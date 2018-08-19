@@ -72,6 +72,13 @@ interface IProject extends IContainer
     public function runWithExtension(): bool;
 
     /**
+     * 是否为 Console.
+     *
+     * @return bool
+     */
+    public function console(): bool;
+
+    /**
      * {@inheritdoc}
      */
     public function make($name, ?array $args = null);

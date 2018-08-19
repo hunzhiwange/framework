@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Queue\Queues;
 
+use Leevel\Option;
 use Leevel\Queue\Backend\Redis as BackendRedis;
 
 /**
@@ -70,6 +71,8 @@ class Redis extends Queue implements IQueue
         $this->sourceConfig['servers'] = $this->getServers();
         $this->sourceConfig['redis_options'] = $this->getOptions();
 
+        $this->sourceConfig['servers']['host'] = '127.0.0.1';
+        var_dump($this->sourceConfig);
         $this->resDataSource = new BackendRedis($this->sourceConfig);
     }
 
@@ -89,8 +92,8 @@ class Redis extends Queue implements IQueue
      */
     protected function getServers()
     {
-        $servers = option(
-            'queue\connect.redis.servers',
+        $servers = Option::get(
+            'queue\\connect.redis.servers',
             $this->sourceConfig['servers']
         );
 
@@ -109,6 +112,6 @@ class Redis extends Queue implements IQueue
      */
     protected function getOptions()
     {
-        return option('queue\connect.redis.options', []);
+        return Option::get('queue\\connect.redis.options', []);
     }
 }

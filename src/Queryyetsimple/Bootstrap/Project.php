@@ -192,6 +192,20 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 是否为 Console.
+     *
+     * @return bool
+     */
+    public function console(): bool
+    {
+        if (!is_object($this->make('request'))) {
+            return PHP_SAPI === 'cli';
+        }
+
+        return $this['request']->isCli();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function make($name, ?array $args = null)

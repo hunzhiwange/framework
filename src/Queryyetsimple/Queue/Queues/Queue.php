@@ -20,9 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Queue\Queues;
 
-use InvalidArgumentException;
-use PHPQueue\JobQueue;
-use PHPQueue\Logger;
+//use PHPQueue\JobQueue;
 
 /**
  * Queue 消息队列.
@@ -33,8 +31,10 @@ use PHPQueue\Logger;
  *
  * @version 1.0
  */
-abstract class Queue extends JobQueue
+abstract class Queue // extends JobQueue
 {
+    public $last_job_id;
+    public $last_job;
     /**
      * 队列连接.
      *
@@ -89,29 +89,8 @@ abstract class Queue extends JobQueue
      */
     public function __construct()
     {
-        parent::__construct();
-
         // 存储队列
         $this->sourceConfig['queue'] = $this->makeSourceKey();
-
-        // 记录日志
-        if (self::$logPath) {
-            if (!is_dir(self::$logPath)) {
-                if (!is_writable(dirname(self::$logPath))) {
-                    throw new InvalidArgumentException(
-                        sprintf('Unable to create the %s directory.', self::$logPath)
-                    );
-                }
-
-                mkdir(self::$logPath, 0777, true);
-            }
-
-            $this->resultLog = Logger::createLogger(
-                $this->connect,
-                Logger::INFO,
-                self::$logPath.'/'.$this->connect.'.log'
-            );
-        }
     }
 
     /**
@@ -124,14 +103,17 @@ abstract class Queue extends JobQueue
         static::$queue = $queue;
     }
 
-    /**
-     * 设置日志路径.
-     *
-     * @param string $logPath
-     */
-    public static function logPath(string $logPath)
+    public function getQueueSize()
     {
-        static::$logPath = $logPath;
+    }
+
+    /**
+     * 添加任务前置方法.
+     *
+     * @param null|array $newJob
+     */
+    public function beforeAdd(?array $newJob = null)
+    {
     }
 
     /**
@@ -151,6 +133,14 @@ abstract class Queue extends JobQueue
         $this->resDataSource->add($formattedData);
 
         return true;
+    }
+
+    public function afterAdd()
+    {
+    }
+
+    public function beforeGet()
+    {
     }
 
     /**
@@ -179,22 +169,35 @@ abstract class Queue extends JobQueue
         return $nextJob;
     }
 
+    public function afterGet()
+    {
+    }
+
+    public function beforeUpdate()
+    {
+    }
+
     /**
      * 更新任务
      *
      * @param null|string $jobId
      * @param null|array  $arrResultData
+     * @param null|mixed  $resultData
      */
-    public function updateJob($jobId = null, $arrResultData = null)
+    public function updateJob($jobId = null, $resultData = null)
     {
-        if (!$this->resultLog) {
-            return;
-        }
+        // if (!$this->resultLog) {
+        //     return;
+        // }
 
-        $this->arrResultLog->addInfo(
-            'Result: ID='.$jobId,
-            $arrResultData
-        );
+        // $this->arrResultLog->addInfo(
+        //     'Result: ID='.$jobId,
+        //     $resultData
+        // );
+    }
+
+    public function afterUpdate()
+    {
     }
 
     /**
@@ -215,6 +218,10 @@ abstract class Queue extends JobQueue
     public function releaseJob($jobId = null)
     {
         $this->resDataSource->release($jobId);
+    }
+
+    public function onError(\Exception $ex)
+    {
     }
 
     /**

@@ -24,6 +24,7 @@ use Exception;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
+use Leevel\Option as Options;
 use PHPQueue\Base;
 
 /**
@@ -76,7 +77,7 @@ class Job extends Command
             $payload['attempts'] = 1;
 
             // 注册处理的队列
-            $connect = 'Leevel\Queue\queues\\'.$this->argument('connect');
+            $connect = 'Leevel\Queue\Queues\\'.$this->argument('connect');
 
             if (!class_exists($connect)) {
                 $this->error($this->time(sprintf('Connect %s not exits.', $connect)));
@@ -135,7 +136,7 @@ class Job extends Command
                 'connect',
                 Argument::OPTIONAL,
                 'The name of connect. ',
-                option('quque\default', 'redis'),
+                Options::get('quque\\default', 'redis'),
             ],
         ];
     }

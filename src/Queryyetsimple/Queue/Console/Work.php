@@ -23,6 +23,7 @@ namespace Leevel\Queue\Console;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
+use Leevel\Option as Options;
 use PHPQueue\Runner;
 
 /**
@@ -215,7 +216,7 @@ class Work extends Command
                 'connect',
                 Argument::OPTIONAL,
                 'The name of connection.',
-                option('quque\default', 'redis'),
+                Options::get('quque\\default', 'redis'),
             ],
         ];
     }

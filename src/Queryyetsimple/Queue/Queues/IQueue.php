@@ -31,65 +31,65 @@ namespace Leevel\Queue\Queues;
  */
 interface IQueue
 {
-    /**
+    /*
      * 设置消息队列.
      *
      * @param string $queue
      */
-    public static function setQueue(string $queue = 'default');
+    //public static function setQueue(string $queue = 'default');
 
-    /**
+    /*
      * 设置日志路径.
      *
      * @param string $logPath
      */
-    public static function logPath(string $logPath);
+    //public static function logPath(string $logPath);
 
-    /**
+    /*
      * 添加一个任务
      *
      * @param null|array $newJob
      *
      * @return bool
      */
-    public function addJob(?array $newJob = null);
+    //public function addJob(?array $newJob = null);
 
-    /**
+    /*
      * 获取一个任务
      *
      * @param null|string $jobId
      *
      * @return object
      */
-    public function getJob(?string $jobId = null);
+    //public function getJob(?string $jobId = null);
 
-    /**
+    /*
      * 更新任务
      *
      * @param null|string $jobId
      * @param null|array  $resultData
      */
-    public function updateJob(?string $jobId = null, ?array $resultData = null);
+   // public function updateJob(?string $jobId = null, ?array $resultData = null);
 
-    /**
+    /*
      * 删除任务
      *
      * @param null|string $jobId
      */
-    public function clearJob(?string $jobId = null);
+    //public function clearJob(?string $jobId = null);
 
-    /**
+    /*
      * 重新发布任务
      *
      * @param null|string $jobId
      */
-    public function releaseJob(?string $jobId = null);
+  //  public function releaseJob(?string $jobId = null);
 
-    /**
+    /*
      * 取得存储连接 key
      * redis:email 表示 redis 邮件队列.
      *
      * @return string
      */
-    public function makeSourceKey();
+  //  public function makeSourceKey();
 }
