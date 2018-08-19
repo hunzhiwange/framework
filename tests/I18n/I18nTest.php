@@ -42,7 +42,7 @@ class I18nTest extends TestCase
         $this->assertSame([
             'zh-CN' => [],
         ], $i18n->all());
-        $this->assertSame('中国语言', $i18n->getText('中国语言'));
+        $this->assertSame('中国语言', $i18n->gettext('中国语言'));
         $this->assertSame('中国人语言', $i18n->__('中国%s语言', '人'));
     }
 
@@ -50,15 +50,15 @@ class I18nTest extends TestCase
     {
         $i18n = new I18n('en-US');
 
-        $this->assertSame('世界你好', $i18n->getText('世界你好'));
+        $this->assertSame('世界你好', $i18n->gettext('世界你好'));
         $this->assertSame('胡巴 ye', $i18n->__('胡巴 %s', 'ye'));
 
-        $i18n->addText('en-US', [
+        $i18n->addtext('en-US', [
             '世界你好'  => 'hello world',
             '胡巴 %s' => 'foo %s',
         ]);
 
-        $this->assertSame('hello world', $i18n->getText('世界你好'));
+        $this->assertSame('hello world', $i18n->gettext('世界你好'));
         $this->assertSame('foo ye', $i18n->__('胡巴 %s', 'ye'));
     }
 
@@ -66,7 +66,7 @@ class I18nTest extends TestCase
     {
         $i18n = new I18n('zh-CN');
 
-        $i18n->addText('en-US', [
+        $i18n->addtext('en-US', [
             '世界你好'  => 'hello world',
             '胡巴 %s' => 'foo %s',
         ]);

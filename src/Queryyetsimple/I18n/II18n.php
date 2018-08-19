@@ -49,7 +49,7 @@ interface II18n
      *
      * @return string
      */
-    public function getText(string $text, ...$arr);
+    public function gettext(string $text, ...$arr);
 
     /**
      * 添加语言包.
@@ -57,7 +57,7 @@ interface II18n
      * @param string $i18n 语言名字
      * @param array  $data 语言包数据
      */
-    public function addText(string $i18n, array $data = []);
+    public function addtext(string $i18n, array $data = []);
 
     /**
      * 设置当前语言包上下文环境.

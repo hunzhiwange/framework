@@ -67,7 +67,7 @@ class I18n implements II18n
      */
     public function __(string $text, ...$arr)
     {
-        return $this->getText($text, ...$arr);
+        return $this->gettext($text, ...$arr);
     }
 
     /**
@@ -78,7 +78,7 @@ class I18n implements II18n
      *
      * @return string
      */
-    public function getText(string $text, ...$arr)
+    public function gettext(string $text, ...$arr)
     {
         $value = $this->text[$this->i18n][$text] ?? $text;
 
@@ -95,7 +95,7 @@ class I18n implements II18n
      * @param string $i18nName 语言名字
      * @param array  $data     语言包数据
      */
-    public function addText(string $i18n, array $data = [])
+    public function addtext(string $i18n, array $data = [])
     {
         if (array_key_exists($i18n, $this->text)) {
             $this->text[$i18n] = array_merge($this->text[$i18n], $data);

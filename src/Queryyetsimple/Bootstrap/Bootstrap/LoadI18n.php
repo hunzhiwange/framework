@@ -59,7 +59,7 @@ class LoadI18n
 
         $project->instance('i18n', $i18n = new I18n($i18nDefault));
 
-        $i18n->addText($i18nDefault, $data);
+        $i18n->addtext($i18nDefault, $data);
     }
 
     /**

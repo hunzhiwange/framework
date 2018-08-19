@@ -336,7 +336,7 @@ class Leevel
             if (!is_object($i18n = static::project('i18n'))) {
                 $i18n = 'sprintf';
             } else {
-                $i18n = [$i18n, 'getText'];
+                $i18n = [$i18n, 'gettext'];
             }
         }
 
