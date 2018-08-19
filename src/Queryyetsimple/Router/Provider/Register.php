@@ -88,16 +88,6 @@ class Register extends Provider
     }
 
     /**
-     * 注册 view 服务
-     */
-    public function view()
-    {
-        $this->container->singleton('view', function ($project) {
-            return new view($project['view.view']);
-        });
-    }
-
-    /**
      * 注册 router 服务
      */
     protected function router()
@@ -168,6 +158,16 @@ class Register extends Provider
     {
         $this->container->singleton('cookie', function ($project) {
             return new Cookie($project['option']->get('cookie\\'));
+        });
+    }
+
+    /**
+     * 注册 view 服务
+     */
+    protected function view()
+    {
+        $this->container->singleton('view', function ($project) {
+            return new view($project['view.view']);
         });
     }
 
