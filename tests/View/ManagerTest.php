@@ -74,8 +74,8 @@ class ManagerTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $this->assertSame(__DIR__.'/assert/default', $container->pathApplicationTheme());
-        $this->assertSame(__DIR__.'/cache_theme', $container->pathApplicationCache('theme'));
+        $this->assertSame(__DIR__.'/assert/default', $container->pathTheme());
+        $this->assertSame(__DIR__.'/cache_theme', $container->pathRuntime('theme'));
 
         $option = new Option([
             'view' => [
@@ -129,12 +129,12 @@ class ExtendContainer extends Container
         return true;
     }
 
-    public function pathApplicationTheme()
+    public function pathTheme()
     {
         return __DIR__.'/assert/default';
     }
 
-    public function pathApplicationCache($type)
+    public function pathRuntime($type)
     {
         return __DIR__.'/cache_'.$type;
     }

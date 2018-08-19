@@ -85,7 +85,7 @@ class ContainerMock extends Container
         return __DIR__;
     }
 
-    public function pathAnApplication(?string $app = null)
+    public function pathApp(?string $app = null)
     {
         return __DIR__;
     }

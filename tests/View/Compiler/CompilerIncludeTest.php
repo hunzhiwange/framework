@@ -50,12 +50,12 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-{~$headTpl = app()->pathApplicationTheme() . '/' . '/header.html'}
+{~$headTpl = app()->pathTheme() . '/' . '/header.html'}
 <include file="$headTpl">
 eot;
 
         $compiled = <<<'eot'
-<?php $headTpl = app()->pathApplicationTheme() . '/' . '/header.html';?>
+<?php $headTpl = app()->pathTheme() . '/' . '/header.html';?>
 <?php $this->display($headTpl, [], '', true);?>
 eot;
 
