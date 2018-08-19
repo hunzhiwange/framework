@@ -63,7 +63,7 @@ class Cache extends Command
 
         $data = $option->all();
 
-        $cachePath = $project->pathCacheOptionFile();
+        $cachePath = $project->optionCachedPath();
 
         $this->checkCacheExists($cachePath);
 

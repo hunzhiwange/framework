@@ -58,7 +58,7 @@ class Clear extends Command
     {
         $this->line('Start to clear cache option.');
 
-        $cachePath = $project->pathCacheOptionFile();
+        $cachePath = $project->optionCachedPath();
 
         $this->clearCache($cachePath);
 

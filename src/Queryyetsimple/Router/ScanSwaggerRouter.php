@@ -92,7 +92,7 @@ class ScanSwaggerRouter
      */
     protected function getAppDir()
     {
-        return app()->pathApp();
+        return app()->appPath();
     }
 
     /**
@@ -102,6 +102,6 @@ class ScanSwaggerRouter
      */
     protected function getCachePath()
     {
-        return app()->pathCacheRouterFile();
+        return app()->routerCachedPath();
     }
 }

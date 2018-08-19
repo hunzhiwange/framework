@@ -57,7 +57,7 @@ class Clear extends Command
     {
         $this->line('Start to clear cache router.');
 
-        $cachePath = $project->pathCacheRouterFile();
+        $cachePath = $project->routerCachedPath();
 
         $this->clearCache($cachePath);
 

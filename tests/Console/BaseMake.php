@@ -80,12 +80,12 @@ class RouterService
 
 class ContainerMock extends Container
 {
-    public function getPathByNamespace($namespaces)
+    public function getPathByComposer($namespaces)
     {
         return __DIR__;
     }
 
-    public function pathApp(?string $app = null)
+    public function appPath(?string $app = null)
     {
         return __DIR__;
     }

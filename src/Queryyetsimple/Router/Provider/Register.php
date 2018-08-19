@@ -24,6 +24,7 @@ use Leevel\Cookie\Cookie;
 use Leevel\Di\Provider;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
+use Leevel\Mvc\View;
 use Leevel\Router\Redirect;
 use Leevel\Router\ResponseFactory;
 use Leevel\Router\Router;
@@ -50,6 +51,7 @@ class Register extends Provider
         $this->redirect();
         $this->response();
         $this->cookie();
+        $this->view();
         $this->cookieResolver();
     }
 
@@ -78,7 +80,21 @@ class Register extends Provider
                 'Leevel\\Cookie\\Cookie',
                 'Leevel\\Cookie\\ICookie',
             ],
+            'view' => [
+                'Leevel\\Mvc\\View',
+                'Leevel\\Mvc\\IView',
+            ],
         ];
+    }
+
+    /**
+     * 注册 view 服务
+     */
+    public function view()
+    {
+        $this->container->singleton('view', function ($project) {
+            return new view($project['view.view']);
+        });
     }
 
     /**
@@ -139,9 +155,9 @@ class Register extends Provider
             $option = $project['option'];
 
             return (new ResponseFactory($project['view'], $project['redirect']))->
-            setViewSuccessTemplate($option->get('view\action_success'))->
+            setViewSuccessTemplate($option->get('view\\action_success'))->
 
-            setViewFailTemplate($option->get('view\action_fail'));
+            setViewFailTemplate($option->get('view\\action_fail'));
         });
     }
 

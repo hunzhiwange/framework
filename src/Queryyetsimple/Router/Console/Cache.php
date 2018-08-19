@@ -67,7 +67,7 @@ class Cache extends Command
             'middlewares' => $router->getGlobalMiddlewares(),
         ];
 
-        $cachePath = $project->pathCacheRouterFile();
+        $cachePath = $project->routerCachedPath();
 
         $this->checkCacheExists($cachePath);
 

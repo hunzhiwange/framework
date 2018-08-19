@@ -87,8 +87,8 @@ class ClearTest extends TestCase
 
         $this->assertInstanceof(IProject::class, $project);
 
-        $project->method('pathCacheI18nFile')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $project->pathCacheI18nFile('en-US'));
+        $project->method('i18nCachedPath')->willReturn($cacheFile);
+        $this->assertEquals($cacheFile, $project->i18nCachedPath('en-US'));
 
         $container->singleton(IProject::class, $project);
 

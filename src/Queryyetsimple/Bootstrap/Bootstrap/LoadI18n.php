@@ -46,9 +46,9 @@ class LoadI18n
         $i18nDefault = $project['option']['i18n\default'];
 
         if ($project->isCachedI18n($i18nDefault)) {
-            $data = (array) include $project->pathCacheI18nFile($i18nDefault);
+            $data = (array) include $project->i18nCachedPath($i18nDefault);
         } else {
-            $load = (new Load([$project->pathI18n()]))->
+            $load = (new Load([$project->i18nPath()]))->
 
             setI18n($i18nDefault)->
 

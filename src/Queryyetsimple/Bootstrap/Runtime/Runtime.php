@@ -79,8 +79,14 @@ abstract class Runtime implements IRuntime
         }
 
         try {
+            // 系统核心组件遇到异常，直接抛出异常
+            if (!is_object($this->container->make('option'))) {
+                echo $this->renderExceptionWithWhoops($e);
+                exit();
+            }
+
             $log = $this->container->make(ILog::class);
-        } catch (Exception $ex) {
+        } catch (Exception $e) {
             throw $e;
         }
 

@@ -66,7 +66,7 @@ class Cache extends Command
 
         $i18nDefault = $option->get('i18n\default');
 
-        $cachePath = $project->pathCacheI18nFile($i18nDefault);
+        $cachePath = $project->i18nCachedPath($i18nDefault);
 
         $this->checkCacheExists($cachePath);
 

@@ -116,7 +116,7 @@ class Load
         $_ENV = [];
 
         try {
-            (new Dotenv($project->pathEnv(), $project->envFile()))->load();
+            (new Dotenv($project->envPath(), $project->envFile()))->load();
         } catch (InvalidPathException $e) {
             throw new RuntimeException($e->getMessage());
         } catch (InvalidFileException $e) {

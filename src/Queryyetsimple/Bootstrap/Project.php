@@ -186,7 +186,7 @@ class Project extends Container implements IProject
      *
      * @return bool
      */
-    public function runWithExtension()
+    public function runWithExtension(): bool
     {
         return extension_loaded('leevel');
     }
@@ -214,11 +214,11 @@ class Project extends Container implements IProject
     {
         $this->path = $path;
 
-        if (!is_writable($this->pathRuntime())) {
+        if (!is_writable($this->runtimePath())) {
             throw new RuntimeException(
                 sprintf(
                     'Runtime path %s is not writeable.',
-                    $this->pathRuntime()
+                    $this->runtimePath()
                 )
             );
         }
@@ -244,10 +244,10 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function pathApp($app = false, string $path = '')
+    public function appPath($app = false, string $path = '')
     {
         return ($this->appPath ?? $this->path.DIRECTORY_SEPARATOR.'application').
-            ($app ? DIRECTORY_SEPARATOR.strtolower(true === $app ? ($this->request->app() ?: 'app') : $app) : '').
+            ($app ? DIRECTORY_SEPARATOR.strtolower(true === $app ? ($this->request->app() ?: 'app') : $app) : $app).
             ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
@@ -258,7 +258,7 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    public function setPathApp(string $path)
+    public function setAppPath(string $path)
     {
         $this->appPath = $path;
 
@@ -274,7 +274,7 @@ class Project extends Container implements IProject
      */
     public function pathTheme(?string $app = null)
     {
-        return $this->pathApp($app).'/ui/theme/'.
+        return $this->appPath($app).'/ui/theme/'.
             $this->make('option')->get('view\\theme_name');
     }
 
@@ -285,7 +285,7 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    public function setPathCommon(string $path)
+    public function setCommonPath(string $path)
     {
         $this->commonPath = $path;
 
@@ -299,7 +299,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function pathCommon(string $path = '')
+    public function commonPath(string $path = '')
     {
         return ($this->commonPath ?? $this->path.DIRECTORY_SEPARATOR.'common').
             ($path ? DIRECTORY_SEPARATOR.$path : $path);
@@ -312,7 +312,7 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    public function setPathRuntime(string $path)
+    public function setRuntimePath(string $path)
     {
         $this->runtimePath = $path;
 
@@ -326,7 +326,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function pathRuntime(string $path = '')
+    public function runtimePath(string $path = '')
     {
         return ($this->runtimePath ?? $this->path.DIRECTORY_SEPARATOR.'runtime').
             ($path ? DIRECTORY_SEPARATOR.$path : $path);
@@ -339,7 +339,7 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    public function setPathStorage(string $path)
+    public function setStoragePath(string $path)
     {
         $this->storagePath = $path;
 
@@ -353,7 +353,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function pathStorage(string $path = '')
+    public function storagePath(string $path = '')
     {
         return ($this->storagePath ?? $this->path.DIRECTORY_SEPARATOR.'storage').
             ($path ? DIRECTORY_SEPARATOR.$path : $path);
@@ -366,7 +366,7 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    public function setPathOption(string $path)
+    public function setOptionPath(string $path)
     {
         $this->optionPath = $path;
 
@@ -376,11 +376,14 @@ class Project extends Container implements IProject
     /**
      * 配置路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function pathOption()
+    public function optionPath(string $path = '')
     {
-        return $this->optionPath ?? $this->path.DIRECTORY_SEPARATOR.'option';
+        return ($this->optionPath ?? $this->path.DIRECTORY_SEPARATOR.'option').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -390,7 +393,7 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    public function setPathI18n(string $path)
+    public function setI18nPath(string $path)
     {
         $this->i18nPath = $path;
 
@@ -400,21 +403,14 @@ class Project extends Container implements IProject
     /**
      * 语言包路径.
      *
-     * @return string
-     */
-    public function pathI18n()
-    {
-        return $this->i18nPath ?? $this->path.DIRECTORY_SEPARATOR.'i18n';
-    }
-
-    /**
-     * 环境变量路径.
+     * @param string $path
      *
      * @return string
      */
-    public function pathEnv()
+    public function i18nPath(string $path = '')
     {
-        return $this->envPath ?: $this->path;
+        return ($this->i18nPath ?? $this->path.DIRECTORY_SEPARATOR.'i18n').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -429,6 +425,16 @@ class Project extends Container implements IProject
         $this->envPath = $path;
 
         return $this;
+    }
+
+    /**
+     * 环境变量路径.
+     *
+     * @return string
+     */
+    public function envPath()
+    {
+        return $this->envPath ?: $this->path;
     }
 
     /**
@@ -462,7 +468,7 @@ class Project extends Container implements IProject
      */
     public function fullEnvPath()
     {
-        return $this->pathEnv().DIRECTORY_SEPARATOR.$this->envFile();
+        return $this->envPath().DIRECTORY_SEPARATOR.$this->envFile();
     }
 
     /**
@@ -472,9 +478,9 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function pathCacheI18nFile(string $i18n): string
+    public function i18nCachedPath(string $i18n): string
     {
-        return $this->pathRuntime().'/i18n/'.$i18n.'.php';
+        return $this->runtimePath().'/i18n/'.$i18n.'.php';
     }
 
     /**
@@ -486,7 +492,7 @@ class Project extends Container implements IProject
      */
     public function isCachedI18n(string $i18n): bool
     {
-        return is_file($this->pathCacheI18nFile($i18n));
+        return is_file($this->i18nCachedPath($i18n));
     }
 
     /**
@@ -494,9 +500,9 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function pathCacheOptionFile(): string
+    public function optionCachedPath(): string
     {
-        return $this->pathRuntime().'/bootstrap/option.php';
+        return $this->runtimePath().'/bootstrap/option.php';
     }
 
     /**
@@ -506,7 +512,7 @@ class Project extends Container implements IProject
      */
     public function isCachedOption(): bool
     {
-        return is_file($this->pathCacheOptionFile());
+        return is_file($this->optionCachedPath());
     }
 
     /**
@@ -514,9 +520,9 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function pathCacheRouterFile(): string
+    public function routerCachedPath(): string
     {
-        return $this->pathRuntime().'/bootstrap/router.php';
+        return $this->runtimePath().'/bootstrap/router.php';
     }
 
     /**
@@ -526,7 +532,7 @@ class Project extends Container implements IProject
      */
     public function isCachedRouter(): bool
     {
-        return is_file($this->pathCacheRouterFile());
+        return is_file($this->routerCachedPath());
     }
 
     /**
@@ -546,7 +552,7 @@ class Project extends Container implements IProject
      *
      * @return null|string
      */
-    public function getPathByNamespace(string $namespaces)
+    public function getPathByComposer(string $namespaces)
     {
         $namespaces = explode('\\', $namespaces);
 
@@ -558,24 +564,6 @@ class Project extends Container implements IProject
         $namespaces[0] = $prefix[$namespaces[0].'\\'][0];
 
         return implode('/', $namespaces);
-    }
-
-    /**
-     * 批量获取命名空间路径.
-     *
-     * @param array $namespaces
-     *
-     * @return array
-     */
-    public function getPathByNamespaces(array $namespaces): array
-    {
-        $result = [];
-
-        foreach ($namespaces as $item) {
-            $result[$item] = $this->getPathByNamespace($item);
-        }
-
-        return $result;
     }
 
     /**
@@ -606,30 +594,6 @@ class Project extends Container implements IProject
     public function environment()
     {
         return $this->make('option')->get('environment');
-    }
-
-    /**
-     * 是否为 API.
-     *
-     * @return bool
-     */
-    public function api()
-    {
-        return $this['request']->isAcceptJson();
-    }
-
-    /**
-     * 是否为 Console.
-     *
-     * @return bool
-     */
-    public function console()
-    {
-        if (!is_object($this->make('request'))) {
-            return PHP_SAPI === 'cli';
-        }
-
-        return $this['request']->isCli();
     }
 
     /**

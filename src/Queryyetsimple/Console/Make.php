@@ -281,8 +281,8 @@ abstract class Make extends Command
      */
     protected function getNamespacePath()
     {
-        if ('/' !== ($namespacePath = $this->getContainer()->getPathByNamespace($this->getNamespace()).'/')) {
-            $namespacePath = $this->getContainer()->pathApp(lcfirst($this->getNamespace())).'/';
+        if ('/' !== ($namespacePath = $this->getContainer()->getPathByComposer($this->getNamespace()).'/')) {
+            $namespacePath = $this->getContainer()->appPath(lcfirst($this->getNamespace())).'/';
         }
 
         return $namespacePath;

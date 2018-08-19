@@ -206,7 +206,11 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function getCommandsWithNamespace(array $namespaces): array
     {
-        $namespaces = $this->project->getPathByNamespaces($namespaces);
+        $namespaces = [];
+
+        foreach ($namespaces as $item) {
+            $namespaces[$item] = $this->project->getPathByComposer($item);
+        }
 
         return (new Load())->addNamespace($namespaces)->loadData();
     }

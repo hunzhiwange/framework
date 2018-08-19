@@ -176,7 +176,7 @@ abstract class RouterProvider extends Provider
      */
     protected function getRouterCachePath()
     {
-        return $this->container->pathCacheRouterFile();
+        return $this->container->routerCachedPath();
     }
 
     /**

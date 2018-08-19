@@ -153,7 +153,7 @@ class Manager extends Managers
             'controller_name'  => $request->controller(),
             'action_name'      => $request->action(),
             'theme_path'       => $this->container->pathTheme(),
-            'theme_cache_path' => $this->container->pathRuntime('theme').'/'.strtolower($request->app()),
+            'theme_cache_path' => $this->container->runtimePath('theme').'/'.strtolower($request->app()),
         ];
 
         return $options;

@@ -101,7 +101,6 @@
                 "Leevel\\Encryption\\Provider\\Register",
                 "Leevel\\Filesystem\\Provider\\Register",
                 "Leevel\\Mail\\Provider\\Register",
-                "Leevel\\Mvc\\Provider\\Register",
                 "Leevel\\Page\\Provider\\Register",
                 "Leevel\\Queue\\Provider\\Register",
                 "Leevel\\Session\\Provider\\Register",

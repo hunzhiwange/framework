@@ -69,7 +69,7 @@ interface IProject extends IContainer
      *
      * @return bool
      */
-    public function runWithExtension();
+    public function runWithExtension(): bool;
 
     /**
      * {@inheritdoc}
@@ -100,7 +100,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function pathApp($app = true, string $path = '');
+    public function appPath($app = true, string $path = '');
 
     /**
      * 设置应用路径.
@@ -109,7 +109,7 @@ interface IProject extends IContainer
      *
      * @return $this
      */
-    public function setPathApp(string $path);
+    public function setAppPath(string $path);
 
     /**
      * 取得应用主题目录.
@@ -127,7 +127,7 @@ interface IProject extends IContainer
      *
      * @return $this
      */
-    public function setPathCommon(string $path);
+    public function setCommonPath(string $path);
 
     /**
      * 公共路径.
@@ -136,7 +136,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function pathCommon(string $path = '');
+    public function commonPath(string $path = '');
 
     /**
      * 设置运行时路径.
@@ -145,7 +145,7 @@ interface IProject extends IContainer
      *
      * @return $this
      */
-    public function setPathRuntime(string $path);
+    public function setRuntimePath(string $path);
 
     /**
      * 运行路径.
@@ -154,7 +154,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function pathRuntime(string $path = '');
+    public function runtimePath(string $path = '');
 
     /**
      * 设置存储路径.
@@ -163,7 +163,7 @@ interface IProject extends IContainer
      *
      * @return $this
      */
-    public function setPathStorage(string $path);
+    public function setStoragePath(string $path);
 
     /**
      * 附件路径.
@@ -172,7 +172,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function pathStorage(string $path = '');
+    public function storagePath(string $path = '');
 
     /**
      * 设置配置路径.
@@ -181,14 +181,16 @@ interface IProject extends IContainer
      *
      * @return $this
      */
-    public function setPathOption(string $path);
+    public function setOptionPath(string $path);
 
     /**
      * 配置路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function pathOption();
+    public function optionPath(string $path = '');
 
     /**
      * 设置语言包路径.
@@ -197,21 +199,16 @@ interface IProject extends IContainer
      *
      * @return $this
      */
-    public function setPathI18n(string $path);
+    public function setI18nPath(string $path);
 
     /**
      * 语言包路径.
      *
-     * @return string
-     */
-    public function pathI18n();
-
-    /**
-     * 环境变量路径.
+     * @param string $path
      *
      * @return string
      */
-    public function pathEnv();
+    public function i18nPath(string $path = '');
 
     /**
      * 设置环境变量路径.
@@ -221,6 +218,13 @@ interface IProject extends IContainer
      * @return $this
      */
     public function setPathEnv(string $path);
+
+    /**
+     * 环境变量路径.
+     *
+     * @return string
+     */
+    public function envPath();
 
     /**
      * 设置环境变量文件.
@@ -252,7 +256,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function pathCacheI18nFile(string $i18n): string;
+    public function i18nCachedPath(string $i18n): string;
 
     /**
      * 是否存在语言包缓存.
@@ -268,7 +272,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function pathCacheOptionFile(): string;
+    public function optionCachedPath(): string;
 
     /**
      * 是否存在配置缓存.
@@ -282,7 +286,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function pathCacheRouterFile(): string;
+    public function routerCachedPath(): string;
 
     /**
      * 是否存在路由缓存.
@@ -305,16 +309,7 @@ interface IProject extends IContainer
      *
      * @return null|string
      */
-    public function getPathByNamespace(string $namespaces);
-
-    /**
-     * 批量获取命名空间路径.
-     *
-     * @param array $namespaces
-     *
-     * @return array
-     */
-    public function getPathByNamespaces(array $namespaces): array;
+    public function getPathByComposer(string $namespaces);
 
     /**
      * 是否开启 debug.
@@ -336,20 +331,6 @@ interface IProject extends IContainer
      * @return bool
      */
     public function environment();
-
-    /**
-     * 是否为 API.
-     *
-     * @return bool
-     */
-    public function api();
-
-    /**
-     * 是否为 Console.
-     *
-     * @return bool
-     */
-    public function console();
 
     /**
      * 创建服务提供者.

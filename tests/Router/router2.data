@@ -1,0 +1,393 @@
+array (
+  'basepaths' => 
+  array (
+    0 => '/v2',
+  ),
+  'groups' => 
+  array (
+  ),
+  'routers' => 
+  array (
+    'get' => 
+    array (
+      'static' => 
+      array (
+        '/v2/pet/findByStatus' => 
+        array (
+          'scheme' => NULL,
+          'domain' => '{suddomain:[A-Za-z]+}-vip.{domain}.queryphp.cn',
+          'params' => 
+          array (
+            'args1' => 'hello',
+            'args2' => 'world',
+          ),
+          'strict' => true,
+          'bind' => '/blog/list?arg1=1&arg2=2',
+          'middlewares' => 
+          array (
+            'handle' => 
+            array (
+            ),
+            'terminate' => 
+            array (
+            ),
+          ),
+          'domain_regex' => '/^([A-Za-z]+)\\-vip\\.(\\S+)\\.queryphp\\.cn$/',
+          'domain_var' => 
+          array (
+            0 => 'suddomain',
+            1 => 'domain',
+          ),
+          'regex' => NULL,
+          'var' => NULL,
+        ),
+      ),
+      'p' => 
+      array (
+        '_' => 
+        array (
+          '/v2/pet/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello1/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello2/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello3/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello4/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello5/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello6/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello7/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello8/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello9/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello10/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello11/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/hello12/{petId:[A-Za-z]+}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => 'www.queryphp.cn',
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => 'test/handle2',
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          'regex' => 
+          array (
+            0 => '~^(?|/v2/pet/([A-Za-z]+)|/v2/pet/hello/([A-Za-z]+)()|/v2/pet/hello1/([A-Za-z]+)()()|/v2/pet/hello2/([A-Za-z]+)()()()|/v2/pet/hello3/([A-Za-z]+)()()()()|/v2/pet/hello4/([A-Za-z]+)()()()()()|/v2/pet/hello5/([A-Za-z]+)()()()()()()|/v2/pet/hello6/([A-Za-z]+)()()()()()()()|/v2/pet/hello7/([A-Za-z]+)()()()()()()()()|/v2/pet/hello8/([A-Za-z]+)()()()()()()()()())$~x',
+            1 => '~^(?|/v2/pet/hello9/([A-Za-z]+)|/v2/pet/hello10/([A-Za-z]+)()|/v2/pet/hello11/([A-Za-z]+)()()|/v2/pet/hello12/([A-Za-z]+)()()())$~x',
+          ),
+          'map' => 
+          array (
+            0 => 
+            array (
+              2 => '/v2/pet/{petId:[A-Za-z]+}',
+              3 => '/v2/pet/hello/{petId:[A-Za-z]+}',
+              4 => '/v2/pet/hello1/{petId:[A-Za-z]+}',
+              5 => '/v2/pet/hello2/{petId:[A-Za-z]+}',
+              6 => '/v2/pet/hello3/{petId:[A-Za-z]+}',
+              7 => '/v2/pet/hello4/{petId:[A-Za-z]+}',
+              8 => '/v2/pet/hello5/{petId:[A-Za-z]+}',
+              9 => '/v2/pet/hello6/{petId:[A-Za-z]+}',
+              10 => '/v2/pet/hello7/{petId:[A-Za-z]+}',
+              11 => '/v2/pet/hello8/{petId:[A-Za-z]+}',
+            ),
+            1 => 
+            array (
+              2 => '/v2/pet/hello9/{petId:[A-Za-z]+}',
+              3 => '/v2/pet/hello10/{petId:[A-Za-z]+}',
+              4 => '/v2/pet/hello11/{petId:[A-Za-z]+}',
+              5 => '/v2/pet/hello12/{petId:[A-Za-z]+}',
+            ),
+          ),
+        ),
+      ),
+    ),
+    'post' => 
+    array (
+      'static' => 
+      array (
+        '/v2/pet' => 
+        array (
+          'scheme' => NULL,
+          'domain' => NULL,
+          'params' => NULL,
+          'strict' => NULL,
+          'bind' => NULL,
+          'middlewares' => NULL,
+          'domain_regex' => NULL,
+          'domain_var' => NULL,
+          'regex' => NULL,
+          'var' => NULL,
+        ),
+      ),
+      'p' => 
+      array (
+        '_' => 
+        array (
+          '/v2/pet/{petId}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => NULL,
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => NULL,
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          '/v2/pet/{petId}/uploadImage' => 
+          array (
+            'scheme' => NULL,
+            'domain' => NULL,
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => NULL,
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          'regex' => 
+          array (
+            0 => '~^(?|/v2/pet/(\\S+)|/v2/pet/(\\S+)/uploadImage())$~x',
+          ),
+          'map' => 
+          array (
+            0 => 
+            array (
+              2 => '/v2/pet/{petId}',
+              3 => '/v2/pet/{petId}/uploadImage',
+            ),
+          ),
+        ),
+      ),
+    ),
+    'delete' => 
+    array (
+      'p' => 
+      array (
+        '_' => 
+        array (
+          '/v2/pet/{petId}' => 
+          array (
+            'scheme' => NULL,
+            'domain' => NULL,
+            'params' => NULL,
+            'strict' => NULL,
+            'bind' => NULL,
+            'middlewares' => NULL,
+            'domain_regex' => NULL,
+            'domain_var' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          'regex' => 
+          array (
+            0 => '~^(?|/v2/pet/(\\S+))$~x',
+          ),
+          'map' => 
+          array (
+            0 => 
+            array (
+              2 => '/v2/pet/{petId}',
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+)

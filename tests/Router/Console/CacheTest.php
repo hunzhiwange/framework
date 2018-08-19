@@ -235,8 +235,8 @@ class CacheTest extends TestCase
 
         $this->assertInstanceof(IProject::class, $project);
 
-        $project->method('pathCacheRouterFile')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $project->pathCacheRouterFile());
+        $project->method('routerCachedPath')->willReturn($cacheFile);
+        $this->assertEquals($cacheFile, $project->routerCachedPath());
 
         $container->singleton(IProject::class, $project);
 

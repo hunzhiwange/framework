@@ -210,9 +210,9 @@ class CacheTest extends TestCase
         $project = $this->createMock(IProject::class);
         $this->assertInstanceof(IProject::class, $project);
 
-        $project->method('pathCacheI18nFile')->willReturn($cacheFile);
+        $project->method('i18nCachedPath')->willReturn($cacheFile);
 
-        $this->assertEquals($cacheFile, $project->pathCacheI18nFile('en-US'));
+        $this->assertEquals($cacheFile, $project->i18nCachedPath('en-US'));
 
         $container->singleton(IProject::class, $project);
 
