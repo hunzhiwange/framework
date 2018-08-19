@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Queue\Jobs;
 
+use Leevel\Leevel;
 use PHPQueue\Job as PHPQueueJob;
 
 /**
@@ -224,7 +225,7 @@ abstract class Job extends PHPQueueJob
      */
     protected function container()
     {
-        return project();
+        return Leevel::singletons();
     }
 
     /**

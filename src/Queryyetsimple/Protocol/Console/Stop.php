@@ -23,6 +23,7 @@ namespace Leevel\Protocol\Console;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
+use Leevel\Leevel;
 
 /**
  * swoole 服务停止.
@@ -56,7 +57,7 @@ class Stop extends Command
     {
         $this->warn($this->getVersion());
 
-        $server = app('swoole.'.$this->argument('type').'.server');
+        $server = Leevel::make('swoole.'.$this->argument('type').'.server');
         $server->setCommand($this);
         $server->options($this->parseOption());
         $server->stopServer();
@@ -89,7 +90,7 @@ class Stop extends Command
     {
         return 'The Stop of Swoole '.
             ucfirst($this->argument('type')).
-            ' Server Version '.app()->version().
+            ' Server Version '.Leevel::version().
             PHP_EOL;
     }
 
@@ -105,7 +106,7 @@ class Stop extends Command
                 'type',
                 Argument::OPTIONAL,
                 'The type of server,support default,http,websocket.',
-                app('option')['swoole\default'],
+                Leevel::make('option')->get('swoole\\default'),
             ],
         ];
     }

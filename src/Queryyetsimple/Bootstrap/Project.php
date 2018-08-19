@@ -233,22 +233,22 @@ class Project extends Container implements IProject
      */
     public function path(string $path = '')
     {
-        return $this->path.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->path.$this->normalizePath($path);
     }
 
     /**
      * 应用路径.
      *
-     * @param mixed  $app
-     * @param string $path
+     * @param bool|string $app
+     * @param string      $path
      *
      * @return string
      */
     public function appPath($app = false, string $path = '')
     {
         return ($this->appPath ?? $this->path.DIRECTORY_SEPARATOR.'application').
-            ($app ? DIRECTORY_SEPARATOR.strtolower(true === $app ? ($this->request->app() ?: 'app') : $app) : $app).
-            ($path ? DIRECTORY_SEPARATOR.$path : $path);
+            ($app ? DIRECTORY_SEPARATOR.$this->normalizeApp($app) : $app).
+            $this->normalizePath($path);
     }
 
     /**
@@ -302,7 +302,7 @@ class Project extends Container implements IProject
     public function commonPath(string $path = '')
     {
         return ($this->commonPath ?? $this->path.DIRECTORY_SEPARATOR.'common').
-            ($path ? DIRECTORY_SEPARATOR.$path : $path);
+            $this->normalizePath($path);
     }
 
     /**
@@ -329,7 +329,7 @@ class Project extends Container implements IProject
     public function runtimePath(string $path = '')
     {
         return ($this->runtimePath ?? $this->path.DIRECTORY_SEPARATOR.'runtime').
-            ($path ? DIRECTORY_SEPARATOR.$path : $path);
+            $this->normalizePath($path);
     }
 
     /**
@@ -356,7 +356,7 @@ class Project extends Container implements IProject
     public function storagePath(string $path = '')
     {
         return ($this->storagePath ?? $this->path.DIRECTORY_SEPARATOR.'storage').
-            ($path ? DIRECTORY_SEPARATOR.$path : $path);
+            $this->normalizePath($path);
     }
 
     /**
@@ -383,7 +383,7 @@ class Project extends Container implements IProject
     public function optionPath(string $path = '')
     {
         return ($this->optionPath ?? $this->path.DIRECTORY_SEPARATOR.'option').
-            ($path ? DIRECTORY_SEPARATOR.$path : $path);
+            $this->normalizePath($path);
     }
 
     /**
@@ -410,7 +410,7 @@ class Project extends Container implements IProject
     public function i18nPath(string $path = '')
     {
         return ($this->i18nPath ?? $this->path.DIRECTORY_SEPARATOR.'i18n').
-            ($path ? DIRECTORY_SEPARATOR.$path : $path);
+            $this->normalizePath($path);
     }
 
     /**
@@ -571,7 +571,7 @@ class Project extends Container implements IProject
      *
      * @return bool
      */
-    public function debug()
+    public function debug(): bool
     {
         return $this->make('option')->get('debug');
     }
@@ -581,7 +581,7 @@ class Project extends Container implements IProject
      *
      * @return bool
      */
-    public function development()
+    public function development(): bool
     {
         return 'development' === $this->environment();
     }
@@ -589,9 +589,9 @@ class Project extends Container implements IProject
     /**
      * 运行环境.
      *
-     * @return bool
+     * @return string
      */
-    public function environment()
+    public function environment(): string
     {
         return $this->make('option')->get('environment');
     }
@@ -782,5 +782,29 @@ class Project extends Container implements IProject
         $this->callProviderBootstrap($providerInstance);
 
         unset($this->deferredProviders[$provider]);
+    }
+
+    /**
+     * 格式化应用名字.
+     *
+     * @param bool|string $app
+     *
+     * @return string
+     */
+    protected function normalizeApp($app)
+    {
+        return strtolower(true === $app ? ($this->request->app() ?: 'app') : $app);
+    }
+
+    /**
+     * 格式化路径.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function normalizePath(string $path)
+    {
+        return $path ? DIRECTORY_SEPARATOR.$path : $path;
     }
 }

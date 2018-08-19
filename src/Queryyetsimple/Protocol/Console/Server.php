@@ -23,6 +23,7 @@ namespace Leevel\Protocol\Console;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
+use Leevel\Leevel;
 
 /**
  * swoole 服务启动.
@@ -57,7 +58,7 @@ class Server extends Command
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
 
-        $server = app('swoole.'.$this->argument('type').'.server');
+        $server = Leevel::make('swoole.'.$this->argument('type').'.server');
         $server->setCommand($this);
         $server->options($this->parseOption());
         $server->startServer();
@@ -89,7 +90,7 @@ class Server extends Command
     protected function getVersion()
     {
         return 'Swoole '.ucfirst($this->argument('type')).
-            ' Server Version '.app()->version().
+            ' Server Version '.Leevel::version().
             PHP_EOL;
     }
 
@@ -122,7 +123,7 @@ queryphp;
                 'type',
                 Argument::OPTIONAL,
                 'The type of server,support default,http,websocket.',
-                app('option')['swoole\default'],
+                Leevel::make('option')->get('swoole\\default'),
             ],
         ];
     }

@@ -95,8 +95,8 @@ interface IProject extends IContainer
     /**
      * 应用路径.
      *
-     * @param mixed  $app
-     * @param string $path
+     * @param bool|string $app
+     * @param string      $path
      *
      * @return string
      */
@@ -316,21 +316,21 @@ interface IProject extends IContainer
      *
      * @return bool
      */
-    public function debug();
+    public function debug(): bool;
 
     /**
      * 是否为开发环境.
      *
-     * @return string
+     * @return bool
      */
-    public function development();
+    public function development(): bool;
 
     /**
      * 运行环境.
      *
-     * @return bool
+     * @return string
      */
-    public function environment();
+    public function environment(): string;
 
     /**
      * 创建服务提供者.

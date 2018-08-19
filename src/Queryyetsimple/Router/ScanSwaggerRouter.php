@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
+use Leevel\Leevel;
 use Leevel\Router;
 
 /**
@@ -70,7 +71,7 @@ class ScanSwaggerRouter
      */
     protected function getTopDomain()
     {
-        return app()->make('option')->get('top_domain');
+        return Leevel::make('option')->get('top_domain');
     }
 
     /**
@@ -92,7 +93,7 @@ class ScanSwaggerRouter
      */
     protected function getAppDir()
     {
-        return app()->appPath();
+        return Leevel::appPath();
     }
 
     /**
@@ -102,6 +103,6 @@ class ScanSwaggerRouter
      */
     protected function getCachePath()
     {
-        return app()->routerCachedPath();
+        return Leevel::routerCachedPath();
     }
 }

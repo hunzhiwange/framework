@@ -23,6 +23,7 @@ namespace Leevel\Protocol\Console;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
+use Leevel\Leevel;
 use Leevel\Protocol\ToolKit\AutoReload as AutoReloads;
 
 /**
@@ -108,7 +109,7 @@ class AutoReload extends Command
      */
     protected function parseWatchDir()
     {
-        $appPath = app()->path();
+        $appPath = Leevel::path();
 
         $dirs = array_map(function ($value) use ($appPath) {
             if (0 !== strpos($value, '/')) {
@@ -128,7 +129,7 @@ class AutoReload extends Command
      */
     protected function getDefaultWatchDir()
     {
-        return app('option')->get('swoole\autoreload_watch_dir');
+        return Leevel::make('option')->get('swoole\\autoreload_watch_dir');
     }
 
     /**
@@ -139,7 +140,7 @@ class AutoReload extends Command
     protected function getVersion()
     {
         return 'The AutoReload of Swoole Version '.
-            app()->version().
+            Leevel::version().
             PHP_EOL;
     }
 
@@ -177,7 +178,7 @@ class AutoReload extends Command
                 null,
                 Option::VALUE_REQUIRED,
                 'The after seconds reload the server when file updated.',
-                app('option')->get('swoole\autoreload_after_seconds'),
+                Leevel::make('option')->get('swoole\\autoreload_after_seconds'),
             ],
         ];
     }

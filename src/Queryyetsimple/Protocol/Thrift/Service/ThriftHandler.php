@@ -25,6 +25,7 @@ use Leevel\Http\IResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request as HttpRequest;
 use Leevel\Kernel\IKernel;
+use Leevel\Leevel;
 use Leevel\Router;
 use Leevel\Router\IRouter;
 
@@ -50,7 +51,7 @@ class ThriftHandler implements ThriftIf
     {
         $httpRequest = $this->normalizeRequest($request);
 
-        $response = app(IKernel::class)->handle($httpRequest);
+        $response = Leevel::make(IKernel::class)->handle($httpRequest);
 
         return $this->normalizeResponse($response);
     }

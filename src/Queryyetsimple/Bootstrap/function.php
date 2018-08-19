@@ -22,6 +22,15 @@ use Leevel\Bootstrap\Project;
 use Leevel\Log\ILog;
 use Leevel\Support\Debug\Dump;
 
+/**
+ * 函数库.
+ *
+ * @author Xiangmin Liu <635750556@qq.com>
+ *
+ * @since 2016.11.26
+ *
+ * @version 1.0
+ */
 class Leevel
 {
     /**
@@ -51,6 +60,19 @@ class Leevel
     }
 
     /**
+     * 语言包别名.
+     *
+     * @param string $text
+     * @param array  $arr
+     *
+     * @return string
+     */
+    public static function __(string $text, ...$arr)
+    {
+        return static::gettext($text, ...$arr);
+    }
+
+    /**
      * 返回项目容器或者注入.
      *
      * @param null|string $instance
@@ -58,7 +80,7 @@ class Leevel
      *
      * @return \Leevel\Bootstrap\Project
      */
-    public static function project($instance = null, $args = [])
+    public static function project(?string $instance = null, array $args = [])
     {
         if (null === $instance) {
             return Project::singletons();
@@ -76,7 +98,7 @@ class Leevel
      *
      * @return \Leevel\Bootstrap\Project
      */
-    public static function app($instance = null, $args = [])
+    public static function app(?string $instance = null, array $args = [])
     {
         return static::project($instance, $args);
     }
@@ -100,7 +122,7 @@ class Leevel
      *
      * @return mixed
      */
-    public static function env($name, $defaults = null)
+    public static function env(string $name, $defaults = null)
     {
         switch (true) {
             case array_key_exists($name, $_ENV):
@@ -216,44 +238,7 @@ class Leevel
 
         return static::project('cache')->get($key, $defaults);
     }
-}
 
-if (!function_exists('project')) {
-    /**
-     * 返回项目容器或者注入.
-     *
-     * @param null|string $instance
-     * @param array       $args
-     *
-     * @return \Leevel\Bootstrap\Project
-     */
-    function project($instance = null, $args = [])
-    {
-        if (null === $instance) {
-            return Project::singletons();
-        }
-
-        return Project::singletons()->make($instance, $args);
-    }
-}
-
-if (!function_exists('app')) {
-    /**
-     * 返回项目容器或者注入
-     * project 别名函数.
-     *
-     * @param null|string $instance
-     * @param array       $args
-     *
-     * @return \Leevel\Bootstrap\Project
-     */
-    function app($instance = null, $args = [])
-    {
-        return project($instance, $args);
-    }
-}
-
-if (!function_exists('encrypt')) {
     /**
      * 加密字符串.
      *
@@ -261,13 +246,11 @@ if (!function_exists('encrypt')) {
      *
      * @return string
      */
-    function encrypt($value)
+    public static function encrypt(string $value)
     {
-        return project('encryption')->encrypt($value);
+        return static::project('encryption')->encrypt($value);
     }
-}
 
-if (!function_exists('decrypt')) {
     /**
      * 解密字符串.
      *
@@ -275,13 +258,11 @@ if (!function_exists('decrypt')) {
      *
      * @return string
      */
-    function decrypt($value)
+    public static function decrypt(string $value)
     {
-        return project('encryption')->decrypt($value);
+        return static::project('encryption')->decrypt($value);
     }
-}
 
-if (!function_exists('session')) {
     /**
      * 设置或者获取 session 值
      *
@@ -290,36 +271,40 @@ if (!function_exists('session')) {
      *
      * @return mixed
      */
-    function session($key = null, $defaults = null)
+    public static function session($key = null, $defaults = null)
     {
         if (null === $key) {
-            return project('session');
+            return static::project('session');
         }
 
         if (is_array($key)) {
-            return project('session')->put($key);
+            return static::project('session')->put($key);
         }
 
-        return project('session')->get($key, $defaults);
+        return static::project('session')->get($key, $defaults);
     }
-}
 
-if (!function_exists('flash')) {
     /**
-     * 返回 flash.
+     * 设置或者获取 flash 值.
      *
      * @param string $key
      * @param mixed  $defaults
      *
      * @return mixed
      */
-    function flash($key, $defaults = null)
+    public static function flash($key = null, $defaults = null)
     {
-        return project('session')->getFlash($key, $defaults);
-    }
-}
+        if (null === $key) {
+            return static::project('session');
+        }
 
-if (!function_exists('url')) {
+        if (is_array($key)) {
+            return static::project('session')->flashs($key);
+        }
+
+        return static::project('session')->getFlash($key, $defaults);
+    }
+
     /**
      * 生成路由地址
      *
@@ -327,13 +312,37 @@ if (!function_exists('url')) {
      * @param array  $params
      * @param string $subdomain
      * @param mixed  $suffix
-     * @param mixed  $option
      *
      * @return string
      */
-    function url($url, $params = [], $option = [], string $subdomain = 'www', $suffix = false): string
+    public static function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
     {
-        return project('url')->make($url, $params, $subdomain, $suffix);
+        return static::project('url')->make($url, $params, $subdomain, $suffix);
+    }
+
+    /**
+     * 语言包.
+     *
+     * @param string $text
+     * @param array  $arr
+     *
+     * @return string
+     */
+    public static function gettext(string $text, ...$arr)
+    {
+        static $i18n;
+
+        if (null === $i18n) {
+            if (!is_object($i18n = static::project('i18n'))) {
+                $i18n = 'sprintf';
+            } else {
+                $i18n = [$i18n, 'getText'];
+            }
+        }
+
+        array_unshift($arr, $text);
+
+        return call_user_func_array($i18n, $arr);
     }
 }
 
@@ -348,19 +357,7 @@ if (!function_exists('__')) {
      */
     function __(string $text, ...$arr)
     {
-        static $i18n;
-
-        if (null === $i18n) {
-            if (!is_object($i18n = project('i18n'))) {
-                $i18n = 'sprintf';
-            } else {
-                $i18n = [$i18n, 'getText'];
-            }
-        }
-
-        array_unshift($arr, $text);
-
-        return call_user_func_array($i18n, $arr);
+        return Leevel::__($text, ...$arr);
     }
 }
 
