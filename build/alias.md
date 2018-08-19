@@ -126,10 +126,6 @@ The code below need to be add.
     url = git@github.com:queryyetsimple/protocol.git
     fetch = +refs/heads/*:refs/remotes/Protocol/*
 
-[remote "Queue"]
-    url = git@github.com:queryyetsimple/queue.git
-    fetch = +refs/heads/*:refs/remotes/Queue/*
-
 [remote "Router"]
     url = git@github.com:queryyetsimple/router.git
     fetch = +refs/heads/*:refs/remotes/Router/*

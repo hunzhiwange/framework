@@ -19,7 +19,6 @@
         "symfony/console": "~4.0",
         "symfony/var-dumper": "~4.0",
         "predis/predis": "1.1.1",
-        "coderkungfu/php-queue": "^0.9.1",
         "clio/clio": "@stable",
         "robmorgan/phinx": "^0.9.2",
         "vlucas/phpdotenv": "~2.2",
@@ -57,7 +56,6 @@
         "leevel/page": "self.version",
         "leevel/pipeline": "self.version",
         "leevel/Protocol": "self.version",
-        "leevel/queue": "self.version",
         "leevel/router": "self.version",
         "leevel/seccode": "self.version",
         "leevel/session": "self.version",
@@ -102,7 +100,6 @@
                 "Leevel\\Filesystem\\Provider\\Register",
                 "Leevel\\Mail\\Provider\\Register",
                 "Leevel\\Page\\Provider\\Register",
-                "Leevel\\Queue\\Provider\\Register",
                 "Leevel\\Session\\Provider\\Register",
                 "Leevel\\Protocol\\Provider\\Register",
                 "Leevel\\Throttler\\Provider\\Register",
@@ -114,7 +111,6 @@
                 "Leevel\\I18n\\Console",
                 "Leevel\\Mvc\\Console",
                 "Leevel\\Option\\Console",
-                "Leevel\\Queue\\Console",
                 "Leevel\\Router\\Console",
                 "Leevel\\Protocol\\Console"
             ]

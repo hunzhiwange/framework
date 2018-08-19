@@ -49,8 +49,6 @@ git subtree add --prefix=src/Queryyetsimple/Pipeline git@github.com:queryyetsimp
 
 git subtree add --prefix=src/Queryyetsimple/Protocol git@github.com:queryyetsimple/protocol.git master
 
-git subtree add --prefix=src/Queryyetsimple/Queue git@github.com:queryyetsimple/queue.git master
-
 git subtree add --prefix=src/Queryyetsimple/Router git@github.com:queryyetsimple/router.git master
 
 git subtree add --prefix=src/Queryyetsimple/Seccode git@github.com:queryyetsimple/seccode.git master
