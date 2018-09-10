@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}}\Domain\Entity;
+
+use Leevel\Database\Ddd\Entity;
+
+{{file_comment}}
+class {{file_name}} extends Entity
+{
+}

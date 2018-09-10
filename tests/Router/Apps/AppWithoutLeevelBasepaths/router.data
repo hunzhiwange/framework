@@ -1,0 +1,42 @@
+array (
+  'basepaths' => 
+  array (
+  ),
+  'groups' => 
+  array (
+    0 => '/pet',
+    1 => '/store',
+    2 => '/user',
+  ),
+  'routers' => 
+  array (
+    'get' => 
+    array (
+      'a' => 
+      array (
+        '_' => 
+        array (
+          '/api/v1/petLeevel/{petId:[A-Za-z]+}/' => 
+          array (
+            'bind' => NULL,
+            'var' => 
+            array (
+              0 => 'petId',
+            ),
+          ),
+          'regex' => 
+          array (
+            0 => '~^(?|/api/v1/petLeevel/([A-Za-z]+)/)$~x',
+          ),
+          'map' => 
+          array (
+            0 => 
+            array (
+              2 => '/api/v1/petLeevel/{petId:[A-Za-z]+}/',
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+)

@@ -1,0 +1,43 @@
+{
+    "name": "leevel/filesystem",
+    "description": "The Leevel Filesystem Package.",
+    "license": "MIT",
+    "homepage": "http://queryphp.com",
+    "support": {
+        "issues": "https://github.com/hunzhiwange/framework/issues",
+        "source": "https://github.com/hunzhiwange/framework"
+    },
+    "authors": [{
+        "name": "Xiangmin Liu",
+        "email": "635750556@qq.com"
+    }],
+    "require": {
+        "php": "^7.1.3",
+        "leevel/support": "1.0.*",
+        "leevel/manager": "1.0.*"
+    },
+    "require-dev": {
+        "league/flysystem-sftp": "^1.0",
+        "league/flysystem-ziparchive": "^1.0"
+    },
+    "suggest": {
+        "league/flysystem-sftp": "Sftp adapter support.",
+        "league/flysystem-ziparchive": "ZipArchive adapter support."
+    },
+    "autoload": {
+        "psr-4": {
+            "Leevel\\Filesystem\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "leevel": {
+            "providers": [
+                "Leevel\\Filesystem\\Provider\\Register"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
