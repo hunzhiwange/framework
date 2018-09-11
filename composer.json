@@ -77,7 +77,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Leevel\\": "src\\Queryyetsimple"
+            "Leevel\\": "src\\Leevel"
         }
     },
     "extra": {
