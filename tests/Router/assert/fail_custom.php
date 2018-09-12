@@ -1,0 +1,1 @@
+fail custom! message is <?php echo $message; ?>,url is <?php echo $url; ?>,time is <?php echo $time; ?>.

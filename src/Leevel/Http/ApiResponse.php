@@ -47,7 +47,7 @@ class ApiResponse extends JsonResponse
 
     /**
      * 请求成功
-     * 一般用于GET与POST请求： 200.
+     * 一般用于GET与POST请求: 200.
      *
      * @param mixed  $content
      * @param string $text
@@ -74,7 +74,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function created($location = '', $content = '')
+    public function created($location = null, $content = '')
     {
         if ($this->checkTControl()) {
             return $this;
@@ -140,7 +140,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function unprocessableEntity(array $errors = null, $message = null, $text = null)
+    public function unprocessableEntity(array $errors = null, ?string $message = null, ?string $text = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -166,7 +166,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function error($message, int $statusCode, $text = null)
+    public function error(?string $message, int $statusCode, ?string $text = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -186,7 +186,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function badRequest($message = null, $text = null)
+    public function badRequest(?string $message = null, ?string $text = null)
     {
         return $this->error($message, static::HTTP_BAD_REQUEST, $text);
     }
@@ -200,7 +200,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function unauthorized($message = null, $text = null)
+    public function unauthorized(?string $message = null, ?string $text = null)
     {
         return $this->error($message, static::HTTP_UNAUTHORIZED, $text);
     }
@@ -214,7 +214,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function forbidden($message = null, $text = null)
+    public function forbidden(?string $message = null, ?string $text = null)
     {
         return $this->error($message, static::HTTP_FORBIDDEN, $text);
     }
@@ -228,7 +228,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function notFound($message = null, $text = null)
+    public function notFound(?string $message = null, ?string $text = null)
     {
         return $this->error($message, static::HTTP_NOT_FOUND, $text);
     }
@@ -242,7 +242,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function methodNotAllowed($message = null, $text = null)
+    public function methodNotAllowed(?string $message = null, ?string $text = null)
     {
         return $this->error($message, static::HTTP_METHOD_NOT_ALLOWED, $text);
     }
@@ -256,7 +256,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function tooManyRequests($message = null, $text = null)
+    public function tooManyRequests(?string $message = null, ?string $text = null)
     {
         return $this->error($message, static::HTTP_TOO_MANY_REQUESTS, $text);
     }
@@ -270,7 +270,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function internalServerError($message = null, $text = null)
+    public function internalServerError(?string $message = null, ?string $text = null)
     {
         return $this->error($message, static::HTTP_INTERNAL_SERVER_ERROR, $text);
     }
@@ -278,12 +278,12 @@ class ApiResponse extends JsonResponse
     /**
      * 格式化错误消息.
      *
-     * @param string     $message
-     * @param null|mixed $text
+     * @param string      $message
+     * @param null|string $text
      *
      * @return $this
      */
-    protected function normalizeErrorMessage($message = null, $text = null)
+    protected function normalizeErrorMessage(?string $message = null, ?string $text = null)
     {
         return $this->setData([
             'message' => $this->parseErrorMessage($message),
@@ -297,7 +297,7 @@ class ApiResponse extends JsonResponse
      *
      * @return string
      */
-    protected function parseErrorMessage($message = null)
+    protected function parseErrorMessage(?string $message = null)
     {
         return $message ?: $this->statusText;
     }

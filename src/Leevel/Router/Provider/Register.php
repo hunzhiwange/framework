@@ -148,9 +148,9 @@ class Register extends Provider
             $option = $container['option'];
 
             return (new ResponseFactory($container['view'], $container['redirect']))->
-            setViewSuccessTemplate($option->get('view\\action_success'))->
+            setViewSuccessTemplate($option->get('view\\success'))->
 
-            setViewFailTemplate($option->get('view\\action_fail'));
+            setViewFailTemplate($option->get('view\\fail'));
         });
     }
 

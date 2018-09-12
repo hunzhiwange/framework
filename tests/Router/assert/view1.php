@@ -1,0 +1,1 @@
+hello view1 for <?php echo $foo; ?>.

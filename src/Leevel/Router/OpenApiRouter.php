@@ -58,7 +58,7 @@ class OpenApiRouter
      *
      * @var string
      */
-    protected $controllerDir = 'App\Controller';
+    protected $controllerDir = 'App\\Controller';
 
     /**
      * 扫描目录.

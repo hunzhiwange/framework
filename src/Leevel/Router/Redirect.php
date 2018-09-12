@@ -70,7 +70,7 @@ class Redirect
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public function url(?string $url, $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
+    public function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
         $url = $this->url->make($url, $params, $subdomain, $suffix);
 
@@ -86,7 +86,7 @@ class Redirect
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public function raw(?string $url, int $status = 302, array $headers = [])
+    public function raw(string $url, int $status = 302, array $headers = [])
     {
         return $this->createRedirectResponse($url, $status, $headers);
     }
@@ -120,7 +120,7 @@ class Redirect
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    protected function createRedirectResponse(?string $url, int $status = 302, array $headers = [])
+    protected function createRedirectResponse(string $url, int $status = 302, array $headers = [])
     {
         $redirect = new RedirectResponse($url, $status, $headers);
 

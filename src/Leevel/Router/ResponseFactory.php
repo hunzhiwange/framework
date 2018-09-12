@@ -23,6 +23,7 @@ namespace Leevel\Router;
 use Leevel\Http\ApiResponse;
 use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
+use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response;
 use Leevel\Http\ResponseHeaderBag;
 use Leevel\Mvc\IView;
@@ -57,14 +58,14 @@ class ResponseFactory implements IResponseFactory
      *
      * @var string
      */
-    protected $viewSuccessTemplate = 'public+success';
+    protected $viewSuccessTemplate = 'success';
 
     /**
      * 视图错误模板
      *
      * @var string
      */
-    protected $viewFailTemplate = 'public+fail';
+    protected $viewFailTemplate = 'fail';
 
     /**
      * 构造函数.
@@ -87,7 +88,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function make($content = '', $status = 200, array $headers = [])
+    public function make($content = '', $status = 200, array $headers = []): Response
     {
         return new Response($content, $status, $headers);
     }
@@ -103,13 +104,13 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function view(?string $file = null, array $vars = [], ?string $ext = null, $status = 200, array $headers = [])
+    public function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): Response
     {
         return $this->make($this->view->display($file, $vars, $ext), $status, $headers);
     }
 
     /**
-     * 返回视图正确消息.
+     * 返回视图成功消息.
      *
      * @param string $message
      * @param string $url
@@ -119,19 +120,19 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewSuccess($message = '', $url = '', $time = 1, $status = 200, array $headers = [])
+    public function viewSuccess(string $message, $url = '', int $time = 1, int $status = 200, array $headers = []): Response
     {
         $vars = [
-            'message' => $message ?: 'Succeed',
+            'message' => $message,
             'url'     => $url,
             'time'    => $time,
         ];
 
-        return $this->view($this->viewSuccessTemplate, $vars, '', $status, $headers);
+        return $this->view($this->viewSuccessTemplate, $vars, null, $status, $headers);
     }
 
     /**
-     * 返回视图错误消息.
+     * 返回视图失败消息.
      *
      * @param string $message
      * @param string $url
@@ -141,15 +142,15 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewError($message = '', $url = '', $time = 3, $status = 200, array $headers = [])
+    public function viewFail(string $message, $url = '', int $time = 3, int $status = 404, array $headers = []): Response
     {
         $vars = [
-            'message' => $message ?: 'Failed',
+            'message' => $message,
             'url'     => $url,
             'time'    => $time,
         ];
 
-        return $this->view($this->viewFailTemplate, $vars, '', $status, $headers);
+        return $this->view($this->viewFailTemplate, $vars, null, $status, $headers);
     }
 
     /**
@@ -162,7 +163,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\JsonResponse
      */
-    public function json($data = null, int $status = 200, array $headers = [], bool $json = false)
+    public function json($data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
         return new JsonResponse($data, $status, $headers, $json);
     }
@@ -178,7 +179,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\JsonResponse
      */
-    public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false)
+    public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
         return $this->json($data, $status, $headers, $json)->
         setCallback($callback);
@@ -196,7 +197,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\FileResponse
      */
-    public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true)
+    public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
     {
         $response = new FileResponse($file, $status, $headers, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
 
@@ -218,7 +219,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\FileResponse
      */
-    public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true)
+    public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
     {
         return new FileResponse($file, $status, $headers, ResponseHeaderBag::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
     }
@@ -235,7 +236,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public function redirect(?string $url, array $params = [], string $subdomain = 'www', $suffix = false, int $status = 302, array $headers = [])
+    public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = false, int $status = 302, array $headers = []): RedirectResponse
     {
         return $this->redirector->url($url, $params, $subdomain, $suffix, $status, $headers);
     }
@@ -249,7 +250,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public function redirectRaw(?string $url, int $status = 302, array $headers = [])
+    public function redirectRaw(string $url, int $status = 302, array $headers = []): RedirectResponse
     {
         return $this->redirector->raw($url, $status, $headers);
     }
@@ -261,9 +262,9 @@ class ResponseFactory implements IResponseFactory
      * @param mixed  $content
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiOk($content = '', $text = null)
+    public function apiOk($content = '', $text = null): ApiResponse
     {
         return $this->createApiResponse()->ok($content, $text);
     }
@@ -275,9 +276,9 @@ class ResponseFactory implements IResponseFactory
      * @param null|string $location
      * @param mixed       $content
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiCreated($location = '', $content = '')
+    public function apiCreated(?string $location = null, $content = ''): ApiResponse
     {
         return $this->createApiResponse()->created($location, $content);
     }
@@ -289,9 +290,9 @@ class ResponseFactory implements IResponseFactory
      * @param null|string $location
      * @param mixed       $content
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiAccepted($location = null, $content = '')
+    public function apiAccepted(?string $location = null, $content = ''): ApiResponse
     {
         return $this->createApiResponse()->accepted($location, $content);
     }
@@ -300,9 +301,9 @@ class ResponseFactory implements IResponseFactory
      * 无内容
      * 服务器成功处理，但未返回内容: 204.
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiNoContent()
+    public function apiNoContent(): ApiResponse
     {
         return $this->createApiResponse()->noContent();
     }
@@ -311,13 +312,12 @@ class ResponseFactory implements IResponseFactory
      * 错误请求
      *
      * @param string $message
-     * @param string $message
+     * @param int    $statusCode
      * @param string $text
-     * @param mixed  $statusCode
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiError($message, $statusCode, $text = null)
+    public function apiError(string $message, int $statusCode, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->error($message, $statusCode, $text);
     }
@@ -329,9 +329,9 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiBadRequest($message = null, $text = null)
+    public function apiBadRequest(?string $message = null, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->badRequest($message, $text);
     }
@@ -343,9 +343,9 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiUnauthorized($message = null, $text = null)
+    public function apiUnauthorized(?string $message = null, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->unauthorized($message, $text);
     }
@@ -357,9 +357,9 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiForbidden($message = null, $text = null)
+    public function apiForbidden(?string $message = null, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->forbidden($message, $text);
     }
@@ -371,9 +371,9 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiNotFound($message = null, $text = null)
+    public function apiNotFound(?string $message = null, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->notFound($message, $text);
     }
@@ -385,9 +385,9 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiMethodNotAllowed($message = null, $text = null)
+    public function apiMethodNotAllowed(?string $message = null, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->methodNotAllowed($message, $text);
     }
@@ -400,9 +400,9 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiUnprocessableEntity(?array $errors = null, $message = null, $text = null)
+    public function apiUnprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->unprocessableEntity($errors, $message, $text);
     }
@@ -414,9 +414,9 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiTooManyRequests($message = null, $text = null)
+    public function apiTooManyRequests(?string $message = null, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->tooManyRequests($message, $text);
     }
@@ -428,9 +428,9 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
-    public function apiInternalServerError($message = null, $text = null)
+    public function apiInternalServerError(?string $message = null, ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->internalServerError($message, $text);
     }
@@ -440,7 +440,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @param string $template
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
     public function setViewSuccessTemplate(string $template)
     {
@@ -454,7 +454,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @param string $template
      *
-     * @return $this
+     * @return \Leevel\Http\ApiResponse
      */
     public function setViewFailTemplate(string $template)
     {
@@ -468,7 +468,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\ApiResponse
      */
-    protected function createApiResponse()
+    protected function createApiResponse(): ApiResponse
     {
         return new ApiResponse();
     }
