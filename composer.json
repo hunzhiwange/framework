@@ -71,6 +71,7 @@
         "hollodotme/phpunit-testdox-markdown": "^1.0"
     },
     "suggest": {
+        "ext-swoole": "Required to use swoole.",
         "ext-v8js": "Required to use php v8js.",
         "league/flysystem-sftp": "Sftp adapter support.",
         "league/flysystem-ziparchive": "ZipArchive adapter support."
