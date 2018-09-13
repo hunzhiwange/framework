@@ -54,9 +54,8 @@ class Url implements IUrl
      */
     protected $option = [
         'with_suffix'  => false,
-        'html_suffix'  => '.html',
-        'domain_top'   => '',
-        'subdomain_on' => true,
+        'suffix'       => '.html',
+        'domain'       => '',
     ];
 
     /**
@@ -119,6 +118,16 @@ class Url implements IUrl
     }
 
     /**
+     * 获取域名.
+     *
+     * @return string
+     */
+    public function getDomain()
+    {
+        return $this->option['domain'];
+    }
+
+    /**
      * 自定义 URL.
      *
      * @param string $url
@@ -168,16 +177,13 @@ class Url implements IUrl
      */
     protected function withDomain(string $url, string $domain): string
     {
-        if (true !== $this->option['subdomain_on'] ||
-            !$this->option['domain_top'] ||
-            !$domain) {
+        if (!$this->option['domain'] || !$domain) {
             return $url;
         }
 
         return ($this->isSecure() ? 'https://' : 'http://').
             ($domain && '*' !== $domain ? $domain.'.' : '').
-            $this->option['domain_top'].
-            $url;
+            $this->option['domain'].$url;
     }
 
     /**
@@ -204,7 +210,7 @@ class Url implements IUrl
             return $url;
         }
 
-        $suffix = true === $suffix ? $this->option['html_suffix'] : $suffix;
+        $suffix = true === $suffix ? $this->option['suffix'] : $suffix;
 
         if (false !== strpos($url, '?')) {
             $url = str_replace('?', $suffix.'?', $url);

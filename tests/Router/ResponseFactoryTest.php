@@ -1073,7 +1073,7 @@ eot;
         $request = $this->makeRequest($isSecure);
 
         $url = new Url($request, [
-            'domain_top' => 'queryphp.com',
+            'domain' => 'queryphp.com',
         ]);
 
         $redirect = new Redirect($url);

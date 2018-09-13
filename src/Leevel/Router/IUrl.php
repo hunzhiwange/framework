@@ -61,4 +61,11 @@ interface IUrl
      * @return $this
      */
     public function setOption(string $name, $value);
+
+    /**
+     * 获取域名.
+     *
+     * @return string
+     */
+    public function getDomain();
 }

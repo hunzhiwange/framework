@@ -140,7 +140,7 @@ class Router implements IRouter
      *
      * @var string
      */
-    protected $controllerDir = 'App\Controller';
+    protected $controllerDir = 'App\\Controller';
 
     /**
      * 构造函数.

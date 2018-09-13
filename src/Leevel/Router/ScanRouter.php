@@ -22,6 +22,7 @@ namespace Leevel\Router;
 
 use Leevel\Leevel;
 use Leevel\Router;
+use Leevel\Url;
 
 /**
  * openapi 路由扫描.
@@ -48,9 +49,11 @@ class ScanRouter
      */
     public function __construct(MiddlewareParser $middlewareParser)
     {
-        $this->openApiRouter = new OpenApiRouter($middlewareParser, $this->getTopDomain(), $this->getController());
+        $this->openApiRouter = new OpenApiRouter(
+            $middlewareParser, $this->getDomain(), $this->getControllerDir()
+        );
 
-        $this->openApiRouter->addScandir($this->getAppDir());
+        $this->openApiRouter->addScandir($this->appPath());
     }
 
     /**
@@ -68,17 +71,17 @@ class ScanRouter
      *
      * @return string
      */
-    protected function getTopDomain()
+    protected function getDomain()
     {
-        return Leevel::make('option')->get('top_domain');
+        return Url::getDomain();
     }
 
     /**
-     * 获取控制器.
+     * 获取控制器目录.
      *
      * @return string
      */
-    protected function getController()
+    protected function getControllerDir()
     {
         return Router::getControllerDir();
     }
@@ -86,22 +89,10 @@ class ScanRouter
     /**
      * 获取应用目录.
      *
-     * @param string $controller
-     *
      * @return string
      */
-    protected function getAppDir()
+    protected function appPath()
     {
         return Leevel::appPath();
-    }
-
-    /**
-     * 获取缓存路径.
-     *
-     * @return string
-     */
-    protected function getCachePath()
-    {
-        return Leevel::routerCachedPath();
     }
 }

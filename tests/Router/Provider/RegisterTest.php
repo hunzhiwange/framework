@@ -70,7 +70,7 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(IView::class, $container->make('view'));
         $this->assertInstanceof(View::class, $container->make('view'));
 
-        $this->assertSame('/foo/bar?hello=world', $url->make('foo/bar', ['hello' => 'world']));
+        $this->assertSame('http://www.queryphp.cn/foo/bar?hello=world', $url->make('foo/bar', ['hello' => 'world']));
     }
 
     protected function createContainer(): Container
@@ -80,9 +80,8 @@ class RegisterTest extends TestCase
         $option = new Option([
             'app' => [
                 'with_suffix'  => false,
-                'html_suffix'  => '.html',
-                'top_domain'   => 'queryphp.cn',
-                'subdomain_on' => false,
+                'suffix'       => '.html',
+                'domain'       => 'queryphp.cn',
             ],
             'cookie' => [
                 'domain'   => '',
@@ -100,6 +99,12 @@ class RegisterTest extends TestCase
         $container->singleton('option', $option);
 
         $request = $this->createMock(IRequest::class);
+
+        $request->method('getEnter')->willReturn('');
+        $this->assertSame('', $request->getEnter());
+
+        $request->method('isSecure')->willReturn(false);
+        $this->assertFalse($request->isSecure());
 
         $container->singleton('request', $request);
 

@@ -43,7 +43,7 @@ class RedirectTest extends TestCase
     {
         $request = $this->makeRequest();
         $url = new Url($request, [
-            'domain_top' => 'queryphp.com',
+            'domain' => 'queryphp.com',
         ]);
         $redirect = new Redirect($url);
 
@@ -75,7 +75,7 @@ eot;
     {
         $request = $this->makeRequest();
         $url = new Url($request, [
-            'domain_top' => 'queryphp.com',
+            'domain' => 'queryphp.com',
         ]);
         $redirect = new Redirect($url);
 
@@ -107,7 +107,7 @@ eot;
     {
         $request = $this->makeRequest();
         $url = new Url($request, [
-            'domain_top' => 'queryphp.com',
+            'domain' => 'queryphp.com',
         ]);
         $redirect = new Redirect($url);
 

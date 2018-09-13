@@ -64,7 +64,7 @@ class UrlTest extends TestCase
     {
         $request = $this->makeRequest();
         $url = new Url($request, [
-            'domain_top' => 'queryphp.com',
+            'domain' => 'queryphp.com',
         ]);
 
         $this->assertSame($url->make('hello/world'), 'http://www.queryphp.com/hello/world');
@@ -80,7 +80,7 @@ class UrlTest extends TestCase
 
         $this->assertSame($url->make('hello/world'), '/hello/world');
 
-        $url->setOption('domain_top', 'queryphp.cn');
+        $url->setOption('domain', 'queryphp.cn');
         $this->assertSame($url->make('hello/world'), 'http://www.queryphp.cn/hello/world');
     }
 
@@ -108,7 +108,7 @@ class UrlTest extends TestCase
     {
         $request = $this->makeRequest(true);
         $url = new Url($request, [
-            'domain_top' => 'queryphp.cn',
+            'domain' => 'queryphp.cn',
         ]);
 
         $this->assertInstanceof(IRequest::class, $url->getRequest());
@@ -124,7 +124,7 @@ class UrlTest extends TestCase
         $this->assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        $this->assertSame($isSecure, $request->isSecure($isSecure));
+        $this->assertSame($isSecure, $request->isSecure());
 
         return $request;
     }
