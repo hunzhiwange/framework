@@ -112,9 +112,8 @@ class Register extends Provider
 
             foreach ([
                 'with_suffix',
-                'html_suffix',
-                'domain_top',
-                'subdomain_on',
+                'suffix',
+                'domain',
             ] as $item) {
                 $options[$item] = $option->get($item);
             }
@@ -128,7 +127,7 @@ class Register extends Provider
      */
     protected function redirect()
     {
-        $this->container['redirect'] = $this->container->share(function (IContainer $container) {
+        $this->container->singleton('redirect', function (IContainer $container) {
             $redirect = new Redirect($container['url']);
 
             if (isset($container['session'])) {

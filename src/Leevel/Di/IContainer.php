@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Di;
 
-use Closure;
-
 /**
  * IContainer 接口.
  *
@@ -59,15 +57,6 @@ interface IContainer
      * @param mixed  $service
      */
     public function singleton($name, $service = null);
-
-    /**
-     * 创建共享的闭包.
-     *
-     * @param \Closure $closure
-     *
-     * @return \Closure
-     */
-    public function share(Closure $closure);
 
     /**
      * 设置别名.

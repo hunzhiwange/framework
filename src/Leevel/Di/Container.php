@@ -174,26 +174,6 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 创建共享的闭包.
-     *
-     * @param \Closure $closures
-     *
-     * @return \Closure
-     */
-    public function share(Closure $closures)
-    {
-        return function ($container) use ($closures) {
-            static $obj;
-
-            if (null === $obj) {
-                $obj = $closures($container);
-            }
-
-            return $obj;
-        };
-    }
-
-    /**
      * 设置别名.
      *
      * @param array|string      $alias
