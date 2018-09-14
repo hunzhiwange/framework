@@ -38,7 +38,7 @@ class OpenApiRouterTest extends TestCase
 {
     public function testBaseUse()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\Router\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\\Router\\Apps');
 
         $scandir = __DIR__.'/Apps/Petstore30';
 
@@ -57,7 +57,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testWithoutLeevelBasepaths()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\Router\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\\Router\\Apps');
 
         $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
 
@@ -76,7 +76,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppWithControllerDirMatche()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\Router\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\\Router\\Apps');
 
         $scandir = __DIR__.'/Apps/AppWithControllerDirNotMatche';
 
@@ -95,7 +95,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppWithControllerDirNotMatche()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'TestsNotFound\Router\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'TestsNotFound\\Router\\Apps');
 
         $scandir = __DIR__.'/Apps/AppWithControllerDirNotMatche';
 
@@ -114,7 +114,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppWithoutExternalDocs()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\Router\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\\Router\\Apps');
 
         $scandir = __DIR__.'/Apps/AppWithoutExternalDocs';
 

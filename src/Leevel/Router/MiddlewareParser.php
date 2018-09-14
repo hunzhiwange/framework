@@ -109,8 +109,11 @@ class MiddlewareParser
     protected function normalizeMiddleware(array $middlewares, string $method)
     {
         $middlewares = array_map(function ($item) use ($method) {
-            $realClass = false === strpos($item, ':') ?
-                $item : array_shift(explode(':', $item));
+            if (false === strpos($item, ':')) {
+                $realClass = $item;
+            } else {
+                list($realClass) = explode(':', $item);
+            }
 
             if (!class_exists($realClass) || !method_exists($realClass, $method)) {
                 return false;
@@ -123,7 +126,7 @@ class MiddlewareParser
             return str_replace(':', '@'.$method.':', $item);
         }, $middlewares);
 
-        $middlewares = array_filter($middlewares);
+        $middlewares = array_values(array_unique(array_filter($middlewares)));
 
         return $middlewares;
     }

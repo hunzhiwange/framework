@@ -116,6 +116,24 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('hello/world'), 'https://www.queryphp.cn/hello/world');
     }
 
+    public function testGetDomain()
+    {
+        $request = $this->makeRequest(true);
+        $url = new Url($request);
+
+        $this->assertSame($url->getDomain(), '');
+    }
+
+    public function testGetDomain2()
+    {
+        $request = $this->makeRequest(true);
+        $url = new Url($request, [
+            'domain' => 'queryphp.cn',
+        ]);
+
+        $this->assertSame($url->getDomain(), 'queryphp.cn');
+    }
+
     protected function makeRequest(bool $isSecure = false): IRequest
     {
         $request = $this->createMock(IRequest::class);
