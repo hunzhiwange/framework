@@ -47,7 +47,7 @@
             "p": {
                 "\/pet": {
                     "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
-                        "bind": "Petstore30\/Controllers\/Pet\/petLeevel",
+                        "bind": "AppScanRouter\/Controllers\/Pet\/petLeevel",
                         "var": [
                             "petId"
                         ]

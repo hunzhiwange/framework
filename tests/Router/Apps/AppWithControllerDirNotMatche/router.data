@@ -18,7 +18,7 @@ array (
         array (
           '/api/v1/petLeevel/{petId:[A-Za-z]+}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Pet/petLeevel',
+            'bind' => 'AppWithControllerDirNotMatche/Controllers/Pet/petLeevel',
             'var' => 
             array (
               0 => 'petId',

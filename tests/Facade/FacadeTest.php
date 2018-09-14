@@ -35,20 +35,6 @@ use Tests\TestCase;
  */
 class FacadeTest extends TestCase
 {
-    protected $container;
-
-    protected function setUp()
-    {
-        $this->container = new Container();
-
-        Facade::setContainer($this->container);
-    }
-
-    protected function tearDown()
-    {
-        Facade::setContainer(null);
-    }
-
     /**
      * @dataProvider getBaseUseData
      *
@@ -57,18 +43,17 @@ class FacadeTest extends TestCase
      */
     public function testBaseUse(string $facade, string $serviceName)
     {
+        Facade::setContainer($container = new Container());
+
         $className = 'Leevel\\'.$facade;
 
         $test = new $className();
 
-        $this->assertSame($this->container, $test->container());
+        $this->assertSame($container, $test->container());
 
-        $this->container->singleton($serviceName, function () {
+        $container->singleton($serviceName, function () {
             return new Service1();
         });
-
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove($serviceName);
 
         $this->assertSame(
             $facade,
@@ -80,6 +65,10 @@ class FacadeTest extends TestCase
             $facade,
             call_user_func([$className, 'hello'], $facade)
         );
+
+        // 静态属性会保持住，可能受到其它单元测试的影响
+        Facade::remove($serviceName);
+        Facade::setContainer(null);
     }
 
     public function getBaseUseData()

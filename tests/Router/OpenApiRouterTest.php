@@ -88,7 +88,8 @@ class OpenApiRouterTest extends TestCase
         $this->assertSame(
             $data,
             $this->varExport(
-                $result
+                $result,
+                __FUNCTION__
             )
         );
     }
@@ -126,7 +127,8 @@ class OpenApiRouterTest extends TestCase
         $this->assertSame(
             $data,
             $this->varExport(
-                $result
+                $result,
+                __FUNCTION__
             )
         );
     }
