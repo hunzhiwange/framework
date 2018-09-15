@@ -26,6 +26,7 @@ use Leevel\Bootstrap\Bootstrap\LoadI18n;
 use Leevel\Bootstrap\Bootstrap\LoadOption;
 use Leevel\Bootstrap\Bootstrap\RegisterRuntime;
 use Leevel\Bootstrap\Bootstrap\TraverseProvider;
+use Leevel\Debug\Console;
 use Leevel\Http\ApiResponse;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
@@ -36,7 +37,6 @@ use Leevel\Kernel\IProject;
 use Leevel\Kernel\Runtime\IRuntime;
 use Leevel\Log\ILog;
 use Leevel\Router\IRouter;
-use Leevel\Support\Debug\Console;
 use Throwable;
 
 /**

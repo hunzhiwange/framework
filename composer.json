@@ -40,6 +40,7 @@
         "leevel/console": "self.version",
         "leevel/cookie": "self.version",
         "leevel/database": "self.version",
+        "leevel/debug": "self.version",
         "leevel/di": "self.version",
         "leevel/encryption": "self.version",
         "leevel/event": "self.version",

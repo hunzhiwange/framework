@@ -56,6 +56,10 @@ The code below need to be add.
     url = git@github.com:leevels/database.git
     fetch = +refs/heads/*:refs/remotes/Database/*
 
+[remote "Debug"]
+    url = git@github.com:leevels/debug.git
+    fetch = +refs/heads/*:refs/remotes/Debug/*
+
 [remote "Di"]
     url = git@github.com:leevels/di.git
     fetch = +refs/heads/*:refs/remotes/Di/*

@@ -18,9 +18,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Support\Debug;
+namespace Tests\Debug;
 
-use Leevel\Support\Debug\Dump;
+use Leevel\Debug\Dump;
 use Tests\TestCase;
 
 /**

@@ -19,9 +19,9 @@ declare(strict_types=1);
  */
 
 use Leevel\Bootstrap\Project;
+use Leevel\Debug\Dump;
 use Leevel\Di\IContainer;
 use Leevel\Log\ILog;
-use Leevel\Support\Debug\Dump;
 
 /**
  * 函数库.

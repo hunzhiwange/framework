@@ -15,6 +15,8 @@ git subtree add --prefix=src/Leevel/Cookie git@github.com:leevels/cookie.git mas
 
 git subtree add --prefix=src/Leevel/Database git@github.com:leevels/database.git master
 
+git subtree add --prefix=src/Leevel/Debug git@github.com:leevels/debug.git master
+
 git subtree add --prefix=src/Leevel/Di git@github.com:leevels/di.git master
 
 git subtree add --prefix=src/Leevel/Encryption git@github.com:leevels/encryption.git master
