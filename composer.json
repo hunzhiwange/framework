@@ -1,7 +1,7 @@
 {
     "name": "hunzhiwange/framework",
     "description": "The QueryPHP Framework.",
-    "keywords": ["framework", "queryphp", "leevel"],
+    "keywords": ["framework", "queryphp", "leevel", "php", "swoole"],
     "license": "MIT",
     "homepage": "http://www.queryphp.com",
     "support": {
