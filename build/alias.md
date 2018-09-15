@@ -1,13 +1,11 @@
 # QueryPHP Framework Alias
 
-Modify this file ../.git/config add alias and remote,then using git stpull and stpush to manager your subtree repository.
+Modify this file ../.git/config add alias and remote,then using git leevels to manager your subtree repository.
 
 ```
-git stpull Auth
-git stpush Auth
+git leevels Auth
 
-git testspull
-git testspush
+git tests
 ```
 
 The code below need to be add.
@@ -155,17 +153,11 @@ The code below need to be add.
     fetch = +refs/heads/*:refs/remotes/View/*
 
 
-[alias]      
-    stpull = !git subtree pull --prefix=src/Leevel/$1 $1 master \
+[alias]
+    leevels = !git subtree push --prefix=src/Leevel/$1 $1 master \
         && :
 
-    stpush = !git subtree push --prefix=src/Leevel/$1 $1 master \
-        && :
-
-    testspull = !git subtree pull --prefix=tests tests master \
-        && :
-
-    testspush = !git subtree push --prefix=tests tests master \
+    tests = !git subtree push --prefix=tests tests master \
         && :
 ```
 
