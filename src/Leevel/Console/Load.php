@@ -100,7 +100,7 @@ class Load
 
         foreach ($namespaces as $key => $dir) {
             if (!is_dir($dir)) {
-                throw new RuntimeException('Console load dir is not exits.');
+                throw new RuntimeException(sprintf('Console load dir %s is not exits.', $dir));
             }
 
             $files = array_merge($files, array_map(function ($item) use ($key) {

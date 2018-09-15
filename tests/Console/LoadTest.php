@@ -63,7 +63,7 @@ class LoadTest extends TestCase
     public function testConsoleDirNotFound()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Console load dir is not exits.');
+        $this->expectExceptionMessage(sprintf('Console load dir %s is not exits.', __DIR__.'/LoadNotFound'));
 
         $load = new Load();
 
