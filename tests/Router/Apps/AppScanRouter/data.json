@@ -1,5 +1,6 @@
 {
-    "basepaths": {
+    "base_paths": [],
+    "group_paths": {
         "\/api\/v1": {
             "middlewares": {
                 "handle": [

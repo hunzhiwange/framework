@@ -1,5 +1,14 @@
 array (
-  'basepaths' => 
+  'base_paths' => 
+  array (
+    '*' => 
+    array (
+      'middlewares' => 
+      array (
+      ),
+    ),
+  ),
+  'group_paths' => 
   array (
     '/api/v1' => 
     array (
@@ -7,13 +16,13 @@ array (
       array (
       ),
     ),
-    '/web/v1' => 
+    '/api/v2' => 
     array (
       'middlewares' => 
       array (
       ),
     ),
-    '/api/v2' => 
+    '/web/v1' => 
     array (
       'middlewares' => 
       array (

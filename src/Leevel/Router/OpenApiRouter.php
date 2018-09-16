@@ -251,8 +251,8 @@ class OpenApiRouter
         $routers = $this->normalizeFastRoute($routers);
 
         return [
-            'base_paths'  => $basePaths,
-            'group_paths' => $groupPaths,
+            'base_paths'  => $basePaths ?: [],
+            'group_paths' => $groupPaths ?: [],
             'groups'      => $groups,
             'routers'     => $routers,
         ];
@@ -532,6 +532,7 @@ class OpenApiRouter
             }
 
             if (isset($value['group']) && true === $value['group']) {
+                unset($value['group']);
                 $groupPaths[$newKey] = $value;
             } else {
                 $newKey = '*' === $newKey ? '*' : $this->prepareRegexForWildcard($newKey);

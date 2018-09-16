@@ -1,5 +1,8 @@
 array (
-  'basepaths' => 
+  'base_paths' => 
+  array (
+  ),
+  'group_paths' => 
   array (
   ),
   'groups' => 
