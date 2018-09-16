@@ -144,7 +144,7 @@ class OpenApiRouter
     public function handle()
     {
         $openApi = $this->makeOpenApi();
-        $basepaths = $this->parseBasepaths($openApi);
+        list($basePaths, $groupPaths) = $this->parsePaths($openApi);
         $groups = $this->parseGroups($openApi);
         $routers = [];
 
@@ -180,17 +180,17 @@ class OpenApiRouter
                     // 分组例如 goods、orders
                     // 首页 `/` 默认提供 Home::show 需要过滤
                     $routerPath = '/'.trim($path->path, '/').'/';
-                    $basepathPrefix = '';
+                    $pathPrefix = '';
 
                     if ('//' === $routerPath) {
                         continue;
                     }
 
-                    if ($basepaths) {
-                        foreach ($basepaths as $basepath => $item) {
-                            if (0 === strpos($routerPath, $basepath)) {
-                                $basepathPrefix = $basepath;
-                                $routerPath = substr($routerPath, strlen($basepath));
+                    if ($groupPaths) {
+                        foreach ($groupPaths as $groupPath => $item) {
+                            if (0 === strpos($routerPath, $groupPath)) {
+                                $pathPrefix = $groupPath;
+                                $routerPath = substr($routerPath, strlen($groupPath));
 
                                 break;
                             }
@@ -230,7 +230,7 @@ class OpenApiRouter
                     // 解析路由正则
                     $isStaticRoute = false;
 
-                    $routerPath = $basepathPrefix.$routerPath;
+                    $routerPath = $pathPrefix.$routerPath;
 
                     if (false !== strpos($routerPath, '{')) {
                         list($routerTmp['regex'], $routerTmp['var']) =
@@ -251,9 +251,10 @@ class OpenApiRouter
         $routers = $this->normalizeFastRoute($routers);
 
         return [
-            'basepaths' => $basepaths,
-            'groups'    => $groups,
-            'routers'   => $routers,
+            'base_paths'  => $basePaths,
+            'group_paths' => $groupPaths,
+            'groups'      => $groups,
+            'routers'     => $routers,
         ];
     }
 
@@ -497,13 +498,13 @@ class OpenApiRouter
     }
 
     /**
-     * 分析基础路径.
+     * 分析路径.
      *
      * @param \OpenApi\Annotations\OpenApi $openApi
      *
      * @return array
      */
-    protected function parseBasepaths(OpenApi $openApi): array
+    protected function parsePaths(OpenApi $openApi): array
     {
         if (\OpenApi\UNDEFINED === $openApi->externalDocs) {
             return [];
@@ -511,15 +512,18 @@ class OpenApiRouter
 
         $externalDocs = $openApi->externalDocs;
 
-        if (!property_exists($externalDocs, 'leevelBasepaths')) {
+        if (!property_exists($externalDocs, 'leevels')) {
             return [];
         }
 
-        $basepaths = $externalDocs->leevelBasepaths;
-        $basepaths = is_array($basepaths) ? $basepaths : [$basepaths];
+        $leevels = $externalDocs->leevels;
+        $tmps = is_array($leevels) ? $leevels : [$leevels];
+        $basePaths = $groupPaths = [];
 
-        foreach ($basepaths as $key => $value) {
-            $newKey = '/'.trim($key, '/');
+        foreach ($tmps as $key => $value) {
+            // * 表示所有路径，group 为 true 的表示分组路径，其余为基础正则匹配路径
+            // 分组路径将会在路由匹配成功后移除自身进行接下来的匹配
+            $newKey = '*' !== $key ? '/'.trim($key, '/') : $key;
 
             if (!empty($value['middlewares'])) {
                 $value['middlewares'] = $this->middlewareParser->handle(
@@ -527,14 +531,30 @@ class OpenApiRouter
                 );
             }
 
-            $basepaths[$newKey] = $value;
-
-            if ($newKey !== $key) {
-                unset($basepaths[$key]);
+            if (isset($value['group']) && true === $value['group']) {
+                $groupPaths[$newKey] = $value;
+            } else {
+                $newKey = '*' === $newKey ? '*' : $this->prepareRegexForWildcard($newKey);
+                $basePaths[$newKey] = $value;
             }
         }
 
-        return $basepaths;
+        return [$basePaths, $groupPaths];
+    }
+
+    /**
+     * 通配符正则.
+     *
+     * @param string $regex
+     *
+     * @return string
+     */
+    protected function prepareRegexForWildcard(string $regex)
+    {
+        $regex = preg_quote($regex, '/');
+        $regex = '/^'.str_replace('\*', '(\S+)', $regex).'$/';
+
+        return $regex;
     }
 
     /**

@@ -217,7 +217,7 @@ class Dispatch implements IDispatch
      *
      * @return string
      */
-    protected function prepareRegexForWildcard($regex)
+    protected function prepareRegexForWildcard(string $regex)
     {
         $regex = preg_quote($regex, '/');
         $regex = '/^'.str_replace('\*', '(\S+)', $regex).'$/';

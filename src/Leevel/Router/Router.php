@@ -58,20 +58,6 @@ class Router implements IRouter
     protected $request;
 
     /**
-     * 全局路由绑定中间件.
-     *
-     * @var array
-     */
-    protected $globalMiddlewares = [];
-
-    /**
-     * 当前的中间件.
-     *
-     * @var array
-     */
-    protected $currentMiddlewares;
-
-    /**
      * 路由匹配数据.
      *
      * @var array
@@ -105,7 +91,14 @@ class Router implements IRouter
      *
      * @var array
      */
-    protected $basepaths = [];
+    protected $basePaths = [];
+
+    /**
+     * 分组路径.
+     *
+     * @var array
+     */
+    protected $groupPaths = [];
 
     /**
      * 分组.
@@ -195,27 +188,22 @@ class Router implements IRouter
      */
     public function throughMiddleware(IRequest $passed, array $passedExtend = [])
     {
-        if (null === $this->currentMiddlewares) {
-            $this->currentMiddlewares = $this->parseMiddleware();
-        }
-
         $method = !$passedExtend ? 'handle' : 'terminate';
+        $middlewares = $this->matchedMiddlewares();
 
-        if (!$this->currentMiddlewares[$method]) {
+        if (empty($middlewares[$method])) {
             return;
         }
 
-        if ($this->currentMiddlewares[$method]) {
-            (new Pipeline($this->container))->
+        (new Pipeline($this->container))->
 
-            send($passed)->
+        send($passed)->
 
-            send($passedExtend)->
+        send($passedExtend)->
 
-            through($this->currentMiddlewares[$method])->
+        through($middlewares[$method])->
 
-            then();
-        }
+        then();
     }
 
     /**
@@ -233,9 +221,9 @@ class Router implements IRouter
     /**
      * 返回控制器相对目录.
      *
-     * @param string $controllerDir
+     * @return string
      */
-    public function getControllerDir()
+    public function getControllerDir(): string
     {
         return $this->controllerDir;
     }
@@ -255,7 +243,7 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getRouters()
+    public function getRouters(): array
     {
         return $this->routers;
     }
@@ -263,21 +251,11 @@ class Router implements IRouter
     /**
      * 设置基础路径.
      *
-     * @param array $basepaths
+     * @param array $basePaths
      */
-    public function setBasepaths(array $basepaths)
+    public function setBasePaths(array $basePaths)
     {
-        $this->basepaths = $basepaths;
-    }
-
-    /**
-     * 添加基础路径.
-     *
-     * @param array $basepaths
-     */
-    public function addBasepaths(array $basepaths)
-    {
-        $this->basepaths = array_unique(array_merge($this->basepaths, $basepaths));
+        $this->basePaths = $basePaths;
     }
 
     /**
@@ -285,9 +263,29 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getBasepaths()
+    public function getBasePaths(): array
     {
-        return $this->basepaths;
+        return $this->basePaths;
+    }
+
+    /**
+     * 设置分组路径.
+     *
+     * @param array $groupPaths
+     */
+    public function setGroupPaths(array $groupPaths)
+    {
+        $this->groupPaths = $groupPaths;
+    }
+
+    /**
+     * 取得分组路径.
+     *
+     * @return array
+     */
+    public function getGroupPaths(): array
+    {
+        return $this->groupPaths;
     }
 
     /**
@@ -301,21 +299,11 @@ class Router implements IRouter
     }
 
     /**
-     * 添加路由分组.
-     *
-     * @param array $groups
-     */
-    public function addGroups(array $groups)
-    {
-        $this->groups = array_unique(array_merge($this->groups, $groups));
-    }
-
-    /**
      * 取得路由分组.
      *
      * @return array
      */
-    public function getGroups()
+    public function getGroups(): array
     {
         return $this->groups;
     }
@@ -335,29 +323,9 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getMiddlewareGroups()
+    public function getMiddlewareGroups(): array
     {
         return $this->middlewareGroups;
-    }
-
-    /**
-     * 设置全局中间件.
-     *
-     * @param array $middlewares
-     */
-    public function setGlobalMiddlewares(array $middlewares)
-    {
-        $this->globalMiddlewares = $middlewares;
-    }
-
-    /**
-     * 取得全局中间件.
-     *
-     * @return array
-     */
-    public function getGlobalMiddlewares()
-    {
-        return $this->globalMiddlewares;
     }
 
     /**
@@ -375,7 +343,7 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getMiddlewareAlias()
+    public function getMiddlewareAlias(): array
     {
         return $this->middlewareAlias;
     }
@@ -403,18 +371,38 @@ class Router implements IRouter
             }
         }
 
-        // 匹配基础路径
-        $basepath = '';
-        $baseOptions = [];
+        $middlewares = [];
 
-        foreach ($this->getBasepaths() as $item => $option) {
-            if (0 === strpos($path, $item)) {
-                $path = substr($path, strlen($item) + 1);
-                $basepath = $item;
-                $baseOptions = $option;
+        if (false === $ignoreMiddleware) {
+            // 匹配基础路径
+            foreach ($this->getBasePaths() as $item => $option) {
+                if ('*' === $item) {
+                    if (isset($option['middlewares'])) {
+                        $middlewares = $option['middlewares'];
+                    }
+                } elseif (preg_match($item, $path, $matches)) {
+                    if (isset($option['middlewares'])) {
+                        $middlewares = $this->mergeMiddlewares($middlewares, $middlewares);
+                    }
 
-                break;
+                    break;
+                }
             }
+
+            // 匹配分组路径
+            foreach ($this->getGroupPaths() as $item => $option) {
+                if (0 === strpos($path, $item)) {
+                    $path = substr($path, strlen($item) + 1);
+
+                    if (isset($option['middlewares'])) {
+                        $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
+                    }
+
+                    break;
+                }
+            }
+
+            $result[IRouter::MIDDLEWARES] = $middlewares;
         }
 
         $path = trim($path, '/');
@@ -460,13 +448,29 @@ class Router implements IRouter
 
         $result[static::PARAMS] = array_merge($result[static::PARAMS] ?? [], $params);
 
-        $result[static::PARAMS][static::BASEPATH] = $basepath ?: null;
-
-        if (false === $ignoreMiddleware) {
-            $result[IRouter::MIDDLEWARES] = $baseOptions['middlewares'] ?? [];
-        }
-
         return $result;
+    }
+
+    /**
+     * 合并中间件.
+     *
+     * @param array $middlewares
+     * @param array $newMiddlewares
+     *
+     * @return array
+     */
+    protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
+    {
+        return [
+            'handle'    => array_unique(array_merge(
+                $middlewares['handle'] ?? [],
+                $newMiddlewares['handle'] ?? []
+            )),
+            'terminate' => array_unique(array_merge(
+                $middlewares['terminate'] ?? [],
+                $newMiddlewares['terminate'] ?? []
+            )),
+        ];
     }
 
     /**
@@ -768,26 +772,6 @@ class Router implements IRouter
         return [
             $controller,
             $method,
-        ];
-    }
-
-    /**
-     * 获取绑定的中间件
-     * 暂时不做重复过滤，允许中间件多次执行.
-     *
-     * @return array
-     */
-    protected function parseMiddleware()
-    {
-        return [
-            'handle'    => array_merge(
-                $this->globalMiddlewares['handle'] ?? [],
-                $this->matchedMiddlewares()['handle'] ?? []
-            ),
-            'terminate' => array_merge(
-                $this->globalMiddlewares['terminate'] ?? [],
-                $this->matchedMiddlewares()['terminate'] ?? []
-            ),
         ];
     }
 

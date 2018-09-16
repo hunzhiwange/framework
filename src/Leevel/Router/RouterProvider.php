@@ -108,10 +108,7 @@ abstract class RouterProvider extends Provider
      */
     protected function importCachedRouters()
     {
-        $routers = include $this->getRouterCachePath();
-
-        //$this->setGlobalMiddlewares($routers['middlewares']);
-        $this->setRoutersData($routers);
+        $this->setRoutersData(include $this->getRouterCachePath());
     }
 
     /**
@@ -119,10 +116,7 @@ abstract class RouterProvider extends Provider
      */
     protected function loadRouters()
     {
-        $routers = $this->getRouters();
-
-        //$this->setGlobalMiddlewares($middlewares);
-        $this->setRoutersData($routers);
+        $this->setRoutersData($this->getRouters());
     }
 
     /**
@@ -152,7 +146,8 @@ abstract class RouterProvider extends Provider
      */
     protected function setRoutersData(array $routers)
     {
-        $this->container['router']->setBasepaths($routers['basepaths']);
+        $this->container['router']->setBasePaths($routers['base_paths']);
+        $this->container['router']->setGroupPaths($routers['group_paths']);
         $this->container['router']->setGroups($routers['groups']);
         $this->container['router']->setRouters($routers['routers']);
     }

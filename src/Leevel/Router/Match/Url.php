@@ -49,18 +49,11 @@ class Url implements IMatch
     protected $request;
 
     /**
-     * 匹配基础路径.
-     *
-     * @var string
-     */
-    protected $matchedBasepath;
-
-    /**
-     * 匹配基础路径配置.
+     * 匹配中间件.
      *
      * @var array
      */
-    protected $matchedBaseOptions = [];
+    protected $middlewares = [];
 
     /**
      * 匹配变量.
@@ -98,20 +91,38 @@ class Url implements IMatch
         $urlRouters = $urlRouters[$method];
 
         $result = [];
-
-        // 匹配基础路径
-        $basepaths = $router->getBasepaths();
+        $middlewares = [];
         $pathInfoSource = $pathInfo = rtrim($request->getPathInfo(), '/').'/';
 
-        foreach ($basepaths as $path => $option) {
-            if (0 === strpos($pathInfo, $path)) {
-                $pathInfo = substr($pathInfo, strlen($path));
-                $this->matchedBasepath = $path;
-                $this->matchedBaseOptions = $option;
+        // 匹配基础路径
+        foreach ($router->getBasePaths() as $item => $option) {
+            if ('*' === $item) {
+                if (isset($option['middlewares'])) {
+                    $middlewares = $option['middlewares'];
+                }
+            } elseif (preg_match($item, $pathInfo, $matches)) {
+                if (isset($option['middlewares'])) {
+                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
+                }
 
                 break;
             }
         }
+
+        // 匹配分组路径
+        foreach ($router->getGroupPaths() as $item => $option) {
+            if (0 === strpos($pathInfo, $item)) {
+                $pathInfo = substr($pathInfo, strlen($item));
+
+                if (isset($option['middlewares'])) {
+                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
+                }
+
+                break;
+            }
+        }
+
+        $this->middlewares = $middlewares;
 
         // 静态路由匹配
         if (isset($urlRouters['static'], $urlRouters['static'][$pathInfoSource])) {
@@ -154,7 +165,6 @@ class Url implements IMatch
 
             $matchedRouter = $urlRouters['map'][$key][count($matches)];
             $routers = $urlRouters[$matchedRouter];
-
             $matcheVars = $this->matcheVariable($routers, $matches);
 
             return $this->matcheSuccessed($routers, $matcheVars);
@@ -208,14 +218,14 @@ class Url implements IMatch
             $result['params'] = array_merge($result['params'], $exendParams);
         }
 
-        // 基础路径匹配 /v1
-        $result['params'][IRouter::BASEPATH] = $this->matchedBasepath;
-
         $result[IRouter::PARAMS] = $result['params'];
-        unset($result['params']);
 
         // 中间件
-        $result[IRouter::MIDDLEWARES] = $this->parseMiddleware($routers['middlewares'] ?? []);
+        if (isset($routers['middlewares'])) {
+            $this->middlewares = $this->mergeMiddlewares($this->middlewares, $routers['middlewares']);
+        }
+
+        $result[IRouter::MIDDLEWARES] = $this->middlewares;
 
         // 匹配的变量
         $result[IRouter::VARS] = $this->matchedVars;
@@ -224,25 +234,24 @@ class Url implements IMatch
     }
 
     /**
-     * 获取绑定的中间件.
+     * 合并中间件.
      *
      * @param array $middlewares
+     * @param array $newMiddlewares
      *
      * @return array
      */
-    protected function parseMiddleware(array $middlewares)
+    protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {
-        $baseMiddlewares = $this->matchedBaseOptions['middlewares'] ?? [];
-
         return [
-            'handle'    => array_merge(
-                $baseMiddlewares['handle'] ?? [],
-                $middlewares['handle'] ?? []
-            ),
-            'terminate' => array_merge(
-                $baseMiddlewares['terminate'] ?? [],
-                $middlewares['terminate'] ?? []
-            ),
+            'handle'    => array_unique(array_merge(
+                $middlewares['handle'] ?? [],
+                $newMiddlewares['handle'] ?? []
+            )),
+            'terminate' => array_unique(array_merge(
+                $middlewares['terminate'] ?? [],
+                $newMiddlewares['terminate'] ?? []
+            )),
         ];
     }
 
@@ -274,7 +283,6 @@ class Url implements IMatch
         $domainVars = [];
 
         if (!empty($routers['domain'])) {
-            //$host = $this->request->getHttpHost();
             $host = $this->request->getHost();
 
             if (!empty($routers['domain_regex'])) {

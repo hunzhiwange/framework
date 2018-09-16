@@ -84,13 +84,6 @@ interface IRouter
     const PREFIX = '_prefix';
 
     /**
-     * 匹配基础路径.
-     *
-     * @var string
-     */
-    const BASEPATH = '_basepath';
-
-    /**
      * restful show.
      *
      * @var string
@@ -186,9 +179,9 @@ interface IRouter
     /**
      * 返回控制器相对目录.
      *
-     * @param string $controllerDir
+     * @return string
      */
-    public function getControllerDir();
+    public function getControllerDir(): string;
 
     /**
      * 设置路由.
@@ -202,7 +195,7 @@ interface IRouter
      *
      * @return array
      */
-    public function getRouters();
+    public function getRouters(): array;
 
     /**
      * 设置基础路径.
@@ -212,18 +205,25 @@ interface IRouter
     public function setBasepaths(array $basepaths);
 
     /**
-     * 添加基础路径.
-     *
-     * @param array $basepaths
-     */
-    public function addBasepaths(array $basepaths);
-
-    /**
      * 取得基础路径.
      *
      * @return array
      */
-    public function getBasepaths();
+    public function getBasepaths(): array;
+
+    /**
+     * 设置分组路径.
+     *
+     * @param array $groupPaths
+     */
+    public function setGroupPaths(array $groupPaths);
+
+    /**
+     * 取得分组路径.
+     *
+     * @return array
+     */
+    public function getGroupPaths(): array;
 
     /**
      * 设置路由分组.
@@ -233,18 +233,11 @@ interface IRouter
     public function setGroups(array $groups);
 
     /**
-     * 添加路由分组.
-     *
-     * @param array $groups
-     */
-    public function addGroups(array $groups);
-
-    /**
      * 取得路由分组.
      *
      * @return array
      */
-    public function getGroups();
+    public function getGroups(): array;
 
     /**
      * 设置中间件分组.
@@ -258,21 +251,7 @@ interface IRouter
      *
      * @return array
      */
-    public function getMiddlewareGroups();
-
-    /**
-     * 设置全局中间件.
-     *
-     * @param array $middlewares
-     */
-    public function setGlobalMiddlewares(array $middlewares);
-
-    /**
-     * 取得全局中间件.
-     *
-     * @return array
-     */
-    public function getGlobalMiddlewares();
+    public function getMiddlewareGroups(): array;
 
     /**
      * 设置中间件别名.
@@ -286,7 +265,7 @@ interface IRouter
      *
      * @return array
      */
-    public function getMiddlewareAlias();
+    public function getMiddlewareAlias(): array;
 
     /**
      * 匹配路径.
