@@ -382,7 +382,7 @@ class Router implements IRouter
                     }
                 } elseif (preg_match($item, $path, $matches)) {
                     if (isset($option['middlewares'])) {
-                        $middlewares = $this->mergeMiddlewares($middlewares, $middlewares);
+                        $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
                     }
 
                     break;

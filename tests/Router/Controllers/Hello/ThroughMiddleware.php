@@ -18,38 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Middlewares;
-
-use Closure;
-use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
+namespace Tests\Router\Controllers\Hello;
 
 /**
- * demo2 中间件.
+ * throughMiddleware.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.09.13
+ * @since 2018.09.17
  *
  * @version 1.0
  */
-class Demo2
+class ThroughMiddleware
 {
-    public function __construct()
+    public function handle()
     {
-    }
-
-    public function handle(Closure $next, IRequest $request)
-    {
-        $GLOBALS['demo_middlewares'][] = 'Demo2::handle';
-
-        $next($request);
-    }
-
-    public function terminate(Closure $next, IRequest $request, IResponse $response)
-    {
-        $GLOBALS['demo_middlewares'][] = 'Demo2::terminate';
-
-        $next($request, $response);
+        return 'hello throughMiddleware';
     }
 }

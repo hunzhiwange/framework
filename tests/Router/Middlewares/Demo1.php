@@ -41,6 +41,8 @@ class Demo1
 
     public function terminate(Closure $next, IRequest $request, IResponse $response)
     {
+        $GLOBALS['demo_middlewares'][] = 'Demo1::terminate';
+
         $next($request, $response);
     }
 }
