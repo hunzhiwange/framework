@@ -251,10 +251,10 @@ class OpenApiRouter
         $routers = $this->normalizeFastRoute($routers);
 
         return [
-            'base_paths'  => $basePaths ?: [],
-            'group_paths' => $groupPaths ?: [],
-            'groups'      => $groups,
-            'routers'     => $routers,
+            'base_paths'      => $basePaths ?: [],
+            'group_paths'     => $groupPaths ? $groupPaths : [],
+            'groups'          => $groups,
+            'routers'         => $routers,
         ];
     }
 

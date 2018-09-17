@@ -7,6 +7,18 @@ array (
       array (
       ),
     ),
+    '/^\\/foo\\/(\\S+)world$/' => 
+    array (
+      'middlewares' => 
+      array (
+      ),
+    ),
+    '/^\\/api\\/test$/' => 
+    array (
+      'middlewares' => 
+      array (
+      ),
+    ),
   ),
   'group_paths' => 
   array (

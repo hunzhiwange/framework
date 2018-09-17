@@ -108,7 +108,9 @@ abstract class RouterProvider extends Provider
      */
     protected function importCachedRouters()
     {
-        $this->setRoutersData(include $this->getRouterCachePath());
+        $routers = include $this->getRouterCachePath();
+
+        $this->setRoutersData($routers);
     }
 
     /**

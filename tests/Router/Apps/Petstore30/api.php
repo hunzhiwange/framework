@@ -75,6 +75,12 @@ class Foobar
  *         "*": {
  *             "middlewares": "common"
  *         },
+ *         "foo/*world": {
+ *             "middlewares": "custom"
+ *         },
+ *         "api/test": {
+ *             "middlewares": "api"
+ *         },
  *         "/api/v1": {
  *             "middlewares": "api",
  *             "group": true
