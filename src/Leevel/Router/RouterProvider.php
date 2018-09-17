@@ -130,16 +130,6 @@ abstract class RouterProvider extends Provider
     }
 
     /**
-     * 设置全局中间件数据.
-     *
-     * @param array $middlewares
-     */
-    protected function setGlobalMiddlewares(array $middlewares)
-    {
-        $this->container['router']->setGlobalMiddlewares($middlewares);
-    }
-
-    /**
      * 设置路由数据.
      *
      * @param array $routers

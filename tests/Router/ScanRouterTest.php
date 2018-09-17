@@ -68,7 +68,7 @@ class ScanRouterTest extends TestCase
 
     protected function createRouter(): Router
     {
-        $router = new Router($container = new Container());
+        $router = new Router($container = new Leevel1());
 
         $router->setMiddlewareGroups([
             'group1' => [
@@ -96,7 +96,7 @@ class ScanRouterTest extends TestCase
 
         $router->setControllerDir('Tests\\Router\\Apps');
 
-        $container->singleton('project', new Leevel1());
+        $container->singleton('project', $container);
         $container->singleton('url', new Url1());
         $container->singleton('router', $router);
 
@@ -111,7 +111,7 @@ class ScanRouterTest extends TestCase
     }
 }
 
-class Leevel1
+class Leevel1 extends Container
 {
     public function appPath()
     {
