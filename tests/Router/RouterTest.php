@@ -208,7 +208,7 @@ class RouterTest extends TestCase
         $pathInfo = '/';
         $params = [];
         $method = $method;
-        $controllerDir = 'App\Controller';
+        $controllerDir = 'App\\Controller';
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $router = $this->createRouter();
@@ -259,7 +259,7 @@ class RouterTest extends TestCase
 
     public function testThroughMiddleware()
     {
-        $pathInfo = '/:tests/hello/throughMiddleware';
+        $pathInfo = '/ap1/v1/:tests/hello/throughMiddleware';
         $params = [];
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
@@ -286,9 +286,10 @@ class RouterTest extends TestCase
         ]);
 
         $router->setMiddlewareAlias([
-            'demo1' => 'Tests\\Router\\Middlewares\\Demo1',
-            'demo2' => 'Tests\\Router\\Middlewares\\Demo2',
-            'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
+            'demo1'        => 'Tests\\Router\\Middlewares\\Demo1',
+            'demo2'        => 'Tests\\Router\\Middlewares\\Demo2',
+            'demo3'        => 'Tests\\Router\\Middlewares\\Demo3',
+            'demoForGroup' => 'Tests\\Router\\Middlewares\\DemoForGroup',
         ]);
 
         $router->setBasePaths([
@@ -303,12 +304,25 @@ class RouterTest extends TestCase
                     ],
                 ],
             ],
-            '/^\/:tests\/hello\/throughMiddleware$/' => [
+            '/^\/ap1\/v1\/:tests\/hello\/throughMiddleware$/' => [
                 'middlewares' => [
                     'handle' => [
                         'Tests\\Router\\Middlewares\\Demo3:10,hello@handle',
                     ],
                     'terminate' => [
+                    ],
+                ],
+            ],
+        ]);
+
+        $router->setGroupPaths([
+            '/ap1/v1' => [
+                'middlewares' => [
+                    'handle' => [
+                        'Tests\\Router\\Middlewares\\DemoForGroup@handle',
+                    ],
+                    'terminate' => [
+                        'Tests\\Router\\Middlewares\\DemoForGroup@terminate',
                     ],
                 ],
             ],
@@ -332,8 +346,10 @@ class RouterTest extends TestCase
 [
     "Demo2::handle",
     "Demo3::handle(arg1:10,arg2:hello@handle)",
+    "DemoForGroup::handle",
     "Demo1::terminate",
-    "Demo2::terminate"
+    "Demo2::terminate",
+    "DemoForGroup::terminate"
 ]
 eot;
 
@@ -346,6 +362,82 @@ eot;
         );
 
         unset($GLOBALS['demo_middlewares']);
+    }
+
+    public function testMatchePathWithQuery()
+    {
+        $pathInfo = '/:tests/hello/matche-path-with-query?foo=bar&hello=world';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = new Router($container = new Container());
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->matchePath($pathInfo);
+
+        $data = <<<'eot'
+{
+    "_params": {
+        "foo": "bar",
+        "hello": "world"
+    },
+    "_middlewares": [],
+    "_app": "tests",
+    "_a": "matche-path-with-query",
+    "_c": "hello"
+}
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $result,
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testParseDefaultBindControllerFoundButMethodNotFound()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router Tests\Router\Controllers\Hello\ControllerFoundMethodNot::foo() was not found.'
+        );
+
+        $pathInfo = '/:tests/hello/ControllerFoundMethodNot/foo';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+    }
+
+    public function testParseDefaultBindMethodClassFoundButEnterMethodNotFound()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router Tests\Router\Controllers\Hello::MethodClassFoundButEnterMethodNot() was not found.'
+        );
+
+        $pathInfo = '/:tests/hello/MethodClassFoundButEnterMethodNot';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
     }
 
     protected function createRouter(): Router

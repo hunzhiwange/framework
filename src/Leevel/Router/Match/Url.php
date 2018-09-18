@@ -219,6 +219,7 @@ class Url implements IMatch
         }
 
         $result[IRouter::PARAMS] = $result['params'];
+        unset($result['params']);
 
         // 中间件
         if (isset($routers['middlewares'])) {

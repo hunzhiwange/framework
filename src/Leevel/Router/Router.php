@@ -753,6 +753,7 @@ class Router implements IRouter
         // 尝试读取默认控制器
         else {
             $controllerClass = $app.'\\'.$this->parseControllerDir().'\\'.$controller;
+
             if (!class_exists($controllerClass)) {
                 return false;
             }
