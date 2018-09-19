@@ -31,7 +31,8 @@
         "twig/twig": "~2.0",
         "gettext/gettext": "^4.6.0",
         "fzaninotto/faker": "^1.6",
-        "zircote/swagger-php": "^3.0.0"
+        "zircote/swagger-php": "^3.0.0",
+        "codedungeon/phpunit-result-printer": "^0.20.1"
     },
     "replace": {
         "leevel/auth": "self.version",
