@@ -31,8 +31,7 @@
         "twig/twig": "~2.0",
         "gettext/gettext": "^4.6.0",
         "fzaninotto/faker": "^1.6",
-        "zircote/swagger-php": "^3.0.0",
-        "codedungeon/phpunit-result-printer": "^0.20.1"
+        "zircote/swagger-php": "^3.0.0"
     },
     "replace": {
         "leevel/auth": "self.version",
@@ -70,7 +69,8 @@
     "require-dev": {
         "php-coveralls/php-coveralls":"^2.1",
         "phpunit/phpunit": "~7.0",
-        "hollodotme/phpunit-testdox-markdown": "^1.0"
+        "hollodotme/phpunit-testdox-markdown": "^1.0",
+        "codedungeon/phpunit-result-printer": "^0.20.1"
     },
     "suggest": {
         "ext-swoole": "Required to use swoole.",
