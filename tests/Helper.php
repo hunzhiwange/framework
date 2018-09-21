@@ -94,14 +94,10 @@ trait Helper
 
     protected function varExport(array $data, ?string $method = null)
     {
-        $traceDir = dirname(__DIR__).'/logs/tests';
-
-        if (!is_dir($traceDir)) {
-            mkdir($traceDir, 0777, true);
-        }
+        list($traceDir, $className) = $this->makeLogsDir();
 
         file_put_contents(
-            $traceDir.'/'.sprintf('%s.%s.export.log', $method, str_replace('\\', '_', static::class)),
+            $traceDir.'/'.sprintf('%s::%s.log', $className, $method),
             $result = var_export($data, true)
         );
 
@@ -110,17 +106,27 @@ trait Helper
 
     protected function varJsonEncode(array $data, ?string $method = null)
     {
-        $traceDir = dirname(__DIR__).'/logs/tests';
+        list($traceDir, $className) = $this->makeLogsDir();
+
+        file_put_contents(
+            $traceDir.'/'.sprintf('%s::%s.json', $className, $method),
+            $result = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
+        );
+
+        return $result;
+    }
+
+    protected function makeLogsDir(): array
+    {
+        $tmp = explode('\\', static::class);
+        array_shift($tmp);
+        $className = array_pop($tmp);
+        $traceDir = dirname(__DIR__).'/logs/tests/'.implode('/', $tmp);
 
         if (!is_dir($traceDir)) {
             mkdir($traceDir, 0777, true);
         }
 
-        file_put_contents(
-            $traceDir.'/'.sprintf('%s.%s.jsonencode.log', $method, str_replace('\\', '_', static::class)),
-            $result = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
-        );
-
-        return $result;
+        return [$traceDir, $className];
     }
 }

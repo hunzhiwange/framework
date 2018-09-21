@@ -559,61 +559,6 @@ interface IRequest
     public function isMethod($method);
 
     /**
-     * 取回应用名.
-     *
-     * @return string
-     */
-    public function app();
-
-    /**
-     * 取回控制器名.
-     *
-     * @return string
-     */
-    public function controller();
-
-    /**
-     * 取回方法名.
-     *
-     * @return string
-     */
-    public function action();
-
-    /**
-     * 取得节点.
-     *
-     * @return string
-     */
-    public function getNode();
-
-    /**
-     * 设置应用名.
-     *
-     * @param string $app
-     *
-     * @return $this
-     */
-    public function setApp($app);
-
-    /**
-     * 设置控制器名.
-     *
-     * @param string $controller
-     *
-     * @return $this
-     */
-    public function setController($controller);
-
-    /**
-     * 设置方法名.
-     *
-     * @param string $action
-     *
-     * @return $this
-     */
-    public function setAction($action);
-
-    /**
      * 返回当前的语言
      *
      * @return null|string

@@ -1,0 +1,319 @@
+div.phpdebugbar {
+    font-size: 13px;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+    direction: ltr;
+    text-align: left;
+    z-index: 100000;
+}
+
+div.phpdebugbar-resize-handle {
+    border-bottom-color: #ddd;
+}
+
+div.phpdebugbar-closed,
+div.phpdebugbar-minimized {
+    border-top-color: #ddd;
+}
+
+a.phpdebugbar-restore-btn {
+    border-right-color: #ddd !important;
+}
+
+div.phpdebugbar code, div.phpdebugbar pre, div.phpdebugbar samp {
+    background: none;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 1em;
+    border: 0;
+    padding: 0;
+}
+
+div.phpdebugbar code, div.phpdebugbar pre {
+    color: #000;
+}
+
+div.phpdebugbar pre.sf-dump {
+    color: #a0a000;
+    outline: 0;
+}
+
+div.phpdebugbar-body {
+    border-top: none;
+}
+
+div.phpdebugbar-header {
+    min-height: 30px;
+    line-height: 20px;
+    padding-left: 39px;
+}
+
+div.phpdebugbar-header,
+a.phpdebugbar-restore-btn,
+div.phpdebugbar-openhandler .phpdebugbar-openhandler-header {
+    background: #f5f5f5 url(data:image/png;base64,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) no-repeat 5px 3px;
+}
+
+a.phpdebugbar-close-btn {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuM4zml1AAAADDSURBVDhPxZCxCsIwFEUzuGdwCvQD7BIIcehUXDqVfGM/wsG/iG4ifkzMlRuSPLo4eeFBue8c6Iv6b4wxW557Hs0KnWa3seqDxTiOyVqbhmF4UND4Rofdruyce3rvE6bIRSo9GOI1McbLPM/vVm4l7MAQr0kpHaQsJTDE+6zrepym6SVFdNgR69M+hBTLzWCI10gJvydvBkO8ZlmWayvhJnkzGOI1+fBTCOHWPkT7YNiBId4HizxnCKy+r81uX/otSn0A7dioI/vYX+8AAAAASUVORK5CYII=) no-repeat 9px 6px;
+    color : #555;
+}
+
+a.phpdebugbar-open-btn {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAOCAYAAADJ7fe0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfdCgYULwwNKp3GAAAAGHRFWHRTb2Z0d2FyZQBwYWludC5uZXQgNC4wLjOM5pdQAAAA1UlEQVQ4T2OgKpCUlOQH4vdA/B8Jv4dKEwYgDdLS0v8NDQ3/GxsbwzGIj2YoGEO1oQJkjcRgqDZUAJKwsrJ6/v//fwdiMFQbKgAZkpGR0QR0ajy60wlgRJhBXSGhpqb2CNnZhHBkZORcqBEMDFBX2BsYGGBVjAv39vZaQ41gYIC6Ygs2hbiwr6/vdqA+DqgR4CiW19bWxqoYF87Ly4uFaocAZWXlydgU4sJ2dna3ga4QgGqHAC0trY/YFOPCKSkpDVCtCAA01QaIsaYJHFgCqpVagIEBACGlF2c3r4ViAAAAAElFTkSuQmCC) no-repeat 8px 6px;
+}
+
+
+div.phpdebugbar-header,
+div.phpdebugbar-openhandler-header {
+    background-size: 21px auto;
+    background-position: 9px center;
+}
+
+a.phpdebugbar-restore-btn {
+    background-size: 20px;
+    width: 16px;
+    border-right-color: #ccc;
+}
+
+div.phpdebugbar-header > div > * {
+    font-size: 13px;
+}
+
+div.phpdebugbar-header .phpdebugbar-tab {
+    padding: 5px 6px;
+}
+
+div.phpdebugbar .phpdebugbar-header select {
+    padding: 1px 0;
+}
+
+dl.phpdebugbar-widgets-kvlist dt {
+    width: 200px;
+    min-height: 20px;
+    padding: 7px 5px;
+    line-height: 20px;
+}
+
+dl.phpdebugbar-widgets-kvlist dd {
+    min-height: 20px;
+    margin-left: 210px;
+    padding: 7px 5px;
+    line-height: 20px;
+}
+
+ul.phpdebugbar-widgets-timeline .phpdebugbar-widgets-measure {
+    height: 25px;
+    line-height: 25px;
+    border: none;
+}
+
+ul.phpdebugbar-widgets-timeline li:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-value {
+    height: 15px;
+    background-color: #f4645f;
+}
+
+ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-label,
+ul.phpdebugbar-widgets-timeline li span.phpdebugbar-widgets-collector  {
+    top: 0px;
+}
+
+div.phpdebugbar-widgets-messages div.phpdebugbar-widgets-toolbar a.phpdebugbar-widgets-filter {
+    background-color: #f4645f;
+}
+
+a.phpdebugbar-tab:hover,
+span.phpdebugbar-indicator:hover,
+a.phpdebugbar-indicator:hover,
+a.phpdebugbar-close-btn:hover,
+a.phpdebugbar-open-btn:hover {
+    background-color: #ebebeb;
+    transition: background-color .25s linear 0s, color .25s linear 0s;
+}
+
+a.phpdebugbar-tab.phpdebugbar-active {
+    background: #045efc;
+    color: #fff;
+}
+
+a.phpdebugbar-tab.phpdebugbar-active span.phpdebugbar-badge {
+    background-color: white;
+    color: #045efc;
+}
+
+a.phpdebugbar-tab span.phpdebugbar-badge {
+    vertical-align: 0px;
+    padding: 2px 6px;
+    background: #045efc;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 10px;
+}
+
+div.phpdebugbar-openhandler .phpdebugbar-openhandler-header {
+    background-size: 20px;
+}
+
+div.phpdebugbar-openhandler a {
+    color: #555;
+}
+
+div.phpdebugbar-openhandler table {
+    table-layout: fixed;
+}
+
+div.phpdebugbar-openhandler table td,
+div.phpdebugbar-openhandler table th {
+    text-align: left;
+}
+
+div.phpdebugbar-openhandler table td a {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.phpdebugbar-indicator span.phpdebugbar-tooltip {
+    top: -36px;
+    border: none;
+    border-radius: 5px;
+    background: #f5f5f5;
+    font-size: 12px;
+}
+
+div.phpdebugbar-widgets-messages div.phpdebugbar-widgets-toolbar a.phpdebugbar-widgets-filter {
+    margin: 0;
+    padding: 5px 8px;
+    border-radius: 0;
+    font-size: 12px;
+    transition: background-color .25s linear 0s, color .25s linear 0s;
+}
+
+div.phpdebugbar-widgets-messages div.phpdebugbar-widgets-toolbar a.phpdebugbar-widgets-filter:hover {
+    background-color: #ad4844;
+    color: #fff;
+}
+
+.phpdebugbar-widgets-toolbar > .fa {
+    width: 25px;
+    font-size: 15px;
+    color: #555;
+    text-align: center;
+}
+
+ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item {
+    padding: 15px 10px;
+    border: none;
+    font-family: inherit;
+    overflow: visible;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.phpdebugbar-widgets-sql.phpdebugbar-widgets-name {
+    font-weight: bold;
+}
+
+ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item .phpdebugbar-widgets-sql {
+    flex: 1;
+    margin-right: 5px;
+    cursor: text;
+}
+
+ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item .phpdebugbar-widgets-duration {
+    /*flex: 0 0 auto;*/
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item .phpdebugbar-widgets-database {
+    /*flex: 0 0 auto;*/
+    margin-left: auto;
+}
+
+ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item .phpdebugbar-widgets-stmt-id {
+    /*flex: 0 0 auto;*/
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item .phpdebugbar-widgets-params {
+    background-color: rgba(255, 255, 255, .5);
+    flex: 1 1 auto;
+    margin: 10px 100% 10px 0;
+    max-width: 100%;
+}
+
+ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-list-item:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value.phpdebugbar-widgets-error:before {
+    font-size: 12px;
+    color: #e74c3c;
+}
+
+div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value.phpdebugbar-widgets-warning:before {
+    font-size: 12px;
+    color: #f1c40f;
+}
+
+div.phpdebugbar-widgets-messages li.phpdebugbar-widgets-list-item span.phpdebugbar-widgets-value.phpdebugbar-widgets-error {
+    color: #e74c3c;
+}
+
+.phpdebugbar-widgets-value.phpdebugbar-widgets-warning {
+    color: #f1c40f;
+}
+
+div.phpdebugbar-widgets-sqlqueries {
+    line-height: 20px;
+}
+
+div.phpdebugbar-widgets-sqlqueries .phpdebugbar-widgets-status {
+    background: none !important;
+    font-family: inherit !important;
+    font-weight: 400 !important;
+}
+
+div.phpdebugbar-widgets-sqlqueries table.phpdebugbar-widgets-params th,
+div.phpdebugbar-widgets-sqlqueries table.phpdebugbar-widgets-params td {
+    padding: 5px 10px;
+}
+
+div.phpdebugbar-widgets-sqlqueries table.phpdebugbar-widgets-params td.phpdebugbar-widgets-name {
+    text-align: right;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+div.phpdebugbar-widgets-sqlqueries table.phpdebugbar-widgets-params td.phpdebugbar-widgets-value {
+    text-align: left;
+}
+
+ul.phpdebugbar-widgets-list ul.phpdebugbar-widgets-table-list {
+    text-align: left;
+}
+
+ul.phpdebugbar-widgets-list li.phpdebugbar-widgets-table-list-item {
+    /*padding: 5px 10px;*/
+}
+
+.phpdebugbar-text-muted {
+    color: #888;
+}
+
+ul.phpdebugbar-widgets-cache a.phpdebugbar-widgets-forget {
+    float: right;
+    font-size: 12px;
+    padding: 0 4px;
+    background: #f4645f;
+    margin: 0 2px;
+    border-radius: 4px;
+    color: #fff;
+    text-decoration: none;
+    line-height: 1.5rem;
+}

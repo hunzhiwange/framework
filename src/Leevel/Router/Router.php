@@ -71,9 +71,10 @@ class Router implements IRouter
      */
     protected static $matcheDataInit = [
         self::APP         => self::DEFAULT_APP,
+        self::PREFIX      => null,
         self::CONTROLLER  => null,
         self::ACTION      => null,
-        self::PREFIX      => null,
+        self::BIND        => null,
         self::PARAMS      => null,
         self::MIDDLEWARES => null,
         self::VARS        => null,
@@ -349,109 +350,6 @@ class Router implements IRouter
     }
 
     /**
-     * 匹配路径.
-     *
-     * @param string $path
-     * @param bool   $ignoreMiddleware
-     *
-     * @return array
-     */
-    public function matchePath(string $path, bool $ignoreMiddleware = false): array
-    {
-        $result = [];
-
-        if (false !== strpos($path, '?')) {
-            list($path, $query) = explode('?', $path);
-
-            if ($query) {
-                foreach (explode('&', $query) as $item) {
-                    $item = explode('=', $item);
-                    $result[static::PARAMS][$item[0]] = $item[1];
-                }
-            }
-        }
-
-        $middlewares = [];
-
-        if (false === $ignoreMiddleware) {
-            // 匹配基础路径
-            foreach ($this->getBasePaths() as $item => $option) {
-                if ('*' === $item) {
-                    if (isset($option['middlewares'])) {
-                        $middlewares = $option['middlewares'];
-                    }
-                } elseif (preg_match($item, $path, $matches)) {
-                    if (isset($option['middlewares'])) {
-                        $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
-                    }
-
-                    break;
-                }
-            }
-
-            // 匹配分组路径
-            foreach ($this->getGroupPaths() as $item => $option) {
-                if (0 === strpos($path, $item)) {
-                    $path = substr($path, strlen($item) + 1);
-
-                    if (isset($option['middlewares'])) {
-                        $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
-                    }
-
-                    break;
-                }
-            }
-
-            $result[IRouter::MIDDLEWARES] = $middlewares;
-        }
-
-        $path = trim($path, '/');
-        $paths = $path ? explode('/', $path) : [];
-
-        // 应用
-        if ($paths && $this->findApp($paths[0])) {
-            $result[static::APP] = substr(array_shift($paths), 1);
-        }
-
-        if (!$paths) {
-            $result[IRouter::CONTROLLER] = IRouter::DEFAULT_HOME_CONTROLLER;
-
-            return $result;
-        }
-
-        list($paths, $params) = $this->normalizePathsAndParams($paths);
-
-        if (1 === count($paths)) {
-            $result[static::CONTROLLER] = array_pop($paths);
-        } else {
-            if ($paths) {
-                $result[static::ACTION] = array_pop($paths);
-            }
-
-            if ($paths) {
-                $result[static::CONTROLLER] = array_pop($paths);
-            }
-
-            if ($paths) {
-                $result[static::PREFIX] = implode('\\', array_map(function ($item) {
-                    if (false !== strpos($item, '_')) {
-                        $item = str_replace('_', ' ', $item);
-                        $item = str_replace(' ', '', ucwords($item));
-                    } else {
-                        $item = ucfirst($item);
-                    }
-
-                    return $item;
-                }, $paths));
-            }
-        }
-
-        $result[static::PARAMS] = array_merge($result[static::PARAMS] ?? [], $params);
-
-        return $result;
-    }
-
-    /**
      * 合并中间件.
      *
      * @param array $middlewares
@@ -474,46 +372,6 @@ class Router implements IRouter
     }
 
     /**
-     * 是否找到 app.
-     *
-     * @param string $app
-     *
-     * @return bool
-     */
-    protected function findApp($app)
-    {
-        return 0 === strpos($app, ':');
-    }
-
-    /**
-     * 解析路径和参数.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function normalizePathsAndParams(array $data): array
-    {
-        $paths = $params = [];
-
-        $k = 0;
-
-        foreach ($data as $item) {
-            if (is_numeric($item)) {
-                $params['_param'.$k] = $item;
-                $k++;
-            } else {
-                $paths[] = $item;
-            }
-        }
-
-        return [
-            $paths,
-            $params,
-        ];
-    }
-
-    /**
      * 路由匹配
      * 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
      *
@@ -532,22 +390,22 @@ class Router implements IRouter
         );
 
         if (false === ($bind = $this->normalizeRouterBind())) {
-            $bind = $this->urlRouterBind($dataPathInfo);
+            $bind = $this->annotationRouterBind($dataPathInfo);
         }
 
         return $bind;
     }
 
     /**
-     * URL 路由绑定.
+     * 注解路由绑定.
      *
      * @param array $dataPathInfo
      *
      * @return mixed
      */
-    protected function urlRouterBind(array $dataPathInfo)
+    protected function annotationRouterBind(array $dataPathInfo)
     {
-        $data = $this->normalizeMatchedData('Url');
+        $data = $this->normalizeMatchedData('Annotation');
 
         if (!$data) {
             $data = $dataPathInfo;
@@ -607,7 +465,7 @@ class Router implements IRouter
     {
         $this->completeRequest();
 
-        return $this->parseDefaultBind();
+        return $this->parseMatchedBind();
     }
 
     /**
@@ -660,10 +518,14 @@ class Router implements IRouter
      */
     protected function makeRouterNode()
     {
+        if ($matchedBind = $this->matchedBind()) {
+            return $matchedBind;
+        }
+
         return $this->matchedApp().'\\'.
-            $this->parseControllerDir().'\\'.
-            $this->matchedController().'::'.
-            $this->matchedAction().'()';
+                $this->parseControllerDir().'\\'.
+                $this->matchedController().'::'.
+                $this->matchedAction().'()';
     }
 
     /**
@@ -688,14 +550,6 @@ class Router implements IRouter
     protected function completeRequest()
     {
         $this->pathinfoRestful();
-
-        foreach ([
-            'App',
-            'Controller',
-            'Action',
-        ] as $type) {
-            $this->request->{'set'.$type}($this->{'matched'.$type}());
-        }
 
         $this->request->params->replace($this->matchedParams());
     }
@@ -732,34 +586,55 @@ class Router implements IRouter
     }
 
     /**
-     * 分析默认控制器.
+     * 分析匹配绑定路由.
      *
      * @return callable|false
      */
-    protected function parseDefaultBind()
+    protected function parseMatchedBind()
     {
-        $app = $this->matchedApp();
-        $controller = $this->matchedController();
-        $action = $this->matchedAction();
+        if ($matchedBind = $this->matchedBind()) {
+            if (false !== strpos($matchedBind, '@')) {
+                list($bindClass, $method) = explode('@', $matchedBind);
 
-        // 尝试直接读取方法控制器类
-        $controllerClass = $app.'\\'.$this->parseControllerDir().'\\'.$controller.'\\'.ucfirst($action);
+                if (!class_exists($bindClass)) {
+                    return false;
+                }
 
-        if (class_exists($controllerClass)) {
-            $controller = $this->container->make($controllerClass);
-            $method = method_exists($controller, 'handle') ? 'handle' : 'run';
-        }
+                $controller = $this->container->make($bindClass);
+            } else {
+                if (!class_exists($matchedBind)) {
+                    return false;
+                }
 
-        // 尝试读取默认控制器
-        else {
-            $controllerClass = $app.'\\'.$this->parseControllerDir().'\\'.$controller;
+                $controller = $this->container->make($matchedBind);
 
-            if (!class_exists($controllerClass)) {
-                return false;
+                $method = method_exists($matchedController, 'handle') ? 'handle' : 'run';
+            }
+        } else {
+            $matchedApp = $this->matchedApp();
+            $matchedController = $this->matchedController();
+            $matchedAction = $this->matchedAction();
+
+            // 尝试直接读取方法控制器类
+            $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
+                $matchedController.'\\'.ucfirst($matchedAction);
+
+            if (class_exists($controllerClass)) {
+                $controller = $this->container->make($controllerClass);
+                $method = method_exists($controller, 'handle') ? 'handle' : 'run';
             }
 
-            $controller = $this->container->make($controllerClass);
-            $method = $action;
+            // 尝试读取默认控制器
+            else {
+                $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
+
+                if (!class_exists($controllerClass)) {
+                    return false;
+                }
+
+                $controller = $this->container->make($controllerClass);
+                $method = $matchedAction;
+            }
         }
 
         if ($controller instanceof IController) {
@@ -784,6 +659,16 @@ class Router implements IRouter
     protected function matchedApp()
     {
         return ucfirst($this->matchedData[static::APP]);
+    }
+
+    /**
+     * 取回控制器前缀
+     *
+     * @return null|string
+     */
+    protected function matchedPrefix()
+    {
+        return $this->matchedData[static::PREFIX];
     }
 
     /**
@@ -818,13 +703,13 @@ class Router implements IRouter
     }
 
     /**
-     * 取回控制器前缀
+     * 取回绑定资源.
      *
      * @return null|string
      */
-    protected function matchedPrefix()
+    protected function matchedBind()
     {
-        return $this->matchedData[static::PREFIX];
+        return $this->matchedData[static::BIND];
     }
 
     /**

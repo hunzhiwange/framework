@@ -24,7 +24,7 @@ use Leevel\Http\IRequest;
 use Leevel\Router\IRouter;
 
 /**
- * 路由 pathInfo 匹配.
+ * pathInfo 路由匹配.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -58,6 +58,123 @@ class PathInfo implements IMatch
      */
     public function matche(IRouter $router, IRequest $request): array
     {
-        return $router->matchePath($request->getPathInfo());
+        $pathInfo = $request->getPathInfo();
+        $result = [];
+        $middlewares = [];
+
+        // 匹配基础路径
+        foreach ($router->getBasePaths() as $item => $option) {
+            if ('*' === $item) {
+                if (isset($option['middlewares'])) {
+                    $middlewares = $option['middlewares'];
+                }
+            } elseif (preg_match($item, $pathInfo, $matches)) {
+                if (isset($option['middlewares'])) {
+                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
+                }
+
+                break;
+            }
+        }
+
+        // 匹配分组路径
+        foreach ($router->getGroupPaths() as $item => $option) {
+            if (0 === strpos($pathInfo, $item)) {
+                $pathInfo = substr($pathInfo, strlen($item) + 1);
+
+                if (isset($option['middlewares'])) {
+                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
+                }
+
+                break;
+            }
+        }
+
+        $result[IRouter::MIDDLEWARES] = $middlewares;
+
+        $pathInfo = trim($pathInfo, '/');
+        $paths = $pathInfo ? explode('/', $pathInfo) : [];
+
+        // 应用
+        if ($paths && $this->findApp($paths[0])) {
+            $result[IRouter::APP] = substr(array_shift($paths), 1);
+        }
+
+        if (!$paths) {
+            $result[IRouter::CONTROLLER] = IRouter::DEFAULT_CONTROLLER;
+
+            return $result;
+        }
+
+        list($paths, $params) = $this->normalizePathsAndParams($paths);
+
+        if (1 === count($paths)) {
+            $result[IRouter::CONTROLLER] = array_pop($paths);
+        } else {
+            if ($paths) {
+                $result[IRouter::ACTION] = array_pop($paths);
+            }
+
+            if ($paths) {
+                $result[IRouter::CONTROLLER] = array_pop($paths);
+            }
+
+            if ($paths) {
+                $result[IRouter::PREFIX] = implode('\\', array_map(function ($item) {
+                    if (false !== strpos($item, '_')) {
+                        $item = str_replace('_', ' ', $item);
+                        $item = str_replace(' ', '', ucwords($item));
+                    } else {
+                        $item = ucfirst($item);
+                    }
+
+                    return $item;
+                }, $paths));
+            }
+        }
+
+        $result[IRouter::PARAMS] = array_merge($result[IRouter::PARAMS] ?? [], $params);
+
+        return $result;
+    }
+
+    /**
+     * 是否找到 app.
+     *
+     * @param string $app
+     *
+     * @return bool
+     */
+    protected function findApp($app)
+    {
+        return 0 === strpos($app, ':');
+    }
+
+    /**
+     * 解析路径和参数.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function normalizePathsAndParams(array $data): array
+    {
+        $paths = $params = [];
+
+        $k = 0;
+
+        foreach ($data as $item) {
+            if (is_numeric($item)) {
+                $params['_param'.$k] = $item;
+                $k++;
+            } else {
+                $paths[] = $item;
+            }
+        }
+
+        return [
+            $paths,
+            $params,
+        ];
     }
 }

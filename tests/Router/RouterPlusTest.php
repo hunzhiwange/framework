@@ -41,6 +41,17 @@ use Tests\TestCase;
  */
 class RouterPlusTest extends TestCase
 {
+    protected function setUp()
+    {
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    protected function tearDown()
+    {
+        $this->setUp();
+    }
+
     public function testBaseUse()
     {
         $pathInfo = '/:tests/Plus/base-use';
@@ -88,14 +99,11 @@ class RouterPlusTest extends TestCase
             )
         );
 
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
-        Facade::remove('url');
-        Facade::remove('router');
+        $this->facadeClear();
         Facade::setContainer(null);
     }
 
-    public function testBaseRouterData111()
+    public function testMatchedPetLeevel()
     {
         $pathInfo = '/api/v1/petLeevel/hello';
         $params = [];
@@ -116,16 +124,160 @@ class RouterPlusTest extends TestCase
         $provider->register();
         $provider->bootstrap();
 
+        if (isset($GLOBALS['demo_middlewares'])) {
+            unset($GLOBALS['demo_middlewares']);
+        }
+
+        $response = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $response);
+
+        $this->assertSame('hello plus for petLeevel, params petId is hello', $response->getContent());
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "Demo2::handle"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__
+            )
+        );
+
+        $router->throughMiddleware($request, [
+            $response,
+        ]);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "Demo2::handle",
+    "DemoForAll::terminate",
+    "Demo1::terminate",
+    "Demo2::terminate"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__.'1'
+            )
+        );
+
+        unset($GLOBALS['demo_middlewares']);
+
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testMatchedBasePathNormalize()
+    {
+        $pathInfo = '/basePath/normalize';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerPlus();
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderPlus($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        if (isset($GLOBALS['demo_middlewares'])) {
+            unset($GLOBALS['demo_middlewares']);
+        }
+
+        $response = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $response);
+
+        $this->assertSame('hello plus for basePath normalize', $response->getContent());
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "DemoForBasePath::handle"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__
+            )
+        );
+
+        $router->throughMiddleware($request, [
+            $response,
+        ]);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "DemoForBasePath::handle",
+    "DemoForAll::terminate"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__.'1'
+            )
+        );
+
+        unset($GLOBALS['demo_middlewares']);
+
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testMatchedButMethodNotFound()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\Router\Controllers\PetLeevel::hello() was not found.'
+        );
+
+        $pathInfo = '/api/v1/petLeevel/hello';
+        $params = [];
+        $method = 'PUT';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerPlus();
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('request', $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderPlus($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
         $result = $router->dispatch($request);
 
-        $this->assertInstanceof(IResponse::class, $result);
-
-        $this->assertSame('hello plus for petLeevel, params petId is hello', $result->getContent());
-
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
-        Facade::remove('url');
-        Facade::remove('router');
+        $this->facadeClear();
         Facade::setContainer(null);
     }
 
@@ -137,11 +289,7 @@ class RouterPlusTest extends TestCase
         $container->singleton('url', new UrlPlus());
         $container->singleton('router', $router);
 
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
-        Facade::remove('url');
-        Facade::remove('router');
-
+        $this->facadeClear();
         Facade::setContainer($container);
 
         return $router;
@@ -155,6 +303,14 @@ class RouterPlusTest extends TestCase
         $request->setMethod($method);
 
         return $request;
+    }
+
+    protected function facadeClear()
+    {
+        // 静态属性会保持住，可能受到其它单元测试的影响
+        Facade::remove('project');
+        Facade::remove('url');
+        Facade::remove('router');
     }
 }
 
@@ -194,9 +350,11 @@ class RouterProviderPlus extends RouterProvider
     ];
 
     protected $middlewareAlias = [
-        'demo1' => 'Tests\\Router\\Middlewares\\Demo1',
-        'demo2' => 'Tests\\Router\\Middlewares\\Demo2',
-        'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
+        'demo1'              => 'Tests\\Router\\Middlewares\\Demo1',
+        'demo2'              => 'Tests\\Router\\Middlewares\\Demo2',
+        'demo3'              => 'Tests\\Router\\Middlewares\\Demo3',
+        'demo_for_base_path' => 'Tests\\Router\\Middlewares\\DemoForBasePath',
+        'demo_for_all'       => 'Tests\\Router\\Middlewares\\DemoForAll',
     ];
 
     public function bootstrap()

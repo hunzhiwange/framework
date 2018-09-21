@@ -12,7 +12,8 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": "^7.1.3"
+        "php": "^7.1.3",
+        "maximebf/debugbar": "~1.15.0"
     },
     "autoload": {
         "psr-4": {
@@ -22,6 +23,14 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },
+        "leevel": {
+            "providers": [
+                "Leevel\\Debug\\Provider\\Register"
+            ],
+            "commands": [
+                "Leevel\\Debug\\Console"
+            ]
         }
     },
     "minimum-stability": "dev"

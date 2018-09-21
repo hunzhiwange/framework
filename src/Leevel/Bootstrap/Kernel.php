@@ -26,16 +26,11 @@ use Leevel\Bootstrap\Bootstrap\LoadI18n;
 use Leevel\Bootstrap\Bootstrap\LoadOption;
 use Leevel\Bootstrap\Bootstrap\RegisterRuntime;
 use Leevel\Bootstrap\Bootstrap\TraverseProvider;
-use Leevel\Debug\Console;
-use Leevel\Http\ApiResponse;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
-use Leevel\Http\JsonResponse;
-use Leevel\Http\RedirectResponse;
 use Leevel\Kernel\IKernel;
 use Leevel\Kernel\IProject;
 use Leevel\Kernel\Runtime\IRuntime;
-use Leevel\Log\ILog;
 use Leevel\Router\IRouter;
 use Throwable;
 
@@ -103,8 +98,6 @@ abstract class Kernel implements IKernel
             $this->bootstrap();
 
             $response = $this->getResponseWithRequest($request);
-
-            $response = $this->prepareTrace($response);
 
             $this->middlewareTerminate($request, $response);
         } catch (Exception $e) {
@@ -225,39 +218,6 @@ abstract class Kernel implements IKernel
     protected function renderException(IRequest $request, Exception $e): IResponse
     {
         return $this->getRuntime()->render($request, $e);
-    }
-
-    /**
-     * 调试信息.
-     *
-     * @param \Leevel\Http\IResponse $response
-     *
-     * @return \Leevel\Http\IResponse
-     */
-    protected function prepareTrace(IResponse $response): IResponse
-    {
-        if (!$this->project->debug()) {
-            return $response;
-        }
-
-        $logs = $this->project[ILog::class]->all();
-
-        if ((
-                $response instanceof ApiResponse ||
-                $response instanceof JsonResponse ||
-                $response->isJson()
-            ) &&
-                is_array(($data = $response->getData()))) {
-            $data['_TRACE'] = Console::jsonTrace($logs);
-
-            $response->setData($data);
-        } elseif (!($response instanceof RedirectResponse)) {
-            $data = Console::trace($logs);
-
-            $response->appendContent($data);
-        }
-
-        return $response;
     }
 
     /**

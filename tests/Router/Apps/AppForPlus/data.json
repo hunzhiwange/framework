@@ -1,5 +1,24 @@
 {
-    "base_paths": [],
+    "base_paths": {
+        "*": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\DemoForAll@handle"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\DemoForAll@terminate"
+                ]
+            }
+        },
+        "\/^\\\/basePath\\\/normalize\\\/$\/": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\DemoForBasePath@handle"
+                ],
+                "terminate": []
+            }
+        }
+    },
     "group_paths": {
         "\/api\/v1": {
             "middlewares": {
@@ -45,6 +64,11 @@
     ],
     "routers": {
         "get": {
+            "static": {
+                "\/basePath\/normalize\/": {
+                    "bind": ":tests\/plus\/basePath\/normalize"
+                }
+            },
             "p": {
                 "\/pet": {
                     "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {

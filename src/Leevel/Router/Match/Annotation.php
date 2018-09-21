@@ -24,7 +24,7 @@ use Leevel\Http\IRequest;
 use Leevel\Router\IRouter;
 
 /**
- * 路由 url 匹配.
+ * 注解路由匹配.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Leevel\Router\IRouter;
  *
  * @version 1.0
  */
-class Url implements IMatch
+class Annotation implements IMatch
 {
     /**
      * Router.
@@ -194,8 +194,9 @@ class Url implements IMatch
             return false;
         }
 
-        $result = $this->router->matchePath($routers['bind'], true);
-        $exendParams = $result['params'] ?? [];
+        $result = [];
+
+        $result[IRouter::BIND] = $routers['bind'];
         $result['params'] = [];
 
         // 域名匹配参数 {subdomain}.{domain}
@@ -211,11 +212,6 @@ class Url implements IMatch
         // 额外参数 ['extend1' => 'foo']
         if (isset($routers['params']) && is_array($routers['params'])) {
             $result['params'] = array_merge($result['params'], $routers['params']);
-        }
-
-        // 路由自身 foo/bar?foo=bar 自带参数
-        if ($exendParams) {
-            $result['params'] = array_merge($result['params'], $exendParams);
         }
 
         $result[IRouter::PARAMS] = $result['params'];

@@ -330,7 +330,9 @@ class RouterTest extends TestCase
 
         $router->setControllerDir($controllerDir);
 
-        unset($GLOBALS['demo_middlewares']);
+        if (isset($GLOBALS['demo_middlewares'])) {
+            unset($GLOBALS['demo_middlewares']);
+        }
 
         $result = $router->dispatch($request);
 

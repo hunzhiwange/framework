@@ -72,6 +72,12 @@ class Foobar
  *     description="Find out more about Swagger",
  *     url="http://swagger.io",
  *     leevels={
+ *         "*": {
+ *             "middlewares": "demo_for_all"
+ *         },
+ *         "/basePath/normalize": {
+ *             "middlewares": "demo_for_base_path"
+ *         },
  *         "/api/v1": {
  *             "middlewares": "group1",
  *             "group": true

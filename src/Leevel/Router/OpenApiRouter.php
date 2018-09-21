@@ -54,13 +54,6 @@ class OpenApiRouter
     protected $domain;
 
     /**
-     * 控制器相对目录.
-     *
-     * @var string
-     */
-    protected $controllerDir = 'App\\Controller';
-
-    /**
      * 扫描目录.
      *
      * @var array
@@ -100,19 +93,13 @@ class OpenApiRouter
      *
      * @param \Leevel\Router\MiddlewareParser $middlewareParser
      * @param string                          $domain
-     * @param string                          $controllerDir
      */
-    public function __construct(MiddlewareParser $middlewareParser, $domain = null, $controllerDir = null)
+    public function __construct(MiddlewareParser $middlewareParser, $domain = null)
     {
         $this->middlewareParser = $middlewareParser;
 
         if ($domain) {
             $this->domain = $domain;
-        }
-
-        if ($controllerDir) {
-            $controllerDir = str_replace('/', '\\', $controllerDir);
-            $this->controllerDir = $controllerDir;
         }
 
         // 忽略 OpenApi 扩展字段警告,改变 set_error_handler 抛出时机
@@ -381,21 +368,7 @@ class OpenApiRouter
             return;
         }
 
-        $className = $context->fullyQualifiedName($context->class);
-        $segmentation = '\\'.$this->controllerDir.'\\';
-
-        if (false === strpos($className, $segmentation)) {
-            return;
-        }
-
-        $tmp = explode($segmentation, $className);
-
-        $router = ($tmp[0] ? ':'.ltrim($tmp[0], '\\').'\\' : '').
-            $tmp[1].'\\'.$context->method;
-
-        $method = str_replace('\\', '/', $router);
-
-        return $method;
+        return $context->fullyQualifiedName($context->class).'@'.$context->method;
     }
 
     /**
@@ -535,7 +508,7 @@ class OpenApiRouter
                 unset($value['group']);
                 $groupPaths[$newKey] = $value;
             } else {
-                $newKey = '*' === $newKey ? '*' : $this->prepareRegexForWildcard($newKey);
+                $newKey = '*' === $newKey ? '*' : $this->prepareRegexForWildcard($newKey.'/');
                 $basePaths[$newKey] = $value;
             }
         }

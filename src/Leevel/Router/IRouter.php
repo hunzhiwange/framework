@@ -42,6 +42,13 @@ interface IRouter
     const APP = '_app';
 
     /**
+     * 控制器前缀
+     *
+     * @var string
+     */
+    const PREFIX = '_prefix';
+
+    /**
      * 控制器参数名.
      *
      * @var string
@@ -54,6 +61,13 @@ interface IRouter
      * @var string
      */
     const ACTION = '_a';
+
+    /**
+     * 绑定资源.
+     *
+     * @var string
+     */
+    const BIND = '_bind';
 
     /**
      * 解析参数名.
@@ -75,13 +89,6 @@ interface IRouter
      * @var string
      */
     const MIDDLEWARES = '_middlewares';
-
-    /**
-     * 控制器前缀
-     *
-     * @var string
-     */
-    const PREFIX = '_prefix';
 
     /**
      * restful show.
@@ -123,14 +130,7 @@ interface IRouter
      *
      * @var string
      */
-    const DEFAULT_HOME_CONTROLLER = 'home';
-
-    /**
-     * 默认首页方法.
-     *
-     * @var string
-     */
-    const DEFAULT_HOME_ACTION = 'handle';
+    const DEFAULT_CONTROLLER = 'home';
 
     /**
      * 默认替换参数[字符串].
@@ -266,14 +266,4 @@ interface IRouter
      * @return array
      */
     public function getMiddlewareAlias(): array;
-
-    /**
-     * 匹配路径.
-     *
-     * @param string $path
-     * @param bool   $ignoreMiddleware
-     *
-     * @return array
-     */
-    public function matchePath(string $path, bool $ignoreMiddleware = false): array;
 }

@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use Leevel\Leevel;
-use Leevel\Router;
 use Leevel\Url;
 
 /**
@@ -50,7 +49,7 @@ class ScanRouter
     public function __construct(MiddlewareParser $middlewareParser)
     {
         $this->openApiRouter = new OpenApiRouter(
-            $middlewareParser, $this->getDomain(), $this->getControllerDir()
+            $middlewareParser, $this->getDomain()
         );
 
         $this->openApiRouter->addScandir($this->appPath());
@@ -74,16 +73,6 @@ class ScanRouter
     protected function getDomain()
     {
         return Url::getDomain();
-    }
-
-    /**
-     * 获取控制器目录.
-     *
-     * @return string
-     */
-    protected function getControllerDir()
-    {
-        return Router::getControllerDir();
     }
 
     /**
