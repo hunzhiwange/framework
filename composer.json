@@ -93,6 +93,7 @@
                 "Leevel\\Auth\\Provider\\Register",
                 "Leevel\\Cache\\Provider\\Register",
                 "Leevel\\Database\\Provider\\Register",
+                "Leevel\\Debug\\Provider\\Register",
                 "Leevel\\Encryption\\Provider\\Register",
                 "Leevel\\Filesystem\\Provider\\Register",
                 "Leevel\\Mail\\Provider\\Register",
@@ -105,6 +106,7 @@
             "commands": [
                 "Leevel\\Bootstrap\\Console",
                 "Leevel\\Database\\Console",
+                "Leevel\\Debug\\Console",
                 "Leevel\\I18n\\Console",
                 "Leevel\\Log\\Console",
                 "Leevel\\Mvc\\Console",

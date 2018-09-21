@@ -61,6 +61,8 @@ class Links extends Command
 
         $this->callStorage();
 
+        $this->callDebugBar();
+
         $this->line('');
         $this->info('Links created successed.');
     }
@@ -90,6 +92,15 @@ class Links extends Command
     {
         $this->line('');
         $this->call('link:storage');
+    }
+
+    /**
+     * 执行创建 debugbar 软连接.
+     */
+    protected function callDebugBar(): void
+    {
+        $this->line('');
+        $this->call('link:debugbar');
     }
 
     /**
