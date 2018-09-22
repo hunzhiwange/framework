@@ -174,24 +174,24 @@ class Annotation implements IMatch
     }
 
     /**
-     * url 匹配成功处理.
+     * 注解路由匹配成功处理.
      *
      * @param array $routers
      * @param array $matcheVars
      *
-     * @return array|false
+     * @return array
      */
-    protected function matcheSuccessed(array $routers, array $matcheVars = [])
+    protected function matcheSuccessed(array $routers, array $matcheVars = []): array
     {
         // 协议匹配
         if (!empty($routers['scheme']) &&
             false === $this->matcheScheme($routers['scheme'])) {
-            return false;
+            return [];
         }
 
         // 域名匹配
         if (false === ($domainVars = $this->matcheDomain($routers))) {
-            return false;
+            return [];
         }
 
         $result = [];

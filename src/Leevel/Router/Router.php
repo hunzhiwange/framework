@@ -350,28 +350,6 @@ class Router implements IRouter
     }
 
     /**
-     * 合并中间件.
-     *
-     * @param array $middlewares
-     * @param array $newMiddlewares
-     *
-     * @return array
-     */
-    protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
-    {
-        return [
-            'handle'    => array_unique(array_merge(
-                $middlewares['handle'] ?? [],
-                $newMiddlewares['handle'] ?? []
-            )),
-            'terminate' => array_unique(array_merge(
-                $middlewares['terminate'] ?? [],
-                $newMiddlewares['terminate'] ?? []
-            )),
-        ];
-    }
-
-    /**
      * 路由匹配
      * 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
      *

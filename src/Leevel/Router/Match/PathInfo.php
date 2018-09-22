@@ -177,4 +177,26 @@ class PathInfo implements IMatch
             $params,
         ];
     }
+
+    /**
+     * 合并中间件.
+     *
+     * @param array $middlewares
+     * @param array $newMiddlewares
+     *
+     * @return array
+     */
+    protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
+    {
+        return [
+            'handle'    => array_unique(array_merge(
+                $middlewares['handle'] ?? [],
+                $newMiddlewares['handle'] ?? []
+            )),
+            'terminate' => array_unique(array_merge(
+                $middlewares['terminate'] ?? [],
+                $newMiddlewares['terminate'] ?? []
+            )),
+        ];
+    }
 }
