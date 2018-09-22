@@ -64,6 +64,23 @@ class Debug
     }
 
     /**
+     * 请求
+     *
+     * @param \Closure              $next
+     * @param \Leevel\Http\IRequest $request
+     */
+    public function handle(Closure $next, IRequest $request)
+    {
+        if (!$this->project->debug()) {
+            return $next($request);
+        }
+
+        $this->debug->bootstrap();
+
+        $next($request);
+    }
+
+    /**
      * 响应.
      *
      * @param \Closure               $next

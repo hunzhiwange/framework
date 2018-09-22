@@ -18,14 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Debug\Provider;
+namespace Leevel\Debug\DataCollector;
 
-use Leevel\Debug\Debug;
-use Leevel\Di\IContainer;
-use Leevel\Di\Provider;
+use DebugBar\DataCollector\DataCollector;
+use DebugBar\DataCollector\Renderable;
 
 /**
- * debug 服务提供者.
+ * 加载文件收集器.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -33,55 +32,50 @@ use Leevel\Di\Provider;
  *
  * @version 1.0
  */
-class Register extends Provider
+class FilesCollector extends DataCollector implements Renderable
 {
     /**
-     * 注册服务
+     * {@inheritdoc}
      */
-    public function register()
-    {
-        $this->debug();
-        $this->middleware();
-    }
-
-    /**
-     * 可用服务提供者.
-     *
-     * @return array
-     */
-    public static function providers(): array
+    public function collect()
     {
         return [
-            'debug' => [
-                'Leevel\\Debug\\Debug',
-            ],
-            'Leevel\\Debug\\Middleware\\Debug',
+            'messages' => $this->getIncludedFiles(),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function isDeferred(): bool
+    public function getWidgets()
     {
-        return true;
+        $name = $this->getName();
+
+        return [
+            'files' => [
+                'icon'    => 'files-o',
+                'widget'  => 'PhpDebugBar.Widgets.VariableListWidget',
+                'map'     => 'files.messages',
+                'default' => '{}',
+            ],
+        ];
     }
 
     /**
-     * 注册 debug 服务
+     * {@inheritdoc}
      */
-    protected function debug()
+    public function getName()
     {
-        $this->container->singleton('debug', function (IContainer $container) {
-            return new Debug($container, $container['option']->get('debug\\'));
-        });
+        return 'files';
     }
 
     /**
-     * 注册 middleware 服务
+     * 获取系统加载文件.
+     *
+     * @return array
      */
-    protected function middleware()
+    protected function getIncludedFiles()
     {
-        $this->container->singleton('Leevel\\Debug\\Middleware\\Debug');
+        return get_included_files();
     }
 }
