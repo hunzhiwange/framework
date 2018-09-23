@@ -64,7 +64,7 @@ class ThrottlerTest extends TestCase
         $this->assertNull($middleware->handle(function ($request) {
             $this->assertInstanceof(IRequest::class, $request);
             $this->assertSame('127.0.0.1', $request->getClientIp());
-            $this->assertSame('helloworld', $request->getNode());
+            $this->assertSame('helloworld', $request->getRoot());
         }, $request, 5, 10));
 
         $key = sha1('127.0.0.1@helloworld');
@@ -90,7 +90,7 @@ class ThrottlerTest extends TestCase
         $this->assertNull($middleware->handle(function ($request) {
             $this->assertInstanceof(IRequest::class, $request);
             $this->assertSame('127.0.0.1', $request->getClientIp());
-            $this->assertSame('foobar', $request->getNode());
+            $this->assertSame('foobar', $request->getRoot());
         }, $request, 5, 10));
 
         for ($i = 0; $i < 10; $i++) {
@@ -100,7 +100,7 @@ class ThrottlerTest extends TestCase
         $middleware->handle(function ($request) {
             $this->assertInstanceof(IRequest::class, $request);
             $this->assertSame('127.0.0.1', $request->getClientIp());
-            $this->assertSame('foobar', $request->getNode());
+            $this->assertSame('foobar', $request->getRoot());
         }, $request, 5, 10);
     }
 
@@ -113,8 +113,8 @@ class ThrottlerTest extends TestCase
         $request->method('getClientIp')->willReturn($ip);
         $this->assertEquals($ip, $request->getClientIp());
 
-        $request->method('getNode')->willReturn($node);
-        $this->assertEquals($node, $request->getNode());
+        $request->method('getRoot')->willReturn($node);
+        $this->assertEquals($node, $request->getRoot());
 
         return $request;
     }
