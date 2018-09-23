@@ -55,6 +55,7 @@ class HeaderBag extends Bag
         ksort($headers);
 
         $content = '';
+
         foreach ($headers as $name => $value) {
             $name = ucwords($name, '-');
             $content .= $name.': '.$value."\r\n";

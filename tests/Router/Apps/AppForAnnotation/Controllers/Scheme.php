@@ -18,13 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Apps\AppForPlus\Controllers;
+namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
-class BasePath
+class Scheme
 {
     /**
      * @OA\Get(
-     *     path="/basePath/normalize/",
+     *     path="/scheme/test",
      *     tags={"pet"},
      *     summary="Just test the router",
      *     operationId="petLeevel",
@@ -46,10 +46,42 @@ class BasePath
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelBind="Tests\Router\Controllers\Plus\BasePath@normalize"
+     *     leevelScheme="https"
      * )
      */
-    public function foo()
+    public function fooNotMatchedScheme()
     {
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/scheme/test2",
+     *     tags={"pet"},
+     *     summary="Just test the router",
+     *     operationId="petLeevel",
+     *     @OA\Parameter(
+     *         name="petId",
+     *         in="path",
+     *         description="ID of pet to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     ),
+     *     security={
+     *         {"petstore_auth": {"write:pets", "read:pets"}}
+     *     },
+     *     requestBody={"$ref": "#/components/requestBodies/Pet"},
+     *     leevelScheme="http"
+     * )
+     */
+    public function barMatchedScheme()
+    {
+        return 'barMatchedScheme';
     }
 }

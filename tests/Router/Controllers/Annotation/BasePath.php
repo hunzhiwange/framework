@@ -18,24 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Controllers\Plus;
-
-use Leevel\Di\IContainer;
+namespace Tests\Router\Controllers\Annotation;
 
 /**
- * petLeevel.
+ * BasePath.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.09.18
+ * @since 2018.09.19
  *
  * @version 1.0
  */
-class PetLeevel
+class BasePath
 {
-    public function handle(IContainer $container)
+    public function normalize()
     {
-        return 'hello plus for petLeevel, params petId is '.
-            $container->make('request')->params->get('petId');
+        return 'hello plus for basePath normalize';
     }
 }

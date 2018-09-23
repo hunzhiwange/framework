@@ -66,13 +66,42 @@
         "get": {
             "static": {
                 "\/basePath\/normalize\/": {
-                    "bind": "\\Tests\\Router\\Controllers\\Plus\\BasePath@normalize"
+                    "bind": "\\Tests\\Router\\Controllers\\Annotation\\BasePath@normalize"
+                },
+                "\/domain\/test\/": {
+                    "domain": "queryphp.com",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@fooNotMatchedDomain"
+                },
+                "\/domain\/test2\/": {
+                    "domain": "queryphp.com",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomain"
+                },
+                "\/domain\/test3\/": {
+                    "domain": "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomainWithVar",
+                    "domain_regex": "\/^([A-Za-z]+)\\-vip\\.(\\S+)\\.queryphp\\.com$\/",
+                    "domain_var": [
+                        "subdomain",
+                        "domain"
+                    ]
+                },
+                "\/domain\/test4\/": {
+                    "domain": "api.queryphp.com",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomainWithoutExtend"
+                },
+                "\/scheme\/test\/": {
+                    "scheme": "https",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@fooNotMatchedScheme"
+                },
+                "\/scheme\/test2\/": {
+                    "scheme": "http",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@barMatchedScheme"
                 }
             },
             "p": {
                 "\/pet": {
                     "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
-                        "bind": "\\Tests\\Router\\Controllers\\Plus\\PetLeevel",
+                        "bind": "\\Tests\\Router\\Controllers\\Annotation\\PetLeevel",
                         "var": [
                             "petId"
                         ]

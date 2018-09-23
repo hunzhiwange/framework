@@ -18,19 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Apps\AppForPlus\Controllers;
+namespace Tests\Router\Apps\AppForAnnotation\Controllers;
 
-/**
- * Class Pet.
- *
- *
- * @author  Donii Sergii <doniysa@gmail.com>
- */
-class Pet
+class BasePath
 {
     /**
      * @OA\Get(
-     *     path="/api/v1/petLeevel/{petId:[A-Za-z]+}/",
+     *     path="/basePath/normalize/",
      *     tags={"pet"},
      *     summary="Just test the router",
      *     operationId="petLeevel",
@@ -52,10 +46,10 @@ class Pet
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelBind="\Tests\Router\Controllers\Plus\PetLeevel"
+     *     leevelBind="Tests\Router\Controllers\Annotation\BasePath@normalize"
      * )
      */
-    public function petLeevel()
+    public function foo()
     {
     }
 }

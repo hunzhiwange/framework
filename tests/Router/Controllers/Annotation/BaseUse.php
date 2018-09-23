@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Controllers\Plus;
+namespace Tests\Router\Controllers\Annotation;
 
 /**
  * baseUse.
