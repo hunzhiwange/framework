@@ -98,7 +98,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IProject::class, $kernel->getProject());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
-        $this->assertContains('{"foo":"bar","_TRACE":{"LOADED.FILE', $resultResponse->getContent());
+        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
     public function testWithResponseIsJson2()
@@ -118,7 +118,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IProject::class, $kernel->getProject());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
-        $this->assertContains('{"foo":"bar","_TRACE":{"LOADED.FILE', $resultResponse->getContent());
+        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
     public function testWithResponseIsJson3()
@@ -138,7 +138,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IProject::class, $kernel->getProject());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
-        $this->assertContains('{"foo":"bar","_TRACE":{"LOADED.FILE', $resultResponse->getContent());
+        $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
     public function testRouterWillThrowException()

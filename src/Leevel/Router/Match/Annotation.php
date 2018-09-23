@@ -194,9 +194,16 @@ class Annotation implements IMatch
             return [];
         }
 
+        // 未绑定
+        if (!$routers['bind']) {
+            return [];
+        }
+
         $result = [];
 
         $result[IRouter::BIND] = $routers['bind'];
+        $result[IRouter::APP] = $this->findApp($routers['bind']);
+
         $result['params'] = [];
 
         // 域名匹配参数 {subdomain}.{domain}
@@ -336,5 +343,19 @@ class Annotation implements IMatch
     protected function addVariable(string $name, $value): void
     {
         $this->matchedVars[$name] = $value;
+    }
+
+    /**
+     * 查找 App.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function findApp(string $path): string
+    {
+        $tmp = explode('\\', $path);
+
+        return array_shift($tmp);
     }
 }

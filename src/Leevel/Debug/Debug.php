@@ -166,7 +166,7 @@ class Debug extends DebugBar
                 is_array(($data = $response->getData()))) {
             if ($this->option['json']) {
                 $jsonRenderer = $this->getJsonRenderer();
-                $data['@TRACE'] = $jsonRenderer->render();
+                $data['@trace'] = $jsonRenderer->render();
 
                 $response->setData($data);
             }

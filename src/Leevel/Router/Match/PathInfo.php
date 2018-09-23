@@ -141,13 +141,13 @@ class PathInfo implements IMatch
     /**
      * 是否找到 app.
      *
-     * @param string $app
+     * @param string $path
      *
      * @return bool
      */
-    protected function findApp($app)
+    protected function findApp(string $path): bool
     {
-        return 0 === strpos($app, ':');
+        return 0 === strpos($path, ':');
     }
 
     /**

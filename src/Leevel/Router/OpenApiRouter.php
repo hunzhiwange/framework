@@ -162,6 +162,10 @@ class OpenApiRouter
                         $routerTmp['bind'] = $this->parseBindBySource($method->_context);
                     }
 
+                    if ($routerTmp['bind']) {
+                        $routerTmp['bind'] = '/'.trim($routerTmp['bind'], '/');
+                    }
+
                     // 解析基础路径和分组
                     // 基础路径如 /api/v1、/web/v2 等等
                     // 分组例如 goods、orders

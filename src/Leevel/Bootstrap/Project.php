@@ -832,7 +832,7 @@ class Project extends Container implements IProject
      */
     protected function normalizeApp($app)
     {
-        return strtolower(true === $app ? ($this->request->app() ?: 'app') : $app);
+        return strtolower(true === $app ? ($this->make('app_name') ?: 'app') : $app);
     }
 
     /**

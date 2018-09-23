@@ -529,6 +529,8 @@ class Router implements IRouter
     {
         $this->pathinfoRestful();
 
+        $this->container->instance('app_name', $this->matchedApp());
+
         $this->request->params->replace($this->matchedParams());
     }
 

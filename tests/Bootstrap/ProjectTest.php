@@ -134,12 +134,12 @@ class ProjectTest extends TestCase
 
         $request = $this->createMock(IRequest::class);
 
-        $request->method('app')->willReturn('blog');
-        $this->assertEquals('blog', $request->app());
-
         $project->singleton('request', function () use ($request) {
             return $request;
         });
+
+        $project->instance('app_name', 'Blog');
+        $this->assertEquals('Blog', $project->make('app_name'));
 
         $this->assertSame($appPath.'/application', $project->appPath());
         $this->assertSame($appPath.'/application', $project->appPath(false));
@@ -161,12 +161,12 @@ class ProjectTest extends TestCase
 
         $request = $this->createMock(IRequest::class);
 
-        $request->method('app')->willReturn('');
-        $this->assertEquals('', $request->app());
-
         $project->singleton('request', function () use ($request) {
             return $request;
         });
+
+        $project->instance('app_name', '');
+        $this->assertEquals('', $project->make('app_name'));
 
         $this->assertSame($appPath.'/application/app', $project->appPath(true));
     }
@@ -177,12 +177,12 @@ class ProjectTest extends TestCase
 
         $request = $this->createMock(IRequest::class);
 
-        $request->method('app')->willReturn('blog');
-        $this->assertEquals('blog', $request->app());
-
         $project->singleton('request', function () use ($request) {
             return $request;
         });
+
+        $project->instance('app_name', 'Blog');
+        $this->assertEquals('Blog', $project->make('app_name'));
 
         $this->assertSame($appPath.'/application/blog', $project->appPath(true));
 
