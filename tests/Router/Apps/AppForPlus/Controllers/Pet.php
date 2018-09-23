@@ -52,7 +52,7 @@ class Pet
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelBind=":tests/plus/petLeevel"
+     *     leevelBind="\Tests\Router\Controllers\Plus\PetLeevel"
      * )
      */
     public function petLeevel()

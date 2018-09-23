@@ -38,7 +38,7 @@ class OpenApiRouterTest extends TestCase
 {
     public function testBaseUse()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\\Router\\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
 
         $scandir = __DIR__.'/Apps/Petstore30';
 
@@ -58,7 +58,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testWithoutLeevelBasepaths()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\\Router\\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
 
         $scandir = __DIR__.'/Apps/AppWithoutLeevelBasepaths';
 
@@ -78,7 +78,7 @@ class OpenApiRouterTest extends TestCase
 
     public function testAppWithControllerDirMatche()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\\Router\\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
 
         $scandir = __DIR__.'/Apps/AppWithControllerDirNotMatche';
 
@@ -96,29 +96,9 @@ class OpenApiRouterTest extends TestCase
         );
     }
 
-    public function testAppWithControllerDirNotMatche()
-    {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'TestsNotFound\\Router\\Apps');
-
-        $scandir = __DIR__.'/Apps/AppWithControllerDirNotMatche';
-
-        $openApiRouter->addScandir($scandir);
-        $result = $openApiRouter->handle();
-
-        $data = file_get_contents($scandir.'/router_not_matche.data');
-
-        $this->assertSame(
-            $data,
-            $this->varExport(
-                $result,
-                __FUNCTION__
-            )
-        );
-    }
-
     public function testAppWithoutExternalDocs()
     {
-        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn', 'Tests\\Router\\Apps');
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
 
         $scandir = __DIR__.'/Apps/AppWithoutExternalDocs';
 

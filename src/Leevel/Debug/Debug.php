@@ -172,7 +172,7 @@ class Debug extends DebugBar
             }
         } elseif (!($response instanceof RedirectResponse)) {
             if ($this->option['javascript']) {
-                $javascriptRenderer = $this->getJavascriptRenderer('debugbar');
+                $javascriptRenderer = $this->getJavascriptRenderer('/debugbar');
                 $response->appendContent(
                     $javascriptRenderer->renderHead().$javascriptRenderer->render()
                 );

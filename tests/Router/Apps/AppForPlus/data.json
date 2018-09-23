@@ -66,13 +66,13 @@
         "get": {
             "static": {
                 "\/basePath\/normalize\/": {
-                    "bind": ":tests\/plus\/basePath\/normalize"
+                    "bind": "\\Tests\\Router\\Controllers\\Plus\\BasePath@normalize"
                 }
             },
             "p": {
                 "\/pet": {
                     "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
-                        "bind": ":tests\/plus\/petLeevel",
+                        "bind": "\\Tests\\Router\\Controllers\\Plus\\PetLeevel",
                         "var": [
                             "petId"
                         ]

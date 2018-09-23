@@ -94,8 +94,6 @@ class ScanRouterTest extends TestCase
             'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
         ]);
 
-        $router->setControllerDir('Tests\\Router\\Apps');
-
         $container->singleton('project', $container);
         $container->singleton('url', new Url1());
         $container->singleton('router', $router);

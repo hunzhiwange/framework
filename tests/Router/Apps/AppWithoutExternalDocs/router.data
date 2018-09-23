@@ -21,7 +21,7 @@ array (
         array (
           '/api/v1/petLeevel/{petId:[A-Za-z]+}/' => 
           array (
-            'bind' => 'AppWithoutExternalDocs/Controllers/Pet/petLeevel',
+            'bind' => '\\Tests\\Router\\Apps\\AppWithoutExternalDocs\\Controllers\\Pet@petLeevel',
             'var' => 
             array (
               0 => 'petId',

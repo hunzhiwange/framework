@@ -193,8 +193,6 @@ eot;
 
         $provider = new RouterProviderPlus($container);
 
-        $router->setControllerDir($controllerDir);
-
         $provider->register();
         $provider->bootstrap();
 

@@ -7,13 +7,13 @@ array (
       array (
       ),
     ),
-    '/^\\/foo\\/(\\S+)world$/' => 
+    '/^\\/foo\\/(\\S+)world\\/$/' => 
     array (
       'middlewares' => 
       array (
       ),
     ),
-    '/^\\/api\\/test$/' => 
+    '/^\\/api\\/test\\/$/' => 
     array (
       'middlewares' => 
       array (
@@ -63,7 +63,7 @@ array (
         array (
           '/api/v1/petLeevelForApi/{petId:[A-Za-z]+}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Api/petLeevelForApi',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Api@petLeevelForApi',
             'var' => 
             array (
               0 => 'petId',
@@ -78,7 +78,7 @@ array (
               'args1' => 'hello',
               'args2' => 'world',
             ),
-            'bind' => '/PetLeevel/show/?query1=foo&query2=bar',
+            'bind' => '\\PetLeevel\\show',
             'middlewares' => 
             array (
             ),
@@ -95,7 +95,7 @@ array (
           ),
           '/pet/{petId}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Pet/getPetById',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Pet@getPetById',
             'var' => 
             array (
               0 => 'petId',
@@ -103,7 +103,7 @@ array (
           ),
           '/web/v1/petLeevelForWeb/{petId:[A-Za-z]+}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Web/petLeevelForWeb',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Web@petLeevelForWeb',
             'var' => 
             array (
               0 => 'petId',
@@ -129,19 +129,19 @@ array (
       array (
         '/pet/findByTags/' => 
         array (
-          'bind' => 'Petstore30/Controllers/Pet/findByTags',
+          'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Pet@findByTags',
         ),
         '/store/' => 
         array (
-          'bind' => 'Petstore30/Controllers/Store/getInventory',
+          'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Store@getInventory',
         ),
         '/user/login/' => 
         array (
-          'bind' => 'Petstore30/Controllers/User/loginUser',
+          'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\User@loginUser',
         ),
         '/user/logout/' => 
         array (
-          'bind' => 'Petstore30/Controllers/User/logoutUser',
+          'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\User@logoutUser',
         ),
       ),
       's' => 
@@ -150,7 +150,7 @@ array (
         array (
           '/store/order/{orderId}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Store/getOrderById',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Store@getOrderById',
             'var' => 
             array (
               0 => 'orderId',
@@ -175,7 +175,7 @@ array (
         array (
           '/user/{username}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/User/getUserByName',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\User@getUserByName',
             'var' => 
             array (
               0 => 'username',
@@ -201,19 +201,19 @@ array (
       array (
         '/pet/' => 
         array (
-          'bind' => 'Petstore30/Controllers/Pet/addPet',
+          'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Pet@addPet',
         ),
         '/store/order/' => 
         array (
-          'bind' => 'Petstore30/Controllers/Store/placeOrder',
+          'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Store@placeOrder',
         ),
         '/user/' => 
         array (
-          'bind' => 'Petstore30/Controllers/User/createUser',
+          'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\User@createUser',
         ),
         '/user/createWithArray/' => 
         array (
-          'bind' => 'Petstore30/Controllers/User/createUsersWithListInput',
+          'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\User@createUsersWithListInput',
         ),
       ),
       'p' => 
@@ -222,7 +222,7 @@ array (
         array (
           '/pet/{petId}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Pet/updatePetWithForm',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Pet@updatePetWithForm',
             'var' => 
             array (
               0 => 'petId',
@@ -230,7 +230,7 @@ array (
           ),
           '/pet/{petId}/uploadImage/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Pet/uploadFile',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Pet@uploadFile',
             'var' => 
             array (
               0 => 'petId',
@@ -259,7 +259,7 @@ array (
         array (
           '/pet/{petId}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Pet/deletePet',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Pet@deletePet',
             'var' => 
             array (
               0 => 'petId',
@@ -284,7 +284,7 @@ array (
         array (
           '/store/order/{orderId}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/Store/deleteOrder',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\Store@deleteOrder',
             'var' => 
             array (
               0 => 'orderId',
@@ -309,7 +309,7 @@ array (
         array (
           '/user/{username}/' => 
           array (
-            'bind' => 'Petstore30/Controllers/User/deleteUser',
+            'bind' => '\\Tests\\Router\\Apps\\Petstore30\\Controllers\\User@deleteUser',
             'var' => 
             array (
               0 => 'username',

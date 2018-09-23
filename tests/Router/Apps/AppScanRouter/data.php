@@ -70,7 +70,7 @@ return [
             'p' => [
                 '/pet' => [
                     '/api/v1/petLeevel/{petId:[A-Za-z]+}/' => [
-                        'bind' => 'AppScanRouter/Controllers/Pet/petLeevel',
+                        'bind' => '\\Tests\\Router\\Apps\\AppScanRouter\\Controllers\\Pet@petLeevel',
                         'var'  => [
                             0 => 'petId',
                         ],

@@ -46,7 +46,7 @@ class BasePath
      *         {"petstore_auth": {"write:pets", "read:pets"}}
      *     },
      *     requestBody={"$ref": "#/components/requestBodies/Pet"},
-     *     leevelBind=":tests/plus/basePath/normalize"
+     *     leevelBind="Tests\Router\Controllers\Plus\BasePath@normalize"
      * )
      */
     public function foo()

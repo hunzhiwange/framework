@@ -587,8 +587,7 @@ class Router implements IRouter
                 }
 
                 $controller = $this->container->make($matchedBind);
-
-                $method = method_exists($matchedController, 'handle') ? 'handle' : 'run';
+                $method = method_exists($controller, 'handle') ? 'handle' : 'run';
             }
         } else {
             $matchedApp = $this->matchedApp();

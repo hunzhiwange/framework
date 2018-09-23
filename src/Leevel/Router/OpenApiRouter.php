@@ -163,7 +163,7 @@ class OpenApiRouter
                     }
 
                     if ($routerTmp['bind']) {
-                        $routerTmp['bind'] = '/'.trim($routerTmp['bind'], '/');
+                        $routerTmp['bind'] = '\\'.trim($routerTmp['bind'], '\\');
                     }
 
                     // 解析基础路径和分组

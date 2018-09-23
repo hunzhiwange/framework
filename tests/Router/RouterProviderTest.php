@@ -37,6 +37,15 @@ use Tests\TestCase;
  */
 class RouterProviderTest extends TestCase
 {
+    protected function tearDown()
+    {
+        $file = __DIR__.'/router_cached.php';
+
+        if (is_file($file)) {
+            unlink($file);
+        }
+    }
+
     public function testBaseUse()
     {
         $container = new Container1();
@@ -87,7 +96,15 @@ class RouterProviderTest extends TestCase
         $this->assertNull($provider->bootstrap());
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
-
+        $this->varExport(
+                [
+                    'base_paths'  => $router->getBasePaths(),
+                    'group_paths' => $router->getGroupPaths(),
+                    'groups'      => $router->getGroups(),
+                    'routers'     => $router->getRouters(),
+                ],
+                __FUNCTION__
+            );
         $this->assertSame(
             $data,
             $this->varJsonEncode(

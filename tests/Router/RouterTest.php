@@ -366,42 +366,6 @@ eot;
         unset($GLOBALS['demo_middlewares']);
     }
 
-    public function testMatchePathWithQuery()
-    {
-        $pathInfo = '/:tests/hello/matche-path-with-query?foo=bar&hello=world';
-        $params = [];
-        $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
-
-        $request = $this->createRequest($pathInfo, $params, $method);
-        $router = new Router($container = new Container());
-
-        $router->setControllerDir($controllerDir);
-
-        $result = $router->matchePath($pathInfo);
-
-        $data = <<<'eot'
-{
-    "_params": {
-        "foo": "bar",
-        "hello": "world"
-    },
-    "_middlewares": [],
-    "_app": "tests",
-    "_a": "matche-path-with-query",
-    "_c": "hello"
-}
-eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJsonEncode(
-                $result,
-                __FUNCTION__
-            )
-        );
-    }
-
     public function testParseDefaultBindControllerFoundButMethodNotFound()
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
