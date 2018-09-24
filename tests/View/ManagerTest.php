@@ -95,10 +95,6 @@ class ManagerTest extends TestCase
 
         $request = new ExtendRequest();
 
-        $this->assertSame('default_app', $request->app());
-        $this->assertSame('default_controller', $request->controller());
-        $this->assertSame('default_action', $request->action());
-
         $container->singleton('request', $request);
 
         $container->singleton('view.parser', function () {
@@ -137,18 +133,4 @@ class ExtendContainer extends Container
 
 class ExtendRequest
 {
-    public function app()
-    {
-        return 'default_app';
-    }
-
-    public function controller()
-    {
-        return 'default_controller';
-    }
-
-    public function action()
-    {
-        return 'default_action';
-    }
 }
