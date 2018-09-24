@@ -28,6 +28,7 @@ namespace Leevel\Bootstrap\Testing;
  * @since 2018.08.26
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 trait Helper
 {
