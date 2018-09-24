@@ -185,10 +185,9 @@ class RouterTest extends TestCase
     public function getRestfulData()
     {
         return [
-            ['GET', Router::RESTFUL_SHOW],
-            ['POST', Router::RESTFUL_STORE],
-            ['PUT', Router::RESTFUL_UPDATE],
-            ['DELETE', Router::RESTFUL_DESTROY],
+            'emergency', 'alert', 'critical',
+            'error', 'warning', 'notice',
+            'info', 'debug', 'log',
         ];
     }
 

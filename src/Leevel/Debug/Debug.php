@@ -34,12 +34,12 @@ use Leevel\Debug\DataCollector\FilesCollector;
 use Leevel\Debug\DataCollector\LeevelCollector;
 use Leevel\Debug\DataCollector\LogsCollector;
 use Leevel\Debug\DataCollector\SessionCollector;
-use Leevel\Di\IContainer;
 use Leevel\Http\ApiResponse;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
+use Leevel\Kernel\IProject;
 use Throwable;
 
 /**
@@ -66,9 +66,9 @@ class Debug extends DebugBar
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Di\IContainer
+     * @var \Leevel\Kernel\IProject
      */
-    protected $container;
+    protected $project;
 
     /**
      * 是否启用调试.
@@ -98,12 +98,12 @@ class Debug extends DebugBar
     /**
      * 构造函数.
      *
-     * @param \Leevel\Di\IContainer $container
-     * @param array                 $option
+     * @param \Leevel\Kernel\IProject $project
+     * @param array                   $option
      */
-    public function __construct(IContainer $container, array $option = [])
+    public function __construct(IProject $project, array $option = [])
     {
-        $this->container = $container;
+        $this->project = $project;
 
         $this->option = array_merge($this->option, $option);
     }
@@ -320,10 +320,10 @@ class Debug extends DebugBar
         $this->addCollector(new MemoryCollector());
         $this->addCollector(new ExceptionsCollector());
         $this->addCollector(new ConfigCollector());
-        $this->addCollector(new LeevelCollector($this->container));
-        $this->addCollector(new SessionCollector($this->container->make('session')));
-        $this->addCollector(new FilesCollector($this->container));
-        $this->addCollector(new LogsCollector($this->container->make('log')));
+        $this->addCollector(new LeevelCollector($this->project));
+        $this->addCollector(new SessionCollector($this->project->make('session')));
+        $this->addCollector(new FilesCollector($this->project));
+        $this->addCollector(new LogsCollector($this->project->make('log')));
 
         $this->initData();
 
@@ -337,6 +337,6 @@ class Debug extends DebugBar
     {
         $this->message('Starts from this moment with QueryPHP.', '');
 
-        $this->getCollector('config')->setData($this->container->make('option')->all());
+        $this->getCollector('config')->setData($this->project->make('option')->all());
     }
 }
