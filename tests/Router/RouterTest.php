@@ -96,6 +96,25 @@ class RouterTest extends TestCase
         $this->assertSame('hello action convert foo bar', $result->getContent());
     }
 
+    public function testControllerConvert()
+    {
+        $pathInfo = '/:tests/controller_convert-foo_bar/bar';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello controller convert', $result->getContent());
+    }
+
     public function testSubControllerDir()
     {
         $pathInfo = '/:tests/sub/world/foo';
@@ -185,9 +204,10 @@ class RouterTest extends TestCase
     public function getRestfulData()
     {
         return [
-            'emergency', 'alert', 'critical',
-            'error', 'warning', 'notice',
-            'info', 'debug', 'log',
+            ['GET', Router::RESTFUL_SHOW],
+            ['POST', Router::RESTFUL_STORE],
+            ['PUT', Router::RESTFUL_UPDATE],
+            ['DELETE', Router::RESTFUL_DESTROY],
         ];
     }
 

@@ -657,7 +657,7 @@ class Router implements IRouter
      */
     protected function matchedController()
     {
-        return ucfirst($this->matchedData[static::CONTROLLER]);
+        return $this->convertMatched(ucfirst($this->matchedData[static::CONTROLLER]));
     }
 
     /**
@@ -667,18 +667,28 @@ class Router implements IRouter
      */
     protected function matchedAction()
     {
-        $action = $this->matchedData[static::ACTION];
+        return $this->convertMatched($this->matchedData[static::ACTION]);
+    }
 
-        if (false !== strpos($action, '-')) {
-            $action = str_replace('-', '_', $action);
+    /**
+     * 转换匹配资源.
+     *
+     * @param string $matched
+     *
+     * @return string
+     */
+    protected function convertMatched(string $matched)
+    {
+        if (false !== strpos($matched, '-')) {
+            $matched = str_replace('-', '_', $matched);
         }
 
-        if (false !== strpos($action, '_')) {
-            $action = '_'.str_replace('_', ' ', $action);
-            $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
+        if (false !== strpos($matched, '_')) {
+            $matched = '_'.str_replace('_', ' ', $matched);
+            $matched = ltrim(str_replace(' ', '', ucwords($matched)), '_');
         }
 
-        return $action;
+        return $matched;
     }
 
     /**
