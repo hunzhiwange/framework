@@ -80,6 +80,7 @@ class FacadeTest extends TestCase
             ['Cookie', 'cookie'],
             ['Database', 'databases'],
             ['Db', 'databases'],
+            ['Debug', 'debug'],
             ['Encryption', 'encryption'],
             ['Event', 'event'],
             ['Filesystem', 'filesystems'],

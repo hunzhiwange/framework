@@ -73,7 +73,7 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('hello plus base use', $result->getContent());
     }
 
-    public function testBaseRouterData()
+    public function t2estBaseRouterData()
     {
         $container = new ContainerAnnotation();
 
@@ -534,18 +534,25 @@ eot;
         Facade::setContainer(null);
     }
 
-    public function testMatchedAndDomainMatchedWithoutExtend()
+    public function testMatchedAndDomainWithVarNotMatched()
     {
-        $pathInfo = '/domain/test4';
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\Router\\Controllers\\Domain::test3() was not found.'
+        );
+
+        $pathInfo = '/domain/test3';
         $params = [];
         $method = 'GET';
         $controllerDir = 'Controllers';
 
         $container = new ContainerAnnotation();
 
-        $request = new Request([], [], $params, [], [], ['HTTP_HOST' => 'api.queryphp.com']);
+        $request = new Request([], [], $params, [], [], ['HTTP_HOST' => '123.queryphp.com']);
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
+
+        $container->instance(IRequest::class, $request);
 
         $container->singleton('router', $router = $this->createRouter($container));
         $container->instance('request', $request);
@@ -560,7 +567,478 @@ eot;
 
         $result = $router->dispatch($request);
 
-        $this->assertSame('barMatchedDomainWithoutExtend', $result->getContent());
+        $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
+
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testMatchedWithExtendVar()
+    {
+        $pathInfo = '/extendVar/test';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+
+        $this->assertSame('withExtendVar and params are {"args1":"hello","args2":"world"}', $result->getContent());
+
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testBindNotSet()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\Router\\Controllers\\BindNotSet::test() was not found.'
+        );
+
+        $pathInfo = '/bindNotSet/test';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testBindNotSet2()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\Router\\Controllers\\BindNotSet::test2() was not found.'
+        );
+
+        $pathInfo = '/bindNotSet/test2';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testMiddleware()
+    {
+        $pathInfo = '/middleware/test';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        if (isset($GLOBALS['demo_middlewares'])) {
+            unset($GLOBALS['demo_middlewares']);
+        }
+
+        $result = $router->dispatch($request);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "Demo2::handle"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__
+            )
+        );
+
+        $router->throughMiddleware($request, [
+            $result,
+        ]);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "Demo2::handle",
+    "DemoForAll::terminate",
+    "Demo1::terminate",
+    "Demo2::terminate"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__.'1'
+            )
+        );
+
+        $this->assertSame('Middleware matched', $result->getContent());
+
+        unset($GLOBALS['demo_middlewares']);
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testMiddleware2()
+    {
+        $pathInfo = '/middleware/test2';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        if (isset($GLOBALS['demo_middlewares'])) {
+            unset($GLOBALS['demo_middlewares']);
+        }
+
+        $result = $router->dispatch($request);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "Demo2::handle",
+    "Demo3::handle(arg1:10,arg2:world)"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__
+            )
+        );
+
+        $router->throughMiddleware($request, [
+            $result,
+        ]);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "Demo2::handle",
+    "Demo3::handle(arg1:10,arg2:world)",
+    "DemoForAll::terminate",
+    "Demo1::terminate",
+    "Demo2::terminate"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__.'1'
+            )
+        );
+
+        $this->assertSame('Middleware matched 2', $result->getContent());
+
+        unset($GLOBALS['demo_middlewares']);
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testMiddleware3()
+    {
+        $pathInfo = '/middleware/test3';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        if (isset($GLOBALS['demo_middlewares'])) {
+            unset($GLOBALS['demo_middlewares']);
+        }
+
+        $result = $router->dispatch($request);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "Demo2::handle",
+    "Demo3::handle(arg1:10,arg2:world)",
+    "DemoForBasePath::handle"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__
+            )
+        );
+
+        $router->throughMiddleware($request, [
+            $result,
+        ]);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "Demo2::handle",
+    "Demo3::handle(arg1:10,arg2:world)",
+    "DemoForBasePath::handle",
+    "DemoForAll::terminate",
+    "Demo1::terminate",
+    "Demo2::terminate"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__.'1'
+            )
+        );
+
+        $this->assertSame('Middleware matched 3', $result->getContent());
+
+        unset($GLOBALS['demo_middlewares']);
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testMiddleware4()
+    {
+        $pathInfo = '/middleware/test4';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        if (isset($GLOBALS['demo_middlewares'])) {
+            unset($GLOBALS['demo_middlewares']);
+        }
+
+        $result = $router->dispatch($request);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__
+            )
+        );
+
+        $router->throughMiddleware($request, [
+            $result,
+        ]);
+
+        $data = <<<'eot'
+[
+    "DemoForAll::handle",
+    "DemoForAll::terminate",
+    "Demo1::terminate"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJsonEncode(
+                $GLOBALS['demo_middlewares'],
+                __FUNCTION__.'1'
+            )
+        );
+
+        $this->assertSame('Middleware matched 4', $result->getContent());
+
+        unset($GLOBALS['demo_middlewares']);
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testBindNotFound()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router \\Tests\\Router\\Controllers\\Annotation\\BindNotFound@notFound was not found.'
+        );
+
+        $pathInfo = '/bindNotFound/test';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+
+        $this->facadeClear();
+        Facade::setContainer(null);
+    }
+
+    public function testBindNotFound2()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router \\Tests\\Router\\Controllers\\Annotation\\BindNotFound was not found.'
+        );
+
+        $pathInfo = '/bindNotFound/test2';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = new ContainerAnnotation();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
 
         $this->facadeClear();
         Facade::setContainer(null);
@@ -586,6 +1064,9 @@ eot;
 
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
+
+        $this->assertSame($pathInfo, $request->getPathInfo());
+        $this->assertSame($method, $request->getMethod());
 
         return $request;
     }

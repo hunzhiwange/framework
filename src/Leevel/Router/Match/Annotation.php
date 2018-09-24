@@ -287,6 +287,7 @@ class Annotation implements IMatch
         $domainVars = [];
 
         if (!empty($routers['domain'])) {
+            // ignore the port
             $host = $this->request->getHost();
 
             if (!empty($routers['domain_regex'])) {
