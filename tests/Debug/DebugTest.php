@@ -58,10 +58,16 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         // twice same with once
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new Response();
@@ -91,7 +97,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -117,7 +127,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -157,7 +171,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -174,7 +192,11 @@ class DebugTest extends TestCase
 
         $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
 
+        $this->assertTrue($debug->isBootstrap());
+
         $debug->enable();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $response2 = new JsonResponse(['foo' => 'bar']);
 
@@ -214,7 +236,11 @@ class DebugTest extends TestCase
 
         $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->enable();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $response2 = new JsonResponse(['foo' => 'bar']);
 
@@ -239,7 +265,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -256,7 +286,11 @@ class DebugTest extends TestCase
 
         $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
 
+        $this->assertTrue($debug->isBootstrap());
+
         $debug->enable();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $response2 = new JsonResponse(['foo' => 'bar']);
 
@@ -286,7 +320,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -326,7 +364,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -350,7 +392,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -379,14 +425,16 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
         $debug->time('time_test');
-
-        sleep(1);
 
         $debug->end('time_test');
 
@@ -397,8 +445,6 @@ class DebugTest extends TestCase
         $this->assertContains('"time":{"start"', $content);
 
         $this->assertContains('"measures":[{"label":"time_test","start":', $content);
-
-        $this->assertContains('"duration_str":"1s",', $content);
     }
 
     public function testTimeWithLabel()
@@ -411,14 +457,16 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
         $debug->time('time_test', 'time_label');
-
-        sleep(1);
 
         $debug->end('time_test');
 
@@ -429,8 +477,6 @@ class DebugTest extends TestCase
         $this->assertContains('"time":{"start"', $content);
 
         $this->assertContains('"measures":[{"label":"time_label","start":', $content);
-
-        $this->assertContains('"duration_str":"1s",', $content);
     }
 
     public function testEndWithNoStartDoNothing()
@@ -443,7 +489,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -469,7 +519,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -503,13 +557,16 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
         $debug->closureTime('time_test', function () {
-            sleep(1);
         });
 
         $debug->handle($request, $response);
@@ -519,8 +576,6 @@ class DebugTest extends TestCase
         $this->assertContains('"time":{"start"', $content);
 
         $this->assertContains('"measures":[{"label":"time_test","start":', $content);
-
-        $this->assertContains('"duration_str":"1s",', $content);
     }
 
     public function testException()
@@ -533,7 +588,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -567,7 +626,11 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $this->assertFalse($debug->isBootstrap());
+
         $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -589,6 +652,110 @@ class DebugTest extends TestCase
         $this->assertContains('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
         $this->assertContains('$debug->exception(new Error(\'test_error\'));', $content);
+    }
+
+    public function testSetOptionWithoutJson()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $this->assertFalse($debug->isBootstrap());
+
+        $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('{"foo":"bar","@trace":', $content);
+
+        $this->assertContains('"php":{"version":', $content);
+
+        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+
+        $debug->setOption('json', false);
+
+        $response2 = new JsonResponse(['foo' => 'bar']);
+
+        $debug->handle($request, $response2);
+
+        $content = $response2->getContent();
+
+        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+
+        $this->assertNotContains('"php":{"version":', $content);
+
+        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+    }
+
+    public function testSetOptionWithoutJavascriptAndConsole()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $this->assertFalse($debug->isBootstrap());
+
+        $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
+
+        // twice same with once
+        $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
+
+        $request = new Request();
+        $response = new Response();
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
+
+        $this->assertContains('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
+
+        $this->assertContains('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
+
+        $this->assertContains("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
+
+        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+
+        $debug->setOption('javascript', false);
+        $debug->setOption('console', false);
+
+        $response2 = new Response();
+
+        $debug->handle($request, $response2);
+
+        $content = $response2->getContent();
+
+        $this->assertNotContains('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
+
+        $this->assertNotContains('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
+
+        $this->assertNotContains('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
+
+        $this->assertNotContains("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
+
+        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+
+        $this->assertSame('', $content);
     }
 
     protected function createSession(): ISession

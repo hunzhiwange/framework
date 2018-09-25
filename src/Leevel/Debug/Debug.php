@@ -331,6 +331,16 @@ class Debug extends DebugBar
     }
 
     /**
+     * 是否初始化.
+     *
+     * @return bool
+     */
+    public function isBootstrap(): bool
+    {
+        return $this->isBootstrap;
+    }
+
+    /**
      * 初始化数据.
      */
     protected function initData()
