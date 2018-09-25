@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Debug;
 
+use Error;
+use Exception;
 use Leevel\Bootstrap\Project as Projects;
 use Leevel\Debug\Debug;
 use Leevel\Http\JsonResponse;
@@ -56,6 +58,9 @@ class DebugTest extends TestCase
 
         $project->instance('option', $this->createOption());
 
+        $debug->bootstrap();
+
+        // twice same with once
         $debug->bootstrap();
 
         $request = new Request();
@@ -142,6 +147,130 @@ class DebugTest extends TestCase
         $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
     }
 
+    public function testEnable()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->disable();
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+
+        $this->assertNotContains('"php":{"version":', $content);
+
+        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+
+        $debug->enable();
+
+        $response2 = new JsonResponse(['foo' => 'bar']);
+
+        $debug->handle($request, $response2);
+
+        $content = $response2->getContent();
+
+        $this->assertContains('{"foo":"bar","@trace":', $content);
+
+        $this->assertContains('"php":{"version":', $content);
+
+        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+    }
+
+    public function testEnableWithoutBootstrap()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->disable();
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+
+        $this->assertNotContains('"php":{"version":', $content);
+
+        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+
+        $debug->enable();
+
+        $response2 = new JsonResponse(['foo' => 'bar']);
+
+        $debug->handle($request, $response2);
+
+        $content = $response2->getContent();
+
+        $this->assertContains('{"foo":"bar","@trace":', $content);
+
+        $this->assertContains('"php":{"version":', $content);
+
+        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+    }
+
+    public function testEnableTwiceSameWithOne()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->disable();
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+
+        $this->assertNotContains('"php":{"version":', $content);
+
+        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+
+        $debug->enable();
+
+        $response2 = new JsonResponse(['foo' => 'bar']);
+
+        $debug->handle($request, $response2);
+
+        $content = $response2->getContent();
+
+        $this->assertContains('{"foo":"bar","@trace":', $content);
+
+        $this->assertContains('"php":{"version":', $content);
+
+        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+    }
+
     /**
      * @dataProvider getMessageLevelsData
      *
@@ -187,6 +316,281 @@ class DebugTest extends TestCase
         ];
     }
 
+    public function testWithSession()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $session = $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $session->set('test_session', 'test_value');
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"session":{"test_session":"test_value"},', $content);
+    }
+
+    public function testWithLog()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $log = $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $log->info('test_log', ['exends' => 'bar']);
+        $log->debug('test_log_debug');
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"logs":{"count":2,"messages":[', $content);
+
+        $this->assertContains('{"message":"test_log","message_html":null,"is_string":true,"label":"info"', $content);
+
+        $this->assertContains('{"message":"test_log_debug","message_html":null,"is_string":true,"label":"debug"', $content);
+    }
+
+    public function testTime()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->time('time_test');
+
+        sleep(1);
+
+        $debug->end('time_test');
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"time":{"start"', $content);
+
+        $this->assertContains('"measures":[{"label":"time_test","start":', $content);
+
+        $this->assertContains('"duration_str":"1s",', $content);
+    }
+
+    public function testTimeWithLabel()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->time('time_test', 'time_label');
+
+        sleep(1);
+
+        $debug->end('time_test');
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"time":{"start"', $content);
+
+        $this->assertContains('"measures":[{"label":"time_label","start":', $content);
+
+        $this->assertContains('"duration_str":"1s",', $content);
+    }
+
+    public function testEndWithNoStartDoNothing()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->end('time_without_start');
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"time":{"start"', $content);
+
+        $this->assertContains('"measures":[]', $content);
+    }
+
+    public function testAddTime()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->addTime('time_test', 1, 5);
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"time":{"start"', $content);
+
+        $this->assertContains('"measures":[{"label":"time_test","start":1', $content);
+
+        $this->assertContains('"end":5,', $content);
+
+        $this->assertContains('"relative_end":5,', $content);
+
+        $this->assertContains('"duration":4,', $content);
+
+        $this->assertContains('"duration_str":"4s",', $content);
+    }
+
+    public function testClosureTime()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->closureTime('time_test', function () {
+            sleep(1);
+        });
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"time":{"start"', $content);
+
+        $this->assertContains('"measures":[{"label":"time_test","start":', $content);
+
+        $this->assertContains('"duration_str":"1s",', $content);
+    }
+
+    public function testException()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->exception(new Exception('test_exception'));
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"exceptions":{"count":1,"exceptions":[', $content);
+
+        $this->assertContains('"type":"Exception",', $content);
+
+        $this->assertContains('"message":"test_exception",', $content);
+
+        $this->assertContains('"code":0,', $content);
+
+        $this->assertContains('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
+
+        $this->assertContains('$debug->exception(new Exception(\'test_exception\'));', $content);
+    }
+
+    public function testExceptionWithError()
+    {
+        $debug = new Debug($project = new Project());
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $debug->bootstrap();
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $debug->exception(new Error('test_error'));
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"exceptions":{"count":1,"exceptions":[', $content);
+
+        $this->assertContains('"type":"Error",', $content);
+
+        $this->assertContains('"message":"test_error",', $content);
+
+        $this->assertContains('"code":0,', $content);
+
+        $this->assertContains('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
+
+        $this->assertContains('$debug->exception(new Error(\'test_error\'));', $content);
+    }
+
     protected function createSession(): ISession
     {
         $file = new SessionFile([
@@ -218,6 +622,11 @@ class DebugTest extends TestCase
         $data = [
             'app' => [
                 'environment'       => 'environment',
+            ],
+            'debug' => [
+                'json'       => true,
+                'console'    => true,
+                'javascript' => true,
             ],
         ];
 

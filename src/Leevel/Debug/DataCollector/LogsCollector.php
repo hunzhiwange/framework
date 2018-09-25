@@ -51,19 +51,19 @@ class LogsCollector extends MessagesCollector
         $this->log = $log;
 
         parent::__construct('logs');
-
-        $this->logs();
     }
 
     /**
-     * 设置日志.
+     * {@inheritdoc}
      */
-    public function logs()
+    public function collect()
     {
         foreach ($this->log->all() as $log) {
             foreach ($log as $v) {
                 $this->log(...$v);
             }
         }
+
+        return parent::collect();
     }
 }

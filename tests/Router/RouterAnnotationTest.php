@@ -73,7 +73,7 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('hello plus base use', $result->getContent());
     }
 
-    public function t2estBaseRouterData()
+    public function testBaseRouterData()
     {
         $container = new ContainerAnnotation();
 
