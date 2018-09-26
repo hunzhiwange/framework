@@ -80,6 +80,9 @@
         "league/flysystem-ziparchive": "ZipArchive adapter support."
     },
     "autoload": {
+        "files": [
+            "src/Leevel/Bootstrap/functions.php"
+        ],
         "psr-4": {
             "Leevel\\": "src\\Leevel"
         }
