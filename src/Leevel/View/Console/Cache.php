@@ -55,7 +55,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $description = 'Compile all view files';
+    protected $description = 'Compile all view files.';
 
     /**
      * IOC 容器.

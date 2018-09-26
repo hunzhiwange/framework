@@ -48,7 +48,7 @@ class Controller extends Make
      *
      * @var string
      */
-    protected $description = 'Create a new controller';
+    protected $description = 'Create a new controller.';
 
     /**
      * 命令帮助.

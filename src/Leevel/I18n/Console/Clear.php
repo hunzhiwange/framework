@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\I18n\Console;
 
 use Leevel\Console\Command;
+use Leevel\Filesystem\Fso;
 use Leevel\Kernel\IProject;
-use Leevel\Option\IOption;
 
 /**
  * 语言包缓存清理.
@@ -47,25 +47,30 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $description = 'Clear cache of i18n';
+    protected $description = 'Clear cache of i18n.';
 
     /**
      * 响应命令.
      *
      * @param \Leevel\Kernel\IProject $project
-     * @param \Leevel\Option\IOption  $option
      */
-    public function handle(IProject $project, IOption $option)
+    public function handle(IProject $project)
     {
-        $this->line('Start to clear cache i18n.');
+        $this->line('Start to clear i18n.');
 
-        $i18nDefault = $option->get('i18n\\default');
+        Fso::listDirectory($project->i18nPath(), false, function ($item) use ($project) {
+            if ($item->isDir()) {
+                $i18n = $item->getFilename();
 
-        $cachePath = $project->i18nCachedPath($i18nDefault);
+                $cachePath = $project->i18nCachedPath($i18n);
 
-        $this->clearCache($cachePath);
+                $this->clearCache($cachePath);
 
-        $this->info(sprintf('I18n file %s cache clear successed.', $cachePath));
+                $this->info(sprintf('I18n cache file %s clear successed.', $cachePath));
+            }
+        });
+
+        $this->info('I18n cache files clear successed.');
     }
 
     /**
@@ -76,7 +81,7 @@ class Clear extends Command
     protected function clearCache(string $cachePath)
     {
         if (!is_file($cachePath)) {
-            $this->warn('I18n cache files have been cleaned up.');
+            $this->warn(sprintf('I18n cache file %s have been cleaned up.', $cachePath));
 
             return;
         }

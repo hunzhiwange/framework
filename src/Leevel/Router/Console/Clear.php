@@ -46,7 +46,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $description = 'Clear cache of router';
+    protected $description = 'Clear cache of router.';
 
     /**
      * 响应命令.
@@ -61,7 +61,7 @@ class Clear extends Command
 
         $this->clearCache($cachePath);
 
-        $this->info(sprintf('Router file %s cache clear successed.', $cachePath));
+        $this->info(sprintf('Router cache file %s cache clear successed.', $cachePath));
     }
 
     /**
@@ -72,7 +72,7 @@ class Clear extends Command
     protected function clearCache(string $cachePath)
     {
         if (!is_file($cachePath)) {
-            $this->warn('Router cache files have been cleaned up.');
+            $this->warn(sprintf('Router cache file %s have been cleaned up.', $cachePath));
 
             return;
         }

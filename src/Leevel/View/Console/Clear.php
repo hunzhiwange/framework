@@ -48,7 +48,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $description = 'Clear cache of view';
+    protected $description = 'Clear cache of view.';
 
     /**
      * 响应命令.

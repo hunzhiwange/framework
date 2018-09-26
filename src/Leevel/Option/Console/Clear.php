@@ -47,7 +47,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $description = 'Clear cache of option';
+    protected $description = 'Clear cache of option.';
 
     /**
      * 响应命令.
@@ -62,7 +62,7 @@ class Clear extends Command
 
         $this->clearCache($cachePath);
 
-        $this->info(sprintf('Option file %s cache clear successed.', $cachePath));
+        $this->info(sprintf('Option cache file %s cache clear successed.', $cachePath));
     }
 
     /**
@@ -73,7 +73,7 @@ class Clear extends Command
     protected function clearCache(string $cachePath)
     {
         if (!is_file($cachePath)) {
-            $this->warn('Option cache files have been cleaned up.');
+            $this->warn(sprintf('Option cache file %s have been cleaned up.', $cachePath));
 
             return;
         }

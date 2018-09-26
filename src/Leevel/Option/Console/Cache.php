@@ -49,7 +49,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $description = 'Merge all option file to a file';
+    protected $description = 'Merge all option file to a file.';
 
     /**
      * 响应命令.
@@ -67,7 +67,7 @@ class Cache extends Command
 
         $this->writeCache($cachePath, $data);
 
-        $this->info(sprintf('Option file %s cache successed.', $cachePath));
+        $this->info(sprintf('Option cache file %s cache successed.', $cachePath));
     }
 
     /**

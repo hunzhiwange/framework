@@ -48,7 +48,7 @@ class Action extends Make
      *
      * @var string
      */
-    protected $description = 'Create a new action';
+    protected $description = 'Create a new action.';
 
     /**
      * 命令帮助.

@@ -248,7 +248,7 @@ eot;
             list($namespace) = explode('\\', $key);
 
             if (in_array($namespace, $optimizeNamespaces, true)) {
-               $result[$key] = $value;
+                $result[$key] = $value;
             }
         }
 
@@ -264,7 +264,7 @@ eot;
     {
         $optimizeNamespaces = $this->optimizeNamespaces();
         $composerStaticClass = $this->composerStaticClass();
-        
+
         return $composerStaticClass::$files;
     }
 

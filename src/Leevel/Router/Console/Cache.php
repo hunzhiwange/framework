@@ -48,7 +48,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $description = 'OpenApi as the router';
+    protected $description = 'OpenApi as the router.';
 
     /**
      * 响应命令.
@@ -66,7 +66,7 @@ class Cache extends Command
 
         $this->writeCache($cachePath, $data);
 
-        $this->info(sprintf('Router file %s cache successed.', $cachePath));
+        $this->info(sprintf('Router cache file %s cache successed.', $cachePath));
     }
 
     /**
