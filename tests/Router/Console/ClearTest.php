@@ -56,12 +56,12 @@ class ClearTest extends TestCase
         );
 
         $this->assertContains(
-            sprintf('Router file %s cache clear successed.', $cacheFile),
+            sprintf('Router cache file %s cache clear successed.', $cacheFile),
             $result
         );
 
         $this->assertNotContains(
-            sprintf('Router cache files have been cleaned up.', $cacheFile),
+            sprintf('Router cache file %s have been cleaned up.', $cacheFile),
             $result
         );
     }
@@ -81,12 +81,12 @@ class ClearTest extends TestCase
         );
 
         $this->assertContains(
-            sprintf('Router file %s cache clear successed.', $cacheFile),
+            sprintf('Router cache file %s cache clear successed.', $cacheFile),
             $result
         );
 
         $this->assertContains(
-            sprintf('Router cache files have been cleaned up.', $cacheFile),
+            sprintf('Router cache file %s have been cleaned up.', $cacheFile),
             $result
         );
     }

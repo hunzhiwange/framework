@@ -89,7 +89,7 @@ class CacheTest extends TestCase
         );
 
         $this->assertContains(
-            $this->normalizeContent(sprintf('Router file %s cache successed.', $cacheFile)),
+            $this->normalizeContent(sprintf('Router cache file %s cache successed.', $cacheFile)),
             $result
         );
 
@@ -127,7 +127,7 @@ class CacheTest extends TestCase
         );
 
         $this->assertContains(
-            $this->normalizeContent(sprintf('Router file %s cache successed.', $cacheFile)),
+            $this->normalizeContent(sprintf('Router cache file %s cache successed.', $cacheFile)),
             $result
         );
 

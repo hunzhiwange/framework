@@ -20,10 +20,13 @@ declare(strict_types=1);
 
 namespace Tests\I18n\Console;
 
+use Leevel\Bootstrap\Project as Projects;
 use Leevel\Di\IContainer;
+use Leevel\I18n\Console\Cache;
 use Leevel\I18n\Console\Clear;
 use Leevel\Kernel\IProject;
 use Leevel\Option\IOption;
+use Leevel\Option\Option;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
@@ -42,9 +45,62 @@ class ClearTest extends TestCase
 
     public function testBaseUse()
     {
-        $cacheFile = __DIR__.'/i18n_clear.php';
+        $cacheFile = __DIR__.'/i18n_cache_[i18n].php';
 
-        file_put_contents($cacheFile, 'foo');
+        $cacheData = [
+            'zh-CN' => [
+            ],
+            'zh-TW' => [
+                '上一页'    => '上一頁',
+                '下一页'    => '下一頁',
+                '共 %d 条' => '共 %d 條',
+                '前往'     => '前往',
+                '页'      => '頁',
+            ],
+            'en-US' => [
+                '上一页'    => 'Previous',
+                '下一页'    => 'Next',
+                '共 %d 条' => 'Total %d',
+                '前往'     => 'Go to',
+                '页'      => 'Page',
+            ],
+        ];
+
+        $result = $this->runCommand(
+            new Cache(),
+            [
+                'command' => 'i18n:cache',
+            ],
+            function ($container) use ($cacheFile) {
+                $this->initContainerService($container, $cacheFile);
+            }
+        );
+
+        $result = $this->normalizeContent($result);
+
+        $this->assertContains(
+            $this->normalizeContent('Start to cache i18n.'),
+            $result
+        );
+
+        foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
+            $this->assertContains(
+                $this->normalizeContent(
+                    sprintf(
+                        'I18n cache file %s cache successed.',
+                        $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
+                    )
+                ),
+                $result
+            );
+
+            $this->assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
+        }
+
+        $this->assertContains(
+            $this->normalizeContent('I18n cache files cache successed.'),
+            $result
+        );
 
         $result = $this->runCommand(
             new Clear(),
@@ -56,14 +112,39 @@ class ClearTest extends TestCase
             }
         );
 
-        $this->assertContains(sprintf('I18n file %s cache clear successed.', $cacheFile), $result);
+        $result = $this->normalizeContent($result);
 
-        $this->assertNotContains(sprintf('I18n cache files have been cleaned up.', $cacheFile), $result);
+        $this->assertContains(
+            $this->normalizeContent('Start to clear i18n.'),
+            $result
+        );
+
+        foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
+            $this->assertContains(
+                $this->normalizeContent(
+                    sprintf(
+                        'I18n cache file %s clear successed.',
+                        $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
+                    )
+                ),
+                $result
+            );
+
+            $this->assertNotContains(
+                sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n),
+                $result
+            );
+        }
+
+        $this->assertContains(
+            $this->normalizeContent('I18n cache files clear successed.'),
+            $result
+        );
     }
 
     public function testHaveCleanedUp()
     {
-        $cacheFile = __DIR__.'/i18n_clear2.php';
+        $cacheFile = __DIR__.'/i18n_cache_[i18n].php';
 
         $result = $this->runCommand(
             new Clear(),
@@ -75,31 +156,95 @@ class ClearTest extends TestCase
             }
         );
 
-        $this->assertContains(sprintf('I18n file %s cache clear successed.', $cacheFile), $result);
+        $result = $this->normalizeContent($result);
 
-        $this->assertContains(sprintf('I18n cache files have been cleaned up.', $cacheFile), $result);
+        $this->assertContains(
+            $this->normalizeContent('Start to clear i18n.'),
+            $result
+        );
+
+        foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
+            $this->assertContains(
+                $this->normalizeContent(
+                    sprintf(
+                        'I18n cache file %s clear successed.',
+                        $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
+                    )
+                ),
+                $result
+            );
+
+            $this->assertContains(
+                $this->normalizeContent(
+                    sprintf('I18n cache file %s have been cleaned up.', $cacheFileForI18n)
+                ),
+                $result
+            );
+        }
+
+        $this->assertContains(
+            $this->normalizeContent('I18n cache files clear successed.'),
+            $result
+        );
     }
 
     protected function initContainerService(IContainer $container, string $cacheFile)
     {
         // 注册 project
-        $project = $this->createMock(IProject::class);
-
+        $project = new Project2();
         $this->assertInstanceof(IProject::class, $project);
 
-        $project->method('i18nCachedPath')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $project->i18nCachedPath('en-US'));
+        $project->setCacheFile($cacheFile);
+
+        foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
+            $this->assertEquals(
+                str_replace('[i18n]', $i18n, $cacheFile),
+                $project->i18nCachedPath($i18n)
+            );
+        }
 
         $container->singleton(IProject::class, $project);
 
         // 注册 option
-        $option = $this->createMock(IOption::class);
+        $option = new Option([
+            'app' => [
+                '_composer' => [
+                    'i18ns' => [],
+                ],
+            ],
+            'i18n' => [
+                'default' => 'en-US',
+            ],
+        ]);
 
-        $this->assertInstanceof(IOption::class, $option);
-
-        $option->method('get')->willReturn('en-US');
-        $this->assertEquals('en-US', $option->get());
+        $project->singleton('option', function () use ($option) {
+            return $option;
+        });
 
         $container->singleton(IOption::class, $option);
+    }
+}
+
+class Project2 extends Projects
+{
+    protected $cacheFile;
+
+    public function setCacheFile(string $cacheFile)
+    {
+        $this->cacheFile = $cacheFile;
+    }
+
+    public function i18nCachedPath($i18n): string
+    {
+        return str_replace('[i18n]', $i18n, $this->cacheFile);
+    }
+
+    public function i18nPath($path = null)
+    {
+        return __DIR__.'/i18n';
+    }
+
+    protected function registerBaseProvider()
+    {
     }
 }

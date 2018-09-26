@@ -90,8 +90,8 @@ class CacheTest extends TestCase
             [
                 'command' => 'i18n:cache',
             ],
-            function ($container) use ($cacheFile, $cacheData) {
-                $this->initContainerService($container, $cacheFile, $cacheData);
+            function ($container) use ($cacheFile) {
+                $this->initContainerService($container, $cacheFile);
             }
         );
 
@@ -106,7 +106,7 @@ class CacheTest extends TestCase
             $this->assertContains(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n file %s cache successed.',
+                        'I18n cache file %s cache successed.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -119,7 +119,7 @@ class CacheTest extends TestCase
         }
 
         $this->assertContains(
-            $this->normalizeContent('I18n files cache successed.'),
+            $this->normalizeContent('I18n cache files cache successed.'),
             $result
         );
     }
@@ -152,8 +152,8 @@ class CacheTest extends TestCase
             [
                 'command' => 'i18n:cache',
             ],
-            function ($container) use ($cacheFile, $cacheData) {
-                $this->initContainerService($container, $cacheFile, $cacheData);
+            function ($container) use ($cacheFile) {
+                $this->initContainerService($container, $cacheFile);
             }
         );
 
@@ -168,7 +168,7 @@ class CacheTest extends TestCase
             $this->assertContains(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n file %s cache successed.',
+                        'I18n cache file %s cache successed.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -181,7 +181,7 @@ class CacheTest extends TestCase
         }
 
         $this->assertContains(
-            $this->normalizeContent('I18n files cache successed.'),
+            $this->normalizeContent('I18n cache files cache successed.'),
             $result
         );
 
@@ -227,8 +227,8 @@ class CacheTest extends TestCase
             [
                 'command' => 'i18n:cache',
             ],
-            function ($container) use ($cacheFile, $cacheData) {
-                $this->initContainerService($container, $cacheFile, $cacheData);
+            function ($container) use ($cacheFile) {
+                $this->initContainerService($container, $cacheFile);
             }
         );
 
@@ -288,8 +288,8 @@ class CacheTest extends TestCase
             [
                 'command' => 'i18n:cache',
             ],
-            function ($container) use ($cacheFile, $cacheData) {
-                $this->initContainerService($container, $cacheFile, $cacheData);
+            function ($container) use ($cacheFile) {
+                $this->initContainerService($container, $cacheFile);
             }
         );
 
@@ -308,7 +308,7 @@ class CacheTest extends TestCase
         rmdir(dirname($dirname));
     }
 
-    protected function initContainerService(IContainer $container, string $cacheFile, array $cacheData)
+    protected function initContainerService(IContainer $container, string $cacheFile)
     {
         // 注册 project
         $project = new Project();
