@@ -46,7 +46,7 @@ class Links extends Command
      *
      * @var string
      */
-    protected $description = 'Create all symbolic links';
+    protected $description = 'Create all symbolic links.';
 
     /**
      * 响应命令.

@@ -48,7 +48,7 @@ class LinkApis extends Command
      *
      * @var string
      */
-    protected $description = 'Create a symbolic link from `apis` to `www/apis`';
+    protected $description = 'Create a symbolic link from `apis` to `www/apis`.';
 
     /**
      * 响应命令.

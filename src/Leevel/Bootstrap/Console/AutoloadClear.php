@@ -47,7 +47,7 @@ class AutoloadClear extends Command
      *
      * @var string
      */
-    protected $description = 'Clear cache of autoload';
+    protected $description = 'Clear cache of autoload.';
 
     /**
      * 响应命令.
@@ -58,7 +58,7 @@ class AutoloadClear extends Command
     {
         $this->line('Start to clear cache autoload.');
 
-        $cachePath = $project->runtimePath('bootstrap/classmap.php');
+        $cachePath = $project->runtimePath('autoload.php');
 
         $this->clearCache($cachePath);
 

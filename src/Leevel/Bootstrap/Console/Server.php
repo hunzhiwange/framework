@@ -49,7 +49,7 @@ class Server extends Command
      *
      * @var string
      */
-    protected $description = 'Start php build-in server';
+    protected $description = 'Start php build-in server.';
 
     /**
      * IOC 容器.

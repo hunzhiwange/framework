@@ -48,7 +48,7 @@ class LinkPublic extends Command
      *
      * @var string
      */
-    protected $description = 'Create a symbolic link from `public` to `www/public`';
+    protected $description = 'Create a symbolic link from `public` to `www/public`.';
 
     /**
      * 响应命令.

@@ -49,7 +49,7 @@ class Autoload extends Command
      *
      * @var string
      */
-    protected $description = 'Optimize base on composer dump-autoload -o';
+    protected $description = 'Optimize base on composer dump-autoload -o.';
 
     /**
      * IOC 容器.
@@ -101,21 +101,108 @@ class Autoload extends Command
      */
     protected function autoloadCachedPath(): string
     {
-        return $this->project->runtimePath('bootstrap/classmap.php');
+        return $this->project->runtimePath('autoload.php');
     }
 
     /**
      * 获取缓存数据.
      *
-     * @return array
+     * @return string
      */
-    protected function data(): array
+    protected function data(): string
     {
-        $result = array_merge($this->prefixesPsr4(), $this->classMap());
+        $data = [];
+
+        $data[] = file_get_contents($this->project->path('vendor/composer/ClassLoader.php'));
+        $data[] = $this->dataInit();
+        $data[] = $this->dataHelper();
+        $data[] = $this->dataLoader();
 
         unlink($this->project->path('vendor/composer/ComposerStaticInit.php'));
 
-        return $result;
+        return implode(PHP_EOL.PHP_EOL, $data).PHP_EOL;
+    }
+
+    /**
+     * 取得初始化数据.
+     *
+     * @return string
+     */
+    protected function dataInit(): string
+    {
+        list($lengths, $prefixs) = $this->prefixesPsr4();
+
+        return 'class ComposerStaticInit
+{
+    public static $files = '.var_export($this->files(), true).';
+
+    public static $prefixLengthsPsr4 = '.var_export($lengths, true).';
+
+    public static $prefixDirsPsr4 = '.var_export($prefixs, true).';
+
+    public static $prefixesPsr0 = [];
+
+    public static $classMap = '.var_export($this->classMap(), true).';
+
+    public static function getInitializer(ClassLoader $loader)
+    {
+        return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit::$classMap;
+
+        }, null, ClassLoader::class);
+    }
+}';
+    }
+
+    /**
+     * 取得助手文件数据.
+     *
+     * @return string
+     */
+    protected function dataHelper(): string
+    {
+        return <<<'eot'
+foreach (ComposerStaticInit::$files as $fileIdentifier => $_) {
+    $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
+}
+
+require_once dirname(__FILE__, 2).'/vendor/hunzhiwange/framework/src/Leevel/Bootstrap/functions.php';
+eot;
+    }
+
+    /**
+     * 取得载入数据.
+     *
+     * @return string
+     */
+    protected function dataLoader(): string
+    {
+        return <<<'eot'
+if (!isset($GLOBALS['__composer_leevel'])) {
+    $GLOBALS['__composer_autoload_leevel'] = new ClassLoader();
+}
+
+$loader =  $GLOBALS['__composer_autoload_leevel'];
+
+call_user_func(ComposerStaticInit::getInitializer($loader));
+
+$loader->register(true);
+
+spl_autoload_register(function (string $className) use(&$loader) {
+    static $loaded;
+
+    if (null === $loaded) {
+        $loader = require_once __DIR__.'/../vendor/autoload.php';
+        $loader->loadClass($className);
+        $loaded = true;
+    }
+ });
+
+return $loader;
+eot;
     }
 
     /**
@@ -125,12 +212,8 @@ class Autoload extends Command
      */
     protected function prefixesPsr4(): array
     {
-        $result = [
-            '@length' => [],
-            '@prefix' => [],
-        ];
+        $lengths = $prefixs = [];
 
-        $basePath = $this->basePath();
         $composerStaticClass = $this->composerStaticClass();
         $prefixesPsr4 = $composerStaticClass::$prefixDirsPsr4;
 
@@ -138,16 +221,14 @@ class Autoload extends Command
             $first = $prefix[0];
             $prefix .= '\\';
 
-            $result['@length'][$first][$prefix] = strlen($prefix);
+            $lengths[$first][$prefix] = strlen($prefix);
 
             if (isset($prefixesPsr4[$prefix])) {
-                $result['@prefix'][$prefix] = array_map(function (string $value) use ($basePath) {
-                    return str_replace($basePath, '', $value);
-                }, $prefixesPsr4[$prefix]);
+                $prefixs[$prefix] = $prefixesPsr4[$prefix];
             }
         }
 
-        return $result;
+        return [$lengths, $prefixs];
     }
 
     /**
@@ -159,7 +240,6 @@ class Autoload extends Command
     {
         $result = [];
 
-        $basePath = $this->basePath();
         $optimizeNamespaces = $this->optimizeNamespaces();
         $composerStaticClass = $this->composerStaticClass();
         $classMap = $composerStaticClass::$classMap;
@@ -168,11 +248,24 @@ class Autoload extends Command
             list($namespace) = explode('\\', $key);
 
             if (in_array($namespace, $optimizeNamespaces, true)) {
-                $result[$key] = str_replace($basePath, '', $value);
+               $result[$key] = $value;
             }
         }
 
         return $result;
+    }
+
+    /**
+     * 获取载入助手函数.
+     *
+     * @return array
+     */
+    protected function files(): array
+    {
+        $optimizeNamespaces = $this->optimizeNamespaces();
+        $composerStaticClass = $this->composerStaticClass();
+        
+        return $composerStaticClass::$files;
     }
 
     /**
@@ -206,16 +299,6 @@ class Autoload extends Command
         }
 
         throw new InvalidArgumentException('Composer autoload is invalid.');
-    }
-
-    /**
-     * 基础路径.
-     *
-     * @return string
-     */
-    protected function basePath(): string
-    {
-        return $this->project->path().'/vendor/composer/../';
     }
 
     /**
@@ -278,7 +361,7 @@ class Autoload extends Command
      * @param string $cachePath
      * @param array  $data
      */
-    protected function writeCache(string $cachePath, array $data)
+    protected function writeCache(string $cachePath, string $data)
     {
         $dirname = dirname($cachePath);
 
@@ -292,13 +375,8 @@ class Autoload extends Command
             mkdir($dirname, 0777, true);
         }
 
-        $content = '<?'.'php /* '.date('Y-m-d H:i:s').
-            ' */ ?'.'>'.
-            PHP_EOL.'<?'.'php return '.
-            var_export($data, true).'; ?'.'>';
-
         if (!is_writable($dirname) ||
-            !file_put_contents($cachePath, $content)) {
+            !file_put_contents($cachePath, $data)) {
             throw new InvalidArgumentException(
                 sprintf('Dir %s is not writeable.', $dirname)
             );
