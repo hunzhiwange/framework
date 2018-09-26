@@ -112,7 +112,7 @@ class Register extends Provider
      */
     protected function eventDispatch(IDispatch $event)
     {
-        Entity::setEventDispatch($event);
+        //Entity::setEventDispatch($event);
     }
 
     /**
@@ -120,6 +120,6 @@ class Register extends Provider
      */
     protected function meta()
     {
-        Meta::setDatabaseManager($this->container['databases']);
+        //Meta::setDatabaseManager($this->container['databases']);
     }
 }

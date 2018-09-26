@@ -988,7 +988,7 @@ class Select
             return $args;
         }
 
-        $data = $this->connect->{'query'}(...$args);
+        $data = $this->connect->query(...$args);
 
         if ($this->queryParams['as_default']) {
             $this->queryDefault($data);

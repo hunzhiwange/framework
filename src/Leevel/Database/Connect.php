@@ -158,17 +158,6 @@ abstract class Connect
 
         // 记录连接参数
         $this->option = $option;
-
-        return;
-        // 尝试连接主服务器
-        $this->writeConnect();
-
-        // 连接分布式服务器
-        if (true === $option['distributed']) {
-            if (!$this->readConnect()) {
-                $this->throwException();
-            }
-        }
     }
 
     /**
@@ -204,8 +193,8 @@ abstract class Connect
      * 返回 Pdo 查询连接.
      *
      * @param mixed $master
-     * @paramnote boolean false (读服务器) true (写服务器)
-     * @paramnote 其它 去对应服务器连接ID 0 表示主服务器
+     * @note bool false (读服务器) true (写服务器)
+     * @note 其它去对应服务器连接ID 0 表示主服务器
      *
      * @return mixed
      */
@@ -234,7 +223,7 @@ abstract class Connect
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = [])
+    public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchType = null, $fetchArgument = null, array $ctorArgs = [])
     {
         // 查询组件
         $this->initSelect();
@@ -982,7 +971,7 @@ abstract class Connect
 
         if ($this->option['log']) {
             $this->log->log(
-                ILog::SQL,
+                ILog::DEBUG,
                 $lastSql[0],
                 $lastSql[1] ?: []
             );
