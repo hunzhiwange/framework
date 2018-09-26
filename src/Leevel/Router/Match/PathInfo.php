@@ -120,16 +120,7 @@ class PathInfo implements IMatch
             }
 
             if ($paths) {
-                $result[IRouter::PREFIX] = implode('\\', array_map(function ($item) {
-                    if (false !== strpos($item, '_')) {
-                        $item = str_replace('_', ' ', $item);
-                        $item = str_replace(' ', '', ucwords($item));
-                    } else {
-                        $item = ucfirst($item);
-                    }
-
-                    return $item;
-                }, $paths));
+                $result[IRouter::PREFIX] = $paths;
             }
         }
 

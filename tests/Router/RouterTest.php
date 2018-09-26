@@ -153,6 +153,26 @@ class RouterTest extends TestCase
         $this->assertSame('hello sub world foo bar', $result->getContent());
     }
 
+    public function testConvertAll()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router Tests\\Router\\Controllers\\HeLloWor\\Bar\\Foo\\XYYAc\\ControllerXxYy::actionXxxYzs() was not found.'
+        );
+
+        $pathInfo = '/:tests/he_llo-wor/Bar/foo/xYY-ac/controller_xx-yy/action-xxx_Yzs';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+    }
+
     public function testControllerExtendsBase()
     {
         $pathInfo = '/:tests/hello/extendsBase';

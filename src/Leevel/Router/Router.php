@@ -516,7 +516,7 @@ class Router implements IRouter
         $result = $this->getControllerDir();
 
         if ($this->matchedPrefix()) {
-            $result = $result.'\\'.$this->matchedPrefix();
+            $result .= '\\'.$this->matchedPrefix();
         }
 
         return $result;
@@ -647,7 +647,17 @@ class Router implements IRouter
      */
     protected function matchedPrefix()
     {
-        return $this->matchedData[static::PREFIX];
+        $prefix = $this->matchedData[static::PREFIX];
+
+        if (!$prefix || is_scalar($prefix)) {
+            return $prefix;
+        }
+
+        $prefix = array_map(function ($item) {
+            return $this->convertMatched(ucfirst($item));
+        }, $prefix);
+
+        return $this->matchedData[static::PREFIX] = implode('\\', $prefix);
     }
 
     /**
