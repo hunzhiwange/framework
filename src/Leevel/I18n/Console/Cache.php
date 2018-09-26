@@ -50,7 +50,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $description = 'Cache i18n to a file';
+    protected $description = 'Cache i18n to a file.';
 
     /**
      * IOC 容器.
@@ -88,11 +88,11 @@ class Cache extends Command
 
                 $this->writeCache($cachePath, $data);
 
-                $this->info(sprintf('I18n file %s cache successed.', $cachePath));
+                $this->info(sprintf('I18n cache file %s cache successed.', $cachePath));
             }
         });
 
-        $this->info('I18n files cache successed.');
+        $this->info('I18n cache files cache successed.');
     }
 
     /**

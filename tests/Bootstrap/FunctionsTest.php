@@ -37,7 +37,7 @@ use Leevel\Session\ISession;
 use Tests\TestCase;
 
 /**
- * function test.
+ * functions test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -45,7 +45,7 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class FunctionTest extends TestCase
+class FunctionsTest extends TestCase
 {
     public function testBaseUse()
     {
