@@ -35,10 +35,11 @@ use Symfony\Component\VarDumper\VarDumper;
 class Dump
 {
     /**
-     * 调试变量
-     * 
-     * @param  mixed $var
-     * @param  array $moreVars
+     * 调试变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
      * @return mixed
      */
     public static function dump($var, ...$moreVars)
@@ -57,10 +58,10 @@ class Dump
     }
 
     /**
-     * 调试变量并中断
-     * 
-     * @param  mixed $var
-     * @param  array $moreVars
+     * 调试变量并中断.
+     *
+     * @param mixed $var
+     * @param array $moreVars
      */
     public static function dumpDie($var, ...$moreVars)
     {
@@ -70,13 +71,13 @@ class Dump
     }
 
     /**
-     * 调试栈信息
+     * 调试栈信息.
      */
     public static function backtrace()
     {
         $result = [];
 
-        foreach(debug_backtrace() as $k => $v) {
+        foreach (debug_backtrace() as $k => $v) {
             if (isset($v['class']) && $v['function']) {
                 $tmp = '\\'.$v['class'].'::'.$v['function'].'()';
             } else {
@@ -86,7 +87,7 @@ class Dump
             if (0 === strpos($tmp, '\\PHPUnit\\') || in_array($tmp, [
                 'db()', '\Leevel::backtrace()',
                 '\Leevel\Debug\Dump::backtrace()',
-            ])) {
+            ], true)) {
                 continue;
             }
 

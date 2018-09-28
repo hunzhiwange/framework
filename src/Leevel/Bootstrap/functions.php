@@ -106,10 +106,11 @@ class Leevel
     }
 
     /**
-     * 调试变量
-     * 
-     * @param  mixed $var
-     * @param  array $moreVars
+     * 调试变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
      * @return mixed
      */
     public static function dump($var, ...$moreVars)
@@ -118,10 +119,10 @@ class Leevel
     }
 
     /**
-     * 调试变量并中断
-     * 
-     * @param  mixed $var
-     * @param  array $moreVars
+     * 调试变量并中断.
+     *
+     * @param mixed $var
+     * @param array $moreVars
      */
     public static function dd($var, ...$moreVars)
     {
@@ -129,7 +130,7 @@ class Leevel
     }
 
     /**
-     * 调试栈信息
+     * 调试栈信息.
      */
     public static function backtrace()
     {
@@ -384,10 +385,11 @@ if (!function_exists('gettext')) {
 
 if (!function_exists('dump')) {
     /**
-     * 调试变量
-     * 
-     * @param  mixed $var
-     * @param  array $moreVars
+     * 调试变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
      * @return mixed
      */
     function dump($var, ...$moreVars)
@@ -398,10 +400,10 @@ if (!function_exists('dump')) {
 
 if (!function_exists('dd')) {
     /**
-     * 调试变量并中断
-     * 
-     * @param  mixed $var
-     * @param  array $moreVars
+     * 调试变量并中断.
+     *
+     * @param mixed $var
+     * @param array $moreVars
      */
     function dd($var, ...$moreVars)
     {
@@ -411,7 +413,7 @@ if (!function_exists('dd')) {
 
 if (!function_exists('db')) {
     /**
-     * 调试栈信息
+     * 调试栈信息.
      */
     function db()
     {
