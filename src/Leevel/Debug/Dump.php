@@ -20,9 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Debug;
 
-use Symfony\Component\VarDumper\Cloner\VarCloner;
-use Symfony\Component\VarDumper\Dumper\CliDumper;
-use Symfony\Component\VarDumper\Dumper\HtmlDumper;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * 调试一个变量.
@@ -37,24 +35,66 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 class Dump
 {
     /**
-     * 调试一个变量.
-     *
-     * @param mixed $var
-     * @param bool  $simple
+     * 调试变量
+     * 
+     * @param  mixed $var
+     * @param  array $moreVars
+     * @return mixed
      */
-    public static function dump($var, bool $simple = false)
+    public static function dump($var, ...$moreVars)
     {
-        static $dump, $varCloner;
+        VarDumper::dump($var);
 
-        if (false === $simple && class_exists(CliDumper::class)) {
-            if (!$dump) {
-                $dump = ('cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper());
-                $varCloner = new VarCloner();
+        foreach ($moreVars as $var) {
+            VarDumper::dump($var);
+        }
+
+        if (1 < func_num_args()) {
+            return func_get_args();
+        }
+
+        return $var;
+    }
+
+    /**
+     * 调试变量并中断
+     * 
+     * @param  mixed $var
+     * @param  array $moreVars
+     */
+    public static function dumpDie($var, ...$moreVars)
+    {
+        static::dump($var, ...$moreVars);
+
+        die;
+    }
+
+    /**
+     * 调试栈信息
+     */
+    public static function backtrace()
+    {
+        $result = [];
+
+        foreach(debug_backtrace() as $k => $v) {
+            if (isset($v['class']) && $v['function']) {
+                $tmp = '\\'.$v['class'].'::'.$v['function'].'()';
+            } else {
+                $tmp = $v['function'].'()';
             }
 
-            $dump->dump($varCloner->cloneVar($var));
-        } else {
-            var_dump($var);
+            if (0 === strpos($tmp, '\\PHPUnit\\') || in_array($tmp, [
+                'db()', '\Leevel::backtrace()',
+                '\Leevel\Debug\Dump::backtrace()',
+            ])) {
+                continue;
+            }
+
+            $result[] = $tmp;
         }
+
+        static::dump(implode(PHP_EOL, array_reverse($result)));
+
+        die;
     }
 }

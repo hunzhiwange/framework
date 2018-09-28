@@ -106,14 +106,34 @@ class Leevel
     }
 
     /**
-     * 调试一个变量.
-     *
-     * @param mixed $var
-     * @param bool  $simple
+     * 调试变量
+     * 
+     * @param  mixed $var
+     * @param  array $moreVars
+     * @return mixed
      */
-    public static function dd($var, bool $simple = false)
+    public static function dump($var, ...$moreVars)
     {
-        Dump::dump($var, $simple);
+        return Dump::dump($var, ...$moreVars);
+    }
+
+    /**
+     * 调试变量并中断
+     * 
+     * @param  mixed $var
+     * @param  array $moreVars
+     */
+    public static function dd($var, ...$moreVars)
+    {
+        Dump::dumpDie($var, ...$moreVars);
+    }
+
+    /**
+     * 调试栈信息
+     */
+    public static function backtrace()
+    {
+        Dump::backtrace();
     }
 
     /**
@@ -362,15 +382,39 @@ if (!function_exists('gettext')) {
     }
 }
 
+if (!function_exists('dump')) {
+    /**
+     * 调试变量
+     * 
+     * @param  mixed $var
+     * @param  array $moreVars
+     * @return mixed
+     */
+    function dump($var, ...$moreVars)
+    {
+        return Leevel::dump($var, ...$moreVars);
+    }
+}
+
 if (!function_exists('dd')) {
     /**
-     * 调试一个变量.
-     *
-     * @param mixed $var
-     * @param bool  $simple
+     * 调试变量并中断
+     * 
+     * @param  mixed $var
+     * @param  array $moreVars
      */
-    function dd($var, bool $simple = false)
+    function dd($var, ...$moreVars)
     {
-        Leevel::dd($var, $simple);
+        Leevel::dd($var, ...$moreVars);
+    }
+}
+
+if (!function_exists('db')) {
+    /**
+     * 调试栈信息
+     */
+    function db()
+    {
+        Leevel::backtrace();
     }
 }
