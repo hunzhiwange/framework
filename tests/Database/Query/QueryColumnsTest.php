@@ -102,4 +102,160 @@ eot;
             )
         );
     }
+
+    public function testColumnsFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`test`.`name`,`test`.`value` FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                columns('id')->
+
+                elses()->
+
+                columns('name,value')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testColumnsFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`test`.`id` FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                columns('id')->
+
+                elses()->
+
+                columns('name,value')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testSetColumnsFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name`,`test`.`value` FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                setColumns('foo')->
+
+                ifs($condition)->
+
+                setColumns('id')->
+
+                elses()->
+
+                setColumns('name,value')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testSetColumnsFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`id` FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                setColumns('foo')->
+
+                ifs($condition)->
+
+                setColumns('id')->
+
+                elses()->
+
+                setColumns('name,value')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
 }

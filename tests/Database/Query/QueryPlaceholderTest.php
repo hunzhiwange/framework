@@ -18,21 +18,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database;
+namespace Tests\Database\Query;
 
-use Tests\Database\Query\Query;
 use Tests\TestCase;
 
 /**
- * truncate test.
+ * placeholder test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.06.25
+ * @since 2018.09.28
  *
  * @version 1.0
  */
-class TruncateTest extends TestCase
+class QueryPlaceholderTest extends TestCase
 {
     use Query;
 
@@ -41,20 +40,68 @@ class TruncateTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-[
-    "TRUNCATE TABLE `test`",
-    []
-]
+array (
+  0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
-                $connect->sql()->
+            $this->varExport(
+                $connect->placeholder()->
 
                 table('test')->
 
-                truncate(),
+                sql(true)->
+
+                latest()->
+
+                getOne(),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testFoobar()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->foobar()->
+
+                table('test')->
+
+                sql(true)->
+
+                latest()->
+
+                getOne(),
                 __FUNCTION__
             )
         );

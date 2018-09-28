@@ -386,4 +386,46 @@ eot;
             )
         );
     }
+
+    public function testDataIsNotInvalid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Data for insertAll is not invalid.'
+        );
+
+        $connect = $this->createConnect();
+
+        $data = [
+            ['name' => '小鸭子1', 'value' => '呱呱呱1'],
+            5,
+        ];
+
+        $connect->sql()->
+
+        table('test')->
+
+        insertAll($data);
+    }
+
+    public function testDataIsNotInvalid2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Data for insertAll is not invalid.'
+        );
+
+        $connect = $this->createConnect();
+
+        $data = [
+            ['name' => '小鸭子1', 'value' => '呱呱呱1'],
+            ['foo' => ['hello', 'world']],
+        ];
+
+        $connect->sql()->
+
+        table('test')->
+
+        insertAll($data);
+    }
 }

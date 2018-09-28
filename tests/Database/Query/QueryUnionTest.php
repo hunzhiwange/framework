@@ -120,4 +120,190 @@ eot;
             )
         );
     }
+
+    public function testUnionFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION SELECT id,value FROM test3",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $union1 = 'SELECT id,value FROM test2';
+
+        $union2 = 'SELECT id,value FROM test3';
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test', 'tid as id,tname as value')->
+
+                ifs($condition)->
+
+                union($union1)->
+
+                elses()->
+
+                union($union2)->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testUnionFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION SELECT id,value FROM test2",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $union1 = 'SELECT id,value FROM test2';
+
+        $union2 = 'SELECT id,value FROM test3';
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test', 'tid as id,tname as value')->
+
+                ifs($condition)->
+
+                union($union1)->
+
+                elses()->
+
+                union($union2)->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testUnionAllFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION ALL SELECT id,value FROM test3",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $union1 = 'SELECT id,value FROM test2';
+
+        $union2 = 'SELECT id,value FROM test3';
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test', 'tid as id,tname as value')->
+
+                ifs($condition)->
+
+                unionAll($union1)->
+
+                elses()->
+
+                unionAll($union2)->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testUnionAllFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION ALL SELECT id,value FROM test2",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $union1 = 'SELECT id,value FROM test2';
+
+        $union2 = 'SELECT id,value FROM test3';
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test', 'tid as id,tname as value')->
+
+                ifs($condition)->
+
+                unionAll($union1)->
+
+                elses()->
+
+                unionAll($union2)->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testUnionNotSupportType()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid UNION type `NOT FOUND`.'
+        );
+
+        $connect = $this->createConnect();
+
+        $union1 = 'SELECT id,value FROM test2';
+
+        $connect->table('test', 'tid as id,tname as value')->
+
+        union($union1, 'NOT FOUND')->
+
+        getAll(true);
+    }
 }

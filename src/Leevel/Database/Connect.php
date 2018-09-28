@@ -23,7 +23,6 @@ namespace Leevel\Database;
 use Exception;
 use Leevel\Cache\ICache;
 use Leevel\Log\ILog;
-use Leevel\Support\Debug\Dump;
 use PDO;
 use PDOException;
 use Throwable;
@@ -863,7 +862,7 @@ abstract class Connect
                     sprintf(
                         'Parameter of sql %s binding failed: %s.',
                         $this->sql,
-                        Dump::dump($bindParams, true)
+                        json_encode($bindParams, JSON_UNESCAPED_UNICODE)
                     )
                 );
             }

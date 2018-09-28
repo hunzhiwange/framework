@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use BadMethodCallException;
-use Exception;
+use Closure;
+use InvalidArgumentException;
 use Leevel\Flow\TControl;
 use Leevel\Support\Arr;
 use Leevel\Support\Type;
@@ -85,7 +85,7 @@ class Condition
     /**
      * 数据库连接.
      *
-     * @var Leevel\Database\Connect
+     * @var Leevel\Database\IConnect
      */
     protected $connect;
 
@@ -212,9 +212,9 @@ class Condition
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Connect $connect
+     * @param \Leevel\Database\IConnect $connect
      */
-    public function __construct($connect)
+    public function __construct(IConnect $connect)
     {
         $this->connect = $connect;
 
@@ -264,15 +264,8 @@ class Condition
      *
      * @return null|array
      */
-    public function insert($data, $bind = [], $replace = false)
+    public function insert($data, array $bind = [], bool $replace = false)
     {
-        if (!Type::these($data, [
-            'string',
-            'array',
-        ])) {
-            throw new Exception('Unsupported parameters.');
-        }
-
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
 
@@ -285,10 +278,7 @@ class Condition
             $tableName = $this->getCurrentTable();
 
             foreach ($fields as &$field) {
-                $field = $this->qualifyOneColumn(
-                    $field,
-                    $tableName
-                );
+                $field = $this->qualifyOneColumn($field, $tableName);
             }
 
             // 构造 insert 语句
@@ -323,12 +313,8 @@ class Condition
      *
      * @return null|array
      */
-    public function insertAll($data, $bind = [], $replace = false)
+    public function insertAll(array $data, array $bind = [], bool $replace = false)
     {
-        if (!is_array($data)) {
-            throw new Exception('Unsupported parameters.');
-        }
-
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
 
@@ -339,8 +325,8 @@ class Condition
             $tableName = $this->getCurrentTable();
 
             foreach ($data as $key => $tmp) {
-                if (!is_array($tmp)) {
-                    continue;
+                if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
+                    throw new InvalidArgumentException('Data for insertAll is not invalid.');
                 }
 
                 $bindData = $this->getBindData($tmp, $bind, $questionMark, $key);
@@ -391,15 +377,8 @@ class Condition
      *
      * @return null|array
      */
-    public function update($data, $bind = [])
+    public function update($data, array $bind = [])
     {
-        if (!Type::these($data, [
-            'string',
-            'array',
-        ])) {
-            throw new Exception('Unsupported parameters.');
-        }
-
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
 
@@ -453,15 +432,8 @@ class Condition
      *
      * @return null|array
      */
-    public function delete($data = null, $bind = [])
+    public function delete(?string $data = null, array $bind = [])
     {
-        if (!Type::these($data, [
-            'string',
-            'null',
-        ])) {
-            throw new Exception('Unsupported parameters.');
-        }
-
         // 构造数据删除
         if (null === $data) {
             // 构造 delete 语句
@@ -515,25 +487,6 @@ class Condition
             'statement',
             $sql,
         ];
-    }
-
-    /**
-     * 声明 statement 运行一般 sql,无返回.
-     *
-     * @param string $data
-     * @param array  $bind
-     * @param bool   $flag 指示是否不做任何操作只返回 SQL
-     */
-    public function statement(string $data, $bind = [], $flag = false)
-    {
-        $this->safeSql($flag)->
-
-        setNativeSql('statement');
-
-        return $this->runNativeSql(...[
-            $data,
-            $bind,
-        ]);
     }
 
     /**
@@ -974,7 +927,7 @@ class Condition
         }
 
         if (!isset(static::$indexTypes[$type])) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 sprintf('Invalid Index type %s.', $type)
             );
         }
@@ -1051,8 +1004,8 @@ class Condition
         }
 
         if (!isset(static::$unionTypes[$type])) {
-            throw new Exception(
-                sprintf('Invalid UNION type %s.', $type)
+            throw new InvalidArgumentException(
+                sprintf('Invalid UNION type `%s`.', $type)
             );
         }
 
@@ -1118,11 +1071,7 @@ class Condition
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
                 $expression[
-                    array_search(
-                        '{'.base64_encode($tmp).'}',
-                        $expression,
-                        true
-                    )
+                    array_search('{'.base64_encode($tmp).'}', $expression, true)
                 ] = '{'.$tmp.'}';
             }
         }
@@ -1148,11 +1097,7 @@ class Condition
             if (!empty($subMatches)) {
                 foreach ($subMatches[1] as $tmp) {
                     $value[
-                        array_search(
-                            '{'.base64_encode($tmp).'}',
-                            $value,
-                            true
-                        )
+                        array_search('{'.base64_encode($tmp).'}', $value, true)
                     ] = '{'.$tmp.'}';
                 }
             }
@@ -1170,10 +1115,7 @@ class Condition
                 }
 
                 // 表达式支持
-                $tmp = $this->qualifyOneColumn(
-                    $tmp,
-                    $currentTableName
-                );
+                $tmp = $this->qualifyOneColumn($tmp, $currentTableName);
 
                 $this->options['group'][] = $tmp;
             }
@@ -1328,11 +1270,7 @@ class Condition
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
                 $expression[
-                    array_search(
-                        '{'.base64_encode($tmp).'}',
-                        $expression,
-                        true
-                    )
+                    array_search('{'.base64_encode($tmp).'}', $expression, true)
                 ] = '{'.$tmp.'}';
             }
         }
@@ -1358,11 +1296,7 @@ class Condition
             if (!empty($subMatches)) {
                 foreach ($subMatches[1] as $tmp) {
                     $value[
-                        array_search(
-                            '{'.base64_encode($tmp).'}',
-                            $value,
-                            true
-                        )
+                        array_search('{'.base64_encode($tmp).'}', $value, true)
                     ] = '{'.$tmp.'}';
                 }
             }
@@ -1448,13 +1382,13 @@ class Condition
      *
      * @return $this
      */
-    public function distinct($flag = true)
+    public function distinct(bool $flag = true)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->options['distinct'] = (bool) $flag;
+        $this->options['distinct'] = $flag;
 
         return $this;
     }
@@ -1628,13 +1562,13 @@ class Condition
      *
      * @return $this
      */
-    public function forUpdate($flag = true)
+    public function forUpdate(bool $flag = true)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->options['forupdate'] = (bool) $flag;
+        $this->options['forupdate'] = $flag;
 
         return $this;
     }
@@ -1718,30 +1652,30 @@ class Condition
      */
     protected function callWhereSugar(string $method, array $args)
     {
-        if (in_array($method, [
+        if (!in_array($method, [
             'whereNotBetween', 'whereBetween',
             'whereNotNull', 'whereNull',
             'whereNotIn', 'whereIn',
             'whereNotLike', 'whereLike',
         ], true)) {
-            if ($this->checkTControl()) {
-                return $this;
-            }
-
-            $this->setTypeAndLogic('where', static::LOGIC_AND);
-
-            if (0 === strpos($method, 'whereNot')) {
-                $type = 'not '.strtolower(substr($method, 8));
-            } else {
-                $type = strtolower(substr($method, 5));
-            }
-
-            array_unshift($args, $type);
-
-            return $this->aliasCondition(...$args);
+            return false;
         }
 
-        return false;
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $this->setTypeAndLogic('where', static::LOGIC_AND);
+
+        if (0 === strpos($method, 'whereNot')) {
+            $type = 'not '.strtolower(substr($method, 8));
+        } else {
+            $type = strtolower(substr($method, 5));
+        }
+
+        array_unshift($args, $type);
+
+        return $this->aliasCondition(...$args);
     }
 
     /**
@@ -1754,30 +1688,30 @@ class Condition
      */
     protected function callHavingSugar(string $method, array $args)
     {
-        if (in_array($method, [
+        if (!in_array($method, [
             'havingNotBetween', 'havingBetween',
             'havingNotNull', 'havingNull',
             'havingNotIn', 'havingIn',
             'havingNotLike', 'havingLike',
         ], true)) {
-            if ($this->checkTControl()) {
-                return $this;
-            }
-
-            $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-            if (0 === strpos($method, 'havingNot')) {
-                $type = 'not '.strtolower(substr($method, 9));
-            } else {
-                $type = strtolower(substr($method, 6));
-            }
-
-            array_unshift($args, $type);
-
-            return $this->aliasCondition(...$args);
+            return false;
         }
 
-        return false;
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $this->setTypeAndLogic('having', static::LOGIC_AND);
+
+        if (0 === strpos($method, 'havingNot')) {
+            $type = 'not '.strtolower(substr($method, 9));
+        } else {
+            $type = strtolower(substr($method, 6));
+        }
+
+        array_unshift($args, $type);
+
+        return $this->aliasCondition(...$args);
     }
 
     /**
@@ -1790,23 +1724,23 @@ class Condition
      */
     protected function callJoinSugar(string $method, array $args)
     {
-        if (in_array($method, [
+        if (!in_array($method, [
             'innerJoin', 'leftJoin',
             'rightJoin', 'fullJoin',
             'crossJoin', 'naturalJoin',
         ], true)) {
-            if ($this->checkTControl()) {
-                return $this;
-            }
-
-            $type = substr($method, 0, -4).' join';
-
-            array_unshift($args, $type);
-
-            return $this->addJoin(...$args);
+            return false;
         }
 
-        return false;
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $type = substr($method, 0, -4).' join';
+
+        array_unshift($args, $type);
+
+        return $this->addJoin(...$args);
     }
 
     /**
@@ -1862,10 +1796,7 @@ class Condition
             } else {
                 if ('*' !== $col && $alias) {
                     $columns[] = $this->connect->normalizeTableOrColumn(
-                        "{$tableName}.{$col}",
-                        $alias,
-                        'AS'
-                    );
+                        "{$tableName}.{$col}", $alias, 'AS');
                 } else {
                     $columns[] = $this->connect->normalizeTableOrColumn(
                         "{$tableName}.{$col}"
@@ -2131,8 +2062,7 @@ class Condition
             return '';
         }
 
-        return 'ORDER BY '.
-            implode(',', array_unique($this->options['order']));
+        return 'ORDER BY '.implode(',', array_unique($this->options['order']));
     }
 
     /**
@@ -2146,8 +2076,7 @@ class Condition
             return '';
         }
 
-        return 'GROUP BY '.
-            implode(',', $this->options['group']);
+        return 'GROUP BY '.implode(',', $this->options['group']);
     }
 
     /**
@@ -2199,7 +2128,7 @@ class Condition
             );
         }
 
-        throw new BadMethodCallException(
+        throw new InvalidArgumentException(
             sprintf(
                 'Connect method %s is not exits',
                 'parseLimitcount'
@@ -2298,7 +2227,7 @@ class Condition
                         }
                     }
                     if (null === $findTime) {
-                        throw new Exception(
+                        throw new InvalidArgumentException(
                             'You are trying to an unsupported time processing grammar.'
                         );
                     }
@@ -2320,7 +2249,7 @@ class Condition
                         }
 
                         // 回调方法子表达式支持
-                        elseif (!is_string($tmp) && is_callable($tmp)) {
+                        elseif ($tmp instanceof Closure) {
                             $select = new static($this->connect);
                             $select->setCurrentTable($this->getCurrentTable());
                             $resultCallback = call_user_func_array($tmp, [
@@ -2385,7 +2314,7 @@ class Condition
                     'not between',
                 ], true)) {
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
-                        throw new Exception(
+                        throw new InvalidArgumentException(
                             'The [not] between parameter value must be '.
                             'an array of not less than two elements.'
                         );
@@ -2447,7 +2376,7 @@ class Condition
     {
         $this->setTypeAndLogic($type, $logic);
 
-        if (!is_string($cond) && is_callable($cond)) {
+        if ($cond instanceof Closure) {
             $select = new static($this->connect);
             $select->setCurrentTable($this->getCurrentTable());
             $resultCallback = call_user_func_array($cond, [
@@ -2460,12 +2389,8 @@ class Condition
                 $tmp = $resultCallback;
             }
 
-            $this->setConditioitem(
-                static::LOGIC_GROUP_LEFT.
-                $tmp.
-                static::LOGIC_GROUP_RIGHT,
-                'string__'
-            );
+            $this->setConditioitem(static::LOGIC_GROUP_LEFT.$tmp.
+                static::LOGIC_GROUP_RIGHT, 'string__');
 
             return $this;
         }
@@ -2523,7 +2448,7 @@ class Condition
             if (is_string($key) && 'string__' === $key) {
                 // 不符合规则抛出异常
                 if (!is_string($tmp)) {
-                    throw new Exception(
+                    throw new InvalidArgumentException(
                         'String__ type only supports string.'
                     );
                 }
@@ -2560,26 +2485,16 @@ class Condition
                     unset($tmp['logic__']);
                 }
 
-                $select = $select->addConditions(
-                    $tmp
-                );
+                $select = $select->addConditions($tmp);
 
                 // 解析结果
                 $parseType = 'parse'.ucwords($typeAndLogic[0]);
                 $oldLogic = $typeAndLogic[1];
 
-                $this->setTypeAndLogic(
-                    null, 'subor__' ?
-                    static::LOGIC_OR :
-                    static::LOGIC_AND
-                );
+                $this->setTypeAndLogic(null, 'subor__' ? static::LOGIC_OR : static::LOGIC_AND);
 
-                $this->setConditioitem(
-                    static::LOGIC_GROUP_LEFT.
-                    $select->{$parseType}(true).
-                    static::LOGIC_GROUP_RIGHT,
-                    'string__'
-                );
+                $this->setConditioitem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).
+                    static::LOGIC_GROUP_RIGHT, 'string__');
 
                 $this->setTypeAndLogic(null, $oldLogic);
             }
@@ -2591,14 +2506,14 @@ class Condition
             ], true)) {
                 // having 不支持 [not] exists
                 if ('having' === $this->getTypeAndLogic()[0]) {
-                    throw new Exception(
+                    throw new InvalidArgumentException(
                         'Having do not support [not] exists writing.'
                     );
                 }
 
                 if ($tmp instanceof self || $tmp instanceof Select) {
                     $tmp = $tmp->makeSql();
-                } elseif (!is_string($tmp) && is_callable($tmp)) {
+                } elseif ($tmp instanceof Closure) {
                     $select = new static($this->connect);
                     $select->setCurrentTable($this->getCurrentTable());
 
@@ -2658,11 +2573,7 @@ class Condition
                         $tmp[2] = explode(',', $tmp[2]);
                     }
 
-                    $this->setConditioitem([
-                        $tmp[0],
-                        $tmp[1],
-                        $tmp[2] ?? null,
-                    ]);
+                    $this->setConditioitem([$tmp[0], $tmp[1], $tmp[2] ?? null]);
                 }
 
                 // 普通类型
@@ -2791,14 +2702,14 @@ class Condition
     {
         // 验证 join 类型
         if (!isset(static::$joinTypes[$joinType])) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 sprintf('Invalid JOIN type %s.', $joinType)
             );
         }
 
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 'JOIN queries cannot be used while using UNION queries.'
             );
         }
@@ -2831,8 +2742,7 @@ class Condition
                 }
 
                 // 回调方法子表达式
-                elseif (!is_string($table) &&
-                    is_callable($table)) {
+                elseif ($table instanceof Closure) {
                     $select = new static($this->connect);
                     $select->setCurrentTable($this->getCurrentTable());
                     $resultCallback = call_user_func_array($table, [
@@ -2864,7 +2774,7 @@ class Condition
         }
 
         // 回调方法
-        elseif (!is_string($names) && is_callable($names)) {
+        elseif ($names instanceof Closure) {
             $select = new static($this->connect);
             $select->setCurrentTable($this->getCurrentTable());
             $resultCallback = call_user_func_array($names, [
@@ -2990,11 +2900,7 @@ class Condition
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
                 $cols[
-                    array_search(
-                        '{'.base64_encode($tmp).'}',
-                        $cols,
-                        true
-                    )
+                    array_search('{'.base64_encode($tmp).'}', $cols, true)
                 ] = '{'.$tmp.'}';
             }
         }
@@ -3028,11 +2934,7 @@ class Condition
                 if (!empty($subMatches)) {
                     foreach ($subMatches[1] as $tmp) {
                         $col[
-                            array_search(
-                                '{'.base64_encode($tmp).'}',
-                                $col,
-                                true
-                            )
+                            array_search('{'.base64_encode($tmp).'}', $col, true)
                         ] = '{'.$tmp.'}';
                     }
                 }
@@ -3101,10 +3003,7 @@ class Condition
                 $tableName = '';
             }
 
-            $field = $this->connect->normalizeColumn(
-                $field,
-                $tableName
-            );
+            $field = $this->connect->normalizeColumn($field, $tableName);
         }
 
         $field = "{$type}(${field})";
@@ -3191,7 +3090,7 @@ class Condition
      * @param int   $questionMark
      * @param int   $index
      */
-    protected function getBindData($data, &$bind = [], &$questionMark = 0, $index = 0)
+    protected function getBindData($data, array &$bind = [], int &$questionMark = 0, int $index = 0)
     {
         $fields = $values = [];
         $tableName = $this->getCurrentTable();
@@ -3206,10 +3105,7 @@ class Condition
                     $tableName
                 );
             } else {
-                $value = $this->connect->normalizeColumnValue(
-                    $value,
-                    false
-                );
+                $value = $this->connect->normalizeColumnValue($value, false);
             }
 
             // 字段
@@ -3238,11 +3134,8 @@ class Condition
 
                 $values[] = ':'.$key;
 
-                $this->bind(
-                    $key,
-                    $value,
-                    $this->connect->normalizeBindParamType($value)
-                );
+                $this->bind($key, $value,
+                    $this->connect->normalizeBindParamType($value));
             }
         }
 
@@ -3310,13 +3203,6 @@ class Condition
      */
     protected function parseTime($field, $value, $type)
     {
-        static $date = null, $columns = [];
-
-        // 获取时间和字段信息
-        if (null === $date) {
-            $date = getdate();
-        }
-
         $field = str_replace('`', '', $field);
         $table = $this->getCurrentTable();
 
@@ -3331,19 +3217,15 @@ class Condition
             return '';
         }
 
-        if (!isset($columns[$table])) {
-            $columns[$table] = $this->connect->getTableColumnsCache(
-                $table
-            )['list'];
-        }
-
         // 支持类型
         switch ($type) {
             case 'day':
+                $date = getdate();
                 $value = mktime(0, 0, 0, $date['mon'], (int) $value, $date['year']);
 
                 break;
             case 'month':
+                $date = getdate();
                 $value = mktime(0, 0, 0, (int) $value, 1, $date['year']);
 
                 break;
@@ -3353,15 +3235,16 @@ class Condition
                 break;
             case 'date':
                 $value = strtotime($value);
+
                 if (false === $value) {
-                    throw new Exception(
+                    throw new InvalidArgumentException(
                         'Please enter a right time of strtotime.'
                     );
                 }
 
                 break;
             default:
-                throw new Exception(
+                throw new InvalidArgumentException(
                     sprintf(
                         'Unsupported time formatting type %s.',
                         $type
@@ -3369,24 +3252,6 @@ class Condition
                 );
 
                 break;
-        }
-
-        // 自动格式化时间
-        if (!empty($columns[$table][$field])) {
-            $fieldType = $columns[$table][$field]['type'];
-
-            if (in_array($fieldType, [
-                'datetime',
-                'timestamp',
-            ], true)) {
-                $value = date('Y-m-d H:i:s', $value);
-            } elseif ('date' === $fieldType) {
-                $value = date('Y-m-d', $value);
-            } elseif ('time' === $fieldType) {
-                $value = date('H:i:s', $value);
-            } elseif (0 === strpos($fieldType, 'year')) {
-                $value = date('Y', $value);
-            }
         }
 
         return $value;

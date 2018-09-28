@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use Exception;
+use Closure;
+use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Page\PageWithoutTotal;
-use Leevel\Support\Type;
 use PDO;
 
 /**
@@ -183,7 +183,7 @@ class Select
                 $keys = explode('And', $method);
 
                 if (count($keys) !== count($args)) {
-                    throw new Exception(
+                    throw new InvalidArgumentException(
                         'Parameter quantity does not correspond.'
                     );
                 }
@@ -205,7 +205,7 @@ class Select
 
         // 查询组件
         if (!$this->callSelect) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Select do not implement magic method %s.',
                     $method
@@ -381,23 +381,15 @@ class Select
      *
      * @return mixed
      */
-    public function select($data = null, $bind = [], $flag = false)
+    public function select($data = null, array $bind = [], bool $flag = false)
     {
-        if (!Type::these($data, [
-            'string',
-            'null',
-            'callback',
-        ]) && !($data instanceof self)) {
-            throw new Exception('Unsupported parameters.');
-        }
-
         // 查询对象直接查询
         if ($data instanceof self) {
             return $data->get(null, $this->onlyMakeSql);
         }
 
         // 回调
-        if (!is_string($data) && is_callable($data)) {
+        if ($data instanceof Closure) {
             call_user_func_array($data, [
                 &$this,
             ]);
@@ -569,25 +561,6 @@ class Select
 
             truncate()
         );
-    }
-
-    /**
-     * 声明 statement 运行一般 sql,无返回.
-     *
-     * @param string $data
-     * @param array  $bind
-     * @param bool   $flag 指示是否不做任何操作只返回 SQL
-     */
-    public function statement(string $data, $bind = [], $flag = false)
-    {
-        $this->safeSql($flag)->
-
-        setNativeSql('statement');
-
-        return $this->runNativeSql(...[
-            $data,
-            $bind,
-        ]);
     }
 
     /**
@@ -1092,44 +1065,34 @@ class Select
     /**
      * 原生 sql 执行方法.
      *
-     * @param string      $method
-     * @param null|string $data
+     * @param string $nativeType
+     * @param string $data
+     * @param array  $bindParams
      *
      * @return mixed
      */
-    protected function runNativeSql(string $nativeType, $data = null)
+    protected function runNativeSql(string $nativeType, string $data, array $bindParams = [])
     {
-        // 空参数返回当前对象
-        if (null === $data) {
-            return $this;
+        $sqlType = $this->connect->normalizeSqlType($data);
+
+        if ('procedure' === $sqlType) {
+            $sqlType = 'select';
         }
 
-        if (is_string($data)) {
-            // 验证参数
-            $sqlType = $this->connect->normalizeSqlType($data);
-
-            if ('procedure' === $sqlType) {
-                $sqlType = 'select';
-            }
-
-            if ($sqlType !== $nativeType) {
-                throw new Exception('Unsupported parameters.');
-            }
-
-            $args = func_get_args();
-            array_shift($args);
-
-            // 只返回 SQL，不做任何实际操作
-            if (true === $this->onlyMakeSql) {
-                return $args;
-            }
-
-            return $this->connect->{
-                'select' === $nativeType ? 'query' : 'execute'
-            }(...$args);
+        if ($sqlType !== $nativeType) {
+            throw new InvalidArgumentException('Unsupported parameters.');
         }
 
-        throw new Exception('Unsupported parameters.');
+        $args = [$data, $bindParams];
+
+        // 只返回 SQL，不做任何实际操作
+        if (true === $this->onlyMakeSql) {
+            return $args;
+        }
+
+        return $this->connect->{
+            'select' === $nativeType ? 'query' : 'execute'
+        }(...$args);
     }
 
     /**

@@ -167,4 +167,80 @@ eot;
             )
         );
     }
+
+    public function testTableFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `foo`.* FROM `foo`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->
+
+                ifs($condition)->
+
+                table('test')->
+
+                elses()->
+
+                table('foo')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testTableFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->
+
+                ifs($condition)->
+
+                table('test')->
+
+                elses()->
+
+                table('foo')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
 }

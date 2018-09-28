@@ -1082,4 +1082,96 @@ eot;
             )
         );
     }
+
+    public function testWhereNotSupportMethod()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Select do not implement magic method whereNotSupportMethod.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        whereNotSupportMethod()->
+
+        getAll(true);
+    }
+
+    public function testCallWhereSugarFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '6'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                whereLike('id', '5')->
+
+                elses()->
+
+                whereLike('id', '6')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testCallWhereSugarFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '5'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                whereLike('id', '5')->
+
+                elses()->
+
+                whereLike('id', '6')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
 }

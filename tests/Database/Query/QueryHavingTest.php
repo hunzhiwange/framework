@@ -675,4 +675,100 @@ eot;
             )
         );
     }
+
+    public function testHavingNotSupportMethod()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Select do not implement magic method havingNotSupportMethod.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        havingNotSupportMethod()->
+
+        getAll(true);
+    }
+
+    public function testCallHavingSugarFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`id` LIKE '6'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                groupBy('id')->
+
+                ifs($condition)->
+
+                havingLike('id', '5')->
+
+                elses()->
+
+                havingLike('id', '6')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testCallHavingSugarFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`id` LIKE '5'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                groupBy('id')->
+
+                ifs($condition)->
+
+                havingLike('id', '5')->
+
+                elses()->
+
+                havingLike('id', '6')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
 }

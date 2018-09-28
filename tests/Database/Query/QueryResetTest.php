@@ -107,4 +107,96 @@ eot;
             )
         );
     }
+
+    public function testResetFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`id` = 5 AND `test`.`name` LIKE 'me' AND `test`.`foo` LIKE 'bar'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                where('id', '=', 5)->
+
+                where('name', 'like', 'me')->
+
+                setColumns('name,id')->
+
+                ifs($condition)->
+
+                reset()->
+
+                table('foo')->
+
+                elses()->
+
+                where('foo', 'like', 'bar')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testResetFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `foo`.* FROM `foo`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                where('id', '=', 5)->
+
+                where('name', 'like', 'me')->
+
+                setColumns('name,id')->
+
+                ifs($condition)->
+
+                reset()->
+
+                table('foo')->
+
+                elses()->
+
+                where('foo', 'like', 'bar')->
+
+                endIfs()->
+
+                getAll(true),
+                __FUNCTION__
+            )
+        );
+    }
 }
