@@ -75,7 +75,7 @@ eot;
 
                 count()->
 
-                get()
+                find()
             )
         );
 
@@ -145,7 +145,7 @@ eot;
 
                 avg('num')->
 
-                get()
+                find()
             )
         );
 
@@ -215,7 +215,7 @@ eot;
 
                 max('num')->
 
-                get()
+                find()
             )
         );
 
@@ -285,7 +285,7 @@ eot;
 
                 min('num')->
 
-                get()
+                find()
             )
         );
 
@@ -355,7 +355,7 @@ eot;
 
                 sum('num')->
 
-                get()
+                find()
             )
         );
 

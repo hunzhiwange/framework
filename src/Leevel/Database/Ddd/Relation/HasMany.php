@@ -113,7 +113,7 @@ class HasMany extends Relation
      */
     public function sourceQuery()
     {
-        return $this->select->getAll();
+        return $this->select->findAll();
     }
 
     /**

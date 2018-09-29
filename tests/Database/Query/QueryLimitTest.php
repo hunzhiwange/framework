@@ -61,7 +61,7 @@ eot;
 
                 limit(5, 10)->
 
-                get(null, true)
+                find(null, true)
             )
         );
 
@@ -87,7 +87,7 @@ eot;
 
                 one()->
 
-                get(null, true)
+                find(null, true)
             )
         );
 
@@ -113,7 +113,7 @@ eot;
 
                 all()->
 
-                get(null, true)
+                find(null, true)
             )
         );
 
@@ -139,7 +139,7 @@ eot;
 
                 top(15)->
 
-                get(null, true)
+                find(null, true)
             )
         );
     }

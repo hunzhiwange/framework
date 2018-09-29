@@ -59,7 +59,7 @@ eot;
             $this->varExport(
                 $connect->table('posts')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -83,7 +83,7 @@ eot;
             $this->varExport(
                 $connect->table('mydb.posts')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -107,7 +107,7 @@ eot;
             $this->varExport(
                 $connect->table(['p' => 'mydb.posts'])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -136,7 +136,7 @@ eot;
             $this->varExport(
                 $connect->table('posts', 'title,body')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -163,7 +163,7 @@ eot;
                         't' => 'title', 'name', 'remark,value',
                     ])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -200,7 +200,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -238,7 +238,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );

@@ -490,20 +490,6 @@ class Condition
     }
 
     /**
-     * 返回所有记录.
-     *
-     * @return mixed
-     */
-    public function getAll()
-    {
-        if ($this->options['limitquery']) {
-            return $this;
-        }
-
-        return $this->all();
-    }
-
-    /**
      * 根据分页设置条件.
      *
      * @param int $page
@@ -511,7 +497,7 @@ class Condition
      *
      * @return $this
      */
-    public function forPage($page, $perPage = 15)
+    public function forPage(int $page, int $perPage = 15)
     {
         return $this->limit(($page - 1) * $perPage, $perPage);
     }
@@ -1504,6 +1490,10 @@ class Condition
     public function all()
     {
         if ($this->checkTControl()) {
+            return $this;
+        }
+
+        if ($this->options['limitquery']) {
             return $this;
         }
 

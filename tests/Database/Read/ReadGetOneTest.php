@@ -62,7 +62,7 @@ eot;
 
                 table('test')->
 
-                getOne()
+                findOne()
             )
         );
 
@@ -75,7 +75,7 @@ eot;
 
                 one()->
 
-                get()
+                find()
             )
         );
     }

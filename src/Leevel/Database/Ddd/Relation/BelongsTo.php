@@ -114,7 +114,7 @@ class BelongsTo extends Relation
      */
     public function sourceQuery()
     {
-        return $this->select->getOne();
+        return $this->select->findOne();
     }
 
     /**

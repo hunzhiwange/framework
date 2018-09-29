@@ -61,7 +61,7 @@ eot;
 
                 distinct()->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -89,7 +89,7 @@ eot;
 
                 distinct(false)->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }

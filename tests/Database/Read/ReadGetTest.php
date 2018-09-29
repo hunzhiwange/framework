@@ -62,7 +62,7 @@ eot;
 
                 table('test')->
 
-                get()
+                find()
             )
         );
 
@@ -88,7 +88,7 @@ eot;
 
                 table('test')->
 
-                get(5)
+                find(5)
             )
         );
     }

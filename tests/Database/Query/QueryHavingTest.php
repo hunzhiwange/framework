@@ -64,7 +64,7 @@ eot;
 
                 having('tid', '>', 5)->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -97,7 +97,7 @@ eot;
 
                 having(['name', 'like', '技术'])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -132,7 +132,7 @@ eot;
 
                 orHaving(['tname', 'like', '技术'])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -167,7 +167,7 @@ eot;
 
                 havingBetween('id', [1, 100])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -198,7 +198,7 @@ eot;
                     ['tname', [5, 22]],
                 ])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -233,7 +233,7 @@ eot;
 
                 havingNotBetween('id', [1, 100])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -268,7 +268,7 @@ eot;
 
                 havingIn('num', [2, 50])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -303,7 +303,7 @@ eot;
 
                 havingNotIn('num', [2, 50])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -338,7 +338,7 @@ eot;
 
                 havingNull('num')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -373,7 +373,7 @@ eot;
 
                 havingNotNull('num')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -408,7 +408,7 @@ eot;
 
                 havingLike('num', '55')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -443,7 +443,7 @@ eot;
 
                 havingNotLike('num', '55')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -480,7 +480,7 @@ eot;
                     $select->having('votes', '>', 100)->having('title', '<>', 'Admin');
                 })->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -513,7 +513,7 @@ eot;
 
                 having('{concat("hello_",[posts])}', '=', '{[id]}')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -554,7 +554,7 @@ eot;
                     'hello'  => ['world'],
                 ])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -589,7 +589,7 @@ eot;
                     ['string__' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -626,7 +626,7 @@ eot;
                     ]
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -671,7 +671,7 @@ eot;
                     ]
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -689,7 +689,7 @@ eot;
 
         havingNotSupportMethod()->
 
-        getAll(true);
+        findAll(true);
     }
 
     public function testCallHavingSugarFlow()
@@ -726,7 +726,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -766,7 +766,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );

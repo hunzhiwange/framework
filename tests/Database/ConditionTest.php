@@ -18,64 +18,48 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Read;
+namespace Tests\Database;
 
 use Tests\Database\Query\Query;
 use Tests\TestCase;
 
 /**
- * read getall test.
+ * condition test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.06.21
+ * @since 2018.09.29
  *
  * @version 1.0
  */
-class ReadGetAllTest extends TestCase
+class ConditionTest extends TestCase
 {
     use Query;
 
-    public function testBaseUse()
+    public function testForPage()
     {
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` LIMIT 114,6",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
-                $connect->sql()->
+            $this->varJsonEncode(
+                $connect->table('test')->
 
-                table('test')->
+                forPage(20, 6)->
 
-                findAll()
-            )
-        );
-
-        $this->assertSame(
-            $sql,
-            $this->varExport(
-                $connect->sql()->
-
-                table('test')->
-
-                all()->
-
-                find()
+                findAll(true),
+                __FUNCTION__
             )
         );
     }

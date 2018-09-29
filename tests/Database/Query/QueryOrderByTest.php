@@ -63,7 +63,7 @@ eot;
 
                 orderBy('name')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -89,7 +89,7 @@ eot;
 
                 orderBy('test.id DESC')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -115,7 +115,7 @@ eot;
 
                 orderBy('{SUM([num]) ASC}')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -141,7 +141,7 @@ eot;
 
                 orderBy('{SUM([num]) ASC}')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -167,7 +167,7 @@ eot;
 
                 orderBy("title,id,{concat('1234',[id],'ttt') desc}")->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -193,7 +193,7 @@ eot;
 
                 orderBy(['title,id,ttt', 'value desc'])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -219,7 +219,7 @@ eot;
 
                 orderBy(['title,id,ttt asc', 'value'], 'desc')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -250,7 +250,7 @@ eot;
 
                 latest()->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -276,7 +276,7 @@ eot;
 
                 latest('foo')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -302,7 +302,7 @@ eot;
 
                 oldest()->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -328,7 +328,7 @@ eot;
 
                 oldest('bar')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }

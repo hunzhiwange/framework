@@ -61,7 +61,7 @@ eot;
 
                 join('hello', 'name,value', 'name', '=', '小牛')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -87,7 +87,7 @@ eot;
 
                 join(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -113,7 +113,7 @@ eot;
 
                 join('hello', 'name,value', ['hello' => 'world', ['test', '>', '{[name]}']])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -141,7 +141,7 @@ eot;
                     $select->where('id', '<', 5)->where('name', 'like', 'hello');
                 })->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -172,7 +172,7 @@ eot;
 
                 innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -203,7 +203,7 @@ eot;
 
                 rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -234,7 +234,7 @@ eot;
 
                 fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -265,7 +265,7 @@ eot;
 
                 crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -296,7 +296,7 @@ eot;
 
                 naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -333,7 +333,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -371,7 +371,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );

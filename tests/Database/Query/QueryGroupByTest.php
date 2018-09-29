@@ -63,7 +63,7 @@ eot;
 
                 groupBy('name')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -89,7 +89,7 @@ eot;
 
                 groupBy('post.id')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -115,7 +115,7 @@ eot;
 
                 groupBy('{SUM([num])}')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -141,7 +141,7 @@ eot;
 
                 groupBy("title,id,{concat('1234',[id],'ttt')}")->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -167,7 +167,7 @@ eot;
 
                 groupBy(['title,id,ttt', 'value'])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }

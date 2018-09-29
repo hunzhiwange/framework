@@ -465,7 +465,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $objInstance = new static();
 
-        foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objEntity) {
+        foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->findAll() as $objEntity) {
             if ($objEntity->delete()) {
                 $intCount++;
             }

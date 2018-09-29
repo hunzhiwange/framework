@@ -40,7 +40,7 @@ class HasOne extends HasMany
      */
     public function sourceQuery()
     {
-        return $this->select->getOne();
+        return $this->select->findOne();
     }
 
     /**

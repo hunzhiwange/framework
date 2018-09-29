@@ -133,7 +133,7 @@ class Repository implements IRepository
             call_user_func($specification, $select);
         }
 
-        return $select->getAll();
+        return $select->findAll();
     }
 
     /**

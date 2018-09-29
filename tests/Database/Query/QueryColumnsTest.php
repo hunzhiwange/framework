@@ -63,7 +63,7 @@ eot;
 
                 columns('name,value')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -98,7 +98,7 @@ eot;
 
                 setColumns('remark')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -135,7 +135,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -173,7 +173,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -213,7 +213,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -253,7 +253,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );

@@ -71,7 +71,7 @@ eot;
 
                 union($union1)->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -82,7 +82,7 @@ eot;
 
                 union([$union1, $union2, $union1])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -116,7 +116,7 @@ eot;
 
                 unionAll($union1)->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -157,7 +157,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -199,7 +199,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -241,7 +241,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -283,7 +283,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -304,6 +304,6 @@ eot;
 
         union($union1, 'NOT FOUND')->
 
-        getAll(true);
+        findAll(true);
     }
 }

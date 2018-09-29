@@ -198,7 +198,7 @@ class Select
 
         setColumns($column)->
 
-        getOne();
+        findOne();
     }
 
     /**
@@ -223,7 +223,7 @@ class Select
 
         setColumns($column)->
 
-        getAll();
+        findAll();
     }
 
     /**
@@ -287,7 +287,7 @@ class Select
         return $this->select->
         setColumns($column)->
 
-        getOne();
+        findOne();
     }
 
     /**
@@ -440,7 +440,7 @@ class Select
                 $instance->getPrimaryKeyNameForQuery(),
                 $id
             )->
-            getAll() as $entity) {
+            findAll() as $entity) {
             if ($entity->softDelete()) {
                 $count++;
             }
@@ -791,7 +791,7 @@ class Select
      */
     protected function getFirstByProp(array $props)
     {
-        if (null !== ($entity = $this->select->where($props)->getOne())) {
+        if (null !== ($entity = $this->select->where($props)->findOne())) {
             return $entity;
         }
     }

@@ -63,7 +63,7 @@ eot;
 
                 where('id', '=', 5)->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -91,7 +91,7 @@ eot;
 
                 where('id', '=', 5)->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }

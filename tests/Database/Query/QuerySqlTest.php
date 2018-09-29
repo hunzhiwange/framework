@@ -63,7 +63,7 @@ eot;
 
                 latest()->
 
-                getOne()
+                findOne()
             )
         );
 
@@ -108,7 +108,7 @@ eot;
 
                 latest()->
 
-                getOne(true)
+                findOne(true)
             )
         );
     }

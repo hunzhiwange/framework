@@ -69,7 +69,7 @@ eot;
 
                 where('id', '=', '[:id]')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -102,7 +102,7 @@ eot;
 
                 where('id', '=', '[:id]')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -135,7 +135,7 @@ eot;
 
                 where('id', '=', '[:id]')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -175,7 +175,7 @@ eot;
 
                 where('hello', 'like', '[:name]')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -215,7 +215,7 @@ eot;
 
                 where('hello', 'like', '[?]')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }

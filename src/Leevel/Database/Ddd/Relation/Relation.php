@@ -135,7 +135,7 @@ abstract class Relation
     {
         return $this->querySelelct()->
         preLoadResult(
-            $this->getAll()
+            $this->findAll()
         );
     }
 

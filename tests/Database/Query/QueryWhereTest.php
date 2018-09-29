@@ -62,7 +62,7 @@ eot;
 
                 where('id', '=', 1)->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -88,7 +88,7 @@ eot;
 
                 where('id', 2)->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -118,7 +118,7 @@ eot;
 
                 where('value', 'like', '小鸭子')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -149,7 +149,7 @@ eot;
 
                 where(['name', 'like', '技术'])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -178,7 +178,7 @@ eot;
                     ['value', '<>', '结局'],
                 ])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -211,7 +211,7 @@ eot;
 
                 orWhere('value', '<>', '结局')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -242,7 +242,7 @@ eot;
 
                 whereBetween('id', [1, 100])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -268,7 +268,7 @@ eot;
 
                 where('id', 'between', [1, 10])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -297,7 +297,7 @@ eot;
                     ['name', [5, 22]],
                 ])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -328,7 +328,7 @@ eot;
 
                 whereNotBetween('id', [1, 10])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -354,7 +354,7 @@ eot;
 
                 where('id', 'not between', [1, 10])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -385,7 +385,7 @@ eot;
 
                 whereIn('id', [2, 50])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -411,7 +411,7 @@ eot;
 
                 where('id', 'in', '1,10')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -437,7 +437,7 @@ eot;
 
                 where('id', 'in', [2, 50])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -468,7 +468,7 @@ eot;
 
                 whereNotIn('id', [2, 50])->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -494,7 +494,7 @@ eot;
 
                 where('id', 'not in', '1,10')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -525,7 +525,7 @@ eot;
 
                 whereNull('id')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -536,7 +536,7 @@ eot;
 
                 where('id', 'null')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -567,7 +567,7 @@ eot;
 
                 whereNotNull('id')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -578,7 +578,7 @@ eot;
 
                 where('id', 'not null')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -609,7 +609,7 @@ eot;
 
                 whereLike('id', '5')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -620,7 +620,7 @@ eot;
 
                 where('id', 'like', '5')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -651,7 +651,7 @@ eot;
 
                 whereNotLike('id', '5')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -662,7 +662,7 @@ eot;
 
                 where('id', 'not like', '5')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -697,7 +697,7 @@ eot;
                     }
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -729,7 +729,7 @@ eot;
                    ]
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -761,7 +761,7 @@ eot;
                    ]
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -795,7 +795,7 @@ eot;
                    ]
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -830,7 +830,7 @@ eot;
                     }
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -865,7 +865,7 @@ eot;
                     $select->where('votes', '>', 100)->where('title', '<>', 'Admin');
                 })->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -897,7 +897,7 @@ eot;
                     $select->where('votes', '>', 100)->orWhere('title', '<>', 'Admin');
                 })->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -928,7 +928,7 @@ eot;
 
                 where('{concat("hello_",[posts])}', '=', '{[id]}')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -967,7 +967,7 @@ eot;
                     'hello'  => ['world'],
                 ])->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -1000,7 +1000,7 @@ eot;
                    ['string__' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -1035,7 +1035,7 @@ eot;
                     ]
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -1078,7 +1078,7 @@ eot;
                     ]
                 )->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -1096,7 +1096,7 @@ eot;
 
         whereNotSupportMethod()->
 
-        getAll(true);
+        findAll(true);
     }
 
     public function testCallWhereSugarFlow()
@@ -1131,7 +1131,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -1169,7 +1169,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );

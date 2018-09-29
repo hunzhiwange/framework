@@ -151,21 +151,21 @@ class Select
         }
 
         // 动态查询支持
-        if (0 === strncasecmp($method, 'get', 3)) {
-            $method = substr($method, 3);
+        if (0 === strncasecmp($method, 'find', 4)) {
+            $method = substr($method, 4);
 
-            // support get10start3 etc.
+            // support find10start3 etc.
             if (false !== strpos(strtolower($method), 'start')) {
                 $values = explode('start', strtolower($method));
                 $num = (int) (array_shift($values));
                 $offset = (int) (array_shift($values));
 
                 return $this->limit($offset, $num)->
-                get();
+                find();
             }
 
-            // support getByName getByNameAndSex etc.
-            // support getAllByNameAndSex etc.
+            // support findByName findByNameAndSex etc.
+            // support findAllByNameAndSex etc.
             if (0 === strncasecmp($method, 'By', 2) ||
                 0 === strncasecmp($method, 'AllBy', 5)) {
                 $method = substr(
@@ -196,11 +196,11 @@ class Select
 
                 return $this->where(
                     array_combine($keys, $args)
-                )->{'get'.($isOne ? 'One' : 'All')}();
+                )->{'find'.($isOne ? 'One' : 'All')}();
             }
 
             return $this->top((int) ($method))->
-            get();
+            find();
         }
 
         // 查询组件
@@ -262,7 +262,7 @@ class Select
      *
      * @return $this
      */
-    public function sql($flag = true)
+    public function sql(bool $flag = true)
     {
         $this->onlyMakeSql = (bool) $flag;
 
@@ -276,7 +276,7 @@ class Select
      *
      * @return $this
      */
-    public function asMaster($master = false)
+    public function asMaster(bool $master = false)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -324,7 +324,7 @@ class Select
      *
      * @return $this
      */
-    public function asClass($className)
+    public function asClass(string $className)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -360,7 +360,7 @@ class Select
      *
      * @return $this
      */
-    public function asCollection($acollection = true)
+    public function asCollection(bool $acollection = true)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -385,7 +385,7 @@ class Select
     {
         // 查询对象直接查询
         if ($data instanceof self) {
-            return $data->get(null, $this->onlyMakeSql);
+            return $data->find(null, $this->onlyMakeSql);
         }
 
         // 回调
@@ -398,7 +398,7 @@ class Select
 
         // 调用查询
         if (null === $data) {
-            return $this->get(null, $flag);
+            return $this->find(null, $flag);
         }
 
         return $this->safeSql($flag)->
@@ -419,7 +419,7 @@ class Select
      *
      * @return null|array|int
      */
-    public function insert($data, $bind = [], $replace = false, $flag = false)
+    public function insert($data, array $bind = [], bool $replace = false, bool $flag = false)
     {
         return $this->safeSql($flag)->
         runNativeSql(
@@ -439,7 +439,7 @@ class Select
      *
      * @return null|array|int
      */
-    public function insertAll($data, $bind = [], $replace = false, $flag = false)
+    public function insertAll($data, array $bind = [], bool $replace = false, bool $flag = false)
     {
         return $this->safeSql($flag)->
         runNativeSql(
@@ -458,7 +458,7 @@ class Select
      *
      * @return int 影响记录
      */
-    public function update($data, $bind = [], $flag = false)
+    public function update($data, array $bind = [], bool $flag = false)
     {
         return $this->safeSql($flag)->
         runNativeSql(
@@ -478,7 +478,7 @@ class Select
      *
      * @return int
      */
-    public function updateColumn(string $column, $value, $bind = [], $flag = false)
+    public function updateColumn(string $column, $value, array $bind = [], bool $flag = false)
     {
         return $this->update(
             [
@@ -499,7 +499,7 @@ class Select
      *
      * @return int
      */
-    public function updateIncrease(string $column, $step = 1, $bind = [], $flag = false)
+    public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
     {
         return $this->updateColumn(
             $column,
@@ -519,7 +519,7 @@ class Select
      *
      * @return int
      */
-    public function updateDecrease(string $column, $step = 1, $bind = [], $flag = false)
+    public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
     {
         return $this->updateColumn(
             $column,
@@ -538,7 +538,7 @@ class Select
      *
      * @return int 影响记录
      */
-    public function delete($data = null, $bind = [], $flag = false)
+    public function delete($data = null, array $bind = [], bool $flag = false)
     {
         return $this->safeSql($flag)->
         runNativeSql(
@@ -553,7 +553,7 @@ class Select
      *
      * @param bool $flag 指示是否不做任何操作只返回 SQL
      */
-    public function truncate($flag = false)
+    public function truncate(bool $flag = false)
     {
         return $this->safeSql($flag)->
         runNativeSql(
@@ -570,7 +570,7 @@ class Select
      *
      * @return mixed
      */
-    public function getOne($flag = false)
+    public function findOne(bool $flag = false)
     {
         $this->condition->one();
 
@@ -585,9 +585,10 @@ class Select
      *
      * @return mixed
      */
-    public function getAll($flag = false)
+    public function findAll(bool $flag = false)
     {
-        $this->condition->getAll();
+        //dd($this->condition);
+        $this->condition->all();
 
         return $this->safeSql($flag)->
         query();
@@ -596,12 +597,12 @@ class Select
     /**
      * 返回最后几条记录.
      *
-     * @param mixed $num
-     * @param bool  $flag 指示是否不做任何操作只返回 SQL
+     * @param int  $num
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
-    public function get($num = null, $flag = false)
+    public function find(?int $num = null, bool $flag = false)
     {
         if (null !== $num) {
             $this->condition->top($num);
@@ -619,7 +620,7 @@ class Select
      *
      * @return mixed
      */
-    public function value($field, $flag = false)
+    public function value(string $field, bool $flag = false)
     {
         $this->condition->setColumns($field)->
 
@@ -646,7 +647,7 @@ class Select
      *
      * @return mixed
      */
-    public function pull($field, $flag = false)
+    public function pull(string $field, bool $flag = false)
     {
         return $this->value($field, $flag);
     }
@@ -660,7 +661,7 @@ class Select
      *
      * @return array
      */
-    public function lists($fieldValue, $fieldKey = null, $flag = false)
+    public function lists($fieldValue, $fieldKey = null, bool $flag = false)
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
@@ -681,7 +682,7 @@ class Select
 
         asDefault()->
 
-        getAll();
+        findAll();
 
         if (true === $this->onlyMakeSql) {
             return $tmps;
@@ -711,11 +712,11 @@ class Select
      *
      * @return bool
      */
-    public function chunk($count, callable $calCallback)
+    public function chunk(int $count, callable $calCallback)
     {
         $result = $this->forPage($page = 1, $count)->
 
-        getAll();
+        findAll();
 
         while (count($result) > 0) {
             if (false === call_user_func_array($calCallback, [
@@ -729,7 +730,7 @@ class Select
 
             $result = $this->forPage($page, $count)->
 
-            getAll();
+            findAll();
         }
 
         return true;
@@ -738,12 +739,12 @@ class Select
     /**
      * 数据分块处理依次回调.
      *
-     * @param int      $count
-     * @param callable $calCallback
+     * @param int     $count
+     * @param Closure $calCallback
      *
      * @return bool
      */
-    public function each($count, callable $calCallback)
+    public function each(int $count, Closure $calCallback)
     {
         return $this->chunk($count, function ($result, $page) use ($calCallback) {
             foreach ($result as $key => $value) {
@@ -763,7 +764,7 @@ class Select
      *
      * @return int
      */
-    public function getCount($field = '*', $alias = 'row_count', $flag = false)
+    public function getCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
     {
         return $this->getAggregateResult('count', $field, $alias, $flag);
     }
@@ -777,7 +778,7 @@ class Select
      *
      * @return number
      */
-    public function getAvg($field, $alias = 'avg_value', $flag = false)
+    public function getAvg(string $field, string $alias = 'avg_value', bool $flag = false)
     {
         return $this->getAggregateResult('avg', $field, $alias, $flag);
     }
@@ -791,7 +792,7 @@ class Select
      *
      * @return number
      */
-    public function getMax($field, $alias = 'max_value', $flag = false)
+    public function getMax(string $field, string $alias = 'max_value', bool $flag = false)
     {
         return $this->getAggregateResult('max', $field, $alias, $flag);
     }
@@ -805,7 +806,7 @@ class Select
      *
      * @return number
      */
-    public function getMin($field, $alias = 'min_value', $flag = false)
+    public function getMin(string $field, string $alias = 'min_value', bool $flag = false)
     {
         return $this->getAggregateResult('min', $field, $alias, $flag);
     }
@@ -819,7 +820,7 @@ class Select
      *
      * @return number
      */
-    public function getSum($field, $alias = 'sum_value', $flag = false)
+    public function getSum(string $field, string $alias = 'sum_value', bool $flag = false)
     {
         return $this->getAggregateResult('sum', $field, $alias, $flag);
     }
@@ -833,7 +834,7 @@ class Select
      *
      * @return array
      */
-    public function paginate($perPage = 10, $cols = '*', array $options = [])
+    public function paginate(int $perPage = 10, string $cols = '*', array $options = [])
     {
         $page = new page_with_total(
             $perPage,
@@ -848,7 +849,7 @@ class Select
                 $perPage
             )->
 
-            getAll(),
+            findAll(),
         ];
     }
 
@@ -861,7 +862,7 @@ class Select
      *
      * @return array
      */
-    public function simplePaginate($perPage = 10, $cols = '*', array $options = [])
+    public function simplePaginate(int $perPage = 10, string $cols = '*', array $options = [])
     {
         $page = new PageWithoutTotal(
             $perPage,
@@ -875,7 +876,7 @@ class Select
                 $perPage
             )->
 
-            getAll(),
+            findAll(),
         ];
     }
 
@@ -886,7 +887,7 @@ class Select
      *
      * @return int
      */
-    public function getPaginateCount($cols = '*')
+    public function getPaginateCount(string $cols = '*')
     {
         $this->backupPaginateArgs();
 
@@ -906,7 +907,7 @@ class Select
      *
      * @return string
      */
-    public function makeSql($withLogicGroup = false)
+    public function makeSql(bool $withLogicGroup = false)
     {
         return $this->condition->
         makeSql($withLogicGroup);
@@ -919,7 +920,7 @@ class Select
      *
      * @return $this
      */
-    protected function safeSql($flag = true)
+    protected function safeSql(bool $flag = true)
     {
         if (true === $this->onlyMakeSql) {
             return $this;

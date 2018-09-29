@@ -62,7 +62,7 @@ eot;
 
                 table('test')->
 
-                get10()
+                find10()
             )
         );
 
@@ -88,7 +88,7 @@ eot;
 
                 table('test')->
 
-                get10start3()
+                find10start3()
             )
         );
 
@@ -114,7 +114,7 @@ eot;
 
                 table('test')->
 
-                getByUserName('1111')
+                findByUserName('1111')
             )
         );
 
@@ -140,7 +140,7 @@ eot;
 
                 table('test')->
 
-                getByUserName_('1111')
+                findByUserName_('1111')
             )
         );
 
@@ -166,7 +166,7 @@ eot;
 
                 table('test')->
 
-                getAllByUserNameAndSex('1111', '222')
+                findAllByUserNameAndSex('1111', '222')
             )
         );
 
@@ -192,7 +192,7 @@ eot;
 
                 table('test')->
 
-                getAllByUserNameAndSex_('1111', '222')
+                findAllByUserNameAndSex_('1111', '222')
             )
         );
     }

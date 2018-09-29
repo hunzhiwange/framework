@@ -69,7 +69,7 @@ eot;
 
                 where('new', '=', 'world')->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -103,7 +103,7 @@ eot;
 
                 where('new', 'like', 'new')->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
@@ -148,7 +148,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );
@@ -194,7 +194,7 @@ eot;
 
                 endIfs()->
 
-                getAll(true),
+                findAll(true),
                 __FUNCTION__
             )
         );

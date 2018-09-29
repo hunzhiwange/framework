@@ -178,7 +178,7 @@ class ManyMany extends Relation
             return new Collection();
         }
 
-        return $this->select->getAll();
+        return $this->select->findAll();
     }
 
     /**
@@ -316,7 +316,7 @@ class ManyMany extends Relation
     {
         $arr = $targetId = [];
 
-        foreach ($this->middleSelect->getAll() as $entity) {
+        foreach ($this->middleSelect->findAll() as $entity) {
             $arr[$entity->{$this->middleTargetKey}][] = $entity->{$this->middleSourceKey};
             $targetId[] = $entity->{$this->middleTargetKey};
         }

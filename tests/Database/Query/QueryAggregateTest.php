@@ -61,7 +61,7 @@ eot;
 
                 count()->
 
-                getOne(true)
+                findOne(true)
             )
         );
 
@@ -87,7 +87,7 @@ eot;
 
                 count('id')->
 
-                getOne(true)
+                findOne(true)
             )
         );
 
@@ -113,7 +113,7 @@ eot;
 
                 count('id', 'count1')->
 
-                getOne(true)
+                findOne(true)
             )
         );
 
@@ -139,7 +139,7 @@ eot;
 
                 count('{[id]*50}', 'count1')->
 
-                getOne(true)
+                findOne(true)
             )
         );
     }
@@ -170,7 +170,7 @@ eot;
 
                 avg('id')->
 
-                getOne(true)
+                findOne(true)
             )
         );
     }
@@ -201,7 +201,7 @@ eot;
 
                 max('num')->
 
-                getOne(true)
+                findOne(true)
             )
         );
     }
@@ -232,7 +232,7 @@ eot;
 
                 min('num')->
 
-                getOne(true)
+                findOne(true)
             )
         );
     }
@@ -263,7 +263,7 @@ eot;
 
                 sum('num')->
 
-                getOne(true)
+                findOne(true)
             )
         );
     }

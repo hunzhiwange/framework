@@ -65,7 +65,7 @@ eot;
 
                 latest()->
 
-                getOne(),
+                findOne(),
                 __FUNCTION__
             )
         );
@@ -101,7 +101,7 @@ eot;
 
                 latest()->
 
-                getOne(),
+                findOne(),
                 __FUNCTION__
             )
         );

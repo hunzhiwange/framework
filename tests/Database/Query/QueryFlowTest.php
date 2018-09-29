@@ -71,7 +71,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true)
+                findOne(true)
             )
         );
 
@@ -107,7 +107,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true)
+                findOne(true)
             )
         );
 
@@ -143,7 +143,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true)
+                findOne(true)
             )
         );
 
@@ -179,7 +179,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true)
+                findOne(true)
             )
         );
     }
@@ -222,7 +222,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true)
+                findOne(true)
             )
         );
 
@@ -260,7 +260,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true)
+                findOne(true)
             )
         );
 
@@ -298,7 +298,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true)
+                findOne(true)
             )
         );
     }

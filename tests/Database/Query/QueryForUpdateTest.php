@@ -61,7 +61,7 @@ eot;
 
                 forUpdate()->
 
-                getAll(true)
+                findAll(true)
             )
         );
 
@@ -89,7 +89,7 @@ eot;
 
                 forUpdate(false)->
 
-                getAll(true)
+                findAll(true)
             )
         );
     }
