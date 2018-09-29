@@ -3096,7 +3096,7 @@ class Condition
      *
      * @param bool $isTable
      */
-    protected function setIsTable($isTable = true)
+    protected function setIsTable(bool $isTable = true)
     {
         $this->isTable = $isTable;
     }
@@ -3106,7 +3106,7 @@ class Condition
      *
      * @return bool
      */
-    protected function getIsTable()
+    protected function getIsTable(): bool
     {
         return $this->isTable;
     }
@@ -3120,7 +3120,7 @@ class Condition
      *
      * @return mixed
      */
-    protected function parseTime($field, $value, $type)
+    protected function parseTime(string $field, $value, string $type)
     {
         $field = str_replace('`', '', $field);
         $table = $this->getCurrentTable();

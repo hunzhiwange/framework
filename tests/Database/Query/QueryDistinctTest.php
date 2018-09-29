@@ -40,56 +40,126 @@ class QueryDistinctTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT DISTINCT `test`.* FROM `test`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT DISTINCT `test`.* FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJsonEncode(
                 $connect->table('test')->
 
                 distinct()->
 
-                findAll(true)
+                findAll(true),
+                __FUNCTION__
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJsonEncode(
                 $connect->table('test')->
 
                 distinct()->
 
                 distinct(false)->
 
-                findAll(true)
+                findAll(true),
+                __FUNCTION__.'1'
+            )
+        );
+    }
+
+    public function testFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                distinct()->
+
+                elses()->
+
+                distinct(false)->
+
+                endIfs()->
+
+                findAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT DISTINCT `test`.* FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                distinct()->
+
+                elses()->
+
+                distinct(false)->
+
+                endIfs()->
+
+                findAll(true),
+                __FUNCTION__
             )
         );
     }

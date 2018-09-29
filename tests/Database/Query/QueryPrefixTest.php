@@ -40,58 +40,128 @@ class QueryPrefixTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT SQL_CALC_FOUND_ROWS `test`.* FROM `test` WHERE `test`.`id` = 5',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT SQL_CALC_FOUND_ROWS `test`.* FROM `test` WHERE `test`.`id` = 5",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJsonEncode(
                 $connect->table('test')->
 
                 prefix('SQL_CALC_FOUND_ROWS')->
 
                 where('id', '=', 5)->
 
-                findAll(true)
+                findAll(true),
+                __FUNCTION__
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT SQL_NO_CACHE `test`.* FROM `test` WHERE `test`.`id` = 5',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT SQL_NO_CACHE `test`.* FROM `test` WHERE `test`.`id` = 5",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJsonEncode(
                 $connect->table('test')->
 
                 prefix('SQL_NO_CACHE')->
 
                 where('id', '=', 5)->
 
-                findAll(true)
+                findAll(true),
+                __FUNCTION__.'1'
+            )
+        );
+    }
+
+    public function testFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT SQL_CALC_FOUND_ROWS `test`.* FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                prefix('SQL_NO_CACHE')->
+
+                elses()->
+
+                prefix('SQL_CALC_FOUND_ROWS')->
+
+                endIfs()->
+
+                findAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT SQL_NO_CACHE `test`.* FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                prefix('SQL_NO_CACHE')->
+
+                elses()->
+
+                prefix('SQL_CALC_FOUND_ROWS')->
+
+                endIfs()->
+
+                findAll(true),
+                __FUNCTION__
             )
         );
     }

@@ -686,4 +686,197 @@ eot;
 
         findOne(true);
     }
+
+    public function testTimeFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`create_at` = %d",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $date = getdate();
+        $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+
+        $this->assertSame(
+            sprintf($sql, $time),
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                time('month')->
+
+                where('create_at', 5)->
+
+                endTime()->
+
+                elses()->
+
+                time('day')->
+
+                where('create_at', 5)->
+
+                endTime()->
+
+                endIfs()->
+
+                findAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testTimeFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`create_at` = %d",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $date = getdate();
+        $time = mktime(0, 0, 0, 5, 1, $date['year']);
+
+        $this->assertSame(
+            sprintf($sql, $time),
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                time('month')->
+
+                where('create_at', 5)->
+
+                endTime()->
+
+                elses()->
+
+                time('day')->
+
+                where('create_at', 5)->
+
+                endTime()->
+
+                endIfs()->
+
+                findAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testEndTimeFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`create_at` = %d AND `test`.`create_at` = 6",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $date = getdate();
+        $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+
+        $this->assertSame(
+            sprintf($sql, $time),
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                time('day')->
+
+                where('create_at', 5)->
+
+                ifs($condition)->
+
+                elses()->
+
+                endTime()->
+
+                endIfs()->
+
+                where('create_at', 6)->
+
+                endTime()->
+
+                findAll(true),
+                __FUNCTION__
+            )
+        );
+    }
+
+    public function testEndTimeFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`create_at` = %d AND `test`.`create_at` = %d",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $date = getdate();
+        $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+        $time2 = mktime(0, 0, 0, $date['mon'], 6, $date['year']);
+
+        $this->assertSame(
+            sprintf($sql, $time, $time2),
+            $this->varJsonEncode(
+                $connect->table('test')->
+
+                time('day')->
+
+                where('create_at', 5)->
+
+                ifs($condition)->
+
+                elses()->
+
+                endTime()->
+
+                endIfs()->
+
+                where('create_at', 6)->
+
+                endTime()->
+
+                findAll(true),
+                __FUNCTION__
+            )
+        );
+    }
 }
