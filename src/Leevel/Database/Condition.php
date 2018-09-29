@@ -504,30 +504,22 @@ class Condition
 
     /**
      * 时间控制语句开始.
+     *
+     * @param string $type
      */
-    public function time()
+    public function time(string $type = 'date')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $args = func_get_args();
+        if (!in_array($type, ['date', 'month', 'day', 'year'], true)) {
+            throw new InvalidArgumentException(
+                sprintf('Time type `%s` is invalid.', $type)
+            );
+        }
 
-        $this->setInTimeCondition(
-            isset($args[0]) &&
-            in_array(
-                $args[0],
-                [
-                    'date',
-                    'month',
-                    'year',
-                    'day',
-                ],
-                true
-            ) ?
-            $args[0] :
-            null
-        );
+        $this->setInTimeCondition($type);
     }
 
     /**
@@ -729,78 +721,6 @@ class Condition
         array_unshift($arr, 'where');
 
         return $this->aliatypeAndLogic(...$arr);
-    }
-
-    /**
-     * whereDate 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereDate(...$arr)
-    {
-        $this->setInTimeCondition('date');
-
-        $this->where(...$arr);
-
-        $this->setInTimeCondition(null);
-
-        return $this;
-    }
-
-    /**
-     * whereMonth 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereMonth(...$arr)
-    {
-        $this->setInTimeCondition('month');
-
-        $this->where(...$arr);
-
-        $this->setInTimeCondition(null);
-
-        return $this;
-    }
-
-    /**
-     * whereDay 查询条件.
-     *
-     * @param mixed $cond
-     *
-     * @return $this
-     */
-    public function whereDay(...$arr)
-    {
-        $this->setInTimeCondition('day');
-
-        $this->where(...$arr);
-
-        $this->setInTimeCondition(null);
-
-        return $this;
-    }
-
-    /**
-     * whereYear 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereYear(...$arr)
-    {
-        $this->setInTimeCondition('year');
-
-        $this->where(...$arr);
-
-        $this->setInTimeCondition(null);
-
-        return $this;
     }
 
     /**
@@ -1647,6 +1567,8 @@ class Condition
             'whereNotNull', 'whereNull',
             'whereNotIn', 'whereIn',
             'whereNotLike', 'whereLike',
+            'whereDate', 'whereDay',
+            'whereMonth', 'whereYear',
         ], true)) {
             return false;
         }
@@ -1655,6 +1577,13 @@ class Condition
             return $this;
         }
 
+        if (in_array($method, ['whereDate', 'whereDay', 'whereMonth', 'whereYear'], true)) {
+            $this->setInTimeCondition(strtolower(substr($method, 5)));
+            $this->where(...$args);
+            $this->setInTimeCondition(null);
+
+            return $this;
+        }
         $this->setTypeAndLogic('where', static::LOGIC_AND);
 
         if (0 === strpos($method, 'whereNot')) {
@@ -3203,20 +3132,32 @@ class Condition
             }
         }
 
-        if ('*' === $field) {
-            return '';
-        }
-
         // 支持类型
         switch ($type) {
             case 'day':
+                $value = (int) $value;
+
+                if ($value > 31) {
+                    throw new InvalidArgumentException(
+                        sprintf('Days can only be less than 31,but %s given.', $value)
+                    );
+                }
+
                 $date = getdate();
-                $value = mktime(0, 0, 0, $date['mon'], (int) $value, $date['year']);
+                $value = mktime(0, 0, 0, $date['mon'], $value, $date['year']);
 
                 break;
             case 'month':
+                $value = (int) $value;
+
+                if ($value > 12) {
+                    throw new InvalidArgumentException(
+                        sprintf('Months can only be less than 12,but %s given.', $value)
+                    );
+                }
+
                 $date = getdate();
-                $value = mktime(0, 0, 0, (int) $value, 1, $date['year']);
+                $value = mktime(0, 0, 0, $value, 1, $date['year']);
 
                 break;
             case 'year':
@@ -3224,6 +3165,7 @@ class Condition
 
                 break;
             case 'date':
+            default:
                 $value = strtotime($value);
 
                 if (false === $value) {
@@ -3231,15 +3173,6 @@ class Condition
                         'Please enter a right time of strtotime.'
                     );
                 }
-
-                break;
-            default:
-                throw new InvalidArgumentException(
-                    sprintf(
-                        'Unsupported time formatting type %s.',
-                        $type
-                    )
-                );
 
                 break;
         }
