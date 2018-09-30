@@ -24,7 +24,7 @@ use Tests\Database\Query\Query;
 use Tests\TestCase;
 
 /**
- * delete delete test.
+ * delete test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -41,17 +41,15 @@ class DeleteDeleteTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'DELETE FROM `test` WHERE `test`.`id` = 1 ORDER BY `test`.`id` DESC LIMIT 1',
-  1 => 
-  array (
-  ),
-)
+[
+    "DELETE FROM `test` WHERE `test`.`id` = 1 ORDER BY `test`.`id` DESC LIMIT 1",
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJsonEncode(
                 $connect->sql()->
 
                 table('test')->
@@ -62,7 +60,8 @@ eot;
 
                 orderBy('id desc')->
 
-                delete()
+                delete(),
+                __FUNCTION__
             )
         );
     }
@@ -72,22 +71,20 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'DELETE t FROM `test` `t` INNER JOIN `hello` `h` ON `h`.`name` = \'小牛\' WHERE `t`.`id` = 1',
-  1 => 
-  array (
-  ),
-)
+[
+    "DELETE t FROM `test` `t` INNER JOIN `hello` `h` ON `h`.`name` = `t`.`content` WHERE `t`.`id` = 1",
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJsonEncode(
                 $connect->sql()->
 
                 table('test as t')->
 
-                innerJoin(['h' => 'hello'], [], 'name', '=', '小牛')->
+                innerJoin(['h' => 'hello'], [], 'name', '=', '{[t.content]}')->
 
                 where('id', 1)->
 
@@ -95,42 +92,8 @@ eot;
 
                 orderBy('id desc')->
 
-                delete()
-            )
-        );
-    }
-
-    public function testUsing()
-    {
-        $connect = $this->createConnect();
-
-        $sql = <<<'eot'
-array (
-  0 => 'DELETE FROM t1 USING `t2`,`t3`,`test` `t1` WHERE `t1`.`id` = `t2`.`id` AND `t2`.`id` = `t3`.`id`',
-  1 => 
-  array (
-  ),
-)
-eot;
-
-        $this->assertSame(
-            $sql,
-            $this->varExport(
-                $connect->sql()->
-
-                table('test as t1')->
-
-                where('t1.id', '{[t2.id]}')->
-
-                where('t2.id', '{[t3.id]}')->
-
-                using('t2,t3')->
-
-                limit(1)->
-
-                orderBy('id desc')->
-
-                delete()
+                delete(),
+                __FUNCTION__
             )
         );
     }

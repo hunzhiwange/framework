@@ -162,7 +162,6 @@ class Condition
         'aggregate'   => [],
         'union'       => [],
         'from'        => [],
-        'using'       => [],
         'index'       => [],
         'where'       => null,
         'group'       => [],
@@ -193,7 +192,7 @@ class Condition
      *
      * @var string
      */
-    protected $currentTable = '';
+    protected $table = '';
 
     /**
      * 是否为表操作.
@@ -275,7 +274,7 @@ class Condition
             $bindData = $this->getBindData($data, $bind, $questionMark);
             $fields = $bindData[0];
             $values = $bindData[1];
-            $tableName = $this->getCurrentTable();
+            $tableName = $this->getTable();
 
             foreach ($fields as &$field) {
                 $field = $this->qualifyOneColumn($field, $tableName);
@@ -322,7 +321,7 @@ class Condition
         if (is_array($data)) {
             $dataResult = [];
             $questionMark = 0;
-            $tableName = $this->getCurrentTable();
+            $tableName = $this->getTable();
 
             foreach ($data as $key => $tmp) {
                 if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
@@ -388,7 +387,7 @@ class Condition
             $bindData = $this->getBindData($data, $bind, $questionMark);
             $fields = $bindData[0];
             $values = $bindData[1];
-            $tableName = $this->getCurrentTable();
+            $tableName = $this->getTable();
 
             // SET 语句
             $setData = [];
@@ -440,21 +439,18 @@ class Condition
             $sql = [];
             $sql[] = 'DELETE';
 
-            // join 方式关联删除
-            if (empty($this->options['using'])) {
-                $sql[] = $this->parseTable(true, true);
+            if (1 === count($this->options['from'])) {
+                $sql[] = 'FROM';
+                $sql[] = $this->parseTable();
+                $sql[] = $this->parseWhere();
+                $sql[] = $this->parseOrder();
+                $sql[] = $this->parseLimitcount(true);
+            } else {
+                $sql[] = $this->parseTable();
                 $sql[] = $this->parseFrom();
+                $sql[] = $this->parseWhere();
             }
 
-            // using 方式关联删除
-            else {
-                $sql[] = 'FROM '.$this->parseTable(true);
-                $sql[] = $this->parseUsing(true);
-            }
-
-            $sql[] = $this->parseWhere();
-            $sql[] = $this->parseOrder(true);
-            $sql[] = $this->parseLimitcount(true, true);
             $sql = array_filter($sql);
             $data = implode(' ', $sql);
 
@@ -480,7 +476,7 @@ class Condition
         // 构造 truncate 语句
         $sql = [];
         $sql[] = 'TRUNCATE TABLE';
-        $sql[] = $this->parseTable(true);
+        $sql[] = $this->parseTable();
         $sql = implode(' ', $sql);
 
         return [
@@ -559,31 +555,17 @@ class Condition
     /**
      * prefix 查询.
      *
-     * @param array|string $prefix
+     * @param string $prefix
      *
      * @return $this
      */
-    public function prefix($prefix)
+    public function prefix(string $prefix)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $prefix = Arr::normalize($prefix);
-
-        foreach ($prefix as $value) {
-            $value = Arr::normalize($value);
-
-            foreach ($value as $tmp) {
-                $tmp = trim($tmp);
-
-                if (empty($tmp)) {
-                    continue;
-                }
-
-                $this->options['prefix'][] = strtoupper($tmp);
-            }
-        }
+        $this->options['prefix'][] = $prefix;
 
         return $this;
     }
@@ -610,54 +592,6 @@ class Condition
     }
 
     /**
-     * 添加一个 using 用于删除操作.
-     *
-     * @param array|string $names
-     *
-     * @return $this
-     */
-    public function using($names)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $names = Arr::normalize($names);
-
-        foreach ($names as $alias => $table) {
-            // 字符串指定别名
-            if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $table, $matches)) {
-                $alias = $matches[2];
-                $table = $matches[1];
-            }
-
-            if (!is_string($alias)) {
-                $alias = $table;
-            }
-
-            // 确定 table_name 和 schema
-            $tmp = explode('.', $table);
-            if (isset($tmp[1])) {
-                $schema = $tmp[0];
-                $tableName = $tmp[1];
-            } else {
-                $schema = null;
-                $tableName = $table;
-            }
-
-            // 获得一个唯一的别名
-            $alias = $this->uniqueAlias(empty($alias) ? $tableName : $alias);
-
-            $this->options['using'][$alias] = [
-                'table_name' => $table,
-                'schema'     => $schema,
-            ];
-        }
-
-        return $this;
-    }
-
-    /**
      * 添加字段.
      *
      * @param mixed  $cols
@@ -672,7 +606,7 @@ class Condition
         }
 
         if (null === $table) {
-            $table = $this->getCurrentTable();
+            $table = $this->getTable();
         }
 
         $this->addCols($table, $cols);
@@ -695,7 +629,7 @@ class Condition
         }
 
         if (null === $table) {
-            $table = $this->getCurrentTable();
+            $table = $this->getTable();
         }
 
         $this->options['columns'] = [];
@@ -982,7 +916,7 @@ class Condition
             }
         }
 
-        $currentTableName = $this->getCurrentTable();
+        $currentTableName = $this->getTable();
 
         foreach ($expression as $value) {
             // 处理条件表达式
@@ -1181,7 +1115,7 @@ class Condition
             }
         }
 
-        $tableName = $this->getCurrentTable();
+        $tableName = $this->getTable();
 
         foreach ($expression as $value) {
             // 处理条件表达式
@@ -1807,19 +1741,12 @@ class Condition
      * 解析 table 分析结果.
      *
      * @param bool $onlyAlias
-     * @param bool $forDelete
      *
      * @return string
      */
-    protected function parseTable($onlyAlias = true, $forDelete = false)
+    protected function parseTable(bool $onlyAlias = true)
     {
         if (empty($this->options['from'])) {
-            return '';
-        }
-
-        // 如果为删除,没有 join 则返回为空
-        if (true === $forDelete &&
-            1 === count($this->options['from'])) {
             return '';
         }
 
@@ -1844,47 +1771,6 @@ class Condition
                 $alias
             );
         }
-    }
-
-    /**
-     * 解析 using 分析结果.
-     *
-     * @param bool $forDelete
-     *
-     * @return string
-     */
-    protected function parseUsing($forDelete = false)
-    {
-        // parse using 只支持删除操作
-        if (false === $forDelete ||
-            empty($this->options['using'])) {
-            return '';
-        }
-
-        $using = [];
-        $optionsUsing = $this->options['using'];
-
-        // table 自动加入
-        foreach ($this->options['from'] as $alias => $value) {
-            $optionsUsing[$alias] = $value;
-
-            break;
-        }
-
-        foreach ($optionsUsing as $alias => $value) {
-            if ($alias === $value['table_name']) {
-                $using[] = $this->connect->normalizeTableOrColumn(
-                    "{$value['schema']}.{$value['table_name']}"
-                );
-            } else {
-                $using[] = $this->connect->normalizeTableOrColumn(
-                    "{$value['schema']}.{$value['table_name']}",
-                    $alias
-                );
-            }
-        }
-
-        return 'USING '.implode(',', array_unique($using));
     }
 
     /**
@@ -1964,20 +1850,11 @@ class Condition
     /**
      * 解析 order 分析结果.
      *
-     * @param bool $forDelete
-     *
      * @return string
      */
-    protected function parseOrder($forDelete = false)
+    protected function parseOrder()
     {
         if (empty($this->options['order'])) {
-            return '';
-        }
-
-        // 删除存在 join, order 无效
-        if (true === $forDelete &&
-            (count($this->options['from']) > 1 ||
-                !empty($this->options['using']))) {
             return '';
         }
 
@@ -2017,41 +1894,20 @@ class Condition
     /**
      * 解析 limit 分析结果.
      *
-     * @param bool $nullLimitOffset
-     * @param bool $forDelete
+     * @param bool $withoutOffset
      *
      * @return string
      */
-    protected function parseLimitcount($nullLimitOffset = false, $forDelete = false)
+    protected function parseLimitcount(bool $withoutOffset = false)
     {
-        // 删除存在 join, limit 无效
-        if (true === $forDelete &&
-            (count($this->options['from']) > 1 ||
-                !empty($this->options['using']))) {
-            return '';
-        }
-
-        if (true === $nullLimitOffset) {
-            $this->options['limitoffset'] = null;
-        }
-
         if (null === $this->options['limitoffset'] &&
             null === $this->options['limitcount']) {
             return '';
         }
 
-        if (method_exists($this->connect, 'parseLimitcount')) {
-            return $this->connect->{'parseLimitcount'}(
-                $this->options['limitcount'],
-                $this->options['limitoffset']
-            );
-        }
-
-        throw new InvalidArgumentException(
-            sprintf(
-                'Connect method %s is not exits',
-                'parseLimitcount'
-            )
+        return $this->connect->parseLimitcount(
+            $this->options['limitcount'],
+            $withoutOffset ? null : $this->options['limitoffset']
         );
     }
 
@@ -2084,7 +1940,7 @@ class Condition
         }
 
         $sqlCond = [];
-        $table = $this->getCurrentTable();
+        $table = $this->getTable();
 
         foreach ($this->options[$condType] as $key => $cond) {
             // 逻辑连接符
@@ -2170,7 +2026,7 @@ class Condition
                         // 回调方法子表达式支持
                         elseif ($tmp instanceof Closure) {
                             $select = new static($this->connect);
-                            $select->setCurrentTable($this->getCurrentTable());
+                            $select->setTable($this->getTable());
                             $resultCallback = call_user_func_array($tmp, [
                                 &$select,
                             ]);
@@ -2297,7 +2153,7 @@ class Condition
 
         if ($cond instanceof Closure) {
             $select = new static($this->connect);
-            $select->setCurrentTable($this->getCurrentTable());
+            $select->setTable($this->getTable());
             $resultCallback = call_user_func_array($cond, [
                 &$select,
             ]);
@@ -2329,7 +2185,7 @@ class Condition
     protected function addConditions()
     {
         $args = func_get_args();
-        $table = $this->getCurrentTable();
+        $table = $this->getTable();
 
         // 整理多个参数到二维数组
         if (!is_array($args[0])) {
@@ -2392,7 +2248,7 @@ class Condition
                 $typeAndLogic = $this->getTypeAndLogic();
 
                 $select = new static($this->connect);
-                $select->setCurrentTable($this->getCurrentTable());
+                $select->setTable($this->getTable());
                 $select->setTypeAndLogic($typeAndLogic[0]);
 
                 // 逻辑表达式
@@ -2434,7 +2290,7 @@ class Condition
                     $tmp = $tmp->makeSql();
                 } elseif ($tmp instanceof Closure) {
                     $select = new static($this->connect);
-                    $select->setCurrentTable($this->getCurrentTable());
+                    $select->setTable($this->getTable());
 
                     $resultCallback = call_user_func_array($tmp, [
                         &$select,
@@ -2581,7 +2437,7 @@ class Condition
         }
 
         if (null === $tableName) {
-            $tableName = $this->getCurrentTable();
+            $tableName = $this->getTable();
         }
 
         if (false !== strpos($field, '{') &&
@@ -2638,7 +2494,7 @@ class Condition
 
         // 没有指定表，获取默认表
         if (empty($names)) {
-            $table = $this->getCurrentTable();
+            $table = $this->getTable();
             $alias = '';
         }
 
@@ -2663,7 +2519,7 @@ class Condition
                 // 回调方法子表达式
                 elseif ($table instanceof Closure) {
                     $select = new static($this->connect);
-                    $select->setCurrentTable($this->getCurrentTable());
+                    $select->setTable($this->getTable());
                     $resultCallback = call_user_func_array($table, [
                         &$select,
                     ]);
@@ -2695,7 +2551,7 @@ class Condition
         // 回调方法
         elseif ($names instanceof Closure) {
             $select = new static($this->connect);
-            $select->setCurrentTable($this->getCurrentTable());
+            $select->setTable($this->getTable());
             $resultCallback = call_user_func_array($names, [
                 &$select,
             ]);
@@ -2755,7 +2611,7 @@ class Condition
 
         // 只有表操作才设置当前表
         if ($this->getIsTable()) {
-            $this->setCurrentTable(
+            $this->setTable(
                 ($schema ? $schema.'.' : '').$alias
             );
         }
@@ -2769,7 +2625,7 @@ class Condition
             }
 
             $select = new static($this->connect);
-            $select->setCurrentTable($alias);
+            $select->setTable($alias);
 
             call_user_func_array([
                 $select,
@@ -2902,7 +2758,7 @@ class Condition
     protected function addAggregate($type, $field, $alias)
     {
         $this->options['columns'] = [];
-        $tableName = $this->getCurrentTable();
+        $tableName = $this->getTable();
 
         // 表达式支持
         if (false !== strpos($field, '{') &&
@@ -3012,7 +2868,7 @@ class Condition
     protected function getBindData($data, array &$bind = [], int &$questionMark = 0, int $index = 0)
     {
         $fields = $values = [];
-        $tableName = $this->getCurrentTable();
+        $tableName = $this->getTable();
 
         foreach ($data as $key => $value) {
             // 表达式支持
@@ -3069,9 +2925,9 @@ class Condition
      *
      * @param mixed $table
      */
-    protected function setCurrentTable($table)
+    protected function setTable($table)
     {
-        $this->currentTable = $table;
+        $this->table = $table;
     }
 
     /**
@@ -3079,15 +2935,15 @@ class Condition
      *
      * @return string
      */
-    protected function getCurrentTable()
+    protected function getTable()
     {
         // 数组
-        if (is_array($this->currentTable)) {
-            while ((list($alias) = each($this->currentTable)) !== false) {
-                return $this->currentTable = $alias;
+        if (is_array($this->table)) {
+            while ((list($alias) = each($this->table)) !== false) {
+                return $this->table = $alias;
             }
         } else {
-            return $this->currentTable;
+            return $this->table;
         }
     }
 
@@ -3123,7 +2979,7 @@ class Condition
     protected function parseTime(string $field, $value, string $type)
     {
         $field = str_replace('`', '', $field);
-        $table = $this->getCurrentTable();
+        $table = $this->getTable();
 
         if (!preg_match('/\(.*\)/', $field)) {
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
