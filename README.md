@@ -18,13 +18,13 @@ now or in the future step by step. Our vision is **<span style="color:#e82e7d;">
 
 **The PHP Framework For Code Poem As Free As Wind.**
 
-![](doyouhaobaby.png)
-
-QueryPHP was the new version of the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzhiwange/framework/master/doyouhaobaby-googlecode.jpg) framework, we have a large code refactoring, it released 0.0.1 version at 2010/10/03.
-
 * Site: <https://www.queryphp.com/>
 * API: <http://api.queryphp.com>
 * Document: <https://www.leevel.vip/>
+
+![](doyouhaobaby.png)
+
+QueryPHP was the new version of the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzhiwange/framework/master/doyouhaobaby-googlecode.jpg) framework, we have a large code refactoring, it released 0.0.1 version at 2010/10/03.
 
 ## The core packages
 
