@@ -13,19 +13,14 @@
 
 # The QueryPHP Framework
 
-QueryPHP is a powerful PHP framework for code poem as free as wind. [Query Yet Simple]
+QueryPHP is a modern, high performance PHP 7 resident framework, with engineer user experience as its historical mission, let every PHP application have a good framework. 100% coverage of the unit tests to facing the bug,based on Zephir implemented framework resident,with Swoole ecology to achieve business resident,
+now or in the future step by step. Our vision is **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, let your business to support more user services.
 
-QueryPHP was founded in 2010 and released the first version on 2010.10.03.
-
-QueryPHP was based on the DoYouHaoBaby framework，we have a large code refactoring.
+**The PHP Framework For Code Poem As Free As Wind.**
 
 ![](doyouhaobaby.png)
 
-<p>DoYouHaoBaby has a lot of features: mvc, active record, i18n, cache, databases, template engine, rbac, and so on.</p>
-
-<p>DoYouHaoBaby released 0.0.1 version at 2010/10/03, the last version was released in 2014/10 version 3, and now it has stopped maintenance.</p>
-
-<p>More information about DoYouHaoBaby,you can see <a href="https://raw.githubusercontent.com/hunzhiwange/framework/master/doyouhaobaby-googlecode.jpg" target="_blank">The history of DoYouHaoBaby on code.google.com</a>.</p>
+QueryPHP was the new version of the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzhiwange/framework/master/doyouhaobaby-googlecode.jpg) framework, we have a large code refactoring, it released 0.0.1 version at 2010/10/03.
 
 * Site: <https://www.queryphp.com/>
 * API: <http://api.queryphp.com>
@@ -93,7 +88,7 @@ _____________                           _______________
    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
         \_\                /_/_/         /_/
-  
+
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework      
 $composer install
 $php vendor/bin/phpunit tests
