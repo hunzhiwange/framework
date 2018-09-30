@@ -62,7 +62,7 @@ class SubjectTest extends TestCase
 
 class Observer1 extends Observer
 {
-    public function run($arg1)
+    public function handle($arg1)
     {
         $_SERVER['runtime'][] = $arg1;
     }

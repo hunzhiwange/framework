@@ -45,12 +45,19 @@ class CacheTest extends TestCase
         $dirs = [
             __DIR__.'/dirWriteable',
             __DIR__.'/parentDirWriteable',
+            __DIR__.'/dirNotExists',
         ];
 
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
                 Fso::deleteDirectory($dir, true);
             }
+        }
+
+        $file = __DIR__.'/option_cache.php';
+
+        if (is_file($file)) {
+            unlink($file);
         }
     }
 
@@ -85,11 +92,11 @@ class CacheTest extends TestCase
             $result
         );
 
-        $optionData = file_get_contents(__DIR__.'/assert/option.data');
+        $optionData = file_get_contents(__DIR__.'/assert/option.json');
 
         $this->assertSame(
-            $optionData,
-            $this->varExport(
+            trim($optionData),
+            $this->varJson(
                 (array) (include $cacheFile)
             )
         );
@@ -123,11 +130,11 @@ class CacheTest extends TestCase
             $result
         );
 
-        $optionData = file_get_contents(__DIR__.'/assert/option.data');
+        $optionData = file_get_contents(__DIR__.'/assert/option.json');
 
         $this->assertSame(
-            $optionData,
-            $this->varExport(
+            trim($optionData),
+            $this->varJson(
                 (array) (include $cacheFile)
             )
         );

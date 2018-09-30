@@ -41,23 +41,19 @@ class ReadAggregateTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT COUNT(*) AS row_count FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT COUNT(*) AS row_count FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -68,40 +64,38 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
                 count()->
 
-                find()
+                find(),
+                1
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT COUNT(*) AS row_count2 FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT COUNT(*) AS row_count2 FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                getCount('*', 'row_count2')
+                getCount('*', 'row_count2'),
+                2
             )
         );
     }
@@ -111,23 +105,19 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT AVG(`test`.`num`) AS avg_value FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT AVG(`test`.`num`) AS avg_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -138,40 +128,38 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
                 avg('num')->
 
-                find()
+                find(),
+                1
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT AVG(`test`.`num`) AS avg_value2 FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT AVG(`test`.`num`) AS avg_value2 FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                getAvg('num', 'avg_value2')
+                getAvg('num', 'avg_value2'),
+                2
             )
         );
     }
@@ -181,23 +169,19 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT MAX(`test`.`num`) AS max_value FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT MAX(`test`.`num`) AS max_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -208,40 +192,38 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
                 max('num')->
 
-                find()
+                find(),
+                1
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT MAX(`test`.`num`) AS max_value2 FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT MAX(`test`.`num`) AS max_value2 FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                getMax('num', 'max_value2')
+                getMax('num', 'max_value2'),
+                2
             )
         );
     }
@@ -251,23 +233,19 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT MIN(`test`.`num`) AS min_value FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT MIN(`test`.`num`) AS min_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -278,40 +256,38 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
                 min('num')->
 
-                find()
+                find(),
+                1
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT MIN(`test`.`num`) AS min_value2 FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT MIN(`test`.`num`) AS min_value2 FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                getMin('num', 'min_value2')
+                getMin('num', 'min_value2'),
+                2
             )
         );
     }
@@ -321,23 +297,19 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT SUM(`test`.`num`) AS sum_value FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT SUM(`test`.`num`) AS sum_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -348,40 +320,38 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
                 sum('num')->
 
-                find()
+                find(),
+                1
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT SUM(`test`.`num`) AS sum_value2 FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT SUM(`test`.`num`) AS sum_value2 FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                getSum('num', 'sum_value2')
+                getSum('num', 'sum_value2'),
+                2
             )
         );
     }

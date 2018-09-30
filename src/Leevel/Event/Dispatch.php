@@ -70,7 +70,7 @@ class Dispatch implements IDispatch
      * @param object|string $event
      * @param array         $params
      */
-    public function run($event, ...$params)
+    public function handle($event, ...$params)
     {
         if (is_object($event)) {
             $name = get_class($event);

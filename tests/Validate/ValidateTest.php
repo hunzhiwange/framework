@@ -53,13 +53,12 @@ class ValidateTest extends TestCase
         $this->assertInstanceof(IValidate::class, $validate);
 
         $rule = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'required',
-    1 => 'max_length:10',
-  ),
-)
+{
+    "name": [
+        "required",
+        "max_length:10"
+    ]
+}
 eot;
 
         $this->assertTrue($validate->success());
@@ -70,7 +69,7 @@ eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
+            $this->varJson(
                 $validate->getRule()
             )
         );
@@ -91,13 +90,12 @@ eot;
         );
 
         $rule = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'required',
-    1 => 'max_length:10',
-  ),
-)
+{
+    "name": [
+        "required",
+        "max_length:10"
+    ]
+}
 eot;
 
         $this->assertTrue($validate->success());
@@ -108,7 +106,7 @@ eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
+            $this->varJson(
                 $validate->getRule()
             )
         );
@@ -129,12 +127,11 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -142,7 +139,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -163,12 +160,11 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -176,7 +172,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -201,12 +197,11 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertTrue($validate->success());
@@ -219,7 +214,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -239,12 +234,11 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertTrue($validate->success());
@@ -257,7 +251,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -291,13 +285,12 @@ eot;
         });
 
         $rule = <<<'eot'
-array (
-)
+[]
 eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
+            $this->varJson(
                 $validate->getRule()
             )
         );
@@ -315,17 +308,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -350,18 +342,17 @@ eot;
         $validate->addRule(['name' => 'required|min_length:20']);
 
         $rule = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'required',
-    1 => 'min_length:20',
-  ),
-)
+{
+    "name": [
+        "required",
+        "min_length:20"
+    ]
+}
 eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
+            $this->varJson(
                 $validate->getRule()
             )
         );
@@ -370,17 +361,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -409,13 +399,12 @@ eot;
         });
 
         $rule = <<<'eot'
-array (
-)
+[]
 eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
+            $this->varJson(
                 $validate->getRule()
             )
         );
@@ -433,17 +422,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -464,12 +452,11 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -477,7 +464,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -485,12 +472,11 @@ eot;
         $validate->message(['min_length' => '{field} not min {rule}']);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 not min 20',
-  ),
-)
+{
+    "name": [
+        "用户名 not min 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -498,7 +484,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -506,12 +492,11 @@ eot;
         $validate->addMessage(['min_length' => '{field} foo bar {rule}']);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 foo bar 20',
-  ),
-)
+{
+    "name": [
+        "用户名 foo bar 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -519,7 +504,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -527,12 +512,11 @@ eot;
         $validate->addMessage(['name' => ['min_length' => '{field} hello world {rule}']]);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 hello world 20',
-  ),
-)
+{
+    "name": [
+        "用户名 hello world 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -540,7 +524,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -561,12 +545,11 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -574,7 +557,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -582,12 +565,11 @@ eot;
         $validate->addMessage(['min_length' => '{field} not min {rule}']);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 not min 20',
-  ),
-)
+{
+    "name": [
+        "用户名 not min 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -595,7 +577,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -603,12 +585,11 @@ eot;
         $validate->addMessage(['name' => ['min_length' => '{field} haha {rule}']]);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 haha 20',
-  ),
-)
+{
+    "name": [
+        "用户名 haha 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -616,7 +597,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -624,12 +605,11 @@ eot;
         $validate->addMessage(['name.min_length' => '{field} hehe {rule}']);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 hehe 20',
-  ),
-)
+{
+    "name": [
+        "用户名 hehe 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -637,7 +617,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -661,17 +641,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name.sub.sub' => 
-  array (
-    0 => 'name.sub.sub 不能为空',
-  ),
-)
+{
+    "name.sub.sub": [
+        "name.sub.sub 不能为空"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -682,17 +661,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name.sub.sub' => 
-  array (
-    0 => '字段 name.sub.sub 不能为空',
-  ),
-)
+{
+    "name.sub.sub": [
+        "字段 name.sub.sub 不能为空"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -703,17 +681,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name.sub.sub' => 
-  array (
-    0 => 'sub name.sub.sub must have value',
-  ),
-)
+{
+    "name.sub.sub": [
+        "sub name.sub.sub must have value"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -737,17 +714,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name.sub.sub' => 
-  array (
-    0 => 'name.sub.sub 不能为空',
-  ),
-)
+{
+    "name.sub.sub": [
+        "name.sub.sub 不能为空"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -768,12 +744,11 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "用户名 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -782,7 +757,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -790,12 +765,11 @@ eot;
         $validate->name(['name' => 'username']);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'username 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "username 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -803,7 +777,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -811,12 +785,11 @@ eot;
         $validate->addName(['name' => 'hello world']);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'hello world 不满足最小长度 20',
-  ),
-)
+{
+    "name": [
+        "hello world 不满足最小长度 20"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -824,7 +797,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -845,12 +818,11 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '地名 不满足最小长度 5',
-  ),
-)
+{
+    "name": [
+        "地名 不满足最小长度 5"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -859,7 +831,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -869,12 +841,11 @@ eot;
         $validate->rule(['name' => 'required|minl:9']);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '地名 不满足最小长度 9',
-  ),
-)
+{
+    "name": [
+        "地名 不满足最小长度 9"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -882,7 +853,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -892,12 +863,11 @@ eot;
         $validate->rule(['name' => 'required|min2:11']);
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '地名 不满足最小长度 11',
-  ),
-)
+{
+    "name": [
+        "地名 不满足最小长度 11"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -905,7 +875,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -1294,13 +1264,12 @@ eot;
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '地名 不能为空',
-    1 => '地名 只能是字母',
-  ),
-)
+{
+    "name": [
+        "地名 不能为空",
+        "地名 只能是字母"
+    ]
+}
 eot;
 
         $this->assertFalse($validate->success());
@@ -1309,7 +1278,7 @@ eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -1320,17 +1289,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '地名 不能为空',
-  ),
-)
+{
+    "name": [
+        "地名 不能为空"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -1365,17 +1333,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '地名 不能为空',
-  ),
-)
+{
+    "name": [
+        "地名 不能为空"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -1386,17 +1353,16 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '地名 不能为空',
-  ),
-)
+{
+    "name": [
+        "地名 不能为空"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -1429,80 +1395,77 @@ eot;
         $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $message = <<<'eot'
-array (
-  'name.required' => 'test {field} required message',
-  'nafoo.required' => 'test {field} required message',
-  'nabar.required' => 'test {field} required message',
-)
+{
+    "name.required": "test {field} required message",
+    "nafoo.required": "test {field} required message",
+    "nabar.required": "test {field} required message"
+}
 eot;
 
         $this->assertSame(
             $message,
-            $this->varExport(
+            $this->varJson(
                 $validate->getMessage()
             )
         );
 
         $data = <<<'eot'
-array (
-  'name' => '',
-  'nafoo' => '',
-  'nabar' => '',
-)
+{
+    "name": "",
+    "nafoo": "",
+    "nabar": ""
+}
 eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
-                $validate->getData()
+            $this->varJson(
+                $validate->getData(),
+                1
             )
         );
 
         $rule = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'required',
-  ),
-  'nafoo' => 
-  array (
-    0 => 'required',
-  ),
-  'nabar' => 
-  array (
-    0 => 'required',
-  ),
-)
+{
+    "name": [
+        "required"
+    ],
+    "nafoo": [
+        "required"
+    ],
+    "nabar": [
+        "required"
+    ]
+}
 eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
-                $validate->getRule()
+            $this->varJson(
+                $validate->getRule(),
+                2
             )
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'test 地名 required message',
-  ),
-  'nafoo' => 
-  array (
-    0 => 'test foo required message',
-  ),
-  'nabar' => 
-  array (
-    0 => 'test bar required message',
-  ),
-)
+{
+    "name": [
+        "test 地名 required message"
+    ],
+    "nafoo": [
+        "test foo required message"
+    ],
+    "nabar": [
+        "test bar required message"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
-                $validate->error()
+            $this->varJson(
+                $validate->error(),
+                3
             )
         );
     }
@@ -1534,81 +1497,77 @@ eot;
         $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $message = <<<'eot'
-array (
-  'name.required' => 'test {field} required message',
-  'nafoo.required' => 'test {field} required message',
-  'nabar.required' => 'test {field} required message',
-)
+{
+    "name.required": "test {field} required message",
+    "nafoo.required": "test {field} required message",
+    "nabar.required": "test {field} required message"
+}
 eot;
 
         $this->assertSame(
             $message,
-            $this->varExport(
+            $this->varJson(
                 $validate->getMessage()
             )
         );
 
-        return;
         $data = <<<'eot'
-array (
-  'name' => '',
-  'nafoo' => '',
-  'nabar' => '',
-)
+{
+    "name": "",
+    "nafoo": "",
+    "nabar": ""
+}
 eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
-                $validate->getData()
+            $this->varJson(
+                $validate->getData(),
+                1
             )
         );
 
         $rule = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'required',
-  ),
-  'nafoo' => 
-  array (
-    0 => 'required',
-  ),
-  'nabar' => 
-  array (
-    0 => 'required',
-  ),
-)
+{
+    "name": [
+        "required"
+    ],
+    "nafoo": [
+        "required"
+    ],
+    "nabar": [
+        "required"
+    ]
+}
 eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
-                $validate->getRule()
+            $this->varJson(
+                $validate->getRule(),
+                2
             )
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'test 地名 required message',
-  ),
-  'nafoo' => 
-  array (
-    0 => 'test foo required message',
-  ),
-  'nabar' => 
-  array (
-    0 => 'test bar required message',
-  ),
-)
+{
+    "name": [
+        "test 地名 required message"
+    ],
+    "nafoo": [
+        "test foo required message"
+    ],
+    "nabar": [
+        "test bar required message"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
-                $validate->error()
+            $this->varJson(
+                $validate->error(),
+                3
             )
         );
     }
@@ -1640,65 +1599,61 @@ eot;
         $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $data = <<<'eot'
-array (
-  'name' => '',
-  'nafoo' => '',
-  'nabar' => '',
-)
+{
+    "name": "",
+    "nafoo": "",
+    "nabar": ""
+}
 eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $validate->getData()
             )
         );
 
         $rule = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'required',
-  ),
-  'nafoo' => 
-  array (
-    0 => 'required',
-  ),
-  'nabar' => 
-  array (
-    0 => 'required',
-  ),
-)
+{
+    "name": [
+        "required"
+    ],
+    "nafoo": [
+        "required"
+    ],
+    "nabar": [
+        "required"
+    ]
+}
 eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
-                $validate->getRule()
+            $this->varJson(
+                $validate->getRule(),
+                1
             )
         );
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '地名 不能为空',
-  ),
-  'nafoo' => 
-  array (
-    0 => 'foo 不能为空',
-  ),
-  'nabar' => 
-  array (
-    0 => 'bar 不能为空',
-  ),
-)
+{
+    "name": [
+        "地名 不能为空"
+    ],
+    "nafoo": [
+        "foo 不能为空"
+    ],
+    "nabar": [
+        "bar 不能为空"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
-                $validate->error()
+            $this->varJson(
+                $validate->error(),
+                2
             )
         );
     }
@@ -1786,7 +1741,7 @@ class ExtendClassTest1
 
 class ExtendClassTest2
 {
-    public function run(string $field, $datas, array $parameter): bool
+    public function handle(string $field, $datas, array $parameter): bool
     {
         if (3 === $datas) {
             return true;

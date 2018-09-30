@@ -41,23 +41,19 @@ class ReadListsTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`name` FROM `test`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.`name` FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -67,50 +63,49 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`name`,`test`.`id` FROM `test`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.`name`,`test`.`id` FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                lists('name,id')
+                lists('name,id'),
+                1
             )
         );
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                lists('name', 'id')
+                lists('name', 'id'),
+                2
             )
         );
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                lists(['name', 'id'])
+                lists(['name', 'id']),
+                3
             )
         );
     }

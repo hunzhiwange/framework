@@ -42,13 +42,13 @@ class QueryColumnsTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`test`.`id`,`test`.`name`,`test`.`value` FROM `test`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 columns('id')->
@@ -75,13 +75,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`remark` FROM `test`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -89,7 +89,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 columns('id')->
@@ -122,7 +122,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs($condition)->
@@ -135,8 +135,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -160,7 +159,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs($condition)->
@@ -173,8 +172,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -198,7 +196,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 setColumns('foo')->
@@ -213,8 +211,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -238,7 +235,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 setColumns('foo')->
@@ -253,8 +250,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }

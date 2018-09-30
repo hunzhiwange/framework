@@ -2564,11 +2564,6 @@ class Validate implements IValidate
             );
         }
 
-        $method = method_exists($extend, $method) ?
-            $method :
-            ('handle' !== $method &&
-                method_exists($extend, 'handle') ? 'handle' : 'run');
-
         $parameter[] = $this;
 
         return call_user_func_array([

@@ -42,13 +42,13 @@ class QueryGroupByTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`id`,`test`.`name`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 groupBy('id')->
@@ -70,13 +70,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `post`.`id`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -84,25 +84,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 groupBy('post.id')->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY SUM(`test`.`num`)',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -110,25 +111,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 groupBy('{SUM([num])}')->
 
-                findAll(true)
+                findAll(true),
+                2
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`title`,`test`.`id`,concat(\'1234\',`test`.`id`,\'ttt\')',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -136,25 +138,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 groupBy("title,id,{concat('1234',[id],'ttt')}")->
 
-                findAll(true)
+                findAll(true),
+                3
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`title`,`test`.`id`,`test`.`ttt`,`test`.`value`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -162,12 +165,13 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 groupBy(['title,id,ttt', 'value'])->
 
-                findAll(true)
+                findAll(true),
+                4
             )
         );
     }

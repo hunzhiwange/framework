@@ -41,23 +41,19 @@ class ReadGetDynamicsTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` LIMIT 0,10',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` LIMIT 0,10",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -67,132 +63,117 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` LIMIT 3,10',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` LIMIT 3,10",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                find10start3()
+                find10start3(),
+                1
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`user_name` = \'1111\' LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`user_name` = '1111' LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                findByUserName('1111')
+                findByUserName('1111'),
+                2
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`UserName` = \'1111\' LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`UserName` = '1111' LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                findByUserName_('1111')
+                findByUserName_('1111'),
+                3
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`user_name` = \'1111\' AND `test`.`sex` = \'222\'',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`user_name` = '1111' AND `test`.`sex` = '222'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                findAllByUserNameAndSex('1111', '222')
+                findAllByUserNameAndSex('1111', '222'),
+                4
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`UserName` = \'1111\' AND `test`.`Sex` = \'222\'',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`UserName` = '1111' AND `test`.`Sex` = '222'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                findAllByUserNameAndSex_('1111', '222')
+                findAllByUserNameAndSex_('1111', '222'),
+                5
             )
         );
     }

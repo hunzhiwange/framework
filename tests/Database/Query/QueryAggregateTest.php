@@ -42,13 +42,13 @@ class QueryAggregateTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT COUNT(*) AS row_count FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 count()->
@@ -68,13 +68,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT COUNT(`test`.`id`) AS row_count FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -82,25 +82,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 count('id')->
 
-                findOne(true)
+                findOne(true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT COUNT(`test`.`id`) AS count1 FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -108,25 +109,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 count('id', 'count1')->
 
-                findOne(true)
+                findOne(true),
+                2
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT COUNT(`test`.`id`*50) AS count1 FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -134,12 +136,13 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 count('{[id]*50}', 'count1')->
 
-                findOne(true)
+                findOne(true),
+                3
             )
         );
     }
@@ -151,13 +154,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT AVG(`test`.`id`) AS avg_value FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -165,7 +168,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 avg('id')->
@@ -182,13 +185,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT MAX(`test`.`num`) AS max_value FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -196,7 +199,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 max('num')->
@@ -213,13 +216,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT MIN(`test`.`num`) AS min_value FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -227,7 +230,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 min('num')->
@@ -244,13 +247,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT SUM(`test`.`num`) AS sum_value FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -258,7 +261,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 sum('num')->

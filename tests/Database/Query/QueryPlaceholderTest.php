@@ -42,13 +42,13 @@ class QueryPlaceholderTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->placeholder()->
 
                 table('test')->
@@ -65,8 +65,7 @@ eot;
 
                 latest()->
 
-                findOne(),
-                __FUNCTION__
+                findOne()
             )
         );
     }
@@ -78,13 +77,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -92,7 +91,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->foobar()->
 
                 table('test')->
@@ -101,8 +100,7 @@ eot;
 
                 latest()->
 
-                findOne(),
-                __FUNCTION__
+                findOne()
             )
         );
     }

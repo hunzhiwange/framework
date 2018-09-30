@@ -42,13 +42,13 @@ class QueryLimitTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` LIMIT 5,10',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 limit(5, 10)->
@@ -68,13 +68,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -82,25 +82,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 one()->
 
-                find(null, true)
+                find(null, true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -108,25 +109,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 all()->
 
-                find(null, true)
+                find(null, true),
+                2
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` LIMIT 0,15',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -134,12 +136,13 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 top(15)->
 
-                find(null, true)
+                find(null, true),
+                3
             )
         );
     }

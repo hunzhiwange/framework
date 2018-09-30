@@ -1,0 +1,23 @@
+{
+    "app": {
+        "foo": "bar",
+        "hello": "world",
+        "_env": {
+            "ENVIRONMENT": "development",
+            "DEBUG": "true",
+            "AUTH_KEY": "7becb888f518b20224a988906df51e05"
+        },
+        "_deferred_providers": [
+            [],
+            []
+        ],
+        "_composer": {
+            "providers": [],
+            "ignores": [],
+            "commands": [],
+            "options": [],
+            "i18ns": [],
+            "metas": []
+        }
+    }
+}

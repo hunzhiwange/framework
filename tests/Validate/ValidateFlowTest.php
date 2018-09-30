@@ -367,17 +367,16 @@ class ValidateFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 bar min 9',
-  ),
-)
+{
+    "name": [
+        "用户名 bar min 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -408,17 +407,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 foo min 9',
-  ),
-)
+{
+    "name": [
+        "用户名 foo min 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -449,17 +447,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 bar min 9',
-  ),
-)
+{
+    "name": [
+        "用户名 bar min 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -490,17 +487,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 foo min 9',
-  ),
-)
+{
+    "name": [
+        "用户名 foo min 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -531,17 +527,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 hello bar 9',
-  ),
-)
+{
+    "name": [
+        "用户名 hello bar 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -572,17 +567,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => '用户名 hello foo 9',
-  ),
-)
+{
+    "name": [
+        "用户名 hello foo 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -613,17 +607,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'bar 不满足最小长度 9',
-  ),
-)
+{
+    "name": [
+        "bar 不满足最小长度 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -654,17 +647,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'foo 不满足最小长度 9',
-  ),
-)
+{
+    "name": [
+        "foo 不满足最小长度 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -695,17 +687,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'bar 不满足最小长度 9',
-  ),
-)
+{
+    "name": [
+        "bar 不满足最小长度 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );
@@ -736,17 +727,16 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'foo 不满足最小长度 9',
-  ),
-)
+{
+    "name": [
+        "foo 不满足最小长度 9"
+    ]
+}
 eot;
 
         $this->assertSame(
             $error,
-            $this->varExport(
+            $this->varJson(
                 $validate->error()
             )
         );

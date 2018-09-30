@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 forceIndex('nameindex,statusindex')->

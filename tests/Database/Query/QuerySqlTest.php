@@ -42,13 +42,13 @@ class QuerySqlTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 sql(true)->
@@ -70,7 +70,7 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'delete from test where id = ?',
-  1 => 
+  1 =>
   array (
     0 => 22,
   ),
@@ -79,23 +79,24 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql(true)->
 
-                delete('delete from test where id = ?', [22])
+                delete('delete from test where id = ?', [22]),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -103,12 +104,13 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 latest()->
 
-                findOne(true)
+                findOne(true),
+                2
             )
         );
     }

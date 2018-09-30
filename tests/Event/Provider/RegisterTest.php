@@ -54,7 +54,7 @@ class RegisterTest extends TestCase
 
         $dispatch->register('test', Listener1::class);
 
-        $dispatch->run('test');
+        $dispatch->handle('test');
 
         $this->assertSame($_SERVER['test'], 'hello');
         $this->assertSame($_SERVER['event_name'], 'test');
@@ -69,7 +69,7 @@ abstract class Listener extends Observer
 
 class Listener1 extends Listener
 {
-    public function run($event)
+    public function handle($event)
     {
         $_SERVER['event_name'] = $event;
         $_SERVER['test'] = 'hello';

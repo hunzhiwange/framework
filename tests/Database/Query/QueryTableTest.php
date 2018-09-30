@@ -40,23 +40,19 @@ class QueryTableTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `posts`.* FROM `posts`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `posts`.* FROM `posts`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('posts')->
 
                 findAll(true)
@@ -64,50 +60,44 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `posts`.* FROM `mydb`.`posts`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `posts`.* FROM `mydb`.`posts`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('mydb.posts')->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `p`.* FROM `mydb`.`posts` `p`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `p`.* FROM `mydb`.`posts` `p`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table(['p' => 'mydb.posts'])->
 
-                findAll(true)
+                findAll(true),
+                2
             )
         );
     }
@@ -117,23 +107,19 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `posts`.`title`,`posts`.`body` FROM `posts`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `posts`.`title`,`posts`.`body` FROM `posts`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('posts', 'title,body')->
 
                 findAll(true)
@@ -141,29 +127,26 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `posts`.`title` AS `t`,`posts`.`name`,`posts`.`remark`,`posts`.`value` FROM `mydb`.`posts`',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `posts`.`title` AS `t`,`posts`.`name`,`posts`.`remark`,`posts`.`value` FROM `mydb`.`posts`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table(
                     'mydb.posts', [
                         't' => 'title', 'name', 'remark,value',
                     ])->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
     }
@@ -187,7 +170,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->
 
                 ifs($condition)->
@@ -200,8 +183,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -225,7 +207,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->
 
                 ifs($condition)->
@@ -238,8 +220,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }

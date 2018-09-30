@@ -65,11 +65,11 @@ class UpdateTest extends TestCase
 
         $data = <<<'eot'
 array (
-  0 => 
+  0 =>
   array (
     'id' => 123,
   ),
-  1 => 
+  1 =>
   array (
     'name' => 'foo',
   ),
@@ -78,7 +78,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->getFlushData()
             )
         );
@@ -87,7 +87,7 @@ eot;
         $entity->setFlush(function (...$args) use ($data, $entity) {
             $this->assertSame(
                 $data,
-                $this->varExport(
+                $this->varJson(
                     $entity->getFlushData()
                 )
             );
@@ -111,11 +111,11 @@ eot;
 
         $data = <<<'eot'
 array (
-  0 => 
+  0 =>
   array (
     'id' => 5,
   ),
-  1 => 
+  1 =>
   array (
     'name' => 'world',
   ),
@@ -124,7 +124,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->getFlushData() ?: []
             )
         );
@@ -139,11 +139,11 @@ eot;
 
         $data = <<<'eot'
 array (
-  0 => 
+  0 =>
   array (
     'id' => 5,
   ),
-  1 => 
+  1 =>
   array (
     'description' => 'bar',
   ),
@@ -152,8 +152,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
-                $entity->getFlushData()
+            $this->varJson(
+                $entity->getFlushData(),
+                1
             )
         );
     }
@@ -170,11 +171,11 @@ eot;
 
         $data = <<<'eot'
 array (
-  0 => 
+  0 =>
   array (
     'id' => 5,
   ),
-  1 => 
+  1 =>
   array (
     'name' => 'foo',
   ),
@@ -183,7 +184,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->getFlushData()
             )
         );
@@ -209,11 +210,11 @@ eot;
 
         $data = <<<'eot'
 array (
-  0 => 
+  0 =>
   array (
     'id' => 5,
   ),
-  1 => 
+  1 =>
   array (
     'name' => 'name for update_fill',
     'description' => 'set description.',
@@ -226,7 +227,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->getFlushData()
             )
         );

@@ -61,14 +61,13 @@ class RouterProviderTest extends TestCase
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 [
                     'base_paths'  => $router->getBasePaths(),
                     'group_paths' => $router->getGroupPaths(),
                     'groups'      => $router->getGroups(),
                     'routers'     => $router->getRouters(),
-                ],
-                __FUNCTION__
+                ]
             )
         );
 
@@ -96,25 +95,23 @@ class RouterProviderTest extends TestCase
         $this->assertNull($provider->bootstrap());
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
-        $this->varExport(
+        $this->varJson(
                 [
                     'base_paths'  => $router->getBasePaths(),
                     'group_paths' => $router->getGroupPaths(),
                     'groups'      => $router->getGroups(),
                     'routers'     => $router->getRouters(),
-                ],
-                __FUNCTION__
+                ]
             );
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 [
                     'base_paths'  => $router->getBasePaths(),
                     'group_paths' => $router->getGroupPaths(),
                     'groups'      => $router->getGroups(),
                     'routers'     => $router->getRouters(),
-                ],
-                __FUNCTION__
+                ]
             )
         );
 

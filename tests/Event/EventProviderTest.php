@@ -51,7 +51,7 @@ class EventProviderTest extends TestCase
 
         $_SERVER['runtime'] = [];
 
-        $dispatch->run(new TestEvent('hello blog'));
+        $dispatch->handle(new TestEvent('hello blog'));
 
         $this->assertSame(['test3', 'test2', 'hello blog', 'test1'], $_SERVER['runtime']);
 
@@ -99,7 +99,7 @@ class TestListener1 extends TestListener
     {
     }
 
-    public function run($event)
+    public function handle($event)
     {
         $_SERVER['runtime'][] = $event->blog();
         $_SERVER['runtime'][] = 'test1';
@@ -112,7 +112,7 @@ class TestListener2 extends TestListener
     {
     }
 
-    public function run()
+    public function handle()
     {
         $_SERVER['runtime'][] = 'test2';
     }
@@ -124,7 +124,7 @@ class TestListener3 extends TestListener
     {
     }
 
-    public function run()
+    public function handle()
     {
         $_SERVER['runtime'][] = 'test3';
     }

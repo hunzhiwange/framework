@@ -48,9 +48,8 @@ class ScanRouterTest extends TestCase
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $scanRouter->handle(),
-                __FUNCTION__
+            $this->varJson(
+                $scanRouter->handle()
             )
         );
 

@@ -51,7 +51,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -73,7 +73,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -98,9 +98,10 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
-            )
+            ),
+            1
         );
 
         // 第二种方式
@@ -125,9 +126,10 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
-            )
+            ),
+            2
         );
 
         // 数组方式
@@ -140,9 +142,10 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
-            )
+            ),
+            3
         );
     }
 
@@ -162,7 +165,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -182,8 +185,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
-                $entity->toArray()
+            $this->varJson(
+                $entity->toArray(),
+                1
             )
         );
 
@@ -203,8 +207,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
-                $entity->toArray()
+            $this->varJson(
+                $entity->toArray(),
+                2
             )
         );
 
@@ -226,8 +231,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
-                $entity->toArray()
+            $this->varJson(
+                $entity->toArray(),
+                3
             )
         );
     }
@@ -248,7 +254,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -269,7 +275,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -289,7 +295,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -308,7 +314,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -329,7 +335,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -348,7 +354,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -370,7 +376,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -390,7 +396,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -412,7 +418,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -434,7 +440,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -456,7 +462,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -471,7 +477,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -487,7 +493,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -506,7 +512,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -528,7 +534,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -545,7 +551,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -561,7 +567,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -576,7 +582,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -593,7 +599,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -609,7 +615,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -631,7 +637,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -654,7 +660,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -677,7 +683,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -700,7 +706,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -722,7 +728,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -740,7 +746,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -757,7 +763,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );
@@ -775,7 +781,7 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $entity->toArray()
             )
         );

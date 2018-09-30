@@ -49,7 +49,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -60,8 +60,7 @@ eot;
 
                 orderBy('id desc')->
 
-                delete(),
-                __FUNCTION__
+                delete()
             )
         );
     }
@@ -79,7 +78,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test as t')->
@@ -92,8 +91,7 @@ eot;
 
                 orderBy('id desc')->
 
-                delete(),
-                __FUNCTION__
+                delete()
             )
         );
     }

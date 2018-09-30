@@ -92,20 +92,10 @@ trait Helper
         return str_replace([' ', "\t", "\n", "\r"], '', $content);
     }
 
-    protected function varExport(array $data, ?string $method = null)
+    protected function varJson(array $data, ?int $id = null)
     {
-        list($traceDir, $className) = $this->makeLogsDir();
+        $method = debug_backtrace()[1]['function'].$id;
 
-        file_put_contents(
-            $traceDir.'/'.sprintf('%s::%s.log', $className, $method),
-            $result = var_export($data, true)
-        );
-
-        return $result;
-    }
-
-    protected function varJsonEncode(array $data, ?string $method = null)
-    {
         list($traceDir, $className) = $this->makeLogsDir();
 
         file_put_contents(

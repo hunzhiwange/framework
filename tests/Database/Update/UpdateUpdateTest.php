@@ -41,22 +41,20 @@ class UpdateUpdateTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503',
-  1 => 
-  array (
-    'name' => 
-    array (
-      0 => '小猪',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
+    {
+        "name": [
+            "小猪",
+            2
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -73,22 +71,20 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 FOR UPDATE',
-  1 => 
-  array (
-    'name' => 
-    array (
-      0 => '小猪',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 FOR UPDATE",
+    {
+        "name": [
+            "小猪",
+            2
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -107,22 +103,20 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 LIMIT 0,2',
-  1 => 
-  array (
-    'name' => 
-    array (
-      0 => '小猪',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 LIMIT 0,2",
+    {
+        "name": [
+            "小猪",
+            2
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -141,22 +135,20 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 ORDER BY `test`.`id` DESC',
-  1 => 
-  array (
-    'name' => 
-    array (
-      0 => '小猪',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 ORDER BY `test`.`id` DESC",
+    {
+        "name": [
+            "小猪",
+            2
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -175,22 +167,20 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` `t` INNER JOIN `hello` `h` ON `t`.`id` = `h`.`size` SET `t`.`name` = :name WHERE `t`.`id` = 503',
-  1 => 
-  array (
-    'name' => 
-    array (
-      0 => '小猪',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "UPDATE `test` `t` INNER JOIN `hello` `h` ON `t`.`id` = `h`.`size` SET `t`.`name` = :name WHERE `t`.`id` = 503",
+    {
+        "name": [
+            "小猪",
+            2
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test as t')->
@@ -209,23 +199,21 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`name` = :hello,`test`.`value` = :questionmark_0 WHERE `test`.`id` = 503',
-  1 => 
-  array (
-    'questionmark_0' => 
-    array (
-      0 => '小牛逼',
-      1 => 2,
-    ),
-    'hello' => 'hello world!',
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`name` = :hello,`test`.`value` = :questionmark_0 WHERE `test`.`id` = 503",
+    {
+        "questionmark_0": [
+            "小牛逼",
+            2
+        ],
+        "hello": "hello world!"
+    }
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -252,17 +240,15 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503',
-  1 => 
-  array (
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->

@@ -41,23 +41,19 @@ class ReadValuePullTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`id` FROM `test` LIMIT 1',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.`id` FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -68,12 +64,13 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                pull('id')
+                pull('id'),
+                1
             )
         );
     }

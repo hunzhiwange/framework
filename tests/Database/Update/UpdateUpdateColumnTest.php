@@ -41,22 +41,20 @@ class UpdateUpdateColumnTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503',
-  1 => 
-  array (
-    'name' => 
-    array (
-      0 => '小小小鸟，怎么也飞不高。',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
+    {
+        "name": [
+            "小小小鸟，怎么也飞不高。",
+            2
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -73,17 +71,15 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503',
-  1 => 
-  array (
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->

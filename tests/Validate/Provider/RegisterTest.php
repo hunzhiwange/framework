@@ -59,13 +59,12 @@ class RegisterTest extends TestCase
         );
 
         $rule = <<<'eot'
-array (
-  'name' => 
-  array (
-    0 => 'required',
-    1 => 'max_length:10',
-  ),
-)
+{
+    "name": [
+        "required",
+        "max_length:10"
+    ]
+}
 eot;
 
         $this->assertTrue($validate->success());
@@ -76,7 +75,7 @@ eot;
 
         $this->assertSame(
             $rule,
-            $this->varExport(
+            $this->varJson(
                 $validate->getRule()
             )
         );

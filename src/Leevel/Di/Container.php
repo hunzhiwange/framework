@@ -281,7 +281,7 @@ class Container implements IContainer, ArrayAccess
             }
 
             if (empty($callback[1])) {
-                $callback[1] = method_exists($callback[0], 'handle') ? 'handle' : 'run';
+                $callback[1] = 'handle';
             }
         }
 

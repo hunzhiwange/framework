@@ -49,13 +49,12 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                truncate(),
-                __FUNCTION__
+                truncate()
             )
         );
     }

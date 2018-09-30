@@ -42,13 +42,13 @@ class QueryOrderByTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`id` DESC,`test`.`name` ASC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy('id DESC')->
@@ -70,13 +70,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`id` DESC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -84,25 +84,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy('test.id DESC')->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY SUM(`test`.`num`) ASC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -110,25 +111,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy('{SUM([num]) ASC}')->
 
-                findAll(true)
+                findAll(true),
+                2
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY SUM(`test`.`num`) ASC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -136,25 +138,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy('{SUM([num]) ASC}')->
 
-                findAll(true)
+                findAll(true),
+                3
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` ASC,`test`.`id` ASC,concat(\'1234\',`test`.`id`,\'ttt\') DESC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -162,25 +165,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy("title,id,{concat('1234',[id],'ttt') desc}")->
 
-                findAll(true)
+                findAll(true),
+                4
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` ASC,`test`.`id` ASC,`test`.`ttt` ASC,`test`.`value` DESC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -188,25 +192,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy(['title,id,ttt', 'value desc'])->
 
-                findAll(true)
+                findAll(true),
+                5
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` DESC,`test`.`id` DESC,`test`.`ttt` ASC,`test`.`value` DESC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -214,12 +219,13 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy(['title,id,ttt asc', 'value'], 'desc')->
 
-                findAll(true)
+                findAll(true),
+                6
             )
         );
     }
@@ -231,13 +237,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -245,7 +251,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 latest()->
@@ -257,13 +263,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`foo` DESC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -271,25 +277,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 latest('foo')->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` ASC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -297,25 +304,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 oldest()->
 
-                findAll(true)
+                findAll(true),
+                2
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`bar` ASC',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -323,12 +331,13 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 oldest('bar')->
 
-                findAll(true)
+                findAll(true),
+                3
             )
         );
     }

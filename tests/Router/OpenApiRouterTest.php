@@ -45,13 +45,12 @@ class OpenApiRouterTest extends TestCase
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
 
-        $data = file_get_contents($scandir.'/router.data');
+        $data = file_get_contents($scandir.'/router.json');
 
         $this->assertSame(
-            $data,
-            $this->varExport(
-                $result,
-                __FUNCTION__
+            trim($data),
+            $this->varJson(
+                $result
             )
         );
     }
@@ -65,13 +64,12 @@ class OpenApiRouterTest extends TestCase
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
 
-        $data = file_get_contents($scandir.'/router.data');
+        $data = file_get_contents($scandir.'/router.json');
 
         $this->assertSame(
-            $data,
-            $this->varExport(
-                $result,
-                __FUNCTION__
+            trim($data),
+            $this->varJson(
+                $result
             )
         );
     }
@@ -85,13 +83,12 @@ class OpenApiRouterTest extends TestCase
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
 
-        $data = file_get_contents($scandir.'/router.data');
+        $data = file_get_contents($scandir.'/router.json');
 
         $this->assertSame(
-            $data,
-            $this->varExport(
-                $result,
-                __FUNCTION__
+            trim($data),
+            $this->varJson(
+                $result
             )
         );
     }
@@ -105,13 +102,12 @@ class OpenApiRouterTest extends TestCase
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();
 
-        $data = file_get_contents($scandir.'/router.data');
+        $data = file_get_contents($scandir.'/router.json');
 
         $this->assertSame(
-            $data,
-            $this->varExport(
-                $result,
-                __FUNCTION__
+            trim($data),
+            $this->varJson(
+                $result
             )
         );
     }

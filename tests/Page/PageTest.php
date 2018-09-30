@@ -69,27 +69,27 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'per_page' => 10,
-  'current_page' => 1,
-  'total_page' => 6,
-  'total_record' => 52,
-  'total_macro' => false,
-  'from' => 1,
-  'to' => 52,
-)
+{
+    "per_page": 10,
+    "current_page": 1,
+    "total_page": 6,
+    "total_record": 52,
+    "total_macro": false,
+    "from": 1,
+    "to": 52
+}
 eot;
 
         $this->assertSame(
             $data,
-                $this->varExport(
+                $this->varJson(
                     $page->toArray()
                 )
         );
 
         $this->assertSame(
             $data,
-                $this->varExport(
+                $this->varJson(
                     $page->jsonSerialize()
                 )
         );
@@ -579,20 +579,20 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'per_page' => 3,
-  'current_page' => 5,
-  'total_page' => NULL,
-  'total_record' => NULL,
-  'total_macro' => false,
-  'from' => NULL,
-  'to' => NULL,
-)
+{
+    "per_page": 3,
+    "current_page": 5,
+    "total_page": null,
+    "total_record": null,
+    "total_macro": false,
+    "from": null,
+    "to": null
+}
 eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $page->toArray()
             )
         );

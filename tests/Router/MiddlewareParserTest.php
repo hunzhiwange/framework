@@ -56,9 +56,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $middlewareParser->handle(['group1']),
-                __FUNCTION__
+            $this->varJson(
+                $middlewareParser->handle(['group1'])
             )
         );
     }
@@ -84,9 +83,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $middlewareParser->handle(['group1', 'demo3:20,foo']),
-                __FUNCTION__
+            $this->varJson(
+                $middlewareParser->handle(['group1', 'demo3:20,foo'])
             )
         );
     }
@@ -110,9 +108,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $middlewareParser->handle(['demo1', 'demo3:20,foo']),
-                __FUNCTION__
+            $this->varJson(
+                $middlewareParser->handle(['demo1', 'demo3:20,foo'])
             )
         );
     }

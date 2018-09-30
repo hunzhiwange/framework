@@ -52,15 +52,14 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 prefix('SQL_CALC_FOUND_ROWS')->
 
                 where('id', '=', 5)->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
 
@@ -77,7 +76,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 prefix('SQL_NO_CACHE')->
@@ -85,7 +84,7 @@ eot;
                 where('id', '=', 5)->
 
                 findAll(true),
-                __FUNCTION__.'1'
+                1
             )
         );
     }
@@ -109,7 +108,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs($condition)->
@@ -122,8 +121,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -147,7 +145,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs($condition)->
@@ -160,8 +158,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }

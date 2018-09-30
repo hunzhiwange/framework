@@ -42,13 +42,13 @@ class QueryForUpdateTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` FOR UPDATE',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 forUpdate()->
@@ -68,13 +68,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -82,14 +82,15 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 forUpdate()->
 
                 forUpdate(false)->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
     }

@@ -42,26 +42,23 @@ class TreeTest extends TestCase
         ]);
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 2,
-        'data' => 'world',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 2,
+                "data": "world"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->toArray()
             )
         );
@@ -70,31 +67,27 @@ eot;
         $tree->setNode(5, 1, 'foo');
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 2,
-        'data' => 'world',
-      ),
-      1 => 
-      array (
-        'value' => 5,
-        'data' => 'foo',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 2,
+                "data": "world"
+            },
+            {
+                "value": 5,
+                "data": "foo"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->toArray()
             )
         );
@@ -103,36 +96,31 @@ eot;
         $tree->setNode(6, 1, 'bar', true);
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 6,
-        'data' => 'bar',
-      ),
-      1 => 
-      array (
-        'value' => 2,
-        'data' => 'world',
-      ),
-      2 => 
-      array (
-        'value' => 5,
-        'data' => 'foo',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 6,
+                "data": "bar"
+            },
+            {
+                "value": 2,
+                "data": "world"
+            },
+            {
+                "value": 5,
+                "data": "foo"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->toArray()
             )
         );
@@ -141,44 +129,37 @@ eot;
         $tree->setNode(8, 6, 'subbar');
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 6,
-        'data' => 'bar',
-        'children' => 
-        array (
-          0 => 
-          array (
-            'value' => 8,
-            'data' => 'subbar',
-          ),
-        ),
-      ),
-      1 => 
-      array (
-        'value' => 2,
-        'data' => 'world',
-      ),
-      2 => 
-      array (
-        'value' => 5,
-        'data' => 'foo',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 6,
+                "data": "bar",
+                "children": [
+                    {
+                        "value": 8,
+                        "data": "subbar"
+                    }
+                ]
+            },
+            {
+                "value": 2,
+                "data": "world"
+            },
+            {
+                "value": 5,
+                "data": "foo"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->toArray()
             )
         );
@@ -198,104 +179,92 @@ eot;
         $tree = $this->providerTree();
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 2,
-        'data' => 'world',
-      ),
-      1 => 
-      array (
-        'value' => 3,
-        'data' => 'foo',
-        'children' => 
-        array (
-          0 => 
-          array (
-            'value' => 5,
-            'data' => 'subfoo',
-            'children' => 
-            array (
-              0 => 
-              array (
-                'value' => 6,
-                'data' => 'subsubfoo',
-              ),
-            ),
-          ),
-        ),
-      ),
-      2 => 
-      array (
-        'value' => 4,
-        'data' => 'bar',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 2,
+                "data": "world"
+            },
+            {
+                "value": 3,
+                "data": "foo",
+                "children": [
+                    {
+                        "value": 5,
+                        "data": "subfoo",
+                        "children": [
+                            {
+                                "value": 6,
+                                "data": "subsubfoo"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "value": 4,
+                "data": "bar"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->toArray()
             )
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 5,
-    'data' => 'subfoo',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 6,
-        'data' => 'subsubfoo',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 5,
+        "data": "subfoo",
+        "children": [
+            {
+                "value": 6,
+                "data": "subsubfoo"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->getChildrenTree(3)
             )
         );
 
         $nodes = <<<'eot'
-array (
-  1 => 1,
-)
+{
+    "1": 1
+}
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->getChild(0)
             )
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 5,
-  1 => 6,
-)
+[
+    5,
+    6
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->getChildren(3)
             )
         );
@@ -337,70 +306,70 @@ eot;
         $tree = $this->providerTree();
 
         $nodes = <<<'eot'
-array (
-  0 => 1,
-)
+[
+    1
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->getParent(3)
             )
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 3,
-)
+[
+    3
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->getParent(5)
             )
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 3,
-  1 => 5,
-)
+[
+    3,
+    5
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->getParent(5, true)
             )
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 1,
-  1 => 3,
-)
+[
+    1,
+    3
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->getParents(5)
             )
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 1,
-  1 => 3,
-  2 => 5,
-)
+[
+    1,
+    3,
+    5
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->getParents(5, true)
             )
         );
@@ -450,26 +419,23 @@ eot;
         ]);
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 2,
-        'data' => 'world',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 2,
+                "data": "world"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->toArray()
             )
         );
@@ -480,28 +446,25 @@ eot;
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 2,
-        'data' => 'world => foo',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 2,
+                "data": "world => foo"
+            }
+        ]
+    }
+]
 eot;
 
         $tree->setData(2, 'world => foo');
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->toArray()
             )
         );
@@ -520,51 +483,45 @@ eot;
         ]);
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 2,
-        'data' => 'world',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 2,
+                "data": "world"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->toArray()
             )
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value1' => 1,
-    'data1' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value1' => 2,
-        'data1' => 'world',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value1": 1,
+        "data1": "hello",
+        "children": [
+            {
+                "value1": 2,
+                "data1": "world"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->normalize(null, [
                     'value' => 'value1',
                     'data'  => 'data1',
@@ -573,28 +530,25 @@ eot;
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 1,
-    'data' => 'hello',
-    'label' => 'hello',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 2,
-        'data' => 'world',
-        'label' => 'world',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "label": "hello",
+        "children": [
+            {
+                "value": 2,
+                "data": "world",
+                "label": "world"
+            }
+        ]
+    }
+]
 eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->normalize(function ($item) {
                     $item['label'] = $item['data'];
 
@@ -604,21 +558,18 @@ eot;
         );
 
         $nodes = <<<'eot'
-array (
-  0 => 
-  array (
-    'value' => 5,
-    'data' => 'subfoo',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'value' => 6,
-        'data' => 'subsubfoo',
-      ),
-    ),
-  ),
-)
+[
+    {
+        "value": 5,
+        "data": "subfoo",
+        "children": [
+            {
+                "value": 6,
+                "data": "subsubfoo"
+            }
+        ]
+    }
+]
 eot;
 
         // 可以返回子树
@@ -626,7 +577,7 @@ eot;
 
         $this->assertSame(
             $nodes,
-            $this->varExport(
+            $this->varJson(
                 $tree->normalize(null, [], 3)
             )
         );

@@ -55,16 +55,14 @@ class Observer implements SplObserver
      */
     public function update(SplSubject $subject)
     {
-        $method = method_exists($this, 'handle') ? 'handle' : 'run';
-
         $handle = [
             $this,
-            $method,
+            'handle',
         ];
 
         if (!is_callable($handle)) {
             throw new RuntimeException(
-                sprintf('Observer %s must has run or handle method.', get_class($this))
+                sprintf('Observer %s must has handle method.', get_class($this))
             );
         }
 

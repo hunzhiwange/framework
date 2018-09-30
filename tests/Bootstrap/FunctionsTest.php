@@ -64,17 +64,6 @@ class FunctionsTest extends TestCase
         $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
     }
 
-    public function testDd()
-    {
-        ob_start();
-        Leevel::dd('hello_world', true);
-        $result = ob_get_contents();
-        ob_end_clean();
-
-        $this->assertContains('hello_world', $result);
-        $this->assertContains('string', $result);
-    }
-
     public function testCallStaticException()
     {
         $this->expectException(\BadMethodCallException::class);

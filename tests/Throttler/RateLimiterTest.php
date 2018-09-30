@@ -22,6 +22,7 @@ namespace Tests\Throttler;
 
 use Leevel\Cache\Cache;
 use Leevel\Cache\File;
+use Leevel\Filesystem\Fso;
 use Leevel\Throttler\IRateLimiter;
 use Leevel\Throttler\RateLimiter;
 use Tests\TestCase;
@@ -37,12 +38,17 @@ use Tests\TestCase;
  */
 class RateLimiterTest extends TestCase
 {
+    protected function setUp()
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown()
     {
         $dirPath = __DIR__.'/cache';
 
         if (is_dir($dirPath)) {
-            rmdir($dirPath);
+            Fso::deleteDirectory($dirPath, true);
         }
     }
 
@@ -57,25 +63,25 @@ class RateLimiterTest extends TestCase
         $time = time() + 60;
 
         $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time}
+}
 eot;
 
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->header()
             )
         );
 
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->toArray()
             )
         );
@@ -96,17 +102,17 @@ eot;
         $time = time() + 60;
 
         $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time}
+}
 eot;
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->header()
             )
         );
@@ -150,18 +156,18 @@ eot;
         $time = time() + 60;
 
         $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time}
+}
 eot;
 
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->header()
             )
         );
@@ -171,18 +177,18 @@ eot;
         $rateLimiter->limit(80);
 
         $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 80,
-  'X-RateLimit-Remaining' => 79,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 80,
+    "X-RateLimit-Remaining": 79,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time}
+}
 eot;
 
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->header()
             )
         );
@@ -194,18 +200,18 @@ eot;
         $time += 20;
 
         $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 80,
-  'X-RateLimit-Remaining' => 79,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 80,
+    "X-RateLimit-Remaining": 79,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time}
+}
 eot;
 
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->header()
             )
         );
@@ -222,18 +228,18 @@ eot;
         $time = time() + 60;
 
         $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time}
+}
 eot;
 
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->header()
             )
         );
@@ -243,18 +249,18 @@ eot;
         $rateLimiter->time(80);
 
         $header = <<<eot
-array (
-  'X-RateLimit-Time' => 80,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
+{
+    "X-RateLimit-Time": 80,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time}
+}
 eot;
 
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->header()
             )
         );
@@ -264,18 +270,18 @@ eot;
         $this->assertFalse($rateLimiter->attempt());
 
         $header = <<<eot
-array (
-  'X-RateLimit-Time' => 80,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
+{
+    "X-RateLimit-Time": 80,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time}
+}
 eot;
 
         $this->assertSame(
             $header,
-            $this->varExport(
+            $this->varJson(
                 $rateLimiter->header()
             )
         );

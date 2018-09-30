@@ -41,17 +41,15 @@ class UpdateUpdateDecreaseTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`num` = `test`.`num`-3 WHERE `test`.`id` = 503',
-  1 => 
-  array (
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`num` = `test`.`num`-3 WHERE `test`.`id` = 503",
+    []
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -68,18 +66,17 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'UPDATE `test` SET `test`.`num` = `test`.`num`-3 WHERE `test`.`id` = ?',
-  1 => 
-  array (
-    0 => 503,
-  ),
-)
+[
+    "UPDATE `test` SET `test`.`num` = `test`.`num`-3 WHERE `test`.`id` = ?",
+    [
+        503
+    ]
+]
 eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->

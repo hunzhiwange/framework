@@ -42,13 +42,13 @@ class QueryJoinTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON `hello`.`name` = \'小牛\'',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 join('hello', 'name,value', 'name', '=', '小牛')->
@@ -68,13 +68,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` INNER JOIN `hello` `t` ON `t`.`name` = \'小牛\'',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -82,25 +82,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 join(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON `hello`.`hello` = \'world\' AND `hello`.`test` > `hello`.`name`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -108,25 +109,26 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 join('hello', 'name,value', ['hello' => 'world', ['test', '>', '{[name]}']])->
 
-                findAll(true)
+                findAll(true),
+                2
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON (`hello`.`id` < 5 AND `hello`.`name` LIKE \'hello\')',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -134,14 +136,15 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 join('hello', 'name,value', function ($select) {
                     $select->where('id', '<', 5)->where('name', 'like', 'hello');
                 })->
 
-                findAll(true)
+                findAll(true),
+                3
             )
         );
     }
@@ -153,13 +156,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` INNER JOIN `hello` `t` ON `t`.`name` = \'小牛\'',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -167,7 +170,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
@@ -184,13 +187,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` RIGHT JOIN `hello` `t` ON `t`.`name` = \'小牛\'',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -198,7 +201,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
@@ -215,13 +218,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` FULL JOIN `hello` `t` ON `t`.`name` = \'小牛\'',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -229,7 +232,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
@@ -246,13 +249,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` CROSS JOIN `hello` `t`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -260,7 +263,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])->
@@ -277,13 +280,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` NATURAL JOIN `hello` `t`',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -291,7 +294,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])->
@@ -320,7 +323,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs($condition)->
@@ -333,8 +336,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -358,7 +360,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs($condition)->
@@ -371,8 +373,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }

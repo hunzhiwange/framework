@@ -88,14 +88,13 @@ class RouterAnnotationTest extends TestCase
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 [
                     'base_paths'  => $router->getBasePaths(),
                     'group_paths' => $router->getGroupPaths(),
                     'groups'      => $router->getGroups(),
                     'routers'     => $router->getRouters(),
-                ],
-                __FUNCTION__
+                ]
             )
         );
 
@@ -143,9 +142,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $GLOBALS['demo_middlewares'],
-                __FUNCTION__
+            $this->varJson(
+                $GLOBALS['demo_middlewares']
             )
         );
 
@@ -165,9 +163,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 $GLOBALS['demo_middlewares'],
-                __FUNCTION__.'1'
+                1
             )
         );
 
@@ -215,9 +213,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $GLOBALS['demo_middlewares'],
-                __FUNCTION__
+            $this->varJson(
+                $GLOBALS['demo_middlewares']
             )
         );
 
@@ -235,9 +232,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 $GLOBALS['demo_middlewares'],
-                __FUNCTION__.'1'
+                1
             )
         );
 
@@ -714,9 +711,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $GLOBALS['demo_middlewares'],
-                __FUNCTION__
+            $this->varJson(
+                $GLOBALS['demo_middlewares']
             )
         );
 
@@ -736,9 +732,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 $GLOBALS['demo_middlewares'],
-                __FUNCTION__.'1'
+                1
             )
         );
 
@@ -789,9 +785,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $GLOBALS['demo_middlewares'],
-                __FUNCTION__
+            $this->varJson(
+                $GLOBALS['demo_middlewares']
             )
         );
 
@@ -812,9 +807,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 $GLOBALS['demo_middlewares'],
-                __FUNCTION__.'1'
+                1
             )
         );
 
@@ -866,9 +861,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $GLOBALS['demo_middlewares'],
-                __FUNCTION__
+            $this->varJson(
+                $GLOBALS['demo_middlewares']
             )
         );
 
@@ -890,9 +884,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 $GLOBALS['demo_middlewares'],
-                __FUNCTION__.'1'
+                1
             )
         );
 
@@ -941,9 +935,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $GLOBALS['demo_middlewares'],
-                __FUNCTION__
+            $this->varJson(
+                $GLOBALS['demo_middlewares']
             )
         );
 
@@ -961,9 +954,9 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
+            $this->varJson(
                 $GLOBALS['demo_middlewares'],
-                __FUNCTION__.'1'
+                1
             )
         );
 

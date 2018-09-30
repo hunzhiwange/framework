@@ -43,9 +43,9 @@ class QueryBindTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = :id',
-  1 => 
+  1 =>
   array (
-    'id' => 
+    'id' =>
     array (
       0 => 1,
       1 => 2,
@@ -54,7 +54,7 @@ array (
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -62,7 +62,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 bind('id', 1)->
@@ -76,9 +76,9 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = :id',
-  1 => 
+  1 =>
   array (
-    'id' => 
+    'id' =>
     array (
       0 => 1,
       1 => 1,
@@ -87,7 +87,7 @@ array (
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -95,23 +95,24 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 bind('id', 1, PDO::PARAM_INT)->
 
                 where('id', '=', '[:id]')->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = :id',
-  1 => 
+  1 =>
   array (
-    'id' => 
+    'id' =>
     array (
       0 => 1,
       1 => 1,
@@ -120,7 +121,7 @@ array (
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -128,28 +129,29 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 bind('id', [1, PDO::PARAM_INT])->
 
                 where('id', '=', '[:id]')->
 
-                findAll(true)
+                findAll(true),
+                2
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = :id AND `test`.`hello` LIKE :name',
-  1 => 
+  1 =>
   array (
-    'id' => 
+    'id' =>
     array (
       0 => 1,
       1 => 1,
     ),
-    'name' => 
+    'name' =>
     array (
       0 => '小鸭子',
       1 => 2,
@@ -158,7 +160,7 @@ array (
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -166,7 +168,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 bind(['id' => [1, PDO::PARAM_INT], 'name'=>'小鸭子'])->
@@ -175,21 +177,22 @@ eot;
 
                 where('hello', 'like', '[:name]')->
 
-                findAll(true)
+                findAll(true),
+                3
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = ? AND `test`.`hello` LIKE ?',
-  1 => 
+  1 =>
   array (
-    0 => 
+    0 =>
     array (
       0 => 5,
       1 => 1,
     ),
-    1 => 
+    1 =>
     array (
       0 => '小鸭子',
       1 => 2,
@@ -198,7 +201,7 @@ array (
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -206,7 +209,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 bind([[5, PDO::PARAM_INT], '小鸭子'])->
@@ -215,7 +218,8 @@ eot;
 
                 where('hello', 'like', '[?]')->
 
-                findAll(true)
+                findAll(true),
+                4
             )
         );
     }

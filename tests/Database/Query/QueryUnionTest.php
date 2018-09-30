@@ -40,21 +40,14 @@ class QueryUnionTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` 
-UNION SELECT `yyyyy`.`yid` AS `id`,`yyyyy`.`name` AS `value` FROM `yyyyy` WHERE `yyyyy`.`first_name` = \'222\'
-UNION SELECT id,value FROM test2
-UNION SELECT `yyyyy`.`yid` AS `id`,`yyyyy`.`name` AS `value` FROM `yyyyy` WHERE `yyyyy`.`first_name` = \'222\'',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION SELECT `yyyyy`.`yid` AS `id`,`yyyyy`.`name` AS `value` FROM `yyyyy` WHERE `yyyyy`.`first_name` = '222'\nUNION SELECT id,value FROM test2\nUNION SELECT `yyyyy`.`yid` AS `id`,`yyyyy`.`name` AS `value` FROM `yyyyy` WHERE `yyyyy`.`first_name` = '222'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $union1 = $connect->table('yyyyy', 'yid as id,name as value')->where('first_name', '=', '222');
@@ -62,7 +55,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 union($union1)->
@@ -77,7 +70,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 union([$union1, $union2, $union1])->
@@ -92,26 +85,21 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` 
-UNION ALL SELECT id,value FROM test2',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION ALL SELECT id,value FROM test2",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $union1 = 'SELECT id,value FROM test2';
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 unionAll($union1)->
@@ -144,7 +132,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 ifs($condition)->
@@ -157,8 +145,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -186,7 +173,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 ifs($condition)->
@@ -199,8 +186,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -228,7 +214,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 ifs($condition)->
@@ -241,8 +227,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -270,7 +255,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test', 'tid as id,tname as value')->
 
                 ifs($condition)->
@@ -283,8 +268,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }

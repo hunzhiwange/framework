@@ -307,21 +307,18 @@ class SessionTest extends TestCase
         $session->flash('hello', 'world');
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-  ),
-  'flash.old.key' => 
-  array (
-  ),
-)
+{
+    "flash.data.hello": "world",
+    "flash.new.key": [
+        "hello"
+    ],
+    "flash.old.key": []
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -329,26 +326,22 @@ eot;
         $session->flash('foo', ['bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.old.key' => 
-  array (
-  ),
-  'flash.data.foo' => 
-  array (
-    0 => 'bar',
-  ),
-)
+{
+    "flash.data.hello": "world",
+    "flash.new.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.old.key": [],
+    "flash.data.foo": [
+        "bar"
+    ]
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -361,23 +354,20 @@ eot;
         $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.old.key' => 
-  array (
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.new.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.old.key": [],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -390,18 +380,17 @@ eot;
         $session->nowFlash('hello', 'world');
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-  ),
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [
+        "hello"
+    ]
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -414,20 +403,19 @@ eot;
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -440,20 +428,19 @@ eot;
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -461,23 +448,20 @@ eot;
         $session->rebuildFlash();
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-  ),
-  'flash.data.foo' => 'bar',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [],
+    "flash.data.foo": "bar",
+    "flash.new.key": [
+        "hello",
+        "foo"
+    ]
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -490,20 +474,19 @@ eot;
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -511,23 +494,20 @@ eot;
         $session->keepFlash('hello', 'foo');
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-  ),
-  'flash.data.foo' => 'bar',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [],
+    "flash.data.foo": "bar",
+    "flash.new.key": [
+        "hello",
+        "foo"
+    ]
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -540,20 +520,19 @@ eot;
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -561,23 +540,20 @@ eot;
         $session->keepFlash(['hello', 'foo']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-  ),
-  'flash.data.foo' => 'bar',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [],
+    "flash.data.foo": "bar",
+    "flash.new.key": [
+        "hello",
+        "foo"
+    ]
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -609,23 +585,20 @@ eot;
         $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.old.key' => 
-  array (
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.new.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.old.key": [],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -633,21 +606,18 @@ eot;
         $session->deleteFlash(['hello', 'foo']);
 
         $flash = <<<'eot'
-array (
-  'flash.new.key' => 
-  array (
-  ),
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-)
+{
+    "flash.new.key": [],
+    "flash.old.key": [
+        "hello",
+        "foo"
+    ]
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -660,23 +630,20 @@ eot;
         $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.old.key' => 
-  array (
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.new.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.old.key": [],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -684,22 +651,20 @@ eot;
         $session->deleteFlash('hello');
 
         $flash = <<<'eot'
-array (
-  'flash.new.key' => 
-  array (
-    1 => 'foo',
-  ),
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.new.key": {
+        "1": "foo"
+    },
+    "flash.old.key": [
+        "hello"
+    ],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -712,23 +677,20 @@ eot;
         $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.new.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.old.key' => 
-  array (
-  ),
-  'flash.data.foo' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.new.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.old.key": [],
+    "flash.data.foo": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -736,21 +698,18 @@ eot;
         $session->clearFlash();
 
         $flash = <<<'eot'
-array (
-  'flash.new.key' => 
-  array (
-  ),
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-)
+{
+    "flash.new.key": [],
+    "flash.old.key": [
+        "hello",
+        "foo"
+    ]
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -764,27 +723,25 @@ eot;
         $session->flashs(['hello2' => 'world', 'foo2' => 'bar']);
 
         $flash = <<<'eot'
-array (
-  'flash.data.hello' => 'world',
-  'flash.old.key' => 
-  array (
-    0 => 'hello',
-    1 => 'foo',
-  ),
-  'flash.data.foo' => 'bar',
-  'flash.data.hello2' => 'world',
-  'flash.new.key' => 
-  array (
-    0 => 'hello2',
-    1 => 'foo2',
-  ),
-  'flash.data.foo2' => 'bar',
-)
+{
+    "flash.data.hello": "world",
+    "flash.old.key": [
+        "hello",
+        "foo"
+    ],
+    "flash.data.foo": "bar",
+    "flash.data.hello2": "world",
+    "flash.new.key": [
+        "hello2",
+        "foo2"
+    ],
+    "flash.data.foo2": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );
@@ -792,20 +749,19 @@ eot;
         $session->unregisterFlash();
 
         $flash = <<<'eot'
-array (
-  'flash.old.key' => 
-  array (
-    0 => 'hello2',
-    1 => 'foo2',
-  ),
-  'flash.data.hello2' => 'world',
-  'flash.data.foo2' => 'bar',
-)
+{
+    "flash.old.key": [
+        "hello2",
+        "foo2"
+    ],
+    "flash.data.hello2": "world",
+    "flash.data.foo2": "bar"
+}
 eot;
 
         $this->assertSame(
             $flash,
-            $this->varExport(
+            $this->varJson(
                 $session->all()
             )
         );

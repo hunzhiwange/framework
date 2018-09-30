@@ -587,7 +587,7 @@ class Router implements IRouter
                 }
 
                 $controller = $this->container->make($matchedBind);
-                $method = method_exists($controller, 'handle') ? 'handle' : 'run';
+                $method = 'handle';
             }
         } else {
             $matchedApp = $this->matchedApp();
@@ -600,7 +600,7 @@ class Router implements IRouter
 
             if (class_exists($controllerClass)) {
                 $controller = $this->container->make($controllerClass);
-                $method = method_exists($controller, 'handle') ? 'handle' : 'run';
+                $method = 'handle';
             }
 
             // 尝试读取默认控制器

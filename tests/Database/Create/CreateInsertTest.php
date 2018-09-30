@@ -43,14 +43,14 @@ class CreateInsertTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
-  1 => 
+  1 =>
   array (
-    'name' => 
+    'name' =>
     array (
       0 => '小鸭子',
       1 => 2,
     ),
-    'value' => 
+    'value' =>
     array (
       0 => '吃饭饭',
       1 => 2,
@@ -63,7 +63,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -80,14 +80,14 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)',
-  1 => 
+  1 =>
   array (
-    'name' => 
+    'name' =>
     array (
       0 => '小鸭子',
       1 => 2,
     ),
-    'questionmark_0' => 
+    'questionmark_0' =>
     array (
       0 => '吃肉',
       1 => 2,
@@ -100,7 +100,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -112,9 +112,9 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
-  1 => 
+  1 =>
   array (
-    'name' => 
+    'name' =>
     array (
       0 => '小鸭子',
       1 => 2,
@@ -128,12 +128,13 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
 
-                insert($data, ['value' => '呱呱呱'])
+                insert($data, ['value' => '呱呱呱']),
+                1
             )
         );
     }
@@ -145,14 +146,14 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)',
-  1 => 
+  1 =>
   array (
-    'name' => 
+    'name' =>
     array (
       0 => '小鸭子',
       1 => 2,
     ),
-    'questionmark_0' => 
+    'questionmark_0' =>
     array (
       0 => '吃鱼',
       1 => 2,
@@ -165,7 +166,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->
@@ -184,9 +185,9 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
-  1 => 
+  1 =>
   array (
-    'name' => 
+    'name' =>
     array (
       0 => '小鸭子',
       1 => 2,
@@ -200,7 +201,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->sql()->
 
                 table('test')->

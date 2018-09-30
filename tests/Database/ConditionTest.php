@@ -53,13 +53,12 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 forPage(20, 6)->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }

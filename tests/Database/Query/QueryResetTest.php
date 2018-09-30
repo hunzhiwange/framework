@@ -42,13 +42,13 @@ class QueryResetTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `newtable`.* FROM `newtable` WHERE `newtable`.`new` = \'world\'',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -56,7 +56,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 where('id', '=', 5)->
@@ -76,13 +76,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`new` LIKE \'new\'',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -90,7 +90,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 where('id', '=', 5)->
@@ -103,7 +103,8 @@ eot;
 
                 where('new', 'like', 'new')->
 
-                findAll(true)
+                findAll(true),
+                1
             )
         );
     }
@@ -127,7 +128,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 where('id', '=', 5)->
@@ -148,8 +149,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -173,7 +173,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 where('id', '=', 5)->
@@ -194,8 +194,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }

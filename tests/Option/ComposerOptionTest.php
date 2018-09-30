@@ -39,51 +39,45 @@ class ComposerOptionTest extends TestCase
         $options = ($composerOption = new ComposerOption(__DIR__.'/app1'))->loadData();
 
         $data = <<<'eot'
-array (
-  'providers' => 
-  array (
-    0 => 'Tests\\Option\\Providers\\Foo',
-    1 => 'Tests\\Option\\Providers\\Bar',
-    2 => 'Demo\\Provider\\Register',
-    3 => 'Common\\Infra\\Provider\\Event',
-    4 => 'Common\\Infra\\Provider\\Router',
-  ),
-  'ignores' => 
-  array (
-    0 => 'Leevel\\Notexits\\Provider\\Register',
-  ),
-  'commands' => 
-  array (
-    0 => 'Tests\\Option\\Commands\\Test',
-    1 => 'Tests\\Option\\Commands\\Console',
-    2 => 'Demo\\Demo\\Console',
-    3 => 'Common\\App\\Console',
-  ),
-  'options' => 
-  array (
-    'demo' => 'option/extend/test.php',
-  ),
-  'i18ns' => 
-  array (
-    0 => 'i18n/extend',
-  ),
-  'metas' => 
-  array (
-    'foo' => 'bar',
-  ),
-)
+{
+    "providers": [
+        "Tests\\Option\\Providers\\Foo",
+        "Tests\\Option\\Providers\\Bar",
+        "Demo\\Provider\\Register",
+        "Common\\Infra\\Provider\\Event",
+        "Common\\Infra\\Provider\\Router"
+    ],
+    "ignores": [
+        "Leevel\\Notexits\\Provider\\Register"
+    ],
+    "commands": [
+        "Tests\\Option\\Commands\\Test",
+        "Tests\\Option\\Commands\\Console",
+        "Demo\\Demo\\Console",
+        "Common\\App\\Console"
+    ],
+    "options": {
+        "demo": "option\/extend\/test.php"
+    },
+    "i18ns": [
+        "i18n\/extend"
+    ],
+    "metas": {
+        "foo": "bar"
+    }
+}
 eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $options
             )
         );
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $composerOption->loadData()
             )
         );
@@ -94,37 +88,27 @@ eot;
         $options = ($composerOption = new ComposerOption(__DIR__.'/app4'))->loadData();
 
         $data = <<<'eot'
-array (
-  'providers' => 
-  array (
-    0 => 'Tests\\Option\\Providers\\Foo',
-    1 => 'Tests\\Option\\Providers\\Bar',
-    2 => 'Demo\\Provider\\Register',
-  ),
-  'ignores' => 
-  array (
-  ),
-  'commands' => 
-  array (
-    0 => 'Tests\\Option\\Commands\\Test',
-    1 => 'Tests\\Option\\Commands\\Console',
-    2 => 'Demo\\Demo\\Console',
-  ),
-  'options' => 
-  array (
-  ),
-  'i18ns' => 
-  array (
-  ),
-  'metas' => 
-  array (
-  ),
-)
+{
+    "providers": [
+        "Tests\\Option\\Providers\\Foo",
+        "Tests\\Option\\Providers\\Bar",
+        "Demo\\Provider\\Register"
+    ],
+    "ignores": [],
+    "commands": [
+        "Tests\\Option\\Commands\\Test",
+        "Tests\\Option\\Commands\\Console",
+        "Demo\\Demo\\Console"
+    ],
+    "options": [],
+    "i18ns": [],
+    "metas": []
+}
 eot;
 
         $this->assertSame(
             $data,
-            $this->varExport(
+            $this->varJson(
                 $options
             )
         );

@@ -59,18 +59,18 @@ class LoadTest extends TestCase
         // 多次调用会存在缓存
         $optionCaches = $load->loadData($project);
 
-        $data = file_get_contents(__DIR__.'/option.data');
+        $data = file_get_contents(__DIR__.'/app1/option.json');
 
         $this->assertSame(
-            $data,
-            $this->varExport(
+            trim($data),
+            $this->varJson(
                 $options
             )
         );
 
         $this->assertSame(
-            $data,
-            $this->varExport(
+            trim($data),
+            $this->varJson(
                 $optionCaches
             )
         );

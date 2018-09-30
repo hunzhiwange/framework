@@ -54,13 +54,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereDate('create_date', '+5 month')->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -85,13 +84,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereDay('create_date', 5)->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -116,13 +114,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereDay('create_date', '5')->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -147,13 +144,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereDay('create_date', '5 foo')->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -178,13 +174,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereMonth('create_date', 5)->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -209,13 +204,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereMonth('create_date', '5')->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -240,13 +234,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereMonth('create_date', '5 foo')->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -270,13 +263,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereYear('create_date', 2018)->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -300,13 +292,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereYear('create_date', '2018')->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -330,13 +321,12 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 whereYear('create_date', '2018 foo')->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -360,7 +350,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time()->
@@ -369,8 +359,7 @@ eot;
 
                 endTime()->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -394,7 +383,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time('date')->
@@ -403,8 +392,7 @@ eot;
 
                 endTime()->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -429,7 +417,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time('day')->
@@ -438,8 +426,7 @@ eot;
 
                 endTime()->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -464,7 +451,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time('month')->
@@ -473,8 +460,7 @@ eot;
 
                 endTime()->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -498,7 +484,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $value),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time('year')->
@@ -507,8 +493,7 @@ eot;
 
                 endTime()->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -536,7 +521,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $year, $month, $day, $date),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time('year')->
@@ -563,8 +548,7 @@ eot;
 
                 endTime()->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -592,7 +576,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $year, $month, $day, $date),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time('year')->
@@ -613,8 +597,7 @@ eot;
 
                 endTime()->
 
-                findOne(true),
-                __FUNCTION__
+                findOne(true)
             )
         );
     }
@@ -709,7 +692,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $time),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs($condition)->
@@ -730,8 +713,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -758,7 +740,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $time),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs($condition)->
@@ -779,8 +761,7 @@ eot;
 
                 endIfs()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -807,7 +788,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $time),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time('day')->
@@ -826,8 +807,7 @@ eot;
 
                 endTime()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }
@@ -855,7 +835,7 @@ eot;
 
         $this->assertSame(
             sprintf($sql, $time, $time2),
-            $this->varJsonEncode(
+            $this->varJson(
                 $connect->table('test')->
 
                 time('day')->
@@ -874,8 +854,7 @@ eot;
 
                 endTime()->
 
-                findAll(true),
-                __FUNCTION__
+                findAll(true)
             )
         );
     }

@@ -396,9 +396,8 @@ eot;
 
         $this->assertSame(
             $data,
-            $this->varJsonEncode(
-                $GLOBALS['demo_middlewares'],
-                __FUNCTION__
+            $this->varJson(
+                $GLOBALS['demo_middlewares']
             )
         );
 

@@ -42,13 +42,13 @@ class QueryFlowTest extends TestCase
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 ORDER BY `test`.`name` DESC LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -58,7 +58,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs(1 === $id)->where('id', 1)->
@@ -78,13 +78,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -94,7 +94,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs(1 === $id)->where('id', 1)->
@@ -107,20 +107,21 @@ eot;
 
                 endIfs()->
 
-                findOne(true)
+                findOne(true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -130,7 +131,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs(1 === $id)->where('id', 1)->
@@ -143,20 +144,21 @@ eot;
 
                 endIfs()->
 
-                findOne(true)
+                findOne(true),
+                2
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -166,7 +168,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs(1 === $id)->where('id', 1)->
@@ -179,25 +181,26 @@ eot;
 
                 endIfs()->
 
-                findOne(true)
+                findOne(true),
+                3
             )
         );
     }
 
-    public function t2estElses()
+    public function testElses()
     {
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`id` = 4 ORDER BY `test`.`name` DESC LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -207,7 +210,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs(1 === $id)->where('id', 1)->
@@ -229,13 +232,13 @@ eot;
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -245,7 +248,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs(1 === $id)->where('id', 1)->
@@ -260,20 +263,21 @@ eot;
 
                 endIfs()->
 
-                findOne(true)
+                findOne(true),
+                1
             )
         );
 
         $sql = <<<'eot'
 array (
   0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1',
-  1 => 
+  1 =>
   array (
   ),
   2 => false,
   3 => NULL,
   4 => NULL,
-  5 => 
+  5 =>
   array (
   ),
 )
@@ -283,7 +287,7 @@ eot;
 
         $this->assertSame(
             $sql,
-            $this->varExport(
+            $this->varJson(
                 $connect->table('test')->
 
                 ifs(1 === $id)->where('id', 1)->
@@ -298,7 +302,8 @@ eot;
 
                 endIfs()->
 
-                findOne(true)
+                findOne(true),
+                2
             )
         );
     }
