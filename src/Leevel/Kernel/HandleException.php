@@ -23,7 +23,7 @@ namespace Leevel\Kernel;
 use Exception;
 
 /**
- * 用户操作异常
+ * 用户操作异常.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
