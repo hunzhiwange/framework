@@ -2923,9 +2923,9 @@ class Condition
     /**
      * 设置当前表名字.
      *
-     * @param mixed $table
+     * @param string $table
      */
-    protected function setTable($table)
+    protected function setTable(string $table)
     {
         $this->table = $table;
     }
@@ -2935,16 +2935,9 @@ class Condition
      *
      * @return string
      */
-    protected function getTable()
+    protected function getTable(): string
     {
-        // 数组
-        if (is_array($this->table)) {
-            while ((list($alias) = each($this->table)) !== false) {
-                return $this->table = $alias;
-            }
-        } else {
-            return $this->table;
-        }
+        return $this->table;
     }
 
     /**
