@@ -18,13 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel\Exception;
+namespace Leevel\Kernel;
 
 use Exception;
 
 /**
- * 方法禁用
- * 禁用请求中指定的方法: 405.
+ * 无法处理的实体
+ * 请求格式正确，但是由于含有语义错误，无法响应: 422.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Exception;
  *
  * @version 1.0
  */
-class MethodNotAllowedHttpException extends HttpException
+class UnprocessableEntityHttpException extends HttpException
 {
     /**
      * 构造函数.
@@ -43,6 +43,6 @@ class MethodNotAllowedHttpException extends HttpException
      */
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        parent::__construct(405, $message, $code, $previous);
+        parent::__construct(422, $message, $code, $previous);
     }
 }

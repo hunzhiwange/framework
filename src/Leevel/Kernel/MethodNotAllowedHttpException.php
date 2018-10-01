@@ -18,27 +18,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap\Runtime;
+namespace Leevel\Kernel;
 
-use Whoops\Exception\Inspector as BaseInspector;
+use Exception;
 
 /**
- * Inspector.
+ * 方法禁用
+ * 禁用请求中指定的方法: 405.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.05.01
+ * @since 2018.04.29
  *
  * @version 1.0
- * @codeCoverageIgnore
  */
-class Inspector extends BaseInspector
+class MethodNotAllowedHttpException extends HttpException
 {
     /**
-     * {@inheritdoc}
+     * 构造函数.
+     *
+     * @param null|string $message
+     * @param int         $code
+     * @param \Exception  $previous
      */
-    protected function getTrace($e)
+    public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        return $e->getTrace();
+        parent::__construct(405, $message, $code, $previous);
     }
 }

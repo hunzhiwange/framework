@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap\Runtime;
+namespace Leevel\Bootstrap;
 
 use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
@@ -27,9 +27,9 @@ use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Response;
-use Leevel\Kernel\Exception\HttpException;
-use Leevel\Kernel\Exception\NotFoundHttpException;
-use Leevel\Kernel\Runtime\IRuntime;
+use Leevel\Kernel\HttpException;
+use Leevel\Kernel\IRuntime;
+use Leevel\Kernel\NotFoundHttpException;
 use Leevel\Log\ILog;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;

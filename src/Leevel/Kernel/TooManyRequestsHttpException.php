@@ -18,21 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel\Exception;
+namespace Leevel\Kernel;
 
 use Exception;
 
 /**
- * 禁止
- * 服务器拒绝请求: 403.
+ * 请求过于频繁异常
+ * 用户在给定的时间内发送了太多的请求: 429.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.04.29
+ * @since 2017.08.10
  *
  * @version 1.0
  */
-class ForbiddenHttpException extends HttpException
+class TooManyRequestsHttpException extends HttpException
 {
     /**
      * 构造函数.
@@ -43,6 +43,6 @@ class ForbiddenHttpException extends HttpException
      */
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        parent::__construct(403, $message, $code, $previous);
+        parent::__construct(429, $message, $code, $previous);
     }
 }

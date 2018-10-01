@@ -30,7 +30,7 @@ use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Kernel\IKernel;
 use Leevel\Kernel\IProject;
-use Leevel\Kernel\Runtime\IRuntime;
+use Leevel\Kernel\IRuntime;
 use Leevel\Router\IRouter;
 use Throwable;
 

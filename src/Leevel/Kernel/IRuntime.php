@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel\Runtime;
+namespace Leevel\Kernel;
 
 use Exception;
 use Leevel\Http\IRequest;

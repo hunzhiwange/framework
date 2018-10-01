@@ -29,7 +29,7 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
-use Leevel\Kernel\Runtime\IRuntime;
+use Leevel\Kernel\IRuntime;
 use Tests\TestCase;
 
 /**

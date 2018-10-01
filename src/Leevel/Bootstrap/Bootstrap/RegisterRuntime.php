@@ -23,7 +23,7 @@ namespace Leevel\Bootstrap\Bootstrap;
 use ErrorException;
 use Exception;
 use Leevel\Kernel\IProject;
-use Leevel\Kernel\Runtime\IRuntime;
+use Leevel\Kernel\IRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
 
@@ -173,7 +173,7 @@ class RegisterRuntime
     /**
      * 返回运行处理器.
      *
-     * @return \Leevel\Kernel\Exception\IRuntime
+     * @return \Leevel\Kernel\IRuntime
      */
     protected function getRuntime(): IRuntime
     {

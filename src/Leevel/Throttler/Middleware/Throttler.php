@@ -22,7 +22,7 @@ namespace Leevel\Throttler\Middleware;
 
 use Closure;
 use Leevel\Http\IRequest;
-use Leevel\Kernel\Exception\TooManyRequestsHttpException;
+use Leevel\Kernel\TooManyRequestsHttpException;
 use Leevel\Throttler\IThrottler;
 
 /**

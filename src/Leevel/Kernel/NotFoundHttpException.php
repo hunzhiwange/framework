@@ -18,13 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel\Exception;
+namespace Leevel\Kernel;
 
 use Exception;
 
 /**
- * 错误请求
- * 服务器不理解请求的语法: 400.
+ * 未找到
+ * 用户发出的请求针对的是不存在的记录: 404.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Exception;
  *
  * @version 1.0
  */
-class BadRequestHttpException extends HttpException
+class NotFoundHttpException extends HttpException
 {
     /**
      * 构造函数.
@@ -43,6 +43,6 @@ class BadRequestHttpException extends HttpException
      */
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        parent::__construct(400, $message, $code, $previous);
+        parent::__construct(404, $message, $code, $previous);
     }
 }

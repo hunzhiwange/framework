@@ -18,31 +18,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel\Exception;
+namespace Leevel\Bootstrap;
 
-use Exception;
+use Whoops\Exception\Inspector as BaseInspector;
 
 /**
- * 无法处理的实体
- * 请求格式正确，但是由于含有语义错误，无法响应: 422.
+ * Inspector.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.04.29
+ * @since 2018.05.01
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-class UnprocessableEntityHttpException extends HttpException
+class Inspector extends BaseInspector
 {
     /**
-     * 构造函数.
-     *
-     * @param null|string $message
-     * @param int         $code
-     * @param \Exception  $previous
+     * {@inheritdoc}
      */
-    public function __construct($message = null, $code = 0, Exception $previous = null)
+    protected function getTrace($e)
     {
-        parent::__construct(422, $message, $code, $previous);
+        return $e->getTrace();
     }
 }
