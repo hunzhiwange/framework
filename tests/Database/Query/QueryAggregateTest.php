@@ -40,18 +40,14 @@ class QueryAggregateTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT COUNT(*) AS row_count FROM `test` LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT COUNT(*) AS row_count FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -66,18 +62,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT COUNT(`test`.`id`) AS row_count FROM `test` LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT COUNT(`test`.`id`) AS row_count FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -93,18 +85,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT COUNT(`test`.`id`) AS count1 FROM `test` LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT COUNT(`test`.`id`) AS count1 FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -120,18 +108,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT COUNT(`test`.`id`*50) AS count1 FROM `test` LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT COUNT(`test`.`id`*50) AS count1 FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -152,18 +136,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT AVG(`test`.`id`) AS avg_value FROM `test` LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT AVG(`test`.`id`) AS avg_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -183,18 +163,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT MAX(`test`.`num`) AS max_value FROM `test` LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT MAX(`test`.`num`) AS max_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -214,18 +190,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT MIN(`test`.`num`) AS min_value FROM `test` LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT MIN(`test`.`num`) AS min_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -245,18 +217,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT SUM(`test`.`num`) AS sum_value FROM `test` LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT SUM(`test`.`num`) AS sum_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(

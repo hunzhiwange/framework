@@ -62,12 +62,11 @@ class CreateTest extends TestCase
         $this->assertInstanceof(Closure::class, $entity->getFlush());
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'name' => 'foo',
-  ),
-)
+[
+    {
+        "name": "foo"
+    }
+]
 eot;
 
         // 尝试写入，接管框架提供的数据库持久层方便测试
@@ -119,12 +118,11 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'name' => 'foo',
-  ),
-)
+[
+    {
+        "name": "foo"
+    }
+]
 eot;
 
         $this->assertSame(
@@ -142,12 +140,11 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'description' => 'hello description',
-  ),
-)
+[
+    {
+        "description": "hello description"
+    }
+]
 eot;
 
         $this->assertSame(
@@ -169,12 +166,11 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'name' => 'foo',
-  ),
-)
+[
+    {
+        "name": "foo"
+    }
+]
 eot;
 
         $this->assertSame(
@@ -201,16 +197,15 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'name' => 'name for create_fill',
-    'description' => 'set description.',
-    'address' => 'address is set now.',
-    'foo_bar' => 'foo bar.',
-    'hello' => 'hello field.',
-  ),
-)
+[
+    {
+        "name": "name for create_fill",
+        "description": "set description.",
+        "address": "address is set now.",
+        "foo_bar": "foo bar.",
+        "hello": "hello field."
+    }
+]
 eot;
 
         $this->assertSame(
@@ -230,12 +225,11 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'id' => NULL,
-  ),
-)
+[
+    {
+        "id": null
+    }
+]
 eot;
 
         $this->assertSame(
@@ -252,12 +246,11 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'id' => NULL,
-  ),
-)
+[
+    {
+        "id": null
+    }
+]
 eot;
 
         $this->assertSame(

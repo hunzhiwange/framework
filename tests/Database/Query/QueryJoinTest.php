@@ -40,18 +40,14 @@ class QueryJoinTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON `hello`.`name` = \'小牛\'',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON `hello`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -66,18 +62,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` INNER JOIN `hello` `t` ON `t`.`name` = \'小牛\'',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` INNER JOIN `hello` `t` ON `t`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -93,18 +85,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON `hello`.`hello` = \'world\' AND `hello`.`test` > `hello`.`name`',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON `hello`.`hello` = 'world' AND `hello`.`test` > `hello`.`name`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -120,18 +108,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON (`hello`.`id` < 5 AND `hello`.`name` LIKE \'hello\')',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON (`hello`.`id` < 5 AND `hello`.`name` LIKE 'hello')",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -154,18 +138,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` INNER JOIN `hello` `t` ON `t`.`name` = \'小牛\'',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` INNER JOIN `hello` `t` ON `t`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -185,18 +165,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` RIGHT JOIN `hello` `t` ON `t`.`name` = \'小牛\'',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` RIGHT JOIN `hello` `t` ON `t`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -216,18 +192,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` FULL JOIN `hello` `t` ON `t`.`name` = \'小牛\'',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` FULL JOIN `hello` `t` ON `t`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -247,18 +219,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` CROSS JOIN `hello` `t`',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` CROSS JOIN `hello` `t`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -278,18 +246,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` NATURAL JOIN `hello` `t`',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` NATURAL JOIN `hello` `t`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(

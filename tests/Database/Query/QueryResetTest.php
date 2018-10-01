@@ -40,18 +40,14 @@ class QueryResetTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `newtable`.* FROM `newtable` WHERE `newtable`.`new` = \'world\'',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `newtable`.* FROM `newtable` WHERE `newtable`.`new` = 'world'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -74,18 +70,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`new` LIKE \'new\'',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`new` LIKE 'new'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(

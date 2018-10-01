@@ -40,18 +40,14 @@ class QueryOrderByTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`id` DESC,`test`.`name` ASC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`id` DESC,`test`.`name` ASC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -68,18 +64,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`id` DESC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`id` DESC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -95,18 +87,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY SUM(`test`.`num`) ASC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY SUM(`test`.`num`) ASC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -122,18 +110,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY SUM(`test`.`num`) ASC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY SUM(`test`.`num`) ASC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -149,18 +133,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` ASC,`test`.`id` ASC,concat(\'1234\',`test`.`id`,\'ttt\') DESC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` ASC,`test`.`id` ASC,concat('1234',`test`.`id`,'ttt') DESC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -176,18 +156,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` ASC,`test`.`id` ASC,`test`.`ttt` ASC,`test`.`value` DESC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` ASC,`test`.`id` ASC,`test`.`ttt` ASC,`test`.`value` DESC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -203,18 +179,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` DESC,`test`.`id` DESC,`test`.`ttt` ASC,`test`.`value` DESC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` DESC,`test`.`id` DESC,`test`.`ttt` ASC,`test`.`value` DESC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -235,18 +207,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -261,18 +229,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`foo` DESC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` ORDER BY `test`.`foo` DESC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -288,18 +252,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` ASC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` ASC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -315,18 +275,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`bar` ASC',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` ORDER BY `test`.`bar` ASC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(

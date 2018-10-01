@@ -41,22 +41,19 @@ class CreateInsertTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子',
-      1 => 2,
-    ),
-    'value' =>
-    array (
-      0 => '吃饭饭',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
+    {
+        "name": [
+            "小鸭子",
+            2
+        ],
+        "value": [
+            "吃饭饭",
+            2
+        ]
+    }
+]
 eot;
 
         $data = ['name' => '小鸭子', 'value' => '吃饭饭'];
@@ -78,22 +75,19 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子',
-      1 => 2,
-    ),
-    'questionmark_0' =>
-    array (
-      0 => '吃肉',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)",
+    {
+        "name": [
+            "小鸭子",
+            2
+        ],
+        "questionmark_0": [
+            "吃肉",
+            2
+        ]
+    }
+]
 eot;
 
         $data = ['name' => '小鸭子', 'value' => '[?]'];
@@ -110,18 +104,16 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子',
-      1 => 2,
-    ),
-    'value' => '呱呱呱',
-  ),
-)
+[
+    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
+    {
+        "name": [
+            "小鸭子",
+            2
+        ],
+        "value": "呱呱呱"
+    }
+]
 eot;
 
         $data = ['name' => '小鸭子', 'value' => '[:value]'];
@@ -144,22 +136,19 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子',
-      1 => 2,
-    ),
-    'questionmark_0' =>
-    array (
-      0 => '吃鱼',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)",
+    {
+        "name": [
+            "小鸭子",
+            2
+        ],
+        "questionmark_0": [
+            "吃鱼",
+            2
+        ]
+    }
+]
 eot;
 
         $data = ['name' => '小鸭子', 'value' => '[?]'];
@@ -183,18 +172,16 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子',
-      1 => 2,
-    ),
-    'value' => '呱呱呱',
-  ),
-)
+[
+    "REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
+    {
+        "name": [
+            "小鸭子",
+            2
+        ],
+        "value": "呱呱呱"
+    }
+]
 eot;
 
         $data = ['name' => '小鸭子', 'value' => '[:value]'];

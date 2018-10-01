@@ -40,18 +40,14 @@ class QueryFlowTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 ORDER BY `test`.`name` DESC LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 ORDER BY `test`.`name` DESC LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $id = 2;
@@ -76,18 +72,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $id = 1;
@@ -113,18 +105,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $id = 3;
@@ -150,18 +138,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $id = 4;
@@ -192,18 +176,14 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`id` = 4 ORDER BY `test`.`name` DESC LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`id` = 4 ORDER BY `test`.`name` DESC LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $id = 2;
@@ -230,18 +210,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $id = 3;
@@ -269,18 +245,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $id = 5;

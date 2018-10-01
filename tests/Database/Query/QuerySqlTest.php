@@ -40,18 +40,14 @@ class QuerySqlTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -68,13 +64,12 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'delete from test where id = ?',
-  1 =>
-  array (
-    0 => 22,
-  ),
-)
+[
+    "delete from test where id = ?",
+    [
+        22
+    ]
+]
 eot;
 
         $this->assertSame(
@@ -88,18 +83,14 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1',
-  1 =>
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(

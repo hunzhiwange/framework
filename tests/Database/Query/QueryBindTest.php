@@ -41,23 +41,19 @@ class QueryBindTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = :id',
-  1 =>
-  array (
-    'id' =>
-    array (
-      0 => 1,
-      1 => 2,
-    ),
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+    {
+        "id": [
+            1,
+            2
+        ]
+    },
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -74,23 +70,19 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = :id',
-  1 =>
-  array (
-    'id' =>
-    array (
-      0 => 1,
-      1 => 1,
-    ),
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+    {
+        "id": [
+            1,
+            1
+        ]
+    },
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -108,23 +100,19 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = :id',
-  1 =>
-  array (
-    'id' =>
-    array (
-      0 => 1,
-      1 => 1,
-    ),
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+    {
+        "id": [
+            1,
+            1
+        ]
+    },
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -142,28 +130,23 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = :id AND `test`.`hello` LIKE :name',
-  1 =>
-  array (
-    'id' =>
-    array (
-      0 => 1,
-      1 => 1,
-    ),
-    'name' =>
-    array (
-      0 => '小鸭子',
-      1 => 2,
-    ),
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id AND `test`.`hello` LIKE :name",
+    {
+        "id": [
+            1,
+            1
+        ],
+        "name": [
+            "小鸭子",
+            2
+        ]
+    },
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(
@@ -183,28 +166,23 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = ? AND `test`.`hello` LIKE ?',
-  1 =>
-  array (
-    0 =>
-    array (
-      0 => 5,
-      1 => 1,
-    ),
-    1 =>
-    array (
-      0 => '小鸭子',
-      1 => 2,
-    ),
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 =>
-  array (
-  ),
-)
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = ? AND `test`.`hello` LIKE ?",
+    [
+        [
+            5,
+            1
+        ],
+        [
+            "小鸭子",
+            2
+        ]
+    ],
+    false,
+    null,
+    null,
+    []
+]
 eot;
 
         $this->assertSame(

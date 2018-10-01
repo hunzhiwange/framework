@@ -64,16 +64,14 @@ class UpdateTest extends TestCase
         $this->assertInstanceof(Closure::class, $entity->getFlush());
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'id' => 123,
-  ),
-  1 =>
-  array (
-    'name' => 'foo',
-  ),
-)
+[
+    {
+        "id": 123
+    },
+    {
+        "name": "foo"
+    }
+]
 eot;
 
         $this->assertSame(
@@ -110,16 +108,14 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'id' => 5,
-  ),
-  1 =>
-  array (
-    'name' => 'world',
-  ),
-)
+[
+    {
+        "id": 5
+    },
+    {
+        "name": "world"
+    }
+]
 eot;
 
         $this->assertSame(
@@ -138,16 +134,14 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'id' => 5,
-  ),
-  1 =>
-  array (
-    'description' => 'bar',
-  ),
-)
+[
+    {
+        "id": 5
+    },
+    {
+        "description": "bar"
+    }
+]
 eot;
 
         $this->assertSame(
@@ -170,16 +164,14 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'id' => 5,
-  ),
-  1 =>
-  array (
-    'name' => 'foo',
-  ),
-)
+[
+    {
+        "id": 5
+    },
+    {
+        "name": "foo"
+    }
+]
 eot;
 
         $this->assertSame(
@@ -209,20 +201,18 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-array (
-  0 =>
-  array (
-    'id' => 5,
-  ),
-  1 =>
-  array (
-    'name' => 'name for update_fill',
-    'description' => 'set description.',
-    'address' => 'address is set now.',
-    'foo_bar' => 'foo bar.',
-    'hello' => 'hello field.',
-  ),
-)
+[
+    {
+        "id": 5
+    },
+    {
+        "name": "name for update_fill",
+        "description": "set description.",
+        "address": "address is set now.",
+        "foo_bar": "foo bar.",
+        "hello": "hello field."
+    }
+]
 eot;
 
         $this->assertSame(

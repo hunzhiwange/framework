@@ -40,13 +40,13 @@ class ToArrayTest extends TestCase
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -62,13 +62,13 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -86,22 +86,22 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-  'append1' => 'append 1',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world",
+    "append1": "append 1"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
-            ),
-            1
+                $entity->toArray(),
+                1
+            )
         );
 
         // 第二种方式
@@ -113,23 +113,23 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-  'append1' => 'append 1',
-  'append2' => 'append 2',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world",
+    "append1": "append 1",
+    "append2": "append 2"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
-            ),
-            2
+                $entity->toArray(),
+                2
+            )
         );
 
         // 数组方式
@@ -143,9 +143,9 @@ eot;
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
-            ),
-            3
+                $entity->toArray(),
+                3
+            )
         );
     }
 
@@ -154,13 +154,13 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -173,14 +173,14 @@ eot;
         $entity->addAppend('append1');
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-  'append1' => 'append 1',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world",
+    "append1": "append 1"
+}
 eot;
 
         $this->assertSame(
@@ -194,15 +194,15 @@ eot;
         $entity->addAppend(['append2']);
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-  'append1' => 'append 1',
-  'append2' => 'append 2',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world",
+    "append1": "append 1",
+    "append2": "append 2"
+}
 eot;
 
         $this->assertSame(
@@ -218,15 +218,15 @@ eot;
         $entity->addAppend('append1', 'append2');
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-  'append1' => 'append 1',
-  'append2' => 'append 2',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world",
+    "append1": "append 1",
+    "append2": "append 2"
+}
 eot;
 
         $this->assertSame(
@@ -243,13 +243,13 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -262,100 +262,105 @@ eot;
         $entity->addAppend(['append2', 'append1']);
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-  'append2' => 'append 2',
-  'append1' => 'append 1',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world",
+    "append2": "append 2",
+    "append1": "append 1"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                1
             )
         );
 
         $entity->removeAppend('append2');
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-  'append1' => 'append 1',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world",
+    "append1": "append 1"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                2
             )
         );
 
         $entity->removeAppend('append1');
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                3
             )
         );
 
         $entity->addAppend(['append2', 'append1']);
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-  'append2' => 'append 2',
-  'append1' => 'append 1',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world",
+    "append2": "append 2",
+    "append1": "append 1"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                4
             )
         );
 
         $entity->removeAppend(['append1', 'append2']);
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                5
             )
         );
     }
@@ -365,13 +370,13 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -389,15 +394,16 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-)
+{
+    "name": "实体名字"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                1
             )
         );
 
@@ -410,16 +416,17 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'description' => 'goods name',
-  'address' => '四川成都',
-)
+{
+    "description": "goods name",
+    "address": "四川成都"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                2
             )
         );
 
@@ -432,16 +439,17 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'foo_bar' => 'foo',
-)
+{
+    "name": "实体名字",
+    "foo_bar": "foo"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                3
             )
         );
     }
@@ -451,13 +459,13 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -470,31 +478,33 @@ eot;
         $entity->addVisible('name');
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-)
+{
+    "name": "实体名字"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                1
             )
         );
 
         $entity->addVisible(['description']);
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-)
+{
+    "name": "实体名字",
+    "description": "goods name"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                2
             )
         );
 
@@ -503,17 +513,18 @@ eot;
         $entity->addVisible('name', 'description', 'hello');
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                3
             )
         );
     }
@@ -523,13 +534,13 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -542,81 +553,86 @@ eot;
         $entity->addVisible(['name', 'description', 'hello']);
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                1
             )
         );
 
         $entity->removeVisible('description');
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                2
             )
         );
 
         $entity->removeVisible('hello');
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-)
+{
+    "name": "实体名字"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                3
             )
         );
 
         $entity->addVisible(['description', 'hello']);
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                4
             )
         );
 
         $entity->removeVisible(['description']);
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                5
             )
         );
     }
@@ -626,13 +642,13 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -650,18 +666,19 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                1
             )
         );
 
@@ -674,17 +691,18 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                2
             )
         );
 
@@ -697,17 +715,18 @@ eot;
         );
 
         $data = <<<'eot'
-array (
-  'description' => 'goods name',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "description": "goods name",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                3
             )
         );
     }
@@ -717,13 +736,13 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-array (
-  'name' => '实体名字',
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "name": "实体名字",
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
@@ -736,35 +755,37 @@ eot;
         $entity->addHidden('name');
 
         $data = <<<'eot'
-array (
-  'description' => 'goods name',
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "description": "goods name",
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                1
             )
         );
 
         $entity->addHidden(['description']);
 
         $data = <<<'eot'
-array (
-  'address' => '四川成都',
-  'foo_bar' => 'foo',
-  'hello' => 'hello world',
-)
+{
+    "address": "四川成都",
+    "foo_bar": "foo",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                2
             )
         );
 
@@ -773,16 +794,17 @@ eot;
         $entity->addHidden('foo_bar', 'name', 'address');
 
         $data = <<<'eot'
-array (
-  'description' => 'goods name',
-  'hello' => 'hello world',
-)
+{
+    "description": "goods name",
+    "hello": "hello world"
+}
 eot;
 
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->toArray()
+                $entity->toArray(),
+                3
             )
         );
     }

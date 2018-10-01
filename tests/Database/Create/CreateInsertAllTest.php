@@ -41,52 +41,43 @@ class CreateInsertAllTest extends TestCase
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:value_1),(:name_2,:value_2),(:name_3,:value_3)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子1',
-      1 => 2,
-    ),
-    'value' =>
-    array (
-      0 => '呱呱呱1',
-      1 => 2,
-    ),
-    'name_1' =>
-    array (
-      0 => '小鸭子2',
-      1 => 2,
-    ),
-    'value_1' =>
-    array (
-      0 => '呱呱呱2',
-      1 => 2,
-    ),
-    'name_2' =>
-    array (
-      0 => '小鸭子3',
-      1 => 2,
-    ),
-    'value_2' =>
-    array (
-      0 => '呱呱呱3',
-      1 => 2,
-    ),
-    'name_3' =>
-    array (
-      0 => '小鸭子4',
-      1 => 2,
-    ),
-    'value_3' =>
-    array (
-      0 => '呱呱呱4',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:value_1),(:name_2,:value_2),(:name_3,:value_3)",
+    {
+        "name": [
+            "小鸭子1",
+            2
+        ],
+        "value": [
+            "呱呱呱1",
+            2
+        ],
+        "name_1": [
+            "小鸭子2",
+            2
+        ],
+        "value_1": [
+            "呱呱呱2",
+            2
+        ],
+        "name_2": [
+            "小鸭子3",
+            2
+        ],
+        "value_2": [
+            "呱呱呱3",
+            2
+        ],
+        "name_3": [
+            "小鸭子4",
+            2
+        ],
+        "value_3": [
+            "呱呱呱4",
+            2
+        ]
+    }
+]
 eot;
 
         $data = [
@@ -113,52 +104,43 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子1',
-      1 => 2,
-    ),
-    'value' =>
-    array (
-      0 => '呱呱呱1',
-      1 => 2,
-    ),
-    'name_1' =>
-    array (
-      0 => '小鸭子2',
-      1 => 2,
-    ),
-    'questionmark_0_1' =>
-    array (
-      0 => '吃肉1',
-      1 => 2,
-    ),
-    'name_2' =>
-    array (
-      0 => '小鸭子3',
-      1 => 2,
-    ),
-    'value_2' =>
-    array (
-      0 => '呱呱呱3',
-      1 => 2,
-    ),
-    'name_3' =>
-    array (
-      0 => '小鸭子4',
-      1 => 2,
-    ),
-    'questionmark_1_3' =>
-    array (
-      0 => '吃肉2',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+    {
+        "name": [
+            "小鸭子1",
+            2
+        ],
+        "value": [
+            "呱呱呱1",
+            2
+        ],
+        "name_1": [
+            "小鸭子2",
+            2
+        ],
+        "questionmark_0_1": [
+            "吃肉1",
+            2
+        ],
+        "name_2": [
+            "小鸭子3",
+            2
+        ],
+        "value_2": [
+            "呱呱呱3",
+            2
+        ],
+        "name_3": [
+            "小鸭子4",
+            2
+        ],
+        "questionmark_1_3": [
+            "吃肉2",
+            2
+        ]
+    }
+]
 eot;
 
         $data = [
@@ -180,44 +162,37 @@ eot;
         );
 
         $sql = <<<'eot'
-array (
-  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:hello),(:name_2,:value_2),(:name_3,:world)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子1',
-      1 => 2,
-    ),
-    'value' =>
-    array (
-      0 => '呱呱呱1',
-      1 => 2,
-    ),
-    'name_1' =>
-    array (
-      0 => '小鸭子2',
-      1 => 2,
-    ),
-    'name_2' =>
-    array (
-      0 => '小鸭子3',
-      1 => 2,
-    ),
-    'value_2' =>
-    array (
-      0 => '呱呱呱3',
-      1 => 2,
-    ),
-    'name_3' =>
-    array (
-      0 => '小鸭子4',
-      1 => 2,
-    ),
-    'hello' => 'hello 吃肉',
-    'world' => 'world 喝汤',
-  ),
-)
+[
+    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:hello),(:name_2,:value_2),(:name_3,:world)",
+    {
+        "name": [
+            "小鸭子1",
+            2
+        ],
+        "value": [
+            "呱呱呱1",
+            2
+        ],
+        "name_1": [
+            "小鸭子2",
+            2
+        ],
+        "name_2": [
+            "小鸭子3",
+            2
+        ],
+        "value_2": [
+            "呱呱呱3",
+            2
+        ],
+        "name_3": [
+            "小鸭子4",
+            2
+        ],
+        "hello": "hello 吃肉",
+        "world": "world 喝汤"
+    }
+]
 eot;
 
         $data = [
@@ -245,52 +220,43 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子1',
-      1 => 2,
-    ),
-    'value' =>
-    array (
-      0 => '呱呱呱1',
-      1 => 2,
-    ),
-    'name_1' =>
-    array (
-      0 => '小鸭子2',
-      1 => 2,
-    ),
-    'questionmark_0_1' =>
-    array (
-      0 => '吃鱼',
-      1 => 2,
-    ),
-    'name_2' =>
-    array (
-      0 => '小鸭子3',
-      1 => 2,
-    ),
-    'value_2' =>
-    array (
-      0 => '呱呱呱3',
-      1 => 2,
-    ),
-    'name_3' =>
-    array (
-      0 => '小鸭子4',
-      1 => 2,
-    ),
-    'questionmark_1_3' =>
-    array (
-      0 => '吃肉',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+    {
+        "name": [
+            "小鸭子1",
+            2
+        ],
+        "value": [
+            "呱呱呱1",
+            2
+        ],
+        "name_1": [
+            "小鸭子2",
+            2
+        ],
+        "questionmark_0_1": [
+            "吃鱼",
+            2
+        ],
+        "name_2": [
+            "小鸭子3",
+            2
+        ],
+        "value_2": [
+            "呱呱呱3",
+            2
+        ],
+        "name_3": [
+            "小鸭子4",
+            2
+        ],
+        "questionmark_1_3": [
+            "吃肉",
+            2
+        ]
+    }
+]
 eot;
 
         $data = [
@@ -319,52 +285,43 @@ eot;
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
-array (
-  0 => 'REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)',
-  1 =>
-  array (
-    'name' =>
-    array (
-      0 => '小鸭子1',
-      1 => 2,
-    ),
-    'value' =>
-    array (
-      0 => '呱呱呱1',
-      1 => 2,
-    ),
-    'name_1' =>
-    array (
-      0 => '小鸭子2',
-      1 => 2,
-    ),
-    'questionmark_0_1' =>
-    array (
-      0 => '吃鱼',
-      1 => 2,
-    ),
-    'name_2' =>
-    array (
-      0 => '小鸭子3',
-      1 => 2,
-    ),
-    'value_2' =>
-    array (
-      0 => '呱呱呱3',
-      1 => 2,
-    ),
-    'name_3' =>
-    array (
-      0 => '小鸭子4',
-      1 => 2,
-    ),
-    'questionmark_1_3' =>
-    array (
-      0 => '吃肉',
-      1 => 2,
-    ),
-  ),
-)
+[
+    "REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+    {
+        "name": [
+            "小鸭子1",
+            2
+        ],
+        "value": [
+            "呱呱呱1",
+            2
+        ],
+        "name_1": [
+            "小鸭子2",
+            2
+        ],
+        "questionmark_0_1": [
+            "吃鱼",
+            2
+        ],
+        "name_2": [
+            "小鸭子3",
+            2
+        ],
+        "value_2": [
+            "呱呱呱3",
+            2
+        ],
+        "name_3": [
+            "小鸭子4",
+            2
+        ],
+        "questionmark_1_3": [
+            "吃肉",
+            2
+        ]
+    }
+]
 eot;
 
         $data = [
