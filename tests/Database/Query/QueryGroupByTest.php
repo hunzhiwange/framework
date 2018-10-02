@@ -155,4 +155,78 @@ eot;
             )
         );
     }
+
+    public function testGroupByFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                groupBy('id')->
+
+                elses()->
+
+                groupBy('name')->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testGroupByFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`id`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                groupBy('id')->
+
+                elses()->
+
+                groupBy('name')->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
 }

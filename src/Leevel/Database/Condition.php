@@ -768,7 +768,7 @@ class Condition
 
         if (!isset(static::$indexTypes[$type])) {
             throw new InvalidArgumentException(
-                sprintf('Invalid Index type %s.', $type)
+                sprintf('Invalid Index type `%s`.', $type)
             );
         }
 
@@ -779,16 +779,6 @@ class Condition
             $value = Arr::normalize($value);
 
             foreach ($value as $tmp) {
-                $tmp = trim($tmp);
-
-                if (empty($tmp)) {
-                    continue;
-                }
-
-                if (empty($this->options['index'][$type])) {
-                    $this->options['index'][$type] = [];
-                }
-
                 $this->options['index'][$type][] = $tmp;
             }
         }
@@ -943,12 +933,6 @@ class Condition
             }
 
             foreach ($value as $tmp) {
-                $tmp = trim($tmp);
-
-                if (empty($tmp)) {
-                    continue;
-                }
-
                 if (preg_match('/(.+)\.(.+)/', $tmp, $matches)) {
                     $currentTableName = $matches[1];
                     $tmp = $matches[2];
@@ -982,78 +966,6 @@ class Condition
         array_unshift($arr, 'having');
 
         return $this->aliatypeAndLogic(...$arr);
-    }
-
-    /**
-     * havingDate 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingDate(...$arr)
-    {
-        $this->setInTimeCondition('date');
-
-        $this->having(...$arr);
-
-        $this->setInTimeCondition(null);
-
-        return $this;
-    }
-
-    /**
-     * havingMonth 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingMonth(...$arr)
-    {
-        $this->setInTimeCondition('month');
-
-        $this->having(...$arr);
-
-        $this->setInTimeCondition(null);
-
-        return $this;
-    }
-
-    /**
-     * havingDay 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingDay(...$arr)
-    {
-        $this->setInTimeCondition('day');
-
-        $this->having(...$arr);
-
-        $this->setInTimeCondition(null);
-
-        return $this;
-    }
-
-    /**
-     * havingYear 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingYear(...$arr)
-    {
-        $this->setInTimeCondition('year');
-
-        $this->having(...$arr);
-
-        $this->setInTimeCondition(null);
-
-        return $this;
     }
 
     /**
@@ -1142,12 +1054,6 @@ class Condition
             }
 
             foreach ($value as $tmp) {
-                $tmp = trim($tmp);
-
-                if (empty($tmp)) {
-                    continue;
-                }
-
                 // 表达式支持
                 if (false !== strpos($tmp, '{') &&
                     preg_match('/^{(.+?)}$/', $tmp, $threeMatches)) {
@@ -1518,6 +1424,7 @@ class Condition
 
             return $this;
         }
+
         $this->setTypeAndLogic('where', static::LOGIC_AND);
 
         if (0 === strpos($method, 'whereNot')) {
@@ -1546,11 +1453,21 @@ class Condition
             'havingNotNull', 'havingNull',
             'havingNotIn', 'havingIn',
             'havingNotLike', 'havingLike',
+            'havingDate', 'havingDay',
+            'havingMonth', 'havingYear',
         ], true)) {
             return false;
         }
 
         if ($this->checkTControl()) {
+            return $this;
+        }
+
+        if (in_array($method, ['havingDate', 'havingDay', 'havingMonth', 'havingYear'], true)) {
+            $this->setInTimeCondition(strtolower(substr($method, 6)));
+            $this->having(...$args);
+            $this->setInTimeCondition(null);
+
             return $this;
         }
 

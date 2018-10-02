@@ -1062,4 +1062,258 @@ eot;
             )
         );
     }
+
+    public function testOrWhereFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`value` <> 'bar'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                orWhere('value', '<>', 'foo')->
+
+                elses()->
+
+                orWhere('value', '<>', 'bar')->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testOrWhereFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`value` <> 'foo'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                orWhere('value', '<>', 'foo')->
+
+                elses()->
+
+                orWhere('value', '<>', 'bar')->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereExistsFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `bar`.* FROM `bar` WHERE `bar`.`id` = 2)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                whereExists(
+                    function ($select) {
+                        $select->table('foo')->where('id', 2);
+                    }
+                )->
+
+                elses()->
+
+                whereExists(
+                    function ($select) {
+                        $select->table('bar')->where('id', 2);
+                    }
+                )->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereExistsFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `foo`.* FROM `foo` WHERE `foo`.`id` = 2)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                whereExists(
+                    function ($select) {
+                        $select->table('foo')->where('id', 2);
+                    }
+                )->
+
+                elses()->
+
+                whereExists(
+                    function ($select) {
+                        $select->table('bar')->where('id', 2);
+                    }
+                )->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereNotExistsFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE NOT EXISTS (SELECT `bar`.* FROM `bar` WHERE `bar`.`id` = 2)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                whereNotExists(
+                    function ($select) {
+                        $select->table('foo')->where('id', 2);
+                    }
+                )->
+
+                elses()->
+
+                whereNotExists(
+                    function ($select) {
+                        $select->table('bar')->where('id', 2);
+                    }
+                )->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereNotExistsFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `foo`.* FROM `foo` WHERE `foo`.`id` = 2)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                whereExists(
+                    function ($select) {
+                        $select->table('foo')->where('id', 2);
+                    }
+                )->
+
+                elses()->
+
+                whereExists(
+                    function ($select) {
+                        $select->table('bar')->where('id', 2);
+                    }
+                )->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
 }

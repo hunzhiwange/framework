@@ -201,4 +201,96 @@ eot;
             )
         );
     }
+
+    public function testBindFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`name` = :name",
+    {
+        "name": [
+            1,
+            2
+        ]
+    },
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                bind('id', 1)->
+
+                where('id', '=', '[:id]')->
+
+                elses()->
+
+                bind('name', 1)->
+
+                where('name', '=', '[:name]')->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testBindFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+    {
+        "id": [
+            1,
+            2
+        ]
+    },
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                bind('id', 1)->
+
+                where('id', '=', '[:id]')->
+
+                elses()->
+
+                bind('name', 1)->
+
+                where('name', '=', '[:name]')->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
 }

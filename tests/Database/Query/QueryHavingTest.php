@@ -699,4 +699,86 @@ eot;
             )
         );
     }
+
+    public function testOrHavingFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` LIKE '技术' OR `test`.`tname` LIKE '改变世界'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test', 'name as id,tname as value')->
+
+                groupBy('name')->
+
+                having(['name', 'like', '技术'])->
+
+                ifs($condition)->
+
+                orHaving(['tname', 'like', '技术'])->
+
+                elses()->
+
+                orHaving(['tname', 'like', '改变世界'])->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testOrHavingFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` LIKE '技术' OR `test`.`tname` LIKE '技术'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test', 'name as id,tname as value')->
+
+                groupBy('name')->
+
+                having(['name', 'like', '技术'])->
+
+                ifs($condition)->
+
+                orHaving(['tname', 'like', '技术'])->
+
+                elses()->
+
+                orHaving(['tname', 'like', '改变世界'])->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
 }

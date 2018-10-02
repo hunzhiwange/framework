@@ -65,4 +65,156 @@ eot;
             )
         );
     }
+
+    public function testForceIndex()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) WHERE `test`.`id` = 2",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                forceIndex(['nameindex', 'statusindex'])->
+
+                where('id', '=', 2)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testIgnoreIndex()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` IGNORE INDEX(nameindex,statusindex) WHERE `test`.`id` = 6",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ignoreIndex(['nameindex', 'statusindex'])->
+
+                where('id', '=', 6)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testForceIndexTypeNotSupported()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid Index type `NOT_SUPPORT`.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        forceIndex('foo', 'NOT_SUPPORT')->
+
+        findAll(true);
+    }
+
+    public function testForceIndexFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` IGNORE INDEX(testindex) WHERE `test`.`id` = 5",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                forceIndex('nameindex,statusindex')->
+
+                elses()->
+
+                ignoreIndex('testindex')->
+
+                endIfs()->
+
+                where('id', '=', 5)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testForceIndexFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) WHERE `test`.`id` = 5",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                forceIndex('nameindex,statusindex')->
+
+                elses()->
+
+                ignoreIndex('testindex')->
+
+                endIfs()->
+
+                where('id', '=', 5)->
+
+                findAll(true)
+            )
+        );
+    }
 }
