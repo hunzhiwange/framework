@@ -24,7 +24,7 @@ use Tests\Database\Query\Query;
 use Tests\TestCase;
 
 /**
- * read getone test.
+ * read find test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ReadGetOneTest extends TestCase
+class ReadFindTest extends TestCase
 {
     use Query;
 
@@ -42,7 +42,7 @@ class ReadGetOneTest extends TestCase
 
         $sql = <<<'eot'
 [
-    "SELECT `test`.* FROM `test` LIMIT 1",
+    "SELECT `test`.* FROM `test`",
     [],
     false,
     null,
@@ -58,9 +58,20 @@ eot;
 
                 table('test')->
 
-                findOne()
+                find()
             )
         );
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` LIMIT 0,5",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
 
         $this->assertSame(
             $sql,
@@ -69,9 +80,8 @@ eot;
 
                 table('test')->
 
-                one()->
-
-                find()
+                find(5),
+                1
             )
         );
     }

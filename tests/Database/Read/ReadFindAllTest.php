@@ -24,7 +24,7 @@ use Tests\Database\Query\Query;
 use Tests\TestCase;
 
 /**
- * read get test.
+ * read findAll test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ReadGetTest extends TestCase
+class ReadFindAllTest extends TestCase
 {
     use Query;
 
@@ -58,20 +58,9 @@ eot;
 
                 table('test')->
 
-                find()
+                findAll()
             )
         );
-
-        $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` LIMIT 0,5",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
 
         $this->assertSame(
             $sql,
@@ -80,8 +69,9 @@ eot;
 
                 table('test')->
 
-                find(5),
-                1
+                all()->
+
+                find()
             )
         );
     }

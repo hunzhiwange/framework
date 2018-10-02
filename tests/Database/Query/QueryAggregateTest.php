@@ -238,4 +238,374 @@ eot;
             )
         );
     }
+
+    public function testCountFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT COUNT(`test`.`foo`) AS row_count FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                count('bar')->
+
+                elses()->
+
+                count('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testCountFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT COUNT(`test`.`bar`) AS row_count FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                count('bar')->
+
+                elses()->
+
+                count('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testAvgFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT AVG(`test`.`foo`) AS avg_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                avg('bar')->
+
+                elses()->
+
+                avg('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testAvgFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT AVG(`test`.`bar`) AS avg_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                avg('bar')->
+
+                elses()->
+
+                avg('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testMaxFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT MAX(`test`.`foo`) AS max_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                max('bar')->
+
+                elses()->
+
+                max('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testMaxFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT MAX(`test`.`bar`) AS max_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                max('bar')->
+
+                elses()->
+
+                max('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testMinFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT MIN(`test`.`foo`) AS min_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                min('bar')->
+
+                elses()->
+
+                min('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testMinFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT MIN(`test`.`bar`) AS min_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                min('bar')->
+
+                elses()->
+
+                min('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testSumFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT SUM(`test`.`foo`) AS sum_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                sum('bar')->
+
+                elses()->
+
+                sum('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
+
+    public function testSumFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT SUM(`test`.`bar`) AS sum_value FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                sum('bar')->
+
+                elses()->
+
+                sum('foo')->
+
+                endIfs()->
+
+                findOne(true)
+            )
+        );
+    }
 }

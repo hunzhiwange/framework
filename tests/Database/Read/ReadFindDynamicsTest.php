@@ -24,7 +24,7 @@ use Tests\Database\Query\Query;
 use Tests\TestCase;
 
 /**
- * read getdynamics test.
+ * read findDynamics test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ReadGetDynamicsTest extends TestCase
+class ReadFindDynamicsTest extends TestCase
 {
     use Query;
 

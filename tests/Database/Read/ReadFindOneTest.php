@@ -24,7 +24,7 @@ use Tests\Database\Query\Query;
 use Tests\TestCase;
 
 /**
- * read getall test.
+ * read findOne test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,12 +32,54 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ReadGetAllTest extends TestCase
+class ReadFindOneTest extends TestCase
 {
     use Query;
 
     public function testBaseUse()
     {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->sql()->
+
+                table('test')->
+
+                findOne()
+            )
+        );
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->sql()->
+
+                table('test')->
+
+                one()->
+
+                find()
+            )
+        );
+    }
+
+    public function testOneFlow()
+    {
+        $condition = false;
+
         $connect = $this->createConnect();
 
         $sql = <<<'eot'
@@ -54,22 +96,58 @@ eot;
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
+                $connect->table('test')->
 
-                table('test')->
+                sql()->
 
-                findAll()
+                ifs($condition)->
+
+                one()->
+
+                elses()->
+
+                all()->
+
+                endIfs()->
+
+                find()
             )
         );
+    }
+
+    public function testOneFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` LIMIT 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
+                $connect->table('test')->
 
-                table('test')->
+                sql()->
+
+                ifs($condition)->
+
+                one()->
+
+                elses()->
 
                 all()->
+
+                endIfs()->
 
                 find()
             )

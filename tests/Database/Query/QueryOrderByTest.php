@@ -297,4 +297,31 @@ eot;
             )
         );
     }
+
+    public function testOrderByExpressionNotSetWithDefaultAsc()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` ORDER BY foo ASC",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                orderBy('{foo}')->
+
+                findAll(true)
+            )
+        );
+    }
 }
