@@ -341,4 +341,41 @@ eot;
             )
         );
     }
+
+    public function testInnerJsonFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` INNER JOIN `hello` `t` ON `t`.`name` = '仔'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
+
+                elses()->
+
+                innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
 }

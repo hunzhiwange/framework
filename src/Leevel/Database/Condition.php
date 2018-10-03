@@ -117,20 +117,6 @@ class Condition
     ];
 
     /**
-     * 支持的 join 类型.
-     *
-     * @var array
-     */
-    protected static $joinTypes = [
-        'inner join'   => 'inner join',
-        'left join'    => 'left join',
-        'right join'   => 'right join',
-        'full join'    => 'full join',
-        'cross join'   => 'cross join',
-        'natural join' => 'natural join',
-    ];
-
-    /**
      * 支持的 union 类型.
      *
      * @var array
@@ -827,7 +813,7 @@ class Condition
      *
      * @return $this
      */
-    public function union($selects, $type = 'UNION')
+    public function union($selects, string $type = 'UNION')
     {
         if ($this->checkTControl()) {
             return $this;
@@ -995,7 +981,7 @@ class Condition
      *
      * @return $this
      */
-    public function orderBy($expression, $orderDefault = 'ASC')
+    public function orderBy($expression, string $orderDefault = 'ASC')
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1104,7 +1090,7 @@ class Condition
      *
      * @return $this
      */
-    public function latest($field = 'create_at')
+    public function latest(string $field = 'create_at')
     {
         return $this->orderBy($field, 'DESC');
     }
@@ -1116,7 +1102,7 @@ class Condition
      *
      * @return $this
      */
-    public function oldest($field = 'create_at')
+    public function oldest(string $field = 'create_at')
     {
         return $this->orderBy($field, 'ASC');
     }
@@ -1147,7 +1133,7 @@ class Condition
      *
      * @return $this
      */
-    public function count($field = '*', $alias = 'row_count')
+    public function count(string $field = '*', string $alias = 'row_count')
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1164,7 +1150,7 @@ class Condition
      *
      * @return $this
      */
-    public function avg($field, $alias = 'avg_value')
+    public function avg(string $field, string $alias = 'avg_value')
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1181,7 +1167,7 @@ class Condition
      *
      * @return $this
      */
-    public function max($field, $alias = 'max_value')
+    public function max(string $field, string $alias = 'max_value')
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1198,7 +1184,7 @@ class Condition
      *
      * @return $this
      */
-    public function min($field, $alias = 'min_value')
+    public function min(string $field, string $alias = 'min_value')
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1215,7 +1201,7 @@ class Condition
      *
      * @return $this
      */
-    public function sum($field, $alias = 'sum_value')
+    public function sum(string $field, string $alias = 'sum_value')
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1271,7 +1257,7 @@ class Condition
      *
      * @return $this
      */
-    public function top($count = 30)
+    public function top(int $count = 30)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1283,23 +1269,23 @@ class Condition
     /**
      * limit 限制条数.
      *
-     * @param number $offset
-     * @param number $count
+     * @param int $offset
+     * @param int $count
      *
      * @return $this
      */
-    public function limit($offset = 0, $count = null)
+    public function limit(int $offset = 0, int $count = 0)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if (null === $count) {
+        if (0 === $count) {
             return $this->top($offset);
         }
 
-        $this->options['limitcount'] = abs((int) $count);
-        $this->options['limitoffset'] = abs((int) $offset);
+        $this->options['limitcount'] = $count;
+        $this->options['limitoffset'] = $offset;
         $this->options['limitquery'] = true;
 
         return $this;
@@ -1326,11 +1312,11 @@ class Condition
     /**
      * 获得查询字符串.
      *
-     * @param $withLogicGroup
+     * @param bool $withLogicGroup
      *
      * @return string
      */
-    public function makeSql($withLogicGroup = false)
+    public function makeSql(bool $withLogicGroup = false)
     {
         $sql = [
             'SELECT',
@@ -2385,20 +2371,12 @@ class Condition
      * @param string     $joinType
      * @param mixed      $names
      * @param mixed      $cols
-     * @param null|array $arrCondArgs
      * @param null|mixed $cond
      *
      * @return $this
      */
-    protected function addJoin($joinType, $names, $cols, $cond = null)
+    protected function addJoin(string $joinType, $names, $cols, $cond = null)
     {
-        // 验证 join 类型
-        if (!isset(static::$joinTypes[$joinType])) {
-            throw new InvalidArgumentException(
-                sprintf('Invalid JOIN type %s.', $joinType)
-            );
-        }
-
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {
             throw new InvalidArgumentException(

@@ -86,4 +86,78 @@ eot;
             )
         );
     }
+
+    public function testForUpdateFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                forUpdate()->
+
+                elses()->
+
+                forUpdate(false)->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testForUpdateFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` FOR UPDATE",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                forUpdate()->
+
+                elses()->
+
+                forUpdate(false)->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
 }

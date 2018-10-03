@@ -62,4 +62,75 @@ eot;
             )
         );
     }
+
+    public function testParseFormNotSet()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT 2",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->
+
+                setColumns('{2}')->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testMakeSql()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test`"
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                [
+                    $connect->table('test')->
+
+                    makeSql(),
+                ]
+            )
+        );
+    }
+
+    public function testMakeSqlWithLogicGroup()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "(SELECT `test`.* FROM `test`)"
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                [
+                    $connect->table('test')->
+
+                    makeSql(true),
+                ]
+            )
+        );
+    }
 }

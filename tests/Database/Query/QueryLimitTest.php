@@ -130,4 +130,152 @@ eot;
             )
         );
     }
+
+    public function testTopFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` LIMIT 0,6",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                top(5)->
+
+                elses()->
+
+                top(6)->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testTopFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` LIMIT 0,5",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                top(5)->
+
+                elses()->
+
+                top(6)->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testLimitFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` LIMIT 2,3",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                limit(0, 5)->
+
+                elses()->
+
+                limit(2, 3)->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testLimitFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` LIMIT 0,5",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                ifs($condition)->
+
+                limit(0, 5)->
+
+                elses()->
+
+                limit(2, 3)->
+
+                endIfs()->
+
+                findAll(true)
+            )
+        );
+    }
 }
