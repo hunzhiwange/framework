@@ -378,4 +378,160 @@ eot;
             )
         );
     }
+
+    public function testInnerJsonAndUnionWillThrowException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+           'JOIN queries cannot be used while using UNION queries.'
+        );
+
+        $connect = $this->createConnect();
+
+        $union = 'SELECT id,value FROM test2';
+
+        $connect->table('test', 'tid as id,tname as value')->
+
+        union($union)->
+
+        innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
+
+        findAll(true);
+    }
+
+    public function testInnerJoinWithTableIsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test` INNER JOIN (SELECT `b`.* FROM `foo` `b`) b ON `b`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $joinTable = $connect->table('foo as b');
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                innerJoin($joinTable, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testInnerJoinWithTableIsCondition()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test` INNER JOIN (SELECT `b`.* FROM `foo` `b`) b ON `b`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $joinTable = $connect->table('foo as b')->getCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                innerJoin($joinTable, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testInnerJoinWithTableIsClosure()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`b`.`name` AS `nikename`,`b`.`value` AS `tt` FROM `test` INNER JOIN (SELECT `b`.* FROM `foo` `b`) b ON `b`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $joinTable = $connect->table('foo as b')->getCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                innerJoin(function ($select) {
+                    $select->table('foo as b');
+                }, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testInnerJoinWithTableIsArrayCondition()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`foo`.`name` AS `nikename`,`foo`.`value` AS `tt` FROM `test` INNER JOIN (SELECT `b`.* FROM `foo` `b`) foo ON `foo`.`name` = '小牛'",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $joinTable = $connect->table('foo as b')->getCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                innerJoin(['foo' => $joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testInnerJoinWithTableIsArrayAndTheAliasKeyMustBeString()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+           'Alias must be string,but integer given.'
+        );
+
+        $connect = $this->createConnect();
+
+        $joinTable = $connect->table('foo as b')->getCondition();
+
+        $connect->table('test')->
+
+        innerJoin([$joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
+
+        findAll(true);
+    }
 }

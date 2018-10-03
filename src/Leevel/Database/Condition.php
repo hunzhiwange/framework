@@ -188,6 +188,13 @@ class Condition
     protected $isTable = false;
 
     /**
+     * 主表别名.
+     *
+     * @var string
+     */
+    protected $alias = '';
+
+    /**
      * 是否处于时间功能状态
      *
      * @var string
@@ -575,6 +582,16 @@ class Condition
         $this->setIsTable(false);
 
         return $this;
+    }
+
+    /**
+     * 获取表别名.
+     *
+     * @return string
+     */
+    public function getAlias(): string
+    {
+        return $this->alias;
     }
 
     /**
@@ -1633,21 +1650,15 @@ class Condition
             $from[] = $tmp;
         }
 
-        if (!empty($from)) {
-            return 'FROM '.implode(' ', $from);
-        }
-
-        return '';
+        return 'FROM '.implode(' ', $from);
     }
 
     /**
      * 解析 table 分析结果.
      *
-     * @param bool $onlyAlias
-     *
      * @return string
      */
-    protected function parseTable(bool $onlyAlias = true)
+    protected function parseTable()
     {
         if (empty($this->options['from'])) {
             return '';
@@ -1660,19 +1671,7 @@ class Condition
                 );
             }
 
-            if (true === $onlyAlias) {
-                return $alias;
-            }
-
-            // 表名子表达式支持
-            if (false !== strpos($value['table_name'], '(')) {
-                return $value['table_name'].' '.$alias;
-            }
-
-            return $this->connect->normalizeTableOrColumn(
-                "{$value['schema']}.{$value['table_name']}",
-                $alias
-            );
+            return $alias;
         }
     }
 
@@ -1709,7 +1708,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseWhere($child = false)
+    protected function parseWhere(bool $child = false)
     {
         if (empty($this->options['where'])) {
             return '';
@@ -1785,7 +1784,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseHaving($child = false)
+    protected function parseHaving(bool $child = false)
     {
         if (empty($this->options['having'])) {
             return '';
@@ -1836,7 +1835,7 @@ class Condition
      *
      * @return string
      */
-    protected function analyseCondition($condType, $child = false)
+    protected function analyseCondition(string $condType, bool $child = false)
     {
         if (!$this->options[$condType]) {
             return '';
@@ -1923,22 +1922,18 @@ class Condition
                     foreach ($cond[2] as &$tmp) {
                         // 对象子表达式支持
                         if ($tmp instanceof self || $tmp instanceof Select) {
-                            $tmp = $tmp->makeSql(true);
+                            $tmp = $tmp instanceof Select ? $tmp->getCondition()->makeSql(true) : $tmp->makeSql(true);
                         }
 
                         // 回调方法子表达式支持
                         elseif ($tmp instanceof Closure) {
                             $select = new static($this->connect);
                             $select->setTable($this->getTable());
-                            $resultCallback = call_user_func_array($tmp, [
-                                &$select,
+                            call_user_func_array($tmp, [
+                                $select,
                             ]);
 
-                            if (null === $resultCallback) {
-                                $tmp = $select->makeSql(true);
-                            } else {
-                                $tmp = $resultCallback;
-                            }
+                            $tmp = $select->makeSql(true);
                         }
 
                         // 字符串子表达式支持
@@ -2026,7 +2021,7 @@ class Condition
      *
      * @return $this
      */
-    protected function aliasCondition($conditionType, $cond)
+    protected function aliasCondition(string $conditionType, $cond)
     {
         if (!is_array($cond)) {
             $args = func_get_args();
@@ -2050,25 +2045,19 @@ class Condition
      *
      * @return $this
      */
-    protected function aliatypeAndLogic($type, $logic, $cond)
+    protected function aliatypeAndLogic(string $type, string $logic, $cond)
     {
         $this->setTypeAndLogic($type, $logic);
 
         if ($cond instanceof Closure) {
             $select = new static($this->connect);
             $select->setTable($this->getTable());
-            $resultCallback = call_user_func_array($cond, [
-                &$select,
+            call_user_func_array($cond, [
+                $select,
             ]);
 
-            if (null === $resultCallback) {
-                $tmp = $select->{'parse'.ucwords($type)}(true);
-            } else {
-                $tmp = $resultCallback;
-            }
-
-            $this->setConditioitem(static::LOGIC_GROUP_LEFT.$tmp.
-                static::LOGIC_GROUP_RIGHT, 'string__');
+            $tmp = $select->{'parse'.ucwords($type)}(true);
+            $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, 'string__');
 
             return $this;
         }
@@ -2140,7 +2129,7 @@ class Condition
                     );
                 }
 
-                $this->setConditioitem($tmp, 'string__');
+                $this->setConditionItem($tmp, 'string__');
             }
 
             // 子表达式
@@ -2171,7 +2160,7 @@ class Condition
 
                 $this->setTypeAndLogic(null, 'subor__' ? static::LOGIC_OR : static::LOGIC_AND);
 
-                $this->setConditioitem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).
+                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).
                     static::LOGIC_GROUP_RIGHT, 'string__');
 
                 $this->setTypeAndLogic(null, $oldLogic);
@@ -2190,20 +2179,15 @@ class Condition
                 }
 
                 if ($tmp instanceof self || $tmp instanceof Select) {
-                    $tmp = $tmp->makeSql();
+                    $tmp = $tmp instanceof Select ? $tmp->getCondition()->makeSql() : $tmp->makeSql();
                 } elseif ($tmp instanceof Closure) {
                     $select = new static($this->connect);
                     $select->setTable($this->getTable());
-
-                    $resultCallback = call_user_func_array($tmp, [
-                        &$select,
+                    call_user_func_array($tmp, [
+                        $select,
                     ]);
 
-                    if (null === $resultCallback) {
-                        $tmp = $tmp = $select->makeSql();
-                    } else {
-                        $tmp = $resultCallback;
-                    }
+                    $tmp = $select->makeSql();
                 }
 
                 $tmp = ('notexists__' === $key ? 'NOT EXISTS ' : 'EXISTS ').
@@ -2211,7 +2195,7 @@ class Condition
                     $tmp.
                     static::LOGIC_GROUP_RIGHT;
 
-                $this->setConditioitem($tmp, 'string__');
+                $this->setConditionItem($tmp, 'string__');
             }
 
             // 其它
@@ -2251,12 +2235,12 @@ class Condition
                         $tmp[2] = explode(',', $tmp[2]);
                     }
 
-                    $this->setConditioitem([$tmp[0], $tmp[1], $tmp[2] ?? null]);
+                    $this->setConditionItem([$tmp[0], $tmp[1], $tmp[2] ?? null]);
                 }
 
                 // 普通类型
                 else {
-                    $this->setConditioitem($tmp);
+                    $this->setConditionItem($tmp);
                 }
             }
         }
@@ -2270,7 +2254,7 @@ class Condition
      * @param array  $items
      * @param string $type
      */
-    protected function setConditioitem($items, $type = '')
+    protected function setConditionItem($items, $type = '')
     {
         $typeAndLogic = $this->getTypeAndLogic();
 
@@ -2386,89 +2370,54 @@ class Condition
 
         // 是否分析 schema，子表达式不支持
         $parseSchema = true;
+        $alias = '';
 
-        // 没有指定表，获取默认表
-        if (empty($names)) {
-            $table = $this->getTable();
-            $alias = '';
-        }
+        if (is_array($names)) {
+            $tmp = $names;
 
-        // $names 为数组配置
-        elseif (is_array($names)) {
-            foreach ($names as $alias => $table) {
+            foreach ($tmp as $alias => $names) {
                 if (!is_string($alias)) {
-                    $alias = '';
-                }
-
-                // 对象子表达式
-                if ($table instanceof self || $table instanceof Select) {
-                    $table = $table->makeSql(true);
-
-                    if (!$alias) {
-                        $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
-                    }
-
-                    $parseSchema = false;
-                }
-
-                // 回调方法子表达式
-                elseif ($table instanceof Closure) {
-                    $select = new static($this->connect);
-                    $select->setTable($this->getTable());
-                    $resultCallback = call_user_func_array($table, [
-                        &$select,
-                    ]);
-
-                    if (null === $resultCallback) {
-                        $table = $select->makeSql(true);
-                    } else {
-                        $table = $resultCallback;
-                    }
-
-                    if (!$alias) {
-                        $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
-                    }
-
-                    $parseSchema = false;
+                    throw new InvalidArgumentException(
+                        sprintf('Alias must be string,but %s given.', gettype($alias))
+                    );
                 }
 
                 break;
             }
         }
 
-        // 对象子表达式
-        elseif ($names instanceof self || $names instanceof Select) {
+        if ($names instanceof self || $names instanceof Select) { // 对象子表达式
             $table = $names->makeSql(true);
-            $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
-            $parseSchema = false;
-        }
 
-        // 回调方法
-        elseif ($names instanceof Closure) {
-            $select = new static($this->connect);
-            $select->setTable($this->getTable());
-            $resultCallback = call_user_func_array($names, [
-                &$select,
-            ]);
-
-            if (null === $resultCallback) {
-                $table = $select->makeSql(true);
-            } else {
-                $table = $resultCallback;
+            if (!$alias) {
+                $alias = $names instanceof Select ? $names->getCondition()->getAlias() : $names->getAlias();
             }
 
-            $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $parseSchema = false;
-        }
+        } elseif ($names instanceof Closure) { // 回调方法
+            $condition = new static($this->connect);
+            $condition->setTable($this->getTable());
+            call_user_func_array($names, [
+                $condition,
+            ]);
 
-        // 字符串子表达式
-        elseif (0 === strpos(trim($names), '(')) {
+            $table = $condition->makeSql(true);
+
+            if (!$alias) {
+                $alias = $condition->getAlias();
+            }
+
+            $parseSchema = false;
+        } elseif (0 === strpos(trim($names), '(')) { // 字符串子表达式
             if (false !== ($position = strripos($names, 'as'))) {
                 $table = trim(substr($names, 0, $position - 1));
                 $alias = trim(substr($names, $position + 2));
             } else {
                 $table = $names;
-                $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
+
+                if (!$alias) {
+                    $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
+                }
             }
 
             $parseSchema = false;
@@ -2479,7 +2428,6 @@ class Condition
                 $alias = $matches[2];
             } else {
                 $table = $names;
-                $alias = '';
             }
         }
 
@@ -2499,16 +2447,17 @@ class Condition
             $tableName = $table;
         }
 
-        // 获得一个唯一的别名
-        $alias = $this->uniqueAlias(
-            empty($alias) ? $tableName : $alias
-        );
+        if (!$alias) {
+            $alias = $tableName;
+        }
 
         // 只有表操作才设置当前表
         if ($this->getIsTable()) {
             $this->setTable(
                 ($schema ? $schema.'.' : '').$alias
             );
+
+            $this->alias = $alias;
         }
 
         // 查询条件
@@ -2922,39 +2871,6 @@ class Condition
         }
 
         return $value;
-    }
-
-    /**
-     * 别名唯一
-     *
-     * @param mixed $names
-     *
-     * @return string
-     */
-    protected function uniqueAlias($names)
-    {
-        if (empty($names)) {
-            return '';
-        }
-
-        // 数组，返回最后一个元素
-        if (is_array($names)) {
-            $result = end($names);
-        }
-
-        // 字符串
-        else {
-            $dot = strrpos($names, '.');
-            $result = false === $dot ?
-                $names :
-                substr($names, $dot + 1);
-        }
-
-        for ($i = 2; array_key_exists($result, $this->options['from']); $i++) {
-            $result = $names.'_'.(string) $i;
-        }
-
-        return $result;
     }
 
     /**

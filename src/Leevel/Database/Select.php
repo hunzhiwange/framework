@@ -139,7 +139,7 @@ class Select
         $condition = true;
 
         try {
-            $this->condition->{$method}(...$args);
+            $result = $this->condition->{$method}(...$args);
 
             return $this;
         } catch (ConditionNotFoundException $e) {
@@ -215,6 +215,16 @@ class Select
 
         // 调用事件
         return $this->callSelect->{$method}(...$args);
+    }
+
+    /**
+     * 查询对象
+     *
+     * @return \Leevel\Database\Condition
+     */
+    public function getCondition(): Condition
+    {
+        return $this->condition;
     }
 
     /**
