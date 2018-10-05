@@ -774,9 +774,9 @@ class Select
      *
      * @return int
      */
-    public function getCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
+    public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
     {
-        return $this->getAggregateResult('count', $field, $alias, $flag);
+        return $this->findAggregateResult('count', $field, $alias, $flag);
     }
 
     /**
@@ -788,9 +788,9 @@ class Select
      *
      * @return number
      */
-    public function getAvg(string $field, string $alias = 'avg_value', bool $flag = false)
+    public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false)
     {
-        return $this->getAggregateResult('avg', $field, $alias, $flag);
+        return $this->findAggregateResult('avg', $field, $alias, $flag);
     }
 
     /**
@@ -802,9 +802,9 @@ class Select
      *
      * @return number
      */
-    public function getMax(string $field, string $alias = 'max_value', bool $flag = false)
+    public function findMax(string $field, string $alias = 'max_value', bool $flag = false)
     {
-        return $this->getAggregateResult('max', $field, $alias, $flag);
+        return $this->findAggregateResult('max', $field, $alias, $flag);
     }
 
     /**
@@ -816,9 +816,9 @@ class Select
      *
      * @return number
      */
-    public function getMin(string $field, string $alias = 'min_value', bool $flag = false)
+    public function findMin(string $field, string $alias = 'min_value', bool $flag = false)
     {
-        return $this->getAggregateResult('min', $field, $alias, $flag);
+        return $this->findAggregateResult('min', $field, $alias, $flag);
     }
 
     /**
@@ -830,9 +830,9 @@ class Select
      *
      * @return number
      */
-    public function getSum(string $field, string $alias = 'sum_value', bool $flag = false)
+    public function findSum(string $field, string $alias = 'sum_value', bool $flag = false)
     {
-        return $this->getAggregateResult('sum', $field, $alias, $flag);
+        return $this->findAggregateResult('sum', $field, $alias, $flag);
     }
 
     /**
@@ -1056,7 +1056,7 @@ class Select
      *
      * @return mixed
      */
-    protected function getAggregateResult($method, $field, $alias, $flag = false)
+    protected function findAggregateResult($method, $field, $alias, $flag = false)
     {
         $this->condition->{$method}($field, $alias);
 

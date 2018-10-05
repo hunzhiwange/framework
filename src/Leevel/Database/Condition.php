@@ -2594,7 +2594,7 @@ class Condition
      *
      * @return $this
      */
-    protected function addAggregate($type, $field, $alias)
+    protected function addAggregate(string $type, string $field, string $alias)
     {
         $this->options['columns'] = [];
         $tableName = $this->getTable();
