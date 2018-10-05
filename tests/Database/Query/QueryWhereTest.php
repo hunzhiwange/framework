@@ -677,11 +677,9 @@ eot;
             $this->varJson(
                 $connect->table('test')->
 
-                where(
-                   [
-                       'exists__' => 'select *from d_sub',
-                   ]
-                )->
+                where([
+                    'exists__' => 'select *from d_sub',
+                ])->
 
                 findAll(true),
                 2
@@ -900,6 +898,42 @@ eot;
                 findAll(true)
             )
         );
+    }
+
+    public function testSupportStringMustBeString()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'String__ type only supports string,but array given.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        where(
+           ['string__' => []]
+        )->
+
+        findAll(true);
+    }
+
+    public function testSupportStringMustBeString2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'String__ type only supports string,but integer given.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        where(
+           ['string__' => 1]
+        )->
+
+        findAll(true);
     }
 
     public function testSupportSubandSubor()

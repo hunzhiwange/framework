@@ -95,6 +95,37 @@ eot;
         );
     }
 
+    public function testColumnsExpressionForSelectString()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    [
+        "SELECT 'foo'",
+        [],
+        false,
+        null,
+        null,
+        []
+    ]
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                [
+                    $connect->
+
+                    columns("{'foo'}")->
+
+                    findAll(true),
+                ]
+            )
+        );
+    }
+
     public function testColumnsFlow()
     {
         $condition = false;

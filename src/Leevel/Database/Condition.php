@@ -1367,9 +1367,7 @@ class Condition
         $result = trim(implode(' ', $sql));
 
         if (true === $withLogicGroup) {
-            return static::LOGIC_GROUP_LEFT.
-                $result.
-                static::LOGIC_GROUP_RIGHT;
+            return static::LOGIC_GROUP_LEFT.$result.static::LOGIC_GROUP_RIGHT;
         }
 
         return $result;
@@ -1660,19 +1658,17 @@ class Condition
      */
     protected function parseTable()
     {
-        if (empty($this->options['from'])) {
-            return '';
-        }
-
         foreach ($this->options['from'] as $alias => $value) {
             if ($alias === $value['table_name']) {
-                return $this->connect->normalizeTableOrColumn(
+                $alias = $this->connect->normalizeTableOrColumn(
                     "{$value['schema']}.{$value['table_name']}"
                 );
             }
 
-            return $alias;
+            break;
         }
+
+        return $alias;
     }
 
     /**
@@ -1903,11 +1899,6 @@ class Condition
                             break;
                         }
                     }
-                    if (null === $findTime) {
-                        throw new InvalidArgumentException(
-                            'You are trying to an unsupported time processing grammar.'
-                        );
-                    }
                 }
 
                 // 格式化字段值，支持数组
@@ -1921,12 +1912,12 @@ class Condition
 
                     foreach ($cond[2] as &$tmp) {
                         // 对象子表达式支持
-                        if ($tmp instanceof self || $tmp instanceof Select) {
+                        if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
                             $tmp = $tmp instanceof Select ? $tmp->getCondition()->makeSql(true) : $tmp->makeSql(true);
                         }
 
                         // 回调方法子表达式支持
-                        elseif ($tmp instanceof Closure) {
+                        elseif (is_object($tmp) && $tmp instanceof Closure) {
                             $select = new static($this->connect);
                             $select->setTable($this->getTable());
                             call_user_func_array($tmp, [
@@ -2116,7 +2107,7 @@ class Condition
                 // 不符合规则抛出异常
                 if (!is_string($tmp)) {
                     throw new InvalidArgumentException(
-                        'String__ type only supports string.'
+                        sprintf('String__ type only supports string,but %s given.', gettype($tmp))
                     );
                 }
 
@@ -2174,13 +2165,13 @@ class Condition
                 // having 不支持 [not] exists
                 if ('having' === $this->getTypeAndLogic()[0]) {
                     throw new InvalidArgumentException(
-                        'Having do not support [not] exists writing.'
+                        'Having do not support [not] exists.'
                     );
                 }
 
-                if ($tmp instanceof self || $tmp instanceof Select) {
+                if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
                     $tmp = $tmp instanceof Select ? $tmp->getCondition()->makeSql() : $tmp->makeSql();
-                } elseif ($tmp instanceof Closure) {
+                } elseif (is_object($tmp) && $tmp instanceof Closure) {
                     $select = new static($this->connect);
                     $select->setTable($this->getTable());
                     call_user_func_array($tmp, [
@@ -2352,10 +2343,10 @@ class Condition
     /**
      * 连表 join 操作.
      *
-     * @param string     $joinType
-     * @param mixed      $names
-     * @param mixed      $cols
-     * @param null|mixed $cond
+     * @param string                                                                   $joinType
+     * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
+     * @param mixed                                                                    $cols
+     * @param null|mixed                                                               $cond
      *
      * @return $this
      */
@@ -2386,7 +2377,7 @@ class Condition
             }
         }
 
-        if ($names instanceof self || $names instanceof Select) { // 对象子表达式
+        if (is_object($names) && ($names instanceof self || $names instanceof Select)) { // 对象子表达式
             $table = $names->makeSql(true);
 
             if (!$alias) {
@@ -2394,7 +2385,7 @@ class Condition
             }
 
             $parseSchema = false;
-        } elseif ($names instanceof Closure) { // 回调方法
+        } elseif (is_object($names) && $names instanceof Closure) { // 回调方法
             $condition = new static($this->connect);
             $condition->setTable($this->getTable());
             call_user_func_array($names, [
@@ -2408,7 +2399,7 @@ class Condition
             }
 
             $parseSchema = false;
-        } elseif (0 === strpos(trim($names), '(')) { // 字符串子表达式
+        } elseif (is_string($names) && 0 === strpos($names, '(')) { // 字符串子表达式
             if (false !== ($position = strripos($names, 'as'))) {
                 $table = trim(substr($names, 0, $position - 1));
                 $alias = trim(substr($names, $position + 2));
@@ -2421,7 +2412,7 @@ class Condition
             }
 
             $parseSchema = false;
-        } else {
+        } elseif (is_string($names)) {
             // 字符串指定别名
             if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $names, $matches)) {
                 $table = $matches[1];
@@ -2429,6 +2420,10 @@ class Condition
             } else {
                 $table = $names;
             }
+        } else {
+            throw new InvalidArgumentException(
+                'Invalid table name.'
+            );
         }
 
         // 确定 table_name 和 schema

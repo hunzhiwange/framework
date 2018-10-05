@@ -534,4 +534,58 @@ eot;
 
         findAll(true);
     }
+
+    public function testInnerJsonWithTableNameIsExpression()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`a`.`name` AS `nikename`,`a`.`value` AS `tt` FROM `test` INNER JOIN (SELECT * FROM foo) a ON `a`.`name` = `test`.`name`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                innerJoin('(SELECT * FROM foo)', ['name as nikename', 'tt' => 'value'], 'name', '=', '{[test.name]}')->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testInnerJsonWithTableNameIsExpressionWithAsCustomAlias()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.*,`foo`.`name` AS `nikename`,`foo`.`value` AS `tt` FROM `test` INNER JOIN (SELECT * FROM foo) foo ON `foo`.`name` = `test`.`name`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                innerJoin('(SELECT * FROM foo) as foo', ['name as nikename', 'tt' => 'value'], 'name', '=', '{[test.name]}')->
+
+                findAll(true)
+            )
+        );
+    }
 }

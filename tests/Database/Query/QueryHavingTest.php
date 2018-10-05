@@ -781,4 +781,40 @@ eot;
             )
         );
     }
+
+    public function testHavingNotSupportExists()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Having do not support [not] exists.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        having([
+            'exists__' => 'select *from d_sub',
+        ])->
+
+        findAll(true);
+    }
+
+    public function testHavingNotSupportExists2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Having do not support [not] exists.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        having([
+            'notexists__' => 'select *from d_sub',
+        ])->
+
+        findAll(true);
+    }
 }

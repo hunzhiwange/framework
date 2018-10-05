@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
+use stdClass;
 use Tests\TestCase;
 
 /**
@@ -223,5 +224,19 @@ eot;
                 findAll(true)
             )
         );
+    }
+
+    public function testTableIsInvalid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+           'Invalid table name.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table(new stdClass())->
+
+        findAll(true);
     }
 }
