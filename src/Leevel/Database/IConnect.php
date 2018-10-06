@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
+use Closure;
+
 /**
  * IConnect 接口.
  *
@@ -40,7 +42,7 @@ interface IConnect
      *
      * @return mixed
      */
-    public function getPdo($master = false);
+    public function getPdo(bool $master = false);
 
     /**
      * 查询数据记录.
@@ -69,11 +71,11 @@ interface IConnect
     /**
      * 执行数据库事务
      *
-     * @param callable $action 事务回调
+     * @param \Closure $action 事务回调
      *
      * @return mixed
      */
-    public function transaction(callable $action);
+    public function transaction(Closure $action);
 
     /**
      * 启动事务
@@ -109,25 +111,16 @@ interface IConnect
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @param bool $withBindParams 是否和绑定参数一起返回
-     *
-     * @return string
-     */
-    public function getLastSql(bool $withBindParams = false);
-
-    /**
-     * 获取最近一次绑定参数.
-     *
      * @return array
      */
-    public function getBindParams();
+    public function getLastSql(): array;
 
     /**
      * 返回影响记录.
      *
      * @return int
      */
-    public function getNumRows();
+    public function getNumRows(): int;
 
     /**
      * 注册 SQL 监视器.
@@ -145,16 +138,6 @@ interface IConnect
      * 关闭数据库连接.
      */
     public function closeDatabase();
-
-    /**
-     * 取得数据库表字段信息缓存.
-     *
-     * @param string $tableName
-     * @param mixed  $master
-     *
-     * @return array
-     */
-    public function getTableColumnsCache(string $tableName, $master = false);
 
     /**
      * sql 表达式格式化.

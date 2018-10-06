@@ -35,12 +35,69 @@ use Leevel\Log\ILog;
  */
 trait Query
 {
-    protected function createConnect()
+    protected function createConnect(array $option = [])
     {
         $log = $this->createMock(ILog::class);
 
         $cache = $this->createMock(ICache::class);
 
-        return new Mysql($log, $cache, []);
+        return new Mysql($log, $cache, $option);
+    }
+
+    protected function createConnectTest()
+    {
+        return $this->createConnect(    array (
+          'driver' => 'mysql',
+          'readwrite_separate' => false,
+          'distributed' => false,
+          'master' =>
+          array (
+            'host' => '127.0.0.1',
+            'port' => '3306',
+            'name' => 'test',
+            'user' => 'root',
+            'password' => '123456',
+            'charset' => 'utf8',
+            'options' =>
+            array (
+              12 => false,
+            ),
+          ),
+          'slave' =>
+          array (
+          ),
+          'fetch' => 5,
+          'log' => true,
+        ));
+    }
+
+    protected function truncate(string $table)
+    {
+        $connect = $this->createConnectTest();
+
+        $sql = <<<'eot'
+[
+    "TRUNCATE TABLE `%s`",
+    []
+]
+eot;
+
+        $this->assertSame(
+            sprintf($sql, $table),
+            $this->varJson(
+                $connect->sql()->
+
+                table($table)->
+
+                truncate()
+            )
+        );
+
+        // 清理表数据
+        $connect->
+
+        table($table)->
+
+        truncate();
     }
 }

@@ -160,13 +160,6 @@ class Condition
     ];
 
     /**
-     * 原生 sql 类型.
-     *
-     * @var string
-     */
-    protected $nativeSql = 'select';
-
-    /**
      * 条件逻辑类型.
      *
      * @var string
@@ -264,13 +257,11 @@ class Condition
         // 构造数据插入
         if (is_array($data)) {
             $questionMark = 0;
-            $bindData = $this->getBindData($data, $bind, $questionMark);
-            $fields = $bindData[0];
-            $values = $bindData[1];
+            list($fields, $values, $bind, $questionMark) = $this->normalizeBindData($data, $bind, $questionMark);
             $tableName = $this->getTable();
 
-            foreach ($fields as &$field) {
-                $field = $this->qualifyOneColumn($field, $tableName);
+            foreach ($fields as $key => $field) {
+                $fields[$key] = $this->normalizeColumn($field, $tableName);
             }
 
             // 构造 insert 语句
@@ -283,7 +274,7 @@ class Condition
                 $sql[] = '('.implode(',', $values).')';
                 $data = implode(' ', $sql);
 
-                unset($bindData, $fields, $values, $sql);
+                unset($fields, $values, $sql);
             }
         }
 
@@ -321,17 +312,15 @@ class Condition
                     throw new InvalidArgumentException('Data for insertAll is not invalid.');
                 }
 
-                $bindData = $this->getBindData($tmp, $bind, $questionMark, $key);
+                list($tmpFields, $values, $bind, $questionMark) = $this->normalizeBindData($tmp, $bind, $questionMark, $key);
 
                 if (0 === $key) {
-                    $fields = $bindData[0];
+                    $fields = $tmpFields;
 
-                    foreach ($fields as &$field) {
-                        $field = $this->qualifyOneColumn($field, $tableName);
+                    foreach ($fields as $fieldKey => $field) {
+                        $fields[$fieldKey] = $this->normalizeColumn($field, $tableName);
                     }
                 }
-
-                $values = $bindData[1];
 
                 if ($values) {
                     $dataResult[] = '('.implode(',', $values).')';
@@ -377,16 +366,14 @@ class Condition
         // 构造数据更新
         if (is_array($data)) {
             $questionMark = 0;
-            $bindData = $this->getBindData($data, $bind, $questionMark);
-            $fields = $bindData[0];
-            $values = $bindData[1];
+            list($fields, $values, $bind, $questionMark) = $this->normalizeBindData($data, $bind, $questionMark);
             $tableName = $this->getTable();
 
             // SET 语句
             $setData = [];
 
             foreach ($fields as $key => $field) {
-                $field = $this->qualifyOneColumn($field, $tableName);
+                $field = $this->normalizeColumn($field, $tableName);
                 $setData[] = $field.' = '.$values[$key];
             }
 
@@ -602,7 +589,7 @@ class Condition
      *
      * @return $this
      */
-    public function columns($cols = '*', $table = null)
+    public function columns($cols = '*', ?string $table = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -625,7 +612,7 @@ class Condition
      *
      * @return $this
      */
-    public function setColumns($cols = '*', $table = null)
+    public function setColumns($cols = '*', ?string $table = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -942,7 +929,7 @@ class Condition
                 }
 
                 // 表达式支持
-                $tmp = $this->qualifyOneColumn($tmp, $currentTableName);
+                $tmp = $this->normalizeColumn($tmp, $currentTableName);
 
                 $this->options['group'][] = $tmp;
             }
@@ -1374,16 +1361,6 @@ class Condition
     }
 
     /**
-     * 返回所有参数绑定.
-     *
-     * @return array
-     */
-    public function getBindParamsAll(): array
-    {
-        return $this->bindParams;
-    }
-
-    /**
      * 返回查询限制.
      *
      * @return bool
@@ -1391,6 +1368,16 @@ class Condition
     public function getLimitQuery(): bool
     {
         return $this->options['limitquery'];
+    }
+
+    /**
+     * 返回参数绑定.
+     *
+     * @return array
+     */
+    public function getBindParams(): array
+    {
+        return $this->bindParams;
     }
 
     /**
@@ -1833,19 +1820,12 @@ class Condition
      */
     protected function analyseCondition(string $condType, bool $child = false)
     {
-        if (!$this->options[$condType]) {
-            return '';
-        }
-
         $sqlCond = [];
         $table = $this->getTable();
 
         foreach ($this->options[$condType] as $key => $cond) {
             // 逻辑连接符
-            if (in_array($cond, [
-                static::LOGIC_AND,
-                static::LOGIC_OR,
-            ], true)) {
+            if (in_array($cond, [static::LOGIC_AND, static::LOGIC_OR], true)) {
                 $sqlCond[] = strtoupper($cond);
 
                 continue;
@@ -1853,9 +1833,7 @@ class Condition
 
             // 特殊处理
             if (is_string($key)) {
-                if (in_array($key, [
-                    'string__',
-                ], true)) {
+                if (in_array($key, ['string__'], true)) {
                     $sqlCond[] = implode(' AND ', $cond);
                 }
             } elseif (is_array($cond)) {
@@ -1868,10 +1846,10 @@ class Condition
                     );
                 } else {
                     // 字段处理
-                    if (false !== strpos($cond[0], ',')) {
-                        $tmp = explode(',', $cond[0]);
+                    if (false !== strpos($cond[0], '.')) {
+                        $tmp = explode('.', $cond[0]);
+                        $currentTable = $tmp[0];
                         $cond[0] = $tmp[1];
-                        $currentTable = $cond[0];
                     } else {
                         $currentTable = $table;
                     }
@@ -1910,7 +1888,7 @@ class Condition
                         $isArray = false;
                     }
 
-                    foreach ($cond[2] as &$tmp) {
+                    foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
                         if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
                             $tmp = $tmp instanceof Select ? $tmp->getCondition()->makeSql(true) : $tmp->makeSql(true);
@@ -1947,11 +1925,12 @@ class Condition
 
                             $tmp = $this->connect->normalizeColumnValue($tmp);
                         }
+
+                        $cond[2][$condKey] = $tmp;
                     }
 
                     if (false === $isArray ||
-                        (1 === count($cond[2]) &&
-                            0 === strpos(trim($cond[2][0]), '('))) {
+                        (1 === count($cond[2]) && 0 === strpos((string) ($cond[2][0]), '('))) {
                         $cond[2] = reset($cond[2]);
                     }
                 }
@@ -1980,17 +1959,13 @@ class Condition
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
                         throw new InvalidArgumentException(
                             'The [not] between parameter value must be '.
-                            'an array of not less than two elements.'
+                            'an array which not less than two elements.'
                         );
                     }
 
-                    $sqlCond[] = $cond[0].' '.
-                        strtoupper($cond[1]).' '.
-                        $cond[2][0].' AND '.$cond[2][1];
+                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2][0].' AND '.$cond[2][1];
                 } elseif (is_scalar($cond[2])) {
-                    $sqlCond[] = $cond[0].' '.
-                        strtoupper($cond[1]).' '.
-                        $cond[2];
+                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
                 } elseif (null === $cond[2]) {
                     $sqlCond[] = $cond[0].' IS NULL';
                 }
@@ -2299,25 +2274,15 @@ class Condition
     }
 
     /**
-     * 格式化一个字段.
+     * 格式化字段.
      *
      * @param string $field
      * @param string $tableName
      *
      * @return string
      */
-    protected function qualifyOneColumn($field, $tableName = null)
+    protected function normalizeColumn(string $field, string $tableName)
     {
-        $field = trim($field);
-
-        if (empty($field)) {
-            return '';
-        }
-
-        if (null === $tableName) {
-            $tableName = $this->getTable();
-        }
-
         if (false !== strpos($field, '{') &&
             preg_match('/^{(.+?)}$/', $field, $matches)) {
             $field = $this->connect->normalizeExpression(
@@ -2494,7 +2459,7 @@ class Condition
      * @param string $tableName
      * @param mixed  $cols
      */
-    protected function addCols($tableName, $cols)
+    protected function addCols(string $tableName, $cols)
     {
         // 处理条件表达式
         if (is_string($cols) &&
@@ -2517,10 +2482,6 @@ class Condition
                     array_search('{'.base64_encode($tmp).'}', $cols, true)
                 ] = '{'.$tmp.'}';
             }
-        }
-
-        if (null === $tableName) {
-            $tableName = '';
         }
 
         // 没有字段则退出
@@ -2576,11 +2537,7 @@ class Condition
                     ];
                 }
             } else {
-                $this->options['columns'][] = [
-                    $tableName,
-                    $col,
-                    is_string($alias) ? $alias : null,
-                ];
+                $this->options['columns'][] = [$tableName, $col, is_string($alias) ? $alias : null];
             }
         }
     }
@@ -2634,58 +2591,9 @@ class Condition
     }
 
     /**
-     * 设置原生 sql 类型.
-     *
-     * @param string $nativeSql
-     */
-    protected function setNativeSql($nativeSql)
-    {
-        $this->nativeSql = $nativeSql;
-    }
-
-    /**
-     * 返回原生 sql 类型.
-     *
-     * @return string
-     */
-    protected function getNativeSql()
-    {
-        return $this->nativeSql;
-    }
-
-    /**
-     * 返回参数绑定.
-     *
-     * @param mixed      $strBind
-     * @param null|mixed $names
-     *
-     * @return array
-     */
-    protected function getBindParams($names = null)
-    {
-        if (null === $names) {
-            return $this->bindParams;
-        }
-
-        return $this->bindParams[$names] ?? null;
-    }
-
-    /**
-     * 判断是否有参数绑定支持
-     *
-     * @param mixed(int|string) $names
-     *
-     * @return bool
-     */
-    protected function isBindParams($names)
-    {
-        return isset($this->bindParams[$names]);
-    }
-
-    /**
      * 删除参数绑定支持
      *
-     * @param mixed(int|string) $names
+     * @param int|string $names
      *
      * @return bool
      */
@@ -2704,15 +2612,14 @@ class Condition
      * @param int   $questionMark
      * @param int   $index
      */
-    protected function getBindData($data, array &$bind = [], int &$questionMark = 0, int $index = 0)
+    protected function normalizeBindData(array $data, array $bind = [], int $questionMark = 0, int $index = 0)
     {
         $fields = $values = [];
         $tableName = $this->getTable();
 
         foreach ($data as $key => $value) {
             // 表达式支持
-            if ($value &&
-                false !== strpos($value, '{') &&
+            if ($value && false !== strpos($value, '{') &&
                 preg_match('/^{(.+?)}$/', $value, $matches)) {
                 $value = $this->connect->normalizeExpression(
                     $matches[1],
@@ -2727,8 +2634,7 @@ class Condition
                 $fields[] = $key;
             }
 
-            if (($value && 0 === strpos($value, ':')) ||
-                !empty($matches)) {
+            if (($value && 0 === strpos($value, ':')) || !empty($matches)) {
                 $values[] = $value;
             } else {
                 // 转换 ? 占位符至 : 占位符
@@ -2738,7 +2644,6 @@ class Condition
                     unset($bind[$questionMark]);
 
                     $this->deleteBindParams($questionMark);
-
                     $questionMark++;
                 }
 
@@ -2748,14 +2653,15 @@ class Condition
 
                 $values[] = ':'.$key;
 
-                $this->bind($key, $value,
-                    $this->connect->normalizeBindParamType($value));
+                $this->bind($key, $value, $this->connect->normalizeBindParamType($value));
             }
         }
 
         return [
             $fields,
             $values,
+            $bind,
+            $questionMark,
         ];
     }
 

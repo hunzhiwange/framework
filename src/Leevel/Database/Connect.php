@@ -26,6 +26,8 @@ use Leevel\Log\ILog;
 use PDO;
 use PDOException;
 use Throwable;
+use InvalidArgumentException;
+use Closure;
 
 /**
  * 数据库连接抽象层
@@ -197,7 +199,7 @@ abstract class Connect
      *
      * @return mixed
      */
-    public function getPdo($master = false)
+    public function getPdo(bool $master = false)
     {
         if (is_bool($master)) {
             if (false === $master) {
@@ -230,13 +232,13 @@ abstract class Connect
         // 记录 sql 参数
         $this->setSqlBindParams($sql, $bindParams);
 
-        // 验证 sql 类型PROCEDURE
+        // 验证 sql 类型
         if (!in_array(($sqlType = $this->normalizeSqlType($sql)), [
             'select',
             'procedure',
         ], true)) {
-            $this->throwException(
-                'The query method only allows select SQL statements.'
+            throw new InvalidArgumentException(
+                'The query method only allows select and procedure SQL statements.'
             );
         }
 
@@ -248,7 +250,7 @@ abstract class Connect
 
         // 执行 sql
         if (false === $this->pdoStatement->execute()) {
-            $this->throwException();
+            $this->pdoException();
         }
 
         // 记录 SQL 日志
@@ -258,12 +260,8 @@ abstract class Connect
         $this->numRows = $this->pdoStatement->rowCount();
 
         // 返回结果
-        return $this->fetchResult(
-            $fetchType,
-            $fetchArgument,
-            $ctorArgs,
-            'procedure' === $sqlType
-        );
+        return $this->fetchResult($fetchType, $fetchArgument,
+            $ctorArgs, 'procedure' === $sqlType);
     }
 
     /**
@@ -283,9 +281,12 @@ abstract class Connect
         $this->setSqlBindParams($sql, $bindParams);
 
         // 验证 sql 类型
-        if ('select' === ($sqlType = $this->normalizeSqlType($sql))) {
-            $this->throwException(
-                'The execute method does not allow select SQL statements.'
+        if (in_array(($sqlType = $this->normalizeSqlType($sql)), [
+            'select',
+            'procedure',
+        ], true)) {
+            throw new InvalidArgumentException(
+                'The query method not allows select and procedure SQL statements.'
             );
         }
 
@@ -297,7 +298,7 @@ abstract class Connect
 
         // 执行 sql
         if (false === $this->pdoStatement->execute()) {
-            $this->throwException();
+            $this->pdoException();
         }
 
         // 记录 SQL 日志
@@ -319,11 +320,11 @@ abstract class Connect
     /**
      * 执行数据库事务
      *
-     * @param callable $action 事务回调
+     * @param \Closure $action 事务回调
      *
      * @return mixed
      */
-    public function transaction(callable $action)
+    public function transaction(Closure $action)
     {
         // 事务过程
         $this->beginTransaction();
@@ -356,7 +357,7 @@ abstract class Connect
      *
      * @return bool
      */
-    public function inTransaction()
+    public function inTransaction(): bool
     {
         return $this->getPdo(true)->inTransaction();
     }
@@ -392,30 +393,14 @@ abstract class Connect
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @param bool $withBindParams 是否和绑定参数一起返回
-     *
-     * @return string
-     */
-    public function getLastSql(bool $withBindParams = false)
-    {
-        if (true === $withBindParams) {
-            return [
-                $this->sql,
-                $this->bindParams,
-            ];
-        }
-
-        return $this->sql;
-    }
-
-    /**
-     * 获取最近一次绑定参数.
-     *
      * @return array
      */
-    public function getBindParams()
+    public function getLastSql(): array
     {
-        return $this->bindParams;
+        return [
+            $this->sql,
+            $this->bindParams,
+        ];
     }
 
     /**
@@ -423,7 +408,7 @@ abstract class Connect
      *
      * @return int
      */
-    public function getNumRows()
+    public function getNumRows(): int
     {
         return $this->numRows;
     }
@@ -456,35 +441,6 @@ abstract class Connect
     }
 
     /**
-     * 取得数据库表字段信息缓存.
-     *
-     * @param string $tableName
-     * @param mixed  $master
-     *
-     * @return array
-     */
-    public function getTableColumnsCache(string $tableName, $master = false)
-    {
-        $cacheKey = sprintf('%s_%s', 'table_columns', $tableName);
-
-        if (isset(static::$tableColumnsCaches[$cacheKey])) {
-            return static::$tableColumnsCaches[$cacheKey];
-        }
-
-        $tableColumns = $this->cache->get($cacheKey);
-
-        if (!$this->development && false !== $tableColumns) {
-            return static::$tableColumnsCaches[$cacheKey] = $tableColumns;
-        }
-
-        $tableColumns = $this->getTableColumns($tableName, $master);
-
-        $this->cache->set($cacheKey, $tableColumns);
-
-        return static::$tableColumnsCaches[$cacheKey] = $tableColumns;
-    }
-
-    /**
      * sql 表达式格式化.
      *
      * @param string $sql
@@ -498,12 +454,8 @@ abstract class Connect
             return '';
         }
 
-        preg_match_all(
-            '/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i',
-            $sql,
-            $matches,
-            PREG_OFFSET_CAPTURE
-        );
+        preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql,
+            $matches, PREG_OFFSET_CAPTURE);
 
         $matches = reset($matches);
 
@@ -810,7 +762,7 @@ abstract class Connect
      *
      * @return mixed
      */
-    protected function commonConnect(array $option = [], ?int $linkid = null, $throwException = false)
+    protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false)
     {
         // 数据库连接 ID
         if (null === $linkid) {
@@ -858,7 +810,7 @@ abstract class Connect
             }
 
             if (false === $this->pdoStatement->bindValue($key, $val, $param)) {
-                $this->throwException(
+                $this->pdoException(
                     sprintf(
                         'Parameter of sql %s binding failed: %s.',
                         $this->sql,
@@ -982,16 +934,12 @@ abstract class Connect
      *
      * @param string $error 错误信息
      */
-    protected function throwException($error = '')
+    protected function pdoException(string $error = '')
     {
-        if ($this->pdoStatement) {
-            $tmp = $this->pdoStatement->errorInfo();
-            $error = '('.$tmp[1].')'.$tmp[2]."\r\n".$error;
+        $tmp = $this->pdoStatement->errorInfo();
+        $error = '('.$tmp[1].')'.$tmp[2]."\r\n".$error;
 
-            throw new PDOException($error);
-        }
-
-        throw new Exception($error);
+        throw new PDOException($error);
     }
 
     /**

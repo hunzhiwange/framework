@@ -197,4 +197,35 @@ eot;
             )
         );
     }
+
+    public function testInsertSupportTable()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "REPLACE INTO `test` (`test`.`name`,`test`.`test`.`value`) VALUES (:name,:value)",
+    {
+        "name": [
+            "小鸭子",
+            2
+        ],
+        "value": "呱呱呱"
+    }
+]
+eot;
+
+        $data = ['name' => '小鸭子', 'test.value' => '[:value]'];
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->sql()->
+
+                table('test')->
+
+                insert($data, ['value' => '呱呱呱'], true)
+            )
+        );
+    }
 }

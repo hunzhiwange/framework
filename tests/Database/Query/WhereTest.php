@@ -1350,4 +1350,291 @@ eot;
             )
         );
     }
+
+    public function testWhereFieldWithTable()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`name` = 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                where('test.name', '=', 1)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereBetweenValueNotAnArrayException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] between parameter value must be an array which not less than two elements.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        whereBetween('id', 'foo')->
+
+        findAll(true);
+    }
+
+    public function testWhereBetweenValueNotAnArrayException2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] between parameter value must be an array which not less than two elements.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        whereBetween('id', [1])->
+
+        findAll(true);
+    }
+
+    public function testWhereBetweenArrayItemIsClosure()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1) AND 100",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                whereBetween('id', [function ($select) {
+                    $select->table('subsql', 'id')->where('id', 1);
+                }, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInArrayItemIsClosure()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1),100)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                whereIn('id', [function ($select) {
+                    $select->table('subsql', 'id')->where('id', 1);
+                }, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereBetweenArrayItemIsExpression()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT 1) AND 100",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                whereBetween('id', ['(SELECT 1)', 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInArrayItemIsExpression()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT 1),100)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                whereIn('id', ['(SELECT 1)', 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereBetweenArrayItemIsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $select = $connect->table('foo', 'id')->one();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                whereBetween('id', [$select, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInArrayItemIsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $select = $connect->table('foo', 'id')->one();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                whereIn('id', [$select, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereBetweenArrayItemIsCondition()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $condition = $connect->table('foo', 'id')->one()->getCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                whereBetween('id', [$condition, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInArrayItemIsCondition()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $condition = $connect->table('foo', 'id')->one()->getCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                whereIn('id', [$condition, 100])->
+
+                findAll(true)
+            )
+        );
+    }
 }

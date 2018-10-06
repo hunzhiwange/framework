@@ -277,4 +277,33 @@ eot;
             )
         );
     }
+
+    public function testSetColumnsWithTableName()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name`,`test`.`value`,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON `hello`.`name` = `test`.`name`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                setColumns('test.name,test.value')->
+
+                join('hello', 'name,value', 'name', '=', '{[test.name]}')->
+
+                findAll(true)
+            )
+        );
+    }
 }

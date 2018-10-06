@@ -401,7 +401,7 @@ class Select
         // 回调
         if ($data instanceof Closure) {
             call_user_func_array($data, [
-                &$this,
+                $this,
             ]);
             $data = null;
         }
@@ -597,7 +597,6 @@ class Select
      */
     public function findAll(bool $flag = false)
     {
-        //dd($this->condition);
         $this->condition->all();
 
         return $this->safeSql($flag)->
@@ -772,11 +771,17 @@ class Select
      * @param string $alias
      * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
-     * @return int
+     * @return array|int
      */
     public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
     {
-        return $this->findAggregateResult('count', $field, $alias, $flag);
+        $result = $this->findAggregateResult('count', $field, $alias, $flag);
+
+        if (!is_array($result)) {
+            $result = (int) $result;
+        }
+
+        return $result;
     }
 
     /**
@@ -936,7 +941,7 @@ class Select
             return $this;
         }
 
-        $this->onlyMakeSql = (bool) $flag;
+        $this->onlyMakeSql = $flag;
 
         return $this;
     }
@@ -960,7 +965,7 @@ class Select
 
         $args = [
             $sql,
-            $this->condition->getBindParamsAll(),
+            $this->condition->getBindParams(),
             $this->queryParams['master'],
             $this->queryParams['fetch_type']['fetch_type'],
             $this->queryParams['fetch_type']['fetch_argument'],
@@ -1056,7 +1061,7 @@ class Select
      *
      * @return mixed
      */
-    protected function findAggregateResult($method, $field, $alias, $flag = false)
+    protected function findAggregateResult($method, $field, $alias, bool $flag = false)
     {
         $this->condition->{$method}($field, $alias);
 
@@ -1107,106 +1112,6 @@ class Select
     }
 
     /**
-     * 设置原生 sql 类型.
-     *
-     * @param string $nativeSql
-     */
-    protected function setNativeSql($nativeSql)
-    {
-        $this->nativeSql = $nativeSql;
-    }
-
-    /**
-     * 返回原生 sql 类型.
-     *
-     * @return string
-     */
-    protected function getNativeSql()
-    {
-        return $this->nativeSql;
-    }
-
-    /**
-     * 设置当前表名字.
-     *
-     * @param mixed $table
-     */
-    protected function setCurrentTable($table)
-    {
-        $this->currentTable = $table;
-    }
-
-    /**
-     * 获取当前表名字.
-     *
-     * @return string
-     */
-    protected function getCurrentTable()
-    {
-        // 数组
-        if (is_array($this->currentTable)) {
-            while ((list($alias) = each($this->currentTable)) !== false) {
-                return $this->currentTable = $alias;
-            }
-        } else {
-            return $this->currentTable;
-        }
-    }
-
-    /**
-     * 设置是否为表操作.
-     *
-     * @param bool $isTable
-     */
-    protected function setIsTable($isTable = true)
-    {
-        $this->isTable = $isTable;
-    }
-
-    /**
-     * 返回是否为表操作.
-     *
-     * @return bool
-     */
-    protected function getIsTable()
-    {
-        return $this->isTable;
-    }
-
-    /**
-     * 别名唯一
-     *
-     * @param mixed $names
-     *
-     * @return string
-     */
-    protected function uniqueAlias($names)
-    {
-        if (empty($names)) {
-            return '';
-        }
-
-        // 数组，返回最后一个元素
-        if (is_array($names)) {
-            $result = end($names);
-        }
-
-        // 字符串
-        else {
-            $dot = strrpos($names, '.');
-            $result = false === $dot ?
-                $names :
-                substr($names, $dot + 1);
-        }
-
-        for ($i = 2; array_key_exists($result, $this->options['from']); $i++) {
-            $result = $names.'_'.(string) $i;
-        }
-
-        return $result;
-    }
-
-    /**
      * 备份分页查询条件.
      */
     protected function backupPaginateArgs()
@@ -1235,7 +1140,7 @@ class Select
      *
      * @return string
      */
-    protected function unCamelize($value, $separator = '_')
+    protected function unCamelize(string $value, string $separator = '_'): string
     {
         return strtolower(
             preg_replace(
