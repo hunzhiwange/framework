@@ -20,10 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
+use Exception;
 use Tests\Database\Query\Query;
 use Tests\TestCase;
-use stdClass;
-use Exception;
 use Throwable;
 
 /**
@@ -84,9 +83,7 @@ eot;
 
         // 写入数据
         $this->assertSame('1', $connect->
-
         table('guestbook')->
-
         insert($data));
 
         $this->assertSame(1, $connect->table('guestbook')->findCount());
@@ -108,9 +105,7 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-
         table('guestbook')->
-
         insert($data));
 
         $insertData = $connect->query('select * from guestbook where id=?', [1]);
@@ -171,9 +166,7 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-
         table('guestbook')->
-
         insert($data));
 
         $insertData = $connect->select('select * from guestbook where id = ?', [1]);
@@ -194,9 +187,7 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-
         table('guestbook')->
-
         insert($data));
 
         $insertData = $connect->select('select * from guestbook where id = :id', ['id' => 1]);
@@ -281,7 +272,7 @@ eot;
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n=0;$n<=1;$n++) {
+        for ($n = 0; $n <= 1; $n++) {
             $connect->
 
             table('guestbook')->
@@ -291,7 +282,7 @@ eot;
 
         $this->assertSame(2, $connect->table('guestbook')->findCount());
 
-        $connect->transaction(function($connect) {
+        $connect->transaction(function ($connect) {
             $connect->table('guestbook')->where('id', 1)->delete();
 
             $this->assertSame(1, $connect->table('guestbook')->findCount());
@@ -312,7 +303,7 @@ eot;
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        for ($n=0;$n<=1;$n++) {
+        for ($n = 0; $n <= 1; $n++) {
             $connect->
 
             table('guestbook')->
@@ -325,7 +316,7 @@ eot;
         $this->assertFalse($connect->inTransaction());
 
         try {
-            $connect->transaction(function($connect) {
+            $connect->transaction(function ($connect) {
                 $connect->table('guestbook')->where('id', 1)->delete();
 
                 $this->assertSame(1, $connect->table('guestbook')->findCount());
@@ -333,7 +324,6 @@ eot;
                 $this->assertTrue($connect->inTransaction());
 
                 throw new Exception('Will rollback');
-
                 $connect->table('guestbook')->where('id', 2)->delete();
             });
         } catch (Throwable $e) {

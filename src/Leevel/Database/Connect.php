@@ -20,14 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use Exception;
+use Closure;
+use InvalidArgumentException;
 use Leevel\Cache\ICache;
 use Leevel\Log\ILog;
 use PDO;
 use PDOException;
 use Throwable;
-use InvalidArgumentException;
-use Closure;
 
 /**
  * 数据库连接抽象层
