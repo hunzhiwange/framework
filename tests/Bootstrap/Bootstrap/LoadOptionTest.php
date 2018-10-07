@@ -40,8 +40,6 @@ class LoadOptionTest extends TestCase
 {
     public function testBaseUse()
     {
-        $_ENV = [];
-
         $bootstrap = new LoadOption();
 
         $project = new Project3($appPath = __DIR__.'/app');
@@ -59,14 +57,10 @@ class LoadOptionTest extends TestCase
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));
-
-        $_ENV = [];
     }
 
     public function testLoadCached()
     {
-        $_ENV = [];
-
         $bootstrap = new LoadOption();
 
         $project = new Project3($appPath = __DIR__.'/app');
@@ -93,8 +87,6 @@ class LoadOptionTest extends TestCase
         $this->assertTrue($option->get('_env.debug'));
 
         Fso::deleteDirectory($appPath.'/runtime', true);
-
-        $_ENV = [];
     }
 }
 

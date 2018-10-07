@@ -37,8 +37,6 @@ class LoadTest extends TestCase
 {
     public function testBaseUse()
     {
-        $_ENV = [];
-
         $appPath = __DIR__.'/app1';
 
         $project = $this->createMock(IProject::class);
@@ -74,8 +72,6 @@ class LoadTest extends TestCase
                 $optionCaches
             )
         );
-
-        $_ENV = [];
     }
 
     public function testLoadDirNotExists()

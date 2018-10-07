@@ -7,3 +7,4 @@ node_modules/
 package-lock.json
 *.log
 phinx.yml
+/tests/config.local.php

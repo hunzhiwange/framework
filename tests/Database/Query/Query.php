@@ -51,11 +51,11 @@ trait Query
             'readwrite_separate' => false,
             'distributed'        => false,
             'master'             => [
-                'host'     => '127.0.0.1',
-                'port'     => '3306',
-                'name'     => 'test',
-                'user'     => 'root',
-                'password' => '123456',
+                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
                     12 => false,
