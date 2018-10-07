@@ -1637,4 +1637,120 @@ eot;
             )
         );
     }
+
+    public function testWhereInIsClosure()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `world`.* FROM `world`)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('hello')->
+
+                whereIn('id', function ($select) {
+                    $select->table('world');
+                })->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInIsSubString()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $subSql = $connect->table('test')->makeSql(true);
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('hello')->
+
+                where('id', 'in', $subSql)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereInIsSubIsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $subSql = $connect->table('test');
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('hello')->
+
+                where('id', 'in', $subSql)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testWhereEqualIsSub()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` = (SELECT `test`.`id` FROM `test` WHERE `test`.`id` = 1)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('hello')->
+
+                where('id', '=', function ($select) {
+                    $select->table('test', 'id')->where('id', 1);
+                })->
+
+                findAll(true)
+            )
+        );
+    }
 }

@@ -259,8 +259,7 @@ abstract class Connect
         $this->numRows = $this->pdoStatement->rowCount();
 
         // 返回结果
-        return $this->fetchResult($fetchType, $fetchArgument,
-            $ctorArgs, 'procedure' === $sqlType);
+        return $this->fetchResult($fetchType, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
     }
 
     /**
@@ -870,11 +869,8 @@ abstract class Connect
         $result = [];
 
         do {
-            if (($result = $this->fetchResult(
-                $fetchType,
-                $fetchArgument,
-                $ctorArgs))) {
-                $result[] = $result;
+            if (($tmp = $this->fetchResult($fetchType, $fetchArgument, $ctorArgs))) {
+                $result[] = $tmp;
             }
         } while ($this->pdoStatement->nextRowset());
 

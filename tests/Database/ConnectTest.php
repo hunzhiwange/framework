@@ -336,4 +336,137 @@ eot;
 
         $this->truncate('guestbook');
     }
+
+    public function testTransactionByCustom()
+    {
+        $connect = $this->createConnectTest();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 1; $n++) {
+            $connect->
+
+            table('guestbook')->
+
+            insert($data);
+        }
+
+        $this->assertSame(2, $connect->table('guestbook')->findCount());
+
+        $connect->beginTransaction();
+
+        $connect->table('guestbook')->where('id', 1)->delete();
+
+        $this->assertSame(1, $connect->table('guestbook')->findCount());
+
+        $connect->table('guestbook')->where('id', 2)->delete();
+
+        $this->assertSame(0, $connect->table('guestbook')->findCount());
+
+        $connect->commit();
+
+        $this->assertSame(0, $connect->table('guestbook')->findCount());
+
+        $this->truncate('guestbook');
+    }
+
+    public function testTransactionRollbackByCustom()
+    {
+        $connect = $this->createConnectTest();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 1; $n++) {
+            $connect->
+
+            table('guestbook')->
+
+            insert($data);
+        }
+
+        $this->assertSame(2, $connect->table('guestbook')->findCount());
+
+        $this->assertFalse($connect->inTransaction());
+
+        try {
+            $connect->beginTransaction();
+
+            $connect->table('guestbook')->where('id', 1)->delete();
+
+            $this->assertSame(1, $connect->table('guestbook')->findCount());
+
+            $this->assertTrue($connect->inTransaction());
+
+            throw new Exception('Will rollback');
+            $connect->table('guestbook')->where('id', 2)->delete();
+
+            $connect->commit();
+        } catch (Throwable $e) {
+            $this->assertSame('Will rollback', $e->getMessage());
+
+            $connect->rollBack();
+        }
+
+        $this->assertFalse($connect->inTransaction());
+
+        $this->assertSame(2, $connect->table('guestbook')->findCount());
+
+        $this->truncate('guestbook');
+    }
+
+    public function testCallProcedure()
+    {
+        $connect = $this->createConnectTest();
+
+        $sqlProcedure = <<<'eot'
+DROP PROCEDURE IF EXISTS `test_procedure`;
+CREATE PROCEDURE `test_procedure`(IN min INT)
+    BEGIN
+    SELECT `name` FROM `guestbook` WHERE id > min;
+    SELECT `content` FROM `guestbook` WHERE id > min+1;
+    END;
+eot;
+
+        $connect->execute($sqlProcedure);
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 1; $n++) {
+            $connect->
+
+            table('guestbook')->
+
+            insert($data);
+        }
+
+        $result = $connect->query('CALL test_procedure(0)');
+
+        $sql = <<<'eot'
+[
+    [
+        {
+            "name": "tom"
+        },
+        {
+            "name": "tom"
+        }
+    ],
+    [
+        {
+            "content": "I love movie."
+        }
+    ]
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $result
+            )
+        );
+
+        $connect->execute('DROP PROCEDURE IF EXISTS `test_procedure`');
+        $this->truncate('guestbook');
+    }
 }

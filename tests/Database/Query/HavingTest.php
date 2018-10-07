@@ -817,4 +817,437 @@ eot;
 
         findAll(true);
     }
+
+    public function testHavingFieldWithTable()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` = 1",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                having('test.name', '=', 1)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingBetweenValueNotAnArrayException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] between parameter value must be an array which not less than two elements.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        groupBy('name')->
+
+        havingBetween('id', 'foo')->
+
+        findAll(true);
+    }
+
+    public function testHavingBetweenValueNotAnArrayException2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The [not] between parameter value must be an array which not less than two elements.'
+        );
+
+        $connect = $this->createConnect();
+
+        $connect->table('test')->
+
+        groupBy('name')->
+
+        havingBetween('id', [1])->
+
+        findAll(true);
+    }
+
+    public function testHavingBetweenArrayItemIsClosure()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN (SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1) AND 100",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                havingBetween('id', [function ($select) {
+                    $select->table('subsql', 'id')->where('id', 1);
+                }, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInArrayItemIsClosure()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN ((SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1),100)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                havingIn('id', [function ($select) {
+                    $select->table('subsql', 'id')->where('id', 1);
+                }, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingBetweenArrayItemIsExpression()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN (SELECT 1) AND 100",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                havingBetween('id', ['(SELECT 1)', 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInArrayItemIsExpression()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN ((SELECT 1),100)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                havingIn('id', ['(SELECT 1)', 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingBetweenArrayItemIsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $select = $connect->table('foo', 'id')->one();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                havingBetween('id', [$select, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInArrayItemIsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $select = $connect->table('foo', 'id')->one();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                havingIn('id', [$select, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingBetweenArrayItemIsCondition()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $condition = $connect->table('foo', 'id')->one()->getCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                havingBetween('id', [$condition, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInArrayItemIsCondition()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $condition = $connect->table('foo', 'id')->one()->getCondition();
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('test')->
+
+                groupBy('name')->
+
+                havingIn('id', [$condition, 100])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInIsClosure()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` GROUP BY `hello`.`name` HAVING `hello`.`id` IN (SELECT `world`.* FROM `world`)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('hello')->
+
+                groupBy('name')->
+
+                havingIn('id', function ($select) {
+                    $select->table('world');
+                })->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInIsSubString()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` GROUP BY `hello`.`name` HAVING `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $subSql = $connect->table('test')->makeSql(true);
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('hello')->
+
+                groupBy('name')->
+
+                having('id', 'in', $subSql)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingInIsSubIsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` GROUP BY `hello`.`name` HAVING `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $subSql = $connect->table('test');
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('hello')->
+
+                groupBy('name')->
+
+                having('id', 'in', $subSql)->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testHavingEqualIsSub()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` GROUP BY `hello`.`name` HAVING `hello`.`id` = (SELECT `test`.`id` FROM `test` WHERE `test`.`id` = 1)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table('hello')->
+
+                groupBy('name')->
+
+                having('id', '=', function ($select) {
+                    $select->table('test', 'id')->where('id', 1);
+                })->
+
+                findAll(true)
+            )
+        );
+    }
 }

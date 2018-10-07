@@ -1884,7 +1884,7 @@ class Condition
                     $isArray = true;
 
                     if (!is_array($cond[2])) {
-                        $cond[2] = (array) $cond[2];
+                        $cond[2] = [$cond[2]];
                         $isArray = false;
                     }
 

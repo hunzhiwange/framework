@@ -239,4 +239,168 @@ eot;
 
         findAll(true);
     }
+
+    public function testSub()
+    {
+        $connect = $this->createConnect();
+
+        $subSql = $connect->table('test')->makeSql(true);
+
+        $sql = <<<'eot'
+[
+    "SELECT `a`.* FROM (SELECT `test`.* FROM `test`) a",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table($subSql.' as a')->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testSubIsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $subSql = $connect->table('test');
+
+        $sql = <<<'eot'
+[
+    "SELECT `bb`.* FROM (SELECT `test`.* FROM `test`) bb",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table(['bb' => $subSql])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testSubIsCondition()
+    {
+        $connect = $this->createConnect();
+
+        $subSql = $connect->table('test')->getCondition();
+
+        $sql = <<<'eot'
+[
+    "SELECT `bb`.* FROM (SELECT `test`.* FROM `test`) bb",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table(['bb' => $subSql])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testSubIsClosure()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `b`.* FROM (SELECT `world`.* FROM `world`) b",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table(['b'=> function ($select) {
+                    $select->table('world');
+                }])->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testSubIsClosureWithItSeltAsAlias()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `guestbook`.* FROM (SELECT `guestbook`.* FROM `guestbook`) guestbook",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table(function ($select) {
+                    $select->table('guestbook');
+                })->
+
+                findAll(true)
+            )
+        );
+    }
+
+    public function testSubIsClosureWithJoin()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+[
+    "SELECT `world`.`remark`,`hello`.`name`,`hello`.`value` FROM (SELECT `world`.* FROM `world`) world INNER JOIN `hello` ON `hello`.`name` = `world`.`name`",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->table(function ($select) {
+                    $select->table('world');
+                }, 'remark')->
+
+                join('hello', 'name,value', 'name', '=', '{[world.name]}')->
+
+                findAll(true)
+            )
+        );
+    }
 }
