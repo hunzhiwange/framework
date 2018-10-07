@@ -43,10 +43,6 @@ class RedisTest extends TestCase
         if (!extension_loaded('redis')) {
             $this->markTestSkipped('Redis extension must be loaded before use.');
         }
-
-        if (!empty($_SERVER['SUDO_USER']) && 'vagrant' === $_SERVER['SUDO_USER']) {
-            $this->markTestSkipped('Development environment will skip.');
-        }
     }
 
     public function testBaseUse()
