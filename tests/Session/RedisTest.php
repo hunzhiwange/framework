@@ -158,9 +158,9 @@ class RedisTest extends TestCase
     protected function createRedisSessionHandler()
     {
         $option = [
-            'host'        => '127.0.0.1',
-            'port'        => 6379,
-            'password'    => '',
+            'host'        => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['HOST'],
+            'port'        => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['PORT'],
+            'password'    => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['PASSWORD'],
             'select'      => 0,
             'timeout'     => 0,
             'persistent'  => false,

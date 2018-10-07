@@ -41,3 +41,15 @@ $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL'] = [
     'USER'     => 'root',
     'PASSWORD' => '',
 ];
+
+$GLOBALS['LEEVEL_ENV']['CACHE']['REDIS'] = [
+    'HOST'     => '127.0.0.1',
+    'PORT'     => 6379,
+    'PASSWORD' => '',
+];
+
+$GLOBALS['LEEVEL_ENV']['SESSION']['REDIS'] = [
+    'HOST'     => '127.0.0.1',
+    'PORT'     => 6379,
+    'PASSWORD' => '',
+];
