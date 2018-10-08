@@ -60,6 +60,7 @@ We think the performance of PHP applications is very important and the developme
 
 * PHP 7 - We choose the lowest version of 7.1.3, because php7 has a unique advantage over the earlier version.
 * Leevel - We provides an optional c extension to takeover core components of the framework,such as ioc, log, cache.
+* Swoole - Enable PHP developers to write high-performance, scalable, concurrent TCP, UDP, Unix socket, HTTP, Websocket services in PHP programming language.
 * Redis - QueryPHP encapsulation a cache component, including files, redis and so on, so as to reduce the pressure of database.
 
 ```
