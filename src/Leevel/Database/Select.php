@@ -56,7 +56,7 @@ class Select
      *
      * @var object
      */
-    protected $callSelect;
+    //protected $callSelect;
 
     /**
      * 查询条件.
@@ -86,10 +86,10 @@ class Select
      */
     protected static $queryParamsDefault = [
         // PDO:fetchAll 参数
-        'fetch_type' => [
-            'fetch_type'     => null,
-            'fetch_argument' => null,
-            'ctor_args'      => [],
+        'fetch_args' => [
+            'fetch_style'     => null,
+            'fetch_argument'  => null,
+            'ctor_args'       => [],
         ],
 
         // 查询主服务器
@@ -168,10 +168,7 @@ class Select
             // support findAllByNameAndSex etc.
             if (0 === strncasecmp($method, 'By', 2) ||
                 0 === strncasecmp($method, 'AllBy', 5)) {
-                $method = substr(
-                    $method,
-                    ($isOne = 0 === strncasecmp($method, 'By', 2)) ? 2 : 5
-                );
+                $method = substr($method, ($isOne = 0 === strncasecmp($method, 'By', 2)) ? 2 : 5);
 
                 $isKeep = false;
 
@@ -204,17 +201,17 @@ class Select
         }
 
         // 查询组件
-        if (!$this->callSelect) {
-            throw new InvalidArgumentException(
+        //if (!$this->callSelect) {
+        throw new InvalidArgumentException(
                 sprintf(
                     'Select do not implement magic method %s.',
                     $method
                 )
             );
-        }
+        //}
 
         // 调用事件
-        return $this->callSelect->{$method}(...$args);
+        // return $this->callSelect->{$method}(...$args);
     }
 
     /**
@@ -254,16 +251,16 @@ class Select
      *
      * @return $this
      */
-    public function registerCallSelect($callSelect)
-    {
-        $this->callSelect = $callSelect;
-
-        if (method_exists($this->callSelect, 'registerSelect')) {
-            $this->callSelect->registerSelect($this);
-        }
-
-        return $this;
-    }
+    // public function registerCallSelect($callSelect)
+    // {
+    //     $this->callSelect = $callSelect;
+    //
+    //     if (method_exists($this->callSelect, 'registerSelect')) {
+    //         $this->callSelect->registerSelect($this);
+    //     }
+    //
+    //     return $this;
+    // }
 
     /**
      * 指定返回 SQL 不做任何操作.
@@ -274,7 +271,7 @@ class Select
      */
     public function sql(bool $flag = true)
     {
-        $this->onlyMakeSql = (bool) $flag;
+        $this->onlyMakeSql = $flag;
 
         return $this;
     }
@@ -286,43 +283,31 @@ class Select
      *
      * @return $this
      */
-    public function asMaster(bool $master = false)
+    public function master(bool $master = false)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->queryParams['master'] = $master;
 
         return $this;
     }
 
     /**
-     * 设置查询结果类型.
+     * 设置查询参数.
      *
-     * @param mixed $type
-     * @param mixed $value
+     * @param int   $fetchStyle
+     * @param mixed $fetchArgument
+     * @param array $ctorArgs
      *
      * @return $this
      */
-    public function asFetchType($type, $value = null)
+    public function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])
     {
-        if ($this->checkTControl()) {
-            return $this;
+        $this->queryParams['fetch_args']['fetch_style'] = $fetchStyle;
+
+        if ($fetchArgument) {
+            $this->queryParams['fetch_args']['fetch_argument'] = $fetchArgument;
         }
 
-        if (is_array($type)) {
-            $this->queryParams['fetch_type'] = array_merge(
-                $this->queryParams['fetch_type'],
-                $type
-            );
-        } else {
-            if (null === $value) {
-                $this->queryParams['fetch_type']['fetch_type'] = $type;
-            } else {
-                $this->queryParams['fetch_type'][$type] = $value;
-            }
-        }
+        $this->queryParams['fetch_args']['ctor_args'] = $ctorArgs;
 
         return $this;
     }
@@ -336,10 +321,6 @@ class Select
      */
     public function asClass(string $className)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->queryParams['as_class'] = $className;
         $this->queryParams['as_default'] = false;
 
@@ -353,10 +334,6 @@ class Select
      */
     public function asDefault()
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->queryParams['as_class'] = null;
         $this->queryParams['as_default'] = true;
 
@@ -366,18 +343,13 @@ class Select
     /**
      * 设置是否以集合返回.
      *
-     * @param string $acollection
+     * @param bool $acollection
      *
      * @return $this
      */
     public function asCollection(bool $acollection = true)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->queryParams['as_collection'] = $acollection;
-        $this->queryParams['as_default'] = false;
 
         return $this;
     }
@@ -490,13 +462,7 @@ class Select
      */
     public function updateColumn(string $column, $value, array $bind = [], bool $flag = false)
     {
-        return $this->update(
-            [
-                $column => $value,
-            ],
-            $bind,
-            $flag
-        );
+        return $this->update([$column => $value], $bind, $flag);
     }
 
     /**
@@ -511,12 +477,7 @@ class Select
      */
     public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
     {
-        return $this->updateColumn(
-            $column,
-            '{['.$column.']+'.$step.'}',
-            $bind,
-            $flag
-        );
+        return $this->updateColumn($column, '{['.$column.']+'.$step.'}', $bind, $flag);
     }
 
     /**
@@ -531,12 +492,7 @@ class Select
      */
     public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
     {
-        return $this->updateColumn(
-            $column,
-            '{['.$column.']-'.$step.'}',
-            $bind,
-            $flag
-        );
+        return $this->updateColumn($column, '{['.$column.']-'.$step.'}', $bind, $flag);
     }
 
     /**
@@ -635,7 +591,7 @@ class Select
 
         one();
 
-        $result = $this->safeSql($flag)->
+        $result = (array) $this->safeSql($flag)->
 
         asDefault()->
 
@@ -670,7 +626,7 @@ class Select
      *
      * @return array
      */
-    public function lists($fieldValue, $fieldKey = null, bool $flag = false)
+    public function list($fieldValue, ?string $fieldKey = null, bool $flag = false)
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
@@ -681,7 +637,7 @@ class Select
             $fields[] = $fieldValue;
         }
 
-        if (is_string($fieldKey)) {
+        if ($fieldKey) {
             $fields[] = $fieldKey;
         }
 
@@ -701,6 +657,8 @@ class Select
         $result = [];
 
         foreach ($tmps as $tmp) {
+            $tmp = (array) $tmp;
+
             if (1 === count($tmp)) {
                 $result[] = reset($tmp);
             } else {
@@ -717,21 +675,18 @@ class Select
      * 数据分块处理.
      *
      * @param int      $count
-     * @param callable $calCallback
+     * @param \Closure $chunk
      *
      * @return bool
      */
-    public function chunk(int $count, callable $calCallback)
+    public function chunk(int $count, Closure $chunk)
     {
         $result = $this->forPage($page = 1, $count)->
 
         findAll();
 
         while (count($result) > 0) {
-            if (false === call_user_func_array($calCallback, [
-                $result,
-                $page,
-            ])) {
+            if (false === call_user_func_array($chunk, [$result, $page])) {
                 return false;
             }
 
@@ -741,23 +696,21 @@ class Select
 
             findAll();
         }
-
-        return true;
     }
 
     /**
      * 数据分块处理依次回调.
      *
      * @param int     $count
-     * @param Closure $calCallback
+     * @param Closure $each
      *
      * @return bool
      */
-    public function each(int $count, Closure $calCallback)
+    public function each(int $count, Closure $each)
     {
-        return $this->chunk($count, function ($result, $page) use ($calCallback) {
+        return $this->chunk($count, function ($result, $page) use ($each) {
             foreach ($result as $key => $value) {
-                if (false === $calCallback($value, $key, $page)) {
+                if (false === $each($value, $key, $page)) {
                     return false;
                 }
             }
@@ -849,11 +802,11 @@ class Select
      *
      * @return array
      */
-    public function paginate(int $perPage = 10, string $cols = '*', array $options = [])
+    public function page(int $perPage = 10, string $cols = '*', array $options = [])
     {
         $page = new page_with_total(
             $perPage,
-            $this->getPaginateCount($cols),
+            $this->pageCount($cols),
             $options
         );
 
@@ -877,7 +830,7 @@ class Select
      *
      * @return array
      */
-    public function simplePaginate(int $perPage = 10, string $cols = '*', array $options = [])
+    public function simplePage(int $perPage = 10, string $cols = '*', array $options = [])
     {
         $page = new PageWithoutTotal(
             $perPage,
@@ -902,15 +855,15 @@ class Select
      *
      * @return int
      */
-    public function getPaginateCount(string $cols = '*')
+    public function pageCount(string $cols = '*')
     {
-        $this->backupPaginateArgs();
+        $this->backupPageArgs();
 
         $count = $this->getCount(
             is_array($cols) ? reset($cols) : $cols
         );
 
-        $this->restorePaginateArgs();
+        $this->restorePageArgs();
 
         return $count;
     }
@@ -967,9 +920,9 @@ class Select
             $sql,
             $this->condition->getBindParams(),
             $this->queryParams['master'],
-            $this->queryParams['fetch_type']['fetch_type'],
-            $this->queryParams['fetch_type']['fetch_argument'],
-            $this->queryParams['fetch_type']['ctor_args'],
+            $this->queryParams['fetch_args']['fetch_style'],
+            $this->queryParams['fetch_args']['fetch_argument'],
+            $this->queryParams['fetch_args']['ctor_args'],
         ];
 
         // 只返回 SQL，不做任何实际操作
@@ -980,75 +933,61 @@ class Select
         $data = $this->connect->query(...$args);
 
         if ($this->queryParams['as_default']) {
-            $this->queryDefault($data);
+            $data = $this->queryDefault($data);
         } else {
-            $this->queryClass($data);
+            $data = $this->queryClass($data);
         }
 
         return $data;
     }
 
     /**
-     * 以数组返回结果.
+     * 以默认返回结果.
      *
      * @param array $data
+     *
+     * @return mixed
      */
-    protected function queryDefault(&$data)
+    protected function queryDefault(array $data)
     {
-        if (empty($data)) {
-            if (!$this->condition->getLimitQuery()) {
-                $data = null;
-            }
-
-            return;
-        }
-
-        // 返回一条记录
         if (!$this->condition->getLimitQuery()) {
-            $data = reset($data) ?: null;
+            $data = reset($data) ?: [];
         }
+
+        return $this->queryParams['as_collection'] ? new Collection($data) : $data;
     }
 
     /**
      * 以 class 返回结果.
      *
      * @param array $data
+     *
+     * @return mixed
      */
-    protected function queryClass(&$data)
+    protected function queryClass(array $data)
     {
-        if (empty($data)) {
-            if (!$this->condition->getLimitQuery()) {
-                $data = null;
-            } else {
-                if ($this->queryParams['as_collection']) {
-                    $data = new Collection();
-                }
-            }
-
-            return;
-        }
-
-        // 模型实体类不存在，直接以数组结果返回
         $className = $this->queryParams['as_class'];
 
-        if ($className && !class_exists($className)) {
-            $this->queryDefault($data);
-
-            return;
+        if (!class_exists($className)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'The class of query `%s` was not found.',
+                    $className
+                )
+            );
         }
 
-        foreach ($data as &$tmp) {
-            $tmp = new $className((array) $tmp);
+        foreach ($data as $key => $tmp) {
+            $data[$key] = new $className((array) $tmp);
         }
 
-        // 创建一个单独的对象
         if (!$this->condition->getLimitQuery()) {
-            $data = reset($data) ?: null;
-        } else {
-            if ($this->queryParams['as_collection']) {
-                $data = new Collection($data, [$className]);
-            }
+            $data = reset($data) ?: new $className([]);
+        } elseif ($this->queryParams['as_collection']) {
+            $data = new Collection($data, [$className]);
         }
+
+        return $data;
     }
 
     /**
@@ -1096,7 +1035,9 @@ class Select
         }
 
         if ($sqlType !== $nativeType) {
-            throw new InvalidArgumentException('Unsupported parameters.');
+            throw new InvalidArgumentException(
+                sprintf('Unsupported parameters `%s`.', $sqlType)
+            );
         }
 
         $args = [$data, $bindParams];
@@ -1114,7 +1055,7 @@ class Select
     /**
      * 备份分页查询条件.
      */
-    protected function backupPaginateArgs()
+    protected function backupPageArgs()
     {
         $this->backupPage = [];
         $this->backupPage['aggregate'] = $this->options['aggregate'];
@@ -1125,7 +1066,7 @@ class Select
     /**
      * 恢复分页查询条件.
      */
-    protected function restorePaginateArgs()
+    protected function restorePageArgs()
     {
         $this->options['aggregate'] = $this->backupPage['aggregate'];
         $this->queryParams = $this->backupPage['query_params'];

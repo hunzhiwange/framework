@@ -234,7 +234,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->elements);
     }
@@ -272,9 +272,11 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
             if ($value instanceof JsonSerializable) {
                 return $value->jsonSerialize();
             }
+
             if ($value instanceof IJson) {
                 return json_decode($value->toJson(), true);
             }
+
             if ($value instanceof IArray) {
                 return $value->toArray();
             }

@@ -32,7 +32,7 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ListsTest extends TestCase
+class ListTest extends TestCase
 {
     use Query;
 
@@ -58,7 +58,7 @@ eot;
 
                 table('test')->
 
-                lists('name')
+                list('name')
             )
         );
 
@@ -80,7 +80,7 @@ eot;
 
                 table('test')->
 
-                lists('name,id'),
+                list('name,id'),
                 1
             )
         );
@@ -92,7 +92,7 @@ eot;
 
                 table('test')->
 
-                lists('name', 'id'),
+                list('name', 'id'),
                 2
             )
         );
@@ -104,8 +104,20 @@ eot;
 
                 table('test')->
 
-                lists(['name', 'id']),
+                list(['name', 'id']),
                 3
+            )
+        );
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect->sql()->
+
+                table('test')->
+
+                list(['name'], 'id'),
+                4
             )
         );
     }

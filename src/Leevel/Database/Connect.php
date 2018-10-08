@@ -217,13 +217,13 @@ abstract class Connect
      * @param string $sql           sql 语句
      * @param array  $bindParams    sql 参数绑定
      * @param mixed  $master
-     * @param int    $fetchType
+     * @param int    $fetchStyle
      * @param mixed  $fetchArgument
      * @param array  $ctorArgs
      *
      * @return mixed
      */
-    public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchType = null, $fetchArgument = null, array $ctorArgs = [])
+    public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
     {
         // 查询组件
         $this->initSelect();
@@ -259,7 +259,7 @@ abstract class Connect
         $this->numRows = $this->pdoStatement->rowCount();
 
         // 返回结果
-        return $this->fetchResult($fetchType, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
+        return $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
     }
 
     /**
@@ -775,12 +775,14 @@ abstract class Connect
         try {
             $this->setCurrentOption($option);
 
-            return $this->connects[$linkid] = new PDO(
+            $result = $this->connects[$linkid] = new PDO(
                 $this->parseDsn($option),
                 $option['user'],
                 $option['password'],
                 $option['options']
             );
+
+            return $result;
         } catch (PDOException $e) {
             if (false === $throwException) {
                 return false;
@@ -822,26 +824,26 @@ abstract class Connect
     /**
      * 获得数据集.
      *
-     * @param int   $fetchType
+     * @param int   $fetchStyle
      * @param mixed $fetchArgument
      * @param array $ctorArgs
      * @param bool  $procedure
      *
      * @return array
      */
-    protected function fetchResult(?int $fetchType = null, $fetchArgument = null, array $ctorArgs = [], bool $procedure = false)
+    protected function fetchResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [], bool $procedure = false)
     {
         // 存储过程支持多个结果
         if ($procedure) {
             return $this->fetchProcedureResult(
-                $fetchType,
+                $fetchStyle,
                 $fetchArgument,
                 $ctorArgs
             );
         }
 
         $args = [
-            null !== $fetchType ? $fetchType : $this->option['fetch'],
+            null !== $fetchStyle ? $fetchStyle : $this->option['fetch'],
         ];
 
         if ($fetchArgument) {
@@ -858,18 +860,18 @@ abstract class Connect
     /**
      * 获得数据集.
      *
-     * @param int   $fetchType
+     * @param int   $fetchStyle
      * @param mixed $fetchArgument
      * @param array $ctorArgs
      *
      * @return array
      */
-    protected function fetchProcedureResult(?int $fetchType = null, $fetchArgument = null, array $ctorArgs = [])
+    protected function fetchProcedureResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
     {
         $result = [];
 
         do {
-            if (($tmp = $this->fetchResult($fetchType, $fetchArgument, $ctorArgs))) {
+            if (($tmp = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs))) {
                 $result[] = $tmp;
             }
         } while ($this->pdoStatement->nextRowset());

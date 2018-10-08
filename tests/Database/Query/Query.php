@@ -96,5 +96,9 @@ eot;
         table($table)->
 
         truncate();
+
+        // 释放数据库连接，否则会出现 Mysql 连接数过多
+        // PDOException: PDO::__construct(): MySQL server has gone away
+        $connect->__destruct();
     }
 }
