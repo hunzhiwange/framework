@@ -405,6 +405,8 @@ class ResponseTest extends TestCase
 
     public function testCookieResolverNotSet()
     {
+        Response::setCookieResolver(null);
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Cookie resolver is not set.'
