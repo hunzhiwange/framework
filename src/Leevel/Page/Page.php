@@ -91,8 +91,8 @@ class Page extends Connect implements IPage, IJson, IArray, JsonSerializable
             'total_page'   => $this->getTotalPage(),
             'total_record' => $this->getTotalRecord(),
             'total_macro'  => $this->isTotalMacro(),
-            'from'         => $this->getFirstRecord(),
-            'to'           => $this->getLastRecord(),
+            'from'         => $this->getFromRecord(),
+            'to'           => $this->getToRecord(),
         ];
     }
 

@@ -35,33 +35,6 @@ use RuntimeException;
 abstract class Connect implements IHtml
 {
     /**
-     * 默认每页分页数量.
-     *
-     * @var int
-     */
-    const PER_PAGE = 15;
-
-    /**
-     * 无穷大记录数.
-     *
-     * @var int
-     */
-    const MACRO = 999999999;
-
-    /**
-     * 默认分页渲染.
-     *
-     * @var int
-     */
-    const RENDER = 'defaults';
-
-    /**
-     * 默认范围.
-     *
-     * @var int
-     */
-    const RANGE = 2;
-    /**
      * 总记录数量.
      *
      * @var int
@@ -414,12 +387,8 @@ abstract class Connect implements IHtml
      *
      * @return int
      */
-    public function getFirstRecord()
+    public function getFromRecord()
     {
-        if (!$this->canTotalRender()) {
-            return;
-        }
-
         return ($this->getCurrentPage() - 1) * $this->getPerPage() + 1;
     }
 
@@ -428,13 +397,15 @@ abstract class Connect implements IHtml
      *
      * @return int
      */
-    public function getLastRecord()
+    public function getToRecord()
     {
         if (!$this->canTotalRender()) {
             return;
         }
 
-        return $this->getFirstRecord() + $this->getTotalRecord() - 1;
+        $to = $this->getFromRecord() + $this->getPerPage();
+
+        return $to <= $this->getTotalRecord() ? $to : $this->getTotalRecord();
     }
 
     /**

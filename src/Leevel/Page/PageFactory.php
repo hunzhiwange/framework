@@ -81,13 +81,13 @@ class PageFactory implements IPageFactory
      */
     public function makeMacro(int $perPage, array $option = []): Page
     {
-        return new Page($perPage, Page::MACRO, $this->normalizeOption($option));
+        return new Page($perPage, IPage::MACRO, $this->normalizeOption($option));
     }
 
     /**
      * 创建一个只有上下页的分页对象.
      *
-     * @param array $optoin
+     * @param array $option
      *
      * @return \Leevel\Page\Page
      */

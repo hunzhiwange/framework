@@ -32,6 +32,34 @@ namespace Leevel\Page;
 interface IPage
 {
     /**
+     * 默认每页分页数量.
+     *
+     * @var int
+     */
+    const PER_PAGE = 15;
+
+    /**
+     * 无穷大记录数.
+     *
+     * @var int
+     */
+    const MACRO = 999999999;
+
+    /**
+     * 默认分页渲染.
+     *
+     * @var int
+     */
+    const RENDER = 'defaults';
+
+    /**
+     * 默认范围.
+     *
+     * @var int
+     */
+    const RANGE = 2;
+
+    /**
      * 设置配置.
      *
      * @param string $name
@@ -205,14 +233,14 @@ interface IPage
      *
      * @return int
      */
-    public function getFirstRecord();
+    public function getFromRecord();
 
     /**
      * 取得最后一个记录的编号.
      *
      * @return int
      */
-    public function getLastRecord();
+    public function getToRecord();
 
     /**
      * 返回当前分页.
