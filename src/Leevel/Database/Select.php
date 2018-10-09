@@ -23,7 +23,8 @@ namespace Leevel\Database;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Collection\Collection;
-use Leevel\Page\PageWithoutTotal;
+use Leevel\Page\IPage;
+use Leevel\Page\Page;
 use PDO;
 
 /**
@@ -676,8 +677,6 @@ class Select
      *
      * @param int      $count
      * @param \Closure $chunk
-     *
-     * @return bool
      */
     public function chunk(int $count, Closure $chunk)
     {
@@ -686,8 +685,8 @@ class Select
         findAll();
 
         while (count($result) > 0) {
-            if (false === call_user_func_array($chunk, [$result, $page])) {
-                return false;
+            if (false === $chunk($result, $page)) {
+                break;
             }
 
             $page++;
@@ -798,51 +797,38 @@ class Select
      *
      * @param int   $perPage
      * @param mixed $cols
-     * @param array $options
+     * @param array $option
      *
      * @return array
      */
-    public function page(int $perPage = 10, string $cols = '*', array $options = [])
+    public function page(int $perPage = 10, string $cols = '*', array $option = []): array
     {
-        $page = new page_with_total(
-            $perPage,
-            $this->pageCount($cols),
-            $options
-        );
+        $page = new Page($perPage, $this->pageCount($cols), $option);
 
         return [
             $page,
-            $this->limit(
-                $page->getFirstRecord(),
-                $perPage
-            )->
+            $this->limit($page->getFromRecord(), $perPage)->
 
             findAll(),
         ];
     }
 
     /**
-     * 简单分页查询.
+     * 创建一个无限数据的分页查询.
      *
      * @param int   $perPage
      * @param mixed $cols
-     * @param array $options
+     * @param array $option
      *
      * @return array
      */
-    public function simplePage(int $perPage = 10, string $cols = '*', array $options = [])
+    public function pageMacro(int $perPage = 10, string $cols = '*', array $option = []): array
     {
-        $page = new PageWithoutTotal(
-            $perPage,
-            $options
-        );
+        $page = new Page($perPage, IPage::MACRO, $option);
 
         return [
             $page,
-            $this->limit(
-                $page->getFirstRecord(),
-                $perPage
-            )->
+            $this->limit($page->getFromRecord(), $perPage)->
 
             findAll(),
         ];
@@ -851,17 +837,15 @@ class Select
     /**
      * 取得分页查询记录数量.
      *
-     * @param mixed $cols
+     * @param string $cols
      *
      * @return int
      */
-    public function pageCount(string $cols = '*')
+    public function pageCount(string $cols = '*'): int
     {
         $this->backupPageArgs();
 
-        $count = $this->getCount(
-            is_array($cols) ? reset($cols) : $cols
-        );
+        $count = $this->findCount($cols);
 
         $this->restorePageArgs();
 
@@ -950,7 +934,7 @@ class Select
      */
     protected function queryDefault(array $data)
     {
-        if (!$this->condition->getLimitQuery()) {
+        if (!$this->condition->getOption()['limitquery']) {
             $data = reset($data) ?: [];
         }
 
@@ -981,7 +965,7 @@ class Select
             $data[$key] = new $className((array) $tmp);
         }
 
-        if (!$this->condition->getLimitQuery()) {
+        if (!$this->condition->getOption()['limitquery']) {
             $data = reset($data) ?: new $className([]);
         } elseif ($this->queryParams['as_collection']) {
             $data = new Collection($data, [$className]);
@@ -1058,9 +1042,9 @@ class Select
     protected function backupPageArgs()
     {
         $this->backupPage = [];
-        $this->backupPage['aggregate'] = $this->options['aggregate'];
         $this->backupPage['query_params'] = $this->queryParams;
-        $this->backupPage['columns'] = $this->options['columns'];
+        $this->backupPage['aggregate'] = $this->condition->getOption()['aggregate'];
+        $this->backupPage['columns'] = $this->condition->getOption()['columns'];
     }
 
     /**
@@ -1068,9 +1052,9 @@ class Select
      */
     protected function restorePageArgs()
     {
-        $this->options['aggregate'] = $this->backupPage['aggregate'];
         $this->queryParams = $this->backupPage['query_params'];
-        $this->options['columns'] = $this->backupPage['columns'];
+        $this->condition->setOption('aggregate', $this->backupPage['aggregate']);
+        $this->condition->setOption('columns', $this->backupPage['columns']);
     }
 
     /**

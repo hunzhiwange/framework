@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Leevel\Collection\Collection;
+use Leevel\Page\IPage;
+use Leevel\Page\Page;
 use PDO;
 use stdClass;
 use Tests\Database\Query\Query;
@@ -789,6 +791,49 @@ eot;
         $this->truncate('guestbook');
     }
 
+    public function testChunkWhenReturnFalseAndBreak()
+    {
+        $connect = $this->createConnectTest();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $connect->table('guestbook')->
+
+            insert($data);
+        }
+
+        $n = 1;
+
+        $result = $connect->table('guestbook')->
+
+        chunk(2, function ($result, $page) use (&$n) {
+            $this->assertInstanceof(stdClass::class, $result[0]);
+            $this->assertSame($n * 2 - 1, (int) $result[0]->id);
+            $this->assertSame('tom', $result[0]->name);
+            $this->assertSame('I love movie.', $result[0]->content);
+            $this->assertContains(date('Y-m-d'), $result[0]->create_at);
+
+            $this->assertInstanceof(stdClass::class, $result[1]);
+            $this->assertSame($n * 2, (int) $result[1]->id);
+            $this->assertSame('tom', $result[1]->name);
+            $this->assertSame('I love movie.', $result[1]->content);
+            $this->assertContains(date('Y-m-d'), $result[1]->create_at);
+
+            $this->assertSame(2, count($result));
+            $this->assertSame($n, $page);
+
+            // It will break.
+            if (2 === $n) {
+                return false;
+            }
+
+            $n++;
+        });
+
+        $this->truncate('guestbook');
+    }
+
     public function testEach()
     {
         $connect = $this->createConnectTest();
@@ -820,6 +865,216 @@ eot;
 
             $n++;
         });
+
+        $this->truncate('guestbook');
+    }
+
+    public function testPageCount()
+    {
+        $connect = $this->createConnectTest();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $connect->table('guestbook')->
+
+            insert($data);
+        }
+
+        $this->assertSame(6, $connect->table('guestbook')->
+        pageCount());
+
+        $this->assertSame(6, $connect->table('guestbook')->
+        pageCount('*'));
+
+        $this->assertSame(6, $connect->table('guestbook')->
+        pageCount('id'));
+
+        $this->truncate('guestbook');
+    }
+
+    public function testPage()
+    {
+        $connect = $this->createConnectTest();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 25; $n++) {
+            $connect->table('guestbook')->
+
+            insert($data);
+        }
+
+        list($page, $result) = $connect->table('guestbook')->
+
+        page();
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertSame(10, count($result));
+
+        $n = 0;
+
+        foreach ($result as $key => $value) {
+            $this->assertSame($key, $n);
+            $this->assertInstanceof(stdClass::class, $value);
+            $this->assertSame('tom', $value->name);
+            $this->assertSame('I love movie.', $value->content);
+
+            $n++;
+        }
+
+        $data = <<<'eot'
+<div class="pagination"> <span class="pagination-total">共 26 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+eot;
+
+        $this->assertSame(
+            $data,
+            $page->render()
+        );
+
+        $this->assertSame(
+            $data,
+            $page->toHtml()
+        );
+
+        $this->assertSame(
+            $data,
+            $page->__toString()
+        );
+
+        $this->assertSame(
+            $data,
+            (string) ($page)
+        );
+
+        $data = <<<'eot'
+{
+    "per_page": 10,
+    "current_page": 1,
+    "total_page": 3,
+    "total_record": 26,
+    "total_macro": false,
+    "from": 1,
+    "to": 11
+}
+eot;
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page->toArray()
+                )
+        );
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page->jsonSerialize()
+                )
+        );
+
+        $data = <<<'eot'
+{"per_page":10,"current_page":1,"total_page":3,"total_record":26,"total_macro":false,"from":1,"to":11}
+eot;
+
+        $this->assertSame(
+            $data,
+            $page->toJson()
+        );
+
+        $this->truncate('guestbook');
+    }
+
+    public function testPageMacro()
+    {
+        $connect = $this->createConnectTest();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 25; $n++) {
+            $connect->table('guestbook')->
+
+            insert($data);
+        }
+
+        list($page, $result) = $connect->table('guestbook')->
+
+        pageMacro();
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertSame(10, count($result));
+
+        $n = 0;
+
+        foreach ($result as $key => $value) {
+            $this->assertSame($key, $n);
+            $this->assertInstanceof(stdClass::class, $value);
+            $this->assertSame('tom', $value->name);
+            $this->assertSame('I love movie.', $value->content);
+
+            $n++;
+        }
+
+        $data = <<<'eot'
+<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=6';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+eot;
+
+        $this->assertSame(
+            $data,
+            $page->render()
+        );
+
+        $this->assertSame(
+            $data,
+            $page->toHtml()
+        );
+
+        $this->assertSame(
+            $data,
+            $page->__toString()
+        );
+
+        $this->assertSame(
+            $data,
+            (string) ($page)
+        );
+
+        $data = <<<'eot'
+{
+    "per_page": 10,
+    "current_page": 1,
+    "total_page": 100000000,
+    "total_record": 999999999,
+    "total_macro": true,
+    "from": 1,
+    "to": null
+}
+eot;
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page->toArray()
+                )
+        );
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page->jsonSerialize()
+                )
+        );
+
+        $data = <<<'eot'
+{"per_page":10,"current_page":1,"total_page":100000000,"total_record":999999999,"total_macro":true,"from":1,"to":null}
+eot;
+
+        $this->assertSame(
+            $data,
+            $page->toJson()
+        );
 
         $this->truncate('guestbook');
     }

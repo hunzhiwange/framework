@@ -1361,13 +1361,28 @@ class Condition
     }
 
     /**
-     * 返回查询限制.
+     * 设置查询参数.
      *
-     * @return bool
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
      */
-    public function getLimitQuery(): bool
+    public function setOption(string $name, $value)
     {
-        return $this->options['limitquery'];
+        $this->options[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * 返回查询参数.
+     *
+     * @return array
+     */
+    public function getOption(): array
+    {
+        return $this->options;
     }
 
     /**
