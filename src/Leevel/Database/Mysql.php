@@ -40,7 +40,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    public function parseDsn(array $option)
+    public function parseDsn(array $option): string
     {
         $dsn = [];
 
@@ -64,13 +64,8 @@ class Mysql extends Connect implements IConnect
      *
      * @return array
      */
-    public function getTableNames(?string $dbName = null, $master = false)
+    public function getTableNames(string $dbName, $master = false): array
     {
-        // 确定数据库
-        if (null === $dbName) {
-            $dbName = $this->getCurrentOption('name');
-        }
-
         $sql = 'SHOW TABLES FROM '.$this->normalizeTableOrColumn($dbName);
 
         $result = [];
@@ -94,7 +89,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return array
      */
-    public function getTableColumns(string $tableName, $master = false)
+    public function getTableColumns(string $tableName, $master = false): array
     {
         $sql = 'SHOW FULL COLUMNS FROM '.
             $this->normalizeTableOrColumn($tableName);
@@ -158,7 +153,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    public function identifierColumn($name)
+    public function identifierColumn($name): string
     {
         return '*' !== $name ? "`{$name}`" : '*';
     }
@@ -171,13 +166,13 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    public function parseLimitcount(?int $limitcount = null, ?int $limitoffset = null)
+    public function parseLimitcount(?int $limitcount = null, ?int $limitoffset = null): string
     {
         if (null !== $limitoffset) {
-            $sql = 'LIMIT '.(int) $limitoffset;
+            $sql = 'LIMIT '.$limitoffset;
 
             if (null !== $limitcount) {
-                $sql .= ','.(int) $limitcount;
+                $sql .= ','.$limitcount;
             } else {
                 $sql .= ',999999999999';
             }
@@ -186,8 +181,10 @@ class Mysql extends Connect implements IConnect
         }
 
         if (null !== $limitcount) {
-            return 'LIMIT '.(int) $limitcount;
+            return 'LIMIT '.$limitcount;
         }
+
+        return '';
     }
 
     /**
@@ -197,10 +194,9 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    protected function parseBase(array $option)
+    protected function parseBase(array $option): string
     {
-        return 'mysql:dbname='.$option['name'].
-            ';host='.$option['host'];
+        return 'mysql:dbname='.$option['name'].';host='.$option['host'];
     }
 
     /**
@@ -210,11 +206,13 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    protected function parsePort(array $option)
+    protected function parsePort(array $option): string
     {
-        if (!empty($option['port'])) {
-            return ';port='.$option['port'];
+        if (empty($option['port'])) {
+            return '';
         }
+
+        return ';port='.$option['port'];
     }
 
     /**
@@ -224,11 +222,13 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    protected function parseSocket(array $option)
+    protected function parseSocket(array $option): string
     {
-        if (!empty($option['socket'])) {
-            return ';unix_socket='.$option['socket'];
+        if (empty($option['socket'])) {
+            return '';
         }
+
+        return ';unix_socket='.$option['socket'];
     }
 
     /**
@@ -238,10 +238,12 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    protected function parseCharset(array $option)
+    protected function parseCharset(array $option): string
     {
-        if (!empty($option['charset'])) {
-            return ';charset='.$option['charset'];
+        if (empty($option['charset'])) {
+            return '';
         }
+
+        return ';charset='.$option['charset'];
     }
 }

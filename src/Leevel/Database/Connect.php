@@ -143,9 +143,8 @@ abstract class Connect
      * @param \leevel\Log\ILog     $log
      * @param \Leevel\Cache\ICache $cache
      * @param array                $option
-     * @param bool                 $development
      */
-    public function __construct(ILog $log, ICache $cache, array $option, bool $development = false)
+    public function __construct(ILog $log, ICache $cache, array $option/*, bool $development = false*/)
     {
         // 日志
         $this->log = $log;
@@ -153,9 +152,9 @@ abstract class Connect
         // 缓存
         $this->cache = $cache;
 
-        // 开发模式
-        $this->development = $development;
-
+        // // 开发模式
+        // $this->development = $development;
+        //
         // 记录连接参数
         $this->option = $option;
     }

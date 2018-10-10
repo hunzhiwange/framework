@@ -90,8 +90,7 @@ class Manager extends Managers
         return new Mysql(
             $this->container['log'],
             $this->container['cache'],
-            $this->normalizeConnectOption('mysql', is_array($option) ? $option : []),
-            $this->container->development()
+            $this->normalizeConnectOption('mysql', is_array($option) ? $option : [])
         );
     }
 

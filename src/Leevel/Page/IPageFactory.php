@@ -55,9 +55,10 @@ interface IPageFactory
     /**
      * 创建一个只有上下页的分页对象.
      *
-     * @param array $optoin
+     * @param int   $perPage
+     * @param array $option
      *
      * @return \Leevel\Page\Page
      */
-    public function makePrevNext(array $option = []): Page;
+    public function makePrevNext(int $perPage, array $option = []): Page;
 }

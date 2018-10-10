@@ -366,6 +366,26 @@ eot;
         $this->truncate('guestbook');
     }
 
+    public function testAsClassButClassNotFound()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The class of query `\\Tests\\Database\\ClassNotFound` was not found.'
+        );
+
+        $connect = $this->createConnectTest();
+
+        $result = $connect->table('guestbook')->
+
+        asClass('\\Tests\\Database\\ClassNotFound')->
+
+        where('id', 1)->
+
+        setColumns('name,content')->
+
+        findOne();
+    }
+
     public function testAsCollectionAsDefault()
     {
         $connect = $this->createConnectTest();
@@ -1069,6 +1089,99 @@ eot;
 
         $data = <<<'eot'
 {"per_page":10,"current_page":1,"total_page":100000000,"total_record":999999999,"total_macro":true,"from":1,"to":null}
+eot;
+
+        $this->assertSame(
+            $data,
+            $page->toJson()
+        );
+
+        $this->truncate('guestbook');
+    }
+
+    public function testPagePrevNext()
+    {
+        $connect = $this->createConnectTest();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 25; $n++) {
+            $connect->table('guestbook')->
+
+            insert($data);
+        }
+
+        list($page, $result) = $connect->table('guestbook')->
+
+        pagePrevNext(15);
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertSame(15, count($result));
+
+        $n = 0;
+
+        foreach ($result as $key => $value) {
+            $this->assertSame($key, $n);
+            $this->assertInstanceof(stdClass::class, $value);
+            $this->assertSame('tom', $value->name);
+            $this->assertSame('I love movie.', $value->content);
+
+            $n++;
+        }
+
+        $data = <<<'eot'
+<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+eot;
+
+        $this->assertSame(
+            $data,
+            $page->render()
+        );
+
+        $this->assertSame(
+            $data,
+            $page->toHtml()
+        );
+
+        $this->assertSame(
+            $data,
+            $page->__toString()
+        );
+
+        $this->assertSame(
+            $data,
+            (string) ($page)
+        );
+
+        $data = <<<'eot'
+{
+    "per_page": 15,
+    "current_page": 1,
+    "total_page": null,
+    "total_record": null,
+    "total_macro": false,
+    "from": 1,
+    "to": null
+}
+eot;
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page->toArray()
+                )
+        );
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page->jsonSerialize()
+                )
+        );
+
+        $data = <<<'eot'
+{"per_page":15,"current_page":1,"total_page":null,"total_record":null,"total_macro":false,"from":1,"to":null}
 eot;
 
         $this->assertSame(

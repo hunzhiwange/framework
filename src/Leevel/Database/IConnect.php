@@ -214,7 +214,7 @@ interface IConnect
      *
      * @return string
      */
-    public function parseDsn(array $option);
+    public function parseDsn(array $option): string;
 
     /**
      * 取得数据库表名列表.
@@ -224,7 +224,7 @@ interface IConnect
      *
      * @return array
      */
-    public function getTableNames(?string $dbName = null, $master = false);
+    public function getTableNames(string $dbName, $master = false): array;
 
     /**
      * 取得数据库表字段信息.
@@ -234,7 +234,7 @@ interface IConnect
      *
      * @return array
      */
-    public function getTableColumns(string $tableName, $master = false);
+    public function getTableColumns(string $tableName, $master = false): array;
 
     /**
      * sql 字段格式化.
@@ -243,7 +243,7 @@ interface IConnect
      *
      * @return string
      */
-    public function identifierColumn($name);
+    public function identifierColumn($name): string;
 
     /**
      * 分析 limit.
@@ -253,5 +253,5 @@ interface IConnect
      *
      * @return string
      */
-    public function parseLimitcount(?int $limitcount = null, ?int $limitoffset = null);
+    public function parseLimitcount(?int $limitcount = null, ?int $limitoffset = null): string;
 }

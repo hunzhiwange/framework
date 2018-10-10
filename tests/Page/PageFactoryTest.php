@@ -70,7 +70,7 @@ eot;
             $page->render()
         );
 
-        $page = $pageFactory->makePrevNext();
+        $page = $pageFactory->makePrevNext(10);
 
         $data = <<<'eot'
 <div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='/?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="/?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>

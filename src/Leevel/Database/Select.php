@@ -795,15 +795,15 @@ class Select
     /**
      * 分页查询.
      *
-     * @param int   $perPage
-     * @param mixed $cols
-     * @param array $option
+     * @param int    $perPage
+     * @param string $column
+     * @param array  $option
      *
      * @return array
      */
-    public function page(int $perPage = 10, string $cols = '*', array $option = []): array
+    public function page(int $perPage = 10, string $column = '*', array $option = []): array
     {
-        $page = new Page($perPage, $this->pageCount($cols), $option);
+        $page = new Page($perPage, $this->pageCount($column), $option);
 
         return [
             $page,
@@ -817,14 +817,33 @@ class Select
      * 创建一个无限数据的分页查询.
      *
      * @param int   $perPage
-     * @param mixed $cols
      * @param array $option
      *
      * @return array
      */
-    public function pageMacro(int $perPage = 10, string $cols = '*', array $option = []): array
+    public function pageMacro(int $perPage = 10, array $option = []): array
     {
         $page = new Page($perPage, IPage::MACRO, $option);
+
+        return [
+            $page,
+            $this->limit($page->getFromRecord(), $perPage)->
+
+            findAll(),
+        ];
+    }
+
+    /**
+     * 创建一个只有上下页的分页查询.
+     *
+     * @param int   $perPage
+     * @param array $option
+     *
+     * @return array
+     */
+    public function pagePrevNext(int $perPage, array $option = []): array
+    {
+        $page = new Page($perPage, null, $option);
 
         return [
             $page,
