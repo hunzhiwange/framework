@@ -31,32 +31,32 @@ use Leevel\Database\Ddd\Entity;
  *
  * @version 1.0
  */
- class PostContent extends Entity
- {
-     const TABLE = 'post_content';
+class PostContent extends Entity
+{
+    const TABLE = 'post_content';
 
-     const ID = null;
+    const ID = null;
 
-     const AUTO = null;
+    const AUTO = null;
 
-     const STRUCT = [
-         'post_id' => [
-             'readonly' => true,
-         ],
-         'content' => [],
-     ];
+    const STRUCT = [
+        'post_id' => [
+            'readonly' => true,
+        ],
+        'content' => [],
+    ];
 
-     private $postId;
+    private $postId;
 
-     private $content;
+    private $content;
 
-     public function setter(string $prop, $value): void
-     {
-         $this->{$prop} = $value;
-     }
+    public function setter(string $prop, $value): void
+    {
+        $this->{$prop} = $value;
+    }
 
-     public function getter(string $prop)
-     {
-         return $this->{$prop};
-     }
- }
+    public function getter(string $prop)
+    {
+        return $this->{$prop};
+    }
+}

@@ -389,8 +389,8 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 取得实体状态.
      *
-     * @param \Leevel\Database\Ddd\IEntity   $entity
-     * @param int $defaults
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $defaults
      *
      * @return int
      */

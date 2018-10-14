@@ -183,7 +183,6 @@ class Repository implements IRepository
      */
     public function handleUpdate(IEntity $entity)
     {
-        dump($entity->update());
         return $entity->update()->flush();
     }
 

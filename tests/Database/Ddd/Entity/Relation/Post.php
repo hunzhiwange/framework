@@ -31,68 +31,68 @@ use Leevel\Database\Ddd\Entity;
  *
  * @version 1.0
  */
- class Post extends Entity
- {
-     const TABLE = 'post';
+class Post extends Entity
+{
+    const TABLE = 'post';
 
-     const ID = 'id';
+    const ID = 'id';
 
-     const AUTO = 'id';
+    const AUTO = 'id';
 
-     const STRUCT = [
-         'id' => [
-             'readonly'           => true,
-         ],
-         'title'     => [],
-         'user_id'   => [],
-         'summary'   => [],
-         'create_at' => [],
-         'user'      => [
-             self::BELONGS_TO => User::class,
-             'source_key'     => 'user_id',
-             'target_key'     => 'id',
-         ],
-         'comment' => [
-             self::HAS_MANY => Comment::class,
-             'source_key'   => 'id',
-             'target_key'   => 'post_id',
-             self::SCOPE    => 'comment',
-         ],
-         'post_content' => [
-             self::HAS_ONE => PostContent::class,
-             'source_key'  => 'id',
-             'target_key'  => 'post_id',
-         ],
-     ];
+    const STRUCT = [
+        'id' => [
+            'readonly'           => true,
+        ],
+        'title'     => [],
+        'user_id'   => [],
+        'summary'   => [],
+        'create_at' => [],
+        'user'      => [
+            self::BELONGS_TO => User::class,
+            'source_key'     => 'user_id',
+            'target_key'     => 'id',
+        ],
+        'comment' => [
+            self::HAS_MANY => Comment::class,
+            'source_key'   => 'id',
+            'target_key'   => 'post_id',
+            self::SCOPE    => 'comment',
+        ],
+        'post_content' => [
+            self::HAS_ONE => PostContent::class,
+            'source_key'  => 'id',
+            'target_key'  => 'post_id',
+        ],
+    ];
 
-     private $id;
+    private $id;
 
-     private $title;
+    private $title;
 
-     private $userId;
+    private $userId;
 
-     private $summary;
+    private $summary;
 
-     private $createAt;
+    private $createAt;
 
-     private $user;
+    private $user;
 
-     private $comment;
+    private $comment;
 
-     private $postContent;
+    private $postContent;
 
-     public function setter(string $prop, $value): void
-     {
-         $this->{$prop} = $value;
-     }
+    public function setter(string $prop, $value): void
+    {
+        $this->{$prop} = $value;
+    }
 
-     public function getter(string $prop)
-     {
-         return $this->{$prop};
-     }
+    public function getter(string $prop)
+    {
+        return $this->{$prop};
+    }
 
-     public function scopeComment($select)
-     {
-         $select->where('id', '>', 4);
-     }
- }
+    public function scopeComment($select)
+    {
+        $select->where('id', '>', 4);
+    }
+}

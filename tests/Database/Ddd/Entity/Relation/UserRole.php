@@ -31,36 +31,36 @@ use Leevel\Database\Ddd\Entity;
  *
  * @version 1.0
  */
- class UserRole extends Entity
- {
-     const TABLE = 'user_role';
+class UserRole extends Entity
+{
+    const TABLE = 'user_role';
 
-     const ID = 'id';
+    const ID = 'id';
 
-     const AUTO = 'id';
+    const AUTO = 'id';
 
-     const STRUCT = [
-         'id'        => [],
-         'user_id'   => [],
-         'role_id'   => [],
-         'create_at' => [],
-     ];
+    const STRUCT = [
+        'id'        => [],
+        'user_id'   => [],
+        'role_id'   => [],
+        'create_at' => [],
+    ];
 
-     private $id;
+    private $id;
 
-     private $userId;
+    private $userId;
 
-     private $roleId;
+    private $roleId;
 
-     private $createAt;
+    private $createAt;
 
-     public function setter(string $prop, $value): void
-     {
-         $this->{$prop} = $value;
-     }
+    public function setter(string $prop, $value): void
+    {
+        $this->{$prop} = $value;
+    }
 
-     public function getter(string $prop)
-     {
-         return $this->{$prop};
-     }
- }
+    public function getter(string $prop)
+    {
+        return $this->{$prop};
+    }
+}
