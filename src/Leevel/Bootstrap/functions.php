@@ -112,6 +112,7 @@ class Leevel
      * @param array $moreVars
      *
      * @return mixed
+     * @codeCoverageIgnore
      */
     public static function dump($var, ...$moreVars)
     {
@@ -123,6 +124,7 @@ class Leevel
      *
      * @param mixed $var
      * @param array $moreVars
+     * @codeCoverageIgnore
      */
     public static function dd($var, ...$moreVars)
     {
@@ -131,6 +133,8 @@ class Leevel
 
     /**
      * 调试栈信息.
+     *
+     * @codeCoverageIgnore
      */
     public static function backtrace()
     {
