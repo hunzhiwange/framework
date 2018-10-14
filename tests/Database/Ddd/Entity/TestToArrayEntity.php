@@ -35,89 +35,51 @@ class TestToArrayEntity extends Entity
 {
     const TABLE = 'test';
 
-    /**
-     * 存在复合主键.
-     *
-     * @var array
-     */
-    const PRIMARY_KEY = [
-        'id',
-    ];
+    const ID = 'id';
 
-    const AUTO_INCREMENT = 'id';
+    const AUTO = 'id';
 
     const STRUCT = [
-        'id' => [
-            'name'              => 'id', // database
-            'type'              => 'int', // database
-            'length'            => 11, // database
-            'primary_key'       => true, // database
-            'auto_increment'    => true, // database
-            'default'           => null, // database
-        ],
-        'name' => [
-            'name'              => 'name',
-            'type'              => 'varchar',
-            'length'            => 45,
-            'primary_key'       => false,
-            'auto_increment'    => false,
-            'default'           => null,
-        ],
-        'description' => [
-            'name'           => 'description',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
-        ],
-        'address' => [
-            'name'           => 'address',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
-        ],
-        'foo_bar' => [
-            'name'           => 'foo_bar',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
-        ],
-        'hello' => [
-            'name'           => 'hello',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
-        ],
+        'id'          => [],
+        'name'        => [],
+        'description' => [],
+        'address'     => [],
+        'foo_bar'     => [],
+        'hello'       => [],
     ];
-    protected $id;
 
-    protected $name;
+    private $id;
 
-    protected $description;
+    private $name;
 
-    protected $address;
+    private $description;
 
-    protected $fooBar;
+    private $address;
 
-    protected $hello;
+    private $fooBar;
 
-    protected $append1;
+    private $hello;
 
-    protected $append2;
+    private $append1;
 
-    protected function getAppend1Prop()
+    private $append2;
+
+    public function setter(string $prop, $value): void
+    {
+        $this->{$prop} = $value;
+    }
+
+    public function getter(string $prop)
+    {
+        return $this->{$prop};
+    }
+
+    protected function getAppend1(): string
     {
         return 'append 1';
     }
 
-    protected function getAppend2Prop()
+    protected function getAppend2(): string
     {
         return 'append 2';
     }

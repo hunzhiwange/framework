@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Exception;
-
 /**
  * 仓储基础
  *
@@ -34,14 +32,7 @@ use Exception;
 class Repository implements IRepository
 {
     /**
-     * 工作单元.
-     *
-     * @var \Leevel\Database\Ddd\IUnitOfWork
-     */
-    protected $unitOfWork;
-
-    /**
-     * 聚合根.
+     * 实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
@@ -54,9 +45,7 @@ class Repository implements IRepository
      */
     public function __construct(IEntity $entity)
     {
-        $this->setAggregate($entity);
-
-        $this->createUnitOfWork();
+        $this->entity = $entity;
     }
 
     /**
@@ -173,48 +162,6 @@ class Repository implements IRepository
     }
 
     /**
-     * 注册保存数据.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
-     */
-    public function registerCreate(IEntity $entity)
-    {
-        $this->checkUnitOfWork();
-
-        return $this->unitOfWork->registerCreate($entity, $this);
-    }
-
-    /**
-     * 注册更新数据.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
-     */
-    public function registerUpdate(IEntity $entity)
-    {
-        $this->checkUnitOfWork();
-
-        return $this->unitOfWork->registerUpdate($entity, $this);
-    }
-
-    /**
-     * 注册删除数据.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return \Leevel\Database\Ddd\UnitOfWork
-     */
-    public function registerDelete(IEntity $entity)
-    {
-        $this->checkUnitOfWork();
-
-        return $this->unitOfWork->registerDelete($entity, $this);
-    }
-
-    /**
      * 响应新建.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
@@ -223,7 +170,8 @@ class Repository implements IRepository
      */
     public function handleCreate(IEntity $entity)
     {
-        return $entity->create();
+        //databaseConnect();
+        return $entity->create()->flush();
     }
 
     /**
@@ -235,7 +183,8 @@ class Repository implements IRepository
      */
     public function handleUpdate(IEntity $entity)
     {
-        return $entity->update();
+        dump($entity->update());
+        return $entity->update()->flush();
     }
 
     /**
@@ -251,111 +200,13 @@ class Repository implements IRepository
     }
 
     /**
-     * 启动事物.
-     */
-    public function beginTransaction()
-    {
-        $this->databaseConnect()->beginTransaction();
-    }
-
-    /**
-     * 事务回滚.
-     */
-    public function rollback()
-    {
-        $this->databaseConnect()->rollback();
-    }
-
-    /**
-     * 事务自动提交.
-     */
-    public function commit()
-    {
-        $this->databaseConnect()->commit();
-    }
-
-    /**
-     * 执行数据库事务
-     *
-     * @param callable $action
-     *
-     * @return mixed
-     */
-    public function transaction(callable $action)
-    {
-        return $this->databaseConnect()->transaction($action);
-    }
-
-    /**
-     * 设置聚合根.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     */
-    public function setAggregate(IEntity $entity)
-    {
-        return $this->entity = $entity;
-    }
-
-    /**
-     * 返回聚合根.
+     * 返回实体.
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function aggregate(): IEntity
+    public function entity(): IEntity
     {
         return $this->entity;
-    }
-
-    /**
-     * 返回工作单元.
-     *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
-     */
-    public function unitOfWork()
-    {
-        return $this->unitOfWork;
-    }
-
-    /**
-     * 返回数据库仓储.
-     *
-     * @return \Leevel\Database\IDatabase
-     */
-    public function databaseConnect()
-    {
-        return $this->entity->databaseConnect();
-    }
-
-    /**
-     * 注册事务提交.
-     */
-    public function registerCommit()
-    {
-        return $this->unitOfWork->registerCommit();
-    }
-
-    /**
-     * 创建设计工作单元.
-     *
-     * @return \Leevel\Database\Ddd\IUnitOfWork
-     */
-    protected function createUnitOfWork()
-    {
-        return $this->unitOfWork = new UnitOfWork($this);
-    }
-
-    /**
-     * 验证是否设计工作单元.
-     */
-    protected function checkUnitOfWork()
-    {
-        if (!$this->unitOfWork ||
-            !($this->unitOfWork instanceof IUnitOfWork)) {
-            throw new Exception(
-                'UnitOfWork is not set,please use '.
-                    'parent::__construct( IEntity $entity ) to set.'
-            );
-        }
     }
 
     /**

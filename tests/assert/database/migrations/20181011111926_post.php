@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class Guestbook extends AbstractMigration
+class Post extends AbstractMigration
 {
     /**
      * Change Method.
@@ -45,9 +45,10 @@ class Guestbook extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('guestbook');
-        $table->addColumn('name', 'string', ['limit'=>64]);
-        $table->addColumn('content', 'text', ['default'=> '', 'comment'=>'评论内容']);
+        $table = $this->table('post');
+        $table->addColumn('title', 'string', ['limit'=>64]);
+        $table->addColumn('user_id', 'integer', ['length'=>11, 'comment' => '用户 ID']);
+        $table->addColumn('summary', 'varchar', ['limit' => 200, 'default'=> '', 'comment'=>'文章摘要']);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
         $table->save();
     }

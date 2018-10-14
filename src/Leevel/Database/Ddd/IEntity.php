@@ -158,6 +158,41 @@ interface IEntity
     const UPDATED_AT = 'updated_at';
 
     /**
+     * 一对一关联.
+     *
+     * @var int
+     */
+    const HAS_ONE = 1;
+
+    /**
+     * 从属关联.
+     *
+     * @var int
+     */
+    const BELONGS_TO = 2;
+
+    /**
+     * 一对多关联.
+     *
+     * @var int
+     */
+    const HAS_MANY = 3;
+
+    /**
+     * 多对多关联.
+     *
+     * @var int
+     */
+    const MANY_MANY = 4;
+
+    /**
+     * 关联查询作用域.
+     *
+     * @var string
+     */
+    const SCOPE = 'scope';
+
+    /**
      * 获取主键
      * 唯一标识符.
      *

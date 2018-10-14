@@ -52,7 +52,7 @@ class HasMany extends Relation
      */
     public function addRelationCondition()
     {
-        if (static::$booRelationCondition) {
+        if (static::$relationCondition) {
             $this->select->where(
                 $this->targetKey,
                 $this->getSourceValue()
@@ -103,7 +103,7 @@ class HasMany extends Relation
      */
     public function getSourceValue()
     {
-        return $this->sourceEntity->getProp($this->sourceKey);
+        return $this->sourceEntity->__get($this->sourceKey);
     }
 
     /**
@@ -201,7 +201,7 @@ class HasMany extends Relation
      */
     public function getSourceKeyValue()
     {
-        return $this->sourceEntity->getProp($this->sourceKey);
+        return $this->sourceEntity->getPropValue($this->sourceKey);
     }
 
     /**
@@ -232,7 +232,7 @@ class HasMany extends Relation
         $maps = $this->buildMap($result);
 
         foreach ($entitys as &$entity) {
-            $key = $entity->getProp($this->sourceKey);
+            $key = $entity->__get($this->sourceKey);
 
             if (isset($maps[$key])) {
                 $entity->setRelationProp(
@@ -258,8 +258,7 @@ class HasMany extends Relation
     {
         $value = $maps[$key];
 
-        return 'one' === $type ?
-            reset($value) :
+        return 'one' === $type ? reset($value) :
             $this->targetEntity->collection($value);
     }
 
@@ -275,7 +274,7 @@ class HasMany extends Relation
         $maps = [];
 
         foreach ($result as $value) {
-            $maps[$value->getProp($this->targetKey)][] = $value;
+            $maps[$value->getPropValue($this->targetKey)][] = $value;
         }
 
         return $maps;

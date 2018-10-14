@@ -20,13 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
-use Leevel\Cache\ICache;
-use Leevel\Database\Manager;
-use Leevel\Di\Container;
-use Leevel\Di\IContainer;
-use Leevel\Log\ILog;
-use Leevel\Option\Option;
-use PDO;
 use Tests\Database\Query\Query;
 use Tests\TestCase;
 
@@ -73,49 +66,5 @@ class ManagerTest extends TestCase
         $this->assertSame('I love movie.', $result->content);
 
         $this->truncate('guestbook');
-    }
-
-    protected function createManager()
-    {
-        $container = new Container();
-
-        $manager = new Manager($container);
-
-        $this->assertInstanceof(IContainer::class, $manager->container());
-        $this->assertInstanceof(Container::class, $manager->container());
-
-        $option = new Option([
-            'database' => [
-                'default' => 'mysql',
-                'fetch'   => PDO::FETCH_OBJ,
-                'log'     => true,
-                'connect' => [
-                    'mysql' => [
-                        'driver'   => 'mysql',
-                        'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                        'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                        'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                        'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
-                        'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                        'charset'  => 'utf8',
-                        'options'  => [
-                            PDO::ATTR_PERSISTENT => false,
-                        ],
-                        'readwrite_separate' => false,
-                        'distributed'        => false,
-                        'master'             => [],
-                        'slave'              => [],
-                    ],
-                ],
-            ],
-        ]);
-
-        $container->singleton('option', $option);
-
-        $container->instance('log', $this->createMock(ILog::class));
-
-        $container->instance('cache', $this->createMock(ICache::class));
-
-        return $manager;
     }
 }

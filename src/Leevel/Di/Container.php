@@ -331,46 +331,46 @@ class Container implements IContainer, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetExits.
      *
-     * @param string $offset
+     * @param string $index
      *
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($index): bool
     {
-        return $this->exists($offset);
+        return $this->exists($index);
     }
 
     /**
      * 实现 ArrayAccess::offsetGet.
      *
-     * @param string $offset
+     * @param string $index
      *
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($index)
     {
-        return $this->make($offset);
+        return $this->make($index);
     }
 
     /**
      * 实现 ArrayAccess::offsetSet.
      *
-     * @param string $offset
-     * @param mixed  $value
+     * @param mixed $index
+     * @param mixed $newval
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($index, $newval)
     {
-        return $this->bind($offset, $value);
+        return $this->bind($index, $newval);
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset.
      *
-     * @param string $offset
+     * @param string $index
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($index)
     {
-        $this->remove($offset);
+        $this->remove($index);
     }
 
     /**

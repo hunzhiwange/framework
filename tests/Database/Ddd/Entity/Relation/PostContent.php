@@ -18,50 +18,45 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd\Entity;
+namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
 
 /**
- * TestFillBlackEntity.
+ * postContent.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.06.30
+ * @since 2018.10.13
  *
  * @version 1.0
  */
-class TestFillBlackEntity extends Entity
-{
-    const TABLE = 'test';
+ class PostContent extends Entity
+ {
+     const TABLE = 'post_content';
 
-    const ID = 'id';
+     const ID = null;
 
-    const AUTO = 'id';
+     const AUTO = null;
 
-    const STRUCT = [
-        'id' => [
-            'readonly' => true,
-        ],
-        'name' => [
-            'fill_black'     => true,
-        ],
-        'description' => [],
-    ];
+     const STRUCT = [
+         'post_id' => [
+             'readonly' => true,
+         ],
+         'content' => [],
+     ];
 
-    private $id;
+     private $postId;
 
-    private $name;
+     private $content;
 
-    private $description;
+     public function setter(string $prop, $value): void
+     {
+         $this->{$prop} = $value;
+     }
 
-    public function setter(string $prop, $value): void
-    {
-        $this->{$prop} = $value;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->{$prop};
-    }
-}
+     public function getter(string $prop)
+     {
+         return $this->{$prop};
+     }
+ }

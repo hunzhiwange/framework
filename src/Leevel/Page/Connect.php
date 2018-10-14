@@ -389,7 +389,7 @@ abstract class Connect implements IHtml
      */
     public function getFromRecord()
     {
-        return ($this->getCurrentPage() - 1) * $this->getPerPage() + 1;
+        return ($this->getCurrentPage() - 1) * $this->getPerPage();
     }
 
     /**
@@ -724,8 +724,6 @@ abstract class Connect implements IHtml
      */
     protected function buildFragment()
     {
-        return $this->getFragment() ?
-            '#'.$this->getFragment() :
-            '';
+        return $this->getFragment() ? '#'.$this->getFragment() : '';
     }
 }

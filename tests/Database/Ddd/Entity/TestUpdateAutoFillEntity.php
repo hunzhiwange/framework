@@ -35,100 +35,69 @@ class TestUpdateAutoFillEntity extends Entity
 {
     const TABLE = 'test';
 
-    /**
-     * 存在复合主键.
-     *
-     * @var array
-     */
-    const PRIMARY_KEY = [
-        'id',
-    ];
+    const ID = 'id';
 
-    const AUTO_INCREMENT = 'id';
+    const AUTO = 'id';
 
     const STRUCT = [
         'id' => [
-            'name'              => 'id', // database
-            'type'              => 'int', // database
-            'length'            => 11, // database
-            'primary_key'       => true, // database
-            'auto_increment'    => true, // database
-            'default'           => null, // database
+            'readonly' => true,
         ],
         'name' => [
-            'name'              => 'name',
-            'type'              => 'varchar',
-            'length'            => 45,
-            'primary_key'       => false,
-            'auto_increment'    => false,
-            'default'           => null,
             'update_fill'       => 'name for update_fill',
         ],
         'description' => [
-            'name'           => 'description',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
             'update_fill'    => null,
         ],
         'address' => [
-            'name'           => 'address',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
             'update_fill'    => null,
         ],
         'foo_bar' => [
-            'name'           => 'foo_bar',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
             'update_fill'    => null,
         ],
         'hello' => [
-            'name'           => 'hello',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
             'auto_fill'      => null,
         ],
     ];
-    protected $id;
 
-    protected $name;
+    private $id;
 
-    protected $description;
+    private $name;
 
-    protected $address;
+    private $description;
 
-    protected $fooBar;
+    private $address;
 
-    protected $hello;
+    private $fooBar;
 
-    protected function setDescriptionProp()
+    private $hello;
+
+    public function setter(string $prop, $value): void
+    {
+        $this->{$prop} = $value;
+    }
+
+    public function getter(string $prop)
+    {
+        return $this->{$prop};
+    }
+
+    protected function fillDescription($old): string
     {
         return 'set description.';
     }
 
-    protected function setAddressProp()
+    protected function fillAddress($old): string
     {
-        $this->forceProp('address', 'address is set now.');
+        return 'address is set now.';
     }
 
-    protected function setFooBarProp()
+    protected function fillFooBar($old): string
     {
         return 'foo bar.';
     }
 
-    protected function setHelloProp()
+    protected function fillHello($old): string
     {
         return 'hello field.';
     }

@@ -94,11 +94,23 @@ class ManyMany extends Relation
      */
     public function addRelationCondition()
     {
-        if (static::$booRelationCondition) {
-            $this->middleSelect = $this->middleEntity->where(
-                $this->middleSourceKey,
+        if (static::$relationCondition) {
+            $this->select->
+
+            join($this->middleEntity->getTable(), [
+                'middle_'.$this->middleTargetKey => $this->middleTargetKey,
+                'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
+                    $this->middleTargetKey       => '{['.$this->targetEntity->getTable().'.'.$this->targetKey.']}',
+                ])->
+
+            where(
+                $this->middleEntity->getTable().'.'.$this->middleSourceKey,
                 $this->getSourceValue()
-            );
+            )->
+
+            asDefault()->
+
+            asCollection(false);
         }
     }
 
@@ -127,7 +139,7 @@ class ManyMany extends Relation
         $maps = $this->buildMap($result);
 
         foreach ($entitys as &$entity) {
-            $key = $entity->getProp($this->sourceKey);
+            $key = $entity->getPropValue($this->sourceKey);
 
             if (isset($maps[$key])) {
                 $entity->setRelationProp(
@@ -141,30 +153,13 @@ class ManyMany extends Relation
     }
 
     /**
-     * 中间表查询回调处理.
-     *
-     * @param callable $callbacks
-     *
-     * @return $this
-     */
-    public function middleCondition(callable $callbacks)
-    {
-        call_user_func_array($callbacks, [
-            $this->middleSelect,
-            $this,
-        ]);
-
-        return $this;
-    }
-
-    /**
      * 取回源模型实体对应数据.
      *
      * @return mixed
      */
     public function getSourceValue()
     {
-        return $this->sourceEntity->getProp($this->sourceKey);
+        return $this->sourceEntity->__get($this->sourceKey);
     }
 
     /**
@@ -174,11 +169,38 @@ class ManyMany extends Relation
      */
     public function sourceQuery()
     {
-        if (false === $this->parseSelectCondition()) {
+        $tmps = $this->select->findAll();
+
+        if (!$tmps) {
             return new Collection();
         }
 
-        return $this->select->findAll();
+        $result = [];
+
+        $middelClass = get_class($this->middleEntity);
+        $targetClass = get_class($this->targetEntity);
+
+        foreach ($tmps as $value) {
+            $value = (array) $value;
+
+            $middleEnity = new $middelClass([
+                $this->middleSourceKey => $value['middle_'.$this->middleSourceKey],
+                $this->middleTargetKey => $value['middle_'.$this->middleTargetKey],
+            ]);
+
+            unset(
+                $value['middle_'.$this->middleSourceKey],
+                $value['middle_'.$this->middleTargetKey]
+            );
+
+            $targetEntity = new $targetClass($value);
+
+            $targetEntity->leevelMiddle = $middleEnity;
+
+            $result[] = $targetEntity;
+        }
+
+        return new Collection($result, [$targetClass]);
     }
 
     /**
@@ -238,7 +260,7 @@ class ManyMany extends Relation
      */
     public function getSourceKeyValue()
     {
-        return $this->sourceEntity->getProp($this->sourceKey);
+        return $this->sourceEntity->getPropValue($this->sourceKey);
     }
 
     /**
@@ -246,7 +268,9 @@ class ManyMany extends Relation
      */
     protected function preLoadRelationCondition(array $entitys)
     {
-        $this->middleSelect = $this->middleEntity->whereIn($this->middleSourceKey, $this->getPreLoadSourceValue($entitys));
+        $this->middleSelect = $this->middleEntity->whereIn(
+            $this->middleSourceKey, $this->getPreLoadSourceValue($entitys)
+        );
     }
 
     /**
@@ -277,7 +301,7 @@ class ManyMany extends Relation
         $maps = [];
 
         foreach ($result as $entity) {
-            $key = $entity->getProp($this->targetKey);
+            $key = $entity->__get($this->targetKey);
 
             if (isset($this->middleMaps[$key])) {
                 foreach ($this->middleMaps[$key] as $value) {
@@ -287,42 +311,5 @@ class ManyMany extends Relation
         }
 
         return $maps;
-    }
-
-    /**
-     * 通过中间表获取目标 ID.
-     *
-     * @return array
-     */
-    protected function parseSelectCondition()
-    {
-        $targetId = $this->parseTargetId();
-
-        $this->select->whereIn($this->targetKey, $targetId ?: [
-            0,
-        ]);
-
-        if (!$targetId) {
-            return false;
-        }
-    }
-
-    /**
-     * 通过中间表获取目标 ID.
-     *
-     * @return array
-     */
-    protected function parseTargetId()
-    {
-        $arr = $targetId = [];
-
-        foreach ($this->middleSelect->findAll() as $entity) {
-            $arr[$entity->{$this->middleTargetKey}][] = $entity->{$this->middleSourceKey};
-            $targetId[] = $entity->{$this->middleTargetKey};
-        }
-
-        $this->middleMaps = $arr;
-
-        return array_unique($targetId);
     }
 }

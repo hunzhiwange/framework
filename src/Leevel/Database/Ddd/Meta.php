@@ -55,63 +55,6 @@ class Meta implements IMeta
     protected $connects;
 
     /**
-     * 数据库查询的原生字段.
-     *
-     * @var array
-     */
-    protected $fields = [];
-
-    /**
-     * 数据库字段名字.
-     *
-     * @var array
-     */
-    protected $field = [];
-
-    /**
-     * 主键.
-     *
-     * @var array
-     */
-    protected $primaryKey = [];
-
-    /**
-     * 自动增加 ID.
-     *
-     * @var string
-     */
-    protected $autoIncrement;
-
-    /**
-     * 是否使用复合主键.
-     *
-     * @var bool
-     */
-    protected $compositeId = false;
-
-    /**
-     * 字段格式化类型.
-     *
-     * @var array
-     */
-    protected static $fieldType = [
-        'int' => [
-            'int',
-            'integer',
-            'smallint',
-            'serial',
-        ],
-        'float' => [
-            'float',
-            'number',
-        ],
-        'boolean' => [
-            'bool',
-            'boolean',
-        ],
-    ];
-
-    /**
      * 元对象表.
      *
      * @var string
@@ -135,7 +78,6 @@ class Meta implements IMeta
      */
     protected function __construct($table, $tableConnect = null)
     {
-        return;
         $this->table = $table;
         $this->tableConnect = $tableConnect;
 
@@ -164,69 +106,11 @@ class Meta implements IMeta
     /**
      * 设置数据库管理对象
      *
-     * @param \Leevel\Database\Manager $databaseManager
+     * @param null|\Leevel\Database\Manager $databaseManager
      */
-    public static function setDatabaseManager(DatabaseManager $databaseManager)
+    public static function setDatabaseManager(DatabaseManager $databaseManager = null)
     {
         static::$databaseManager = $databaseManager;
-    }
-
-    /**
-     * 字段强制过滤.
-     *
-     * @param string $field
-     * @param mixed  $value
-     *
-     * @return array
-     */
-    public function fieldsProp($field, $value)
-    {
-        if (!in_array($field, $this->field, true)) {
-            return $value;
-        }
-
-        $type = $this->fields[$field]['type'];
-
-        switch (true) {
-            case in_array($type, static::$fieldType['int'], true):
-                $value = (int) $value;
-
-                break;
-            case in_array($type, static::$fieldType['float'], true):
-                $value = (float) $value;
-
-                break;
-            case in_array($type, static::$fieldType['boolean'], true):
-                $value = $value ? true : false;
-
-                break;
-            default:
-                if (null !== $value && is_scalar($value)) {
-                    $value = (string) $value;
-                }
-        }
-
-        return $value;
-    }
-
-    /**
-     * 批量字段转属性.
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    public function fieldsProps(array $data)
-    {
-        $result = [];
-
-        foreach ($data as $field => $value) {
-            if (null !== (($value = $this->fieldsProp($field, $value)))) {
-                $result[$field] = $value;
-            }
-        }
-
-        return $result;
     }
 
     /**
@@ -242,11 +126,6 @@ class Meta implements IMeta
         table($this->table)->
 
         insert($saveData);
-
-        //return [
-            //$this->getAutoIncrement() ?: 0 => $this->connect->table($this->table)->insert($saveData),
-            //$this->getAutoIncrement() ?: 0 => $this->connect->table($this->table)->insert($saveData),
-        //];
     }
 
     /**
@@ -265,56 +144,6 @@ class Meta implements IMeta
         where($condition)->
 
         update($saveData);
-    }
-
-    /**
-     * 返回主键.
-     *
-     * @return array
-     */
-    public function getPrimaryKey()
-    {
-        return $this->primaryKey;
-    }
-
-    /**
-     * 是否为符合主键.
-     *
-     * @return bool
-     */
-    public function getCompositeId()
-    {
-        return $this->compositeId;
-    }
-
-    /**
-     * 返回自增 ID.
-     *
-     * @return null|string
-     */
-    public function getAutoIncrement()
-    {
-        return $this->autoIncrement;
-    }
-
-    /**
-     * 返回数据库查询的原生字段.
-     *
-     * @return array
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * 返回字段名字.
-     *
-     * @return array
-     */
-    public function getField()
-    {
-        return $this->field;
     }
 
     /**
@@ -344,29 +173,10 @@ class Meta implements IMeta
      */
     protected function initialization($table)
     {
-        $this->initConnect();
-
-        $columnInfo = $this->connect->getTableColumnsCache($table);
-
-        $this->fields = $columnInfo['list'];
-        $this->primaryKey = $columnInfo['primary_key'];
-        $this->autoIncrement = $columnInfo['auto_increment'];
-
-        if (count($this->primaryKey) > 1) {
-            $this->compositeId = true;
+        if (!static::$databaseManager) {
         }
 
-        $this->field = array_keys($columnInfo['list']);
-    }
-
-    /**
-     * 连接数据库仓储.
-     *
-     * @return \Leevel\Database\IDatabase
-     */
-    protected function initConnect()
-    {
-        //$this->connect = static::$databaseManager->connect($this->tableConnect);
+        $this->connect = static::$databaseManager->connect($this->tableConnect);
     }
 
     /**

@@ -75,8 +75,8 @@ eot;
     "total_page": 6,
     "total_record": 52,
     "total_macro": false,
-    "from": 1,
-    "to": 11
+    "from": 0,
+    "to": 10
 }
 eot;
 
@@ -95,7 +95,7 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":10,"current_page":1,"total_page":6,"total_record":52,"total_macro":false,"from":1,"to":11}
+{"per_page":10,"current_page":1,"total_page":6,"total_record":52,"total_macro":false,"from":0,"to":10}
 eot;
 
         $this->assertSame(
@@ -585,7 +585,7 @@ eot;
     "total_page": null,
     "total_record": null,
     "total_macro": false,
-    "from": 13,
+    "from": 12,
     "to": null
 }
 eot;

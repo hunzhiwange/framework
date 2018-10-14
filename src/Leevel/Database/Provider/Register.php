@@ -52,13 +52,12 @@ class Register extends Provider
     //  *
     //  * @param \Leevel\Event\IDispatch $event
     //  */
-    // public function bootstrap(IDispatch $event)
-    // {
-    //     $this->eventDispatch($event);
-    //
-    //     $this->meta();
-    // }
-    //
+    public function bootstrap(IDispatch $event)
+    {
+        $this->eventDispatch($event);
+
+        $this->meta();
+    }
 
     /**
      * 可用服务提供者.
@@ -111,16 +110,16 @@ class Register extends Provider
     //  *
     //  * @param \Leevel\Event\IDispatch $event
     //  */
-    // protected function eventDispatch(IDispatch $event)
-    // {
-    //     //Entity::setEventDispatch($event);
-    // }
+    protected function eventDispatch(IDispatch $event)
+    {
+        //Entity::setEventDispatch($event);
+    }
 
     // /**
     //  * Meta 设置数据库管理.
     //  */
-    // protected function meta()
-    // {
-    //     //Meta::setDatabaseManager($this->container['databases']);
-    // }
+    protected function meta()
+    {
+        //Meta::setDatabaseManager($this->container['databases']);
+    }
 }

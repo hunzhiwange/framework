@@ -18,42 +18,49 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd\Entity;
+namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
 
 /**
- * TestFillBlackEntity.
+ * user.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.06.30
+ * @since 2018.10.13
  *
  * @version 1.0
  */
-class TestFillBlackEntity extends Entity
+class User extends Entity
 {
-    const TABLE = 'test';
+    const TABLE = 'user';
 
     const ID = 'id';
 
     const AUTO = 'id';
 
     const STRUCT = [
-        'id' => [
-            'readonly' => true,
+        'id'        => [],
+        'name'      => [],
+        'create_at' => [],
+        'role'      => [
+            self::MANY_MANY     => Role::class,
+            'middle_entity'     => UserRole::class,
+            'source_key'        => 'id',
+            'target_key'        => 'id',
+            'middle_source_key' => 'user_id',
+            'middle_target_key' => 'role_id',
+            self::SCOPE         => 'role',
         ],
-        'name' => [
-            'fill_black'     => true,
-        ],
-        'description' => [],
     ];
 
     private $id;
 
     private $name;
 
-    private $description;
+    private $createAt;
+
+    private $role;
 
     public function setter(string $prop, $value): void
     {
@@ -63,5 +70,10 @@ class TestFillBlackEntity extends Entity
     public function getter(string $prop)
     {
         return $this->{$prop};
+    }
+
+    public function scopeRole($select)
+    {
+        $select->pageLimit(2);
     }
 }

@@ -92,16 +92,16 @@ eot;
             'name' => 'foo',
         ]);
 
-        $this->assertSame(5, $entity->getProp('id'));
-        $this->assertNull($entity->getProp('name'));
+        $this->assertSame(5, $entity->getId());
+        $this->assertNull($entity->getName());
 
         $entity = new TestConstructBlackEntity([
             'id'   => 5,
             'name' => 'foo',
         ]);
 
-        $this->assertNull($entity->getProp('id'));
-        $this->assertSame('foo', $entity->getProp('name'));
+        $this->assertNull($entity->getId());
+        $this->assertSame('foo', $entity->getName());
     }
 
     public function testFillBlackAndWhite()
@@ -111,9 +111,9 @@ eot;
             'description' => 'hello description',
         ]);
 
-        $this->assertNull($entity->getProp('id'));
-        $this->assertSame('foo', $entity->getProp('name'));
-        $this->assertSame('hello description', $entity->getProp('description'));
+        $this->assertNull($entity->getId());
+        $this->assertSame('foo', $entity->getName());
+        $this->assertSame('hello description', $entity->getDescription());
 
         $entity->save();
 
@@ -183,7 +183,8 @@ eot;
 
     public function testPropNotExist()
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestEntity` field `not_exists` do not exist.');
 
         $entity = new TestEntity();
 

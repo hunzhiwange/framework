@@ -1059,7 +1059,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Container has not set yet.'
+            'Container was not set.'
         );
 
         $validate = new Validate(
@@ -1074,7 +1074,7 @@ eot;
             ]
         );
 
-        $validate->extend('tests\\validate\\notfound', 'Tests\\Validate\\NotFound');
+        $validate->extend('tests\\validate\\not_found', 'Tests\\Validate\\NotFound');
 
         $validate->success();
     }

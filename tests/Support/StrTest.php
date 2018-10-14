@@ -233,9 +233,9 @@ class StrTest extends TestCase
 
     public function testCamelize()
     {
-        $this->assertSame('helloworld', Str::camelize('helloWorld'));
+        $this->assertSame('helloWorld', Str::camelize('helloWorld'));
 
-        $this->assertSame('helloworld', Str::camelize('helloWorld', '-'));
+        $this->assertSame('helloWorld', Str::camelize('helloWorld', '-'));
 
         $this->assertSame('helloWorld', Str::camelize('hello_world'));
 

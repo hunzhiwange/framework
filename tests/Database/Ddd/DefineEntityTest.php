@@ -43,14 +43,14 @@ class DefineEntityTest extends TestCase
 
         $this->assertSame(TestEntity::STRUCT, $entity->getField());
         $this->assertSame(TestEntity::TABLE, $entity->getTable());
-        $this->assertSame(TestEntity::PRIMARY_KEY, $entity->getPrimaryKeyNameSource());
-        $this->assertSame(TestEntity::AUTO_INCREMENT, $entity->getAutoIncrement());
+        $this->assertSame((array) TestEntity::ID, $entity->getPrimaryKeyNameSource());
+        $this->assertSame(TestEntity::AUTO, $entity->getAutoIncrement());
     }
 
     public function testConstDefined()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The entity const TABLE is not defined.');
+        $this->expectExceptionMessage('The entity const TABLE was not defined.');
 
         $entity = new Test1Entity();
     }
@@ -58,7 +58,7 @@ class DefineEntityTest extends TestCase
     public function testConstDefined2()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The entity const PRIMARY_KEY is not defined.');
+        $this->expectExceptionMessage('The entity const ID was not defined.');
 
         $entity = new Test2Entity();
     }
@@ -66,7 +66,7 @@ class DefineEntityTest extends TestCase
     public function testConstDefined3()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The entity const AUTO_INCREMENT is not defined.');
+        $this->expectExceptionMessage('The entity const AUTO was not defined.');
 
         $entity = new Test3Entity();
     }
@@ -74,7 +74,7 @@ class DefineEntityTest extends TestCase
     public function testConstDefined4()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The entity const STRUCT is not defined.');
+        $this->expectExceptionMessage('The entity const STRUCT was not defined.');
 
         $entity = new Test4Entity();
     }
@@ -93,7 +93,7 @@ class Test3Entity extends Entity
 {
     const TABLE = 'test2';
 
-    const PRIMARY_KEY = [
+    const ID = [
         'id',
     ];
 }
@@ -102,9 +102,9 @@ class Test4Entity extends Entity
 {
     const TABLE = 'test2';
 
-    const PRIMARY_KEY = [
+    const ID = [
         'id',
     ];
 
-    const AUTO_INCREMENT = 'id';
+    const AUTO = 'id';
 }

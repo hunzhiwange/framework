@@ -20,6 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use InvalidArgumentException;
+use Leevel\Database\IDatabase;
+
 /**
  * 工作单元.
  *
@@ -32,11 +35,30 @@ namespace Leevel\Database\Ddd;
 class UnitOfWork implements IUnitOfWork
 {
     /**
-     * 基础仓储.
+     * 已经被管理的实体状态.
      *
-     * @var \Leevel\Database\Ddd\IRepository
+     * @var int
      */
-    protected $repository;
+    public const STATE_MANAGED = 1;
+
+    /**
+     * 尚未被管理的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_NEW = 2;
+
+    /**
+     * 被标识为删除的实体状态.
+     */
+    public const STATE_REMOVED = 3;
+
+    /**
+     * 根实体.
+     *
+     * @var \Leevel\Database\Ddd\IEntity
+     */
+    protected $rootEntity;
 
     /**
      * 是否提交事务
@@ -46,43 +68,239 @@ class UnitOfWork implements IUnitOfWork
     protected $committed = false;
 
     /**
-     * 新建对象
+     * 注入的新建实体.
      *
      * @var array
      */
-    protected $creates = [];
+    protected $entitysInserts = [];
 
     /**
-     * 更新对象
+     * 注入的更新实体.
      *
      * @var array
      */
-    protected $updates = [];
+    protected $entityUpdates = [];
 
     /**
-     * 删除对象
+     * 注入的删除实体.
      *
      * @var array
      */
-    protected $deletes = [];
+    protected $entityDeletes = [];
 
     /**
-     * 注册对象数量.
+     * 实体当前状态
      *
-     * @var int
+     * @var array
      */
-    protected $count = 0;
+    protected $entityStates;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IRepository $repository
+     * @param \Leevel\Database\Ddd\IEntity $rootEntity
      *
      * @return $this
      */
-    public function __construct(IRepository $repository)
+    public function __construct(IEntity $rootEntity = null)
     {
-        $this->repository = $repository;
+        $this->rootEntity = $rootEntity;
+    }
+
+    /**
+     * 执行数据库事务.
+     *
+     * @return mixed
+     */
+    public function flush()
+    {
+        if (!$this->rootEntity || $this->committed) {
+            return;
+        }
+
+        $this->committed = true;
+
+        return $this->rootEntity->databaseConnect()->transaction(function () {
+            $this->handleRepository();
+        });
+    }
+
+    /**
+     * 注册实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    public function register(IEntity $entity)
+    {
+        $visited = [];
+        $this->doRegister($entity, $visited);
+
+        return $this;
+    }
+
+    /**
+     * 注册新建实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    public function insert(IEntity $entity)
+    {
+        $id = spl_object_id($entity);
+
+        if (isset($this->entityUpdates[$id])) {
+            throw new InvalidArgumentException(
+                'Update entity can not be added for insert.'
+            );
+        }
+
+        if (isset($this->entityDeletes[$id])) {
+            throw new InvalidArgumentException(
+                'Delete entity can not be added for insert.'
+            );
+        }
+
+        if (!isset($this->entityInserts[$id])) {
+            $this->entityInserts[$id] = $entity;
+
+            if (!$this->rootEntity) {
+                $this->rootEntity = $entity;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * 实体是否已经注册新增.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return bool
+     */
+    public function isInserted(IEntity $entity): bool
+    {
+        return isset($this->entityInserts[spl_object_id($entity)]);
+    }
+
+    /**
+     * 注册更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    public function update(IEntity $entity)
+    {
+        $id = spl_object_id($entity);
+
+        if (isset($this->entityDeletes[$id])) {
+            throw new InvalidArgumentException(
+                'Delete entity can not be added for update.'
+            );
+        }
+
+        if (isset($this->entityInserts[$id])) {
+            throw new InvalidArgumentException(
+                'Insert entity can not be added for update.'
+            );
+        }
+
+        if (!isset($this->entityUpdates[$id])) {
+            $this->entityUpdates[$id] = $entity;
+
+            if (!$this->rootEntity) {
+                $this->rootEntity = $entity;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * 实体是否已经注册更新.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return bool
+     */
+    public function isUpdated(IEntity $entity): bool
+    {
+        return isset($this->entiteUpdates[spl_object_id($entity)]);
+    }
+
+    /**
+     * 注册删除实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    public function delete(IEntity $entity)
+    {
+        $id = spl_object_id($entity);
+
+        if (isset($this->entityInserts[$id])) {
+            unset($this->entityInserts[$id], $this->entityStates[$id]);
+
+            return;
+        }
+
+        if (isset($this->entityUpdates[$id])) {
+            unset($this->entityUpdates[$id]);
+        }
+
+        if (!isset($this->entityDeletes[$id])) {
+            $this->entityDeletes[$id] = $entity;
+            $this->entityStates[$id] = self::STATE_REMOVED;
+
+            if (!$this->rootEntity) {
+                $this->rootEntity = $entity;
+            }
+        }
+    }
+
+    /**
+     * 实体是否已经注册删除.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return bool
+     */
+    public function isDeleted(IEntity $entity): bool
+    {
+        return isset($this->entityDeletes[spl_object_id($entity)]);
+    }
+
+    /**
+     * 实体是否已经注册.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return bool
+     */
+    public function isRegistered(IEntity $entity): bool
+    {
+        $id = spl_object_id($entity);
+
+        return isset($this->entityInsertes[$id])
+            || isset($this->entityUpdates[$id])
+            || isset($this->entityDeletes[$id]);
+    }
+
+    /**
+     * 设置根实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $rootEntity
+     *
+     * @return $this
+     */
+    public function setRootEntity(IEntity $rootEntity)
+    {
+        $this->rootEntity = $rootEntity;
     }
 
     /**
@@ -90,7 +308,7 @@ class UnitOfWork implements IUnitOfWork
      */
     public function beginTransaction()
     {
-        $this->repository->beginTransaction();
+        $this->connect()->beginTransaction();
 
         $this->committed = false;
     }
@@ -98,9 +316,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 事务回滚.
      */
-    public function rollback()
+    public function rollBack()
     {
-        $this->repository->rollback();
+        ${$this}->connect()->rollBack();
 
         $this->committed = false;
     }
@@ -110,31 +328,13 @@ class UnitOfWork implements IUnitOfWork
      */
     public function commit()
     {
-        if ($this->committed) {
+        if (!$this->rootEntity || $this->committed) {
             return;
         }
 
-        $this->repository->commit();
+        $this->connect()->commit();
 
         $this->committed = true;
-    }
-
-    /**
-     * 事务回滚.
-     *
-     * @param callable $action
-     *
-     * @return mixed
-     */
-    public function transaction(callable $action)
-    {
-        if ($this->committed) {
-            return;
-        }
-
-        $this->committed = true;
-
-        return $this->repository->transaction($action);
     }
 
     /**
@@ -142,101 +342,109 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return bool
      */
-    public function committed()
+    public function committed(): bool
     {
         return $this->committed;
     }
 
     /**
-     * 注册事务提交.
+     * 返回数据库仓储.
+     *
+     * @return \Leevel\Database\IDatabase
      */
-    public function registerCommit()
+    public function connect(): IDatabase
     {
-        if ($this->committed && 0 === $this->count) {
+        if (!$this->rootEntity) {
+            throw new InvalidArgumentException(
+                'Root entity must be set before use connect.'
+            );
+        }
+
+        return $this->rootEntity->databaseConnect();
+    }
+
+    /**
+     * 取得实体仓储.
+     *
+     * @param \Leevel\Database\Ddd\IEntity|string $entity
+     *
+     * @return \Leevel\Database\Ddd\IRepository
+     */
+    public function getRepository($entity): IRepository
+    {
+        if (!is_object($entity)) {
+            $entity = new $entity();
+        }
+
+        if (defined(get_class($entity).'::REPOSITORY')) {
+            $repositoryClass = $entity::REPOSITORY;
+            $repository = new $repositoryClass($entity);
+        } else {
+            $repository = new Repository($entity);
+        }
+
+        return $repository;
+    }
+
+    /**
+     * 取得实体状态.
+     *
+     * @param \Leevel\Database\Ddd\IEntity   $entity
+     * @param int $defaults
+     *
+     * @return int
+     */
+    public function getEntityState(IEntity $entity, int $defaults = self::STATE_NEW)
+    {
+        $id = spl_object_id($entity);
+
+        if (isset($this->entityStates[$id])) {
+            return $this->entityStates[$id];
+        }
+
+        return $defaults;
+    }
+
+    /**
+     * 执行实体注册.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param array                        $visited
+     */
+    protected function doRegister(IEntity $entity, array &$visited)
+    {
+        $id = spl_object_id($entity);
+
+        if (isset($visited[$id])) {
             return;
         }
 
-        if ($this->count > 1) {
-            $this->transaction(function () {
-                $this->handleRepository();
-            });
-        } else {
-            $this->handleRepository();
-        }
+        $visited[$id] = $entity;
 
-        $this->committed = true;
-    }
+        $entityState = $this->getEntityState($entity, self::STATE_NEW);
 
-    /**
-     * 注册新建.
-     *
-     * @param \Leevel\Database\Ddd\IEntity     $entity
-     * @param \Leevel\Database\Ddd\IRepository $repository
-     *
-     * @return $this
-     */
-    public function registerCreate(IEntity $entity, IRepository $repository)
-    {
-        $hash = spl_object_hash($entity);
+        switch ($entityState) {
+              case self::STATE_MANAGED:
+                  break;
+              case self::STATE_NEW:
+                  $this->entityStates[$id] = self::STATE_MANAGED;
 
-        if (!isset($this->creates[$hash])) {
-            $this->creates[$hash] = [
-                $entity,
-                $repository,
-            ];
+                  $this->insert($entity);
 
-            $this->count++;
-        }
+                  break;
+              case self::STATE_REMOVED:
+                  if (isset($this->entityDeletes[$id])) {
+                      unset($this->entityDeletes[$id]);
+                  }
 
-        return $this;
-    }
+                  $this->entityStates[$id] = self::STATE_MANAGED;
 
-    /**
-     * 注册更新.
-     *
-     * @param \Leevel\Database\Ddd\IEntity     $entity
-     * @param \Leevel\Database\Ddd\IRepository $repository
-     *
-     * @return $this
-     */
-    public function registerUpdate(IEntity $entity, IRepository $repository)
-    {
-        $hash = spl_object_hash($entity);
-
-        if (!isset($this->updates[$hash])) {
-            $this->updates[$hash] = [
-                $entity,
-                $repository,
-            ];
-
-            $this->count++;
-        }
-
-        return $this;
-    }
-
-    /**
-     * 注册删除.
-     *
-     * @param \Leevel\Database\Ddd\IEntity     $entity
-     * @param \Leevel\Database\Ddd\IRepository $repository
-     *
-     * @return $this
-     */
-    public function registerDelete(IEntity $entity, IRepository $repository)
-    {
-        $hash = spl_object_hash($entity);
-
-        if (!isset($this->deletes[$hash])) {
-            $this->deletes[$hash] = [
-                $entity,
-                $repository,
-            ];
-
-            $this->count++;
-        }
-
-        return $this;
+                  break;
+              default:
+                  throw new InvalidArgumentException(
+                      sprintf('Invalid entity state `%d` of `%s`.', $entityState, get_class($entity))
+                  );
+          }
     }
 
     /**
@@ -244,22 +452,16 @@ class UnitOfWork implements IUnitOfWork
      */
     protected function handleRepository()
     {
-        foreach ($this->creates as $create) {
-            list($entity, $repository) = $create;
-
-            $repository->handleCreate($entity);
+        foreach ($this->entityInserts as $entity) {
+            $this->getRepository($entity)->handleCreate($entity);
         }
 
-        foreach ($this->updates as $update) {
-            list($entity, $repository) = $update;
-
-            $repository->handleUpdate($entity);
+        foreach ($this->entityUpdates as $entity) {
+            $this->getRepository($entity)->handleUpdate($entity);
         }
 
-        foreach ($this->deletes as $delete) {
-            list($entity, $repository) = $delete;
-
-            $repository->handleDelete($entity);
+        foreach ($this->entityDeletes as $entity) {
+            $this->getRepository($entity)->handleDelete($entity);
         }
     }
 }

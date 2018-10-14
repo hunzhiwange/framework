@@ -21,8 +21,13 @@ declare(strict_types=1);
 namespace Tests\Database\Query;
 
 use Leevel\Cache\ICache;
+use Leevel\Database\Manager;
 use Leevel\Database\Mysql;
+use Leevel\Di\Container;
+use Leevel\Di\IContainer;
 use Leevel\Log\ILog;
+use Leevel\Option\Option;
+use PDO;
 
 /**
  * query trait.
@@ -100,5 +105,49 @@ eot;
         // 释放数据库连接，否则会出现 Mysql 连接数过多
         // PDOException: PDO::__construct(): MySQL server has gone away
         $connect->__destruct();
+    }
+
+    protected function createManager()
+    {
+        $container = new Container();
+
+        $manager = new Manager($container);
+
+        $this->assertInstanceof(IContainer::class, $manager->container());
+        $this->assertInstanceof(Container::class, $manager->container());
+
+        $option = new Option([
+            'database' => [
+                'default' => 'mysql',
+                'fetch'   => PDO::FETCH_OBJ,
+                'log'     => true,
+                'connect' => [
+                    'mysql' => [
+                        'driver'   => 'mysql',
+                        'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                        'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                        'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                        'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                        'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                        'charset'  => 'utf8',
+                        'options'  => [
+                            PDO::ATTR_PERSISTENT => false,
+                        ],
+                        'readwrite_separate' => false,
+                        'distributed'        => false,
+                        'master'             => [],
+                        'slave'              => [],
+                    ],
+                ],
+            ],
+        ]);
+
+        $container->singleton('option', $option);
+
+        $container->instance('log', $this->createMock(ILog::class));
+
+        $container->instance('cache', $this->createMock(ICache::class));
+
+        return $manager;
     }
 }

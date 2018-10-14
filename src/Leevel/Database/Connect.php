@@ -93,7 +93,7 @@ abstract class Connect
      *
      * @var array
      */
-    protected static $tableColumnsCaches = [];
+    //protected static $tableColumnsCaches = [];
 
     /**
      * 数据库连接参数.
@@ -243,6 +243,8 @@ abstract class Connect
         // 预处理
         $this->pdoStatement = $this->getPdo($master)->prepare($sql);
 
+        //dump($sql);
+
         // 参数绑定
         $this->bindParams($bindParams);
 
@@ -252,7 +254,8 @@ abstract class Connect
         }
 
         // 记录 SQL 日志
-        $this->recordSqlLog();
+        //
+        //$$this->recordSqlLog();
 
         // 返回影响函数
         $this->numRows = $this->pdoStatement->rowCount();
@@ -299,7 +302,7 @@ abstract class Connect
         }
 
         // 记录 SQL 日志
-        $this->recordSqlLog();
+        //$this->recordSqlLog();
 
         // 返回影响函数
         $this->numRows = $this->pdoStatement->rowCount();
@@ -904,26 +907,26 @@ abstract class Connect
     /**
      * 记录 SQL 日志.
      */
-    protected function recordSqlLog()
-    {
-        // SQL 监视器
-        if (null !== static::$sqlListen) {
-            call_user_func_array(static::$sqlListen, [
-                $this,
-            ]);
-        }
-
-        // 记录 SQL 日志
-        $lastSql = $this->getLastSql(true);
-
-        if ($this->option['log']) {
-            $this->log->log(
-                ILog::DEBUG,
-                $lastSql[0],
-                $lastSql[1] ?: []
-            );
-        }
-    }
+    // protected function recordSqlLog()
+    // {
+    //     // SQL 监视器
+    //     if (null !== static::$sqlListen) {
+    //         call_user_func_array(static::$sqlListen, [
+    //             $this,
+    //         ]);
+    //     }
+    //
+    //     // 记录 SQL 日志
+    //     $lastSql = $this->getLastSql(true);
+    //
+    //     if ($this->option['log']) {
+    //         $this->log->log(
+    //             ILog::DEBUG,
+    //             $lastSql[0],
+    //             $lastSql[1] ?: []
+    //         );
+    //     }
+    // }
 
     /**
      * 数据查询异常，抛出错误.

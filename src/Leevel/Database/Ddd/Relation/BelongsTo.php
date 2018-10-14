@@ -52,7 +52,7 @@ class BelongsTo extends Relation
      */
     public function addRelationCondition()
     {
-        if (static::$booRelationCondition) {
+        if (static::$relationCondition) {
             $this->select->where(
                 $this->targetKey,
                 $this->getSourceValue()
@@ -74,7 +74,7 @@ class BelongsTo extends Relation
         $maps = $this->buildMap($result);
 
         foreach ($entitys as &$value) {
-            $key = $value->getProp($this->sourceKey);
+            $key = $value->getPropValue($this->sourceKey);
 
             if (isset($maps[$key])) {
                 $value->setRelationProp($relation, $maps[$key]);
@@ -104,7 +104,7 @@ class BelongsTo extends Relation
      */
     public function getSourceValue()
     {
-        return $this->sourceEntity->getProp($this->sourceKey);
+        return $this->sourceEntity->__get($this->sourceKey);
     }
 
     /**
@@ -129,7 +129,7 @@ class BelongsTo extends Relation
         $maps = [];
 
         foreach ($result as $entity) {
-            $maps[$entity->getProp($this->targetKey)] = $entity;
+            $maps[$entity->getPropValue($this->targetKey)] = $entity;
         }
 
         return $maps;

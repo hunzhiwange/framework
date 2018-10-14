@@ -386,7 +386,11 @@ class Str
      */
     public static function camelize(string $value, string $separator = '_')
     {
-        $value = $separator.str_replace($separator, ' ', strtolower($value));
+        if (false === strpos($value, $separator)) {
+            return $value;
+        }
+
+        $value = $separator.str_replace($separator, ' ', $value);
 
         return ltrim(
             str_replace(

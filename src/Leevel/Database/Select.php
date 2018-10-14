@@ -872,6 +872,21 @@ class Select
     }
 
     /**
+     * 分页查询限制条件.
+     *
+     * @param int   $perPage
+     * @param array $option
+     *
+     * @return $this
+     */
+    public function pageLimit(int $perPage, array $option = [])
+    {
+        $page = new Page($perPage, null, $option);
+
+        return $this->limit($page->getFromRecord(), $perPage);
+    }
+
+    /**
      * 获得查询字符串.
      *
      * @param $withLogicGroup
@@ -1007,7 +1022,7 @@ class Select
     {
         $this->condition->{$method}($field, $alias);
 
-        $result = (array) $this->safeSql($flag)->
+        $result = $this->safeSql($flag)->
 
         asDefault()->
 
@@ -1017,7 +1032,7 @@ class Select
             return $result;
         }
 
-        return $result[$alias];
+        return is_object($result) ? $result->{$alias} : $result[$alias];
     }
 
     /**

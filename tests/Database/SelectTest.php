@@ -975,8 +975,8 @@ eot;
     "total_page": 3,
     "total_record": 26,
     "total_macro": false,
-    "from": 1,
-    "to": 11
+    "from": 0,
+    "to": 10
 }
 eot;
 
@@ -995,7 +995,7 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":10,"current_page":1,"total_page":3,"total_record":26,"total_macro":false,"from":1,"to":11}
+{"per_page":10,"current_page":1,"total_page":3,"total_record":26,"total_macro":false,"from":0,"to":10}
 eot;
 
         $this->assertSame(
@@ -1068,7 +1068,7 @@ eot;
     "total_page": 100000000,
     "total_record": 999999999,
     "total_macro": true,
-    "from": 1,
+    "from": 0,
     "to": null
 }
 eot;
@@ -1088,7 +1088,7 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":10,"current_page":1,"total_page":100000000,"total_record":999999999,"total_macro":true,"from":1,"to":null}
+{"per_page":10,"current_page":1,"total_page":100000000,"total_record":999999999,"total_macro":true,"from":0,"to":null}
 eot;
 
         $this->assertSame(
@@ -1161,7 +1161,7 @@ eot;
     "total_page": null,
     "total_record": null,
     "total_macro": false,
-    "from": 1,
+    "from": 0,
     "to": null
 }
 eot;
@@ -1181,7 +1181,7 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":15,"current_page":1,"total_page":null,"total_record":null,"total_macro":false,"from":1,"to":null}
+{"per_page":15,"current_page":1,"total_page":null,"total_record":null,"total_macro":false,"from":0,"to":null}
 eot;
 
         $this->assertSame(

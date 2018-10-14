@@ -255,46 +255,46 @@ class Option implements IOption, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetExists.
      *
-     * @param string $offset
+     * @param mixed $index
      *
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($index): bool
     {
-        return $this->has($offset);
+        return $this->has($index);
     }
 
     /**
      * 实现 ArrayAccess::offsetGet.
      *
-     * @param string $offset
+     * @param mixed $index
      *
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($index)
     {
-        return $this->get($offset);
+        return $this->get($index);
     }
 
     /**
      * 实现 ArrayAccess::offsetSet.
      *
-     * @param string $offset
-     * @param mixed  $value
+     * @param mixed $index
+     * @param mixed $newval
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($index, $newval)
     {
-        return $this->set($offset, $value);
+        return $this->set($index, $newval);
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset.
      *
-     * @param string $offset
+     * @param string $index
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($index)
     {
-        $this->delete($offset);
+        $this->delete($index);
     }
 
     /**

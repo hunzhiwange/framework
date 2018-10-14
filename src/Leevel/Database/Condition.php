@@ -2634,7 +2634,7 @@ class Condition
 
         foreach ($data as $key => $value) {
             // 表达式支持
-            if ($value && false !== strpos($value, '{') &&
+            if (is_string($value) && false !== strpos($value, '{') &&
                 preg_match('/^{(.+?)}$/', $value, $matches)) {
                 $value = $this->connect->normalizeExpression(
                     $matches[1],
@@ -2649,7 +2649,7 @@ class Condition
                 $fields[] = $key;
             }
 
-            if (($value && 0 === strpos($value, ':')) || !empty($matches)) {
+            if ((is_string($value) && 0 === strpos($value, ':')) || !empty($matches)) {
                 $values[] = $value;
             } else {
                 // 转换 ? 占位符至 : 占位符

@@ -53,7 +53,7 @@ class UpdateTest extends TestCase
         $this->assertSame(123, $entity->id);
         $this->assertSame('foo', $entity->name);
 
-        $this->assertSame(['id', 'name'], $entity->getChanged());
+        $this->assertSame(['name'], $entity->getChanged());
 
         $this->assertNull($entity->getFlush());
         $this->assertNull($entity->getFlushData());

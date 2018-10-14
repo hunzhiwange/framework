@@ -25,6 +25,7 @@ use DateTime;
 use DateTimeZone;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\IEntity;
 use Tests\Database\Ddd\Entity\TestConversionEntity;
 use Tests\TestCase;
 
@@ -55,7 +56,7 @@ class ConversionTest extends TestCase
         $old = date_default_timezone_get();
         date_default_timezone_set('UTC');
 
-        $entity->{$field} = $source;
+        $entity->__set($field, $source);
 
         $assertMethod = in_array($field, [
             'obj1', 'object1',
@@ -75,7 +76,7 @@ class ConversionTest extends TestCase
         ], true) ? 'assertEquals' : 'assertSame';
 
         $this->assertSame($prop, $this->getTestProperty($entity, $field));
-        $this->{$assertMethod}($conversion, $entity->getProp($field));
+        $this->{$assertMethod}($conversion, $entity->__get($field));
 
         date_default_timezone_set($old);
     }
@@ -188,6 +189,7 @@ class ConversionTest extends TestCase
         $entity = new TestConversionEntity();
 
         $this->assertInstanceof(Entity::class, $entity);
+        $this->assertInstanceof(IEntity::class, $entity);
 
         return $entity;
     }

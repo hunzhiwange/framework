@@ -190,7 +190,7 @@ class Validate implements IValidate
         }
 
         if (count($args) > 0) {
-            $extend = 'validate'.ucwords($method);
+            $extend = 'validate'.ucfirst($method);
 
             $parameter = [
                 'foobar',
@@ -2548,7 +2548,7 @@ class Validate implements IValidate
     protected function callClassExtend(string $extend, array $parameter)
     {
         if (!$this->container) {
-            throw new InvalidArgumentException('Container has not set yet.');
+            throw new InvalidArgumentException('Container was not set.');
         }
 
         if (false === strpos($extend, '@')) {
