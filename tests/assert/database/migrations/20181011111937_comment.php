@@ -48,7 +48,7 @@ class Comment extends AbstractMigration
         $table = $this->table('comment');
         $table->addColumn('title', 'string', ['limit'=>64]);
         $table->addColumn('post_id', 'integer', ['limit'=>11, 'comment' => '文章 ID']);
-        $table->addColumn('content', 'varchar', ['length' => 200, 'default'=> '', 'comment'=>'评论内容']);
+        $table->addColumn('content', 'string', ['length' => 200, 'default'=> '', 'comment'=>'评论内容']);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
         $table->save();
     }
