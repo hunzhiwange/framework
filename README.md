@@ -116,6 +116,10 @@ Let code poem.
 
 Documentation for the framework can be found on the [QueryPHP website](http://www.queryphp.com).
 
+## Thanks
+
+Thanks my colleague [John.mao](https://github.com/maosea0125) for your selfless help in the development of this project and and let me have a new understanding, it makes QueryPHP more beautiful.
+
 ## License
 
 The QueryPHP framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
