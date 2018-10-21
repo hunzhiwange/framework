@@ -251,150 +251,6 @@ class Select
     }
 
     /**
-     * 通过主键查找模型实体，未找到初始化一个新的模型实体.
-     *
-     * @param mixed  $id
-     * @param array  $column
-     * @param array  $data
-     * @param mixed  $connect
-     * @param string $table
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function findOrNew($id, array $column = ['*'], ?array $data = null, $connect = null, $table = null)
-    {
-        if (null !== ($entity = $this->find($id, $column))) {
-            return $entity;
-        }
-
-        return $this->entity->
-        newInstance(
-            $data,
-            $connect ?: $this->entity->getConnect(),
-            $table ?: $this->entity->getTable()
-        );
-    }
-
-    /**
-     * 查找第一个结果.
-     *
-     * @param array $columns
-     *
-     * @return null|\Leevel\Database\Ddd\IEntity|static
-     */
-    public function first(array $column = ['*'])
-    {
-        return $this->select->
-        setColumns($column)->
-
-        findOne();
-    }
-
-    /**
-     * 查找第一个结果，未找到则抛出异常.
-     *
-     * @param array $column
-     *
-     * @return \Leevel\Database\Ddd\IEntity|static
-     */
-    public function firstOrFail(array $column = ['*'])
-    {
-        if (null !== (($entity = $this->first($column)))) {
-            return $entity;
-        }
-
-        throw (new EntityNotFoundException())->
-        entity(get_class($this->entity));
-    }
-
-    /**
-     * 查找第一个结果，未找到则初始化一个新的模型实体.
-     *
-     * @param array  $props
-     * @param mixed  $connect
-     * @param string $table
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function firstOrNew(array $props, $connect = null, $table = null)
-    {
-        if (null !== (($entity = $this->getFirstByProp($props)))) {
-            return $entity;
-        }
-
-        return $this->entity->
-        newInstance(
-            $props,
-            $connect ?: $this->entity->getConnect(),
-            $table ?: $this->entity->getTable()
-        );
-    }
-
-    /**
-     * 尝试根据属性查找一个模型实体，未找到则新建一个模型实体.
-     *
-     * @param array  $props
-     * @param mixed  $connect
-     * @param string $table
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function firstOrCreate(array $props, $connect = null, $table = null)
-    {
-        if (null !== (($entity = $this->getFirstByProp($props)))) {
-            return $entity;
-        }
-
-        return $this->entity->
-        newInstance(
-            $props,
-            $connect ?: $this->entity->getConnect(),
-            $table ?: $this->entity->getTable()
-        )->
-
-        create();
-    }
-
-    /**
-     * 尝试根据属性查找一个模型实体，未找到则新建或者更新一个模型实体.
-     *
-     * @param array  $props
-     * @param array  $data
-     * @param mixed  $connect
-     * @param string $table
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function updateOrCreate(array $props, array $data = [], $connect = null, $table = null)
-    {
-        return $this->firstOrNew($props, $connect, $table)->
-        forceProps($data)->
-
-        save();
-    }
-
-    /**
-     * 新建一个模型实体.
-     *
-     * @param array  $props
-     * @param mixed  $connect
-     * @param string $table
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function onlyCreate(array $props = [], $connect = null, $table = null)
-    {
-        return $this->entity->
-        newInstance(
-            $props,
-            $connect ?: $this->entity->getConnect(),
-            $table ?: $this->entity->getTable()
-        )->
-
-        save();
-    }
-
-    /**
      * 从模型实体中软删除数据.
      *
      * @return int
@@ -406,8 +262,6 @@ class Select
         );
 
         $this->entity->{$this->getDeletedAtColumn()} = $time = $this->entity->carbon();
-
-        $this->entity->addDate($this->getDeletedAtColumn());
 
         $this->entity->runEvent(Entity::BEFORE_SOFT_DELETE_EVENT);
 
@@ -534,7 +388,7 @@ class Select
      */
     public function getFullDeletedAtColumn()
     {
-        return $this->entity->getTable().'.'.
+        return $this->entity->table().'.'.
             $this->getDeletedAtColumn();
     }
 
@@ -566,7 +420,7 @@ class Select
 
             unset($resultCallback);
 
-            $this->entity->setSelectForQuery($select);
+            $this->entity->withSelectForQuery($select);
         } else {
             foreach (Arr::normalize($scope) as $scope) {
                 $scope = 'scope'.ucwords($scope);
@@ -583,7 +437,7 @@ class Select
 
                     unset($resultCallback);
 
-                    $this->entity->setSelectForQuery($select);
+                    $this->entity->withSelectForQuery($select);
                 }
             }
         }
@@ -780,19 +634,5 @@ class Select
             $relation->getPreLoad(),
             $name
         );
-    }
-
-    /**
-     * 尝试根据属性查找一个模型实体.
-     *
-     * @param array $props
-     *
-     * @return null|\Leevel\Database\Ddd\IEntity
-     */
-    protected function getFirstByProp(array $props)
-    {
-        if (null !== ($entity = $this->select->where($props)->findOne())) {
-            return $entity;
-        }
     }
 }

@@ -74,10 +74,10 @@ class BelongsTo extends Relation
         $maps = $this->buildMap($result);
 
         foreach ($entitys as &$value) {
-            $key = $value->getPropValue($this->sourceKey);
+            $key = $value->__get($this->sourceKey);
 
             if (isset($maps[$key])) {
-                $value->setRelationProp($relation, $maps[$key]);
+                $value->withRelationProp($relation, $maps[$key]);
             }
         }
 
@@ -129,7 +129,7 @@ class BelongsTo extends Relation
         $maps = [];
 
         foreach ($result as $entity) {
-            $maps[$entity->getPropValue($this->targetKey)] = $entity;
+            $maps[$entity->__get($this->targetKey)] = $entity;
         }
 
         return $maps;

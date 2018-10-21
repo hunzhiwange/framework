@@ -97,14 +97,14 @@ class ManyMany extends Relation
         if (static::$relationCondition) {
             $this->select->
 
-            join($this->middleEntity->getTable(), [
+            join($this->middleEntity->table(), [
                 'middle_'.$this->middleTargetKey => $this->middleTargetKey,
                 'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
-                    $this->middleTargetKey       => '{['.$this->targetEntity->getTable().'.'.$this->targetKey.']}',
+                    $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
                 ])->
 
             where(
-                $this->middleEntity->getTable().'.'.$this->middleSourceKey,
+                $this->middleEntity->table().'.'.$this->middleSourceKey,
                 $this->getSourceValue()
             )->
 
@@ -139,10 +139,10 @@ class ManyMany extends Relation
         $maps = $this->buildMap($result);
 
         foreach ($entitys as &$entity) {
-            $key = $entity->getPropValue($this->sourceKey);
+            $key = $entity->__get($this->sourceKey);
 
             if (isset($maps[$key])) {
-                $entity->setRelationProp(
+                $entity->withRelationProp(
                     $relation,
                     $this->targetEntity->collection($maps[$key])
                 );
@@ -260,7 +260,7 @@ class ManyMany extends Relation
      */
     public function getSourceKeyValue()
     {
-        return $this->sourceEntity->getPropValue($this->sourceKey);
+        return $this->sourceEntity->__get($this->sourceKey);
     }
 
     /**
