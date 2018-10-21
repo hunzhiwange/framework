@@ -23,15 +23,15 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 
 /**
- * TestCreateFillWhiteEntity.
+ * TestToArrayBlackEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.07.01
+ * @since 2018.10.21
  *
  * @version 1.0
  */
-class TestCreateFillWhiteEntity extends Entity
+class TestToArrayBlackEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -40,13 +40,16 @@ class TestCreateFillWhiteEntity extends Entity
     const AUTO = 'id';
 
     const STRUCT = [
-        'id' => [
-            'readonly' => true,
+        'id'          => [],
+        'name'        => [],
+        'description' => [
+            'show_prop_black' => true,
         ],
-        'name' => [
-            'create_fill_white' => true,
+        'address'     => [],
+        'foo_bar'     => [
+            'show_prop_black' => true,
         ],
-        'description' => [],
+        'hello'       => [],
     ];
 
     private $id;
@@ -54,6 +57,12 @@ class TestCreateFillWhiteEntity extends Entity
     private $name;
 
     private $description;
+
+    private $address;
+
+    private $fooBar;
+
+    private $hello;
 
     public function setter(string $prop, $value): void
     {

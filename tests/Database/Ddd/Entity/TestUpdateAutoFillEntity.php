@@ -56,7 +56,7 @@ class TestUpdateAutoFillEntity extends Entity
             'update_fill'    => null,
         ],
         'hello' => [
-            'auto_fill'      => null,
+            'update_fill'      => null,
         ],
     ];
 

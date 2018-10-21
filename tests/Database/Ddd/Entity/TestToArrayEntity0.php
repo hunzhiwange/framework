@@ -23,15 +23,15 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 
 /**
- * TestConstructBlackEntity.
+ * TestToArrayEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.06.30
+ * @since 2018.07.02
  *
  * @version 1.0
  */
-class TestConstructBlackEntity extends Entity
+class TestToArrayEntity0 extends Entity
 {
     const TABLE = 'test';
 
@@ -40,16 +40,25 @@ class TestConstructBlackEntity extends Entity
     const AUTO = 'id';
 
     const STRUCT = [
-        'id' => [
-            'readonly'        => true,
-            'construct_black' => true,
-        ],
-        'name' => [],
+        'id'          => [],
+        'name'        => [],
+        'description' => [],
+        'address'     => [],
+        'foo_bar'     => [],
+        'hello'       => [],
     ];
 
     private $id;
 
     private $name;
+
+    private $description;
+
+    private $address;
+
+    private $fooBar;
+
+    private $hello;
 
     public function setter(string $prop, $value): void
     {

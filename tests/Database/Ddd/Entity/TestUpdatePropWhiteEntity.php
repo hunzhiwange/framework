@@ -23,15 +23,15 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 
 /**
- * TestFillBlackEntity.
+ * TestUpdateFillWhiteEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.06.30
+ * @since 2018.07.01
  *
  * @version 1.0
  */
-class TestFillBlackEntity extends Entity
+class TestUpdatePropWhiteEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -41,10 +41,11 @@ class TestFillBlackEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly' => true,
+            'update_prop_white' => true,
+            'readonly'          => true,
         ],
         'name' => [
-            'fill_black'     => true,
+            'update_prop_white' => true,
         ],
         'description' => [],
     ];

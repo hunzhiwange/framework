@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Leevel\Database\IDatabase;
 use Leevel\Database\Manager as DatabaseManager;
+use Leevel\Database\Select as DatabaseSelect;
 
 /**
  * 数据库元对象
@@ -43,16 +45,9 @@ class Meta implements IMeta
     /**
      * meta 对象实例.
      *
-     * @var array
+     * @var \Leevel\Database\Ddd\IMeta[]
      */
     protected static $instances = [];
-
-    /**
-     * 数据库仓储.
-     *
-     * @var \Leevel\Database\IConnect
-     */
-    protected $connects;
 
     /**
      * 元对象表.
@@ -64,40 +59,39 @@ class Meta implements IMeta
     /**
      * 表连接.
      *
-     * @var mixed
+     * @var \Leevel\Database\IConnect
      */
-    protected $tableConnect;
+    protected $connect;
 
     /**
      * 构造函数
      * 禁止直接访问构造函数，只能通过 instance 生成对象
      *
-     * @param string $strTabe
-     * @param mixed  $tableConnect
+     * @param string $table
+     * @param mixed  $connect
      * @param mixed  $table
      */
-    protected function __construct($table, $tableConnect = null)
+    protected function __construct(string $table, $connect = null)
     {
         $this->table = $table;
-        $this->tableConnect = $tableConnect;
 
-        $this->initialization($table);
+        $this->connect = static::$databaseManager->connect($connect);
     }
 
     /**
      * 返回数据库元对象
      *
      * @param string $table
-     * @param mixed  $tableConnect
+     * @param mixed  $connect
      *
      * @return $this
      */
-    public static function instance($table, $tableConnect = null)
+    public static function instance(string $table, $connect = null)
     {
-        $unique = static::getUnique($table, $tableConnect);
+        $unique = static::normalizeUnique($table, $connect);
 
         if (!isset(static::$instances[$unique])) {
-            return static::$instances[$unique] = new static($table, $tableConnect);
+            return static::$instances[$unique] = new static($table, $connect);
         }
 
         return static::$instances[$unique];
@@ -151,7 +145,7 @@ class Meta implements IMeta
      *
      * @return \Leevel\Database\IDatabase
      */
-    public function getConnect()
+    public function connect(): IDatabase
     {
         return $this->connect;
     }
@@ -159,37 +153,24 @@ class Meta implements IMeta
     /**
      * 返回查询.
      *
-     * @var \Leevel\Database\IConnect
+     * @var \Leevel\Database\Select
      */
-    public function getSelect()
+    public function select(): DatabaseSelect
     {
         return $this->connect->table($this->table);
-    }
-
-    /**
-     * 初始化元对象
-     *
-     * @param string $table
-     */
-    protected function initialization($table)
-    {
-        if (!static::$databaseManager) {
-        }
-
-        $this->connect = static::$databaseManager->connect($this->tableConnect);
     }
 
     /**
      * 取得唯一值
      *
      * @param string $table
-     * @param mixed  $tableConnect
+     * @param mixed  $connect
      * @param mixed  $table
      *
      * @return string
      */
-    protected static function getUnique($table, $tableConnect = null)
+    protected static function normalizeUnique(string $table, $connect = null)
     {
-        return $table.'.'.md5(serialize($tableConnect));
+        return $table.'.'.md5(serialize($connect));
     }
 }

@@ -20,15 +20,12 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Create;
 
-use Closure;
 use Leevel\Database\Ddd\Entity;
-use Tests\Database\Ddd\Entity\TestConstructBlackEntity;
-use Tests\Database\Ddd\Entity\TestConstructWhiteEntity;
+use Tests\Database\Ddd\Entity\TestConstructPropBlackEntity;
+use Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity;
 use Tests\Database\Ddd\Entity\TestCreateAutoFillEntity;
-use Tests\Database\Ddd\Entity\TestCreateFillWhiteEntity;
+use Tests\Database\Ddd\Entity\TestCreatePropWhiteEntity;
 use Tests\Database\Ddd\Entity\TestEntity;
-use Tests\Database\Ddd\Entity\TestFillBlackEntity;
-use Tests\Database\Ddd\Entity\TestFillWhiteEntity;
 use Tests\TestCase;
 
 /**
@@ -51,15 +48,11 @@ class CreateTest extends TestCase
         $entity->name = 'foo';
 
         $this->assertSame('foo', $entity->name);
-        $this->assertSame(['name'], $entity->getCreated());
+        $this->assertSame(['name'], $entity->created());
 
-        $this->assertNull($entity->getFlush());
-        $this->assertNull($entity->getFlushData());
+        $this->assertNull($entity->flushData());
 
-        // 此时暂未写入数据库
         $entity->save();
-
-        $this->assertInstanceof(Closure::class, $entity->getFlush());
 
         $data = <<<'eot'
 [
@@ -69,33 +62,28 @@ class CreateTest extends TestCase
 ]
 eot;
 
-        // 尝试写入，接管框架提供的数据库持久层方便测试
-        $entity->setFlush(function (...$args) use ($data, $entity) {
-            $this->assertSame(
-                $data,
-                $this->varJson(
-                    $entity->getFlushData()
-                )
-            );
-
-            // 此处应该将写入数据库了，做持久化存储实体
-            // ...
-        });
-
-        $entity->flush();
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
     }
 
-    public function testConsturctBlackAndWhite()
+    public function testConsturctPropBlackAndWhite()
     {
-        $entity = new TestConstructWhiteEntity([
+        $entity = new TestConstructPropWhiteEntity([
             'id'   => 5,
             'name' => 'foo',
         ]);
 
         $this->assertSame(5, $entity->getId());
         $this->assertNull($entity->getName());
+    }
 
-        $entity = new TestConstructBlackEntity([
+    public function testConsturctPropBlackAndWhite2()
+    {
+        $entity = new TestConstructPropBlackEntity([
             'id'   => 5,
             'name' => 'foo',
         ]);
@@ -104,61 +92,9 @@ eot;
         $this->assertSame('foo', $entity->getName());
     }
 
-    public function testFillBlackAndWhite()
+    public function testCreatePropBlackAndWhite()
     {
-        $entity = new TestFillWhiteEntity([
-            'name'        => 'foo',
-            'description' => 'hello description',
-        ]);
-
-        $this->assertNull($entity->getId());
-        $this->assertSame('foo', $entity->getName());
-        $this->assertSame('hello description', $entity->getDescription());
-
-        $entity->save();
-
-        $data = <<<'eot'
-[
-    {
-        "name": "foo"
-    }
-]
-eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $entity->getFlushData()
-            )
-        );
-
-        $entity = new TestFillBlackEntity([
-            'name'        => 'foo',
-            'description' => 'hello description',
-        ]);
-
-        $entity->save();
-
-        $data = <<<'eot'
-[
-    {
-        "description": "hello description"
-    }
-]
-eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $entity->getFlushData(),
-                1
-            )
-        );
-    }
-
-    public function testCreateFillBlackAndWhite()
-    {
-        $entity = new TestCreateFillWhiteEntity([
+        $entity = new TestCreatePropWhiteEntity([
             'name'        => 'foo',
             'description' => 'hello description',
         ]);
@@ -176,7 +112,7 @@ eot;
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->getFlushData()
+                $entity->flushData()
             )
         );
     }
@@ -184,7 +120,7 @@ eot;
     public function testPropNotExist()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestEntity` field `not_exists` do not exist.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestEntity` prop or field of struct `not_exists` was not defined.');
 
         $entity = new TestEntity();
 
@@ -196,6 +132,28 @@ eot;
         $entity = new TestCreateAutoFillEntity();
 
         $entity->save();
+
+        $data = <<<'eot'
+[
+    {
+        "id": null
+    }
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testAutoFileWithAll()
+    {
+        $entity = new TestCreateAutoFillEntity();
+
+        $entity->save([], []);
 
         $data = <<<'eot'
 [
@@ -212,23 +170,21 @@ eot;
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->getFlushData()
+                $entity->flushData()
             )
         );
     }
 
-    public function testSetAutoFile()
+    public function testAutoFileWithCustomField()
     {
         $entity = new TestCreateAutoFillEntity();
 
-        $entity->autoFill(false);
-
-        $entity->save();
+        $entity->save([], ['address']);
 
         $data = <<<'eot'
 [
     {
-        "id": null
+        "address": "address is set now."
     }
 ]
 eot;
@@ -236,29 +192,7 @@ eot;
         $this->assertSame(
             $data,
             $this->varJson(
-                $entity->getFlushData()
-            )
-        );
-
-        $entity = new TestCreateAutoFillEntity();
-
-        $entity->createFill(false);
-
-        $entity->save();
-
-        $data = <<<'eot'
-[
-    {
-        "id": null
-    }
-]
-eot;
-
-        $this->assertSame(
-            $data,
-            $this->varJson(
-                $entity->getFlushData(),
-                1
+                $entity->flushData()
             )
         );
     }

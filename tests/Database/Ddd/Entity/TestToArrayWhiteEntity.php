@@ -23,15 +23,15 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 
 /**
- * TestCreateAutoFillEntity.
+ * TestToArrayWhiteEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.07.01
+ * @since 2018.10.21
  *
  * @version 1.0
  */
-class TestCreateAutoFillEntity extends Entity
+class TestToArrayWhiteEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -40,24 +40,16 @@ class TestCreateAutoFillEntity extends Entity
     const AUTO = 'id';
 
     const STRUCT = [
-        'id' => [
-            'readonly' => true,
-        ],
-        'name' => [
-            'create_fill'       => 'name for create_fill',
-        ],
+        'id'          => [],
+        'name'        => [],
         'description' => [
-            'create_fill'    => null,
+            'show_prop_white' => true,
         ],
-        'address' => [
-            'create_fill'    => null,
+        'address'     => [],
+        'foo_bar'     => [
+            'show_prop_white' => true,
         ],
-        'foo_bar' => [
-            'create_fill'    => null,
-        ],
-        'hello' => [
-            'create_fill'      => null,
-        ],
+        'hello'       => [],
     ];
 
     private $id;
@@ -80,25 +72,5 @@ class TestCreateAutoFillEntity extends Entity
     public function getter(string $prop)
     {
         return $this->{$prop};
-    }
-
-    protected function fillDescription($old): string
-    {
-        return 'set description.';
-    }
-
-    protected function fillAddress($old): string
-    {
-        return 'address is set now.';
-    }
-
-    protected function fillFooBar($old): string
-    {
-        return 'foo bar.';
-    }
-
-    protected function fillHello($old): string
-    {
-        return 'hello field.';
     }
 }

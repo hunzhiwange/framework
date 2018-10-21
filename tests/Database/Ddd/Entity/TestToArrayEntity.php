@@ -60,10 +60,6 @@ class TestToArrayEntity extends Entity
 
     private $hello;
 
-    private $append1;
-
-    private $append2;
-
     public function setter(string $prop, $value): void
     {
         $this->{$prop} = $value;
@@ -72,15 +68,5 @@ class TestToArrayEntity extends Entity
     public function getter(string $prop)
     {
         return $this->{$prop};
-    }
-
-    protected function getAppend1(): string
-    {
-        return 'append 1';
-    }
-
-    protected function getAppend2(): string
-    {
-        return 'append 2';
     }
 }

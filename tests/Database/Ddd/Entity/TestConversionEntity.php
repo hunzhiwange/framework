@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Entity;
 
+use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
+use stdClass;
 
 /**
  * TestConversionEntity.
@@ -43,178 +45,63 @@ class TestConversionEntity extends Entity
         'id' => [
             'readonly' => true,
         ],
-        'int1' => [
-            // int = integer
-            'conversion'        => 'int',
-        ],
-        'integer1' => [
-            'conversion'     => 'integer',
-        ],
-        'real1' => [
-            // real = float = double
-            'conversion'     => 'real',
-        ],
-        'float1' => [
-            'conversion'     => 'float',
-        ],
-        'double1' => [
-            'conversion'     => 'double',
-        ],
-        'string1' => [
-            // string = str
-            'conversion'     => 'string',
-        ],
-        'str1' => [
-            'conversion'     => 'str',
-        ],
-        'bool1' => [
-            // bool = boolean
-            'conversion'     => 'bool',
-        ],
-        'boolean1' => [
-            'conversion'     => 'boolean',
-        ],
-        'obj1' => [
-            // obj = object
-            'conversion'     => 'obj',
-        ],
-        'obj2' => [
-            'conversion'     => 'obj',
-        ],
-        'object1' => [
-            'conversion'     => 'object',
-        ],
-        'object2' => [
-            'conversion'     => 'object',
-        ],
-        'arr1' => [
-            // arr = array = json
-            'conversion'     => 'arr',
-        ],
-        'arr2' => [
-            'conversion'     => 'arr',
-        ],
-        'array1' => [
-            'conversion'     => 'array',
-        ],
-        'array2' => [
-            'conversion'     => 'array',
-        ],
-        'json1' => [
-            'conversion'     => 'json',
-        ],
-        'json2' => [
-            'conversion'     => 'json',
-        ],
-        'coll1' => [
-            'conversion'     => 'collection',
-        ],
-        'coll2' => [
-            'conversion'     => 'collection',
-        ],
-        'collection1' => [
-            'conversion'     => 'collection',
-        ],
-        'collection2' => [
-            'conversion'     => 'collection',
-        ],
-        'date1' => [
-            'conversion'     => 'date',
-        ],
-        'date2' => [
-            'conversion'     => 'date',
-        ],
-        'date3' => [
-            'conversion'     => 'date',
-        ],
-        'date4' => [
-            'conversion'     => 'date',
-        ],
-        'date5' => [
-            'conversion'     => 'date',
-        ],
-        'datetime1' => [
-            'conversion'     => 'datetime',
-        ],
-        'datetime2' => [
-            'conversion'     => 'datetime',
-        ],
-        'datetime3' => [
-            'conversion'     => 'datetime',
-        ],
-        'datetime4' => [
-            'conversion'     => 'datetime',
-        ],
-        'datetime5' => [
-            'conversion'     => 'datetime',
-        ],
-        'time1' => [
-            'conversion'     => 'time',
-        ],
-        'time2' => [
-            'conversion'     => 'time',
-        ],
-        'time3' => [
-            'conversion'     => 'time',
-        ],
-        'time4' => [
-            'conversion'     => 'time',
-        ],
-        'time5' => [
-            'conversion'     => 'time',
-        ],
-        'timestamp1' => [
-            'conversion'     => 'timestamp',
-        ],
-        'timestamp2' => [
-            'conversion'     => 'timestamp',
-        ],
-        'timestamp3' => [
-            'conversion'     => 'timestamp',
-        ],
-        'timestamp4' => [
-            'conversion'     => 'timestamp',
-        ],
-        'timestamp5' => [
-            'conversion'     => 'timestamp',
-        ],
+        'int1'    => [],
+        'int2'    => [],
+        'float1'  => [],
+        'float2'  => [],
+        'float3'  => [],
+        'string1' => [],
+        'string2' => [],
+        'bool1'   => [],
+        'bool2'   => [],
+        'bool3'   => [],
+        'bool4'   => [],
+        'obj1'    => [],
+        'obj2'    => [],
+        'obj3'    => [],
+        'arr1'    => [],
+        'arr2'    => [],
+        'json1'   => [],
+        'json2'   => [],
+        'coll1'   => [],
+        'coll2'   => [],
     ];
 
     private $id;
 
     private $int1;
 
-    private $integer1;
+    private $int2;
 
-    private $real1;
+    private $int3;
 
     private $float1;
 
-    private $double1;
+    private $float2;
+
+    private $float3;
 
     private $string1;
 
-    private $str1;
+    private $string2;
 
     private $bool1;
 
-    private $boolean1;
+    private $bool2;
+
+    private $bool3;
+
+    private $bool4;
 
     private $obj1;
 
     private $obj2;
 
-    private $object1;
-
-    private $object2;
+    private $obj3;
 
     private $arr1;
 
     private $arr2;
-
-    private $array1;
-
-    private $array2;
 
     private $json1;
 
@@ -224,49 +111,206 @@ class TestConversionEntity extends Entity
 
     private $coll2;
 
-    private $collection1;
+    public function setInt1($value)
+    {
+        $this->int1 = (int) $value;
+    }
 
-    private $collection2;
+    public function getInt1(): int
+    {
+        return $this->int1 + 1;
+    }
 
-    private $date1;
+    public function setInt2(int $value)
+    {
+        $this->int2 = $value;
+    }
 
-    private $date2;
+    public function getInt2(): int
+    {
+        return $this->int2;
+    }
 
-    private $date3;
+    public function setFloat1($value)
+    {
+        $this->float1 = (float) $value;
+    }
 
-    private $date4;
+    public function getFloat1(): float
+    {
+        return $this->float1 + 1;
+    }
 
-    private $date5;
+    public function setFloat2(float $value)
+    {
+        $this->float2 = $value;
+    }
 
-    private $datetime1;
+    public function getFloat2(): float
+    {
+        return $this->float2;
+    }
 
-    private $datetime2;
+    public function setFloat3(float $value)
+    {
+        $this->float3 = $value;
+    }
 
-    private $datetime3;
+    public function getFloat3(): float
+    {
+        return $this->float3;
+    }
 
-    private $datetime4;
+    public function setString1($value)
+    {
+        $this->string1 = (string) $value;
+    }
 
-    private $datetime5;
+    public function getString1(): string
+    {
+        return $this->string1;
+    }
 
-    private $time1;
+    public function setString2(string $value)
+    {
+        $this->string2 = $value;
+    }
 
-    private $time2;
+    public function getString2(): string
+    {
+        return $this->string2;
+    }
 
-    private $time3;
+    public function setBool1($value)
+    {
+        $this->bool1 = (bool) $value;
+    }
 
-    private $time4;
+    public function getBool1(): bool
+    {
+        return $this->bool1;
+    }
 
-    private $time5;
+    public function setBool2($value)
+    {
+        $this->bool2 = (bool) $value;
+    }
 
-    private $timestamp1;
+    public function getBool2(): bool
+    {
+        return $this->bool2;
+    }
 
-    private $timestamp2;
+    public function setBool3(bool $value)
+    {
+        $this->bool3 = $value;
+    }
 
-    private $timestamp3;
+    public function getBool3(): bool
+    {
+        return $this->bool3;
+    }
 
-    private $timestamp4;
+    public function setBool4(bool $value)
+    {
+        $this->bool4 = $value;
+    }
 
-    private $timestamp5;
+    public function getBool4(): bool
+    {
+        return $this->bool4;
+    }
+
+    public function setObj1($value)
+    {
+        $this->obj1 = json_encode($value, JSON_FORCE_OBJECT);
+    }
+
+    public function getObj1(): stdClass
+    {
+        return json_decode($this->obj1);
+    }
+
+    public function setObj2(string $value)
+    {
+        $value = json_decode($value, true);
+        $this->obj2 = json_encode($value, JSON_FORCE_OBJECT);
+    }
+
+    public function getObj2(): stdClass
+    {
+        return json_decode($this->obj2);
+    }
+
+    public function setObj3(stdClass $value)
+    {
+        $this->obj3 = json_encode($value);
+    }
+
+    public function getObj3(): stdClass
+    {
+        return json_decode($this->obj3);
+    }
+
+    public function setArr1(array $value)
+    {
+        $this->arr1 = json_encode($value);
+    }
+
+    public function getArr1(): array
+    {
+        return json_decode($this->arr1, true);
+    }
+
+    public function setArr2(string $value)
+    {
+        $this->arr2 = $value;
+    }
+
+    public function getArr2(): array
+    {
+        return json_decode($this->arr2, true);
+    }
+
+    public function setJson1(array $value)
+    {
+        $this->json1 = json_encode($value);
+    }
+
+    public function getJson1(): array
+    {
+        return json_decode($this->json1, true);
+    }
+
+    public function setJson2(string $value)
+    {
+        $this->json2 = $value;
+    }
+
+    public function getJson2(): array
+    {
+        return json_decode($this->json2, true);
+    }
+
+    public function setColl1(string $value)
+    {
+        $this->coll1 = $value;
+    }
+
+    public function getColl1(): Collection
+    {
+        return new Collection(json_decode($this->coll1, true));
+    }
+
+    public function setColl2(array $value)
+    {
+        $this->coll2 = json_encode($value);
+    }
+
+    public function getColl2(): Collection
+    {
+        return new Collection(json_decode($this->coll2, true));
+    }
 
     public function setter(string $prop, $value): void
     {

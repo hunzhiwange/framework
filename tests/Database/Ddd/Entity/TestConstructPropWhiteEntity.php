@@ -23,7 +23,7 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 
 /**
- * TestFillWhiteEntity.
+ * TestConstructPropWhiteEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Leevel\Database\Ddd\Entity;
  *
  * @version 1.0
  */
-class TestFillWhiteEntity extends Entity
+class TestConstructPropWhiteEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -41,20 +41,15 @@ class TestFillWhiteEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'       => true,
-            'fill_white'     => true,
+            'readonly'             => true,
+            'construct_prop_white' => true,
         ],
-        'name' => [
-            'fill_white'     => true,
-        ],
-        'description' => [],
+        'name' => [],
     ];
 
     private $id;
 
     private $name;
-
-    private $description;
 
     public function setter(string $prop, $value): void
     {

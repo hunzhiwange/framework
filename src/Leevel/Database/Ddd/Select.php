@@ -258,7 +258,7 @@ class Select
     public function softDelete()
     {
         $select = $this->select->where(
-            $this->entity->getKeyConditionForQuery()
+            $this->entity->idCondition()
         );
 
         $this->entity->{$this->getDeletedAtColumn()} = $time = $this->entity->carbon();
