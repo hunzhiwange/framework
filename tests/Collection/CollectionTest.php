@@ -236,7 +236,7 @@ class TestIArray implements IArray
 
 class TestIJson implements IJson
 {
-    public function toJson($option = JSON_UNESCAPED_UNICODE)
+    public function toJson(int $option = JSON_UNESCAPED_UNICODE)
     {
         return json_encode([
             'hello',

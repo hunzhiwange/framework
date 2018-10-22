@@ -724,9 +724,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $middleTargetKey
      * @param string $middleSourceKey
      *
-     * @return \Leevel\Database\Ddd\Relation\HasMany
+     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
-    public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey): HasMany
+    public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey): ManyMany
     {
         $entity = new $relatedEntityClass();
         $middleEntity = new $middleEntityClass();

@@ -41,10 +41,10 @@ class DefineEntityTest extends TestCase
 
         $this->assertInstanceof(Entity::class, $entity);
 
-        $this->assertSame(TestEntity::STRUCT, $entity->getField());
-        $this->assertSame(TestEntity::TABLE, $entity->getTable());
-        $this->assertSame((array) TestEntity::ID, $entity->getPrimaryKeyNameSource());
-        $this->assertSame(TestEntity::AUTO, $entity->getAutoIncrement());
+        $this->assertSame(TestEntity::STRUCT, $entity->fields());
+        $this->assertSame(TestEntity::TABLE, $entity->table());
+        $this->assertSame((array) TestEntity::ID, $entity->primaryKeys());
+        $this->assertSame(TestEntity::AUTO, $entity->autoIncrement());
     }
 
     public function testConstDefined()

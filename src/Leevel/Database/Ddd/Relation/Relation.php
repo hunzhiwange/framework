@@ -260,6 +260,6 @@ abstract class Relation
      */
     protected function getSelectFromEntity()
     {
-        $this->select = $this->targetEntity->getClassCollectionQuery();
+        $this->select = $this->targetEntity->select();
     }
 }
