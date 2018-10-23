@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Relation;
 
+use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Meta;
+use Leevel\Database\Ddd\Relation\HasOne;
+use Leevel\Database\Ddd\Select;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
 use Tests\Database\Query\Query;
@@ -106,6 +109,81 @@ class HasOneTest extends TestCase
         $this->assertSame('I am content with big data.', $postContent->content);
         $this->assertSame('I am content with big data.', $postContent['content']);
         $this->assertSame('I am content with big data.', $postContent->getContent());
+
+        $this->truncate('post');
+        $this->truncate('post_content');
+    }
+
+    public function testEager()
+    {
+        $post = Post::where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i <= 5; $i++) {
+            $this->assertSame((string) ($i + 1), $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'Say hello to the world.',
+            ]));
+
+            $this->assertSame('0', $connect->
+            table('post_content')->
+            insert([
+                'post_id' => $i + 1,
+                'content' => 'I am content with big data.',
+            ]));
+        }
+
+        $posts = Post::eager(['post_content'])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertSame(6, count($posts));
+
+        foreach ($posts as $value) {
+            $postContent = $value->postContent;
+
+            $this->assertInstanceof(PostContent::class, $postContent);
+            $this->assertSame($value->id, $postContent->postId);
+            $this->assertSame('I am content with big data.', $postContent->content);
+        }
+
+        $this->truncate('post');
+        $this->truncate('post_content');
+    }
+
+    public function testRelationAsMethod()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'Say hello to the world.',
+        ]));
+
+        $this->assertSame('0', $connect->
+        table('post_content')->
+        insert([
+            'post_id' => 1,
+            'content' => 'I am content with big data.',
+        ]));
+
+        $postContentRelation = Post::postContent();
+
+        $this->assertInstanceof(HasOne::class, $postContentRelation);
+        $this->assertSame('id', $postContentRelation->getSourceKey());
+        $this->assertSame('post_id', $postContentRelation->getTargetKey());
+        $this->assertInstanceof(Post::class, $postContentRelation->getSourceEntity());
+        $this->assertInstanceof(PostContent::class, $postContentRelation->getTargetEntity());
+        $this->assertInstanceof(Select::class, $postContentRelation->getSelect());
 
         $this->truncate('post');
         $this->truncate('post_content');

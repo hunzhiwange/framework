@@ -50,7 +50,6 @@ class User extends Entity
             'target_key'        => 'id',
             'middle_source_key' => 'user_id',
             'middle_target_key' => 'role_id',
-            self::SCOPE         => 'role',
         ],
     ];
 
@@ -70,10 +69,5 @@ class User extends Entity
     public function getter(string $prop)
     {
         return $this->{$prop};
-    }
-
-    public function scopeRole($select)
-    {
-        $select->pageLimit(2);
     }
 }

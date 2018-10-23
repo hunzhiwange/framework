@@ -21,9 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Closure;
-use Exception;
+use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体基类.
@@ -39,7 +40,7 @@ abstract class Relation
     /**
      * 查询对象
      *
-     * @var \Leevel\Database\Select
+     * @var \Leevel\Database\Ddd\Select
      */
     protected $select;
 
@@ -86,7 +87,7 @@ abstract class Relation
      * @param string                       $targetKey
      * @param string                       $sourceKey
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, $targetKey, $sourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey)
     {
         $this->targetEntity = $targetEntity;
         $this->sourceEntity = $sourceEntity;
@@ -119,9 +120,9 @@ abstract class Relation
     /**
      * 返回查询.
      *
-     * @return \Leevel\Database\Select
+     * @return \Leevel\Database\Ddd\Select
      */
-    public function getSelect()
+    public function getSelect(): Select
     {
         return $this->select;
     }
@@ -129,11 +130,11 @@ abstract class Relation
     /**
      * 取得预载入关联模型实体.
      *
-     * @return \Leevel\Collection\Collection
+     * @return mixed
      */
     public function getPreLoad()
     {
-        return $this->querySelelct()->
+        return $this->targetEntity->select()->
         preLoadResult(
             $this->findAll()
         );
@@ -144,7 +145,7 @@ abstract class Relation
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function getTargetEntity()
+    public function getTargetEntity(): IEntity
     {
         return $this->targetEntity;
     }
@@ -154,7 +155,7 @@ abstract class Relation
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function getSourceEntity()
+    public function getSourceEntity(): IEntity
     {
         return $this->sourceEntity;
     }
@@ -164,7 +165,7 @@ abstract class Relation
      *
      * @return string
      */
-    public function getTargetKey()
+    public function getTargetKey(): string
     {
         return $this->targetKey;
     }
@@ -174,7 +175,7 @@ abstract class Relation
      *
      * @return string
      */
-    public function getSourceKey()
+    public function getSourceKey(): string
     {
         return $this->sourceKey;
     }
@@ -184,9 +185,9 @@ abstract class Relation
      *
      * @param \Closure $returnRelation
      *
-     * @return \leevel\Mvc\Relation\Relation
+     * @return \Leevel\Database\Ddd\Relation\Relation
      */
-    public static function withoutRelationCondition(Closure $returnRelation)
+    public static function withoutRelationCondition(Closure $returnRelation): self
     {
         $old = static::$relationCondition;
         static::$relationCondition = false;
@@ -194,7 +195,7 @@ abstract class Relation
         $relation = call_user_func($returnRelation);
 
         if (!($relation instanceof self)) {
-            throw new Exception('The result must be relation.');
+            throw new InvalidArgumentException('The result must be relation.');
         }
 
         static::$relationCondition = $old;
@@ -223,7 +224,7 @@ abstract class Relation
      *
      * @return array
      */
-    abstract public function matchPreLoad(array $entitys, collection $result, $relation);
+    abstract public function matchPreLoad(array $entitys, collection $result, string $relation): array;
 
     /**
      * 查询关联对象
@@ -240,7 +241,7 @@ abstract class Relation
      *
      * @return array
      */
-    protected function getEntityKey(array $entitys, $key = null)
+    protected function getEntityKey(array $entitys, ?string $key = null): array
     {
         return array_unique(
             array_values(
@@ -255,8 +256,6 @@ abstract class Relation
 
     /**
      * 从模型实体返回查询.
-     *
-     * @return \Leevel\Database\Select
      */
     protected function getSelectFromEntity()
     {

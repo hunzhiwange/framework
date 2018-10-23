@@ -35,13 +35,6 @@ use Leevel\Database\Ddd\IEntity;
 class ManyMany extends Relation
 {
     /**
-     * 中间表查询对象
-     *
-     * @var \Leevel\Database\Select
-     */
-    protected $middleSelect;
-
-    /**
      * 中间表模型实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
@@ -61,13 +54,6 @@ class ManyMany extends Relation
      * @var string
      */
     protected $middleSourceKey;
-
-    /**
-     * 中间表隐射数据.
-     *
-     * @var array
-     */
-    protected $middleMaps = [];
 
     /**
      * 构造函数.
@@ -121,8 +107,22 @@ class ManyMany extends Relation
      */
     public function preLoadCondition(array $entitys)
     {
-        $this->preLoadRelationCondition($entitys);
-        $this->parseSelectCondition();
+        $this->select->
+
+        join($this->middleEntity->table(), [
+            'middle_'.$this->middleTargetKey => $this->middleTargetKey,
+            'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
+                $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
+            ])->
+
+        whereIn(
+            $this->middleEntity->table().'.'.$this->middleSourceKey,
+            $this->getPreLoadSourceValue($entitys)
+        )->
+
+        asDefault()->
+
+        asCollection(false);
     }
 
     /**
@@ -134,11 +134,11 @@ class ManyMany extends Relation
      *
      * @return array
      */
-    public function matchPreLoad(array $entitys, collection $result, $relation)
+    public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
 
-        foreach ($entitys as &$entity) {
+        foreach ($entitys as $entity) {
             $key = $entity->__get($this->sourceKey);
 
             if (isset($maps[$key])) {
@@ -195,7 +195,7 @@ class ManyMany extends Relation
 
             $targetEntity = new $targetClass($value);
 
-            $targetEntity->leevelMiddle = $middleEnity;
+            $targetEntity->withMiddle($middleEnity);
 
             $result[] = $targetEntity;
         }
@@ -204,13 +204,16 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得中间表查询对象
+     * 取得预载入关联模型实体.
      *
-     * @return \Leevel\Database\Select
+     * @return mixed
      */
-    public function getMiddleSelect()
+    public function getPreLoad()
     {
-        return $this->middleSelect;
+        return $this->targetEntity->select()->
+        preLoadResult(
+            $this->sourceQuery()
+        );
     }
 
     /**
@@ -218,7 +221,7 @@ class ManyMany extends Relation
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function getMiddleEntity()
+    public function getMiddleEntity(): IEntity
     {
         return $this->middleEntity;
     }
@@ -228,7 +231,7 @@ class ManyMany extends Relation
      *
      * @return string
      */
-    public function getTargetKey()
+    public function getMiddleTargetKey(): string
     {
         return $this->middleTargetKey;
     }
@@ -238,19 +241,9 @@ class ManyMany extends Relation
      *
      * @return string
      */
-    public function getSourceKey()
+    public function getMiddleSourceKey(): string
     {
         return $this->middleSourceKey;
-    }
-
-    /**
-     * 取得中间表隐射数据.
-     *
-     * @return array
-     */
-    public function getMiddleMap()
-    {
-        return $this->middleMaps;
     }
 
     /**
@@ -264,16 +257,6 @@ class ManyMany extends Relation
     }
 
     /**
-     * 预载入关联基础查询条件.
-     */
-    protected function preLoadRelationCondition(array $entitys)
-    {
-        $this->middleSelect = $this->middleEntity->whereIn(
-            $this->middleSourceKey, $this->getPreLoadSourceValue($entitys)
-        );
-    }
-
-    /**
      * 取回源模型实体对应数据.
      *
      * @return mixed
@@ -283,7 +266,7 @@ class ManyMany extends Relation
         $arr = [];
 
         foreach ($entitys as $sourceEntity) {
-            $arr[] = $sourceEntity->{$this->sourceKey};
+            $arr[] = $sourceEntity->__get($this->sourceKey);
         }
 
         return $arr;
@@ -296,18 +279,12 @@ class ManyMany extends Relation
      *
      * @return array
      */
-    protected function buildMap(Collection $result)
+    protected function buildMap(Collection $result): array
     {
         $maps = [];
 
         foreach ($result as $entity) {
-            $key = $entity->__get($this->targetKey);
-
-            if (isset($this->middleMaps[$key])) {
-                foreach ($this->middleMaps[$key] as $value) {
-                    $maps[$value][] = $entity;
-                }
-            }
+            $maps[$entity->middle()->__get($this->middleSourceKey)][] = $entity;
         }
 
         return $maps;

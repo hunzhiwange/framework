@@ -169,7 +169,7 @@ class Meta implements IMeta
      *
      * @return string
      */
-    protected static function normalizeUnique(string $table, $connect = null)
+    protected static function normalizeUnique(string $table, $connect = null): string
     {
         return $table.'.'.md5(serialize($connect));
     }

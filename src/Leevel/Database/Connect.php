@@ -243,7 +243,7 @@ abstract class Connect
         // 预处理
         $this->pdoStatement = $this->getPdo($master)->prepare($sql);
 
-        //dump($sql);
+        dump($sql);
 
         // 参数绑定
         $this->bindParams($bindParams);

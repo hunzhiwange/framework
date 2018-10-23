@@ -52,7 +52,7 @@ class HasOne extends HasMany
      *
      * @return array
      */
-    public function matchPreLoad(array $entitys, Collection $result, $relation)
+    public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
         return $this->matchPreLoadOneOrMany($entitys, $result, $relation, 'one');
     }

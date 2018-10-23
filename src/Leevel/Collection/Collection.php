@@ -21,9 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Collection;
 
 use ArrayAccess;
+use ArrayIterator;
 use Countable;
 use InvalidArgumentException;
-use Iterator;
+use IteratorAggregate;
 use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -39,7 +40,7 @@ use Leevel\Support\Type;
  *
  * @version 1.0
  */
-class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, JsonSerializable
+class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Countable, JsonSerializable
 {
     use TMacro;
 
@@ -179,6 +180,16 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     public function valid()
     {
         return $this->valid;
+    }
+
+    /**
+     * 实现 IteratorAggregate::getIterator.
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator(): ArrayIterator
+    {
+        return new ArrayIterator($this->elements);
     }
 
     /**

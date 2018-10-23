@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use Exception;
+use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Select as DatabaseSelect;
@@ -68,6 +68,8 @@ class Select
     public function __construct(IEntity $entity)
     {
         $this->entity = $entity;
+
+        $this->select = $this->entity->selectReal();
     }
 
     /**
@@ -80,20 +82,15 @@ class Select
      */
     public function __call(string $method, array $args)
     {
-        if (method_exists($this->select, $method)) {
-            $result = $this->select->{$method}(...$args);
+        $result = $this->select->{$method}(...$args);
 
-            $result = $this->preLoadResult($result);
-
-            return $result;
+        if ($result instanceof DatabaseSelect) {
+            return $this;
         }
 
-        throw new Exception(
-            sprintf(
-                'Select do not implement magic method %s.',
-                $method
-            )
-        );
+        $result = $this->preLoadResult($result);
+
+        return $result;
     }
 
     /**
@@ -109,40 +106,14 @@ class Select
     }
 
     /**
-     * 占位符返回本对象
-     *
-     * @return $this
-     */
-    public function querySelelct()
-    {
-        return $this;
-    }
-
-    /**
-     * 注册查询.
-     *
-     * @param \Leevel\Database\Select $select
-     */
-    public function registerSelect(DatabaseSelect $select)
-    {
-        $this->select = $select;
-
-        return $this;
-    }
-
-    /**
      * 添加预载入的关联.
      *
-     * @param mixed $relation
+     * @param array $relation
      *
      * @return $this
      */
-    public function with($relation)
+    public function eager(array $relation)
     {
-        if (is_string($relation)) {
-            $relation = func_get_args();
-        }
-
         $this->preLoads = array_merge(
             $this->preLoads,
             $this->parseWithRelation($relation)
@@ -369,9 +340,9 @@ class Select
         }
 
         if (!$this->entity->hasField($deleteAt)) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 sprintf(
-                    'Entity %s do not have soft delete field [%s]',
+                    'Entity %s do not have soft delete field [%s].',
                     get_class($this->entity),
                     $deleteAt
                 )
@@ -388,8 +359,7 @@ class Select
      */
     public function getFullDeletedAtColumn()
     {
-        return $this->entity->table().'.'.
-            $this->getDeletedAtColumn();
+        return $this->entity->table().'.'.$this->getDeletedAtColumn();
     }
 
     /**
@@ -454,15 +424,11 @@ class Select
      *
      * @return array
      */
-    protected function preLoadRelation(array $entitys)
+    protected function preLoadRelation(array $entitys): array
     {
         foreach ($this->preLoads as $name => $condition) {
             if (false === strpos($name, '.')) {
-                $entitys = $this->loadRelation(
-                    $entitys,
-                    $name,
-                    $condition
-                );
+                $entitys = $this->loadRelation($entitys, $name, $condition);
             }
         }
 
@@ -473,11 +439,10 @@ class Select
      * 取得关联模型实体.
      *
      * @param string $name
-     * @param mixed  $name
      *
-     * @return \leevel\Mvc\Relation\Relation
+     * @return \leevel\Database\Ddd\Relation\Relation
      */
-    protected function getRelation($name)
+    protected function getRelation(string $name): Relation
     {
         $relation = Relation::withoutRelationCondition(function () use ($name) {
             return $this->entity->{$name}();
@@ -486,7 +451,7 @@ class Select
         $nested = $this->nestedRelation($name);
 
         if (count($nested) > 0) {
-            $relation->getSelect()->with($nested);
+            $relation->select()->eager($nested);
         }
 
         return $relation;
@@ -499,7 +464,7 @@ class Select
      *
      * @return array
      */
-    protected function nestedRelation($relation)
+    protected function nestedRelation(string $relation): array
     {
         $nested = [];
 
@@ -522,8 +487,7 @@ class Select
      */
     protected function isNested($name, $relation)
     {
-        return Str::contains($name, '.') &&
-            Str::startsWith($name, $relation.'.');
+        return Str::contains($name, '.') && Str::startsWith($name, $relation.'.');
     }
 
     /**
@@ -598,7 +562,7 @@ class Select
 
             $result = $arr;
             $type = 'collection';
-        } elseif ($result instanceof IEntity) {
+        } elseif (is_object($result) && $result instanceof IEntity) {
             $result = [
                 $result,
             ];
@@ -617,11 +581,11 @@ class Select
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
      * @param string                         $name
-     * @param callable                       $condition
+     * @param \Closure                       $condition
      *
      * @return array
      */
-    protected function loadRelation(array $entitys, $name, callable $condition)
+    protected function loadRelation(array $entitys, $name, Closure $condition)
     {
         $relation = $this->getRelation($name);
 
@@ -629,10 +593,6 @@ class Select
 
         call_user_func($condition, $relation);
 
-        return $relation->matchPreLoad(
-            $entitys,
-            $relation->getPreLoad(),
-            $name
-        );
+        return $relation->matchPreLoad($entitys, $relation->getPreLoad(), $name);
     }
 }

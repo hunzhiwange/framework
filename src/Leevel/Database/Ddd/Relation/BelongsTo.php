@@ -42,7 +42,7 @@ class BelongsTo extends Relation
      * @param string                       $targetKey
      * @param string                       $sourceKey
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, $targetKey, $sourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey)
     {
         parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
     }
@@ -69,11 +69,11 @@ class BelongsTo extends Relation
      *
      * @return array
      */
-    public function matchPreLoad(array $entitys, Collection $result, $relation)
+    public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
 
-        foreach ($entitys as &$value) {
+        foreach ($entitys as $value) {
             $key = $value->__get($this->sourceKey);
 
             if (isset($maps[$key])) {
@@ -124,7 +124,7 @@ class BelongsTo extends Relation
      *
      * @return array
      */
-    protected function buildMap(Collection $result)
+    protected function buildMap(Collection $result): array
     {
         $maps = [];
 
@@ -142,12 +142,12 @@ class BelongsTo extends Relation
      *
      * @return array
      */
-    protected function getPreLoadEntityValue(array $entitys)
+    protected function getPreLoadEntityValue(array $entitys): array
     {
         $arr = [];
 
         foreach ($entitys as $value) {
-            if (null !== ($tmp = $value->getProp($this->sourceKey))) {
+            if (null !== ($tmp = $value->__get($this->sourceKey))) {
                 $arr[] = $tmp;
             }
         }

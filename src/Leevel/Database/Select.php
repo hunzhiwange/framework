@@ -53,13 +53,6 @@ class Select
     protected $connect;
 
     /**
-     * 额外的查询扩展.
-     *
-     * @var object
-     */
-    //protected $callSelect;
-
-    /**
      * 查询条件.
      *
      * @var \Leevel\Database\Condition
@@ -202,17 +195,12 @@ class Select
         }
 
         // 查询组件
-        //if (!$this->callSelect) {
         throw new InvalidArgumentException(
-                sprintf(
-                    'Select do not implement magic method %s.',
-                    $method
-                )
-            );
-        //}
-
-        // 调用事件
-        // return $this->callSelect->{$method}(...$args);
+            sprintf(
+                'Select do not implement magic method %s.',
+                $method
+            )
+        );
     }
 
     /**
@@ -244,24 +232,6 @@ class Select
     {
         return $this;
     }
-
-    /**
-     * 注册额外的查询扩展.
-     *
-     * @param object $callSelect
-     *
-     * @return $this
-     */
-    // public function registerCallSelect($callSelect)
-    // {
-    //     $this->callSelect = $callSelect;
-    //
-    //     if (method_exists($this->callSelect, 'registerSelect')) {
-    //         $this->callSelect->registerSelect($this);
-    //     }
-    //
-    //     return $this;
-    // }
 
     /**
      * 指定返回 SQL 不做任何操作.

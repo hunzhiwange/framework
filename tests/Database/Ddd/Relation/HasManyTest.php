@@ -22,6 +22,8 @@ namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Meta;
+use Leevel\Database\Ddd\Relation\HasMany;
+use Leevel\Database\Ddd\Select;
 use Tests\Database\Ddd\Entity\Relation\Comment;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Query\Query;
@@ -123,6 +125,111 @@ class HasManyTest extends TestCase
         }
 
         $this->assertSame(6, count($comment));
+
+        $this->truncate('post');
+        $this->truncate('comment');
+    }
+
+    public function testEager()
+    {
+        $post = Post::where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'Say hello to the world.',
+        ]));
+
+        $this->assertSame('2', $connect->
+        table('post')->
+        insert([
+            'title'   => 'foo bar',
+            'user_id' => 1,
+            'summary' => 'Say foo to the bar.',
+        ]));
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('comment')->
+            insert([
+                'title'   => 'niu'.($i + 1),
+                'post_id' => 1,
+                'content' => 'Comment data.'.($i + 1),
+            ]);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('comment')->
+            insert([
+                'title'   => 'niu'.($i + 1),
+                'post_id' => 2,
+                'content' => 'Comment data.'.($i + 1),
+            ]);
+        }
+
+        $posts = Post::eager(['comment'])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertSame(2, count($posts));
+
+        $min = 5;
+
+        foreach ($posts as $k => $value) {
+            $comments = $value->comment;
+
+            $this->assertInstanceof(Collection::class, $comments);
+            $this->assertSame(0 === $k ? 6 : 10, count($comments));
+
+            foreach ($comments as $comment) {
+                $this->assertInstanceof(Comment::class, $comment);
+                $this->assertSame((string) $min, $comment->id);
+
+                $min++;
+            }
+        }
+
+        $this->truncate('post');
+        $this->truncate('comment');
+    }
+
+    public function testRelationAsMethod()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'Say hello to the world.',
+        ]));
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('comment')->
+            insert([
+                'title'   => 'niu'.($i + 1),
+                'post_id' => 1,
+                'content' => 'Comment data.'.($i + 1),
+            ]);
+        }
+
+        $commentRelation = Post::comment();
+
+        $this->assertInstanceof(HasMany::class, $commentRelation);
+        $this->assertSame('id', $commentRelation->getSourceKey());
+        $this->assertSame('post_id', $commentRelation->getTargetKey());
+        $this->assertInstanceof(Post::class, $commentRelation->getSourceEntity());
+        $this->assertInstanceof(Comment::class, $commentRelation->getTargetEntity());
+        $this->assertInstanceof(Select::class, $commentRelation->getSelect());
 
         $this->truncate('post');
         $this->truncate('comment');

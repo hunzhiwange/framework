@@ -248,7 +248,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->elements);
     }

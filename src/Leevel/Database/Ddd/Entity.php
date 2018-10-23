@@ -29,6 +29,7 @@ use Leevel\Database\Ddd\Relation\HasMany;
 use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Relation\ManyMany;
 use Leevel\Database\Ddd\Relation\Relation;
+use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -47,13 +48,6 @@ use Leevel\Support\Str;
  */
 abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, ArrayAccess
 {
-    /**
-     * 中间件实体.
-     *
-     * @var \Leevel\Database\Ddd\Entity
-     */
-    public $leevelMiddle;
-
     /**
      * 此模型实体的连接名称.
      *
@@ -108,11 +102,25 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     ];
 
     /**
-     * 查询 select.
+     * 持久化基础层
      *
-     * @var \Leevel\Database\Select
+     * @var \Closure
      */
-    protected $leevelSelectForQuery;
+    protected $leevelFlush;
+
+    /**
+     * 即将持久化数据.
+     *
+     * @var array
+     */
+    protected $leevelFlushData;
+
+    /**
+     * 多对多关联中间实体.
+     *
+     * @var \Leevel\Database\Ddd\Entity
+     */
+    protected $leevelRelationMiddle;
 
     /**
      * 模型实体事件处理器.
@@ -134,27 +142,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @var array
      */
     protected static $leevelUnCamelizeProp = [];
-
-    /**
-     * 最后插入记录或者响应记录.
-     *
-     * @var mixed
-     */
-    protected $leevelLastResult;
-
-    /**
-     * 持久化基础层
-     *
-     * @var \Closure
-     */
-    protected $leevelFlush;
-
-    /**
-     * 即将持久化数据.
-     *
-     * @var array
-     */
-    protected $leevelFlushData;
 
     /**
      * 构造函数.
@@ -253,38 +240,36 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function __call(string $method, array $args)
     {
-        // get
+        // getter
         if (0 === strpos($method, 'get')) {
             if (!method_exists($this, 'getter')) {
                 throw new InvalidArgumentException(
-                    sprintf(
-                        'The entity `%s` `%s` method was not defined.',
-                        static::class,
-                        'getter'
-                    )
+                    sprintf('The entity `%s` `%s` method was not defined.', static::class, 'getter')
                 );
             }
 
             return $this->getter(lcfirst(substr($method, 3)));
         }
 
-        // set
+        // setter
         if (0 === strpos($method, 'set')) {
             if (!method_exists($this, 'setter')) {
                 throw new InvalidArgumentException(
-                    sprintf(
-                        'The entity `%s` `%s` method was not defined.',
-                        static::class,
-                        'setter'
-                    )
+                    sprintf('The entity `%s` `%s` method was not defined.', static::class, 'setter')
                 );
             }
 
             return $this->setter(lcfirst(substr($method, 3)), $args[0] ?? null);
         }
 
-        if (isset(static::STRUCT[$method])) {
-            return $this->loadRelation($method, true);
+        // relation
+        try {
+            $unCamelize = $this->normalizeUnCamelizeProp($method);
+
+            if ($this->isRelation($unCamelize)) {
+                return $this->loadRelation($unCamelize, true);
+            }
+        } catch (InvalidArgumentException $e) {
         }
 
         // 作用域
@@ -389,16 +374,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->saveEntry('replace', $data, $fill);
 
         return $this;
-    }
-
-    /**
-     * 返回最后插入记录或者响应记录.
-     *
-     * @return mixed
-     */
-    public function lastResult()
-    {
-        return $this->leevelLastResult;
     }
 
     /**
@@ -647,14 +622,31 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param array $relation
      *
-     * @return \Leevel\Database\Ddd\select
+     * @return \Leevel\Database\Ddd\Select
      */
-    public static function with(array $relation)
+    public static function eager(array $relation): Select
     {
-        return (new static())->
-        select()->
+        return (new static())->select()->eager($relation);
+    }
 
-        with($relation);
+    /**
+     * 设置多对多中间实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $middle
+     */
+    public function withMiddle(IEntity $middle): void
+    {
+        $this->leevelRelationMiddle = $middle;
+    }
+
+    /**
+     * 获取多对多中间实体.
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function middle(): ?IEntity
+    {
+        return $this->leevelRelationMiddle;
     }
 
     /**
@@ -1096,35 +1088,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 设置查询 select.
-     *
-     * @param mixed $selectForQuery
-     *
-     * @return $this
-     */
-    public function withSelectForQuery($selectForQuery)
-    {
-        $this->leevelSelectForQuery = $selectForQuery;
-
-        return $this;
-    }
-
-    /**
-     * 查询 select.
+     * 返回数据库查询集合对象
      *
      * @return \Leevel\Database\Select
      */
-    public function selectForQuery()
-    {
-        return $this->leevelSelectForQuery;
-    }
-
-    /**
-     * 返回数据库查询集合对象
-     *
-     * @return \Leevel\Database\IConnect
-     */
-    public function selectSource()
+    public function selectReal(): DatabaseSelect
     {
         return $this->meta()->
         select()->
@@ -1137,11 +1105,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 返回数据库查询集合对象
      *
-     * @return \Leevel\Database\IConnect
+     * @return \Leevel\Database\Ddd\Select
      */
-    public function select()
+    public function select(): Select
     {
-        return $this->selectForQuery() ?: $this->selectSource();
+        return new Select($this);
     }
 
     /**
@@ -1301,8 +1269,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $this->clearChanged();
 
             $this->runEvent(static::AFTER_CREATE_EVENT, $saveData);
-
-            return $this->leevelLastResult = $lastInsertId;
         };
 
         $this->leevelFlushData = [$saveData];
@@ -1358,15 +1324,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlush = function ($condition, $saveData) {
             $this->runEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
 
-            $num = $this->meta()->update($condition, $saveData);
+            $this->meta()->update($condition, $saveData);
 
             $this->runEvent(static::BEFORE_UPDATE_EVENT, null, null);
 
             $this->clearChanged();
 
             $this->runEvent(static::AFTER_UPDATE_EVENT);
-
-            return $this->leevelLastResult = isset($num) ? $num : 0;
         };
 
         $this->leevelFlushData = [$condition, $saveData];
@@ -1505,16 +1469,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 从关联中读取数据.
      *
-     * @param string $propName
+     * @param string $prop
      *
      * @return mixed
      */
-    protected function parseDataFromRelation($propName)
+    protected function parseDataFromRelation(string $prop)
     {
-        $relation = $this->loadRelation($propName);
+        $relation = $this->loadRelation($prop);
         $result = $relation->sourceQuery();
 
-        $this->withRelationProp($propName, $result);
+        $this->withRelationProp($prop, $result);
 
         return $result;
     }

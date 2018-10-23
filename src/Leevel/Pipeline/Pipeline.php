@@ -139,7 +139,9 @@ class Pipeline implements IPipeline
      */
     protected function traverseGenerator()
     {
-        if (!$this->generator->valid() || $this->generator->next() || !$this->generator->valid()) {
+        if (!$this->generator->valid() ||
+            $this->generator->next() ||
+            !$this->generator->valid()) {
             return;
         }
 

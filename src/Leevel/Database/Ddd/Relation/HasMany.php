@@ -42,7 +42,7 @@ class HasMany extends Relation
      * @param string                       $targetKey
      * @param string                       $sourceKey
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, $targetKey, $sourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey)
     {
         parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
     }
@@ -86,7 +86,7 @@ class HasMany extends Relation
      *
      * @return array
      */
-    public function matchPreLoad(array $entitys, Collection $result, $relation)
+    public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
         return $this->matchPreLoadOneOrMany(
             $entitys,
@@ -123,7 +123,7 @@ class HasMany extends Relation
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function save(IEntity $entity)
+    public function save(IEntity $entity): IEntity
     {
         $this->withSourceKeyValue($entity);
 
@@ -153,7 +153,7 @@ class HasMany extends Relation
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function create(array $props)
+    public function create(array $props): IEntity
     {
         $entity = $this->targetEntity->newInstance($props);
 
@@ -171,7 +171,7 @@ class HasMany extends Relation
      *
      * @return array
      */
-    public function createMany(array $props)
+    public function createMany(array $props): array
     {
         $entitys = [];
 
@@ -189,7 +189,7 @@ class HasMany extends Relation
      *
      * @return int
      */
-    public function update(array $props)
+    public function update(array $props): ini
     {
         return $this->select->update($props);
     }
@@ -227,7 +227,7 @@ class HasMany extends Relation
      *
      * @return array
      */
-    protected function matchPreLoadOneOrMany(array $entitys, Collection $result, $relation, $type)
+    protected function matchPreLoadOneOrMany(array $entitys, Collection $result, string $relation, string $type): array
     {
         $maps = $this->buildMap($result);
 
@@ -254,12 +254,11 @@ class HasMany extends Relation
      *
      * @return mixed
      */
-    protected function getRelationValue(array $maps, $key, $type)
+    protected function getRelationValue(array $maps, string $key, string $type)
     {
         $value = $maps[$key];
 
-        return 'one' === $type ? reset($value) :
-            $this->targetEntity->collection($value);
+        return 'one' === $type ? reset($value) : $this->targetEntity->collection($value);
     }
 
     /**

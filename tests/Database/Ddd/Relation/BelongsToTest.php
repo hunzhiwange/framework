@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Relation;
 
+use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Meta;
+use Leevel\Database\Ddd\Relation\BelongsTo;
+use Leevel\Database\Ddd\Select;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Query\Query;
@@ -103,6 +106,79 @@ class BelongsToTest extends TestCase
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());
+
+        $this->truncate('post');
+        $this->truncate('user');
+    }
+
+    public function testEager()
+    {
+        $posts = Post::limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertSame(0, count($posts));
+
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i <= 5; $i++) {
+            $this->assertSame((string) ($i + 1), $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'Say hello to the world.',
+            ]));
+        }
+
+        $this->assertSame('1', $connect->
+        table('user')->
+        insert([
+            'name' => 'niu',
+        ]));
+
+        $posts = Post::eager(['user'])->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertSame(5, count($posts));
+
+        foreach ($posts as $value) {
+            $user = $value->user;
+
+            $this->assertInstanceof(User::class, $user);
+            $this->assertSame('1', $user->id);
+            $this->assertSame('niu', $user->name);
+        }
+
+        $this->truncate('post');
+        $this->truncate('user');
+    }
+
+    public function testRelationAsMethod()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'Say hello to the world.',
+        ]));
+
+        $this->assertSame('1', $connect->
+        table('user')->
+        insert([
+            'name' => 'niu',
+        ]));
+
+        $userRelation = Post::user();
+
+        $this->assertInstanceof(BelongsTo::class, $userRelation);
+        $this->assertSame('user_id', $userRelation->getSourceKey());
+        $this->assertSame('id', $userRelation->getTargetKey());
+        $this->assertInstanceof(Post::class, $userRelation->getSourceEntity());
+        $this->assertInstanceof(User::class, $userRelation->getTargetEntity());
+        $this->assertInstanceof(Select::class, $userRelation->getSelect());
 
         $this->truncate('post');
         $this->truncate('user');
