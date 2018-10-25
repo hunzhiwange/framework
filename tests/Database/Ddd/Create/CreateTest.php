@@ -48,7 +48,7 @@ class CreateTest extends TestCase
         $entity->name = 'foo';
 
         $this->assertSame('foo', $entity->name);
-        $this->assertSame(['name'], $entity->created());
+        $this->assertSame(['name'], $entity->changed());
 
         $this->assertNull($entity->flushData());
 

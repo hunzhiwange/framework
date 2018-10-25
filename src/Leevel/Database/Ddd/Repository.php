@@ -97,7 +97,7 @@ class Repository implements IRepository
      */
     public function count($specification = null)
     {
-        $select = $this->entity->selfQuerySelect();
+        $select = $this->entity->selfDatabaseSelect();
 
         if (!is_string($specification) && is_callable($specification)) {
             call_user_func($specification, $select);
@@ -116,7 +116,7 @@ class Repository implements IRepository
      */
     public function all($specification = null)
     {
-        $select = $this->entity->selfQuerySelect();
+        $select = $this->entity->selfDatabaseSelect();
 
         if (!is_string($specification) && is_callable($specification)) {
             call_user_func($specification, $select);
@@ -126,51 +126,18 @@ class Repository implements IRepository
     }
 
     /**
-     * 保存数据.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function create(IEntity $entity)
-    {
-        return $this->handleCreate($entity);
-    }
-
-    /**
-     * 更新数据.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function update(IEntity $entity)
-    {
-        return $this->handleUpdate($entity);
-    }
-
-    /**
-     * 删除数据.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return int
-     */
-    public function delete(IEntity $entity)
-    {
-        return $this->handleDelete($entity);
-    }
-
-    /**
      * 响应新建.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return mixed
      */
-    public function handleCreate(IEntity $entity)
+    public function create(IEntity $entity)
     {
-        //databaseConnect();
+        if ($entity->flushed()) {
+            return;
+        }
+
         return $entity->create()->flush();
     }
 
@@ -179,10 +146,14 @@ class Repository implements IRepository
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @return mixed
      */
-    public function handleUpdate(IEntity $entity)
+    public function update(IEntity $entity)
     {
+        if ($entity->flushed()) {
+            return;
+        }
+
         return $entity->update()->flush();
     }
 
@@ -191,11 +162,15 @@ class Repository implements IRepository
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return int
+     * @return mixed
      */
-    public function handleDelete(IEntity $entity)
+    public function delete(IEntity $entity)
     {
-        return $entity->delete();
+        if ($entity->flushed()) {
+            return;
+        }
+
+        return $entity->destroy()->flush();
     }
 
     /**

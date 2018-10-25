@@ -247,16 +247,6 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得源外键值
-     *
-     * @return mixed
-     */
-    public function getSourceKeyValue()
-    {
-        return $this->sourceEntity->__get($this->sourceKey);
-    }
-
-    /**
      * 取回源模型实体对应数据.
      *
      * @return mixed

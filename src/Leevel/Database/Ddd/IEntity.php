@@ -196,8 +196,6 @@ interface IEntity
      * 获取主键
      * 唯一标识符.
      *
-     * @param bool $update
-     *
      * @return mixed
      */
     public function id();

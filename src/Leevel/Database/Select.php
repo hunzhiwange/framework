@@ -92,6 +92,9 @@ class Select
         // 每一项记录以对象返回
         'as_class' => null,
 
+        // 对象附加参数
+        'class_args' => [],
+
         // 数组或者默认
         'as_default' => true,
 
@@ -208,7 +211,7 @@ class Select
      *
      * @return \Leevel\Database\Condition
      */
-    public function getCondition(): Condition
+    public function databaseCondition(): Condition
     {
         return $this->condition;
     }
@@ -218,7 +221,7 @@ class Select
      *
      * @return \Leevel\Database\Connect
      */
-    public function databaseConnect()
+    public function databaseConnect(): Connect
     {
         return $this->connect;
     }
@@ -228,7 +231,7 @@ class Select
      *
      * @return $this
      */
-    public function selfQuerySelect()
+    public function selfDatabaseSelect()
     {
         return $this;
     }
@@ -287,12 +290,14 @@ class Select
      * 设置以类返会结果.
      *
      * @param string $className
+     * @param array  $args
      *
      * @return $this
      */
-    public function asClass(string $className)
+    public function asClass(string $className, array $args = [])
     {
         $this->queryParams['as_class'] = $className;
+        $this->queryParams['class_args'] = $args;
         $this->queryParams['as_default'] = false;
 
         return $this;
@@ -966,11 +971,11 @@ class Select
         }
 
         foreach ($data as $key => $tmp) {
-            $data[$key] = new $className((array) $tmp);
+            $data[$key] = new $className((array) $tmp, ...$this->queryParams['class_args']);
         }
 
         if (!$this->condition->getOption()['limitquery']) {
-            $data = reset($data) ?: new $className([]);
+            $data = reset($data) ?: new $className([], ...$this->queryParams['class_args']);
         } elseif ($this->queryParams['as_collection']) {
             $data = new Collection($data, [$className]);
         }

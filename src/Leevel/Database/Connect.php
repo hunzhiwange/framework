@@ -138,6 +138,28 @@ abstract class Connect
     protected static $sqlListen;
 
     /**
+     * 事务等级.
+     *
+     * @var int
+     */
+    protected $transactionLevel = 0;
+
+    /**
+     * 是否开启部分事务.
+     * 依赖数据库是否支持部分事务.
+     *
+     * @var bool
+     */
+    protected $transactionWithSavepoints = false;
+
+    /**
+     * 是否仅仅是事务回滚.
+     *
+     * @var bool
+     */
+    protected $isRollbackOnly = false;
+
+    /**
      * 构造函数.
      *
      * @param \leevel\Log\ILog     $log
@@ -197,7 +219,7 @@ abstract class Connect
      *
      * @return mixed
      */
-    public function getPdo(bool $master = false)
+    public function pdo(bool $master = false)
     {
         if (is_bool($master)) {
             if (false === $master) {
@@ -241,7 +263,7 @@ abstract class Connect
         }
 
         // 预处理
-        $this->pdoStatement = $this->getPdo($master)->prepare($sql);
+        $this->pdoStatement = $this->pdo($master)->prepare($sql);
 
         dump($sql);
 
@@ -291,7 +313,7 @@ abstract class Connect
         }
 
         // 预处理
-        $this->pdoStatement = $this->getPdo(true)->prepare($sql);
+        $this->pdoStatement = $this->pdo(true)->prepare($sql);
 
         // 参数绑定
         $this->bindParams($bindParams);
@@ -320,7 +342,7 @@ abstract class Connect
     /**
      * 执行数据库事务
      *
-     * @param \Closure $action 事务回调
+     * @param \Closure $action
      *
      * @return mixed
      */
@@ -349,7 +371,19 @@ abstract class Connect
      */
     public function beginTransaction()
     {
-        $this->getPdo(true)->beginTransaction();
+        $this->transactionLevel++;
+
+        if (1 === $this->transactionLevel) {
+            try {
+                $this->pdo(true)->beginTransaction();
+            } catch (Exception $e) {
+                $this->transactionLevel--;
+
+                throw $e;
+            }
+        } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
+            $this->createSavepoint($this->getSavepointName());
+        }
     }
 
     /**
@@ -359,7 +393,7 @@ abstract class Connect
      */
     public function inTransaction(): bool
     {
-        return $this->getPdo(true)->inTransaction();
+        return $this->pdo(true)->inTransaction();
     }
 
     /**
@@ -367,7 +401,21 @@ abstract class Connect
      */
     public function commit()
     {
-        $this->getPdo(true)->commit();
+        if (0 === $this->transactionLevel) {
+            throw new InvalidArgumentException('There was no active transaction.');
+        }
+
+        if ($this->isRollbackOnly) {
+            throw new InvalidArgumentException('Commit failed for rollback only.');
+        }
+
+        if (1 === $this->transactionLevel) {
+            $this->pdo(true)->commit();
+        } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
+            $this->releaseSavepoint($this->getSavepointName());
+        }
+
+        $this->transactionLevel = max(0, $this->transactionLevel - 1);
     }
 
     /**
@@ -375,7 +423,35 @@ abstract class Connect
      */
     public function rollBack()
     {
-        $this->getPdo(true)->rollBack();
+        if (0 === $this->transactionLevel) {
+            throw new InvalidArgumentException('There was no active transaction.');
+        }
+
+        if (1 === $this->transactionLevel) {
+            $this->transactionLevel = 0;
+
+            $this->pdo(true)->rollBack();
+
+            $this->isRollbackOnly = false;
+        } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
+            $this->rollbackSavepoint($this->getSavepointName());
+
+            $this->transactionLevel--;
+        } else {
+            $this->isRollbackOnly = true;
+
+            $this->transactionLevel = max(0, $this->transactionLevel - 1);
+        }
+    }
+
+    /**
+     * 设置是否启用部分事务.
+     *
+     * @param bool $savepoints
+     */
+    public function setSavepoints(bool $savepoints)
+    {
+        $this->transactionWithSavepoints = $savepoints;
     }
 
     /**
@@ -395,12 +471,9 @@ abstract class Connect
      *
      * @return array
      */
-    public function getLastSql(): array
+    public function lastSql(): array
     {
-        return [
-            $this->sql,
-            $this->bindParams,
-        ];
+        return [$this->sql, $this->bindParams];
     }
 
     /**
@@ -408,7 +481,7 @@ abstract class Connect
      *
      * @return int
      */
-    public function getNumRows(): int
+    public function numRows(): int
     {
         return $this->numRows;
     }
@@ -689,7 +762,7 @@ abstract class Connect
      *
      * @return array
      */
-    public function getCurrentOption(?string $optionName = null)
+    public function currentOption(?string $optionName = null)
     {
         if (null === $optionName) {
             return $this->currentOption;
@@ -902,6 +975,46 @@ abstract class Connect
     protected function setCurrentOption(array $option): void
     {
         $this->currentOption = $option;
+    }
+
+    /**
+     * 获取部分事务回滚点名字.
+     *
+     * @return string
+     */
+    protected function getSavepointName(): string
+    {
+        return 'trans'.$this->transactionLevel;
+    }
+
+    /**
+     * 保存部分事务保存点.
+     *
+     * @param string $savepointName
+     */
+    protected function createSavepoint(string $savepointName)
+    {
+        $this->pdo(true)->exec('SAVEPOINT '.$savepointName);
+    }
+
+    /**
+     * 回滚部分事务到保存点.
+     *
+     * @param string $savepointName
+     */
+    protected function rollbackSavepoint(string $savepointName)
+    {
+        $this->pdo(true)->exec('ROLLBACK TO SAVEPOINT '.$savepointName);
+    }
+
+    /**
+     * 清除前面定义的部分事务保存点.
+     *
+     * @param string $savepointName
+     */
+    protected function releaseSavepoint(string $savepointName)
+    {
+        $this->pdo(true)->exec('RELEASE SAVEPOINT '.$savepointName);
     }
 
     /**

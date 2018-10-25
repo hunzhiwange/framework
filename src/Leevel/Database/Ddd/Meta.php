@@ -38,7 +38,7 @@ class Meta implements IMeta
     /**
      * Database 管理.
      *
-     * @var array
+     * @var \Leevel\Database\Manager
      */
     protected static $databaseManager;
 
@@ -68,33 +68,26 @@ class Meta implements IMeta
      * 禁止直接访问构造函数，只能通过 instance 生成对象
      *
      * @param string $table
-     * @param mixed  $connect
-     * @param mixed  $table
      */
-    protected function __construct(string $table, $connect = null)
+    protected function __construct(string $table)
     {
         $this->table = $table;
-
-        $this->connect = static::$databaseManager->connect($connect);
     }
 
     /**
      * 返回数据库元对象
      *
      * @param string $table
-     * @param mixed  $connect
      *
      * @return $this
      */
-    public static function instance(string $table, $connect = null)
+    public static function instance(string $table)
     {
-        $unique = static::normalizeUnique($table, $connect);
-
-        if (!isset(static::$instances[$unique])) {
-            return static::$instances[$unique] = new static($table, $connect);
+        if (!isset(static::$instances[$table])) {
+            return static::$instances[$table] = new static($table);
         }
 
-        return static::$instances[$unique];
+        return static::$instances[$table];
     }
 
     /**
@@ -108,11 +101,25 @@ class Meta implements IMeta
     }
 
     /**
-     * 新增并返回数据.
+     * 返回数据库元对象连接.
+     *
+     * @param mixed $connect
+     *
+     * @return $this
+     */
+    public function setConnect($connect = null)
+    {
+        $this->connect = static::$databaseManager->connect($connect);
+
+        return $this;
+    }
+
+    /**
+     * 新增数据并返回上一次插入 ID.
      *
      * @param array $saveData
      *
-     * @return array
+     * @return mixed
      */
     public function insert(array $saveData)
     {
@@ -123,7 +130,7 @@ class Meta implements IMeta
     }
 
     /**
-     * 更新并返回数据.
+     * 更新数据并返回影响行数.
      *
      * @param array $condition
      * @param array $saveData
@@ -138,6 +145,23 @@ class Meta implements IMeta
         where($condition)->
 
         update($saveData);
+    }
+
+    /**
+     * 删除数据并返回影响行数.
+     *
+     * @param array $condition
+     *
+     * @return int
+     */
+    public function delete(array $condition): int
+    {
+        return $this->connect->
+        table($this->table)->
+
+        where($condition)->
+
+        delete();
     }
 
     /**
@@ -158,19 +182,5 @@ class Meta implements IMeta
     public function select(): DatabaseSelect
     {
         return $this->connect->table($this->table);
-    }
-
-    /**
-     * 取得唯一值
-     *
-     * @param string $table
-     * @param mixed  $connect
-     * @param mixed  $table
-     *
-     * @return string
-     */
-    protected static function normalizeUnique(string $table, $connect = null): string
-    {
-        return $table.'.'.md5(serialize($connect));
     }
 }

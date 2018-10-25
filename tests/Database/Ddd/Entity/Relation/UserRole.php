@@ -54,13 +54,15 @@ class UserRole extends Entity
 
     private $createAt;
 
-    public function setter(string $prop, $value): void
+    public function setter(string $prop, $value)
     {
-        $this->{$prop} = $value;
+        $this->{$this->prop($prop)} = $value;
+
+        return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$prop};
+        return $this->{$this->prop($prop)};
     }
 }

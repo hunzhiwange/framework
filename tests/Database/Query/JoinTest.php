@@ -443,7 +443,7 @@ eot;
 ]
 eot;
 
-        $joinTable = $connect->table('foo as b')->getCondition();
+        $joinTable = $connect->table('foo as b')->databaseCondition();
 
         $this->assertSame(
             $sql,
@@ -472,7 +472,7 @@ eot;
 ]
 eot;
 
-        $joinTable = $connect->table('foo as b')->getCondition();
+        $joinTable = $connect->table('foo as b')->databaseCondition();
 
         $this->assertSame(
             $sql,
@@ -503,7 +503,7 @@ eot;
 ]
 eot;
 
-        $joinTable = $connect->table('foo as b')->getCondition();
+        $joinTable = $connect->table('foo as b')->databaseCondition();
 
         $this->assertSame(
             $sql,
@@ -526,7 +526,7 @@ eot;
 
         $connect = $this->createConnect();
 
-        $joinTable = $connect->table('foo as b')->getCondition();
+        $joinTable = $connect->table('foo as b')->databaseCondition();
 
         $connect->table('test')->
 

@@ -64,7 +64,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return array
      */
-    public function getTableNames(string $dbName, $master = false): array
+    public function tableNames(string $dbName, $master = false): array
     {
         $sql = 'SHOW TABLES FROM '.$this->normalizeTableOrColumn($dbName);
 
@@ -89,7 +89,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return array
      */
-    public function getTableColumns(string $tableName, $master = false): array
+    public function tableColumns(string $tableName, $master = false): array
     {
         $sql = 'SHOW FULL COLUMNS FROM '.
             $this->normalizeTableOrColumn($tableName);
@@ -185,6 +185,16 @@ class Mysql extends Connect implements IConnect
         }
 
         return '';
+    }
+
+    /**
+     * 获取是否启用部分事务
+     *
+     * @return bool
+     */
+    public function hasSavepoints(): bool
+    {
+        return $this->transactionWithSavepoints;
     }
 
     /**

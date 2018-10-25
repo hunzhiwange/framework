@@ -1595,7 +1595,7 @@ eot;
 ]
 eot;
 
-        $condition = $connect->table('foo', 'id')->one()->getCondition();
+        $condition = $connect->table('foo', 'id')->one()->databaseCondition();
 
         $this->assertSame(
             $sql,
@@ -1624,7 +1624,7 @@ eot;
 ]
 eot;
 
-        $condition = $connect->table('foo', 'id')->one()->getCondition();
+        $condition = $connect->table('foo', 'id')->one()->databaseCondition();
 
         $this->assertSame(
             $sql,

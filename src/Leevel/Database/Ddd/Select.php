@@ -149,23 +149,15 @@ class Select
     /**
      * 通过主键查找模型实体.
      *
-     * @param mixed $id
+     * @param int   $id
      * @param array $column
      *
-     * @return null|\Leevel\Collection\Collection|\Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function find($id, array $column = ['*'])
+    public function find(int $id, array $column = ['*'])
     {
-        if (is_array($id)) {
-            return $this->findMany($id, $column);
-        }
-
         return $this->select->
-        where(
-            $this->entity->getPrimaryKeyNameForQuery(),
-            '=',
-            $id
-        )->
+        where($this->entity->singlePrimaryKey(), '=', $id)->
 
         setColumns($column)->
 
@@ -187,10 +179,7 @@ class Select
         }
 
         return $this->select->
-        whereIn(
-            $this->entity->getPrimaryKeyNameForQuery(),
-            $ids
-        )->
+        whereIn($this->entity->singlePrimaryKey(), $ids)->
 
         setColumns($column)->
 
@@ -258,7 +247,7 @@ class Select
         $count = 0;
         $id = (array) $id;
 
-        $instance = $this->entity->newInstance();
+        $instance = $this->entity->make();
 
         foreach (
             $instance->whereIn(
@@ -563,17 +552,11 @@ class Select
             $result = $arr;
             $type = 'collection';
         } elseif (is_object($result) && $result instanceof IEntity) {
-            $result = [
-                $result,
-            ];
-
+            $result = [$result];
             $type = 'entity';
         }
 
-        return [
-            $result,
-            $type,
-        ];
+        return [$result, $type];
     }
 
     /**

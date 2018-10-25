@@ -31,6 +31,34 @@ namespace Leevel\Database\Ddd;
  */
 interface IUnitOfWork
 {
+    /**
+     * 已经被管理的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_MANAGED = 1;
+
+    /**
+     * 尚未被管理的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_NEW = 2;
+
+    /**
+     * 已经持久化并且脱落管理的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_DETACHED = 3;
+
+    /**
+     * 被标识为删除的实体状态.
+     *
+     * @var int
+     */
+    public const STATE_REMOVED = 4;
+
     // /**
     //  * 启动事物.
     //  */

@@ -1906,7 +1906,7 @@ class Condition
                     foreach ($cond[2] as $condKey => $tmp) {
                         // 对象子表达式支持
                         if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
-                            $tmp = $tmp instanceof Select ? $tmp->getCondition()->makeSql(true) : $tmp->makeSql(true);
+                            $tmp = $tmp instanceof Select ? $tmp->databaseCondition()->makeSql(true) : $tmp->makeSql(true);
                         }
 
                         // 回调方法子表达式支持
@@ -2160,7 +2160,7 @@ class Condition
                 }
 
                 if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
-                    $tmp = $tmp instanceof Select ? $tmp->getCondition()->makeSql() : $tmp->makeSql();
+                    $tmp = $tmp instanceof Select ? $tmp->databaseCondition()->makeSql() : $tmp->makeSql();
                 } elseif (is_object($tmp) && $tmp instanceof Closure) {
                     $select = new static($this->connect);
                     $select->setTable($this->getTable());
@@ -2361,7 +2361,7 @@ class Condition
             $table = $names->makeSql(true);
 
             if (!$alias) {
-                $alias = $names instanceof Select ? $names->getCondition()->getAlias() : $names->getAlias();
+                $alias = $names instanceof Select ? $names->databaseCondition()->getAlias() : $names->getAlias();
             }
 
             $parseSchema = false;

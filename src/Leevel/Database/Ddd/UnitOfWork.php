@@ -21,10 +21,13 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use InvalidArgumentException;
-use Leevel\Database\IDatabase;
+use Leevel\Database\IConnect;
+use Throwable;
 
 /**
  * 工作单元.
+ * 工作单元大量参考了 Doctrine2 以及 Java Bean 的实现和设计.
+ * 最早基于 .NET 里面关于领域驱动设计代码实现，工作单元、仓储等概念均来源于此.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -35,25 +38,6 @@ use Leevel\Database\IDatabase;
 class UnitOfWork implements IUnitOfWork
 {
     /**
-     * 已经被管理的实体状态.
-     *
-     * @var int
-     */
-    public const STATE_MANAGED = 1;
-
-    /**
-     * 尚未被管理的实体状态.
-     *
-     * @var int
-     */
-    public const STATE_NEW = 2;
-
-    /**
-     * 被标识为删除的实体状态.
-     */
-    public const STATE_REMOVED = 3;
-
-    /**
      * 根实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
@@ -61,18 +45,11 @@ class UnitOfWork implements IUnitOfWork
     protected $rootEntity;
 
     /**
-     * 是否提交事务
-     *
-     * @var bool
-     */
-    protected $committed = false;
-
-    /**
      * 注入的新建实体.
      *
      * @var array
      */
-    protected $entitysInserts = [];
+    protected $entityInserts = [];
 
     /**
      * 注入的更新实体.
@@ -96,6 +73,13 @@ class UnitOfWork implements IUnitOfWork
     protected $entityStates;
 
     /**
+     * 工作单元是否关闭.
+     *
+     * @var bool
+     */
+    protected $closed = false;
+
+    /**
      * 构造函数.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
@@ -108,34 +92,84 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 执行数据库事务.
+     * 创建一个工作单元.
      *
-     * @return mixed
+     * @param \Leevel\Database\Ddd\IEntity $rootEntity
+     *
+     * @return static
      */
-    public function flush()
+    public static function make(IEntity $rootEntity = null)
     {
-        if (!$this->rootEntity || $this->committed) {
-            return;
-        }
-
-        $this->committed = true;
-
-        return $this->rootEntity->databaseConnect()->transaction(function () {
-            $this->handleRepository();
-        });
+        return new static($rootEntity);
     }
 
     /**
-     * 注册实体.
+     * 执行数据库事务.
+     */
+    public function flush()
+    {
+        $this->validateClosed();
+
+        if (!($this->entityInserts ||
+                $this->entityUpdates ||
+                $this->entityDeletes)) {
+            return;
+        }
+
+        $this->beginTransaction();
+
+        try {
+            $this->handleRepository();
+            $this->commit();
+        } catch (Throwable $e) {
+            $this->close();
+            $this->rollBack();
+
+            throw $e;
+        }
+    }
+
+    /**
+     * 保持实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return $this
      */
-    public function register(IEntity $entity)
+    public function persist(IEntity $entity)
     {
-        $visited = [];
-        $this->doRegister($entity, $visited);
+        $this->validateClosed();
+
+        $id = spl_object_id($entity);
+
+        $entityState = $this->getEntityState($entity, self::STATE_NEW);
+
+        switch ($entityState) {
+              case self::STATE_MANAGED:
+                  break;
+              case self::STATE_NEW:
+                  $this->entityStates[$id] = self::STATE_MANAGED;
+
+                  $this->insert($entity);
+
+                  break;
+              case self::STATE_REMOVED:
+                  if (isset($this->entityDeletes[$id])) {
+                      unset($this->entityDeletes[$id]);
+                  }
+
+                  $this->entityStates[$id] = self::STATE_MANAGED;
+
+                  break;
+             case self::STATE_DETACHED:
+                  throw new InvalidArgumentException(
+                      spintf('Detached entity `%s` cannot be persist.', get_class($entity))
+                  );
+              default:
+                  throw new InvalidArgumentException(
+                      sprintf('Invalid entity state `%d` of `%s`.', $entityState, get_class($entity))
+                  );
+        }
 
         return $this;
     }
@@ -149,6 +183,8 @@ class UnitOfWork implements IUnitOfWork
      */
     public function insert(IEntity $entity)
     {
+        $this->validateClosed();
+
         $id = spl_object_id($entity);
 
         if (isset($this->entityUpdates[$id])) {
@@ -181,7 +217,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return bool
      */
-    public function isInserted(IEntity $entity): bool
+    public function inserted(IEntity $entity): bool
     {
         return isset($this->entityInserts[spl_object_id($entity)]);
     }
@@ -195,6 +231,8 @@ class UnitOfWork implements IUnitOfWork
      */
     public function update(IEntity $entity)
     {
+        $this->validateClosed();
+
         $id = spl_object_id($entity);
 
         if (isset($this->entityDeletes[$id])) {
@@ -227,9 +265,9 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return bool
      */
-    public function isUpdated(IEntity $entity): bool
+    public function updated(IEntity $entity): bool
     {
-        return isset($this->entiteUpdates[spl_object_id($entity)]);
+        return isset($this->entityUpdates[spl_object_id($entity)]);
     }
 
     /**
@@ -241,12 +279,14 @@ class UnitOfWork implements IUnitOfWork
      */
     public function delete(IEntity $entity)
     {
+        $this->validateClosed();
+
         $id = spl_object_id($entity);
 
         if (isset($this->entityInserts[$id])) {
             unset($this->entityInserts[$id], $this->entityStates[$id]);
 
-            return;
+            return $this;
         }
 
         if (isset($this->entityUpdates[$id])) {
@@ -261,6 +301,8 @@ class UnitOfWork implements IUnitOfWork
                 $this->rootEntity = $entity;
             }
         }
+
+        return $this;
     }
 
     /**
@@ -270,7 +312,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return bool
      */
-    public function isDeleted(IEntity $entity): bool
+    public function deleted(IEntity $entity): bool
     {
         return isset($this->entityDeletes[spl_object_id($entity)]);
     }
@@ -282,13 +324,35 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return bool
      */
-    public function isRegistered(IEntity $entity): bool
+    public function registered(IEntity $entity): bool
     {
         $id = spl_object_id($entity);
 
         return isset($this->entityInsertes[$id])
             || isset($this->entityUpdates[$id])
             || isset($this->entityDeletes[$id]);
+    }
+
+    /**
+     * 刷新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    public function refresh(IEntity $entity)
+    {
+        $this->validateClosed();
+
+        if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
+            throw new InvalidArgumentException(
+                'Entity `%s` was not managed.', get_class($entity)
+            );
+        }
+
+        $entity->refresh();
+
+        return $this;
     }
 
     /**
@@ -304,13 +368,35 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
+     * 返回连接根实体.
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function rootEntity(): ?IEntity
+    {
+        return $this->rootEntity;
+    }
+
+    /**
+     * 返回数据库连接.
+     *
+     * @return \Leevel\Database\IConnect
+     */
+    public function connect(): IConnect
+    {
+        if (!$this->rootEntity) {
+            throw new InvalidArgumentException('Root entity must be set before use connect.');
+        }
+
+        return $this->rootEntity->databaseConnect();
+    }
+
+    /**
      * 启动事物.
      */
     public function beginTransaction()
     {
         $this->connect()->beginTransaction();
-
-        $this->committed = false;
     }
 
     /**
@@ -318,9 +404,7 @@ class UnitOfWork implements IUnitOfWork
      */
     public function rollBack()
     {
-        ${$this}->connect()->rollBack();
-
-        $this->committed = false;
+        $this->connect()->rollBack();
     }
 
     /**
@@ -328,39 +412,54 @@ class UnitOfWork implements IUnitOfWork
      */
     public function commit()
     {
-        if (!$this->rootEntity || $this->committed) {
-            return;
-        }
-
         $this->connect()->commit();
-
-        $this->committed = true;
     }
 
     /**
-     * 是否已经提交事务
+     * 执行数据库事务
      *
-     * @return bool
+     * @param \Closure $action
+     *
+     * @return mixed
      */
-    public function committed(): bool
+    public function transaction(Closure $action)
     {
-        return $this->committed;
-    }
+        $this->beginTransaction();
 
-    /**
-     * 返回数据库仓储.
-     *
-     * @return \Leevel\Database\IDatabase
-     */
-    public function connect(): IDatabase
-    {
-        if (!$this->rootEntity) {
-            throw new InvalidArgumentException(
-                'Root entity must be set before use connect.'
-            );
+        try {
+            $result = $func($this);
+
+            $this->flush();
+            $this->commit();
+
+            return $result;
+        } catch (Throwable $e) {
+            $this->close();
+            $this->rollBack();
+
+            throw $e;
         }
+    }
 
-        return $this->rootEntity->databaseConnect();
+    /**
+     * 清理工作单元.
+     */
+    public function clear()
+    {
+        $this->rootEntity = null;
+        $this->entityInserts = [];
+        $this->entityUpdates = [];
+        $this->entityDeletes = [];
+        $this->entityStates = [];
+    }
+
+    /**
+     * 关闭.
+     */
+    public function close()
+    {
+        $this->clear();
+        $this->closed = true;
     }
 
     /**
@@ -370,7 +469,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return \Leevel\Database\Ddd\IRepository
      */
-    public function getRepository($entity): IRepository
+    public function repository($entity): IRepository
     {
         if (!is_object($entity)) {
             $entity = new $entity();
@@ -394,7 +493,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return int
      */
-    public function getEntityState(IEntity $entity, int $defaults = self::STATE_NEW)
+    public function getEntityState(IEntity $entity, int $defaults = self::STATE_NEW): int
     {
         $id = spl_object_id($entity);
 
@@ -402,49 +501,12 @@ class UnitOfWork implements IUnitOfWork
             return $this->entityStates[$id];
         }
 
-        return $defaults;
-    }
-
-    /**
-     * 执行实体注册.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param array                        $visited
-     */
-    protected function doRegister(IEntity $entity, array &$visited)
-    {
-        $id = spl_object_id($entity);
-
-        if (isset($visited[$id])) {
-            return;
+        // 已经持久化数据，标识为游离状态
+        if ($entity->flushed()) {
+            return self::STATE_DETACHED;
         }
 
-        $visited[$id] = $entity;
-
-        $entityState = $this->getEntityState($entity, self::STATE_NEW);
-
-        switch ($entityState) {
-              case self::STATE_MANAGED:
-                  break;
-              case self::STATE_NEW:
-                  $this->entityStates[$id] = self::STATE_MANAGED;
-
-                  $this->insert($entity);
-
-                  break;
-              case self::STATE_REMOVED:
-                  if (isset($this->entityDeletes[$id])) {
-                      unset($this->entityDeletes[$id]);
-                  }
-
-                  $this->entityStates[$id] = self::STATE_MANAGED;
-
-                  break;
-              default:
-                  throw new InvalidArgumentException(
-                      sprintf('Invalid entity state `%d` of `%s`.', $entityState, get_class($entity))
-                  );
-          }
+        return $defaults;
     }
 
     /**
@@ -453,15 +515,29 @@ class UnitOfWork implements IUnitOfWork
     protected function handleRepository()
     {
         foreach ($this->entityInserts as $entity) {
-            $this->getRepository($entity)->handleCreate($entity);
+            $this->repository($entity)->create($entity);
         }
 
         foreach ($this->entityUpdates as $entity) {
-            $this->getRepository($entity)->handleUpdate($entity);
+            $this->repository($entity)->update($entity);
         }
 
         foreach ($this->entityDeletes as $entity) {
-            $this->getRepository($entity)->handleDelete($entity);
+            $this->repository($entity)->delete($entity);
+        }
+
+        $this->entityInserts = [];
+        $this->entityUpdates = [];
+        $this->entityDeletes = [];
+    }
+
+    /**
+     * 校验工作单元是否关闭.
+     */
+    protected function validateClosed()
+    {
+        if ($this->closed) {
+            throw InvalidArgumentException('Unit of work has closed.');
         }
     }
 }

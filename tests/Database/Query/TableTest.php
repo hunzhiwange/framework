@@ -298,7 +298,7 @@ eot;
     {
         $connect = $this->createConnect();
 
-        $subSql = $connect->table('test')->getCondition();
+        $subSql = $connect->table('test')->databaseCondition();
 
         $sql = <<<'eot'
 [

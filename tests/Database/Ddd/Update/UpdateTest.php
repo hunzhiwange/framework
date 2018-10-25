@@ -40,14 +40,13 @@ class UpdateTest extends TestCase
 {
     public function testBaseUse()
     {
-        $entity = new TestEntity();
+        $entity = new TestEntity(['id' => 1], true);
 
         $this->assertInstanceof(Entity::class, $entity);
 
-        $entity->id = 123;
         $entity->name = 'foo';
 
-        $this->assertSame(123, $entity->id);
+        $this->assertSame(1, $entity->id);
         $this->assertSame('foo', $entity->name);
 
         $this->assertSame(['name'], $entity->changed());
@@ -58,7 +57,7 @@ class UpdateTest extends TestCase
         $data = <<<'eot'
 [
     {
-        "id": 123
+        "id": 1
     },
     {
         "name": "foo"
@@ -76,9 +75,8 @@ eot;
 
     public function testUpdatePropBlackAndWhite()
     {
-        $entity = new TestUpdatePropWhiteEntity();
+        $entity = new TestUpdatePropWhiteEntity(['id' => 5], true);
 
-        $entity->id = 5;
         $entity->name = 'foo';
         $entity->description = 'hello description';
 
@@ -105,19 +103,17 @@ eot;
 
     public function testUpdateReadonly()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot set a read-only prop `name` on entity `Tests\\Database\\Ddd\\Entity\\TestReadonlyUpdateEntity`.');
+
         $entity = new TestReadonlyUpdateEntity();
 
         $entity->name = 'foo';
-        $entity->description = 'bar';
-
-        $this->assertSame(['description'], $entity->changed());
     }
 
     public function testAutoFile()
     {
-        $entity = new TestUpdateAutoFillEntity();
-
-        $entity->id = 5;
+        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
 
         $entity->save();
 
@@ -126,9 +122,7 @@ eot;
 
     public function testAutoFileWithAll()
     {
-        $entity = new TestUpdateAutoFillEntity();
-
-        $entity->id = 5;
+        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
 
         $entity->save([], []);
 
@@ -157,9 +151,7 @@ eot;
 
     public function testAutoFileWithCustomField()
     {
-        $entity = new TestUpdateAutoFillEntity();
-
-        $entity->id = 5;
+        $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
 
         $entity->save([], ['address', 'hello']);
 

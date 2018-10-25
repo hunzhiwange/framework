@@ -42,7 +42,7 @@ interface IConnect
      *
      * @return mixed
      */
-    public function getPdo(bool $master = false);
+    public function pdo(bool $master = false);
 
     /**
      * 查询数据记录.
@@ -113,14 +113,14 @@ interface IConnect
      *
      * @return array
      */
-    public function getLastSql(): array;
+    public function lastSql(): array;
 
     /**
      * 返回影响记录.
      *
      * @return int
      */
-    public function getNumRows(): int;
+    public function numRows(): int;
 
     /**
      * 注册 SQL 监视器.
@@ -205,7 +205,7 @@ interface IConnect
      *
      * @return array
      */
-    public function getCurrentOption(?string $optionName = null);
+    public function currentOption(?string $optionName = null);
 
     /**
      * dsn 解析.
@@ -224,7 +224,7 @@ interface IConnect
      *
      * @return array
      */
-    public function getTableNames(string $dbName, $master = false): array;
+    public function tableNames(string $dbName, $master = false): array;
 
     /**
      * 取得数据库表字段信息.
@@ -234,7 +234,7 @@ interface IConnect
      *
      * @return array
      */
-    public function getTableColumns(string $tableName, $master = false): array;
+    public function tableColumns(string $tableName, $master = false): array;
 
     /**
      * sql 字段格式化.

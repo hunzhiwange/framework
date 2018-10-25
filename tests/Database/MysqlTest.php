@@ -50,7 +50,7 @@ class MysqlTest extends TestCase
     {
         $connect = $this->createConnectTest();
 
-        $result = $connect->getTableNames('test');
+        $result = $connect->tableNames('test');
 
         $this->assertTrue(in_array('guestbook', $result, true));
     }
@@ -59,7 +59,7 @@ class MysqlTest extends TestCase
     {
         $connect = $this->createConnectTest();
 
-        $result = $connect->getTableColumns('guestbook');
+        $result = $connect->tableColumns('guestbook');
 
         $sql = <<<'eot'
 {

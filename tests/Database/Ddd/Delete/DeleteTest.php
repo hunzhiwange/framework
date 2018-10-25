@@ -18,48 +18,49 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd\Entity\Relation;
+namespace Tests\Database\Ddd\Delete;
 
 use Leevel\Database\Ddd\Entity;
+use Tests\Database\Ddd\Entity\TestEntity;
+use Tests\TestCase;
 
 /**
- * role.
+ * delete test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.10.13
+ * @since 2018.10.23
  *
  * @version 1.0
  */
-class Role extends Entity
+class DeleteTest extends TestCase
 {
-    const TABLE = 'role';
-
-    const ID = 'id';
-
-    const AUTO = 'id';
-
-    const STRUCT = [
-        'id'        => [],
-        'name'      => [],
-        'create_at' => [],
-    ];
-
-    private $id;
-
-    private $name;
-
-    private $createAt;
-
-    public function setter(string $prop, $value)
+    public function testBaseUse()
     {
-        $this->{$this->prop($prop)} = $value;
+        $entity = new TestEntity(['id' => 5, 'name' => 'foo']);
 
-        return $this;
+        $this->assertInstanceof(Entity::class, $entity);
+
+        $this->assertSame('foo', $entity->name);
+        $this->assertSame(['id', 'name'], $entity->changed());
+
+        $this->assertNull($entity->flushData());
+
+        $entity->destroy();
+
+        $data = <<<'eot'
+[
+    {
+        "id": 5
     }
+]
+eot;
 
-    public function getter(string $prop)
-    {
-        return $this->{$this->prop($prop)};
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
     }
 }
