@@ -890,7 +890,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf('You can not set alias for skip rule %s.', $skipRule)
+            sprintf('You cannot set alias for skip rule %s.', $skipRule)
         );
 
         $validate = new Validate(

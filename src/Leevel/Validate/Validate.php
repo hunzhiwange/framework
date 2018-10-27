@@ -495,7 +495,7 @@ class Validate implements IValidate
     {
         if (in_array($name, $this->getSkipRule(), true)) {
             throw new InvalidArgumentException(
-                sprintf('You can not set alias for skip rule %s.', $name)
+                sprintf('You cannot set alias for skip rule %s.', $name)
             );
         }
 

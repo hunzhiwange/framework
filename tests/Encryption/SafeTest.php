@@ -225,7 +225,7 @@ class SafeTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'You IP 127.0.0.1 are banned,you can not access this.'
+            'You IP 127.0.0.1 are banned,you cannot access this.'
         );
 
         Safe::limitIp('127.0.0.1', ['127.0.0.1']);

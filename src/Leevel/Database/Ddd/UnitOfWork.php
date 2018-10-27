@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Closure;
 use InvalidArgumentException;
 use Leevel\Database\IConnect;
 use Throwable;
@@ -32,6 +33,7 @@ use Throwable;
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.10.14
+ * @since 2018.10 参考 Doctrine2 进行一次重构
  *
  * @version 1.0
  */
@@ -83,24 +85,37 @@ class UnitOfWork implements IUnitOfWork
      * 构造函数.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
+     * @param mixed                        $connect
      *
      * @return $this
      */
-    public function __construct(IEntity $rootEntity = null)
+    public function __construct(IEntity $rootEntity = null, $connect = null)
     {
+        if (null === $rootEntity) {
+            $rootEntity = new class() extends Entity {
+                const TABLE = '';
+                const ID = null;
+                const AUTO = null;
+                const STRUCT = [];
+            };
+        }
+
         $this->rootEntity = $rootEntity;
+
+        $this->setConnect($connect);
     }
 
     /**
      * 创建一个工作单元.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
+     * @param mixed                        $connect
      *
      * @return static
      */
-    public static function make(IEntity $rootEntity = null)
+    public static function make(IEntity $rootEntity = null, $connect = null)
     {
-        return new static($rootEntity);
+        return new static($rootEntity, $connect);
     }
 
     /**
@@ -111,8 +126,8 @@ class UnitOfWork implements IUnitOfWork
         $this->validateClosed();
 
         if (!($this->entityInserts ||
-                $this->entityUpdates ||
-                $this->entityDeletes)) {
+            $this->entityUpdates ||
+            $this->entityDeletes)) {
             return;
         }
 
@@ -122,8 +137,8 @@ class UnitOfWork implements IUnitOfWork
             $this->handleRepository();
             $this->commit();
         } catch (Throwable $e) {
-            $this->close();
             $this->rollBack();
+            $this->close();
 
             throw $e;
         }
@@ -162,12 +177,9 @@ class UnitOfWork implements IUnitOfWork
 
                   break;
              case self::STATE_DETACHED:
+             default:
                   throw new InvalidArgumentException(
-                      spintf('Detached entity `%s` cannot be persist.', get_class($entity))
-                  );
-              default:
-                  throw new InvalidArgumentException(
-                      sprintf('Invalid entity state `%d` of `%s`.', $entityState, get_class($entity))
+                      sprintf('Detached entity `%s` cannot be persist.', get_class($entity))
                   );
         }
 
@@ -189,22 +201,18 @@ class UnitOfWork implements IUnitOfWork
 
         if (isset($this->entityUpdates[$id])) {
             throw new InvalidArgumentException(
-                'Update entity can not be added for insert.'
+                sprintf('Updated entity `%s` cannot be added for insert.', get_class($entity))
             );
         }
 
         if (isset($this->entityDeletes[$id])) {
             throw new InvalidArgumentException(
-                'Delete entity can not be added for insert.'
+                sprintf('Deleted entity `%s` cannot be added for insert.', get_class($entity))
             );
         }
 
         if (!isset($this->entityInserts[$id])) {
             $this->entityInserts[$id] = $entity;
-
-            if (!$this->rootEntity) {
-                $this->rootEntity = $entity;
-            }
         }
 
         return $this;
@@ -237,22 +245,18 @@ class UnitOfWork implements IUnitOfWork
 
         if (isset($this->entityDeletes[$id])) {
             throw new InvalidArgumentException(
-                'Delete entity can not be added for update.'
+                sprintf('Deleted entity `%s` cannot be added for update.', get_class($entity))
             );
         }
 
         if (isset($this->entityInserts[$id])) {
             throw new InvalidArgumentException(
-                'Insert entity can not be added for update.'
+                sprintf('Inserted entity `%s` cannot be added for update.', get_class($entity))
             );
         }
 
         if (!isset($this->entityUpdates[$id])) {
             $this->entityUpdates[$id] = $entity;
-
-            if (!$this->rootEntity) {
-                $this->rootEntity = $entity;
-            }
         }
 
         return $this;
@@ -296,10 +300,6 @@ class UnitOfWork implements IUnitOfWork
         if (!isset($this->entityDeletes[$id])) {
             $this->entityDeletes[$id] = $entity;
             $this->entityStates[$id] = self::STATE_REMOVED;
-
-            if (!$this->rootEntity) {
-                $this->rootEntity = $entity;
-            }
         }
 
         return $this;
@@ -328,7 +328,7 @@ class UnitOfWork implements IUnitOfWork
     {
         $id = spl_object_id($entity);
 
-        return isset($this->entityInsertes[$id])
+        return isset($this->entityInserts[$id])
             || isset($this->entityUpdates[$id])
             || isset($this->entityDeletes[$id]);
     }
@@ -346,13 +346,23 @@ class UnitOfWork implements IUnitOfWork
 
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
             throw new InvalidArgumentException(
-                'Entity `%s` was not managed.', get_class($entity)
+                sprintf('Entity `%s` was not managed.', get_class($entity))
             );
         }
 
-        $entity->refresh();
+        $this->repository($entity)->refresh($entity);
 
         return $this;
+    }
+
+    /**
+     * 注册实体为管理状态.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     */
+    public function registerManaged(IEntity $entity)
+    {
+        $this->entityStates[spl_object_id($entity)] = self::STATE_MANAGED;
     }
 
     /**
@@ -368,13 +378,13 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 返回连接根实体.
+     * 设置连接.
      *
-     * @return \Leevel\Database\Ddd\IEntity
+     * @param mixed $connect
      */
-    public function rootEntity(): ?IEntity
+    public function setConnect($connect)
     {
-        return $this->rootEntity;
+        $this->rootEntity->withConnect($connect);
     }
 
     /**
@@ -384,10 +394,6 @@ class UnitOfWork implements IUnitOfWork
      */
     public function connect(): IConnect
     {
-        if (!$this->rootEntity) {
-            throw new InvalidArgumentException('Root entity must be set before use connect.');
-        }
-
         return $this->rootEntity->databaseConnect();
     }
 
@@ -427,15 +433,15 @@ class UnitOfWork implements IUnitOfWork
         $this->beginTransaction();
 
         try {
-            $result = $func($this);
+            $result = $action($this);
 
             $this->flush();
             $this->commit();
 
             return $result;
         } catch (Throwable $e) {
-            $this->close();
             $this->rollBack();
+            $this->close();
 
             throw $e;
         }
@@ -446,7 +452,6 @@ class UnitOfWork implements IUnitOfWork
      */
     public function clear()
     {
-        $this->rootEntity = null;
         $this->entityInserts = [];
         $this->entityUpdates = [];
         $this->entityDeletes = [];
@@ -538,6 +543,35 @@ class UnitOfWork implements IUnitOfWork
     {
         if ($this->closed) {
             throw InvalidArgumentException('Unit of work has closed.');
+        }
+    }
+
+    /**
+     * 移除实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    private function remove(IEntity $entity)
+    {
+        $id = spl_object_id($entity);
+
+        $entityState = $this->getEntityState($entity);
+
+        switch ($entityState) {
+            case self::STATE_NEW:
+            case self::STATE_REMOVED:
+                break;
+            case self::STATE_MANAGED:
+                $this->delete($entity);
+
+                break;
+             case self::STATE_DETACHED:
+             default:
+                  throw new InvalidArgumentException(
+                      sprintf('Detached entity `%s` cannot be remove.', get_class($entity))
+                  );
         }
     }
 }

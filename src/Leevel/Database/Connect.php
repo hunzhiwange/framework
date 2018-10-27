@@ -219,7 +219,7 @@ abstract class Connect
      *
      * @return mixed
      */
-    public function pdo(bool $master = false)
+    public function pdo($master = false)
     {
         if (is_bool($master)) {
             if (false === $master) {
@@ -435,11 +435,9 @@ abstract class Connect
             $this->isRollbackOnly = false;
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->rollbackSavepoint($this->getSavepointName());
-
             $this->transactionLevel--;
         } else {
             $this->isRollbackOnly = true;
-
             $this->transactionLevel = max(0, $this->transactionLevel - 1);
         }
     }

@@ -42,7 +42,7 @@ interface IConnect
      *
      * @return mixed
      */
-    public function pdo(bool $master = false);
+    public function pdo($master = false);
 
     /**
      * 查询数据记录.

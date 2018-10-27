@@ -276,7 +276,7 @@ class FsoTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Dir can not be a file.'
+            'Dir cannot be a file.'
         );
 
         Fso::createFile($file.'/demo.txt');

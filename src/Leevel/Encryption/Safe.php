@@ -432,7 +432,7 @@ class Safe
 
             throw new RuntimeException(
                 sprintf(
-                    'You IP %s are banned,you can not access this.',
+                    'You IP %s are banned,you cannot access this.',
                     $visitorIp
                 )
             );

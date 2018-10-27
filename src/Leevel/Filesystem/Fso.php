@@ -251,7 +251,7 @@ class Fso
 
         if (is_file($dirname)) {
             throw new InvalidArgumentException(
-                'Dir can not be a file.'
+                'Dir cannot be a file.'
             );
         }
 

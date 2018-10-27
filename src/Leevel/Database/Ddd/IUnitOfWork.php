@@ -58,7 +58,6 @@ interface IUnitOfWork
      * @var int
      */
     public const STATE_REMOVED = 4;
-
     // /**
     //  * 启动事物.
     //  */

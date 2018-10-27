@@ -174,6 +174,16 @@ class Repository implements IRepository
     }
 
     /**
+     * 重新载入.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     */
+    public function refresh(IEntity $entity)
+    {
+        $entity->refresh();
+    }
+
+    /**
      * 返回实体.
      *
      * @return \Leevel\Database\Ddd\IEntity

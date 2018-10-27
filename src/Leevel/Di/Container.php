@@ -410,7 +410,7 @@ class Container implements IContainer, ArrayAccess
         if (interface_exists($classname)) {
             throw new ContainerInvalidArgumentException(
                 sprintf(
-                    'Interface %s can not be normalize because not binded.',
+                    'Interface %s cannot be normalize because not binded.',
                     $classname
                 )
             );

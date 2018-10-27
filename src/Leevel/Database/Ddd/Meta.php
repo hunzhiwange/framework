@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Leevel\Database\IDatabase;
 use Leevel\Database\Manager as DatabaseManager;
 use Leevel\Database\Select as DatabaseSelect;
 
@@ -162,16 +161,6 @@ class Meta implements IMeta
         where($condition)->
 
         delete();
-    }
-
-    /**
-     * 返回数据库仓储.
-     *
-     * @return \Leevel\Database\IDatabase
-     */
-    public function connect(): IDatabase
-    {
-        return $this->connect;
     }
 
     /**
