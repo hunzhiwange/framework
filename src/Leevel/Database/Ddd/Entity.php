@@ -340,7 +340,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function save(array $data = [], array $fill = null)
+    public function save(array $data = [], array $fill = null): IEntity
     {
         $this->saveEntry('save', $data, $fill);
 
@@ -355,7 +355,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function create(array $data = [], array $fill = null)
+    public function create(array $data = [], array $fill = null): IEntity
     {
         $this->saveEntry('create', $data, $fill);
 
@@ -370,7 +370,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function update(array $data = [], array $fill = null)
+    public function update(array $data = [], array $fill = null): IEntity
     {
         $this->saveEntry('update', $data, $fill);
 
@@ -385,7 +385,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function replace(array $data = [], array $fill = null)
+    public function replace(array $data = [], array $fill = null): IEntity
     {
         $this->saveEntry('replace', $data, $fill);
 
@@ -419,7 +419,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function destroy()
+    public function destroy(): IEntity
     {
         if (null === $this->primaryKey()) {
             throw new InvalidArgumentException(
@@ -568,7 +568,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return mixed
      */
-    public function loadRelationProp($prop)
+    public function loadRelationProp(string $prop)
     {
         if ($result = $this->relationProp($prop)) {
             return $result;
@@ -928,7 +928,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return bool
      */
-    public function hasChanged(string $prop)
+    public function hasChanged(string $prop): bool
     {
         return in_array($prop, $this->leevelChangedProp, true);
     }
@@ -940,7 +940,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function addChanged(array $props)
+    public function addChanged(array $props): IEntity
     {
         foreach ($props as $prop) {
             if (!in_array($prop, $this->leevelChangedProp, true)) {
@@ -960,7 +960,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function deleteChanged(array $props)
+    public function deleteChanged(array $props): IEntity
     {
         $this->leevelChangedProp = array_values(array_diff($this->leevelChangedProp, $props));
 
@@ -972,7 +972,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function clearChanged()
+    public function clearChanged(): IEntity
     {
         $this->leevelChangedProp = [];
 
@@ -1037,9 +1037,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 返回供查询的主键字段
      * 复合主键或者没有主键直接抛出异常.
      *
-     * @return string|void
+     * @return string
      */
-    public function singlePrimaryKey()
+    public function singlePrimaryKey(): string
     {
         $key = $this->primaryKey();
 
@@ -1085,7 +1085,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function withConnect($connect)
+    public function withConnect($connect): IEntity
     {
         $this->leevelConnect = $connect;
 
@@ -1259,7 +1259,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    protected function saveEntry(string $saveMethod, array $data, ?array $fill = null)
+    protected function saveEntry(string $saveMethod, array $data, ?array $fill = null): IEntity
     {
         foreach ($data as $k => $v) {
             $this->withPropValue($k, $v);
@@ -1312,7 +1312,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    protected function createReal(?array $fill = null)
+    protected function createReal(?array $fill = null): IEntity
     {
         $this->leevelFlushed = false;
 
@@ -1374,7 +1374,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    protected function updateReal(?array $fill = null)
+    protected function updateReal(?array $fill = null): IEntity
     {
         $this->leevelFlushed = false;
 
@@ -1440,7 +1440,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return mixed
      */
-    protected function replaceReal(?array $fill = null)
+    protected function replaceReal(?array $fill = null): IEntity
     {
         try {
             return $this->createReal($fill);

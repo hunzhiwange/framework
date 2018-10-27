@@ -187,6 +187,35 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
+     * 移除实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    public function remove(IEntity $entity)
+    {
+        $id = spl_object_id($entity);
+
+        $entityState = $this->getEntityState($entity);
+
+        switch ($entityState) {
+            case self::STATE_NEW:
+            case self::STATE_REMOVED:
+                break;
+            case self::STATE_MANAGED:
+                $this->delete($entity);
+
+                break;
+             case self::STATE_DETACHED:
+             default:
+                  throw new InvalidArgumentException(
+                      sprintf('Detached entity `%s` cannot be remove.', get_class($entity))
+                  );
+        }
+    }
+
+    /**
      * 注册新建实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
@@ -543,35 +572,6 @@ class UnitOfWork implements IUnitOfWork
     {
         if ($this->closed) {
             throw InvalidArgumentException('Unit of work has closed.');
-        }
-    }
-
-    /**
-     * 移除实体.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return $this
-     */
-    private function remove(IEntity $entity)
-    {
-        $id = spl_object_id($entity);
-
-        $entityState = $this->getEntityState($entity);
-
-        switch ($entityState) {
-            case self::STATE_NEW:
-            case self::STATE_REMOVED:
-                break;
-            case self::STATE_MANAGED:
-                $this->delete($entity);
-
-                break;
-             case self::STATE_DETACHED:
-             default:
-                  throw new InvalidArgumentException(
-                      sprintf('Detached entity `%s` cannot be remove.', get_class($entity))
-                  );
         }
     }
 }
