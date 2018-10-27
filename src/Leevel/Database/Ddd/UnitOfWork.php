@@ -137,8 +137,8 @@ class UnitOfWork implements IUnitOfWork
             $this->handleRepository();
             $this->commit();
         } catch (Throwable $e) {
-            $this->rollBack();
             $this->close();
+            $this->rollBack();
 
             throw $e;
         }
@@ -163,9 +163,9 @@ class UnitOfWork implements IUnitOfWork
               case self::STATE_MANAGED:
                   break;
               case self::STATE_NEW:
-                  $this->entityStates[$id] = self::STATE_MANAGED;
-
                   $this->insert($entity);
+
+                  $this->entityStates[$id] = self::STATE_MANAGED;
 
                   break;
               case self::STATE_REMOVED:
@@ -240,9 +240,13 @@ class UnitOfWork implements IUnitOfWork
             );
         }
 
-        if (!isset($this->entityInserts[$id])) {
-            $this->entityInserts[$id] = $entity;
+        if (isset($this->entityInserts[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Entity `%s` cannot be added for twice.', get_class($entity))
+            );
         }
+
+        $this->entityInserts[$id] = $entity;
 
         return $this;
     }
@@ -272,6 +276,12 @@ class UnitOfWork implements IUnitOfWork
 
         $id = spl_object_id($entity);
 
+        if (!$entity->id()) {
+            throw new InvalidArgumentException(
+                sprintf('Entity `%s` has no identity for update.', get_class($entity))
+            );
+        }
+
         if (isset($this->entityDeletes[$id])) {
             throw new InvalidArgumentException(
                 sprintf('Deleted entity `%s` cannot be added for update.', get_class($entity))
@@ -284,9 +294,13 @@ class UnitOfWork implements IUnitOfWork
             );
         }
 
-        if (!isset($this->entityUpdates[$id])) {
-            $this->entityUpdates[$id] = $entity;
+        if (isset($this->entityUpdates[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Entity `%s` cannot be updated for twice.', get_class($entity))
+            );
         }
+
+        $this->entityUpdates[$id] = $entity;
 
         return $this;
     }
@@ -326,10 +340,20 @@ class UnitOfWork implements IUnitOfWork
             unset($this->entityUpdates[$id]);
         }
 
-        if (!isset($this->entityDeletes[$id])) {
-            $this->entityDeletes[$id] = $entity;
-            $this->entityStates[$id] = self::STATE_REMOVED;
+        if (!$entity->id()) {
+            throw new InvalidArgumentException(
+                sprintf('Entity `%s` has no identity for delete.', get_class($entity))
+            );
         }
+
+        if (isset($this->entityDeletes[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Entity `%s` cannot be deleted for twice.', get_class($entity))
+            );
+        }
+
+        $this->entityDeletes[$id] = $entity;
+        $this->entityStates[$id] = self::STATE_REMOVED;
 
         return $this;
     }
@@ -505,13 +529,13 @@ class UnitOfWork implements IUnitOfWork
      */
     public function repository($entity): IRepository
     {
-        if (!is_object($entity)) {
+        if (is_string($entity)) {
             $entity = new $entity();
         }
 
         if (defined(get_class($entity).'::REPOSITORY')) {
-            $repositoryClass = $entity::REPOSITORY;
-            $repository = new $repositoryClass($entity);
+            $name = $entity::REPOSITORY;
+            $repository = new $name($entity);
         } else {
             $repository = new Repository($entity);
         }
@@ -558,6 +582,8 @@ class UnitOfWork implements IUnitOfWork
 
         foreach ($this->entityDeletes as $entity) {
             $this->repository($entity)->delete($entity);
+
+            unset($this->entityStates[spl_object_id($entity)]);
         }
 
         $this->entityInserts = [];
@@ -571,7 +597,7 @@ class UnitOfWork implements IUnitOfWork
     protected function validateClosed()
     {
         if ($this->closed) {
-            throw InvalidArgumentException('Unit of work has closed.');
+            throw new InvalidArgumentException('Unit of work has closed.');
         }
     }
 }

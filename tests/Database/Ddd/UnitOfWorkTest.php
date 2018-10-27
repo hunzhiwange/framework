@@ -24,6 +24,8 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IUnitOfWork;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\UnitOfWork;
+use Tests\Database\Ddd\Entity\Guestbook;
+use Tests\Database\Ddd\Entity\GuestbookRepository;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Query\Query;
 use Tests\TestCase;
@@ -442,8 +444,8 @@ class UnitOfWorkTest extends TestCase
             $work->flush();
             $work->commit();
         } catch (Throwable $e) {
-            $work->rollBack();
             $work->close();
+            $work->rollBack();
         }
 
         $this->assertSame('1', $post->getId());
@@ -730,17 +732,19 @@ class UnitOfWorkTest extends TestCase
         $work->insert($post);
     }
 
-    public function testInsertManyTimesButOne()
+    public function testInsertManyTimes()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for twice.'
+        );
+
         $work = UnitOfWork::make();
 
         $connect = $this->createConnectTest();
 
         $post = new Post(['title' => 'foo']);
 
-        $work->insert($post);
-        $work->insert($post);
-        $work->insert($post);
         $work->insert($post);
         $work->insert($post);
 
@@ -849,8 +853,94 @@ class UnitOfWorkTest extends TestCase
         $work->refresh($post);
     }
 
+    public function testPersistButUnitOfWorkWasClosed()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Unit of work has closed.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $work->close();
+
+        $post = new Post(['id' => 5, 'title' => 'new']);
+
+        $work->persist($post);
+    }
+
+    public function testRepository()
+    {
+        $work = UnitOfWork::make();
+
+        $repository = $work->repository(Guestbook::class);
+
+        $this->assertInstanceof(GuestbookRepository::class, $repository);
+    }
+
+    public function testRepository2()
+    {
+        $work = UnitOfWork::make();
+
+        $repository = $work->repository(new Guestbook());
+
+        $this->assertInstanceof(GuestbookRepository::class, $repository);
+    }
+
+    public function testRemoveStageNewDoNothing()
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $work->remove($post = new Post());
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $this->clear();
+    }
+
+    public function testRemoveStageRemovedDoNothing()
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $work->delete($post = new Post(['id' => 5]));
+        $work->remove($post);
+
+        $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+
+        $this->clear();
+    }
+
+    public function testRemoveStageManagedWillDelete()
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post();
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $work->persist($post);
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+
+        $work->remove($post);
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $this->clear();
+    }
+
     protected function clear()
     {
         $this->truncate('post');
+        $this->truncate('guestbook');
     }
 }
