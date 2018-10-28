@@ -40,11 +40,18 @@ use Leevel\Support\Str;
  * 为最大化避免 getter setter 属性与系统冲突
  * 系统自身的属性均加前缀 leevel，设置以 with 开头, 获取数据不带 get.
  * 包含 Leevel\Database\Connect[包含继承], Leevel\Database\Select.
+ * ORM 主要基于妖怪的 QeePHP V2 设计灵感.
+ * 例外参照了 Laravel 关联模型实现设计.
+ * Doctrine 和 Java Hibernate 中关于 getter setter 的设计
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.04.27
  * @since 2018.10 进行一次大规模重构
+ * @see https://github.com/dualface/qeephp2_x
+ * @see https://github.com/laravel/framework
+ * @see https://github.com/doctrine/doctrine2
+ * @see http://hibernate.org/
  *
  * @version 1.0
  */
