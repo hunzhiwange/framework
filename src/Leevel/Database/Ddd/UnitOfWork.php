@@ -51,7 +51,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @var array
      */
-    protected $entityInserts = [];
+    protected $entityCreates = [];
 
     /**
      * 注入的更新实体.
@@ -68,11 +68,25 @@ class UnitOfWork implements IUnitOfWork
     protected $entityDeletes = [];
 
     /**
+     * 注入的不存在则新建否则更新实体.
+     *
+     * @var array
+     */
+    protected $entityReplaces = [];
+
+    /**
      * 实体当前状态
      *
      * @var array
      */
-    protected $entityStates;
+    protected $entityStates = [];
+
+    /**
+     * 响应回调.
+     *
+     * @var \Closure[]
+     */
+    protected $onCallbacks = [];
 
     /**
      * 工作单元是否关闭.
@@ -125,9 +139,10 @@ class UnitOfWork implements IUnitOfWork
     {
         $this->validateClosed();
 
-        if (!($this->entityInserts ||
+        if (!($this->entityCreates ||
             $this->entityUpdates ||
-            $this->entityDeletes)) {
+            $this->entityDeletes ||
+            $this->entityReplaces)) {
             return;
         }
 
@@ -148,10 +163,11 @@ class UnitOfWork implements IUnitOfWork
      * 保持实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $method
      *
      * @return $this
      */
-    public function persist(IEntity $entity)
+    public function persist(IEntity $entity, string $method = 'save')
     {
         $this->validateClosed();
 
@@ -163,9 +179,7 @@ class UnitOfWork implements IUnitOfWork
               case self::STATE_MANAGED:
                   break;
               case self::STATE_NEW:
-                  $this->insert($entity);
-
-                  $this->entityStates[$id] = self::STATE_MANAGED;
+                    $this->persistNewEntry($method, $entity);
 
                   break;
               case self::STATE_REMOVED:
@@ -222,7 +236,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return $this
      */
-    public function insert(IEntity $entity)
+    public function create(IEntity $entity)
     {
         $this->validateClosed();
 
@@ -230,23 +244,30 @@ class UnitOfWork implements IUnitOfWork
 
         if (isset($this->entityUpdates[$id])) {
             throw new InvalidArgumentException(
-                sprintf('Updated entity `%s` cannot be added for insert.', get_class($entity))
+                sprintf('Updated entity `%s` cannot be added for create.', get_class($entity))
             );
         }
 
         if (isset($this->entityDeletes[$id])) {
             throw new InvalidArgumentException(
-                sprintf('Deleted entity `%s` cannot be added for insert.', get_class($entity))
+                sprintf('Deleted entity `%s` cannot be added for create.', get_class($entity))
             );
         }
 
-        if (isset($this->entityInserts[$id])) {
+        if (isset($this->entityReplaces[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Replaced entity `%s` cannot be added for create.', get_class($entity))
+            );
+        }
+
+        if (isset($this->entityCreates[$id])) {
             throw new InvalidArgumentException(
                 sprintf('Entity `%s` cannot be added for twice.', get_class($entity))
             );
         }
 
-        $this->entityInserts[$id] = $entity;
+        $this->entityCreates[$id] = $entity;
+        $this->entityStates[$id] = self::STATE_MANAGED;
 
         return $this;
     }
@@ -258,9 +279,9 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return bool
      */
-    public function inserted(IEntity $entity): bool
+    public function created(IEntity $entity): bool
     {
-        return isset($this->entityInserts[spl_object_id($entity)]);
+        return isset($this->entityCreates[spl_object_id($entity)]);
     }
 
     /**
@@ -288,9 +309,15 @@ class UnitOfWork implements IUnitOfWork
             );
         }
 
-        if (isset($this->entityInserts[$id])) {
+        if (isset($this->entityCreates[$id])) {
             throw new InvalidArgumentException(
-                sprintf('Inserted entity `%s` cannot be added for update.', get_class($entity))
+                sprintf('Created entity `%s` cannot be added for update.', get_class($entity))
+            );
+        }
+
+        if (isset($this->entityReplaces[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Replaced entity `%s` cannot be added for update.', get_class($entity))
             );
         }
 
@@ -301,6 +328,7 @@ class UnitOfWork implements IUnitOfWork
         }
 
         $this->entityUpdates[$id] = $entity;
+        $this->entityStates[$id] = self::STATE_MANAGED;
 
         return $this;
     }
@@ -318,6 +346,61 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
+     * 注册不存在则新增否则更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    public function replace(IEntity $entity)
+    {
+        $this->validateClosed();
+
+        $id = spl_object_id($entity);
+
+        if (isset($this->entityDeletes[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Deleted entity `%s` cannot be added for replace.', get_class($entity))
+            );
+        }
+
+        if (isset($this->entityCreates[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Created entity `%s` cannot be added for replace.', get_class($entity))
+            );
+        }
+
+        if (isset($this->entityUpdates[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Updated entity `%s` cannot be added for replace.', get_class($entity))
+            );
+        }
+
+        if (isset($this->entityReplaces[$id])) {
+            throw new InvalidArgumentException(
+                sprintf('Entity `%s` cannot be replaced for twice.', get_class($entity))
+            );
+        }
+
+        $this->entityReplaces[$id] = $entity;
+        $this->entityStates[$id] = self::STATE_MANAGED;
+
+        return $this;
+    }
+
+    /**
+     * 实体是否已经注册不存在则新增否则更新.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return bool
+     */
+    public function replaced(IEntity $entity): bool
+    {
+        return isset($this->entityReplaces[spl_object_id($entity)]);
+    }
+
+    /**
      * 注册删除实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
@@ -330,20 +413,24 @@ class UnitOfWork implements IUnitOfWork
 
         $id = spl_object_id($entity);
 
-        if (isset($this->entityInserts[$id])) {
-            unset($this->entityInserts[$id], $this->entityStates[$id]);
+        if (isset($this->entityCreates[$id])) {
+            unset($this->entityCreates[$id], $this->entityStates[$id]);
 
             return $this;
-        }
-
-        if (isset($this->entityUpdates[$id])) {
-            unset($this->entityUpdates[$id]);
         }
 
         if (!$entity->id()) {
             throw new InvalidArgumentException(
                 sprintf('Entity `%s` has no identity for delete.', get_class($entity))
             );
+        }
+
+        if (isset($this->entityUpdates[$id])) {
+            unset($this->entityUpdates[$id]);
+        }
+
+        if (isset($this->entityReplaces[$id])) {
+            unset($this->entityReplaces[$id]);
         }
 
         if (isset($this->entityDeletes[$id])) {
@@ -381,9 +468,10 @@ class UnitOfWork implements IUnitOfWork
     {
         $id = spl_object_id($entity);
 
-        return isset($this->entityInserts[$id])
-            || isset($this->entityUpdates[$id])
-            || isset($this->entityDeletes[$id]);
+        return isset($this->entityCreates[$id]) ||
+            isset($this->entityUpdates[$id]) ||
+            isset($this->entityDeletes[$id]) ||
+            isset($this->entityReplaces[$id]);
     }
 
     /**
@@ -505,10 +593,12 @@ class UnitOfWork implements IUnitOfWork
      */
     public function clear()
     {
-        $this->entityInserts = [];
+        $this->entityCreates = [];
         $this->entityUpdates = [];
         $this->entityDeletes = [];
+        $this->entityReplaces = [];
         $this->entityStates = [];
+        $this->onCallbacks = [];
     }
 
     /**
@@ -518,6 +608,21 @@ class UnitOfWork implements IUnitOfWork
     {
         $this->clear();
         $this->closed = true;
+    }
+
+    /**
+     * 响应回调.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param \Closure                     $callbacks
+     *
+     * @return $this
+     */
+    public function on(IEntity $entity, Closure $callbacks)
+    {
+        $this->onCallbacks[spl_object_id($entity)] = $callbacks;
+
+        return $this;
     }
 
     /**
@@ -551,7 +656,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return int
      */
-    public function getEntityState(IEntity $entity, int $defaults = self::STATE_NEW): int
+    public function getEntityState(IEntity $entity, ?int $defaults = null): int
     {
         $id = spl_object_id($entity);
 
@@ -559,12 +664,19 @@ class UnitOfWork implements IUnitOfWork
             return $this->entityStates[$id];
         }
 
-        // 已经持久化数据，标识为游离状态
-        if ($entity->flushed()) {
+        if (null !== $defaults) {
+            return $defaults;
+        }
+
+        if (!$entity->id()) {
+            return self::STATE_NEW;
+        }
+
+        if (!$this->registered($entity)) {
             return self::STATE_DETACHED;
         }
 
-        return $defaults;
+        return self::STATE_NEW;
     }
 
     /**
@@ -572,23 +684,96 @@ class UnitOfWork implements IUnitOfWork
      */
     protected function handleRepository()
     {
-        foreach ($this->entityInserts as $entity) {
+        foreach ($this->entityCreates as $entity) {
+            $id = spl_object_id($entity);
+
             $this->repository($entity)->create($entity);
+
+            if (isset($this->onCallbacks[$id])) {
+                $this->onCallbacks[$id]($entity);
+            }
+
+            $this->entityStates[$id] = self::STATE_DETACHED;
         }
 
         foreach ($this->entityUpdates as $entity) {
+            $id = spl_object_id($entity);
+
             $this->repository($entity)->update($entity);
+
+            if (isset($this->onCallbacks[$id])) {
+                $this->onCallbacks[$id]($entity);
+            }
+
+            $this->entityStates[$id] = self::STATE_DETACHED;
+        }
+
+        foreach ($this->entityReplaces as $entity) {
+            $id = spl_object_id($entity);
+
+            $this->repository($entity)->replace($entity);
+
+            if (isset($this->onCallbacks[$id])) {
+                $this->onCallbacks[$id]($entity);
+            }
+
+            $this->entityStates[$id] = self::STATE_DETACHED;
         }
 
         foreach ($this->entityDeletes as $entity) {
+            $id = spl_object_id($entity);
+
             $this->repository($entity)->delete($entity);
 
-            unset($this->entityStates[spl_object_id($entity)]);
+            if (isset($this->onCallbacks[$id])) {
+                $this->onCallbacks[$id]($entity);
+            }
         }
 
-        $this->entityInserts = [];
+        $this->entityCreates = [];
         $this->entityUpdates = [];
         $this->entityDeletes = [];
+        $this->entityReplaces = [];
+        $this->onCallbacks = [];
+    }
+
+    /**
+     * 处理持久化.
+     *
+     * @param string                       $method
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     */
+    protected function persistNewEntry(string $method, IEntity $entity)
+    {
+        switch (strtolower($method)) {
+            case 'create':
+                $this->create($entity);
+
+                break;
+            case 'update':
+                $this->update($entity);
+
+                break;
+            case 'replace':
+                $this->replace($entity);
+
+                break;
+            case 'save':
+            default:
+                $ids = $entity->id();
+
+                if (is_array($ids)) {
+                    $this->replace($entity);
+                } else {
+                    if (empty($ids)) {
+                        $this->create($entity);
+                    } else {
+                        $this->update($entity);
+                    }
+                }
+
+                break;
+        }
     }
 
     /**

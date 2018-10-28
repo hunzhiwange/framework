@@ -102,7 +102,7 @@ interface IUnitOfWork
      *
      * @return $this
      */
-    public function insert(IEntity $entity);
+    public function create(IEntity $entity);
 
     /**
      * 实体是否已经注册新增.
@@ -111,7 +111,7 @@ interface IUnitOfWork
      *
      * @return bool
      */
-    public function inserted(IEntity $entity): bool;
+    public function created(IEntity $entity): bool;
 
     /**
      * 注册更新实体.
@@ -130,6 +130,24 @@ interface IUnitOfWork
      * @return bool
      */
     public function updated(IEntity $entity): bool;
+
+    /**
+     * 注册不存在则新增否则更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return $this
+     */
+    public function replace(IEntity $entity);
+
+    /**
+     * 实体是否已经注册不存在则新增否则更新.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return bool
+     */
+    public function replaced(IEntity $entity): bool;
 
     /**
      * 注册删除实体.

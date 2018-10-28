@@ -158,6 +158,22 @@ class Repository implements IRepository
     }
 
     /**
+     * 响应不存在则新增否则更新.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return mixed
+     */
+    public function replace(IEntity $entity)
+    {
+        if ($entity->flushed()) {
+            return;
+        }
+
+        return $entity->replace()->flush();
+    }
+
+    /**
      * 响应删除.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity

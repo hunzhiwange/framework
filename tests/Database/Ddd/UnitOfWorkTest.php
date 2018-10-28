@@ -129,7 +129,7 @@ class UnitOfWorkTest extends TestCase
         $this->clear();
     }
 
-    public function testInsert()
+    public function testCreate()
     {
         $work = UnitOfWork::make();
 
@@ -150,23 +150,23 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertNull($post->id);
         $this->assertNull($post2->id);
-        $this->assertFalse($work->inserted($post));
-        $this->assertFalse($work->inserted($post2));
+        $this->assertFalse($work->created($post));
+        $this->assertFalse($work->created($post2));
         $this->assertFalse($work->registered($post));
         $this->assertFalse($work->registered($post2));
 
-        $work->insert($post);
-        $work->insert($post2);
+        $work->create($post);
+        $work->create($post2);
 
-        $this->assertTrue($work->inserted($post));
-        $this->assertTrue($work->inserted($post2));
+        $this->assertTrue($work->created($post));
+        $this->assertTrue($work->created($post2));
         $this->assertTrue($work->registered($post));
         $this->assertTrue($work->registered($post2));
 
         $work->flush();
 
-        $this->assertFalse($work->inserted($post));
-        $this->assertFalse($work->inserted($post2));
+        $this->assertFalse($work->created($post));
+        $this->assertFalse($work->created($post2));
         $this->assertFalse($work->registered($post));
         $this->assertFalse($work->registered($post2));
 
@@ -475,8 +475,8 @@ class UnitOfWorkTest extends TestCase
             'summary' => 'old',
         ]);
 
-        $work->insert($post);
-        $work->insert($post2);
+        $work->create($post);
+        $work->create($post2);
 
         $work->flush();
     }
@@ -540,8 +540,8 @@ class UnitOfWorkTest extends TestCase
                 'summary' => 'old',
             ]);
 
-            $w->insert($post);
-            $w->insert($post2);
+            $w->create($post);
+            $w->create($post2);
         });
 
         $this->assertSame(0, $connect->table('post')->findCount());
@@ -608,8 +608,8 @@ class UnitOfWorkTest extends TestCase
             'summary' => 'old',
         ]);
 
-        $work->persist($post);
-        $work->persist($post);
+        $work->persist($post, 'create');
+        $work->persist($post, 'create');
 
         $work->flush();
 
@@ -678,33 +678,11 @@ class UnitOfWorkTest extends TestCase
         $this->clear();
     }
 
-    public function testPersistStageDetachedEntity()
+    public function testCreateButAlreadyInUpdates()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Detached entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be persist.'
-        );
-
-        $work = UnitOfWork::make();
-
-        $connect = $this->createConnectTest();
-
-        $post = new Post(['title' => 'foo']);
-
-        $work->insert($post);
-
-        $work->flush();
-
-        $this->assertSame(1, $connect->table('post')->findCount());
-
-        $work->persist($post);
-    }
-
-    public function testInsertButAlreadyInUpdates()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Updated entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for insert.'
+            'Updated entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for create.'
         );
 
         $work = UnitOfWork::make();
@@ -713,14 +691,14 @@ class UnitOfWorkTest extends TestCase
 
         $work->update($post);
 
-        $work->insert($post);
+        $work->create($post);
     }
 
-    public function testInsertButAlreadyInDeletes()
+    public function testCreateButAlreadyInDeletes()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Deleted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for insert.'
+            'Deleted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for create.'
         );
 
         $work = UnitOfWork::make();
@@ -729,10 +707,10 @@ class UnitOfWorkTest extends TestCase
 
         $work->delete($post);
 
-        $work->insert($post);
+        $work->create($post);
     }
 
-    public function testInsertManyTimes()
+    public function testCreateManyTimes()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -745,8 +723,8 @@ class UnitOfWorkTest extends TestCase
 
         $post = new Post(['title' => 'foo']);
 
-        $work->insert($post);
-        $work->insert($post);
+        $work->create($post);
+        $work->create($post);
 
         $work->flush();
 
@@ -771,23 +749,23 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    public function testUpdateButAlreadyInInserts()
+    public function testUpdateButAlreadyInCreates()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Inserted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for update.'
+            'Created entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for update.'
         );
 
         $work = UnitOfWork::make();
 
         $post = new Post(['id' => 5, 'title' => 'new']);
 
-        $work->insert($post);
+        $work->create($post);
 
         $work->update($post);
     }
 
-    public function testDeleteInserted()
+    public function testDeleteCreated()
     {
         $work = UnitOfWork::make();
 
@@ -795,7 +773,7 @@ class UnitOfWorkTest extends TestCase
 
         $post = new Post(['title' => 'foo']);
 
-        $work->insert($post);
+        $work->create($post);
         $work->delete($post);
 
         $work->flush();
@@ -848,7 +826,7 @@ class UnitOfWorkTest extends TestCase
 
         $post = new Post(['id' => 5, 'title' => 'new']);
 
-        $work->insert($post);
+        $work->delete($post);
 
         $work->refresh($post);
     }
@@ -936,6 +914,119 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $this->clear();
+    }
+
+    public function testPersistAsUpdate()
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $post = new Post([
+            'id'      => 1,
+            'title'   => 'old',
+            'summary' => 'old',
+        ]);
+
+        $work->persist($post);
+
+        $work->flush();
+
+        $this->assertSame(0, $connect->table('post')->findCount());
+
+        $this->clear();
+    }
+
+    public function testPersistAsReplace()
+    {
+        // phpunit 不支持 try catch
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
+        );
+
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $post = new Post([
+            'id'      => 1,
+            'title'   => 'old',
+            'summary' => 'old',
+        ]);
+
+        $work->persist($post, 'replace');
+
+        $work->flush();
+    }
+
+    public function testPersistStageDetachedEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Detached entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be persist.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 5, 'title' => 'new']);
+
+        $work->persist($post);
+
+        $work->flush($post);
+
+        dump($work->getEntityState($post));
+
+        $work->persist($post);
+    }
+
+    public function testRemoveStageDetachedEntity()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Detached entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be remove.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 5, 'title' => 'new']);
+
+        $work->persist($post);
+
+        $work->flush($post);
+
+        $work->remove($post);
+    }
+
+    public function testOnCallbacks()
+    {
+        $work = UnitOfWork::make();
+
+        $post = new Post(['title' => 'new']);
+        $guestbook = new Guestbook([]);
+
+        $work->persist($post);
+        $work->persist($guestbook);
+
+        $work->on($post, function ($p) use ($guestbook) {
+            $guestbook->content = 'guestbook content was post id is '.$p->id;
+        });
+
+        $work->flush($post);
+
+        $newGuestbook = Guestbook::find(1);
+
+        $this->assertSame('guestbook content was post id is 1', $newGuestbook->content);
+
+        $work->clear();
     }
 
     protected function clear()

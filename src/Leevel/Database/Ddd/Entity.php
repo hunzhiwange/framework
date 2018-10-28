@@ -34,6 +34,7 @@ use Leevel\Event\IDispatch;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str;
+use Throwable;
 
 /**
  * 模型实体 Object Relational Mapping.
@@ -1150,19 +1151,19 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function idCondition(): array
     {
-        if (null === (($primaryData = $this->id()))) {
+        if (null === (($ids = $this->id()))) {
             throw new InvalidArgumentException(
                 sprintf('Entity %s has no primary key data.', static::class)
             );
         }
 
-        if (!is_array($primaryData)) {
-            $primaryData = [
-                $this->singlePrimaryKey() => $primaryData,
+        if (!is_array($ids)) {
+            $ids = [
+                $this->singlePrimaryKey() => $ids,
             ];
         }
 
-        return $primaryData;
+        return $ids;
     }
 
     /**
@@ -1260,13 +1261,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 保存统一入口.
      *
-     * @param string     $saveMethod
+     * @param string     $method
      * @param array      $data
      * @param null|array $fill
      *
      * @return $this
      */
-    protected function saveEntry(string $saveMethod, array $data, ?array $fill = null): IEntity
+    protected function saveEntry(string $method, array $data, ?array $fill = null): IEntity
     {
         foreach ($data as $k => $v) {
             $this->withPropValue($k, $v);
@@ -1275,7 +1276,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->runEvent(static::BEFORE_SAVE_EVENT);
 
         // 程序通过内置方法统一实现
-        switch (strtolower($saveMethod)) {
+        switch (strtolower($method)) {
             case 'create':
                 $this->createReal($fill);
 
@@ -1290,16 +1291,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 break;
             case 'save':
             default:
-                $primaryData = $this->id();
+                $ids = $this->id();
 
-                // 复合主键的情况下，则使用 replace 方式
-                if (is_array($primaryData)) {
+                if (is_array($ids)) {
                     $this->replaceReal($fill);
-                }
-
-                // 单一主键
-                else {
-                    if (empty($primaryData)) {
+                } else {
+                    if (empty($ids)) {
                         $this->createReal($fill);
                     } else {
                         $this->updateReal($fill);
@@ -1451,7 +1448,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         try {
             return $this->createReal($fill);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return $this->updateReal($fill);
         }
     }
