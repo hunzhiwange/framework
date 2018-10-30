@@ -34,11 +34,19 @@ interface ISpecification
     /**
      * 是否满足规约.
      *
-     * @param mixed $candidate
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return bool
      */
-    public function isSatisfiedBy($candidate): bool;
+    public function isSatisfiedBy(IEntity $entity): bool;
+
+    /**
+     * 规约实现.
+     *
+     * @param \Leevel\Database\Ddd\Select  $select
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     */
+    public function handle(Select $select, IEntity $entity);
 
     /**
      * 规约 And 操作.
@@ -61,9 +69,7 @@ interface ISpecification
     /**
      * 规约 Not 操作.
      *
-     * @param \Leevel\Database\Ddd\ISpecification $spec
-     *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function not(self $spec): self;
+    public function not(): self;
 }

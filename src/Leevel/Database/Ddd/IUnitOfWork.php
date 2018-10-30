@@ -266,5 +266,5 @@ interface IUnitOfWork
      *
      * @return int
      */
-    public function getEntityState(IEntity $entity, int $defaults = self::STATE_NEW): int;
+    public function getEntityState(IEntity $entity, ?int $defaults = null): int;
 }

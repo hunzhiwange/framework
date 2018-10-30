@@ -710,6 +710,22 @@ class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
+    public function testCreateButAlreadyInReplaces()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Replaced entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for create.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 5]);
+
+        $work->replace($post);
+
+        $work->create($post);
+    }
+
     public function testCreateManyTimes()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -725,12 +741,6 @@ class UnitOfWorkTest extends TestCase
 
         $work->create($post);
         $work->create($post);
-
-        $work->flush();
-
-        $this->assertSame(1, $connect->table('post')->findCount());
-
-        $this->clear();
     }
 
     public function testUpdateButAlreadyInDeletes()
@@ -761,6 +771,55 @@ class UnitOfWorkTest extends TestCase
         $post = new Post(['id' => 5, 'title' => 'new']);
 
         $work->create($post);
+
+        $work->update($post);
+    }
+
+    public function testUpdateButAlreadyInReplaces()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Replaced entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for update.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 5, 'title' => 'new']);
+
+        $work->replace($post);
+
+        $work->update($post);
+    }
+
+    public function testUpdateManyTimes()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be updated for twice.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $post = new Post(['id' => 1, 'title' => 'foo']);
+
+        $work->update($post);
+        $work->update($post);
+    }
+
+    public function testUpdateButHasNoPrimaryData()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no identity for update.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $post = new Post(['title' => 'foo']);
 
         $work->update($post);
     }
@@ -800,6 +859,38 @@ class UnitOfWorkTest extends TestCase
         $post = Post::find(1);
 
         $work->update($post);
+        $work->delete($post);
+
+        $post->title = 'new';
+
+        $work->flush();
+
+        $postNew = Post::find(1);
+
+        $this->assertSame(0, $connect->table('post')->findCount());
+        $this->assertNull($postNew->id);
+        $this->assertNull($postNew->title);
+
+        $this->clear();
+    }
+
+    public function testDeleteReplaced()
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $post = Post::find(1);
+
+        $work->replace($post);
         $work->delete($post);
 
         $post->title = 'new';
@@ -916,7 +1007,7 @@ class UnitOfWorkTest extends TestCase
         $this->clear();
     }
 
-    public function testPersistAsUpdate()
+    public function testPersistAsSaveUpdate()
     {
         $work = UnitOfWork::make();
 
@@ -929,6 +1020,27 @@ class UnitOfWorkTest extends TestCase
         ]);
 
         $work->persist($post);
+
+        $work->flush();
+
+        $this->assertSame(0, $connect->table('post')->findCount());
+
+        $this->clear();
+    }
+
+    public function testPersistAsUpdate()
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $post = new Post([
+            'id'      => 1,
+            'title'   => 'old',
+            'summary' => 'old',
+        ]);
+
+        $work->persist($post, 'update');
 
         $work->flush();
 
@@ -966,6 +1078,8 @@ class UnitOfWorkTest extends TestCase
         $work->persist($post, 'replace');
 
         $work->flush();
+
+        // 非 phpunit 模式下面系统会更新 post 的数据
     }
 
     public function testPersistStageDetachedEntity()
@@ -982,8 +1096,6 @@ class UnitOfWorkTest extends TestCase
         $work->persist($post);
 
         $work->flush($post);
-
-        dump($work->getEntityState($post));
 
         $work->persist($post);
     }
@@ -1027,6 +1139,248 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('guestbook content was post id is 1', $newGuestbook->content);
 
         $work->clear();
+    }
+
+    public function testOnCallbacksForReplace()
+    {
+        $work = UnitOfWork::make();
+
+        $post = new Post(['title' => 'new']);
+        $guestbook = new Guestbook([]);
+
+        $work->replace($post);
+        $work->replace($guestbook);
+
+        $work->on($post, function ($p) use ($guestbook) {
+            $guestbook->content = 'guestbook content was post id is '.$p->id;
+        });
+
+        $work->flush($post);
+
+        $newGuestbook = Guestbook::find(1);
+
+        $this->assertSame('guestbook content was post id is 1', $newGuestbook->content);
+
+        $work->clear();
+    }
+
+    public function testOnCallbacksForUpdate()
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $this->assertSame('1', $connect->
+        table('guestbook')->
+        insert([
+            'content'   => 'hello world',
+        ]));
+
+        $post = new Post(['id' => 1, 'title' => 'new'], true);
+        $guestbook = new Guestbook(['id' => 1], true);
+
+        $work->update($post);
+        $work->update($guestbook);
+
+        $work->on($post, function ($p) use ($guestbook) {
+            $guestbook->content = 'guestbook content was post id is '.$p->id;
+        });
+
+        $work->flush($post);
+
+        $newGuestbook = Guestbook::find(1);
+
+        $this->assertSame('guestbook content was post id is 1', $newGuestbook->content);
+
+        $work->clear();
+    }
+
+    public function testReplaceButAlreadyInDeletes()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Deleted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for replace.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 5, 'title' => 'new']);
+
+        $work->delete($post);
+
+        $work->replace($post);
+    }
+
+    public function testReplace()
+    {
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 1, 'title' => 'new']);
+
+        $this->assertFalse($work->replaced($post));
+
+        $work->replace($post);
+
+        $this->assertTrue($work->replaced($post));
+
+        $work->flush();
+
+        $this->assertFalse($work->replaced($post));
+
+        $createPost = Post::find(1);
+
+        $this->assertInstanceof(Post::class, $createPost);
+        $this->assertSame('1', $createPost->id);
+        $this->assertSame('new', $createPost->title);
+
+        $this->clear();
+    }
+
+    public function testReplaceAsUpdate()
+    {
+        // phpunit 不支持 try catch
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
+        );
+
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $post = new Post(['id' => 1, 'title' => 'new', 'summary' => 'new']);
+
+        $work->replace($post);
+
+        $work->flush();
+
+        // 非 phpunit 模式下面系统会更新 post 的数据
+    }
+
+    public function testReplaceButAlreadyInCreates()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Created entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for replace.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 5, 'title' => 'new']);
+
+        $work->create($post);
+
+        $work->replace($post);
+    }
+
+    public function testReplaceButAlreadyInUpdates()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Updated entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for replace.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['id' => 5, 'title' => 'new']);
+
+        $work->update($post);
+
+        $work->replace($post);
+    }
+
+    public function testReplaceManyTimes()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be replaced for twice.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $post = new Post(['title' => 'foo']);
+
+        $work->replace($post);
+        $work->replace($post);
+    }
+
+    public function testDeleteButHasNoPrimaryData()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no identity for delete.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $post = new Post(['title' => 'new']);
+
+        $work->delete($post);
+    }
+
+    public function testDeleteManyTimes()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be deleted for twice.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $post = new Post(['id' => 1, 'title' => 'foo']);
+
+        $work->delete($post);
+        $work->delete($post);
+    }
+
+    public function testRegisterManaged()
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $post = new Post(['id' => 1, 'title' => 'foo']);
+
+        $this->assertSame(IUnitOfWork::STATE_DETACHED, $work->getEntityState($post));
+
+        $work->registerManaged($post);
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+    }
+
+    public function testRegisterManagedFromNew()
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $post = new Post(['title' => 'foo']);
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $work->registerManaged($post);
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
     }
 
     protected function clear()

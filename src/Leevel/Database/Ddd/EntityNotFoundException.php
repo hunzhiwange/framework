@@ -47,10 +47,10 @@ class EntityNotFoundException extends RuntimeException
      *
      * @return $this
      */
-    public function entity($entity)
+    public function setEntity(string $entity)
     {
         $this->entity = $entity;
-        $this->message = "Can not find {$entity} data";
+        $this->message = sprintf('Entity `%s` was not found.', $entity);
 
         return $this;
     }
@@ -60,7 +60,7 @@ class EntityNotFoundException extends RuntimeException
      *
      * @return string
      */
-    public function getEntity()
+    public function entity(): string
     {
         return $this->entity;
     }

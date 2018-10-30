@@ -20,12 +20,15 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Leevel\Collection\Collection;
+
 /**
  * 仓储基础
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.10.14
+ * @since 2018.10 重新实现规约查询
  *
  * @version 1.0
  */
@@ -69,7 +72,7 @@ class Repository implements IRepository
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function find($id, $column = ['*'])
+    public function find(int $id, array $column = ['*']): IEntity
     {
         return $this->entity->find($id, $column);
     }
@@ -80,49 +83,60 @@ class Repository implements IRepository
      * @param int   $id
      * @param array $column
      *
-     * @return \Leevel\Database\Ddd\IEntity|void
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function findOrFail($id, $column = ['*'])
+    public function findOrFail(int $id, array $column = ['*']): IEntity
     {
         return $this->entity->findOrFail($id, $column);
     }
 
     /**
-     * 取得记录数量.
-     *
-     * @param null|callable $callbacks
-     * @param null|mixed    $specification
-     *
-     * @return int
-     */
-    public function count($specification = null)
-    {
-        $select = $this->entity->selfDatabaseSelect();
-
-        if (!is_string($specification) && is_callable($specification)) {
-            call_user_func($specification, $select);
-        }
-
-        return $select->getCount();
-    }
-
-    /**
      * 取得所有记录.
      *
-     * @param null|callable $callbacks
-     * @param null|mixed    $specification
+     * @param null|\Leevel\Database\Ddd\ISpecification $spec
      *
      * @return \Leevel\Collection\Collection
      */
-    public function all($specification = null)
+    public function findAll($spec = null)//: Collection
     {
         $select = $this->entity->selfDatabaseSelect();
 
-        if (!is_string($specification) && is_callable($specification)) {
-            call_user_func($specification, $select);
-        }
+        $this->normalizeSpec($select, $spec);
 
         return $select->findAll();
+    }
+
+    /**
+     * 取得记录数量.
+     *
+     * @param null|\Leevel\Database\Ddd\ISpecification $spec
+     * @param string                                   $field
+     *
+     * @return int
+     */
+    public function findCount($spec = null, string $field = '*'): int
+    {
+        $select = $this->entity->selfDatabaseSelect();
+
+        $this->normalizeSpec($select, $spec);
+
+        return $select->findCount($field);
+    }
+
+    /**
+     * 规约查询器.
+     *
+     * @param \Leevel\Database\Ddd\ISpecification $spec
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public function spec(ISpecification $spec): Select
+    {
+        $select = $this->entity->selfDatabaseSelect();
+
+        $this->normalizeSpec($select, $spec);
+
+        return $select;
     }
 
     /**
@@ -194,7 +208,7 @@ class Repository implements IRepository
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    public function refresh(IEntity $entity)
+    public function refresh(IEntity $entity): void
     {
         $entity->refresh();
     }
@@ -210,29 +224,15 @@ class Repository implements IRepository
     }
 
     /**
-     * 自定义规约处理.
+     * 处理规约查询.
      *
-     * @param callbable      $callbacks
-     * @param null|callbable $specification
-     *
-     * @return callbable
+     * @param \Leevel\Database\Ddd\Select         $select
+     * @param \Leevel\Database\Ddd\ISpecification $spec
      */
-    protected function specification($callbacks, $specification = null)
+    protected function normalizeSpec(Select $select, ISpecification $spec): void
     {
-        if (null === $specification) {
-            $specification = function ($select) use ($callbacks) {
-                call_user_func($callbacks, $select);
-            };
-        } else {
-            $specification = function ($select) use ($callbacks, $specification) {
-                call_user_func($callbacks, $select);
-
-                if (!is_string($specification) && is_callable($specification)) {
-                    call_user_func($specification, $select);
-                }
-            };
+        if ($spec instanceof ISpecification && $spec->isSatisfiedBy($this->entity)) {
+            $spec->handle($select, $this->entity);
         }
-
-        return $specification;
     }
 }

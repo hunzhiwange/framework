@@ -34,32 +34,65 @@ use Closure;
 class Specification implements ISpecification
 {
     /**
-     * 闭包规约实现.
+     * 闭包规约判断.
      *
      * @var \Closure
      */
     protected $spec;
 
     /**
+     * 闭包规约实现.
+     *
+     * @var \Closure
+     */
+    protected $handle;
+
+    /**
      * 构造函数.
      *
      * @param \Closure $spec
+     * @param \Closure $handle
      */
-    public function __construct(Closure $spec)
+    public function __construct(Closure $spec, Closure $handle)
     {
         $this->spec = $spec;
+        $this->handle = $handle;
+    }
+
+    /**
+     * 创建规约.
+     *
+     * @param \Closure $spec
+     * @param \Closure $handle
+     *
+     * @return static
+     */
+    public static function make(Closure $spec, Closure $handle): ISpecification
+    {
+        return new static($spec, $handle);
     }
 
     /**
      * 是否满足规约.
      *
-     * @param mixed $candidate
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return bool
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(IEntity $entity): bool
     {
-        return call_user_func($this->spec, $candidate);
+        return call_user_func($this->spec, $entity);
+    }
+
+    /**
+     * 规约实现.
+     *
+     * @param \Leevel\Database\Ddd\Select  $select
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     */
+    public function handle(Select $select, IEntity $entity)
+    {
+        call_user_func($this->handle, $select, $entity);
     }
 
     /**
@@ -71,8 +104,11 @@ class Specification implements ISpecification
      */
     public function and(ISpecification $spec): ISpecification
     {
-        return new self(function ($candidate) use ($spec): bool {
-            return $this->isSatisfiedBy($candidate) && $spec->isSatisfiedBy($candidate);
+        return new self(function (IEntity $entity) use ($spec): bool {
+            return $this->isSatisfiedBy($entity) && $spec->isSatisfiedBy($entity);
+        }, function (Select $select, IEntity $entity) use ($spec) {
+            $this->handle($select, $entity);
+            $spec->handle($select, $entity);
         });
     }
 
@@ -85,22 +121,26 @@ class Specification implements ISpecification
      */
     public function or(ISpecification $spec): ISpecification
     {
-        return new self(function ($candidate) use ($spec): bool {
-            return $this->isSatisfiedBy($candidate) || $spec->isSatisfiedBy($candidate);
+        return new self(function (IEntity $entity): bool {
+            return true;
+        }, function (Select $select, IEntity $entity) use ($spec) {
+            if ($this->isSatisfiedBy($entity)) {
+                $this->handle($select, $entity);
+            } elseif ($spec->isSatisfiedBy($entity)) {
+                $spec->handle($select, $entity);
+            }
         });
     }
 
     /**
      * 规约 Not 操作.
      *
-     * @param \Leevel\Database\Ddd\ISpecification $spec
-     *
      * @return \Leevel\Database\Ddd\ISpecification
      */
-    public function not(ISpecification $spec): ISpecification
+    public function not(): ISpecification
     {
-        return new self(function ($candidate) use ($spec): bool {
-            return !$this->isSatisfiedBy($candidate);
-        });
+        return new self(function (IEntity $entity): bool {
+            return !$this->isSatisfiedBy($entity);
+        }, $this->handle);
     }
 }

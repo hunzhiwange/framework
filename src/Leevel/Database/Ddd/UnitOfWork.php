@@ -696,10 +696,10 @@ class UnitOfWork implements IUnitOfWork
             $this->entityStates[$id] = self::STATE_DETACHED;
         }
 
-        foreach ($this->entityUpdates as $entity) {
+        foreach ($this->entityReplaces as $entity) {
             $id = spl_object_id($entity);
 
-            $this->repository($entity)->update($entity);
+            $this->repository($entity)->replace($entity);
 
             if (isset($this->onCallbacks[$id])) {
                 $this->onCallbacks[$id]($entity);
@@ -708,10 +708,10 @@ class UnitOfWork implements IUnitOfWork
             $this->entityStates[$id] = self::STATE_DETACHED;
         }
 
-        foreach ($this->entityReplaces as $entity) {
+        foreach ($this->entityUpdates as $entity) {
             $id = spl_object_id($entity);
 
-            $this->repository($entity)->replace($entity);
+            $this->repository($entity)->update($entity);
 
             if (isset($this->onCallbacks[$id])) {
                 $this->onCallbacks[$id]($entity);

@@ -189,25 +189,21 @@ class Select
     /**
      * 通过主键查找模型实体，未找到则抛出异常.
      *
-     * @param mixed $id
+     * @param int   $id
      * @param array $column
      *
-     * @return \Leevel\Collection\Collection|\Leevel\Database\Ddd\IEntity
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function findOrFail($id, array $column = ['*'])
+    public function findOrFail(int $id, array $column = ['*']): IEntity
     {
         $result = $this->find($id, $column);
 
-        if (is_array($id)) {
-            if (count($result) === count(array_unique($id))) {
-                return $result;
-            }
-        } elseif (null !== $result) {
+        if (null !== $result->__get($this->entity->singlePrimaryKey())) {
             return $result;
         }
 
         throw (new EntityNotFoundException())->
-        entity(get_class($this->entity));
+        setEntity(get_class($this->entity));
     }
 
     /**
@@ -474,7 +470,7 @@ class Select
      *
      * @return bool
      */
-    protected function isNested($name, $relation)
+    protected function isNested(string $name, string $relation)
     {
         return Str::contains($name, '.') && Str::startsWith($name, $relation.'.');
     }
@@ -568,7 +564,7 @@ class Select
      *
      * @return array
      */
-    protected function loadRelation(array $entitys, $name, Closure $condition)
+    protected function loadRelation(array $entitys, string $name, Closure $condition)
     {
         $relation = $this->getRelation($name);
 

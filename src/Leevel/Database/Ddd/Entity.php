@@ -1158,9 +1158,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         if (!is_array($ids)) {
-            $ids = [
-                $this->singlePrimaryKey() => $ids,
-            ];
+            $ids = [$this->singlePrimaryKey() => $ids];
         }
 
         return $ids;
