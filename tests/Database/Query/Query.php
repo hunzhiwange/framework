@@ -20,12 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use Leevel\Cache\ICache;
 use Leevel\Database\Manager;
 use Leevel\Database\Mysql;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Log\ILog;
 use Leevel\Option\Option;
 use PDO;
 
@@ -42,11 +40,7 @@ trait Query
 {
     protected function createConnect(array $option = [])
     {
-        $log = $this->createMock(ILog::class);
-
-        $cache = $this->createMock(ICache::class);
-
-        return new Mysql($log, $cache, $option);
+        return new Mysql($option);
     }
 
     protected function createConnectTest()
@@ -63,13 +57,10 @@ trait Query
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
-                    12 => false,
+                    PDO::ATTR_PERSISTENT => false,
                 ],
             ],
-            'slave' => [
-            ],
-            'fetch' => 5,
-            'log'   => true,
+            'slave' => [],
         ]);
     }
 
@@ -119,8 +110,6 @@ eot;
         $option = new Option([
             'database' => [
                 'default' => 'mysql',
-                'fetch'   => PDO::FETCH_OBJ,
-                'log'     => true,
                 'connect' => [
                     'mysql' => [
                         'driver'   => 'mysql',
@@ -143,10 +132,6 @@ eot;
         ]);
 
         $container->singleton('option', $option);
-
-        $container->instance('log', $this->createMock(ILog::class));
-
-        $container->instance('cache', $this->createMock(ICache::class));
 
         return $manager;
     }

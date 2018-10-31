@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -20,7 +18,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class Post extends AbstractMigration
+class CompositeId extends AbstractMigration
 {
     /**
      * Change Method.
@@ -45,12 +43,10 @@ class Post extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('post');
-        $table->addColumn('title', 'string', ['limit'=>64]);
-        $table->addColumn('user_id', 'integer', ['length'=>11, 'comment' => '用户 ID']);
-        $table->addColumn('summary', 'string', ['limit' => 200, 'default'=> '', 'comment'=>'文章摘要']);
-        $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
-        $table->addColumn('delete_at', 'timestamp', ['default' => null, 'comment' => '删除时间']);
+        $table = $this->table('composite_id', ['id' => false, 'primary_key' => ['id1', 'id2']]);
+        $table->addColumn('id1', 'integer', ['limit'=>11]);
+        $table->addColumn('id2', 'integer', ['limit'=>11]);
+        $table->addColumn('name', 'string', ['limit'=>32]);
         $table->save();
     }
 }

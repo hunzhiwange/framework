@@ -88,9 +88,7 @@ class Manager extends Managers
     protected function makeConnectMysql(array $option = []): Mysql
     {
         return new Mysql(
-            $this->container['log'],
-            $this->container['cache'],
-            $this->normalizeConnectOption('mysql', is_array($option) ? $option : [])
+            $this->normalizeConnectOption('mysql', $option)
         );
     }
 
@@ -121,15 +119,7 @@ class Manager extends Managers
         $temp = $option;
 
         foreach (array_keys($option) as $type) {
-            if (in_array($type, [
-                'distributed',
-                'readwrite_separate',
-                'driver',
-                'master',
-                'slave',
-                'fetch',
-                'log',
-            ], true)) {
+            if (in_array($type, ['distributed', 'readwrite_separate', 'driver', 'master', 'slave'], true)) {
                 if (isset($temp[$type])) {
                     unset($temp[$type]);
                 }
@@ -141,10 +131,7 @@ class Manager extends Managers
         }
 
         // 纠正数据库服务器参数
-        foreach ([
-            'master',
-            'slave',
-        ] as $type) {
+        foreach (['master', 'slave'] as $type) {
             if (!is_array($option[$type])) {
                 $option[$type] = [];
             }
@@ -158,18 +145,13 @@ class Manager extends Managers
             $option['slave'] = [];
         } elseif ($option['slave']) {
             if (count($option['slave']) === count($option['slave'], COUNT_RECURSIVE)) {
-                $option['slave'] = [
-                    $option['slave'],
-                ];
+                $option['slave'] = [$option['slave']];
             }
 
             foreach ($option['slave'] as &$slave) {
                 $slave = array_merge($slave, $temp);
             }
         }
-
-        // 返回结果
-        unset($temp);
 
         return $option;
     }

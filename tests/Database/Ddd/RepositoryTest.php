@@ -1236,6 +1236,162 @@ class RepositoryTest extends TestCase
         $this->truncate('post');
     }
 
+    public function testCall()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $repository = new Repository(new Post());
+
+        $newPost = $repository->where('id', 5)->find(1);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        $this->assertNull($newPost->id);
+        $this->assertNull($newPost->userId);
+        $this->assertNull($newPost->title);
+        $this->assertNull($newPost->summary);
+
+        $this->clear();
+    }
+
+    public function testCreateFlushed()
+    {
+        $repository = new Repository(new Post());
+
+        $repository->create($post = new Post(['id' => 5, 'title' => 'foo']));
+
+        $repository->create($post); // do nothing.
+
+        $newPost = $repository->find(5);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        $this->assertSame('5', $newPost->id);
+        $this->assertSame('foo', $newPost->title);
+
+        $this->clear();
+    }
+
+    public function testUpdateFlushed()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $repository = new Repository(new Post());
+
+        $repository->update($post = new Post(['id' => 1, 'title' => 'new title']));
+
+        $repository->update($post); // do nothing.
+
+        $newPost = $repository->find(1);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        $this->assertSame('1', $newPost->id);
+        $this->assertSame('new title', $newPost->title);
+
+        $this->clear();
+    }
+
+    public function testReplaceFlushed()
+    {
+        // phpunit 不支持 try catch
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
+        );
+
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $repository = new Repository(new Post());
+
+        $repository->replace($post = new Post(['id' => 1, 'title' => 'new title']));
+
+        // 非 phpunit 模式下面系统会更新 post 的数据
+    }
+
+    public function testReplaceFlushed2()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $repository = new Repository(new Post());
+
+        $repository->replace($post = new Post(['id' => 2, 'title' => 'new title']));
+
+        $repository->replace($post); // do nothing.
+
+        $newPost = $repository->find(1);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        $this->assertSame('1', $newPost->id);
+        $this->assertSame('hello world', $newPost->title);
+        $this->assertSame('post summary', $newPost->summary);
+
+        $newPost2 = $repository->find(2);
+
+        $this->assertInstanceof(Post::class, $newPost2);
+        $this->assertSame('2', $newPost2->id);
+        $this->assertSame('new title', $newPost2->title);
+        $this->assertSame('', $newPost2->summary);
+    }
+
+    public function testDeleteFlushed()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $repository = new Repository(new Post());
+
+        $repository->delete($post = new Post(['id' => 1, 'title' => 'new title']));
+
+        $repository->delete($post); // do nothing.
+
+        $newPost = $repository->find(1);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        $this->assertNull($newPost->id);
+        $this->assertNull($newPost->userId);
+        $this->assertNull($newPost->title);
+        $this->assertNull($newPost->summary);
+
+        $this->clear();
+    }
+
     protected function clear()
     {
         $this->truncate('post');

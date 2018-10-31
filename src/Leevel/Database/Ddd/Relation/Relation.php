@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Closure;
-use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
@@ -193,10 +192,6 @@ abstract class Relation
         static::$relationCondition = false;
 
         $relation = call_user_func($returnRelation);
-
-        if (!($relation instanceof self)) {
-            throw new InvalidArgumentException('The result must be relation.');
-        }
 
         static::$relationCondition = $old;
 

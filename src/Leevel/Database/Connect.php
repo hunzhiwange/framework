@@ -22,8 +22,6 @@ namespace Leevel\Database;
 
 use Closure;
 use InvalidArgumentException;
-use Leevel\Cache\ICache;
-use Leevel\Log\ILog;
 use PDO;
 use PDOException;
 use Throwable;
@@ -66,34 +64,6 @@ abstract class Connect
      * @var \Leevel\Database\Select
      */
     protected $select;
-
-    /**
-     * 日志仓储.
-     *
-     * @var \leevel\Log\ILog
-     */
-    protected $log;
-
-    /**
-     * 缓存仓储.
-     *
-     * @var \Leevel\Cache\ICache
-     */
-    protected $cache;
-
-    /**
-     * 开发模式.
-     *
-     * @var bool
-     */
-    protected $development = false;
-
-    /**
-     * 字段缓存.
-     *
-     * @var array
-     */
-    //protected static $tableColumnsCaches = [];
 
     /**
      * 数据库连接参数.
@@ -162,22 +132,10 @@ abstract class Connect
     /**
      * 构造函数.
      *
-     * @param \leevel\Log\ILog     $log
-     * @param \Leevel\Cache\ICache $cache
-     * @param array                $option
+     * @param array $option
      */
-    public function __construct(ILog $log, ICache $cache, array $option/*, bool $development = false*/)
+    public function __construct(array $option)
     {
-        // 日志
-        $this->log = $log;
-
-        // 缓存
-        $this->cache = $cache;
-
-        // // 开发模式
-        // $this->development = $development;
-        //
-        // 记录连接参数
         $this->option = $option;
     }
 
@@ -186,10 +144,8 @@ abstract class Connect
      */
     public function __destruct()
     {
-        // 释放 PDO 预处理查询
         $this->freePDOStatement();
 
-        // 关闭数据库连接
         $this->closeDatabase();
     }
 
@@ -203,10 +159,8 @@ abstract class Connect
      */
     public function __call(string $method, array $args)
     {
-        // 查询组件
         $this->initSelect();
 
-        // 调用事件
         return $this->select->{$method}(...$args);
     }
 
@@ -246,13 +200,10 @@ abstract class Connect
      */
     public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
     {
-        // 查询组件
         $this->initSelect();
 
-        // 记录 sql 参数
         $this->setSqlBindParams($sql, $bindParams);
 
-        // 验证 sql 类型
         if (!in_array(($sqlType = $this->normalizeSqlType($sql)), [
             'select',
             'procedure',
@@ -262,27 +213,18 @@ abstract class Connect
             );
         }
 
-        // 预处理
         $this->pdoStatement = $this->pdo($master)->prepare($sql);
 
         dump($sql);
 
-        // 参数绑定
         $this->bindParams($bindParams);
 
-        // 执行 sql
         if (false === $this->pdoStatement->execute()) {
             $this->pdoException();
         }
 
-        // 记录 SQL 日志
-        //
-        //$$this->recordSqlLog();
-
-        // 返回影响函数
         $this->numRows = $this->pdoStatement->rowCount();
 
-        // 返回结果
         return $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
     }
 
@@ -296,13 +238,10 @@ abstract class Connect
      */
     public function execute(string $sql, array $bindParams = [])
     {
-        // 查询组件
         $this->initSelect();
 
-        // 记录 sql 参数
         $this->setSqlBindParams($sql, $bindParams);
 
-        // 验证 sql 类型
         if (in_array(($sqlType = $this->normalizeSqlType($sql)), [
             'select',
             'procedure',
@@ -312,21 +251,16 @@ abstract class Connect
             );
         }
 
-        // 预处理
         $this->pdoStatement = $this->pdo(true)->prepare($sql);
 
-        // 参数绑定
+        dump($sql);
+
         $this->bindParams($bindParams);
 
-        // 执行 sql
         if (false === $this->pdoStatement->execute()) {
             $this->pdoException();
         }
 
-        // 记录 SQL 日志
-        //$this->recordSqlLog();
-
-        // 返回影响函数
         $this->numRows = $this->pdoStatement->rowCount();
 
         if (in_array($sqlType, [
@@ -348,7 +282,6 @@ abstract class Connect
      */
     public function transaction(Closure $action)
     {
-        // 事务过程
         $this->beginTransaction();
 
         try {
@@ -521,10 +454,6 @@ abstract class Connect
      */
     public function normalizeExpression(string $sql, string $tableName)
     {
-        if (empty($sql)) {
-            return '';
-        }
-
         preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql,
             $matches, PREG_OFFSET_CAPTURE);
 
@@ -539,11 +468,6 @@ abstract class Connect
             $tmp = explode('.', $field);
 
             switch (count($tmp)) {
-                case 3:
-                    $field = $tmp[2];
-                    $table = "{$tmp[0]}.{$tmp[1]}";
-
-                    break;
                 case 2:
                     $field = $tmp[1];
                     $table = $tmp[0];
@@ -575,10 +499,8 @@ abstract class Connect
      */
     public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)
     {
-        // 过滤'`'字符
         $name = str_replace('`', '', $name);
 
-        // 不包含表名字
         if (false === strpos($name, '.')) {
             $name = $this->identifierColumn($name);
         } else {
@@ -637,22 +559,13 @@ abstract class Connect
     /**
      * 字段值格式化.
      *
-     * @param bool  $quotationMark
      * @param mixed $value
+     * @param bool  $quotationMark
      *
      * @return mixed
      */
     public function normalizeColumnValue($value, bool $quotationMark = true)
     {
-        // 数组，递归
-        if (is_array($value)) {
-            foreach ($value as $offset => $v) {
-                $value[$offset] = $this->normalizeColumnValue($v);
-            }
-
-            return $value;
-        }
-
         if (is_int($value)) {
             return $value;
         }
@@ -696,22 +609,13 @@ abstract class Connect
         $sql = trim($sql);
 
         foreach ([
-            'select',
-            'show',
-            'call',
-            'exec',
-            'delete',
-            'insert',
-            'replace',
-            'update',
+            'select', 'show', 'call', 'exec',
+            'delete', 'insert', 'replace', 'update',
         ] as $value) {
             if (0 === stripos($sql, $value)) {
                 if ('show' === $value) {
                     $value = 'select';
-                } elseif (in_array($value, [
-                    'call',
-                    'exec',
-                ], true)) {
+                } elseif (in_array($value, ['call', 'exec'], true)) {
                     $value = 'procedure';
                 }
 
@@ -776,15 +680,12 @@ abstract class Connect
      */
     protected function writeConnect()
     {
-        // 判断是否已经连接
         if (!empty($this->connects[0])) {
             return $this->connect = $this->connects[0];
         }
 
-        // 没有连接开始请求连接
         $pdo = $this->commonConnect($this->option['master'], 0, true);
 
-        // 当前连接
         return $this->connect = $pdo;
     }
 
@@ -795,32 +696,26 @@ abstract class Connect
      */
     protected function readConnect()
     {
-        // 未开启分布式服务器连接或则没有读服务器，直接连接写服务器
-        if (false === $this->option['distributed'] ||
-            empty($this->option['slave'])) {
+        if (false === $this->option['distributed'] || empty($this->option['slave'])) {
             return $this->writeConnect();
         }
 
-        // 只有主服务器,主服务器必须先连接,未连接过附属服务器
         if (1 === count($this->connects)) {
             foreach ($this->option['slave'] as $read) {
                 $this->commonConnect($read, null);
             }
 
-            // 没有连接成功的读服务器则还是连接写服务器
             if (count($this->connects) < 2) {
                 return $this->writeConnect();
             }
         }
 
-        // 如果为读写分离,去掉主服务器
         $connects = $this->connects;
 
         if (true === $this->option['readwrite_separate']) {
             unset($connects[0]);
         }
 
-        // 随机在已连接的 slave 服务器中选择一台
         return $this->connect = $connects[floor(mt_rand(0, count($connects) - 1))];
     }
 
@@ -835,12 +730,10 @@ abstract class Connect
      */
     protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false)
     {
-        // 数据库连接 ID
         if (null === $linkid) {
             $linkid = count($this->connects);
         }
 
-        // 已经存在连接
         if (!empty($this->connects[$linkid])) {
             return $this->connects[$linkid];
         }
@@ -906,18 +799,15 @@ abstract class Connect
      */
     protected function fetchResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [], bool $procedure = false)
     {
-        // 存储过程支持多个结果
         if ($procedure) {
-            return $this->fetchProcedureResult(
-                $fetchStyle,
-                $fetchArgument,
-                $ctorArgs
-            );
+            return $this->fetchProcedureResult($fetchStyle, $fetchArgument, $ctorArgs);
         }
 
-        $args = [
-            null !== $fetchStyle ? $fetchStyle : $this->option['fetch'],
-        ];
+        if (null === $fetchStyle) {
+            $fetchStyle = PDO::FETCH_OBJ;
+        }
+
+        $args = [$fetchStyle];
 
         if ($fetchArgument) {
             $args[] = $fetchArgument;
@@ -1014,30 +904,6 @@ abstract class Connect
     {
         $this->pdo(true)->exec('RELEASE SAVEPOINT '.$savepointName);
     }
-
-    /**
-     * 记录 SQL 日志.
-     */
-    // protected function recordSqlLog()
-    // {
-    //     // SQL 监视器
-    //     if (null !== static::$sqlListen) {
-    //         call_user_func_array(static::$sqlListen, [
-    //             $this,
-    //         ]);
-    //     }
-    //
-    //     // 记录 SQL 日志
-    //     $lastSql = $this->getLastSql(true);
-    //
-    //     if ($this->option['log']) {
-    //         $this->log->log(
-    //             ILog::DEBUG,
-    //             $lastSql[0],
-    //             $lastSql[1] ?: []
-    //         );
-    //     }
-    // }
 
     /**
      * 数据查询异常，抛出错误.

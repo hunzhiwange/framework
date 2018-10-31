@@ -24,6 +24,7 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IUnitOfWork;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\UnitOfWork;
+use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Guestbook;
 use Tests\Database\Ddd\Entity\GuestbookRepository;
 use Tests\Database\Ddd\Entity\Relation\Post;
@@ -1381,6 +1382,54 @@ class UnitOfWorkTest extends TestCase
         $work->registerManaged($post);
 
         $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+    }
+
+    public function testPersistAsCompositeIdReplace()
+    {
+        $this->truncate('composite_id');
+
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $compositeId = new CompositeId([
+            'id1'      => 1,
+            'id2'      => 2,
+            'name'     => 'old',
+        ]);
+
+        $work->persist($compositeId, 'replace');
+
+        $work->flush();
+
+        $this->assertSame(1, $connect->table('composite_id')->findCount());
+
+        $this->truncate('composite_id');
+        $this->clear();
+    }
+
+    public function testPersistAsCompositeIdReplace2()
+    {
+        $this->truncate('composite_id');
+
+        $work = UnitOfWork::make();
+
+        $connect = $this->createConnectTest();
+
+        $compositeId = new CompositeId([
+            'id1'      => 1,
+            'id2'      => 2,
+            'name'     => 'old',
+        ]);
+
+        $work->persist($compositeId);
+
+        $work->flush();
+
+        $this->assertSame(1, $connect->table('composite_id')->findCount());
+
+        $this->truncate('composite_id');
+        $this->clear();
     }
 
     protected function clear()

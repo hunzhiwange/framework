@@ -119,6 +119,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected $leevelRelationMiddle;
 
     /**
+     * 作用域查询对象.
+     *
+     * @var \Leevel\Database\Select
+     */
+    protected $leevelScopeSelect;
+
+    /**
      * 持久化基础层
      *
      * @var \Closure
@@ -335,7 +342,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return static
      */
-    public static function make(array $data, bool $fromStorage)
+    public static function make(array $data = [], bool $fromStorage = false)
     {
         return new static($data, $fromStorage);
     }
@@ -1125,9 +1132,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 实现 JsonSerializable::jsonSerialize.
      *
-     * @return bool
+     * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -1139,13 +1146,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Collection\Collection
      */
-    public function collection(array $entity = [])
+    public function collection(array $entity = []): Collection
     {
         return new Collection($entity);
     }
 
     /**
-     * 获取查询键值
+     * 获取查询键值.
      *
      * @return array
      */
@@ -1165,12 +1172,26 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 返回数据库查询集合对象
+     * 设置作用域查询对象.
+     *
+     * @param \Leevel\Database\Select $select
+     */
+    public function withScopeSelect(DatabaseSelect $select): void
+    {
+        $this->leevelScopeSelect = $select;
+    }
+
+    /**
+     * 返回数据库查询集合对象.
      *
      * @return \Leevel\Database\Select
      */
-    public function selectReal(): DatabaseSelect
+    public function databaseSelect(): DatabaseSelect
     {
+        if ($this->leevelScopeSelect) {
+            return $this->leevelScopeSelect;
+        }
+
         return $this->metaConnect()->
         select()->
 
@@ -1180,7 +1201,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 返回数据库查询集合对象
+     * 返回数据库查询集合对象.
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -1190,7 +1211,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 返回模型实体类的 meta 对象
+     * 返回模型实体类的 meta 对象.
      *
      * @return \Leevel\Database\Ddd\IMeta
      */
@@ -1200,7 +1221,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 返回模型实体类的 meta 对象
+     * 返回模型实体类的 meta 对象.
      *
      * @param mixed $connect
      *

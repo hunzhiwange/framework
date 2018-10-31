@@ -183,4 +183,17 @@ class BelongsToTest extends TestCase
         $this->truncate('post');
         $this->truncate('user');
     }
+
+    public function testEagerButNotFoundSourceData()
+    {
+        $posts = Post::limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertSame(0, count($posts));
+
+        $posts = Post::eager(['user'])->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertSame(0, count($posts));
+    }
 }

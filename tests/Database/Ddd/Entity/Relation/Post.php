@@ -47,6 +47,7 @@ class Post extends Entity
         'user_id'   => [],
         'summary'   => [],
         'create_at' => [],
+        'delete_at' => [],
         'user'      => [
             self::BELONGS_TO => User::class,
             'source_key'     => 'user_id',
@@ -65,6 +66,8 @@ class Post extends Entity
         ],
     ];
 
+    const DELETE_AT = 'delete_at';
+
     private $id;
 
     private $title;
@@ -74,6 +77,8 @@ class Post extends Entity
     private $summary;
 
     private $createAt;
+
+    private $deleteAt;
 
     private $user;
 
@@ -96,5 +101,20 @@ class Post extends Entity
     public function scopeComment($select)
     {
         $select->where('id', '>', 4);
+    }
+
+    public function scopeTest($select)
+    {
+        $select->where('id', '>', 4);
+    }
+
+    public function scopeTest2($select)
+    {
+        $select->where('id', '<', 10);
+    }
+
+    public function scopeTest3($select)
+    {
+        $select->where('id', 5);
     }
 }

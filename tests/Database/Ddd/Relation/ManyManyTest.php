@@ -146,10 +146,12 @@ class ManyManyTest extends TestCase
         $this->assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
+        $this->assertInstanceof(UserRole::class, $middle);
         $this->assertSame('1', $middle->userId);
         $this->assertSame('1', $middle->roleId);
 
         $middle = $role[1]->middle();
+        $this->assertInstanceof(UserRole::class, $middle);
         $this->assertSame('1', $middle->userId);
         $this->assertSame('3', $middle->roleId);
 
@@ -314,5 +316,37 @@ class ManyManyTest extends TestCase
         $this->truncate('user');
         $this->truncate('user_role');
         $this->truncate('role');
+    }
+
+    public function testNotFoundData()
+    {
+        $user = User::where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $connect = $this->createConnectTest();
+
+        $this->assertSame('1', $connect->
+        table('user')->
+        insert([
+            'name' => 'niu',
+        ]));
+
+        $user = User::where('id', 1)->findOne();
+
+        $this->assertSame('1', $user->id);
+        $this->assertSame('1', $user['id']);
+        $this->assertSame('1', $user->getId());
+        $this->assertSame('niu', $user->name);
+        $this->assertSame('niu', $user['name']);
+        $this->assertSame('niu', $user->getName());
+
+        $role = $user->role;
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertSame(0, count($role));
+
+        $this->truncate('user');
     }
 }

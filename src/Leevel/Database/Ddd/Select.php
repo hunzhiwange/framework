@@ -69,7 +69,7 @@ class Select
     {
         $this->entity = $entity;
 
-        $this->select = $this->entity->selectReal();
+        $this->select = $this->entity->databaseSelect();
     }
 
     /**
@@ -96,11 +96,9 @@ class Select
     /**
      * 获取模型实体.
      *
-     * @param mixed $entity
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function getEntity($entity): IEntity
+    public function entity(): IEntity
     {
         return $this->entity;
     }
@@ -154,7 +152,7 @@ class Select
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function find(int $id, array $column = ['*'])
+    public function find(int $id, array $column = ['*']): IEntity
     {
         return $this->select->
         where($this->entity->singlePrimaryKey(), '=', $id)->
@@ -172,7 +170,7 @@ class Select
      *
      * @return \Leevel\Collection\Collection
      */
-    public function findMany(array $ids, array $column = ['*'])
+    public function findMany(array $ids, array $column = ['*']): Collection
     {
         if (empty($ids)) {
             return $this->entity->collection();
@@ -211,21 +209,15 @@ class Select
      *
      * @return int
      */
-    public function softDelete()
+    public function softDelete(): int
     {
-        $select = $this->select->where(
-            $this->entity->idCondition()
-        );
+        $this->entity->__set($this->deleteAtColumn(), $time = date('Y-m-d H:i:s'));
 
-        $this->entity->{$this->getDeletedAtColumn()} = $time = $this->entity->carbon();
+        $this->entity->runEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
 
-        $this->entity->runEvent(Entity::BEFORE_SOFT_DELETE_EVENT);
+        $num = $this->entity->update()->flush();
 
-        $num = $select->update([
-            $this->getDeletedAtColumn() => $this->entity->fromDateTime($time),
-        ]);
-
-        $this->entity->runEvent(Entity::AFTER_SOFT_DELETE_EVENT);
+        $this->entity->runEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
 
         return $num;
     }
@@ -238,20 +230,16 @@ class Select
      *
      * @return int
      */
-    public function softDestroy($id)
+    public function softDestroy(array $ids): int
     {
         $count = 0;
-        $id = (array) $id;
 
         $instance = $this->entity->make();
+        $entitys = $instance->whereIn($instance->singlePrimaryKey(), $ids)->
+            findAll();
 
-        foreach (
-            $instance->whereIn(
-                $instance->getPrimaryKeyNameForQuery(),
-                $id
-            )->
-            findAll() as $entity) {
-            if ($entity->softDelete()) {
+        foreach ($entitys as $value) {
+            if ($value->softDelete()) {
                 $count++;
             }
         }
@@ -264,15 +252,15 @@ class Select
      *
      * @return int
      */
-    public function softRestore()
+    public function softRestore(): int
     {
-        $this->entity->runEvent(Entity::BEFORE_SOFT_RESTORE_EVENT);
+        $this->entity->runEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
 
-        $this->entity->{$this->getDeletedAtColumn()} = null;
+        $this->entity->__set($this->deleteAtColumn(), null);
 
-        $num = $this->entity->update();
+        $num = $this->entity->update()->flush();
 
-        $this->entity->runEvent(Entity::AFTER_SOFT_RESTORE_EVENT);
+        $this->entity->runEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
 
         return $num;
     }
@@ -282,11 +270,9 @@ class Select
      *
      * @return \Leevel\Database\Select
      */
-    public function withoutSoftDeleted()
+    public function withoutSoftDeleted(): DatabaseSelect
     {
-        return $this->select->whereNull(
-            $this->getDeletedAtColumn()
-        );
+        return $this->select->whereNull($this->deleteAtColumn());
     }
 
     /**
@@ -294,11 +280,9 @@ class Select
      *
      * @return \Leevel\Database\Select
      */
-    public function onlySoftDeleted()
+    public function onlySoftDeleted(): DatabaseSelect
     {
-        return $this->select->whereNotNull(
-            $this->getDeletedAtColumn()
-        );
+        return $this->select->whereNotNull($this->deleteAtColumn());
     }
 
     /**
@@ -306,9 +290,9 @@ class Select
      *
      * @return bool
      */
-    public function softDeleted()
+    public function softDeleted(): bool
     {
-        return null !== $this->entity->{$this->getDeletedAtColumn()};
+        return null !== $this->entity->__get($this->deleteAtColumn());
     }
 
     /**
@@ -316,35 +300,24 @@ class Select
      *
      * @return string
      */
-    public function getDeletedAtColumn()
+    public function deleteAtColumn(): string
     {
-        if (defined(get_class($this->entity).'::DELETED_AT')) {
-            eval('$deleteAt = '.get_class($this->entity).'::DELETED_AT;');
+        if (defined(get_class($this->entity).'::DELETE_AT')) {
+            $deleteAt = $this->entity::DELETE_AT;
         } else {
-            $deleteAt = 'deleted_at';
+            $deleteAt = 'delete_at';
         }
 
         if (!$this->entity->hasField($deleteAt)) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'Entity %s do not have soft delete field [%s].',
-                    get_class($this->entity),
-                    $deleteAt
+                    'Entity `%s` soft delete field `%s` was not found.',
+                    get_class($this->entity), $deleteAt
                 )
             );
         }
 
         return $deleteAt;
-    }
-
-    /**
-     * 获取删除表加字段.
-     *
-     * @return string
-     */
-    public function getFullDeletedAtColumn()
-    {
-        return $this->entity->table().'.'.$this->getDeletedAtColumn();
     }
 
     /**
@@ -354,50 +327,27 @@ class Select
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function scope($scope)
+    public function scope($scope): IEntity
     {
-        if ($scope instanceof DatabaseSelect) {
-            return $scope;
-        }
-
-        $select = $this->select;
+        $scopeSelect = $this->select;
 
         $args = func_get_args();
         array_shift($args);
-        array_unshift($args, $select);
+        array_unshift($args, $scopeSelect);
 
         if ($scope instanceof Closure) {
-            $resultCallback = call_user_func_array($scope, $args);
-
-            if ($resultCallback instanceof DatabaseSelect) {
-                $select = $resultCallback;
-            }
-
-            unset($resultCallback);
-
-            $this->entity->withSelectForQuery($select);
+            $scope(...$args);
+            $this->entity->withScopeSelect($scopeSelect);
         } else {
-            foreach (Arr::normalize($scope) as $scope) {
-                $scope = 'scope'.ucwords($scope);
+            foreach (Arr::normalize($scope) as $value) {
+                $value = 'scope'.ucfirst($value);
 
-                if (method_exists($this->entity, $scope)) {
-                    $resultCallback = call_user_func_array([
-                        $this->entity,
-                        $scope,
-                    ], $args);
-
-                    if ($resultCallback instanceof DatabaseSelect) {
-                        $select = $resultCallback;
-                    }
-
-                    unset($resultCallback);
-
-                    $this->entity->withSelectForQuery($select);
+                if (method_exists($this->entity, $value)) {
+                    $this->entity->{$value}(...$args);
+                    $this->entity->withScopeSelect($scopeSelect);
                 }
             }
         }
-
-        unset($select, $args, $scope);
 
         return $this->entity;
     }
@@ -436,7 +386,7 @@ class Select
         $nested = $this->nestedRelation($name);
 
         if (count($nested) > 0) {
-            $relation->select()->eager($nested);
+            $relation->getSelect()->eager($nested);
         }
 
         return $relation;
@@ -511,7 +461,7 @@ class Select
      *
      * @return array
      */
-    protected function parseNestedWith($name, array $result)
+    protected function parseNestedWith(string $name, array $result)
     {
         $progress = [];
 

@@ -597,7 +597,7 @@ interface IEntity
      *
      * @return \Leevel\Database\Select
      */
-    public function selectReal(): DatabaseSelect;
+    public function databaseSelect(): DatabaseSelect;
 
     /**
      * 返回数据库查询集合对象

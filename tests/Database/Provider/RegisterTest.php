@@ -20,10 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Database\Provider;
 
-use Leevel\Cache\ICache;
 use Leevel\Database\Provider\Register;
 use Leevel\Di\Container;
-use Leevel\Log\ILog;
 use Leevel\Option\Option;
 use PDO;
 use Tests\Database\Query\Query;
@@ -115,8 +113,6 @@ class RegisterTest extends TestCase
         $option = new Option([
             'database' => [
                 'default' => 'mysql',
-                'fetch'   => PDO::FETCH_OBJ,
-                'log'     => true,
                 'connect' => [
                     'mysql' => [
                         'driver'   => 'mysql',
@@ -139,10 +135,6 @@ class RegisterTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
-
-        $container->instance('log', $this->createMock(ILog::class));
-
-        $container->instance('cache', $this->createMock(ICache::class));
 
         return $container;
     }

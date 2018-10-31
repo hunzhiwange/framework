@@ -231,6 +231,7 @@ class Mysql extends Connect implements IConnect
      * @param array $option
      *
      * @return string
+     * @codeCoverageIgnore
      */
     protected function parseSocket(array $option): string
     {

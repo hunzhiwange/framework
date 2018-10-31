@@ -672,11 +672,7 @@ class UnitOfWork implements IUnitOfWork
             return self::STATE_NEW;
         }
 
-        if (!$this->registered($entity)) {
-            return self::STATE_DETACHED;
-        }
-
-        return self::STATE_NEW;
+        return self::STATE_DETACHED;
     }
 
     /**
