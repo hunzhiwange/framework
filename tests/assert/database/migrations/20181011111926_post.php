@@ -50,7 +50,7 @@ class Post extends AbstractMigration
         $table->addColumn('user_id', 'integer', ['length'=>11, 'comment' => '用户 ID']);
         $table->addColumn('summary', 'string', ['limit' => 200, 'default'=> '', 'comment'=>'文章摘要']);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
-        $table->addColumn('delete_at', 'timestamp', ['default' => null, 'comment' => '删除时间']);
+        $table->addColumn('delete_at', 'timestamp', ['default' => null, 'null' => true, 'comment' => '删除时间']);
         $table->save();
     }
 }
