@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
+use PDO;
 use Tests\Database\Query\Query;
 use Tests\TestCase;
 
@@ -66,5 +67,141 @@ class ManagerTest extends TestCase
         $this->assertSame('I love movie.', $result->content);
 
         $this->truncate('guestbook');
+    }
+
+    public function testParseDatabaseOptionDistributedIsTrue()
+    {
+        $manager = $this->createManager();
+
+        $option = [
+            'driver'   => 'mysql',
+            'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+            'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+            'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+            'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+            'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+            'charset'  => 'utf8',
+            'options'  => [
+                PDO::ATTR_PERSISTENT => false,
+            ],
+            'separate'           => false,
+            'distributed'        => true,
+            'master'             => [],
+            'slave'              => ['host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST']],
+        ];
+
+        $optionNew = $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
+
+        $data = <<<'eot'
+{
+    "driver": "mysql",
+    "separate": false,
+    "distributed": true,
+    "master": {
+        "host": "127.0.0.1",
+        "port": 3306,
+        "name": "test",
+        "user": "root",
+        "password": "123456",
+        "charset": "utf8",
+        "options": {
+            "12": false
+        }
+    },
+    "slave": [
+        {
+            "host": "127.0.0.1",
+            "port": 3306,
+            "name": "test",
+            "user": "root",
+            "password": "123456",
+            "charset": "utf8",
+            "options": {
+                "12": false
+            }
+        }
+    ]
+}
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson($optionNew)
+        );
+    }
+
+    public function testParseDatabaseOptionDistributedIsTrue2()
+    {
+        $manager = $this->createManager();
+
+        $option = [
+            'driver'   => 'mysql',
+            'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+            'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+            'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+            'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+            'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+            'charset'  => 'utf8',
+            'options'  => [
+                PDO::ATTR_PERSISTENT => false,
+            ],
+            'separate'           => false,
+            'distributed'        => true,
+            'master'             => [],
+            'slave'              => [
+                ['host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST']],
+                ['password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD']],
+            ],
+        ];
+
+        $optionNew = $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
+
+        $data = <<<'eot'
+{
+    "driver": "mysql",
+    "separate": false,
+    "distributed": true,
+    "master": {
+        "host": "127.0.0.1",
+        "port": 3306,
+        "name": "test",
+        "user": "root",
+        "password": "123456",
+        "charset": "utf8",
+        "options": {
+            "12": false
+        }
+    },
+    "slave": [
+        {
+            "host": "127.0.0.1",
+            "port": 3306,
+            "name": "test",
+            "user": "root",
+            "password": "123456",
+            "charset": "utf8",
+            "options": {
+                "12": false
+            }
+        },
+        {
+            "password": "123456",
+            "host": "127.0.0.1",
+            "port": 3306,
+            "name": "test",
+            "user": "root",
+            "charset": "utf8",
+            "options": {
+                "12": false
+            }
+        }
+    ]
+}
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson($optionNew)
+        );
     }
 }

@@ -47,11 +47,11 @@ class Register extends Provider
         $this->database();
     }
 
-    // /**
-    //  * bootstrap.
-    //  *
-    //  * @param \Leevel\Event\IDispatch $event
-    //  */
+    /**
+     * bootstrap.
+     *
+     * @param \Leevel\Event\IDispatch $event
+     */
     public function bootstrap(IDispatch $event)
     {
         $this->eventDispatch($event);
@@ -105,21 +105,21 @@ class Register extends Provider
         });
     }
 
-    // /**
-    //  * 设置模型实体事件.
-    //  *
-    //  * @param \Leevel\Event\IDispatch $event
-    //  */
+    /**
+     * 设置模型实体事件.
+     *
+     * @param \Leevel\Event\IDispatch $event
+     */
     protected function eventDispatch(IDispatch $event)
     {
-        //Entity::setEventDispatch($event);
+        Entity::withEventDispatch($event);
     }
 
-    // /**
-    //  * Meta 设置数据库管理.
-    //  */
+    /**
+     * Meta 设置数据库管理.
+     */
     protected function meta()
     {
-        //Meta::setDatabaseManager($this->container['databases']);
+        Meta::setDatabaseManager($this->container['databases']);
     }
 }

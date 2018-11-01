@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
+use Leevel\Database\Mysql;
 use Tests\Database\Query\Query;
 use Tests\TestCase;
 
@@ -112,5 +113,51 @@ eot;
         );
 
         $this->truncate('guestbook');
+    }
+
+    public function testLimitCount()
+    {
+        $mysql = new Mysql([]);
+
+        $this->assertSame('', $mysql->limitCount());
+        $this->assertSame('LIMIT 5,999999999999', $mysql->limitCount(null, 5));
+        $this->assertSame('LIMIT 5', $mysql->limitCount(5, null));
+        $this->assertSame('LIMIT 5,5', $mysql->limitCount(5, 5));
+    }
+
+    public function testParsePort()
+    {
+        $mysql = new Mysql([]);
+
+        $result = $this->invokeTestMethod($mysql, 'parsePort', [['port' => '']]);
+
+        $this->assertSame('', $result);
+    }
+
+    public function testParseSocket()
+    {
+        $mysql = new Mysql([]);
+
+        $result = $this->invokeTestMethod($mysql, 'parseSocket', [['socket' => '']]);
+
+        $this->assertSame('', $result);
+    }
+
+    public function testParseSocket2()
+    {
+        $mysql = new Mysql([]);
+
+        $result = $this->invokeTestMethod($mysql, 'parseSocket', [['socket' => '/var/lib/mysql/mysql.sock']]);
+
+        $this->assertSame(';unix_socket=/var/lib/mysql/mysql.sock', $result);
+    }
+
+    public function testParseCharset()
+    {
+        $mysql = new Mysql([]);
+
+        $result = $this->invokeTestMethod($mysql, 'parseCharset', [['charset' => '']]);
+
+        $this->assertSame('', $result);
     }
 }

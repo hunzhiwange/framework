@@ -123,13 +123,6 @@ interface IConnect
     public function numRows(): int;
 
     /**
-     * 注册 SQL 监视器.
-     *
-     * @param callable $sqlListen
-     */
-    public function registerListen(callable $sqlListen);
-
-    /**
      * 释放 PDO 预处理查询.
      */
     public function freePDOStatement();
@@ -248,10 +241,10 @@ interface IConnect
     /**
      * 分析 limit.
      *
-     * @param null|int $limitcount
-     * @param null|int $limitoffset
+     * @param null|int $limitCount
+     * @param null|int $limitOffset
      *
      * @return string
      */
-    public function parseLimitcount(?int $limitcount = null, ?int $limitoffset = null): string;
+    public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string;
 }

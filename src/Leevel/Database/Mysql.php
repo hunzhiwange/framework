@@ -44,12 +44,7 @@ class Mysql extends Connect implements IConnect
     {
         $dsn = [];
 
-        foreach ([
-            'Base',
-            'Port',
-            'Socket',
-            'Charset',
-        ] as $method) {
+        foreach (['Base', 'Port', 'Socket', 'Charset'] as $method) {
             $dsn[] = $this->{'parse'.$method}($option);
         }
 
@@ -161,18 +156,18 @@ class Mysql extends Connect implements IConnect
     /**
      * 分析 limit.
      *
-     * @param null|int $limitcount
-     * @param null|int $limitoffset
+     * @param null|int $limitCount
+     * @param null|int $limitOffset
      *
      * @return string
      */
-    public function parseLimitcount(?int $limitcount = null, ?int $limitoffset = null): string
+    public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {
-        if (null !== $limitoffset) {
-            $sql = 'LIMIT '.$limitoffset;
+        if (null !== $limitOffset) {
+            $sql = 'LIMIT '.$limitOffset;
 
-            if (null !== $limitcount) {
-                $sql .= ','.$limitcount;
+            if (null !== $limitCount) {
+                $sql .= ','.$limitCount;
             } else {
                 $sql .= ',999999999999';
             }
@@ -180,8 +175,8 @@ class Mysql extends Connect implements IConnect
             return $sql;
         }
 
-        if (null !== $limitcount) {
-            return 'LIMIT '.$limitcount;
+        if (null !== $limitCount) {
+            return 'LIMIT '.$limitCount;
         }
 
         return '';
@@ -231,7 +226,6 @@ class Mysql extends Connect implements IConnect
      * @param array $option
      *
      * @return string
-     * @codeCoverageIgnore
      */
     protected function parseSocket(array $option): string
     {

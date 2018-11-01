@@ -153,10 +153,10 @@ class Condition
         'group'       => [],
         'having'      => null,
         'order'       => [],
-        'limitcount'  => null,
-        'limitoffset' => null,
-        'limitquery'  => true,
-        'forupdate'   => false,
+        'limitCount'  => null,
+        'limitOffset' => null,
+        'limitQuery'  => true,
+        'forUpdate'   => false,
     ];
 
     /**
@@ -385,7 +385,7 @@ class Condition
                 $sql[] = 'SET '.implode(',', $setData);
                 $sql[] = $this->parseWhere();
                 $sql[] = $this->parseOrder();
-                $sql[] = $this->parseLimitcount();
+                $sql[] = $this->parseLimitCount();
                 $sql[] = $this->parseForUpdate();
                 $sql = array_filter($sql);
                 $data = implode(' ', $sql);
@@ -424,7 +424,7 @@ class Condition
                 $sql[] = $this->parseTable();
                 $sql[] = $this->parseWhere();
                 $sql[] = $this->parseOrder();
-                $sql[] = $this->parseLimitcount(true);
+                $sql[] = $this->parseLimitCount(true);
             } else {
                 $sql[] = $this->parseTable();
                 $sql[] = $this->parseFrom();
@@ -1225,9 +1225,9 @@ class Condition
             return $this;
         }
 
-        $this->options['limitcount'] = 1;
-        $this->options['limitoffset'] = null;
-        $this->options['limitquery'] = false;
+        $this->options['limitCount'] = 1;
+        $this->options['limitOffset'] = null;
+        $this->options['limitQuery'] = false;
 
         return $this;
     }
@@ -1243,13 +1243,13 @@ class Condition
             return $this;
         }
 
-        if ($this->options['limitquery']) {
+        if ($this->options['limitQuery']) {
             return $this;
         }
 
-        $this->options['limitcount'] = null;
-        $this->options['limitoffset'] = null;
-        $this->options['limitquery'] = true;
+        $this->options['limitCount'] = null;
+        $this->options['limitOffset'] = null;
+        $this->options['limitQuery'] = true;
 
         return $this;
     }
@@ -1288,9 +1288,9 @@ class Condition
             return $this->top($offset);
         }
 
-        $this->options['limitcount'] = $count;
-        $this->options['limitoffset'] = $offset;
-        $this->options['limitquery'] = true;
+        $this->options['limitCount'] = $count;
+        $this->options['limitOffset'] = $offset;
+        $this->options['limitQuery'] = true;
 
         return $this;
     }
@@ -1308,7 +1308,7 @@ class Condition
             return $this;
         }
 
-        $this->options['forupdate'] = $flag;
+        $this->options['forUpdate'] = $flag;
 
         return $this;
     }
@@ -1782,7 +1782,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseHaving(bool $child = false)
+    protected function parseHaving(bool $child = false): string
     {
         if (empty($this->options['having'])) {
             return '';
@@ -1798,27 +1798,27 @@ class Condition
      *
      * @return string
      */
-    protected function parseLimitcount(bool $withoutOffset = false)
+    protected function parseLimitCount(bool $withoutOffset = false): string
     {
-        if (null === $this->options['limitoffset'] &&
-            null === $this->options['limitcount']) {
+        if (null === $this->options['limitOffset'] &&
+            null === $this->options['limitCount']) {
             return '';
         }
 
-        return $this->connect->parseLimitcount(
-            $this->options['limitcount'],
-            $withoutOffset ? null : $this->options['limitoffset']
+        return $this->connect->limitCount(
+            $this->options['limitCount'],
+            $withoutOffset ? null : $this->options['limitOffset']
         );
     }
 
     /**
-     * 解析 forupdate 分析结果.
+     * 解析 forUpdate 分析结果.
      *
      * @return string
      */
-    protected function parseForUpdate()
+    protected function parseForUpdate(): string
     {
-        if (!$this->options['forupdate']) {
+        if (!$this->options['forUpdate']) {
             return '';
         }
 

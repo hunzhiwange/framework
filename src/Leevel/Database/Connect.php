@@ -101,13 +101,6 @@ abstract class Connect
     protected $numRows = 0;
 
     /**
-     * SQL 监听器.
-     *
-     * @var callable
-     */
-    protected static $sqlListen;
-
-    /**
      * 事务等级.
      *
      * @var int
@@ -418,16 +411,6 @@ abstract class Connect
     }
 
     /**
-     * 注册 SQL 监视器.
-     *
-     * @param callable $sqlListen
-     */
-    public function registerListen(callable $sqlListen)
-    {
-        static::$sqlListen = $sqlListen;
-    }
-
-    /**
      * 释放 PDO 预处理查询.
      */
     public function freePDOStatement()
@@ -712,7 +695,7 @@ abstract class Connect
 
         $connects = $this->connects;
 
-        if (true === $this->option['readwrite_separate']) {
+        if (true === $this->option['separate']) {
             unset($connects[0]);
         }
 

@@ -133,18 +133,11 @@ class Select
      */
     public function __call(string $method, array $args)
     {
-        $condition = true;
-
         try {
-            $result = $this->condition->{$method}(...$args);
+            $this->condition->{$method}(...$args);
 
             return $this;
         } catch (ConditionNotFoundException $e) {
-            $condition = false;
-        }
-
-        if (true === $condition) {
-            return;
         }
 
         // 动态查询支持
@@ -847,21 +840,6 @@ class Select
     }
 
     /**
-     * 分页查询限制条件.
-     *
-     * @param int   $perPage
-     * @param array $option
-     *
-     * @return $this
-     */
-    public function pageLimit(int $perPage, array $option = [])
-    {
-        $page = new Page($perPage, null, $option);
-
-        return $this->limit($page->getFromRecord(), $perPage);
-    }
-
-    /**
      * 获得查询字符串.
      *
      * @param $withLogicGroup
@@ -943,7 +921,7 @@ class Select
      */
     protected function queryDefault(array $data)
     {
-        if (!$this->condition->getOption()['limitquery']) {
+        if (!$this->condition->getOption()['limitQuery']) {
             $data = reset($data) ?: [];
         }
 
@@ -974,7 +952,7 @@ class Select
             $data[$key] = new $className((array) $tmp, ...$this->queryParams['class_args']);
         }
 
-        if (!$this->condition->getOption()['limitquery']) {
+        if (!$this->condition->getOption()['limitQuery']) {
             $data = reset($data) ?: new $className([], ...$this->queryParams['class_args']);
         } elseif ($this->queryParams['as_collection']) {
             $data = new Collection($data, [$className]);
@@ -1029,7 +1007,7 @@ class Select
 
         if ($sqlType !== $nativeType) {
             throw new InvalidArgumentException(
-                sprintf('Unsupported parameters `%s`.', $sqlType)
+                sprintf('The SQL type `%s` must be consistent with the provided `%s`.', $sqlType, $nativeType)
             );
         }
 

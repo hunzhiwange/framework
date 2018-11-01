@@ -100,7 +100,7 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function normalizeConnectOption($connect, array $extendOption = null)
+    protected function normalizeConnectOption($connect, array $extendOption = []): array
     {
         return $this->parseDatabaseOption(
             parent::normalizeConnectOption($connect, $extendOption)
@@ -114,12 +114,12 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function parseDatabaseOption($option)
+    protected function parseDatabaseOption(array $option): array
     {
         $temp = $option;
 
         foreach (array_keys($option) as $type) {
-            if (in_array($type, ['distributed', 'readwrite_separate', 'driver', 'master', 'slave'], true)) {
+            if (in_array($type, ['distributed', 'separate', 'driver', 'master', 'slave'], true)) {
                 if (isset($temp[$type])) {
                     unset($temp[$type]);
                 }
@@ -130,17 +130,14 @@ class Manager extends Managers
             }
         }
 
-        // 纠正数据库服务器参数
         foreach (['master', 'slave'] as $type) {
             if (!is_array($option[$type])) {
                 $option[$type] = [];
             }
         }
 
-        // 填充数据库服务器参数
         $option['master'] = array_merge($option['master'], $temp);
 
-        // 是否采用分布式服务器，非分布式关闭附属服务器
         if (!$option['distributed']) {
             $option['slave'] = [];
         } elseif ($option['slave']) {

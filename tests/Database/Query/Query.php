@@ -47,7 +47,7 @@ trait Query
     {
         return $this->createConnect([
             'driver'             => 'mysql',
-            'readwrite_separate' => false,
+            'separate'           => false,
             'distributed'        => false,
             'master'             => [
                 'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
@@ -122,7 +122,7 @@ eot;
                         'options'  => [
                             PDO::ATTR_PERSISTENT => false,
                         ],
-                        'readwrite_separate' => false,
+                        'separate'           => false,
                         'distributed'        => false,
                         'master'             => [],
                         'slave'              => [],

@@ -1191,6 +1191,35 @@ eot;
 
         $this->truncate('guestbook');
     }
+
+    public function testRunNativeSqlWithProcedureAsSelect()
+    {
+        $connect = $this->createConnect();
+
+        $sql = $connect->sql(true)->select('CALL hello()');
+
+        $data = <<<'eot'
+[
+    "CALL hello()",
+    []
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson($sql)
+        );
+    }
+
+    public function testRunNativeSqlTypeInvalid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The SQL type `delete` must be consistent with the provided `select`.');
+
+        $connect = $this->createConnect();
+
+        $connect->select('DELETE FROM test WHERE id = 1');
+    }
 }
 
 class FetchArgsClassDemo

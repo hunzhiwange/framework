@@ -22,6 +22,7 @@ namespace Tests\Database\Provider;
 
 use Leevel\Database\Provider\Register;
 use Leevel\Di\Container;
+use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
 use PDO;
 use Tests\Database\Query\Query;
@@ -58,6 +59,8 @@ class RegisterTest extends TestCase
 
         $container->alias($test->providers());
 
+        $test->bootstrap($this->createMock(IDispatch::class));
+
         $manager = $container->make('databases');
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -85,6 +88,8 @@ class RegisterTest extends TestCase
         $test->register();
 
         $container->alias($test->providers());
+
+        $test->bootstrap($this->createMock(IDispatch::class));
 
         $manager = $container->make('Leevel\\Database\\Manager');
 
@@ -125,7 +130,7 @@ class RegisterTest extends TestCase
                         'options'  => [
                             PDO::ATTR_PERSISTENT => false,
                         ],
-                        'readwrite_separate' => false,
+                        'separate'           => false,
                         'distributed'        => false,
                         'master'             => [],
                         'slave'              => [],
