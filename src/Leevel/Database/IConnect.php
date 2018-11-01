@@ -140,7 +140,7 @@ interface IConnect
      *
      * @return string
      */
-    public function normalizeExpression(string $sql, string $tableName);
+    public function normalizeExpression(string $sql, string $tableName): string;
 
     /**
      * 表或者字段格式化（支持别名）.
@@ -151,7 +151,7 @@ interface IConnect
      *
      * @return string
      */
-    public function normalizeTableOrColumn(string $name, ?string $alias = null, string $as = null);
+    public function normalizeTableOrColumn(string $name, ?string $alias = null, string $as = null): string;
 
     /**
      * 字段格式化.
@@ -161,7 +161,7 @@ interface IConnect
      *
      * @return string
      */
-    public function normalizeColumn(string $key, string $tableName);
+    public function normalizeColumn(string $key, string $tableName): string;
 
     /**
      * 字段值格式化.

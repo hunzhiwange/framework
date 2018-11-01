@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Exception;
+use PDO;
 use Tests\Database\Query\Query;
 use Tests\TestCase;
 use Throwable;
@@ -467,6 +468,178 @@ eot;
         );
 
         $connect->execute('DROP PROCEDURE IF EXISTS `test_procedure`');
+        $this->truncate('guestbook');
+    }
+
+    public function testPdo()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertNull($connect->pdo(0));
+        $this->assertInstanceof(PDO::class, $connect->pdo(true));
+        $this->assertInstanceof(PDO::class, $connect->pdo(0));
+        $this->assertNull($connect->pdo(5));
+
+        $connect->closeDatabase();
+    }
+
+    public function testQueryException()
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            '(1146)Table \'test.db_not_found\' doesn\'t exist'
+        );
+
+        $connect = $this->createConnectTest();
+
+        $connect->query('SELECT * FROM db_not_found where id = 1;');
+    }
+
+    public function testBeginTransactionWithCreateSavepoint()
+    {
+        $connect = $this->createConnectTest();
+
+        $connect->setSavepoints(true);
+
+        $connect->beginTransaction();
+
+        $connect->
+
+        table('guestbook')->
+
+        insert(['name' => 'tom']); // `tom` will not rollBack
+
+        $connect->beginTransaction();
+        $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
+
+        $connect->
+
+        table('guestbook')->
+
+        insert(['name' => 'jerry']);
+
+        $connect->rollBack();
+        $this->assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->lastSql()[0]);
+        $connect->commit();
+
+        $book = $connect->table('guestbook')->where('id', 1)->findOne();
+
+        $this->assertSame(1, $connect->table('guestbook')->findCount());
+        $this->assertSame('tom', $book->name);
+
+        $this->truncate('guestbook');
+    }
+
+    public function testCommitWithoutActiveTransaction()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'There was no active transaction.'
+        );
+
+        $connect = $this->createConnectTest();
+
+        $connect->commit();
+    }
+
+    public function testCommitButIsRollbackOnly()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Commit failed for rollback only.'
+        );
+
+        $connect = $this->createConnectTest();
+
+        $connect->beginTransaction();
+        $connect->beginTransaction();
+        $connect->rollBack();
+        $connect->commit();
+    }
+
+    public function testCommitWithReleaseSavepoint()
+    {
+        $connect = $this->createConnectTest();
+
+        $connect->setSavepoints(true);
+
+        $connect->beginTransaction();
+
+        $connect->
+
+        table('guestbook')->
+
+        insert(['name' => 'tom']);
+
+        $connect->beginTransaction();
+        $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
+
+        $connect->
+
+        table('guestbook')->
+
+        insert(['name' => 'jerry']);
+
+        $connect->commit();
+        $this->assertSame('RELEASE SAVEPOINT trans2', $connect->lastSql()[0]);
+        $connect->commit();
+
+        $book = $connect->table('guestbook')->where('id', 1)->findOne();
+        $book2 = $connect->table('guestbook')->where('id', 2)->findOne();
+
+        $this->assertSame(2, $connect->table('guestbook')->findCount());
+        $this->assertSame('tom', $book->name);
+        $this->assertSame('jerry', $book2->name);
+
+        $this->truncate('guestbook');
+    }
+
+    public function testRollBackWithoutActiveTransaction()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'There was no active transaction.'
+        );
+
+        $connect = $this->createConnectTest();
+
+        $connect->rollBack();
+    }
+
+    public function testNumRows()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame(0, $connect->numRows());
+
+        $connect->
+
+        table('guestbook')->
+
+        insert(['name' => 'jerry']);
+
+        $this->assertSame(1, $connect->numRows());
+
+        $connect->
+
+        table('guestbook')->
+
+        where('id', 1)->
+
+        update(['name' => 'jerry']);
+
+        $this->assertSame(0, $connect->numRows());
+
+        $connect->
+
+        table('guestbook')->
+
+        where('id', 1)->
+
+        update(['name' => 'tom']);
+
+        $this->assertSame(1, $connect->numRows());
+
         $this->truncate('guestbook');
     }
 }

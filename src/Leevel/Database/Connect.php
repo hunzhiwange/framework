@@ -195,7 +195,7 @@ abstract class Connect
     {
         $this->initSelect();
 
-        $this->setSqlBindParams($sql, $bindParams);
+        $this->setLastSql($sql, $bindParams);
 
         if (!in_array(($sqlType = $this->normalizeSqlType($sql)), [
             'select',
@@ -208,7 +208,7 @@ abstract class Connect
 
         $this->pdoStatement = $this->pdo($master)->prepare($sql);
 
-        dump($sql);
+        //dump($sql);
 
         $this->bindParams($bindParams);
 
@@ -233,7 +233,7 @@ abstract class Connect
     {
         $this->initSelect();
 
-        $this->setSqlBindParams($sql, $bindParams);
+        $this->setLastSql($sql, $bindParams);
 
         if (in_array(($sqlType = $this->normalizeSqlType($sql)), [
             'select',
@@ -246,7 +246,7 @@ abstract class Connect
 
         $this->pdoStatement = $this->pdo(true)->prepare($sql);
 
-        dump($sql);
+        //dump($sql);
 
         $this->bindParams($bindParams);
 
@@ -300,13 +300,13 @@ abstract class Connect
         $this->transactionLevel++;
 
         if (1 === $this->transactionLevel) {
-            try {
+            try { // @codeCoverageIgnore
                 $this->pdo(true)->beginTransaction();
-            } catch (Exception $e) {
-                $this->transactionLevel--;
+            } catch (Exception $e) { // @codeCoverageIgnore
+                $this->transactionLevel--; // @codeCoverageIgnore
 
-                throw $e;
-            }
+                throw $e; // @codeCoverageIgnore
+            } // @codeCoverageIgnore
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->createSavepoint($this->getSavepointName());
         }
@@ -435,7 +435,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function normalizeExpression(string $sql, string $tableName)
+    public function normalizeExpression(string $sql, string $tableName): string
     {
         preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql,
             $matches, PREG_OFFSET_CAPTURE);
@@ -480,7 +480,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)
+    public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
     {
         $name = str_replace('`', '', $name);
 
@@ -501,8 +501,7 @@ abstract class Connect
         }
 
         if ($alias) {
-            return "{$name} ".($as ? $as.' ' : '').
-                $this->identifierColumn($alias);
+            return "{$name} ".($as ? $as.' ' : '').$this->identifierColumn($alias);
         }
 
         return $name;
@@ -516,27 +515,9 @@ abstract class Connect
      *
      * @return string
      */
-    public function normalizeColumn(string $key, string $tableName)
+    public function normalizeColumn(string $key, string $tableName): string
     {
-        if (strpos($key, '.')) {
-            // 如果字段名带有 .，则需要分离出数据表名称和 schema
-            $tmp = explode('.', $key);
-
-            switch (count($tmp)) {
-                case 3:
-                    $field = $this->normalizeTableOrColumn("{$tmp[0]}.{$tmp[1]}.{$tmp[2]}");
-
-                    break;
-                case 2:
-                    $field = $this->normalizeTableOrColumn("{$tmp[0]}.{$tmp[1]}");
-
-                    break;
-            }
-        } else {
-            $field = $this->normalizeTableOrColumn("{$tableName}.{$key}");
-        }
-
-        return $field;
+        return $this->normalizeTableOrColumn("{$tableName}.{$key}");
     }
 
     /**
@@ -828,13 +809,12 @@ abstract class Connect
     /**
      * 设置 sql 绑定参数.
      *
-     * @param mixed $sql
-     * @param array $bindParams
+     * @param string $sql
+     * @param array  $bindParams
      */
-    protected function setSqlBindParams($sql, array $bindParams = [])
+    protected function setLastSql(string $sql, array $bindParams = [])
     {
         $this->sql = $sql;
-
         $this->bindParams = $bindParams;
     }
 
@@ -865,7 +845,8 @@ abstract class Connect
      */
     protected function createSavepoint(string $savepointName)
     {
-        $this->pdo(true)->exec('SAVEPOINT '.$savepointName);
+        $this->setLastSql($sql = 'SAVEPOINT '.$savepointName);
+        $this->pdo(true)->exec($sql);
     }
 
     /**
@@ -875,7 +856,8 @@ abstract class Connect
      */
     protected function rollbackSavepoint(string $savepointName)
     {
-        $this->pdo(true)->exec('ROLLBACK TO SAVEPOINT '.$savepointName);
+        $this->setLastSql($sql = 'ROLLBACK TO SAVEPOINT '.$savepointName);
+        $this->pdo(true)->exec($sql);
     }
 
     /**
@@ -885,7 +867,8 @@ abstract class Connect
      */
     protected function releaseSavepoint(string $savepointName)
     {
-        $this->pdo(true)->exec('RELEASE SAVEPOINT '.$savepointName);
+        $this->setLastSql($sql = 'RELEASE SAVEPOINT '.$savepointName);
+        $this->pdo(true)->exec($sql);
     }
 
     /**
