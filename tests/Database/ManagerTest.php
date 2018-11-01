@@ -75,11 +75,11 @@ class ManagerTest extends TestCase
 
         $option = [
             'driver'   => 'mysql',
-            'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-            'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-            'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-            'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
-            'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+            'host'     => '127.0.0.1',
+            'port'     => 3306,
+            'name'     => 'test',
+            'user'     => 'root',
+            'password' => '123456',
             'charset'  => 'utf8',
             'options'  => [
                 PDO::ATTR_PERSISTENT => false,
@@ -87,7 +87,7 @@ class ManagerTest extends TestCase
             'separate'           => false,
             'distributed'        => true,
             'master'             => [],
-            'slave'              => ['host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST']],
+            'slave'              => ['host' => '127.0.0.1'],
         ];
 
         $optionNew = $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
@@ -136,11 +136,11 @@ eot;
 
         $option = [
             'driver'   => 'mysql',
-            'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-            'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-            'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-            'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
-            'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+            'host'     => '127.0.0.1',
+            'port'     => 3306,
+            'name'     => 'test',
+            'user'     => 'root',
+            'password' => '123456',
             'charset'  => 'utf8',
             'options'  => [
                 PDO::ATTR_PERSISTENT => false,
@@ -149,8 +149,8 @@ eot;
             'distributed'        => true,
             'master'             => [],
             'slave'              => [
-                ['host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST']],
-                ['password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD']],
+                ['host' => '127.0.0.1'],
+                ['password' => '123456'],
             ],
         ];
 
