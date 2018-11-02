@@ -1965,12 +1965,8 @@ class Condition
                     }
 
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2][0].' AND '.$cond[2][1];
-                } elseif (array_key_exists(2, $cond) && is_scalar($cond[2])) {
-                    if (null === $cond[2]) {
-                        $sqlCond[] = $cond[0].' IS NULL';
-                    } else {
-                        $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
-                    }
+                } elseif (is_scalar($cond[2])) {
+                    $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
                 }
             }
         }
