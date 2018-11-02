@@ -424,7 +424,7 @@ class OpenApiRouter
             }
 
             $regex = '('.$regex.')';
-            $regexEncode = '#'.md5($regex).'#';
+            $regexEncode = '`'.md5($regex).'`';
 
             $mapRegex['find'][] = $regexEncode;
             $mapRegex['replace'][] = $regex;
@@ -446,10 +446,7 @@ class OpenApiRouter
             $rule = '/^'.$rule.'$/';
         }
 
-        return [
-            $rule,
-            $routerVar,
-        ];
+        return [$rule, $routerVar];
     }
 
     /**
