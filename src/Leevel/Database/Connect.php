@@ -201,8 +201,6 @@ abstract class Connect
 
         $this->pdoStatement = $this->pdo($master)->prepare($sql);
 
-        //dump($sql);
-
         $this->bindParams($bindParams);
 
         if (false === $this->pdoStatement->execute()) {
@@ -238,8 +236,6 @@ abstract class Connect
         }
 
         $this->pdoStatement = $this->pdo(true)->prepare($sql);
-
-        //dump($sql);
 
         $this->bindParams($bindParams);
 

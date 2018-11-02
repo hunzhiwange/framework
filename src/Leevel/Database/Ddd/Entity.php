@@ -1486,11 +1486,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->validate($prop);
 
-        $this->propSetter($prop, $value);
-
         if ($this->isRelation($prop)) {
-            return;
+            throw new InvalidArgumentException(
+                sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class)
+            );
         }
+
+        $this->propSetter($prop, $value);
 
         if (!$force) {
             return;

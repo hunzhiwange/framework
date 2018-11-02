@@ -805,4 +805,32 @@ eot;
 
         $connect->closeDatabase();
     }
+
+    public function testConnectException()
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[HY000] [2002] Connection refused'
+        );
+
+        $connect = $this->createConnect([
+            'driver'             => 'mysql',
+            'separate'           => false,
+            'distributed'        => false,
+            'master'             => [
+                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port'     => '5566',
+                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                'charset'  => 'utf8',
+                'options'  => [
+                    PDO::ATTR_PERSISTENT => false,
+                ],
+            ],
+            'slave' => [],
+        ]);
+
+        $connect->pdo(true);
+    }
 }
