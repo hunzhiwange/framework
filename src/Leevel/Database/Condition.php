@@ -1879,12 +1879,7 @@ class Condition
                 $findTime = null;
 
                 if (0 === strpos($cond[1], '@')) {
-                    foreach ([
-                        'date',
-                        'month',
-                        'day',
-                        'year',
-                    ] as $timeType) {
+                    foreach (['date', 'month', 'day', 'year'] as $timeType) {
                         if (0 === stripos($cond[1], '@'.$timeType)) {
                             $findTime = $timeType;
                             $cond[1] = ltrim(substr($cond[1], strlen($timeType) + 1));
@@ -1951,15 +1946,9 @@ class Condition
                 }
 
                 // 拼接结果
-                if (in_array($cond[1], [
-                    'null',
-                    'not null',
-                ], true)) {
+                if (in_array($cond[1], ['null', 'not null'], true)) {
                     $sqlCond[] = $cond[0].' IS '.strtoupper($cond[1]);
-                } elseif (in_array($cond[1], [
-                    'in',
-                    'not in',
-                ], true)) {
+                } elseif (in_array($cond[1], ['in', 'not in'], true)) {
                     $sqlCond[] = $cond[0].' '.
                         strtoupper($cond[1]).' '.
                         (
@@ -1967,10 +1956,7 @@ class Condition
                             '('.implode(',', $cond[2]).')' :
                             $cond[2]
                         );
-                } elseif (in_array($cond[1], [
-                    'between',
-                    'not between',
-                ], true)) {
+                } elseif (in_array($cond[1], ['between', 'not between'], true)) {
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
                         throw new InvalidArgumentException(
                             'The [not] between parameter value must be '.
@@ -1981,7 +1967,7 @@ class Condition
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2][0].' AND '.$cond[2][1];
                 } elseif (is_scalar($cond[2])) {
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
-                } elseif (null === $cond[2]) {
+                } elseif (!isset($cond[2]) || null === $cond[2]) {
                     $sqlCond[] = $cond[0].' IS NULL';
                 }
             }

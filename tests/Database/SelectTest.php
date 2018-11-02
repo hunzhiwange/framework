@@ -1220,6 +1220,16 @@ eot;
 
         $connect->select('DELETE FROM test WHERE id = 1');
     }
+
+    public function testFindByFooAndBarArgsWasNotMatched()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Parameters of findBy or findAllBy was not matched.');
+
+        $connect = $this->createConnect();
+
+        $connect->findByNameAndTitle('one');
+    }
 }
 
 class FetchArgsClassDemo

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Exception;
+use Leevel\Database\IConnect;
 use PDO;
 use Tests\Database\Query\Query;
 use Tests\TestCase;
@@ -475,9 +476,9 @@ eot;
     {
         $connect = $this->createConnectTest();
 
-        $this->assertNull($connect->pdo(0));
+        $this->assertNull($connect->pdo(IConnect::MASTER));
         $this->assertInstanceof(PDO::class, $connect->pdo(true));
-        $this->assertInstanceof(PDO::class, $connect->pdo(0));
+        $this->assertInstanceof(PDO::class, $connect->pdo(IConnect::MASTER));
         $this->assertNull($connect->pdo(5));
 
         $connect->closeDatabase();
@@ -641,5 +642,167 @@ eot;
         $this->assertSame(1, $connect->numRows());
 
         $this->truncate('guestbook');
+    }
+
+    public function testNormalizeColumnValueWithBool()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertTrue($connect->normalizeColumnValue(true));
+        $this->assertFalse($connect->normalizeColumnValue(false));
+    }
+
+    public function testNormalizeBindParamTypeWithBool()
+    {
+        $connect = $this->createConnectTest();
+
+        $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(true));
+        $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(false));
+    }
+
+    public function testReadConnectDistributed()
+    {
+        $connect = $this->createConnect([
+            'driver'             => 'mysql',
+            'separate'           => false,
+            'distributed'        => true,
+            'master'             => [
+                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                'charset'  => 'utf8',
+                'options'  => [
+                    PDO::ATTR_PERSISTENT => false,
+                ],
+            ],
+            'slave' => [
+                [
+                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                    'charset'  => 'utf8',
+                    'options'  => [
+                        PDO::ATTR_PERSISTENT => false,
+                    ],
+                ],
+                [
+                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                    'charset'  => 'utf8',
+                    'options'  => [
+                        PDO::ATTR_PERSISTENT => false,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertInstanceof(PDO::class, $connect->pdo());
+
+        $connect->closeDatabase();
+    }
+
+    public function testReadConnectDistributedButAllInvalid()
+    {
+        $connect = $this->createConnect([
+            'driver'             => 'mysql',
+            'separate'           => false,
+            'distributed'        => true,
+            'master'             => [
+                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                'charset'  => 'utf8',
+                'options'  => [
+                    PDO::ATTR_PERSISTENT => false,
+                ],
+            ],
+            'slave' => [
+                [
+                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port'     => '5555', // not invalid
+                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                    'charset'  => 'utf8',
+                    'options'  => [
+                        PDO::ATTR_PERSISTENT => false,
+                    ],
+                ],
+                [
+                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port'     => '6666', // not invalid
+                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                    'charset'  => 'utf8',
+                    'options'  => [
+                        PDO::ATTR_PERSISTENT => false,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertInstanceof(PDO::class, $connect->pdo());
+        $this->assertInstanceof(PDO::class, $connect->pdo());
+
+        $connect->closeDatabase();
+    }
+
+    public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate()
+    {
+        $connect = $this->createConnect([
+            'driver'             => 'mysql',
+            'separate'           => true,
+            'distributed'        => true,
+            'master'             => [
+                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                'charset'  => 'utf8',
+                'options'  => [
+                    PDO::ATTR_PERSISTENT => false,
+                ],
+            ],
+            'slave' => [
+                [
+                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port'     => '5555', // not invalid
+                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                    'charset'  => 'utf8',
+                    'options'  => [
+                        PDO::ATTR_PERSISTENT => false,
+                    ],
+                ],
+                [
+                    'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                    'port'     => '6666', // not invalid
+                    'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                    'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                    'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                    'charset'  => 'utf8',
+                    'options'  => [
+                        PDO::ATTR_PERSISTENT => false,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertInstanceof(PDO::class, $connect->pdo());
+        $this->assertInstanceof(PDO::class, $connect->pdo());
+
+        $connect->closeDatabase();
     }
 }

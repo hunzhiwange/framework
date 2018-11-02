@@ -73,13 +73,6 @@ abstract class Connect
     protected $option = [];
 
     /**
-     * 当前数据库连接参数.
-     *
-     * @var array
-     */
-    protected $currentOption = [];
-
-    /**
      * sql 最后查询语句.
      *
      * @var string
@@ -535,7 +528,7 @@ abstract class Connect
         }
 
         if (is_bool($value)) {
-            return $value ? true : false;
+            return $value;
         }
 
         if (null === $value) {
@@ -601,7 +594,6 @@ abstract class Connect
      */
     public function normalizeBindParamType($value)
     {
-        // 参数
         switch (true) {
             case is_int($value):
                 return PDO::PARAM_INT;
@@ -622,62 +614,50 @@ abstract class Connect
     }
 
     /**
-     * 返回当前配置连接信息（方便其他组件调用设置为 public）.
-     *
-     * @param string $optionName
-     *
-     * @return array
-     */
-    public function currentOption(?string $optionName = null)
-    {
-        if (null === $optionName) {
-            return $this->currentOption;
-        }
-
-        return $this->currentOption[$optionName] ?? null;
-    }
-
-    /**
      * 连接主服务器.
      *
      * @return Pdo
      */
     protected function writeConnect()
     {
-        if (!empty($this->connects[0])) {
-            return $this->connect = $this->connects[0];
-        }
-
-        $pdo = $this->commonConnect($this->option['master'], 0, true);
-
-        return $this->connect = $pdo;
+        return $this->connect = $this->commonConnect($this->option['master'], IConnect::MASTER, true);
     }
 
     /**
      * 连接读服务器.
      *
-     * @return Pdo
+     * @return \PDO
      */
-    protected function readConnect()
+    protected function readConnect(): PDO
     {
         if (false === $this->option['distributed'] || empty($this->option['slave'])) {
             return $this->writeConnect();
         }
 
-        if (1 === count($this->connects)) {
+        if (count($this->connects) <= 1) {
             foreach ($this->option['slave'] as $read) {
                 $this->commonConnect($read, null);
             }
 
-            if (count($this->connects) < 2) {
+            if (0 === count($this->connects)) {
                 return $this->writeConnect();
             }
         }
 
         $connects = $this->connects;
 
-        if (true === $this->option['separate']) {
-            unset($connects[0]);
+        if (true === $this->option['separate'] && isset($connects[IConnect::MASTER])) {
+            unset($connects[IConnect::MASTER]);
+        }
+
+        if (!$connects) {
+            return $this->writeConnect();
+        }
+
+        $connects = array_values($connects);
+
+        if (1 === count($connects)) {
+            return $connects[0];
         }
 
         return $this->connect = $connects[floor(mt_rand(0, count($connects) - 1))];
@@ -703,8 +683,6 @@ abstract class Connect
         }
 
         try {
-            $this->setCurrentOption($option);
-
             $result = $this->connects[$linkid] = new PDO(
                 $this->parseDsn($option),
                 $option['user'],
@@ -740,13 +718,14 @@ abstract class Connect
             }
 
             if (false === $this->pdoStatement->bindValue($key, $val, $param)) {
+                // @codeCoverageIgnoreStart
                 $this->pdoException(
                     sprintf(
-                        'Parameter of sql %s binding failed: %s.',
-                        $this->sql,
+                        'Parameter of sql `%s` binding failed: `%s`.', $this->sql,
                         json_encode($bindParams, JSON_UNESCAPED_UNICODE)
                     )
                 );
+                // @codeCoverageIgnoreEnd
             }
         }
     }
@@ -816,16 +795,6 @@ abstract class Connect
     {
         $this->sql = $sql;
         $this->bindParams = $bindParams;
-    }
-
-    /**
-     * 设置当前数据库连接信息.
-     *
-     * @param array $option
-     */
-    protected function setCurrentOption(array $option): void
-    {
-        $this->currentOption = $option;
     }
 
     /**

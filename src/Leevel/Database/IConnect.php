@@ -34,6 +34,13 @@ use Closure;
 interface IConnect
 {
     /**
+     * 主服务 PDO 标识.
+     *
+     * @var int
+     */
+    const MASTER = 999999999;
+
+    /**
      * 返回 Pdo 查询连接.
      *
      * @param mixed $master
@@ -190,15 +197,6 @@ interface IConnect
      * @return string
      */
     public function normalizeBindParamType($value);
-
-    /**
-     * 返回当前配置连接信息（方便其他组件调用设置为 public）.
-     *
-     * @param string $optionName
-     *
-     * @return array
-     */
-    public function currentOption(?string $optionName = null);
 
     /**
      * dsn 解析.

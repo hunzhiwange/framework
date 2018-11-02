@@ -171,7 +171,7 @@ class Select
 
                 if (count($keys) !== count($args)) {
                     throw new InvalidArgumentException(
-                        'Parameter quantity does not correspond.'
+                        'Parameters of findBy or findAllBy was not matched.'
                     );
                 }
 
