@@ -129,4 +129,19 @@ class EncryptionTest extends TestCase
 
         $this->assertSame('', $encryption->decrypt($data));
     }
+
+    public function testDecryptButExpired()
+    {
+        $encryption = new Encryption('encode-key');
+
+        $this->assertInstanceof(IEncryption::class, $encryption);
+
+        $data = $encryption->encrypt('123456', 1);
+
+        $this->assertSame('123456', $encryption->decrypt($data));
+
+        sleep(2);
+
+        $this->assertSame('', $encryption->decrypt($data));
+    }
 }

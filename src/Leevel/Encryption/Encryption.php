@@ -97,14 +97,20 @@ class Encryption implements IEncryption
      */
     public function decrypt(string $value): string
     {
-        $tmp = explode("\t", base64_decode($value, true));
+        $value = base64_decode($value, true);
 
-        if (2 !== count($tmp)) {
+        if (false === $value) {
+            return '';
+        }
+
+        $value = explode("\t", $value);
+
+        if (2 !== count($value)) {
             return '';
         }
 
         $data = openssl_decrypt(
-            base64_decode($tmp[0], true), $this->cipher, $this->key, OPENSSL_RAW_DATA, base64_decode($tmp[1], true)
+            base64_decode($value[0], true), $this->cipher, $this->key, OPENSSL_RAW_DATA, base64_decode($value[1], true)
         );
 
         if (false === $data) {
@@ -113,7 +119,8 @@ class Encryption implements IEncryption
 
         $data = explode("\t", $data);
 
-        if (3 !== count($data) || $data[2] !== $tmp[1] || ('0000000000' !== $data[0] && time() > $data[0])) {
+        if (3 !== count($data) || $data[2] !== $value[1] ||
+            ('0000000000' !== $data[0] && time() > $data[0])) {
             return '';
         }
 
