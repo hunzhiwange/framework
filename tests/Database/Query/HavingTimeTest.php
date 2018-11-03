@@ -605,33 +605,40 @@ eot;
         $month = mktime(0, 0, 0, 5, 1, $date['year']);
         $day = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
         $date = strtotime('+5 month');
+        $date2 = $date + 1;
+        $date3 = $date + 2;
 
-        $this->assertSame(
-            sprintf($sql, $year, $month, $day, $date),
-            $this->varJson(
-                $connect->table('test')->
+        $this->assertTrue(
+            in_array(
+                $this->varJson(
+                    $connect->table('test')->
 
-                groupBy('create_date')->
+                    groupBy('create_date')->
 
-                time('year')->
+                    time('year')->
 
-                having('create_year', 2018)->
+                    having('create_year', 2018)->
 
-                time('month')->
+                    time('month')->
 
-                havingMonth('create_month', 5)->
+                    havingMonth('create_month', 5)->
 
-                time('day')->
+                    time('day')->
 
-                having('create_day', 5)->
+                    having('create_day', 5)->
 
-                time('date')->
+                    time('date')->
 
-                having('create_date', '+5 month')->
+                    having('create_date', '+5 month')->
 
-                endTime()->
+                    endTime()->
 
-                findOne(true)
+                    findOne(true)
+                ), [
+                    sprintf($sql, $year, $month, $day, $date),
+                    sprintf($sql, $year, $month, $day, $date2),
+                    sprintf($sql, $year, $month, $day, $date3),
+                ], true
             )
         );
     }
