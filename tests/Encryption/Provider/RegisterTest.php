@@ -43,6 +43,8 @@ class RegisterTest extends TestCase
 
         $test->register();
 
+        $container->alias($test->providers());
+
         $encryption = $container->make('encryption');
 
         $this->assertInstanceof(IEncryption::class, $encryption);
@@ -62,16 +64,6 @@ class RegisterTest extends TestCase
             $encryption->decrypt($encodeMessage.'foo'),
             ''
         );
-
-        $this->assertSame(
-            '7becb888f518b20224a988906df51e05',
-            $this->getTestProperty($encryption, 'key')
-        );
-
-        $this->assertSame(
-            0,
-            $this->getTestProperty($encryption, 'expiry')
-        );
     }
 
     protected function createContainer(): Container
@@ -81,7 +73,7 @@ class RegisterTest extends TestCase
         $option = new Option([
             'app' => [
                 'auth_key'    => '7becb888f518b20224a988906df51e05',
-                'auth_expiry' => 0,
+                'auth_cipher' => 'AES-256-CBC',
             ],
         ]);
 

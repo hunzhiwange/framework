@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption;
 
+use InvalidArgumentException;
+
 /**
  * 加密组件.
  *
@@ -29,35 +31,61 @@ namespace Leevel\Encryption;
  *
  * @version 1.0
  */
-class Encryption extends Connect implements IEncryption
+class Encryption implements IEncryption
 {
     /**
-     * 创建一个加密实例.
+     * 加密 key.
+     *
+     * @var string
+     */
+    protected $key;
+
+    /**
+     * openssl 加密解密算法.
+     *
+     * @var string
+     */
+    protected $cipher;
+
+    /**
+     * 构造函数.
      *
      * @param string $key
-     * @param int    $expiry
+     * @param string $cipher
      */
-    public function __construct($key, ?int $expiry = 0)
+    public function __construct(string $key, string $cipher = 'AES-256-CBC')
     {
-        $this->key = (string) $key;
-        $this->expiry = (int) $expiry;
+        if (!in_array($cipher, openssl_get_cipher_methods(), true)) {
+            throw new InvalidArgumentException(
+                sprintf('Encrypt cipher `%s` was not found.', $cipher)
+            );
+        }
+
+        $this->key = $key;
+        $this->cipher = $cipher;
     }
 
     /**
      * 加密.
      *
-     * @param string     $value
-     * @param null|mixed $expiry
+     * @param string $value
+     * @param int    $expiry
      *
      * @return string
      */
-    public function encrypt($value, ?int $expiry = null)
+    public function encrypt(string $value, int $expiry = 0): string
     {
-        return $this->authcode($value,
-            false,
-            $this->key,
-            null !== $expiry ? $expiry : $this->expiry
-        );
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->cipher));
+        $expiry = sprintf('%010d', $expiry ? $expiry + time() : 0);
+        $value = $expiry."\t".base64_encode($value)."\t".base64_encode($iv);
+
+        $value = openssl_encrypt($value, $this->cipher, $this->key, OPENSSL_RAW_DATA, $iv);
+
+        if (false === $value) {
+            throw new InvalidArgumentException('Encrypt the data failed.'); // @codeCoverageIgnore
+        }
+
+        return base64_encode(base64_encode($value)."\t".base64_encode($iv));
     }
 
     /**
@@ -67,80 +95,28 @@ class Encryption extends Connect implements IEncryption
      *
      * @return string
      */
-    public function decrypt($value)
+    public function decrypt(string $value): string
     {
-        return $this->authcode($value,
-            true,
-            $this->key
-        );
-    }
+        $tmp = explode("\t", base64_decode($value, true));
 
-    /**
-     * 来自 Discuz 经典 PHP 加密算法.
-     *
-     * @param string $strings
-     * @param bool   $decode
-     * @param string $key
-     * @param int    $expiry
-     *
-     * @return string
-     */
-    protected function authcode(string $strings, bool $decode = true, string $key = '', int $expiry = 0)
-    {
-        $ckeyLength = 4;
-        $key = md5($key ?: '');
-
-        $keya = md5(substr($key, 0, 16));
-        $keyb = md5(substr($key, 16, 16));
-        $keyc = $ckeyLength ?
-            ($decode ?
-                substr($strings, 0, $ckeyLength) :
-                substr(md5(microtime()), -$ckeyLength)) :
-            '';
-
-        $cryptkey = $keya.md5($keya.$keyc);
-        $keyLength = strlen($cryptkey);
-
-        $strings = $decode ?
-            base64_decode(substr($strings, $ckeyLength), true) :
-            sprintf('%010d', $expiry ? $expiry + time() : 0).
-                substr(md5($strings.$keyb), 0, 16).
-                $strings;
-
-        $result = '';
-        $stringsLength = strlen($strings);
-        $box = range(0, 255);
-        $rndkey = [];
-
-        for ($i = 0; $i <= 255; $i++) {
-            $rndkey[$i] = ord($cryptkey[$i % $keyLength]);
-        }
-
-        for ($j = $i = 0; $i < 256; $i++) {
-            $j = ($j + $box[$i] + $rndkey[$i]) % 256;
-            $tmp = $box[$i];
-            $box[$i] = $box[$j];
-            $box[$j] = $tmp;
-        }
-
-        for ($a = $j = $i = 0; $i < $stringsLength; $i++) {
-            $a = ($a + 1) % 256;
-            $j = ($j + $box[$a]) % 256;
-            $tmp = $box[$a];
-            $box[$a] = $box[$j];
-            $box[$j] = $tmp;
-            $result .= chr(ord($strings[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
-        }
-
-        if ($decode) {
-            if ((0 === (int) (substr($result, 0, 10)) || substr($result, 0, 10) - time() > 0) &&
-                substr($result, 10, 16) === substr(md5(substr($result, 26).$keyb), 0, 16)) {
-                return substr($result, 26);
-            }
-
+        if (2 !== count($tmp)) {
             return '';
         }
 
-        return $keyc.str_replace('=', '', base64_encode($result));
+        $data = openssl_decrypt(
+            base64_decode($tmp[0], true), $this->cipher, $this->key, OPENSSL_RAW_DATA, base64_decode($tmp[1], true)
+        );
+
+        if (false === $data) {
+            throw new InvalidArgumentException('Decrypt the data failed.');
+        }
+
+        $data = explode("\t", $data);
+
+        if (3 !== count($data) || $data[2] !== $tmp[1] || ('0000000000' !== $data[0] && time() > $data[0])) {
+            return '';
+        }
+
+        return base64_decode($data[1], true) ?: '';
     }
 }

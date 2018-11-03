@@ -61,10 +61,72 @@ class EncryptionTest extends TestCase
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );
+    }
+
+    public function testUse128()
+    {
+        $encryption = new Encryption('encode-key', 'AES-128-CBC');
+
+        $this->assertInstanceof(IEncryption::class, $encryption);
+
+        $sourceMessage = '123456';
+
+        $encodeMessage = $encryption->encrypt($sourceMessage);
+
+        $this->assertFalse($sourceMessage === $encodeMessage);
 
         $this->assertSame(
-            0,
-            $this->getTestProperty($encryption, 'expiry')
+            $encryption->decrypt($encodeMessage),
+            $sourceMessage
         );
+
+        $this->assertSame(
+            $encryption->decrypt($encodeMessage.'foo'),
+            ''
+        );
+
+        $this->assertSame(
+            'encode-key',
+            $this->getTestProperty($encryption, 'key')
+        );
+    }
+
+    public function testEncryptCipherNotFound()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Encrypt cipher `foo` was not found.'
+        );
+
+        $encryption = new Encryption('encode-key', 'foo');
+    }
+
+    public function testDecryptWasEmpty()
+    {
+        $encryption = new Encryption('encode-key');
+
+        $this->assertInstanceof(IEncryption::class, $encryption);
+
+        $data = base64_encode('123456');
+
+        $this->assertSame('', $encryption->decrypt($data));
+    }
+
+    public function testDecryptException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Decrypt the data failed.'
+        );
+
+        $encryption = new Encryption('encode-key');
+
+        $this->assertInstanceof(IEncryption::class, $encryption);
+
+        $vi = openssl_random_pseudo_bytes(openssl_cipher_iv_length('AES-256-CBC'));
+
+        $data = base64_encode(base64_encode('123456')."\t".base64_encode($vi));
+
+        $this->assertSame('', $encryption->decrypt($data));
     }
 }

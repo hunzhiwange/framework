@@ -258,7 +258,7 @@ class Leevel
      *
      * @return string
      */
-    public static function encrypt(string $value, ?int $expiry = null)
+    public static function encrypt(string $value, int $expiry = 0): string
     {
         return static::project('encryption')->encrypt($value, $expiry);
     }
@@ -270,7 +270,7 @@ class Leevel
      *
      * @return string
      */
-    public static function decrypt(string $value)
+    public static function decrypt(string $value): string
     {
         return static::project('encryption')->decrypt($value);
     }
