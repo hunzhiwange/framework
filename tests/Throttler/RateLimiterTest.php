@@ -61,6 +61,8 @@ class RateLimiterTest extends TestCase
         $this->assertInstanceof(Cache::class, $rateLimiter->getCache());
 
         $time = time() + 60;
+        $time2 = time() + 61;
+        $time3 = time() + 62;
 
         $header = <<<eot
 {
@@ -72,18 +74,32 @@ class RateLimiterTest extends TestCase
 }
 eot;
 
-        $this->assertSame(
-            $header,
-            $this->varJson(
-                $rateLimiter->header()
-            )
+        $header2 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time2}
+}
+eot;
+
+        $header3 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time3}
+}
+eot;
+
+        $this->assertTrue(
+            in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3], true)
         );
 
-        $this->assertSame(
-            $header,
-            $this->varJson(
-                $rateLimiter->toArray()
-            )
+        $this->assertTrue(
+            in_array($this->varJson($rateLimiter->toArray()), [$header, $header2, $header3], true)
         );
 
         $path = __DIR__.'/cache';
@@ -100,6 +116,8 @@ eot;
         $this->assertFalse($rateLimiter->attempt());
 
         $time = time() + 60;
+        $time2 = time() + 61;
+        $time3 = time() + 62;
 
         $header = <<<eot
 {
@@ -110,11 +128,29 @@ eot;
     "X-RateLimit-Reset": {$time}
 }
 eot;
-        $this->assertSame(
-            $header,
-            $this->varJson(
-                $rateLimiter->header()
-            )
+
+        $header2 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time2}
+}
+eot;
+
+        $header3 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time3}
+}
+eot;
+
+        $this->assertTrue(
+            in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3], true)
         );
 
         $cacheData = array_map(function ($v) {
