@@ -144,4 +144,73 @@ class EncryptionTest extends TestCase
 
         $this->assertSame('', $encryption->decrypt($data));
     }
+
+    public function testWithPublicAndPrimaryKey()
+    {
+        $encryption = new Encryption(
+            'encode-key', 'AES-256-CBC',
+            file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
+            file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
+        );
+
+        $this->assertInstanceof(IEncryption::class, $encryption);
+
+        $sourceMessage = '123456';
+
+        $encodeMessage = $encryption->encrypt($sourceMessage);
+
+        $this->assertFalse($sourceMessage === $encodeMessage);
+
+        $this->assertSame(
+            $encryption->decrypt($encodeMessage),
+            $sourceMessage
+        );
+    }
+
+    public function testWithPrimaryKeyButPrimanyIsInvalid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'openssl_sign(): supplied key param cannot be coerced into a private key'
+        );
+
+        $encryption = new Encryption(
+            'encode-key', 'AES-256-CBC',
+            'primary_key_not_found',
+            file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
+        );
+
+        $this->assertInstanceof(IEncryption::class, $encryption);
+
+        $sourceMessage = '123456';
+
+        $encodeMessage = $encryption->encrypt($sourceMessage);
+    }
+
+    public function testWithPublicKeyButPrimanyIsInvalid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'openssl_verify(): supplied key param cannot be coerced into a public key'
+        );
+
+        $encryption = new Encryption(
+            'encode-key', 'AES-256-CBC',
+            file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
+            'public_key_not_found'
+        );
+
+        $this->assertInstanceof(IEncryption::class, $encryption);
+
+        $sourceMessage = '123456';
+
+        $encodeMessage = $encryption->encrypt($sourceMessage);
+
+        $this->assertFalse($sourceMessage === $encodeMessage);
+
+        $this->assertSame(
+            $encryption->decrypt($encodeMessage),
+            $sourceMessage
+        );
+    }
 }

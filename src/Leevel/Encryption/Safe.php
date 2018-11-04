@@ -678,4 +678,36 @@ class Safe
 
         return $strings;
     }
+
+    /**
+     * 签名算法.
+     *
+     * @param string $query
+     * @param string $secret
+     * @param array  $ignore
+     *
+     * @return string
+     */
+    public static function signature(array $query, string $secret, array $ignore = []): string
+    {
+        foreach ($ignore as $v) {
+            if (isset($query[$v])) {
+                unset($query[$v]);
+            }
+        }
+
+        ksort($query);
+
+        $sign = '';
+
+        foreach ($query as $k => $v) {
+            if (!is_array($v)) {
+                $sign .= $k.'='.$v;
+            } else {
+                $sign .= $k.self::signature($v, $secret, $ignore);
+            }
+        }
+
+        return hash_hmac('sha256', $sign, $secret);
+    }
 }

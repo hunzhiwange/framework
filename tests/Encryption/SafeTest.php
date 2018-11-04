@@ -408,4 +408,30 @@ class SafeTest extends TestCase
 
         $this->assertSame($out, Safe::bigCheck($strings, 5));
     }
+
+    public function testSignature()
+    {
+        $query = [
+            'foo'   => 'bar',
+            'hello' => 'world',
+        ];
+
+        $signature = Safe::signature($query, '123456');
+
+        $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
+    }
+
+    public function testSignatureWithIgnore()
+    {
+        $query = [
+            'foo'       => 'bar',
+            'hello'     => 'world',
+            'signature' => 'dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8',
+            'timestamp' => 1541312367,
+        ];
+
+        $signature = Safe::signature($query, '123456', ['signature', 'timestamp']);
+
+        $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
+    }
 }

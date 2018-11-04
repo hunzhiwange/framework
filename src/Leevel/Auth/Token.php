@@ -21,10 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 use Leevel\Cache\ICache;
-use Leevel\Database\Ddd\IEntity;
 use Leevel\Encryption\IEncryption;
 use Leevel\Support\Str;
-use Leevel\Validate\IValidate;
 
 /**
  * auth.token.
@@ -47,17 +45,15 @@ class Token extends Connect implements IConnect
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity   $user
      * @param \Leevel\Encryption\IEncryption $encryption
-     * @param \Leevel\Validate\IValidate     $validate
      * @param \Leevel\Cache\ICache           $cache
      * @param array                          $option
      */
-    public function __construct(IEntity $user, IEncryption $encryption, IValidate $validate, ICache $cache, array $option = [])
+    public function __construct(IEncryption $encryption, ICache $cache, array $option = [])
     {
         $this->cache = $cache;
 
-        parent::__construct($user, $encryption, $validate, $option);
+        parent::__construct($encryption, $option);
     }
 
     /**

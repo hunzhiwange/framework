@@ -20,10 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
-use Leevel\Database\Ddd\IEntity;
 use Leevel\Encryption\IEncryption;
 use Leevel\Session\ISession;
-use Leevel\Validate\IValidate;
 
 /**
  * auth.session.
@@ -46,17 +44,15 @@ class Session extends Connect implements IConnect
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity   $user
      * @param \Leevel\Encryption\IEncryption $encryption
-     * @param \Leevel\Validate\IValidate     $validate
      * @param \Leevel\Session\ISession       $session
      * @param array                          $option
      */
-    public function __construct(IEntity $user, IEncryption $encryption, IValidate $validate, ISession $session, array $option = [])
+    public function __construct(IEncryption $encryption, ISession $session, array $option = [])
     {
         $this->session = $session;
 
-        parent::__construct($user, $encryption, $validate, $option);
+        parent::__construct($encryption, $option);
     }
 
     /**

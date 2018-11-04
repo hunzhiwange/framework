@@ -20,10 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
-use Leevel\Database\Ddd\IEntity;
 use Leevel\Encryption\IEncryption;
-use Leevel\Support\Str;
-use Leevel\Validate\IValidate;
 
 /**
  * connect 驱动抽象类.
@@ -37,32 +34,11 @@ use Leevel\Validate\IValidate;
 abstract class Connect
 {
     /**
-     * user 对象
-     *
-     * @var \Leevel\Database\Ddd\IEntity
-     */
-    protected $user;
-
-    /**
      * 加密.
      *
      * @var \Leevel\Encryption\IEncryption
      */
     protected $encryption;
-
-    /**
-     * 验证
-     *
-     * @var \Leevel\Validate\IValidate
-     */
-    protected $validate;
-
-    /**
-     * 是否已经设置过登录字段.
-     *
-     * @var bool
-     */
-    protected $setField = false;
 
     /**
      * 认证名字.
@@ -79,33 +55,6 @@ abstract class Connect
     protected $userPersistenceName;
 
     /**
-     * 锁定名字.
-     *
-     * @return string
-     */
-    protected $lockName;
-
-    /**
-     * 登录字段设置.
-     *
-     * @var array
-     */
-    protected $fields = [
-        'id'          => 'id',
-        'name'        => 'name',
-        'nikename'    => 'nikename',
-        'random'      => 'random',
-        'email'       => 'email',
-        'mobile'      => 'mobile',
-        'password'    => 'password',
-        'register_ip' => 'register_ip',
-        'login_time'  => 'login_time',
-        'login_ip'    => 'login_ip',
-        'login_count' => 'login_count',
-        'status'      => 'status',
-    ];
-
-    /**
      * 配置.
      *
      * @var array
@@ -113,20 +62,17 @@ abstract class Connect
     protected $option = [
         'user_persistence'  => 'user_persistence',
         'token_persistence' => 'token_persistence',
-        'lock_persistence'  => 'lock_persistence',
-        'field'             => 'id,name,nikename,email,mobile',
     ];
 
     /**
      * 构造函数.
      *
-     * @param array $option
+     * @param \Leevel\Encryption\IEncryption $encryption
+     * @param array                          $option
      */
-    public function __construct(IEntity $user, IEncryption $encryption, IValidate $validate, array $option = [])
+    public function __construct(IEncryption $encryption, array $option = [])
     {
-        $this->user = $user;
         $this->encryption = $encryption;
-        $this->validate = $validate;
 
         $this->option = array_merge($this->option, $option);
     }
@@ -252,170 +198,6 @@ abstract class Connect
         $this->deletePersistence(
             $this->getTokenName()
         );
-
-        $this->deletePersistence(
-            $this->getLockName()
-        );
-    }
-
-    /**
-     * 是否处于锁定状态
-     *
-     * @return bool
-     */
-    public function isLock()
-    {
-        return 'locked' === $this->getPersistence($this->getLockName());
-    }
-
-    /**
-     * 锁定登录.
-     *
-     * @param mixed $loginTime
-     */
-    public function lock($loginTime = null)
-    {
-        $this->setPersistence(
-            $this->getLockName(),
-            'locked',
-            $loginTime
-        );
-    }
-
-    /**
-     * 解锁
-     */
-    public function unlock()
-    {
-        $this->deletePersistence($this->getLockName());
-    }
-
-    /**
-     * 修改密码
-     *
-     * @param mixed  $name
-     * @param string $newPassword
-     * @param string $confirmPassword
-     * @param string $oldPassword
-     * @param bool   $ignoreOldPassword
-     *
-     * @return mixed
-     */
-    public function changePassword($name, $newPassword, $confirmPassword, $oldPassword, $ignoreOldPassword = false)
-    {
-        if (!$name) {
-            throw new ChangePasswordFailed(__('账号或者 ID 不能为空'));
-        }
-
-        if (false === $ignoreOldPassword && '' === $oldPassword) {
-            throw new ChangePasswordFailed(__('旧密码不能为空'));
-        }
-
-        if (!$newPassword) {
-            throw new ChangePasswordFailed(__('新密码不能为空'));
-        }
-
-        if ($confirmPassword !== $newPassword) {
-            throw new ChangePasswordFailed(__('两次输入的密码不一致'));
-        }
-
-        $user = $this->user->
-
-        where($this->parseChangePasswordField($name), $name)->
-
-        setColumns('id,status,random,password')->
-
-        getOne();
-
-        if (empty($user->{$this->getField('id')}) ||
-            'enable' !== $user->{$this->getField('status')}) {
-            throw new ChangePasswordFailed(__('帐号不存在或者未启用'));
-        }
-
-        if (!$ignoreOldPassword &&
-            !$this->checkPassword(
-                $oldPassword,
-                $user->{$this->getField('password')},
-                $user->{$this->getField('random')})) {
-            throw new ChangePasswordFailed(__('用户输入的旧密码错误'));
-        }
-
-        try {
-            $user->password = $this->encodePassword($newPassword, $user->random);
-            $user->update();
-
-            return $user;
-        } catch (Exception $e) {
-            throw new ChangePasswordFailed($e->getMessage());
-        }
-    }
-
-    /**
-     * 注册用户.
-     *
-     * @param string $name
-     * @param string $password
-     * @param string $comfirmPassword
-     * @param string $nikename
-     * @param string $ip
-     * @param string $email
-     * @param string $mobile
-     *
-     * @return mixed
-     */
-    public function registerUser($name, $password, $comfirmPassword, $nikename = null, $ip = null, $email = null, $mobile = null)
-    {
-        $name = trim($name);
-        $nikename = trim($nikename);
-        $password = trim($password);
-        $comfirmPassword = trim($comfirmPassword);
-        $email = trim($email);
-        $mobile = trim($mobile);
-
-        if (!$name ||
-            $name !== addslashes($name)) {
-            throw new RegisterFailed(__('用户名不能为空或包含非法字符'));
-        }
-
-        if (!$password ||
-            $password !== addslashes($password) ||
-            false !== strpos($password, "\n") ||
-            false !== strpos($password, "\r") ||
-            false !== strpos($password, "\t")) {
-            throw new RegisterFailed(__('密码不能为空或包含非法字符'));
-        }
-
-        if ($password !== $comfirmPassword) {
-            throw new RegisterFailed(__('两次输入的密码不一致'));
-        }
-
-        try {
-            $user = $this->user->
-
-            forceProp('name', $name)->
-
-            ifs(null !== $nikename)->forceProp('nikename', $nikename)->endIfs()->
-
-            forceProp('random', $random = Str::randAlphaNum(6))->
-
-            forceProp('password', $this->encodePassword($password, $random))->
-
-            ifs(null !== $email)->forceProp('email', $email)->endIfs()->
-
-            ifs(null !== $mobile)->forceProp('mobile', $mobile)->endIfs()->
-
-            ifs(null !== $ip)->forceProp('register_ip', $ip)->endIfs()->
-
-            create();
-
-            if (empty($user->id)) {
-                throw new RegisterFailed(__('注册失败'));
-            }
-
-            return $user;
-        } catch (Exception $e) {
-            throw new RegisterFailed($e->getMessage());
-        }
     }
 
     /**
@@ -469,90 +251,6 @@ abstract class Connect
 
         return $this->userPersistenceName = $this->getTokenName().'@'.
             $this->option['user_persistence'];
-    }
-
-    /**
-     * 设置锁定名字.
-     *
-     * @param string $lockName
-     *
-     * @return string
-     */
-    public function setLockName($lockName)
-    {
-        return $this->lockName = $lockName;
-    }
-
-    /**
-     * 取得锁定名字.
-     *
-     * @return string
-     */
-    public function getLockName()
-    {
-        if (null !== $this->lockName) {
-            return $this->lockName;
-        }
-
-        return $this->lockName = $this->getTokenName().'@'.
-            $this->option['lock_persistence'];
-    }
-
-    /**
-     * 设置字段.
-     *
-     * @param array $fields
-     * @param bool  $force
-     */
-    public function setField(array $fields, $force = false)
-    {
-        if (false === $force && $this->setField = true) {
-            return;
-        }
-
-        $this->setField = true;
-
-        foreach ($fields as $key => $field) {
-            if (isset($this->fields[$key])) {
-                $this->fields[$key] = $field;
-            }
-        }
-    }
-
-    /**
-     * 获取字段.
-     *
-     * @param array $field
-     *
-     * @return mixed
-     */
-    public function getField($field)
-    {
-        return $this->fields[$field] ?? null;
-    }
-
-    /**
-     * 批量获取字段.
-     *
-     * @param array $fields
-     * @param bool  $filterNull
-     *
-     * @return array
-     */
-    public function getFields(array $fields, $filterNull = true)
-    {
-        $data = [];
-
-        foreach ($fields as $field) {
-            if (null === ($value = $this->getField($field)) &&
-                true === $filterNull) {
-                continue;
-            }
-
-            $data[] = $value;
-        }
-
-        return $data;
     }
 
     /**
@@ -629,20 +327,6 @@ abstract class Connect
             ($this->validate->mobile($name) ?
                 $this->getField('mobile') :
                 $this->getField('name'));
-    }
-
-    /**
-     * 解析修改密码字段.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function parseChangePasswordField($name)
-    {
-        return is_numeric($name) ?
-            $this->getField('id') :
-            $this->getField('name');
     }
 
     /**
