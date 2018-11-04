@@ -118,6 +118,16 @@ Documentation for the framework can be found on the [QueryPHP website](http://ww
 
 Thanks my colleague [John.mao](https://github.com/maosea0125) for your selfless help in the development of this project and and let me have a new understanding, it makes QueryPHP more beautiful.
 
+Thanks for these excellent projects, we have absorbed a lot of excellent design and ideas, standing on the shoulders of giants for innovation.
+
+ * QeePHP: <https://github.com/dualface/qeephp2_x/>
+ * JeCat: <https://github.com/JeCat/>
+ * ThinkPHP: <https://github.com/top-think/>
+ * Laravel: <https://github.com/laravel/>
+ * Symfony: <https://github.com/symfony/>
+ * Doctrine: <https://github.com/doctrine/>
+
+
 ## License
 
 The QueryPHP framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
