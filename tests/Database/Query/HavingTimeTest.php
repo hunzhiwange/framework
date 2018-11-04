@@ -367,21 +367,28 @@ eot;
 eot;
 
         $value = strtotime('+5 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
-            $this->varJson(
-                $connect->table('test')->
+        $this->assertTrue(
+            in_array(
+                $this->varJson(
+                    $connect->table('test')->
 
-                groupBy('create_date')->
+                    groupBy('create_date')->
 
-                time()->
+                    time()->
 
-                having('create_date', '+5 month')->
+                    having('create_date', '+5 month')->
 
-                endTime()->
+                    endTime()->
 
-                findOne(true)
+                    findOne(true)
+                ), [
+                    sprintf($sql, $value),
+                    sprintf($sql, $value2),
+                    sprintf($sql, $value3),
+                ], true
             )
         );
     }
