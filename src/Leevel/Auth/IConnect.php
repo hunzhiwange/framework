@@ -32,177 +32,43 @@ namespace Leevel\Auth;
 interface IConnect
 {
     /**
-     * 设置配置.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return $this
-     */
-    public function setOption(string $name, $value);
-
-    /**
      * 用户是否已经登录.
      *
      * @return bool
      */
-    public function isLogin();
+    public function isLogin(): bool;
 
     /**
      * 获取登录信息.
      *
-     * @return mixed
+     * @return array
      */
-    public function getLogin();
+    public function getLogin(): array;
 
     /**
-     * 登录验证
+     * 登录写入数据.
      *
-     * @param mixed  $name
-     * @param string $password
-     * @param mixed  $loginTime
-     *
-     * @return \Leevel\Database\Ddd\IEntity|void
+     * @param array $data
+     * @param int   $loginTime
      */
-    public function login($name, $password, $loginTime = null);
-
-    /**
-     * 仅仅验证登录用户和密码是否正确.
-     *
-     * @param mixed  $name
-     * @param string $password
-     *
-     * @return \Leevel\Database\Ddd\IEntity|void
-     */
-    public function onlyValidate($name, $password);
+    public function login(array $data, int $loginTime = 0): void;
 
     /**
      * 登出.
      */
-    public function logout();
-
-    /**
-     * 是否处于锁定状态
-     *
-     * @return bool
-     */
-    public function isLock();
-
-    /**
-     * 锁定登录.
-     *
-     * @param mixed $loginTime
-     */
-    public function lock($loginTime = null);
-
-    /**
-     * 解锁
-     */
-    public function unlock();
-
-    /**
-     * 修改密码
-     *
-     * @param mixed  $name
-     * @param string $newPassword
-     * @param string $confirmPassword
-     * @param string $oldPassword
-     * @param bool   $ignoreOldPassword
-     *
-     * @return mixed
-     */
-    public function changePassword($name, $newPassword, $confirmPassword, $oldPassword, $ignoreOldPassword = false);
-
-    /**
-     * 注册用户.
-     *
-     * @param string $name
-     * @param string $password
-     * @param string $comfirmPassword
-     * @param string $nikename
-     * @param string $ip
-     * @param string $email
-     * @param string $mobile
-     *
-     * @return mixed
-     */
-    public function registerUser($name, $password, $comfirmPassword, $nikename = null, $ip = null, $email = null, $mobile = null);
+    public function logout(): void;
 
     /**
      * 设置认证名字.
      *
      * @param string $tokenName
-     *
-     * @return string
      */
-    public function setTokenName($tokenName);
+    public function setTokenName(string $tokenName): void;
 
     /**
      * 取得认证名字.
      *
      * @return string
      */
-    public function getTokenName();
-
-    /**
-     * 设置用户信息持久化名字.
-     *
-     * @param string $userPersistenceName
-     *
-     * @return string
-     */
-    public function setUserPersistenceName($userPersistenceName);
-
-    /**
-     * 取得用户信息持久化名字.
-     *
-     * @return string
-     */
-    public function getUserPersistenceName();
-
-    /**
-     * 设置字段.
-     *
-     * @param array $fields
-     * @param bool  $force
-     */
-    public function setField(array $fields, $force = false);
-
-    /**
-     * 获取字段.
-     *
-     * @param array $field
-     *
-     * @return mixed
-     */
-    public function getField($field);
-
-    /**
-     * 批量获取字段.
-     *
-     * @param array $fields
-     * @param bool  $filterNull
-     *
-     * @return array
-     */
-    public function getFields(array $fields, $filterNull = true);
-
-    /**
-     * 验证数据分离.
-     *
-     * @param string $auth
-     *
-     * @return mixed
-     */
-    public function explodeTokenData($auth);
-
-    /**
-     * 验证数据组合.
-     *
-     * @param mixed  $identifier
-     * @param string $password
-     *
-     * @return string
-     */
-    public function implodeTokenData($identifier, $password);
+    public function getTokenName(): string;
 }

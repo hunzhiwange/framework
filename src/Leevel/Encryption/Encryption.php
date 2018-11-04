@@ -56,7 +56,7 @@ class Encryption implements IEncryption
     protected $rsaPrivate;
 
     /**
-     * 安全 RSA 共钥.
+     * 安全 RSA 公钥.
      *
      * @var string
      */

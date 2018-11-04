@@ -50,7 +50,7 @@ class Manager extends Managers
      *
      * @param string $name
      */
-    public function setDefaultDriver($name)
+    public function setDefaultDriver($name): void
     {
         $option = $this->getContainerOption('default');
 
@@ -92,13 +92,7 @@ class Manager extends Managers
             $this->normalizeConnectOption('session', $options)
         );
 
-        return new Session(
-            $this->container[$options['entity']],
-            $this->container['encryption'],
-            $this->container['validate'],
-            $this->container['session'],
-            $options
-        );
+        return new Session($this->container['session'], $options);
     }
 
     /**
@@ -114,12 +108,6 @@ class Manager extends Managers
             $this->normalizeConnectOption('token', $options)
         );
 
-        return new Token(
-            $this->container[$options['model']],
-            $this->container['encryption'],
-            $this->container['validate'],
-            $this->container['cache'],
-            $options
-        );
+        return new Token($this->container['cache'], $options);
     }
 }

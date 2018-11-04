@@ -21,8 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 use Leevel\Cache\ICache;
-use Leevel\Encryption\IEncryption;
-use Leevel\Support\Str;
 
 /**
  * auth.token.
@@ -45,31 +43,14 @@ class Token extends Connect implements IConnect
     /**
      * 构造函数.
      *
-     * @param \Leevel\Encryption\IEncryption $encryption
-     * @param \Leevel\Cache\ICache           $cache
-     * @param array                          $option
+     * @param \Leevel\Cache\ICache $cache
+     * @param array                $option
      */
-    public function __construct(IEncryption $encryption, ICache $cache, array $option = [])
+    public function __construct(ICache $cache, array $option = [])
     {
         $this->cache = $cache;
 
-        parent::__construct($encryption, $option);
-    }
-
-    /**
-     * 设置认证名字.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $user
-     */
-    protected function setLoginTokenName($user)
-    {
-        $this->setTokenName(
-            md5(
-                $user->{$this->getField('name')}.
-                $user->{$this->getField('password')}.
-                Str::randAlphaNum(5)
-            )
-        );
+        parent::__construct($option);
     }
 
     /**
@@ -77,9 +58,9 @@ class Token extends Connect implements IConnect
      *
      * @param string $key
      * @param string $value
-     * @param mixed  $expire
+     * @param int    $expire
      */
-    protected function setPersistence($key, $value, $expire = null)
+    protected function setPersistence(string $key, string $value, int $expire = 0): void
     {
         $this->cache->set($key, $value, [
             'expire' => $expire,
@@ -93,7 +74,7 @@ class Token extends Connect implements IConnect
      *
      * @return mixed
      */
-    protected function getPersistence($key)
+    protected function getPersistence(string $key)
     {
         return $this->cache->get($key);
     }
@@ -103,7 +84,7 @@ class Token extends Connect implements IConnect
      *
      * @param string $key
      */
-    protected function deletePersistence($key)
+    protected function deletePersistence(string $key): void
     {
         $this->cache->delele($key);
     }

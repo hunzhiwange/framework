@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
-use Leevel\Encryption\IEncryption;
 use Leevel\Session\ISession;
 
 /**
@@ -44,24 +43,14 @@ class Session extends Connect implements IConnect
     /**
      * 构造函数.
      *
-     * @param \Leevel\Encryption\IEncryption $encryption
-     * @param \Leevel\Session\ISession       $session
-     * @param array                          $option
+     * @param \Leevel\Session\ISession $session
+     * @param array                    $option
      */
-    public function __construct(IEncryption $encryption, ISession $session, array $option = [])
+    public function __construct(ISession $session, array $option = [])
     {
         $this->session = $session;
 
-        parent::__construct($encryption, $option);
-    }
-
-    /**
-     * 设置认证名字.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $user
-     */
-    protected function setLoginTokenName($user)
-    {
+        parent::__construct($option);
     }
 
     /**
@@ -69,13 +58,11 @@ class Session extends Connect implements IConnect
      *
      * @param string $key
      * @param string $value
-     * @param mixed  $expire
+     * @param int    $expire
      */
-    protected function setPersistence($key, $value, $expire = null)
+    protected function setPersistence(string $key, string $value, int $expire = 0): void
     {
-        $this->session->set($key, $value, [
-            'expire' => $expire,
-        ]);
+        $this->session->set($key, $value);
     }
 
     /**
@@ -85,7 +72,7 @@ class Session extends Connect implements IConnect
      *
      * @return mixed
      */
-    protected function getPersistence($key)
+    protected function getPersistence(string $key)
     {
         return $this->session->get($key);
     }
@@ -95,8 +82,8 @@ class Session extends Connect implements IConnect
      *
      * @param string $key
      */
-    protected function deletePersistence($key)
+    protected function deletePersistence(string $key): void
     {
-        $this->session->delele($key);
+        $this->session->delete($key);
     }
 }
