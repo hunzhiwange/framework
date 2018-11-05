@@ -51,9 +51,10 @@ class HavingTimeTest extends TestCase
 eot;
 
         $value = strtotime('+5 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -62,7 +63,10 @@ eot;
                 havingDate('create_date', '+5 month')->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -83,9 +87,10 @@ eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -94,7 +99,10 @@ eot;
                 havingDay('create_date', 5)->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -115,9 +123,10 @@ eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -126,7 +135,10 @@ eot;
                 havingDay('create_date', '5')->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -147,9 +159,10 @@ eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -158,7 +171,10 @@ eot;
                 havingDay('create_date', '5 foo')->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -179,9 +195,10 @@ eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, 5, 1, $date['year']);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -190,7 +207,10 @@ eot;
                 havingMonth('create_date', 5)->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -211,9 +231,10 @@ eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, 5, 1, $date['year']);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -222,7 +243,10 @@ eot;
                 havingMonth('create_date', '5')->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -243,9 +267,10 @@ eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, 5, 1, $date['year']);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -254,7 +279,10 @@ eot;
                 havingMonth('create_date', '5 foo')->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -274,9 +302,10 @@ eot;
 eot;
 
         $value = mktime(0, 0, 0, 1, 1, 2018);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -285,7 +314,10 @@ eot;
                 havingYear('create_date', 2018)->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -305,9 +337,10 @@ eot;
 eot;
 
         $value = mktime(0, 0, 0, 1, 1, 2018);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -316,7 +349,10 @@ eot;
                 havingYear('create_date', '2018')->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -336,9 +372,10 @@ eot;
 eot;
 
         $value = mktime(0, 0, 0, 1, 1, 2018);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -347,7 +384,10 @@ eot;
                 havingYear('create_date', '2018 foo')->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -451,9 +491,10 @@ eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -466,7 +507,10 @@ eot;
                 endTime()->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -487,9 +531,10 @@ eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, 5, 1, $date['year']);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -502,7 +547,10 @@ eot;
                 endTime()->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -522,9 +570,10 @@ eot;
 eot;
 
         $value = mktime(0, 0, 0, 1, 1, 2018);
+        $value2 = $value + 1;
+        $value3 = $value + 2;
 
-        $this->assertSame(
-            sprintf($sql, $value),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -537,7 +586,10 @@ eot;
                 endTime()->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
         );
     }
 
@@ -751,9 +803,10 @@ eot;
 
         $date = getdate();
         $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+        $time2 = $time + 1;
+        $time3 = $time + 2;
 
-        $this->assertSame(
-            sprintf($sql, $time),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -778,7 +831,10 @@ eot;
                 endIfs()->
 
                 findAll(true)
-            )
+            ),
+            sprintf($sql, $time),
+            sprintf($sql, $time2),
+            sprintf($sql, $time3)
         );
     }
 
@@ -801,9 +857,10 @@ eot;
 
         $date = getdate();
         $time = mktime(0, 0, 0, 5, 1, $date['year']);
+        $time2 = $time + 1;
+        $time3 = $time + 2;
 
-        $this->assertSame(
-            sprintf($sql, $time),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -828,7 +885,10 @@ eot;
                 endIfs()->
 
                 findAll(true)
-            )
+            ),
+            sprintf($sql, $time),
+            sprintf($sql, $time2),
+            sprintf($sql, $time3)
         );
     }
 
@@ -851,9 +911,10 @@ eot;
 
         $date = getdate();
         $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+        $time2 = $time + 1;
+        $time3 = $time + 2;
 
-        $this->assertSame(
-            sprintf($sql, $time),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -876,7 +937,10 @@ eot;
                 endTime()->
 
                 findAll(true)
-            )
+            ),
+            sprintf($sql, $time),
+            sprintf($sql, $time2),
+            sprintf($sql, $time3)
         );
     }
 
@@ -898,11 +962,14 @@ eot;
 eot;
 
         $date = getdate();
-        $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
+        $time1 = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
         $time2 = mktime(0, 0, 0, $date['mon'], 6, $date['year']);
+        $time12 = $time1 + 1;
+        $time13 = $time1 + 2;
+        $time22 = $time2 + 1;
+        $time23 = $time2 + 2;
 
-        $this->assertSame(
-            sprintf($sql, $time, $time2),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -925,7 +992,16 @@ eot;
                 endTime()->
 
                 findAll(true)
-            )
+            ),
+            sprintf($sql, $time1, $time2),
+            sprintf($sql, $time1, $time22),
+            sprintf($sql, $time1, $time23),
+            sprintf($sql, $time12, $time2),
+            sprintf($sql, $time12, $time22),
+            sprintf($sql, $time12, $time23),
+            sprintf($sql, $time13, $time2),
+            sprintf($sql, $time13, $time22),
+            sprintf($sql, $time13, $time23)
         );
     }
 }
