@@ -343,7 +343,7 @@ class RouterTest extends TestCase
                     ],
                 ],
             ],
-            '/^\/ap1\/v1\/:tests\/hello\/throughMiddleware$/' => [
+            '/^\/ap1\/v1\/:tests\/hello\/throughMiddleware\\/$/' => [
                 'middlewares' => [
                     'handle' => [
                         'Tests\\Router\\Middlewares\\Demo3:10,hello@handle',
