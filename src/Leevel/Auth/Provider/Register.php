@@ -59,6 +59,7 @@ class Register extends Provider
                 'Leevel\\Auth\\Auth',
                 'Leevel\\Auth\\IAuth',
             ],
+            'Leevel\\Auth\\Middleware\\Auth',
         ];
     }
 

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 use Leevel\Cache\ICache;
+use Leevel\Http\IRequest;
 
 /**
  * auth.token.
@@ -41,16 +42,37 @@ class Token extends Connect implements IConnect
     protected $cache;
 
     /**
+     * HTTP 请求
+     *
+     * @var \Leevel\Http\IRequest
+     */
+    protected $request;
+
+    /**
+     * 配置.
+     *
+     * @var array
+     */
+    protected $option = [
+        'token'       => null,
+        'input_token' => 'token',
+    ];
+
+    /**
      * 构造函数.
      *
-     * @param \Leevel\Cache\ICache $cache
-     * @param array                $option
+     * @param \Leevel\Cache\ICache  $cache
+     * @param \Leevel\Http\IRequest $request
+     * @param array                 $option
      */
-    public function __construct(ICache $cache, array $option = [])
+    public function __construct(ICache $cache, IRequest $request, array $option = [])
     {
         $this->cache = $cache;
+        $this->request = $request;
 
         parent::__construct($option);
+
+        $this->option['token'] = $this->getTokenNameFromRequest();
     }
 
     /**
@@ -62,9 +84,7 @@ class Token extends Connect implements IConnect
      */
     protected function setPersistence(string $key, string $value, int $expire = 0): void
     {
-        $this->cache->set($key, $value, [
-            'expire' => $expire,
-        ]);
+        $this->cache->set($key, $value, ['expire' => $expire]);
     }
 
     /**
@@ -86,6 +106,26 @@ class Token extends Connect implements IConnect
      */
     protected function deletePersistence(string $key): void
     {
-        $this->cache->delele($key);
+        $this->cache->delete($key);
+    }
+
+    /**
+     * 从请求中获取 token.
+     *
+     * @return string
+     */
+    protected function getTokenNameFromRequest(): string
+    {
+        $token = $this->request->query($this->option['input_token']);
+
+        if (empty($token)) {
+            $token = $this->request->input($this->option['input_token']);
+        }
+
+        if (!$token) {
+            throw new AuthException('Token name was not set.');
+        }
+
+        return $token;
     }
 }

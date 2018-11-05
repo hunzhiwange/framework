@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
-use InvalidArgumentException;
-
 /**
  * connect 驱动抽象类.
  *
@@ -88,7 +86,7 @@ abstract class Connect
      */
     public function logout(): void
     {
-        $this->deletePersistence($this->getTokenName());
+        $this->tokenDelete();
     }
 
     /**
@@ -109,7 +107,7 @@ abstract class Connect
     public function getTokenName(): string
     {
         if (!$this->option['token']) {
-            throw new InvalidArgumentException('Token name was not set.');
+            throw new AuthException('Token name was not set.');
         }
 
         return $this->option['token'];

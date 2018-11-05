@@ -108,6 +108,6 @@ class Manager extends Managers
             $this->normalizeConnectOption('token', $options)
         );
 
-        return new Token($this->container['cache'], $options);
+        return new Token($this->container['cache'], $this->container['request'], $options);
     }
 }
