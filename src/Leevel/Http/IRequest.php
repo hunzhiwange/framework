@@ -450,13 +450,6 @@ interface IRequest
     public function isAcceptAny();
 
     /**
-     * 是否为手机访问.
-     *
-     * @return bool
-     */
-    public function isMobile();
-
-    /**
      * 是否为 HEAD 请求行为.
      *
      * @return bool
