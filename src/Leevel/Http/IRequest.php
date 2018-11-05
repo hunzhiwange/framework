@@ -188,47 +188,47 @@ interface IRequest
     public function get($key, $defaults = null);
 
     /**
-     * 请求是否包含给定的 key.
+     * 请求是否包含给定的 keys.
      *
-     * @param array|string $key
+     * @param array $keys
      *
      * @return bool
      */
-    public function exists($key);
+    public function exists(array $keys): bool;
 
     /**
      * 请求是否包含非空.
      *
-     * @param array|string $key
+     * @param array $keys
      *
      * @return bool
      */
-    public function has($key);
+    public function has(array $keys): bool;
 
     /**
-     * 取得给定的 key 数据.
+     * 取得给定的 keys 数据.
      *
-     * @param array|mixed $keys
+     * @param array $keys
      *
      * @return array
      */
-    public function only($keys);
+    public function only(array $keys): array;
 
     /**
-     * 取得排除给定的 key 数据.
+     * 取得排除给定的 keys 数据.
      *
-     * @param array|mixed $keys
+     * @param array $keys
      *
      * @return array
      */
-    public function except($keys);
+    public function except(array $keys): array;
 
     /**
      * 取回输入和文件.
      *
      * @return array
      */
-    public function all();
+    public function all(): array;
 
     /**
      * 获取输入数据.

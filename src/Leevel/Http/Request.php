@@ -292,16 +292,14 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 请求是否包含给定的 key.
+     * 请求是否包含给定的 keys.
      *
-     * @param array|string $key
+     * @param array $keys
      *
      * @return bool
      */
-    public function exists($key)
+    public function exists(array $keys): bool
     {
-        $keys = is_array($key) ? $key : func_get_args();
-
         $input = $this->all();
 
         foreach ($keys as $value) {
@@ -316,14 +314,12 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 请求是否包含非空.
      *
-     * @param array|string $key
+     * @param array $keys
      *
      * @return bool
      */
-    public function has($key)
+    public function has(array $keys): bool
     {
-        $keys = is_array($key) ? $key : func_get_args();
-
         foreach ($keys as $value) {
             if ($this->isEmptyString($value)) {
                 return false;
@@ -334,16 +330,14 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取得给定的 key 数据.
+     * 取得给定的 keys 数据.
      *
-     * @param array|mixed $keys
+     * @param array $keys
      *
      * @return array
      */
-    public function only($keys)
+    public function only(array $keys): array
     {
-        $keys = is_array($keys) ? $keys : func_get_args();
-
         $results = [];
 
         $input = $this->all();
@@ -356,16 +350,14 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取得排除给定的 key 数据.
+     * 取得排除给定的 keys 数据.
      *
-     * @param array|mixed $keys
+     * @param array $keys
      *
      * @return array
      */
-    public function except($keys)
+    public function except(array $keys): array
     {
-        $keys = is_array($keys) ? $keys : func_get_args();
-
         $results = $this->all();
 
         foreach ($keys as $key) {
@@ -382,7 +374,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array
      */
-    public function all()
+    public function all(): array
     {
         return array_replace_recursive($this->input(), $this->allFiles());
     }

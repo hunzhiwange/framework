@@ -148,10 +148,8 @@ class RedirectResponse extends Response
      *
      * @return $this
      */
-    public function onlyInput()
+    public function onlyInput(...$args)
     {
-        $args = func_get_args();
-
         if (!$args) {
             throw new InvalidArgumentException('Method onlyInput need an args.');
         }
@@ -164,10 +162,8 @@ class RedirectResponse extends Response
      *
      * @return $this
      */
-    public function exceptInput()
+    public function exceptInput(...$args)
     {
-        $args = func_get_args();
-
         if (!$args) {
             throw new InvalidArgumentException('Method exceptInput need an args.');
         }
