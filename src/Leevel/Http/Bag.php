@@ -167,10 +167,10 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 获取过滤变量.
      *
-     * @param string          $key
-     * @param mixed           $defaults
-     * @param array|int|sting $filter
-     * @param array           $options
+     * @param string           $key
+     * @param mixed            $defaults
+     * @param array|int|string $filter
+     * @param array            $options
      *
      * @return mixed
      */

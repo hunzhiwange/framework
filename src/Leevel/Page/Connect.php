@@ -708,13 +708,13 @@ abstract class Connect implements IHtml
      *
      * @return string
      */
-    protected function resolverUrl()
+    protected function resolverUrl(...$args)
     {
         if (!static::$urlResolver) {
             throw new RuntimeException('Page not set url resolver.');
         }
 
-        return call_user_func_array(static::$urlResolver, func_get_args());
+        return call_user_func_array(static::$urlResolver, $args);
     }
 
     /**

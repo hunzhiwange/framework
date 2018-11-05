@@ -50,10 +50,8 @@ class PageFactory implements IPageFactory
     {
         $this->url = $url;
 
-        Page::setUrlResolver(function () use ($url) {
-            return call_user_func_array(
-                [$url, 'make'], func_get_args()
-            );
+        Page::setUrlResolver(function (...$args) use ($url) {
+            return $url->make(...$args);
         });
     }
 
