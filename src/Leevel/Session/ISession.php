@@ -188,9 +188,9 @@ interface ISession
     /**
      * 保持闪存数据.
      *
-     * @param mixed $keys
+     * @param array $keys
      */
-    public function keepFlash($keys);
+    public function keepFlash(array $keys);
 
     /**
      * 返回闪存数据.
@@ -205,9 +205,9 @@ interface ISession
     /**
      * 删除闪存数据.
      *
-     * @param mixed $keys
+     * @param array $keys
      */
-    public function deleteFlash($keys);
+    public function deleteFlash(array $keys);
 
     /**
      * 清理所有闪存数据.

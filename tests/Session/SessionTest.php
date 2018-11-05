@@ -491,7 +491,7 @@ eot;
             )
         );
 
-        $session->keepFlash('hello', 'foo');
+        $session->keepFlash(['hello', 'foo']);
 
         $flash = <<<'eot'
 {
@@ -648,7 +648,7 @@ eot;
             )
         );
 
-        $session->deleteFlash('hello');
+        $session->deleteFlash(['hello']);
 
         $flash = <<<'eot'
 {

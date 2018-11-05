@@ -89,7 +89,7 @@ class View implements IView
      *
      * @return mixed
      */
-    public function getAssign($name = null)
+    public function getAssign(?string $name = null)
     {
         return $this->theme->getVar($name);
     }
@@ -97,14 +97,13 @@ class View implements IView
     /**
      * 删除变量值
      *
-     * @param mixed $name
+     * @param array $name
      *
      * @return $this
      */
-    public function deleteAssign($name)
+    public function deleteAssign(array $name)
     {
-        $args = func_get_args();
-        $this->theme->deleteVar(...$args);
+        $this->theme->deleteVar($name);
 
         return $this;
     }

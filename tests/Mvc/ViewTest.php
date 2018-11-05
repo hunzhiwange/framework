@@ -66,7 +66,7 @@ class ViewTest extends TestCase
         $this->assertSame('world', $html->getVar('hello'));
 
         // delete
-        $view->deleteAssign('hello');
+        $view->deleteAssign(['hello']);
 
         $this->assertNull($view->getAssign('hello'));
 

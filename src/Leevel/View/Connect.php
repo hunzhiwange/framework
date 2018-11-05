@@ -106,14 +106,12 @@ abstract class Connect
     /**
      * 删除变量值
      *
-     * @param mixed $name
+     * @param array $name
      *
      * @return $this
      */
-    public function deleteVar($name)
+    public function deleteVar(array $name)
     {
-        $name = is_array($name) ? $name : func_get_args();
-
         foreach ($name as $item) {
             if (isset($this->vars[$item])) {
                 unset($this->vars[$item]);

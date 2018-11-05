@@ -71,7 +71,7 @@ class ControllerTest extends TestCase
         $this->assertSame('world', $test->getAssign('hello'));
 
         // delete
-        $test->deleteAssign('hello');
+        $test->deleteAssign(['hello']);
 
         $this->assertNull($test->getAssign('hello'));
     }

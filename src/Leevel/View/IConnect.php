@@ -63,11 +63,11 @@ interface IConnect
     /**
      * 删除变量值
      *
-     * @param mixed $name
+     * @param array $name
      *
      * @return $this
      */
-    public function deleteVar($name);
+    public function deleteVar(array $name);
 
     /**
      * 清空变量值

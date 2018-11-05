@@ -394,12 +394,10 @@ class Session implements ISession
     /**
      * 保持闪存数据.
      *
-     * @param mixed $keys
+     * @param array $keys
      */
-    public function keepFlash($keys)
+    public function keepFlash(array $keys)
     {
-        $keys = is_array($keys) ? $keys : func_get_args();
-
         $this->mergeNewFlash($keys);
 
         $this->popOldFlash($keys);
@@ -428,12 +426,10 @@ class Session implements ISession
     /**
      * 删除闪存数据.
      *
-     * @param mixed $keys
+     * @param array $keys
      */
-    public function deleteFlash($keys)
+    public function deleteFlash(array $keys)
     {
-        $keys = is_array($keys) ? $keys : func_get_args();
-
         foreach ($keys as $item) {
             $this->delete($this->flashDataKey($item));
         }
@@ -448,9 +444,7 @@ class Session implements ISession
      */
     public function clearFlash()
     {
-        foreach ($this->get($this->flashNewKey(), []) as $item) {
-            $this->deleteFlash($item);
-        }
+        $this->deleteFlash($this->get($this->flashNewKey(), []));
     }
 
     /**

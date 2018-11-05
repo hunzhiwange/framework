@@ -198,7 +198,7 @@ class Router implements IRouter
 
         (new Pipeline($this->container))->
 
-        send($passed)->
+        send([$passed])->
 
         send($passedExtend)->
 

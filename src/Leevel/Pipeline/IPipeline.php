@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Pipeline;
 
+use Closure;
+
 /**
  * IPipeline 接口.
  *
@@ -34,27 +36,27 @@ interface IPipeline
     /**
      * 将传输对象传入管道.
      *
-     * @param mixed $passed
+     * @param array $passed
      *
      * @return $this
      */
-    public function send($passed);
+    public function send(array $passed);
 
     /**
      * 设置管道中的执行工序.
      *
-     * @param array|dynamic $stage
+     * @param array $stage
      *
      * @return $this
      */
-    public function through($stage);
+    public function through(array $stage);
 
     /**
      * 执行管道工序响应结果.
      *
-     * @param callable $end
+     * @param \Closure $end
      *
      * @return mixed
      */
-    public function then(callable $end = null);
+    public function then(Closure $end = null);
 }

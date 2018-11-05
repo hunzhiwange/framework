@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Pipeline;
 
+use Closure;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
@@ -75,14 +76,12 @@ class Pipeline implements IPipeline
     /**
      * 将传输对象传入管道.
      *
-     * @param mixed $passed
+     * @param array $passed
      *
      * @return $this
      */
-    public function send($passed)
+    public function send(array $passed)
     {
-        $passed = is_array($passed) ? $passed : func_get_args();
-
         foreach ($passed as $item) {
             $this->passed[] = $item;
         }
@@ -93,14 +92,12 @@ class Pipeline implements IPipeline
     /**
      * 设置管道中的执行工序.
      *
-     * @param array|dynamic $stage
+     * @param array $stage
      *
      * @return $this
      */
-    public function through($stage)
+    public function through(array $stage)
     {
-        $stage = is_array($stage) ? $stage : func_get_args();
-
         foreach ($stage as $item) {
             $this->stage[] = $item;
         }
@@ -111,13 +108,13 @@ class Pipeline implements IPipeline
     /**
      * 执行管道工序响应结果.
      *
-     * @param callable $end
+     * @param \Closure $end
      *
      * @since 2018.01.03
      *
      * @return mixed
      */
-    public function then(callable $end = null)
+    public function then(Closure $end = null)
     {
         $stage = $this->stage;
 
@@ -137,7 +134,7 @@ class Pipeline implements IPipeline
      *
      * @return mixed
      */
-    protected function traverseGenerator()
+    protected function traverseGenerator(...$args)
     {
         if (!$this->generator->valid() ||
             $this->generator->next() ||
@@ -145,9 +142,8 @@ class Pipeline implements IPipeline
             return;
         }
 
-        $args = func_get_args();
-        array_unshift($args, function () {
-            return $this->traverseGenerator(...func_get_args());
+        array_unshift($args, function (...$args) {
+            return $this->traverseGenerator(...$args);
         });
 
         $current = $this->generator->current();

@@ -40,7 +40,7 @@ class PipelineTest extends TestCase
     {
         $result = (new Pipeline(new Container()))->
 
-        send('hello world')->
+        send(['hello world'])->
 
         through(['Tests\Pipeline\First', 'Tests\Pipeline\Second'])->
 
@@ -60,7 +60,7 @@ class PipelineTest extends TestCase
 
         $result = (new Pipeline(new Container()))->
 
-        send('foo bar')->
+        send(['foo bar'])->
 
         through(['Tests\Pipeline\First', 'Tests\Pipeline\Second'])->
 
@@ -97,9 +97,9 @@ class PipelineTest extends TestCase
 
         $result = (new Pipeline(new Container()))->
 
-        send('return test')->
+        send(['return test'])->
 
-        through($pipe1, $pipe2)->
+        through([$pipe1, $pipe2])->
 
         then();
 
@@ -113,7 +113,7 @@ class PipelineTest extends TestCase
     {
         $result = (new Pipeline(new Container()))->
 
-        send('hello world')->
+        send(['hello world'])->
 
         through(['Tests\Pipeline\DiConstruct'])->
 
@@ -132,7 +132,7 @@ class PipelineTest extends TestCase
 
         $result = (new Pipeline(new Container()))->
 
-        through($pipe)->
+        through([$pipe])->
 
         then();
     }
@@ -148,11 +148,11 @@ class PipelineTest extends TestCase
 
         $result = (new Pipeline(new Container()))->
 
-        send('hello world')->
+        send(['hello world'])->
 
         send(['foo', 'bar', 'wow'])->
 
-        through($pipe)->
+        through([$pipe])->
 
         then();
     }
@@ -169,9 +169,9 @@ class PipelineTest extends TestCase
 
         $result = (new Pipeline(new Container()))->
 
-        through($pipe)->
+        through([$pipe])->
 
-        through($pipe, $pipe, $pipe)->
+        through([$pipe, $pipe, $pipe])->
 
         through([$pipe, $pipe])->
 
@@ -188,7 +188,7 @@ class PipelineTest extends TestCase
 
         $result = (new Pipeline(new Container()))->
 
-        through('Tests\Pipeline\WithArgs:'.implode(',', $parameters))->
+        through(['Tests\Pipeline\WithArgs:'.implode(',', $parameters)])->
 
         then();
 
@@ -206,7 +206,7 @@ class PipelineTest extends TestCase
 
         (new Pipeline(new Container()))->
 
-        through('Tests\Pipeline\NotFound')->
+        through(['Tests\Pipeline\NotFound'])->
 
         then();
     }
@@ -215,9 +215,9 @@ class PipelineTest extends TestCase
     {
         (new Pipeline(new Container()))->
 
-        send('hello world')->
+        send(['hello world'])->
 
-        through('Tests\Pipeline\WithAtMethod@run')->
+        through(['Tests\Pipeline\WithAtMethod@run'])->
 
         then();
 

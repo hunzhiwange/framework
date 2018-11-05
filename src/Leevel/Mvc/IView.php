@@ -59,16 +59,16 @@ interface IView
      *
      * @return mixed
      */
-    public function getAssign($name = null);
+    public function getAssign(?string $name = null);
 
     /**
      * 删除变量值
      *
-     * @param mixed $name
+     * @param array $name
      *
      * @return $this
      */
-    public function deleteAssign($name);
+    public function deleteAssign(array $name);
 
     /**
      * 清空变量值
