@@ -119,4 +119,9 @@ trait Helper
 
         return [$traceDir, $className];
     }
+
+    protected function assertTimeRange($data, ...$timeRange)
+    {
+        return $this->assertTrue(in_array($data, $timeRange, true));
+    }
 }
