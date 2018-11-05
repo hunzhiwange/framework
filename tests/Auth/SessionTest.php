@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Session;
+namespace Tests\Auth;
 
 use Leevel\Auth\Session;
 use Leevel\Session\File;
