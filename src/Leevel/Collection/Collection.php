@@ -377,20 +377,4 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
         return (array) $elements;
     }
-
-    /**
-     * 分析 key.
-     *
-     * @param mixed $key
-     *
-     * @return mixed
-     */
-    protected function parseKey($key = null)
-    {
-        if (null === $key) {
-            $key = $this->key();
-        }
-
-        return $key;
-    }
 }
