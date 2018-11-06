@@ -61,8 +61,9 @@ class RateLimiterTest extends TestCase
         $this->assertInstanceof(Cache::class, $rateLimiter->getCache());
 
         $time = time() + 60;
-        $time2 = time() + 61;
-        $time3 = time() + 62;
+        $time2 = $time + 1;
+        $time3 = $time + 2;
+        $time0 = $time - 1;
 
         $header = <<<eot
 {
@@ -94,12 +95,22 @@ eot;
 }
 eot;
 
+        $header0 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time0}
+}
+eot;
+
         $this->assertTrue(
-            in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3], true)
+            in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3, $header0], true)
         );
 
         $this->assertTrue(
-            in_array($this->varJson($rateLimiter->toArray()), [$header, $header2, $header3], true)
+            in_array($this->varJson($rateLimiter->toArray()), [$header, $header2, $header3, $header0], true)
         );
 
         $path = __DIR__.'/cache';
@@ -116,8 +127,9 @@ eot;
         $this->assertFalse($rateLimiter->attempt());
 
         $time = time() + 60;
-        $time2 = time() + 61;
-        $time3 = time() + 62;
+        $time2 = $time + 1;
+        $time3 = $time + 2;
+        $time0 = $time - 1;
 
         $header = <<<eot
 {
@@ -149,8 +161,18 @@ eot;
 }
 eot;
 
+        $header0 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time0}
+}
+eot;
+
         $this->assertTrue(
-            in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3], true)
+            in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3, $header0], true)
         );
 
         $cacheData = array_map(function ($v) {
@@ -190,6 +212,9 @@ eot;
         $this->assertFalse($rateLimiter->attempt());
 
         $time = time() + 60;
+        $time2 = $time + 1;
+        $time3 = $time + 2;
+        $time0 = $time - 1;
 
         $header = <<<eot
 {
@@ -201,11 +226,44 @@ eot;
 }
 eot;
 
-        $this->assertSame(
-            $header,
+        $header2 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time2}
+}
+eot;
+
+        $header3 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time3}
+}
+eot;
+
+        $header0 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time0}
+}
+eot;
+
+        $this->assertTimeRange(
             $this->varJson(
                 $rateLimiter->header()
-            )
+            ),
+            $header,
+            $header2,
+            $header3,
+            $header0
         );
 
         $path = __DIR__.'/cache';
@@ -222,11 +280,44 @@ eot;
 }
 eot;
 
-        $this->assertSame(
-            $header,
+        $header2 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 80,
+    "X-RateLimit-Remaining": 79,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time2}
+}
+eot;
+
+        $header3 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 80,
+    "X-RateLimit-Remaining": 79,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time3}
+}
+eot;
+
+        $header0 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 80,
+    "X-RateLimit-Remaining": 79,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time0}
+}
+eot;
+
+        $this->assertTimeRange(
             $this->varJson(
                 $rateLimiter->header()
-            )
+            ),
+            $header,
+            $header2,
+            $header3,
+            $header0
         );
 
         unlink($path.'/limit.php');
@@ -234,6 +325,9 @@ eot;
         $this->assertFalse($rateLimiter->attempt());
 
         $time += 20;
+        $time2 = $time + 1;
+        $time3 = $time + 2;
+        $time0 = $time - 1;
 
         $header = <<<eot
 {
@@ -245,11 +339,44 @@ eot;
 }
 eot;
 
-        $this->assertSame(
-            $header,
+        $header2 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 80,
+    "X-RateLimit-Remaining": 79,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time2}
+}
+eot;
+
+        $header3 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 80,
+    "X-RateLimit-Remaining": 79,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time3}
+}
+eot;
+
+        $header0 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 80,
+    "X-RateLimit-Remaining": 79,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time0}
+}
+eot;
+
+        $this->assertTimeRange(
             $this->varJson(
                 $rateLimiter->header()
-            )
+            ),
+            $header,
+            $header2,
+            $header3,
+            $header0
         );
 
         unlink($path.'/limit.php');
@@ -262,6 +389,9 @@ eot;
         $this->assertFalse($rateLimiter->attempt());
 
         $time = time() + 60;
+        $time2 = $time + 1;
+        $time3 = $time + 2;
+        $time0 = $time - 1;
 
         $header = <<<eot
 {
@@ -273,11 +403,44 @@ eot;
 }
 eot;
 
-        $this->assertSame(
-            $header,
+        $header2 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time2}
+}
+eot;
+
+        $header3 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time3}
+}
+eot;
+
+        $header0 = <<<eot
+{
+    "X-RateLimit-Time": 60,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time0}
+}
+eot;
+
+        $this->assertTimeRange(
             $this->varJson(
                 $rateLimiter->header()
-            )
+            ),
+            $header,
+            $header2,
+            $header3,
+            $header0
         );
 
         $path = __DIR__.'/cache';
@@ -294,11 +457,44 @@ eot;
 }
 eot;
 
-        $this->assertSame(
-            $header,
+        $header2 = <<<eot
+{
+    "X-RateLimit-Time": 80,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time2}
+}
+eot;
+
+        $header3 = <<<eot
+{
+    "X-RateLimit-Time": 80,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time3}
+}
+eot;
+
+        $header0 = <<<eot
+{
+    "X-RateLimit-Time": 80,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time0}
+}
+eot;
+
+        $this->assertTimeRange(
             $this->varJson(
                 $rateLimiter->header()
-            )
+            ),
+            $header,
+            $header2,
+            $header3,
+            $header0
         );
 
         unlink($path.'/time.php');
@@ -315,11 +511,44 @@ eot;
 }
 eot;
 
-        $this->assertSame(
-            $header,
+        $header2 = <<<eot
+{
+    "X-RateLimit-Time": 80,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time2}
+}
+eot;
+
+        $header3 = <<<eot
+{
+    "X-RateLimit-Time": 80,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time3}
+}
+eot;
+
+        $header0 = <<<eot
+{
+    "X-RateLimit-Time": 80,
+    "X-RateLimit-Limit": 60,
+    "X-RateLimit-Remaining": 59,
+    "X-RateLimit-RetryAfter": 0,
+    "X-RateLimit-Reset": {$time0}
+}
+eot;
+
+        $this->assertTimeRange(
             $this->varJson(
                 $rateLimiter->header()
-            )
+            ),
+            $header,
+            $header2,
+            $header3,
+            $header0
         );
 
         unlink($path.'/time.php');
