@@ -30,6 +30,7 @@ use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Kernel\IRuntime;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
 
 /**
@@ -85,6 +86,9 @@ class RegisterRuntimeTest extends TestCase
         });
 
         $runtime = $this->createMock(IRuntime::class);
+
+        $runtime->method('renderForConsole')->willReturn(null);
+        $this->assertNull($runtime->renderForConsole(new ConsoleOutput(), new Exception()));
 
         $project->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;

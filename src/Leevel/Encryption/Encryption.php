@@ -68,7 +68,7 @@ class Encryption implements IEncryption
      * @param string $key
      * @param string $cipher
      */
-    public function __construct(string $key, string $cipher = 'AES-256-CBC', string $rsaPrivate = '', string $rsaPublic = '')
+    public function __construct(string $key, string $cipher = 'AES-256-CBC', ?string $rsaPrivate = null, ?string $rsaPublic = null)
     {
         if (!in_array($cipher, openssl_get_cipher_methods(), true)) {
             throw new InvalidArgumentException(
