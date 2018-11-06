@@ -97,7 +97,7 @@ class Repository implements IRepository
      *
      * @return \Leevel\Collection\Collection
      */
-    public function findAll($spec = null)//: Collection
+    public function findAll($spec = null): Collection
     {
         $select = $this->entity->selfDatabaseSelect();
 

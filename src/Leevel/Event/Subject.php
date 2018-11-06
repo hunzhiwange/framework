@@ -102,7 +102,7 @@ class Subject implements ISubject, SplSubject
     /**
      * 添加一个观察者角色.
      *
-     * @param \SplObserver|string\Closure $observer
+     * @param \Closure|\SplObserver|string $observer
      *
      * @return $this
      */

@@ -319,8 +319,12 @@ class Tree implements ITree, IJson, IArray
      *
      * @return string
      */
-    public function toJson(int $option = JSON_UNESCAPED_UNICODE)
+    public function toJson($option = null)
     {
+        if (null === $option) {
+            $option = JSON_UNESCAPED_UNICODE;
+        }
+
         $args = func_get_args();
         array_shift($args);
 

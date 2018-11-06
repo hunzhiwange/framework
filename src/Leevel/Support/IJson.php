@@ -38,5 +38,5 @@ interface IJson
      *
      * @return string
      */
-    public function toJson(int $option = JSON_UNESCAPED_UNICODE);
+    public function toJson($option = null);
 }

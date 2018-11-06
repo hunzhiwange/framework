@@ -91,7 +91,7 @@ class Dispatch implements IDispatch
 
         ksort($listeners);
 
-        $listeners = array_reduce($listeners, function ($result, $value) {
+        $listeners = array_reduce($listeners, function (array $result, array $value) {
             return array_merge($result, $value);
         }, []);
 
