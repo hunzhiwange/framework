@@ -210,7 +210,7 @@ class DispatchTest extends TestCase
 
     public function testListenerWithoutRunOrHandleMethod()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Observer Tests\Event\ListenerWithoutRunOrHandleMethod must has handle method.'
         );
@@ -226,7 +226,7 @@ class DispatchTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Observer is invalid.'
+            'Observer `Tests\\Event\\NotFoundListener` is invalid.'
         );
 
         $dispatch = new Dispatch(new Container());
@@ -236,18 +236,58 @@ class DispatchTest extends TestCase
         $dispatch->handle('testevent');
     }
 
-    public function testListenerNotInstanceofSplObserver()
+    public function testListenerNotInstanceofSplObserverWillAuthChange()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Invalid observer argument because it not instanceof SplObserver.'
-        );
-
         $dispatch = new Dispatch(new Container());
 
         $dispatch->register('testevent', ListenerNotExtends::class);
 
         $dispatch->handle('testevent');
+
+        $this->assertSame($_SERVER['autochange'], 'autochange');
+        unset($_SERVER['autochange']);
+    }
+
+    public function testListenerNotInstanceofSplObserverWithoutHandle()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Observer `Tests\\Event\\ListenerNotExtendsWithoutHandle` is invalid.'
+        );
+
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('testevent', ListenerNotExtendsWithoutHandle::class);
+
+        $dispatch->handle('testevent');
+    }
+
+    public function testListenerWithoutSetHandleMustSetHandleClosure()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Observer Leevel\\Event\\Observer must has handle method.'
+        );
+
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('testevent', new Observer());
+
+        $dispatch->handle('testevent');
+    }
+
+    public function testListenerIsClosure()
+    {
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('testevent', function () {
+            $_SERVER['isclosure'] = 'isclosure';
+        });
+
+        $dispatch->handle('testevent');
+
+        $this->assertSame($_SERVER['isclosure'], 'isclosure');
+        unset($_SERVER['isclosure']);
     }
 }
 
@@ -330,7 +370,12 @@ class ListenerNotExtends
 {
     public function handle()
     {
+        $_SERVER['autochange'] = 'autochange';
     }
+}
+
+class ListenerNotExtendsWithoutHandle
+{
 }
 
 class Event1

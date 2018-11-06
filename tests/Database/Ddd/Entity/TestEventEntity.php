@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IMeta;
+use Leevel\Database\Ddd\Meta;
 
 /**
  * TestEventEntity.
@@ -61,144 +62,16 @@ class TestEventEntity extends Entity
         return $this->{$this->prop($prop)};
     }
 
-    /**
-     * 返回模型类的 meta 对象
-     *
-     * @return Leevel\Database\Ddd\IMeta
-     */
-    public function meta(): IMeta
+    public static function meta($connect = null): IMeta
     {
-        return new MockMeta();
-    }
-
-    /**
-     * 模型快捷事件 selecting.
-     */
-    protected function runEventSelecting()
-    {
-    }
-
-    /**
-     * 模型快捷事件 selected.
-     */
-    protected function runEventSelected()
-    {
-    }
-
-    /**
-     * 模型快捷事件 finding.
-     */
-    protected function runEventFinding()
-    {
-    }
-
-    /**
-     * 模型快捷事件 finded.
-     */
-    protected function runEventFinded()
-    {
-    }
-
-    /**
-     * 模型快捷事件 saveing.
-     */
-    protected function runEventSaveing()
-    {
-        $_SERVER['model_runEventSaveing'] = true;
-    }
-
-    /**
-     * 模型快捷事件 saved.
-     */
-    protected function runEventSaved()
-    {
-        $_SERVER['model_runEventSaved'] = true;
-    }
-
-    /**
-     * 模型快捷事件 creating.
-     */
-    protected function runEventCreating()
-    {
-        $_SERVER['model_runEventCreating'] = true;
-    }
-
-    /**
-     * 模型快捷事件 created.
-     */
-    protected function runEventCreated()
-    {
-        $_SERVER['model_runEventCreated'] = true;
-    }
-
-    /**
-     * 模型快捷事件 updating.
-     */
-    protected function runEventUpdating()
-    {
-        $_SERVER['model_runEventUpdating'] = true;
-    }
-
-    /**
-     * 模型快捷事件 updated.
-     */
-    protected function runEventUpdated()
-    {
-        $_SERVER['model_runEventUpdated'] = true;
-    }
-
-    /**
-     * 模型快捷事件 deleting.
-     */
-    protected function runEventDeleting()
-    {
-    }
-
-    /**
-     * 模型快捷事件 deleted.
-     */
-    protected function runEventDeleted()
-    {
-    }
-
-    /**
-     * 模型快捷事件 softDeleting.
-     */
-    protected function runEventSoftDeleting()
-    {
-    }
-
-    /**
-     * 模型快捷事件 softDeleted.
-     */
-    protected function runEventSoftDeleted()
-    {
-    }
-
-    /**
-     * 模型快捷事件 softRestoring.
-     */
-    protected function runEventSoftRestoring()
-    {
-    }
-
-    /**
-     * 模型快捷事件 softRestored.
-     */
-    protected function runEventSoftRestored()
-    {
+        return MockMeta::instance('test', $connect);
     }
 }
 
-class MockMeta implements IMeta
+class MockMeta extends Meta
 {
-    public function insert(array $data)
+    public function insert(array $saveData)
     {
         return 10;
-    }
-
-    public function update(array $condition, array $data)
-    {
-        return 1;
     }
 }

@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Event;
 
+use Closure;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use SplObjectStorage;
@@ -89,9 +90,9 @@ class Subject implements ISubject, SplSubject
     /**
      * {@inheritdoc}
      */
-    public function notify()
+    public function notify(...$args)
     {
-        $this->notifyArgs = func_get_args();
+        $this->notifyArgs = $args;
 
         foreach ($this->observers as $observer) {
             $observer->update($this);
@@ -101,25 +102,33 @@ class Subject implements ISubject, SplSubject
     /**
      * 添加一个观察者角色.
      *
-     * @param \SplObserver|string $observer
+     * @param \SplObserver|string\Closure $observer
      *
      * @return $this
      */
-    public function attachs($observer)
+    public function register($observer)
     {
-        if (is_string($observer) &&
-            is_string($observer = $this->container->make($observer))) {
-            throw new InvalidArgumentException(
-                sprintf('Observer is invalid.')
-            );
+        if ($observer instanceof Closure) {
+            $observer = new Observer($observer);
+        } else {
+            if (is_string($observer) &&
+                is_string($observer = $this->container->make($observer))) {
+                throw new InvalidArgumentException(
+                    sprintf('Observer `%s` is invalid.', $observer)
+                );
+            }
+
+            if (!($observer instanceof SplObserver)) {
+                if (!is_callable([$observer, 'handle'])) {
+                    throw new InvalidArgumentException(
+                        sprintf('Observer `%s` is invalid.', get_class($observer))
+                    );
+                }
+
+                $observer = new Observer(Closure::fromCallable([$observer, 'handle']));
+            }
         }
 
-        if ($observer instanceof SplObserver) {
-            $this->attach($observer);
-        } else {
-            throw new InvalidArgumentException(
-                'Invalid observer argument because it not instanceof SplObserver.'
-            );
-        }
+        $this->attach($observer);
     }
 }

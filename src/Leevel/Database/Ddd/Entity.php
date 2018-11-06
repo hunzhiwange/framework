@@ -297,15 +297,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return $this->scope(...$args);
         }
 
-        $this->runEvent(static::BEFORE_FIND_EVENT);
-        $this->runEvent(static::BEFORE_SELECT_EVENT);
+        $this->handleEvent(static::BEFORE_FIND_EVENT);
+        $this->handleEvent(static::BEFORE_SELECT_EVENT);
 
         $data = $this->select()->{$method}(...$args);
 
         if ($data instanceof Collection) {
-            $this->runEvent(static::AFTER_SELECT_EVENT, $data);
+            $this->handleEvent(static::AFTER_SELECT_EVENT, $data);
         } else {
-            $this->runEvent(static::AFTER_FIND_EVENT, $data);
+            $this->handleEvent(static::AFTER_FIND_EVENT, $data);
         }
 
         return $data;
@@ -445,11 +445,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushed = false;
 
         $this->leevelFlush = function ($condition) {
-            $this->runEvent(static::BEFORE_DELETE_EVENT, $condition);
+            $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
 
             $num = $this->metaConnect()->delete($condition);
 
-            $this->runEvent(static::AFTER_DELETE_EVENT);
+            $this->handleEvent(static::AFTER_DELETE_EVENT);
 
             return $num;
         };
@@ -476,7 +476,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushData = null;
         $this->leevelFlushed = true;
 
-        $this->runEvent(static::AFTER_SAVE_EVENT);
+        $this->handleEvent(static::AFTER_SAVE_EVENT);
 
         return $result;
     }
@@ -846,15 +846,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 注册模型实体事件.
      *
-     * @param string                        $event
-     * @param \leevel\event\observer|string $listener
+     * @param string                                 $event
+     * @param \Closure|\Leevel\Event\Observer|string $listener
      */
-    public static function registerEvent(string $event, $listener)
+    public static function event(string $event, $listener)
     {
         if (null !== static::$leevelDispatch) {
             static::isSupportEvent($event);
 
-            static::$leevelDispatch->listener(
+            static::$leevelDispatch->register(
                 "entity.{$event}:".static::class,
                 $listener
             );
@@ -866,7 +866,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $event
      */
-    public function runEvent(string $event)
+    public function handleEvent(string $event, ...$args)
     {
         if (null === static::$leevelDispatch) {
             return;
@@ -874,15 +874,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->isSupportEvent($event);
 
-        $args = func_get_args();
-        array_shift($args);
-        array_unshift($args, "entity.{$event}:".get_class($this));
         array_unshift($args, $this);
+        array_unshift($args, "entity.{$event}:".get_class($this));
 
-        call_user_func_array([
-            static::$leevelDispatch,
-            'handle',
-        ], $args);
+        static::$leevelDispatch->handle(...$args);
     }
 
     /**
@@ -1292,7 +1287,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $this->withPropValue($k, $v);
         }
 
-        $this->runEvent(static::BEFORE_SAVE_EVENT);
+        $this->handleEvent(static::BEFORE_SAVE_EVENT);
 
         // 程序通过内置方法统一实现
         switch (strtolower($method)) {
@@ -1368,7 +1363,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         $this->leevelFlush = function ($saveData) {
-            $this->runEvent(static::BEFORE_CREATE_EVENT, $saveData);
+            $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
 
             $lastInsertId = $this->metaConnect()->insert($saveData);
 
@@ -1380,7 +1375,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
             $this->clearChanged();
 
-            $this->runEvent(static::AFTER_CREATE_EVENT, $saveData);
+            $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
 
             return $lastInsertId;
         };
@@ -1438,15 +1433,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         $this->leevelFlush = function ($condition, $saveData) {
-            $this->runEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
+            $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
 
             $num = $this->metaConnect()->update($condition, $saveData);
 
-            $this->runEvent(static::BEFORE_UPDATE_EVENT, null, null);
+            $this->handleEvent(static::BEFORE_UPDATE_EVENT, null, null);
 
             $this->clearChanged();
 
-            $this->runEvent(static::AFTER_UPDATE_EVENT);
+            $this->handleEvent(static::AFTER_UPDATE_EVENT);
 
             return $num;
         };

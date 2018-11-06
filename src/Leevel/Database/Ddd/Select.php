@@ -213,11 +213,11 @@ class Select
     {
         $this->entity->__set($this->deleteAtColumn(), $time = date('Y-m-d H:i:s'));
 
-        $this->entity->runEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
+        $this->entity->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
 
         $num = $this->entity->update()->flush();
 
-        $this->entity->runEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
+        $this->entity->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
 
         return $num;
     }
@@ -254,13 +254,13 @@ class Select
      */
     public function softRestore(): int
     {
-        $this->entity->runEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
+        $this->entity->handleEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
 
         $this->entity->__set($this->deleteAtColumn(), null);
 
         $num = $this->entity->update()->flush();
 
-        $this->entity->runEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
+        $this->entity->handleEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
 
         return $num;
     }

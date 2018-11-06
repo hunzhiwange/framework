@@ -91,12 +91,11 @@ class Dispatch implements IDispatch
 
         ksort($listeners);
 
-        foreach ($listeners as $items) {
-            $items = $this->makeSubject($items);
-            $items->notify(...$params);
-        }
+        $listeners = array_reduce($listeners, function ($result, $value) {
+            return array_merge($result, $value);
+        }, []);
 
-        unset($listeners);
+        $this->makeSubject($listeners)->notify(...$params);
     }
 
     /**
@@ -194,7 +193,7 @@ class Dispatch implements IDispatch
         $subject = new Subject($this->container);
 
         foreach ($listeners as $item) {
-            $subject->attachs($item);
+            $subject->register($item);
         }
 
         return $subject;

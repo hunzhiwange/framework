@@ -20,7 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Event;
 
-use RuntimeException;
+use Closure;
+use InvalidArgumentException;
 use SplObserver;
 use SplSubject;
 
@@ -44,10 +45,28 @@ class Observer implements SplObserver
     protected $subject;
 
     /**
-     * 构造函数.
+     * 观察者实现.
+     *
+     * @var \Closure
      */
-    public function __construct()
+    protected $handle;
+
+    /**
+     * 构造函数.
+     *
+     * @param \Closure $handle
+     */
+    public function __construct(Closure $handle = null)
     {
+        $this->handle = $handle;
+    }
+
+    /**
+     * 观察者实现.
+     */
+    public function __invoke(...$args)
+    {
+        call_user_func($this->handle, ...$args);
     }
 
     /**
@@ -55,13 +74,16 @@ class Observer implements SplObserver
      */
     public function update(SplSubject $subject)
     {
-        $handle = [
-            $this,
-            'handle',
-        ];
+        if (method_exists($this, 'handle')) {
+            $handle = [$this, 'handle'];
+        } elseif ($this->handle) {
+            $handle = [$this, '__invoke'];
+        } else {
+            $handle = null;
+        }
 
         if (!is_callable($handle)) {
-            throw new RuntimeException(
+            throw new InvalidArgumentException(
                 sprintf('Observer %s must has handle method.', get_class($this))
             );
         }

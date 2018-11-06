@@ -34,9 +34,9 @@ interface ISubject
     /**
      * 添加一个观察者角色.
      *
-     * @param \SplObserver|string $observer
+     * @param \SplObserver|string\Closure $observer
      *
      * @return $this
      */
-    public function attachs($observer);
+    public function register($observer);
 }

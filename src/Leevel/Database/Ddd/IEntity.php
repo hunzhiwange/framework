@@ -438,17 +438,17 @@ interface IEntity
     /**
      * 注册模型实体事件.
      *
-     * @param string                        $event
-     * @param \leevel\event\observer|string $listener
+     * @param string                                 $event
+     * @param \Closure|\Leevel\Event\Observer|string $listener
      */
-    public static function registerEvent(string $event, $listener);
+    public static function event(string $event, $listener);
 
     /**
      * 执行模型实体事件.
      *
      * @param string $event
      */
-    public function runEvent(string $event);
+    public function handleEvent(string $event, ...$args);
 
     /**
      * 验证事件是否受支持
