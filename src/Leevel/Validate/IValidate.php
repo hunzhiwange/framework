@@ -242,12 +242,12 @@ interface IValidate
     /**
      * 注册自定义扩展.
      *
-     * @param string   $rule
-     * @param \Closure $extends
+     * @param string          $rule
+     * @param \Closure|string $extends
      *
      * @return $this
      */
-    public function extend($rule, Closure $extends);
+    public function extend($rule, $extends);
 
     /**
      * 设置 ioc 容器.
