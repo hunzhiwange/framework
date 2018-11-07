@@ -51,9 +51,11 @@ class TMacroTest extends TestCase
 
         $this->assertSame('queryphp-static world', $test->world());
 
-        $test->macro('test', [$this, 'md5']);
+        $test->macro('test', function ($item) {
+            return $this->md5($item);
+        });
 
-        $this->assertSame('827ccb0eea8a706c4c34a16891f84e7b', $test->test(12345));
+        $this->assertSame('827ccb0eea8a706c4c34a16891f84e7b', $test->test('12345'));
     }
 
     public function testBadMethodCallException()
@@ -77,11 +79,6 @@ class TMacroTest extends TestCase
 
         MacroTest1::worldNotFound();
     }
-
-    public function md5(string $key): string
-    {
-        return md5($key);
-    }
 }
 
 class MacroTest1
@@ -91,4 +88,9 @@ class MacroTest1
     public static $world = 'static world';
 
     public $hello = 'queryphp';
+
+    public function md5(string $key): string
+    {
+        return md5($key);
+    }
 }

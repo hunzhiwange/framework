@@ -229,6 +229,10 @@ class Response implements IResponse
     public static function setCookieResolver(Closure $cookieResolver = null)
     {
         static::$cookieResolver = $cookieResolver;
+
+        if (null === $cookieResolver) {
+            static::$resolvedCookie = null;
+        }
     }
 
     /**
