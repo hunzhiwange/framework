@@ -210,7 +210,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return false|object
      */
-    public function make($name, ?array $args = null)
+    public function make($name, array $args = [])
     {
         // 别名
         $name = $this->getAlias($name);
@@ -218,10 +218,6 @@ class Container implements IContainer, ArrayAccess
         // 存在直接返回
         if (isset($this->instances[$name])) {
             return $this->instances[$name];
-        }
-
-        if (!$args) {
-            $args = [];
         }
 
         // 生成实例

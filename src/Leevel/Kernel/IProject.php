@@ -80,11 +80,6 @@ interface IProject extends IContainer
     public function console(): bool;
 
     /**
-     * {@inheritdoc}
-     */
-    public function make($name, ?array $args = null);
-
-    /**
      * 设置项目路径.
      *
      * @param string $path

@@ -74,7 +74,7 @@ interface IContainer
      *
      * @return false|object
      */
-    public function make($name, ?array $args = null);
+    public function make($name, array $args = []);
 
     /**
      * 实例回调自动注入.

@@ -224,7 +224,7 @@ class Project extends Container implements IProject
     /**
      * {@inheritdoc}
      */
-    public function make($name, ?array $args = null)
+    public function make($name, array $args = [])
     {
         $name = $this->getAlias($name);
 
