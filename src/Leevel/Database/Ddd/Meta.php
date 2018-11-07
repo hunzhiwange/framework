@@ -39,6 +39,13 @@ class Meta implements IMeta
     /**
      * Database 管理.
      *
+     * @var \Leevel\Database\Manager
+     */
+    protected static $database;
+
+    /**
+     * Database 管理.
+     *
      * @var \Closure
      */
     protected static $databaseResolver;
@@ -98,11 +105,15 @@ class Meta implements IMeta
      */
     public static function database(): DatabaseManager
     {
+        if (static::$database) {
+            return static::$database;
+        }
+
         if (!static::$databaseResolver) {
             throw new InvalidArgumentException('Database resolver was not set.');
         }
 
-        return call_user_func(static::$databaseResolver);
+        return static::$database = call_user_func(static::$databaseResolver);
     }
 
     /**
@@ -113,6 +124,10 @@ class Meta implements IMeta
     public static function setDatabaseResolver(?Closure $databaseResolver = null)
     {
         static::$databaseResolver = $databaseResolver;
+
+        if (null === $databaseResolver) {
+            static::$database = null;
+        }
     }
 
     /**
