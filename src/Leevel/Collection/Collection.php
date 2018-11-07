@@ -30,6 +30,7 @@ use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\TMacro;
 use Leevel\Support\Type;
+use stdClass;
 
 /**
  * 集合.
@@ -379,6 +380,10 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
             return $elements->jsonSerialize();
         }
 
-        return json_decode(json_encode($elements), true);
+        if ($elements instanceof stdClass) {
+            return json_decode(json_encode($elements), true);
+        }
+
+        return [$elements];
     }
 }
