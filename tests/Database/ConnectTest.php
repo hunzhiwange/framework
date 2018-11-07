@@ -809,9 +809,6 @@ eot;
     public function testConnectException()
     {
         $this->expectException(\PDOException::class);
-        $this->expectExceptionMessage(
-            'SQLSTATE[HY000] [2002] Connection refused'
-        );
 
         $connect = $this->createConnect([
             'driver'             => 'mysql',
