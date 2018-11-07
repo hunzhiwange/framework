@@ -49,7 +49,9 @@ class ManyManyTest extends TestCase
         $this->truncate('user_role');
         $this->truncate('role');
 
-        Meta::setDatabaseManager($this->createManager());
+        Meta::setDatabaseResolver(function () {
+            return $this->createManager();
+        });
     }
 
     protected function tearDown()
@@ -58,7 +60,7 @@ class ManyManyTest extends TestCase
         $this->truncate('user_role');
         $this->truncate('role');
 
-        Meta::setDatabaseManager(null);
+        Meta::setDatabaseResolver(null);
     }
 
     public function testBaseUse()

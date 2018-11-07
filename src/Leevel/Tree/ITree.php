@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Tree;
 
+use Closure;
+
 /**
  * ITree 接口.
  *
@@ -34,114 +36,115 @@ interface ITree
     /**
      * 设置节点数据.
      *
-     * @param int   $nId
-     * @param int   $nParent
-     * @param mixed $mixValue
+     * @param int   $id
+     * @param int   $parent
+     * @param mixed $value
+     * @param bool  $priority
      */
-    public function setNode($nId, $nParent, $mixValue);
+    public function setNode($id, $parent, $value, bool $priority = false);
 
     /**
      * 取得给定 ID 子树.
      *
-     * @param int $nId
+     * @param int $id
      *
      * @return array
      */
-    public function getChildrenTree($nId = 0): array;
+    public function getChildrenTree($id = 0): array;
 
     /**
      * 取得给定 ID 一级子树 ID.
      *
-     * @param int $nId
+     * @param int $id
      *
      * @return array
      */
-    public function getChild($nId): array;
+    public function getChild($id): array;
 
     /**
      * 取得给定 ID 所有子树 ID.
      *
-     * @param int $nId
+     * @param int $id
      *
      * @return array
      */
-    public function getChildren($nId = 0): array;
+    public function getChildren($id = 0): array;
 
     /**
      * 取得给定 ID 是否包含子树.
      *
-     * @param int $nId
+     * @param int $id
      *
      * @return bool
      */
-    public function hasChild($nId): bool;
+    public function hasChild($id): bool;
 
     /**
      * 验证是否存在子菜单.
      *
-     * @param int   $intId
-     * @param array $arrCheckChildren
-     * @param bool  $booStrict
+     * @param int   $id
+     * @param array $validateChildren
+     * @param bool  $strict
      *
      * @return bool
      */
-    public function hasChildren($intId, array $arrCheckChildren, bool $booStrict = true): bool;
+    public function hasChildren($id, array $validateChildren, bool $strict = true): bool;
 
     /**
      * 取得给定 ID 上级父级 ID.
      *
-     * @param int  $nId
-     * @param bool $booWithItSelf
+     * @param int  $id
+     * @param bool $withItSelf
      *
      * @return array
      */
-    public function getParent($nId, bool $booWithItSelf = false): array;
+    public function getParent($id, bool $withItSelf = false): array;
 
     /**
      * 取得给定 ID 所有父级 ID.
      *
-     * @param int  $nId
-     * @param bool $booWithItSelf
+     * @param int  $id
+     * @param bool $withItSelf
      *
      * @return array
      */
-    public function getParents($nId, bool $booWithItSelf = false): array;
+    public function getParents($id, bool $withItSelf = false): array;
 
     /**
      * 判断级别.
      *
-     * @param int $nId
+     * @param int $id
      *
-     * @return string
+     * @return int
      */
-    public function getLevel($nId);
+    public function getLevel($id): int;
 
     /**
      * 取得节点的值
      *
-     * @param int        $nId
-     * @param null|mixed $mixDefault
+     * @param int        $id
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
-    public function getData($nId, $mixDefault = null);
+    public function getData($id, $defaults = null);
 
     /**
      * 设置节点的值
      *
-     * @param int   $nId
-     * @param mixed $mixValue
+     * @param int   $id
+     * @param mixed $value
      */
-    public function setData($nId, $mixValue);
+    public function setData($id, $value);
 
     /**
      * 树转化为数组.
      *
-     * @param mixed $mixCallable
-     * @param array $arrKey
-     * @param int   $nId
+     * @param \Closure $callables
+     * @param array    $key
+     * @param int      $id
      *
      * @return array
      */
-    public function normalize($mixCallable = null, array $arrKey = [], $nId = 0): array;
+    public function normalize(Closure $callables = null, array $key = [], $id = 0): array;
 }

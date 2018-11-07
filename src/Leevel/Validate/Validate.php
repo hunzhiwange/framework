@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use BadMethodCallException;
+use Closure;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -350,11 +351,11 @@ class Validate implements IValidate
      * 设置验证规则.
      *
      * @param array         $rules
-     * @param null|callable $calCallback
+     * @param null|\Closure $calCallback
      *
      * @return $this
      */
-    public function rule(array $rules, callable $callbacks = null)
+    public function rule(array $rules, Closure $callbacks = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -371,11 +372,11 @@ class Validate implements IValidate
      * 添加验证规则.
      *
      * @param array         $rules
-     * @param null|callable $calCallback
+     * @param null|\Closure $calCallback
      *
      * @return $this
      */
-    public function addRule(array $rules, callable $callbacks = null)
+    public function addRule(array $rules, Closure $callbacks = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -523,11 +524,11 @@ class Validate implements IValidate
     /**
      * 设置验证后事件.
      *
-     * @param callable|string $callbacks
+     * @param \Closure $callbacks
      *
      * @return $this
      */
-    public function after($callbacks)
+    public function after(Closure $callbacks)
     {
         $this->afters[] = function () use ($callbacks) {
             return call_user_func($callbacks, $this);
@@ -539,13 +540,12 @@ class Validate implements IValidate
     /**
      * 注册自定义扩展.
      *
-     * @param string          $rule
-     * @param callable|string $extends
-     * @param mixed           $rule
+     * @param string   $rule
+     * @param \Closure $extends
      *
      * @return $this
      */
-    public function extend($rule, $extends)
+    public function extend($rule, Closure $extends)
     {
         $this->extends[strtolower($rule)] = $extends;
 
@@ -2602,11 +2602,11 @@ class Validate implements IValidate
     /**
      * 验证条件是否通过.
      *
-     * @param null|callable $calCallback
+     * @param \Closure $calCallback
      *
      * @return bool
      */
-    protected function isCallbackValid(callable $callbacks = null)
+    protected function isCallbackValid(Closure $callbacks): bool
     {
         return call_user_func($callbacks, $this->getData());
     }

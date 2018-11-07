@@ -67,6 +67,17 @@ class EntityTest extends TestCase
         $entity = new Post();
         $entity->postContent = 5;
     }
+
+    public function testDatabaseResolverWasNotSet()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Database resolver was not set.'
+        );
+
+        $entity = new Post(['title' => 'foo']);
+        $entity->create()->flush();
+    }
 }
 
 class TestPropErrorEntity extends Entity

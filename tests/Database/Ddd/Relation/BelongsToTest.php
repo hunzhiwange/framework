@@ -47,7 +47,9 @@ class BelongsToTest extends TestCase
         $this->truncate('post');
         $this->truncate('user');
 
-        Meta::setDatabaseManager($this->createManager());
+        Meta::setDatabaseResolver(function () {
+            return $this->createManager();
+        });
     }
 
     protected function tearDown()
@@ -55,7 +57,7 @@ class BelongsToTest extends TestCase
         $this->truncate('post');
         $this->truncate('user');
 
-        Meta::setDatabaseManager(null);
+        Meta::setDatabaseResolver(null);
     }
 
     public function testBaseUse()

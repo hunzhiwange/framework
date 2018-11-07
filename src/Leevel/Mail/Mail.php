@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Mail;
 
+use Closure;
 use Leevel\Event\IDispatch;
 use Leevel\Mvc\IView;
 use Swift_Attachment;
@@ -227,11 +228,11 @@ class Mail implements IMail
     /**
      * 消息回调处理.
      *
-     * @param callable $callbacks
+     * @param \Closure $callbacks
      *
      * @return $this
      */
-    public function message(callable $callbacks)
+    public function message(Closure $callbacks)
     {
         $this->callbackMessage($callbacks, $this->makeMessage());
 
@@ -242,11 +243,11 @@ class Mail implements IMail
      * 添加附件.
      *
      * @param string        $file
-     * @param null|callable $callbacks
+     * @param null|\Closure $callbacks
      *
      * @return $this
      */
-    public function attach($file, $callbacks = null)
+    public function attach($file, Closure $callbacks = null)
     {
         $this->makeMessage();
 
@@ -262,11 +263,11 @@ class Mail implements IMail
      *
      * @param string        $data
      * @param string        $name
-     * @param null|callable $callbacks
+     * @param null|\Closure $callbacks
      *
      * @return $this
      */
-    public function attachData($data, $name, $callbacks = null)
+    public function attachData($data, $name, Closure $callbacks = null)
     {
         $this->makeMessage();
 
@@ -329,12 +330,12 @@ class Mail implements IMail
     /**
      * 发送邮件.
      *
-     * @param callable|string $callbacks
-     * @param bool            $htmlPriority
+     * @param \Closure $callbacks
+     * @param bool     $htmlPriority
      *
      * @return int
      */
-    public function send($callbacks = null, bool $htmlPriority = true)
+    public function send(Closure $callbacks = null, bool $htmlPriority = true)
     {
         $this->makeMessage();
 
@@ -474,17 +475,14 @@ class Mail implements IMail
     /**
      * 邮件消息回调处理.
      *
-     * @param callable       $callbacks
+     * @param \Closure       $callbacks
      * @param \Swift_Message $message
      *
      * @return mixed
      */
-    protected function callbackMessage(callable $callbacks, Swift_Message $message)
+    protected function callbackMessage(Closure $callbacks, Swift_Message $message)
     {
-        return call_user_func_array($callbacks, [
-            $message,
-            $this,
-        ]);
+        return $callbacks($message, $this);
     }
 
     /**
@@ -516,17 +514,14 @@ class Mail implements IMail
      * 邮件附件消息回调处理.
      *
      * @param \Swift_Attachment $attachment
-     * @param null|callable     $callbacks
+     * @param null|\Closure     $callbacks
      *
      * @return $this
      */
-    protected function callbackAttachment($attachment, $callbacks = null)
+    protected function callbackAttachment($attachment, Closure $callbacks = null)
     {
-        if (is_callable($callbacks)) {
-            call_user_func_array($callbacks, [
-                $attachment,
-                $this,
-            ]);
+        if ($callbacks) {
+            $callbacks($attachment, $this);
         }
 
         $this->message->attach($attachment);

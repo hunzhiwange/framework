@@ -71,9 +71,9 @@ trait TMacro
      * 注册一个扩展.
      *
      * @param string   $name
-     * @param callable $macro
+     * @param \Closure $macro
      */
-    public static function macro(string $name, callable $macro)
+    public static function macro(string $name, Closure $macro)
     {
         static::$macro[$name] = $macro;
     }

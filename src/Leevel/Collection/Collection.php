@@ -22,6 +22,7 @@ namespace Leevel\Collection;
 
 use ArrayAccess;
 use ArrayIterator;
+use Closure;
 use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
@@ -314,13 +315,13 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 
     /**
-     * JQuery.each.
+     * each.
      *
-     * @param callable $callback
+     * @param \Closure $callback
      *
      * @return $this
      */
-    public function each(callable $callback)
+    public function each(Closure $callback)
     {
         foreach ($this->elements as $key => $item) {
             if (false === $callback($item, $key)) {

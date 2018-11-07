@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Closure;
+use InvalidArgumentException;
 use Leevel\Database\Manager as DatabaseManager;
 use Leevel\Database\Select as DatabaseSelect;
 
@@ -37,9 +39,9 @@ class Meta implements IMeta
     /**
      * Database 管理.
      *
-     * @var \Leevel\Database\Manager
+     * @var \Closure
      */
-    protected static $databaseManager;
+    protected static $databaseResolver;
 
     /**
      * meta 对象实例.
@@ -90,13 +92,27 @@ class Meta implements IMeta
     }
 
     /**
-     * 设置数据库管理对象
+     * 返回数据库管理对象.
      *
-     * @param null|\Leevel\Database\Manager $databaseManager
+     * @return \Leevel\Database\Manager
      */
-    public static function setDatabaseManager(DatabaseManager $databaseManager = null)
+    public static function database(): DatabaseManager
     {
-        static::$databaseManager = $databaseManager;
+        if (!static::$databaseResolver) {
+            throw new InvalidArgumentException('Database resolver was not set.');
+        }
+
+        return call_user_func(static::$databaseResolver);
+    }
+
+    /**
+     * 设置数据库管理对象.
+     *
+     * @param null|\Closure $databaseResolver
+     */
+    public static function setDatabaseResolver(?Closure $databaseResolver = null)
+    {
+        static::$databaseResolver = $databaseResolver;
     }
 
     /**
@@ -108,7 +124,7 @@ class Meta implements IMeta
      */
     public function setConnect($connect = null)
     {
-        $this->connect = static::$databaseManager->connect($connect);
+        $this->connect = self::database()->connect($connect);
 
         return $this;
     }

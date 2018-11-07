@@ -63,7 +63,7 @@ class JsonResponse extends Response
     /**
      * JSONP 回调.
      *
-     * @var \callable
+     * @var string
      */
     protected $callback;
 

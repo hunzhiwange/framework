@@ -47,14 +47,16 @@ class SelectTest extends TestCase
     {
         $this->clear();
 
-        Meta::setDatabaseManager($this->createManager());
+        Meta::setDatabaseResolver(function () {
+            return $this->createManager();
+        });
     }
 
     protected function tearDown()
     {
         $this->clear();
 
-        Meta::setDatabaseManager(null);
+        Meta::setDatabaseResolver(null);
     }
 
     public function testBase()

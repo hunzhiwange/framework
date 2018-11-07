@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Tree;
 
+use Closure;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use RuntimeException;
@@ -275,13 +276,13 @@ class Tree implements ITree, IJson, IArray
     /**
      * 树转化为数组.
      *
-     * @param mixed $callables
-     * @param array $key
-     * @param int   $id
+     * @param \Closure $callables
+     * @param array    $key
+     * @param int      $id
      *
      * @return array
      */
-    public function normalize($callables = null, array $key = [], $id = 0): array
+    public function normalize(Closure $callables = null, array $key = [], $id = 0): array
     {
         $data = [];
 
@@ -291,11 +292,8 @@ class Tree implements ITree, IJson, IArray
                 $key['data'] ?? 'data'   => $this->data[$value],
             ];
 
-            if (is_callable($callables)) {
-                $result = call_user_func_array($callables, [
-                    $item,
-                    $this,
-                ]);
+            if ($callables) {
+                $result = $callables($item, $this);
 
                 if (null !== $result) {
                     $item = $result;

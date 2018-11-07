@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
+use Closure;
 use Leevel\Di\IContainer;
 
 /**
@@ -144,21 +145,21 @@ interface IValidate
      * 设置验证规则.
      *
      * @param array         $rules
-     * @param null|callable $calCallback
+     * @param null|\Closure $calCallback
      *
      * @return $this
      */
-    public function rule(array $rules, callable $callbacks = null);
+    public function rule(array $rules, Closure $callbacks = null);
 
     /**
      * 添加验证规则.
      *
      * @param array         $rules
-     * @param null|callable $calCallback
+     * @param null|\Closure $calCallback
      *
      * @return $this
      */
-    public function addRule(array $rules, callable $callbacks = null);
+    public function addRule(array $rules, Closure $callbacks = null);
 
     /**
      * 返回验证消息.
@@ -232,22 +233,21 @@ interface IValidate
     /**
      * 设置验证后事件.
      *
-     * @param callable|string $callbacks
+     * @param \Closure $callbacks
      *
      * @return $this
      */
-    public function after($callbacks);
+    public function after(Closure $callbacks);
 
     /**
      * 注册自定义扩展.
      *
-     * @param string          $rule
-     * @param callable|string $extends
-     * @param mixed           $rule
+     * @param string   $rule
+     * @param \Closure $extends
      *
      * @return $this
      */
-    public function extend($rule, $extends);
+    public function extend($rule, Closure $extends);
 
     /**
      * 设置 ioc 容器.

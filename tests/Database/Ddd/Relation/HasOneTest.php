@@ -47,7 +47,9 @@ class HasOneTest extends TestCase
         $this->truncate('post');
         $this->truncate('post_content');
 
-        Meta::setDatabaseManager($this->createManager());
+        Meta::setDatabaseResolver(function () {
+            return $this->createManager();
+        });
     }
 
     protected function tearDown()
@@ -55,7 +57,7 @@ class HasOneTest extends TestCase
         $this->truncate('post');
         $this->truncate('post_content');
 
-        Meta::setDatabaseManager(null);
+        Meta::setDatabaseResolver(null);
     }
 
     public function testBaseUse()

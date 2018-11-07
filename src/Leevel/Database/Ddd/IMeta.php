@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Closure;
 use Leevel\Database\Manager as DatabaseManager;
 use Leevel\Database\Select as DatabaseSelect;
 
@@ -44,11 +45,18 @@ interface IMeta
     public static function instance(string $table);
 
     /**
-     * 设置数据库管理对象
+     * 返回数据库管理对象.
      *
-     * @param null|\Leevel\Database\Manager $databaseManager
+     * @return \Leevel\Database\Manager
      */
-    public static function setDatabaseManager(DatabaseManager $databaseManager = null);
+    public static function database(): DatabaseManager;
+
+    /**
+     * 设置数据库管理对象.
+     *
+     * @param null|\Closure $databaseResolver
+     */
+    public static function setDatabaseResolver(?Closure $databaseResolver = null);
 
     /**
      * 返回数据库元对象连接.

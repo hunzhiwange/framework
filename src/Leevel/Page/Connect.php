@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
+use Closure;
 use Leevel\Support\IHtml;
 use RuntimeException;
 
@@ -629,9 +630,9 @@ abstract class Connect implements IHtml
     /**
      * 设置 url 解析回调.
      *
-     * @param callable $urlResolver
+     * @param \Closure $urlResolver
      */
-    public static function setUrlResolver(?callable $urlResolver = null)
+    public static function setUrlResolver(Closure $urlResolver = null)
     {
         static::$urlResolver = $urlResolver;
     }

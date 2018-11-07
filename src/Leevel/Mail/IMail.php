@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Mail;
 
+use Closure;
+
 /**
  * IMail 接口.
  *
@@ -102,21 +104,21 @@ interface IMail
     /**
      * 消息回调处理.
      *
-     * @param callable $callbacks
+     * @param \Closure $callbacks
      *
      * @return $this
      */
-    public function message(callable $callbacks);
+    public function message(Closure $callbacks);
 
     /**
      * 添加附件.
      *
      * @param string        $file
-     * @param null|callable $callbacks
+     * @param null|\Closure $callbacks
      *
      * @return $this
      */
-    public function attach($file, $callbacks = null);
+    public function attach($file, Closure $callbacks = null);
 
     /**
      * 添加内存内容附件
@@ -124,11 +126,11 @@ interface IMail
      *
      * @param string        $data
      * @param string        $name
-     * @param null|callable $callbacks
+     * @param null|\Closure $callbacks
      *
      * @return $this
      */
-    public function attachData($data, $name, $callbacks = null);
+    public function attachData($data, $name, Closure $callbacks = null);
 
     /**
      * 图片嵌入邮件.
@@ -162,12 +164,12 @@ interface IMail
     /**
      * 发送邮件.
      *
-     * @param callable|string $callbacks
-     * @param bool            $htmlPriority
+     * @param \Closure $callbacks
+     * @param bool     $htmlPriority
      *
      * @return int
      */
-    public function send($callbacks = null, bool $htmlPriority = true);
+    public function send(Closure $callbacks = null, bool $htmlPriority = true);
 
     /**
      * 错误消息.

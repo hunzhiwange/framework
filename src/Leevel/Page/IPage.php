@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
+use Closure;
+
 /**
  * IPage 接口.
  *
@@ -343,9 +345,9 @@ interface IPage
     /**
      * 设置 url 解析回调.
      *
-     * @param callable $urlResolver
+     * @param \Closure $urlResolver
      */
-    public static function setUrlResolver(?callable $urlResolver = null);
+    public static function setUrlResolver(Closure $urlResolver = null);
 
     /**
      * 替换分页变量.

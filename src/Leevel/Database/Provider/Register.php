@@ -77,13 +77,13 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function isDeferred(): bool
-    {
-        return true;
-    }
+    // /**
+    //  * {@inheritdoc}
+    //  */
+    // public static function isDeferred(): bool
+    // {
+    //     return true;
+    // }
 
     /**
      * 注册 databases 服务
@@ -120,6 +120,8 @@ class Register extends Provider
      */
     protected function meta()
     {
-        Meta::setDatabaseManager($this->container['databases']);
+        Meta::setDatabaseResolver(function () {
+            return $this->container['databases'];
+        });
     }
 }
