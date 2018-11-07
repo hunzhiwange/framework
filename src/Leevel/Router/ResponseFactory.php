@@ -82,9 +82,9 @@ class ResponseFactory implements IResponseFactory
     /**
      * 返回一个响应.
      *
-     * @param string $content
-     * @param int    $status
-     * @param array  $headers
+     * @param mixed $content
+     * @param int   $status
+     * @param array $headers
      *
      * @return \Leevel\Http\Response
      */

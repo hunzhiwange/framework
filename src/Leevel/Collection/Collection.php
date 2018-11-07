@@ -379,6 +379,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
             return $elements->jsonSerialize();
         }
 
-        return (array) $elements;
+        return json_decode(json_encode($elements), true);
     }
 }
