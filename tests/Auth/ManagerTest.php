@@ -44,6 +44,8 @@ class ManagerTest extends TestCase
 {
     public function testBaseUse()
     {
+        var_dump(\Leevel\Bootstrap\Project::singletons());
+        dd(1);
         $manager = $this->createManager();
 
         $this->assertFalse($manager->isLogin());
