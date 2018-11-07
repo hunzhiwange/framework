@@ -24,7 +24,7 @@
         "robmorgan/phinx": "^0.9.2",
         "vlucas/phpdotenv": "~2.2",
         "nesbot/carbon": "~1.20",
-        "league/flysystem": "^1.0",
+        "league/flysystem": "^1.0.8",
         "monolog/monolog": "^1.23",
         "swiftmailer/swiftmailer": "6.0.2",
         "nunomaduro/collision": "~2.0",
