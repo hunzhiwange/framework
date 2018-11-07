@@ -354,7 +354,7 @@ eot;
 
         $sql = <<<'eot'
 [
-    "SELECT `guestbook`.* FROM (SELECT `guestbook`.* FROM `guestbook`) guestbook",
+    "SELECT `guest_book`.* FROM (SELECT `guest_book`.* FROM `guest_book`) guest_book",
     [],
     false,
     null,
@@ -367,7 +367,7 @@ eot;
             $sql,
             $this->varJson(
                 $connect->table(function ($select) {
-                    $select->table('guestbook');
+                    $select->table('guest_book');
                 })->
 
                 findAll(true)

@@ -46,7 +46,7 @@ class User extends AbstractMigration
     public function change()
     {
         $table = $this->table('user');
-        $table->addColumn('name', 'string', ['limit'=>64]);
+        $table->addColumn('name', 'string', ['limit' => 64]);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
         $table->save();
     }

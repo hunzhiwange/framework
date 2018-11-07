@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -44,9 +46,9 @@ class CompositeId extends AbstractMigration
     public function change()
     {
         $table = $this->table('composite_id', ['id' => false, 'primary_key' => ['id1', 'id2']]);
-        $table->addColumn('id1', 'integer', ['limit'=>11]);
-        $table->addColumn('id2', 'integer', ['limit'=>11]);
-        $table->addColumn('name', 'string', ['limit'=>32]);
+        $table->addColumn('id1', 'integer', ['limit' => 11]);
+        $table->addColumn('id2', 'integer', ['limit' => 11]);
+        $table->addColumn('name', 'string', ['limit' => 32]);
         $table->save();
     }
 }

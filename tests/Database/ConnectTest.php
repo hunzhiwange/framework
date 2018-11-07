@@ -42,7 +42,7 @@ class ConnectTest extends TestCase
 
     protected function setUp()
     {
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     protected function tearDown()
@@ -56,7 +56,7 @@ class ConnectTest extends TestCase
 
         $sql = <<<'eot'
 [
-    "INSERT INTO `guestbook` (`guestbook`.`name`,`guestbook`.`content`) VALUES (:name,:content)",
+    "INSERT INTO `guest_book` (`guest_book`.`name`,`guest_book`.`content`) VALUES (:name,:content)",
     {
         "name": [
             "小鸭子",
@@ -77,7 +77,7 @@ eot;
             $this->varJson(
                 $connect->sql()->
 
-                table('guestbook')->
+                table('guest_book')->
 
                 insert($data)
             )
@@ -85,19 +85,19 @@ eot;
 
         // 写入数据
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $this->assertSame(1, $connect->table('guestbook')->findCount());
+        $this->assertSame(1, $connect->table('guest_book')->findCount());
 
-        $insertData = $connect->table('guestbook')->where('id', 1)->findOne();
+        $insertData = $connect->table('guest_book')->where('id', 1)->findOne();
 
         $this->assertSame('1', $insertData->id);
         $this->assertSame('小鸭子', $insertData->name);
         $this->assertSame('吃饭饭', $insertData->content);
         $this->assertContains(date('Y-m-d'), $insertData->create_at);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testQuery()
@@ -107,10 +107,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $insertData = $connect->query('select * from guestbook where id=?', [1]);
+        $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
 
         $this->assertSame('1', $insertData['id']);
@@ -118,15 +118,15 @@ eot;
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testExecute()
     {
         $connect = $this->createConnectTest();
 
-        $this->assertSame('1', $connect->execute('insert into guestbook (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
-        $insertData = $connect->query('select * from guestbook where id=?', [1]);
+        $this->assertSame('1', $connect->execute('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
+        $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
 
         $this->assertSame('1', $insertData['id']);
@@ -134,7 +134,7 @@ eot;
         $this->assertSame('喜欢游泳', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testQueryOnlyAllowedSelect()
@@ -146,7 +146,7 @@ eot;
 
         $connect = $this->createConnectTest();
 
-        $connect->query('insert into guestbook (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']);
+        $connect->query('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']);
     }
 
     public function testExecuteNotAllowedSelect()
@@ -158,7 +158,7 @@ eot;
 
         $connect = $this->createConnectTest();
 
-        $connect->execute('select * from guestbook where id=?', [1]);
+        $connect->execute('select * from guest_book where id=?', [1]);
     }
 
     public function testSelect()
@@ -168,10 +168,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $insertData = $connect->select('select * from guestbook where id = ?', [1]);
+        $insertData = $connect->select('select * from guest_book where id = ?', [1]);
         $insertData = (array) $insertData[0];
 
         $this->assertSame('1', $insertData['id']);
@@ -179,7 +179,7 @@ eot;
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testSelectWithBind()
@@ -189,10 +189,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $insertData = $connect->select('select * from guestbook where id = :id', ['id' => 1]);
+        $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
         $this->assertSame('1', $insertData['id']);
@@ -200,16 +200,16 @@ eot;
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testInsert()
     {
         $connect = $this->createConnectTest();
 
-        $this->assertSame('1', $connect->insert('insert into guestbook (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
-        $insertData = $connect->select('select * from guestbook where id = :id', ['id' => 1]);
+        $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
         $this->assertSame('1', $insertData['id']);
@@ -217,16 +217,16 @@ eot;
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testUpdate()
     {
         $connect = $this->createConnectTest();
 
-        $this->assertSame('1', $connect->insert('insert into guestbook (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
-        $insertData = $connect->select('select * from guestbook where id = :id', ['id' => 1]);
+        $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
         $this->assertSame('1', $insertData['id']);
@@ -234,9 +234,9 @@ eot;
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
 
-        $this->assertSame(1, $connect->update('update guestbook set name = "小牛" where id = ?', [1]));
+        $this->assertSame(1, $connect->update('update guest_book set name = "小牛" where id = ?', [1]));
 
-        $insertData = $connect->select('select * from guestbook where id = :id', ['id' => 1]);
+        $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
         $this->assertSame('1', $insertData['id']);
@@ -244,16 +244,16 @@ eot;
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testDelete()
     {
         $connect = $this->createConnectTest();
 
-        $this->assertSame('1', $connect->insert('insert into guestbook (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
-        $insertData = $connect->select('select * from guestbook where id = :id', ['id' => 1]);
+        $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
         $this->assertSame('1', $insertData['id']);
@@ -261,11 +261,11 @@ eot;
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
 
-        $this->assertSame(1, $connect->delete('delete from guestbook where id = ?', [1]));
+        $this->assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
 
-        $this->assertSame(0, $connect->table('guestbook')->findCount());
+        $this->assertSame(0, $connect->table('guest_book')->findCount());
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testTransaction()
@@ -277,26 +277,26 @@ eot;
         for ($n = 0; $n <= 1; $n++) {
             $connect->
 
-            table('guestbook')->
+            table('guest_book')->
 
             insert($data);
         }
 
-        $this->assertSame(2, $connect->table('guestbook')->findCount());
+        $this->assertSame(2, $connect->table('guest_book')->findCount());
 
         $connect->transaction(function ($connect) {
-            $connect->table('guestbook')->where('id', 1)->delete();
+            $connect->table('guest_book')->where('id', 1)->delete();
 
-            $this->assertSame(1, $connect->table('guestbook')->findCount());
+            $this->assertSame(1, $connect->table('guest_book')->findCount());
 
-            $connect->table('guestbook')->where('id', 2)->delete();
+            $connect->table('guest_book')->where('id', 2)->delete();
 
-            $this->assertSame(0, $connect->table('guestbook')->findCount());
+            $this->assertSame(0, $connect->table('guest_book')->findCount());
         });
 
-        $this->assertSame(0, $connect->table('guestbook')->findCount());
+        $this->assertSame(0, $connect->table('guest_book')->findCount());
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testTransactionRollback()
@@ -308,25 +308,25 @@ eot;
         for ($n = 0; $n <= 1; $n++) {
             $connect->
 
-            table('guestbook')->
+            table('guest_book')->
 
             insert($data);
         }
 
-        $this->assertSame(2, $connect->table('guestbook')->findCount());
+        $this->assertSame(2, $connect->table('guest_book')->findCount());
 
         $this->assertFalse($connect->inTransaction());
 
         try {
             $connect->transaction(function ($connect) {
-                $connect->table('guestbook')->where('id', 1)->delete();
+                $connect->table('guest_book')->where('id', 1)->delete();
 
-                $this->assertSame(1, $connect->table('guestbook')->findCount());
+                $this->assertSame(1, $connect->table('guest_book')->findCount());
 
                 $this->assertTrue($connect->inTransaction());
 
                 throw new Exception('Will rollback');
-                $connect->table('guestbook')->where('id', 2)->delete();
+                $connect->table('guest_book')->where('id', 2)->delete();
             });
         } catch (Throwable $e) {
             $this->assertSame('Will rollback', $e->getMessage());
@@ -334,9 +334,9 @@ eot;
 
         $this->assertFalse($connect->inTransaction());
 
-        $this->assertSame(2, $connect->table('guestbook')->findCount());
+        $this->assertSame(2, $connect->table('guest_book')->findCount());
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testTransactionByCustom()
@@ -348,28 +348,28 @@ eot;
         for ($n = 0; $n <= 1; $n++) {
             $connect->
 
-            table('guestbook')->
+            table('guest_book')->
 
             insert($data);
         }
 
-        $this->assertSame(2, $connect->table('guestbook')->findCount());
+        $this->assertSame(2, $connect->table('guest_book')->findCount());
 
         $connect->beginTransaction();
 
-        $connect->table('guestbook')->where('id', 1)->delete();
+        $connect->table('guest_book')->where('id', 1)->delete();
 
-        $this->assertSame(1, $connect->table('guestbook')->findCount());
+        $this->assertSame(1, $connect->table('guest_book')->findCount());
 
-        $connect->table('guestbook')->where('id', 2)->delete();
+        $connect->table('guest_book')->where('id', 2)->delete();
 
-        $this->assertSame(0, $connect->table('guestbook')->findCount());
+        $this->assertSame(0, $connect->table('guest_book')->findCount());
 
         $connect->commit();
 
-        $this->assertSame(0, $connect->table('guestbook')->findCount());
+        $this->assertSame(0, $connect->table('guest_book')->findCount());
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testTransactionRollbackByCustom()
@@ -381,26 +381,26 @@ eot;
         for ($n = 0; $n <= 1; $n++) {
             $connect->
 
-            table('guestbook')->
+            table('guest_book')->
 
             insert($data);
         }
 
-        $this->assertSame(2, $connect->table('guestbook')->findCount());
+        $this->assertSame(2, $connect->table('guest_book')->findCount());
 
         $this->assertFalse($connect->inTransaction());
 
         try {
             $connect->beginTransaction();
 
-            $connect->table('guestbook')->where('id', 1)->delete();
+            $connect->table('guest_book')->where('id', 1)->delete();
 
-            $this->assertSame(1, $connect->table('guestbook')->findCount());
+            $this->assertSame(1, $connect->table('guest_book')->findCount());
 
             $this->assertTrue($connect->inTransaction());
 
             throw new Exception('Will rollback');
-            $connect->table('guestbook')->where('id', 2)->delete();
+            $connect->table('guest_book')->where('id', 2)->delete();
 
             $connect->commit();
         } catch (Throwable $e) {
@@ -411,9 +411,9 @@ eot;
 
         $this->assertFalse($connect->inTransaction());
 
-        $this->assertSame(2, $connect->table('guestbook')->findCount());
+        $this->assertSame(2, $connect->table('guest_book')->findCount());
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testCallProcedure()
@@ -424,8 +424,8 @@ eot;
 DROP PROCEDURE IF EXISTS `test_procedure`;
 CREATE PROCEDURE `test_procedure`(IN min INT)
     BEGIN
-    SELECT `name` FROM `guestbook` WHERE id > min;
-    SELECT `content` FROM `guestbook` WHERE id > min+1;
+    SELECT `name` FROM `guest_book` WHERE id > min;
+    SELECT `content` FROM `guest_book` WHERE id > min+1;
     END;
 eot;
 
@@ -436,7 +436,7 @@ eot;
         for ($n = 0; $n <= 1; $n++) {
             $connect->
 
-            table('guestbook')->
+            table('guest_book')->
 
             insert($data);
         }
@@ -469,7 +469,7 @@ eot;
         );
 
         $connect->execute('DROP PROCEDURE IF EXISTS `test_procedure`');
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testPdo()
@@ -506,7 +506,7 @@ eot;
 
         $connect->
 
-        table('guestbook')->
+        table('guest_book')->
 
         insert(['name' => 'tom']); // `tom` will not rollBack
 
@@ -515,7 +515,7 @@ eot;
 
         $connect->
 
-        table('guestbook')->
+        table('guest_book')->
 
         insert(['name' => 'jerry']);
 
@@ -523,12 +523,12 @@ eot;
         $this->assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->lastSql()[0]);
         $connect->commit();
 
-        $book = $connect->table('guestbook')->where('id', 1)->findOne();
+        $book = $connect->table('guest_book')->where('id', 1)->findOne();
 
-        $this->assertSame(1, $connect->table('guestbook')->findCount());
+        $this->assertSame(1, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testCommitWithoutActiveTransaction()
@@ -568,7 +568,7 @@ eot;
 
         $connect->
 
-        table('guestbook')->
+        table('guest_book')->
 
         insert(['name' => 'tom']);
 
@@ -577,7 +577,7 @@ eot;
 
         $connect->
 
-        table('guestbook')->
+        table('guest_book')->
 
         insert(['name' => 'jerry']);
 
@@ -585,14 +585,14 @@ eot;
         $this->assertSame('RELEASE SAVEPOINT trans2', $connect->lastSql()[0]);
         $connect->commit();
 
-        $book = $connect->table('guestbook')->where('id', 1)->findOne();
-        $book2 = $connect->table('guestbook')->where('id', 2)->findOne();
+        $book = $connect->table('guest_book')->where('id', 1)->findOne();
+        $book2 = $connect->table('guest_book')->where('id', 2)->findOne();
 
-        $this->assertSame(2, $connect->table('guestbook')->findCount());
+        $this->assertSame(2, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
         $this->assertSame('jerry', $book2->name);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testRollBackWithoutActiveTransaction()
@@ -615,7 +615,7 @@ eot;
 
         $connect->
 
-        table('guestbook')->
+        table('guest_book')->
 
         insert(['name' => 'jerry']);
 
@@ -623,7 +623,7 @@ eot;
 
         $connect->
 
-        table('guestbook')->
+        table('guest_book')->
 
         where('id', 1)->
 
@@ -633,7 +633,7 @@ eot;
 
         $connect->
 
-        table('guestbook')->
+        table('guest_book')->
 
         where('id', 1)->
 
@@ -641,7 +641,7 @@ eot;
 
         $this->assertSame(1, $connect->numRows());
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testNormalizeColumnValueWithBool()

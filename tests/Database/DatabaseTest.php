@@ -39,7 +39,7 @@ class DatabaseTest extends TestCase
 
     protected function setUp()
     {
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     protected function tearDown()
@@ -56,10 +56,10 @@ class DatabaseTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $database->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $database->table('guestbook', 'name,content')->
+        $result = $database->table('guest_book', 'name,content')->
 
         where('id', 1)->
 
@@ -68,6 +68,6 @@ class DatabaseTest extends TestCase
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 }

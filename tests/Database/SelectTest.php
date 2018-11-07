@@ -43,7 +43,7 @@ class SelectTest extends TestCase
 
     protected function setUp()
     {
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     protected function tearDown()
@@ -112,10 +112,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         fetchArgs(PDO::FETCH_BOTH)->
 
@@ -134,7 +134,7 @@ eot;
         $this->assertSame('I love movie.', $result[2]);
         $this->assertContains(date('Y-m-d'), $result[3]);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testFetchArgsColumn()
@@ -144,12 +144,12 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         fetchArgs(PDO::FETCH_COLUMN, 0)->
 
@@ -175,7 +175,7 @@ eot;
             )
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testFetchArgsClass()
@@ -185,10 +185,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         fetchArgs(PDO::FETCH_CLASS, FetchArgsClassDemo::class)->
 
@@ -217,7 +217,7 @@ eot;
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testFetchArgsClassWithArgs()
@@ -227,10 +227,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         fetchArgs(PDO::FETCH_CLASS, FetchArgsClassDemo2::class, ['foo', 'bar'])->
 
@@ -263,7 +263,7 @@ eot;
         $this->assertSame('foo', $result->arg1);
         $this->assertSame('bar', $result->arg2);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testFetchArgsColumnGroup()
@@ -273,7 +273,7 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
@@ -281,12 +281,12 @@ eot;
         $data = ['name' => 'hello', 'content' => 'Test.'];
 
         for ($n = 0; $n <= 4; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         fetchArgs(PDO::FETCH_COLUMN | PDO::FETCH_GROUP, 0)->
 
@@ -321,7 +321,7 @@ eot;
             )
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testAsClass()
@@ -331,10 +331,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         asClass(AsClassDemo::class)->
 
@@ -363,7 +363,7 @@ eot;
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testAsClassButClassNotFound()
@@ -375,7 +375,7 @@ eot;
 
         $connect = $this->createConnectTest();
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         asClass('\\Tests\\Database\\ClassNotFound')->
 
@@ -393,10 +393,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         asCollection()->
 
@@ -425,7 +425,7 @@ eot;
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testAsCollectionAsDefaultAndNotFound()
@@ -435,10 +435,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         asCollection()->
 
@@ -466,7 +466,7 @@ eot;
         $this->assertNull($result->name);
         $this->assertNull($result->content);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testAsCollectionAsDefaultFindAll()
@@ -476,12 +476,12 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         asCollection()->
 
@@ -539,7 +539,7 @@ eot;
             $n++;
         }
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testAsCollectionAsClassFindAll()
@@ -549,12 +549,12 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         asCollection()->
 
@@ -614,7 +614,7 @@ eot;
             $n++;
         }
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testValue()
@@ -624,16 +624,16 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $name = $connect->table('guestbook')->
+        $name = $connect->table('guest_book')->
 
         where('id', 1)->
 
         value('name');
 
-        $content = $connect->table('guestbook')->
+        $content = $connect->table('guest_book')->
 
         where('id', 1)->
 
@@ -642,7 +642,7 @@ eot;
         $this->assertSame('tom', $name);
         $this->assertSame('I love movie.', $content);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testList()
@@ -652,10 +652,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         where('id', 1)->
 
@@ -674,7 +674,7 @@ eot;
             )
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testList2()
@@ -684,10 +684,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         where('id', 1)->
 
@@ -706,7 +706,7 @@ eot;
             )
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testList3()
@@ -716,10 +716,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         where('id', 1)->
 
@@ -738,7 +738,7 @@ eot;
             )
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testList4()
@@ -748,10 +748,10 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         where('id', 1)->
 
@@ -770,7 +770,7 @@ eot;
             )
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testChunk()
@@ -780,14 +780,14 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
         $n = 1;
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         chunk(2, function ($result, $page) use (&$n) {
             $this->assertInstanceof(stdClass::class, $result[0]);
@@ -808,7 +808,7 @@ eot;
             $n++;
         });
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testChunkWhenReturnFalseAndBreak()
@@ -818,14 +818,14 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
         $n = 1;
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         chunk(2, function ($result, $page) use (&$n) {
             $this->assertInstanceof(stdClass::class, $result[0]);
@@ -851,7 +851,7 @@ eot;
             $n++;
         });
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testEach()
@@ -861,14 +861,14 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
         $n = $p = 1;
 
-        $result = $connect->table('guestbook')->
+        $result = $connect->table('guest_book')->
 
         each(2, function ($value, $key, $page) use (&$n, &$p) {
             $this->assertInstanceof(stdClass::class, $value);
@@ -886,7 +886,7 @@ eot;
             $n++;
         });
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testPageCount()
@@ -896,21 +896,21 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
-        $this->assertSame(6, $connect->table('guestbook')->
+        $this->assertSame(6, $connect->table('guest_book')->
         pageCount());
 
-        $this->assertSame(6, $connect->table('guestbook')->
+        $this->assertSame(6, $connect->table('guest_book')->
         pageCount('*'));
 
-        $this->assertSame(6, $connect->table('guestbook')->
+        $this->assertSame(6, $connect->table('guest_book')->
         pageCount('id'));
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testPage()
@@ -920,12 +920,12 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 25; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
-        list($page, $result) = $connect->table('guestbook')->
+        list($page, $result) = $connect->table('guest_book')->
 
         page();
 
@@ -1003,7 +1003,7 @@ eot;
             $page->toJson()
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testPageMacro()
@@ -1013,12 +1013,12 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 25; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
-        list($page, $result) = $connect->table('guestbook')->
+        list($page, $result) = $connect->table('guest_book')->
 
         pageMacro();
 
@@ -1096,7 +1096,7 @@ eot;
             $page->toJson()
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testPagePrevNext()
@@ -1106,12 +1106,12 @@ eot;
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 25; $n++) {
-            $connect->table('guestbook')->
+            $connect->table('guest_book')->
 
             insert($data);
         }
 
-        list($page, $result) = $connect->table('guestbook')->
+        list($page, $result) = $connect->table('guest_book')->
 
         pagePrevNext(15);
 
@@ -1189,7 +1189,7 @@ eot;
             $page->toJson()
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testRunNativeSqlWithProcedureAsSelect()

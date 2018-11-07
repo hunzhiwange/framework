@@ -35,7 +35,7 @@ class Guestbook extends Entity
 {
     const REPOSITORY = GuestbookRepository::class;
 
-    const TABLE = 'guestbook';
+    const TABLE = 'guest_book';
 
     const ID = 'id';
 

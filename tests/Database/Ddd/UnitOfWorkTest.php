@@ -1124,20 +1124,20 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $post = new Post(['title' => 'new']);
-        $guestbook = new Guestbook([]);
+        $guest_book = new Guestbook([]);
 
         $work->persist($post);
-        $work->persist($guestbook);
+        $work->persist($guest_book);
 
-        $work->on($post, function ($p) use ($guestbook) {
-            $guestbook->content = 'guestbook content was post id is '.$p->id;
+        $work->on($post, function ($p) use ($guest_book) {
+            $guest_book->content = 'guest_book content was post id is '.$p->id;
         });
 
         $work->flush($post);
 
         $newGuestbook = Guestbook::find(1);
 
-        $this->assertSame('guestbook content was post id is 1', $newGuestbook->content);
+        $this->assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
         $work->clear();
     }
@@ -1147,20 +1147,20 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $post = new Post(['title' => 'new']);
-        $guestbook = new Guestbook([]);
+        $guest_book = new Guestbook([]);
 
         $work->replace($post);
-        $work->replace($guestbook);
+        $work->replace($guest_book);
 
-        $work->on($post, function ($p) use ($guestbook) {
-            $guestbook->content = 'guestbook content was post id is '.$p->id;
+        $work->on($post, function ($p) use ($guest_book) {
+            $guest_book->content = 'guest_book content was post id is '.$p->id;
         });
 
         $work->flush($post);
 
         $newGuestbook = Guestbook::find(1);
 
-        $this->assertSame('guestbook content was post id is 1', $newGuestbook->content);
+        $this->assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
         $work->clear();
     }
@@ -1180,26 +1180,26 @@ class UnitOfWorkTest extends TestCase
         ]));
 
         $this->assertSame('1', $connect->
-        table('guestbook')->
+        table('guest_book')->
         insert([
             'content'   => 'hello world',
         ]));
 
         $post = new Post(['id' => 1, 'title' => 'new'], true);
-        $guestbook = new Guestbook(['id' => 1], true);
+        $guest_book = new Guestbook(['id' => 1], true);
 
         $work->update($post);
-        $work->update($guestbook);
+        $work->update($guest_book);
 
-        $work->on($post, function ($p) use ($guestbook) {
-            $guestbook->content = 'guestbook content was post id is '.$p->id;
+        $work->on($post, function ($p) use ($guest_book) {
+            $guest_book->content = 'guest_book content was post id is '.$p->id;
         });
 
         $work->flush($post);
 
         $newGuestbook = Guestbook::find(1);
 
-        $this->assertSame('guestbook content was post id is 1', $newGuestbook->content);
+        $this->assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
         $work->clear();
     }
@@ -1435,6 +1435,6 @@ class UnitOfWorkTest extends TestCase
     protected function clear()
     {
         $this->truncate('post');
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 }

@@ -43,7 +43,7 @@ class RegisterTest extends TestCase
 
     protected function setUp()
     {
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     protected function tearDown()
@@ -66,10 +66,10 @@ class RegisterTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $manager->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $manager->table('guestbook', 'name,content')->
+        $result = $manager->table('guest_book', 'name,content')->
 
         where('id', 1)->
 
@@ -78,7 +78,7 @@ class RegisterTest extends TestCase
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testUseAlias()
@@ -96,10 +96,10 @@ class RegisterTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame('1', $manager->
-        table('guestbook')->
+        table('guest_book')->
         insert($data));
 
-        $result = $manager->table('guestbook', 'name,content')->
+        $result = $manager->table('guest_book', 'name,content')->
 
         where('id', 1)->
 
@@ -108,7 +108,7 @@ class RegisterTest extends TestCase
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     protected function createContainer(): Container

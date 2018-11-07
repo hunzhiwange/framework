@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class Guestbook extends AbstractMigration
+class GuestBook extends AbstractMigration
 {
     /**
      * Change Method.
@@ -45,9 +45,9 @@ class Guestbook extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('guestbook');
-        $table->addColumn('name', 'string', ['limit'=>64]);
-        $table->addColumn('content', 'text', ['default'=> '', 'comment'=>'评论内容']);
+        $table = $this->table('guest_book');
+        $table->addColumn('name', 'string', ['limit' => 64]);
+        $table->addColumn('content', 'text', ['default' => '', 'comment' => '评论内容']);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
         $table->save();
     }

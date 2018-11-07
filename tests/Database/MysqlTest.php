@@ -39,7 +39,7 @@ class MysqlTest extends TestCase
 
     protected function setUp()
     {
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     protected function tearDown()
@@ -53,14 +53,14 @@ class MysqlTest extends TestCase
 
         $result = $connect->tableNames('test');
 
-        $this->assertTrue(in_array('guestbook', $result, true));
+        $this->assertTrue(in_array('guest_book', $result, true));
     }
 
     public function testGetTableColumns()
     {
         $connect = $this->createConnectTest();
 
-        $result = $connect->tableColumns('guestbook');
+        $result = $connect->tableColumns('guest_book');
 
         $sql = <<<'eot'
 {
@@ -112,7 +112,7 @@ eot;
             )
         );
 
-        $this->truncate('guestbook');
+        $this->truncate('guest_book');
     }
 
     public function testLimitCount()
