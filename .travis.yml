@@ -37,6 +37,7 @@ before_install:
 install:
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
+  - if [[ $setup = 'lowest' ]]; then travis_retry composer update doctrine/annotations ~1.6.0; fi
   # Some debug info is located here
   - ls -al `$(phpenv which php-config) --extension-dir`
   - $(phpenv which php) -v
