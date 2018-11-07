@@ -440,7 +440,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @param string $template
      *
-     * @return \Leevel\Http\ApiResponse
+     * @return $this
      */
     public function setViewSuccessTemplate(string $template)
     {
@@ -454,7 +454,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @param string $template
      *
-     * @return \Leevel\Http\ApiResponse
+     * @return $this
      */
     public function setViewFailTemplate(string $template)
     {
