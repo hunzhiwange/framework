@@ -8,3 +8,4 @@ package-lock.json
 *.log
 /tests/config.local.php
 /split.sh
+/tests.sh
