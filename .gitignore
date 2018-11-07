@@ -9,3 +9,4 @@ package-lock.json
 /tests/config.local.php
 /split.sh
 /tests.sh
+/release.sh
