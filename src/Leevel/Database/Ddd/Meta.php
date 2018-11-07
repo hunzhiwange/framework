@@ -41,7 +41,7 @@ class Meta implements IMeta
      *
      * @var \Leevel\Database\Manager
      */
-    protected static $database;
+    protected static $resolveDatabase;
 
     /**
      * Database 管理.
@@ -103,17 +103,17 @@ class Meta implements IMeta
      *
      * @return \Leevel\Database\Manager
      */
-    public static function database(): DatabaseManager
+    public static function resolveDatabase(): DatabaseManager
     {
-        if (static::$database) {
-            return static::$database;
+        if (static::$resolveDatabase) {
+            return static::$resolveDatabase;
         }
 
         if (!static::$databaseResolver) {
             throw new InvalidArgumentException('Database resolver was not set.');
         }
 
-        return static::$database = call_user_func(static::$databaseResolver);
+        return static::$resolveDatabase = call_user_func(static::$databaseResolver);
     }
 
     /**
@@ -126,7 +126,7 @@ class Meta implements IMeta
         static::$databaseResolver = $databaseResolver;
 
         if (null === $databaseResolver) {
-            static::$database = null;
+            static::$resolveDatabase = null;
         }
     }
 
@@ -139,7 +139,7 @@ class Meta implements IMeta
      */
     public function setConnect($connect = null)
     {
-        $this->connect = self::database()->connect($connect);
+        $this->connect = self::resolveDatabase()->connect($connect);
 
         return $this;
     }

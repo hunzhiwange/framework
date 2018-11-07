@@ -49,7 +49,7 @@ interface IMeta
      *
      * @return \Leevel\Database\Manager
      */
-    public static function database(): DatabaseManager;
+    public static function resolveDatabase(): DatabaseManager;
 
     /**
      * 设置数据库管理对象.

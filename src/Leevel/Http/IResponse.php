@@ -22,6 +22,7 @@ namespace Leevel\Http;
 
 use Closure;
 use DateTime;
+use Leevel\Cookie\ICookie;
 
 /**
  * HTTP 响应接口.
@@ -487,6 +488,13 @@ interface IResponse
      * @param \Closure $cookieResolver
      */
     public static function setCookieResolver(Closure $cookieResolver = null);
+
+    /**
+     * 返回 COOKIE.
+     *
+     * @return \Leevel\Cookie\ICookie
+     */
+    public static function resolveCookie(): ICookie;
 
     /**
      * 发送 HTTP 响应.

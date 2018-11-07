@@ -26,6 +26,7 @@ use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 use JsonSerializable;
+use Leevel\Cookie\ICookie;
 use Leevel\Flow\TControl;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -185,6 +186,13 @@ class Response implements IResponse
     protected static $cookieResolver;
 
     /**
+     * COOKIE.
+     *
+     * @var \Leevel\Cookie\ICookie
+     */
+    protected static $resolvedCookie;
+
+    /**
      * 构造函数.
      *
      * @param string $content
@@ -224,6 +232,24 @@ class Response implements IResponse
     }
 
     /**
+     * 返回 COOKIE.
+     *
+     * @return \Leevel\Cookie\ICookie
+     */
+    public static function resolveCookie(): ICookie
+    {
+        if (static::$resolvedCookie) {
+            return static::$resolvedCookie;
+        }
+
+        if (!static::$cookieResolver) {
+            throw new InvalidArgumentException('Cookie resolver is not set.');
+        }
+
+        return static::$resolvedCookie = call_user_func(static::$cookieResolver);
+    }
+
+    /**
      * 发送 HTTP 响应.
      *
      * @return $this
@@ -256,11 +282,8 @@ class Response implements IResponse
         // 状态码
         header(sprintf('HTTP/%s %s %s', $this->protocolVersion, $this->statusCode, $this->statusText), true, $this->statusCode);
 
-        // cookie
-        $cookie = call_user_func(static::$cookieResolver);
-
-        if ($cookie) {
-            foreach ($cookie->all() as $item) {
+        if (static::$cookieResolver) {
+            foreach (self::resolveCookie()->all() as $item) {
                 call_user_func_array('setcookie', $item);
             }
         }
@@ -406,12 +429,7 @@ class Response implements IResponse
             return $this;
         }
 
-        if (!static::$cookieResolver) {
-            throw new InvalidArgumentException('Cookie resolver is not set.');
-        }
-
-        $cookie = call_user_func(static::$cookieResolver);
-        $cookie->set($name, $value, $option);
+        self::resolveCookie()->set($name, $value, $option);
 
         return $this;
     }
@@ -444,9 +462,7 @@ class Response implements IResponse
      */
     public function getCookies()
     {
-        $cookie = call_user_func(static::$cookieResolver);
-
-        return $cookie->all();
+        return self::resolveCookie()->all();
     }
 
     /**
