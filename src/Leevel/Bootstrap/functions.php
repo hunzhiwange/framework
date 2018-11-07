@@ -353,11 +353,6 @@ class Leevel
      */
     protected static function singletons(): IContainer
     {
-        dump(new Project());
-        dump(Project::singletons());
-        //dump(Project::singletons());
-       // return Project::singletons();
-        die;
         return Project::singletons();
     }
 }
