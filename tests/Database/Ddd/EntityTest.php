@@ -78,6 +78,20 @@ class EntityTest extends TestCase
         $entity = new Post(['title' => 'foo']);
         $entity->create()->flush();
     }
+
+    public function testProps()
+    {
+        $entity = new Post();
+
+        $entity->props([
+            'title'   => 'foo',
+            'summary' => 'bar',
+        ]);
+
+        $this->assertSame('foo', $entity->title);
+        $this->assertSame('bar', $entity->summary);
+        $this->assertSame(['title', 'summary'], $entity->changed());
+    }
 }
 
 class TestPropErrorEntity extends Entity

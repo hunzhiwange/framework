@@ -348,6 +348,22 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
+     * 批量修改属性.
+     *
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function props(array $data): IEntity
+    {
+        foreach ($data as $prop => $value) {
+            $this->offsetSet($prop, $value);
+        }
+
+        return $this;
+    }
+
+    /**
      * 自动判断快捷方式.
      *
      * @param array      $data
@@ -1737,11 +1753,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             );
         } else {
             $prop = $this->normalizeWhiteAndBlack(
-                array_flip($this->leevelChangedProp), 'show_prop'
+                $this->fields(), 'show_prop'
             );
         }
 
         foreach ($prop as $k => &$value) {
+            if ($this->isRelation($k)) {
+                unset($prop[$k]);
+            }
+
             $value = $this->propValue($k);
         }
 

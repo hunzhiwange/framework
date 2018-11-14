@@ -211,6 +211,15 @@ interface IEntity
     public static function make(array $data, bool $fromStorage);
 
     /**
+     * 批量修改属性.
+     *
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function props(array $data): self;
+
+    /**
      * 自动判断快捷方式.
      *
      * @param array      $data
