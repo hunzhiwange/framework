@@ -115,7 +115,14 @@ class MiddlewareParser
                 list($realClass) = explode(':', $item);
             }
 
-            if (!class_exists($realClass) || !method_exists($realClass, $method)) {
+            // ignore group like `web` or `api`
+            if (false !== strpos($realClass, '\\') && !class_exists($realClass)) {
+                throw new InvalidArgumentException(
+                    sprintf('Middleware %s was not found.', $realClass)
+                );
+            }
+
+            if (!method_exists($realClass, $method)) {
                 return false;
             }
 

@@ -101,13 +101,13 @@ class PathInfo implements IMatch
             $result[IRouter::APP] = substr(array_shift($paths), 1);
         }
 
+        list($paths, $params) = $this->normalizePathsAndParams($paths);
+
         if (!$paths) {
             $result[IRouter::CONTROLLER] = IRouter::DEFAULT_CONTROLLER;
 
             return $result;
         }
-
-        list($paths, $params) = $this->normalizePathsAndParams($paths);
 
         if (1 === count($paths)) {
             $result[IRouter::CONTROLLER] = array_pop($paths);
