@@ -128,6 +128,18 @@ eot;
         $middlewareParser->handle([[]]);
     }
 
+    public function testMiddlewareNotFound()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Middleware Tests\\Router\\Middlewares\\NotFound was not found.'
+        );
+
+        $middlewareParser = $this->createMiddlewareParserNotFound();
+
+        $middlewareParser->handle(['notFound']);
+    }
+
     protected function createMiddlewareParser(): MiddlewareParser
     {
         return new MiddlewareParser($this->createRouter());
@@ -159,6 +171,22 @@ eot;
             'demo1' => 'Tests\\Router\\Middlewares\\Demo1',
             'demo2' => 'Tests\\Router\\Middlewares\\Demo2',
             'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
+        ]);
+
+        return $router;
+    }
+
+    protected function createMiddlewareParserNotFound(): MiddlewareParser
+    {
+        return new MiddlewareParser($this->createRouterNotFound());
+    }
+
+    protected function createRouterNotFound(): Router
+    {
+        $router = new Router(new Container());
+
+        $router->setMiddlewareAlias([
+            'notFound' => 'Tests\\Router\\Middlewares\\NotFound',
         ]);
 
         return $router;
