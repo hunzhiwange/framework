@@ -545,6 +545,13 @@ class Router implements IRouter
         }
 
         switch ($this->request->getMethod()) {
+            // 跨域请求转发到首页
+            // 防止由于 API 请求跨域提示路由不正确
+            case 'OPTIONS':
+                $this->matchedData[static::CONTROLLER] = static::DEFAULT_CONTROLLER;
+                $this->matchedData[static::ACTION] = static::RESTFUL_INDEX;
+
+                break;
             case 'POST':
                 $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
 
@@ -559,7 +566,13 @@ class Router implements IRouter
                 break;
             case 'GET':
             default:
-                $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
+                $params = $this->matchedParams();
+
+                if (isset($params['_param0'])) {
+                    $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
+                } else {
+                    $this->matchedData[static::ACTION] = static::RESTFUL_INDEX;
+                }
 
                 break;
         }

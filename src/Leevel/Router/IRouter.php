@@ -119,6 +119,13 @@ interface IRouter
     const RESTFUL_DESTROY = 'destroy';
 
     /**
+     * restful index.
+     *
+     * @var string
+     */
+    const RESTFUL_INDEX = 'index';
+
+    /**
      * 默认应用.
      *
      * @var string

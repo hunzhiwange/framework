@@ -280,7 +280,7 @@ eot;
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\NotFirstLetter::show() was not found.'
+            'The router App\\Router\\Controllers\\NotFirstLetter::index() was not found.'
         );
 
         $pathInfo = '/notFirstLetter';
@@ -312,7 +312,7 @@ eot;
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\PFirstLetterNotGroupNotMatched::show() was not found.'
+            'The router App\\Router\\Controllers\\PFirstLetterNotGroupNotMatched::index() was not found.'
         );
 
         $pathInfo = '/pFirstLetterNotGroupNotMatched';
@@ -344,7 +344,7 @@ eot;
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\PetRegexNotMatched::show() was not found.'
+            'The router App\\Router\\Controllers\\PetRegexNotMatched::index() was not found.'
         );
 
         $pathInfo = '/petRegexNotMatched';

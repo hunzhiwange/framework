@@ -260,7 +260,79 @@ class RouterTest extends TestCase
     public function getNodeNotFoundData()
     {
         return [
+            ['GET', Router::RESTFUL_INDEX],
+            ['POST', Router::RESTFUL_STORE],
+            ['PUT', Router::RESTFUL_UPDATE],
+            ['DELETE', Router::RESTFUL_DESTROY],
+        ];
+    }
+
+    /**
+     * @dataProvider getNodeNotFoundDataWithParams
+     *
+     * @param string $method
+     * @param string $action
+     */
+    public function testNodeNotFoundWithParams(string $method, string $action)
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            sprintf('The router App\\App\\Controller\\Home::%s() was not found.', $action)
+        );
+
+        $pathInfo = '/home/5';
+        $params = [];
+        $method = $method;
+        $controllerDir = 'App\\Controller';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+    }
+
+    public function getNodeNotFoundDataWithParams()
+    {
+        return [
             ['GET', Router::RESTFUL_SHOW],
+            ['POST', Router::RESTFUL_STORE],
+            ['PUT', Router::RESTFUL_UPDATE],
+            ['DELETE', Router::RESTFUL_DESTROY],
+        ];
+    }
+
+    /**
+     * @dataProvider getNodeNotFoundDataWithParamsAndDefaultController
+     *
+     * @param string $method
+     * @param string $action
+     */
+    public function testNodeNotFoundWithParamsAndDefaultController(string $method, string $action)
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            sprintf('The router App\\App\\Controller\\Home::%s() was not found.', $action)
+        );
+
+        $pathInfo = '/5';
+        $params = [];
+        $method = $method;
+        $controllerDir = 'App\\Controller';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+    }
+
+    public function getNodeNotFoundDataWithParamsAndDefaultController()
+    {
+        return [
+            ['GET', Router::RESTFUL_INDEX],
             ['POST', Router::RESTFUL_STORE],
             ['PUT', Router::RESTFUL_UPDATE],
             ['DELETE', Router::RESTFUL_DESTROY],
@@ -442,6 +514,25 @@ eot;
         $router->setControllerDir($controllerDir);
 
         $result = $router->dispatch($request);
+    }
+
+    public function testOptionsForCorsWillBackToHomeIndex()
+    {
+        $pathInfo = '/:tests';
+        $params = [];
+        $method = 'OPTIONS';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello my home', $result->getContent());
     }
 
     protected function createRouter(): Router

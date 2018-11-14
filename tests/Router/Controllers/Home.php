@@ -31,7 +31,7 @@ namespace Tests\Router\Controllers;
  */
 class Home
 {
-    public function show()
+    public function index()
     {
         return 'hello my home';
     }
