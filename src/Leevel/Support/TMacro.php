@@ -126,11 +126,7 @@ trait TMacro
     public function callMacro(string $method, array $args)
     {
         if (static::hasMacro($method)) {
-            if (static::$macro[$method] instanceof Closure) {
-                return call_user_func_array(static::$macro[$method]->bindTo($this), $args);
-            }
-
-            return call_user_func_array(static::$macro[$method], $args);
+            return call_user_func_array(static::$macro[$method]->bindTo($this), $args);
         }
 
         throw new BadMethodCallException(
