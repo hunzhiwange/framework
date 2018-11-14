@@ -84,7 +84,7 @@ interface IUnitOfWork
      *
      * @return $this
      */
-    public function persist(IEntity $entity);
+    public function persist(IEntity $entity): self;
 
     /**
      * 移除实体.
@@ -93,7 +93,7 @@ interface IUnitOfWork
      *
      * @return $this
      */
-    public function remove(IEntity $entity);
+    public function remove(IEntity $entity): self;
 
     /**
      * 注册新建实体.
@@ -102,7 +102,7 @@ interface IUnitOfWork
      *
      * @return $this
      */
-    public function create(IEntity $entity);
+    public function create(IEntity $entity): self;
 
     /**
      * 实体是否已经注册新增.
@@ -120,7 +120,7 @@ interface IUnitOfWork
      *
      * @return $this
      */
-    public function update(IEntity $entity);
+    public function update(IEntity $entity): self;
 
     /**
      * 实体是否已经注册更新.
@@ -138,7 +138,7 @@ interface IUnitOfWork
      *
      * @return $this
      */
-    public function replace(IEntity $entity);
+    public function replace(IEntity $entity): self;
 
     /**
      * 实体是否已经注册不存在则新增否则更新.
@@ -156,7 +156,7 @@ interface IUnitOfWork
      *
      * @return $this
      */
-    public function delete(IEntity $entity);
+    public function delete(IEntity $entity): self;
 
     /**
      * 实体是否已经注册删除.
@@ -183,7 +183,7 @@ interface IUnitOfWork
      *
      * @return $this
      */
-    public function refresh(IEntity $entity);
+    public function refresh(IEntity $entity): self;
 
     /**
      * 注册实体为管理状态.
@@ -196,8 +196,6 @@ interface IUnitOfWork
      * 设置根实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
-     *
-     * @return $this
      */
     public function setRootEntity(IEntity $rootEntity);
 

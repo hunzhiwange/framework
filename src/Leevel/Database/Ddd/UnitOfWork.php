@@ -167,7 +167,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return $this
      */
-    public function persist(IEntity $entity, string $method = 'save')
+    public function persist(IEntity $entity, string $method = 'save'): IUnitOfWork
     {
         $this->validateClosed();
 
@@ -207,7 +207,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return $this
      */
-    public function remove(IEntity $entity)
+    public function remove(IEntity $entity): IUnitOfWork
     {
         $id = spl_object_id($entity);
 
@@ -227,6 +227,8 @@ class UnitOfWork implements IUnitOfWork
                       sprintf('Detached entity `%s` cannot be remove.', get_class($entity))
                   );
         }
+
+        return $this;
     }
 
     /**
@@ -236,7 +238,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return $this
      */
-    public function create(IEntity $entity)
+    public function create(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
 
@@ -291,7 +293,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return $this
      */
-    public function update(IEntity $entity)
+    public function update(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
 
@@ -352,7 +354,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return $this
      */
-    public function replace(IEntity $entity)
+    public function replace(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
 
@@ -407,7 +409,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return $this
      */
-    public function delete(IEntity $entity)
+    public function delete(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
 
@@ -481,7 +483,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return $this
      */
-    public function refresh(IEntity $entity)
+    public function refresh(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
 
@@ -510,8 +512,6 @@ class UnitOfWork implements IUnitOfWork
      * 设置根实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
-     *
-     * @return $this
      */
     public function setRootEntity(IEntity $rootEntity)
     {
@@ -615,14 +615,10 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param \Closure                     $callbacks
-     *
-     * @return $this
      */
     public function on(IEntity $entity, Closure $callbacks)
     {
         $this->onCallbacks[spl_object_id($entity)] = $callbacks;
-
-        return $this;
     }
 
     /**
