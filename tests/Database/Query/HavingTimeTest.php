@@ -613,9 +613,10 @@ eot;
         $month = mktime(0, 0, 0, 5, 1, $date['year']);
         $day = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
         $date = strtotime('+5 month');
+        $date2 = $date + 1;
+        $date3 = $date + 2;
 
-        $this->assertSame(
-            sprintf($sql, $year, $month, $day, $date),
+        $this->assertTimeRange(
             $this->varJson(
                 $connect->table('test')->
 
@@ -646,7 +647,10 @@ eot;
                 endTime()->
 
                 findOne(true)
-            )
+            ),
+            sprintf($sql, $year, $month, $day, $date),
+            sprintf($sql, $year, $month, $day, $date2),
+            sprintf($sql, $year, $month, $day, $date3)
         );
     }
 
