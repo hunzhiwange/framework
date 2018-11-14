@@ -158,16 +158,15 @@ class Debug extends DebugBar
             return;
         }
 
-        if ((
+        if (
+                $request->isJson() ||
                 $response instanceof ApiResponse ||
                 $response instanceof JsonResponse ||
                 $response->isJson()
-            ) &&
-                is_array(($data = $response->getData()))) {
-            if ($this->option['json']) {
+            ) {
+            if ($this->option['json'] && is_array($data = $response->getData())) {
                 $jsonRenderer = $this->getJsonRenderer();
                 $data['@trace'] = $jsonRenderer->render();
-
                 $response->setData($data);
             }
         } elseif (!($response instanceof RedirectResponse)) {
