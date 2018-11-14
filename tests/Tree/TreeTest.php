@@ -592,6 +592,36 @@ eot;
         ]);
     }
 
+    public function testButNotIsStringInt()
+    {
+        $tree = new Tree([
+            ['1', '0', 'hello'],
+            ['2', '1', 'world'],
+        ]);
+
+        $nodes = <<<'eot'
+[
+    {
+        "value": 1,
+        "data": "hello",
+        "children": [
+            {
+                "value": 2,
+                "data": "world"
+            }
+        ]
+    }
+]
+eot;
+
+        $this->assertSame(
+            $nodes,
+            $this->varJson(
+                $tree->toArray()
+            )
+        );
+    }
+
     protected function providerTree(): Tree
     {
         return new Tree([

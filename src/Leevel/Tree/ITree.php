@@ -140,9 +140,9 @@ interface ITree
     /**
      * 树转化为数组.
      *
-     * @param \Closure $callables
-     * @param array    $key
-     * @param int      $id
+     * @param \Closure   $callables
+     * @param array      $key
+     * @param int|string $id
      *
      * @return array
      */

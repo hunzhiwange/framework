@@ -121,7 +121,7 @@ class Tree implements ITree, IJson, IArray
         $data = [];
 
         foreach ($this->map as $key => $parent) {
-            if ($parent === $id) {
+            if ((string) $parent === (string) $id) {
                 $data[$key] = $key;
             }
         }
@@ -276,9 +276,9 @@ class Tree implements ITree, IJson, IArray
     /**
      * 树转化为数组.
      *
-     * @param \Closure $callables
-     * @param array    $key
-     * @param int      $id
+     * @param \Closure   $callables
+     * @param array      $key
+     * @param int|string $id
      *
      * @return array
      */
@@ -326,10 +326,7 @@ class Tree implements ITree, IJson, IArray
         $args = func_get_args();
         array_shift($args);
 
-        return json_encode(call_user_func_array([
-            $this,
-            'toArray',
-        ], $args), $option);
+        return json_encode($this->toArray(...$args), $option);
     }
 
     /**
@@ -339,10 +336,7 @@ class Tree implements ITree, IJson, IArray
      */
     public function toArray()
     {
-        return call_user_func_array([
-            $this,
-            'normalize',
-        ], func_get_args());
+        return $this->normalize(...func_get_args());
     }
 
     /**
