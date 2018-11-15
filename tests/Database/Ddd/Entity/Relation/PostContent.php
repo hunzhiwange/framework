@@ -50,7 +50,7 @@ class PostContent extends Entity
 
     private $content;
 
-    public function setter(string $prop, $value)
+    public function setter(string $prop, $value): Entity
     {
         $this->{$this->prop($prop)} = $value;
 

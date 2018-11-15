@@ -58,7 +58,7 @@ class Guestbook extends Entity
 
     private $createAt;
 
-    public function setter(string $prop, $value)
+    public function setter(string $prop, $value): Entity
     {
         $this->{$this->prop($prop)} = $value;
 

@@ -53,7 +53,7 @@ class TestReadonlyUpdateEntity extends Entity
 
     private $description;
 
-    public function setter(string $prop, $value)
+    public function setter(string $prop, $value): Entity
     {
         $this->{$this->prop($prop)} = $value;
 

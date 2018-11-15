@@ -312,7 +312,7 @@ class TestConversionEntity extends Entity
         return new Collection(json_decode($this->coll2, true));
     }
 
-    public function setter(string $prop, $value)
+    public function setter(string $prop, $value): Entity
     {
         $this->{$this->prop($prop)} = $value;
 
