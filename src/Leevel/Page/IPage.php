@@ -242,7 +242,7 @@ interface IPage
      */
     public function getToRecord();
 
-    /*
+    /**
      * 设置当前分页.
      *
      * @param int $page
