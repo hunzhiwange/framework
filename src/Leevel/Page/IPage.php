@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Closure;
-
 /**
  * IPage 接口.
  *
@@ -244,6 +242,13 @@ interface IPage
      */
     public function getToRecord();
 
+    /*
+     * 设置当前分页.
+     *
+     * @param int $page
+     */
+    public function currentPage(int $page);
+
     /**
      * 返回当前分页.
      *
@@ -341,13 +346,6 @@ interface IPage
      * @return int
      */
     public function parseLastRenderNext();
-
-    /**
-     * 设置 url 解析回调.
-     *
-     * @param \Closure $urlResolver
-     */
-    public static function setUrlResolver(Closure $urlResolver = null);
 
     /**
      * 替换分页变量.

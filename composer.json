@@ -100,7 +100,6 @@
                 "Leevel\\Encryption\\Provider\\Register",
                 "Leevel\\Filesystem\\Provider\\Register",
                 "Leevel\\Mail\\Provider\\Register",
-                "Leevel\\Page\\Provider\\Register",
                 "Leevel\\Session\\Provider\\Register",
                 "Leevel\\Throttler\\Provider\\Register",
                 "Leevel\\Validate\\Provider\\Register",

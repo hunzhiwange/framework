@@ -23,11 +23,6 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
-        },
-        "leevel": {
-            "providers": [
-                "Leevel\\Page\\Provider\\Register"
-            ]
         }
     },
     "minimum-stability": "dev"
