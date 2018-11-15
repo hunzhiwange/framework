@@ -89,7 +89,6 @@ class FacadeTest extends TestCase
             ['Log', 'logs'],
             ['Mail', 'mails'],
             ['Option', 'option'],
-            ['Page', 'page'],
             ['Request', 'request'],
             ['Response', 'response'],
             ['Router', 'router'],
