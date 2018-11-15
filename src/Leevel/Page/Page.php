@@ -104,15 +104,15 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 构造函数.
      *
+     * @param int   $currentPage
      * @param int   $perPage
      * @param int   $totalRecord
-     * @param int   $currentPage
      * @param array $option
      */
-    public function __construct(?int $perPage = null, ?int $totalRecord = null, ?int $currentPage = null, array $option = [])
+    public function __construct(int $currentPage, ?int $perPage = null, ?int $totalRecord = null, array $option = [])
     {
-        $this->perPage = $perPage;
         $this->currentPage = $currentPage;
+        $this->perPage = $perPage;
         $this->totalRecord = $totalRecord;
 
         $this->option = array_merge($this->option, $option);
@@ -370,7 +370,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return string
      */
-    public function getPageName()
+    public function getPageName(): string
     {
         return $this->option['page'];
     }
@@ -400,7 +400,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return int
      */
-    public function getFromRecord()
+    public function getFromRecord(): int
     {
         return ($this->getCurrentPage() - 1) * $this->getPerPage();
     }
@@ -408,12 +408,12 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 取得最后一个记录的编号.
      *
-     * @return int
+     * @return null|int
      */
-    public function getToRecord()
+    public function getToRecord(): ?int
     {
         if (!$this->canTotalRender()) {
-            return;
+            return null;
         }
 
         $to = $this->getFromRecord() + $this->getPerPage();
@@ -426,7 +426,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param int $page
      */
-    public function currentPage(int $page)
+    public function currentPage(int $page): void
     {
         $this->currentPage = $page;
     }
@@ -436,24 +436,8 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return int
      */
-    public function getCurrentPage()
+    public function getCurrentPage(): int
     {
-        if (null !== $this->currentPage) {
-            return $this->currentPage;
-        }
-
-        $parameter = $this->option['parameter'];
-
-        if (isset($parameter[$this->option['page']])) {
-            $this->currentPage = abs((int) ($parameter[$this->option['page']]));
-
-            if ($this->currentPage < 1) {
-                $this->currentPage = 1;
-            }
-        } else {
-            $this->currentPage = 1;
-        }
-
         return $this->currentPage;
     }
 
@@ -462,7 +446,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return int
      */
-    public function getPageStart()
+    public function getPageStart(): int
     {
         if (null !== $this->pageStart) {
             return $this->pageStart;
@@ -482,7 +466,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return int
      */
-    public function getPageEnd()
+    public function getPageEnd(): int
     {
         if (null !== $this->pageEnd) {
             return $this->pageEnd;
@@ -505,9 +489,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 返回总分页数量.
      *
-     * @return int
+     * @return null|int
      */
-    public function getTotalPage()
+    public function getTotalPage(): ?int
     {
         if (null !== $this->totalPage || !$this->getTotalRecord()) {
             return $this->totalPage;
@@ -525,7 +509,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return bool
      */
-    public function canTotalRender()
+    public function canTotalRender(): bool
     {
         return null !== $this->getTotalRecord() &&
             !$this->isTotalMacro();
@@ -536,7 +520,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return bool
      */
-    public function canFirstRender()
+    public function canFirstRender(): bool
     {
         return $this->getTotalPage() > 1 &&
             $this->getCurrentPage() >= ($this->getRange() * 2 + 2);
@@ -547,7 +531,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return int
      */
-    public function parseFirstRenderPrev()
+    public function parseFirstRenderPrev(): int
     {
         return $this->getCurrentPage() - ($this->getRange() * 2 + 1);
     }
@@ -557,7 +541,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return bool
      */
-    public function canPrevRender()
+    public function canPrevRender(): bool
     {
         return (null === $this->getTotalPage() || $this->getTotalPage() > 1) &&
             1 !== $this->getCurrentPage();
@@ -568,7 +552,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return int
      */
-    public function parsePrevRenderPrev()
+    public function parsePrevRenderPrev(): int
     {
         return $this->getCurrentPage() - 1;
     }
@@ -578,7 +562,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return bool
      */
-    public function canMainRender()
+    public function canMainRender(): bool
     {
         return $this->getTotalPage() > 1;
     }
@@ -586,9 +570,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 是否渲染 next.
      *
-     * @return string
+     * @return bool
      */
-    public function canNextRender()
+    public function canNextRender(): bool
     {
         return null === $this->getTotalPage() ||
             ($this->getTotalPage() > 1 &&
@@ -598,9 +582,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 是否渲染 last.
      *
-     * @return string
+     * @return bool
      */
-    public function canLastRender()
+    public function canLastRender(): bool
     {
         return $this->getTotalPage() > 1 &&
             $this->getCurrentPage() !== $this->getTotalPage() &&
@@ -610,11 +594,11 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 是否渲染 last.
      *
-     * @return string
+     * @return bool
      */
-    public function canLastRenderNext()
+    public function canLastRenderNext(): bool
     {
-        return $this->getTotalPage() > $this->getPageEnd() + 1;
+        return $this->getTotalPage() > ($this->getPageEnd() + 1);
     }
 
     /**
@@ -622,7 +606,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return int
      */
-    public function parseLastRenderNext()
+    public function parseLastRenderNext(): int
     {
         $next = $this->getCurrentPage() +
             $this->getRange() * 2 + 1;

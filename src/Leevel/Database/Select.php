@@ -190,7 +190,6 @@ class Select
             find();
         }
 
-        // 查询组件
         throw new InvalidArgumentException(
             sprintf(
                 'Select do not implement magic method %s.',
@@ -763,61 +762,96 @@ class Select
     /**
      * 分页查询.
      *
+     * @param int    $currentPage
      * @param int    $perPage
+     * @param bool   $flag
+     * @param bool   $withTotal
+     * @param string $column
+     *
+     * @return array
+     */
+    public function page(int $currentPage, int $perPage = 10, bool $flag = false, bool $withTotal = true, string $column = '*'): array
+    {
+        $from = ($currentPage - 1) * $perPage;
+
+        return [
+            [
+                'per_page'     => $perPage,
+                'current_page' => $currentPage,
+                'total_record' => $withTotal ? $this->pageCount($column) : null,
+                'from'         => $from,
+            ],
+            $this->limit($from, $perPage)->
+
+            findAll($flag),
+        ];
+    }
+
+    /**
+     * 分页查询.
+     * 可以渲染 HTML.
+     *
+     * @param int    $currentPage
+     * @param int    $perPage
+     * @param bool   $flag
      * @param string $column
      * @param array  $option
      *
      * @return array
      */
-    public function page(int $perPage = 10, string $column = '*', array $option = []): array
+    public function pageHtml(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array
     {
-        $page = new Page($perPage, $this->pageCount($column), $option);
+        $page = new Page($currentPage, $perPage, $this->pageCount($column), $option);
 
         return [
             $page,
             $this->limit($page->getFromRecord(), $perPage)->
 
-            findAll(),
+            findAll($flag),
         ];
     }
 
     /**
      * 创建一个无限数据的分页查询.
      *
+     * @param int   $currentPage
      * @param int   $perPage
+     * @param bool  $flag
      * @param array $option
      *
      * @return array
      */
-    public function pageMacro(int $perPage = 10, array $option = []): array
+    public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
     {
-        $page = new Page($perPage, IPage::MACRO, $option);
+        $page = new Page($currentPage, $perPage, IPage::MACRO, $option);
 
         return [
             $page,
             $this->limit($page->getFromRecord(), $perPage)->
 
-            findAll(),
+            findAll($flag),
         ];
     }
 
     /**
      * 创建一个只有上下页的分页查询.
      *
+     * @param int   $currentPage
      * @param int   $perPage
+     * @param bool  $flag
      * @param array $option
      *
      * @return array
      */
-    public function pagePrevNext(int $perPage, array $option = []): array
+    public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
     {
-        $page = new Page($perPage, null, $option);
+        $page = new Page($currentPage, $perPage, null, $option);
 
         return [
             $page,
             $this->limit($page->getFromRecord(), $perPage)->
 
-            findAll(),
+            findAll($flag),
         ];
     }
 

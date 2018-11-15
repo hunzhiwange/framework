@@ -28,6 +28,8 @@ use Leevel\Database\Ddd\Repository;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Ddd\Specification;
 use Leevel\Database\Ddd\SpecificationExpression;
+use Leevel\Page\IPage;
+use Leevel\Page\Page;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Query\Query;
 use Tests\TestCase;
@@ -182,7 +184,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(ISpecification::class, $andSpec);
         $this->assertInstanceof(Specification::class, $andSpec);
 
-        $select = $repository->spec($andSpec);
+        $select = $repository->condition($andSpec);
         $result = $select->findAll();
 
         $this->assertInstanceof(Select::class, $select);
@@ -217,7 +219,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(ISpecification::class, $andSpec);
         $this->assertInstanceof(Specification::class, $andSpec);
 
-        $select = $repository->spec($andSpec);
+        $select = $repository->condition($andSpec);
         $result = $select->findAll();
 
         $this->assertInstanceof(Select::class, $select);
@@ -260,7 +262,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(ISpecification::class, $specExpr);
         $this->assertInstanceof(SpecificationExpression::class, $specExpr);
 
-        $select = $repository->spec($specExpr);
+        $select = $repository->condition($specExpr);
         $result = $select->findAll();
 
         $this->assertInstanceof(Select::class, $select);
@@ -605,7 +607,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(ISpecification::class, $orSpec);
         $this->assertInstanceof(Specification::class, $orSpec);
 
-        $select = $repository->spec($orSpec);
+        $select = $repository->condition($orSpec);
         $result = $select->findAll();
 
         $this->assertInstanceof(Select::class, $select);
@@ -648,7 +650,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(ISpecification::class, $orSpec);
         $this->assertInstanceof(Specification::class, $orSpec);
 
-        $select = $repository->spec($orSpec);
+        $select = $repository->condition($orSpec);
         $result = $select->findAll();
 
         $this->assertInstanceof(Select::class, $select);
@@ -691,7 +693,7 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(ISpecification::class, $orSpec);
         $this->assertInstanceof(Specification::class, $orSpec);
 
-        $select = $repository->spec($orSpec);
+        $select = $repository->condition($orSpec);
         $result = $select->findAll();
 
         $this->assertInstanceof(Select::class, $select);
@@ -725,7 +727,7 @@ class RepositoryTest extends TestCase
             $select->where('id', '>', 4);
         });
 
-        $select = $repository->spec($spec);
+        $select = $repository->condition($spec);
         $result = $select->findAll();
 
         $this->assertInstanceof(Select::class, $select);
@@ -1392,6 +1394,312 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->summary);
 
         $this->clear();
+    }
+
+    public function testConditionIsClosure()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
+
+        $repository = new Repository(new Post());
+
+        $condition = function (Select $select, IEntity $entity) use ($request) {
+            $select->where('id', '<', 8);
+        };
+
+        $select = $repository->condition($condition);
+        $result = $select->findAll();
+
+        $this->assertInstanceof(Select::class, $select);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(7, count($result));
+
+        $this->truncate('post');
+    }
+
+    public function testConditionTypeIsInvalid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid condition type.'
+        );
+
+        $repository = new Repository(new Post());
+
+        $select = $repository->condition(5);
+    }
+
+    public function testFindPage()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $repository = new Repository(new Post());
+
+        list($page, $result) = $repository->findPage(1, 10);
+
+        $this->assertInternalType('array', $page);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(10, count($result));
+
+        $data = <<<'eot'
+{
+    "per_page": 10,
+    "current_page": 1,
+    "total_record": 10,
+    "from": 0
+}
+eot;
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page
+                )
+        );
+
+        $this->truncate('post');
+    }
+
+    public function testFindPageWithCondition()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
+
+        $repository = new Repository(new Post());
+
+        $condition = function (Select $select, IEntity $entity) use ($request) {
+            $select->where('id', '<', 8);
+        };
+
+        list($page, $result) = $repository->findPage(1, 10, $condition);
+
+        $this->assertInternalType('array', $page);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(7, count($result));
+
+        $data = <<<'eot'
+{
+    "per_page": 10,
+    "current_page": 1,
+    "total_record": 7,
+    "from": 0
+}
+eot;
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page
+                )
+        );
+
+        $this->truncate('post');
+    }
+
+    public function testFindPageHtml()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $repository = new Repository(new Post());
+
+        list($page, $result) = $repository->findPageHtml(1, 10);
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(10, count($result));
+
+        $this->truncate('post');
+    }
+
+    public function testFindPageHtmlWithCondition()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
+
+        $repository = new Repository(new Post());
+
+        $condition = function (Select $select, IEntity $entity) use ($request) {
+            $select->where('id', '<', 8);
+        };
+
+        list($page, $result) = $repository->findPageHtml(1, 10, $condition);
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(7, count($result));
+
+        $this->truncate('post');
+    }
+
+    public function testFindPageMacro()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $repository = new Repository(new Post());
+
+        list($page, $result) = $repository->findPageMacro(1, 10);
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(10, count($result));
+
+        $this->truncate('post');
+    }
+
+    public function testFindPageMacroWithCondition()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
+
+        $repository = new Repository(new Post());
+
+        $condition = function (Select $select, IEntity $entity) use ($request) {
+            $select->where('id', '<', 8);
+        };
+
+        list($page, $result) = $repository->findPageMacro(1, 10, $condition);
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(7, count($result));
+
+        $this->truncate('post');
+    }
+
+    public function testFindPagePrevNext()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $repository = new Repository(new Post());
+
+        list($page, $result) = $repository->findPagePrevNext(1, 10);
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(10, count($result));
+
+        $this->truncate('post');
+    }
+
+    public function testFindPagePrevNextWithCondition()
+    {
+        $connect = $this->createConnectTest();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world',
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
+
+        $repository = new Repository(new Post());
+
+        $condition = function (Select $select, IEntity $entity) use ($request) {
+            $select->where('id', '<', 8);
+        };
+
+        list($page, $result) = $repository->findPagePrevNext(1, 10, $condition);
+
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
+        $this->assertInstanceof(Collection::class, $result);
+        $this->assertSame(7, count($result));
+
+        $this->truncate('post');
     }
 
     protected function clear()

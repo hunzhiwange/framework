@@ -39,7 +39,7 @@ class PageTest extends TestCase
 {
     public function testBaseUse()
     {
-        $page = new Page(10, 52);
+        $page = new Page(1, 10, 52);
 
         $this->assertInstanceof(IPage::class, $page);
 
@@ -105,7 +105,7 @@ eot;
 
     public function testWithCurrentPage()
     {
-        $page = new Page(10, 52, 2);
+        $page = new Page(2, 10, 52);
 
         $this->assertInstanceof(IPage::class, $page);
 
@@ -171,7 +171,7 @@ eot;
 
     public function testFragment()
     {
-        $page = new Page(10, 52);
+        $page = new Page(1, 10, 52);
 
         $page->fragment('hello');
 
@@ -207,7 +207,7 @@ eot;
 
     public function testPerPage()
     {
-        $page = new Page(10, 52);
+        $page = new Page(1, 10, 52);
 
         $this->assertSame(10, $page->getPerPage());
 
@@ -245,7 +245,7 @@ eot;
 
     public function testSetSmallTemplate()
     {
-        $page = new Page(10, 52, null, [
+        $page = new Page(1, 10, 52, [
             'render_option' => ['small_template' => true],
         ]);
 
@@ -279,7 +279,7 @@ eot;
 
     public function testAppend()
     {
-        $page = new Page(5, 3);
+        $page = new Page(1, 5, 3);
 
         $page->append('foo', 'bar');
 
@@ -328,7 +328,7 @@ eot;
 
     public function testRenderOption()
     {
-        $page = new Page(5, 3);
+        $page = new Page(1, 5, 3);
 
         $data = <<<'eot'
 <div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
@@ -384,7 +384,7 @@ eot;
 
     public function testUrl()
     {
-        $page = new Page(3, 5);
+        $page = new Page(1, 3, 5);
 
         $page->url('/hello');
 
@@ -400,7 +400,7 @@ eot;
 
     public function testSetRender()
     {
-        $page = new Page(3, 5);
+        $page = new Page(1, 3, 5);
 
         $page->setRender('bootstrap');
 
@@ -416,7 +416,7 @@ eot;
 
     public function testDefaultPerPage()
     {
-        $page = new Page(null, 25);
+        $page = new Page(1, null, 25);
 
         $data = <<<'eot'
 <div class="pagination"> <span class="pagination-total">共 25 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
@@ -430,7 +430,7 @@ eot;
 
     public function testPageName()
     {
-        $page = new Page(10, 25);
+        $page = new Page(1, 10, 25);
 
         $this->assertSame('page', $page->getPageName());
 
@@ -450,7 +450,7 @@ eot;
 
     public function testParseLastRenderNext()
     {
-        $page = new Page(3, 30);
+        $page = new Page(1, 3, 30);
 
         $page->currentPage(3);
 
@@ -504,7 +504,7 @@ eot;
 
     public function testRange()
     {
-        $page = new Page(3, 40);
+        $page = new Page(1, 3, 40);
 
         $page->currentPage(7);
 
@@ -540,7 +540,7 @@ eot;
 
     public function testMacro()
     {
-        $page = new Page(3, Page::MACRO);
+        $page = new Page(1, 3, Page::MACRO);
 
         $page->currentPage(44);
 
@@ -572,14 +572,14 @@ eot;
         );
     }
 
-    public function testUseParameterAsPage()
+    public function testUseParameterWithPageWillBeRemoved()
     {
-        $page = new Page(3, null);
+        $page = new Page(1, 3, null);
 
         $page->addParameter('page', 5);
 
         $data = <<<'eot'
-<div class="pagination">  <button class="btn-prev" onclick="window.location.href='?page=4';">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=6';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
 eot;
 
         $this->assertSame(
@@ -590,11 +590,11 @@ eot;
         $data = <<<'eot'
 {
     "per_page": 3,
-    "current_page": 5,
+    "current_page": 1,
     "total_page": null,
     "total_record": null,
     "total_macro": false,
-    "from": 12,
+    "from": 0,
     "to": null
 }
 eot;
@@ -609,7 +609,7 @@ eot;
 
     public function testPageBootstrapSize()
     {
-        $page = new Page(3, 40);
+        $page = new Page(1, 3, 40);
 
         $page->currentPage(8);
 
@@ -634,7 +634,7 @@ eot;
 
     public function testRenderObject()
     {
-        $page = new Page(10, 25);
+        $page = new Page(1, 10, 25);
 
         $render = new Defaults($page, [
             'small_template' => true,
@@ -670,7 +670,7 @@ eot;
             'Unsupported render type.'
         );
 
-        $page = new Page(10, 25);
+        $page = new Page(1, 10, 25);
 
         $page->render([1, 2]);
     }

@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Leevel\Collection\Collection;
+
 /**
  * 仓储基础接口.
  *
@@ -31,180 +33,156 @@ namespace Leevel\Database\Ddd;
  */
 interface IRepository
 {
-    // /**
-    //  * 取得一条数据.
-    //  *
-    //  * @param int   $id
-    //  * @param array $column
-    //  *
-    //  * @return \Leevel\Database\Ddd\IEntity
-    //  */
-    // public function find($id, $column = ['*']);
-    //
-    // /**
-    //  * 取得一条数据，未找到记录抛出异常.
-    //  *
-    //  * @param int   $id
-    //  * @param array $column
-    //  *
-    //  * @return \Leevel\Database\Ddd\IEntity|void
-    //  */
-    // public function findOrFail($id, $column = ['*']);
-    //
-    // /**
-    //  * 取得记录数量.
-    //  *
-    //  * @param null|mixed $specification
-    //  *
-    //  * @return int
-    //  */
-    // public function count($specification = null);
-    //
-    // /**
-    //  * 取得所有记录.
-    //  *
-    //  * @param null|callable $mixCallback
-    //  * @param null|mixed    $specification
-    //  *
-    //  * @return \Leevel\Collection\Collection
-    //  */
-    // public function all($specification = null);
-    //
-    // /**
-    //  * 保存数据.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return \Leevel\Database\Ddd\IEntity
-    //  */
-    // public function create(IEntity $entity);
-    //
-    // /**
-    //  * 更新数据.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return \Leevel\Database\Ddd\IEntity
-    //  */
-    // public function update(IEntity $entity);
-    //
-    // /**
-    //  * 删除数据.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return int
-    //  */
-    // public function delete(IEntity $entity);
-    //
-    // /**
-    //  * 注册保存数据.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return \Leevel\Database\Ddd\UnitOfWork
-    //  */
-    // public function registerCreate(IEntity $entity);
-    //
-    // /**
-    //  * 注册更新数据.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return \Leevel\Database\Ddd\UnitOfWork
-    //  */
-    // public function registerUpdate(IEntity $entity);
-    //
-    // /**
-    //  * 注册删除数据.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return \Leevel\Database\Ddd\UnitOfWork
-    //  */
-    // public function registerDelete(IEntity $entity);
-    //
-    // /**
-    //  * 响应新建.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return \Leevel\Database\Ddd\IEntity
-    //  */
-    // public function handleCreate(IEntity $entity);
-    //
-    // /**
-    //  * 响应修改.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return \Leevel\Database\Ddd\IEntity
-    //  */
-    // public function handleUpdate(IEntity $entity);
-    //
-    // /**
-    //  * 响应删除.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  *
-    //  * @return int
-    //  */
-    // public function handleDelete(IEntity $entity);
-    //
-    // /**
-    //  * 启动事物.
-    //  */
-    // public function beginTransaction();
-    //
-    // /**
-    //  * 事务回滚.
-    //  */
-    // public function rollback();
-    //
-    // /**
-    //  * 事务自动提交.
-    //  */
-    // public function commit();
-    //
-    // /**
-    //  * 执行数据库事务
-    //  *
-    //  * @param callable $action
-    //  *
-    //  * @return mixed
-    //  */
-    // public function transaction(callable $action);
-    //
-    // /**
-    //  * 设置聚合根.
-    //  *
-    //  * @param \Leevel\Database\Ddd\IEntity $entity
-    //  */
-    // public function setAggregate(IEntity $entity);
-    //
-    // /**
-    //  * 返回聚合根.
-    //  *
-    //  * @return \Leevel\Database\Ddd\IEntity
-    //  */
-    // public function aggregate(): IEntity;
-    //
-    // /**
-    //  * 返回工作单元.
-    //  *
-    //  * @return \Leevel\Database\Ddd\IUnitOfWork
-    //  */
-    // public function unitOfWork();
-    //
-    // /**
-    //  * 返回数据库仓储.
-    //  *
-    //  * @return \Leevel\Database\IDatabase
-    //  */
-    // public function databaseConnect();
-    //
-    // /**
-    //  * 注册事务提交.
-    //  */
-    // public function registerCommit();
+    /**
+     * 取得一条数据.
+     *
+     * @param int   $id
+     * @param array $column
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function find(int $id, array $column = ['*']): IEntity;
+
+    /**
+     * 取得一条数据，未找到记录抛出异常.
+     *
+     * @param int   $id
+     * @param array $column
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function findOrFail(int $id, array $column = ['*']): IEntity;
+
+    /**
+     * 取得所有记录.
+     *
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     *
+     * @return \Leevel\Collection\Collection
+     */
+    public function findAll($condition = null): Collection;
+
+    /**
+     * 取得记录数量.
+     *
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param string                                            $field
+     *
+     * @return int
+     */
+    public function findCount($condition = null, string $field = '*'): int;
+
+    /**
+     * 分页查询记录.
+     *
+     * @param int                                               $currentPage
+     * @param int                                               $perPage
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param bool                                              $flag
+     * @param bool                                              $withTotal
+     * @param string                                            $column
+     *
+     * @return array
+     */
+    public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, bool $withTotal = true, string $column = '*'): array;
+
+    /**
+     * 分页查询.
+     * 可以渲染 HTML.
+     *
+     * @param int                                               $currentPage
+     * @param int                                               $perPage
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param bool                                              $flag
+     * @param string                                            $column
+     * @param array                                             $option
+     *
+     * @return array
+     */
+    public function findPageHtml(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): array;
+
+    /**
+     * 创建一个无限数据的分页查询.
+     *
+     * @param int                                               $currentPage
+     * @param int                                               $perPage
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param bool                                              $flag
+     * @param array                                             $option
+     *
+     * @return array
+     */
+    public function findPageMacro(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): array;
+
+    /**
+     * 创建一个只有上下页的分页查询.
+     *
+     * @param int                                               $currentPage
+     * @param int                                               $perPage
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param bool                                              $flag
+     * @param array                                             $option
+     *
+     * @return array
+     */
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): array;
+
+    /**
+     * 条件查询器.
+     *
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public function condition($condition): Select;
+
+    /**
+     * 响应新建.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return mixed
+     */
+    public function create(IEntity $entity);
+
+    /**
+     * 响应修改.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return mixed
+     */
+    public function update(IEntity $entity);
+
+    /**
+     * 响应不存在则新增否则更新.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return mixed
+     */
+    public function replace(IEntity $entity);
+
+    /**
+     * 响应删除.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return mixed
+     */
+    public function delete(IEntity $entity);
+
+    /**
+     * 重新载入.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     */
+    public function refresh(IEntity $entity): void;
+
+    /**
+     * 返回实体.
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function entity(): IEntity;
 }

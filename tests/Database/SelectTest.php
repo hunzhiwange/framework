@@ -927,7 +927,56 @@ eot;
 
         list($page, $result) = $connect->table('guest_book')->
 
-        page();
+        page(1);
+
+        $this->assertInternalType('array', $page);
+        $this->assertSame(10, count($result));
+
+        $n = 0;
+
+        foreach ($result as $key => $value) {
+            $this->assertSame($key, $n);
+            $this->assertInstanceof(stdClass::class, $value);
+            $this->assertSame('tom', $value->name);
+            $this->assertSame('I love movie.', $value->content);
+
+            $n++;
+        }
+
+        $data = <<<'eot'
+{
+    "per_page": 10,
+    "current_page": 1,
+    "total_record": 26,
+    "from": 0
+}
+eot;
+
+        $this->assertSame(
+            $data,
+                $this->varJson(
+                    $page
+                )
+        );
+
+        $this->truncate('guest_book');
+    }
+
+    public function testPageHtml()
+    {
+        $connect = $this->createConnectTest();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 25; $n++) {
+            $connect->table('guest_book')->
+
+            insert($data);
+        }
+
+        list($page, $result) = $connect->table('guest_book')->
+
+        pageHtml(1);
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
@@ -1020,7 +1069,7 @@ eot;
 
         list($page, $result) = $connect->table('guest_book')->
 
-        pageMacro();
+        pageMacro(1);
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
@@ -1113,7 +1162,7 @@ eot;
 
         list($page, $result) = $connect->table('guest_book')->
 
-        pagePrevNext(15);
+        pagePrevNext(1, 15);
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);

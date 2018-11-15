@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Closure;
+use InvalidArgumentException;
 use Leevel\Collection\Collection;
 
 /**
@@ -93,15 +95,17 @@ class Repository implements IRepository
     /**
      * 取得所有记录.
      *
-     * @param null|\Leevel\Database\Ddd\ISpecification $spec
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
      *
      * @return \Leevel\Collection\Collection
      */
-    public function findAll($spec = null): Collection
+    public function findAll($condition = null): Collection
     {
         $select = $this->entity->selfDatabaseSelect();
 
-        $this->normalizeSpec($select, $spec);
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
 
         return $select->findAll();
     }
@@ -109,32 +113,125 @@ class Repository implements IRepository
     /**
      * 取得记录数量.
      *
-     * @param null|\Leevel\Database\Ddd\ISpecification $spec
-     * @param string                                   $field
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param string                                            $field
      *
      * @return int
      */
-    public function findCount($spec = null, string $field = '*'): int
+    public function findCount($condition = null, string $field = '*'): int
     {
         $select = $this->entity->selfDatabaseSelect();
 
-        $this->normalizeSpec($select, $spec);
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
 
         return $select->findCount($field);
     }
 
     /**
-     * 规约查询器.
+     * 分页查询记录.
      *
-     * @param \Leevel\Database\Ddd\ISpecification $spec
+     * @param int                                               $currentPage
+     * @param int                                               $perPage
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param bool                                              $flag
+     * @param bool                                              $withTotal
+     * @param string                                            $column
      *
-     * @return \Leevel\Database\Ddd\Select
+     * @return array
      */
-    public function spec(ISpecification $spec): Select
+    public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, bool $withTotal = true, string $column = '*'): array
     {
         $select = $this->entity->selfDatabaseSelect();
 
-        $this->normalizeSpec($select, $spec);
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
+
+        return $select->page($currentPage, $perPage, $flag, $withTotal, $column);
+    }
+
+    /**
+     * 分页查询.
+     * 可以渲染 HTML.
+     *
+     * @param int                                               $currentPage
+     * @param int                                               $perPage
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param bool                                              $flag
+     * @param string                                            $column
+     * @param array                                             $option
+     *
+     * @return array
+     */
+    public function findPageHtml(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): array
+    {
+        $select = $this->entity->selfDatabaseSelect();
+
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
+
+        return $select->pageHtml($currentPage, $perPage, $flag, $column, $option);
+    }
+
+    /**
+     * 创建一个无限数据的分页查询.
+     *
+     * @param int                                               $currentPage
+     * @param int                                               $perPage
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param bool                                              $flag
+     * @param array                                             $option
+     *
+     * @return array
+     */
+    public function findPageMacro(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): array
+    {
+        $select = $this->entity->selfDatabaseSelect();
+
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
+
+        return $select->pageMacro($currentPage, $perPage, $flag, $option);
+    }
+
+    /**
+     * 创建一个只有上下页的分页查询.
+     *
+     * @param int                                               $currentPage
+     * @param int                                               $perPage
+     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param bool                                              $flag
+     * @param array                                             $option
+     *
+     * @return array
+     */
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): array
+    {
+        $select = $this->entity->selfDatabaseSelect();
+
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
+
+        return $select->pagePrevNext($currentPage, $perPage, $flag, $option);
+    }
+
+    /**
+     * 条件查询器.
+     *
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public function condition($condition): Select
+    {
+        $select = $this->entity->selfDatabaseSelect();
+
+        $this->normalizeCondition($condition, $select);
 
         return $select;
     }
@@ -221,6 +318,23 @@ class Repository implements IRepository
     public function entity(): IEntity
     {
         return $this->entity;
+    }
+
+    /**
+     * 处理查询条件.
+     *
+     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param \Leevel\Database\Ddd\Select                  $select
+     */
+    protected function normalizeCondition($condition, Select $select): void
+    {
+        if (is_object($condition) && $condition instanceof ISpecification) {
+            $this->normalizeSpec($select, $condition);
+        } elseif (is_object($condition) && $condition instanceof Closure) {
+            $condition($select, $this->entity);
+        } else {
+            throw new InvalidArgumentException('Invalid condition type.');
+        }
     }
 
     /**

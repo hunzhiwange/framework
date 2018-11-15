@@ -212,7 +212,7 @@ interface IPage
      *
      * @return string
      */
-    public function getPageName();
+    public function getPageName(): string;
 
     /**
      * 返回总记录数量.
@@ -233,119 +233,119 @@ interface IPage
      *
      * @return int
      */
-    public function getFromRecord();
+    public function getFromRecord(): int;
 
     /**
      * 取得最后一个记录的编号.
      *
-     * @return int
+     * @return null|int
      */
-    public function getToRecord();
+    public function getToRecord(): ?int;
 
     /**
      * 设置当前分页.
      *
      * @param int $page
      */
-    public function currentPage(int $page);
+    public function currentPage(int $page): void;
 
     /**
      * 返回当前分页.
      *
      * @return int
      */
-    public function getCurrentPage();
+    public function getCurrentPage(): int;
 
     /**
      * 返回分页视图开始页码
      *
      * @return int
      */
-    public function getPageStart();
+    public function getPageStart(): int;
 
     /**
      * 返回分页视图结束页码
      *
      * @return int
      */
-    public function getPageEnd();
+    public function getPageEnd(): int;
 
     /**
      * 返回总分页数量.
      *
-     * @return int
+     * @return null|int
      */
-    public function getTotalPage();
+    public function getTotalPage(): ?int;
 
     /**
      * 是否渲染 total.
      *
      * @return bool
      */
-    public function canTotalRender();
+    public function canTotalRender(): bool;
 
     /**
      * 是否渲染 first.
      *
      * @return bool
      */
-    public function canFirstRender();
+    public function canFirstRender(): bool;
 
     /**
      * 返回渲染 first.prev.
      *
      * @return int
      */
-    public function parseFirstRenderPrev();
+    public function parseFirstRenderPrev(): int;
 
     /**
      * 是否渲染 prev.
      *
      * @return bool
      */
-    public function canPrevRender();
+    public function canPrevRender(): bool;
 
     /**
      * 返回渲染 prev.prev.
      *
      * @return int
      */
-    public function parsePrevRenderPrev();
+    public function parsePrevRenderPrev(): int;
 
     /**
      * 是否渲染 main.
      *
      * @return bool
      */
-    public function canMainRender();
+    public function canMainRender(): bool;
 
     /**
      * 是否渲染 next.
      *
-     * @return string
+     * @return bool
      */
-    public function canNextRender();
+    public function canNextRender(): bool;
 
     /**
      * 是否渲染 last.
      *
      * @return string
      */
-    public function canLastRender();
+    public function canLastRender(): bool;
 
     /**
      * 是否渲染 last.
      *
-     * @return string
+     * @return bool
      */
-    public function canLastRenderNext();
+    public function canLastRenderNext(): bool;
 
     /**
      * 返回渲染 last.next.
      *
      * @return int
      */
-    public function parseLastRenderNext();
+    public function parseLastRenderNext(): int;
 
     /**
      * 替换分页变量.
