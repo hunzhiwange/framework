@@ -97,7 +97,6 @@ class Mysql extends Connect implements IConnect
 
         if (($columns = $this->query($sql, [], $master, PDO::FETCH_ASSOC))) {
             foreach ($columns as $column) {
-                // 处理字段
                 $tmp = [];
                 $tmp['name'] = $column['Field'];
 
@@ -119,7 +118,8 @@ class Mysql extends Connect implements IConnect
                     $tmp['default'] = null;
                 }
 
-                // 返回结果
+                $tmp['comment'] = $column['Comment'];
+
                 $result['list'][$tmp['name']] = $tmp;
 
                 if ($tmp['auto_increment']) {

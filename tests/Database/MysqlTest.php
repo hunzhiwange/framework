@@ -71,7 +71,8 @@ class MysqlTest extends TestCase
             "length": "int",
             "primary_key": true,
             "auto_increment": true,
-            "default": null
+            "default": null,
+            "comment": ""
         },
         "name": {
             "name": "name",
@@ -79,7 +80,8 @@ class MysqlTest extends TestCase
             "length": "varchar",
             "primary_key": false,
             "auto_increment": false,
-            "default": null
+            "default": null,
+            "comment": ""
         },
         "content": {
             "name": "content",
@@ -87,7 +89,8 @@ class MysqlTest extends TestCase
             "length": null,
             "primary_key": false,
             "auto_increment": false,
-            "default": null
+            "default": null,
+            "comment": "评论内容"
         },
         "create_at": {
             "name": "create_at",
@@ -95,7 +98,8 @@ class MysqlTest extends TestCase
             "length": null,
             "primary_key": false,
             "auto_increment": false,
-            "default": "CURRENT_TIMESTAMP"
+            "default": "CURRENT_TIMESTAMP",
+            "comment": "创建时间"
         }
     },
     "primary_key": [
