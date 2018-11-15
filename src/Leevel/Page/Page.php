@@ -22,8 +22,8 @@ namespace Leevel\Page;
 
 use JsonSerializable;
 use Leevel\Support\IArray;
-use Leevel\Support\IJson;
 use Leevel\Support\IHtml;
+use Leevel\Support\IJson;
 use RuntimeException;
 
 /**
@@ -35,7 +35,7 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class Page implements IPage, IJson, IArray, JsonSerializable
+class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 {
     /**
      * 总记录数量.
@@ -153,7 +153,7 @@ class Page implements IPage, IJson, IArray, JsonSerializable
         return (string) $this->render();
     }
 
-   /**
+    /**
      * 追加分页条件.
      *
      * @param string $key
