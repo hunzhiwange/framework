@@ -23,6 +23,8 @@ namespace Leevel\Database\Console;
 use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
+use Leevel\Database\Manager;
+use Leevel\Support\Str;
 
 /**
  * 生成模型实体.
@@ -64,37 +66,181 @@ You can also by using the <comment>--namespace</comment> option:
 
   <info>php %command.full_name% name --namespace=common</info>
 
-You can also by using the <comment>--extend</comment> option:
+You can also by using the <comment>--table</comment> option:
 
-  <info>php %command.full_name% name action --extend=0</info>
+  <info>php %command.full_name% name --table=test</info>
 EOF;
+
+    /**
+     * 数据库仓储.
+     *
+     * @var \Leevel\Database\Manager
+     */
+    protected $database;
 
     /**
      * 响应命令.
      */
-    public function handle()
+    public function handle(Manager $database)
     {
+        $this->database = $database;
+
         // 处理命名空间路径
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(
-            __DIR__.'/stub/'.
-            ($this->option('extend') ? 'entity' : 'entity_without_extend')
-        );
+        $this->setTemplatePath(__DIR__.'/stub/entity');
 
         // 保存路径
         $this->setSaveFilePath(
             $this->getNamespacePath().
             'Domain/Entity/'.
-            ucfirst($this->argument('name')).'.php'
+            ucfirst(Str::camelize($this->argument('name'))).'.php'
         );
+
+        $this->setCustomReplaceKeyValue($this->getReplace());
 
         // 设置类型
         $this->setMakeType('entity');
 
         // 执行
         parent::handle();
+    }
+
+    /**
+     * 获取实体替换信息.
+     *
+     * @return array
+     */
+    protected function getReplace(): array
+    {
+        $columns = $this->getColumns();
+
+        return [
+            'table_name'     => $this->getTableName(),
+            'primary_key'    => $this->getPrimaryKey($columns),
+            'auto_increment' => $this->getAutoIncrement($columns),
+            'struct'         => $this->getStruct($columns),
+            'props'          => $this->getProps($columns),
+        ];
+    }
+
+    /**
+     * 获取主键信息.
+     *
+     * @param array $columns
+     *
+     * @return string
+     */
+    protected function getPrimaryKey(array $columns): string
+    {
+        if (!$columns['primary_key']) {
+            return 'null';
+        }
+
+        if (count($columns['primary_key']) > 1) {
+            return '['.implode(', ', array_map(function ($item) {
+                return "'{$item}'";
+            }, $columns['primary_key'])).']';
+        }
+
+        return  "'{$columns['primary_key'][0]}'";
+    }
+
+    /**
+     * 获取自增信息.
+     *
+     * @param array $columns
+     *
+     * @return string
+     */
+    protected function getAutoIncrement(array $columns): string
+    {
+        return $columns['auto_increment'] ? "'{$columns['auto_increment']}'" : 'null';
+    }
+
+    /**
+     * 获取结构信息.
+     *
+     * @param array $columns
+     *
+     * @return string
+     */
+    protected function getStruct(array $columns): string
+    {
+        $struct = ['['];
+
+        foreach ($columns['list'] as $val) {
+            if ($val['primary_key']) {
+                $struct[] = "        '{$val['name']}' => [
+            'readonly' => true,
+        ],";
+            } else {
+                $struct[] = "        '{$val['name']}' => [],";
+            }
+        }
+
+        $struct[] = '    ]';
+
+        return implode(PHP_EOL, $struct);
+    }
+
+    /**
+     * 获取属性信息.
+     *
+     * @param array $columns
+     *
+     * @return string
+     */
+    protected function getProps(array $columns): string
+    {
+        $props = [];
+
+        foreach ($columns['list'] as $val) {
+            $comment = $val['comment'] ?: $val['name'];
+
+            $propName = Str::camelize($val['name']);
+
+            $type = in_array($val['type'], ['tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint'], true) ?
+                'int' : 'string';
+
+            $tmpProp = "
+    /**
+     * {$comment}.
+     *
+     * @var {$type}
+     */
+    private \${$propName};
+";
+
+            $props[] = $tmpProp;
+        }
+
+        return implode('', $props);
+    }
+
+    /**
+     * 获取数据库表名字.
+     *
+     * @return string
+     */
+    protected function getTableName(): string
+    {
+        if ($this->option('table')) {
+            return $this->option('table');
+        }
+
+        return Str::unCamelize($this->argument('name'));
+    }
+
+    /**
+     * 获取数据库表字段信息.
+     *
+     * @return array
+     */
+    protected function getColumns(): array
+    {
+        return $this->database->tableColumns($this->getTableName(), true);
     }
 
     /**
@@ -129,11 +275,10 @@ EOF;
                 'app',
             ],
             [
-                'extend',
+                'table',
                 null,
                 Option::VALUE_OPTIONAL,
-                'Entity with the code that make it extends Leevel\Database\Ddd\Entity',
-                1,
+                'The database table of entity',
             ],
         ];
     }
