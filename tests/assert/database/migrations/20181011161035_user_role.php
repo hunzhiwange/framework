@@ -49,6 +49,6 @@ class UserRole extends AbstractMigration
         $table->addColumn('user_id', 'integer', ['length' => 11, 'comment' => '用户 ID']);
         $table->addColumn('role_id', 'integer', ['limit' => 11, 'comment' => '角色 ID']);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
-        $table->save();
+        $table->create();
     }
 }

@@ -49,6 +49,6 @@ class GuestBook extends AbstractMigration
         $table->addColumn('name', 'string', ['limit' => 64]);
         $table->addColumn('content', 'text', ['default' => '', 'comment' => '评论内容']);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
-        $table->save();
+        $table->create();
     }
 }

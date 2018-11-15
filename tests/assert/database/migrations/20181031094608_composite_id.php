@@ -49,6 +49,6 @@ class CompositeId extends AbstractMigration
         $table->addColumn('id1', 'integer', ['limit' => 11]);
         $table->addColumn('id2', 'integer', ['limit' => 11]);
         $table->addColumn('name', 'string', ['limit' => 32]);
-        $table->save();
+        $table->create();
     }
 }

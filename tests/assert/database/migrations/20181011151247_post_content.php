@@ -48,6 +48,6 @@ class PostContent extends AbstractMigration
         $table = $this->table('post_content', ['id' => false]);
         $table->addColumn('post_id', 'integer', ['length' => 11]);
         $table->addColumn('content', 'text', ['comment' => '文章内容']);
-        $table->save();
+        $table->create();
     }
 }

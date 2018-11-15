@@ -48,6 +48,6 @@ class Role extends AbstractMigration
         $table = $this->table('role');
         $table->addColumn('name', 'string', ['limit' => 64]);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
-        $table->save();
+        $table->create();
     }
 }
