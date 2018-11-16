@@ -47,14 +47,16 @@ then
         then
             echo $result
             isCheck=$result
+            git add $FILE
         fi
     done 
     
     if [ "$isCheck" != "" ] 
     then 
-        echo "The file has been automatically formatted. Please add it again and commit it." 
-        exit 1 
+        echo "The file has been automatically formatted."
     fi 
 fi 
+
+git update-index -g
  
 exit $?
