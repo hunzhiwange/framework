@@ -486,7 +486,7 @@ class UnitOfWorkTest extends TestCase
 
     public function testTransaction()
     {
-        $work = UnitOfWork::make(new Post());
+        $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);
@@ -523,7 +523,7 @@ class UnitOfWorkTest extends TestCase
             '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
         );
 
-        $work = UnitOfWork::make(new Post());
+        $work = UnitOfWork::make();
 
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);

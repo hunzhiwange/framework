@@ -97,6 +97,7 @@ class FacadeTest extends TestCase
             ['Url', 'url'],
             ['Validate', 'validate'],
             ['View', 'view'],
+            ['Work', 'work'],
         ];
     }
 }

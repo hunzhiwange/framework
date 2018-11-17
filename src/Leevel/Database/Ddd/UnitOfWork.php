@@ -97,26 +97,15 @@ class UnitOfWork implements IUnitOfWork
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $rootEntity
-     * @param mixed                        $connect
-     *
-     * @return $this
      */
-    public function __construct(IEntity $rootEntity = null, $connect = null)
+    public function __construct()
     {
-        if (null === $rootEntity) {
-            $rootEntity = new class() extends Entity {
-                const TABLE = '';
-                const ID = null;
-                const AUTO = null;
-                const STRUCT = [];
-            };
-        }
-
-        $this->rootEntity = $rootEntity;
-
-        $this->setConnect($connect);
+        $this->rootEntity = new class() extends Entity {
+            const TABLE = '';
+            const ID = null;
+            const AUTO = null;
+            const STRUCT = [];
+        };
     }
 
     /**

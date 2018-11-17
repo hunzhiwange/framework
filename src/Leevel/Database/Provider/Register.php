@@ -22,6 +22,7 @@ namespace Leevel\Database\Provider;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Meta;
+use Leevel\Database\Ddd\UnitOfWork;
 use Leevel\Database\Manager;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
@@ -45,6 +46,7 @@ class Register extends Provider
     {
         $this->databases();
         $this->database();
+        $this->work();
     }
 
     /**
@@ -74,16 +76,12 @@ class Register extends Provider
                 'Leevel\\Database\\Database',
                 'Leevel\\Database\\IDatabase',
             ],
+            'work' => [
+                'Leevel\\Database\\Ddd\UnitOfWork',
+                'Leevel\\Database\\Ddd\IUnitOfWork',
+            ],
         ];
     }
-
-    // /**
-    //  * {@inheritdoc}
-    //  */
-    // public static function isDeferred(): bool
-    // {
-    //     return true;
-    // }
 
     /**
      * 注册 databases 服务
@@ -102,6 +100,16 @@ class Register extends Provider
     {
         $this->container->singleton('database', function (IContainer $container) {
             return $container['databases']->connect();
+        });
+    }
+
+    /**
+     * 注册 work 服务
+     */
+    protected function work()
+    {
+        $this->container->singleton('work', function (IContainer $container) {
+            return new UnitOfWork();
         });
     }
 
