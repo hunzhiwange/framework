@@ -258,15 +258,20 @@ class Request implements IRequest, IArray, ArrayAccess
         $contentType = $request->headers->get('CONTENT_TYPE');
         $method = strtoupper($request->server->get('REQUEST_METHOD', self::METHOD_GET));
 
-        if ($contentType && 0 === strpos($contentType, 'application/x-www-form-urlencoded') &&
-            in_array($method, [
-                static::METHOD_PUT,
-                static::METHOD_DELETE,
-                static::METHOD_PATCH,
-            ], true)
-        ) {
-            parse_str($request->getContent(), $data);
-            $request->request = new Bag($data);
+        if ($contentType) {
+            if (0 === strpos($contentType, 'application/x-www-form-urlencoded') &&
+                in_array($method, [
+                    static::METHOD_PUT,
+                    static::METHOD_DELETE,
+                    static::METHOD_PATCH,
+                ], true)
+            ) {
+                parse_str($request->getContent(), $data);
+                $request->request = new Bag($data);
+            } elseif (0 === strpos($contentType, 'application/json') &&
+                $content = $request->getContent()) {
+                $request->request = new Bag(json_decode($content, true));
+            }
         }
 
         return $request;
