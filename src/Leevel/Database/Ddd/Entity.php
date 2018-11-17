@@ -354,7 +354,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return $this
      */
-    public function props(array $data): IEntity
+    public function withProps(array $data): IEntity
     {
         foreach ($data as $prop => $value) {
             $this->offsetSet($prop, $value);
@@ -1010,9 +1010,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return null|array|string
      */
-    public function primaryKey()
+    public static function primaryKey()
     {
-        $keys = $this->primaryKeys();
+        $keys = static::primaryKeys();
 
         return 1 === count($keys) ? reset($keys) : $keys;
     }
@@ -1022,7 +1022,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return array
      */
-    public function primaryKeys(): array
+    public static function primaryKeys(): array
     {
         return (array) static::ID;
     }
@@ -1032,7 +1032,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return string
      */
-    public function autoIncrement(): ?string
+    public static function autoIncrement(): ?string
     {
         return static::AUTO;
     }
@@ -1042,7 +1042,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return array
      */
-    public function fields(): array
+    public static function fields(): array
     {
         return static::STRUCT;
     }
@@ -1054,9 +1054,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return bool
      */
-    public function hasField(string $field): bool
+    public static function hasField(string $field): bool
     {
-        return array_key_exists($field, $this->fields());
+        return array_key_exists($field, static::fields());
     }
 
     /**
@@ -1065,9 +1065,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return string
      */
-    public function singlePrimaryKey(): string
+    public static function singlePrimaryKey(): string
     {
-        $key = $this->primaryKey();
+        $key = static::primaryKey();
 
         if (!is_string($key)) {
             throw new InvalidArgumentException(
@@ -1099,7 +1099,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return string
      */
-    public function table(): string
+    public static function table(): string
     {
         return static::TABLE;
     }
@@ -1116,6 +1116,59 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelConnect = $connect;
 
         return $this;
+    }
+
+    /**
+     * 获取 enum.
+     * 不存在返回 false.
+     *
+     * @param string      $prop
+     * @param null|string $enum
+     *
+     * @return mixed
+     */
+    public static function enum(string $prop, ?string $enum = null)
+    {
+        $prop = static::normalize($prop);
+
+        if (!static::hasField($prop)) {
+            return false;
+        }
+
+        $tmp = static::STRUCT[$prop];
+
+        if (!isset($tmp[self::ENUM]) || !is_array($tmp[self::ENUM])) {
+            return false;
+        }
+
+        if (null === $enum) {
+            return array_map(function (string $val) {
+                return __($val);
+            }, $tmp[self::ENUM]);
+        }
+
+        if (!isset($tmp[self::ENUM][$enum])) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Value not a enum in the field `%s` of entity `%s`.',
+                    $prop, static::class
+                )
+            );
+        }
+
+        return __($tmp[self::ENUM][$enum]);
+    }
+
+    /**
+     * 是否存在 enum.
+     *
+     * @param string $prop
+     *
+     * @return bool
+     */
+    public static function isEnum(string $prop): bool
+    {
+        return false !== static::enum($prop);
     }
 
     /**
@@ -1745,8 +1798,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function toArraySource(array $white = [], array $black = [])
     {
-        $args = func_get_args();
-
         if ($white || $black) {
             $prop = $this->whiteAndBlack(
                 array_flip($this->leevelChangedProp), $white, $black
@@ -1757,15 +1808,22 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             );
         }
 
-        foreach ($prop as $k => &$value) {
+        $result = [];
+
+        foreach ($prop as $k => $value) {
             if ($this->isRelation($k)) {
-                unset($prop[$k]);
+                continue;
             }
 
             $value = $this->propValue($k);
+            $result[$k] = $value;
+
+            if (false !== ($enum = $this->enum($k, $value))) {
+                $result[$k.'_'.self::ENUM] = $enum;
+            }
         }
 
-        return $prop;
+        return $result;
     }
 
     /**
@@ -1795,7 +1853,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return string
      */
-    protected function normalize(string $prop): string
+    protected static function normalize(string $prop): string
     {
         if (isset(static::$leevelUnCamelize[$prop])) {
             return static::$leevelUnCamelize[$prop];

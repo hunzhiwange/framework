@@ -201,6 +201,13 @@ interface IEntity
     const SCOPE = 'scope';
 
     /**
+     * ENUM.
+     *
+     * @var string
+     */
+    const ENUM = 'enum';
+
+    /**
      * 创建新的实例.
      *
      * @param array $data
@@ -217,7 +224,7 @@ interface IEntity
      *
      * @return $this
      */
-    public function props(array $data): self;
+    public function withProps(array $data): self;
 
     /**
      * 自动判断快捷方式.
@@ -521,28 +528,28 @@ interface IEntity
      *
      * @return null|array|string
      */
-    public function primaryKey();
+    public static function primaryKey();
 
     /**
      * 返回主键字段.
      *
      * @return array
      */
-    public function primaryKeys(): array;
+    public static function primaryKeys(): array;
 
     /**
      * 返回自动增长字段.
      *
      * @return string
      */
-    public function autoIncrement(): ?string;
+    public static function autoIncrement(): ?string;
 
     /**
      * 返回字段名字.
      *
      * @return array
      */
-    public function fields(): array;
+    public static function fields(): array;
 
     /**
      * 是否存在字段.
@@ -551,7 +558,7 @@ interface IEntity
      *
      * @return bool
      */
-    public function hasField(string $field): bool;
+    public static function hasField(string $field): bool;
 
     /**
      * 返回供查询的主键字段
@@ -559,7 +566,7 @@ interface IEntity
      *
      * @return string
      */
-    public function singlePrimaryKey(): string;
+    public static function singlePrimaryKey(): string;
 
     /**
      * 返回供查询的主键字段值
@@ -574,7 +581,7 @@ interface IEntity
      *
      * @return string
      */
-    public function table(): string;
+    public static function table(): string;
 
     /**
      * 设置连接.
@@ -584,6 +591,26 @@ interface IEntity
      * @return $this
      */
     public function withConnect($connect): self;
+
+    /**
+     * 获取 enum.
+     * 不存在返回 false.
+     *
+     * @param string      $prop
+     * @param null|string $enum
+     *
+     * @return mixed
+     */
+    public static function enum(string $prop, ?string $enum = null);
+
+    /**
+     * 是否存在 enum.
+     *
+     * @param string $prop
+     *
+     * @return bool
+     */
+    public static function isEnum(string $prop): bool;
 
     /**
      * 创建一个模型实体集合.
