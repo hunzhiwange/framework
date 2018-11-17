@@ -23,6 +23,7 @@ namespace Tests\Database\Ddd;
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
+use Tests\Database\Ddd\Entity\EntityWithEnum3;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\TestPropErrorEntity;
 use Tests\TestCase;
@@ -210,5 +211,15 @@ eot;
         ]);
 
         $entity->toArray();
+    }
+
+    public function testEntityWithEnumIsNotArrayWillReturnFalse()
+    {
+        $entity = new EntityWithEnum3([
+            'title'   => 'foo',
+            'status'  => 't',
+        ]);
+
+        $this->assertFalse($entity->enum('status'));
     }
 }
