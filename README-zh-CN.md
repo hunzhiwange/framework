@@ -15,26 +15,25 @@
     <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
 </p>
 
-# The QueryPHP Framework
+# QueryPHP 渐进式 PHP 常驻框架引擎 (核心包)
 
-> This is the core framework code of QueryPHP application, starts from this moment with [QueryPHP](https://github.com/hunzhiwange/queryphp).
+> 这里是 QueryPHP 框架的核心包, 此刻携手 [QueryPHP](https://github.com/hunzhiwange/queryphp) 共创美好.
 
-QueryPHP is a modern, high performance PHP 7 resident framework, with engineer user experience as its historical mission, let every PHP application have a good framework.
+QueryPHP 是一款现代化的高性能 PHP 7 常驻框架，以工程师用户体验为历史使命，让每一个 PHP 应用都有一个好框架。
 
-A hundred percent coverage of the unit tests to facing the bug,based on Zephir implemented framework resident,with Swoole ecology to achieve business resident,
-now or in the future step by step. Our vision is **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, let your business to support more user services.
+百分之百单元测试覆盖直面 Bug 一剑封喉，基于 Zephir 实现框架常驻，依托 Swoole 生态实现业务常驻，此刻未来逐步渐进。 我们的愿景是 **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, 让您的业务撑起更多的用户服务。
 
-*The PHP Framework For Code Poem As Free As Wind, Starts From This Moment With QueryPHP.*
+*代码如诗，自由如风, 此刻携手 QueryPHP 共创美好.*
 
-* Site: <https://www.queryphp.com/>
-* API: <https://api.queryphp.com>
-* Document: <https://www.leevel.vip/>
+* 官方网站: <https://www.queryphp.com/>
+* API 文档: <https://api.queryphp.com>
+* 开发文档: <https://www.queryphp.com/docs/>
 
 ![](doyouhaobaby.png)
 
-QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzhiwange/framework/master/doyouhaobaby-googlecode.jpg) framework which released 0.0.1 version at 2010.10.03.
+QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://raw.githubusercontent.com/hunzhiwange/framework/master/doyouhaobaby-googlecode.jpg) 开发，继承了上一代产品的优秀之处，彻底革新并进行了长达 2 年重构.
 
-## The core packages
+## 核心包
 
  * QueryPHP On Github: <https://github.com/hunzhiwange/queryphp/>
  * QueryPHP On Gitee: <https://gitee.com/dyhb/queryphp/>
@@ -47,7 +46,7 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
  * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
  * Packages From Leevel: <https://packagist.org/packages/leevel/>
 
-## Optional C Extension
+## 可选 C 扩展
 
 <p>
   <a href="https://github.com/hunzhiwange/leevel">
@@ -58,26 +57,26 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
     <img alt="V8js Version" src="https://img.shields.io/badge/v8js-%3E=2.1.0-brightgreen.svg" /></a>
 </p>
 
-We think the performance of PHP applications is very important and the development of pleasure also needs to be considered, and that's why we have developed the QueryPHP framework to achieve great ideals.
+我们认为，PHP 应用程序的性能非常重要，但是工程师开发乐趣也需要被考虑，这就是我们开发 QueryPHP 框架以实现伟大理想的原因。
 
-* PHP 7 - We choose the lowest version of 7.1.3, because php7 has a unique advantage over the earlier version.
-* Leevel - We provides an optional c extension to takeover core components of the framework,such as ioc, log, cache.
-* Swoole - Enable PHP developers to write high-performance, scalable, concurrent TCP, UDP, Unix socket, HTTP, Websocket services in PHP programming language.
-* Redis - QueryPHP encapsulation a cache component, including files, redis and so on, so as to reduce the pressure of database.
+* PHP 7 - 我们选择 7.1.3 最为最低版本，因为 PHP7 相对于早期版本具有独特的优势。
+* Leevel - 我们提供了一个可选的 C 扩展来接管框架的核心组件，如 IOC、日志、缓存。
+* Swoole - 使 PHP 开发人员可以编写高性能的异步并发 TCP、UDP、Unix Socket、HTTP，WebSocket 服务。
+* Redis - queryphp 实现了缓存组件封装，包括文件、Redis，它们可以降低数据库压力。
 
 ```
 Wow! Cool! Query Yet Simple!
 ```
 
-## How to install
+## 如何安装
 
 ```
 composer require hunzhiwange/framework
 ```
 
-## The components that make up the QueryPHP framework
+## 基于组件化的 QueryPHP
 
-Components for the framework can be found on the [Github website](https://github.com/queryyetsimple) and [Packagist website](https://packagist.org/packages/leevel/).
+QueryPHP 框架提供的组件可以在 [Github website](https://github.com/queryyetsimple) 和 [Packagist website](https://packagist.org/packages/leevel/) 上面找到.
 
 ```
 composer require leevel/di
@@ -86,7 +85,7 @@ composer require leevel/cache
 ... and more
 ```
 
-## Run Tests
+## 运行测试文件
 
 ```
 _____________                           _______________
@@ -101,26 +100,26 @@ $composer install
 $php vendor/bin/phpunit tests
 ```
 
-## Unified Code Style
+## 统一团队代码风格
 
 ```
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 $php-cs-fixer fix --config=.php_cs.dist
 ```
 
-## Travis CI Supported
+## Travis CI 持续集成支持
 
-Let code poem.
+让代码提交更值得信赖.
 
-## Official Documentation
+## 官方文档
 
-Documentation for the framework can be found on the [QueryPHP website](http://www.queryphp.com).
+请访问官方网站即即可查看 [Leevel website](http://www.queryphp.com).
 
-## Thanks
+## 致谢
 
-Thanks my colleague [John.mao](https://github.com/maosea0125) for your selfless help in the development of this project and and let me have a new understanding, it makes QueryPHP more beautiful.
+感谢同事 [毛飞](https://github.com/maosea0125) 在开发这个项目过程中的无私帮助，让我有了很多新的认识, 这让 QueryPHP 变得更加的美好.
 
-Thanks for these excellent projects, we have absorbed a lot of excellent design and ideas, standing on the shoulders of giants for innovation.
+也非常感谢下面的这些优秀的开源软件, 我们也参考了很多的设计与思想, 让我们可以站在巨人的肩膀上保持创新.
 
  * QeePHP: <https://github.com/dualface/qeephp2_x/>
  * Swoole: <https://github.com/swoole/>
@@ -131,6 +130,6 @@ Thanks for these excellent projects, we have absorbed a lot of excellent design 
  * Doctrine: <https://github.com/doctrine/>
  * Phalcon: <https://github.com/phalcon/>
 
-## License
+## 版权协议
 
-The QueryPHP framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+QueryPHP 是一个基于 [MIT license](http://opensource.org/licenses/MIT) 授权许可协议的开源软件.
