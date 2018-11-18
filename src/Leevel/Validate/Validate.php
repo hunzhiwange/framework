@@ -292,6 +292,30 @@ class Validate implements IValidate
     }
 
     /**
+     * 返回所有错误消息.
+     *
+     * @param \Closure $callback
+     *
+     * @return string
+     */
+    public function errorMessage(Closure $callback = null): string
+    {
+        $data = [];
+
+        foreach ($this->errorMessages as $v) {
+            $data = array_merge($data, $v);
+        }
+
+        if (null === $callback) {
+            $callback = function (string $v) {
+                return '<p>'.$v.'</p>';
+            };
+        }
+
+        return implode('', array_map($callback, $data));
+    }
+
+    /**
      * 返回验证数据.
      *
      * @return array
