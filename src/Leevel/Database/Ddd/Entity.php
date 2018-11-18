@@ -1800,7 +1800,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         if ($white || $black) {
             $prop = $this->whiteAndBlack(
-                array_flip($this->leevelChangedProp), $white, $black
+                $this->fields(), $white, $black
             );
         } else {
             $prop = $this->normalizeWhiteAndBlack(
