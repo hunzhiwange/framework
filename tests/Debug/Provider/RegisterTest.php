@@ -73,7 +73,7 @@ class RegisterTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar","@trace":', $content);
+        $this->assertContains('{"foo":"bar",":trace":', $content);
 
         $this->assertContains('"php":{"version":', $content);
 

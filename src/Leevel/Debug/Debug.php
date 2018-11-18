@@ -166,7 +166,7 @@ class Debug extends DebugBar
             ) {
             if ($this->option['json'] && is_array($data = $response->getData())) {
                 $jsonRenderer = $this->getJsonRenderer();
-                $data['@trace'] = $jsonRenderer->render();
+                $data[':trace'] = $jsonRenderer->render();
                 $response->setData($data);
             }
         } elseif (!($response instanceof RedirectResponse)) {

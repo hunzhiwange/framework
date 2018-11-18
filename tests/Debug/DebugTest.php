@@ -110,7 +110,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar","@trace":', $content);
+        $this->assertContains('{"foo":"bar",":trace":', $content);
 
         $this->assertContains('"php":{"version":', $content);
 
@@ -140,7 +140,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar","@trace":', $content);
+        $this->assertContains('{"foo":"bar",":trace":', $content);
 
         $this->assertContains('"php":{"version":', $content);
 
@@ -154,7 +154,7 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+        $this->assertNotContains('{"foo":"bar",":trace":', $content);
 
         $this->assertNotContains('"php":{"version":', $content);
 
@@ -186,7 +186,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+        $this->assertNotContains('{"foo":"bar",":trace":', $content);
 
         $this->assertNotContains('"php":{"version":', $content);
 
@@ -204,7 +204,7 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertContains('{"foo":"bar","@trace":', $content);
+        $this->assertContains('{"foo":"bar",":trace":', $content);
 
         $this->assertContains('"php":{"version":', $content);
 
@@ -230,7 +230,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+        $this->assertNotContains('{"foo":"bar",":trace":', $content);
 
         $this->assertNotContains('"php":{"version":', $content);
 
@@ -248,7 +248,7 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertContains('{"foo":"bar","@trace":', $content);
+        $this->assertContains('{"foo":"bar",":trace":', $content);
 
         $this->assertContains('"php":{"version":', $content);
 
@@ -280,7 +280,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+        $this->assertNotContains('{"foo":"bar",":trace":', $content);
 
         $this->assertNotContains('"php":{"version":', $content);
 
@@ -298,7 +298,7 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertContains('{"foo":"bar","@trace":', $content);
+        $this->assertContains('{"foo":"bar",":trace":', $content);
 
         $this->assertContains('"php":{"version":', $content);
 
@@ -335,7 +335,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar","@trace":', $content);
+        $this->assertContains('{"foo":"bar",":trace":', $content);
 
         $this->assertContains('"php":{"version":', $content);
 
@@ -677,7 +677,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar","@trace":', $content);
+        $this->assertContains('{"foo":"bar",":trace":', $content);
 
         $this->assertContains('"php":{"version":', $content);
 
@@ -691,7 +691,7 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertNotContains('{"foo":"bar","@trace":', $content);
+        $this->assertNotContains('{"foo":"bar",":trace":', $content);
 
         $this->assertNotContains('"php":{"version":', $content);
 
