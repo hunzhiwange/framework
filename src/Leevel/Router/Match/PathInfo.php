@@ -60,8 +60,7 @@ class PathInfo implements IMatch
     {
         $pathInfo = $request->getPathInfo();
         $pathInfo = rtrim($pathInfo, '/').'/';
-        $result = [];
-        $middlewares = [];
+        $result = $middlewares = [];
 
         // 匹配基础路径
         foreach ($router->getBasePaths() as $item => $option) {

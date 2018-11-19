@@ -228,8 +228,6 @@ class RequestTest extends TestCase
             ['her=Jane Doe&him=John%20Doe', 'her=Jane Doe&him=John%20Doe', ''],
             ['foo=bar&&&test&&', 'foo=bar&test', 'removes unneeded delimiters'],
             ['formula=e=m*c^2', 'formula=e=m*c^2', ''],
-            // remove _url 用于 nginx url 重写
-            ['foo=bar&_url=/hello/world', 'foo=bar', ''],
         ];
     }
 

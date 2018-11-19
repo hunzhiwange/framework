@@ -1109,7 +1109,7 @@ class Request implements IRequest, IArray, ArrayAccess
             $queryString = '?'.$queryString;
         }
 
-        return $this->getSchemeAndHttpHost().$this->getBaseUrl().$this->getPathInfo().$queryString;
+        return $this->getSchemeAndHttpHost().rtrim($this->getBaseUrl(), '/').$this->getPathInfo().$queryString;
     }
 
     /**
@@ -1193,9 +1193,10 @@ class Request implements IRequest, IArray, ArrayAccess
             $requestUri = substr($requestUri, 0, $pos);
         }
 
-        if ((null !== $baseUrl) && (false === ($pathInfo = substr($requestUri, strlen($baseUrl))))) {
+        if (null !== $baseUrl &&
+            (false === ($pathInfo = substr($requestUri, strlen($baseUrl))))) {
             $pathInfo = '';
-        } elseif (null === $baseUrl) {
+        } elseif (null === $baseUrl || '/' === $baseUrl) {
             $pathInfo = $requestUri;
         }
 
@@ -1214,6 +1215,7 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $baseUrl = $this->getBaseUrl();
+
         if (empty($baseUrl)) {
             return '';
         }
@@ -1412,7 +1414,6 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     protected function parsePathInfo($pathInfo)
     {
-        // 自动清除后缀
         if ($pathInfo) {
             $ext = pathinfo($pathInfo, PATHINFO_EXTENSION);
 
@@ -1421,7 +1422,7 @@ class Request implements IRequest, IArray, ArrayAccess
             }
         }
 
-        $pathInfo = empty($pathInfo) ? '/' : $pathInfo;
+        $pathInfo = empty($pathInfo) ? '/' : '/'.ltrim($pathInfo, '/');
 
         return $pathInfo;
     }
