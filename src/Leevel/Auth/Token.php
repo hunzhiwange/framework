@@ -116,14 +116,10 @@ class Token extends Connect implements IConnect
      */
     protected function getTokenNameFromRequest(): string
     {
-        $token = $this->request->query($this->option['input_token']);
-
-        if (empty($token)) {
-            $token = $this->request->input($this->option['input_token']);
-        }
+        $token = $this->request->query($this->option['input_token'], '');
 
         if (!$token) {
-            throw new AuthException('Token name was not set.');
+            $token = $this->request->input($this->option['input_token'], '');
         }
 
         return $token;

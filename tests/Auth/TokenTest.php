@@ -94,7 +94,7 @@ class TokenTest extends TestCase
             'Token name was not set.'
         );
 
-        $token = new Token($this->createCache(), $this->createRequestWithoutValue());
+        $token = new Token($this->createCache(), $this->createRequestWithEmptyValue());
 
         $token->isLogin();
     }
@@ -129,8 +129,13 @@ class TokenTest extends TestCase
         return $request;
     }
 
-    protected function createRequestWithoutValue()
+    protected function createRequestWithEmptyValue()
     {
-        return $this->createMock(IRequest::class);
+        $request = $this->createMock(IRequest::class);
+
+        $request->method('input')->willReturn('');
+        $this->assertSame('', $request->input('input_token'));
+
+        return $request;
     }
 }

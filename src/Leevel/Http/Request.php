@@ -1181,13 +1181,6 @@ class Request implements IRequest, IArray, ArrayAccess
             return $this->pathInfo = $this->parsePathInfo($pathInfo);
         }
 
-        // 服务器重写
-        if ($this->query->get(static::PATHINFO_URL)) {
-            $pathInfo = $this->parsePathInfo($this->query->get(static::PATHINFO_URL));
-
-            return $this->pathInfo = $pathInfo;
-        }
-
         // 分析基础 url
         $baseUrl = $this->getBaseUrl();
 
@@ -1449,7 +1442,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $parts = [];
 
         foreach (explode('&', $queryString) as $item) {
-            if (('' === $item && '0' !== $item) || 0 === strpos($item, static::PATHINFO_URL.'=')) {
+            if ('' === $item && '0' !== $item) {
                 continue;
             }
 
