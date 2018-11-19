@@ -104,7 +104,7 @@ EOF;
         $this->setMakeType('action');
 
         // 执行
-        parent::handle();
+        $this->create();
     }
 
     /**

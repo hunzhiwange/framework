@@ -51,7 +51,7 @@ class MakeFile extends Make
 
         $this->setMakeType('test');
 
-        parent::handle();
+        parent::create();
     }
 
     protected function getArguments()

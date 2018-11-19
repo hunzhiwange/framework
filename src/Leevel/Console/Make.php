@@ -91,22 +91,6 @@ abstract class Make extends Command
     protected $namespace;
 
     /**
-     * 响应命令.
-     */
-    public function handle()
-    {
-        // 替换模板变量
-        $this->replaceTemplateSource();
-
-        // 保存文件
-        $this->saveTemplateResult();
-
-        // 保存成功输出消息
-        $this->info(sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->argument('name')));
-        $this->comment($this->formatFile($this->getSaveFilePath()));
-    }
-
-    /**
      * 设置全局变量替换.
      *
      * @param array $replace
@@ -126,6 +110,22 @@ abstract class Make extends Command
     public static function getGlobalReplace(): array
     {
         return static::$globalReplace;
+    }
+
+    /**
+     * 创建文件.
+     */
+    protected function create()
+    {
+        // 替换模板变量
+        $this->replaceTemplateSource();
+
+        // 保存文件
+        $this->saveTemplateResult();
+
+        // 保存成功输出消息
+        $this->info(sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->argument('name')));
+        $this->comment($this->formatFile($this->getSaveFilePath()));
     }
 
     /**

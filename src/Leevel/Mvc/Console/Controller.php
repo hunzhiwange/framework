@@ -100,7 +100,7 @@ EOF;
         $this->setMakeType('controller');
 
         // 执行
-        parent::handle();
+        $this->create();
     }
 
     /**
