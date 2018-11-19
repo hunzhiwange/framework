@@ -1,4 +1,4 @@
-![](queryphp.png)
+<img src="./queryphp.png" />
 
 <p align="center">
   <a href="https://github.styleci.io/repos/91284136"><img src="https://github.styleci.io/repos/91284136/shield?branch=master" alt="StyleCI"></a>
