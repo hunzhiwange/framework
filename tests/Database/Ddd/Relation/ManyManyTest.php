@@ -231,8 +231,6 @@ class ManyManyTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $connect = $this->createDatabaseConnect();
-
         $this->assertSame('1', $connect->
         table('user')->
         insert([
@@ -316,6 +314,6 @@ class ManyManyTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post', 'user_role', 'role'];
+        return ['user', 'user_role', 'role'];
     }
 }
