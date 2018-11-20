@@ -86,9 +86,6 @@ class TestEvent
     }
 }
 
-/**
- * 必须继承至 \Leevel\Event\Observer，因为系统基于 Spl 观察者模式实现的事件.
- */
 abstract class TestListener extends Observer
 {
 }
