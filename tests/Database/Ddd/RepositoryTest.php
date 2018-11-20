@@ -23,16 +23,14 @@ namespace Tests\Database\Ddd;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\ISpecification;
-use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\Repository;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Ddd\Specification;
 use Leevel\Database\Ddd\SpecificationExpression;
 use Leevel\Page\IPage;
 use Leevel\Page\Page;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
 
 /**
  * repository test.
@@ -45,27 +43,9 @@ use Tests\TestCase;
  */
 class RepositoryTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->clear();
-
-        Meta::setDatabaseResolver(function () {
-            return $this->createManager();
-        });
-    }
-
-    protected function tearDown()
-    {
-        $this->clear();
-
-        Meta::setDatabaseResolver(null);
-    }
-
     public function testBase()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -85,13 +65,11 @@ class RepositoryTest extends TestCase
         $this->assertSame('hello world', $newPost->title);
         $this->assertSame('post summary', $newPost->summary);
         $this->assertInstanceof(Post::class, $repository->entity());
-
-        $this->clear();
     }
 
     public function testFind()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -110,13 +88,11 @@ class RepositoryTest extends TestCase
         $this->assertSame('1', $newPost->userId);
         $this->assertSame('hello world', $newPost->title);
         $this->assertSame('post summary', $newPost->summary);
-
-        $this->clear();
     }
 
     public function testFindOrFail()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -135,8 +111,6 @@ class RepositoryTest extends TestCase
         $this->assertSame('1', $newPost->userId);
         $this->assertSame('hello world', $newPost->title);
         $this->assertSame('post summary', $newPost->summary);
-
-        $this->clear();
     }
 
     public function testFindOrFailNotFound()
@@ -153,7 +127,7 @@ class RepositoryTest extends TestCase
 
     public function testSpecWithClosure()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -190,13 +164,11 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(4, count($result));
-
-        $this->truncate('post');
     }
 
     public function testSpecWithClass()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -225,13 +197,11 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(4, count($result));
-
-        $this->truncate('post');
     }
 
     public function testExpr()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -268,13 +238,11 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(4, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindAllBySpecWithClosure()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -310,13 +278,11 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(4, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindAllBySpecWithClass()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -343,13 +309,11 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(4, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindAllByExpr()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -384,13 +348,11 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(4, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindCountBySpecWithClosure()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -424,13 +386,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($andSpec);
 
         $this->assertSame(4, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountBySpecWithClass()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -456,13 +416,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($andSpec);
 
         $this->assertSame(4, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountByExpr()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -496,13 +454,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(4, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindAllBySpecWithClosureForNot()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -533,13 +489,11 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(10, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindAllBySpecWithClosureForNotButValueIsTrue()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -570,13 +524,11 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(7, count($result));
-
-        $this->truncate('post');
     }
 
     public function testSpecWithOrFirstIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -613,13 +565,11 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(7, count($result));
-
-        $this->truncate('post');
     }
 
     public function testSpecWithOrFirstIsYes()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -656,13 +606,11 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(6, count($result));
-
-        $this->truncate('post');
     }
 
     public function testSpecWithOrFirstIsNoSecondAlsoIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -699,13 +647,11 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(10, count($result));
-
-        $this->truncate('post');
     }
 
     public function testSpecMake()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -733,13 +679,11 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(6, count($result));
-
-        $this->truncate('post');
     }
 
     public function testSpecificationExpressionMake()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -764,13 +708,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(7, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithOrClosureFirstIsYes()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -804,13 +746,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(7, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithOrClosureFirstIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -844,13 +784,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(5, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithOrClosureFirstIsNoAndSecondAlsoIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -884,13 +822,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(10, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithOrFirstIsYes()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -924,13 +860,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(7, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithOrFirstIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -964,13 +898,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(5, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithOrFirstIsNoAndSecodeAlsoIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1004,13 +936,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(10, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithAndFirstIsYes()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1044,13 +974,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(2, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithAndFirstIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1084,13 +1012,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(10, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithAndFirstIsYesSecodeIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1124,13 +1050,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(10, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithAndFirstIsNoSecodeIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1164,13 +1088,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(10, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithAndIsYes()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1200,13 +1122,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(10, $result);
-
-        $this->truncate('post');
     }
 
     public function testFindCountWithAndIsNo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1236,13 +1156,11 @@ class RepositoryTest extends TestCase
         $result = $repository->findCount($specExpr);
 
         $this->assertSame(7, $result);
-
-        $this->truncate('post');
     }
 
     public function testCall()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -1261,8 +1179,6 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->userId);
         $this->assertNull($newPost->title);
         $this->assertNull($newPost->summary);
-
-        $this->clear();
     }
 
     public function testCreateFlushed()
@@ -1278,13 +1194,11 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame('5', $newPost->id);
         $this->assertSame('foo', $newPost->title);
-
-        $this->clear();
     }
 
     public function testUpdateFlushed()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -1305,8 +1219,6 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame('1', $newPost->id);
         $this->assertSame('new title', $newPost->title);
-
-        $this->clear();
     }
 
     public function testReplaceFlushed()
@@ -1317,7 +1229,7 @@ class RepositoryTest extends TestCase
             '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
         );
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -1336,7 +1248,7 @@ class RepositoryTest extends TestCase
 
     public function testReplaceFlushed2()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -1369,7 +1281,7 @@ class RepositoryTest extends TestCase
 
     public function testDeleteFlushed()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -1392,13 +1304,11 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->userId);
         $this->assertNull($newPost->title);
         $this->assertNull($newPost->summary);
-
-        $this->clear();
     }
 
     public function testConditionIsClosure()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1424,8 +1334,6 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(7, count($result));
-
-        $this->truncate('post');
     }
 
     public function testConditionTypeIsInvalid()
@@ -1442,7 +1350,7 @@ class RepositoryTest extends TestCase
 
     public function testFindPage()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1477,13 +1385,11 @@ eot;
                     $page
                 )
         );
-
-        $this->truncate('post');
     }
 
     public function testFindPageWithCondition()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1524,13 +1430,11 @@ eot;
                     $page
                 )
         );
-
-        $this->truncate('post');
     }
 
     public function testFindPageHtml()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1550,13 +1454,11 @@ eot;
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(10, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindPageHtmlWithCondition()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1582,13 +1484,11 @@ eot;
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(7, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindPageMacro()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1608,13 +1508,11 @@ eot;
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(10, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindPageMacroWithCondition()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1640,13 +1538,11 @@ eot;
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(7, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindPagePrevNext()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1666,13 +1562,11 @@ eot;
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(10, count($result));
-
-        $this->truncate('post');
     }
 
     public function testFindPagePrevNextWithCondition()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -1698,13 +1592,11 @@ eot;
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertSame(7, count($result));
-
-        $this->truncate('post');
     }
 
-    protected function clear()
+    protected function getDatabaseTable(): array
     {
-        $this->truncate('post');
+        return ['post'];
     }
 }
 

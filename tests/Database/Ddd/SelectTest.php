@@ -22,13 +22,11 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
-use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Select as DatabaseSelect;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
 
 /**
  * select test.
@@ -41,27 +39,9 @@ use Tests\TestCase;
  */
 class SelectTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->clear();
-
-        Meta::setDatabaseResolver(function () {
-            return $this->createManager();
-        });
-    }
-
-    protected function tearDown()
-    {
-        $this->clear();
-
-        Meta::setDatabaseResolver(null);
-    }
-
     public function testBase()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -81,13 +61,11 @@ class SelectTest extends TestCase
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
         $this->assertInstanceof(IEntity::class, $entity);
-
-        $this->clear();
     }
 
     public function testFind()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -105,13 +83,11 @@ class SelectTest extends TestCase
         $this->assertSame('1', $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
-
-        $this->clear();
     }
 
     public function testFindOrFail()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -129,8 +105,6 @@ class SelectTest extends TestCase
         $this->assertSame('1', $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
-
-        $this->clear();
     }
 
     public function testFindOrFailThrowsException()
@@ -146,7 +120,7 @@ class SelectTest extends TestCase
 
     public function testFindMany()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -181,8 +155,6 @@ class SelectTest extends TestCase
         $this->assertSame('1', $post2->userId);
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
-
-        $this->clear();
     }
 
     public function testFindManyWithEmptyIds()
@@ -205,7 +177,7 @@ class SelectTest extends TestCase
 
     public function testSoftDelete()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -248,13 +220,11 @@ class SelectTest extends TestCase
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
         $this->assertNull($post2->delete_at);
-
-        $this->clear();
     }
 
     public function testSoftDestroy()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -297,13 +267,11 @@ class SelectTest extends TestCase
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
         $this->assertNull($post2->delete_at);
-
-        $this->clear();
     }
 
     public function testSoftRestore()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -354,13 +322,11 @@ class SelectTest extends TestCase
 
         $restorePost1 = Post::find(1);
         $this->assertNull($restorePost1->delete_at);
-
-        $this->clear();
     }
 
     public function testWithoutSoftDeleted()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -398,13 +364,11 @@ class SelectTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertSame(1, count($posts));
-
-        $this->clear();
     }
 
     public function testOnlySoftDeleted()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -442,8 +406,6 @@ class SelectTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertSame(1, count($posts));
-
-        $this->clear();
     }
 
     public function testDeleteAtColumnNotFound()
@@ -459,7 +421,7 @@ class SelectTest extends TestCase
 
     public function testScopeBase()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -497,13 +459,11 @@ class SelectTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $result4);
         $this->assertSame(5, count($result4));
-
-        $this->clear();
     }
 
     public function testScopeClosure()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
             $connect->
@@ -535,13 +495,10 @@ class SelectTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $result2);
         $this->assertSame(3, count($result2));
-
-        $this->clear();
     }
 
-    protected function clear()
+    protected function getDatabaseTable(): array
     {
-        $this->truncate('post');
-        $this->truncate('post_content');
+        return ['post', 'post_content'];
     }
 }

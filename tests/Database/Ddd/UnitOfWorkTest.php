@@ -22,14 +22,12 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IUnitOfWork;
-use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\UnitOfWork;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Guestbook;
 use Tests\Database\Ddd\Entity\GuestbookRepository;
 use Tests\Database\Ddd\Entity\Relation\Post;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
 use Throwable;
 
 /**
@@ -43,24 +41,6 @@ use Throwable;
  */
 class UnitOfWorkTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->clear();
-
-        Meta::setDatabaseResolver(function () {
-            return $this->createManager();
-        });
-    }
-
-    protected function tearDown()
-    {
-        $this->clear();
-
-        Meta::setDatabaseResolver(null);
-    }
-
     public function testBaseUse()
     {
         $work = UnitOfWork::make();
@@ -85,8 +65,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('1', $post->getId());
         $this->assertSame(1, $post->userId);
         $this->assertSame('post summary', $post->summary);
-
-        $this->clear();
     }
 
     public function testPersist()
@@ -128,8 +106,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('2', $post2->getId());
         $this->assertSame(2, $post2->userId);
         $this->assertSame('foo bar', $post2->summary);
-
-        $this->clear();
     }
 
     public function testCreate()
@@ -184,8 +160,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('2', $post2->getId());
         $this->assertSame(2, $post2->userId);
         $this->assertSame('foo bar', $post2->summary);
-
-        $this->clear();
     }
 
     public function testUpdate()
@@ -195,7 +169,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -275,8 +249,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('2', $post2->userId);
         $this->assertSame('new post2 title', $post2->title);
         $this->assertSame('new post2 summary', $post2->summary);
-
-        $this->clear();
     }
 
     public function testDelete()
@@ -286,7 +258,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -364,8 +336,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($post2After->userId);
         $this->assertNull($post2After->title);
         $this->assertNull($post2After->summary);
-
-        $this->clear();
     }
 
     public function testRefresh()
@@ -375,7 +345,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -415,8 +385,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('1', $post->userId);
         $this->assertSame('post summary', $post->summary);
         $this->assertSame('hello world', $post->title);
-
-        $this->clear();
     }
 
     public function testBeginTransaction()
@@ -426,7 +394,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -453,8 +421,6 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $post->getId());
         $this->assertSame('new title', $post->getTitle());
-
-        $this->clear();
     }
 
     public function testFlushButRollBack()
@@ -491,7 +457,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -512,8 +478,6 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $newPost->getId());
         $this->assertSame('new title', $newPost->getTitle());
-
-        $this->clear();
     }
 
     public function testTransactionAndRollBack()
@@ -528,7 +492,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $work->transaction(function ($w) {
             $post = new Post([
@@ -548,8 +512,6 @@ class UnitOfWorkTest extends TestCase
         });
 
         $this->assertSame(0, $connect->table('post')->findCount());
-
-        $this->clear();
     }
 
     public function testSetRootEntity()
@@ -559,7 +521,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(UnitOfWork::class, $work);
         $this->assertInstanceof(IUnitOfWork::class, $work);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -586,24 +548,20 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $newPost->getId());
         $this->assertSame('new title', $newPost->getTitle());
-
-        $this->clear();
     }
 
     public function testFlushButNotFoundAny()
     {
         $work = UnitOfWork::make(new Post());
 
-        $work->flush();
-
-        $this->clear();
+        $this->assertNull($work->flush());
     }
 
     public function testPersistStageManagedEntityDoNothing()
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post([
             'id'      => 1,
@@ -617,15 +575,13 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(1, $connect->table('post')->findCount());
-
-        $this->clear();
     }
 
     public function testPersistStageRemovedEntityBefore()
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -646,15 +602,13 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(0, $connect->table('post')->findCount());
-
-        $this->clear();
     }
 
     public function testPersistStageRemovedEntity()
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -677,8 +631,6 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(1, $connect->table('post')->findCount());
-
-        $this->clear();
     }
 
     public function testCreateButAlreadyInUpdates()
@@ -738,7 +690,7 @@ class UnitOfWorkTest extends TestCase
 
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post(['title' => 'foo']);
 
@@ -803,7 +755,7 @@ class UnitOfWorkTest extends TestCase
 
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post(['id' => 1, 'title' => 'foo']);
 
@@ -820,7 +772,7 @@ class UnitOfWorkTest extends TestCase
 
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post(['title' => 'foo']);
 
@@ -831,7 +783,7 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post(['title' => 'foo']);
 
@@ -841,15 +793,13 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(0, $connect->table('post')->findCount());
-
-        $this->clear();
     }
 
     public function testDeleteUpdated()
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -873,15 +823,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
         $this->assertNull($postNew->id);
         $this->assertNull($postNew->title);
-
-        $this->clear();
     }
 
     public function testDeleteReplaced()
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -905,8 +853,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
         $this->assertNull($postNew->id);
         $this->assertNull($postNew->title);
-
-        $this->clear();
     }
 
     public function testRefreshButNotIsStageManaged()
@@ -969,8 +915,6 @@ class UnitOfWorkTest extends TestCase
         $work->remove($post = new Post());
 
         $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
-
-        $this->clear();
     }
 
     public function testRemoveStageRemovedDoNothing()
@@ -984,8 +928,6 @@ class UnitOfWorkTest extends TestCase
         $work->remove($post);
 
         $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
-
-        $this->clear();
     }
 
     public function testRemoveStageManagedWillDelete()
@@ -1006,15 +948,13 @@ class UnitOfWorkTest extends TestCase
         $work->remove($post);
 
         $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
-
-        $this->clear();
     }
 
     public function testPersistAsSaveUpdate()
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post([
             'id'      => 1,
@@ -1027,15 +967,13 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(0, $connect->table('post')->findCount());
-
-        $this->clear();
     }
 
     public function testPersistAsUpdate()
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post([
             'id'      => 1,
@@ -1048,8 +986,6 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(0, $connect->table('post')->findCount());
-
-        $this->clear();
     }
 
     public function testPersistAsReplace()
@@ -1062,7 +998,7 @@ class UnitOfWorkTest extends TestCase
 
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -1171,7 +1107,7 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -1243,8 +1179,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(Post::class, $createPost);
         $this->assertSame('1', $createPost->id);
         $this->assertSame('new', $createPost->title);
-
-        $this->clear();
     }
 
     public function testReplaceAsUpdate()
@@ -1257,7 +1191,7 @@ class UnitOfWorkTest extends TestCase
 
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -1317,7 +1251,7 @@ class UnitOfWorkTest extends TestCase
 
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post(['title' => 'foo']);
 
@@ -1348,7 +1282,7 @@ class UnitOfWorkTest extends TestCase
 
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post(['id' => 1, 'title' => 'foo']);
 
@@ -1360,7 +1294,7 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post(['id' => 1, 'title' => 'foo']);
 
@@ -1375,7 +1309,7 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $post = new Post(['title' => 'foo']);
 
@@ -1388,11 +1322,9 @@ class UnitOfWorkTest extends TestCase
 
     public function testPersistAsCompositeIdReplace()
     {
-        $this->truncate('composite_id');
-
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $compositeId = new CompositeId([
             'id1'      => 1,
@@ -1405,18 +1337,13 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(1, $connect->table('composite_id')->findCount());
-
-        $this->truncate('composite_id');
-        $this->clear();
     }
 
     public function testPersistAsCompositeIdReplace2()
     {
-        $this->truncate('composite_id');
-
         $work = UnitOfWork::make();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $compositeId = new CompositeId([
             'id1'      => 1,
@@ -1429,14 +1356,10 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(1, $connect->table('composite_id')->findCount());
-
-        $this->truncate('composite_id');
-        $this->clear();
     }
 
-    protected function clear()
+    protected function getDatabaseTable(): array
     {
-        $this->truncate('post');
-        $this->truncate('guest_book');
+        return ['post', 'guest_book', 'composite_id'];
     }
 }
