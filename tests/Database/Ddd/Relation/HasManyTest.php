@@ -21,13 +21,11 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\Relation\HasMany;
 use Leevel\Database\Ddd\Select;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Comment;
 use Tests\Database\Ddd\Entity\Relation\Post;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
 
 /**
  * hasMany test.
@@ -40,26 +38,6 @@ use Tests\TestCase;
  */
 class HasManyTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('post');
-        $this->truncate('comment');
-
-        Meta::setDatabaseResolver(function () {
-            return $this->createManager();
-        });
-    }
-
-    protected function tearDown()
-    {
-        $this->truncate('post');
-        $this->truncate('comment');
-
-        Meta::setDatabaseResolver(null);
-    }
-
     public function testBaseUse()
     {
         $post = Post::where('id', 1)->findOne();
@@ -67,7 +45,7 @@ class HasManyTest extends TestCase
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -127,9 +105,6 @@ class HasManyTest extends TestCase
         }
 
         $this->assertSame(6, count($comment));
-
-        $this->truncate('post');
-        $this->truncate('comment');
     }
 
     public function testEager()
@@ -139,7 +114,7 @@ class HasManyTest extends TestCase
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -197,14 +172,11 @@ class HasManyTest extends TestCase
                 $min++;
             }
         }
-
-        $this->truncate('post');
-        $this->truncate('comment');
     }
 
     public function testRelationAsMethod()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -232,8 +204,10 @@ class HasManyTest extends TestCase
         $this->assertInstanceof(Post::class, $commentRelation->getSourceEntity());
         $this->assertInstanceof(Comment::class, $commentRelation->getTargetEntity());
         $this->assertInstanceof(Select::class, $commentRelation->getSelect());
+    }
 
-        $this->truncate('post');
-        $this->truncate('comment');
+    protected function getDatabaseTable(): array
+    {
+        return ['post', 'comment'];
     }
 }

@@ -21,14 +21,12 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\Relation\ManyMany;
 use Leevel\Database\Ddd\Select;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Role;
 use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\Relation\UserRole;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
 
 /**
  * manyMany test.
@@ -41,28 +39,6 @@ use Tests\TestCase;
  */
 class ManyManyTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('user');
-        $this->truncate('user_role');
-        $this->truncate('role');
-
-        Meta::setDatabaseResolver(function () {
-            return $this->createManager();
-        });
-    }
-
-    protected function tearDown()
-    {
-        $this->truncate('user');
-        $this->truncate('user_role');
-        $this->truncate('role');
-
-        Meta::setDatabaseResolver(null);
-    }
-
     public function testBaseUse()
     {
         $user = User::where('id', 1)->findOne();
@@ -70,7 +46,7 @@ class ManyManyTest extends TestCase
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('user')->
@@ -156,10 +132,6 @@ class ManyManyTest extends TestCase
         $this->assertInstanceof(UserRole::class, $middle);
         $this->assertSame('1', $middle->userId);
         $this->assertSame('3', $middle->roleId);
-
-        $this->truncate('user');
-        $this->truncate('user_role');
-        $this->truncate('role');
     }
 
     public function testEager()
@@ -169,7 +141,7 @@ class ManyManyTest extends TestCase
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('user')->
@@ -253,17 +225,13 @@ class ManyManyTest extends TestCase
         $middle = $role[1]->middle();
         $this->assertSame('1', $middle->userId);
         $this->assertSame('3', $middle->roleId);
-
-        $this->truncate('user');
-        $this->truncate('user_role');
-        $this->truncate('role');
     }
 
     public function testRelationAsMethod()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('user')->
@@ -314,10 +282,6 @@ class ManyManyTest extends TestCase
         $this->assertInstanceof(Role::class, $roleRelation->getTargetEntity());
         $this->assertInstanceof(UserRole::class, $roleRelation->getMiddleEntity());
         $this->assertInstanceof(Select::class, $roleRelation->getSelect());
-
-        $this->truncate('user');
-        $this->truncate('user_role');
-        $this->truncate('role');
     }
 
     public function testNotFoundData()
@@ -327,7 +291,7 @@ class ManyManyTest extends TestCase
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('user')->
@@ -348,7 +312,10 @@ class ManyManyTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $role);
         $this->assertSame(0, count($role));
+    }
 
-        $this->truncate('user');
+    protected function getDatabaseTable(): array
+    {
+        return ['post', 'user_role', 'role'];
     }
 }

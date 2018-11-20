@@ -21,13 +21,11 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\Meta;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\Role;
 use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\Relation\UserRole;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
 
 /**
  * nested test.
@@ -40,24 +38,6 @@ use Tests\TestCase;
  */
 class NestedTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->clear();
-
-        Meta::setDatabaseResolver(function () {
-            return $this->createManager();
-        });
-    }
-
-    protected function tearDown()
-    {
-        $this->clear();
-
-        Meta::setDatabaseResolver(null);
-    }
-
     public function testBase()
     {
         $posts = Post::limit(5)->findAll();
@@ -65,7 +45,7 @@ class NestedTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertSame(0, count($posts));
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i <= 5; $i++) {
             $this->assertSame((string) ($i + 1), $connect->
@@ -184,15 +164,10 @@ class NestedTest extends TestCase
         $this->assertInstanceof(UserRole::class, $middle);
         $this->assertSame('1', $middle->userId);
         $this->assertSame('3', $middle->roleId);
-
-        $this->clear();
     }
 
-    protected function clear()
+    protected function getDatabaseTable(): array
     {
-        $this->truncate('post');
-        $this->truncate('user_role');
-        $this->truncate('role');
-        $this->truncate('user');
+        return ['post', 'user_role', 'role', 'user'];
     }
 }

@@ -21,13 +21,11 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Select;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
 
 /**
  * hasOne test.
@@ -40,26 +38,6 @@ use Tests\TestCase;
  */
 class HasOneTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('post');
-        $this->truncate('post_content');
-
-        Meta::setDatabaseResolver(function () {
-            return $this->createManager();
-        });
-    }
-
-    protected function tearDown()
-    {
-        $this->truncate('post');
-        $this->truncate('post_content');
-
-        Meta::setDatabaseResolver(null);
-    }
-
     public function testBaseUse()
     {
         $post = Post::where('id', 1)->findOne();
@@ -67,7 +45,7 @@ class HasOneTest extends TestCase
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -111,9 +89,6 @@ class HasOneTest extends TestCase
         $this->assertSame('I am content with big data.', $postContent->content);
         $this->assertSame('I am content with big data.', $postContent['content']);
         $this->assertSame('I am content with big data.', $postContent->getContent());
-
-        $this->truncate('post');
-        $this->truncate('post_content');
     }
 
     public function testEager()
@@ -123,7 +98,7 @@ class HasOneTest extends TestCase
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i <= 5; $i++) {
             $this->assertSame((string) ($i + 1), $connect->
@@ -154,14 +129,11 @@ class HasOneTest extends TestCase
             $this->assertSame($value->id, $postContent->postId);
             $this->assertSame('I am content with big data.', $postContent->content);
         }
-
-        $this->truncate('post');
-        $this->truncate('post_content');
     }
 
     public function testRelationAsMethod()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -186,8 +158,10 @@ class HasOneTest extends TestCase
         $this->assertInstanceof(Post::class, $postContentRelation->getSourceEntity());
         $this->assertInstanceof(PostContent::class, $postContentRelation->getTargetEntity());
         $this->assertInstanceof(Select::class, $postContentRelation->getSelect());
+    }
 
-        $this->truncate('post');
-        $this->truncate('post_content');
+    protected function getDatabaseTable(): array
+    {
+        return ['post', 'post_content'];
     }
 }

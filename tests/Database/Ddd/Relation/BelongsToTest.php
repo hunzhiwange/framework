@@ -21,13 +21,11 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\Relation\BelongsTo;
 use Leevel\Database\Ddd\Select;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
 
 /**
  * belongs test.
@@ -40,26 +38,6 @@ use Tests\TestCase;
  */
 class BelongsToTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('post');
-        $this->truncate('user');
-
-        Meta::setDatabaseResolver(function () {
-            return $this->createManager();
-        });
-    }
-
-    protected function tearDown()
-    {
-        $this->truncate('post');
-        $this->truncate('user');
-
-        Meta::setDatabaseResolver(null);
-    }
-
     public function testBaseUse()
     {
         $post = Post::where('id', 1)->findOne();
@@ -67,7 +45,7 @@ class BelongsToTest extends TestCase
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -108,9 +86,6 @@ class BelongsToTest extends TestCase
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());
-
-        $this->truncate('post');
-        $this->truncate('user');
     }
 
     public function testEager()
@@ -120,7 +95,7 @@ class BelongsToTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertSame(0, count($posts));
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i <= 5; $i++) {
             $this->assertSame((string) ($i + 1), $connect->
@@ -150,14 +125,11 @@ class BelongsToTest extends TestCase
             $this->assertSame('1', $user->id);
             $this->assertSame('niu', $user->name);
         }
-
-        $this->truncate('post');
-        $this->truncate('user');
     }
 
     public function testRelationAsMethod()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
         table('post')->
@@ -181,9 +153,6 @@ class BelongsToTest extends TestCase
         $this->assertInstanceof(Post::class, $userRelation->getSourceEntity());
         $this->assertInstanceof(User::class, $userRelation->getTargetEntity());
         $this->assertInstanceof(Select::class, $userRelation->getSelect());
-
-        $this->truncate('post');
-        $this->truncate('user');
     }
 
     public function testEagerButNotFoundSourceData()
@@ -197,5 +166,10 @@ class BelongsToTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertSame(0, count($posts));
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['post', 'user'];
     }
 }
