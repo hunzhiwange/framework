@@ -113,6 +113,16 @@ abstract class KernelConsole implements IKernelConsole
     }
 
     /**
+     * 初始化.
+     *
+     * @codeCoverageIgnore
+     */
+    public function bootstrap(): void
+    {
+        $this->project->bootstrap($this->bootstraps);
+    }
+
+    /**
      * 返回项目.
      *
      * @return \Leevel\Kernel\IProject
@@ -143,16 +153,6 @@ abstract class KernelConsole implements IKernelConsole
     protected function registerBaseService(): void
     {
         $this->project->instance('request', Request::createFromGlobals());
-    }
-
-    /**
-     * 初始化.
-     *
-     * @codeCoverageIgnore
-     */
-    protected function bootstrap(): void
-    {
-        $this->project->bootstrap($this->bootstraps);
     }
 
     /**

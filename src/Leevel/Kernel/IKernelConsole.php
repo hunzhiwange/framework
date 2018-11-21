@@ -53,6 +53,11 @@ interface IKernelConsole
     public function terminate(int $status, InputInterface $input = null): void;
 
     /**
+     * 初始化.
+     */
+    public function bootstrap(): void;
+
+    /**
      * 返回项目.
      *
      * @return \Leevel\Kernel\IProject

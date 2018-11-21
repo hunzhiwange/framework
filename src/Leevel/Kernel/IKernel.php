@@ -52,6 +52,11 @@ interface IKernel
     public function terminate(IRequest $request, IResponse $response): void;
 
     /**
+     * 初始化.
+     */
+    public function bootstrap(): void;
+
+    /**
      * 返回项目.
      *
      * @return \Leevel\Kernel\IProject
