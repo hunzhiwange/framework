@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * time test.
@@ -33,11 +33,9 @@ use Tests\TestCase;
  */
 class TimeTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -70,7 +68,7 @@ eot;
 
     public function testWhereDay()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -104,7 +102,7 @@ eot;
 
     public function testWhereDayWillFormatInt()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -138,7 +136,7 @@ eot;
 
     public function testWhereDayWillFormatInt2()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -172,7 +170,7 @@ eot;
 
     public function testWhereMonth()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -206,7 +204,7 @@ eot;
 
     public function testWhereMonthFormatInt()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -240,7 +238,7 @@ eot;
 
     public function testWhereMonthFormatInt2()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -274,7 +272,7 @@ eot;
 
     public function testWhereYear()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -307,7 +305,7 @@ eot;
 
     public function testWhereYearFormatYear()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -340,7 +338,7 @@ eot;
 
     public function testWhereYearFormatYear2()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -373,7 +371,7 @@ eot;
 
     public function testTime()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -410,7 +408,7 @@ eot;
 
     public function testTimeDateIsDefault()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -447,7 +445,7 @@ eot;
 
     public function testTimeDay()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -485,7 +483,7 @@ eot;
 
     public function testTimeMonth()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -523,7 +521,7 @@ eot;
 
     public function testTimeYear()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -560,7 +558,7 @@ eot;
 
     public function testTimeMulti()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -621,7 +619,7 @@ eot;
 
     public function testTimeMultiWithoutEndTime()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -679,7 +677,7 @@ eot;
            'Please enter a right time of strtotime.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -695,7 +693,7 @@ eot;
            'Days can only be less than 31,but 40 given.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -711,7 +709,7 @@ eot;
            'Months can only be less than 12,but 13 given.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -727,7 +725,7 @@ eot;
            'Time type `foo` is invalid.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -744,7 +742,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -796,7 +794,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -848,7 +846,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -898,7 +896,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

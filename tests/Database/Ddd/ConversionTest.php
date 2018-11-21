@@ -23,8 +23,8 @@ namespace Tests\Database\Ddd;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestConversionEntity;
-use Tests\TestCase;
 
 /**
  * conversion test.

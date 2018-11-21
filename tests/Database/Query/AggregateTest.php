@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * aggregate test.
@@ -33,11 +33,9 @@ use Tests\TestCase;
  */
 class AggregateTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -133,7 +131,7 @@ eot;
 
     public function testAvg()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -160,7 +158,7 @@ eot;
 
     public function testMax()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -187,7 +185,7 @@ eot;
 
     public function testMin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -214,7 +212,7 @@ eot;
 
     public function testSum()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -243,7 +241,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -280,7 +278,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -317,7 +315,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -354,7 +352,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -391,7 +389,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -428,7 +426,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -465,7 +463,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -502,7 +500,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -539,7 +537,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -576,7 +574,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

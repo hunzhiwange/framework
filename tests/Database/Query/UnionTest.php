@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * union test.
@@ -33,11 +33,9 @@ use Tests\TestCase;
  */
 class UnionTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -82,7 +80,7 @@ eot;
 
     public function testUnionAll()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -113,7 +111,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -154,7 +152,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -195,7 +193,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -236,7 +234,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -280,7 +278,7 @@ eot;
             'Invalid UNION type `NOT FOUND`.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $union1 = 'SELECT id,value FROM test2';
 

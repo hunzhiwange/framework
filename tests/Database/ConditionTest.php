@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * condition test.
@@ -34,11 +33,9 @@ use Tests\TestCase;
  */
 class ConditionTest extends TestCase
 {
-    use Query;
-
     public function testForPage()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -65,7 +62,7 @@ eot;
 
     public function testParseFormNotSet()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -92,7 +89,7 @@ eot;
 
     public function testMakeSql()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -114,7 +111,7 @@ eot;
 
     public function testMakeSqlWithLogicGroup()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

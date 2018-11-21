@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * join test.
@@ -33,11 +33,9 @@ use Tests\TestCase;
  */
 class JoinTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -135,7 +133,7 @@ eot;
 
     public function testInnerJoin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -162,7 +160,7 @@ eot;
 
     public function testRightJoin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -189,7 +187,7 @@ eot;
 
     public function testFullJoin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -216,7 +214,7 @@ eot;
 
     public function testCrossJoin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -243,7 +241,7 @@ eot;
 
     public function testNaturalJoin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -272,7 +270,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -309,7 +307,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -346,7 +344,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -386,7 +384,7 @@ eot;
            'JOIN queries cannot be used while using UNION queries.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $union = 'SELECT id,value FROM test2';
 
@@ -401,7 +399,7 @@ eot;
 
     public function testInnerJoinWithTableIsSelect()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -430,7 +428,7 @@ eot;
 
     public function testInnerJoinWithTableIsCondition()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -459,7 +457,7 @@ eot;
 
     public function testInnerJoinWithTableIsClosure()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -490,7 +488,7 @@ eot;
 
     public function testInnerJoinWithTableIsArrayCondition()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -524,7 +522,7 @@ eot;
            'Alias must be string,but integer given.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $joinTable = $connect->table('foo as b')->databaseCondition();
 
@@ -537,7 +535,7 @@ eot;
 
     public function testInnerJsonWithTableNameIsExpression()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -564,7 +562,7 @@ eot;
 
     public function testInnerJsonWithTableNameIsExpressionWithAsCustomAlias()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

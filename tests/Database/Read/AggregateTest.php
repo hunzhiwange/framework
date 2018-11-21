@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Read;
 
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * aggregate test.
@@ -34,11 +33,9 @@ use Tests\TestCase;
  */
 class AggregateTest extends TestCase
 {
-    use Query;
-
     public function testCount()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -102,7 +99,7 @@ eot;
 
     public function testAvg()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -166,7 +163,7 @@ eot;
 
     public function testMax()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -230,7 +227,7 @@ eot;
 
     public function testMin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -294,7 +291,7 @@ eot;
 
     public function testSum()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -358,7 +355,7 @@ eot;
 
     public function testAvgWithTable()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * where test.
@@ -33,11 +33,9 @@ use Tests\TestCase;
  */
 class WhereTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         // 字段 （表达式） 值
         $sql = <<<'eot'
@@ -115,7 +113,7 @@ eot;
 
     public function testArray()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -168,7 +166,7 @@ eot;
 
     public function testOrWhere()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -197,7 +195,7 @@ eot;
 
     public function testWhereBetween()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -273,7 +271,7 @@ eot;
 
     public function testWhereNotBetween()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -323,7 +321,7 @@ eot;
 
     public function testWhereIn()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -396,7 +394,7 @@ eot;
 
     public function testWhereNotIn()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -446,7 +444,7 @@ eot;
 
     public function testWhereNull()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -485,7 +483,7 @@ eot;
 
     public function testWhereNotNull()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -524,7 +522,7 @@ eot;
 
     public function testWhereLike()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -563,7 +561,7 @@ eot;
 
     public function testWhereNotLike()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -602,7 +600,7 @@ eot;
 
     public function testWhereExists()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -720,7 +718,7 @@ eot;
 
     public function testWhereNotExists()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -751,7 +749,7 @@ eot;
 
     public function testWhereGroup()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -811,7 +809,7 @@ eot;
 
     public function testConditionalExpression()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -838,7 +836,7 @@ eot;
 
     public function testArrayKeyAsField()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -873,7 +871,7 @@ eot;
 
     public function testSupportString()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -907,7 +905,7 @@ eot;
             'String__ type only supports string,but array given.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -925,7 +923,7 @@ eot;
             'String__ type only supports string,but integer given.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -938,7 +936,7 @@ eot;
 
     public function testSupportSubandSubor()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1014,7 +1012,7 @@ eot;
             'Select do not implement magic method whereNotSupportMethod.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -1027,7 +1025,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1064,7 +1062,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1101,7 +1099,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1138,7 +1136,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1175,7 +1173,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1220,7 +1218,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1265,7 +1263,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1310,7 +1308,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1353,7 +1351,7 @@ eot;
 
     public function testWhereFieldWithTable()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1385,7 +1383,7 @@ eot;
             'The [not] between parameter value must be an array which not less than two elements.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -1401,7 +1399,7 @@ eot;
             'The [not] between parameter value must be an array which not less than two elements.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table('test')->
 
@@ -1412,7 +1410,7 @@ eot;
 
     public function testWhereBetweenArrayItemIsClosure()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1441,7 +1439,7 @@ eot;
 
     public function testWhereInArrayItemIsClosure()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1470,7 +1468,7 @@ eot;
 
     public function testWhereBetweenArrayItemIsExpression()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1497,7 +1495,7 @@ eot;
 
     public function testWhereInArrayItemIsExpression()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1524,7 +1522,7 @@ eot;
 
     public function testWhereBetweenArrayItemIsSelect()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1553,7 +1551,7 @@ eot;
 
     public function testWhereInArrayItemIsSelect()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1582,7 +1580,7 @@ eot;
 
     public function testWhereBetweenArrayItemIsCondition()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1611,7 +1609,7 @@ eot;
 
     public function testWhereInArrayItemIsCondition()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1640,7 +1638,7 @@ eot;
 
     public function testWhereInIsClosure()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1669,7 +1667,7 @@ eot;
 
     public function testWhereInIsSubString()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1698,7 +1696,7 @@ eot;
 
     public function testWhereInIsSubIsSelect()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1727,7 +1725,7 @@ eot;
 
     public function testWhereEqualIsSub()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

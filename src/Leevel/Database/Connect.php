@@ -130,9 +130,7 @@ abstract class Connect
      */
     public function __destruct()
     {
-        $this->freePDOStatement();
-
-        $this->closeDatabase();
+        $this->close();
     }
 
     /**
@@ -400,6 +398,16 @@ abstract class Connect
     }
 
     /**
+     * 关闭数据库.
+     */
+    public function close()
+    {
+        $this->freePDOStatement();
+
+        $this->closeConnects();
+    }
+
+    /**
      * 释放 PDO 预处理查询.
      */
     public function freePDOStatement()
@@ -410,7 +418,7 @@ abstract class Connect
     /**
      * 关闭数据库连接.
      */
-    public function closeDatabase()
+    public function closeConnects()
     {
         $this->connects = [];
         $this->connect = null;

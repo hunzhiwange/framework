@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestToArrayBlackEntity;
 use Tests\Database\Ddd\Entity\TestToArrayEntity;
 use Tests\Database\Ddd\Entity\TestToArrayWhiteEntity;
-use Tests\TestCase;
 
 /**
  * toArray test.

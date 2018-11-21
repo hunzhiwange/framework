@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Read;
 
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * findAll test.
@@ -34,11 +33,9 @@ use Tests\TestCase;
  */
 class FindAllTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -78,7 +75,7 @@ eot;
 
     public function testFromOneToAll()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

@@ -25,8 +25,7 @@ use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
 use PDO;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * register test.
@@ -39,18 +38,6 @@ use Tests\TestCase;
  */
 class RegisterTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('guest_book');
-    }
-
-    protected function tearDown()
-    {
-        $this->setUp();
-    }
-
     public function testBaseUse()
     {
         $test = new Register($container = $this->createContainer());
@@ -78,7 +65,7 @@ class RegisterTest extends TestCase
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $this->truncate('guest_book');
+        $manager->close();
     }
 
     public function testUseAlias()
@@ -108,7 +95,12 @@ class RegisterTest extends TestCase
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
 
-        $this->truncate('guest_book');
+        $manager->close();
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['guest_book'];
     }
 
     protected function createContainer(): Container

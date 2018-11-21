@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Create;
 
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * insertall test.
@@ -34,11 +33,9 @@ use Tests\TestCase;
  */
 class InsertAllTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -101,7 +98,7 @@ eot;
 
     public function testBind()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -217,7 +214,7 @@ eot;
 
     public function testWithBindFunction()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -282,7 +279,7 @@ eot;
 
     public function testReplace()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -352,7 +349,7 @@ eot;
             'Data for insertAll is not invalid.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $data = [
             ['name' => '小鸭子1', 'value' => '呱呱呱1'],
@@ -373,7 +370,7 @@ eot;
             'Data for insertAll is not invalid.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $data = [
             ['name' => '小鸭子1', 'value' => '呱呱呱1'],

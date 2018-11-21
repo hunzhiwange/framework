@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Update;
 
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * updateIncrease test.
@@ -34,11 +33,9 @@ use Tests\TestCase;
  */
 class UpdateIncreaseTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -63,7 +60,7 @@ eot;
 
     public function testExpression()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

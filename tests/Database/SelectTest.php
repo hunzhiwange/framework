@@ -25,8 +25,7 @@ use Leevel\Page\IPage;
 use Leevel\Page\Page;
 use PDO;
 use stdClass;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * select test.
@@ -39,21 +38,9 @@ use Tests\TestCase;
  */
 class SelectTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('guest_book');
-    }
-
-    protected function tearDown()
-    {
-        $this->setUp();
-    }
-
     public function testMaster()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -80,7 +67,7 @@ eot;
 
     public function testMasterIsFalse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -107,7 +94,7 @@ eot;
 
     public function testFetchArgs()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -133,13 +120,11 @@ eot;
         $this->assertSame('tom', $result[1]);
         $this->assertSame('I love movie.', $result[2]);
         $this->assertContains(date('Y-m-d'), $result[3]);
-
-        $this->truncate('guest_book');
     }
 
     public function testFetchArgsColumn()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -174,13 +159,11 @@ eot;
                 $result
             )
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testFetchArgsClass()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -216,13 +199,11 @@ eot;
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
-
-        $this->truncate('guest_book');
     }
 
     public function testFetchArgsClassWithArgs()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -262,13 +243,11 @@ eot;
         $this->assertSame('I love movie.', $result->content);
         $this->assertSame('foo', $result->arg1);
         $this->assertSame('bar', $result->arg2);
-
-        $this->truncate('guest_book');
     }
 
     public function testFetchArgsColumnGroup()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -320,13 +299,11 @@ eot;
                 $result
             )
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testAsClass()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -362,8 +339,6 @@ eot;
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
-
-        $this->truncate('guest_book');
     }
 
     public function testAsClassButClassNotFound()
@@ -373,7 +348,7 @@ eot;
             'The class of query `\\Tests\\Database\\ClassNotFound` was not found.'
         );
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $result = $connect->table('guest_book')->
 
@@ -388,7 +363,7 @@ eot;
 
     public function testAsCollectionAsDefault()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -424,13 +399,11 @@ eot;
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
-
-        $this->truncate('guest_book');
     }
 
     public function testAsCollectionAsDefaultAndNotFound()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -465,13 +438,11 @@ eot;
 
         $this->assertNull($result->name);
         $this->assertNull($result->content);
-
-        $this->truncate('guest_book');
     }
 
     public function testAsCollectionAsDefaultFindAll()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -538,13 +509,11 @@ eot;
 
             $n++;
         }
-
-        $this->truncate('guest_book');
     }
 
     public function testAsCollectionAsClassFindAll()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -613,13 +582,11 @@ eot;
 
             $n++;
         }
-
-        $this->truncate('guest_book');
     }
 
     public function testValue()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -641,13 +608,11 @@ eot;
 
         $this->assertSame('tom', $name);
         $this->assertSame('I love movie.', $content);
-
-        $this->truncate('guest_book');
     }
 
     public function testList()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -673,13 +638,11 @@ eot;
                 $result
             )
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testList2()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -705,13 +668,11 @@ eot;
                 $result
             )
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testList3()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -737,13 +698,11 @@ eot;
                 $result
             )
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testList4()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -769,13 +728,11 @@ eot;
                 $result
             )
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testChunk()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -807,13 +764,11 @@ eot;
 
             $n++;
         });
-
-        $this->truncate('guest_book');
     }
 
     public function testChunkWhenReturnFalseAndBreak()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -850,13 +805,11 @@ eot;
 
             $n++;
         });
-
-        $this->truncate('guest_book');
     }
 
     public function testEach()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -885,13 +838,11 @@ eot;
 
             $n++;
         });
-
-        $this->truncate('guest_book');
     }
 
     public function testPageCount()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -909,13 +860,11 @@ eot;
 
         $this->assertSame(6, $connect->table('guest_book')->
         pageCount('id'));
-
-        $this->truncate('guest_book');
     }
 
     public function testPage()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -958,13 +907,11 @@ eot;
                     $page
                 )
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testPageHtml()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -1051,13 +998,11 @@ eot;
             $data,
             $page->toJson()
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testPageMacro()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -1144,13 +1089,11 @@ eot;
             $data,
             $page->toJson()
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testPagePrevNext()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -1237,13 +1180,11 @@ eot;
             $data,
             $page->toJson()
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testRunNativeSqlWithProcedureAsSelect()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = $connect->sql(true)->select('CALL hello()');
 
@@ -1265,7 +1206,7 @@ eot;
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The SQL type `delete` must be consistent with the provided `select`.');
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->select('DELETE FROM test WHERE id = 1');
     }
@@ -1275,9 +1216,14 @@ eot;
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Parameters of findBy or findAllBy was not matched.');
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->findByNameAndTitle('one');
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['guest_book'];
     }
 }
 

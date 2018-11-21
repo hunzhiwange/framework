@@ -23,8 +23,7 @@ namespace Tests\Database;
 use Exception;
 use Leevel\Database\IConnect;
 use PDO;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Throwable;
 
 /**
@@ -38,21 +37,9 @@ use Throwable;
  */
 class ConnectTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('guest_book');
-    }
-
-    protected function tearDown()
-    {
-        $this->setUp();
-    }
-
     public function testBaseUse()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $sql = <<<'eot'
 [
@@ -96,13 +83,11 @@ eot;
         $this->assertSame('小鸭子', $insertData->name);
         $this->assertSame('吃饭饭', $insertData->content);
         $this->assertContains(date('Y-m-d'), $insertData->create_at);
-
-        $this->truncate('guest_book');
     }
 
     public function testQuery()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -117,13 +102,11 @@ eot;
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
-
-        $this->truncate('guest_book');
     }
 
     public function testExecute()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->execute('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
@@ -133,8 +116,6 @@ eot;
         $this->assertSame('小鸭子', $insertData['name']);
         $this->assertSame('喜欢游泳', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
-
-        $this->truncate('guest_book');
     }
 
     public function testQueryOnlyAllowedSelect()
@@ -144,7 +125,7 @@ eot;
             'The query method only allows select and procedure SQL statements.'
         );
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $connect->query('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']);
     }
@@ -156,14 +137,14 @@ eot;
             'The query method not allows select and procedure SQL statements.'
         );
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $connect->execute('select * from guest_book where id=?', [1]);
     }
 
     public function testSelect()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -178,13 +159,11 @@ eot;
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
-
-        $this->truncate('guest_book');
     }
 
     public function testSelectWithBind()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -199,13 +178,11 @@ eot;
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
-
-        $this->truncate('guest_book');
     }
 
     public function testInsert()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
@@ -216,13 +193,11 @@ eot;
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
-
-        $this->truncate('guest_book');
     }
 
     public function testUpdate()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
@@ -243,13 +218,11 @@ eot;
         $this->assertSame('小牛', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
         $this->assertContains(date('Y-m-d'), $insertData['create_at']);
-
-        $this->truncate('guest_book');
     }
 
     public function testDelete()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
@@ -264,13 +237,11 @@ eot;
         $this->assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
 
         $this->assertSame(0, $connect->table('guest_book')->findCount());
-
-        $this->truncate('guest_book');
     }
 
     public function testTransaction()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -295,13 +266,11 @@ eot;
         });
 
         $this->assertSame(0, $connect->table('guest_book')->findCount());
-
-        $this->truncate('guest_book');
     }
 
     public function testTransactionRollback()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -335,13 +304,11 @@ eot;
         $this->assertFalse($connect->inTransaction());
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
-
-        $this->truncate('guest_book');
     }
 
     public function testTransactionByCustom()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -368,13 +335,11 @@ eot;
         $connect->commit();
 
         $this->assertSame(0, $connect->table('guest_book')->findCount());
-
-        $this->truncate('guest_book');
     }
 
     public function testTransactionRollbackByCustom()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -412,13 +377,11 @@ eot;
         $this->assertFalse($connect->inTransaction());
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
-
-        $this->truncate('guest_book');
     }
 
     public function testCallProcedure()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $sqlProcedure = <<<'eot'
 DROP PROCEDURE IF EXISTS `test_procedure`;
@@ -469,19 +432,18 @@ eot;
         );
 
         $connect->execute('DROP PROCEDURE IF EXISTS `test_procedure`');
-        $this->truncate('guest_book');
     }
 
     public function testPdo()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertNull($connect->pdo(IConnect::MASTER));
         $this->assertInstanceof(PDO::class, $connect->pdo(true));
         $this->assertInstanceof(PDO::class, $connect->pdo(IConnect::MASTER));
         $this->assertNull($connect->pdo(5));
 
-        $connect->closeDatabase();
+        $connect->close();
     }
 
     public function testQueryException()
@@ -491,14 +453,14 @@ eot;
             '(1146)Table \'test.db_not_found\' doesn\'t exist'
         );
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $connect->query('SELECT * FROM db_not_found where id = 1;');
     }
 
     public function testBeginTransactionWithCreateSavepoint()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $connect->setSavepoints(true);
 
@@ -527,8 +489,6 @@ eot;
 
         $this->assertSame(1, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
-
-        $this->truncate('guest_book');
     }
 
     public function testCommitWithoutActiveTransaction()
@@ -538,7 +498,7 @@ eot;
             'There was no active transaction.'
         );
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $connect->commit();
     }
@@ -550,7 +510,7 @@ eot;
             'Commit failed for rollback only.'
         );
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $connect->beginTransaction();
         $connect->beginTransaction();
@@ -560,7 +520,7 @@ eot;
 
     public function testCommitWithReleaseSavepoint()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $connect->setSavepoints(true);
 
@@ -591,8 +551,6 @@ eot;
         $this->assertSame(2, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
         $this->assertSame('jerry', $book2->name);
-
-        $this->truncate('guest_book');
     }
 
     public function testRollBackWithoutActiveTransaction()
@@ -602,14 +560,14 @@ eot;
             'There was no active transaction.'
         );
 
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $connect->rollBack();
     }
 
     public function testNumRows()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame(0, $connect->numRows());
 
@@ -640,13 +598,11 @@ eot;
         update(['name' => 'tom']);
 
         $this->assertSame(1, $connect->numRows());
-
-        $this->truncate('guest_book');
     }
 
     public function testNormalizeColumnValueWithBool()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertTrue($connect->normalizeColumnValue(true));
         $this->assertFalse($connect->normalizeColumnValue(false));
@@ -654,7 +610,7 @@ eot;
 
     public function testNormalizeBindParamTypeWithBool()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(true));
         $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(false));
@@ -662,7 +618,7 @@ eot;
 
     public function testReadConnectDistributed()
     {
-        $connect = $this->createConnect([
+        $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
             'separate'           => false,
             'distributed'        => true,
@@ -705,12 +661,12 @@ eot;
 
         $this->assertInstanceof(PDO::class, $connect->pdo());
 
-        $connect->closeDatabase();
+        $connect->close();
     }
 
     public function testReadConnectDistributedButAllInvalid()
     {
-        $connect = $this->createConnect([
+        $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
             'separate'           => false,
             'distributed'        => true,
@@ -754,12 +710,12 @@ eot;
         $this->assertInstanceof(PDO::class, $connect->pdo());
         $this->assertInstanceof(PDO::class, $connect->pdo());
 
-        $connect->closeDatabase();
+        $connect->close();
     }
 
     public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate()
     {
-        $connect = $this->createConnect([
+        $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
             'separate'           => true,
             'distributed'        => true,
@@ -803,14 +759,14 @@ eot;
         $this->assertInstanceof(PDO::class, $connect->pdo());
         $this->assertInstanceof(PDO::class, $connect->pdo());
 
-        $connect->closeDatabase();
+        $connect->close();
     }
 
     public function testConnectException()
     {
         $this->expectException(\PDOException::class);
 
-        $connect = $this->createConnect([
+        $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
             'separate'           => false,
             'distributed'        => false,
@@ -829,5 +785,10 @@ eot;
         ]);
 
         $connect->pdo(true);
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['guest_book'];
     }
 }

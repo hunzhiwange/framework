@@ -54,8 +54,10 @@ abstract class DatabaseTestCase extends TestCase
 
     protected function clearDatabaseTable()
     {
+        if (!method_exists($this, 'getDatabaseTable')) {
+            return;
+        }
+
         $this->truncateDatabase($this->getDatabaseTable());
     }
-
-    abstract protected function getDatabaseTable(): array;
 }

@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Create;
 
 use Leevel\Database\Ddd\Entity;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestConstructPropBlackEntity;
 use Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity;
 use Tests\Database\Ddd\Entity\TestCreateAutoFillEntity;
 use Tests\Database\Ddd\Entity\TestCreatePropWhiteEntity;
 use Tests\Database\Ddd\Entity\TestEntity;
-use Tests\TestCase;
 
 /**
  * create test.

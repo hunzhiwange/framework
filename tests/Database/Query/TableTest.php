@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database\Query;
 
 use stdClass;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * table test.
@@ -34,11 +34,9 @@ use Tests\TestCase;
  */
 class TableTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -105,7 +103,7 @@ eot;
 
     public function testField()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -156,7 +154,7 @@ eot;
     {
         $condition = false;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -193,7 +191,7 @@ eot;
     {
         $condition = true;
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -233,7 +231,7 @@ eot;
            'Invalid table name.'
         );
 
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $connect->table(new stdClass())->
 
@@ -242,7 +240,7 @@ eot;
 
     public function testSub()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $subSql = $connect->table('test')->makeSql(true);
 
@@ -269,7 +267,7 @@ eot;
 
     public function testSubIsSelect()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $subSql = $connect->table('test');
 
@@ -296,7 +294,7 @@ eot;
 
     public function testSubIsCondition()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $subSql = $connect->table('test')->databaseCondition();
 
@@ -323,7 +321,7 @@ eot;
 
     public function testSubIsClosure()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -350,7 +348,7 @@ eot;
 
     public function testSubIsClosureWithItSeltAsAlias()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -377,7 +375,7 @@ eot;
 
     public function testSubIsClosureWithJoin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

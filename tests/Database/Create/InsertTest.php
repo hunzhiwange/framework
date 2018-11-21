@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Create;
 
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * insert test.
@@ -34,11 +33,9 @@ use Tests\TestCase;
  */
 class InsertTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -72,7 +69,7 @@ eot;
 
     public function testBind()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -133,7 +130,7 @@ eot;
 
     public function testWithBindFunction()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -169,7 +166,7 @@ eot;
 
     public function testReplace()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -200,7 +197,7 @@ eot;
 
     public function testInsertSupportTable()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

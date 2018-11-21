@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Update;
 
 use Leevel\Database\Ddd\Entity;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestEntity;
 use Tests\Database\Ddd\Entity\TestReadonlyUpdateEntity;
 use Tests\Database\Ddd\Entity\TestUpdateAutoFillEntity;
 use Tests\Database\Ddd\Entity\TestUpdatePropWhiteEntity;
-use Tests\TestCase;
 
 /**
  * update test.

@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Update;
 
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * update test.
@@ -34,11 +33,9 @@ use Tests\TestCase;
  */
 class UpdateTest extends TestCase
 {
-    use Query;
-
     public function testBaseUse()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -68,7 +65,7 @@ eot;
 
     public function testForUpdate()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -100,7 +97,7 @@ eot;
 
     public function testWithLimit()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -132,7 +129,7 @@ eot;
 
     public function testWithOrderBy()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -164,7 +161,7 @@ eot;
 
     public function testWithJoin()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -196,7 +193,7 @@ eot;
 
     public function testBind()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -237,7 +234,7 @@ eot;
 
     public function testExpression()
     {
-        $connect = $this->createConnect();
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [

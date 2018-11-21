@@ -21,8 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Leevel\Database\Database;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * database test.
@@ -35,21 +34,9 @@ use Tests\TestCase;
  */
 class DatabaseTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('guest_book');
-    }
-
-    protected function tearDown()
-    {
-        $this->setUp();
-    }
-
     public function testBaseUse()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $database = new Database($connect);
 
@@ -67,7 +54,10 @@ class DatabaseTest extends TestCase
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
+    }
 
-        $this->truncate('guest_book');
+    protected function getDatabaseTable(): array
+    {
+        return ['guest_book'];
     }
 }

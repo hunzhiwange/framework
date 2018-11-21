@@ -21,8 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Leevel\Database\Mysql;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * mysql test.
@@ -35,21 +34,9 @@ use Tests\TestCase;
  */
 class MysqlTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('guest_book');
-    }
-
-    protected function tearDown()
-    {
-        $this->setUp();
-    }
-
     public function testGetTableNames()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $result = $connect->tableNames('test');
 
@@ -58,7 +45,7 @@ class MysqlTest extends TestCase
 
     public function testGetTableColumns()
     {
-        $connect = $this->createConnectTest();
+        $connect = $this->createDatabaseConnect();
 
         $result = $connect->tableColumns('guest_book');
 
@@ -115,8 +102,6 @@ eot;
                 $result
             )
         );
-
-        $this->truncate('guest_book');
     }
 
     public function testLimitCount()
@@ -163,5 +148,10 @@ eot;
         $result = $this->invokeTestMethod($mysql, 'parseCharset', [['charset' => '']]);
 
         $this->assertSame('', $result);
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['guest_book'];
     }
 }

@@ -27,6 +27,7 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Option\Option;
 use PDO;
+use stdClass;
 
 /**
  * 数据辅助方法.
@@ -41,7 +42,7 @@ trait Database
 {
     protected $databaseConnects;
 
-    protected function createDatabaseConnectBase(array $option = []): Mysql
+    protected function createDatabaseConnectMock(array $option = []): Mysql
     {
         $connect = new Mysql($option);
 
@@ -50,9 +51,9 @@ trait Database
         return $connect;
     }
 
-    protected function createDatabaseConnect()
+    protected function createDatabaseConnect(): Mysql
     {
-        return $this->createDatabaseConnectBase([
+        $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
             'separate'           => false,
             'distributed'        => false,
@@ -69,10 +70,20 @@ trait Database
             ],
             'slave' => [],
         ]);
+
+        $test = $connect->query('select 1 as test;')[0];
+        $this->assertInstanceof(stdClass::class, $test);
+        $this->assertSame('1', $test->test);
+
+        return $connect;
     }
 
-    protected function truncateDatabase($tables)
+    protected function truncateDatabase(array $tables): void
     {
+        if (!$tables) {
+            return;
+        }
+
         if ($this->databaseConnects[0]) {
             $connect = $this->databaseConnects[0];
         } else {
@@ -80,6 +91,21 @@ trait Database
         }
 
         foreach ($tables as $table) {
+            $sql = <<<'eot'
+[
+    "TRUNCATE TABLE `%s`",
+    []
+]
+eot;
+            $this->assertSame(
+                sprintf($sql, $table),
+                $this->varJson(
+                    $connect->sql()->
+                    table($table)->
+                    truncate()
+                )
+            );
+
             $connect->
 
             table($table)->
@@ -88,58 +114,67 @@ trait Database
         }
     }
 
-    protected function metaWithoutDatabase()
+    protected function metaWithoutDatabase(): void
     {
         Meta::setDatabaseResolver(null);
     }
 
-    protected function metaWithDatabase()
+    protected function metaWithDatabase(): void
     {
         Meta::setDatabaseResolver(function () {
-            $container = new Container();
-
-            $manager = new Manager($container);
-
-            $this->assertInstanceof(IContainer::class, $manager->container());
-            $this->assertInstanceof(Container::class, $manager->container());
-
-            $option = new Option([
-                'database' => [
-                    'default' => 'mysql',
-                    'connect' => [
-                        'mysql' => [
-                            'driver'   => 'mysql',
-                            'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
-                            'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
-                            'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
-                            'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
-                            'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                            'charset'  => 'utf8',
-                            'options'  => [
-                                PDO::ATTR_PERSISTENT => false,
-                            ],
-                            'separate'           => false,
-                            'distributed'        => false,
-                            'master'             => [],
-                            'slave'              => [],
-                        ],
-                    ],
-                ],
-            ]);
-
-            $container->singleton('option', $option);
-
-            return $manager;
+            return $this->createDatabaseManager();
         });
     }
 
-    protected function freeDatabaseConnects()
+    protected function createDatabaseManager(): Manager
     {
+        $container = new Container();
+
+        $manager = new Manager($container);
+
+        $this->assertInstanceof(IContainer::class, $manager->container());
+        $this->assertInstanceof(Container::class, $manager->container());
+
+        $option = new Option([
+            'database' => [
+                'default' => 'mysql',
+                'connect' => [
+                    'mysql' => [
+                        'driver'   => 'mysql',
+                        'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                        'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                        'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                        'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                        'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                        'charset'  => 'utf8',
+                        'options'  => [
+                            PDO::ATTR_PERSISTENT => false,
+                        ],
+                        'separate'           => false,
+                        'distributed'        => false,
+                        'master'             => [],
+                        'slave'              => [],
+                    ],
+                ],
+            ],
+        ]);
+
+        $container->singleton('option', $option);
+
+        return $manager;
+    }
+
+    protected function freeDatabaseConnects(): void
+    {
+        if (!$this->databaseConnects) {
+            return;
+        }
+
         // 释放数据库连接，否则会出现 Mysql 连接数过多
         // PDOException: PDO::__construct(): MySQL server has gone away
         foreach ($this->databaseConnects as $k => $connect) {
             unset($this->databaseConnects[$k]);
-            $connect->__destruct();
+            $connect->close();
         }
     }
 }

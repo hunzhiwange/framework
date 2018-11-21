@@ -130,6 +130,11 @@ interface IConnect
     public function numRows(): int;
 
     /**
+     * 关闭数据库.
+     */
+    public function close();
+
+    /**
      * 释放 PDO 预处理查询.
      */
     public function freePDOStatement();
@@ -137,7 +142,7 @@ interface IConnect
     /**
      * 关闭数据库连接.
      */
-    public function closeDatabase();
+    public function closeConnects();
 
     /**
      * sql 表达式格式化.

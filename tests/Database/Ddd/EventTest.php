@@ -24,8 +24,8 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
+use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestEventEntity;
-use Tests\TestCase;
 
 /**
  * event test.

@@ -21,8 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use PDO;
-use Tests\Database\Query\Query;
-use Tests\TestCase;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * manager test.
@@ -35,21 +34,9 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    use Query;
-
-    protected function setUp()
-    {
-        $this->truncate('guest_book');
-    }
-
-    protected function tearDown()
-    {
-        $this->setUp();
-    }
-
     public function testBaseUse()
     {
-        $manager = $this->createManager();
+        $manager = $this->createDatabaseManager();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
@@ -65,13 +52,11 @@ class ManagerTest extends TestCase
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
-
-        $this->truncate('guest_book');
     }
 
     public function testParseDatabaseOptionDistributedIsTrue()
     {
-        $manager = $this->createManager();
+        $manager = $this->createDatabaseManager();
 
         $option = [
             'driver'   => 'mysql',
@@ -132,7 +117,7 @@ eot;
 
     public function testParseDatabaseOptionDistributedIsTrue2()
     {
-        $manager = $this->createManager();
+        $manager = $this->createDatabaseManager();
 
         $option = [
             'driver'   => 'mysql',
@@ -203,5 +188,10 @@ eot;
             $data,
             $this->varJson($optionNew)
         );
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['guest_book'];
     }
 }
