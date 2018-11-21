@@ -854,6 +854,10 @@ abstract class Connect
         $tmp = $this->pdoStatement->errorInfo();
         $error = '('.$tmp[1].')'.$tmp[2]."\r\n".$error;
 
+        if (false !== strpos($tmp[2], 'Duplicate entry')) {
+            throw new DuplicateKeyException($error);
+        }
+
         throw new PDOException($error);
     }
 
