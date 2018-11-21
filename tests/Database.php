@@ -27,7 +27,6 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Option\Option;
 use PDO;
-use stdClass;
 
 /**
  * 数据辅助方法.
@@ -70,10 +69,6 @@ trait Database
             ],
             'slave' => [],
         ]);
-
-        $test = $connect->query('select 1 as test;')[0];
-        $this->assertInstanceof(stdClass::class, $test);
-        $this->assertSame('1', $test->test);
 
         return $connect;
     }
