@@ -24,6 +24,7 @@ use Leevel\Kernel\IProject;
 use Leevel\Option\Load;
 use Leevel\Option\Option;
 use Leevel\Support\Facade;
+use RuntimeException;
 
 /**
  * 读取配置.
@@ -43,6 +44,8 @@ class LoadOption
      */
     public function handle(IProject $project): void
     {
+        $this->checkRuntimeEnv($project);
+
         if ($project->isCachedOption()) {
             $data = (array) include $project->optionCachedPath();
 
@@ -64,6 +67,27 @@ class LoadOption
             $this->initialization($option);
             // @codeCoverageIgnoreEnd
         }
+    }
+
+    /**
+     * 载入运行时环境变量.
+     *
+     * @param \Leevel\Kernel\IProject $projecty
+     */
+    protected function checkRuntimeEnv(IProject $project)
+    {
+        if (!getenv('ENVIRONMENT')) {
+            return;
+        }
+
+        $file = '.'.getenv('ENVIRONMENT');
+
+        // 校验运行时环境，防止测试用例清空非测试库的业务数据
+        if (!is_file($fullFile = $project->envPath().'/'.$file)) {
+            throw new RuntimeException(sprintf('Env file `%s` was not found.', $fullFile));
+        }
+
+        $project->setEnvFile($file);
     }
 
     /**

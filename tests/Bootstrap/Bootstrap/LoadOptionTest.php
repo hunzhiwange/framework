@@ -38,6 +38,16 @@ use Tests\TestCase;
  */
 class LoadOptionTest extends TestCase
 {
+    protected function tearDown()
+    {
+        $appPath = __DIR__.'/app';
+        $runtimePath = $appPath.'/runtime';
+
+        if (is_dir($runtimePath)) {
+            Fso::deleteDirectory($runtimePath, true);
+        }
+    }
+
     public function testBaseUse()
     {
         $bootstrap = new LoadOption();
@@ -61,6 +71,9 @@ class LoadOptionTest extends TestCase
 
     public function testLoadCached()
     {
+        // 重置环境
+        putenv('ENVIRONMENT=');
+
         $bootstrap = new LoadOption();
 
         $project = new Project3($appPath = __DIR__.'/app');
@@ -85,8 +98,11 @@ class LoadOptionTest extends TestCase
         $this->assertSame('bar', $option->get('demo\\foo'));
         $this->assertNull($option->get('_env.foo'));
         $this->assertTrue($option->get('_env.debug'));
+    }
 
-        Fso::deleteDirectory($appPath.'/runtime', true);
+    protected function tearUp()
+    {
+        $this->tearDown();
     }
 }
 
