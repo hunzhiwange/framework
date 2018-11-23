@@ -169,7 +169,7 @@ class OpenApiRouter
                     // 解析基础路径和分组
                     // 基础路径如 /api/v1、/web/v2 等等
                     // 分组例如 goods、orders
-                    // 首页 `/` 默认提供 Home::show 需要过滤
+                    // 首页 `/` 默认提供 Home::index 需要过滤
                     $routerPath = '/'.trim($path->path, '/').'/';
                     $pathPrefix = '';
 
