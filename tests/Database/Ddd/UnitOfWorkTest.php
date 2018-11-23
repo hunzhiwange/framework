@@ -425,9 +425,9 @@ class UnitOfWorkTest extends TestCase
 
     public function testFlushButRollBack()
     {
-        $this->expectException(\PDOException::class);
+        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
-            '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
+            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
         );
 
         $work = UnitOfWork::make();
@@ -482,9 +482,9 @@ class UnitOfWorkTest extends TestCase
 
     public function testTransactionAndRollBack()
     {
-        $this->expectException(\PDOException::class);
+        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
-            '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
+            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
         );
 
         $work = UnitOfWork::make();
@@ -990,12 +990,6 @@ class UnitOfWorkTest extends TestCase
 
     public function testPersistAsReplace()
     {
-        // phpunit 不支持 try catch
-        $this->expectException(\PDOException::class);
-        $this->expectExceptionMessage(
-            '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
-        );
-
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
@@ -1018,7 +1012,12 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        // 非 phpunit 模式下面系统会更新 post 的数据
+        $updatedPost = Post::find(1);
+
+        $this->assertSame('1', $updatedPost->id);
+        $this->assertSame('old', $updatedPost->title);
+        $this->assertSame('1', $updatedPost->userId);
+        $this->assertSame('old', $updatedPost->summary);
     }
 
     public function testPersistStageDetachedEntity()
@@ -1183,12 +1182,6 @@ class UnitOfWorkTest extends TestCase
 
     public function testReplaceAsUpdate()
     {
-        // phpunit 不支持 try catch
-        $this->expectException(\PDOException::class);
-        $this->expectExceptionMessage(
-            '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
-        );
-
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
@@ -1207,7 +1200,12 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        // 非 phpunit 模式下面系统会更新 post 的数据
+        $updatedPost = Post::find(1);
+
+        $this->assertSame('1', $updatedPost->id);
+        $this->assertSame('new', $updatedPost->title);
+        $this->assertSame('1', $updatedPost->userId);
+        $this->assertSame('new', $updatedPost->summary);
     }
 
     public function testReplaceButAlreadyInCreates()

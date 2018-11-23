@@ -116,6 +116,13 @@ abstract class Connect
     protected $isRollbackOnly = false;
 
     /**
+     * 断线重连次数.
+     *
+     * @var int
+     */
+    protected $reconnectRetry = 0;
+
+    /**
      * 构造函数.
      *
      * @param array $option
@@ -201,8 +208,18 @@ abstract class Connect
 
         $this->bindParams($bindParams);
 
-        if (false === $this->pdoStatement->execute()) {
-            $this->pdoException();
+        try {
+            $this->pdoStatement->execute();
+            $this->reconnectRetry = 0;
+        } catch (PDOException $e) {
+            if ($this->needReconnect($e)) {
+                $this->reconnectRetry++;
+                $this->close();
+
+                return self::query($sql, $bindParams, $master, $fetchStyle, $fetchArgument, $ctorArgs);
+            }
+
+            throw $e;
         }
 
         $this->numRows = $this->pdoStatement->rowCount();
@@ -237,8 +254,18 @@ abstract class Connect
 
         $this->bindParams($bindParams);
 
-        if (false === $this->pdoStatement->execute()) {
-            $this->pdoException();
+        try {
+            $this->pdoStatement->execute();
+            $this->reconnectRetry = 0;
+        } catch (PDOException $e) {
+            if ($this->needReconnect($e)) {
+                $this->reconnectRetry++;
+                $this->close();
+
+                return self::execute($sql, $bindParams);
+            }
+
+            $this->pdoException($e);
         }
 
         $this->numRows = $this->pdoStatement->rowCount();
@@ -687,14 +714,16 @@ abstract class Connect
         }
 
         try {
-            $result = $this->connects[$linkid] = new PDO(
+            $connect = $this->connects[$linkid] = new PDO(
                 $this->parseDsn($option),
                 $option['user'],
                 $option['password'],
                 $option['options']
             );
 
-            return $result;
+            $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            return $connect;
         } catch (PDOException $e) {
             if (false === $throwException) {
                 return false;
@@ -721,16 +750,7 @@ abstract class Connect
                 $param = PDO::PARAM_STR;
             }
 
-            if (false === $this->pdoStatement->bindValue($key, $val, $param)) {
-                // @codeCoverageIgnoreStart
-                $this->pdoException(
-                    sprintf(
-                        'Parameter of sql `%s` binding failed: `%s`.', $this->sql,
-                        json_encode($bindParams, JSON_UNESCAPED_UNICODE)
-                    )
-                );
-                // @codeCoverageIgnoreEnd
-            }
+            $this->pdoStatement->bindValue($key, $val, $param);
         }
     }
 
@@ -774,6 +794,8 @@ abstract class Connect
      * @param mixed $fetchArgument
      * @param array $ctorArgs
      *
+     * @see http://php.net/manual/vote-note.php?id=123030&page=pdostatement.nextrowset&vote=down
+     *
      * @return array
      */
     protected function fetchProcedureResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
@@ -781,8 +803,9 @@ abstract class Connect
         $result = [];
 
         do {
-            if (($tmp = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs))) {
-                $result[] = $tmp;
+            try {
+                $result[] = $tim = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs);
+            } catch (PDOException $e) {
             }
         } while ($this->pdoStatement->nextRowset());
 
@@ -845,20 +868,34 @@ abstract class Connect
     }
 
     /**
-     * 数据查询异常，抛出错误.
+     * 是否需要重连.
      *
-     * @param string $error 错误信息
+     * @return bool
      */
-    protected function pdoException(string $error = '')
+    protected function needReconnect(PDOException $e): bool
     {
-        $tmp = $this->pdoStatement->errorInfo();
-        $error = '('.$tmp[1].')'.$tmp[2]."\r\n".$error;
+        // errorInfo[1] 表示某个驱动错误码，后期扩展需要优化
+        // 可以在驱动重写这个方法
+        return in_array($e->errorInfo[1], [2006, 2013], true) &&
+            $this->reconnectRetry <= self::RECONNECT_MAX;
+    }
 
-        if (false !== strpos($tmp[2], 'Duplicate entry')) {
-            throw new DuplicateKeyException($error);
+    /**
+     * PDO 异常处理.
+     *
+     * @param \PDOException $e
+     */
+    protected function pdoException(PDOException $e)
+    {
+        $message = $e->getMessage();
+
+        if ('23000' === $e->getCode() &&
+            false !== strpos($message, 'Duplicate entry') &&
+            false !== strpos($message, 'for key \'PRIMARY\'')) {
+            throw new DuplicateKeyException($message);
         }
 
-        throw new PDOException($error);
+        throw $e;
     }
 
     /**

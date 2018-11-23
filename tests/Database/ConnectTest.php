@@ -450,7 +450,7 @@ eot;
     {
         $this->expectException(\PDOException::class);
         $this->expectExceptionMessage(
-            '(1146)Table \'test.db_not_found\' doesn\'t exist'
+            'SQLSTATE[42S02]: Base table or view not found: 1146 Table \'test.db_not_found\' doesn\'t exist'
         );
 
         $connect = $this->createDatabaseConnect();

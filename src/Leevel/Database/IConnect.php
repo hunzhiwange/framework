@@ -34,6 +34,13 @@ use Closure;
 interface IConnect
 {
     /**
+     * 断线重连尝试次数.
+     *
+     * @var int
+     */
+    const RECONNECT_MAX = 3;
+
+    /**
      * 主服务 PDO 标识.
      *
      * @var int

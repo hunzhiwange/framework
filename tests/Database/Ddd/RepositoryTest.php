@@ -1223,12 +1223,6 @@ class RepositoryTest extends TestCase
 
     public function testReplaceFlushed()
     {
-        // phpunit 不支持 try catch
-        $this->expectException(\PDOException::class);
-        $this->expectExceptionMessage(
-            '(1062)Duplicate entry \'1\' for key \'PRIMARY\''
-        );
-
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame('1', $connect->
@@ -1241,9 +1235,16 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $repository->replace($post = new Post(['id' => 1, 'title' => 'new title']));
+        $affectedRow = $repository->replace($post = new Post(['id' => 1, 'title' => 'new title']));
 
-        // 非 phpunit 模式下面系统会更新 post 的数据
+        $this->assertSame(1, $affectedRow);
+
+        $updatedPost = $repository->find(1);
+
+        $this->assertSame('1', $updatedPost->id);
+        $this->assertSame('new title', $updatedPost->title);
+        $this->assertSame('1', $updatedPost->userId);
+        $this->assertSame('post summary', $updatedPost->summary);
     }
 
     public function testReplaceFlushed2()

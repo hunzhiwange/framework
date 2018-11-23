@@ -29,12 +29,12 @@ use Leevel\Database\Ddd\Relation\HasMany;
 use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Relation\ManyMany;
 use Leevel\Database\Ddd\Relation\Relation;
+use Leevel\Database\DuplicateKeyException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str;
-use Throwable;
 
 /**
  * 模型实体 Object Relational Mapping.
@@ -110,6 +110,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @var bool
      */
     protected $leevelNewed = true;
+
+    /**
+     * Replace 模式.
+     * 先插入出现主键重复.
+     * false 表示非 replace 模式，其它值表示 replace 模式附带的 fill 数据.
+     *
+     * @var bool
+     */
+    protected $leevelReplace = false;
 
     /**
      * 多对多关联中间实体.
@@ -486,7 +495,20 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return;
         }
 
-        $result = call_user_func_array($this->leevelFlush, $this->leevelFlushData);
+        try {
+            $result = call_user_func_array($this->leevelFlush, $this->leevelFlushData);
+        } catch (DuplicateKeyException $e) {
+            if (false === $this->leevelReplace) {
+                throw $e;
+            }
+
+            $this->leevelFlush = null;
+            $this->leevelFlushData = null;
+            $this->updateReal($this->leevelReplace);
+            $this->leevelReplace = false;
+
+            return $this->flush();
+        }
 
         $this->leevelFlush = null;
         $this->leevelFlushData = null;
@@ -1528,16 +1550,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 模拟 replace 数据.
      *
      * @param null|array $fill
-     *
-     * @return mixed
      */
-    protected function replaceReal(?array $fill = null): IEntity
+    protected function replaceReal(?array $fill = null)
     {
-        try {
-            return $this->createReal($fill);
-        } catch (Throwable $e) {
-            return $this->updateReal($fill);
-        }
+        $this->leevelReplace = $fill;
+        $this->createReal($fill);
     }
 
     /**
