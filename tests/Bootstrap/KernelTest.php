@@ -255,7 +255,7 @@ class KernelTest extends TestCase
 
 class Kernel1 extends Kernel
 {
-    protected function bootstrap(): void
+    public function bootstrap(): void
     {
     }
 }

@@ -80,7 +80,7 @@ class KernelConsoleTest extends TestCase
 
 class KernelConsole1 extends KernelConsole
 {
-    protected function bootstrap(): void
+    public function bootstrap(): void
     {
     }
 
