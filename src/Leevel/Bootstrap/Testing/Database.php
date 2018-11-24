@@ -20,61 +20,50 @@ declare(strict_types=1);
 
 namespace Leevel\Bootstrap\Testing;
 
-use Leevel\Bootstrap\Project;
-use Leevel\Support\Facade;
-use PHPUnit\Framework\TestCase as TestCases;
+use Leevel\Db;
 
 /**
- * phpunit 基础测试类.
+ * 数据库助手方法.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.05.08
+ * @since 2018.11.24
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-abstract class TestCase extends TestCases
+trait Database
 {
-    use Helper;
-
     /**
-     * 创建的项目.
+     * 清理数据表.
      *
-     * @var \Leevel\Bootstrap\Project
+     * @param array $tables
      */
-    protected $project;
-
-    /**
-     * Setup.
-     */
-    protected function setUp()
+    protected function truncateDatabase(array $tables): void
     {
-        if (!$this->project) {
-            $this->project = $this->createProject();
+        if (!$tables) {
+            return;
         }
 
-        Facade::remove();
+        foreach ($tables as $table) {
+            $sql = <<<'eot'
+[
+    "TRUNCATE TABLE `%s`",
+    []
+]
+eot;
+            $this->assertSame(
+                sprintf($sql, $table),
+                $this->varJson(
+                    Db::sql()->
+                    table($table)->
+                    truncate()
+                )
+            );
+
+            Db::table($table)->
+
+            truncate();
+        }
     }
-
-    /**
-     * tearDown.
-     */
-    protected function tearDown()
-    {
-        $this->project = null;
-    }
-
-    /**
-     * 创建日志目录.
-     *
-     * @var array
-     */
-    abstract protected function makeLogsDir(): array;
-
-    /**
-     * 初始化项目.
-     *
-     * @return \Leevel\Bootstrap\Project
-     */
-    abstract protected function createProject(): Project;
 }
