@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Leevel\Bootstrap\Testing\Helper as BaseHelper;
 use PHPUnit\Framework\TestCase as TestCases;
 
 /**
@@ -33,5 +34,6 @@ use PHPUnit\Framework\TestCase as TestCases;
  */
 abstract class TestCase extends TestCases
 {
+    use BaseHelper;
     use Helper;
 }
