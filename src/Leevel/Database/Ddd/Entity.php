@@ -116,7 +116,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 先插入出现主键重复.
      * false 表示非 replace 模式，其它值表示 replace 模式附带的 fill 数据.
      *
-     * @var bool
+     * @var mixed
      */
     protected $leevelReplace = false;
 
