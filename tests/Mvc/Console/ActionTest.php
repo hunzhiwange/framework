@@ -71,7 +71,7 @@ class ActionTest extends TestCase
 
         $this->assertContains('class HelloWorldYes extends Controller', file_get_contents($file));
 
-        $this->assertContains('function run', file_get_contents($file));
+        $this->assertContains('function handle', file_get_contents($file));
 
         unlink($file);
         rmdir(dirname($file));
@@ -93,7 +93,7 @@ class ActionTest extends TestCase
 
         $this->assertNotContains('class HelloWorldYes extends Controller', file_get_contents($file));
 
-        $this->assertContains('function run', file_get_contents($file));
+        $this->assertContains('function handle', file_get_contents($file));
 
         unlink($file);
         rmdir(dirname($file));

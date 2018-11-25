@@ -249,7 +249,6 @@ abstract class Make extends Command
     {
         return array_merge([
             'namespace' => $this->getNamespace(),
-            'file_name' => ucfirst($this->argument('name')),
             'date_y'    => date('Y'),
         ], $this->getCustomReplaceKeyValue());
     }
