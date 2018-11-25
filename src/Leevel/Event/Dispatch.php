@@ -108,7 +108,6 @@ class Dispatch implements IDispatch
     public function register($event, $listener, int $priority = 500)
     {
         $event = is_object($event) ? [$event] : (array) $event;
-        $priority = (int) $priority;
 
         foreach ($event as $item) {
             $item = $this->normalizeEvent($item);
