@@ -7,23 +7,21 @@ namespace {{namespace}}\{{controller_dir}};
 use Leevel\Mvc\Controller;
 
 {{file_comment}}
-class {{file_name}} extends Controller 
+class {{file_name}} extends Controller
 {
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @return void
      */
-    public function __construct() 
+    public function __construct()
     {
     }
 
     /**
-     * 默认方法
-     *
-     * @return void
+     * 默认方法.
      */
-    public function {{action}}() 
+    public function {{action}}()
     {
     }
 }

@@ -24,6 +24,7 @@ use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
 use Leevel\Router;
+use Leevel\Support\Str;
 
 /**
  * 生成控制器.
@@ -84,6 +85,9 @@ EOF;
         );
 
         $controllerNamespace = Router::getControllerDir();
+        $controllerName = ucfirst(Str::camelize($this->argument('name')));
+
+        $this->setCustomReplaceKeyValue('file_name', $controllerName);
 
         $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
 
@@ -93,7 +97,7 @@ EOF;
         $this->setSaveFilePath(
             $this->getNamespacePath().
             str_replace('\\', '/', $controllerNamespace).'/'.
-            ucfirst($this->argument('name')).'.php'
+            $controllerName.'.php'
         );
 
         // 设置类型

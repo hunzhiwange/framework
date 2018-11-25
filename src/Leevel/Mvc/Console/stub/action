@@ -10,20 +10,18 @@ use Leevel\Mvc\Controller;
 class {{action}} extends Controller
 {
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @return void
      */
-    public function __construct() 
+    public function __construct()
     {
     }
 
     /**
-     * 执行入口
-     *
-     * @return void
+     * 执行入口.
      */
-    public function run() 
+    public function handle()
     {
     }
 }

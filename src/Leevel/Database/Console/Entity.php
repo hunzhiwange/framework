@@ -117,6 +117,7 @@ EOF;
         $columns = $this->getColumns();
 
         return [
+            'file_name'      => ucfirst(Str::camelize($this->argument('name'))),
             'table_name'     => $this->getTableName(),
             'primary_key'    => $this->getPrimaryKey($columns),
             'auto_increment' => $this->getAutoIncrement($columns),

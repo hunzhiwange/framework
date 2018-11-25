@@ -10,29 +10,29 @@ use Leevel\Database\Ddd\Entity;
 class {{file_name}} extends Entity
 {
     /**
-     * database table
-     * 
+     * database table.
+     *
      * @string
      */
     const TABLE = '{{table_name}}';
 
     /**
-     * primary key
-     * 
+     * primary key.
+     *
      * @string|null
      */
     const ID = {{primary_key}};
 
     /**
-     * auto increment 
-     * 
+     * auto increment.
+     *
      * @string|null
      */
     const AUTO = {{auto_increment}};
 
     /**
-     * entity struct 
-     * 
+     * entity struct.
+     *
      * @array
      */
     const STRUCT = {{struct}};
