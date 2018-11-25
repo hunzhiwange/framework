@@ -680,7 +680,7 @@ class Condition
         }
 
         return $this->addConditions([
-            'exists__' => $exists,
+            ':exists' => $exists,
         ]);
     }
 
@@ -698,7 +698,7 @@ class Condition
         }
 
         return $this->addConditions([
-            'notexists__' => $exists,
+            ':notexists' => $exists,
         ]);
     }
 
@@ -1848,7 +1848,7 @@ class Condition
 
             // 特殊处理
             if (is_string($key)) {
-                if (in_array($key, ['string__'], true)) {
+                if (in_array($key, [':string'], true)) {
                     $sqlCond[] = implode(' AND ', $cond);
                 }
             } elseif (is_array($cond)) {
@@ -2022,7 +2022,7 @@ class Condition
             ]);
 
             $tmp = $select->{'parse'.ucwords($type)}(true);
-            $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, 'string__');
+            $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, ':string');
 
             return $this;
         }
@@ -2077,11 +2077,11 @@ class Condition
             }
 
             // 字符串表达式
-            if (is_string($key) && 'string__' === $key) {
+            if (is_string($key) && ':string' === $key) {
                 // 不符合规则抛出异常
                 if (!is_string($tmp)) {
                     throw new InvalidArgumentException(
-                        sprintf('String__ type only supports string,but %s given.', gettype($tmp))
+                        sprintf('String type only supports string,but %s given.', gettype($tmp))
                     );
                 }
 
@@ -2094,13 +2094,13 @@ class Condition
                     );
                 }
 
-                $this->setConditionItem($tmp, 'string__');
+                $this->setConditionItem($tmp, ':string');
             }
 
             // 子表达式
             elseif (is_string($key) && in_array($key, [
-                'subor__',
-                'suband__',
+                ':subor',
+                ':suband',
             ], true)) {
                 $typeAndLogic = $this->getTypeAndLogic();
 
@@ -2109,12 +2109,12 @@ class Condition
                 $select->setTypeAndLogic($typeAndLogic[0]);
 
                 // 逻辑表达式
-                if (isset($tmp['logic__'])) {
-                    if (strtolower($tmp['logic__']) === static::LOGIC_OR) {
+                if (isset($tmp[':logic'])) {
+                    if (strtolower($tmp[':logic']) === static::LOGIC_OR) {
                         $select->setTypeAndLogic(null, static::LOGIC_OR);
                     }
 
-                    unset($tmp['logic__']);
+                    unset($tmp[':logic']);
                 }
 
                 $select = $select->addConditions($tmp);
@@ -2123,18 +2123,18 @@ class Condition
                 $parseType = 'parse'.ucwords($typeAndLogic[0]);
                 $oldLogic = $typeAndLogic[1];
 
-                $this->setTypeAndLogic(null, 'subor__' ? static::LOGIC_OR : static::LOGIC_AND);
+                $this->setTypeAndLogic(null, ':subor' ? static::LOGIC_OR : static::LOGIC_AND);
 
                 $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$parseType}(true).
-                    static::LOGIC_GROUP_RIGHT, 'string__');
+                    static::LOGIC_GROUP_RIGHT, ':string');
 
                 $this->setTypeAndLogic(null, $oldLogic);
             }
 
             // exists 支持
             elseif (is_string($key) && in_array($key, [
-                'exists__',
-                'notexists__',
+                ':exists',
+                ':notexists',
             ], true)) {
                 // having 不支持 [not] exists
                 if ('having' === $this->getTypeAndLogic()[0]) {
@@ -2155,12 +2155,12 @@ class Condition
                     $tmp = $select->makeSql();
                 }
 
-                $tmp = ('notexists__' === $key ? 'NOT EXISTS ' : 'EXISTS ').
+                $tmp = (':notexists' === $key ? 'NOT EXISTS ' : 'EXISTS ').
                     static::LOGIC_GROUP_LEFT.
                     $tmp.
                     static::LOGIC_GROUP_RIGHT;
 
-                $this->setConditionItem($tmp, 'string__');
+                $this->setConditionItem($tmp, ':string');
             }
 
             // 其它

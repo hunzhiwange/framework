@@ -521,7 +521,7 @@ eot;
                 groupBy('id')->
 
                 having(
-                    ['string__' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
+                    [':string' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
                 )->
 
                 findAll(true)
@@ -553,7 +553,7 @@ eot;
                 having(
                     [
                         'hello'   => 'world',
-                        'subor__' => ['id', 'like', '你好'],
+                        ':subor'  => ['id', 'like', '你好'],
                     ]
                 )->
 
@@ -582,15 +582,15 @@ eot;
                 having(
                     [
                         'hello'   => '111',
-                        'subor__' => [
+                        ':subor'  => [
                             ['id', 'like', '你好'],
                             ['value', '=', 'helloworld'],
                         ],
-                        'suband__' => [
-                            'logic__' => 'or',
+                        ':suband' => [
+                            ':logic' => 'or',
                             ['id', 'like', '你好'],
                             ['value', '=', 'helloworld'],
-                            'subor__' => [
+                            ':subor' => [
                                 ['child_one', '>', '123'],
                                 ['child_two', 'like', '123'],
                             ],
@@ -792,7 +792,7 @@ eot;
         $connect->table('test')->
 
         having([
-            'exists__' => 'select *from d_sub',
+            ':exists' => 'select *from d_sub',
         ])->
 
         findAll(true);
@@ -810,7 +810,7 @@ eot;
         $connect->table('test')->
 
         having([
-            'notexists__' => 'select *from d_sub',
+            ':notexists' => 'select *from d_sub',
         ])->
 
         findAll(true);
