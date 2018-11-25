@@ -648,7 +648,7 @@ eot;
 
                 where(
                    [
-                       'exists__' => $subSelect,
+                       ':exists' => $subSelect,
                    ]
                 )->
 
@@ -676,7 +676,7 @@ eot;
                 $connect->table('test')->
 
                 where([
-                    'exists__' => 'select *from d_sub',
+                    ':exists' => 'select *from d_sub',
                 ])->
 
                 findAll(true),
@@ -704,7 +704,7 @@ eot;
 
                 where(
                    [
-                       'exists__' => function ($select) {
+                       ':exists' => function ($select) {
                            $select->table('subsql')->where('id', 1);
                        },
                    ]
@@ -890,7 +890,7 @@ eot;
                 $connect->table('test')->
 
                 where(
-                   ['string__' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
+                   [':string' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
                 )->
 
                 findAll(true)
@@ -902,7 +902,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'String__ type only supports string,but array given.'
+            'String type only supports string,but array given.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -910,7 +910,7 @@ eot;
         $connect->table('test')->
 
         where(
-           ['string__' => []]
+           [':string' => []]
         )->
 
         findAll(true);
@@ -920,7 +920,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'String__ type only supports string,but integer given.'
+            'String type only supports string,but integer given.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -928,7 +928,7 @@ eot;
         $connect->table('test')->
 
         where(
-           ['string__' => 1]
+           [':string' => 1]
         )->
 
         findAll(true);
@@ -956,7 +956,7 @@ eot;
                 where(
                     [
                         'hello'   => 'world',
-                        'subor__' => ['id', 'like', '你好'],
+                        ':subor'  => ['id', 'like', '你好'],
                     ]
                 )->
 
@@ -983,15 +983,15 @@ eot;
                 where(
                     [
                         'hello'   => '111',
-                        'subor__' => [
+                        ':subor'  => [
                             ['id', 'like', '你好'],
                             ['value', '=', 'helloworld'],
                         ],
-                        'suband__' => [
-                            'logic__' => 'or',
+                        ':suband' => [
+                            ':logic' => 'or',
                             ['id2', 'like', '你好2'],
                             ['value2', '=', 'helloworld2'],
-                            'subor__' => [
+                            ':subor' => [
                                 ['child_one', '>', '123'],
                                 ['child_two', 'like', '123'],
                             ],
