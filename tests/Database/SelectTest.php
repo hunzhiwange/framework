@@ -391,11 +391,11 @@ eot;
         $this->assertSame(
             $json,
             $this->varJson(
-                $result->toArray()
+                json_decode(json_encode($result), true)
             )
         );
 
-        $this->assertInstanceof(Collection::class, $result);
+        $this->assertInstanceof(stdClass::class, $result);
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
@@ -422,22 +422,17 @@ eot;
         findOne();
 
         $json = <<<'eot'
-[
-    "[]"
-]
+[]
 eot;
 
         $this->assertSame(
             $json,
             $this->varJson(
-                [(string) $result]
+                $result
             )
         );
 
-        $this->assertInstanceof(Collection::class, $result);
-
-        $this->assertNull($result->name);
-        $this->assertNull($result->content);
+        $this->assertInternalType('array', $result);
     }
 
     public function testAsCollectionAsDefaultFindAll()

@@ -46,6 +46,13 @@ use PDO;
 class Select
 {
     /**
+     * 分页查询结果标识.
+     *
+     * @var string
+     */
+    const PAGE = ':page';
+
+    /**
      * 数据库连接.
      *
      * @var Leevel\Database\Connect
@@ -784,6 +791,7 @@ class Select
             $this->limit($from, $perPage)->
 
             findAll($flag),
+            self::PAGE => true,
         ];
     }
 
@@ -808,6 +816,7 @@ class Select
             $this->limit($page->getFromRecord(), $perPage)->
 
             findAll($flag),
+            self::PAGE => true,
         ];
     }
 
@@ -830,6 +839,7 @@ class Select
             $this->limit($page->getFromRecord(), $perPage)->
 
             findAll($flag),
+            self::PAGE => true,
         ];
     }
 
@@ -852,6 +862,7 @@ class Select
             $this->limit($page->getFromRecord(), $perPage)->
 
             findAll($flag),
+            self::PAGE => true,
         ];
     }
 
@@ -956,7 +967,7 @@ class Select
     protected function queryDefault(array $data)
     {
         if (!$this->condition->getOption()['limitQuery']) {
-            $data = reset($data) ?: [];
+            return reset($data) ?: [];
         }
 
         return $this->queryParams['as_collection'] ? new Collection($data) : $data;

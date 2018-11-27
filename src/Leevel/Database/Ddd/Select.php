@@ -88,7 +88,17 @@ class Select
             return $this;
         }
 
-        $result = $this->preLoadResult($result);
+        if (!$this->preLoads) {
+            return $result;
+        }
+
+        if (is_array($result) &&
+            isset($result[DatabaseSelect::PAGE]) &&
+            true === $result[DatabaseSelect::PAGE]) {
+            $result[1] = $this->preLoadResult($result[1]);
+        } else {
+            $result = $this->preLoadResult($result);
+        }
 
         return $result;
     }
@@ -131,7 +141,7 @@ class Select
     {
         list($result, $type) = $this->conversionToEntitys($result);
 
-        if (is_array($result)) {
+        if ($type) {
             $result = $this->preLoadRelation($result);
 
             if ('entity' === $type) {
@@ -484,7 +494,7 @@ class Select
      *
      * @return array
      */
-    protected function conversionToEntitys($result)
+    protected function conversionToEntitys($result): array
     {
         $type = '';
 
