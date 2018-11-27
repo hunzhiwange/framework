@@ -46,7 +46,7 @@ class RegisterTest extends TestCase
 
         $this->assertInstanceof(IValidate::class, $validate);
 
-        $validate = $validate->make(
+        $validator = $validate->make(
             [
                 'name' => '小牛哥',
             ],
@@ -67,16 +67,16 @@ class RegisterTest extends TestCase
 }
 eot;
 
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-        $this->assertSame([], $validate->error());
-        $this->assertSame([], $validate->getMessage());
-        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+        $this->assertTrue($validator->success());
+        $this->assertFalse($validator->fail());
+        $this->assertSame([], $validator->error());
+        $this->assertSame([], $validator->getMessage());
+        $this->assertSame(['name' => '小牛哥'], $validator->getData());
 
         $this->assertSame(
             $rule,
             $this->varJson(
-                $validate->getRule()
+                $validator->getRule()
             )
         );
     }

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
-use Leevel\Validate\Validate;
+use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
@@ -42,7 +42,7 @@ class EqualGreaterThanTest extends TestCase
      */
     public function testBaseUse($value, string $parameter)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => $value,
             ],
@@ -80,7 +80,7 @@ class EqualGreaterThanTest extends TestCase
      */
     public function testBad($value, string $parameter)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => $value,
             ],
@@ -110,7 +110,7 @@ class EqualGreaterThanTest extends TestCase
 
     public function testSpecial()
     {
-        $validate = new Validate();
+        $validate = new Validator();
 
         $this->assertTrue($validate->equalGreaterThan('0', '0'));
         $this->assertFalse($validate->equalGreaterThan(0, '0'));

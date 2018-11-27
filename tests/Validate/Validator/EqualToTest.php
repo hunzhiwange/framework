@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
-use Leevel\Validate\Validate;
+use Leevel\Validate\Validator;
 use stdClass;
 use Tests\TestCase;
 
@@ -44,7 +44,7 @@ class EqualToTest extends TestCase
      */
     public function testBaseUse($value, $valueCompare, string $parameter)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name'  => $value,
                 'name2' => $valueCompare,
@@ -76,7 +76,7 @@ class EqualToTest extends TestCase
      */
     public function testBad($value, $valueCompare, string $parameter)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name'  => $value,
                 'name2' => $valueCompare,

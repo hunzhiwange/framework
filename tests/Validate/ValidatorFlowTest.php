@@ -21,10 +21,11 @@ declare(strict_types=1);
 namespace Tests\Validate;
 
 use Leevel\Validate\Validate;
+use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * validateFlow test.
+ * validatorFlow test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,8 +33,13 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ValidateFlowTest extends TestCase
+class ValidatorFlowTest extends TestCase
 {
+    protected function setUp()
+    {
+        Validate::initMessages();
+    }
+
     public function testData()
     {
         $validate = $this->makeBaseValidate();
@@ -742,9 +748,9 @@ eot;
         );
     }
 
-    protected function makeBaseValidate(): Validate
+    protected function makeBaseValidate(): Validator
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '小牛神',
             ],

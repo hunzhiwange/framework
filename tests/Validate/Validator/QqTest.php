@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
-use Leevel\Validate\Validate;
+use Leevel\Validate\Validator;
 use stdClass;
 use Tests\TestCase;
 
@@ -42,7 +42,7 @@ class QqTest extends TestCase
      */
     public function testBaseUse($value)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => $value,
             ],
@@ -72,7 +72,7 @@ class QqTest extends TestCase
      */
     public function testBad($value)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => $value,
             ],

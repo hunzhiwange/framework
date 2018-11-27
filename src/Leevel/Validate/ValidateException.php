@@ -37,9 +37,9 @@ class ValidateException extends Exception
     /**
      * 验证器.
      *
-     * @var \Leevel\Validate\IValidate
+     * @var \Leevel\Validate\IValidator
      */
-    public $validate;
+    public $validator;
 
     /**
      * 响应组件.
@@ -51,15 +51,15 @@ class ValidateException extends Exception
     /**
      * 构造函数.
      *
-     * @param \Leevel\Validate\IValidate $validate
-     * @param \Leevel\Http\IResponse     $response
+     * @param \Leevel\Validate\IValidator $validator
+     * @param \Leevel\Http\IResponse      $response
      */
-    public function __construct(IValidate $validate, IResponse $response = null)
+    public function __construct(IValidator $validator, IResponse $response = null)
     {
         parent::__construct('Validate failed.');
 
         $this->response = $response;
-        $this->validate = $validate;
+        $this->validator = $validator;
     }
 
     /**
@@ -75,10 +75,10 @@ class ValidateException extends Exception
     /**
      * 返回验证器.
      *
-     * @return \Leevel\Validate\IValidate
+     * @return \Leevel\Validate\IValidator
      */
-    public function getValidate(): IValidate
+    public function getValidator(): IValidator
     {
-        return $this->validate;
+        return $this->validator;
     }
 }

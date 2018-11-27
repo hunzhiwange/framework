@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
-use Leevel\Validate\Validate;
+use Leevel\Validate\Validator;
 use stdClass;
 use Tests\TestCase;
 
@@ -43,7 +43,7 @@ class AfterTest extends TestCase
      */
     public function testBaseUse($value, string $parameter)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name'  => $value,
                 'name2' => '2018-08-10',
@@ -73,7 +73,7 @@ class AfterTest extends TestCase
      */
     public function testBad($value, string $parameter)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => $value,
             ],
@@ -101,7 +101,7 @@ class AfterTest extends TestCase
 
     public function testMakeDateTimeFormatWithNewDateTimeExceptionError()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name'  => '2018-08-10',
             ],

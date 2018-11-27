@@ -21,12 +21,13 @@ declare(strict_types=1);
 namespace Tests\Validate;
 
 use Leevel\Di\Container;
-use Leevel\Validate\IValidate;
+use Leevel\Validate\IValidator;
 use Leevel\Validate\Validate;
+use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * validate test.
+ * validator test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -34,11 +35,16 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ValidateTest extends TestCase
+class ValidatorTest extends TestCase
 {
+    protected function setUp()
+    {
+        Validate::initMessages();
+    }
+
     public function testBaseUse()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '小牛哥',
             ],
@@ -50,7 +56,7 @@ class ValidateTest extends TestCase
             ]
         );
 
-        $this->assertInstanceof(IValidate::class, $validate);
+        $this->assertInstanceof(IValidator::class, $validate);
 
         $rule = <<<'eot'
 {
@@ -77,7 +83,7 @@ eot;
 
     public function testMake()
     {
-        $validate = Validate::make(
+        $validate = Validator::make(
             [
                 'name' => '小牛哥',
             ],
@@ -114,7 +120,7 @@ eot;
 
     public function testError()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '小牛哥',
             ],
@@ -177,7 +183,7 @@ eot;
 
     public function testData()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '中国',
             ],
@@ -215,7 +221,7 @@ eot;
 
     public function testAddData()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
             ],
             [
@@ -252,7 +258,7 @@ eot;
 
     public function testRule()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '中国',
             ],
@@ -294,7 +300,7 @@ eot;
 
     public function testRuleIf()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '中国',
             ],
@@ -355,7 +361,7 @@ eot;
 
     public function testAddRule()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '中国',
             ],
@@ -408,7 +414,7 @@ eot;
 
     public function testAddRuleIf()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '中国',
             ],
@@ -469,7 +475,7 @@ eot;
 
     public function testMessage()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '中国',
             ],
@@ -562,7 +568,7 @@ eot;
 
     public function testMessage2()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '中国',
             ],
@@ -655,12 +661,12 @@ eot;
 
     public function testSubDataWithSubMessage()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => ['sub' => ['sub' => '']],
             ],
             [
-                'name.sub.sub' => 'required|'.Validate::CONDITION_MUST,
+                'name.sub.sub' => 'required|'.Validator::CONDITION_MUST,
             ],
             [
                 'name'     => '歌曲',
@@ -728,12 +734,12 @@ eot;
 
     public function testSubDataWithNotSet()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => ['sub' => ['sub' => null]],
             ],
             [
-                'name.sub.sub' => 'required|'.Validate::CONDITION_MUST,
+                'name.sub.sub' => 'required|'.Validator::CONDITION_MUST,
             ],
             [
                 'name'     => '歌曲',
@@ -761,7 +767,7 @@ eot;
 
     public function testName()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '中国',
             ],
@@ -835,7 +841,7 @@ eot;
 
     public function testAlias()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '成都',
             ],
@@ -923,7 +929,7 @@ eot;
             sprintf('You cannot set alias for skip rule %s.', $skipRule)
         );
 
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '成都',
             ],
@@ -944,17 +950,17 @@ eot;
     public function aliasSkipExceptionProvider()
     {
         return [
-            [Validate::CONDITION_EXISTS],
-            [Validate::CONDITION_MUST],
-            [Validate::CONDITION_VALUE],
-            [Validate::SKIP_SELF],
-            [Validate::SKIP_OTHER],
+            [Validator::CONDITION_EXISTS],
+            [Validator::CONDITION_MUST],
+            [Validator::CONDITION_VALUE],
+            [Validator::SKIP_SELF],
+            [Validator::SKIP_OTHER],
         ];
     }
 
     public function testAfter()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '成都',
             ],
@@ -976,7 +982,7 @@ eot;
 
     public function testExtend()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 1,
             ],
@@ -1007,7 +1013,7 @@ eot;
 
     public function testPlaceholder()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 1,
             ],
@@ -1019,13 +1025,13 @@ eot;
             ]
         );
 
-        $this->assertInstanceof(Validate::class, $validate->foobar());
-        $this->assertInstanceof(Validate::class, $validate->placeholder());
+        $this->assertInstanceof(Validator::class, $validate->foobar());
+        $this->assertInstanceof(Validator::class, $validate->placeholder());
     }
 
     public function testCall()
     {
-        $validate = new Validate();
+        $validate = new Validator();
 
         $this->assertTrue($validate->minLength('成都', 1));
         $this->assertTrue($validate->minLength('成都', 2));
@@ -1037,7 +1043,7 @@ eot;
 
     public function testCallCustom()
     {
-        $validate = new Validate();
+        $validate = new Validator();
 
         $validate->extend('custom_foo_bar', function (string $field, $datas, array $parameter): bool {
             if ('成都' === $datas) {
@@ -1058,7 +1064,7 @@ eot;
             'Method notFoundMethod is not exits.'
         );
 
-        $validate = new Validate();
+        $validate = new Validator();
 
         $validate->notFoundMethod();
     }
@@ -1070,7 +1076,7 @@ eot;
             'The rule name requires at least 1 arguments.'
         );
 
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 1,
             ],
@@ -1092,7 +1098,7 @@ eot;
             'Container was not set.'
         );
 
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 1,
             ],
@@ -1111,7 +1117,7 @@ eot;
 
     public function testCallExtendClass()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 1,
             ],
@@ -1138,7 +1144,7 @@ eot;
 
     public function testCallExtendClassWithCustomMethod()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 2,
             ],
@@ -1165,7 +1171,7 @@ eot;
 
     public function testCallExtendClassWithRun()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 3,
             ],
@@ -1197,7 +1203,7 @@ eot;
             'Extend class Tests\\Validate\\NotFound is not valid.'
         );
 
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 1,
             ],
@@ -1225,7 +1231,7 @@ eot;
             'Extend in rule custom_foobar is not valid.'
         );
 
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 1,
             ],
@@ -1253,7 +1259,7 @@ eot;
      */
     public function testSkipRule(string $skipRule)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 2,
             ],
@@ -1271,17 +1277,17 @@ eot;
     public function skipRuleProvider()
     {
         return [
-            [Validate::CONDITION_EXISTS],
-            [Validate::CONDITION_MUST],
-            [Validate::CONDITION_VALUE],
-            [Validate::SKIP_SELF],
-            [Validate::SKIP_OTHER],
+            [Validator::CONDITION_EXISTS],
+            [Validator::CONDITION_MUST],
+            [Validator::CONDITION_VALUE],
+            [Validator::SKIP_SELF],
+            [Validator::SKIP_OTHER],
         ];
     }
 
     public function testShouldSkipOther()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '',
             ],
@@ -1313,7 +1319,7 @@ eot;
             )
         );
 
-        $validate->rule(['name' => 'required|alpha|'.Validate::SKIP_OTHER]);
+        $validate->rule(['name' => 'required|alpha|'.Validator::SKIP_OTHER]);
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -1336,7 +1342,7 @@ eot;
 
     public function testMustRequired()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '',
             ],
@@ -1352,12 +1358,12 @@ eot;
         $this->assertTrue($validate->fail());
         $this->assertSame(['name' => '地名'], $validate->getName());
 
-        $validate->rule(['name' => 'required|'.Validate::CONDITION_VALUE]);
+        $validate->rule(['name' => 'required|'.Validator::CONDITION_VALUE]);
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
 
-        $validate->rule(['name' => 'required|'.Validate::CONDITION_MUST]);
+        $validate->rule(['name' => 'required|'.Validator::CONDITION_MUST]);
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -1400,7 +1406,7 @@ eot;
 
     public function testWildcardMessage()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name'  => '',
                 'nafoo' => '',
@@ -1502,7 +1508,7 @@ eot;
 
     public function testMessageForAllFieldRule()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name'  => '',
                 'nafoo' => '',
@@ -1604,7 +1610,7 @@ eot;
 
     public function testWildcardRule()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name'  => '',
                 'nafoo' => '',
@@ -1690,7 +1696,7 @@ eot;
 
     public function testGetFieldRuleButNotSet()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => '大地',
             ],
@@ -1710,7 +1716,7 @@ eot;
 
     public function testRuleIsEmpty()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 'hello',
             ],
@@ -1728,7 +1734,7 @@ eot;
 
     public function testHasFieldRuleWithoutParameterRealWithRuleNotSet()
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => 'hello',
             ],

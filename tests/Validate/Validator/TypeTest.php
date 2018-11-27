@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
-use Leevel\Validate\Validate;
+use Leevel\Validate\Validator;
 use stdClass;
 use Tests\TestCase;
 
@@ -57,7 +57,7 @@ class TypeTest extends TestCase
      */
     public function testBaseUse($value, string $type)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => $value,
             ],
@@ -100,7 +100,7 @@ class TypeTest extends TestCase
      */
     public function testBad($value, string $type)
     {
-        $validate = new Validate(
+        $validate = new Validator(
             [
                 'name' => $value,
             ],
