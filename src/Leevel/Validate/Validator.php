@@ -26,7 +26,6 @@ use DateTime;
 use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
-use Leevel\Database\Ddd\IEntity;
 use Leevel\Di\IContainer;
 use Leevel\Flow\TControl;
 use Leevel\Support\Arr;
@@ -1802,104 +1801,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证唯一值.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateUnique(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        if (!is_string($parameter[0]) && !is_object($parameter[0])) {
-            return false;
-        }
-
-        if (is_string($parameter[0])) {
-            if (false !== strpos($parameter[0], ':')) {
-                list($entityClass, $connect) = explode(':', $entityClass);
-            } else {
-                $entityClass = $parameter[0];
-                $connect = null;
-            }
-
-            if (!class_exists($entityClass)) {
-                throw new InvalidArgumentException(
-                    sprintf('Validate entity `%s` was not found.', $entityClass)
-                );
-            }
-
-            $entity = new $entityClass();
-        } else {
-            $entity = $parameter[0];
-        }
-
-        if (!($entity instanceof IEntity)) {
-            throw new InvalidArgumentException(
-                sprintf('Validate entity `%s` must be an entity.', get_class($entity))
-            );
-        }
-
-        if ($connect) {
-            $entity->withConnect($connect);
-        }
-
-        if (isset($parameter[1])) {
-            $field = $parameter[1];
-        }
-
-        if (false !== strpos($field, ':')) {
-            $select = $entity->selfDatabaseSelect();
-
-            foreach (explode(':', $field) as $v) {
-                $select->where($v, $datas);
-            }
-        } else {
-            $select = $entity->where($field, $datas);
-        }
-
-        if (isset($parameter[2]) && '_' !== $parameter[2]) {
-            $withoutPrimary = true;
-
-            if (!empty($parameter[3])) {
-                $primaryKey = $parameter[3];
-            } else {
-                if (is_string($entity->primaryKey())) {
-                    $primaryKey = $entity->singlePrimaryKey();
-                } else {
-                    $withoutPrimary = false;
-                }
-            }
-
-            if ($withoutPrimary) {
-                $select->where($primaryKey, '<>', $parameter[2]);
-            }
-        }
-
-        if (($num = count($parameter)) >= 4) {
-            for ($i = 4; $i < $num; $i += 2) {
-                if (!isset($parameter[$i + 1])) {
-                    throw new InvalidArgumentException('Unique additional conditions must be paired.');
-                }
-
-                if (false !== strpos($parameter[$i], ':')) {
-                    list($field, $operator) = explode(':', $parameter[$i]);
-                } else {
-                    $field = $parameter[$i];
-                    $operator = '=';
-                }
-
-                $select->where($field, $operator, $parameter[$i + 1]);
-            }
-        }
-
-        return 0 === $select->findCount();
-    }
-
-    /**
      * 数据是否满足正则条件.
      *
      * @param string $field
@@ -2415,9 +2316,21 @@ class Validator implements IValidator
             return;
         }
 
-        $method = 'validate'.ucwords(Str::camelize($rule));
+        $camelizeRule = ucwords(Str::camelize($rule));
+        $method = 'validate'.$camelizeRule;
+        $className = '\\Leevel\\Validate\\'.$camelizeRule.'Rule';
 
-        if (!$this->{$method}($field, $fieldValue, $parameter)) {
+        if (class_exists($className)) {
+            if ($this->container) {
+                $validateRule = $this->container->make($className);
+            } else {
+                $validateRule = new $className();
+            }
+
+            if (!$validateRule->validate($field, $fieldValue, $parameter)) {
+                return false;
+            }
+        } elseif (!$this->{$method}($field, $fieldValue, $parameter)) {
             $this->addFailure($field, $rule, $parameter);
 
             return false;
