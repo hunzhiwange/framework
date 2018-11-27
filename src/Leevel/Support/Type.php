@@ -42,7 +42,7 @@ class Type
      *
      * @return bool
      */
-    public static function vars($value, $type)
+    public static function vars($value, $type): bool
     {
         // 整理参数，以支持 array:int 格式
         $tmp = explode(':', $type);
@@ -113,7 +113,7 @@ class Type
      *
      * @since bool
      */
-    public static function num($value)
+    public static function num($value): bool
     {
         if (is_numeric($value)) {
             return true;
@@ -129,7 +129,7 @@ class Type
      *
      * @since bool
      */
-    public static function ints($value)
+    public static function ints($value): bool
     {
         if (is_int($value)) {
             return true;
@@ -146,7 +146,7 @@ class Type
      *
      * @return bool
      */
-    public static function these($value, $types)
+    public static function these($value, $types): bool
     {
         if (!static::vars($types, 'string') && !static::arr($types, [
             'string',
@@ -178,7 +178,7 @@ class Type
      *
      * @return bool
      */
-    public static function arr($arr, array $types)
+    public static function arr($arr, array $types): bool
     {
         // 不是数组直接返回
         if (!is_array($arr)) {
