@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
+use Leevel;
+
 /**
  * 默认分页渲染.
  *
@@ -172,7 +174,7 @@ class Defaults implements IRender
 
         return sprintf(
             '<span class="pagination-total">%s</span>',
-            __('共 %d 条', $this->page->getTotalRecord() ?: 0)
+            Leevel::__('共 %d 条', $this->page->getTotalRecord() ?: 0)
         );
     }
 
@@ -326,9 +328,9 @@ class Defaults implements IRender
                 'this.getAttribute(\'link\').replace( \'{jump}\', this.value); }" '.
                 'onfocus="this.select();" min="1" value="1" number="true" '.
                 'class="pagination-editor">%s</span>',
-            __('前往'),
+            Leevel::__('前往'),
             $this->replace('{jump}'),
-            __('页')
+            Leevel::__('页')
         );
     }
 

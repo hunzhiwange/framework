@@ -60,10 +60,8 @@ class Leevel
         static $i18n;
 
         if (null === $i18n) {
-            // @codeCoverageIgnoreStart
-            if (!is_object($i18n = static::project('i18n'))) {
-                $i18n = 'sprintf';
-            // @codeCoverageIgnoreEnd
+            if (!is_object($i18n = static::project('i18n'))) { /** @codeCoverageIgnore */
+                $i18n = 'sprintf'; // @codeCoverageIgnore
             } else {
                 $i18n = [$i18n, 'gettext'];
             }

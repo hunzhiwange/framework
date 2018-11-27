@@ -23,6 +23,7 @@ namespace Leevel\Database\Ddd;
 use ArrayAccess;
 use InvalidArgumentException;
 use JsonSerializable;
+use Leevel;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\BelongsTo;
 use Leevel\Database\Ddd\Relation\HasMany;
@@ -1165,7 +1166,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         if (null === $enum) {
             return array_map(function (string $val) {
-                return __($val);
+                return Leevel::__($val);
             }, $tmp[self::ENUM]);
         }
 
@@ -1178,7 +1179,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             );
         }
 
-        return __($tmp[self::ENUM][$enum]);
+        return Leevel::__($tmp[self::ENUM][$enum]);
     }
 
     /**
