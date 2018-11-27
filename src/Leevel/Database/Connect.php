@@ -736,7 +736,7 @@ abstract class Connect
     /**
      * pdo　参数绑定.
      *
-     * @param array $bindParams 绑定参数
+     * @param array $bindParams
      */
     protected function bindParams(array $bindParams = [])
     {
