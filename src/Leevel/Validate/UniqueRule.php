@@ -105,6 +105,22 @@ class UniqueRule extends Rule implements IRule
     }
 
     /**
+     * 校验基本参数.
+     *
+     * @return bool
+     */
+    protected function validateArgs(): bool
+    {
+        $this->checkParameterLength($this->field, $this->parameter, 1);
+
+        if (!is_string($this->parameter[0]) && !is_object($this->parameter[0])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * 取得查询.
      *
      * @return \Leevel\Database\Ddd\Select

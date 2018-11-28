@@ -69,22 +69,6 @@ abstract class Rule
     }
 
     /**
-     * 校验基本参数.
-     *
-     * @return bool
-     */
-    protected function validateArgs(): bool
-    {
-        $this->checkParameterLength($this->field, $this->parameter, 1);
-
-        if (!is_string($this->parameter[0]) && !is_object($this->parameter[0])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * 数据是否满足正则条件.
      *
      * @param string $field
