@@ -212,8 +212,8 @@ class StrTest extends TestCase
         $this->assertSame('4 minutes ago', Str::formatDate($time - 240));
         $this->assertSame('4 分钟之前', Str::formatDate($time - 240, ['minutes' => '分钟之前']));
 
-        $this->assertSame('40 seconds ago', Str::formatDate($time - 40));
-        $this->assertSame('40 秒之前', Str::formatDate($time - 40, ['seconds' => '秒之前']));
+        $this->assertTrue(in_array(Str::formatDate($time - 40), ['40 seconds ago', '41 seconds ago', '42 seconds ago'], true));
+        $this->assertTrue(in_array(Str::formatDate($time - 40, ['seconds' => '秒之前']), ['40 秒之前', '41 秒之前', '42 秒之前'], true));
     }
 
     public function testFormatBytes()
