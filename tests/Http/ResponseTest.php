@@ -1089,8 +1089,14 @@ class ResponseTest extends TestCase
         $date->setTimezone(new DateTimeZone('UTC'));
         $result = $date->format('D, d M Y H:i:s').' GMT';
 
+        $date->modify('+1seconds');
+        $result2 = $date->format('D, d M Y H:i:s').' GMT';
+
+        $date->modify('+1seconds');
+        $result3 = $date->format('D, d M Y H:i:s').' GMT';
+
         $this->assertSame('hello', $response->getContent());
-        $this->assertSame($result, $response->headers->get('Expires'));
+        $this->assertTimeRange($response->headers->get('Expires'), $result, $result2, $result3);
         $this->assertSame('max-age=300', $response->headers->get('Cache-Control'));
         $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($response->isOk());
@@ -1119,8 +1125,14 @@ class ResponseTest extends TestCase
         $date->setTimezone(new DateTimeZone('UTC'));
         $result = $date->format('D, d M Y H:i:s').' GMT';
 
+        $date->modify('+1seconds');
+        $result2 = $date->format('D, d M Y H:i:s').' GMT';
+
+        $date->modify('+1seconds');
+        $result3 = $date->format('D, d M Y H:i:s').' GMT';
+
         $this->assertSame('hello', $response->getContent());
-        $this->assertSame($result, $response->headers->get('Expires'));
+        $this->assertTimeRange($response->headers->get('Expires'), $result, $result2, $result3);
         $this->assertSame('max-age=60', $response->headers->get('Cache-Control'));
         $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($response->isOk());
