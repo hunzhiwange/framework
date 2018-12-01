@@ -110,15 +110,6 @@ interface IValidator
     public function error(): array;
 
     /**
-     * 返回所有错误消息.
-     *
-     * @param \Closure $callback
-     *
-     * @return string
-     */
-    public function errorMessage(Closure $callback = null): string;
-
-    /**
      * 返回验证数据.
      *
      * @return array
