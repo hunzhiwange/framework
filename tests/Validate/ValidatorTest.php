@@ -149,36 +149,6 @@ eot;
                 $validate->error()
             )
         );
-
-        $error2 = <<<'eot'
-[
-    "<p>用户名 不满足最小长度 20<\/p>"
-]
-eot;
-
-        $this->assertSame(
-            $error2,
-            $this->varJson(
-                [$validate->errorMessage()],
-                2
-            )
-        );
-
-        $error3 = <<<'eot'
-[
-    "<span>用户名 不满足最小长度 20<\/span>"
-]
-eot;
-
-        $this->assertSame(
-            $error3,
-            $this->varJson(
-                [$validate->errorMessage(function (string $v) {
-                    return '<span>'.$v.'</span>';
-                })],
-                3
-            )
-        );
     }
 
     public function testData()
