@@ -1836,7 +1836,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $value = $this->propValue($k);
             $result[$k] = $value;
 
-            if (false !== ($enum = $this->enum($k, $value))) {
+            if (false !== ($enum = $this->enum($k, (string) $value))) {
                 $result[$k.'_'.self::ENUM] = $enum;
             }
         }
