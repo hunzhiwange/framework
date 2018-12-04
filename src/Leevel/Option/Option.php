@@ -34,12 +34,6 @@ use ArrayAccess;
 class Option implements IOption, ArrayAccess
 {
     /**
-     * 默认命名空间.
-     *
-     * @var string
-     */
-    const DEFAUTL_NAMESPACE = 'app';
-    /**
      * 配置数据.
      *
      * @var array

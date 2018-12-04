@@ -32,6 +32,13 @@ namespace Leevel\Option;
 interface IOption
 {
     /**
+     * 默认命名空间.
+     *
+     * @var string
+     */
+    const DEFAUTL_NAMESPACE = 'app';
+
+    /**
      * 是否存在配置.
      *
      * @param string $name 配置键值
