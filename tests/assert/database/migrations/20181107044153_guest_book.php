@@ -18,6 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Phinx\Db\Adapter\MysqlAdapter;
 use Phinx\Migration\AbstractMigration;
 
 class GuestBook extends AbstractMigration
@@ -47,7 +48,7 @@ class GuestBook extends AbstractMigration
     {
         $table = $this->table('guest_book');
         $table->addColumn('name', 'string', ['limit' => 64]);
-        $table->addColumn('content', 'text', ['default' => '', 'comment' => '评论内容']);
+        $table->addColumn('content', 'string', ['limit' => MysqlAdapter::TEXT_MEDIUM, 'comment' => '评论内容']);
         $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
         $table->create();
     }

@@ -72,7 +72,7 @@ class MysqlTest extends TestCase
         },
         "content": {
             "name": "content",
-            "type": "text",
+            "type": "longtext",
             "length": null,
             "primary_key": false,
             "auto_increment": false,
