@@ -72,7 +72,7 @@ class LoadOptionTest extends TestCase
     public function testLoadCached()
     {
         // 重置环境
-        putenv('ENVIRONMENT=');
+        putenv('RUNTIME_ENVIRONMENT=');
 
         $bootstrap = new LoadOption();
 

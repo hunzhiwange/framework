@@ -76,11 +76,11 @@ class LoadOption
      */
     protected function checkRuntimeEnv(IProject $project)
     {
-        if (!getenv('ENVIRONMENT')) {
+        if (!getenv('RUNTIME_ENVIRONMENT')) {
             return;
         }
 
-        $file = '.'.getenv('ENVIRONMENT');
+        $file = '.'.getenv('RUNTIME_ENVIRONMENT');
 
         // 校验运行时环境，防止测试用例清空非测试库的业务数据
         if (!is_file($fullFile = $project->envPath().'/'.$file)) {

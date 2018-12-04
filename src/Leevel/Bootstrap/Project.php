@@ -538,7 +538,7 @@ class Project extends Container implements IProject
      */
     public function optionCachedPath(): string
     {
-        $cache = getenv('ENVIRONMENT') ?: 'option';
+        $cache = getenv('RUNTIME_ENVIRONMENT') ?: 'option';
 
         return $this->runtimePath().'/bootstrap/'.$cache.'.php';
     }
