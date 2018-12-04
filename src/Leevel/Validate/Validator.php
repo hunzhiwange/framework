@@ -2303,7 +2303,9 @@ class Validator implements IValidator
                 $validateRule = new $className();
             }
 
-            if (!$validateRule->validate($field, $fieldValue, $parameter)) {
+            if (false === $validateRule->validate($field, $fieldValue, $parameter)) {
+                $this->addFailure($field, $rule, $parameter);
+
                 return false;
             }
         } elseif (!$this->{$method}($field, $fieldValue, $parameter)) {

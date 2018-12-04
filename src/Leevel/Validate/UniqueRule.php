@@ -159,7 +159,7 @@ class UniqueRule extends Rule implements IRule
 
         if (is_string($this->parameter[0])) {
             if (false !== strpos($this->parameter[0], self::SEPARATE)) {
-                list($entityClass, $connect) = explode(self::SEPARATE, $entityClass);
+                list($connect, $entityClass) = explode(self::SEPARATE, $this->parameter[0]);
             } else {
                 $entityClass = $this->parameter[0];
             }
@@ -189,7 +189,7 @@ class UniqueRule extends Rule implements IRule
     }
 
     /**
-     * 排查主键.
+     * 排除主键.
      *
      * @param \Leevel\Database\Ddd\Select $select
      */
