@@ -98,6 +98,8 @@ _____________                           _______________
 
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework      
 $composer install
+$cp ./tests/config.php ./tests/config.local.php // Modify the config
+$php vendor/bin/phinx migrate
 $php vendor/bin/phpunit tests
 ```
 
