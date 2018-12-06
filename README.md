@@ -105,9 +105,30 @@ $php vendor/bin/phpunit tests
 
 ## Unified Code Style
 
+### Install PHP Coding Standards Fixer
+
+<https://github.com/friendsofphp/php-cs-fixer>
+
+### Base use
+
 ```
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 $php-cs-fixer fix --config=.php_cs.dist
+```
+
+### With Git hooks
+
+Add a pre-commit for it.
+
+```
+ln -s ./build/pre-commit.sh ./.git/hooks/pre-commit
+```
+
+Pass hook
+
+```
+# git commit -h
+# git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
 ```
 
 ## Travis CI Supported

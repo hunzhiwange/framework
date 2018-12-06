@@ -104,9 +104,30 @@ $php vendor/bin/phpunit tests
 
 ## 统一团队代码风格
 
+### 安装 PHP 代码格式化工具
+
+<https://github.com/friendsofphp/php-cs-fixer>
+
+### 基本使用
+
 ```
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 $php-cs-fixer fix --config=.php_cs.dist
+```
+
+### 使用 Git 钩子
+
+添加一个 pre-commit 钩子.
+
+```
+ln -s ./build/pre-commit.sh ./.git/hooks/pre-commit
+```
+
+跳过钩子
+
+```
+# git commit -h
+# git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
 ```
 
 ## Travis CI 持续集成支持
