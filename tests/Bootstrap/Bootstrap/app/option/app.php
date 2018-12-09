@@ -17,6 +17,6 @@
  */
 
 return [
-    'environment' => 'development',
+    'environment' => getenv('ENVIRONMENT'),
     'debug'       => false,
 ];

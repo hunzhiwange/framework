@@ -46,6 +46,10 @@ class LoadOptionTest extends TestCase
         if (is_dir($runtimePath)) {
             Fso::deleteDirectory($runtimePath, true);
         }
+
+        if (getenv('RUNTIME_ENVIRONMENT')) {
+            putenv('RUNTIME_ENVIRONMENT=fooenv');
+        }
     }
 
     public function testBaseUse()
@@ -67,6 +71,56 @@ class LoadOptionTest extends TestCase
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));
+    }
+
+    public function testWithRuntimeEnv()
+    {
+        putenv('RUNTIME_ENVIRONMENT=fooenv');
+
+        $bootstrap = new LoadOption();
+
+        $project = new Project3($appPath = __DIR__.'/app');
+
+        $this->assertInstanceof(IContainer::class, $project);
+        $this->assertInstanceof(Container::class, $project);
+
+        $this->assertSame($appPath.'/runtime/bootstrap/fooenv.php', $project->optionCachedPath());
+        $this->assertFalse($project->isCachedOption());
+        $this->assertSame($appPath.'/option', $project->optionPath());
+
+        $this->assertNull($bootstrap->handle($project, true));
+
+        $option = $project->make('option');
+
+        $this->assertSame('testing', $option->get('environment'));
+        $this->assertSame('bar', $option->get('demo\\foo'));
+
+        putenv('RUNTIME_ENVIRONMENT=');
+    }
+
+    public function testWithRuntimeEnvNotFound()
+    {
+        $appPath = __DIR__.'/app';
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf('Env file `%s` was not found.', $appPath.'/.notfoundenv')
+        );
+
+        putenv('RUNTIME_ENVIRONMENT=notfoundenv');
+
+        $bootstrap = new LoadOption();
+
+        $project = new Project3($appPath);
+
+        $this->assertInstanceof(IContainer::class, $project);
+        $this->assertInstanceof(Container::class, $project);
+
+        $this->assertSame($appPath.'/runtime/bootstrap/notfoundenv.php', $project->optionCachedPath());
+        $this->assertFalse($project->isCachedOption());
+        $this->assertSame($appPath.'/option', $project->optionPath());
+
+        $bootstrap->handle($project, true);
     }
 
     public function testLoadCached()
