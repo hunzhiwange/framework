@@ -25,9 +25,9 @@ declare(strict_types=1);
  *
  * 读取配置并且返回配置值
  */
-/** @codeCoverageIgnoreStart */
-require_once __DIR__.'/tests/config.php';
+require_once __DIR__.'/tests/config.php'; // @codeCoverageIgnore
 
+// @codeCoverageIgnoreStart
 return [
     'paths' => [
         'migrations'    => 'tests/assert/database/migrations',
