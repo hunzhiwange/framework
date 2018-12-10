@@ -24,6 +24,7 @@ use JsonSerializable;
 use Leevel\Collection\Collection;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
+use stdClass;
 use Tests\TestCase;
 
 /**
@@ -65,6 +66,56 @@ class CollectionTest extends TestCase
                     break;
             }
         }
+
+        $this->assertSame($collection[0], 'hello');
+        $this->assertSame($collection[1], 'world');
+        $this->assertSame($collection[2], 'foo');
+        $this->assertSame($collection[3], 'bar');
+        $this->assertTrue(isset($collection[0]));
+        $this->assertTrue(isset($collection[1]));
+        $this->assertTrue(isset($collection[2]));
+        $this->assertTrue(isset($collection[3]));
+        $this->assertFalse(isset($collection[4]));
+    }
+
+    public function testMake()
+    {
+        $data = [
+            'hello', 'world', 'foo', 'bar',
+        ];
+
+        $collection = Collection::make($data);
+
+        foreach ($collection as $key => $val) {
+            switch ($key) {
+                case 0:
+                    $this->assertSame($val, 'hello');
+
+                    break;
+                case 1:
+                    $this->assertSame($val, 'world');
+
+                    break;
+                case 2:
+                    $this->assertSame($val, 'foo');
+
+                    break;
+                case 3:
+                    $this->assertSame($val, 'bar');
+
+                    break;
+            }
+        }
+
+        $this->assertSame($collection[0], 'hello');
+        $this->assertSame($collection[1], 'world');
+        $this->assertSame($collection[2], 'foo');
+        $this->assertSame($collection[3], 'bar');
+        $this->assertTrue(isset($collection[0]));
+        $this->assertTrue(isset($collection[1]));
+        $this->assertTrue(isset($collection[2]));
+        $this->assertTrue(isset($collection[3]));
+        $this->assertFalse(isset($collection[4]));
     }
 
     public function testIterator()
@@ -195,6 +246,22 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
+    public function testGetArrayElementsWithStdClass()
+    {
+        $data = [
+            'hello' => 'world',
+            'foo'   => 'bar',
+        ];
+
+        $std = new stdClass();
+        $std->hello = 'world';
+        $std->foo = 'bar';
+
+        $collection = new Collection($std);
+
+        $this->assertSame($collection->toArray(), $data);
+    }
+
     public function testTypeValidate()
     {
         $data = [
@@ -220,6 +287,183 @@ class CollectionTest extends TestCase
         ];
 
         $collection = new Collection($data, ['int']);
+    }
+
+    public function testEach()
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection($data);
+
+        $i = 0;
+
+        $collection->each(function ($item, $key) use (&$i) {
+            $this->assertSame($i, $key);
+
+            if (0 === $i) {
+                $this->assertSame($item, 'hello');
+            } else {
+                $this->assertSame($item, 'world');
+            }
+
+            $i++;
+        });
+    }
+
+    public function testEachAndBreak()
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection($data);
+
+        $i = 0;
+
+        $collection->each(function ($item, $key) use (&$i) {
+            $this->assertSame($i, $key);
+
+            if (0 === $i) {
+                $this->assertSame($item, 'hello');
+
+                return false;
+            }
+
+            $i++;
+        });
+
+        $this->assertSame($i, 0);
+    }
+
+    public function testToJson()
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection($data);
+
+        $data = '["hello","world"]';
+
+        $this->assertSame($data, $collection->toJson());
+    }
+
+    public function testToJsonWithCn()
+    {
+        $data = [
+            '我',
+            '成都',
+        ];
+
+        $collection = new Collection($data);
+
+        $data = '["我","成都"]';
+
+        $this->assertSame($data, $collection->toJson());
+    }
+
+    public function testToJsonWithCnEncode()
+    {
+        $data = [
+            '我',
+            '成都',
+        ];
+
+        $collection = new Collection($data);
+
+        $data = '["\u6211","\u6210\u90fd"]';
+
+        $this->assertSame($data, $collection->toJson(JSON_HEX_TAG));
+    }
+
+    public function testJsonSerialize()
+    {
+        $data = [
+            new TestJsonSerializable(),
+            new TestIArray(),
+            new TestIJson(),
+            'foo',
+            'bar',
+        ];
+
+        $collection = new Collection($data);
+
+        $data = <<<'eot'
+[
+    [
+        "hello",
+        "world"
+    ],
+    [
+        "hello",
+        "world"
+    ],
+    [
+        "hello",
+        "world"
+    ],
+    "foo",
+    "bar"
+]
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $collection->jsonSerialize()
+            )
+        );
+    }
+
+    public function testGetSetString()
+    {
+        $data = [
+            'hello' => 'world',
+            'foo'   => 'bar',
+        ];
+
+        $collection = new Collection($data);
+
+        $this->assertSame($collection->hello, 'world');
+        $this->assertSame($collection->foo, 'bar');
+        $collection->hello = 'new world';
+        $collection->foo = 'new bar';
+        $this->assertSame($collection->hello, 'new world');
+        $this->assertSame($collection->foo, 'new bar');
+        $this->assertSame((string) $collection, '{"hello":"new world","foo":"new bar"}');
+    }
+
+    public function testGetSetString2()
+    {
+        $data = [
+            '我' => '成都',
+            '们' => '中国',
+        ];
+
+        $collection = new Collection($data);
+        $this->assertSame((string) $collection, '{"我":"成都","们":"中国"}');
+    }
+
+    public function testValid()
+    {
+        $data = [
+            'hello', 'world',
+        ];
+
+        $collection = new Collection($data);
+
+        $this->assertTrue($collection->valid());
+        $collection->next();
+        $this->assertTrue($collection->valid());
+        $collection->next();
+        $this->assertFalse($collection->valid());
+        $collection->rewind();
+        $this->assertTrue($collection->valid());
     }
 }
 
