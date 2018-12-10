@@ -32,6 +32,7 @@ use PHPUnit\Framework\TestCase as TestCases;
  * @since 2017.05.08
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 abstract class TestCase extends TestCases
 {
