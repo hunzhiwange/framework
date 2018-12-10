@@ -22,7 +22,9 @@ namespace Tests\Database;
 
 use Exception;
 use Leevel\Database\IConnect;
+use Leevel\Database\Mysql;
 use PDO;
+use PDOException;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Throwable;
 
@@ -787,8 +789,82 @@ eot;
         $connect->pdo(true);
     }
 
+    public function testReconnectRetryForQuery()
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[42S02]: Base table or view not found: 1146 Table \'test.not_found_table\' doesn\'t exist'
+        );
+
+        $connect = $this->createDatabaseConnectMock([
+            'driver'             => 'mysql',
+            'separate'           => false,
+            'distributed'        => true,
+            'master'             => [
+                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                'charset'  => 'utf8',
+                'options'  => [
+                    PDO::ATTR_PERSISTENT => false,
+                ],
+            ],
+            'slave' => [],
+        ], MyMysql::class);
+
+        $this->assertInstanceof(MyMysql::class, $connect);
+
+        $connect->query('SELECT * FROM not_found_table');
+    }
+
+    public function testReconnectRetryForExecute()
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[42S02]: Base table or view not found: 1146 Table \'test.not_found_table\' doesn\'t exist'
+        );
+
+        $connect = $this->createDatabaseConnectMock([
+            'driver'             => 'mysql',
+            'separate'           => false,
+            'distributed'        => true,
+            'master'             => [
+                'host'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
+                'port'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
+                'name'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
+                'user'     => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
+                'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
+                'charset'  => 'utf8',
+                'options'  => [
+                    PDO::ATTR_PERSISTENT => false,
+                ],
+            ],
+            'slave' => [],
+        ], MyMysql::class);
+
+        $this->assertInstanceof(MyMysql::class, $connect);
+
+        $connect->execute('DELETE FROM not_found_table WHERE id > 0');
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['guest_book'];
+    }
+}
+
+class MyMysql extends Mysql
+{
+    /**
+     * 是否需要重连.
+     *
+     * @return bool
+     */
+    protected function needReconnect(PDOException $e): bool
+    {
+        // 任意错误都需要重试，为了测试的需要
+        return 1 && $this->reconnectRetry <= self::RECONNECT_MAX;
     }
 }

@@ -550,6 +550,42 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new title', $newPost->getTitle());
     }
 
+    public function testSetConnectNotFoundWillUseDefault()
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $post = Post::find(1);
+
+        $work->setConnect('hello');
+
+        $work->update($post);
+
+        $post->title = 'new title';
+
+        $work->flush();
+
+        $this->assertSame('1', $post->getId());
+        $this->assertSame('new title', $post->getTitle());
+
+        $newPost = Post::find(1);
+
+        $this->assertSame('1', $newPost->getId());
+        $this->assertSame('new title', $newPost->getTitle());
+    }
+
     public function testFlushButNotFoundAny()
     {
         $work = UnitOfWork::make(new Post());

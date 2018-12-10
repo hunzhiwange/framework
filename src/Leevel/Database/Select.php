@@ -790,8 +790,7 @@ class Select
             ],
             $this->limit($from, $perPage)->
 
-            findAll($flag),
-            self::PAGE => true,
+            findAll($flag), self::PAGE => true,
         ];
     }
 
@@ -815,8 +814,7 @@ class Select
             $page,
             $this->limit($page->getFromRecord(), $perPage)->
 
-            findAll($flag),
-            self::PAGE => true,
+            findAll($flag), self::PAGE => true,
         ];
     }
 
@@ -838,8 +836,7 @@ class Select
             $page,
             $this->limit($page->getFromRecord(), $perPage)->
 
-            findAll($flag),
-            self::PAGE => true,
+            findAll($flag), self::PAGE => true,
         ];
     }
 
@@ -861,8 +858,7 @@ class Select
             $page,
             $this->limit($page->getFromRecord(), $perPage)->
 
-            findAll($flag),
-            self::PAGE => true,
+            findAll($flag), self::PAGE => true,
         ];
     }
 
