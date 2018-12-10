@@ -170,6 +170,7 @@ foreach (ComposerStaticInit::$files as $fileIdentifier => $_) {
 }
 
 require_once dirname(__FILE__, 2).'/vendor/hunzhiwange/framework/src/Leevel/Bootstrap/functions.php';
+require_once dirname(__FILE__, 2).'/common/Infra/functions.php';
 eot;
     }
 
@@ -196,9 +197,10 @@ spl_autoload_register(function (string $className) use(&$loader) {
 
     if (null === $loaded) {
         $loader = require_once __DIR__.'/../vendor/autoload.php';
-        $loader->loadClass($className);
         $loaded = true;
     }
+
+    $loader->loadClass($className);
  });
 
 return $loader;
