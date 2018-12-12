@@ -1,1 +1,0 @@
-hello phpui for default controller and action,<?php echo $foo; ?>.

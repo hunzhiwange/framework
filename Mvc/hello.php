@@ -1,1 +1,0 @@
-Hi here! <?php echo $foo; ?>

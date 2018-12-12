@@ -1,1 +1,0 @@
-hello phpui,<?php echo $foo; ?>.

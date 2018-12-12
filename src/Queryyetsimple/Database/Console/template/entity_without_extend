@@ -1,8 +1,0 @@
-<?php declare(strict_types=1);
-{{header_comment}}
-namespace {{namespace}}\Domain\Entity;
-
-{{file_comment}}
-class {{file_name}}
-{
-}

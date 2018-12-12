@@ -1,1 +1,0 @@
-echo('hello v8 demo1.js!');
