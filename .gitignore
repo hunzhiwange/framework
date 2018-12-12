@@ -5,4 +5,8 @@ composer.lock
 logs/
 node_modules/
 package-lock.json
-Router
+*.log
+/tests/config.local.php
+/split.sh
+/tests.sh
+/release.sh

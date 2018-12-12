@@ -1,0 +1,31 @@
+{
+    "name": "leevel/kernel",
+    "description": "The Leevel Kernel Package.",
+    "license": "MIT",
+    "homepage": "http://queryphp.com",
+    "support": {
+        "issues": "https://github.com/hunzhiwange/framework/issues",
+        "source": "https://github.com/hunzhiwange/framework"
+    },
+    "authors": [{
+        "name": "Xiangmin Liu",
+        "email": "635750556@qq.com"
+    }],
+    "require": {
+        "php": "^7.1.3",
+        "leevel/support": "1.0.*",
+        "leevel/http": "1.0.*",
+        "symfony/console": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Leevel\\Kernel\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,188 @@
+{
+    "base_paths": {
+        "*": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\DemoForAll@handle"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\DemoForAll@terminate"
+                ]
+            }
+        },
+        "\/^\\\/basePath\\\/normalize\\\/$\/": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\DemoForBasePath@handle"
+                ],
+                "terminate": []
+            }
+        }
+    },
+    "group_paths": {
+        "\/api\/v1": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo2@handle"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate",
+                    "Tests\\Router\\Middlewares\\Demo2@terminate"
+                ]
+            }
+        },
+        "\/api\/v2": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo3@handle:10,world"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate"
+                ]
+            }
+        },
+        "\/api\/v3": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo2@handle",
+                    "Tests\\Router\\Middlewares\\Demo3@handle:10,world"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate",
+                    "Tests\\Router\\Middlewares\\Demo2@terminate"
+                ]
+            }
+        },
+        "\/api\/v4": {
+            "middlewares": []
+        }
+    },
+    "groups": [
+        "\/pet",
+        "\/store",
+        "\/user"
+    ],
+    "routers": {
+        "get": {
+            "static": {
+                "\/basePath\/normalize\/": {
+                    "bind": "\\Tests\\Router\\Controllers\\Annotation\\BasePath@normalize"
+                },
+                "\/bindNotFound\/test\/": {
+                    "bind": "\\Tests\\Router\\Controllers\\Annotation\\BindNotFound@notFound"
+                },
+                "\/bindNotFound\/test2\/": {
+                    "bind": "\\Tests\\Router\\Controllers\\Annotation\\BindNotFound"
+                },
+                "\/bindNotSet\/test\/": {
+                    "bind": null
+                },
+                "\/bindNotSet\/test2\/": {
+                    "bind": null
+                },
+                "\/domain\/test\/": {
+                    "domain": "queryphp.com",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@fooNotMatchedDomain"
+                },
+                "\/domain\/test2\/": {
+                    "domain": "queryphp.com",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomain"
+                },
+                "\/domain\/test3\/": {
+                    "domain": "{subdomain:[A-Za-z]+}-vip.{domain}.queryphp.com",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomainWithVar",
+                    "domain_regex": "\/^([A-Za-z]+)\\-vip\\.(\\S+)\\.queryphp\\.com$\/",
+                    "domain_var": [
+                        "subdomain",
+                        "domain"
+                    ]
+                },
+                "\/domain\/test4\/": {
+                    "domain": "api.queryphp.com",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Domain@barMatchedDomainWithoutExtend"
+                },
+                "\/extendVar\/test\/": {
+                    "params": {
+                        "args1": "hello",
+                        "args2": "world"
+                    },
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\ExtendVar@withExtendVar"
+                },
+                "\/middleware\/test\/": {
+                    "middlewares": {
+                        "handle": [
+                            "Tests\\Router\\Middlewares\\Demo2@handle"
+                        ],
+                        "terminate": [
+                            "Tests\\Router\\Middlewares\\Demo1@terminate",
+                            "Tests\\Router\\Middlewares\\Demo2@terminate"
+                        ]
+                    },
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@foo"
+                },
+                "\/middleware\/test2\/": {
+                    "middlewares": {
+                        "handle": [
+                            "Tests\\Router\\Middlewares\\Demo2@handle",
+                            "Tests\\Router\\Middlewares\\Demo3@handle:10,world"
+                        ],
+                        "terminate": [
+                            "Tests\\Router\\Middlewares\\Demo1@terminate",
+                            "Tests\\Router\\Middlewares\\Demo2@terminate"
+                        ]
+                    },
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@bar"
+                },
+                "\/middleware\/test3\/": {
+                    "middlewares": {
+                        "handle": [
+                            "Tests\\Router\\Middlewares\\Demo2@handle",
+                            "Tests\\Router\\Middlewares\\Demo3@handle:10,world",
+                            "Tests\\Router\\Middlewares\\DemoForBasePath@handle"
+                        ],
+                        "terminate": [
+                            "Tests\\Router\\Middlewares\\Demo1@terminate",
+                            "Tests\\Router\\Middlewares\\Demo2@terminate"
+                        ]
+                    },
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@hello"
+                },
+                "\/middleware\/test4\/": {
+                    "middlewares": {
+                        "handle": [],
+                        "terminate": [
+                            "Tests\\Router\\Middlewares\\Demo1@terminate"
+                        ]
+                    },
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Middleware@world"
+                },
+                "\/scheme\/test\/": {
+                    "scheme": "https",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@fooNotMatchedScheme"
+                },
+                "\/scheme\/test2\/": {
+                    "scheme": "http",
+                    "bind": "\\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\Scheme@barMatchedScheme"
+                }
+            },
+            "p": {
+                "\/pet": {
+                    "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
+                        "bind": "\\Tests\\Router\\Controllers\\Annotation\\PetLeevel",
+                        "var": [
+                            "petId"
+                        ]
+                    },
+                    "regex": [
+                        "~^(?|\/api\/v1\/petLeevel\/([A-Za-z]+)\/)$~x"
+                    ],
+                    "map": [
+                        {
+                            "2": "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

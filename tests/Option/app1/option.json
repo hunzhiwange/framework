@@ -1,0 +1,51 @@
+{
+    "app": {
+        "environment": "development",
+        "debug": false,
+        "_env": {
+            "ENVIRONMENT": "development",
+            "DEBUG": "true",
+            "AUTH_KEY": "7becb888f518b20224a988906df51e05"
+        },
+        "_deferred_providers": [
+            {
+                "bar": "Tests\\Option\\Providers\\Bar",
+                "helloworld": "Tests\\Option\\Providers\\Bar"
+            },
+            {
+                "Tests\\Option\\Providers\\Bar": {
+                    "bar": [
+                        "Tests\\Option\\Providers\\World"
+                    ],
+                    "0": "helloworld"
+                }
+            }
+        ],
+        "_composer": {
+            "providers": [
+                "Tests\\Option\\Providers\\Foo"
+            ],
+            "ignores": [
+                "Leevel\\Notexits\\Provider\\Register"
+            ],
+            "commands": [
+                "Tests\\Option\\Commands\\Test",
+                "Tests\\Option\\Commands\\Console",
+                "Demo\\Demo\\Console",
+                "Common\\App\\Console"
+            ],
+            "options": {
+                "demo": "option\/extend\/test.php"
+            },
+            "i18ns": [
+                "i18n\/extend"
+            ],
+            "metas": {
+                "foo": "bar"
+            }
+        }
+    },
+    "demo": {
+        "foo": "bar"
+    }
+}

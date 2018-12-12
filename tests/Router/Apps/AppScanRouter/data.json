@@ -1,0 +1,68 @@
+{
+    "base_paths": [],
+    "group_paths": {
+        "\/api\/v1": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo2@handle"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate",
+                    "Tests\\Router\\Middlewares\\Demo2@terminate"
+                ]
+            }
+        },
+        "\/api\/v2": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo3@handle:10,world"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate"
+                ]
+            }
+        },
+        "\/api\/v3": {
+            "middlewares": {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo2@handle",
+                    "Tests\\Router\\Middlewares\\Demo3@handle:10,world"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate",
+                    "Tests\\Router\\Middlewares\\Demo2@terminate"
+                ]
+            }
+        },
+        "\/api\/v4": {
+            "middlewares": []
+        }
+    },
+    "groups": [
+        "\/pet",
+        "\/store",
+        "\/user"
+    ],
+    "routers": {
+        "get": {
+            "p": {
+                "\/pet": {
+                    "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/": {
+                        "bind": "\\Tests\\Router\\Apps\\AppScanRouter\\Controllers\\Pet@petLeevel",
+                        "var": [
+                            "petId"
+                        ]
+                    },
+                    "regex": [
+                        "~^(?|\/api\/v1\/petLeevel\/([A-Za-z]+)\/)$~x"
+                    ],
+                    "map": [
+                        {
+                            "2": "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

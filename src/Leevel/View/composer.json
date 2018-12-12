@@ -1,0 +1,41 @@
+{
+    "name": "leevel/view",
+    "description": "The Leevel View Package.",
+    "license": "MIT",
+    "homepage": "http://queryphp.com",
+    "support": {
+        "issues": "https://github.com/hunzhiwange/framework/issues",
+        "source": "https://github.com/hunzhiwange/framework"
+    },
+    "authors": [{
+        "name": "Xiangmin Liu",
+        "email": "635750556@qq.com"
+    }],
+    "require": {
+        "php": "^7.1.3",
+        "leevel/support": "1.0.*",
+        "leevel/manager": "1.0.*",
+        "leevel/stack": "1.0.*",
+        "twig/twig": "~2.0"
+    },
+    "suggest": {
+        "ext-v8js": "PHP v8js support."
+    },
+    "autoload": {
+        "psr-4": {
+            "Leevel\\View\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "leevel": {
+            "providers": [
+                "Leevel\\View\\Provider\\Register"
+            ],
+            "commands": "Leevel\\View\\Console"
+        }
+    },
+    "minimum-stability": "dev"
+}
