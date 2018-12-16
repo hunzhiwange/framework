@@ -24,6 +24,7 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Kernel\IKernel;
 use Leevel\Protocol\HttpServer;
+use Leevel\Protocol\Pool;
 use Leevel\Protocol\RpcServer;
 use Leevel\Protocol\Server;
 use Leevel\Protocol\WebsocketServer;
@@ -55,6 +56,7 @@ class Register extends Provider
         $this->swooleHttpServer();
         $this->swooleWebsocketServer();
         $this->swooleRpcServer();
+        $this->pool();
     }
 
     /**
@@ -76,6 +78,10 @@ class Register extends Provider
             ],
             'swoole.rpc.server' => [
                 'Leevel\\Protocol\\RpcServer',
+            ],
+            'pool' => [
+                'Leevel\\Protocol\\Pool',
+                'Leevel\\Protocol\\IPool',
             ],
         ];
     }
@@ -142,6 +148,16 @@ class Register extends Provider
                     $container['option']['swoole\\rpc_server']
                 )
             );
+        });
+    }
+
+    /**
+     * 注册 pool 服务
+     */
+    protected function pool()
+    {
+        $this->container->singleton('pool', function (IContainer $container) {
+            return new Pool($container);
         });
     }
 }

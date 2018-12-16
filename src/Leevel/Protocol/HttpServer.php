@@ -25,7 +25,6 @@ use Leevel\Http\IResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\IKernel;
-use Leevel\Leevel;
 use Swoole\Http\Request as SwooleHttpRequest;
 use Swoole\Http\Response as SwooleHttpResponse;
 use Swoole\Http\Server as SwooleHttpServer;
@@ -158,9 +157,7 @@ class HttpServer extends Server
         $swooleResponse->end();
 
         // 清理协程上下文数据
-        $this->container->removeCoroutine();
-
-        // 归还对象池
+        $this->removeCoroutine();
     }
 
     /**
@@ -265,18 +262,7 @@ class HttpServer extends Server
 
         $this->initServer();
 
-        $this->container->instance('pool', new Pool());
-
-        $this->container->alias(
-            [
-                'pool' => [
-                    'Leevel\\Protocol\\Pool',
-                    'Leevel\\Protocol\\IPool',
-                ],
-            ]
-        );
-
         // 清理协程上下文数据
-        $this->container->removeCoroutine();
+        $this->removeCoroutine();
     }
 }

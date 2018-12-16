@@ -433,6 +433,14 @@ class Server implements IServer
     }
 
     /**
+     * 清理协程上下文数据.
+     */
+    protected function removeCoroutine(): void
+    {
+        $this->container->removeCoroutine();
+    }
+
+    /**
      * 创建服务前环境验证
      */
     protected function checkBefore()
@@ -480,17 +488,6 @@ class Server implements IServer
         );
 
         $this->initServer();
-
-        $this->container->instance('pool', new Pool());
-
-        $this->container->alias(
-            [
-                'pool' => [
-                    'Leevel\\Protocol\\Pool',
-                    'Leevel\\Protocol\\IPool',
-                ],
-            ]
-        );
     }
 
     /**

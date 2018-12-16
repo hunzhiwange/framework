@@ -35,6 +35,13 @@ use SplStack;
 class Pool implements IPool
 {
     /**
+     * IOC 容器.
+     *
+     * @var \Leevel\Di\IContainer
+     */
+    protected $container;
+
+    /**
      * 对象池.
      *
      * @var array
@@ -43,9 +50,12 @@ class Pool implements IPool
 
     /**
      * 构造函数.
+     *
+     * @param \Leevel\Di\IContainer $container
      */
-    public function __construct()
+    public function __construct(Container $container)
     {
+        $this->container = $container;
     }
 
     /**
