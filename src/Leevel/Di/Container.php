@@ -487,7 +487,7 @@ class Container implements IContainer, ArrayAccess
      */
     protected function existsCoroutine(string $name): bool
     {
-        return false !== $this->coroutineUid() ||
+        return false !== $this->coroutineUid() &&
             isset($this->coroutineInstances[$this->coroutineUid()], $this->coroutineInstances[$this->coroutineUid()][$name])
             ;
     }
