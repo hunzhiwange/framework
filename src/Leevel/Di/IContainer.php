@@ -100,7 +100,7 @@ interface IContainer
      *
      * @return bool
      */
-    public function exists($name);
+    public function exists(string $name): bool;
 
     /**
      * 设置协程.

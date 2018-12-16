@@ -170,7 +170,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         if ($this->coroutineContext($service)) {
-            $this->instances[$name][$this->coroutineUid()] = $service;
+            $this->coroutineInstances[$name][$this->coroutineUid()] = $service;
         } else {
             $this->instances[$name] = $service;
         }
@@ -237,6 +237,9 @@ class Container implements IContainer, ArrayAccess
         if (isset($this->instances[$name])) {
             return $this->instances[$name];
         }
+        if ($this->existsCoroutine($name)) {
+            return $this->coroutineInstances[$this->coroutineUid()][$name];
+        }
 
         // 生成实例
         if (!isset($this->services[$name])) {
@@ -257,7 +260,7 @@ class Container implements IContainer, ArrayAccess
         // 单一实例
         if (in_array($name, $this->singletons, true)) {
             if ($this->coroutineContext($instance)) {
-                return $this->instances[$name][$this->coroutineUid()] = $instance;
+                return $this->coroutineInstances[$name][$this->coroutineUid()] = $instance;
             }
 
             return $this->instances[$name] = $instance;
@@ -328,6 +331,10 @@ class Container implements IContainer, ArrayAccess
                 unset($this->{$item}[$name]);
             }
         }
+
+        if ($this->existsCoroutine($name)) {
+            unset($this->coroutineInstances[$this->coroutineUid()][$name]);
+        }
     }
 
     /**
@@ -337,13 +344,15 @@ class Container implements IContainer, ArrayAccess
      *
      * @return bool
      */
-    public function exists($name)
+    public function exists(string $name): bool
     {
         $name = $this->normalize($name);
 
         $name = $this->getAlias($name);
 
-        return isset($this->services[$name]) || isset($this->instances[$name]);
+        return isset($this->services[$name]) ||
+            isset($this->instances[$name]) ||
+            $this->existsCoroutine($name);
     }
 
     /**
@@ -458,15 +467,29 @@ class Container implements IContainer, ArrayAccess
     /**
      * 当前协程 ID.
      *
-     * @return int
+     * @return false|int
      */
-    protected function coroutineUid(): int
+    protected function coroutineUid()
     {
         if (!$this->coroutine) {
-            return -1;
+            return false;
         }
 
         return $this->coroutine->uid();
+    }
+
+    /**
+     * 协程服务或者实例是否存在.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    protected function existsCoroutine(string $name): bool
+    {
+        return false !== $this->coroutineUid() ||
+            isset($this->coroutineInstances[$this->coroutineUid()], $this->coroutineInstances[$this->coroutineUid()][$name])
+            ;
     }
 
     /**
