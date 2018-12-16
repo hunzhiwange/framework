@@ -237,6 +237,7 @@ class Container implements IContainer, ArrayAccess
         if (isset($this->instances[$name])) {
             return $this->instances[$name];
         }
+
         if ($this->existsCoroutine($name)) {
             return $this->coroutineInstances[$this->coroutineUid()][$name];
         }
