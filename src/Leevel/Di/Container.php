@@ -70,6 +70,20 @@ class Container implements IContainer, ArrayAccess
     protected $alias = [];
 
     /**
+     * 协程.
+     *
+     * @var \Leevel\Di\ICoroutine
+     */
+    protected $coroutine;
+
+    /**
+     * 协程上下文注册的实例.
+     *
+     * @var array
+     */
+    protected $coroutineInstances = [];
+
+    /**
      * 捕捉支持属性参数.
      *
      * @param string $key
@@ -155,7 +169,11 @@ class Container implements IContainer, ArrayAccess
             $service = $name;
         }
 
-        $this->instances[$name] = $service;
+        if ($this->coroutineContext($service)) {
+            $this->instances[$name][$this->coroutineUid()] = $service;
+        } else {
+            $this->instances[$name] = $service;
+        }
 
         return $this;
     }
@@ -238,6 +256,10 @@ class Container implements IContainer, ArrayAccess
 
         // 单一实例
         if (in_array($name, $this->singletons, true)) {
+            if ($this->coroutineContext($instance)) {
+                return $this->instances[$name][$this->coroutineUid()] = $instance;
+            }
+
             return $this->instances[$name] = $instance;
         }
 
@@ -325,6 +347,26 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
+     * 设置协程.
+     *
+     * @param \Leevel\Di\ICoroutine $coroutine
+     */
+    public function setCoroutine(ICoroutine $coroutine): void
+    {
+        $this->coroutine = $coroutine;
+    }
+
+    /**
+     * 返回协程.
+     *
+     * @return \Leevel\Di\ICoroutine
+     */
+    public function getCoroutine(): ?ICoroutine
+    {
+        return $this->coroutine;
+    }
+
+    /**
      * 实现 ArrayAccess::offsetExits.
      *
      * @param string $index
@@ -391,6 +433,40 @@ class Container implements IContainer, ArrayAccess
     protected function getAlias($name)
     {
         return $this->alias[$name] ?? $name;
+    }
+
+    /**
+     * 是否处于协程上下文.
+     *
+     * @param mixed $instance
+     *
+     * @return bool
+     */
+    protected function coroutineContext($instance): bool
+    {
+        if (!$this->coroutine) {
+            return false;
+        }
+
+        if (is_object($instance)) {
+            $instance = get_class($instance);
+        }
+
+        return $this->coroutine->context($instance);
+    }
+
+    /**
+     * 当前协程 ID.
+     *
+     * @return int
+     */
+    protected function coroutineUid(): int
+    {
+        if (!$this->coroutine) {
+            return -1;
+        }
+
+        return $this->coroutine->uid();
     }
 
     /**

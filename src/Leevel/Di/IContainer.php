@@ -101,4 +101,18 @@ interface IContainer
      * @return bool
      */
     public function exists($name);
+
+    /**
+     * 设置协程.
+     *
+     * @param \Leevel\Di\ICoroutine $coroutine
+     */
+    public function setCoroutine(ICoroutine $coroutine): void;
+
+    /**
+     * 返回协程.
+     *
+     * @return \Leevel\Di\ICoroutine
+     */
+    public function getCoroutine(): ?ICoroutine;
 }

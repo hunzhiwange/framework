@@ -18,52 +18,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Protocol;
-
-use Leevel\Di\ICoroutine;
-use Swoole\Coroutine as SwooleCoroutine;
+namespace Leevel\Di;
 
 /**
- * 协程实现.
+ * 协程接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.12.14
+ * @since 2018.12.16
  *
  * @version 1.0
  */
-class Coroutine implements ICoroutine
+interface ICoroutine
 {
     /**
      * 是否处于协程上下文.
      *
      * @param string $className
      */
-    public function context(string $className): bool
-    {
-        if (!class_exists($className)) {
-            return false;
-        }
-
-        if (method_exists($className, 'coroutineContext') &&
-            true === $className::coroutineContext()) {
-            return true;
-        }
-
-        return false;
-    }
+    public function context(string $className): bool;
 
     /**
      * 当前协程 ID.
      *
      * @return int
      */
-    public function uid(): int
-    {
-        if (class_exits('\\Swoole\\Coroutine')) {
-            return -1;
-        }
-
-        return SwooleCoroutine::getuid();
-    }
+    public function uid(): int;
 }
