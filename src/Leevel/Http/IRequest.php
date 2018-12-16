@@ -137,6 +137,13 @@ interface IRequest
     const VAR_ACCEPT_JSON = '_acceptjson';
 
     /**
+     * 是否处于协程上下文.
+     *
+     * @return bool
+     */
+    public static function coroutineContext(): bool;
+
+    /**
      * 重置或者初始化.
      *
      * @param array  $query
@@ -521,7 +528,7 @@ interface IRequest
      *
      * @return $this
      */
-    public function setMethod($method);
+    public function setMethod(string $method);
 
     /**
      * 实际请求类型.

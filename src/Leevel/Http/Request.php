@@ -201,6 +201,16 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
+     * 是否处于协程上下文.
+     *
+     * @return bool
+     */
+    public static function coroutineContext(): bool
+    {
+        return true;
+    }
+
+    /**
      * 重置或者初始化.
      *
      * @param array  $query
@@ -906,7 +916,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return $this
      */
-    public function setMethod($method)
+    public function setMethod(string $method)
     {
         $this->method = null;
         $this->server->set('REQUEST_METHOD', $method);
