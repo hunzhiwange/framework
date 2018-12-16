@@ -32,7 +32,8 @@
         "gettext/gettext": "^4.6.0",
         "fzaninotto/faker": "^1.6",
         "zircote/swagger-php": "^3.0.1",
-        "maximebf/debugbar": "~1.15.0"
+        "maximebf/debugbar": "~1.15.0",
+        "leric/php-thrift": "0.10.0"
     },
     "replace": {
         "leevel/auth": "self.version",
@@ -99,6 +100,7 @@
                 "Leevel\\Encryption\\Provider\\Register",
                 "Leevel\\Filesystem\\Provider\\Register",
                 "Leevel\\Mail\\Provider\\Register",
+                "Leevel\\Protocol\\Provider\\Register",
                 "Leevel\\Session\\Provider\\Register",
                 "Leevel\\Throttler\\Provider\\Register",
                 "Leevel\\Validate\\Provider\\Register",
@@ -112,6 +114,7 @@
                 "Leevel\\Log\\Console",
                 "Leevel\\Mvc\\Console",
                 "Leevel\\Option\\Console",
+                "Leevel\\Protocol\\Console",
                 "Leevel\\Router\\Console",
                 "Leevel\\Session\\Console",
                 "Leevel\\View\\Console"

@@ -11,7 +11,7 @@ fi
 
 CURRENT_BRANCH="master"
 
-for REMOTE in auth cache collection console cookie database debug di encryption event filesystem flow http i18n kernel log mail manager mvc option page pipeline router seccode session stack support throttler tree validate view
+for REMOTE in auth cache collection console cookie database debug di encryption event filesystem flow http i18n kernel log mail manager mvc option page pipeline protocol router seccode session stack support throttler tree validate view
 do
     echo ""
     echo ""
