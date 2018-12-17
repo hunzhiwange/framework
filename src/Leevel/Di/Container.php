@@ -317,7 +317,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @param string $name
      */
-    public function remove($name)
+    public function remove(string $name)
     {
         $name = $this->normalize($name);
 
@@ -335,6 +335,30 @@ class Container implements IContainer, ArrayAccess
 
         if ($this->existsCoroutine($name)) {
             unset($this->coroutineInstances[$this->coroutineUid()][$name]);
+        }
+    }
+
+    /**
+     * 删除协程上下文服务和实例.
+     *
+     * @param string $name
+     */
+    public function removeCoroutine(?string $name = null): void
+    {
+        if (!$this->coroutine) {
+            return;
+        }
+
+        if (null === $name) {
+            if (isset($this->coroutineInstances[$this->coroutineUid()])) {
+                unset($this->coroutineInstances[$this->coroutineUid()]);
+            }
+        } else {
+            $name = $this->normalize($name);
+
+            if ($this->existsCoroutine($name)) {
+                unset($this->coroutineInstances[$this->coroutineUid()][$name]);
+            }
         }
     }
 

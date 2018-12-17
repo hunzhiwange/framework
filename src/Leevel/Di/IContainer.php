@@ -91,7 +91,14 @@ interface IContainer
      *
      * @param string $name
      */
-    public function remove($name);
+    public function remove(string $name);
+
+    /**
+     * 删除协程上下文服务和实例.
+     *
+     * @param string $name
+     */
+    public function removeCoroutine(?string $name = null): void;
 
     /**
      * 服务或者实例是否存在.
