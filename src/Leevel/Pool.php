@@ -18,48 +18,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Protocol;
+namespace Leevel;
 
-use Leevel\Di\ICoroutine;
-use Swoole\Coroutine as SwooleCoroutine;
+use Leevel\Support\Facade;
 
 /**
- * 协程实现.
+ * 沙盒 pool.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.12.14
+ * @since 2018.12.17
  *
  * @version 1.0
  */
-class Coroutine implements ICoroutine
+class Pool extends Facade
 {
     /**
-     * 是否处于协程上下文.
+     * 返回门面名字.
      *
-     * @param string $className
+     * @return string
      */
-    public function context(string $className): bool
+    protected static function name(): string
     {
-        if (!class_exists($className)) {
-            return false;
-        }
-
-        if (method_exists($className, 'coroutineContext') &&
-            true === $className::coroutineContext()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * 当前协程 ID.
-     *
-     * @return int
-     */
-    public function uid(): int
-    {
-        return SwooleCoroutine::getuid();
+        return 'pool';
     }
 }

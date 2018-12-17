@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Protocol;
 
 use InvalidArgumentException;
+use Leevel\Di\IContainer;
 use SplStack;
 
 /**
@@ -53,7 +54,7 @@ class Pool implements IPool
      *
      * @param \Leevel\Di\IContainer $container
      */
-    public function __construct(Container $container)
+    public function __construct(IContainer $container)
     {
         $this->container = $container;
     }
@@ -73,10 +74,16 @@ class Pool implements IPool
         $pool = $this->pool($className);
 
         if ($pool->count()) {
-            return $pool->shift();
+            $obj = $pool->shift();
+
+            if ($args && is_callable([$obj, '__construct'])) {
+                $obj->__construct(...$args);
+            }
+
+            return $obj;
         }
 
-        return new $className();
+        return $this->container->make($className, $args);
     }
 
     /**

@@ -124,6 +124,8 @@ class Server implements IServer
      */
     public function __construct(IContainer $container, array $option = [])
     {
+        $this->validSwoole();
+
         $this->container = $container;
 
         $this->option = array_merge($this->option, $option);
@@ -202,7 +204,7 @@ class Server implements IServer
      */
     public function startServer()
     {
-        $this->checkBefore();
+        $this->checkPidPath();
         $this->createServer();
         $this->eventServer();
         $this->startSwooleServer();
@@ -441,15 +443,6 @@ class Server implements IServer
     }
 
     /**
-     * 创建服务前环境验证
-     */
-    protected function checkBefore()
-    {
-        $this->checkEnvironment();
-        $this->checkPidPath();
-    }
-
-    /**
      * 验证 pid_path 是否可用.
      */
     protected function checkPidPath()
@@ -583,40 +576,14 @@ class Server implements IServer
     }
 
     /**
-     * 验证 swoole 运行环境.
+     * 验证 swoole 版本.
      */
-    protected function checkEnvironment(): void
-    {
-        $this->checkPhpVersion();
-        $this->checkSwooleInstalled();
-        $this->checkSwooleInstalled();
-    }
-
-    /**
-     * 验证 swoole 是否安装.
-     */
-    protected function checkSwooleInstalled(): void
+    protected function validSwoole(): void
     {
         if (!extension_loaded('swoole')) {
             throw new InvalidArgumentException('Swoole is not installed.');
         }
-    }
 
-    /**
-     * 验证 PHP 版本.
-     */
-    protected function checkPhpVersion(): void
-    {
-        if (version_compare(PHP_VERSION, '7.1.3', '<')) {
-            throw new InvalidArgumentException('PHP 7.1.3 OR Higher');
-        }
-    }
-
-    /**
-     * 验证 swoole 版本.
-     */
-    protected function checkSwooleVersion(): void
-    {
         if (version_compare(phpversion('swoole'), '4.2.9', '<')) {
             throw new InvalidArgumentException('Swoole 4.2.9 OR Higher');
         }

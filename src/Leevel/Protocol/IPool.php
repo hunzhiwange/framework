@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
+use SplStack;
+
 /**
  * 对象池接口.
  *
@@ -31,4 +33,36 @@ namespace Leevel\Protocol;
  */
 interface IPool
 {
+    /**
+     * 获取一个对象.
+     *
+     * @param string $className
+     * @param array  $args
+     *
+     * @return \Object
+     */
+    public function get(string $className, ...$args);
+
+    /**
+     * 返还一个对象.
+     *
+     * @param \Object $obj
+     */
+    public function back($obj): void;
+
+    /**
+     * 获取对象栈.
+     *
+     * @param string $className
+     *
+     * @return \SplStack
+     */
+    public function pool(string $className): SplStack;
+
+    /**
+     * 获取对象池数据.
+     *
+     * @return array
+     */
+    public function getPools(): array;
 }
