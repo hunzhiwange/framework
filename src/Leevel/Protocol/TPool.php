@@ -35,8 +35,6 @@ trait TPool
 {
     /**
      * 析构函数.
-     *
-     * @return
      */
     public function __destruct()
     {
