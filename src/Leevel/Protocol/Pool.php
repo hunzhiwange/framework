@@ -76,8 +76,12 @@ class Pool implements IPool
         if ($pool->count()) {
             $obj = $pool->shift();
 
-            if ($args && is_callable([$obj, '__construct'])) {
+            if (is_callable([$obj, '__construct'])) {
                 $obj->__construct(...$args);
+            }
+
+            if (is_callable([$obj, 'construct'])) {
+                $obj->construct();
             }
 
             return $obj;

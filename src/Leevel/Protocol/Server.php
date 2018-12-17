@@ -54,13 +54,6 @@ class Server implements IServer
     protected $server;
 
     /**
-     * 命令行工具.
-     *
-     * @var \leevel\Console\Command
-     */
-    protected $command;
-
-    /**
      * 配置.
      *
      * @var array
