@@ -18,22 +18,52 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests;
+namespace Leevel\Leevel\Testing;
 
-use Leevel\Leevel\Testing\Helper as BaseHelper;
-use PHPUnit\Framework\TestCase as TestCases;
+use Leevel\Db;
 
 /**
- * phpunit 基础测试类.
+ * 数据库助手方法.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.05.09
+ * @since 2018.11.24
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-abstract class TestCase extends TestCases
+trait Database
 {
-    use BaseHelper;
-    use Helper;
+    /**
+     * 清理数据表.
+     *
+     * @param array $tables
+     */
+    protected function truncateDatabase(array $tables): void
+    {
+        if (!$tables) {
+            return;
+        }
+
+        foreach ($tables as $table) {
+            $sql = <<<'eot'
+[
+    "TRUNCATE TABLE `%s`",
+    []
+]
+eot;
+            $this->assertSame(
+                sprintf($sql, $table),
+                $this->varJson(
+                    Db::sql()->
+                    table($table)->
+                    truncate()
+                )
+            );
+
+            Db::table($table)->
+
+            truncate();
+        }
+    }
 }

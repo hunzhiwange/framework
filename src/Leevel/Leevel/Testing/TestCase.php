@@ -18,9 +18,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests;
+namespace Leevel\Leevel\Testing;
 
-use Leevel\Leevel\Testing\Helper as BaseHelper;
+use Leevel\Bootstrap\Project;
+use Leevel\Support\Facade;
 use PHPUnit\Framework\TestCase as TestCases;
 
 /**
@@ -28,12 +29,53 @@ use PHPUnit\Framework\TestCase as TestCases;
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.05.09
+ * @since 2017.05.08
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 abstract class TestCase extends TestCases
 {
-    use BaseHelper;
     use Helper;
+
+    /**
+     * 创建的项目.
+     *
+     * @var \Leevel\Leevel\Project
+     */
+    protected $project;
+
+    /**
+     * Setup.
+     */
+    protected function setUp()
+    {
+        if (!$this->project) {
+            $this->project = $this->createProject();
+        }
+
+        Facade::remove();
+    }
+
+    /**
+     * tearDown.
+     */
+    protected function tearDown()
+    {
+        $this->project = null;
+    }
+
+    /**
+     * 创建日志目录.
+     *
+     * @var array
+     */
+    abstract protected function makeLogsDir(): array;
+
+    /**
+     * 初始化项目.
+     *
+     * @return \Leevel\Leevel\Project
+     */
+    abstract protected function createProject(): Project;
 }

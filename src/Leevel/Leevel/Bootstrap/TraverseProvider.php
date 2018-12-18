@@ -18,22 +18,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests;
+namespace Leevel\Leevel\Bootstrap;
 
-use Leevel\Leevel\Testing\Helper as BaseHelper;
-use PHPUnit\Framework\TestCase as TestCases;
+use Leevel\Kernel\IProject;
 
 /**
- * phpunit 基础测试类.
+ * 遍历服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.05.09
+ * @since 2018.05.02
  *
  * @version 1.0
  */
-abstract class TestCase extends TestCases
+class TraverseProvider
 {
-    use BaseHelper;
-    use Helper;
+    /**
+     * 响应.
+     *
+     * @param \Leevel\Kernel\IProject $project
+     */
+    public function handle(IProject $project): void
+    {
+        $project->registerProviders();
+
+        $project->bootstrapProviders();
+    }
 }

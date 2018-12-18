@@ -22,11 +22,11 @@ namespace Tests\Debug;
 
 use Error;
 use Exception;
-use Leevel\Bootstrap\Project as Projects;
 use Leevel\Debug\Debug;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
+use Leevel\Leevel\Project as Projects;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
 use Leevel\Log\Log;

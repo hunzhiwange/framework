@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Tests\I18n\Console;
 
-use Leevel\Bootstrap\Project as Projects;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Fso;
 use Leevel\I18n\Console\Cache;
 use Leevel\Kernel\IProject;
+use Leevel\Leevel\Project as Projects;
 use Leevel\Option\IOption;
 use Leevel\Option\Option;
 use Tests\Console\BaseCommand;

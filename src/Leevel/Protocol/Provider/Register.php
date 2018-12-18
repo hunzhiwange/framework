@@ -83,6 +83,9 @@ class Register extends Provider
                 'Leevel\\Protocol\\Pool',
                 'Leevel\\Protocol\\IPool',
             ],
+            'rpc' => [
+                'Leevel\\Protocol\\Client\\Rpc',
+            ],
         ];
     }
 

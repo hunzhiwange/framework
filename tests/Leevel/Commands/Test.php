@@ -18,22 +18,43 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests;
+namespace Leevel\Leevel\Commands;
 
-use Leevel\Leevel\Testing\Helper as BaseHelper;
-use PHPUnit\Framework\TestCase as TestCases;
+use Leevel\Console\Command;
 
 /**
- * phpunit 基础测试类.
+ * test command.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.05.09
+ * @since 2018.08.24
  *
  * @version 1.0
  */
-abstract class TestCase extends TestCases
+class Test extends Command
 {
-    use BaseHelper;
-    use Helper;
+    protected $name = 'test';
+
+    protected $description = 'This is a test command';
+
+    protected $help = <<<'EOF'
+The <info>%command.name%</info> command to show how to make a command:
+
+  <info>php %command.full_name%</info>
+EOF;
+
+    public function handle()
+    {
+        $this->info('Hello my test command.');
+    }
+
+    protected function getArguments()
+    {
+        return [];
+    }
+
+    protected function getOptions()
+    {
+        return [];
+    }
 }

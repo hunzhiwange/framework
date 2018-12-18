@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Leevel\I18n\Console;
 
 use InvalidArgumentException;
-use Leevel\Bootstrap\Bootstrap\LoadI18n;
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
 use Leevel\I18n\Load;
 use Leevel\Kernel\IProject;
+use Leevel\Leevel\Bootstrap\LoadI18n;
 
 /**
  * 语言包缓存.

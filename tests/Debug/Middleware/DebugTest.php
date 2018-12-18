@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Tests\Debug\Middleware;
 
-use Leevel\Bootstrap\Project as Projects;
 use Leevel\Debug\Debug;
 use Leevel\Debug\Middleware\Debug as MiddlewareDebug;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
+use Leevel\Leevel\Project as Projects;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
 use Leevel\Log\Log;

@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Tests\Debug\Provider;
 
-use Leevel\Bootstrap\Project as Projects;
 use Leevel\Debug\Debug;
 use Leevel\Debug\Provider\Register;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
+use Leevel\Leevel\Project as Projects;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
 use Leevel\Log\Log;

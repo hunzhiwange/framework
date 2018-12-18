@@ -51,20 +51,6 @@ class Rpc
     const OK = 200;
 
     /**
-     * 默认上下文.
-     *
-     * @var string
-     */
-    const DEFAULT_CONTEXT = 'dafault';
-
-    /**
-     * 对象实例.
-     *
-     * @var array
-     */
-    protected static $instances = [];
-
-    /**
      * 服务端和客户端的享元数据.
      *
      * @var array
@@ -76,26 +62,8 @@ class Rpc
      *
      * @param string $id
      */
-    public function __construct($id = null)
+    public function __construct()
     {
-    }
-
-    /**
-     * 获取 RPC 客户端实例.
-     *
-     * @param string $id
-     *
-     * @return static
-     */
-    public static function instance($id = null)
-    {
-        $key = $id ?: self::DEFAULT_CONTEXT;
-
-        if (isset(static::$instances[$key])) {
-            return static::$instances[$key];
-        }
-
-        return static::$instances[$key] = new static($key);
     }
 
     /**
@@ -131,7 +99,7 @@ class Rpc
      *
      * @param array $metas;
      */
-    public function setMetas(array $metas)
+    public function setMetas(array $metas): array
     {
         $this->metas = $metas;
     }
@@ -141,7 +109,7 @@ class Rpc
      *
      * @return array
      */
-    public function getMetas()
+    public function getMetas(): array
     {
         return $this->metas;
     }

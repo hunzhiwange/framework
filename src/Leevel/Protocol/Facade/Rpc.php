@@ -18,22 +18,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests;
+namespace Leevel\Protocol\Facade;
 
-use Leevel\Leevel\Testing\Helper as BaseHelper;
-use PHPUnit\Framework\TestCase as TestCases;
+use Leevel\Support\Facade;
 
 /**
- * phpunit 基础测试类.
+ * 门面 rpc.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.05.09
+ * @since 2018.12.18
  *
  * @version 1.0
  */
-abstract class TestCase extends TestCases
+class Rpc extends Facade
 {
-    use BaseHelper;
-    use Helper;
+    /**
+     * 返回门面名字.
+     *
+     * @return string
+     */
+    protected static function name(): string
+    {
+        return 'rpc';
+    }
 }
