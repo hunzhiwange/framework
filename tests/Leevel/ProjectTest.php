@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel;
+namespace Tests\Leevel;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -668,12 +668,12 @@ class OptionTest
         if ('_deferred_providers' === $name) {
             return [
                 [
-                    'foo' => 'Tests\\Bootstrap\\ProviderDeferTest1',
+                    'foo' => 'Tests\\Leevel\\ProviderDeferTest1',
                 ],
                 [
-                    'Tests\\Bootstrap\\ProviderDeferTest1' => [
+                    'Tests\\Leevel\\ProviderDeferTest1' => [
                         'foo' => [
-                            'Tests\\Bootstrap\\ProviderDeferTest1',
+                            'Tests\\Leevel\\ProviderDeferTest1',
                         ],
                     ],
                 ],
@@ -701,7 +701,7 @@ class ProviderDeferTest1 extends Provider
     {
         return [
             'foo' => [
-                'Tests\\Bootstrap\\ProviderDeferTest1',
+                'Tests\\Leevel\\ProviderDeferTest1',
             ],
         ];
     }

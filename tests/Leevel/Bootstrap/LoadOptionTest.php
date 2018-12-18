@@ -18,11 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Bootstrap;
+namespace Tests\Leevel\Bootstrap;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Fso;
+use Leevel\Leevel\Bootstrap\LoadOption;
 use Leevel\Leevel\Project as Projects;
 use Tests\TestCase;
 

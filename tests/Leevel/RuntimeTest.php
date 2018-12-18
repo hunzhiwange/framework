@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel;
+namespace Tests\Leevel;
 
 use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
@@ -31,6 +31,7 @@ use Leevel\Kernel\InternalServerErrorHttpException;
 use Leevel\Kernel\MethodNotAllowedHttpException;
 use Leevel\Kernel\NotFoundHttpException;
 use Leevel\Leevel\Project as Projects;
+use Leevel\Leevel\Runtime;
 use Leevel\Log\ILog;
 use Leevel\Option\Option;
 use Tests\TestCase;
@@ -131,8 +132,7 @@ class RuntimeTest extends TestCase
         $e = new Exception1('hello world');
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
-
-        $this->assertContains('Tests\\Bootstrap\\Exception1: hello world in file', $resultResponse->getContent());
+        $this->assertContains('Tests\\Leevel\\Exception1: hello world in file', $resultResponse->getContent());
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
@@ -266,7 +266,7 @@ class RuntimeTest extends TestCase
 
         $this->assertInternalType('array', $content = json_decode($resultResponse->getContent(), true));
         $this->assertArrayHasKey('error', $content);
-        $this->assertSame('Tests\\Bootstrap\\Exception1', $content['error']['type']);
+        $this->assertSame('Tests\\Leevel\\Exception1', $content['error']['type']);
         $this->assertSame('hello world', $content['error']['message']);
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
@@ -349,7 +349,7 @@ class RuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertContains('Tests\\Bootstrap\\Exception8: hello world', $content);
+        $this->assertContains('Tests\\Leevel\\Exception8: hello world', $content);
         $this->assertSame(405, $resultResponse->getStatusCode());
     }
 
@@ -421,7 +421,7 @@ class RuntimeTest extends TestCase
 
         $content = $resultResponse->getContent();
 
-        $this->assertContains('Tests\\Bootstrap\\Exception1: hello world', $content);
+        $this->assertContains('Tests\\Leevel\\Exception1: hello world', $content);
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
@@ -448,7 +448,7 @@ class RuntimeTest extends TestCase
         $content = $resultResponse->getContent();
 
         $this->assertContains('<div id="status-code">405</div>', $content);
-        $this->assertContains('Tests\\Bootstrap\\Exception8<div class="file">#FILE', $content);
+        $this->assertContains('Tests\\Leevel\\Exception8<div class="file">#FILE', $content);
         $this->assertContains('<p id="sub-title">hello world</p>', $content);
         $this->assertSame(405, $resultResponse->getStatusCode());
     }

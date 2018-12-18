@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Commands\Console;
+namespace Tests\Leevel\Commands\Console;
 
 use Leevel\Console\Command;
 

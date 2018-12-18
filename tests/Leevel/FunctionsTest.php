@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel;
+namespace Tests\Leevel;
 
 use Leevel as Leevels;
 use Leevel\Cache\Cache;

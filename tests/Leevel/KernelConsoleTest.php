@@ -18,11 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel;
+namespace Tests\Leevel;
 
 use Leevel\Console\Application;
 use Leevel\Kernel\IKernelConsole;
 use Leevel\Kernel\IProject;
+use Leevel\Leevel\KernelConsole;
 use Leevel\Leevel\Project as Projects;
 use Leevel\Option\IOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,8 +59,8 @@ class KernelConsoleTest extends TestCase
         $map = [
             ['console\\template', null, []],
             ['_composer.commands', null, [
-                'Tests\\Bootstrap\\Commands\\Test',
-                'Tests\\Bootstrap\\Commands\\Console',
+                'Tests\\Leevel\\Commands\\Test',
+                'Tests\\Leevel\\Commands\\Console',
             ]],
         ];
 
@@ -67,8 +68,8 @@ class KernelConsoleTest extends TestCase
         $option->method('get')->will($this->returnValueMap($map));
         $this->assertSame([], $option->get('console\\template'));
         $this->assertSame([
-            'Tests\\Bootstrap\\Commands\\Test',
-            'Tests\\Bootstrap\\Commands\\Console',
+            'Tests\\Leevel\\Commands\\Test',
+            'Tests\\Leevel\\Commands\\Console',
         ], $option->get('_composer.commands'));
 
         $project->singleton('option', function () use ($option) {

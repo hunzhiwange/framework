@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel;
+namespace Tests\Leevel;
 
 use Error;
 use Exception;
@@ -30,7 +30,9 @@ use Leevel\Http\Response;
 use Leevel\Kernel\IKernel;
 use Leevel\Kernel\IProject;
 use Leevel\Kernel\IRuntime;
+use Leevel\Leevel\Kernel;
 use Leevel\Leevel\Project as Projects;
+use Leevel\Leevel\Runtime;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;
 use Leevel\Router\IRouter;

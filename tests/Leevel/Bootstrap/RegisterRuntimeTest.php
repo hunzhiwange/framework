@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Bootstrap;
+namespace Tests\Leevel\Bootstrap;
 
 use Error;
 use ErrorException;
@@ -28,6 +28,7 @@ use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Kernel\IRuntime;
+use Leevel\Leevel\Bootstrap\RegisterRuntime;
 use Leevel\Leevel\Project as Projects;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
