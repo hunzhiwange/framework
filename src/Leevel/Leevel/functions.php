@@ -18,9 +18,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Leevel\Bootstrap\Project;
 use Leevel\Debug\Dump;
 use Leevel\Di\IContainer;
+use Leevel\Leevel\Project;
 use Leevel\Log\ILog;
 
 /**

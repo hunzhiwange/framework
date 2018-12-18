@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Database\Facade;
+namespace Leevel\Cookie\Facade;
 
 use Leevel\Support\Facade;
 

@@ -58,6 +58,7 @@
         "leevel/option": "self.version",
         "leevel/page": "self.version",
         "leevel/pipeline": "self.version",
+        "leevel/protocol": "self.version",
         "leevel/router": "self.version",
         "leevel/seccode": "self.version",
         "leevel/session": "self.version",
@@ -81,7 +82,7 @@
     },
     "autoload": {
         "files": [
-            "src/Leevel/Bootstrap/functions.php"
+            "src/Leevel/Leevel/functions.php"
         ],
         "psr-4": {
             "Leevel\\": "src\\Leevel"

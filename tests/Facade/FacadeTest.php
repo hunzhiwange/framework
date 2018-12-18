@@ -40,12 +40,13 @@ class FacadeTest extends TestCase
      *
      * @param string $facade
      * @param string $serviceName
+     * @param string $package
      */
-    public function testBaseUse(string $facade, string $serviceName)
+    public function testBaseUse(string $facade, string $serviceName, string $package)
     {
         Facade::setContainer($container = new Container());
 
-        $className = 'Leevel\\'.$facade;
+        $className = 'Leevel\\'.$package.'\\Facade\\'.$facade;
 
         $test = new $className();
 
@@ -74,30 +75,32 @@ class FacadeTest extends TestCase
     public function getBaseUseData()
     {
         return [
-            ['Auth', 'auths'],
-            ['Cache', 'caches'],
-            ['CacheLoad', 'cache_load'],
-            ['Cookie', 'cookie'],
-            ['Database', 'databases'],
-            ['Db', 'databases'],
-            ['Debug', 'debug'],
-            ['Encryption', 'encryption'],
-            ['Event', 'event'],
-            ['Filesystem', 'filesystems'],
-            ['I18n', 'i18n'],
-            ['Leevel', 'project'],
-            ['Log', 'logs'],
-            ['Mail', 'mails'],
-            ['Option', 'option'],
-            ['Request', 'request'],
-            ['Response', 'response'],
-            ['Router', 'router'],
-            ['Session', 'sessions'],
-            ['Throttler', 'throttler'],
-            ['Url', 'url'],
-            ['Validate', 'validate'],
-            ['View', 'view'],
-            ['Work', 'work'],
+            ['Auth', 'auths', 'Auth'],
+            ['Cache', 'caches', 'Cache'],
+            ['CacheLoad', 'cache_load', 'Cache'],
+            ['Cookie', 'cookie', 'Cookie'],
+            ['Database', 'databases', 'Database'],
+            ['Db', 'databases', 'Database'],
+            ['Debug', 'debug', 'Debug'],
+            ['Encryption', 'encryption', 'Encryption'],
+            ['Event', 'event', 'Event'],
+            ['Filesystem', 'filesystems', 'Filesystem'],
+            ['I18n', 'i18n', 'I18n'],
+            ['Leevel', 'project', 'Leevel'],
+            ['Log', 'logs', 'Log'],
+            ['Mail', 'mails', 'Mail'],
+            ['Option', 'option', 'Option'],
+            ['Request', 'request', 'Router'],
+            ['Response', 'response', 'Router'],
+            ['Router', 'router', 'Router'],
+            ['Session', 'sessions', 'Session'],
+            ['Throttler', 'throttler', 'Throttler'],
+            ['Url', 'url', 'Router'],
+            ['Validate', 'validate', 'Validate'],
+            ['View', 'view', 'View'],
+            ['Work', 'work', 'Database'],
+            ['Pool', 'pool', 'Protocol'],
+            ['Rpc', 'rpc', 'Protocol'],
         ];
     }
 }

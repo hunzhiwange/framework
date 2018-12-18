@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap;
+namespace Leevel\Leevel;
 
 use Leevel\Bootstrap\Bootstrap\LoadI18n;
 use Leevel\Bootstrap\Bootstrap\LoadOption;

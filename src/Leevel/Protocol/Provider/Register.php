@@ -23,6 +23,7 @@ namespace Leevel\Protocol\Provider;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Kernel\IKernel;
+use Leevel\Protocol\Client\Rpc;
 use Leevel\Protocol\HttpServer;
 use Leevel\Protocol\Pool;
 use Leevel\Protocol\RpcServer;
@@ -57,6 +58,7 @@ class Register extends Provider
         $this->swooleWebsocketServer();
         $this->swooleRpcServer();
         $this->pool();
+        $this->rpc();
     }
 
     /**
@@ -161,6 +163,16 @@ class Register extends Provider
     {
         $this->container->singleton('pool', function (IContainer $container) {
             return new Pool($container);
+        });
+    }
+
+    /**
+     * 注册 rpc 服务
+     */
+    protected function rpc()
+    {
+        $this->container->singleton('rpc', function (IContainer $container) {
+            return new Rpc();
         });
     }
 }

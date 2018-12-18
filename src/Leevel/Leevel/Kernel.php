@@ -18,19 +18,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap;
+namespace Leevel\Leevel;
 
 use ErrorException;
 use Exception;
-use Leevel\Bootstrap\Bootstrap\LoadI18n;
-use Leevel\Bootstrap\Bootstrap\LoadOption;
-use Leevel\Bootstrap\Bootstrap\RegisterRuntime;
-use Leevel\Bootstrap\Bootstrap\TraverseProvider;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Kernel\IKernel;
 use Leevel\Kernel\IProject;
 use Leevel\Kernel\IRuntime;
+use Leevel\Leevel\Bootstrap\LoadI18n;
+use Leevel\Leevel\Bootstrap\LoadOption;
+use Leevel\Leevel\Bootstrap\RegisterRuntime;
+use Leevel\Leevel\Bootstrap\TraverseProvider;
 use Leevel\Router\IRouter;
 use Throwable;
 
