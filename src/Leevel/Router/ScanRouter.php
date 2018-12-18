@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Leevel;
-use Leevel\Url;
+use Leevel\Leevel\Facade\Leevel;
+use Leevel\Router\Facade\Url;
 
 /**
  * openapi 路由扫描.

@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Mvc\Provider;
 
+use Leevel\Di\IContainer;
+use Leevel\Kernel\IProject;
 use Leevel\Mvc\Console\Controller;
+use Leevel\Router\IRouter;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
@@ -44,7 +47,9 @@ class ControllerTest extends TestCase
             'name'        => 'BarValue',
             'action'      => 'hello',
             '--namespace' => 'common',
-        ]);
+        ], function ($container) {
+            $this->initContainerService($container);
+        });
 
         $this->assertContains('controller <BarValue> created successfully.', $result);
 
@@ -62,7 +67,9 @@ class ControllerTest extends TestCase
             'name'        => 'Hello',
             'action'      => 'hello-world_Yes',
             '--namespace' => 'common',
-        ]);
+        ], function ($container) {
+            $this->initContainerService($container);
+        });
 
         $this->assertContains('controller <Hello> created successfully.', $result);
 
@@ -83,7 +90,9 @@ class ControllerTest extends TestCase
             'action'      => 'hello-world_Yes',
             '--namespace' => 'common',
             '--extend'    => 0,
-        ]);
+        ], function ($container) {
+            $this->initContainerService($container);
+        });
 
         $this->assertContains('controller <Hello> created successfully.', $result);
 
@@ -94,5 +103,23 @@ class ControllerTest extends TestCase
         $this->assertContains('function helloWorldYes', file_get_contents($file));
 
         unlink($file);
+    }
+
+    protected function initContainerService(IContainer $container)
+    {
+        // 注册 project
+        $project = $this->createMock(IProject::class);
+
+        $this->assertInstanceof(IProject::class, $project);
+
+        // 注册 router
+        $router = $this->createMock(IRouter::class);
+
+        $this->assertInstanceof(IRouter::class, $router);
+
+        $router->method('getControllerDir')->willReturn('');
+        $this->assertEquals('', $router->getControllerDir());
+
+        $container->singleton(IRouter::class, $router);
     }
 }

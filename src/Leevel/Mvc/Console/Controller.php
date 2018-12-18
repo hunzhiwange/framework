@@ -23,7 +23,7 @@ namespace Leevel\Mvc\Console;
 use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
-use Leevel\Router;
+use Leevel\Router\IRouter;
 use Leevel\Support\Str;
 
 /**
@@ -72,8 +72,10 @@ EOF;
 
     /**
      * 响应命令.
+     *
+     * @param \Leevel\Router\IRouter $router
      */
-    public function handle()
+    public function handle(IRouter $router)
     {
         // 处理命名空间路径
         $this->parseNamespace();
@@ -84,7 +86,7 @@ EOF;
             ($this->option('extend') ? 'controller' : 'controller_without_extend')
         );
 
-        $controllerNamespace = Router::getControllerDir();
+        $controllerNamespace = $router->getControllerDir();
         $controllerName = ucfirst(Str::camelize($this->argument('name')));
 
         $this->setCustomReplaceKeyValue('file_name', $controllerName);

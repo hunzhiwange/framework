@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Console;
 
+use Closure;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
 use Leevel\Di\Container;
@@ -38,7 +39,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 trait BaseMake
 {
-    protected function runCommand(Command $command, array $inputs)
+    protected function runCommand(Command $command, array $inputs, Closure $call = null)
     {
         $container = new ContainerMock();
 
@@ -47,6 +48,10 @@ trait BaseMake
         $application->setAutoExit(false);
 
         Facade::setContainer($container);
+
+        if ($call) {
+            call_user_func($call, $container, $application);
+        }
 
         $application->add($command);
 

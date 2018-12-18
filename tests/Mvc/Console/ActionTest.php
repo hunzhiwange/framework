@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Mvc\Provider;
 
+use Leevel\Di\IContainer;
+use Leevel\Kernel\IProject;
 use Leevel\Mvc\Console\Action;
+use Leevel\Router\IRouter;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
@@ -44,7 +47,9 @@ class ActionTest extends TestCase
             'controller'  => 'BarValue',
             'name'        => 'hello',
             '--namespace' => 'common',
-        ]);
+        ], function ($container) {
+            $this->initContainerService($container);
+        });
 
         $this->assertContains('action <hello> created successfully.', $result);
 
@@ -63,7 +68,9 @@ class ActionTest extends TestCase
             'controller'  => 'Hello',
             'name'        => 'hello-world_Yes',
             '--namespace' => 'common',
-        ]);
+        ], function ($container) {
+            $this->initContainerService($container);
+        });
 
         $this->assertContains('action <hello-world_Yes> created successfully.', $result);
 
@@ -85,7 +92,9 @@ class ActionTest extends TestCase
             'name'        => 'hello-world_Yes',
             '--namespace' => 'common',
             '--extend'    => 0,
-        ]);
+        ], function ($container) {
+            $this->initContainerService($container);
+        });
 
         $this->assertContains('action <hello-world_Yes> created successfully.', $result);
 
@@ -97,5 +106,23 @@ class ActionTest extends TestCase
 
         unlink($file);
         rmdir(dirname($file));
+    }
+
+    protected function initContainerService(IContainer $container)
+    {
+        // 注册 project
+        $project = $this->createMock(IProject::class);
+
+        $this->assertInstanceof(IProject::class, $project);
+
+        // 注册 router
+        $router = $this->createMock(IRouter::class);
+
+        $this->assertInstanceof(IRouter::class, $router);
+
+        $router->method('getControllerDir')->willReturn('');
+        $this->assertEquals('', $router->getControllerDir());
+
+        $container->singleton(IRouter::class, $router);
     }
 }
