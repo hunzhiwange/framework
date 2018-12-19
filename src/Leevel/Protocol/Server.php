@@ -37,7 +37,7 @@ use Swoole\Server as SwooleServer;
  *
  * @version 1.0
  */
-class Server implements IServer
+abstract class Server
 {
     /**
      * IOC 容器.
@@ -58,38 +58,7 @@ class Server implements IServer
      *
      * @var array
      */
-    protected $option = [
-        // 监听 IP 地址
-        // see https://wiki.swoole.com/wiki/page/p-server.html
-        // see https://wiki.swoole.com/wiki/page/327.html
-        'host' => '0.0.0.0',
-
-        // 监听端口
-        // see https://wiki.swoole.com/wiki/page/p-server.html
-        // see https://wiki.swoole.com/wiki/page/327.html
-        'port' => '9501',
-
-        // swoole 进程名称
-        'process_name' => 'queryphp.swoole.default',
-
-        // swoole 进程保存路径
-        'pid_path' => '',
-
-        // 设置启动的 worker 进程数
-        // see https://wiki.swoole.com/wiki/page/275.html
-        'worker_num' => 8,
-
-        // 设置启动的 task worker 进程数
-        // https://wiki.swoole.com/wiki/page/276.html
-        'task_worker_num' => 4,
-
-        // 守护进程化
-        // see https://wiki.swoole.com/wiki/page/278.html
-        'daemonize' => 0,
-
-        // 自定义进程
-        'processes' => [],
-    ];
+    protected $option = [];
 
     /**
      * 服务回调事件.

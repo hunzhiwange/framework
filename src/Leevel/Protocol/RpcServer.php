@@ -39,7 +39,7 @@ use Thrift\Server\TServerSocket;
  *
  * @version 1.0
  */
-class RpcServer extends Server
+class RpcServer extends Server implements IServer
 {
     /**
      * 配置.

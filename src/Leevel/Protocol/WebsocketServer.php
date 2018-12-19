@@ -34,7 +34,7 @@ use Swoole\Websocket\Server as SwooleWebsocketServer;
  *
  * @version 1.0
  */
-class WebsocketServer extends HttpServer
+class WebsocketServer extends HttpServer implements IServer
 {
     /**
      * 配置.

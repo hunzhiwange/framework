@@ -38,7 +38,7 @@ use Swoole\Http\Server as SwooleHttpServer;
  *
  * @version 1.0
  */
-class HttpServer extends Server
+class HttpServer extends Server implements IServer
 {
     /**
      * 内核.
