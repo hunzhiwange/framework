@@ -69,16 +69,16 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'swoole.default.server' => [
+            'swoole.default' => [
                 'Leevel\\Protocol\\Server',
             ],
-            'swoole.http.server' => [
+            'swoole.http' => [
                 'Leevel\\Protocol\\Http\\Server',
             ],
-            'swoole.websocket.server' => [
+            'swoole.websocket' => [
                 'Leevel\\Protocol\\Websocket\\Server',
             ],
-            'swoole.rpc.server' => [
+            'swoole.rpc' => [
                 'Leevel\\Protocol\\RpcServer',
             ],
             'pool' => [
@@ -96,7 +96,7 @@ class Register extends Provider
      */
     protected function swooleServer()
     {
-        $this->container->singleton('swoole.default.server', function (IContainer $container) {
+        $this->container->singleton('swoole.default', function (IContainer $container) {
             return new Server(
                 $container,
                 $container['option']['swoole\\server']
@@ -109,14 +109,14 @@ class Register extends Provider
      */
     protected function swooleHttpServer()
     {
-        $this->container->singleton('swoole.http.server', function (IContainer $container) {
+        $this->container->singleton('swoole.http', function (IContainer $container) {
             return new HttpServer(
                 $container,
                 $container->make(IKernel::class),
                 $container['request'],
                 array_merge(
                     $container['option']['swoole\\server'],
-                    $container['option']['swoole\\http_server']
+                    $container['option']['swoole\\http']
                 )
             );
         });
@@ -127,14 +127,14 @@ class Register extends Provider
      */
     protected function swooleWebsocketServer()
     {
-        $this->container->singleton('swoole.websocket.server', function (IContainer $container) {
+        $this->container->singleton('swoole.websocket', function (IContainer $container) {
             return new WebsocketServer(
                 $container,
                 $container->make(IKernel::class),
                 $container['request'],
                 array_merge(
                     $container['option']['swoole\\server'],
-                    $container['option']['swoole\\websocket_server']
+                    $container['option']['swoole\\websocket']
                 )
             );
         });
@@ -145,12 +145,12 @@ class Register extends Provider
      */
     protected function swooleRpcServer()
     {
-        $this->container->singleton('swoole.rpc.server', function (IContainer $container) {
+        $this->container->singleton('swoole.rpc', function (IContainer $container) {
             return new RpcServer(
                 $container,
                 array_merge(
                     $container['option']['swoole\\server'],
-                    $container['option']['swoole\\rpc_server']
+                    $container['option']['swoole\\rpc']
                 )
             );
         });

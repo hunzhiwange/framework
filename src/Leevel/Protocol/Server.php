@@ -574,7 +574,7 @@ class Server implements IServer
     protected function validSwoole(): void
     {
         if (!extension_loaded('swoole')) {
-            throw new InvalidArgumentException('Swoole is not installed.');
+            throw new InvalidArgumentException('Swoole was not installed.');
         }
 
         if (version_compare(phpversion('swoole'), '4.2.9', '<')) {

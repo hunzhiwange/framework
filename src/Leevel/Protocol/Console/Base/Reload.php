@@ -18,14 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Protocol\Console;
+namespace Leevel\Protocol\Console\Base;
 
 use InvalidArgumentException;
-use Leevel\Console\Argument;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
-use Leevel\Leevel;
 use Leevel\Option\IOption;
+use Leevel\Protocol\IServer;
 use Swoole\Process;
 
 /**
@@ -37,22 +36,8 @@ use Swoole\Process;
  *
  * @version 1.0
  */
-class Reload extends Command
+abstract class Reload extends Command
 {
-    /**
-     * 命令名字.
-     *
-     * @var string
-     */
-    protected $name = 'swoole:reload';
-
-    /**
-     * 命令行描述.
-     *
-     * @var string
-     */
-    protected $description = 'Reload swoole service';
-
     /**
      * 配置.
      *
@@ -79,9 +64,24 @@ class Reload extends Command
     {
         $this->warn($this->getVersion());
 
-        $server = Leevel::make('swoole.'.$this->argument('type').'.server');
+        $server = $this->createServer();
+
         $this->reload($server->getOption());
     }
+
+    /**
+     * 创建 server.
+     *
+     * @return \Leevel\Protocol\IServer
+     */
+    abstract protected function createServer(): IServer;
+
+    /**
+     * 返回 Version.
+     *
+     * @return string
+     */
+    abstract protected function getVersion(): string;
 
     /**
      * 重启 Swoole 服务.
@@ -123,33 +123,13 @@ class Reload extends Command
     }
 
     /**
-     * 返回 QueryPHP Version.
-     *
-     * @return string
-     */
-    protected function getVersion()
-    {
-        return 'The Restart Of Swoole '.
-            ucfirst($this->argument('type')).
-            ' Server Version '.Leevel::version().
-            PHP_EOL;
-    }
-
-    /**
      * 命令参数.
      *
      * @return array
      */
     protected function getArguments()
     {
-        return [
-            [
-                'type',
-                Argument::OPTIONAL,
-                'The type of server,support default,http,websocket.',
-                $this->option->get('swoole\\default'),
-            ],
-        ];
+        return [];
     }
 
     /**

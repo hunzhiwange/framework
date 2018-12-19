@@ -18,13 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Protocol\Console;
+namespace Leevel\Protocol\Console\Base;
 
-use Leevel\Console\Argument;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
-use Leevel\Leevel;
 use Leevel\Option\IOption;
+use Leevel\Protocol\IServer;
 use Swoole\Process;
 
 /**
@@ -36,22 +35,8 @@ use Swoole\Process;
  *
  * @version 1.0
  */
-class Status extends Command
+abstract class Status extends Command
 {
-    /**
-     * 命令名字.
-     *
-     * @var string
-     */
-    protected $name = 'swoole:status';
-
-    /**
-     * 命令行描述.
-     *
-     * @var string
-     */
-    protected $description = 'Status swoole http service process';
-
     /**
      * 配置.
      *
@@ -78,9 +63,24 @@ class Status extends Command
     {
         $this->warn($this->getVersion());
 
-        $server = Leevel::make('swoole.'.$this->argument('type').'.server');
+        $server = $this->createServer();
+
         $this->status($server->getOption());
     }
+
+    /**
+     * 创建 server.
+     *
+     * @return \Leevel\Protocol\IServer
+     */
+    abstract protected function createServer(): IServer;
+
+    /**
+     * 返回 Version.
+     *
+     * @return string
+     */
+    abstract protected function getVersion(): string;
 
     /**
      * 获取 Swoole 服务状态.
@@ -180,33 +180,13 @@ class Status extends Command
     }
 
     /**
-     * 返回 QueryPHP Version.
-     *
-     * @return string
-     */
-    protected function getVersion()
-    {
-        return 'The Status Of Swoole '.
-            ucfirst($this->argument('type')).
-            ' Server Version '.Leevel::version().
-            PHP_EOL;
-    }
-
-    /**
      * 命令参数.
      *
      * @return array
      */
     protected function getArguments()
     {
-        return [
-            [
-                'type',
-                Argument::OPTIONAL,
-                'The type of server,support default,http,websocket.',
-                $this->option->get('swoole\\default'),
-            ],
-        ];
+        return [];
     }
 
     /**
