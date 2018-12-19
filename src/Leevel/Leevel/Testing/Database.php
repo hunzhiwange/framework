@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Testing;
 
-use Leevel\Db;
+use Leevel\Database\Facade\Db;
 
 /**
  * 数据库助手方法.
