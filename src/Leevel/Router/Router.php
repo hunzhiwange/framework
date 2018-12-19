@@ -531,7 +531,7 @@ class Router implements IRouter
 
         $this->container->instance('app_name', $this->matchedApp());
 
-        $this->request->params->replace($this->matchedParams());
+        $this->request->params->add($this->matchedParams());
     }
 
     /**
