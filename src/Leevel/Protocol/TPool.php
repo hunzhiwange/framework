@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Leevel\Pool;
+use Leevel\Protocol\Facade\Pool;
 
 /**
  * 对象池归还.
@@ -40,10 +40,6 @@ trait TPool
     {
         if (!extension_loaded('swoole')) {
             return;
-        }
-
-        if (method_exists($this, 'destruct')) {
-            $this->destruct();
         }
 
         Pool::back($this);

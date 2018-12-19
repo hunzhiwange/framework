@@ -97,6 +97,10 @@ class Pool implements IPool
      */
     public function back($obj): void
     {
+        if (method_exists($obj, 'destruct')) {
+            $obj->destruct();
+        }
+
         $className = $this->normalize(get_class($obj));
         $pool = $this->pool($className);
         $pool->push($obj);
