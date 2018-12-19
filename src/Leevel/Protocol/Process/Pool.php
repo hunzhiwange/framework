@@ -31,8 +31,15 @@ use Leevel\Protocol\IPool;
  *
  * @version 1.0
  */
-class Pool
+class Pool extends Process
 {
+    /**
+     * 进程名字.
+     *
+     * @var string
+     */
+    protected $name = 'pool';
+
     /**
      * 对象池.
      *

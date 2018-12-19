@@ -50,6 +50,21 @@ class Rpc extends BaseServer
     protected $description = 'Start rpc server';
 
     /**
+     * 命令帮助.
+     *
+     * @var string
+     */
+    protected $help = <<<'EOF'
+The <info>%command.name%</info> command to start rpc server:
+
+  <info>php %command.full_name%</info>
+
+You can also by using the <comment>--daemonize</comment> option:
+
+  <info>php %command.full_name% --daemonize=1</info>
+EOF;
+
+    /**
      * 创建 server.
      *
      * @return \Leevel\Protocol\IServer

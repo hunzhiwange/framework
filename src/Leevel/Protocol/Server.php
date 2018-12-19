@@ -22,6 +22,7 @@ namespace Leevel\Protocol;
 
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
+use Leevel\Protocol\Process as ProtocolProcess;
 use Swoole\Process;
 use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
@@ -142,7 +143,7 @@ abstract class Server
             function (Process $worker) use ($process) {
                 $newProgress = $this->container->make($process);
 
-                if (!is_object($newProgress)) {
+                if (!is_object($newProgress) || ($newProgress instanceof ProtocolProcess)) {
                     throw new InvalidArgumentException(
                         sprintf('Process `%s` was invalid.', $process)
                     );
@@ -153,6 +154,8 @@ abstract class Server
                         sprintf('The `handle` of process `%s` was not found.', $process)
                     );
                 }
+
+                $worker->name($this->option['process_name'].'.'.$newProgress->getName());
 
                 $newProgress->handle($this, $worker);
             }
@@ -194,14 +197,14 @@ abstract class Server
     {
         $this->log(
             sprintf(
-                'Swoole server is started at %s:%d',
+                'Server is started at %s:%d',
                 $this->option['host'], $this->option['port']
             ),
             true,
             ''
         );
 
-        $this->log('Swoole server master worker start', true);
+        $this->log('Server master worker start', true);
 
         $this->setProcesname($this->option['process_name'].'-master');
 
@@ -236,7 +239,7 @@ abstract class Server
     {
         $this->log(
             sprintf(
-                'Swoole server connect, fd %d, reactorId %d.',
+                'Server connect, fd %d, reactorId %d.',
                 $fd, $reactorId
             )
         );
@@ -256,11 +259,11 @@ abstract class Server
     {
         if ($workeId >= $this->option['worker_num']) {
             $this->setProcesname(
-                $this->option['process_name'].'-task'
+                $this->option['process_name'].'.task'
             );
         } else {
             $this->setProcesname(
-                $this->option['process_name'].'-worker'
+                $this->option['process_name'].'.worker'
             );
         }
 
@@ -284,10 +287,10 @@ abstract class Server
      */
     public function onManagerStart(SwooleServer $server)
     {
-        $this->log('Swoole server manager worker start', true);
+        $this->log('Server manager worker start', true);
 
         $this->setProcesname(
-            $this->option['process_name'].'-manager'
+            $this->option['process_name'].'.manager'
         );
     }
 
@@ -301,7 +304,7 @@ abstract class Server
     {
         $this->log(
             sprintf(
-                'Swoole server %s worker %d shutdown',
+                'Server %s worker %d shutdown',
                 $server->setting['process_name'], $workerId
             )
         );
@@ -373,7 +376,7 @@ abstract class Server
             unlink($this->option['pid_path']);
         }
 
-        $this->log('Swoole server shutdown');
+        $this->log('Server shutdown');
     }
 
     /**
@@ -390,7 +393,7 @@ abstract class Server
     {
         $this->log(
             sprintf(
-                'Swoole server close, fd %d, reactorId %d.',
+                'Server close, fd %d, reactorId %d.',
                 $fd, $reactorId
             )
         );
@@ -427,7 +430,7 @@ abstract class Server
 
         if (!is_writable($dirname)) {
             throw new InvalidArgumentException(
-                sprintf('swoole pid dir is not writable'.$dirname)
+                sprintf('Pid dir is not writable'.$dirname)
             );
         }
     }

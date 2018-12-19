@@ -69,8 +69,6 @@ abstract class Status extends Command
      */
     protected function status(array $option): void
     {
-        $this->info('Status swoole service process', true, '');
-
         $processName = $option['process_name'];
 
         if ($this->option('all')) {

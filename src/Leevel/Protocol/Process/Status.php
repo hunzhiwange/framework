@@ -31,8 +31,15 @@ use Leevel\Protocol\IServer;
  *
  * @version 1.0
  */
-class Status
+class Status extends Process
 {
+    /**
+     * 进程名字.
+     *
+     * @var string
+     */
+    protected $name = 'status';
+
     /**
      * 响应句柄.
      *

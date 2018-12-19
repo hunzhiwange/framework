@@ -33,8 +33,15 @@ use Leevel\Protocol\IServer;
  *
  * @version 1.0
  */
-class HotOverload
+class HotOverload extends Process
 {
+    /**
+     * 进程名字.
+     *
+     * @var string
+     */
+    protected $name = 'hot.overload';
+
     /**
      * 时间记录.
      *
