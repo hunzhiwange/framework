@@ -169,7 +169,7 @@ foreach (ComposerStaticInit::$files as $fileIdentifier => $_) {
     $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
 }
 
-require_once dirname(__FILE__, 2).'/vendor/hunzhiwange/framework/src/Leevel/Bootstrap/functions.php';
+require_once dirname(__FILE__, 2).'/vendor/hunzhiwange/framework/src/Leevel/Leevel/functions.php';
 require_once dirname(__FILE__, 2).'/common/Infra/functions.php';
 eot;
     }

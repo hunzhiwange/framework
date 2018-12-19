@@ -775,7 +775,7 @@ class Project extends Container implements IProject
 
         $this->alias([
             'project' => [
-                'Leevel\\Bootstrap\\Project',
+                'Leevel\\Leevel\\Project',
                 'Leevel\\Di\\IContainer',
                 'Leevel\\Kernel\\IProject',
                 'app',
