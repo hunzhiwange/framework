@@ -260,7 +260,7 @@ abstract class Server
             );
         } else {
             $this->setProcesname(
-                $this->option['process_name'].'-event'
+                $this->option['process_name'].'-worker'
             );
         }
 
