@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
-use Leevel\Leevel\Facade\Leevel;
+use Leevel\Kernel\Facade\Leevel;
 use Leevel\Protocol\Console\Base\Status as BaseStatus;
 use Leevel\Protocol\IServer;
 

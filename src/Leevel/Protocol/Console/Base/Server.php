@@ -23,7 +23,7 @@ namespace Leevel\Protocol\Console\Base;
 use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
-use Leevel\Leevel\Facade\Leevel;
+use Leevel\Kernel\Facade\Leevel;
 use Leevel\Protocol\IServer;
 use Swoole\Process;
 
