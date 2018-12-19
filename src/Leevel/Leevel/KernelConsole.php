@@ -20,16 +20,16 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel;
 
-use Leevel\Bootstrap\Bootstrap\LoadI18n;
-use Leevel\Bootstrap\Bootstrap\LoadOption;
-use Leevel\Bootstrap\Bootstrap\RegisterRuntime;
-use Leevel\Bootstrap\Bootstrap\TraverseProvider;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
 use Leevel\Http\Request;
 use Leevel\Kernel\IKernelConsole;
 use Leevel\Kernel\IProject;
+use Leevel\Leevel\Bootstrap\LoadI18n;
+use Leevel\Leevel\Bootstrap\LoadOption;
+use Leevel\Leevel\Bootstrap\RegisterRuntime;
+use Leevel\Leevel\Bootstrap\TraverseProvider;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
