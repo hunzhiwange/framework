@@ -27,7 +27,6 @@ use Leevel\Protocol\Client\Rpc;
 use Leevel\Protocol\HttpServer;
 use Leevel\Protocol\Pool;
 use Leevel\Protocol\RpcServer;
-use Leevel\Protocol\Server;
 use Leevel\Protocol\WebsocketServer;
 
 /**
@@ -53,10 +52,9 @@ class Register extends Provider
      */
     public function register()
     {
-        $this->swooleServer();
-        $this->swooleHttpServer();
-        $this->swooleWebsocketServer();
-        $this->swooleRpcServer();
+        $this->httpServer();
+        $this->websocketServer();
+        $this->rpcServer();
         $this->pool();
         $this->rpc();
     }
@@ -69,16 +67,13 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'swoole.default' => [
-                'Leevel\\Protocol\\Server',
-            ],
-            'swoole.http' => [
+            'http.server' => [
                 'Leevel\\Protocol\\Http\\Server',
             ],
-            'swoole.websocket' => [
+            'websocket.server' => [
                 'Leevel\\Protocol\\Websocket\\Server',
             ],
-            'swoole.rpc' => [
+            'rpc.server' => [
                 'Leevel\\Protocol\\RpcServer',
             ],
             'pool' => [
@@ -92,65 +87,52 @@ class Register extends Provider
     }
 
     /**
-     * 注册 swoole 服务
+     * 注册  http.server 服务
      */
-    protected function swooleServer()
+    protected function httpServer()
     {
-        $this->container->singleton('swoole.default', function (IContainer $container) {
-            return new Server(
-                $container,
-                $container['option']['swoole\\server']
-            );
-        });
-    }
-
-    /**
-     * 注册 swoole http 服务
-     */
-    protected function swooleHttpServer()
-    {
-        $this->container->singleton('swoole.http', function (IContainer $container) {
+        $this->container->singleton('http.server', function (IContainer $container) {
             return new HttpServer(
                 $container,
                 $container->make(IKernel::class),
                 $container['request'],
                 array_merge(
-                    $container['option']['swoole\\server'],
-                    $container['option']['swoole\\http']
+                    $container['option']['protocol\\server'],
+                    $container['option']['protocol\\http']
                 )
             );
         });
     }
 
     /**
-     * 注册 swoole websocket 服务
+     * 注册 websocket.server 服务
      */
-    protected function swooleWebsocketServer()
+    protected function websocketServer()
     {
-        $this->container->singleton('swoole.websocket', function (IContainer $container) {
+        $this->container->singleton('websocket.server', function (IContainer $container) {
             return new WebsocketServer(
                 $container,
                 $container->make(IKernel::class),
                 $container['request'],
                 array_merge(
-                    $container['option']['swoole\\server'],
-                    $container['option']['swoole\\websocket']
+                    $container['option']['protocol\\server'],
+                    $container['option']['protocol\\websocket']
                 )
             );
         });
     }
 
     /**
-     * 注册 swoole rpc 服务
+     * 注册 rpc.server 服务
      */
-    protected function swooleRpcServer()
+    protected function rpcServer()
     {
-        $this->container->singleton('swoole.rpc', function (IContainer $container) {
+        $this->container->singleton('rpc.server', function (IContainer $container) {
             return new RpcServer(
                 $container,
                 array_merge(
-                    $container['option']['swoole\\server'],
-                    $container['option']['swoole\\rpc']
+                    $container['option']['protocol\\server'],
+                    $container['option']['protocol\\rpc']
                 )
             );
         });

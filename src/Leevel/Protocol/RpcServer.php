@@ -30,7 +30,7 @@ use Thrift\Factory\TBinaryProtocolFactory;
 use Thrift\Server\TServerSocket;
 
 /**
- * swoole rpc 服务
+ * Rpc 服务
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -58,7 +58,7 @@ class RpcServer extends Server implements IServer
         'port' => '1355',
 
         // swoole 进程名称
-        'process_name' => 'queryphp.swoole.rpc',
+        'process_name' => 'leevel.rpc',
 
         // swoole 进程保存路径
         'pid_path' => '',

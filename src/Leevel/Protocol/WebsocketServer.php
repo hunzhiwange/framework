@@ -25,7 +25,7 @@ use Swoole\Websocket\Frame as SwooleWebsocketFrame;
 use Swoole\Websocket\Server as SwooleWebsocketServer;
 
 /**
- * swoole websocket 服务
+ * Websocket 服务
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -53,7 +53,7 @@ class WebsocketServer extends HttpServer implements IServer
         'port' => '9501',
 
         // swoole 进程名称
-        'process_name' => 'queryphp.swoole.websocket',
+        'process_name' => 'leevel.websocket',
 
         // swoole 进程保存路径
         'pid_path' => '',

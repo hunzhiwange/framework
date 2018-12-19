@@ -30,7 +30,7 @@ use Swoole\Http\Response as SwooleHttpResponse;
 use Swoole\Http\Server as SwooleHttpServer;
 
 /**
- * swoole http 服务
+ *  Http 服务
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -71,7 +71,7 @@ class HttpServer extends Server implements IServer
         'port' => '9501',
 
         // swoole 进程名称
-        'process_name' => 'queryphp.swoole.http',
+        'process_name' => 'leevel.http',
 
         // swoole 进程保存路径
         'pid_path' => '',
