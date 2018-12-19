@@ -67,6 +67,16 @@ class Rpc
     }
 
     /**
+     * 是否处于协程上下文.
+     *
+     * @return bool
+     */
+    public static function coroutineContext(): bool
+    {
+        return true;
+    }
+
+    /**
      * Rpc 调用.
      *
      * @param string $call
