@@ -22,7 +22,6 @@ namespace Leevel\Protocol\Console\Base;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Leevel\Option\IOption;
 use Leevel\Protocol\IServer;
 use Swoole\Process;
 
@@ -37,25 +36,6 @@ use Swoole\Process;
  */
 abstract class Stop extends Command
 {
-    /**
-     * 配置.
-     *
-     * @var \Leevel\Option\IOption
-     */
-    protected $option;
-
-    /**
-     * 构造函数.
-     *
-     * @param \Leevel\Option\IOption $option
-     */
-    public function __construct(IOption $option)
-    {
-        $this->option = $option;
-
-        parent::__construct();
-    }
-
     /**
      * 响应命令.
      */

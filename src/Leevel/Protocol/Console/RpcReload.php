@@ -56,7 +56,7 @@ class RpcReload extends BaseReload
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('swoole.rpc');
+        return Leevel::make('rpc.server');
     }
 
     /**

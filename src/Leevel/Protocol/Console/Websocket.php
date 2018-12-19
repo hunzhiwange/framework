@@ -56,7 +56,7 @@ class Websocket extends BaseServer
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('swoole.websocket');
+        return Leevel::make('websocket.server');
     }
 
     /**

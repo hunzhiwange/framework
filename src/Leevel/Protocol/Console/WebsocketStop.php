@@ -56,7 +56,7 @@ class WebsocketStop extends BaseStop
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('swoole.websocket');
+        return Leevel::make('websocket.server');
     }
 
     /**

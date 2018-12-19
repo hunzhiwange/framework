@@ -56,7 +56,7 @@ class Http extends BaseServer
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('swoole.http');
+        return Leevel::make('http.server');
     }
 
     /**

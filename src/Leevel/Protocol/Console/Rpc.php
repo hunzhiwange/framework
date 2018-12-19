@@ -56,7 +56,7 @@ class Rpc extends BaseServer
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('swoole.rpc');
+        return Leevel::make('rpc.server');
     }
 
     /**
