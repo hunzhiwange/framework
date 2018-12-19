@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Testing;
 
-use Leevel\Bootstrap\Project;
+use Leevel\Leevel\Project;
 use Leevel\Support\Facade;
 use PHPUnit\Framework\TestCase as TestCases;
 
