@@ -86,7 +86,7 @@ class FacadeTest extends TestCase
             ['Event', 'event', 'Event'],
             ['Filesystem', 'filesystems', 'Filesystem'],
             ['I18n', 'i18n', 'I18n'],
-            ['Leevel', 'project', 'Leevel'],
+            ['Leevel', 'project', 'Kernel'],
             ['Log', 'logs', 'Log'],
             ['Mail', 'mails', 'Mail'],
             ['Option', 'option', 'Option'],
