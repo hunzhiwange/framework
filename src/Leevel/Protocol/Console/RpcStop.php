@@ -32,6 +32,7 @@ use Leevel\Protocol\IServer;
  * @since 2017.12.26
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class RpcStop extends BaseStop
 {

@@ -33,6 +33,7 @@ use Swoole\Process;
  * @since 2017.12.26
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 abstract class Stop extends Command
 {

@@ -34,6 +34,7 @@ use Swoole\Process;
  * @since 2017.12.27
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 abstract class Reload extends Command
 {
