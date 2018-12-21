@@ -176,9 +176,11 @@ class Router implements IRouter
      */
     public function setMatchedData(array $matchedData): void
     {
-        $this->matchedData = array_merge(self::$matcheDataInit, $matchedData);
+        //$this->matchedData = array_merge(self::$matcheDataInit, $matchedData);
 
-        $this->isMatched = true;
+        self::$matcheDataInit = array_merge(self::$matcheDataInit, $matchedData);
+
+        //$this->isMatched = true;
     }
 
     /**

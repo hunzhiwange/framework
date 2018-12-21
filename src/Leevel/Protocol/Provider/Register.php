@@ -22,7 +22,6 @@ namespace Leevel\Protocol\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\Kernel\IKernel;
 use Leevel\Protocol\Client\Rpc;
 use Leevel\Protocol\HttpServer;
 use Leevel\Protocol\Pool;
@@ -94,8 +93,6 @@ class Register extends Provider
         $this->container->singleton('http.server', function (IContainer $container) {
             return new HttpServer(
                 $container,
-                $container->make(IKernel::class),
-                $container['request'],
                 array_merge(
                     $container['option']['protocol\\server'],
                     $container['option']['protocol\\http']
@@ -112,8 +109,6 @@ class Register extends Provider
         $this->container->singleton('websocket.server', function (IContainer $container) {
             return new WebsocketServer(
                 $container,
-                $container->make(IKernel::class),
-                $container['request'],
                 array_merge(
                     $container['option']['protocol\\server'],
                     $container['option']['protocol\\websocket']

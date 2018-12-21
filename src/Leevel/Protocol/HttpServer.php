@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Leevel\Di\IContainer;
+use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
@@ -40,20 +40,6 @@ use Swoole\Http\Server as SwooleHttpServer;
  */
 class HttpServer extends Server implements IServer
 {
-    /**
-     * 内核.
-     *
-     * @var \Leevel\Kernel\IKernel
-     */
-    protected $kernel;
-
-    /**
-     * 请求.
-     *
-     * @var \Leevel\Http\Request
-     */
-    protected $request;
-
     /**
      * 配置.
      *
@@ -112,22 +98,6 @@ class HttpServer extends Server implements IServer
     ];
 
     /**
-     * 构造函数.
-     *
-     * @param \Leevel\Di\IContainer  $container
-     * @param \Leevel\Kernel\IKernel $kernel
-     * @param \Leevel\Http\Request   $request
-     * @param array                  $option
-     */
-    public function __construct(IContainer $container, IKernel $kernel, Request $request, array $option = [])
-    {
-        parent::__construct($container, $option);
-
-        $this->kernel = $kernel;
-        $this->request = $request;
-    }
-
-    /**
      * 处理 http 请求
      * 浏览器连接服务器后, 页面上的每个请求均会执行一次
      * nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
@@ -147,17 +117,30 @@ class HttpServer extends Server implements IServer
         }
 
         $request = $this->normalizeRequest($swooleRequest);
-
-        $response = $this->kernel->handle($request);
+        $response = $this->dispatchRouter($request);
 
         $swooleResponse = $this->normalizeResponse($response, $swooleResponse);
-
-        $this->kernel->terminate($request, $response);
-
         $swooleResponse->end();
+    }
 
-        // 清理协程上下文数据
+    /**
+     * 路由调度.
+     *
+     * @param \Leevel\Http\IRequest $request
+     *
+     * @return \Leevel\Http\IResource
+     */
+    protected function dispatchRouter(IRequest $request): IResponse
+    {
+        $kernel = $this->container->make(IKernel::class);
+
+        $response = $kernel->handle($request);
+
+        $kernel->terminate($request, $response);
+
         $this->removeCoroutine();
+
+        return $response;
     }
 
     /**
@@ -195,11 +178,11 @@ class HttpServer extends Server implements IServer
      *
      * @param \Swoole\Http\Request $swooleRequest
      *
-     * @return \Leevel\Http\Request
+     * @return \Leevel\Http\IRequest
      */
-    protected function normalizeRequest(SwooleHttpRequest $swooleRequest): Request
+    protected function normalizeRequest(SwooleHttpRequest $swooleRequest): IRequest
     {
-        $this->request->reset();
+        $request = new Request();
 
         $datas = [
             'header' => 'headers',
@@ -241,11 +224,11 @@ class HttpServer extends Server implements IServer
 
         foreach ($datas as $key => $item) {
             if ($swooleRequest->{$key}) {
-                $this->request->{$item}->replace($swooleRequest->{$key});
+                $request->{$item}->replace($swooleRequest->{$key});
             }
         }
 
-        return $this->request;
+        return $request;
     }
 
     /**
@@ -262,7 +245,7 @@ class HttpServer extends Server implements IServer
 
         $this->initServer();
 
-        // 清理协程上下文数据
+        // 删除容器中注册为 -1 的数据
         $this->removeCoroutine();
     }
 }

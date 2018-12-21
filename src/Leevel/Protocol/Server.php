@@ -200,13 +200,12 @@ abstract class Server
                 'Server is started at %s:%d',
                 $this->option['host'], $this->option['port']
             ),
-            true,
-            ''
+            true, ''
         );
 
         $this->log('Server master worker start', true);
 
-        $this->setProcesname($this->option['process_name'].'-master');
+        $this->setProcessName($this->option['process_name'].'.master');
 
         $pid = $server->master_pid."\n".$server->manager_pid;
 
@@ -258,11 +257,11 @@ abstract class Server
     public function onWorkerStart(SwooleServer $server, int $workeId)
     {
         if ($workeId >= $this->option['worker_num']) {
-            $this->setProcesname(
+            $this->setProcessName(
                 $this->option['process_name'].'.task'
             );
         } else {
-            $this->setProcesname(
+            $this->setProcessName(
                 $this->option['process_name'].'.worker'
             );
         }
@@ -289,7 +288,7 @@ abstract class Server
     {
         $this->log('Server manager worker start', true);
 
-        $this->setProcesname(
+        $this->setProcessName(
             $this->option['process_name'].'.manager'
         );
     }
@@ -486,7 +485,7 @@ abstract class Server
      * @see http://php.net/manual/zh/function.cli-set-process-title.php
      * @see https://wiki.swoole.com/wiki/page/125.html
      */
-    protected function setProcesname(string $name)
+    protected function setProcessName(string $name)
     {
         if (function_exists('cli_set_process_title')) {
             cli_set_process_title($name);
