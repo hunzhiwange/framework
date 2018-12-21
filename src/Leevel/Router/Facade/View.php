@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\View\Facade;
+namespace Leevel\Router\Facade;
 
 use Leevel\Support\Facade;
 

@@ -97,7 +97,7 @@ class FacadeTest extends TestCase
             ['Throttler', 'throttler', 'Throttler'],
             ['Url', 'url', 'Router'],
             ['Validate', 'validate', 'Validate'],
-            ['View', 'view', 'View'],
+            ['View', 'view', 'Router'],
             ['Work', 'work', 'Database'],
             ['Pool', 'pool', 'Protocol'],
             ['Rpc', 'rpc', 'Protocol'],
