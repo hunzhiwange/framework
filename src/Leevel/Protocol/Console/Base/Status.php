@@ -143,6 +143,8 @@ abstract class Status extends Command
 
         exec($cmd, $out);
 
+        $this->info($cmd, true);
+
         if (empty($out)) {
             $this->warn('No swoole service process was found', true);
 
@@ -152,8 +154,6 @@ abstract class Status extends Command
         foreach ($out as &$v) {
             $v = explode(' ', $v);
         }
-
-        $this->info($cmd, true);
 
         $this->table($nikename, $out);
     }
