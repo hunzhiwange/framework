@@ -182,7 +182,7 @@ class WebsocketServer extends HttpServer implements IServer
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
      */
-    public function onClose(SwooleWebsocketServer $server, int $fd, int $reactorId): void
+    public function onWebsocketClose(SwooleWebsocketServer $server, int $fd, int $reactorId): void
     {
         $this->log(
             sprintf('Server close, fd %d, reactorId %d.', $fd, $reactorId)

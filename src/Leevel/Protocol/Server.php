@@ -379,26 +379,6 @@ abstract class Server
     }
 
     /**
-     * 监听连接关闭事件
-     * 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
-     *
-     * @param \Swoole\Server $server
-     * @param int            $fd
-     * @param int            $reactorId
-     *
-     * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
-     */
-    public function onClose(SwooleServer $server, int $fd, int $reactorId)
-    {
-        $this->log(
-            sprintf(
-                'Server close, fd %d, reactorId %d.',
-                $fd, $reactorId
-            )
-        );
-    }
-
-    /**
      * 清理协程上下文数据.
      */
     protected function removeCoroutine(): void
@@ -464,8 +444,16 @@ abstract class Server
      */
     protected function eventServer()
     {
+        $type = get_class($this);
+        $type = substr($type, strrpos($type, '\\') + 1);
+        $type = str_replace('Server', '', $type);
+
         foreach ($this->serverEvent as $event) {
-            $this->server->on($event, [$this, 'on'.ucfirst($event)]);
+            if (!method_exists($this, $onEvent = 'on'.$type.ucfirst($event))) {
+                $onEvent = 'on'.ucfirst($event);
+            }
+
+            $this->server->on($event, [$this, $onEvent]);
         }
     }
 
