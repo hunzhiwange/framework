@@ -585,7 +585,9 @@ class Container implements IContainer, ArrayAccess
             try {
                 switch (true) {
                     case $argsclass = $this->parseParameterClass($item):
-                        if (array_key_exists($argsclass, $args)) {
+                        if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsclass) {
+                            $data = array_shift($args);
+                        } elseif (array_key_exists($argsclass, $args)) {
                             $data = $args[$argsclass];
                         } elseif ($item->isDefaultValueAvailable()) {
                             $data = $item->getDefaultValue();
@@ -608,8 +610,12 @@ class Container implements IContainer, ArrayAccess
                             $data = $args[$item->name];
                             $validArgs++;
                         } else {
-                            $validArgs--;
-                            $data = null;
+                            if (isset($args[0])) {
+                                $data = array_shift($args);
+                            } else {
+                                $validArgs--;
+                                $data = null;
+                            }
                         }
 
                         break;

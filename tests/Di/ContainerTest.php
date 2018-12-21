@@ -427,6 +427,32 @@ class ContainerTest extends TestCase
         $container->instance('Leevel\\Foo\\Middleware\\Bar');
         $this->assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
     }
+
+    public function testCallWithClassArgsAndItInstance()
+    {
+        $container = new Container();
+
+        $obj = new Test20();
+
+        $args = [new Test21('hello'), new Test22('world')];
+
+        $result = $container->call([$obj, 'handle'], $args);
+
+        $this->assertSame(['test21' => 'hello', 'test22' => 'world'], $result);
+    }
+
+    public function testCallWithClassArgsAndItInstanceAndMore()
+    {
+        $container = new Container();
+
+        $obj = new Test23();
+
+        $args = [new Test24('hello'), new Test25('world'), 'more'];
+
+        $result = $container->call([$obj, 'handle'], $args);
+
+        $this->assertSame(['test24' => 'hello', 'test25' => 'world', 'three' => 'more'], $result);
+    }
 }
 
 class Test1
@@ -542,5 +568,61 @@ class Test10
     public function hello(TestNotFound $test)
     {
         return 'test10';
+    }
+}
+
+class Test20
+{
+    public function handle(Test21 $arg1, Test22 $arg2)
+    {
+        return ['test21' => $arg1->prop, 'test22' => $arg2->prop];
+    }
+}
+
+class Test21
+{
+    public $prop;
+
+    public function __construct(?string $prop = null)
+    {
+        $this->prop = $prop;
+    }
+}
+
+class Test22
+{
+    public $prop;
+
+    public function __construct(?string $prop = null)
+    {
+        $this->prop = $prop;
+    }
+}
+
+class Test23
+{
+    public function handle(Test24 $arg1, Test25 $arg2, string $arg3)
+    {
+        return ['test24' => $arg1->prop, 'test25' => $arg2->prop, 'three' => $arg3];
+    }
+}
+
+class Test24
+{
+    public $prop;
+
+    public function __construct(?string $prop = null)
+    {
+        $this->prop = $prop;
+    }
+}
+
+class Test25
+{
+    public $prop;
+
+    public function __construct(?string $prop = null)
+    {
+        $this->prop = $prop;
     }
 }
