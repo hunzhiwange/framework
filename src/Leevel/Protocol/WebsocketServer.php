@@ -139,7 +139,7 @@ class WebsocketServer extends HttpServer implements IServer
         $request = $this->normalizeRequest($swooleRequest);
         $request->setPathInfo($this->normalizePathInfo($request->getPathInfo(), self::OPEN));
 
-        $this->setRouterMatchedData([$server, $request, $swooleRequest->fd]);
+        $this->setPreRequestMatched($request, [$server, $request, $swooleRequest->fd]);
 
         $response = $this->dispatchRouter($request);
     }
@@ -165,9 +165,9 @@ class WebsocketServer extends HttpServer implements IServer
             return;
         }
 
-        $this->setRouterMatchedData([$server, $frame, $frame->fd]);
-
         $request = $this->createRequestWithPathInfo($pathInfo, self::MESSAGE);
+
+        $this->setPreRequestMatched($request, [$server, $frame, $frame->fd]);
 
         $response = $this->dispatchRouter($request);
     }
@@ -213,7 +213,7 @@ class WebsocketServer extends HttpServer implements IServer
 
         $request = $this->createRequestWithPathInfo($pathInfo, self::CLOSE);
 
-        $this->setRouterMatchedData([$server, $fd, $reactorId]);
+        $this->setPreRequestMatched($request, [$server, $fd, $reactorId]);
 
         $response = $this->dispatchRouter($request);
     }
@@ -231,13 +231,14 @@ class WebsocketServer extends HttpServer implements IServer
     /**
      * 设置路由匹配数据.
      *
-     * @param array $data
+     * @param \Leevel\Http\IRequest $request
+     * @param array                 $data
      */
-    protected function setRouterMatchedData(array $data): void
+    protected function setPreRequestMatched(IRequest $request, array $data): void
     {
         $this->container->make(IRouter::class)->
 
-        setMatchedData([IRouter::VARS => $data]);
+        setPreRequestMatched($request, [IRouter::VARS => $data]);
     }
 
     /**
