@@ -404,7 +404,7 @@ class Router implements IRouter
      */
     protected function resolveMatchedData(array $data): void
     {
-        $data = $this->mergeMatchedData($this->preRequestMatched[spl_object_id($this->request)] ?? [], $data);
+        $data = $this->mergeMatchedData($data, $this->preRequestMatched[spl_object_id($this->request)] ?? []);
 
         if (!$data[IRouter::APP]) {
             $data[IRouter::APP] = self::DEFAULT_APP;

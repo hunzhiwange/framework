@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Controllers\MatchedData\Prefix\Bar;
+namespace Tests\Router\Controllers\PreRequestMatched\Prefix\Bar;
 
 /**
  * foo.
@@ -33,6 +33,6 @@ class Foo
 {
     public function handle()
     {
-        return 'hello matchedData';
+        return 'hello preRequestMatched';
     }
 }

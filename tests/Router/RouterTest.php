@@ -339,7 +339,7 @@ class RouterTest extends TestCase
         ];
     }
 
-    public function testSetMatchedData()
+    public function testSetPreRequestMatched()
     {
         $pathInfo = '';
         $params = [];
@@ -349,11 +349,11 @@ class RouterTest extends TestCase
         $request = $this->createRequest($pathInfo, $params, $method);
         $router = $this->createRouter();
 
-        $router->setMatchedData([
+        $router->setPreRequestMatched($request, [
             IRouter::APP         => 'Tests',
             IRouter::CONTROLLER  => 'Bar',
             IRouter::ACTION      => 'foo',
-            IRouter::PREFIX      => 'MatchedData\\Prefix',
+            IRouter::PREFIX      => 'PreRequestMatched\\Prefix',
             IRouter::PARAMS      => null,
             IRouter::MIDDLEWARES => null,
             IRouter::VARS        => null,
@@ -365,7 +365,7 @@ class RouterTest extends TestCase
 
         $this->assertInstanceof(IResponse::class, $result);
 
-        $this->assertSame('hello matchedData', $result->getContent());
+        $this->assertSame('hello preRequestMatched', $result->getContent());
     }
 
     public function testThroughMiddleware()
@@ -555,8 +555,8 @@ eot;
 
         $bag = $this->createMock(IBag::class);
 
-        $bag->method('replace')->willReturn($params);
-        $this->assertEquals($params, $bag->replace([]));
+        $bag->method('add')->willReturn($params);
+        $this->assertEquals($params, $bag->add([]));
 
         $request->params = $bag;
 
@@ -566,5 +566,5 @@ eot;
 
 interface IBag
 {
-    public function replace(array $data);
+    public function add(array $data);
 }
