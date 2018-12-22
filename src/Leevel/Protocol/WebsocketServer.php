@@ -121,7 +121,7 @@ class WebsocketServer extends HttpServer implements IServer
     ];
 
     /**
-     * WebSocket客户端与服务器建立连接并完成握手后.
+     * WebSocket 客户端与服务器建立连接并完成握手后.
      *
      * @param \Swoole\Websocket\Server $server
      * @param \Swoole\Http\Request     $swooleRequest
