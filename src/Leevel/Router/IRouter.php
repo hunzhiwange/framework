@@ -147,6 +147,22 @@ interface IRouter
     const DEFAULT_REGEX = '\S+';
 
     /**
+     * 路由匹配项.
+     *
+     * @var array
+     */
+    const MATCHED = [
+        self::APP,
+        self::PREFIX,
+        self::CONTROLLER,
+        self::ACTION,
+        self::BIND,
+        self::PARAMS,
+        self::MIDDLEWARES,
+        self::VARS,
+    ];
+
+    /**
      * 分发请求到路由.
      *
      * @param \Leevel\Http\IRequest $request
@@ -161,12 +177,13 @@ interface IRouter
     public function initRequest();
 
     /**
-     * 设置匹配路由
-     * 绕过路由解析，可以用于高性能 RPC 快速匹配资源.
+     * 设置路由请求预解析结果.
+     * 可以用于高性能 Rpc 和 Websocket 预匹配数据.
      *
-     * @param array $matchedData
+     * @param \Leevel\Http\IRequest $request
+     * @param array                 $matchedData
      */
-    public function setMatchedData(array $matchedData): void;
+    public function setPreRequestMatched(IRequest $request, array $matchedData): void;
 
     /**
      * 穿越中间件.
@@ -273,4 +290,14 @@ interface IRouter
      * @return array
      */
     public function getMiddlewareAlias(): array;
+
+    /**
+     * 合并中间件.
+     *
+     * @param array $middlewares
+     * @param array $newMiddlewares
+     *
+     * @return array
+     */
+    public function mergeMiddlewares(array $middlewares, array $newMiddlewares): array;
 }

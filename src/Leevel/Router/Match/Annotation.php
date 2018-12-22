@@ -247,16 +247,7 @@ class Annotation implements IMatch
      */
     protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {
-        return [
-            'handle'    => array_unique(array_merge(
-                $middlewares['handle'] ?? [],
-                $newMiddlewares['handle'] ?? []
-            )),
-            'terminate' => array_unique(array_merge(
-                $middlewares['terminate'] ?? [],
-                $newMiddlewares['terminate'] ?? []
-            )),
-        ];
+        return $this->router->mergeMiddlewares($middlewares, $newMiddlewares);
     }
 
     /**

@@ -58,6 +58,9 @@ class PathInfo implements IMatch
      */
     public function matche(IRouter $router, IRequest $request): array
     {
+        $this->request = $request;
+        $this->router = $router;
+
         $pathInfo = $request->getPathInfo();
         $pathInfo = rtrim($pathInfo, '/').'/';
         $result = $middlewares = [];
@@ -179,15 +182,6 @@ class PathInfo implements IMatch
      */
     protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {
-        return [
-            'handle'    => array_unique(array_merge(
-                $middlewares['handle'] ?? [],
-                $newMiddlewares['handle'] ?? []
-            )),
-            'terminate' => array_unique(array_merge(
-                $middlewares['terminate'] ?? [],
-                $newMiddlewares['terminate'] ?? []
-            )),
-        ];
+        return $this->router->mergeMiddlewares($middlewares, $newMiddlewares);
     }
 }

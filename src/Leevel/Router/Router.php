@@ -65,29 +65,6 @@ class Router implements IRouter
     protected $matchedData;
 
     /**
-     * 路由匹配初始化数据.
-     *
-     * @var array
-     */
-    protected static $matcheDataInit = [
-        self::APP         => self::DEFAULT_APP,
-        self::PREFIX      => null,
-        self::CONTROLLER  => null,
-        self::ACTION      => null,
-        self::BIND        => null,
-        self::PARAMS      => null,
-        self::MIDDLEWARES => null,
-        self::VARS        => null,
-    ];
-
-    /**
-     * 是否已经进行匹配.
-     *
-     * @var bool
-     */
-    protected $isMatched;
-
-    /**
      * 基础路径.
      *
      * @var array
@@ -137,6 +114,13 @@ class Router implements IRouter
     protected $controllerDir = 'App\\Controller';
 
     /**
+     * 设置路由请求预解析结果.
+     *
+     * @var array
+     */
+    protected $preRequestMatched = [];
+
+    /**
      * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
@@ -169,18 +153,15 @@ class Router implements IRouter
     }
 
     /**
-     * 设置匹配路由
-     * 绕过路由解析，可以用于高性能 RPC 快速匹配资源.
+     * 设置路由请求预解析结果.
+     * 可以用于高性能 Rpc 和 Websocket 预匹配数据.
      *
-     * @param array $matchedData
+     * @param \Leevel\Http\IRequest $request
+     * @param array                 $matchedData
      */
-    public function setMatchedData(array $matchedData): void
+    public function setPreRequestMatched(IRequest $request, array $matchedData): void
     {
-        //$this->matchedData = array_merge(self::$matcheDataInit, $matchedData);
-
-        self::$matcheDataInit = array_merge(self::$matcheDataInit, $matchedData);
-
-        //$this->isMatched = true;
+        $this->preRequestMatched[spl_object_id($request)] = $matchedData;
     }
 
     /**
@@ -352,6 +333,28 @@ class Router implements IRouter
     }
 
     /**
+     * 合并中间件.
+     *
+     * @param array $middlewares
+     * @param array $newMiddlewares
+     *
+     * @return array
+     */
+    public function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
+    {
+        return [
+            'handle'    => array_unique(array_merge(
+                $middlewares['handle'] ?? [],
+                $newMiddlewares['handle'] ?? []
+            )),
+            'terminate' => array_unique(array_merge(
+                $middlewares['terminate'] ?? [],
+                $newMiddlewares['terminate'] ?? []
+            )),
+        ];
+    }
+
+    /**
      * 路由匹配
      * 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
      *
@@ -359,10 +362,6 @@ class Router implements IRouter
      */
     protected function matchRouter()
     {
-        if (true === $this->isMatched && null !== $this->matchedData) {
-            return $this->findRouterBind();
-        }
-
         $this->initRequest();
 
         $this->resolveMatchedData(
@@ -405,7 +404,38 @@ class Router implements IRouter
      */
     protected function resolveMatchedData(array $data): void
     {
-        $this->matchedData = array_merge(self::$matcheDataInit, $data);
+        $data = $this->mergeMatchedData($this->preRequestMatched[spl_object_id($this->request)] ?? [], $data);
+
+        if (!$data[IRouter::APP]) {
+            $data[IRouter::APP] = self::DEFAULT_APP;
+        }
+
+        $this->matchedData = $data;
+    }
+
+    /**
+     * 合并匹配数据.
+     *
+     * @param array $before
+     * @param array $after
+     *
+     * @return array
+     */
+    protected function mergeMatchedData(array $before, array $after): array
+    {
+        $result = [];
+
+        foreach (self::MATCHED as $key) {
+            if (self::MIDDLEWARES === $key) {
+                $result[$key] = $this->mergeMiddlewares($before[$key] ?? [], $after[$key] ?? []);
+            } elseif (in_array($key, [self::PARAMS, self::VARS], true)) {
+                $result[$key] = array_merge($before[$key] ?? [], $after[$key] ?? []);
+            } else {
+                $result[$key] = $after[$key] ?? $before[$key] ?? null;
+            }
+        }
+
+        return $result;
     }
 
     /**
