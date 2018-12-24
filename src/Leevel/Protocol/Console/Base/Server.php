@@ -232,7 +232,7 @@ queryphp;
             [
                 'daemonize',
                 'd',
-                Option::VALUE_OPTIONAL,
+                Option::VALUE_NONE,
                 'Daemon process',
             ],
         ];
