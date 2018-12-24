@@ -21,11 +21,13 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Thrift\Service;
 
 use InvalidArgumentException;
+use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request as HttpRequest;
+use Leevel\Kernel\Facade\Leevel;
 use Leevel\Kernel\IKernel;
-use Leevel\Leevel;
+use Leevel\Router\IRouter;
 
 /**
  * thrift 默认服务调用响应.
@@ -39,11 +41,11 @@ use Leevel\Leevel;
 class ThriftHandler implements ThriftIf
 {
     /**
-     * 变量名储存键.
+     * 共享数据存储键.
      *
      * @var string
      */
-    const VARS = '_vars';
+    const METAS = 'metas';
 
     /**
      * 定义一个响应包结构.
@@ -95,11 +97,9 @@ class ThriftHandler implements ThriftIf
             throw new InvalidArgumentException('Rpc call is not set.');
         }
 
-        $params = $request->metas ?: [];
-        $params[self::VARS] = $request->params ?: [];
+        $httpRequest = new HttpRequest();
 
-        $httpRequest = new HttpRequest([], [], $params);
-
+        // pathInfo
         if (false !== strpos($request->call, '@')) {
             list($call, $method) = explode('@', $request->call);
             $httpRequest->setMethod($method);
@@ -109,6 +109,24 @@ class ThriftHandler implements ThriftIf
 
         $httpRequest->setPathInfo($call);
 
+        // var
+        $data = $request->params ?: [];
+        $data[self::METAS] = $request->metas ?: [];
+        $this->setPreRequestMatched($httpRequest, $data);
+
         return $httpRequest;
+    }
+
+    /**
+     * 设置路由匹配数据.
+     *
+     * @param \Leevel\Http\IRequest $request
+     * @param array                 $data
+     */
+    protected function setPreRequestMatched(IRequest $request, array $data): void
+    {
+        Leevel::make(IRouter::class)->
+
+        setPreRequestMatched($request, [IRouter::VARS => $data]);
     }
 }
