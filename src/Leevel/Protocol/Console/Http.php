@@ -62,7 +62,9 @@ The <info>%command.name%</info> command to start http server:
 
 You can also by using the <comment>--daemonize</comment> option:
 
-  <info>php %command.full_name% --daemonize=1</info>
+  <info>php %command.full_name% --daemonize</info>
+
+  <info>php %command.full_name% -d</info>
 EOF;
 
     /**

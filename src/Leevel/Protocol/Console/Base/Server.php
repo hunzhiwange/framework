@@ -49,7 +49,7 @@ abstract class Server extends Command
 
         $server = $this->createServer();
 
-        if ($this->option('daemonize')) {
+        if (true === $this->option('daemonize')) {
             $server->setOption('daemonize', '1');
         }
 
@@ -231,7 +231,7 @@ queryphp;
         return [
             [
                 'daemonize',
-                null,
+                'd',
                 Option::VALUE_OPTIONAL,
                 'Daemon process',
             ],
