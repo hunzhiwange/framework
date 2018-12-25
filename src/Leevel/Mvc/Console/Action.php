@@ -67,7 +67,7 @@ You can also by using the <comment>--namespace</comment> option:
 
 You can also by using the <comment>--extend</comment> option:
 
-  <info>php %command.full_name% controller name --extend=0</info>
+  <info>php %command.full_name% controller name --extend</info>
 EOF;
 
     /**
@@ -83,7 +83,7 @@ EOF;
         // 设置模板路径
         $this->setTemplatePath(
             __DIR__.'/stub/'.
-            ($this->option('extend') ? 'action' : 'action_without_extend')
+            (true === $this->option('extend') ? 'action' : 'action_without_extend')
         );
 
         $controllerNamespace = $router->getControllerDir();
@@ -172,10 +172,9 @@ EOF;
             ],
             [
                 'extend',
-                null,
-                Option::VALUE_OPTIONAL,
+                'e',
+                Option::VALUE_NONE,
                 'Action with the code that make it extends Leevel\Mvc\Controller',
-                1,
             ],
         ];
     }
