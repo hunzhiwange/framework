@@ -32,22 +32,8 @@ use Leevel\Router\IRouter;
  *
  * @version 1.0
  */
-class PathInfo implements IMatch
+class PathInfo extends Match implements IMatch
 {
-    /**
-     * Router.
-     *
-     * @var \Leevel\Router\IRouter
-     */
-    protected $router;
-
-    /**
-     * HTTP Request.
-     *
-     * @var \Leevel\Http\IRequest
-     */
-    protected $request;
-
     /**
      * 匹配数据项.
      *
@@ -61,37 +47,14 @@ class PathInfo implements IMatch
         $this->request = $request;
         $this->router = $router;
 
-        $pathInfo = $request->getPathInfo();
-        $pathInfo = rtrim($pathInfo, '/').'/';
-        $result = $middlewares = [];
+        $pathInfo = $this->getPathInfo();
+        $result = [];
 
         // 匹配基础路径
-        foreach ($router->getBasePaths() as $item => $option) {
-            if ('*' === $item) {
-                if (isset($option['middlewares'])) {
-                    $middlewares = $option['middlewares'];
-                }
-            } elseif (preg_match($item, $pathInfo, $matches)) {
-                if (isset($option['middlewares'])) {
-                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
-                }
-
-                break;
-            }
-        }
+        $middlewares = $this->matcheBasePaths($pathInfo);
 
         // 匹配分组路径
-        foreach ($router->getGroupPaths() as $item => $option) {
-            if (0 === strpos($pathInfo, $item)) {
-                $pathInfo = substr($pathInfo, strlen($item) + 1);
-
-                if (isset($option['middlewares'])) {
-                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
-                }
-
-                break;
-            }
-        }
+        list($pathInfo, $middlewares) = $this->matcheGroupPaths($pathInfo, $middlewares);
 
         $result[IRouter::MIDDLEWARES] = $middlewares;
 
@@ -99,7 +62,7 @@ class PathInfo implements IMatch
         $paths = $pathInfo ? explode('/', $pathInfo) : [];
 
         // 应用
-        if ($paths && $this->findApp($paths[0])) {
+        if ($paths && $this->isFindApp($paths[0])) {
             $result[IRouter::APP] = substr(array_shift($paths), 1);
         }
 
@@ -139,7 +102,7 @@ class PathInfo implements IMatch
      *
      * @return bool
      */
-    protected function findApp(string $path): bool
+    protected function isFindApp(string $path): bool
     {
         return 0 === strpos($path, ':');
     }
@@ -170,18 +133,5 @@ class PathInfo implements IMatch
             $paths,
             $params,
         ];
-    }
-
-    /**
-     * 合并中间件.
-     *
-     * @param array $middlewares
-     * @param array $newMiddlewares
-     *
-     * @return array
-     */
-    protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
-    {
-        return $this->router->mergeMiddlewares($middlewares, $newMiddlewares);
     }
 }

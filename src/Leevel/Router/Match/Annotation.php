@@ -32,22 +32,8 @@ use Leevel\Router\IRouter;
  *
  * @version 1.0
  */
-class Annotation implements IMatch
+class Annotation extends Match implements IMatch
 {
-    /**
-     * Router.
-     *
-     * @var \Leevel\Router\IRouter
-     */
-    protected $router;
-
-    /**
-     * HTTP Request.
-     *
-     * @var \Leevel\Http\IRequest
-     */
-    protected $request;
-
     /**
      * 匹配中间件.
      *
@@ -72,81 +58,122 @@ class Annotation implements IMatch
      */
     public function matche(IRouter $router, IRequest $request): array
     {
-        $urlRouters = $router->getRouters();
-
-        if (!$urlRouters) {
+        if (!($routers = $router->getRouters())) {
             return [];
         }
 
         $this->request = $request;
         $this->router = $router;
 
-        // 验证是否存在请求方法
-        $method = strtolower($request->getMethod());
-
-        if (!isset($urlRouters[$method])) {
+        // 匹配路由请求方法
+        if (false === ($routers = $this->matcheMethod($routers))) {
             return [];
         }
 
-        $urlRouters = $urlRouters[$method];
-
-        $result = [];
-        $middlewares = [];
-        $pathInfoSource = $pathInfo = rtrim($request->getPathInfo(), '/').'/';
-
-        // 匹配基础路径
-        foreach ($router->getBasePaths() as $item => $option) {
-            if ('*' === $item) {
-                if (isset($option['middlewares'])) {
-                    $middlewares = $option['middlewares'];
-                }
-            } elseif (preg_match($item, $pathInfo, $matches)) {
-                if (isset($option['middlewares'])) {
-                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
-                }
-
-                break;
-            }
-        }
-
-        // 匹配分组路径
-        foreach ($router->getGroupPaths() as $item => $option) {
-            if (0 === strpos($pathInfo, $item)) {
-                $pathInfo = substr($pathInfo, strlen($item));
-
-                if (isset($option['middlewares'])) {
-                    $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
-                }
-
-                break;
-            }
-        }
-
-        $this->middlewares = $middlewares;
+        // 匹配 PathInfo
+        $pathInfo = $this->matchePathInfo();
 
         // 静态路由匹配
-        if (isset($urlRouters['static'], $urlRouters['static'][$pathInfoSource])) {
-            $urlRouters = $urlRouters['static'][$pathInfoSource];
-
-            return $this->matcheSuccessed($urlRouters);
+        if (false !== ($result = $this->matcheStatic($routers))) {
+            return $result;
         }
 
         // 匹配首字母
-        $firstLetter = $pathInfo[1];
-
-        if (isset($urlRouters[$firstLetter])) {
-            $urlRouters = $urlRouters[$firstLetter];
-        } else {
+        if (false === ($routers = $this->matcheFirstLetter($pathInfo, $routers))) {
             return [];
         }
 
         // 匹配分组
-        $groups = $router->getGroups();
+        $routers = $this->matcheGroups($pathInfo, $routers);
+
+        // 路由匹配
+        if (false !== ($result = $this->matcheRegexGroups($routers))) {
+            return $result;
+        }
+
+        return [];
+    }
+
+    /**
+     * 匹配 PathInfo.
+     *
+     * @return string
+     */
+    protected function matchePathInfo(): string
+    {
+        $pathInfo = $this->getPathInfo();
+
+        // 匹配基础路径
+        $middlewares = $this->matcheBasePaths($pathInfo);
+
+        // 匹配分组路径
+        list($pathInfo, $this->middlewares) = $this->matcheGroupPaths($pathInfo, $middlewares);
+
+        return $pathInfo;
+    }
+
+    /**
+     * 匹配路由方法.
+     *
+     * @param array $routers
+     *
+     * @return array|false
+     */
+    protected function matcheMethod(array $routers)
+    {
+        $method = strtolower($this->request->getMethod());
+
+        return $routers[$method] ?? false;
+    }
+
+    /**
+     * 匹配静态路由.
+     *
+     * @param array $routers
+     *
+     * @return array|false
+     */
+    protected function matcheStatic(array $routers)
+    {
+        $pathInfo = $this->getPathInfo();
+
+        if (isset($routers['static'], $routers['static'][$pathInfo])) {
+            $routers = $routers['static'][$pathInfo];
+
+            return $this->matcheSuccessed($routers);
+        }
+
+        return false;
+    }
+
+    /**
+     * 匹配首字母.
+     *
+     * @param string $pathInfo
+     * @param array  $routers
+     *
+     * @return array|false
+     */
+    protected function matcheFirstLetter(string $pathInfo, array $routers)
+    {
+        return $routers[$pathInfo[1]] ?? false;
+    }
+
+    /**
+     * 匹配路由分组.
+     *
+     * @param string $pathInfo
+     * @param array  $routers
+     *
+     * @return array
+     */
+    protected function matcheGroups(string $pathInfo, array $routers): array
+    {
         $matchGroup = false;
 
-        foreach ($groups as $group) {
+        foreach ($this->router->getGroups() as $group) {
             if (0 === strpos($pathInfo, $group)) {
-                $urlRouters = $urlRouters[$group];
+                $routers = $routers[$group];
                 $matchGroup = true;
 
                 break;
@@ -154,23 +181,36 @@ class Annotation implements IMatch
         }
 
         if (false === $matchGroup) {
-            $urlRouters = $urlRouters['_'];
+            $routers = $routers['_'] ?? [];
         }
 
-        // 路由匹配
-        foreach ($urlRouters['regex'] as $key => $regex) {
-            if (!preg_match($regex, $pathInfoSource, $matches)) {
+        return $routers;
+    }
+
+    /**
+     * 匹配路由正则分组.
+     *
+     * @param array $routers
+     *
+     * @return array|false
+     */
+    protected function matcheRegexGroups(array $routers)
+    {
+        $pathInfo = $this->getPathInfo();
+
+        foreach ($routers['regex'] as $key => $regex) {
+            if (!preg_match($regex, $pathInfo, $matches)) {
                 continue;
             }
 
-            $matchedRouter = $urlRouters['map'][$key][count($matches)];
-            $routers = $urlRouters[$matchedRouter];
+            $matchedRouter = $routers['map'][$key][count($matches)];
+            $routers = $routers[$matchedRouter];
             $matcheVars = $this->matcheVariable($routers, $matches);
 
             return $this->matcheSuccessed($routers, $matcheVars);
         }
 
-        return [];
+        return false;
     }
 
     /**
@@ -235,19 +275,6 @@ class Annotation implements IMatch
         $result[IRouter::VARS] = $this->matchedVars;
 
         return $result;
-    }
-
-    /**
-     * 合并中间件.
-     *
-     * @param array $middlewares
-     * @param array $newMiddlewares
-     *
-     * @return array
-     */
-    protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
-    {
-        return $this->router->mergeMiddlewares($middlewares, $newMiddlewares);
     }
 
     /**
