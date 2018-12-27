@@ -177,6 +177,30 @@ class CacheTest extends TestCase
         $this->assertFalse(is_file($filePath));
     }
 
+    public function testRememberWithClosure()
+    {
+        $cache = new Cache(new File([
+            'path' => __DIR__.'/cache',
+        ]));
+
+        $filePath = __DIR__.'/cache/hello.php';
+
+        $this->assertFalse(is_file($filePath));
+
+        $this->assertSame(['hello' => 'world'], $cache->remember('hello', function (string $key) {
+            return [$key => 'world'];
+        }));
+
+        $this->assertTrue(is_file($filePath));
+
+        $this->assertSame(['hello' => 'world'], $cache->get('hello'));
+
+        $cache->delete('hello');
+
+        $this->assertFalse($cache->get('hello'));
+        $this->assertFalse(is_file($filePath));
+    }
+
     public function testMacro()
     {
         $cache = new Cache(new File([
