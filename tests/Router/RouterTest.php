@@ -332,7 +332,43 @@ class RouterTest extends TestCase
     public function getNodeNotFoundDataWithParamsAndDefaultController()
     {
         return [
-            ['GET', Router::RESTFUL_INDEX],
+            ['GET', Router::RESTFUL_SHOW],
+            ['POST', Router::RESTFUL_STORE],
+            ['PUT', Router::RESTFUL_UPDATE],
+            ['DELETE', Router::RESTFUL_DESTROY],
+        ];
+    }
+
+    /**
+     * @dataProvider getNodeNotFoundDataWithParamsAndParamsBefore
+     *
+     * @param string $method
+     * @param string $action
+     */
+    public function testNodeNotFoundWithParamsAndParamsBefore(string $method, string $action)
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            sprintf('The router App\\App\\Controller\\Home::%s() was not found.', $action)
+        );
+
+        $pathInfo = '/5/home';
+        $params = [];
+        $method = $method;
+        $controllerDir = 'App\\Controller';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+    }
+
+    public function getNodeNotFoundDataWithParamsAndParamsBefore()
+    {
+        return [
+            ['GET', Router::RESTFUL_SHOW],
             ['POST', Router::RESTFUL_STORE],
             ['PUT', Router::RESTFUL_UPDATE],
             ['DELETE', Router::RESTFUL_DESTROY],

@@ -23,6 +23,7 @@ namespace Leevel\Router;
 use InvalidArgumentException;
 use Leevel\Support\Arr;
 use OpenApi\Annotations\OpenApi;
+use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
 
 /**
@@ -89,12 +90,33 @@ class OpenApiRouter
     ];
 
     /**
+     * 匹配基础路径.
+     *
+     * @var array
+     */
+    protected $basePaths = [];
+
+    /**
+     * 匹配分组路径.
+     *
+     * @var array
+     */
+    protected $groupPaths = [];
+
+    /**
+     * 匹配分组.
+     *
+     * @var array
+     */
+    protected $groups = [];
+
+    /**
      * 构造函数.
      *
      * @param \Leevel\Router\MiddlewareParser $middlewareParser
      * @param string                          $domain
      */
-    public function __construct(MiddlewareParser $middlewareParser, $domain = null)
+    public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null)
     {
         $this->middlewareParser = $middlewareParser;
 
@@ -112,7 +134,7 @@ class OpenApiRouter
      *
      * @param string $dir
      */
-    public function addScandir(string $dir)
+    public function addScandir(string $dir): void
     {
         if (!is_dir($dir)) {
             throw new InvalidArgumentException(
@@ -128,125 +150,300 @@ class OpenApiRouter
      *
      * @return array
      */
-    public function handle()
+    public function handle(): array
     {
         $openApi = $this->makeOpenApi();
-        list($basePaths, $groupPaths) = $this->parsePaths($openApi);
-        $groups = $this->parseGroups($openApi);
+
+        $this->parseMainPath($openApi);
+
+        $routers = $this->normalizeFastRoute($this->parseMainRouters($openApi));
+
+        return $this->packageRouters($routers);
+    }
+
+    /**
+     * 打包路由解析数据.
+     *
+     * @param array $routers
+     *
+     * @return array
+     */
+    protected function packageRouters(array $routers): array
+    {
+        return [
+            'base_paths'      => $this->basePaths,
+            'group_paths'     => $this->groupPaths,
+            'groups'          => $this->groups,
+            'routers'         => $routers,
+        ];
+    }
+
+    /**
+     * 解析主路径.
+     *
+     * @param \OpenApi\Annotations\OpenApi $openApi
+     */
+    protected function parseMainPath(OpenApi $openApi): void
+    {
+        list($this->basePaths, $this->groupPaths) = $this->parsePaths($openApi);
+
+        $this->groups = $this->parseGroups($openApi);
+    }
+
+    /**
+     * 解析主路由.
+     *
+     * @param \OpenApi\Annotations\OpenApi $openApi
+     *
+     * @return array
+     */
+    protected function parseMainRouters(OpenApi $openApi): array
+    {
         $routers = [];
 
         if ($openApi->paths) {
             foreach ($openApi->paths as $path) {
-                foreach ($this->methods as $m) {
-                    $method = $path->{$m};
+                $routers = $this->parseOpenApiPath($path, $routers);
+            }
+        }
 
-                    // 忽略已删除和带有忽略标记的路由
-                    if (!is_object($method) || true === $method->deprecated ||
-                        (property_exists($method, 'leevelIgnore') && $method->leevelIgnore)) {
-                        continue;
-                    }
+        return $routers;
+    }
 
-                    $routerTmp = [];
+    /**
+     * 解析 openApi 每一项路径.
+     *
+     * @param \OpenApi\Annotations\PathItem $path
+     * @param array                         $routers
+     *
+     * @return array
+     */
+    protected function parseOpenApiPath(PathItem $path, array $routers): array
+    {
+        foreach ($this->methods as $m) {
+            $method = $path->{$m};
 
-                    // 支持的自定义路由字段
-                    foreach ($this->routerField as $f) {
-                        $field = 'leevel'.ucfirst($f);
+            // 忽略已删除和带有忽略标记的路由
+            if ($this->isRouterIgnore($method, $path->path)) {
+                continue;
+            }
 
-                        if (property_exists($method, $field)) {
-                            $routerTmp[$f] = $method->{$field};
-                        }
-                    }
+            $router = [];
 
-                    // 根据源代码生成绑定
-                    if (empty($routerTmp['bind'])) {
-                        $routerTmp['bind'] = $this->parseBindBySource($method->_context);
-                    }
+            // 支持的自定义路由字段
+            $router = $this->parseRouterField($method);
 
-                    if ($routerTmp['bind']) {
-                        $routerTmp['bind'] = '\\'.trim($routerTmp['bind'], '\\');
-                    }
+            // 根据源代码生成绑定
+            $router = $this->parseRouterBind($method, $router);
 
-                    // 解析基础路径和分组
-                    // 基础路径如 /api/v1、/web/v2 等等
-                    // 分组例如 goods、orders
-                    // 首页 `/` 默认提供 Home::index 需要过滤
-                    $routerPath = '/'.trim($path->path, '/').'/';
-                    $pathPrefix = '';
+            // 解析中间件
+            $router = $this->parseRouterMiddlewares($router);
 
-                    if ('//' === $routerPath) {
-                        continue;
-                    }
+            // 解析域名
+            $router = $this->parseRouterDomain($router);
 
-                    if ($groupPaths) {
-                        foreach ($groupPaths as $groupPath => $item) {
-                            if (0 === strpos($routerPath, $groupPath)) {
-                                $pathPrefix = $groupPath;
-                                $routerPath = substr($routerPath, strlen($groupPath));
+            // 解析基础路径
+            list($prefix, $groupPrefix, $routerPath) = $this->parseRouterPath($path->path, $this->groupPaths, $this->groups);
 
-                                break;
-                            }
-                        }
-                    }
+            // 解析路由正则
+            if ($this->isStaticRouter($routerPath)) {
+                $routers[$m]['static'][$routerPath] = $router;
+            } else {
+                $routers[$m][$prefix][$groupPrefix][$routerPath] =
+                    $this->parseRouterRegex($routerPath, $router);
+            }
+        }
 
-                    $prefix = $routerPath[1];
-                    $groupPrefix = '_';
+        return $routers;
+    }
 
-                    foreach ($groups as $g) {
-                        if (0 === strpos($routerPath, $g)) {
-                            $groupPrefix = $g;
+    /**
+     * 判断是否为忽略路由.
+     *
+     * @param object|string $method
+     * @param string        $path
+     *
+     * @return bool
+     */
+    protected function isRouterIgnore($method, string $path): bool
+    {
+        if (!is_object($method) || true === $method->deprecated ||
+            (property_exists($method, 'leevelIgnore') && $method->leevelIgnore)) {
+            return true;
+        }
 
-                            break;
-                        }
-                    }
+        // 首页 `/` 默认提供 Home::index 需要过滤
+        if ('//' === $this->normalizePath($path)) {
+            return true;
+        }
 
-                    // 解析中间件
-                    if (!empty($routerTmp['middlewares'])) {
-                        $routerTmp['middlewares'] = $this->middlewareParser->handle(
-                            Arr::normalize($routerTmp['middlewares'])
-                        );
-                    }
+        return false;
+    }
 
-                    // 解析域名
-                    $routerTmp['domain'] = $this->normalizeDomain($routerTmp['domain'] ?? '', $this->domain);
+    /**
+     * 解析自定义路由字段.
+     *
+     * @param object $method
+     *
+     * @return array
+     */
+    protected function parseRouterField($method): array
+    {
+        $result = [];
 
-                    if ($routerTmp['domain'] && false !== strpos($routerTmp['domain'], '{')) {
-                        list($routerTmp['domain_regex'], $routerTmp['domain_var']) =
-                            $this->ruleRegex($routerTmp['domain'], $routerTmp, true);
-                    }
+        foreach ($this->routerField as $f) {
+            $field = 'leevel'.ucfirst($f);
 
-                    if (!$routerTmp['domain']) {
-                        unset($routerTmp['domain']);
-                    }
+            if (property_exists($method, $field)) {
+                $result[$f] = $method->{$field};
+            }
+        }
 
-                    // 解析路由正则
-                    $isStaticRoute = false;
+        return $result;
+    }
 
-                    $routerPath = $pathPrefix.$routerPath;
+    /**
+     * 解析路由绑定.
+     *
+     * @param object $method
+     * @param array  $router
+     *
+     * @return array
+     */
+    protected function parseRouterBind($method, array $router): array
+    {
+        if (empty($router['bind'])) {
+            $router['bind'] = $this->parseBindBySource($method->_context);
+        }
 
-                    if (false !== strpos($routerPath, '{')) {
-                        list($routerTmp['regex'], $routerTmp['var']) =
-                            $this->ruleRegex($routerPath, $routerTmp);
-                    } else {
-                        $isStaticRoute = true;
-                    }
+        if ($router['bind']) {
+            $router['bind'] = '\\'.trim($router['bind'], '\\');
+        }
 
-                    if (true === $isStaticRoute) {
-                        $routers[$m]['static'][$routerPath] = $routerTmp;
-                    } else {
-                        $routers[$m][$prefix][$groupPrefix][$routerPath] = $routerTmp;
-                    }
+        return $router;
+    }
+
+    /**
+     * 解析基础路径和分组.
+     * 基础路径如 /api/v1、/web/v2 等等.
+     * 分组例如 goods、orders.
+     *
+     * @param string $path
+     * @param array  $groupPaths
+     * @param array  $groups
+     *
+     * @return array
+     */
+    protected function parseRouterPath(string $path, array $groupPaths, array $groups): array
+    {
+        $routerPath = $this->normalizePath($path);
+        $pathPrefix = '';
+
+        if ($groupPaths) {
+            foreach ($groupPaths as $key => $item) {
+                if (0 === strpos($routerPath, $key)) {
+                    $pathPrefix = $key;
+                    $routerPath = substr($routerPath, strlen($key));
+
+                    break;
                 }
             }
         }
 
-        $routers = $this->normalizeFastRoute($routers);
+        $prefix = $routerPath[1];
+        $groupPrefix = '_';
 
-        return [
-            'base_paths'      => $basePaths ?: [],
-            'group_paths'     => $groupPaths ? $groupPaths : [],
-            'groups'          => $groups,
-            'routers'         => $routers,
-        ];
+        foreach ($groups as $g) {
+            if (0 === strpos($routerPath, $g)) {
+                $groupPrefix = $g;
+
+                break;
+            }
+        }
+
+        $routerPath = $pathPrefix.$routerPath;
+
+        return [$prefix, $groupPrefix, $routerPath];
+    }
+
+    /**
+     * 解析中间件.
+     *
+     * @param array $router
+     *
+     * @return array
+     */
+    protected function parseRouterMiddlewares(array $router): array
+    {
+        if (!empty($router['middlewares'])) {
+            $router['middlewares'] = $this->middlewareParser->handle(
+                Arr::normalize($router['middlewares'])
+            );
+        }
+
+        return $router;
+    }
+
+    /**
+     * 解析域名.
+     *
+     * @param array $router
+     *
+     * @return array
+     */
+    protected function parseRouterDomain(array $router): array
+    {
+        $router['domain'] = $this->normalizeDomain($router['domain'] ?? '', $this->domain ?: '');
+
+        if ($router['domain'] && false !== strpos($router['domain'], '{')) {
+            list($router['domain_regex'], $router['domain_var']) =
+                $this->ruleRegex($router['domain'], $router, true);
+        }
+
+        if (!$router['domain']) {
+            unset($router['domain']);
+        }
+
+        return $router;
+    }
+
+    /**
+     * 是否为静态路由.
+     *
+     * @param string $router
+     *
+     * @return bool
+     */
+    protected function isStaticRouter(string $router): bool
+    {
+        return false === strpos($router, '{');
+    }
+
+    /**
+     * 解析路由正则.
+     *
+     * @param string $path
+     * @param array  $router
+     *
+     * @return array
+     */
+    protected function parseRouterRegex(string $path, array $router): array
+    {
+        list($router['regex'], $router['var']) = $this->ruleRegex($path, $router);
+
+        return $router;
+    }
+
+    /**
+     * 格式化路径.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function normalizePath(string $path): string
+    {
+        return '/'.trim($path, '/').'/';
     }
 
     /**
@@ -366,10 +563,10 @@ class OpenApiRouter
      *
      * @return null|string
      */
-    protected function parseBindBySource(Context $context)
+    protected function parseBindBySource(Context $context): ?string
     {
         if (!$context->class || !$context->method) {
-            return;
+            return null;
         }
 
         return $context->fullyQualifiedName($context->class).'@'.$context->method;
@@ -382,7 +579,7 @@ class OpenApiRouter
      *
      * @return array
      */
-    protected function parseGroups(OpenApi $openApi)
+    protected function parseGroups(OpenApi $openApi): array
     {
         $groups = [];
 
@@ -458,7 +655,7 @@ class OpenApiRouter
      *
      * @return string
      */
-    protected function normalizeDomain(?string $domain, ?string $topDomain)
+    protected function normalizeDomain(string $domain, string $topDomain): string
     {
         if (!$domain || !$this->domain) {
             return $domain;
@@ -481,13 +678,13 @@ class OpenApiRouter
     protected function parsePaths(OpenApi $openApi): array
     {
         if (\OpenApi\UNDEFINED === $openApi->externalDocs) {
-            return [];
+            return [[], []];
         }
 
         $externalDocs = $openApi->externalDocs;
 
         if (!property_exists($externalDocs, 'leevels')) {
-            return [];
+            return [[], []];
         }
 
         $leevels = $externalDocs->leevels;
@@ -524,7 +721,7 @@ class OpenApiRouter
      *
      * @return string
      */
-    protected function prepareRegexForWildcard(string $regex)
+    protected function prepareRegexForWildcard(string $regex): string
     {
         $regex = preg_quote($regex, '/');
         $regex = '/^'.str_replace('\*', '(\S+)', $regex).'$/';

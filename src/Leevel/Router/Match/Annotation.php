@@ -35,13 +35,6 @@ use Leevel\Router\IRouter;
 class Annotation extends Match implements IMatch
 {
     /**
-     * 匹配中间件.
-     *
-     * @var array
-     */
-    protected $middlewares = [];
-
-    /**
      * 匹配变量.
      *
      * @var array
@@ -58,12 +51,21 @@ class Annotation extends Match implements IMatch
      */
     public function matche(IRouter $router, IRequest $request): array
     {
-        if (!($routers = $router->getRouters())) {
+        $this->setRouterAndRequest($router, $request);
+
+        return $this->matchMain();
+    }
+
+    /**
+     * 主匹配.
+     *
+     * @return array
+     */
+    protected function matchMain(): array
+    {
+        if (!($routers = $this->router->getRouters())) {
             return [];
         }
-
-        $this->request = $request;
-        $this->router = $router;
 
         // 匹配路由请求方法
         if (false === ($routers = $this->matcheMethod($routers))) {
@@ -92,24 +94,6 @@ class Annotation extends Match implements IMatch
         }
 
         return [];
-    }
-
-    /**
-     * 匹配 PathInfo.
-     *
-     * @return string
-     */
-    protected function matchePathInfo(): string
-    {
-        $pathInfo = $this->getPathInfo();
-
-        // 匹配基础路径
-        $middlewares = $this->matcheBasePaths($pathInfo);
-
-        // 匹配分组路径
-        list($pathInfo, $this->middlewares) = $this->matcheGroupPaths($pathInfo, $middlewares);
-
-        return $pathInfo;
     }
 
     /**

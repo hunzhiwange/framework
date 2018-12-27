@@ -44,53 +44,104 @@ class PathInfo extends Match implements IMatch
      */
     public function matche(IRouter $router, IRequest $request): array
     {
-        $this->request = $request;
-        $this->router = $router;
+        $this->setRouterAndRequest($router, $request);
 
-        $pathInfo = $this->getPathInfo();
+        return $this->matchMain();
+    }
+
+    /**
+     * 主匹配.
+     *
+     * @return array
+     */
+    protected function matchMain(): array
+    {
         $result = [];
 
-        // 匹配基础路径
-        $middlewares = $this->matcheBasePaths($pathInfo);
-
-        // 匹配分组路径
-        list($pathInfo, $middlewares) = $this->matcheGroupPaths($pathInfo, $middlewares);
-
-        $result[IRouter::MIDDLEWARES] = $middlewares;
-
-        $pathInfo = trim($pathInfo, '/');
-        $paths = $pathInfo ? explode('/', $pathInfo) : [];
+        // 匹配 PathInfo
+        $path = $this->normalizePath($this->matchePathInfo());
 
         // 应用
-        if ($paths && $this->isFindApp($paths[0])) {
-            $result[IRouter::APP] = substr(array_shift($paths), 1);
-        }
+        list($result, $path) = $this->matcheApp($path);
 
-        list($paths, $params) = $this->normalizePathsAndParams($paths);
-
-        if (!$paths) {
-            $result[IRouter::CONTROLLER] = IRouter::DEFAULT_CONTROLLER;
-
+        if (!$path) {
             return $result;
         }
 
-        if (1 === count($paths)) {
-            $result[IRouter::CONTROLLER] = array_pop($paths);
-        } else {
-            if ($paths) {
-                $result[IRouter::ACTION] = array_pop($paths);
-            }
+        // Mvc
+        $result = array_merge($result, $this->matcheMvc($path));
 
-            if ($paths) {
-                $result[IRouter::CONTROLLER] = array_pop($paths);
-            }
+        // Middleware
+        $result[IRouter::MIDDLEWARES] = $this->middlewares;
 
-            if ($paths) {
-                $result[IRouter::PREFIX] = $paths;
-            }
+        return $result;
+    }
+
+    /**
+     * 格式化 PathInfo.
+     *
+     * @param array $pathInfo
+     *
+     * @return array
+     */
+    protected function normalizePath(string $pathInfo): array
+    {
+        $pathInfo = trim($pathInfo, '/');
+
+        return $pathInfo ? explode('/', $pathInfo) : [];
+    }
+
+    /**
+     * 匹配路由应用.
+     *
+     * @param array $path
+     *
+     * @return array
+     */
+    protected function matcheApp(array $path): array
+    {
+        $result = [];
+
+        if ($path && $this->isFindApp($path[0])) {
+            $result[IRouter::APP] = substr(array_shift($path), 1);
         }
 
-        $result[IRouter::PARAMS] = array_merge($result[IRouter::PARAMS] ?? [], $params);
+        list($path, $result[IRouter::PARAMS]) = $this->normalizePathsAndParams($path);
+
+        // 首页去掉参数
+        if (!$path) {
+            $result[IRouter::CONTROLLER] = IRouter::DEFAULT_CONTROLLER;
+        }
+
+        return [$result, $path];
+    }
+
+    /**
+     * 匹配路由 Mvc.
+     *
+     * @param array $path
+     *
+     * @return array
+     */
+    protected function matcheMvc(array $path)
+    {
+        $result = [];
+
+        if (1 === count($path)) {
+            $result[IRouter::CONTROLLER] = array_pop($path);
+        } else {
+            if ($path) {
+                $result[IRouter::ACTION] = array_pop($path);
+            }
+
+            if ($path) {
+                $result[IRouter::CONTROLLER] = array_pop($path);
+            }
+
+            if ($path) {
+                $result[IRouter::PREFIX] = $path;
+            }
+        }
 
         return $result;
     }

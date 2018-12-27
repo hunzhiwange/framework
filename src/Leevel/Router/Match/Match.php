@@ -20,6 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Match;
 
+use Leevel\Http\IRequest;
+use Leevel\Router\IRouter;
+
 /**
  * 路由匹配抽象类.
  *
@@ -44,6 +47,43 @@ abstract class Match
      * @var \Leevel\Http\IRequest
      */
     protected $request;
+
+    /**
+     * 匹配中间件.
+     *
+     * @var array
+     */
+    protected $middlewares = [];
+
+    /**
+     * 设置路由和请求.
+     *
+     * @param \Leevel\Router\IRouter $router
+     * @param \Leevel\Http\IRequest  $request
+     */
+    protected function setRouterAndRequest(IRouter $router, IRequest $request): void
+    {
+        $this->request = $request;
+        $this->router = $router;
+    }
+
+    /**
+     * 匹配 PathInfo.
+     *
+     * @return string
+     */
+    protected function matchePathInfo(): string
+    {
+        $pathInfo = $this->getPathInfo();
+
+        // 匹配基础路径
+        $middlewares = $this->matcheBasePaths($pathInfo);
+
+        // 匹配分组路径
+        list($pathInfo, $this->middlewares) = $this->matcheGroupPaths($pathInfo, $middlewares);
+
+        return $pathInfo;
+    }
 
     /**
      * 取得 PathInfo.
