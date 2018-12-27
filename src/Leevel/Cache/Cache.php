@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
+use Closure;
 use Leevel\Support\TMacro;
 
 /**
@@ -76,8 +77,9 @@ class Cache implements ICache
      *
      * @param array|string $keys
      * @param mixed        $value
+     * @param array        $option
      */
-    public function put($keys, $value = null)
+    public function put($keys, $value = null, array $option = [])
     {
         if (!is_array($keys)) {
             $keys = [
@@ -86,7 +88,29 @@ class Cache implements ICache
         }
 
         foreach ($keys as $key => $value) {
-            $this->connect->set($key, $value);
+            $this->connect->set($key, $value, $option);
         }
+    }
+
+    /**
+     * 缓存存在读取否则重新设置.
+     *
+     * @param string $name
+     * @param mixed  $data
+     * @param array  $option
+     */
+    public function remember(string $name, $data, array $option = [])
+    {
+        if (false !== ($result = $this->connect->get($name, false, $option))) {
+            return $result;
+        }
+
+        if (is_object($data) && $data instanceof Closure) {
+            $data = $data($name);
+        }
+
+        $this->connect->set($name, $data, $option);
+
+        return $data;
     }
 }

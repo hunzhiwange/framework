@@ -22,6 +22,7 @@ namespace Tests\Cache;
 
 use Leevel\Cache\Cache;
 use Leevel\Cache\File;
+use Leevel\Filesystem\Fso;
 use Tests\TestCase;
 
 /**
@@ -40,7 +41,7 @@ class CacheTest extends TestCase
         $path = __DIR__.'/cache';
 
         if (is_dir($path)) {
-            rmdir($path);
+            Fso::deleteDirectory($path, true);
         }
     }
 
@@ -86,6 +87,94 @@ class CacheTest extends TestCase
         $this->assertFalse($cache->get('hello'));
         $this->assertFalse($cache->get('hello2'));
         $this->assertFalse($cache->get('foo'));
+    }
+
+    public function testPutWithOption()
+    {
+        $cache = new Cache(new File([
+            'path' => __DIR__.'/cache',
+        ]));
+
+        $filePath = __DIR__.'/cache/hello.php';
+
+        $cache->put('hello', 'world', [
+            'serialize' => true,
+        ]);
+
+        $cache->put(['hello2' => 'world', 'foo' => 'bar'], [
+            'serialize' => true,
+        ]);
+
+        $this->assertSame('world', $cache->get('hello'));
+        $this->assertSame('world', $cache->get('hello2'));
+        $this->assertSame('bar', $cache->get('foo'));
+
+        $this->assertTrue(is_file($filePath));
+        $this->assertContains('s:5:"world"', file_get_contents($filePath));
+
+        $cache->delete('hello');
+        $cache->delete('hello2');
+        $cache->delete('foo');
+
+        $this->assertFalse($cache->get('hello'));
+        $this->assertFalse($cache->get('hello2'));
+        $this->assertFalse($cache->get('foo'));
+    }
+
+    public function testRemember()
+    {
+        $cache = new Cache(new File([
+            'path' => __DIR__.'/cache',
+        ]));
+
+        $filePath = __DIR__.'/cache/hello.php';
+
+        $this->assertFalse(is_file($filePath));
+
+        $this->assertSame('123456', $cache->remember('hello', '123456'));
+
+        $this->assertTrue(is_file($filePath));
+
+        $this->assertSame('123456', $cache->remember('hello', '123456'));
+
+        $this->assertSame('123456', $cache->get('hello'));
+
+        $cache->delete('hello');
+
+        $this->assertFalse($cache->get('hello'));
+        $this->assertFalse(is_file($filePath));
+    }
+
+    public function testRememberWithOption()
+    {
+        $cache = new Cache(new File([
+            'path' => __DIR__.'/cache',
+        ]));
+
+        $filePath = __DIR__.'/cache/hello.php';
+
+        if (is_file($filePath)) {
+            unlink($filePath);
+        }
+
+        $this->assertFalse(is_file($filePath));
+
+        $this->assertSame('123456', $cache->remember('hello', '123456', [
+            'serialize' => true,
+        ]));
+
+        $this->assertTrue(is_file($filePath));
+
+        $this->assertSame('123456', $cache->remember('hello', '123456', [
+            'serialize' => true,
+        ]));
+
+        $this->assertSame('123456', $cache->get('hello'));
+
+        $cache->delete('hello');
+
+        $this->assertFalse($cache->get('hello'));
+        $this->assertFalse(is_file($filePath));
     }
 
     public function testMacro()

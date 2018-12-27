@@ -50,7 +50,7 @@ interface IConnect
      *
      * @return mixed
      */
-    public function get($name, $defaults = false, array $option = []);
+    public function get(string $name, $defaults = false, array $option = []);
 
     /**
      * 设置缓存.
@@ -59,14 +59,14 @@ interface IConnect
      * @param mixed  $data
      * @param array  $option
      */
-    public function set($name, $data, array $option = []);
+    public function set(string $name, $data, array $option = []): void;
 
     /**
      * 清除缓存.
      *
      * @param string $name
      */
-    public function delete($name);
+    public function delete(string $name);
 
     /**
      * 返回缓存句柄.

@@ -87,7 +87,7 @@ abstract class Connect
      *
      * @return string
      */
-    protected function getCacheName($name)
+    protected function getCacheName(string $name): string
     {
         return $name;
     }

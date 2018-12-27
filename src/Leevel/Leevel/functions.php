@@ -232,20 +232,21 @@ class Leevel
      *
      * @param null|array|string $key
      * @param mixed             $defaults
+     * @param array             $option
      *
      * @return mixed
      */
-    public static function cache($key = null, $defaults = null)
+    public static function cache($key = null, $defaults = null, array $option = [])
     {
         if (null === $key) {
             return static::project('caches');
         }
 
         if (is_array($key)) {
-            return static::project('caches')->put($key);
+            return static::project('caches')->put($key, null, $option);
         }
 
-        return static::project('caches')->get($key, $defaults);
+        return static::project('caches')->get($key, $defaults, $option);
     }
 
     /**

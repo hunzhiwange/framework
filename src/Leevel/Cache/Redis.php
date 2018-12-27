@@ -66,7 +66,7 @@ class Redis extends Connect implements IConnect
      *
      * @return mixed
      */
-    public function get($name, $defaults = false, array $option = [])
+    public function get(string $name, $defaults = false, array $option = [])
     {
         $option = $this->normalizeOptions($option);
 
@@ -92,7 +92,7 @@ class Redis extends Connect implements IConnect
      * @param mixed  $data
      * @param array  $option
      */
-    public function set($name, $data, array $option = [])
+    public function set(string $name, $data, array $option = []): void
     {
         $option = $this->normalizeOptions($option);
 
@@ -113,7 +113,7 @@ class Redis extends Connect implements IConnect
      *
      * @param string $name
      */
-    public function delete($name)
+    public function delete(string $name): void
     {
         $this->handle->delete(
             $this->getCacheName($name)

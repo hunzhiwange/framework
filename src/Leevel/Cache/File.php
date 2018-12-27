@@ -68,7 +68,7 @@ class File extends Connect implements IConnect
      *
      * @return mixed
      */
-    public function get($name, $defaults = false, array $option = [])
+    public function get(string $name, $defaults = false, array $option = [])
     {
         $option = $this->normalizeOptions($option);
         $cachePath = $this->getCachePath($name);
@@ -129,7 +129,7 @@ class File extends Connect implements IConnect
      * @param mixed  $data
      * @param array  $option
      */
-    public function set($name, $data, array $option = [])
+    public function set(string $name, $data, array $option = []): void
     {
         $option = $this->normalizeOptions($option);
 
@@ -149,7 +149,7 @@ class File extends Connect implements IConnect
      *
      * @param string $name
      */
-    public function delete($name)
+    public function delete(string $name): void
     {
         $cachePath = $this->getCachePath($name);
 
@@ -173,7 +173,7 @@ class File extends Connect implements IConnect
      *
      * @return bool
      */
-    protected function isExpired($name, $option)
+    protected function isExpired(string $name, array $option)
     {
         $filePath = $this->getCachePath($name);
 
@@ -193,7 +193,7 @@ class File extends Connect implements IConnect
      *
      * @return string
      */
-    protected function getCachePath($name)
+    protected function getCachePath(string $name)
     {
         if (!$this->option['path']) {
             throw new InvalidArgumentException('Cache path is not allowed empty.');
@@ -208,7 +208,7 @@ class File extends Connect implements IConnect
      * @param string $fileName
      * @param string $data
      */
-    protected function writeData($fileName, $data)
+    protected function writeData(string $fileName, string $data): void
     {
         $dirname = dirname($fileName);
 
@@ -239,7 +239,7 @@ class File extends Connect implements IConnect
      *
      * @return bool
      */
-    protected function exist($name)
+    protected function exist(string $name): bool
     {
         return is_file($this->getCachePath($name));
     }
@@ -252,7 +252,7 @@ class File extends Connect implements IConnect
      *
      * @return string
      */
-    protected function getCacheName($name)
+    protected function getCacheName(string $name): string
     {
         return str_replace([
             '?',
