@@ -457,6 +457,31 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
+    public function testWithPlaceHolder()
+    {
+        $validate = new Validator(
+            [
+                'name' => 'foo',
+            ],
+            [
+                'name'     => UniqueRule::rule(Guestbook::class, UniqueRule::PLACEHOLDER, UniqueRule::PLACEHOLDER, UniqueRule::PLACEHOLDER, 'content', 'hello'),
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame('1', $connect->
+        table('guest_book')->
+        insert([
+            'name'    => 'foo',
+            'content' => 'hello',
+        ]));
+
+        $this->assertFalse($validate->success());
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['guest_book', 'composite_id'];
