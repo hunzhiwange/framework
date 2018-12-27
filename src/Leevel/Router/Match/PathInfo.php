@@ -108,7 +108,6 @@ class PathInfo extends Match implements IMatch
 
         list($path, $result[IRouter::PARAMS]) = $this->normalizePathsAndParams($path);
 
-        // 首页去掉参数
         if (!$path) {
             $result[IRouter::CONTROLLER] = IRouter::DEFAULT_CONTROLLER;
         }
