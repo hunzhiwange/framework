@@ -31,7 +31,7 @@ namespace Tests\Router\Controllers\Hello;
  */
 class ActionClass
 {
-    public function handle()
+    public function handle(): string
     {
         return 'hello action class';
     }

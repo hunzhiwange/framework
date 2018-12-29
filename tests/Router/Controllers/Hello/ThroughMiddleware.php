@@ -31,7 +31,7 @@ namespace Tests\Router\Controllers\Hello;
  */
 class ThroughMiddleware
 {
-    public function handle()
+    public function handle(): string
     {
         return 'hello throughMiddleware';
     }

@@ -571,6 +571,350 @@ eot;
         $this->assertSame('hello my home', $result->getContent());
     }
 
+    public function testColonInController()
+    {
+        $pathInfo = '/:tests/colon:hello';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with controller', $result->getContent());
+    }
+
+    public function testColonInControllerWithActionIsSingleClass()
+    {
+        $pathInfo = '/:tests/colonActionSingle:hello';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with controller and action is single', $result->getContent());
+    }
+
+    public function testColonInControllerWithMoreThanOne()
+    {
+        $pathInfo = '/:tests/colon:hello:world:foo';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with more than one in controller', $result->getContent());
+    }
+
+    public function testColonInControllerWithMoreThanOneWithActionIsSingleClass()
+    {
+        $pathInfo = '/:tests/colonActionSingle:hello:world:foo';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with more than one in controller and action is single', $result->getContent());
+    }
+
+    public function testColonInControllerMustBeforeAlpha()
+    {
+        $pathInfo = '/:tests/:colon/foundAction';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with controller with foundAction', $result->getContent());
+    }
+
+    public function testColonInControllerMustBeforeAlphaWithActionIsSingleClass()
+    {
+        $pathInfo = '/:tests/:colonActionSingle/foundAction';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with controller with foundAction and action is single', $result->getContent());
+    }
+
+    public function testColonInControllerMustBeforeAlphaButNotFound()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router Tests\\Router\\Controllers\\:colon::notFound() was not found.'
+        );
+
+        $pathInfo = '/:tests/:colon/notFound';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+    }
+
+    public function testColonInActionAndActionIsNotSingleClass()
+    {
+        $pathInfo = '/:tests/colon:action/foo:bar';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with action and action is not single class', $result->getContent());
+    }
+
+    public function testColonInActionAndActionIsSingleClass()
+    {
+        $pathInfo = '/:tests/colonActionSingle:action/foo:bar';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with action and action is not single class and action is single', $result->getContent());
+    }
+
+    public function testColonInActionAndActionIsNotSingleClassWithMoreThanOne()
+    {
+        $pathInfo = '/:tests/colon:action/more:foo:bar';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with action and action is not single class with more than one', $result->getContent());
+    }
+
+    public function testColonInActionAndActionIsSingleClassWithMoreThanOne()
+    {
+        $pathInfo = '/:tests/colonActionSingle:action/more:foo:bar';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with action and action is not single class with more than one and action is single', $result->getContent());
+    }
+
+    public function testColonInActionIsNotSingleClassMustBeforeAlpha()
+    {
+        $pathInfo = '/:tests/colon:action/:beforeButFirst';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with action and action is not single class before but first', $result->getContent());
+    }
+
+    public function testColonInActionIsSingleClassMustBeforeAlpha()
+    {
+        $pathInfo = '/:tests/colonActionSingle:action/:beforeButFirst';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon with action and action is not single class before but first and action is single', $result->getContent());
+    }
+
+    public function testColonInActionIsNotSingleClassMustBeforeAlphaButActionNotFound()
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router Tests\\Router\\Controllers\\Colon:action:::beforeButFirstAndNotFound() was not found.'
+        );
+
+        $pathInfo = '/:tests/colon:action/:beforeButFirstAndNotFound';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+    }
+
+    public function testColonRestfulInControllerWithActionIsNotSingleClass()
+    {
+        $pathInfo = '/:tests/colonRestful:hello/5';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon restful with controller', $result->getContent());
+    }
+
+    public function testColonRestfulInControllerWithActionIsSingleClass()
+    {
+        $pathInfo = '/:tests/colonRestfulActionSingle:hello/5';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon restful with controller and action is single', $result->getContent());
+    }
+
+    public function testColonRestfulInActionWithActionIsNotSingleClass()
+    {
+        $pathInfo = '/:tests/colonRestful:hello/5/foo:bar';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon restful with action', $result->getContent());
+    }
+
+    public function testColonRestfulInActionWithActionIsSingleClass()
+    {
+        $pathInfo = '/:tests/colonRestfulActionSingle:hello/5/foo:bar';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello colon restful with action and action is single', $result->getContent());
+    }
+
     protected function createRouter(): Router
     {
         return new Router(new Container());

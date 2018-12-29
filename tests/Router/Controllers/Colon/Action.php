@@ -18,21 +18,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Controllers\Hello;
+namespace Tests\Router\Controllers\Colon;
 
 /**
- * actionConvertFooBar.
+ * action.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.07.20
+ * @since 2018.12.29
  *
  * @version 1.0
  */
-class ActionConvertFooBar
+class Action
 {
-    public function handle(): string
+    public function fooBar(): string
     {
-        return 'hello action convert foo bar';
+        return 'hello colon with action and action is not single class';
+    }
+
+    public function moreFooBar(): string
+    {
+        return 'hello colon with action and action is not single class with more than one';
+    }
+
+    public function beforeButFirst(): string
+    {
+        return 'hello colon with action and action is not single class before but first';
     }
 }

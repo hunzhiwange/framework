@@ -33,7 +33,7 @@ use Leevel\Mvc\Controller;
  */
 class ExtendsBase extends Controller
 {
-    public function handle()
+    public function handle(): string
     {
         return 'hello extends base';
     }

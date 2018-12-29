@@ -31,7 +31,7 @@ namespace Tests\Router\Controllers\PreRequestMatched\Prefix\Bar;
  */
 class Foo
 {
-    public function handle()
+    public function handle(): string
     {
         return 'hello preRequestMatched';
     }

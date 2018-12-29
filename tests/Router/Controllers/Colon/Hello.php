@@ -18,21 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router\Controllers\Hello;
+namespace Tests\Router\Controllers\Colon;
 
 /**
- * actionConvertFooBar.
+ * hello.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.07.20
+ * @since 2018.12.28
  *
  * @version 1.0
  */
-class ActionConvertFooBar
+class Hello
 {
-    public function handle(): string
+    public function index(): string
     {
-        return 'hello action convert foo bar';
+        return 'hello colon with controller';
     }
 }

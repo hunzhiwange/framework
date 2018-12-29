@@ -643,6 +643,8 @@ class Router implements IRouter
             $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
                 $matchedController.'\\'.ucfirst($matchedAction);
 
+            $controllerClass = $this->normalizeForSubdir($controllerClass);
+
             if (class_exists($controllerClass)) {
                 $controller = $this->container->make($controllerClass);
                 $method = 'handle';
@@ -652,12 +654,14 @@ class Router implements IRouter
             else {
                 $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
 
+                $controllerClass = $this->normalizeForSubdir($controllerClass);
+
                 if (!class_exists($controllerClass)) {
                     return false;
                 }
 
                 $controller = $this->container->make($controllerClass);
-                $method = $matchedAction;
+                $method = $this->normalizeForSubdir($matchedAction, true);
             }
         }
 
@@ -673,6 +677,31 @@ class Router implements IRouter
             $controller,
             $method,
         ];
+    }
+
+    /**
+     * 控制器和方法子目录支持.
+     *
+     * @param string $className
+     * @param bool   $forAction
+     *
+     * @return string
+     */
+    protected function normalizeForSubdir(string $className, bool $forAction = false): string
+    {
+        if (false === strpos($className, ':')) {
+            return $className;
+        }
+
+        $className = preg_replace_callback(
+            '/:([a-zA-Z])/',
+            function (array $matches) use ($forAction) {
+                return false === $forAction ? '\\'.ucfirst($matches[1]) : ucfirst($matches[1]);
+            },
+            $className
+        );
+
+        return str_replace('\\\\', '\\', $className);
     }
 
     /**
