@@ -915,6 +915,25 @@ eot;
         $this->assertSame('hello colon restful with action and action is single', $result->getContent());
     }
 
+    public function testColonInApp()
+    {
+        $pathInfo = '/:tests:router:subAppController/test';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+
+        $this->assertSame('hello sub app', $result->getContent());
+    }
+
     protected function createRouter(): Router
     {
         return new Router(new Container());
