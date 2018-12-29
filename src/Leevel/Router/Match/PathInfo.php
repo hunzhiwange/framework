@@ -56,13 +56,14 @@ class PathInfo extends Match implements IMatch
      */
     protected function matchMain(): array
     {
-        $result = [];
-
         // 匹配 PathInfo
         $path = $this->normalizePath($this->matchePathInfo());
 
         // 应用
         list($result, $path) = $this->matcheApp($path);
+
+        // Middleware
+        $result[IRouter::MIDDLEWARES] = $this->middlewares;
 
         if (!$path) {
             return $result;
@@ -70,9 +71,6 @@ class PathInfo extends Match implements IMatch
 
         // Mvc
         $result = array_merge($result, $this->matcheMvc($path));
-
-        // Middleware
-        $result[IRouter::MIDDLEWARES] = $this->middlewares;
 
         return $result;
     }
