@@ -66,7 +66,7 @@ class Register extends Provider
     /**
      * 注册 auths 服务
      */
-    protected function auths()
+    protected function auths(): void
     {
         $this->container->singleton('auths', function (IContainer $container) {
             return new Manager($container);
@@ -76,7 +76,7 @@ class Register extends Provider
     /**
      * 注册 auth 服务
      */
-    protected function auth()
+    protected function auth(): void
     {
         $this->container->singleton('auth', function (IContainer $container) {
             return $container['auths']->connect();

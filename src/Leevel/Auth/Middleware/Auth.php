@@ -59,7 +59,7 @@ class Auth
      * @param \Closure              $next
      * @param \Leevel\Http\IRequest $request
      */
-    public function handle(Closure $next, IRequest $request)
+    public function handle(Closure $next, IRequest $request): void
     {
         if (!$this->manager->isLogin()) {
             throw new AuthException('User authorization failed.');

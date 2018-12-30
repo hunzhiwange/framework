@@ -38,7 +38,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
         $option = $this->getContainerOption('default');
 
@@ -62,7 +62,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function normalizeOptionNamespace()
+    protected function normalizeOptionNamespace(): string
     {
         return 'auth';
     }
