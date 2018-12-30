@@ -833,13 +833,16 @@ abstract class Connect
         $this->sql = $sql;
         $this->bindParams = $bindParams;
 
-        $this->handleDispatch();
+        $this->handleDispatch($sql, $bindParams);
     }
 
     /**
      * 事件派发.
+     *
+     * @param string $sql
+     * @param array  $bindParams
      */
-    protected function handleDispatch(): void
+    protected function handleDispatch(string $sql, array $bindParams = []): void
     {
         if ($this->dispatch) {
             $this->dispatch->handle(IConnect::SQL_EVENT, $sql, $bindParams);
