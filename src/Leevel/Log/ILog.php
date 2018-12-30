@@ -90,6 +90,13 @@ interface ILog
     const EMERGENCY = 'emergency';
 
     /**
+     * 日志事件.
+     *
+     * @var string
+     */
+    const LOG_EVENT = 'log.log';
+
+    /**
      * 设置配置.
      *
      * @param string $name

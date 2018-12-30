@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
+use Leevel\Event\IDispatch;
 use Leevel\Manager\Manager as Managers;
 
 /**
@@ -53,7 +54,8 @@ class Manager extends Managers
     protected function createConnect($connect)
     {
         return new Log($connect,
-            $this->getCommonOption()
+            $this->getCommonOption(),
+            $this->container->make(IDispatch::class)
         );
     }
 

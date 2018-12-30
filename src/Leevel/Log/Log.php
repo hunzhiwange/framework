@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Log;
 
 use Closure;
+use Leevel\Event\IDispatch;
 
 /**
  * 日志仓储.
@@ -69,6 +70,13 @@ class Log implements ILog
     protected $count = 0;
 
     /**
+     * 事件处理器.
+     *
+     * @var \Leevel\Event\IDispatch
+     */
+    protected $dispatch;
+
+    /**
      * 配置.
      *
      * @var array
@@ -91,14 +99,17 @@ class Log implements ILog
     /**
      * 构造函数.
      *
-     * @param \Leevel\Log\IConnect $connect
-     * @param array                $option
+     * @param \Leevel\Log\IConnect    $connect
+     * @param array                   $option
+     * @param \Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(IConnect $connect, array $option = [])
+    public function __construct(IConnect $connect, array $option = [], IDispatch $dispatch = null)
     {
         $this->connect = $connect;
 
         $this->option = array_merge($this->option, $option);
+
+        $this->dispatch = $dispatch;
     }
 
     /**
@@ -239,6 +250,8 @@ class Log implements ILog
             return;
         }
 
+        $this->handleDispatch();
+
         $this->count++;
         $this->logs[$level][] = $data;
 
@@ -366,6 +379,16 @@ class Log implements ILog
     public function getConnect(): IConnect
     {
         return $this->connect;
+    }
+
+    /**
+     * 事件派发.
+     */
+    protected function handleDispatch(): void
+    {
+        if ($this->dispatch) {
+            $this->dispatch->handle(self::LOG_EVENT, ...$data);
+        }
     }
 
     /**

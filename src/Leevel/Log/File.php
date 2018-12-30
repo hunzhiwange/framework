@@ -82,8 +82,26 @@ class File implements IConnect
         $this->checkSize($filepath = $this->normalizePath($level));
 
         foreach ($datas as $value) {
-            error_log($this->formatMessage(...$value), 3, $filepath);
+            error_log(self::formatMessage(...$value), 3, $filepath);
         }
+    }
+
+    /**
+     * 格式化日志信息.
+     *
+     * @param string $level
+     * @param string $message
+     * @param array  $context
+     *
+     * @return string
+     */
+    public static function formatMessage(string $level, string $message, array $context = []): string
+    {
+        return sprintf(
+            '[%s] %s %s: %s'.PHP_EOL,
+            date('Y-m-d H:i:s'), $message, $level,
+            json_encode($context, JSON_UNESCAPED_UNICODE)
+        );
     }
 
     /**
@@ -141,23 +159,5 @@ class File implements IConnect
 
         return $this->option['path'].'/'.$this->option['channel'].'.'.
             ($level ? $level.'/' : '').date($this->option['name']).'.log';
-    }
-
-    /**
-     * 格式化日志信息.
-     *
-     * @param string $level
-     * @param string $message
-     * @param array  $contexts
-     *
-     * @return string
-     */
-    protected function formatMessage(string $level, string $message, array $contexts = []): string
-    {
-        return sprintf(
-            '[%s] %s %s: %s'.PHP_EOL,
-            date('Y-m-d H:i:s'), $message, $level,
-            json_encode($contexts, JSON_UNESCAPED_UNICODE)
-        );
     }
 }
