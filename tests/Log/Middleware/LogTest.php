@@ -22,6 +22,7 @@ namespace Tests\Log\Middleware;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Fso;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
@@ -118,6 +119,13 @@ class LogTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
+
+        $eventDispatch = $this->createMock(IDispatch::class);
+
+        $eventDispatch->method('handle')->willReturn(null);
+        $this->assertNull($eventDispatch->handle('event'));
+
+        $container->singleton(IDispatch::class, $eventDispatch);
 
         return $manager;
     }

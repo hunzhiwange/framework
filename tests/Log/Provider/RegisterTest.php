@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Log\Provider;
 
 use Leevel\Di\Container;
+use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Fso;
 use Leevel\Log\Provider\Register;
 use Leevel\Option\Option;
@@ -87,6 +88,13 @@ class RegisterTest extends TestCase
         ]);
 
         $container->singleton('option', $option);
+
+        $eventDispatch = $this->createMock(IDispatch::class);
+
+        $eventDispatch->method('handle')->willReturn(null);
+        $this->assertNull($eventDispatch->handle('event'));
+
+        $container->singleton(IDispatch::class, $eventDispatch);
 
         return $container;
     }
