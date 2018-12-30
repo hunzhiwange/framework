@@ -250,7 +250,7 @@ class Log implements ILog
             return;
         }
 
-        $this->handleDispatch();
+        $this->handleDispatch($data);
 
         $this->count++;
         $this->logs[$level][] = $data;
@@ -383,8 +383,10 @@ class Log implements ILog
 
     /**
      * 事件派发.
+     *
+     * @param array $data
      */
-    protected function handleDispatch(): void
+    protected function handleDispatch(array $data): void
     {
         if ($this->dispatch) {
             $this->dispatch->handle(self::LOG_EVENT, ...$data);
