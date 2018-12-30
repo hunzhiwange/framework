@@ -30,16 +30,20 @@ use DebugBar\DataCollector\RequestDataCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use DebugBar\DebugBar;
 use Exception;
+use Leevel\Database\IConnect;
 use Leevel\Debug\DataCollector\FilesCollector;
 use Leevel\Debug\DataCollector\LeevelCollector;
 use Leevel\Debug\DataCollector\LogsCollector;
 use Leevel\Debug\DataCollector\SessionCollector;
+use Leevel\Event\IDispatch;
 use Leevel\Http\ApiResponse;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Kernel\IProject;
+use Leevel\Log\File;
+use Leevel\Log\ILog;
 use Throwable;
 
 /**
@@ -212,8 +216,7 @@ class Debug extends DebugBar
      */
     public function message($message, string $label = 'info')
     {
-        $collector = $this->getCollector('messages');
-        $collector->addMessage($message, $label);
+        $this->getCollector('messages')->addMessage($message, $label);
     }
 
     /**
@@ -224,8 +227,7 @@ class Debug extends DebugBar
      */
     public function time(string $name, ?string $label = null)
     {
-        $collector = $this->getCollector('time');
-        $collector->startMeasure($name, $label);
+        $this->getCollector('time')->startMeasure($name, $label);
     }
 
     /**
@@ -235,10 +237,8 @@ class Debug extends DebugBar
      */
     public function end(string $name)
     {
-        $collector = $this->getCollector('time');
-
         try {
-            $collector->stopMeasure($name);
+            $this->getCollector('time')->stopMeasure($name);
         } catch (Exception $e) {
         }
     }
@@ -252,8 +252,7 @@ class Debug extends DebugBar
      */
     public function addTime(string $label, float $start, float $end)
     {
-        $collector = $this->getCollector('time');
-        $collector->addMeasure($label, $start, $end);
+        $this->getCollector('time')->addMeasure($label, $start, $end);
     }
 
     /**
@@ -264,8 +263,7 @@ class Debug extends DebugBar
      */
     public function closureTime(string $label, Closure $closure)
     {
-        $collector = $this->getCollector('time');
-        $collector->measure($label, $closure);
+        $this->getCollector('time')->measure($label, $closure);
     }
 
     /**
@@ -275,8 +273,7 @@ class Debug extends DebugBar
      */
     public function exception(Throwable $e)
     {
-        $collector = $this->getCollector('exceptions');
-        $collector->addThrowable($e);
+        $this->getCollector('exceptions')->addThrowable($e);
     }
 
     /**
@@ -322,9 +319,11 @@ class Debug extends DebugBar
         $this->addCollector(new LeevelCollector($this->project));
         $this->addCollector(new SessionCollector($this->project->make('session')));
         $this->addCollector(new FilesCollector($this->project));
-        $this->addCollector(new LogsCollector($this->project->make('log')));
+        $this->addCollector(new LogsCollector());
 
         $this->initData();
+        $this->databaseEventDispatch();
+        $this->logEventDispatch();
 
         $this->isBootstrap = true;
     }
@@ -347,5 +346,39 @@ class Debug extends DebugBar
         $this->message('Starts from this moment with QueryPHP.', '');
 
         $this->getCollector('config')->setData($this->project->make('option')->all());
+    }
+
+    /**
+     * 设置数据库 SQL 监听器.
+     */
+    protected function databaseEventDispatch(): void
+    {
+        $this->createEventDispatch()->
+
+        register(IConnect::SQL_EVENT, function ($event, string $sql, array $bindParams = []) {
+            $this->getCollector('logs')->addMessage($sql.': '.json_encode($bindParams, JSON_UNESCAPED_UNICODE), 'sql');
+        });
+    }
+
+    /**
+     * 设置日志监听器.
+     */
+    protected function logEventDispatch(): void
+    {
+        $this->createEventDispatch()->
+
+        register(ILog::LOG_EVENT, function ($event, string $level, string $message, array $context = []) {
+            $this->getCollector('logs')->addMessage(File::formatMessage($level, $message, $context), $level);
+        });
+    }
+
+    /**
+     * 创建事件处理器.
+     *
+     * @return \Leevel\Event\IDispatch
+     */
+    protected function createEventDispatch(): IDispatch
+    {
+        return $this->project->make(IDispatch::class);
     }
 }
