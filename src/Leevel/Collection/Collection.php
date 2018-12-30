@@ -120,7 +120,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * @param string $key
      * @param mixed  $value
      */
-    public function __set($key, $value)
+    public function __set($key, $value): void
     {
         $this->offsetSet($key, $value);
     }
@@ -131,7 +131,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * @param mixed $elements
      * @param mixed $type
      */
-    public static function make($elements = [], $type = null)
+    public static function make($elements = [], $type = null): self
     {
         return new static($elements, $type);
     }
@@ -159,7 +159,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 下一个元素.
      */
-    public function next()
+    public function next(): void
     {
         $next = next($this->elements);
         $this->valid = false !== $next;
@@ -168,7 +168,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 指针重置.
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->elements);
         $this->valid = true;
@@ -224,7 +224,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * @param mixed $index
      * @param mixed $newval
      */
-    public function offsetSet($index, $newval)
+    public function offsetSet($index, $newval): void
     {
         $this->checkType($newval);
         $this->elements[$index] = $newval;
@@ -235,7 +235,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @param mixed $index
      */
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         if (isset($this->elements[$index])) {
             unset($this->elements[$index]);
@@ -257,7 +257,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @return array
      */
-    public function all()
+    public function all(): array
     {
         return $this->elements;
     }
@@ -267,7 +267,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return array_map(function ($value) {
             return $value instanceof IArray ? $value->toArray() : $value;
@@ -279,7 +279,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_map(function ($value) {
             if ($value instanceof JsonSerializable) {
@@ -318,18 +318,14 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * each.
      *
      * @param \Closure $callback
-     *
-     * @return $this
      */
-    public function each(Closure $callback)
+    public function each(Closure $callback): void
     {
         foreach ($this->elements as $key => $item) {
             if (false === $callback($item, $key)) {
                 break;
             }
         }
-
-        return $this;
     }
 
     /**
@@ -337,7 +333,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @param mixed $value
      */
-    protected function checkType($value)
+    protected function checkType($value): void
     {
         if (!$this->type) {
             return;
@@ -359,7 +355,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @return array
      */
-    protected function getArrayElements($elements)
+    protected function getArrayElements($elements): array
     {
         if (is_array($elements)) {
             return $elements;
