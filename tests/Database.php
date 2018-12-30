@@ -25,6 +25,7 @@ use Leevel\Database\Manager;
 use Leevel\Database\Mysql;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Event\IDispatch;
 use Leevel\Option\Option;
 use PDO;
 
@@ -159,6 +160,13 @@ eot;
         ]);
 
         $container->singleton('option', $option);
+
+        $eventDispatch = $this->createMock(IDispatch::class);
+
+        $eventDispatch->method('handle')->willReturn(null);
+        $this->assertNull($eventDispatch->handle('event'));
+
+        $container->singleton(IDispatch::class, $eventDispatch);
 
         return $manager;
     }
