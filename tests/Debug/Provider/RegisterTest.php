@@ -22,6 +22,7 @@ namespace Tests\Debug\Provider;
 
 use Leevel\Debug\Debug;
 use Leevel\Debug\Provider\Register;
+use Leevel\Event\IDispatch;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Leevel\Project as Projects;
@@ -48,13 +49,7 @@ class RegisterTest extends TestCase
 {
     public function testBaseUse()
     {
-        $test = new Register($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $test = new Register($project = $this->createProject());
 
         $test->register();
 
@@ -78,6 +73,26 @@ class RegisterTest extends TestCase
         $this->assertContains('"php":{"version":', $content);
 
         $this->assertContains('Starts from this moment with QueryPHP.', $content);
+    }
+
+    protected function createProject(): Project
+    {
+        $project = new Project();
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $eventDispatch = $this->createMock(IDispatch::class);
+
+        $eventDispatch->method('handle')->willReturn(null);
+        $this->assertNull($eventDispatch->handle('event'));
+
+        $project->singleton(IDispatch::class, $eventDispatch);
+
+        return $project;
     }
 
     protected function createSession(): ISession

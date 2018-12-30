@@ -22,6 +22,7 @@ namespace Tests\Debug\Middleware;
 
 use Leevel\Debug\Debug;
 use Leevel\Debug\Middleware\Debug as MiddlewareDebug;
+use Leevel\Event\IDispatch;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
@@ -49,15 +50,10 @@ class DebugTest extends TestCase
 {
     public function testBaseUse()
     {
-        $debug = new Debug($project = new Project());
+        $debug = $this->createDebug();
+        $project = $debug->getProject();
 
         $middleware = new MiddlewareDebug($project, $debug);
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
 
         $request = $this->createRequest('http://127.0.0.1');
 
@@ -73,15 +69,10 @@ class DebugTest extends TestCase
 
     public function testTerminate()
     {
-        $debug = new Debug($project = new Project());
+        $debug = $this->createDebug();
+        $project = $debug->getProject();
 
         $middleware = new MiddlewareDebug($project, $debug);
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
 
         $request = $this->createRequest('http://127.0.0.1');
         $response = new JsonResponse(['foo' => 'bar']);
@@ -112,15 +103,10 @@ class DebugTest extends TestCase
 
     public function testHandleWithDebugIsFalse()
     {
-        $debug = new Debug($project = new Project());
+        $debug = $this->createDebug(false);
+        $project = $debug->getProject();
 
         $middleware = new MiddlewareDebug($project, $debug);
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption(false));
 
         $request = $this->createRequest('http://127.0.0.1');
 
@@ -136,15 +122,10 @@ class DebugTest extends TestCase
 
     public function testTerminateWithDebugIsFalse()
     {
-        $debug = new Debug($project = new Project());
+        $debug = $this->createDebug(false);
+        $project = $debug->getProject();
 
         $middleware = new MiddlewareDebug($project, $debug);
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption(false));
 
         $request = $this->createRequest('http://127.0.0.1');
         $response = new JsonResponse(['foo' => 'bar']);
@@ -184,6 +165,31 @@ class DebugTest extends TestCase
         $this->assertEquals($url, $request->getUri());
 
         return $request;
+    }
+
+    protected function createDebug(bool $debug = true): Debug
+    {
+        return new Debug($this->createProject($debug));
+    }
+
+    protected function createProject(bool $debug = true): Project
+    {
+        $project = new Project();
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption($debug));
+
+        $eventDispatch = $this->createMock(IDispatch::class);
+
+        $eventDispatch->method('handle')->willReturn(null);
+        $this->assertNull($eventDispatch->handle('event'));
+
+        $project->singleton(IDispatch::class, $eventDispatch);
+
+        return $project;
     }
 
     protected function createSession(): ISession

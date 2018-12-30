@@ -136,6 +136,16 @@ class Debug extends DebugBar
     }
 
     /**
+     * 返回项目管理.
+     *
+     * @return \Leevel\Kernel\IProject
+     */
+    public function getProject(): IProject
+    {
+        return $this->project;
+    }
+
+    /**
      * 设置配置.
      *
      * @param string $name

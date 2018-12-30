@@ -23,6 +23,8 @@ namespace Tests\Debug;
 use Error;
 use Exception;
 use Leevel\Debug\Debug;
+use Leevel\Event\Dispatch;
+use Leevel\Event\IDispatch;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
@@ -50,13 +52,9 @@ class DebugTest extends TestCase
 {
     public function testBaseUse()
     {
-        $debug = new Debug($project = new Project());
+        $debug = $this->createDebug();
 
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $this->createProject();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -89,13 +87,7 @@ class DebugTest extends TestCase
 
     public function testJson()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -119,13 +111,7 @@ class DebugTest extends TestCase
 
     public function testDisable()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -163,13 +149,7 @@ class DebugTest extends TestCase
 
     public function testEnable()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -213,13 +193,7 @@ class DebugTest extends TestCase
 
     public function testEnableWithoutBootstrap()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
@@ -257,13 +231,7 @@ class DebugTest extends TestCase
 
     public function testEnableTwiceSameWithOne()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -312,13 +280,7 @@ class DebugTest extends TestCase
      */
     public function testMessageLevelsData(string $level)
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -356,13 +318,7 @@ class DebugTest extends TestCase
 
     public function testWithSession()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $session = $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -372,6 +328,8 @@ class DebugTest extends TestCase
 
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
+
+        $session = $debug->getProject()->make('session');
 
         $session->set('test_session', 'test_value');
 
@@ -384,13 +342,9 @@ class DebugTest extends TestCase
 
     public function testWithLog()
     {
-        $debug = new Debug($project = new Project());
+        $debug = $this->createDebugWithLog();
 
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $log = $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $project = $debug->getProject();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -401,6 +355,8 @@ class DebugTest extends TestCase
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
+        $log = $project->make('log');
+
         $log->info('test_log', ['exends' => 'bar']);
         $log->debug('test_log_debug');
 
@@ -408,22 +364,16 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"logs":{"count":2,"messages":[', $content);
+        $this->assertContains('"logs":{"count":2,', $content);
 
-        $this->assertContains('{"message":"test_log","message_html":null,"is_string":true,"label":"info"', $content);
+        $this->assertContains('test_log info: {\"exends\":\"bar\"}', $content);
 
-        $this->assertContains('{"message":"test_log_debug","message_html":null,"is_string":true,"label":"debug"', $content);
+        $this->assertContains('test_log_debug debug: []', $content);
     }
 
     public function testTime()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -449,13 +399,7 @@ class DebugTest extends TestCase
 
     public function testTimeWithLabel()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -481,13 +425,7 @@ class DebugTest extends TestCase
 
     public function testEndWithNoStartDoNothing()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -511,13 +449,7 @@ class DebugTest extends TestCase
 
     public function testAddTime()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -549,13 +481,7 @@ class DebugTest extends TestCase
 
     public function testClosureTime()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -580,13 +506,7 @@ class DebugTest extends TestCase
 
     public function testException()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -618,13 +538,7 @@ class DebugTest extends TestCase
 
     public function testExceptionWithError()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -656,13 +570,7 @@ class DebugTest extends TestCase
 
     public function testSetOptionWithoutJson()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -700,13 +608,7 @@ class DebugTest extends TestCase
 
     public function testSetOptionWithoutJavascriptAndConsole()
     {
-        $debug = new Debug($project = new Project());
-
-        $project->instance('session', $this->createSession());
-
-        $project->instance('log', $this->createLog());
-
-        $project->instance('option', $this->createOption());
+        $debug = $this->createDebug();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -758,6 +660,52 @@ class DebugTest extends TestCase
         $this->assertSame('', $content);
     }
 
+    protected function createDebugWithLog()
+    {
+        return new Debug($this->createProjectWithLog());
+    }
+
+    protected function createProjectWithLog(): Project
+    {
+        $project = new Project();
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('option', $this->createOption());
+
+        $eventDispatch = new Dispatch($project);
+        $project->singleton(IDispatch::class, $eventDispatch);
+
+        $project->instance('log', $this->createLog($eventDispatch));
+
+        return $project;
+    }
+
+    protected function createDebug(): Debug
+    {
+        return new Debug($this->createProject());
+    }
+
+    protected function createProject(): Project
+    {
+        $project = new Project();
+
+        $project->instance('session', $this->createSession());
+
+        $project->instance('log', $this->createLog());
+
+        $project->instance('option', $this->createOption());
+
+        $eventDispatch = $this->createMock(IDispatch::class);
+
+        $eventDispatch->method('handle')->willReturn(null);
+        $this->assertNull($eventDispatch->handle('event'));
+
+        $project->singleton(IDispatch::class, $eventDispatch);
+
+        return $project;
+    }
+
     protected function createSession(): ISession
     {
         $file = new SessionFile([
@@ -771,13 +719,13 @@ class DebugTest extends TestCase
         return $session;
     }
 
-    protected function createLog(): ILog
+    protected function createLog(IDispatch $dispatch = null): ILog
     {
         $file = new LogFile([
             'path' => __DIR__.'/cacheLog',
         ]);
 
-        $log = new Log($file);
+        $log = new Log($file, [], $dispatch);
 
         $this->assertInstanceof(ILog::class, $log);
 
