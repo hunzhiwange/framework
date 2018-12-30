@@ -161,7 +161,7 @@ class File extends Connect implements IConnect
     /**
      * 关闭.
      */
-    public function close()
+    public function close(): void
     {
     }
 
@@ -173,7 +173,7 @@ class File extends Connect implements IConnect
      *
      * @return bool
      */
-    protected function isExpired(string $name, array $option)
+    protected function isExpired(string $name, array $option): bool
     {
         $filePath = $this->getCachePath($name);
 
@@ -193,7 +193,7 @@ class File extends Connect implements IConnect
      *
      * @return string
      */
-    protected function getCachePath(string $name)
+    protected function getCachePath(string $name): string
     {
         if (!$this->option['path']) {
             throw new InvalidArgumentException('Cache path is not allowed empty.');

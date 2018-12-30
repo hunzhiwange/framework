@@ -123,7 +123,7 @@ class Redis extends Connect implements IConnect
     /**
      * 关闭 redis.
      */
-    public function close()
+    public function close(): void
     {
         $this->handle->close();
     }

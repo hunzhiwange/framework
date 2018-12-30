@@ -126,7 +126,7 @@ abstract class Connect
      *
      * @return string
      */
-    protected function prepareRegexForWildcard(string $regex)
+    protected function prepareRegexForWildcard(string $regex): string
     {
         $regex = preg_quote($regex, '/');
         $regex = '/^'.str_replace('\*', '(\S+)', $regex).'$/';
@@ -141,7 +141,7 @@ abstract class Connect
      *
      * @return array
      */
-    protected function normalizeOptions(array $option = [])
+    protected function normalizeOptions(array $option = []): array
     {
         return $option ? array_merge($this->option, $option) : $this->option;
     }

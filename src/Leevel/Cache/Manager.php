@@ -39,7 +39,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function normalizeOptionNamespace()
+    protected function normalizeOptionNamespace(): string
     {
         return 'cache';
     }
@@ -91,7 +91,7 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function getConnectOption($connect)
+    protected function getConnectOption($connect): array
     {
         return $this->filterNullOfOption(
             parent::getConnectOption($connect)

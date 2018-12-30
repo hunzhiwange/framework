@@ -72,7 +72,7 @@ class Load
      *
      * @param \Leevel\Cache\ICache $cache
      */
-    public function switchCache(ICache $cache)
+    public function switchCache(ICache $cache): void
     {
         $this->cache = $cache;
     }
@@ -97,7 +97,7 @@ class Load
      *
      * @return array
      */
-    public function data($names, array $option = [], bool $force = false)
+    public function data($names, array $option = [], bool $force = false): array
     {
         $names = is_array($names) ? $names : [
             $names,
@@ -123,7 +123,7 @@ class Load
      *
      * @param array|string $names
      */
-    public function refresh($names)
+    public function refresh($names): void
     {
         $tmp = is_array($names) ? $names : [
             $names,
@@ -141,7 +141,7 @@ class Load
      * @param array|string $names
      * @param mixed        $force
      *
-     * @return array
+     * @return mixed
      */
     public function dataLoaded($names, array $option = [], bool $force = false)
     {
@@ -165,7 +165,7 @@ class Load
      *
      * @param string $name
      */
-    protected function delete($name)
+    protected function delete(string $name): void
     {
         $this->deletePersistence($name);
     }
@@ -179,7 +179,7 @@ class Load
      *
      * @return mixed
      */
-    protected function cache($name, array $option = [], bool $force = false)
+    protected function cache(string $name, array $option = [], bool $force = false)
     {
         if (false === $force) {
             $data = $this->getPersistence($name, false, $option);
@@ -202,7 +202,7 @@ class Load
      *
      * @return mixed
      */
-    protected function update($name, array $option = [])
+    protected function update(string $name, array $option = [])
     {
         $sourceName = $name;
 
@@ -252,7 +252,7 @@ class Load
      * @param mixed  $data
      * @param array  $option
      */
-    protected function setPersistence($name, $data, array $option = [])
+    protected function setPersistence(string $name, $data, array $option = []): void
     {
         $this->cache->set($name, $data, $option);
     }
@@ -262,7 +262,7 @@ class Load
      *
      * @param string $name
      */
-    protected function deletePersistence($name)
+    protected function deletePersistence(string $name): void
     {
         $this->cache->delete($name);
     }
@@ -274,7 +274,7 @@ class Load
      *
      * @return array
      */
-    protected function parse($name)
+    protected function parse(string $name): array
     {
         list($name, $args) = array_pad(explode(':', $name, 2), 2, []);
 

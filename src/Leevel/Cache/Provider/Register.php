@@ -78,7 +78,7 @@ class Register extends Provider
     /**
      * 注册 caches 服务
      */
-    protected function caches()
+    protected function caches(): void
     {
         $this->container->singleton('caches', function (IContainer $container) {
             return new Manager($container);
@@ -88,7 +88,7 @@ class Register extends Provider
     /**
      * 注册 cache 服务
      */
-    protected function cache()
+    protected function cache(): void
     {
         $this->container->singleton('cache', function (IContainer $container) {
             return $container['caches']->connect();
@@ -98,7 +98,7 @@ class Register extends Provider
     /**
      * 注册 cache.load 服务
      */
-    protected function cacheLoad()
+    protected function cacheLoad(): void
     {
         $this->container->singleton('cache.load', function (IContainer $container) {
             return new Load($container, $container['cache']);

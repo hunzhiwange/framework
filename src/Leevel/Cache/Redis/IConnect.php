@@ -45,7 +45,7 @@ interface IConnect
      *
      * @return mixed
      */
-    public function get($name);
+    public function get(string $name);
 
     /**
      * 设置缓存.
@@ -54,17 +54,17 @@ interface IConnect
      * @param mixed  $data
      * @param int    $expire
      */
-    public function set($name, $data, ?int $expire = null);
+    public function set(string $name, $data, ?int $expire = null): void;
 
     /**
      * 清除缓存.
      *
      * @param string $name
      */
-    public function delete($name);
+    public function delete(string $name): void;
 
     /**
      * 关闭 redis.
      */
-    public function close();
+    public function close(): void;
 }

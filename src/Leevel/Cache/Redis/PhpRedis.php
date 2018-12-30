@@ -106,7 +106,7 @@ class PhpRedis implements IConnect
      *
      * @return mixed
      */
-    public function get($name)
+    public function get(string $name)
     {
         return $this->handle->get($name);
     }
@@ -118,7 +118,7 @@ class PhpRedis implements IConnect
      * @param mixed  $data
      * @param int    $expire
      */
-    public function set($name, $data, ?int $expire = null)
+    public function set(string $name, $data, ?int $expire = null): void
     {
         if ($expire) {
             $this->handle->setex($name, $expire, $data);
@@ -132,7 +132,7 @@ class PhpRedis implements IConnect
      *
      * @param string $name
      */
-    public function delete($name)
+    public function delete(string $name): void
     {
         $this->handle->delete($name);
     }
@@ -140,7 +140,7 @@ class PhpRedis implements IConnect
     /**
      * 关闭 redis.
      */
-    public function close()
+    public function close(): void
     {
         $this->handle->close();
         $this->handle = null;
@@ -151,7 +151,7 @@ class PhpRedis implements IConnect
      *
      * @return \Redis
      */
-    protected function createRedis()
+    protected function createRedis(): Redis
     {
         return new Redis();
     }

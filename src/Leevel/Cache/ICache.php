@@ -37,5 +37,16 @@ interface ICache
      * @param array|string $keys
      * @param mixed        $value
      */
-    public function put($keys, $value = null);
+    public function put($keys, $value = null): void;
+
+    /**
+     * 缓存存在读取否则重新设置.
+     *
+     * @param string $name
+     * @param mixed  $data
+     * @param array  $option
+     *
+     * @return mixed
+     */
+    public function remember(string $name, $data, array $option = []);
 }

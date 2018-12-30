@@ -66,7 +66,7 @@ interface IConnect
      *
      * @param string $name
      */
-    public function delete(string $name);
+    public function delete(string $name): void;
 
     /**
      * 返回缓存句柄.

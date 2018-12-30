@@ -79,7 +79,7 @@ class Cache implements ICache
      * @param mixed        $value
      * @param array        $option
      */
-    public function put($keys, $value = null, array $option = [])
+    public function put($keys, $value = null, array $option = []): void
     {
         if (!is_array($keys)) {
             $keys = [
@@ -98,6 +98,8 @@ class Cache implements ICache
      * @param string $name
      * @param mixed  $data
      * @param array  $option
+     *
+     * @return mixed
      */
     public function remember(string $name, $data, array $option = [])
     {
