@@ -110,46 +110,6 @@ class LogTest extends TestCase
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
-    public function testFilter()
-    {
-        $log = new Log($this->createFileConnect());
-
-        $log->filter(function (string $level, string $message, array $context) {
-            $this->assertSame('foo', $message);
-            $this->assertSame(['hello', 'world'], $context);
-
-            if (ILog::DEBUG === $level) {
-                return false;
-            }
-        });
-
-        $log->log(ILog::INFO, 'foo', ['hello', 'world']);
-        $log->log(ILog::DEBUG, 'foo', ['hello', 'world']);
-
-        $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
-    }
-
-    public function testProcessor()
-    {
-        $log = new Log($this->createFileConnect());
-
-        $log->processor(function (string $level, string $message, array $context) {
-            $this->assertSame(ILog::INFO, $level);
-            $this->assertSame('foo', $message);
-            $this->assertSame(['hello', 'world'], $context);
-        });
-
-        $log->log(ILog::INFO, 'foo', ['hello', 'world']);
-
-        $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
-
-        $log->flush();
-
-        $this->assertSame([], $log->all());
-
-        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
-    }
-
     public function testWithOutBuffer()
     {
         $log = new Log($this->createFileConnect(), ['buffer' => false]);
