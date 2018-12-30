@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use Closure;
-
 /**
  * ILog 接口.
  *
@@ -219,20 +217,6 @@ interface ILog
      * @return int
      */
     public function count(?string $level = null);
-
-    /**
-     * 注册日志过滤器.
-     *
-     * @param \Closure $filter
-     */
-    public function filter(Closure $filter);
-
-    /**
-     * 注册日志处理器.
-     *
-     * @param \Closure $processor
-     */
-    public function processor(Closure $processor);
 
     /**
      * 是否为 Monolog.
