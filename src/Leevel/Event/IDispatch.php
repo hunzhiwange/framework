@@ -37,7 +37,7 @@ interface IDispatch
      * @param object|string $event
      * @param array         $params
      */
-    public function handle($event, ...$params);
+    public function handle($event, ...$params): void;
 
     /**
      * 注册监听器.
@@ -46,7 +46,7 @@ interface IDispatch
      * @param mixed               $listener
      * @param int                 $priority
      */
-    public function register($event, $listener, int $priority = 500);
+    public function register($event, $listener, int $priority = 500): void;
 
     /**
      * 获取一个事件监听器.
@@ -55,7 +55,7 @@ interface IDispatch
      *
      * @return array
      */
-    public function get($event);
+    public function get($event): array;
 
     /**
      * 判断事件监听器是否存在.
@@ -64,12 +64,12 @@ interface IDispatch
      *
      * @return bool
      */
-    public function has($event);
+    public function has($event): bool;
 
     /**
      * 删除一个事件所有监听器.
      *
      * @param object|string $event
      */
-    public function delete($event);
+    public function delete($event): void;
 }

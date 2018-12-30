@@ -70,7 +70,7 @@ class Dispatch implements IDispatch
      * @param object|string $event
      * @param array         $params
      */
-    public function handle($event, ...$params)
+    public function handle($event, ...$params): void
     {
         if (is_object($event)) {
             $name = get_class($event);
@@ -105,7 +105,7 @@ class Dispatch implements IDispatch
      * @param mixed               $listener
      * @param int                 $priority
      */
-    public function register($event, $listener, int $priority = 500)
+    public function register($event, $listener, int $priority = 500): void
     {
         $event = is_object($event) ? [$event] : (array) $event;
 
@@ -127,7 +127,7 @@ class Dispatch implements IDispatch
      *
      * @return array
      */
-    public function get($event)
+    public function get($event): array
     {
         $listeners = [];
 
@@ -157,7 +157,7 @@ class Dispatch implements IDispatch
      *
      * @return bool
      */
-    public function has($event)
+    public function has($event): bool
     {
         return [] !== $this->get($event);
     }
@@ -167,7 +167,7 @@ class Dispatch implements IDispatch
      *
      * @param object|string $event
      */
-    public function delete($event)
+    public function delete($event): void
     {
         $event = $this->normalizeEvent($event);
 
@@ -187,7 +187,7 @@ class Dispatch implements IDispatch
      *
      * @return \Leevel\Event\Subject
      */
-    protected function makeSubject(array $listeners)
+    protected function makeSubject(array $listeners): Subject
     {
         $subject = new Subject($this->container);
 
@@ -202,8 +202,10 @@ class Dispatch implements IDispatch
      * 格式化事件名字.
      *
      * @param object|string $event
+     *
+     * @return string
      */
-    protected function normalizeEvent($event)
+    protected function normalizeEvent($event): string
     {
         return is_object($event) ? get_class($event) : $event;
     }
@@ -215,7 +217,7 @@ class Dispatch implements IDispatch
      *
      * @return string
      */
-    protected function prepareRegexForWildcard(string $regex)
+    protected function prepareRegexForWildcard(string $regex): string
     {
         $regex = preg_quote($regex, '/');
         $regex = '/^'.str_replace('\*', '(\S+)', $regex).'$/';
