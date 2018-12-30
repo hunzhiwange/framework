@@ -133,6 +133,13 @@ class RegisterTest extends TestCase
 
         $container->singleton('option', $option);
 
+        $eventDispatch = $this->createMock(IDispatch::class);
+
+        $eventDispatch->method('handle')->willReturn(null);
+        $this->assertNull($eventDispatch->handle('event'));
+
+        $container->singleton(IDispatch::class, $eventDispatch);
+
         return $container;
     }
 }
