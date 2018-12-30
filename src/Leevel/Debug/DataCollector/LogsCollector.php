@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Debug\DataCollector;
 
 use DebugBar\DataCollector\MessagesCollector;
-use Leevel\Log\ILog;
 
 /**
  * 日志收集器.
@@ -35,35 +34,10 @@ use Leevel\Log\ILog;
 class LogsCollector extends MessagesCollector
 {
     /**
-     * 日志仓储.
-     *
-     * @var \Leevel\Log\ILog
-     */
-    protected $log;
-
-    /**
      * 构造函数.
-     *
-     * @param \Leevel\Log\ILog $log
      */
-    public function __construct(ILog $log)
+    public function __construct()
     {
-        $this->log = $log;
-
         parent::__construct('logs');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function collect()
-    {
-        foreach ($this->log->all() as $log) {
-            foreach ($log as $v) {
-                $this->log(...$v);
-            }
-        }
-
-        return parent::collect();
     }
 }
