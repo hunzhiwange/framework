@@ -34,6 +34,13 @@ use Closure;
 interface IMail
 {
     /**
+     * 邮件事件.
+     *
+     * @var string
+     */
+    const MAIL_EVENT = 'mail.mail';
+
+    /**
      * 设置配置.
      *
      * @param string $name

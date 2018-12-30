@@ -53,11 +53,11 @@ class Mail implements IMail
     protected $view;
 
     /**
-     * 事件.
+     * 事件处理器.
      *
      * @var null|\Leevel\Event\IDispatch
      */
-    protected $event;
+    protected $dispatch;
 
     /**
      * 邮件错误消息.
@@ -104,14 +104,14 @@ class Mail implements IMail
      *
      * @param \Leevel\Mail\IConnect        $connect
      * @param \leevel\Mvc\IView            $view
-     * @param null|\Leevel\Event\IDispatch $event
+     * @param null|\Leevel\Event\IDispatch $dispatch
      * @param array                        $option
      */
-    public function __construct(IConnect $connect, IView $view, IDispatch $event = null, array $option = [])
+    public function __construct(IConnect $connect, IView $view, IDispatch $dispatch = null, array $option = [])
     {
         $this->connect = $connect;
         $this->view = $view;
-        $this->event = $event;
+        $this->dispatch = $dispatch;
 
         $this->option = array_merge($this->option, $option);
     }
@@ -352,6 +352,8 @@ class Mail implements IMail
             );
         }
 
+        $this->handleDispatch($this->message);
+
         return $this->sendMessage($this->message);
     }
 
@@ -363,6 +365,18 @@ class Mail implements IMail
     public function failedRecipients()
     {
         return $this->failedRecipients;
+    }
+
+    /**
+     * 事件派发.
+     *
+     * @param \Swift_Message $message
+     */
+    protected function handleDispatch(Swift_Message $message): void
+    {
+        if ($this->dispatch) {
+            $this->dispatch->handle(self::MAIL_EVENT, $message);
+        }
     }
 
     /**
