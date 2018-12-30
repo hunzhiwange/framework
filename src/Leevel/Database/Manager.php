@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
+use Leevel\Event\IDispatch;
 use Leevel\Manager\Manager as Managers;
 
 /**
@@ -88,7 +89,8 @@ class Manager extends Managers
     protected function makeConnectMysql(array $option = []): Mysql
     {
         return new Mysql(
-            $this->normalizeConnectOption('mysql', $option)
+            $this->normalizeConnectOption('mysql', $option),
+            $this->container->make(IDispatch::class)
         );
     }
 

@@ -22,6 +22,7 @@ namespace Leevel\Database;
 
 use Closure;
 use InvalidArgumentException;
+use Leevel\Event\IDispatch;
 use PDO;
 use PDOException;
 use Throwable;
@@ -123,13 +124,22 @@ abstract class Connect
     protected $reconnectRetry = 0;
 
     /**
+     * 事件处理器.
+     *
+     * @var \Leevel\Event\IDispatch
+     */
+    protected $dispatch;
+
+    /**
      * 构造函数.
      *
-     * @param array $option
+     * @param array                   $option
+     * @param \Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(array $option)
+    public function __construct(array $option, IDispatch $dispatch = null)
     {
         $this->option = $option;
+        $this->dispatch = $dispatch;
     }
 
     /**
@@ -822,6 +832,18 @@ abstract class Connect
     {
         $this->sql = $sql;
         $this->bindParams = $bindParams;
+
+        $this->handleDispatch();
+    }
+
+    /**
+     * 事件派发.
+     */
+    protected function handleDispatch(): void
+    {
+        if ($this->dispatch) {
+            $this->dispatch->handle(IConnect::SQL_EVENT, $sql, $bindParams);
+        }
     }
 
     /**

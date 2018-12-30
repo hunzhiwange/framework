@@ -48,6 +48,13 @@ interface IConnect
     const MASTER = 999999999;
 
     /**
+     * SQL 日志事件.
+     *
+     * @var string
+     */
+    const SQL_EVENT = 'database.sql';
+
+    /**
      * 返回 Pdo 查询连接.
      *
      * @param mixed $master
