@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use Closure;
 use Leevel\Event\IDispatch;
 
 /**
@@ -47,20 +46,6 @@ class Log implements ILog
      * @var array
      */
     protected $logs = [];
-
-    /**
-     * 日志过滤器.
-     *
-     * @var \Closure
-     */
-    protected $filter;
-
-    /**
-     * 日志处理器.
-     *
-     * @var \Closure
-     */
-    protected $processor;
 
     /**
      * 日志数量.
@@ -239,16 +224,7 @@ class Log implements ILog
             return;
         }
 
-        $data = [
-            $level,
-            $message,
-            $context,
-        ];
-
-        if (null !== ($filter = $this->filter) &&
-            false === $filter(...$data)) {
-            return;
-        }
+        $data = [$level, $message, $context];
 
         $this->handleDispatch($data);
 
@@ -328,26 +304,6 @@ class Log implements ILog
     }
 
     /**
-     * 注册日志过滤器.
-     *
-     * @param \Closure $filter
-     */
-    public function filter(Closure $filter)
-    {
-        $this->filter = $filter;
-    }
-
-    /**
-     * 注册日志处理器.
-     *
-     * @param \Closure $processor
-     */
-    public function processor(Closure $processor)
-    {
-        $this->processor = $processor;
-    }
-
-    /**
      * 是否为 Monolog.
      *
      * @return bool
@@ -400,12 +356,6 @@ class Log implements ILog
      */
     protected function saveStore(array $data)
     {
-        if (null !== ($processor = $this->processor)) {
-            foreach ($data as $value) {
-                $processor(...$value);
-            }
-        }
-
         $this->connect->flush($data);
     }
 }
