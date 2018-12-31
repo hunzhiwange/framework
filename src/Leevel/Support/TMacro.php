@@ -73,7 +73,7 @@ trait TMacro
      * @param string   $name
      * @param \Closure $macro
      */
-    public static function macro(string $name, Closure $macro)
+    public static function macro(string $name, Closure $macro): void
     {
         static::$macro[$name] = $macro;
     }
@@ -85,7 +85,7 @@ trait TMacro
      *
      * @return bool
      */
-    public static function hasMacro(string $name)
+    public static function hasMacro(string $name): bool
     {
         return isset(static::$macro[$name]);
     }

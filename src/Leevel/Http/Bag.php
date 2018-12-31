@@ -216,7 +216,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->elements;
     }
@@ -238,7 +238,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return string
      */
-    public function toJson($option = null)
+    public function toJson($option = null): string
     {
         if (null === $option) {
             $option = JSON_UNESCAPED_UNICODE;

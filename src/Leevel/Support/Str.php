@@ -41,7 +41,7 @@ class Str
      *
      * @return string
      */
-    public static function randAlphaNum(int $length, ?string $charBox = null)
+    public static function randAlphaNum(int $length, ?string $charBox = null): string
     {
         if (!$length) {
             return '';
@@ -62,7 +62,7 @@ class Str
      *
      * @return string
      */
-    public static function randAlphaNumLowercase(int $length, ?string $charBox = null)
+    public static function randAlphaNumLowercase(int $length, ?string $charBox = null): string
     {
         if (!$length) {
             return '';
@@ -85,7 +85,7 @@ class Str
      *
      * @return string
      */
-    public static function randAlphaNumUppercase(int $length, ?string $charBox = null)
+    public static function randAlphaNumUppercase(int $length, ?string $charBox = null): string
     {
         if (!$length) {
             return '';
@@ -108,7 +108,7 @@ class Str
      *
      * @return string
      */
-    public static function randAlpha(int $length, ?string $charBox = null)
+    public static function randAlpha(int $length, ?string $charBox = null): string
     {
         if (!$length) {
             return '';
@@ -129,7 +129,7 @@ class Str
      *
      * @return string
      */
-    public static function randAlphaLowercase(int $length, ?string $charBox = null)
+    public static function randAlphaLowercase(int $length, ?string $charBox = null): string
     {
         if (!$length) {
             return '';
@@ -152,7 +152,7 @@ class Str
      *
      * @return string
      */
-    public static function randAlphaUppercase(int $length, ?string $charBox = null)
+    public static function randAlphaUppercase(int $length, ?string $charBox = null): string
     {
         if (!$length) {
             return '';
@@ -175,7 +175,7 @@ class Str
      *
      * @return string
      */
-    public static function randNum(int $length, ?string $charBox = null)
+    public static function randNum(int $length, ?string $charBox = null): string
     {
         if (!$length) {
             return '';
@@ -196,7 +196,7 @@ class Str
      *
      * @return string
      */
-    public static function randChinese(int $length, ?string $charBox = null)
+    public static function randChinese(int $length, ?string $charBox = null): string
     {
         if (!$length) {
             return '';
@@ -259,7 +259,7 @@ class Str
      *
      * @return string
      */
-    public static function randStr(int $length, string $charBox)
+    public static function randStr(int $length, string $charBox): string
     {
         if (!$length || !$charBox) {
             return '';
@@ -315,7 +315,7 @@ class Str
      *
      * @return string
      */
-    public static function substr(string $strings, int $start = 0, int $length = 255, string $charset = 'utf-8')
+    public static function substr(string $strings, int $start = 0, int $length = 255, string $charset = 'utf-8'): string
     {
         return mb_substr($strings, $start, $length, $charset);
     }
@@ -329,7 +329,7 @@ class Str
      *
      * @return string
      */
-    public static function formatDate(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-d H:i')
+    public static function formatDate(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-d H:i'): string
     {
         $sec = time() - $dateTemp;
 
@@ -361,7 +361,7 @@ class Str
      *
      * @return string
      */
-    public static function formatBytes(int $fileSize, bool $withUnit = true)
+    public static function formatBytes(int $fileSize, bool $withUnit = true): string
     {
         if ($fileSize >= 1073741824) {
             $fileSize = round($fileSize / 1073741824, 2).($withUnit ? 'G' : '');
@@ -384,7 +384,7 @@ class Str
      *
      * @return string
      */
-    public static function camelize(string $value, string $separator = '_')
+    public static function camelize(string $value, string $separator = '_'): string
     {
         if (false === strpos($value, $separator)) {
             return $value;
@@ -410,7 +410,7 @@ class Str
      *
      * @return string
      */
-    public static function unCamelize(string $value, string $separator = '_')
+    public static function unCamelize(string $value, string $separator = '_'): string
     {
         return strtolower(
             preg_replace(

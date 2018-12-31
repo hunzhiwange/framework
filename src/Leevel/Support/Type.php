@@ -37,12 +37,12 @@ class Type
     /**
      * 验证 PHP 各种变量类型.
      *
-     * @param mixed  $value 待验证的变量
-     * @param string $type  变量类型
+     * @param mixed  $value
+     * @param string $type
      *
      * @return bool
      */
-    public static function vars($value, $type): bool
+    public static function vars($value, string $type): bool
     {
         // 整理参数，以支持 array:int 格式
         $tmp = explode(':', $type);
@@ -109,7 +109,7 @@ class Type
     /**
      * 判断字符串是否为数字.
      *
-     * @param string $value
+     * @param mixed $value
      *
      * @since bool
      */
@@ -125,7 +125,7 @@ class Type
     /**
      * 判断字符串是否为整数.
      *
-     * @param string $value
+     * @param mixed $value
      *
      * @since bool
      */
@@ -173,7 +173,7 @@ class Type
     /**
      * 验证数组中的每一项格式化是否正确.
      *
-     * @param array $arr
+     * @param mixed $arr
      * @param array $types
      *
      * @return bool

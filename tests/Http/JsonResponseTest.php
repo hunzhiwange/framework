@@ -464,7 +464,7 @@ class JsonResponseMyArray implements IArray
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return ['hello' => 'IArray'];
     }
@@ -479,7 +479,7 @@ class JsonResponseMyJson implements IJson
      *
      * @return string
      */
-    public function toJson($option = null)
+    public function toJson($option = null): string
     {
         if (null === $option) {
             $option = JSON_UNESCAPED_UNICODE;

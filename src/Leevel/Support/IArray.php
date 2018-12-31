@@ -36,5 +36,5 @@ interface IArray
      *
      * @return array
      */
-    public function toArray();
+    public function toArray(): array;
 }

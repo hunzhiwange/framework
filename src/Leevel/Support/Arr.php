@@ -40,7 +40,7 @@ class Arr
      *
      * @return mixed
      */
-    public static function normalize($inputs, $delimiter = ',', bool $allowedEmpty = false)
+    public static function normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false)
     {
         if (is_array($inputs) || is_string($inputs)) {
             if (!is_array($inputs)) {

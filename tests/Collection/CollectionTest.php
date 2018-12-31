@@ -469,7 +469,7 @@ eot;
 
 class TestIArray implements IArray
 {
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'hello',
@@ -480,7 +480,7 @@ class TestIArray implements IArray
 
 class TestIJson implements IJson
 {
-    public function toJson($option = null)
+    public function toJson($option = null): string
     {
         if (null === $option) {
             $option = JSON_UNESCAPED_UNICODE;

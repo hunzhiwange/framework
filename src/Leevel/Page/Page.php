@@ -148,7 +148,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return string
      */
-    public function toHtml()
+    public function toHtml(): string
     {
         return (string) $this->render();
     }
@@ -666,7 +666,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'per_page'     => $this->getPerPage(),
@@ -696,7 +696,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return string
      */
-    public function toJson($option = null)
+    public function toJson($option = null): string
     {
         if (null === $option) {
             $option = JSON_UNESCAPED_UNICODE;

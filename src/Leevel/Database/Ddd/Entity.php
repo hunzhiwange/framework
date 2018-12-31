@@ -1199,7 +1199,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->toArraySource(...func_get_args());
     }
@@ -1211,7 +1211,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return string
      */
-    public function toJson($option = null)
+    public function toJson($option = null): string
     {
         if (null === $option) {
             $option = JSON_UNESCAPED_UNICODE;

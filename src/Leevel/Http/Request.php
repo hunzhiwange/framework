@@ -1347,7 +1347,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->all();
     }

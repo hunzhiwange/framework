@@ -305,7 +305,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @return string
      */
-    public function toJson($option = null)
+    public function toJson($option = null): string
     {
         if (null === $option) {
             $option = JSON_UNESCAPED_UNICODE;
