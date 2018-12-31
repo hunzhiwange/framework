@@ -163,7 +163,7 @@ abstract class Status extends Command
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }
@@ -173,7 +173,7 @@ abstract class Status extends Command
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             [

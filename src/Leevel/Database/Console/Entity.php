@@ -249,7 +249,7 @@ EOF;
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             [
@@ -265,7 +265,7 @@ EOF;
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             [

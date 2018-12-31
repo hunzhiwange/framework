@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Console;
 
+use Leevel\Di\IContainer;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
@@ -34,36 +35,25 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 interface IApplication
 {
     /**
-     * 添加一条命令.
-     *
-     * @param \Symfony\Component\Console\Command\Command $command
-     *
-     * @return \Symfony\Component\Console\Command\Command
-     */
-    public function add(SymfonyCommand $command);
-
-    /**
      * 格式化一个命令行.
      *
      * @param string $command
      *
      * @return \Symfony\Component\Console\Command\Command
      */
-    public function normalizeCommand(string $command);
+    public function normalizeCommand(string $command): SymfonyCommand;
 
     /**
      * 批量格式化命令行.
      *
      * @param array $commands
-     *
-     * @return $this
      */
-    public function normalizeCommands(array $commands);
+    public function normalizeCommands(array $commands): void;
 
     /**
      * 返回项目容器.
      *
      * @return \Leevel\Di\Container
      */
-    public function getContainer();
+    public function getContainer(): IContainer;
 }

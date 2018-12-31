@@ -240,7 +240,7 @@ class Load
      *
      * @return mixed
      */
-    protected function getPersistence($name, $defaults = false, array $option = [])
+    protected function getPersistence(string $name, $defaults = false, array $option = [])
     {
         return $this->cache->get($name, $defaults, $option);
     }

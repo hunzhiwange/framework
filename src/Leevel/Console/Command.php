@@ -51,6 +51,7 @@ abstract class Command extends SymfonyCommand
      * @var int
      */
     const DEFAULT_VERBOSITY = OutputInterface::VERBOSITY_NORMAL;
+
     /**
      * 项目容器.
      *
@@ -142,7 +143,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return int
      */
-    public function call($command, array $arguments = [])
+    public function call($command, array $arguments = []): int
     {
         $arguments['command'] = $command;
 
@@ -158,7 +159,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return array|string
      */
-    public function argument($key = null)
+    public function argument(?string $key = null)
     {
         if (null === $key) {
             return $this->input->getArguments();
@@ -174,7 +175,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return array|string
      */
-    public function option($key = null)
+    public function option(?string $key = null)
     {
         if (null === $key) {
             return $this->input->getOptions();
@@ -193,7 +194,7 @@ abstract class Command extends SymfonyCommand
      * @return bool
      * @codeCoverageIgnore
      */
-    public function confirm($question, $defaults = false)
+    public function confirm($question, $defaults = false): bool
     {
         return $this->output->confirm($question, $defaults);
     }
@@ -208,7 +209,7 @@ abstract class Command extends SymfonyCommand
      * @return string
      * @codeCoverageIgnore
      */
-    public function ask($question, $defaults = null)
+    public function ask($question, $defaults = null): string
     {
         return $this->output->ask($question, $defaults);
     }
@@ -220,7 +221,7 @@ abstract class Command extends SymfonyCommand
      * @param array  $rows
      * @param string $style
      */
-    public function table(array $headers, array $rows, $style = 'default')
+    public function table(array $headers, array $rows, $style = 'default'): void
     {
         (new Table($this->output))->
 
@@ -239,7 +240,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function info($message, $verbosity = null)
+    public function info($message, $verbosity = null): void
     {
         $this->line($message, 'info', $verbosity);
     }
@@ -252,7 +253,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return string
      */
-    public function time($message, $format = 'H:i:s')
+    public function time($message, $format = 'H:i:s'): string
     {
         return ($format ? sprintf('[%s]', date($format)) : '').$message;
     }
@@ -263,7 +264,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function comment($message, $verbosity = null)
+    public function comment($message, $verbosity = null): void
     {
         $this->line($message, 'comment', $verbosity);
     }
@@ -274,7 +275,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function question($message, $verbosity = null)
+    public function question($message, $verbosity = null): void
     {
         $this->line($message, 'question', $verbosity);
     }
@@ -290,7 +291,7 @@ abstract class Command extends SymfonyCommand
      * @return string
      * @codeCoverageIgnore
      */
-    public function askWithCompletion($question, array $choices, $defaults = null)
+    public function askWithCompletion($question, array $choices, $defaults = null): string
     {
         $question = new Question($question, $defaults);
         $question->setAutocompleterValues($choices);
@@ -308,7 +309,7 @@ abstract class Command extends SymfonyCommand
      * @return string
      * @codeCoverageIgnore
      */
-    public function secret($question, bool $fallback = true)
+    public function secret($question, bool $fallback = true): string
     {
         $question = new Question($question);
         $question->setHidden(true)->setHiddenFallback($fallback);
@@ -329,7 +330,7 @@ abstract class Command extends SymfonyCommand
      * @return string
      * @codeCoverageIgnore
      */
-    public function choice($question, array $choices, $defaults = null, $attempts = null, $multiple = null)
+    public function choice($question, array $choices, $defaults = null, $attempts = null, $multiple = null): string
     {
         $question = new ChoiceQuestion($question, $choices, $defaults);
         $question->setMaxAttempts($attempts)->setMultiselect($multiple);
@@ -343,7 +344,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function error($message, $verbosity = null)
+    public function error($message, $verbosity = null): void
     {
         $this->line($message, 'error', $verbosity);
     }
@@ -354,7 +355,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function warn($message, $verbosity = null)
+    public function warn($message, $verbosity = null): void
     {
         if (!$this->output->getFormatter()->hasStyle('warning')) {
             $this->output->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
@@ -370,7 +371,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $style
      * @param null|int|string $verbosity
      */
-    public function line($message, $style = null, $verbosity = null)
+    public function line($message, $style = null, $verbosity = null): void
     {
         $message = $style ? "<{$style}>{$message}</{$style}>" : $message;
 
@@ -382,7 +383,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param \Leevel\Di\IContainer $container
      */
-    public function setContainer(IContainer $container)
+    public function setContainer(IContainer $container): void
     {
         $this->container = $container;
     }
@@ -418,7 +419,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }
@@ -428,7 +429,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [];
     }
@@ -436,7 +437,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 定义参数和配置.
      */
-    protected function specifyParameters()
+    protected function specifyParameters(): void
     {
         foreach ($this->getArguments() as $argument) {
             $this->addArgument(...$argument);
@@ -454,7 +455,7 @@ abstract class Command extends SymfonyCommand
      *
      * @return int
      */
-    protected function parseVerbosity($level = null)
+    protected function parseVerbosity($level = null): int
     {
         return static::$verbosityMap[$level] ??
             (!is_int($level) ? static::DEFAULT_VERBOSITY : $level);

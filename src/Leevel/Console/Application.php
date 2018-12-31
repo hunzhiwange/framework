@@ -80,7 +80,7 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @return \Symfony\Component\Console\Command\Command
      */
-    public function normalizeCommand(string $command)
+    public function normalizeCommand(string $command): SymfonyCommand
     {
         return $this->add($this->container->make($command));
     }
@@ -89,16 +89,12 @@ class Application extends SymfonyApplication implements IApplication
      * 批量格式化命令行.
      *
      * @param array $commands
-     *
-     * @return $this
      */
-    public function normalizeCommands(array $commands)
+    public function normalizeCommands(array $commands): void
     {
         foreach ($commands as $command) {
             $this->normalizeCommand($command);
         }
-
-        return $this;
     }
 
     /**
@@ -106,7 +102,7 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @return \Leevel\Di\Container
      */
-    public function getContainer()
+    public function getContainer(): IContainer
     {
         return $this->container;
     }
@@ -116,7 +112,7 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @return string
      */
-    protected function getLogo()
+    protected function getLogo(): string
     {
         return <<<'queryphp'
 _____________                           _______________

@@ -54,7 +54,7 @@ class MakeFile extends Make
         $this->create();
     }
 
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             [

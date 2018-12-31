@@ -102,7 +102,7 @@ abstract class Stop extends Command
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }
@@ -112,7 +112,7 @@ abstract class Stop extends Command
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [];
     }

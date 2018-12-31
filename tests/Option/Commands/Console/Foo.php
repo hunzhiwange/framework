@@ -48,12 +48,12 @@ EOF;
         $this->info('Hello my foo command.');
     }
 
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }
 
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [];
     }

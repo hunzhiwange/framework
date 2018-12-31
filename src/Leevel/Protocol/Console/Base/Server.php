@@ -216,7 +216,7 @@ queryphp;
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }
@@ -226,7 +226,7 @@ queryphp;
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             [

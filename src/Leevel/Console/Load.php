@@ -64,7 +64,7 @@ class Load
      *
      * @return $this
      */
-    public function addNamespace(array $namespaces)
+    public function addNamespace(array $namespaces): self
     {
         $this->namespaces = array_merge($this->namespaces, $namespaces);
 
@@ -76,7 +76,7 @@ class Load
      *
      * @return array
      */
-    public function loadData()
+    public function loadData(): array
     {
         if (null !== $this->loaded) {
             return $this->loaded;
@@ -94,7 +94,7 @@ class Load
      *
      * @return array
      */
-    public function findConsoleFile(array $namespaces)
+    public function findConsoleFile(array $namespaces): array
     {
         $files = [];
 

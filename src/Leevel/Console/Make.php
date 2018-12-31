@@ -115,7 +115,7 @@ abstract class Make extends Command
     /**
      * 创建文件.
      */
-    protected function create()
+    protected function create(): void
     {
         // 替换模板变量
         $this->replaceTemplateSource();
@@ -130,10 +130,8 @@ abstract class Make extends Command
 
     /**
      * 替换模板变量.
-     *
-     * @return string
      */
-    protected function replaceTemplateSource()
+    protected function replaceTemplateSource(): void
     {
         // 解析模板源码
         $this->parseTemplateSource();
@@ -148,9 +146,9 @@ abstract class Make extends Command
     }
 
     /**
-     * 保存模板
+     * 保存模板.
      */
-    protected function saveTemplateResult()
+    protected function saveTemplateResult(): void
     {
         $saveFilePath = $this->getSaveFilePath();
 
@@ -187,15 +185,15 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function getTemplateResult()
+    protected function getTemplateResult(): string
     {
         return $this->templateResult;
     }
 
     /**
-     * 分析模板源码
+     * 分析模板源码.
      */
-    protected function parseTemplateSource()
+    protected function parseTemplateSource(): void
     {
         $templateSource = $this->getTemplatePath();
 
@@ -214,7 +212,7 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function getTemplateSource()
+    protected function getTemplateSource(): string
     {
         return $this->templateSource;
     }
@@ -224,7 +222,7 @@ abstract class Make extends Command
      *
      * @return array
      */
-    protected function parseSourceAndReplace()
+    protected function parseSourceAndReplace(): array
     {
         $replaceKeyValue = array_merge(static::$globalReplace, $this->getDefaultReplaceKeyValue());
 
@@ -245,7 +243,7 @@ abstract class Make extends Command
      *
      * @return array
      */
-    protected function getDefaultReplaceKeyValue()
+    protected function getDefaultReplaceKeyValue(): array
     {
         return array_merge([
             'namespace' => $this->getNamespace(),
@@ -258,7 +256,7 @@ abstract class Make extends Command
      *
      * @param string $saveFilePath
      */
-    protected function setSaveFilePath($saveFilePath)
+    protected function setSaveFilePath(string $saveFilePath): void
     {
         $this->saveFilePath = $saveFilePath;
     }
@@ -268,7 +266,7 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function getSaveFilePath()
+    protected function getSaveFilePath(): string
     {
         return $this->saveFilePath;
     }
@@ -278,7 +276,7 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function getNamespacePath()
+    protected function getNamespacePath(): string
     {
         if ('/' === ($namespacePath = $this->getContainer()->getPathByComposer($this->getNamespace()).'/')) {
             $namespacePath = $this->getContainer()->appPath(lcfirst($this->getNamespace())).'/';
@@ -290,7 +288,7 @@ abstract class Make extends Command
     /**
      * 分析命名空间.
      */
-    protected function parseNamespace()
+    protected function parseNamespace(): void
     {
         $namespace = $this->option('namespace');
 
@@ -308,7 +306,7 @@ abstract class Make extends Command
      *
      * @param string $namespace
      */
-    protected function setNamespace($namespace)
+    protected function setNamespace(string $namespace): void
     {
         $this->namespace = $namespace;
     }
@@ -318,7 +316,7 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function getNamespace()
+    protected function getNamespace(): ?string
     {
         return $this->namespace;
     }
@@ -328,7 +326,7 @@ abstract class Make extends Command
      *
      * @param string $makeType
      */
-    protected function setMakeType($makeType)
+    protected function setMakeType(string $makeType): void
     {
         $this->makeType = $makeType;
     }
@@ -338,7 +336,7 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function getMakeType()
+    protected function getMakeType(): string
     {
         return $this->makeType;
     }
@@ -348,7 +346,7 @@ abstract class Make extends Command
      *
      * @param string $templatePath
      */
-    protected function setTemplatePath($templatePath)
+    protected function setTemplatePath(string $templatePath): void
     {
         $this->templatePath = $templatePath;
     }
@@ -358,7 +356,7 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function getTemplatePath()
+    protected function getTemplatePath(): string
     {
         return $this->templatePath;
     }
@@ -381,11 +379,9 @@ abstract class Make extends Command
     /**
      * 读取自定义变量替换.
      *
-     * @param string $makeType
-     *
      * @return array
      */
-    protected function getCustomReplaceKeyValue()
+    protected function getCustomReplaceKeyValue(): array
     {
         return $this->customReplaceKeyValue;
     }
@@ -397,7 +393,7 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function formatFile($file)
+    protected function formatFile(string $file): string
     {
         return $file;
     }
