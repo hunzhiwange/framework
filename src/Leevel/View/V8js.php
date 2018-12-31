@@ -134,9 +134,10 @@ class V8js extends Connect implements IConnect
      *
      * @return string
      */
-    public function select(string $js)
+    public function select(string $js): string
     {
         ob_start();
+
         $this->v8js->executeString($js);
 
         return ob_get_clean();
@@ -160,7 +161,7 @@ class V8js extends Connect implements IConnect
      *
      * @codeCoverageIgnore
      */
-    public function initDd()
+    public function initDd(): void
     {
         $this->v8js->{'$dd'} = function ($message) {
             dd($message);
@@ -172,7 +173,7 @@ class V8js extends Connect implements IConnect
     /**
      * initDump.
      */
-    public function initDump()
+    public function initDump(): void
     {
         $this->v8js->{'$dump'} = function ($message) {
             var_dump($message);
@@ -184,7 +185,7 @@ class V8js extends Connect implements IConnect
     /**
      * initEcho.
      */
-    public function initEcho()
+    public function initEcho(): void
     {
         $this->v8js->{'$echo'} = function ($message) {
             echo $message;
@@ -196,7 +197,7 @@ class V8js extends Connect implements IConnect
     /**
      * initHtml.
      */
-    public function initHtml()
+    public function initHtml(): void
     {
         $this->v8js->{'$html'} = function ($path, $ext = '.html') {
             $file = $this->parseDisplayFile($path, $ext);
@@ -210,7 +211,7 @@ class V8js extends Connect implements IConnect
     /**
      * initLoad.
      */
-    public function initLoad()
+    public function initLoad(): void
     {
         $this->v8js->{'$load'} = function ($package) {
             $package .= 'Package';
@@ -230,7 +231,7 @@ class V8js extends Connect implements IConnect
     /**
      * initModule.
      */
-    public function initModule()
+    public function initModule(): void
     {
         $this->v8js->setModuleNormaliser(function ($base, $module) {
             try {
@@ -250,7 +251,7 @@ class V8js extends Connect implements IConnect
     /**
      * initBase.
      */
-    protected function initBase()
+    protected function initBase(): void
     {
         $console = <<<'EOT'
 /*!
@@ -291,7 +292,7 @@ EOT;
     /**
      * 初始化 vue.
      */
-    protected function vuePackage()
+    protected function vuePackage(): void
     {
         $vue = $this->option['vue_path'];
         $renderer = $this->option['vue_renderer'];
@@ -320,7 +321,7 @@ EOT;
     /**
      * 初始化 art.
      */
-    protected function artPackage()
+    protected function artPackage(): void
     {
         $art = $this->option['art_path'];
 

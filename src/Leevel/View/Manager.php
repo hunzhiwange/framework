@@ -147,8 +147,8 @@ class Manager extends Managers
     protected function viewOptionCommon(): array
     {
         return [
-            'theme_path'       => $this->container->themesPath(),
-            'cache_path'       => $this->container->runtimePath('theme'),
+            'theme_path' => $this->container->themesPath(),
+            'cache_path' => $this->container->runtimePath('theme'),
         ];
     }
 }

@@ -22,6 +22,7 @@ namespace Leevel\View;
 
 use Closure;
 use RuntimeException;
+use Twig_Environment;
 
 /**
  * twig 模板处理类.
@@ -87,21 +88,21 @@ class Twig extends Connect implements IConnect
     }
 
     /**
-     * 设置 parse 解析回调.
+     * 设置 parser 解析回调.
      *
      * @param \Closure $parseResolver
      */
-    public function setParseResolver(Closure $parseResolver)
+    public function setParseResolver(Closure $parseResolver): void
     {
         $this->parseResolver = $parseResolver;
     }
 
     /**
-     * 解析 parse.
+     * 解析 parser.
      *
      * @return \Twig_Environment
      */
-    protected function resolverParser()
+    protected function resolverParser(): Twig_Environment
     {
         if (!$this->parseResolver) {
             throw new RuntimeException('Twig theme not set parse resolver.');
@@ -113,9 +114,9 @@ class Twig extends Connect implements IConnect
     /**
      * 获取分析器.
      *
-     * @return \Leevel\View\IParser
+     * @return \Twig_Environment
      */
-    protected function parser()
+    protected function parser(): Twig_Environment
     {
         if (null !== $this->parser) {
             return $this->parser;
@@ -125,13 +126,13 @@ class Twig extends Connect implements IConnect
     }
 
     /**
-     * 渲染模板
+     * 渲染模板.
      *
      * @param string $file
      *
      * @return string
      */
-    protected function renderFile(string $file)
+    protected function renderFile(string $file): string
     {
         $this->parser();
 
