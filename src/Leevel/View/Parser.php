@@ -173,11 +173,9 @@ class Parser implements IParser
     public function registerCompilers(): IParser
     {
         foreach ($this->compiler->getCompilers() as $compiler) {
-            $this->registerCompiler(
-                $compiler[0],
-                $compiler[1],
-                $compiler[2]
-            );
+            foreach ((array) $compiler[1] as $name) {
+                $this->registerCompiler($compiler[0], $name, $compiler[2]);
+            }
         }
 
         return $this;
@@ -728,19 +726,13 @@ class Parser implements IParser
     /**
      * 注册编译器 code 和 node 编译器注册.
      *
-     * @param string       $type
-     * @param array|string $name
-     * @param array|string $tag
+     * @param string $type
+     * @param string $name
+     * @param string $tag
      */
-    protected function registerCompiler(string $type, $name, $tag): void
+    protected function registerCompiler(string $type, string $name, string $tag): void
     {
-        if (!is_array($name)) {
-            $name = (array) $name;
-        }
-
-        foreach ($name as $item) {
-            $this->compilers[$type][$item] = $tag;
-        }
+        $this->compilers[$type][$name] = $tag;
     }
 
     /**
@@ -750,7 +742,6 @@ class Parser implements IParser
      */
     protected function compileThemeTree(): string
     {
-        // 逐个编译
         $cache = '';
 
         foreach ($this->themeTree as $theme) {

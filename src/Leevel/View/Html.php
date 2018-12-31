@@ -103,7 +103,7 @@ class Html extends Connect implements IConnect
     }
 
     /**
-     * 设置 parse 解析回调.
+     * 设置 parser 解析回调.
      *
      * @param \Closure $parseResolver
      */
@@ -133,7 +133,7 @@ class Html extends Connect implements IConnect
     }
 
     /**
-     * 解析 parse.
+     * 解析 parser.
      *
      * @return \Leevel\View\IParser
      */
