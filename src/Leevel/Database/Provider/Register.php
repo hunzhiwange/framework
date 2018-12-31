@@ -40,9 +40,9 @@ use Leevel\Event\IDispatch;
 class Register extends Provider
 {
     /**
-     * 注册服务
+     * 注册服务.
      */
-    public function register()
+    public function register(): void
     {
         $this->databases();
         $this->database();

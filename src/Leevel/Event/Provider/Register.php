@@ -36,9 +36,9 @@ use Leevel\Event\Dispatch;
 class Register extends Provider
 {
     /**
-     * 注册服务
+     * 注册服务.
      */
-    public function register()
+    public function register(): void
     {
         $this->container->singleton('event', function (IContainer $container) {
             return new Dispatch($container);

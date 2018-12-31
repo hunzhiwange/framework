@@ -106,7 +106,7 @@ class ProviderTest extends TestCase
 
 class PrividerTest extends Provider
 {
-    public function register()
+    public function register(): void
     {
         $this->container->singleton('foo', function ($container) {
             return new PrividerService1($container);
@@ -126,7 +126,7 @@ class PrividerTest extends Provider
 
 class PrividerTest2 extends Provider
 {
-    public function register()
+    public function register(): void
     {
         $this->container->singleton('world', function ($container) {
             return new PrividerService2();
@@ -148,7 +148,7 @@ class PrividerTest2 extends Provider
 
 class PrividerTest3 extends Provider
 {
-    public function register()
+    public function register(): void
     {
     }
 }

@@ -36,9 +36,9 @@ use Leevel\Validate\Validate;
 class Register extends Provider
 {
     /**
-     * 注册服务
+     * 注册服务.
      */
-    public function register()
+    public function register(): void
     {
         $this->container->singleton('validate', function (IContainer $container) {
             return new Validate($container);

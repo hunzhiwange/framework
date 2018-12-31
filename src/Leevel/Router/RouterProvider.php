@@ -76,7 +76,7 @@ abstract class RouterProvider extends Provider
     /**
      * 注册一个提供者.
      */
-    public function register()
+    public function register(): void
     {
         $this->container->singleton(self::class, $this);
     }

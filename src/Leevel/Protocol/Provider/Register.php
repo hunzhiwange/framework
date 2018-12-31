@@ -47,9 +47,9 @@ class Register extends Provider
     public static $defer = true;
 
     /**
-     * 注册服务
+     * 注册服务.
      */
-    public function register()
+    public function register(): void
     {
         $this->httpServer();
         $this->websocketServer();

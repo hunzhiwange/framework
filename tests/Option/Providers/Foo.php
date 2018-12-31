@@ -34,7 +34,7 @@ use Leevel\Di\Provider;
  */
 class Foo extends Provider
 {
-    public function register()
+    public function register(): void
     {
         $this->container->singleton('foo', function (IContainer $container) {
             return 'bar';

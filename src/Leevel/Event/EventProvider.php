@@ -61,7 +61,7 @@ abstract class EventProvider extends Provider
     /**
      * 注册一个提供者.
      */
-    public function register()
+    public function register(): void
     {
     }
 

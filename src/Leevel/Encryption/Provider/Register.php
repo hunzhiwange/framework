@@ -36,9 +36,9 @@ use Leevel\Encryption\Encryption;
 class Register extends Provider
 {
     /**
-     * 注册服务
+     * 注册服务.
      */
-    public function register()
+    public function register(): void
     {
         $this->container->singleton('encryption', function (IContainer $container) {
             $option = $container['option'];

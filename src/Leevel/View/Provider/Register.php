@@ -41,9 +41,9 @@ use Twig_Loader_Filesystem;
 class Register extends Provider
 {
     /**
-     * 注册服务
+     * 注册服务.
      */
-    public function register()
+    public function register(): void
     {
         $this->viewViews();
         $this->viewView();

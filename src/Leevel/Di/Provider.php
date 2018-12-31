@@ -72,9 +72,9 @@ abstract class Provider
     }
 
     /**
-     * 注册服务
+     * 注册服务.
      */
-    abstract public function register();
+    abstract public function register(): void;
 
     /**
      * 注册服务别名.

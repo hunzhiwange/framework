@@ -36,9 +36,9 @@ use Leevel\Log\Manager;
 class Register extends Provider
 {
     /**
-     * 注册服务
+     * 注册服务.
      */
-    public function register()
+    public function register(): void
     {
         $this->logs();
         $this->log();

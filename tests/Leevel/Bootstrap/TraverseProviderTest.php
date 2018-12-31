@@ -108,7 +108,7 @@ class OptionTest
 
 class ProviderDeferTest1 extends Provider
 {
-    public function register()
+    public function register(): void
     {
         $_SERVER['providerDeferTest1'] = 1;
 
@@ -143,7 +143,7 @@ class ProviderTest3 extends Provider
         $_SERVER['testRegisterProvidersBootstrap'] = 1;
     }
 
-    public function register()
+    public function register(): void
     {
         $_SERVER['testRegisterProvidersRegister'] = 1;
     }
