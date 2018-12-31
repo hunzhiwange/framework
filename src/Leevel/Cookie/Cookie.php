@@ -71,7 +71,7 @@ class Cookie implements ICookie
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): ICookie
     {
         $this->option[$name] = $value;
 
@@ -85,7 +85,7 @@ class Cookie implements ICookie
      * @param string $value
      * @param array  $option
      */
-    public function set($name, $value = '', array $option = [])
+    public function set(string $name, $value = '', array $option = []): void
     {
         $option = $this->normalizeOptions($option);
 
@@ -124,7 +124,7 @@ class Cookie implements ICookie
      * @param mixed        $value
      * @param array        $option
      */
-    public function put($keys, $value = null, array $option = [])
+    public function put($keys, $value = null, array $option = []): void
     {
         if (!is_array($keys)) {
             $keys = [
@@ -144,7 +144,7 @@ class Cookie implements ICookie
      * @param mixed  $value
      * @param array  $option
      */
-    public function push($key, $value, array $option = [])
+    public function push(string $key, $value, array $option = []): void
     {
         $arr = $this->get($key, [], $option);
         $arr[] = $value;
@@ -158,7 +158,7 @@ class Cookie implements ICookie
      * @param array  $value
      * @param array  $option
      */
-    public function merge($key, array $value, array $option = [])
+    public function merge(string $key, array $value, array $option = []): void
     {
         $this->set($key, array_merge($this->get($key, [], $option), $value), $option);
     }
@@ -170,7 +170,7 @@ class Cookie implements ICookie
      * @param mixed  $value
      * @param array  $option
      */
-    public function pop($key, array $value, array $option = [])
+    public function pop(string $key, array $value, array $option = []): void
     {
         $this->set($key, array_diff($this->get($key, [], $option), $value), $option);
     }
@@ -183,7 +183,7 @@ class Cookie implements ICookie
      * @param mixed  $value
      * @param array  $option
      */
-    public function arr($key, $keys, $value = null, array $option = [])
+    public function arr(string $key, $keys, $value = null, array $option = []): void
     {
         $arr = $this->get($key, [], $option);
 
@@ -202,7 +202,7 @@ class Cookie implements ICookie
      * @param string $key
      * @param mixed  $keys
      */
-    public function arrDelete($key, $keys, array $option = [])
+    public function arrDelete(string $key, $keys, array $option = []): void
     {
         $arr = $this->get($key, [], $option);
 
@@ -230,7 +230,7 @@ class Cookie implements ICookie
      *
      * @return mixed
      */
-    public function get($name, $defaults = null, array $option = [])
+    public function get(string $name, $defaults = null, array $option = [])
     {
         $option = $this->normalizeOptions($option);
 
@@ -251,7 +251,7 @@ class Cookie implements ICookie
      * @param string $name
      * @param array  $option
      */
-    public function delete($name, array $option = [])
+    public function delete(string $name, array $option = []): void
     {
         $this->set($name, null, $option);
     }
@@ -261,7 +261,7 @@ class Cookie implements ICookie
      *
      * @param array $option
      */
-    public function clear(array $option = [])
+    public function clear(array $option = []): void
     {
         $option = $this->normalizeOptions($option);
 
@@ -287,7 +287,7 @@ class Cookie implements ICookie
      *
      * @return array
      */
-    protected function normalizeOptions(array $option = [])
+    protected function normalizeOptions(array $option = []): array
     {
         return $option ? array_merge($this->option, $option) : $this->option;
     }
@@ -299,7 +299,7 @@ class Cookie implements ICookie
      *
      * @return bool
      */
-    protected function isJson($data)
+    protected function isJson($data): bool
     {
         if (!is_scalar($data) && !method_exists($data, '__toString')) {
             return false;

@@ -39,7 +39,7 @@ interface ICookie
      *
      * @return $this
      */
-    public function setOption(string $name, $value);
+    public function setOption(string $name, $value): self;
 
     /**
      * 设置 COOKIE.
@@ -48,7 +48,7 @@ interface ICookie
      * @param string $value
      * @param array  $option
      */
-    public function set($name, $value = '', array $option = []);
+    public function set(string $name, $value = '', array $option = []): void;
 
     /**
      * 批量插入.
@@ -57,7 +57,7 @@ interface ICookie
      * @param mixed        $value
      * @param array        $option
      */
-    public function put($keys, $value = null, array $option = []);
+    public function put($keys, $value = null, array $option = []): void;
 
     /**
      * 数组插入数据.
@@ -66,7 +66,7 @@ interface ICookie
      * @param mixed  $value
      * @param array  $option
      */
-    public function push($key, $value, array $option = []);
+    public function push(string $key, $value, array $option = []): void;
 
     /**
      * 合并元素.
@@ -75,7 +75,7 @@ interface ICookie
      * @param array  $value
      * @param array  $option
      */
-    public function merge($key, array $value, array $option = []);
+    public function merge(string $key, array $value, array $option = []): void;
 
     /**
      * 弹出元素.
@@ -84,7 +84,7 @@ interface ICookie
      * @param mixed  $value
      * @param array  $option
      */
-    public function pop($key, array $value, array $option = []);
+    public function pop(string $key, array $value, array $option = []): void;
 
     /**
      * 数组插入键值对数据.
@@ -94,7 +94,7 @@ interface ICookie
      * @param mixed  $value
      * @param array  $option
      */
-    public function arr($key, $keys, $value = null, array $option = []);
+    public function arr(string $key, $keys, $value = null, array $option = []): void;
 
     /**
      * 数组键值删除数据.
@@ -102,7 +102,7 @@ interface ICookie
      * @param string $key
      * @param mixed  $keys
      */
-    public function arrDelete($key, $keys, array $option = []);
+    public function arrDelete(string $key, $keys, array $option = []): void;
 
     /**
      * 获取 cookie.
@@ -113,7 +113,7 @@ interface ICookie
      *
      * @return mixed
      */
-    public function get($name, $defaults = null, array $option = []);
+    public function get(string $name, $defaults = null, array $option = []);
 
     /**
      * 删除 cookie.
@@ -121,14 +121,14 @@ interface ICookie
      * @param string $name
      * @param array  $option
      */
-    public function delete($name, array $option = []);
+    public function delete(string $name, array $option = []): void;
 
     /**
      * 清空 cookie.
      *
      * @param array $option
      */
-    public function clear(array $option = []);
+    public function clear(array $option = []): void;
 
     /**
      * 返回所有 cookie.
