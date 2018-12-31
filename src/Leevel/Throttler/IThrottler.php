@@ -40,9 +40,9 @@ interface IThrottler
      * @param int         $xRateLimitLimit
      * @param int         $xRateLimitTime
      *
-     * @return \Leevel\Throttler\RateLimiter
+     * @return \Leevel\Throttler\IRateLimiter
      */
-    public function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20);
+    public function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20): IRateLimiter;
 
     /**
      * 设置 http request.
@@ -51,7 +51,7 @@ interface IThrottler
      *
      * @return $this
      */
-    public function setRequest(IRequest $request);
+    public function setRequest(IRequest $request): self;
 
     /**
      * 获取请求 key.
@@ -60,5 +60,5 @@ interface IThrottler
      *
      * @return string
      */
-    public function getRequestKey(?string $key = null);
+    public function getRequestKey(?string $key = null): string;
 }

@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Throttler;
 
+use Leevel\Cache\ICache;
+
 /**
  * IRateLimiter 接口.
  *
@@ -43,49 +45,49 @@ interface IRateLimiter
      *
      * @return bool
      */
-    public function attempt();
+    public function attempt(): bool;
 
     /**
      * 判断资源是否被耗尽.
      *
      * @return bool
      */
-    public function tooManyAttempt();
+    public function tooManyAttempt(): bool;
 
     /**
      * 执行请求
      *
      * @return $this
      */
-    public function hit();
+    public function hit(): self;
 
     /**
      * 下次重置时间.
      *
-     * @return $this
+     * @return int
      */
-    public function endTime();
+    public function endTime(): int;
 
     /**
      * 请求返回 HEADER.
      *
      * @return array
      */
-    public function header();
+    public function header(): array;
 
     /**
      * 距离下一次请求等待时间.
      *
      * @return int
      */
-    public function retryAfter();
+    public function retryAfter(): int;
 
     /**
      * 指定时间内剩余请求次数.
      *
      * @return int
      */
-    public function remaining();
+    public function remaining(): int;
 
     /**
      * 指定时间长度.
@@ -94,7 +96,7 @@ interface IRateLimiter
      *
      * @return $this
      */
-    public function limit(int $xRateLimitLimit = 60);
+    public function limit(int $xRateLimitLimit = 60): self;
 
     /**
      * 指定时间内允许的最大请求次数.
@@ -103,12 +105,12 @@ interface IRateLimiter
      *
      * @return $this
      */
-    public function time(int $xRateLimitTime = 60);
+    public function time(int $xRateLimitTime = 60): self;
 
     /**
      * 返回缓存组件.
      *
      * @return \Leevel\Cache\ICache
      */
-    public function getCache();
+    public function getCache(): ICache;
 }

@@ -61,7 +61,7 @@ class Throttler
      * @param int                   $limit
      * @param int                   $time
      */
-    public function handle(Closure $next, IRequest $request, int $limit = 60, int $time = 60)
+    public function handle(Closure $next, IRequest $request, int $limit = 60, int $time = 60): void
     {
         $rateLimiter = $this->throttler->
 

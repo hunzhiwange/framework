@@ -69,9 +69,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 throttler 服务
+     * 注册 throttler 服务.
      */
-    protected function throttler()
+    protected function throttler(): void
     {
         $this->container->singleton('throttler', function (IContainer $container) {
             return (new Throttler($container['caches']->
@@ -82,9 +82,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 middleware 服务
+     * 注册 middleware 服务.
      */
-    protected function middleware()
+    protected function middleware(): void
     {
         $this->container->singleton('Leevel\\Throttler\\Middleware\\Throttler');
     }

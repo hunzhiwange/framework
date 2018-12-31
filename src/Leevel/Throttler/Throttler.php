@@ -86,9 +86,9 @@ class Throttler implements IThrottler
      * @param int         $limit
      * @param int         $time
      *
-     * @return \Leevel\Throttler\RateLimiter
+     * @return \Leevel\Throttler\IRateLimiter
      */
-    public function create(?string $key = null, int $limit = 60, int $time = 60): RateLimiter
+    public function create(?string $key = null, int $limit = 60, int $time = 60): IRateLimiter
     {
         $key = $this->getRequestKey($key);
 
@@ -111,7 +111,7 @@ class Throttler implements IThrottler
      *
      * @return $this
      */
-    public function setRequest(IRequest $request)
+    public function setRequest(IRequest $request): IThrottler
     {
         $this->request = $request;
 
@@ -125,7 +125,7 @@ class Throttler implements IThrottler
      *
      * @return string
      */
-    public function getRequestKey(?string $key = null)
+    public function getRequestKey(?string $key = null): string
     {
         if (!$key && !$this->request) {
             throw new RuntimeException('Request is not set.');

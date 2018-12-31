@@ -109,7 +109,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @return $this
      */
-    public function hit()
+    public function hit(): IRateLimiter
     {
         $this->saveData($this->count() + 1);
 
@@ -159,7 +159,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @return $this
      */
-    public function limit(int $limit = 60)
+    public function limit(int $limit = 60): IRateLimiter
     {
         $this->limit = $limit;
 
@@ -173,7 +173,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @return $this
      */
-    public function time(int $time = 60)
+    public function time(int $time = 60): IRateLimiter
     {
         $this->time = $time;
 
@@ -282,7 +282,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @return string
      */
-    protected function getImplodeData($endTime, $count): string
+    protected function getImplodeData(int $endTime, int $count): string
     {
         return $endTime.static::SEPARATE.$count;
     }
@@ -290,23 +290,23 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 分隔缓存数据.
      *
-     * @param array $datas
+     * @param array $data
      *
      * @return array
      */
-    protected function getExplodeData($datas): array
+    protected function getExplodeData(string $data): array
     {
         return array_map(function ($v) {
             return (int) ($v);
-        }, explode(static::SEPARATE, $datas));
+        }, explode(static::SEPARATE, $data));
     }
 
     /**
      * 获取 key.
      *
-     * @return null|string
+     * @return string
      */
-    protected function getKey()
+    protected function getKey(): string
     {
         if (!$this->key) {
             throw new RuntimeException('Key is not set.');
@@ -320,7 +320,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @return int
      */
-    protected function getInitEndTime()
+    protected function getInitEndTime(): int
     {
         return time() + $this->limit;
     }
@@ -330,7 +330,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @return int
      */
-    protected function getInitCount()
+    protected function getInitCount(): int
     {
         return 0;
     }
