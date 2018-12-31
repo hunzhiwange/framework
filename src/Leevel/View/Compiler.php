@@ -1436,7 +1436,7 @@ class Compiler implements ICompiler
     protected function getNodeBody(array $theme)
     {
         foreach ($theme['children'] as $child) {
-            if (isset($child['is_body']) && 1 === $child['is_body']) {
+            if (isset($child['is_body']) && true === $child['is_body']) {
                 return $child['content'];
             }
         }

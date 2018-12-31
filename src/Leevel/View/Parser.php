@@ -671,7 +671,7 @@ class Parser implements IParser
                         'content'  => $body,
                         'compiler' => null, // 编译器
                         'source'   => $body,
-                        'is_body'  => 1,
+                        'is_body'  => true,
                     ];
 
                     $themeBody['position'] = $this->getPosition($compiled, $body, $start);
