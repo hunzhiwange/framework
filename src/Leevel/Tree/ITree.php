@@ -36,17 +36,17 @@ interface ITree
     /**
      * 设置节点数据.
      *
-     * @param int   $id
-     * @param int   $parent
-     * @param mixed $value
-     * @param bool  $priority
+     * @param int|string $id
+     * @param int|string $parent
+     * @param mixed      $value
+     * @param bool       $priority
      */
-    public function setNode($id, $parent, $value, bool $priority = false);
+    public function setNode($id, $parent, $value, bool $priority = false): void;
 
     /**
      * 取得给定 ID 子树.
      *
-     * @param int $id
+     * @param int|string $id
      *
      * @return array
      */
@@ -55,7 +55,7 @@ interface ITree
     /**
      * 取得给定 ID 一级子树 ID.
      *
-     * @param int $id
+     * @param int|string $id
      *
      * @return array
      */
@@ -64,7 +64,7 @@ interface ITree
     /**
      * 取得给定 ID 所有子树 ID.
      *
-     * @param int $id
+     * @param int|string $id
      *
      * @return array
      */
@@ -73,7 +73,7 @@ interface ITree
     /**
      * 取得给定 ID 是否包含子树.
      *
-     * @param int $id
+     * @param int|string $id
      *
      * @return bool
      */
@@ -82,9 +82,9 @@ interface ITree
     /**
      * 验证是否存在子菜单.
      *
-     * @param int   $id
-     * @param array $validateChildren
-     * @param bool  $strict
+     * @param int|string $id
+     * @param array      $validateChildren
+     * @param bool       $strict
      *
      * @return bool
      */
@@ -93,8 +93,8 @@ interface ITree
     /**
      * 取得给定 ID 上级父级 ID.
      *
-     * @param int  $id
-     * @param bool $withItSelf
+     * @param int|string $id
+     * @param bool       $withItSelf
      *
      * @return array
      */
@@ -103,8 +103,8 @@ interface ITree
     /**
      * 取得给定 ID 所有父级 ID.
      *
-     * @param int  $id
-     * @param bool $withItSelf
+     * @param int|string $id
+     * @param bool       $withItSelf
      *
      * @return array
      */
@@ -113,7 +113,7 @@ interface ITree
     /**
      * 判断级别.
      *
-     * @param int $id
+     * @param int|string $id
      *
      * @return int
      */
@@ -122,7 +122,7 @@ interface ITree
     /**
      * 取得节点的值
      *
-     * @param int        $id
+     * @param int|string $id
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -132,10 +132,10 @@ interface ITree
     /**
      * 设置节点的值
      *
-     * @param int   $id
-     * @param mixed $value
+     * @param int|string $id
+     * @param mixed      $value
      */
-    public function setData($id, $value);
+    public function setData($id, $value): void;
 
     /**
      * 树转化为数组.
