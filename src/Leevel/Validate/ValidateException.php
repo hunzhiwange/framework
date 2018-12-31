@@ -44,7 +44,7 @@ class ValidateException extends Exception
     /**
      * 响应组件.
      *
-     * @var null|\Leevel\Http\IResponse
+     * @var \Leevel\Http\IResponse
      */
     public $response;
 
@@ -67,7 +67,7 @@ class ValidateException extends Exception
      *
      * @return \Leevel\Http\IResponse
      */
-    public function getResponse(): IResponse
+    public function getResponse(): ?IResponse
     {
         return $this->response;
     }

@@ -84,9 +84,9 @@ interface IValidator
      * @param array $names
      * @param array $message
      *
-     * @return \Leevel\Validate
+     * @return \Leevel\Validate\IValidator
      */
-    public static function make(array $datas = [], array $rules = [], array $names = [], array $message = []);
+    public static function make(array $datas = [], array $rules = [], array $names = [], array $message = []): self;
 
     /**
      * 验证是否成功
@@ -123,7 +123,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function data(array $datas);
+    public function data(array $datas): self;
 
     /**
      * 添加验证数据.
@@ -132,7 +132,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function addData(array $datas);
+    public function addData(array $datas): self;
 
     /**
      * 返回验证规则.
@@ -149,7 +149,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function rule(array $rules, Closure $callbacks = null);
+    public function rule(array $rules, Closure $callbacks = null): self;
 
     /**
      * 添加验证规则.
@@ -159,7 +159,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function addRule(array $rules, Closure $callbacks = null);
+    public function addRule(array $rules, Closure $callbacks = null): self;
 
     /**
      * 返回验证消息.
@@ -175,7 +175,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function message(array $message);
+    public function message(array $message): self;
 
     /**
      * 添加验证消息.
@@ -184,7 +184,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function addMessage(array $message);
+    public function addMessage(array $message): self;
 
     /**
      * 返回名字.
@@ -200,7 +200,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function name(array $names);
+    public function name(array $names): self;
 
     /**
      * 添加名字.
@@ -209,7 +209,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function addName(array $names);
+    public function addName(array $names): self;
 
     /**
      * 设置别名.
@@ -219,7 +219,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function alias(string $name, string $alias);
+    public function alias(string $name, string $alias): self;
 
     /**
      * 批量设置别名.
@@ -228,7 +228,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function aliasMany(array $alias);
+    public function aliasMany(array $alias): self;
 
     /**
      * 设置验证后事件.
@@ -237,7 +237,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function after(Closure $callbacks);
+    public function after(Closure $callbacks): self;
 
     /**
      * 注册自定义扩展.
@@ -247,7 +247,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function extend($rule, $extends);
+    public function extend(string $rule, $extends): self;
 
     /**
      * 设置 ioc 容器.
@@ -256,7 +256,7 @@ interface IValidator
      *
      * @return $this
      */
-    public function setContainer(IContainer $container);
+    public function setContainer(IContainer $container): self;
 
     /**
      * 初始化默认的消息.

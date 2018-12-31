@@ -215,9 +215,9 @@ class Validator implements IValidator
      * @param array $names
      * @param array $messages
      *
-     * @return \Leevel\Validate
+     * @return \Leevel\Validate\IValidator
      */
-    public static function make(array $datas = [], array $rules = [], array $names = [], array $messages = [])
+    public static function make(array $datas = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
         return new static($datas, $rules, $names, $messages);
     }
@@ -299,7 +299,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function data(array $datas)
+    public function data(array $datas): IValidator
     {
         if ($this->checkTControl()) {
             return $this;
@@ -317,7 +317,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function addData(array $datas)
+    public function addData(array $datas): IValidator
     {
         if ($this->checkTControl()) {
             return $this;
@@ -333,7 +333,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    public function getRule()
+    public function getRule(): array
     {
         return $this->rules;
     }
@@ -346,7 +346,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function rule(array $rules, Closure $callbacks = null)
+    public function rule(array $rules, Closure $callbacks = null): IValidator
     {
         if ($this->checkTControl()) {
             return $this;
@@ -367,7 +367,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function addRule(array $rules, Closure $callbacks = null)
+    public function addRule(array $rules, Closure $callbacks = null): IValidator
     {
         if ($this->checkTControl()) {
             return $this;
@@ -397,7 +397,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function message(array $messages)
+    public function message(array $messages): IValidator
     {
         if ($this->checkTControl()) {
             return $this;
@@ -415,7 +415,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function addMessage(array $messages)
+    public function addMessage(array $messages): IValidator
     {
         if ($this->checkTControl()) {
             return $this;
@@ -446,7 +446,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function name(array $names)
+    public function name(array $names): IValidator
     {
         if ($this->checkTControl()) {
             return $this;
@@ -464,7 +464,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function addName(array $names)
+    public function addName(array $names): IValidator
     {
         if ($this->checkTControl()) {
             return $this;
@@ -483,7 +483,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function alias(string $name, string $alias)
+    public function alias(string $name, string $alias): IValidator
     {
         if (in_array($name, $this->getSkipRule(), true)) {
             throw new InvalidArgumentException(
@@ -503,7 +503,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function aliasMany(array $alias)
+    public function aliasMany(array $alias): IValidator
     {
         foreach ($alias as $alias => $value) {
             $this->alias($alias, $value);
@@ -519,7 +519,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function after(Closure $callbacks)
+    public function after(Closure $callbacks): IValidator
     {
         $this->afters[] = function () use ($callbacks) {
             return call_user_func($callbacks, $this);
@@ -536,7 +536,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function extend($rule, $extends)
+    public function extend(string $rule, $extends): IValidator
     {
         $this->extends[strtolower($rule)] = $extends;
 
@@ -550,7 +550,7 @@ class Validator implements IValidator
      *
      * @return $this
      */
-    public function setContainer(IContainer $container)
+    public function setContainer(IContainer $container): IValidator
     {
         $this->container = $container;
 
@@ -1807,7 +1807,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    protected function doBeforeWithFormat(string $format, $datas, array $parameter)
+    protected function doBeforeWithFormat(string $format, $datas, array $parameter): bool
     {
         $parameter[0] = $this->getFieldValue($parameter[0]) ?: $parameter[0];
 
@@ -1823,7 +1823,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    protected function doAfterWithFormat(string $format, $datas, array $parameter)
+    protected function doAfterWithFormat(string $format, $datas, array $parameter): bool
     {
         $parameter[0] = $this->getFieldValue($parameter[0]) ?: $parameter[0];
 
@@ -1839,7 +1839,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    protected function doCheckBeforeAfter(string $format, string $first, string $second)
+    protected function doCheckBeforeAfter(string $format, string $first, string $second): bool
     {
         $before = $this->makeDateTimeFormat($format, $first);
         $after = $this->makeDateTimeFormat($format, $second);
@@ -1852,7 +1852,7 @@ class Validator implements IValidator
      *
      * @param string $field
      *
-     * @return null|string
+     * @return string|void
      */
     protected function getDateFormat(string $field)
     {
@@ -1867,7 +1867,7 @@ class Validator implements IValidator
      * @param string       $field
      * @param array|string $rules
      *
-     * @return null|array
+     * @return array|void
      */
     protected function getParseRule(string $field, $rules)
     {
@@ -1891,7 +1891,7 @@ class Validator implements IValidator
      * @param string $format
      * @param string $value
      *
-     * @return null|\DateTime
+     * @return \DateTime|void
      */
     protected function makeDateTimeFormat(string $format, string $value)
     {
@@ -1913,10 +1913,8 @@ class Validator implements IValidator
      * @param string $field
      * @param array  $parameter
      * @param int    $limitLength
-     *
-     * @return bool
      */
-    protected function checkParameterLength(string $field, array $parameter, int $limitLength)
+    protected function checkParameterLength(string $field, array $parameter, int $limitLength): void
     {
         if (count($parameter) < $limitLength) {
             throw new InvalidArgumentException(
@@ -1935,7 +1933,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    protected function arrayMessage(array $messages)
+    protected function arrayMessage(array $messages): array
     {
         $result = [];
 
@@ -1974,7 +1972,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    protected function wildcardMessageItem(string $field, $message)
+    protected function wildcardMessageItem(string $field, $message): array
     {
         $field = $this->prepareRegexForWildcard($field);
 
@@ -1999,7 +1997,7 @@ class Validator implements IValidator
      *
      * @return string
      */
-    protected function prepareRegexForWildcard(string $regex, bool $strict = true)
+    protected function prepareRegexForWildcard(string $regex, bool $strict = true): string
     {
         $regex = preg_quote($regex, '/');
         $regex = '/^'.str_replace('\*', '(\S+)', $regex).($strict ? '$' : '').'/';
@@ -2015,7 +2013,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    protected function arrayMessageItem(string $field, $message)
+    protected function arrayMessageItem(string $field, $message): array
     {
         $result = [];
 
@@ -2039,7 +2037,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    protected function getFieldRuleWithoutSkip(string $field)
+    protected function getFieldRuleWithoutSkip(string $field): array
     {
         return array_diff($this->getFieldRule($field), $this->getSkipRule());
     }
@@ -2067,7 +2065,7 @@ class Validator implements IValidator
      *
      * @return array
      */
-    protected function getFieldRule(string $field)
+    protected function getFieldRule(string $field): array
     {
         if (isset($this->rules[$field])) {
             return $this->rules[$field];
@@ -2176,8 +2174,10 @@ class Validator implements IValidator
      *
      * @param array  $datas
      * @param string $parentKey
+     *
+     * @return array
      */
-    protected function parseDataKeyRecursion(array $datas, string $parentKey = '')
+    protected function parseDataKeyRecursion(array $datas, string $parentKey = ''): array
     {
         $dataKeys = [];
 
@@ -2254,9 +2254,7 @@ class Validator implements IValidator
     protected function parseParameters(string $rule, string $parameter): array
     {
         if ('regex' === strtolower($rule)) {
-            return [
-                $parameter,
-            ];
+            return [$parameter];
         }
 
         return explode(',', $parameter);
@@ -2350,7 +2348,7 @@ class Validator implements IValidator
      * @param string $rule
      * @param array  $parameter
      */
-    protected function addFailure(string $field, string $rule, array $parameter)
+    protected function addFailure(string $field, string $rule, array $parameter): void
     {
         $this->addError($field, $rule, $parameter);
 
@@ -2364,7 +2362,7 @@ class Validator implements IValidator
      * @param string $rule
      * @param array  $parameter
      */
-    protected function addError(string $field, string $rule, array $parameter)
+    protected function addError(string $field, string $rule, array $parameter): void
     {
         $message = $this->getFieldRuleMessage($field, $rule);
 
@@ -2397,7 +2395,7 @@ class Validator implements IValidator
      *
      * @return string
      */
-    protected function getFieldRuleMessage(string $field, string $rule)
+    protected function getFieldRuleMessage(string $field, string $rule): string
     {
         return $this->messages[$field.'.'.$rule] ?? $this->messages[$rule] ??
             static::$defaultMessages[$rule] ?? '';
@@ -2410,7 +2408,7 @@ class Validator implements IValidator
      *
      * @return string
      */
-    protected function parseFieldName(string $field)
+    protected function parseFieldName(string $field): string
     {
         return $this->names[$field] ?? $field;
     }
@@ -2451,7 +2449,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    protected function hasFieldValue(string $rule)
+    protected function hasFieldValue(string $rule): bool
     {
         return array_key_exists($rule, $this->datas);
     }
@@ -2481,7 +2479,7 @@ class Validator implements IValidator
      *
      * @return bool
      */
-    protected function callClassExtend(string $extend, array $parameter)
+    protected function callClassExtend(string $extend, array $parameter): bool
     {
         if (!$this->container) {
             throw new InvalidArgumentException('Container was not set.');
@@ -2514,9 +2512,9 @@ class Validator implements IValidator
      * @param string $rule
      * @param array  $parameter
      *
-     * @return null|bool
+     * @return bool
      */
-    protected function callExtend(string $rule, array $parameter)
+    protected function callExtend(string $rule, array $parameter): bool
     {
         $extends = $this->extends[$rule];
 

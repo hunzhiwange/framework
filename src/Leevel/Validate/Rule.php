@@ -74,10 +74,8 @@ abstract class Rule
      * @param string $field
      * @param array  $parameter
      * @param int    $limitLength
-     *
-     * @return bool
      */
-    protected function checkParameterLength(string $field, array $parameter, int $limitLength)
+    protected function checkParameterLength(string $field, array $parameter, int $limitLength): void
     {
         if (count($parameter) < $limitLength) {
             throw new InvalidArgumentException(
