@@ -36,14 +36,14 @@ interface IParser
      *
      * @return $this
      */
-    public function registerCompilers();
+    public function registerCompilers(): self;
 
     /**
      * 注册视图分析器.
      *
      * @return $this
      */
-    public function registerParsers();
+    public function registerParsers(): self;
 
     /**
      * 执行编译.
@@ -52,9 +52,9 @@ interface IParser
      * @param null|string $cachePath
      * @param bool        $isContent
      *
-     * @return string
+     * @return string|void
      */
-    public function doCompile($file, $cachePath = null, bool $isContent = false);
+    public function doCompile(string $file, ?string $cachePath = null, bool $isContent = false);
 
     /**
      * code 编译编码，后还原
@@ -63,7 +63,7 @@ interface IParser
      *
      * @return string
      */
-    public static function revertEncode($content);
+    public static function revertEncode(string $content): string;
 
     /**
      * tagself 编译编码，后还原
@@ -72,5 +72,5 @@ interface IParser
      *
      * @return string
      */
-    public static function globalEncode($content);
+    public static function globalEncode(string $content): string;
 }

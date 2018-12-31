@@ -84,7 +84,7 @@ class Cache extends Command
      * @param \Leevel\Kernel\IProject $project
      * @param \Leevel\Option\IOption  $option
      */
-    public function handle(IProject $project, IOption $option)
+    public function handle(IProject $project, IOption $option): void
     {
         $this->project = $project;
         $this->parser = $this->createParser();

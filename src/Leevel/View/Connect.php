@@ -34,7 +34,7 @@ use RuntimeException;
 abstract class Connect
 {
     /**
-     * 变量值
+     * 变量值.
      *
      * @var array
      */
@@ -65,7 +65,7 @@ abstract class Connect
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): self
     {
         $this->option[$name] = $value;
 
@@ -78,7 +78,7 @@ abstract class Connect
      * @param mixed $name
      * @param mixed $value
      */
-    public function setVar($name, $value = null)
+    public function setVar($name, $value = null): void
     {
         if (is_array($name)) {
             $this->vars = array_merge($this->vars, $name);
@@ -88,13 +88,13 @@ abstract class Connect
     }
 
     /**
-     * 获取变量值
+     * 获取变量值.
      *
      * @param null|string $name
      *
      * @return mixed
      */
-    public function getVar(string $name = null)
+    public function getVar(?string $name = null)
     {
         if (null === $name) {
             return $this->vars;
@@ -104,46 +104,38 @@ abstract class Connect
     }
 
     /**
-     * 删除变量值
+     * 删除变量值.
      *
      * @param array $name
-     *
-     * @return $this
      */
-    public function deleteVar(array $name)
+    public function deleteVar(array $name): void
     {
         foreach ($name as $item) {
             if (isset($this->vars[$item])) {
                 unset($this->vars[$item]);
             }
         }
-
-        return $this;
     }
 
     /**
-     * 清空变量值
+     * 清空变量值.
      *
      * @param null|string $name
-     *
-     * @return $this
      */
-    public function clearVar()
+    public function clearVar(): void
     {
         $this->vars = [];
-
-        return $this;
     }
 
     /**
      * 分析展示的视图文件.
      *
-     * @param string $file 视图文件地址
-     * @param string $ext  后缀
+     * @param string $file
+     * @param string $ext
      *
-     * @return string|void
+     * @return string
      */
-    protected function parseDisplayFile(?string $file = null, ?string $ext = '')
+    protected function parseDisplayFile(?string $file = null, ?string $ext = ''): string
     {
         if (!is_file($file)) {
             $file = $this->parseFile($file, $ext);
@@ -161,12 +153,12 @@ abstract class Connect
     /**
      * 分析模板真实路径.
      *
-     * @param string $tpl 文件地址
-     * @param string $ext 扩展名
+     * @param string $tpl
+     * @param string $ext
      *
      * @return string
      */
-    protected function parseFile(?string $tpl = null, ?string $ext = '')
+    protected function parseFile(?string $tpl = null, ?string $ext = ''): string
     {
         $tpl = trim(str_replace('->', '.', $tpl));
 
@@ -192,7 +184,7 @@ abstract class Connect
      *
      * @return string
      */
-    protected function formatFile(string $content)
+    protected function formatFile(string $content): string
     {
         return str_replace([
             ':',

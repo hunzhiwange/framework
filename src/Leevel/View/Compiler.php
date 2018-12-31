@@ -249,7 +249,7 @@ class Compiler implements ICompiler
      *
      * @return array
      */
-    public function getCompilers()
+    public function getCompilers(): array
     {
         $methods = get_class_methods($this);
         $compilers = [];
@@ -298,7 +298,7 @@ class Compiler implements ICompiler
      *
      * @return array
      */
-    public function getNodeTagHelp()
+    public function getNodeTagHelp(): array
     {
         return $this->nodeTag;
     }
@@ -308,7 +308,7 @@ class Compiler implements ICompiler
      *
      * @return array
      */
-    public function getJsTagHelp()
+    public function getJsTagHelp(): array
     {
         return $this->jsTag;
     }
@@ -318,7 +318,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function globalCompiler(array &$theme)
+    public function globalCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent($theme['content'], 'global');
     }
@@ -328,7 +328,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function globalrevertCompiler(array &$theme)
+    public function globalrevertCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent($theme['content'], 'revert');
     }
@@ -338,7 +338,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function revertCompiler(array &$theme)
+    public function revertCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent($theme['content'], 'revert');
     }
@@ -348,7 +348,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function variableCodeCompiler(array &$theme)
+    public function variableCodeCompiler(array &$theme): void
     {
         $theme['content'] = !empty($theme['content']) ?
             $this->parseContent($theme['content']) : null;
@@ -365,9 +365,9 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function ifCodeCompiler(array &$theme)
+    public function ifCodeCompiler(array &$theme): void
     {
-        $theme['content'] = $this->parseContentIf($theme['content']);
+        $theme['content'] = $this->parseContentIf($theme['content'], '');
         $theme['content'] = $this->encodeContent(
             $this->withPhpTag($theme['content'].':')
         );
@@ -378,7 +378,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function elseifCodeCompiler(array &$theme)
+    public function elseifCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->parseContentIf($theme['content'], 'else');
         $theme['content'] = $this->encodeContent(
@@ -391,7 +391,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function elseCodeCompiler(array &$theme)
+    public function elseCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent(
             $this->withPhpTag('else:')
@@ -403,7 +403,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function foreachCodeCompiler(array &$theme)
+    public function foreachCodeCompiler(array &$theme): void
     {
         $theme['content'] = call_user_func(
             function ($content) {
@@ -437,7 +437,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function forCodeCompiler(array &$theme)
+    public function forCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent(
             $this->withPhpTag('for ('.$theme['content'].'):')
@@ -449,7 +449,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function whileCodeCompiler(array &$theme)
+    public function whileCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent(
             $this->withPhpTag('while ('.$theme['content'].'):')
@@ -461,7 +461,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function phpCodeCompiler(array &$theme)
+    public function phpCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent(
             $this->withPhpTag($theme['content'].';')
@@ -473,7 +473,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function noteCodeCompiler(array &$theme)
+    public function noteCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent(' ');
     }
@@ -483,7 +483,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function echoCodeCompiler(array &$theme)
+    public function echoCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent(
             $this->withPhpTag('echo '.$theme['content'].';')
@@ -495,7 +495,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function scriptCodeCompiler(array &$theme)
+    public function scriptCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent(
             '<script type="text/javascript">'
@@ -507,7 +507,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function styleCodeCompiler(array &$theme)
+    public function styleCodeCompiler(array &$theme): void
     {
         $theme['content'] = $this->encodeContent(
             '<style type="text/css">'
@@ -519,7 +519,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function endtagCodeCompiler(array &$theme)
+    public function endtagCodeCompiler(array &$theme): void
     {
         $theme['content'] = substr(
             $theme['source'],
@@ -570,7 +570,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function jsvarCompiler(array &$theme)
+    public function jsvarCompiler(array &$theme): void
     {
         $theme['content'] = $this->withPhpTag(
             'echo '.$this->parseJcontent($theme['content']).';'
@@ -582,7 +582,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function letJsCompiler(array &$theme)
+    public function letJsCompiler(array &$theme): void
     {
         $this->checkNode($theme, true);
         $attr = $this->getNodeAttribute($theme);
@@ -612,7 +612,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function ifJsCompiler(array &$theme)
+    public function ifJsCompiler(array &$theme): void
     {
         $this->checkNode($theme, true);
         $attr = $this->getNodeAttribute($theme);
@@ -629,7 +629,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function elseifJsCompiler(array &$theme)
+    public function elseifJsCompiler(array &$theme): void
     {
         $this->checkNode($theme, true);
         $attr = $this->getNodeAttribute($theme);
@@ -645,7 +645,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function elseJsCompiler(array &$theme)
+    public function elseJsCompiler(array &$theme): void
     {
         $theme['content'] = $this->withPhpTag('else:');
     }
@@ -655,7 +655,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function forJsCompiler(array &$theme)
+    public function forJsCompiler(array &$theme): void
     {
         $this->checkNode($theme, true);
         $attr = $this->getNodeAttribute($theme);
@@ -692,7 +692,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function assignNodeCompiler(array &$theme)
+    public function assignNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
@@ -720,12 +720,12 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function ifNodeCompiler(array &$theme)
+    public function ifNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
 
-        $attr['condition'] = $this->parseContentIf($attr['condition'], false);
+        $attr['condition'] = $this->parseContentIf($attr['condition']);
         $theme['content'] = $this->withPhpTag('if ('.$attr['condition'].'):').
             $this->getNodeBody($theme).
             $this->withPhpTag('endif;');
@@ -736,12 +736,12 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function elseifNodeCompiler(array &$theme)
+    public function elseifNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
 
-        $attr['condition'] = $this->parseContentIf($attr['condition'], false);
+        $attr['condition'] = $this->parseContentIf($attr['condition']);
         $theme['content'] = $this->withPhpTag('elseif ('.$attr['condition'].'):');
     }
 
@@ -750,7 +750,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function elseNodeCompiler(array &$theme)
+    public function elseNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $theme['content'] = $this->withPhpTag('else:');
@@ -761,7 +761,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function listNodeCompiler(array &$theme)
+    public function listNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
@@ -804,7 +804,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function listsNodeCompiler(array &$theme)
+    public function listsNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
@@ -867,7 +867,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function includeNodeCompiler(array &$theme)
+    public function includeNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
@@ -885,7 +885,7 @@ class Compiler implements ICompiler
             }
         }
 
-        $attr['file'] = $this->parseContentIf($attr['file'], false);
+        $attr['file'] = $this->parseContentIf($attr['file']);
 
         $theme['content'] = $this->withPhpTag(
             '$this->display('.$attr['file'].
@@ -899,7 +899,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function forNodeCompiler(array &$theme)
+    public function forNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
@@ -936,7 +936,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function whileNodeCompiler(array &$theme)
+    public function whileNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
@@ -951,7 +951,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function breakNodeCompiler(array &$theme)
+    public function breakNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $theme['content'] = $this->withPhpTag('break;');
@@ -962,7 +962,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function continueNodeCompiler(array &$theme)
+    public function continueNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $theme['content'] = $this->withPhpTag('continue;');
@@ -973,7 +973,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function phpNodeCompiler(array &$theme)
+    public function phpNodeCompiler(array &$theme): void
     {
         $this->checkNode($theme);
         $theme['content'] = $this->withPhpTag($this->getNodeBody($theme));
@@ -984,7 +984,7 @@ class Compiler implements ICompiler
      *
      * @param array $theme
      */
-    public function attributeNodeCompiler(array &$theme)
+    public function attributeNodeCompiler(array &$theme): void
     {
         $source = trim($theme['content']);
         $source = $this->escapeRegexCharacter($source);
@@ -1051,7 +1051,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function parseContentIf($content, $type = '')
+    protected function parseContentIf(string $content, ?string $type = null): string
     {
         $param = [];
 
@@ -1066,7 +1066,7 @@ class Compiler implements ICompiler
 
         $result = implode(' ', $param);
 
-        if (false === $type) {
+        if (null === $type) {
             return $result;
         }
 
@@ -1080,7 +1080,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function parseJcontent($content)
+    protected function parseJcontent(string $content): string
     {
         $var = explode('|', $content);
         $content = array_shift($var);
@@ -1101,7 +1101,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function parseExpression($content)
+    protected function parseExpression(string $content): string
     {
         $content = trim($content);
 
@@ -1194,7 +1194,7 @@ class Compiler implements ICompiler
      *
      * @return bool
      */
-    protected function isVarExpression($char)
+    protected function isVarExpression(string $char): bool
     {
         return !in_array($char, [
             '"',
@@ -1211,7 +1211,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function parseJsFunction($name, $var)
+    protected function parseJsFunction(string $name, array $var): string
     {
         return $this->parseVarFunction($name, $var, true);
     }
@@ -1224,7 +1224,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function parseContent($content, bool $isFunc = true)
+    protected function parseContent(string $content, bool $isFunc = true): string
     {
         // 以|分割字符串,数组第一位是变量名字符串,之后的都是函数参数&&函数{$hello|md5}
         $var = explode('|', $content);
@@ -1277,7 +1277,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function parseVarFunction($name, $var, $isJavascript = false)
+    protected function parseVarFunction(string $name, array $var, bool $isJavascript = false): string
     {
         $len = count($var);
 
@@ -1327,7 +1327,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function arrayHandler(&$vars, bool $forObj = true, int $start = 2)
+    protected function arrayHandler(array &$vars, bool $forObj = true, int $start = 2): string
     {
         $len = count($vars);
         $param = '';
@@ -1349,12 +1349,11 @@ class Compiler implements ICompiler
      * 编码内容.
      *
      * @param string $content
-     * @param string $content
-     * @param mixed  $type
+     * @param string $type
      *
      * @return string
      */
-    protected function encodeContent($content, $type = '')
+    protected function encodeContent(string $content, string $type = ''): string
     {
         if ('global' === $type) {
             $content = Parser::globalEncode($content);
@@ -1378,7 +1377,7 @@ class Compiler implements ICompiler
      *
      * @return bool
      */
-    protected function checkNode(array $theme, bool $jsNode = false)
+    protected function checkNode(array $theme, bool $jsNode = false): bool
     {
         $attribute = $theme['children'][0];
 
@@ -1412,11 +1411,11 @@ class Compiler implements ICompiler
     /**
      * 取得节点的属性列表.
      *
-     * @param array $theme 节点
+     * @param array $theme
      *
      * @return array
      */
-    protected function getNodeAttribute($theme)
+    protected function getNodeAttribute(array $theme): array
     {
         foreach ($theme['children'] as $child) {
             if (isset($child['is_attribute']) && true === $child['is_attribute']) {
@@ -1430,11 +1429,11 @@ class Compiler implements ICompiler
     /**
      * 取得body编译内容.
      *
-     * @param array $theme 节点
+     * @param array $theme
      *
-     * @return array
+     * @return string|void
      */
-    protected function getNodeBody($theme)
+    protected function getNodeBody(array $theme)
     {
         foreach ($theme['children'] as $child) {
             if (isset($child['is_body']) && 1 === $child['is_body']) {
@@ -1451,7 +1450,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function escapeRegexCharacter($txt, bool $esc = true)
+    protected function escapeRegexCharacter(string $txt, bool $esc = true): string
     {
         $txt = $this->escapeCharacter($txt, $esc);
 
@@ -1508,7 +1507,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function escapeCharacter($txt, bool $esc = true)
+    protected function escapeCharacter(string $txt, bool $esc = true): string
     {
         if ('""' === $txt) {
             $txt = '';
@@ -1554,7 +1553,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function withPhpTag($content)
+    protected function withPhpTag(string $content): string
     {
         return $this->phpTagStart().$content.$this->phpTagEnd();
     }
@@ -1564,7 +1563,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function phpTagStart()
+    protected function phpTagStart(): string
     {
         return '<?php ';
     }
@@ -1574,7 +1573,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function phpTagEnd()
+    protected function phpTagEnd(): string
     {
         return ' ?>';
     }

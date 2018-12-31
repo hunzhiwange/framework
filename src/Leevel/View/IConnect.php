@@ -49,10 +49,10 @@ interface IConnect
      * @param mixed $name
      * @param mixed $value
      */
-    public function setVar($name, $value = null);
+    public function setVar($name, $value = null): void;
 
     /**
-     * 获取变量值
+     * 获取变量值.
      *
      * @param null|string $name
      *
@@ -61,18 +61,14 @@ interface IConnect
     public function getVar(string $name = null);
 
     /**
-     * 删除变量值
+     * 删除变量值.
      *
      * @param array $name
-     *
-     * @return $this
      */
-    public function deleteVar(array $name);
+    public function deleteVar(array $name): void;
 
     /**
-     * 清空变量值
-     *
-     * @return $this
+     * 清空变量值.
      */
-    public function clearVar();
+    public function clearVar(): void;
 }

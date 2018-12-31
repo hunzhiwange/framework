@@ -36,19 +36,19 @@ interface ICompiler
      *
      * @return array
      */
-    public function getCompilers();
+    public function getCompilers(): array;
 
     /**
      * node.tag.
      *
      * @return array
      */
-    public function getNodeTagHelp();
+    public function getNodeTagHelp(): array;
 
     /**
      * js.tag.
      *
      * @return array
      */
-    public function getJsTagHelp();
+    public function getJsTagHelp(): array;
 }

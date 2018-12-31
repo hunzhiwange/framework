@@ -170,7 +170,7 @@ class Parser implements IParser
      *
      * @return $this
      */
-    public function registerCompilers()
+    public function registerCompilers(): IParser
     {
         foreach ($this->compiler->getCompilers() as $compiler) {
             $this->registerCompiler(
@@ -188,7 +188,7 @@ class Parser implements IParser
      *
      * @return $this
      */
-    public function registerParsers()
+    public function registerParsers(): IParser
     {
         foreach ($this->tags as $key => $value) {
             $this->registerParser($key);
@@ -204,9 +204,9 @@ class Parser implements IParser
      * @param null|string $cachePath
      * @param bool        $isContent
      *
-     * @return string
+     * @return string|void
      */
-    public function doCompile($file, $cachePath = null, bool $isContent = false)
+    public function doCompile(string $file, ?string $cachePath = null, bool $isContent = false)
     {
         // 源码
         if (false === $isContent) {
@@ -263,7 +263,7 @@ class Parser implements IParser
      *
      * @return string
      */
-    public static function revertEncode($content)
+    public static function revertEncode(string $content): string
     {
         $rand = rand(1000000, 9999999);
 
@@ -279,7 +279,7 @@ class Parser implements IParser
      *
      * @return string
      */
-    public static function globalEncode($content)
+    public static function globalEncode(string $content): string
     {
         $rand = rand(1000000, 9999999);
 
@@ -293,7 +293,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function globalParse(&$compiled)
+    protected function globalParse(string &$compiled): void
     {
         $tag = $this->getTag('global');
 
@@ -328,7 +328,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function jsvarParse(&$compiled)
+    protected function jsvarParse(string &$compiled): void
     {
         $tag = $this->getTag('jsvar');
 
@@ -362,7 +362,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function codeParse(&$compiled)
+    protected function codeParse(string &$compiled): void
     {
         foreach ($this->compilers['code'] as $compilers => $tag) {
             // 处理一些正则表达式中有特殊意义的符号
@@ -405,7 +405,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function jsParse(&$compiled)
+    protected function jsParse(string &$compiled): void
     {
         $this->jsNode = true;
 
@@ -417,7 +417,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function nodeParse(&$compiled)
+    protected function nodeParse(string &$compiled): void
     {
         $this->jsNode = false;
 
@@ -429,7 +429,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function normalizeNodeParse(&$compiled)
+    protected function normalizeNodeParse(string &$compiled): void
     {
         // 查找分析 Node 的标签
         $this->findNodeTag($compiled);
@@ -443,7 +443,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function revertParse(&$compiled)
+    protected function revertParse(string &$compiled): void
     {
         if (preg_match_all(
             '/__##revert##START##\d+@(.+?)##END##revert##__/',
@@ -475,7 +475,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function globalrevertParse(&$compiled)
+    protected function globalrevertParse(string &$compiled): void
     {
         if (preg_match_all(
             '/__##global##START##\d+@(.+?)##END##global##__/',
@@ -508,7 +508,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function findNodeTag(&$compiled)
+    protected function findNodeTag(string &$compiled): void
     {
         // 设置一个栈
         $this->nodeStack = new Stack(['array']);
@@ -591,7 +591,7 @@ class Parser implements IParser
      *
      * @param string $compiled
      */
-    protected function packNode(&$compiled)
+    protected function packNode(string &$compiled): void
     {
         if (true === $this->jsNode) {
             $nodeTag = $this->compiler->getJsTagHelp();
@@ -710,9 +710,9 @@ class Parser implements IParser
      *
      * @return bool
      */
-    protected function findHeadTag($tag, $tailTag)
+    protected function findHeadTag(array $tag, array $tailTag): bool
     {
-        return preg_match("/^{$tailTag['name']}/i", $tag['name']);
+        return preg_match("/^{$tailTag['name']}/i", $tag['name']) > 0;
     }
 
     /**
@@ -720,7 +720,7 @@ class Parser implements IParser
      *
      * @param string $tag
      */
-    protected function registerParser($tag)
+    protected function registerParser(string $tag): void
     {
         $this->parses[] = $tag;
     }
@@ -728,13 +728,11 @@ class Parser implements IParser
     /**
      * 注册编译器 code 和 node 编译器注册.
      *
-     * @param string $type
-     * @param array|string
-     * @param array|string $Tag
-     * @param mixed        $name
-     * @param mixed        $tag
+     * @param string       $type
+     * @param array|string $name
+     * @param array|string $tag
      */
-    protected function registerCompiler($type, $name, $tag)
+    protected function registerCompiler(string $type, $name, $tag): void
     {
         if (!is_array($name)) {
             $name = (array) $name;
@@ -750,7 +748,7 @@ class Parser implements IParser
      *
      * @return string
      */
-    protected function compileThemeTree()
+    protected function compileThemeTree(): string
     {
         // 逐个编译
         $cache = '';
@@ -766,9 +764,9 @@ class Parser implements IParser
     /**
      * 分析模板调用编译器编译.
      *
-     * @param array $theme 待编译的模板
+     * @param array $theme
      */
-    protected function compileTheme(&$theme)
+    protected function compileTheme(array &$theme): void
     {
         foreach ($theme['children'] as $key => $value) {
             $source = $value['source'];
@@ -799,7 +797,7 @@ class Parser implements IParser
      * @param string $cachePath
      * @param string $compiled
      */
-    protected function makeCacheFile($cachePath, &$compiled)
+    protected function makeCacheFile(string $cachePath, string &$compiled): void
     {
         $dirname = dirname($cachePath);
 
@@ -833,7 +831,7 @@ class Parser implements IParser
      *
      * @return array
      */
-    protected function getTag($type)
+    protected function getTag(string $type): array
     {
         return $this->tags[$type];
     }
@@ -843,16 +841,16 @@ class Parser implements IParser
      *
      * @param array $theme
      */
-    protected function addTheme($theme)
+    protected function addTheme(array $theme): void
     {
         $top = &$this->themeTree[0];
         $top = $this->addThemeTree($top, $theme);
     }
 
     /**
-     * 清理模板树对象
+     * 清理模板树对象.
      */
-    protected function clearThemeTree()
+    protected function clearThemeTree(): void
     {
         $this->themeTree = [];
     }
@@ -862,7 +860,7 @@ class Parser implements IParser
      *
      * @param array $theme
      */
-    protected function topTheme($theme)
+    protected function topTheme(array $theme): void
     {
         $this->themeTree[] = $theme;
     }
@@ -870,12 +868,12 @@ class Parser implements IParser
     /**
      * 将新的模板加入到树结构中去.
      *
-     * @param array $top 顶层模板
-     * @param array $new 待加入的模板
+     * @param array $top
+     * @param array $new
      *
      * @return array
      */
-    protected function addThemeTree($top, $new)
+    protected function addThemeTree(array $top, array $new): array
     {
         $result = [];
 
@@ -949,7 +947,7 @@ class Parser implements IParser
      * @note int start_in 标签开始的所在的行的起始字节数
      * @note int end_in 标签结束的所在的行的起始字节数
      */
-    protected function getPosition($content, $find, $start)
+    protected function getPosition(string $content, string $find, int $start): array
     {
         /*
          *
@@ -1022,8 +1020,8 @@ class Parser implements IParser
      * 这个和两个时间段之间的关系一样，其中交叉在模板引擎中是不被支持，因为无法实现
      * 除掉交叉，剩下包含、被包含、前面和后面，通过位置组装成一颗树结构.
      *
-     * @param array $value  待分析的第一个模板
-     * @param array $beyond 待分析的第二个模板
+     * @param array $value
+     * @param array $beyond
      *
      * @return string
      * @note string front 第一个在第二个前面
@@ -1031,7 +1029,7 @@ class Parser implements IParser
      * @note string in 第一个在第二里面，成为它的子模板
      * @note string out 第一个在第一个里面，成为它的子模板
      */
-    protected function positionRelative($value, $beyond)
+    protected function positionRelative(array $value, array $beyond): string
     {
         /*
          * 第一个匹配的标签在第二个前面
@@ -1138,7 +1136,7 @@ class Parser implements IParser
      *
      * @return array
      */
-    protected function normalizeThemeStruct(array $theme)
+    protected function normalizeThemeStruct(array $theme): array
     {
         return array_merge(self::$themeStruct, $theme);
     }
@@ -1150,7 +1148,7 @@ class Parser implements IParser
      *
      * @return string
      */
-    protected function escapeRegexCharacter($txt)
+    protected function escapeRegexCharacter(string $txt): string
     {
         return preg_quote($txt, '/');
     }
@@ -1162,7 +1160,7 @@ class Parser implements IParser
      *
      * @return string
      */
-    protected function getLocation($position)
+    protected function getLocation(array $position): string
     {
         return sprintf(
                 'Line:%s; column:%s; file:%s.',
@@ -1180,7 +1178,7 @@ class Parser implements IParser
      *
      * @return string
      */
-    protected function getLocationSource($position)
+    protected function getLocationSource(array $position): string
     {
         $line = explode(
             PHP_EOL,

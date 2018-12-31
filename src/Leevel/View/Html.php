@@ -107,7 +107,7 @@ class Html extends Connect implements IConnect
      *
      * @param \Closure $parseResolver
      */
-    public function setParseResolver(Closure $parseResolver)
+    public function setParseResolver(Closure $parseResolver): void
     {
         $this->parseResolver = $parseResolver;
     }
@@ -119,7 +119,7 @@ class Html extends Connect implements IConnect
      *
      * @return string
      */
-    public function getCachePath(string $file)
+    public function getCachePath(string $file): string
     {
         if (!$this->option['cache_path']) {
             throw new RuntimeException('Theme cache path must be set.');
@@ -137,7 +137,7 @@ class Html extends Connect implements IConnect
      *
      * @return \Leevel\View\IParser
      */
-    protected function resolverParser()
+    protected function resolverParser(): IParser
     {
         if (!$this->parseResolver) {
             throw new RuntimeException('Html theme not set parse resolver.');
@@ -151,7 +151,7 @@ class Html extends Connect implements IConnect
      *
      * @return \Leevel\View\IParser
      */
-    protected function parser()
+    protected function parser(): IParser
     {
         if (null !== $this->parser) {
             return $this->parser;
@@ -168,7 +168,7 @@ class Html extends Connect implements IConnect
      *
      * @return bool
      */
-    protected function isCacheExpired(string $file, string $cachepath)
+    protected function isCacheExpired(string $file, string $cachepath): bool
     {
         if (!is_file($cachepath)) {
             return true;

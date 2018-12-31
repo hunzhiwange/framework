@@ -82,7 +82,7 @@ class Register extends Provider
     /**
      * 注册 view.views 服务
      */
-    protected function viewViews()
+    protected function viewViews(): void
     {
         $this->container->singleton('view.views', function (IContainer $container) {
             return new Manager($container);
@@ -92,7 +92,7 @@ class Register extends Provider
     /**
      * 注册 view.view 服务
      */
-    protected function viewView()
+    protected function viewView(): void
     {
         $this->container->singleton('view.view', function (IContainer $container) {
             return $container['view.views']->connect();
@@ -102,7 +102,7 @@ class Register extends Provider
     /**
      * 注册 view.compiler 服务
      */
-    protected function viewCompiler()
+    protected function viewCompiler(): void
     {
         $this->container->singleton('view.compiler', function (IContainer $container) {
             return new Compiler();
@@ -112,7 +112,7 @@ class Register extends Provider
     /**
      * 注册 view.parser 服务
      */
-    protected function viewParser()
+    protected function viewParser(): void
     {
         $this->container->singleton('view.parser', function (IContainer $container) {
             return (new Parser($container['view.compiler']))->
@@ -125,7 +125,7 @@ class Register extends Provider
     /**
      * 注册 view.twig.parser 服务
      */
-    protected function viewTwigParser()
+    protected function viewTwigParser(): void
     {
         $this->container->singleton('view.twig.parser', function (IProject $project) {
             return new Twig_Environment(new Twig_Loader_Filesystem(), [
