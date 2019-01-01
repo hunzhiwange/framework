@@ -67,7 +67,7 @@ class Register extends Provider
     /**
      * 注册 sessions 服务
      */
-    protected function sessions()
+    protected function sessions(): void
     {
         $this->container->singleton('sessions', function (IContainer $container) {
             return new Manager($container);
@@ -77,7 +77,7 @@ class Register extends Provider
     /**
      * 注册 session 服务
      */
-    protected function session()
+    protected function session(): void
     {
         $this->container->singleton('session', function (IContainer $container) {
             return $container['sessions']->connect();
@@ -87,7 +87,7 @@ class Register extends Provider
     /**
      * 注册 middleware 服务
      */
-    protected function middleware()
+    protected function middleware(): void
     {
         $this->container->singleton('Leevel\\Session\\Middleware\\Session');
     }

@@ -48,7 +48,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function normalizeOptionNamespace()
+    protected function normalizeOptionNamespace(): string
     {
         return 'session';
     }
@@ -114,7 +114,7 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function getConnectOption($connect)
+    protected function getConnectOption(string $connect): array
     {
         return $this->filterNullOfOption(
             parent::getConnectOption($connect)

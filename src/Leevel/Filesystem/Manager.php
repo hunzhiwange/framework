@@ -63,7 +63,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function normalizeOptionNamespace()
+    protected function normalizeOptionNamespace(): string
     {
         return 'filesystem';
     }

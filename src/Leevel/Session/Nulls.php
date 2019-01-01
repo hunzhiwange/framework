@@ -36,7 +36,7 @@ class Nulls implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName)
+    public function open($savePath, $sessionName): bool
     {
         return true;
     }
@@ -44,7 +44,7 @@ class Nulls implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function close()
+    public function close(): bool
     {
         return true;
     }
@@ -52,15 +52,15 @@ class Nulls implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function read($sessionid)
+    public function read($sessionid): string
     {
-        return [];
+        return serialize([]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function write($sessionid, $sessiondata)
+    public function write($sessionid, $sessiondata): bool
     {
         return true;
     }
@@ -68,7 +68,7 @@ class Nulls implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionid)
+    public function destroy($sessionid): bool
     {
         return true;
     }
@@ -76,9 +76,9 @@ class Nulls implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function gc($maxlifetime)
+    public function gc($maxlifetime): int
     {
-        return true;
+        return 0;
     }
 
     /**

@@ -55,7 +55,7 @@ class Clear extends Command
      *
      * @param \Leevel\Kernel\IProject $project
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         $this->line('Start to clear cache session.');
 

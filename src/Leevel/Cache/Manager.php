@@ -91,7 +91,7 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function getConnectOption($connect): array
+    protected function getConnectOption(string $connect): array
     {
         return $this->filterNullOfOption(
             parent::getConnectOption($connect)

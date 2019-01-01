@@ -76,7 +76,7 @@ abstract class Manager
      *
      * @return \Leevel\Di\IContainer
      */
-    public function container()
+    public function container(): IContainer
     {
         return $this->container;
     }
@@ -122,7 +122,7 @@ abstract class Manager
      *
      * @param array|string $options
      */
-    public function disconnect($options = [])
+    public function disconnect($options = []): void
     {
         list($options, $unique) = $this->parseOptionAndUnique($options);
 
@@ -136,7 +136,7 @@ abstract class Manager
      *
      * @return object[]
      */
-    public function getConnects()
+    public function getConnects(): array
     {
         return $this->connects;
     }
@@ -146,7 +146,7 @@ abstract class Manager
      *
      * @return string
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
         return $this->getContainerOption('default');
     }
@@ -156,7 +156,7 @@ abstract class Manager
      *
      * @param string $name
      */
-    public function setDefaultDriver($name): void
+    public function setDefaultDriver(string $name): void
     {
         $this->setContainerOption('default', $name);
     }
@@ -193,7 +193,7 @@ abstract class Manager
      *
      * @return string
      */
-    abstract protected function normalizeOptionNamespace();
+    abstract protected function normalizeOptionNamespace(): string;
 
     /**
      * 创建连接对象
@@ -211,7 +211,7 @@ abstract class Manager
      *
      * @return string
      */
-    protected function normalizeOptionName($name = null)
+    protected function normalizeOptionName(?string $name = null): string
     {
         return $this->normalizeOptionNamespace().'\\'.$name;
     }
@@ -224,7 +224,7 @@ abstract class Manager
      *
      * @return object
      */
-    protected function makeConnect($connect, array $options = [])
+    protected function makeConnect(string $connect, array $options = [])
     {
         if (null === $this->getContainerOption('connect.'.$connect)) {
             throw new Exception(
@@ -247,7 +247,7 @@ abstract class Manager
      *
      * @return object
      */
-    protected function createConnectCommon($connect, array $options = [])
+    protected function createConnectCommon(string $connect, array $options = [])
     {
         return $this->{'makeConnect'.ucwords($connect)}($options);
     }
@@ -298,7 +298,7 @@ abstract class Manager
      *
      * @return string
      */
-    protected function normalizeUnique($options)
+    protected function normalizeUnique(array $options): string
     {
         return md5(serialize($options));
     }
@@ -311,7 +311,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function normalizeConnectOption($connect, array $extendOption = [])
+    protected function normalizeConnectOption(string $connect, array $extendOption = []): array
     {
         return array_merge(
             $this->getConnectOption($connect),
@@ -325,7 +325,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function getCommonOption()
+    protected function getCommonOption(): array
     {
         return $this->filterCommonOption(
             $this->getContainerOption()
@@ -339,7 +339,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function filterCommonOption(array $options)
+    protected function filterCommonOption(array $options): array
     {
         foreach ($this->defaultCommonOption() as $item) {
             if (isset($options[$item])) {
@@ -355,7 +355,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function defaultCommonOption()
+    protected function defaultCommonOption(): array
     {
         return [
             'default',
@@ -370,7 +370,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function getConnectOption($connect)
+    protected function getConnectOption(string $connect): array
     {
         return $this->getContainerOption('connect.'.$connect);
     }
@@ -382,7 +382,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function filterNullOfOption(array $options)
+    protected function filterNullOfOption(array $options): array
     {
         return array_filter($options, function ($value) {
             return null !== $value;

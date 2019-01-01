@@ -50,7 +50,7 @@ class Manager extends Managers
      *
      * @param string $name
      */
-    public function setDefaultDriver($name): void
+    public function setDefaultDriver(string $name): void
     {
         $option = $this->getContainerOption('default');
 

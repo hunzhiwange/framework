@@ -62,7 +62,7 @@ abstract class Connect implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName)
+    public function open($savePath, $sessionName): bool
     {
         return true;
     }
@@ -70,7 +70,7 @@ abstract class Connect implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function close()
+    public function close(): bool
     {
         return true;
     }
@@ -78,40 +78,44 @@ abstract class Connect implements SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function read($sessionid)
+    public function read($sessionid): string
     {
-        return $this->cache->get(
+        return serialize($this->cache->get(
             $this->getSessionName($sessionid), []
-        ) ?: [];
+        ) ?: []);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function write($sessionid, $sessiondata)
+    public function write($sessionid, $sessiondata): bool
     {
         $this->cache->set(
             $this->getSessionName($sessionid),
             unserialize($sessiondata)
         );
+
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionid)
+    public function destroy($sessionid): bool
     {
         $this->cache->delete(
             $this->getSessionName($sessionid)
         );
+
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function gc($maxlifetime)
+    public function gc($maxlifetime): int
     {
-        return true;
+        return 0;
     }
 
     /**
@@ -131,7 +135,7 @@ abstract class Connect implements SessionHandlerInterface
      *
      * @return string
      */
-    protected function getSessionName($sessionid)
+    protected function getSessionName(string $sessionid): string
     {
         return $sessionid;
     }

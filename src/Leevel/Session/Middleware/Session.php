@@ -59,7 +59,7 @@ class Session
      * @param \Closure              $next
      * @param \Leevel\Http\IRequest $request
      */
-    public function handle(Closure $next, IRequest $request)
+    public function handle(Closure $next, IRequest $request): void
     {
         $this->startSession($request);
 
@@ -73,7 +73,7 @@ class Session
      * @param \Leevel\Http\IRequest  $request
      * @param \Leevel\Http\IResponse $response
      */
-    public function terminate(Closure $next, IRequest $request, IResponse $response)
+    public function terminate(Closure $next, IRequest $request, IResponse $response): void
     {
         $this->setPrevUrl($request);
         $this->saveSession();
@@ -94,7 +94,7 @@ class Session
      *
      * @param \Leevel\Http\IRequest $request
      */
-    protected function startSession(IRequest $request)
+    protected function startSession(IRequest $request): void
     {
         $this->manager->start($this->getSessionId($request));
     }
@@ -102,7 +102,7 @@ class Session
     /**
      * 保存 session.
      */
-    protected function saveSession()
+    protected function saveSession(): void
     {
         $this->manager->save();
     }
@@ -112,7 +112,7 @@ class Session
      *
      * @param \Leevel\Http\IRequest $request
      */
-    protected function setPrevUrl(IRequest $request)
+    protected function setPrevUrl(IRequest $request): void
     {
         $this->manager->setPrevUrl($request->getUri());
     }
@@ -124,7 +124,7 @@ class Session
      *
      * @return null|string
      */
-    protected function getSessionId(IRequest $request)
+    protected function getSessionId(IRequest $request): ?string
     {
         return $request->cookies->get(
             $this->manager->getName(), null

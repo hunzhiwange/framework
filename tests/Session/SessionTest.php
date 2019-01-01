@@ -170,7 +170,7 @@ class SessionTest extends TestCase
 
         $this->assertTrue($connect->open('', 'foo'));
         $this->assertTrue($connect->close());
-        $this->assertTrue($connect->gc(0));
+        $this->assertSame(0, $connect->gc(0));
     }
 
     public function testPut()

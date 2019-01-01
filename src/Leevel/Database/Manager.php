@@ -62,7 +62,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function normalizeOptionNamespace()
+    protected function normalizeOptionNamespace(): string
     {
         return 'database';
     }
@@ -102,7 +102,7 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function normalizeConnectOption($connect, array $extendOption = []): array
+    protected function normalizeConnectOption(string $connect, array $extendOption = []): array
     {
         return $this->parseDatabaseOption(
             parent::normalizeConnectOption($connect, $extendOption)

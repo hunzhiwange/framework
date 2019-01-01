@@ -257,7 +257,7 @@ class ManagerTest extends TestCase
 
 class Test1 extends Manager
 {
-    protected function normalizeOptionNamespace()
+    protected function normalizeOptionNamespace(): string
     {
         return 'test1';
     }
@@ -267,21 +267,21 @@ class Test1 extends Manager
         return new Bag($connect);
     }
 
-    protected function makeConnectFoo($options = [])
+    protected function makeConnectFoo($options = []): Foo
     {
         return new Foo(
             $this->normalizeConnectOption('foo')
         );
     }
 
-    protected function makeConnectBar($options = [])
+    protected function makeConnectBar($options = []): Bar
     {
         return new Bar(
             $this->normalizeConnectOption('bar', $options)
         );
     }
 
-    protected function getConnectOption($connect)
+    protected function getConnectOption(string $connect): array
     {
         return $this->filterNullOfOption(
             parent::getConnectOption($connect)

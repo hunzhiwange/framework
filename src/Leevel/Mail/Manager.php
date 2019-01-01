@@ -38,7 +38,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function normalizeOptionNamespace()
+    protected function normalizeOptionNamespace(): string
     {
         return 'mail';
     }
@@ -106,7 +106,7 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function defaultCommonOption()
+    protected function defaultCommonOption(): array
     {
         return [
             'default',

@@ -614,7 +614,7 @@ class Session implements ISession
      */
     protected function loadDataFromConnect()
     {
-        return $this->connect->read($this->getId());
+        return unserialize($this->connect->read($this->getId()));
     }
 
     /**

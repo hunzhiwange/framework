@@ -78,7 +78,7 @@ class NullsTest extends TestCase
         $this->assertTrue($connect->close());
         $this->assertTrue($connect->write('foo', 'bar'));
         $this->assertTrue($connect->destroy('foo'));
-        $this->assertTrue($connect->gc(0));
+        $this->assertSame(0, $connect->gc(0));
     }
 
     protected function createNullsSessionHandler()
