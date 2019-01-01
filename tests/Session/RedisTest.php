@@ -148,7 +148,7 @@ class RedisTest extends TestCase
 
         $session->destroy();
 
-        $this->assertSame([], $connect->read($sessionId));
+        $this->assertSame('a:0:{}', $connect->read($sessionId));
     }
 
     protected function createRedisSessionHandler()
