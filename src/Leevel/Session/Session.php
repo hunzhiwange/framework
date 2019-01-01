@@ -102,10 +102,10 @@ class Session implements ISession
      *
      * @param string $sessionId
      */
-    public function start(?string $sessionId = null)
+    public function start(?string $sessionId = null): void
     {
         if ($this->isStart()) {
-            return $this;
+            return;
         }
 
         $this->setId($sessionId ?: $this->option['id']);
@@ -118,7 +118,7 @@ class Session implements ISession
     /**
      * 程序执行保存 session.
      */
-    public function save()
+    public function save(): void
     {
         if (!$this->isStart()) {
             throw new RuntimeException(
@@ -149,7 +149,7 @@ class Session implements ISession
      * @param string $name
      * @param mxied  $value
      */
-    public function set(string $name, $value)
+    public function set(string $name, $value): void
     {
         $name = $this->getNormalizeName($name);
 
@@ -162,7 +162,7 @@ class Session implements ISession
      * @param array|string $keys
      * @param mixed        $value
      */
-    public function put($keys, $value = null)
+    public function put($keys, $value = null): void
     {
         if (!is_array($keys)) {
             $keys = [
@@ -181,7 +181,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function push(string $key, $value)
+    public function push(string $key, $value): void
     {
         $arr = $this->get($key, []);
         $arr[] = $value;
@@ -195,7 +195,7 @@ class Session implements ISession
      * @param string $key
      * @param array  $value
      */
-    public function merge(string $key, array $value)
+    public function merge(string $key, array $value): void
     {
         $this->set($key, array_merge($this->get($key, []), $value));
     }
@@ -206,7 +206,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function pop(string $key, array $value)
+    public function pop(string $key, array $value): void
     {
         $this->set($key, array_diff($this->get($key, []), $value));
     }
@@ -218,7 +218,7 @@ class Session implements ISession
      * @param mixed  $keys
      * @param mixed  $value
      */
-    public function arr(string $key, $keys, $value = null)
+    public function arr(string $key, $keys, $value = null): void
     {
         $arr = $this->get($key, []);
 
@@ -237,7 +237,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $keys
      */
-    public function arrDelete(string $key, $keys)
+    public function arrDelete(string $key, $keys): void
     {
         $arr = $this->get($key, []);
 
@@ -289,7 +289,7 @@ class Session implements ISession
      *
      * @param string $name
      */
-    public function delete(string $name)
+    public function delete(string $name): void
     {
         $name = $this->getNormalizeName($name);
 
@@ -305,7 +305,7 @@ class Session implements ISession
      *
      * @return bool
      */
-    public function has(string $name)
+    public function has(string $name): bool
     {
         $name = $this->getNormalizeName($name);
 
@@ -315,7 +315,7 @@ class Session implements ISession
     /**
      * 删除 session.
      */
-    public function clear()
+    public function clear(): void
     {
         $this->datas = [];
     }
@@ -326,7 +326,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function flash(string $key, $value)
+    public function flash(string $key, $value): void
     {
         $this->set($this->flashDataKey($key), $value);
 
@@ -344,7 +344,7 @@ class Session implements ISession
      *
      * @param array $flash
      */
-    public function flashs(array $flash)
+    public function flashs(array $flash): void
     {
         foreach ($flash as $key => $value) {
             $this->flash($key, $value);
@@ -357,7 +357,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function nowFlash(string $key, $value)
+    public function nowFlash(string $key, $value): void
     {
         $this->set($this->flashDataKey($key), $value);
 
@@ -372,7 +372,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function nowFlashs(array $flash)
+    public function nowFlashs(array $flash): void
     {
         foreach ($flash as $key => $value) {
             $this->nowFlash($key, $value);
@@ -382,7 +382,7 @@ class Session implements ISession
     /**
      * 保持所有闪存数据.
      */
-    public function rebuildFlash()
+    public function rebuildFlash(): void
     {
         $this->mergeNewFlash(
             $this->get($this->flashOldKey(), [])
@@ -396,7 +396,7 @@ class Session implements ISession
      *
      * @param array $keys
      */
-    public function keepFlash(array $keys)
+    public function keepFlash(array $keys): void
     {
         $this->mergeNewFlash($keys);
 
@@ -428,7 +428,7 @@ class Session implements ISession
      *
      * @param array $keys
      */
-    public function deleteFlash(array $keys)
+    public function deleteFlash(array $keys): void
     {
         foreach ($keys as $item) {
             $this->delete($this->flashDataKey($item));
@@ -442,7 +442,7 @@ class Session implements ISession
     /**
      * 清理所有闪存数据.
      */
-    public function clearFlash()
+    public function clearFlash(): void
     {
         $this->deleteFlash($this->get($this->flashNewKey(), []));
     }
@@ -450,7 +450,7 @@ class Session implements ISession
     /**
      * 程序执行结束清理 flash.
      */
-    public function unregisterFlash()
+    public function unregisterFlash(): void
     {
         $arr = $this->get($this->flashNewKey(), []);
         $old = $this->get($this->flashOldKey(), []);
@@ -466,11 +466,11 @@ class Session implements ISession
     }
 
     /**
-     * 获取前一个请求地址
+     * 获取前一个请求地址.
      *
      * @return null|string
      */
-    public function prevUrl()
+    public function prevUrl(): ?string
     {
         return $this->get($this->prevUrlKey());
     }
@@ -480,15 +480,15 @@ class Session implements ISession
      *
      * @param string $url
      */
-    public function setPrevUrl(string $url)
+    public function setPrevUrl(string $url): void
     {
-        return $this->set($this->prevUrlKey(), $url);
+        $this->set($this->prevUrlKey(), $url);
     }
 
     /**
      * 终止会话.
      */
-    public function destroy()
+    public function destroy(): void
     {
         $this->clear();
         $this->connect->destroy($this->getId());
@@ -512,7 +512,7 @@ class Session implements ISession
      *
      * @param string $name
      */
-    public function setName(?string $name = null)
+    public function setName(?string $name = null): void
     {
         $this->name = $name ?: static::SESSION_NAME;
     }
@@ -532,7 +532,7 @@ class Session implements ISession
      *
      * @param string $id
      */
-    public function setId(?string $id = null)
+    public function setId(?string $id = null): void
     {
         $this->id = $id ?: $this->generateSessionId();
     }
@@ -596,7 +596,7 @@ class Session implements ISession
      *
      * @return string
      */
-    protected function getNormalizeName(string $name)
+    protected function getNormalizeName(string $name): string
     {
         return $name;
     }
@@ -604,15 +604,17 @@ class Session implements ISession
     /**
      * 载入 session 数据.
      */
-    protected function loadData()
+    protected function loadData(): void
     {
         $this->datas = array_merge($this->datas, $this->loadDataFromConnect());
     }
 
     /**
      * 从驱动载入 session 数据.
+     *
+     * @return array
      */
-    protected function loadDataFromConnect()
+    protected function loadDataFromConnect(): array
     {
         return unserialize($this->connect->read($this->getId()));
     }
@@ -622,7 +624,7 @@ class Session implements ISession
      *
      * @param array $keys
      */
-    protected function popOldFlash(array $keys)
+    protected function popOldFlash(array $keys): void
     {
         $this->pop($this->flashOldKey(), $keys);
     }
@@ -632,7 +634,7 @@ class Session implements ISession
      *
      * @param array $keys
      */
-    protected function mergeOldFlash(array $keys)
+    protected function mergeOldFlash(array $keys): void
     {
         $this->merge($this->flashOldKey(), $keys);
     }
@@ -642,7 +644,7 @@ class Session implements ISession
      *
      * @param array $keys
      */
-    protected function popNewFlash(array $keys)
+    protected function popNewFlash(array $keys): void
     {
         $this->pop($this->flashNewKey(), $keys);
     }
@@ -652,7 +654,7 @@ class Session implements ISession
      *
      * @param array $keys
      */
-    protected function mergeNewFlash(array $keys)
+    protected function mergeNewFlash(array $keys): void
     {
         $this->merge($this->flashNewKey(), $keys);
     }
@@ -704,7 +706,7 @@ class Session implements ISession
      *
      * @return string
      */
-    protected function flashDataKey(string $key)
+    protected function flashDataKey(string $key): string
     {
         return 'flash.data.'.$key;
     }
@@ -714,7 +716,7 @@ class Session implements ISession
      *
      * @return string
      */
-    protected function flashNewKey()
+    protected function flashNewKey(): string
     {
         return 'flash.new.key';
     }
@@ -724,7 +726,7 @@ class Session implements ISession
      *
      * @return string
      */
-    protected function flashOldKey()
+    protected function flashOldKey(): string
     {
         return 'flash.old.key';
     }
@@ -734,7 +736,7 @@ class Session implements ISession
      *
      * @return string
      */
-    protected function prevUrlKey()
+    protected function prevUrlKey(): string
     {
         return 'prev.url.key';
     }

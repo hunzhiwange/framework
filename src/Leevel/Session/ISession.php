@@ -45,12 +45,12 @@ interface ISession
      *
      * @param string $sessionId
      */
-    public function start(?string $sessionId = null);
+    public function start(?string $sessionId = null): void;
 
     /**
      * 程序执行保存 session.
      */
-    public function save();
+    public function save(): void;
 
     /**
      * 取回所有 session 数据.
@@ -65,7 +65,7 @@ interface ISession
      * @param string $name
      * @param mxied  $value
      */
-    public function set(string $name, $value);
+    public function set(string $name, $value): void;
 
     /**
      * 批量插入.
@@ -73,7 +73,7 @@ interface ISession
      * @param array|string $keys
      * @param mixed        $value
      */
-    public function put($keys, $value = null);
+    public function put($keys, $value = null): void;
 
     /**
      * 数组插入数据.
@@ -81,7 +81,7 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function push(string $key, $value);
+    public function push(string $key, $value): void;
 
     /**
      * 合并元素.
@@ -89,7 +89,7 @@ interface ISession
      * @param string $key
      * @param array  $value
      */
-    public function merge(string $key, array $value);
+    public function merge(string $key, array $value): void;
 
     /**
      * 弹出元素.
@@ -97,7 +97,7 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function pop(string $key, array $value);
+    public function pop(string $key, array $value): void;
 
     /**
      * 数组插入键值对数据.
@@ -106,7 +106,7 @@ interface ISession
      * @param mixed  $keys
      * @param mixed  $value
      */
-    public function arr(string $key, $keys, $value = null);
+    public function arr(string $key, $keys, $value = null): void;
 
     /**
      * 数组键值删除数据.
@@ -114,7 +114,7 @@ interface ISession
      * @param string $key
      * @param mixed  $keys
      */
-    public function arrDelete(string $key, $keys);
+    public function arrDelete(string $key, $keys): void;
 
     /**
      * 取回 session.
@@ -141,7 +141,7 @@ interface ISession
      *
      * @param string $name
      */
-    public function delete(string $name);
+    public function delete(string $name): void;
 
     /**
      * 是否存在 session.
@@ -150,12 +150,12 @@ interface ISession
      *
      * @return bool
      */
-    public function has(string $name);
+    public function has(string $name): bool;
 
     /**
      * 删除 session.
      */
-    public function clear();
+    public function clear(): void;
 
     /**
      * 闪存一个数据，当前请求和下一个请求可用.
@@ -163,14 +163,14 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function flash(string $key, $value);
+    public function flash(string $key, $value): void;
 
     /**
      * 批量闪存数据，当前请求和下一个请求可用.
      *
      * @param array $flash
      */
-    public function flashs(array $flash);
+    public function flashs(array $flash): void;
 
     /**
      * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取.
@@ -178,19 +178,19 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function nowFlash(string $key, $value);
+    public function nowFlash(string $key, $value): void;
 
     /**
      * 保持所有闪存数据.
      */
-    public function rebuildFlash();
+    public function rebuildFlash(): void;
 
     /**
      * 保持闪存数据.
      *
      * @param array $keys
      */
-    public function keepFlash(array $keys);
+    public function keepFlash(array $keys): void;
 
     /**
      * 返回闪存数据.
@@ -207,36 +207,36 @@ interface ISession
      *
      * @param array $keys
      */
-    public function deleteFlash(array $keys);
+    public function deleteFlash(array $keys): void;
 
     /**
      * 清理所有闪存数据.
      */
-    public function clearFlash();
+    public function clearFlash(): void;
 
     /**
      * 程序执行结束清理 flash.
      */
-    public function unregisterFlash();
+    public function unregisterFlash(): void;
 
     /**
      * 获取前一个请求地址
      *
      * @return null|string
      */
-    public function prevUrl();
+    public function prevUrl(): ?string;
 
     /**
      * 设置前一个请求地址
      *
      * @param string $url
      */
-    public function setPrevUrl(string $url);
+    public function setPrevUrl(string $url): void;
 
     /**
      * 终止会话.
      */
-    public function destroy();
+    public function destroy(): void;
 
     /**
      * session 是否已经启动.
@@ -250,7 +250,7 @@ interface ISession
      *
      * @param string $name
      */
-    public function setName(string $name);
+    public function setName(string $name): void;
 
     /**
      * 取得 SESSION 名字.
@@ -264,7 +264,7 @@ interface ISession
      *
      * @param string $id
      */
-    public function setId(?string $id = null);
+    public function setId(?string $id = null): void;
 
     /**
      * 取得 SESSION ID.
