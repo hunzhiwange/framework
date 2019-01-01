@@ -120,7 +120,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewSuccess(string $message, $url = '', int $time = 1, int $status = 200, array $headers = []): Response
+    public function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): Response
     {
         $vars = [
             'message' => $message,
@@ -142,7 +142,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewFail(string $message, $url = '', int $time = 3, int $status = 404, array $headers = []): Response
+    public function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): Response
     {
         $vars = [
             'message' => $message,
@@ -156,10 +156,10 @@ class ResponseFactory implements IResponseFactory
     /**
      * 返回 JSON 响应.
      *
-     * @param string $data
-     * @param int    $status
-     * @param array  $headers
-     * @param bool   $json
+     * @param mixed $data
+     * @param int   $status
+     * @param array $headers
+     * @param bool  $json
      *
      * @return \Leevel\Http\JsonResponse
      */
@@ -172,7 +172,7 @@ class ResponseFactory implements IResponseFactory
      * 返回 JSONP 响应.
      *
      * @param string $callback
-     * @param string $data
+     * @param mixed  $data
      * @param int    $status
      * @param array  $headers
      * @param bool   $json
@@ -227,16 +227,16 @@ class ResponseFactory implements IResponseFactory
     /**
      * 返回一个 URL 生成跳转响应.
      *
-     * @param string $url
-     * @param array  $params
-     * @param string $subdomain
-     * @param mixed  $suffix
-     * @param int    $status
-     * @param array  $headers
+     * @param string      $url
+     * @param array       $params
+     * @param string      $subdomain
+     * @param bool|string $suffix
+     * @param int         $status
+     * @param array       $headers
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = false, int $status = 302, array $headers = []): RedirectResponse
+    public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
         return $this->redirector->url($url, $params, $subdomain, $suffix, $status, $headers);
     }
@@ -264,7 +264,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public function apiOk($content = '', $text = null): ApiResponse
+    public function apiOk($content = '', ?string $text = null): ApiResponse
     {
         return $this->createApiResponse()->ok($content, $text);
     }
@@ -442,7 +442,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return $this
      */
-    public function setViewSuccessTemplate(string $template)
+    public function setViewSuccessTemplate(string $template): IResponseFactory
     {
         $this->viewSuccessTemplate = $template;
 
@@ -456,7 +456,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return $this
      */
-    public function setViewFailTemplate(string $template)
+    public function setViewFailTemplate(string $template): IResponseFactory
     {
         $this->viewFailTemplate = $template;
 

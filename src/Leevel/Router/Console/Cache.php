@@ -56,7 +56,7 @@ class Cache extends Command
      * @param \Leevel\Kernel\IProject       $project
      * @param \Leevel\Router\RouterProvider $routerProvider
      */
-    public function handle(IProject $project, RouterProvider $routerProvider)
+    public function handle(IProject $project, RouterProvider $routerProvider): void
     {
         $this->line('Start to cache router.');
 
@@ -75,7 +75,7 @@ class Cache extends Command
      * @param string $cachePath
      * @param array  $data
      */
-    protected function writeCache(string $cachePath, array $data)
+    protected function writeCache(string $cachePath, array $data): void
     {
         $dirname = dirname($cachePath);
 

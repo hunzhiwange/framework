@@ -60,7 +60,7 @@ class ScanRouter
      *
      * @return array
      */
-    public function handle()
+    public function handle(): array
     {
         return $this->openApiRouter->handle();
     }
@@ -70,7 +70,7 @@ class ScanRouter
      *
      * @return string
      */
-    protected function getDomain()
+    protected function getDomain(): string
     {
         return Url::getDomain();
     }
@@ -80,7 +80,7 @@ class ScanRouter
      *
      * @return string
      */
-    protected function appPath()
+    protected function appPath(): string
     {
         return Leevel::appPath();
     }

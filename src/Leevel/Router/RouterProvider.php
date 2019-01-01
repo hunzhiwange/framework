@@ -60,7 +60,7 @@ abstract class RouterProvider extends Provider
     /**
      * bootstrap.
      */
-    public function bootstrap()
+    public function bootstrap(): void
     {
         $this->setControllerDir();
 
@@ -106,7 +106,7 @@ abstract class RouterProvider extends Provider
     /**
      * 导入路由缓存.
      */
-    protected function importCachedRouters()
+    protected function importCachedRouters(): void
     {
         $routers = include $this->getRouterCachePath();
 
@@ -116,7 +116,7 @@ abstract class RouterProvider extends Provider
     /**
      * 注册路由.
      */
-    protected function loadRouters()
+    protected function loadRouters(): void
     {
         $this->setRoutersData($this->getRouters());
     }
@@ -126,7 +126,7 @@ abstract class RouterProvider extends Provider
      *
      * @return \Leevel\Router\MiddlewareParser
      */
-    protected function makeMiddlewareParser()
+    protected function makeMiddlewareParser(): MiddlewareParser
     {
         return new MiddlewareParser($this->container['router']);
     }
@@ -136,7 +136,7 @@ abstract class RouterProvider extends Provider
      *
      * @param array $routers
      */
-    protected function setRoutersData(array $routers)
+    protected function setRoutersData(array $routers): void
     {
         $this->container['router']->setBasePaths($routers['base_paths']);
         $this->container['router']->setGroupPaths($routers['group_paths']);
@@ -149,7 +149,7 @@ abstract class RouterProvider extends Provider
      *
      * @return bool
      */
-    protected function isRouterCached()
+    protected function isRouterCached(): bool
     {
         return file_exists($this->getRouterCachePath());
     }
@@ -159,7 +159,7 @@ abstract class RouterProvider extends Provider
      *
      * @return string
      */
-    protected function getRouterCachePath()
+    protected function getRouterCachePath(): string
     {
         return $this->container->routerCachedPath();
     }
@@ -167,7 +167,7 @@ abstract class RouterProvider extends Provider
     /**
      * 设置应用控制器目录.
      */
-    protected function setControllerDir()
+    protected function setControllerDir(): void
     {
         if (null !== $this->controllerDir) {
             $this->container['router']->setControllerDir($this->controllerDir);
@@ -177,7 +177,7 @@ abstract class RouterProvider extends Provider
     /**
      * 设置中间件.
      */
-    protected function setMiddleware()
+    protected function setMiddleware(): void
     {
         if (null !== $this->middlewareGroups) {
             $this->container['router']->setMiddlewareGroups($this->middlewareGroups);

@@ -172,9 +172,9 @@ interface IRouter
     public function dispatch(IRequest $request): IResponse;
 
     /**
-     * 初始化请求
+     * 初始化请求.
      */
-    public function initRequest();
+    public function initRequest(): void;
 
     /**
      * 设置路由请求预解析结果.
@@ -191,14 +191,14 @@ interface IRouter
      * @param \Leevel\Http\IRequest $passed
      * @param array                 $passedExtend
      */
-    public function throughMiddleware(IRequest $passed, array $passedExtend = []);
+    public function throughMiddleware(IRequest $passed, array $passedExtend = []): void;
 
     /**
      * 设置控制器相对目录.
      *
      * @param string $controllerDir
      */
-    public function setControllerDir(string $controllerDir);
+    public function setControllerDir(string $controllerDir): void;
 
     /**
      * 返回控制器相对目录.
@@ -212,7 +212,7 @@ interface IRouter
      *
      * @param array $routers
      */
-    public function setRouters(array $routers);
+    public function setRouters(array $routers): void;
 
     /**
      * 取得当前路由.
@@ -226,7 +226,7 @@ interface IRouter
      *
      * @param array $basepaths
      */
-    public function setBasepaths(array $basepaths);
+    public function setBasepaths(array $basepaths): void;
 
     /**
      * 取得基础路径.
@@ -240,7 +240,7 @@ interface IRouter
      *
      * @param array $groupPaths
      */
-    public function setGroupPaths(array $groupPaths);
+    public function setGroupPaths(array $groupPaths): void;
 
     /**
      * 取得分组路径.
@@ -254,7 +254,7 @@ interface IRouter
      *
      * @param array $groups
      */
-    public function setGroups(array $groups);
+    public function setGroups(array $groups): void;
 
     /**
      * 取得路由分组.
@@ -268,7 +268,7 @@ interface IRouter
      *
      * @param array $middlewareGroups
      */
-    public function setMiddlewareGroups(array $middlewareGroups);
+    public function setMiddlewareGroups(array $middlewareGroups): void;
 
     /**
      * 取得中间件分组.
@@ -282,7 +282,7 @@ interface IRouter
      *
      * @param array $middlewareAlias
      */
-    public function setMiddlewareAlias(array $middlewareAlias);
+    public function setMiddlewareAlias(array $middlewareAlias): void;
 
     /**
      * 取得中间件别名.

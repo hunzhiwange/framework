@@ -145,9 +145,9 @@ class Router implements IRouter
     }
 
     /**
-     * 初始化请求
+     * 初始化请求.
      */
-    public function initRequest()
+    public function initRequest(): void
     {
         $this->matchedData = null;
     }
@@ -170,7 +170,7 @@ class Router implements IRouter
      * @param \Leevel\Http\IRequest $passed
      * @param array                 $passedExtend
      */
-    public function throughMiddleware(IRequest $passed, array $passedExtend = [])
+    public function throughMiddleware(IRequest $passed, array $passedExtend = []): void
     {
         $method = !$passedExtend ? 'handle' : 'terminate';
         $middlewares = $this->matchedMiddlewares();
@@ -195,7 +195,7 @@ class Router implements IRouter
      *
      * @param string $controllerDir
      */
-    public function setControllerDir(string $controllerDir)
+    public function setControllerDir(string $controllerDir): void
     {
         $controllerDir = str_replace('/', '\\', $controllerDir);
 
@@ -217,7 +217,7 @@ class Router implements IRouter
      *
      * @param array $routers
      */
-    public function setRouters(array $routers)
+    public function setRouters(array $routers): void
     {
         $this->routers = $routers;
     }
@@ -237,7 +237,7 @@ class Router implements IRouter
      *
      * @param array $basePaths
      */
-    public function setBasePaths(array $basePaths)
+    public function setBasePaths(array $basePaths): void
     {
         $this->basePaths = $basePaths;
     }
@@ -257,7 +257,7 @@ class Router implements IRouter
      *
      * @param array $groupPaths
      */
-    public function setGroupPaths(array $groupPaths)
+    public function setGroupPaths(array $groupPaths): void
     {
         $this->groupPaths = $groupPaths;
     }
@@ -277,7 +277,7 @@ class Router implements IRouter
      *
      * @param array $groups
      */
-    public function setGroups(array $groups)
+    public function setGroups(array $groups): void
     {
         $this->groups = $groups;
     }
@@ -297,7 +297,7 @@ class Router implements IRouter
      *
      * @param array $middlewareGroups
      */
-    public function setMiddlewareGroups(array $middlewareGroups)
+    public function setMiddlewareGroups(array $middlewareGroups): void
     {
         $this->middlewareGroups = $middlewareGroups;
     }
@@ -317,7 +317,7 @@ class Router implements IRouter
      *
      * @param array $middlewareAlias
      */
-    public function setMiddlewareAlias(array $middlewareAlias)
+    public function setMiddlewareAlias(array $middlewareAlias): void
     {
         $this->middlewareAlias = $middlewareAlias;
     }
@@ -358,7 +358,7 @@ class Router implements IRouter
      * 路由匹配
      * 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
      *
-     * @return mixed|void
+     * @return mixed
      */
     protected function matchRouter()
     {
@@ -455,7 +455,7 @@ class Router implements IRouter
     /**
      * 尝试获取路由绑定.
      *
-     * @return callable|void
+     * @return callable
      */
     protected function findRouterBind()
     {
@@ -514,7 +514,7 @@ class Router implements IRouter
     /**
      * 路由未找到异常.
      */
-    protected function routerNotFound()
+    protected function routerNotFound(): void
     {
         $message = sprintf('The router %s was not found.', $this->makeRouterNode());
 
@@ -526,7 +526,7 @@ class Router implements IRouter
      *
      * @return string
      */
-    protected function makeRouterNode()
+    protected function makeRouterNode(): string
     {
         if ($matchedBind = $this->matchedBind()) {
             return $matchedBind;
@@ -543,7 +543,7 @@ class Router implements IRouter
      *
      * @return string
      */
-    protected function parseControllerDir()
+    protected function parseControllerDir(): string
     {
         $result = $this->getControllerDir();
 
@@ -555,9 +555,9 @@ class Router implements IRouter
     }
 
     /**
-     * 完成请求
+     * 完成请求.
      */
-    protected function completeRequest()
+    protected function completeRequest(): void
     {
         $this->pathinfoRestful();
 
@@ -570,7 +570,7 @@ class Router implements IRouter
      * 智能 restful 解析
      * 路由匹配如果没有匹配上方法则系统会进入 restful 解析.
      */
-    protected function pathinfoRestful()
+    protected function pathinfoRestful(): void
     {
         if (!empty($this->matchedData[static::ACTION])) {
             return;
@@ -709,7 +709,7 @@ class Router implements IRouter
      *
      * @return string
      */
-    protected function matchedApp()
+    protected function matchedApp(): string
     {
         return ucfirst($this->matchedData[static::APP]);
     }
@@ -717,9 +717,9 @@ class Router implements IRouter
     /**
      * 取回控制器前缀
      *
-     * @return null|string
+     * @return string
      */
-    protected function matchedPrefix()
+    protected function matchedPrefix(): ?string
     {
         $prefix = $this->matchedData[static::PREFIX];
 
@@ -739,7 +739,7 @@ class Router implements IRouter
      *
      * @return string
      */
-    protected function matchedController()
+    protected function matchedController(): string
     {
         return $this->convertMatched(ucfirst($this->matchedData[static::CONTROLLER]));
     }
@@ -749,7 +749,7 @@ class Router implements IRouter
      *
      * @return string
      */
-    protected function matchedAction()
+    protected function matchedAction(): string
     {
         return $this->convertMatched($this->matchedData[static::ACTION]);
     }
@@ -761,7 +761,7 @@ class Router implements IRouter
      *
      * @return string
      */
-    protected function convertMatched(string $matched)
+    protected function convertMatched(string $matched): string
     {
         if (false !== strpos($matched, '-')) {
             $matched = str_replace('-', '_', $matched);
@@ -778,9 +778,9 @@ class Router implements IRouter
     /**
      * 取回绑定资源.
      *
-     * @return null|string
+     * @return string
      */
-    protected function matchedBind()
+    protected function matchedBind(): ?string
     {
         return $this->matchedData[static::BIND];
     }
@@ -790,7 +790,7 @@ class Router implements IRouter
      *
      * @return array
      */
-    protected function matchedParams()
+    protected function matchedParams(): array
     {
         return $this->matchedData[static::PARAMS] ?? [];
     }
@@ -800,7 +800,7 @@ class Router implements IRouter
      *
      * @return array
      */
-    protected function matchedMiddlewares()
+    protected function matchedMiddlewares(): array
     {
         return $this->matchedData[static::MIDDLEWARES] ?? [
             'handle'    => [],
@@ -813,7 +813,7 @@ class Router implements IRouter
      *
      * @return array
      */
-    protected function matchedVars()
+    protected function matchedVars(): array
     {
         return $this->matchedData[static::VARS] ?? [];
     }

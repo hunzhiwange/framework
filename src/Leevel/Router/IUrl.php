@@ -36,10 +36,10 @@ interface IUrl
     /**
      * 生成路由地址
      *
-     * @param string $url
-     * @param array  $params
-     * @param string $subdomain
-     * @param mixed  $suffix
+     * @param string      $url
+     * @param array       $params
+     * @param string      $subdomain
+     * @param bool|string $suffix
      *
      * @return string
      */
@@ -60,12 +60,12 @@ interface IUrl
      *
      * @return $this
      */
-    public function setOption(string $name, $value);
+    public function setOption(string $name, $value): self;
 
     /**
      * 获取域名.
      *
      * @return string
      */
-    public function getDomain();
+    public function getDomain(): string;
 }

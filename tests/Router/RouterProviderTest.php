@@ -184,7 +184,7 @@ class RouterProvider1 extends RouterProvider
         'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
     ];
 
-    public function bootstrap()
+    public function bootstrap(): void
     {
         parent::bootstrap();
     }

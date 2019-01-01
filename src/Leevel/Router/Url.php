@@ -76,10 +76,10 @@ class Url implements IUrl
     /**
      * 生成路由地址
      *
-     * @param string $url
-     * @param array  $params
-     * @param string $subdomain
-     * @param mixed  $suffix
+     * @param string      $url
+     * @param array       $params
+     * @param string      $subdomain
+     * @param bool|string $suffix
      *
      * @return string
      */
@@ -110,7 +110,7 @@ class Url implements IUrl
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IUrl
     {
         $this->option[$name] = $value;
 
@@ -122,7 +122,7 @@ class Url implements IUrl
      *
      * @return string
      */
-    public function getDomain()
+    public function getDomain(): string
     {
         return $this->option['domain'];
     }
@@ -130,9 +130,9 @@ class Url implements IUrl
     /**
      * 自定义 URL.
      *
-     * @param string $url
-     * @param array  $params
-     * @param mixed  $suffix
+     * @param string      $url
+     * @param array       $params
+     * @param bool|string $suffix
      *
      * @return string
      */

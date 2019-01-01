@@ -1116,7 +1116,7 @@ class RouterProviderAnnotation extends RouterProvider
         'demo_for_all'       => 'Tests\\Router\\Middlewares\\DemoForAll',
     ];
 
-    public function bootstrap()
+    public function bootstrap(): void
     {
         parent::bootstrap();
     }

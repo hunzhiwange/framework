@@ -58,7 +58,7 @@ class MiddlewareParser
      *
      * @return array
      */
-    public function handle(array $middlewares)
+    public function handle(array $middlewares): array
     {
         $middlewareGroups = $this->router->getMiddlewareGroups();
         $middlewareAlias = $this->router->getMiddlewareAlias();
@@ -106,7 +106,7 @@ class MiddlewareParser
      *
      * @return array
      */
-    protected function normalizeMiddleware(array $middlewares, string $method)
+    protected function normalizeMiddleware(array $middlewares, string $method): array
     {
         $middlewares = array_map(function ($item) use ($method) {
             if (false === strpos($item, ':')) {
@@ -145,7 +145,7 @@ class MiddlewareParser
      *
      * @return array
      */
-    protected function parseMiddleware($middleware)
+    protected function parseMiddleware(string $middleware): array
     {
         $params = '';
 
@@ -167,7 +167,7 @@ class MiddlewareParser
      *
      * @return string
      */
-    protected function middlewareName($middleware, $params)
+    protected function middlewareName(string $middleware, string $params): string
     {
         return $middleware.($params ? ':'.$params : '');
     }

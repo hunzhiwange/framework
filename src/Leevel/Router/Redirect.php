@@ -61,12 +61,12 @@ class Redirect
     /**
      * 返回一个 URL 生成跳转响应.
      *
-     * @param string $url
-     * @param array  $params
-     * @param string $subdomain
-     * @param mixed  $suffix
-     * @param int    $status
-     * @param array  $headers
+     * @param string      $url
+     * @param array       $params
+     * @param string      $subdomain
+     * @param bool|string $suffix
+     * @param int         $status
+     * @param array       $headers
      *
      * @return \Leevel\Http\RedirectResponse
      */
@@ -86,7 +86,7 @@ class Redirect
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public function raw(string $url, int $status = 302, array $headers = [])
+    public function raw(string $url, int $status = 302, array $headers = []): RedirectResponse
     {
         return $this->createRedirectResponse($url, $status, $headers);
     }
@@ -94,9 +94,9 @@ class Redirect
     /**
      * 取回 URL 生成实例.
      *
-     * @return \Leevel\Router\Url
+     * @return \Leevel\Router\IUrl
      */
-    public function getUrl(): Url
+    public function getUrl(): IUrl
     {
         return $this->url;
     }
@@ -106,7 +106,7 @@ class Redirect
      *
      * @param \Leevel\Session\ISession $session
      */
-    public function setSession(ISession $session)
+    public function setSession(ISession $session): void
     {
         $this->session = $session;
     }
@@ -120,7 +120,7 @@ class Redirect
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    protected function createRedirectResponse(string $url, int $status = 302, array $headers = [])
+    protected function createRedirectResponse(string $url, int $status = 302, array $headers = []): RedirectResponse
     {
         $redirect = new RedirectResponse($url, $status, $headers);
 

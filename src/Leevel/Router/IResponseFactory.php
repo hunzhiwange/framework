@@ -40,9 +40,9 @@ interface IResponseFactory
     /**
      * 返回一个响应.
      *
-     * @param string $content
-     * @param int    $status
-     * @param array  $headers
+     * @param mixed $content
+     * @param int   $status
+     * @param array $headers
      *
      * @return \Leevel\Http\Response
      */
@@ -72,7 +72,7 @@ interface IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewSuccess(string $message, $url = '', int $time = 1, int $status = 200, array $headers = []): Response;
+    public function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): Response;
 
     /**
      * 返回视图失败消息.
@@ -85,15 +85,15 @@ interface IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewFail(string $message, $url = '', int $time = 3, int $status = 404, array $headers = []): Response;
+    public function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): Response;
 
     /**
      * 返回 JSON 响应.
      *
-     * @param string $data
-     * @param int    $status
-     * @param array  $headers
-     * @param bool   $json
+     * @param mixed $data
+     * @param int   $status
+     * @param array $headers
+     * @param bool  $json
      *
      * @return \Leevel\Http\JsonResponse
      */
@@ -103,7 +103,7 @@ interface IResponseFactory
      * 返回 JSONP 响应.
      *
      * @param string $callback
-     * @param string $data
+     * @param mixed  $data
      * @param int    $status
      * @param array  $headers
      * @param bool   $json
@@ -142,16 +142,16 @@ interface IResponseFactory
     /**
      * 返回一个 URL 生成跳转响应.
      *
-     * @param string $url
-     * @param array  $params
-     * @param string $subdomain
-     * @param mixed  $suffix
-     * @param int    $status
-     * @param array  $headers
+     * @param string      $url
+     * @param array       $params
+     * @param string      $subdomain
+     * @param bool|string $suffix
+     * @param int         $status
+     * @param array       $headers
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = false, int $status = 302, array $headers = []): RedirectResponse;
+    public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse;
 
     /**
      * 返回一个跳转响应.
@@ -173,7 +173,7 @@ interface IResponseFactory
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public function apiOk($content = '', $text = null): ApiResponse;
+    public function apiOk($content = '', ?string $text = null): ApiResponse;
 
     /**
      * 已创建
@@ -311,7 +311,7 @@ interface IResponseFactory
      *
      * @param string $template
      */
-    public function setViewSuccessTemplate(string $template);
+    public function setViewSuccessTemplate(string $template): self;
 
     /**
      * 设置视图错误模板
@@ -320,5 +320,5 @@ interface IResponseFactory
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public function setViewFailTemplate(string $template);
+    public function setViewFailTemplate(string $template): self;
 }

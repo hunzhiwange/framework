@@ -92,7 +92,7 @@ class Register extends Provider
     /**
      * 注册 router 服务
      */
-    protected function router()
+    protected function router(): void
     {
         $this->container->singleton('router', function (IContainer $container) {
             return new Router($container);
@@ -102,7 +102,7 @@ class Register extends Provider
     /**
      * 注册 url 服务
      */
-    protected function url()
+    protected function url(): void
     {
         $this->container->singleton('url', function (IContainer $container) {
             $option = $container['option'];
@@ -125,7 +125,7 @@ class Register extends Provider
     /**
      * 注册 redirect 服务
      */
-    protected function redirect()
+    protected function redirect(): void
     {
         $this->container->singleton('redirect', function (IContainer $container) {
             $redirect = new Redirect($container['url']);
@@ -141,7 +141,7 @@ class Register extends Provider
     /**
      * 注册 response 服务
      */
-    protected function response()
+    protected function response(): void
     {
         $this->container->singleton('response', function (IContainer $container) {
             $option = $container['option'];
@@ -156,7 +156,7 @@ class Register extends Provider
     /**
      * 注册 cookie 服务
      */
-    protected function cookie()
+    protected function cookie(): void
     {
         $this->container->singleton('cookie', function (IContainer $container) {
             return new Cookie($container['option']->get('cookie\\'));
@@ -166,7 +166,7 @@ class Register extends Provider
     /**
      * 注册 view 服务
      */
-    protected function view()
+    protected function view(): void
     {
         $this->container->singleton('view', function (IContainer $container) {
             return new view($container['view.view']);
@@ -176,7 +176,7 @@ class Register extends Provider
     /**
      * 设置 COOKIE Resolver.
      */
-    protected function cookieResolver()
+    protected function cookieResolver(): void
     {
         Response::setCookieResolver(function () {
             return $this->container['cookie'];
