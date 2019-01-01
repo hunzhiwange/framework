@@ -123,19 +123,17 @@ interface ISeccode
      *
      * @return $this
      */
-    public function setOption(string $name, $value);
+    public function setOption(string $name, $value): self;
 
     /**
      * 设置验证码
      *
      * @param mixed  $code
      * @param string $outPath
-     * @param string $autoType
      * @param bool   $autoCode
-     *
-     * @return $this
+     * @param string $autoType
      */
-    public function display($code = null, ?string $outPath = null, $autoType = self::ALPHA_UPPERCASE, $autoCode = true);
+    public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void;
 
     /**
      * 设置验证码
@@ -144,12 +142,12 @@ interface ISeccode
      *
      * @return $this
      */
-    public function code($code);
+    public function code(string $code): self;
 
     /**
      * 返回验证码
      *
      * @return $this
      */
-    public function getCode();
+    public function getCode(): ?string;
 }

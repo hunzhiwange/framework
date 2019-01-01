@@ -106,7 +106,7 @@ class Seccode implements ISeccode
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): ISeccode
     {
         $this->option[$name] = $value;
 
@@ -120,10 +120,8 @@ class Seccode implements ISeccode
      * @param string $outPath
      * @param bool   $autoCode
      * @param string $autoType
-     *
-     * @return $this
      */
-    public function display($code = null, ?string $outPath = null, $autoCode = true, $autoType = self::ALPHA_UPPERCASE)
+    public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void
     {
         if (is_int($code) && $autoCode) {
             $this->autoCode($code, $autoType);
@@ -170,7 +168,7 @@ class Seccode implements ISeccode
      *
      * @return $this
      */
-    public function code($code)
+    public function code(string $code): ISeccode
     {
         $this->code = $code;
 
@@ -180,9 +178,9 @@ class Seccode implements ISeccode
     /**
      * 返回验证码
      *
-     * @return $this
+     * @return string
      */
-    public function getCode()
+    public function getCode(): ?string
     {
         return $this->code;
     }
@@ -192,7 +190,7 @@ class Seccode implements ISeccode
      *
      * @return int
      */
-    protected function normalizeWidth()
+    protected function normalizeWidth(): int
     {
         if ($this->option['width'] < static::MIN_WIDTH) {
             return static::MIN_WIDTH;
@@ -210,7 +208,7 @@ class Seccode implements ISeccode
      *
      * @return int
      */
-    protected function normalizeHeight()
+    protected function normalizeHeight(): int
     {
         if ($this->option['height'] < static::MIN_HEIGHT) {
             return static::MIN_HEIGHT;
@@ -228,7 +226,7 @@ class Seccode implements ISeccode
      *
      * @return string
      */
-    protected function makeBackground()
+    protected function makeBackground(): string
     {
         $resImage = imagecreatetruecolor($this->normalizeWidth(), $this->normalizeHeight());
         $resColor = imagecolorallocate($resImage, 255, 255, 255);
@@ -254,7 +252,7 @@ class Seccode implements ISeccode
      *
      * @param resource $resImage
      */
-    protected function makeAdulterate(&$resImage)
+    protected function makeAdulterate(&$resImage): void
     {
         $width = $this->normalizeWidth();
         $height = $this->normalizeHeight();
@@ -308,7 +306,7 @@ class Seccode implements ISeccode
      *
      * @param resource $resImage
      */
-    protected function makeTtfFont(&$resImage)
+    protected function makeTtfFont(&$resImage): void
     {
         if (!function_exists('imagettftext')) {
             // @codeCoverageIgnoreStart
@@ -408,7 +406,7 @@ class Seccode implements ISeccode
      *
      * @return array
      */
-    protected function getFontOption()
+    protected function getFontOption(): array
     {
         $code = $this->getCode();
         $ttf = $this->getTtf();
@@ -487,7 +485,7 @@ class Seccode implements ISeccode
      *
      * @return bool
      */
-    protected function makeBackgroundWithImage(&$resImage)
+    protected function makeBackgroundWithImage(&$resImage): bool
     {
         $findBackground = false;
         $backgroundPath = $this->option['background_path'];
@@ -549,7 +547,7 @@ class Seccode implements ISeccode
      *
      * @param resource $resImage
      */
-    protected function makeBackgroundDefault(&$resImage)
+    protected function makeBackgroundDefault(&$resImage): void
     {
         $width = $this->normalizeWidth();
         $height = $this->normalizeHeight();
@@ -601,7 +599,7 @@ class Seccode implements ISeccode
      *
      * @return array
      */
-    protected function getTtf()
+    protected function getTtf(): array
     {
         $fontPath = $this->isChinese($this->getCode()) ?
             $this->option['chinese_font_path'] :
@@ -627,10 +625,8 @@ class Seccode implements ISeccode
      *
      * @param int    $size
      * @param string $autoType
-     *
-     * @return bool
      */
-    protected function autoCode($size, $autoType = self::ALPHA_UPPERCASE)
+    protected function autoCode(int $size, string $autoType = self::ALPHA_UPPERCASE): void
     {
         if ($size < 1) {
             throw new InvalidArgumentException(
@@ -657,7 +653,7 @@ class Seccode implements ISeccode
      *
      * @return array
      */
-    protected function getAllowedAutoType()
+    protected function getAllowedAutoType(): array
     {
         return [
             static::ALPHA_NUM,
@@ -678,9 +674,9 @@ class Seccode implements ISeccode
      *
      * @return bool
      */
-    protected function isChinese($code)
+    protected function isChinese(?string $code = null): bool
     {
-        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', (string) ($code));
+        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', (string) ($code)) > 0;
     }
 
     /**
@@ -691,7 +687,7 @@ class Seccode implements ISeccode
      *
      * @return int
      */
-    protected function mtRand($numFirst, $numSecond)
+    protected function mtRand($numFirst, $numSecond): int
     {
         $numFirst = (int) ($numFirst);
         $numSecond = (int) ($numSecond);
