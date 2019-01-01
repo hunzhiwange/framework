@@ -39,7 +39,7 @@ class Queue extends LinkedList implements IStackQueue
      *
      * @param mixed $value
      */
-    public function in($value)
+    public function in($value): void
     {
         $this->push($value);
     }
@@ -57,7 +57,7 @@ class Queue extends LinkedList implements IStackQueue
     /**
      * {@inheritdoc}
      */
-    public function validate($value)
+    public function validate($value): void
     {
         if (!$this->checkType($value)) {
             throw new InvalidArgumentException(

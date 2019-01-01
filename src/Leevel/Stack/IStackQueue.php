@@ -36,7 +36,7 @@ interface IStackQueue
      *
      * @param mixed $value
      */
-    public function in($value);
+    public function in($value): void;
 
     /**
      * 出.
@@ -50,5 +50,5 @@ interface IStackQueue
      *
      * @param mixed $value
      */
-    public function validate($value);
+    public function validate($value): void;
 }

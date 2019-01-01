@@ -72,7 +72,7 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * {@inheritdoc}
      */
-    public function add($index, $newval)
+    public function add($index, $newval): void
     {
         $this->validate($newval);
 
@@ -82,7 +82,7 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($index, $newval)
+    public function offsetSet($index, $newval): void
     {
         $this->validate($newval);
 
@@ -92,7 +92,7 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * {@inheritdoc}
      */
-    public function push($value)
+    public function push($value): void
     {
         $this->validate($value);
 
@@ -114,7 +114,7 @@ class LinkedList extends SplDoublyLinkedList
      *
      * @param mixed $value
      */
-    public function validate($value)
+    public function validate($value): void
     {
         if (!$this->checkType($value)) {
             throw new InvalidArgumentException(
@@ -132,7 +132,7 @@ class LinkedList extends SplDoublyLinkedList
      *
      * @return bool
      */
-    protected function checkType($value)
+    protected function checkType($value): bool
     {
         if (!$this->type) {
             return true;
