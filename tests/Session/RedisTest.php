@@ -84,7 +84,7 @@ class RedisTest extends TestCase
 
         $this->assertTrue($connect->open('', 'foo'));
         $this->assertTrue($connect->close());
-        $this->assertTrue($connect->gc(0));
+        $this->assertSame(0, $connect->gc(0));
     }
 
     public function testSave()
@@ -144,7 +144,7 @@ class RedisTest extends TestCase
 
         $connect = $session->getConnect();
 
-        $this->assertSame(['other' => 'value', 'foo' => 'bar', 'hello' => 'world', 'flash.old.key' => []], $connect->read($sessionId));
+        $this->assertSame('a:4:{s:5:"other";s:5:"value";s:3:"foo";s:3:"bar";s:5:"hello";s:5:"world";s:13:"flash.old.key";a:0:{}}', $connect->read($sessionId));
 
         $session->destroy();
 
