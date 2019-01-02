@@ -365,7 +365,7 @@ class Debug extends DebugBar
     {
         $this->getEventDispatch()->
 
-        register(IConnect::SQL_EVENT, function ($event, string $sql, array $bindParams = []) {
+        register(IConnect::SQL_EVENT, function (string $event, string $sql, array $bindParams = []) {
             $this->getCollector('logs')->addMessage($sql.': '.json_encode($bindParams, JSON_UNESCAPED_UNICODE), 'sql');
         });
     }
@@ -377,7 +377,7 @@ class Debug extends DebugBar
     {
         $this->getEventDispatch()->
 
-        register(ILog::LOG_EVENT, function ($event, string $level, string $message, array $context = []) {
+        register(ILog::LOG_EVENT, function (string $event, string $level, string $message, array $context = []) {
             $this->getCollector('logs')->addMessage(File::formatMessage($level, $message, $context), $level);
         });
     }
