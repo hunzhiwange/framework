@@ -40,7 +40,7 @@ interface IPipeline
      *
      * @return $this
      */
-    public function send(array $passed);
+    public function send(array $passed): self;
 
     /**
      * 设置管道中的执行工序.
@@ -49,7 +49,7 @@ interface IPipeline
      *
      * @return $this
      */
-    public function through(array $stage);
+    public function through(array $stage): self;
 
     /**
      * 执行管道工序响应结果.

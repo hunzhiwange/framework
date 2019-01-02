@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Pipeline;
 
 use Closure;
+use Generator;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
@@ -80,7 +81,7 @@ class Pipeline implements IPipeline
      *
      * @return $this
      */
-    public function send(array $passed)
+    public function send(array $passed): IPipeline
     {
         foreach ($passed as $item) {
             $this->passed[] = $item;
@@ -96,7 +97,7 @@ class Pipeline implements IPipeline
      *
      * @return $this
      */
-    public function through(array $stage)
+    public function through(array $stage): IPipeline
     {
         foreach ($stage as $item) {
             $this->stage[] = $item;
@@ -166,7 +167,7 @@ class Pipeline implements IPipeline
      *
      * @return \Generator
      */
-    protected function stageGenerator(array $stage)
+    protected function stageGenerator(array $stage): Generator
     {
         array_unshift($stage, null);
 
@@ -218,7 +219,7 @@ class Pipeline implements IPipeline
      *
      * @return array
      */
-    protected function parse(string $stage)
+    protected function parse(string $stage): array
     {
         list($name, $args) = array_pad(explode(':', $stage, 2), 2, []);
 
