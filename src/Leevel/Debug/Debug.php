@@ -363,7 +363,7 @@ class Debug extends DebugBar
      */
     protected function databaseEventDispatch(): void
     {
-        $this->createEventDispatch()->
+        $this->getEventDispatch()->
 
         register(IConnect::SQL_EVENT, function ($event, string $sql, array $bindParams = []) {
             $this->getCollector('logs')->addMessage($sql.': '.json_encode($bindParams, JSON_UNESCAPED_UNICODE), 'sql');
@@ -375,7 +375,7 @@ class Debug extends DebugBar
      */
     protected function logEventDispatch(): void
     {
-        $this->createEventDispatch()->
+        $this->getEventDispatch()->
 
         register(ILog::LOG_EVENT, function ($event, string $level, string $message, array $context = []) {
             $this->getCollector('logs')->addMessage(File::formatMessage($level, $message, $context), $level);
@@ -383,11 +383,11 @@ class Debug extends DebugBar
     }
 
     /**
-     * 创建事件处理器.
+     * 获取事件处理器.
      *
      * @return \Leevel\Event\IDispatch
      */
-    protected function createEventDispatch(): IDispatch
+    protected function getEventDispatch(): IDispatch
     {
         return $this->project->make(IDispatch::class);
     }
