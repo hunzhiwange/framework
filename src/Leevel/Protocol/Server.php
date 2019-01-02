@@ -115,7 +115,7 @@ abstract class Server
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IServer
     {
         $this->option[$name] = $value;
 
@@ -165,9 +165,9 @@ abstract class Server
     }
 
     /**
-     * 运行服务
+     * 运行服务.
      */
-    public function startServer()
+    public function startServer(): void
     {
         $this->checkPidPath();
         $this->createServer();
@@ -176,11 +176,11 @@ abstract class Server
     }
 
     /**
-     * 返回服务
+     * 返回服务.
      *
      * @return \Swoole\Server
      */
-    public function getServer()
+    public function getServer(): SwooleServer
     {
         return $this->server;
     }
@@ -193,7 +193,7 @@ abstract class Server
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onStart.html
      */
-    public function onStart(SwooleServer $server)
+    public function onStart(SwooleServer $server): void
     {
         $this->log(
             sprintf(
@@ -234,7 +234,7 @@ abstract class Server
      *
      * @see https://wiki.swoole.com/wiki/page/49.html
      */
-    public function onConnect(SwooleServer $server, int $fd, int $reactorId)
+    public function onConnect(SwooleServer $server, int $fd, int $reactorId): void
     {
         $this->log(
             sprintf(
@@ -254,7 +254,7 @@ abstract class Server
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onWorkerStart.html
      */
-    public function onWorkerStart(SwooleServer $server, int $workeId)
+    public function onWorkerStart(SwooleServer $server, int $workeId): void
     {
         if ($workeId >= $this->option['worker_num']) {
             $this->setProcessName(
@@ -284,7 +284,7 @@ abstract class Server
      *
      * @see https://wiki.swoole.com/wiki/page/190.html
      */
-    public function onManagerStart(SwooleServer $server)
+    public function onManagerStart(SwooleServer $server): void
     {
         $this->log('Server manager worker start', true);
 
@@ -299,7 +299,7 @@ abstract class Server
      * @param \Swoole\Server $server
      * @param int            $workerId
      */
-    public function onWorkerStop(SwooleServer $server, int $workerId)
+    public function onWorkerStop(SwooleServer $server, int $workerId): void
     {
         $this->log(
             sprintf(
@@ -319,7 +319,7 @@ abstract class Server
      *
      * @see https://wiki.swoole.com/wiki/page/50.html
      */
-    public function onReceive(SwooleServer $server, int $fd, int $reactorId, string $data)
+    public function onReceive(SwooleServer $server, int $fd, int $reactorId, string $data): void
     {
     }
 
@@ -332,7 +332,7 @@ abstract class Server
      *
      * @see https://wiki.swoole.com/wiki/page/136.html
      */
-    public function onFinish(SwooleServer $server, int $taskId, string $data)
+    public function onFinish(SwooleServer $server, int $taskId, string $data): void
     {
         $this->log(
             sprintf('Task %d finish, the result is %s', $taskId, $data)
@@ -349,7 +349,7 @@ abstract class Server
      *
      * @see https://wiki.swoole.com/wiki/page/134.html
      */
-    public function onTask(SwooleServer $server, int $taskId, int $fromId, string $data)
+    public function onTask(SwooleServer $server, int $taskId, int $fromId, string $data): void
     {
         $this->log(
             sprintf(
@@ -369,7 +369,7 @@ abstract class Server
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onShutdown.html
      */
-    public function onShutdown(SwooleServer $server)
+    public function onShutdown(SwooleServer $server): void
     {
         if (is_file($this->option['pid_path'])) {
             unlink($this->option['pid_path']);
@@ -389,7 +389,7 @@ abstract class Server
     /**
      * 验证 pid_path 是否可用.
      */
-    protected function checkPidPath()
+    protected function checkPidPath(): void
     {
         if (!$this->option['pid_path']) {
             throw new InvalidArgumentException('Pid path is not set');
@@ -417,7 +417,7 @@ abstract class Server
     /**
      * 创建 server.
      */
-    protected function createServer()
+    protected function createServer(): void
     {
         $this->server = new SwooleServer(
             $this->option['host'],
@@ -430,7 +430,7 @@ abstract class Server
     /**
      * 初始化 http server.
      */
-    protected function initServer()
+    protected function initServer(): void
     {
         $this->server->set($this->option);
 
@@ -442,7 +442,7 @@ abstract class Server
     /**
      * http server 绑定事件.
      */
-    protected function eventServer()
+    protected function eventServer(): void
     {
         $type = get_class($this);
         $type = substr($type, strrpos($type, '\\') + 1);
@@ -460,7 +460,7 @@ abstract class Server
     /**
      * http server 启动.
      */
-    protected function startSwooleServer()
+    protected function startSwooleServer(): void
     {
         $this->server->start();
     }
@@ -473,7 +473,7 @@ abstract class Server
      * @see http://php.net/manual/zh/function.cli-set-process-title.php
      * @see https://wiki.swoole.com/wiki/page/125.html
      */
-    protected function setProcessName(string $name)
+    protected function setProcessName(string $name): void
     {
         if (function_exists('cli_set_process_title')) {
             cli_set_process_title($name);
@@ -491,9 +491,9 @@ abstract class Server
     /**
      * 是否为守候进程运行.
      *
-     * @return int
+     * @return bool
      */
-    protected function daemonize()
+    protected function daemonize(): bool
     {
         return !$this->option['daemonize'];
     }
@@ -505,7 +505,7 @@ abstract class Server
      * @param bool   $force
      * @param string $formatTime
      */
-    protected function log(string $message, bool $force = false, string $formatTime = 'H:i:s')
+    protected function log(string $message, bool $force = false, string $formatTime = 'H:i:s'): void
     {
         if (!$force && !$this->daemonize()) {
             return;

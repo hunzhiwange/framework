@@ -199,7 +199,7 @@ class Rpc
      *
      * @return bool
      */
-    protected function isJson($data)
+    protected function isJson($data): bool
     {
         if (!is_scalar($data) && !method_exists($data, '__toString')) {
             return false;

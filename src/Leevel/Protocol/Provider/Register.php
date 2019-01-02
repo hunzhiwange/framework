@@ -86,9 +86,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册  http.server 服务
+     * 注册  http.server 服务.
      */
-    protected function httpServer()
+    protected function httpServer(): void
     {
         $this->container->singleton('http.server', function (IContainer $container) {
             return new HttpServer(
@@ -102,9 +102,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 websocket.server 服务
+     * 注册 websocket.server 服务.
      */
-    protected function websocketServer()
+    protected function websocketServer(): void
     {
         $this->container->singleton('websocket.server', function (IContainer $container) {
             return new WebsocketServer(
@@ -118,9 +118,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 rpc.server 服务
+     * 注册 rpc.server 服务.
      */
-    protected function rpcServer()
+    protected function rpcServer(): void
     {
         $this->container->singleton('rpc.server', function (IContainer $container) {
             return new RpcServer(
@@ -134,9 +134,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 pool 服务
+     * 注册 pool 服务.
      */
-    protected function pool()
+    protected function pool(): void
     {
         $this->container->singleton('pool', function (IContainer $container) {
             return new Pool($container);
@@ -144,9 +144,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 rpc 服务
+     * 注册 rpc 服务.
      */
-    protected function rpc()
+    protected function rpc(): void
     {
         $this->container->singleton('rpc', function (IContainer $container) {
             return new Rpc();

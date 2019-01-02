@@ -133,7 +133,7 @@ class HttpServer extends Server implements IServer
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
      */
-    public function onHttpClose(SwooleHttpServer $server, int $fd, int $reactorId)
+    public function onHttpClose(SwooleHttpServer $server, int $fd, int $reactorId): void
     {
         $this->log(
             sprintf(
@@ -254,7 +254,7 @@ class HttpServer extends Server implements IServer
     /**
      * 创建 http server.
      */
-    protected function createServer()
+    protected function createServer(): void
     {
         unset($this->option['task_worker_num']);
 

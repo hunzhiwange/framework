@@ -38,6 +38,8 @@ class Coroutine implements ICoroutine
      * 是否处于协程上下文.
      *
      * @param string $className
+     *
+     * @return bool
      */
     public function context(string $className): bool
     {

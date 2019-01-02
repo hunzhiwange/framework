@@ -42,7 +42,7 @@ abstract class Server extends Command
     /**
      * 响应命令.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
@@ -160,7 +160,7 @@ abstract class Server extends Command
      *
      * @param array $option
      */
-    protected function checkService(array $option)
+    protected function checkService(array $option): void
     {
         $file = $option['pid_path'];
 
@@ -199,7 +199,7 @@ abstract class Server extends Command
      *
      * @return string
      */
-    protected function getLogo()
+    protected function getLogo(): string
     {
         return <<<'queryphp'
 _____________                           _______________

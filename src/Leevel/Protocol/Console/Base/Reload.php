@@ -41,7 +41,7 @@ abstract class Reload extends Command
     /**
      * 响应命令.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->warn($this->getVersion());
 

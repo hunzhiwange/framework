@@ -141,10 +141,10 @@ class Pool implements IPool
      *
      * @param string $className
      */
-    protected function valid(string $className)
+    protected function valid(string $className): void
     {
         if (!class_exists($className)) {
-            return new InvalidArgumentException(sprintf('Class `%s` was not found.', $className));
+            throw new InvalidArgumentException(sprintf('Class `%s` was not found.', $className));
         }
     }
 
@@ -153,9 +153,9 @@ class Pool implements IPool
      *
      * @param string $name
      *
-     * @return mixed
+     * @return string
      */
-    protected function normalize($name)
+    protected function normalize(string $name): string
     {
         return ltrim($name, '\\');
     }

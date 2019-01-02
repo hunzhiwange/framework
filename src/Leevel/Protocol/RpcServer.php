@@ -175,7 +175,7 @@ class RpcServer extends Server implements IServer
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
      */
-    public function onRpcClose(SwooleServer $server, int $fd, int $reactorId)
+    public function onRpcClose(SwooleServer $server, int $fd, int $reactorId): void
     {
         $this->log(
             sprintf(
