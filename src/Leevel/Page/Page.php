@@ -123,7 +123,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->render();
     }
@@ -136,7 +136,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IPage
     {
         $this->option[$name] = $value;
 
@@ -161,7 +161,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function append(string $key, string $value)
+    public function append(string $key, string $value): IPage
     {
         return $this->addParameter($key, $value);
     }
@@ -173,7 +173,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function appends(array $values)
+    public function appends(array $values): IPage
     {
         foreach ($values as $key => $value) {
             $this->addParameter($key, $value);
@@ -186,10 +186,12 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * 设置分页条件.
      *
      * @param array $parameter
+     *
+     * @return $this
      */
-    public function parameter(array $parameter)
+    public function parameter(array $parameter): IPage
     {
-        $this->setOption('parameter', $parameter);
+        return $this->setOption('parameter', $parameter);
     }
 
     /**
@@ -200,7 +202,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function addParameter(string $key, $value)
+    public function addParameter(string $key, $value): IPage
     {
         $tmp = $this->option['parameter'];
         $tmp[$key] = $value;
@@ -218,7 +220,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function renderOption(string $key, $value)
+    public function renderOption(string $key, $value): IPage
     {
         $tmp = $this->option['render_option'];
         $tmp[$key] = $value;
@@ -236,7 +238,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function renderOptions(array $option)
+    public function renderOptions(array $option): IPage
     {
         foreach ($option as $key => $value) {
             $this->renderOption($key, $value);
@@ -252,7 +254,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function url(?string $url = null)
+    public function url(?string $url = null): IPage
     {
         return $this->setOption('url', $url);
     }
@@ -264,7 +266,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function setRender(?string $render = null)
+    public function setRender(?string $render = null): IPage
     {
         return $this->setOption('render', $render);
     }
@@ -274,7 +276,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return null|string
      */
-    public function getRender()
+    public function getRender(): string
     {
         return $this->option['render'] ?: static::RENDER;
     }
@@ -286,7 +288,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function range(?int $range = null)
+    public function range(?int $range = null): IPage
     {
         return $this->setOption('range', $range);
     }
@@ -296,7 +298,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return int
      */
-    public function getRange()
+    public function getRange(): int
     {
         return $this->option['range'] ?
             (int) ($this->option['range']) :
@@ -310,7 +312,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function fragment(?string $fragment = null)
+    public function fragment(?string $fragment = null): IPage
     {
         return $this->setOption('fragment', $fragment);
     }
@@ -320,7 +322,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return null|string
      */
-    public function getFragment()
+    public function getFragment(): ?string
     {
         return $this->option['fragment'];
     }
@@ -332,7 +334,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function perPage(int $perPage)
+    public function perPage(int $perPage): IPage
     {
         $this->perPage = $perPage;
 
@@ -360,7 +362,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return $this
      */
-    public function pageName(string $pageName)
+    public function pageName(string $pageName): IPage
     {
         return $this->setOption('page', $pageName);
     }
@@ -380,7 +382,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return null|int
      */
-    public function getTotalRecord()
+    public function getTotalRecord(): ?int
     {
         return $this->totalRecord;
     }
@@ -622,11 +624,11 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 替换分页变量.
      *
-     * @param mixed $page
+     * @param int|string $page
      *
      * @return string
      */
-    public function pageReplace($page)
+    public function pageReplace($page): string
     {
         return str_replace([
             urlencode('{page}'),
@@ -642,7 +644,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return string
      */
-    public function render($render = null, array $option = [])
+    public function render($render = null, array $option = []): string
     {
         $option = array_merge($this->option['render_option'], $option);
 
@@ -682,9 +684,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 实现 JsonSerializable::jsonSerialize.
      *
-     * @return bool
+     * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -711,7 +713,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return string
      */
-    protected function getUrl()
+    protected function getUrl(): string
     {
         if (null !== $this->cachedUrl) {
             return $this->cachedUrl;
@@ -741,7 +743,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return string
      */
-    protected function buildFragment()
+    protected function buildFragment(): string
     {
         return $this->getFragment() ? '#'.$this->getFragment() : '';
     }

@@ -48,7 +48,7 @@ interface IPage
     /**
      * 默认分页渲染.
      *
-     * @var int
+     * @var string
      */
     const RENDER = 'defaults';
 
@@ -67,7 +67,7 @@ interface IPage
      *
      * @return $this
      */
-    public function setOption(string $name, $value);
+    public function setOption(string $name, $value): self;
 
     /**
      * 追加分页条件.
@@ -77,7 +77,7 @@ interface IPage
      *
      * @return $this
      */
-    public function append(string $key, string $value);
+    public function append(string $key, string $value): self;
 
     /**
      * 批量追加分页条件.
@@ -86,14 +86,16 @@ interface IPage
      *
      * @return $this
      */
-    public function appends(array $value);
+    public function appends(array $value): self;
 
     /**
      * 设置分页条件.
      *
      * @param array $parameter
+     *
+     * @return $this
      */
-    public function parameter(array $parameter);
+    public function parameter(array $parameter): self;
 
     /**
      * 添加分页条件.
@@ -103,7 +105,7 @@ interface IPage
      *
      * @return $this
      */
-    public function addParameter(string $key, $value);
+    public function addParameter(string $key, $value): self;
 
     /**
      * 设置渲染参数.
@@ -113,7 +115,7 @@ interface IPage
      *
      * @return $this
      */
-    public function renderOption(string $key, $value);
+    public function renderOption(string $key, $value): self;
 
     /**
      * 批量设置渲染参数.
@@ -123,7 +125,7 @@ interface IPage
      *
      * @return $this
      */
-    public function renderOptions(array $option);
+    public function renderOptions(array $option): self;
 
     /**
      * 设置 url.
@@ -132,7 +134,7 @@ interface IPage
      *
      * @return $this
      */
-    public function url(?string $url = null);
+    public function url(?string $url = null): self;
 
     /**
      * 设置 render.
@@ -141,14 +143,14 @@ interface IPage
      *
      * @return $this
      */
-    public function setRender(?string $render = null);
+    public function setRender(?string $render = null): self;
 
     /**
      * 获取 render.
      *
      * @return null|string
      */
-    public function getRender();
+    public function getRender(): ?string;
 
     /**
      * 设置 range.
@@ -157,7 +159,7 @@ interface IPage
      *
      * @return $this
      */
-    public function range(?int $range = null);
+    public function range(?int $range = null): self;
 
     /**
      * 获取 range.
@@ -173,14 +175,14 @@ interface IPage
      *
      * @return $this
      */
-    public function fragment(?string $fragment = null);
+    public function fragment(?string $fragment = null): self;
 
     /**
      * 获取 url 描点.
      *
      * @return null|string
      */
-    public function getFragment();
+    public function getFragment(): ?string;
 
     /**
      * 设置每页分页数量.
@@ -189,7 +191,7 @@ interface IPage
      *
      * @return $this
      */
-    public function perPage(int $perPage);
+    public function perPage(int $perPage): self;
 
     /**
      * 返回每页数量.
@@ -205,7 +207,7 @@ interface IPage
      *
      * @return $this
      */
-    public function pageName(string $pageName);
+    public function pageName(string $pageName): self;
 
     /**
      * 获取分页名字.
@@ -219,7 +221,7 @@ interface IPage
      *
      * @return null|int
      */
-    public function getTotalRecord();
+    public function getTotalRecord(): ?int;
 
     /**
      * 是否为无限分页.
@@ -350,11 +352,11 @@ interface IPage
     /**
      * 替换分页变量.
      *
-     * @param mixed $page
+     * @param int|string $page
      *
      * @return string
      */
-    public function pageReplace($page);
+    public function pageReplace($page): string;
 
     /**
      * 渲染分页.
@@ -364,5 +366,5 @@ interface IPage
      *
      * @return string
      */
-    public function render($render = null, array $option = []);
+    public function render($render = null, array $option = []): string;
 }

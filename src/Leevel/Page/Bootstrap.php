@@ -75,7 +75,7 @@ class Bootstrap implements IRender
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IRender
     {
         $this->option[$name] = $value;
 
@@ -84,18 +84,22 @@ class Bootstrap implements IRender
 
     /**
      * 大尺寸样式.
+     *
+     * @return $this
      */
-    public function setLargeSize()
+    public function setLargeSize(): IRender
     {
-        $this->setOption('size', 'lg');
+        return $this->setOption('size', 'lg');
     }
 
     /**
      * 小尺寸样式.
+     *
+     * @return $this
      */
-    public function setSmallSize()
+    public function setSmallSize(): IRender
     {
-        $this->setOption('size', 'sm');
+        return $this->setOption('size', 'sm');
     }
 
     /**
@@ -105,7 +109,7 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    public function render(array $option = [])
+    public function render(array $option = []): string
     {
         if ($option) {
             $this->option = array_merge($this->option, $option);
@@ -124,11 +128,11 @@ class Bootstrap implements IRender
     /**
      * 替换分页变量.
      *
-     * @param mixed $page
+     * @param int|string $page
      *
      * @return string
      */
-    public function replace($page)
+    public function replace($page): string
     {
         return $this->page->pageReplace($page);
     }
@@ -150,7 +154,7 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getHeaderRender()
+    protected function getHeaderRender(): string
     {
         return '<nav aria-label="navigation">';
     }
@@ -160,7 +164,7 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getUlRender()
+    protected function getUlRender(): string
     {
         return sprintf(
             '<ul class="pagination%s">',
@@ -175,10 +179,10 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getFirstRender()
+    protected function getFirstRender(): string
     {
         if (!$this->page->canFirstRender()) {
-            return;
+            return '';
         }
 
         return sprintf(
@@ -194,7 +198,7 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getPrevRender()
+    protected function getPrevRender(): string
     {
         if ($this->page->canPrevRender()) {
             return sprintf(
@@ -213,10 +217,10 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getMainRender()
+    protected function getMainRender(): string
     {
         if (!$this->page->canMainRender()) {
-            return;
+            return '';
         }
 
         $result = '';
@@ -241,7 +245,7 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getNextRender()
+    protected function getNextRender(): string
     {
         if ($this->page->canNextRender()) {
             return sprintf(
@@ -260,7 +264,7 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getLastRender()
+    protected function getLastRender(): string
     {
         if ($this->page->isTotalMacro()) {
             return sprintf(
@@ -280,6 +284,8 @@ class Bootstrap implements IRender
                     $this->page->getTotalPage()
                 );
         }
+
+        return '';
     }
 
     /**
@@ -287,7 +293,7 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getEndulRender()
+    protected function getEndulRender(): string
     {
         return '</ul>';
     }
@@ -297,7 +303,7 @@ class Bootstrap implements IRender
      *
      * @return string
      */
-    protected function getFooterRender()
+    protected function getFooterRender(): string
     {
         return '</nav>';
     }

@@ -39,7 +39,7 @@ interface IRender
      *
      * @return $this
      */
-    public function setOption(string $name, $value);
+    public function setOption(string $name, $value): self;
 
     /**
      * 渲染.
@@ -48,5 +48,5 @@ interface IRender
      *
      * @return string
      */
-    public function render();
+    public function render(): string;
 }

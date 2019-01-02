@@ -47,8 +47,10 @@ class BootstrapSimple extends Bootstrap
 
     /**
      * 设置两端对齐.
+     *
+     * @return $this
      */
-    public function setJustifyAlign()
+    public function setJustifyAlign(): IRender
     {
         $this->setOption('align', 'justify');
     }
@@ -68,7 +70,7 @@ class BootstrapSimple extends Bootstrap
      *
      * @return string
      */
-    protected function getHeaderRender()
+    protected function getHeaderRender(): string
     {
         return '<nav aria-label="...">';
     }
@@ -78,7 +80,7 @@ class BootstrapSimple extends Bootstrap
      *
      * @return string
      */
-    protected function getUlRender()
+    protected function getUlRender(): string
     {
         return '<ul class="pager">';
     }
@@ -88,7 +90,7 @@ class BootstrapSimple extends Bootstrap
      *
      * @return string
      */
-    protected function getPrevRender()
+    protected function getPrevRender(): string
     {
         if ($this->page->canPrevRender()) {
             return sprintf(
@@ -115,7 +117,7 @@ class BootstrapSimple extends Bootstrap
      *
      * @return string
      */
-    protected function getNextRender()
+    protected function getNextRender(): string
     {
         if ($this->page->canNextRender()) {
             return sprintf(
@@ -142,7 +144,7 @@ class BootstrapSimple extends Bootstrap
      *
      * @return string
      */
-    protected function getEndulRender()
+    protected function getEndulRender(): string
     {
         return '</ul>';
     }
@@ -152,7 +154,7 @@ class BootstrapSimple extends Bootstrap
      *
      * @return string
      */
-    protected function getFooterRender()
+    protected function getFooterRender(): string
     {
         return '</nav>';
     }

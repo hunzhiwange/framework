@@ -75,7 +75,7 @@ class Defaults implements IRender
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IRender
     {
         $this->option[$name] = $value;
 
@@ -84,10 +84,12 @@ class Defaults implements IRender
 
     /**
      * 简单渲染.
+     *
+     * @return $this
      */
-    public function setSimpleTemplate()
+    public function setSimpleTemplate(): IRender
     {
-        $this->setOption(
+        return $this->setOption(
             'template',
             '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}'
         );
@@ -100,7 +102,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    public function render(array $option = [])
+    public function render(array $option = []): string
     {
         if ($option) {
             $this->option = array_merge($this->option, $option);
@@ -119,11 +121,11 @@ class Defaults implements IRender
     /**
      * 替换分页变量.
      *
-     * @param mixed $page
+     * @param int|string $page
      *
      * @return string
      */
-    public function replace($page)
+    public function replace($page): string
     {
         return $this->page->pageReplace($page);
     }
@@ -143,7 +145,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getHeaderRender()
+    protected function getHeaderRender(): string
     {
         return sprintf(
             '<div class="pagination%s">',
@@ -156,7 +158,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getUlRender()
+    protected function getUlRender(): string
     {
         return '<ul class="pager">';
     }
@@ -166,10 +168,10 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getTotalRender()
+    protected function getTotalRender(): string
     {
         if (!$this->page->canTotalRender()) {
-            return;
+            return '';
         }
 
         return sprintf(
@@ -183,10 +185,10 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getFirstRender()
+    protected function getFirstRender(): string
     {
         if (!$this->page->canFirstRender()) {
-            return;
+            return '';
         }
 
         return sprintf(
@@ -206,7 +208,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getPrevRender()
+    protected function getPrevRender(): string
     {
         if ($this->page->canPrevRender()) {
             return sprintf(
@@ -227,10 +229,10 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getMainRender()
+    protected function getMainRender(): string
     {
         if (!$this->page->canMainRender()) {
-            return;
+            return '';
         }
 
         $result = '';
@@ -255,7 +257,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getNextRender()
+    protected function getNextRender(): string
     {
         if ($this->page->canNextRender()) {
             return sprintf(
@@ -274,7 +276,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getLastRender()
+    protected function getLastRender(): string
     {
         if ($this->page->isTotalMacro()) {
             return sprintf(
@@ -301,6 +303,8 @@ class Defaults implements IRender
                     $this->page->getTotalPage()
                 );
         }
+
+        return '';
     }
 
     /**
@@ -308,7 +312,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getEndulRender()
+    protected function getEndulRender(): string
     {
         return '</ul>';
     }
@@ -318,7 +322,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getJumpRender()
+    protected function getJumpRender(): string
     {
         return sprintf(
             '<span class="pagination-jump">%s'.
@@ -339,7 +343,7 @@ class Defaults implements IRender
      *
      * @return string
      */
-    protected function getFooterRender()
+    protected function getFooterRender(): string
     {
         return '</div>';
     }
