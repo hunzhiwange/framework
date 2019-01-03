@@ -162,7 +162,7 @@ class LoadOptionTest extends TestCase
 
 class Project3 extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

@@ -242,7 +242,7 @@ class DebugTest extends TestCase
 
 class Project extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

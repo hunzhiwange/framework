@@ -72,9 +72,9 @@ interface IContainer
      * @param string $name
      * @param array  $args
      *
-     * @return false|object
+     * @return mixed
      */
-    public function make($name, array $args = []);
+    public function make(string $name, array $args = []);
 
     /**
      * 实例回调自动注入.

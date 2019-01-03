@@ -165,7 +165,7 @@ class RegisterRuntimeTest extends TestCase
 
 class Project4 extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

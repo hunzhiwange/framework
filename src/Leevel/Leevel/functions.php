@@ -55,7 +55,7 @@ class Leevel
      *
      * @return string
      */
-    public static function __(string $text, ...$arr)
+    public static function __(string $text, ...$arr): string
     {
         static $i18n;
 
@@ -124,7 +124,7 @@ class Leevel
      * @param array $moreVars
      * @codeCoverageIgnore
      */
-    public static function dd($var, ...$moreVars)
+    public static function dd($var, ...$moreVars): void
     {
         Dump::dumpDie($var, ...$moreVars);
     }
@@ -134,7 +134,7 @@ class Leevel
      *
      * @codeCoverageIgnore
      */
-    public static function backtrace()
+    public static function backtrace(): void
     {
         Dump::backtrace();
     }
@@ -203,7 +203,7 @@ class Leevel
             return static::project('logs');
         }
 
-        return static::project('logs')->log($level, $message, $context);
+        static::project('logs')->log($level, $message, $context);
     }
 
     /**
@@ -298,8 +298,8 @@ class Leevel
     /**
      * 设置或者获取 flash 值.
      *
-     * @param null|string $key
-     * @param mixed       $defaults
+     * @param null|array|string $key
+     * @param mixed             $defaults
      *
      * @return mixed
      */
@@ -319,10 +319,10 @@ class Leevel
     /**
      * 生成路由地址
      *
-     * @param string $url
-     * @param array  $params
-     * @param string $subdomain
-     * @param mixed  $suffix
+     * @param string      $url
+     * @param array       $params
+     * @param string      $subdomain
+     * @param bool|string $suffix
      *
      * @return string
      */
@@ -339,7 +339,7 @@ class Leevel
      *
      * @return string
      */
-    public static function gettext(string $text, ...$arr)
+    public static function gettext(string $text, ...$arr): string
     {
         return static::__($text, ...$arr);
     }
@@ -365,7 +365,7 @@ if (!function_exists('__')) {
      *
      * @return string
      */
-    function __(string $text, ...$arr)
+    function __(string $text, ...$arr): string
     {
         return Leevel::__($text, ...$arr);
     }
@@ -380,7 +380,7 @@ if (!function_exists('gettext')) {
      *
      * @return string
      */
-    function gettext(string $text, ...$arr)
+    function gettext(string $text, ...$arr): string
     {
         return Leevel::__($text, ...$arr);
     }
@@ -408,7 +408,7 @@ if (!function_exists('dd')) {
      * @param mixed $var
      * @param array $moreVars
      */
-    function dd($var, ...$moreVars)
+    function dd($var, ...$moreVars): void
     {
         Leevel::dd($var, ...$moreVars);
     }
@@ -418,7 +418,7 @@ if (!function_exists('db')) {
     /**
      * 调试栈信息.
      */
-    function db()
+    function db(): void
     {
         Leevel::backtrace();
     }

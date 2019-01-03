@@ -61,5 +61,5 @@ interface IRuntime
      * @param \sSymfony\Component\Console\Output\OutputInterface $output
      * @param \Exception                                         $e
      */
-    public function renderForConsole(OutputInterface $output, Exception $e);
+    public function renderForConsole(OutputInterface $output, Exception $e): void;
 }

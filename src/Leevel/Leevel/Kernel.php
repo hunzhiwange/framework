@@ -168,7 +168,7 @@ abstract class Kernel implements IKernel
      *
      * @param \Leevel\Http\IRequest $request
      */
-    protected function registerBaseService(IRequest $request)
+    protected function registerBaseService(IRequest $request): void
     {
         $this->project->instance('request', $request);
     }
@@ -202,7 +202,7 @@ abstract class Kernel implements IKernel
      *
      * @param \Exception $e
      */
-    protected function reportException(Exception $e)
+    protected function reportException(Exception $e): void
     {
         $this->getRuntime()->report($e);
     }
@@ -226,7 +226,7 @@ abstract class Kernel implements IKernel
      * @param \Leevel\Http\IRequest  $request
      * @param \Leevel\Http\IResponse $response
      */
-    protected function middlewareTerminate(IRequest $request, IResponse $response)
+    protected function middlewareTerminate(IRequest $request, IResponse $response): void
     {
         $this->router->throughMiddleware($request, [
             $response,

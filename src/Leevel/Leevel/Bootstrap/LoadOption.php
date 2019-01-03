@@ -74,7 +74,7 @@ class LoadOption
      *
      * @param \Leevel\Kernel\IProject $projecty
      */
-    protected function checkRuntimeEnv(IProject $project)
+    protected function checkRuntimeEnv(IProject $project): void
     {
         if (!getenv('RUNTIME_ENVIRONMENT')) {
             return;
@@ -105,10 +105,10 @@ class LoadOption
     /**
      * 设置环境变量.
      *
-     * @param string      $name
-     * @param null|string $value
+     * @param string           $name
+     * @param null|bool|string $value
      */
-    protected function setEnvVar($name, $value = null): void
+    protected function setEnvVar(string $name, $value = null): void
     {
         if (is_bool($value)) {
             putenv($name.'='.($value ? '(true)' : '(false)'));

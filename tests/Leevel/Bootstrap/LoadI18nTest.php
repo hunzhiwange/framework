@@ -165,7 +165,7 @@ class LoadI18nTest extends TestCase
 
 class Project extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

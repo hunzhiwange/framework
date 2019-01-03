@@ -50,7 +50,7 @@ class RegisterRuntime
      *
      * @param \Leevel\Kernel\IProject $project
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         $this->project = $project;
 
@@ -82,7 +82,7 @@ class RegisterRuntime
      * @param int    $line
      * @param mixed  $context
      */
-    public function setErrorHandle(int $code, string $description, ?string $file = null, ?int $line = null, $context = null)
+    public function setErrorHandle(int $code, string $description, ?string $file = null, ?int $line = null, $context = null): void
     {
         // 根据 error_reporing 等级来确定是否抛出错误
         if (!(error_reporting() & $code)) {
@@ -97,7 +97,7 @@ class RegisterRuntime
      *
      * @codeCoverageIgnore
      */
-    public function registerShutdownFunction()
+    public function registerShutdownFunction(): void
     {
         if (($error = error_get_last()) && !empty($error['type'])) {
             $this->setExceptionHandler($this->formatErrorException($error));
@@ -109,7 +109,7 @@ class RegisterRuntime
      *
      * @param \Throwable $e
      */
-    public function setExceptionHandler(Throwable $e)
+    public function setExceptionHandler(Throwable $e): void
     {
         if (!$e instanceof Exception) {
             $e = new ErrorException(
@@ -141,7 +141,7 @@ class RegisterRuntime
      *
      * @param \Exception $e
      */
-    protected function renderConsoleResponse(Exception $e)
+    protected function renderConsoleResponse(Exception $e): void
     {
         $this->getRuntime()->renderForConsole(new ConsoleOutput(), $e);
     }
@@ -151,7 +151,7 @@ class RegisterRuntime
      *
      * @param \Exception $e
      */
-    protected function renderHttpResponse(Exception $e)
+    protected function renderHttpResponse(Exception $e): void
     {
         $this->getRuntime()->render($this->project['request'], $e)->send();
     }

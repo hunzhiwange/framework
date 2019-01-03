@@ -612,7 +612,7 @@ class ProjectTest extends TestCase
 
 class Project extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

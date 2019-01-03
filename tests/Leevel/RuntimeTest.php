@@ -519,7 +519,7 @@ class RuntimeTest extends TestCase
 
 class ProjectRuntime extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

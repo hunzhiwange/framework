@@ -76,7 +76,7 @@ class TraverseProviderTest extends TestCase
 
 class Project2 extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

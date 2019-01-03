@@ -63,7 +63,7 @@ class Autoload extends Command
      *
      * @param \Leevel\Kernel\IProject $project
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         $this->project = $project;
 
@@ -363,7 +363,7 @@ eot;
      * @param string $cachePath
      * @param array  $data
      */
-    protected function writeCache(string $cachePath, string $data)
+    protected function writeCache(string $cachePath, string $data): void
     {
         $dirname = dirname($cachePath);
 

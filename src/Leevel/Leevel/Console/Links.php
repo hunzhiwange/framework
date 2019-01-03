@@ -51,7 +51,7 @@ class Links extends Command
     /**
      * 响应命令.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->line('Start to create symbolic links.');
 

@@ -178,7 +178,7 @@ trait Helper
      * @param string $data
      * @param array  $timeRange
      */
-    protected function assertTimeRange(string $data, ...$timeRange)
+    protected function assertTimeRange(string $data, ...$timeRange): void
     {
         $this->assertTrue(in_array($data, $timeRange, true));
     }

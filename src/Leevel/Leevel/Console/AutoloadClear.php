@@ -54,7 +54,7 @@ class AutoloadClear extends Command
      *
      * @param \Leevel\Kernel\IProject $project
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         $this->line('Start to clear cache autoload.');
 
@@ -70,7 +70,7 @@ class AutoloadClear extends Command
      *
      * @param string $cachePath
      */
-    protected function clearCache(string $cachePath)
+    protected function clearCache(string $cachePath): void
     {
         if (!is_file($cachePath)) {
             $this->warn('Autoload cache files have been cleaned up.');

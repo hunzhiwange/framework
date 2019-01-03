@@ -262,7 +262,7 @@ class Kernel1 extends Kernel
 
 class ProjectKernel extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

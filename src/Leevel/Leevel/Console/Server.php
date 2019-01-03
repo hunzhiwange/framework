@@ -63,7 +63,7 @@ class Server extends Command
      *
      * @param \Leevel\Kernel\IProject $project
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         $this->project = $project;
 
@@ -75,8 +75,6 @@ class Server extends Command
         ]);
 
         passthru($this->normalizeCommand(), $status);
-
-        return $status;
     }
 
     /**

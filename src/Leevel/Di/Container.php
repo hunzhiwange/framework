@@ -226,9 +226,9 @@ class Container implements IContainer, ArrayAccess
      * @param string $name
      * @param array  $args
      *
-     * @return false|object
+     * @return mixed
      */
-    public function make($name, array $args = [])
+    public function make(string $name, array $args = [])
     {
         // 别名
         $name = $this->getAlias($name);

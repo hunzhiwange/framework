@@ -52,7 +52,7 @@ class Production extends Command
     /**
      * 响应命令.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->line('Start to optimize you app.');
 

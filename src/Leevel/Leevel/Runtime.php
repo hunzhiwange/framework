@@ -139,7 +139,7 @@ abstract class Runtime implements IRuntime
      * @param \Exception                                         $e
      * @codeCoverageIgnore
      */
-    public function renderForConsole(OutputInterface $output, Exception $e)
+    public function renderForConsole(OutputInterface $output, Exception $e): void
     {
         $handler = (new CollisionProvider())->
 
@@ -336,7 +336,7 @@ abstract class Runtime implements IRuntime
      *
      * @return \Whoops\Run
      */
-    protected function makeWhoops()
+    protected function makeWhoops(): Run
     {
         $whoops = new Run();
 

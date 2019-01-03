@@ -308,14 +308,14 @@ class FunctionsTest extends TestCase
 
 class Project2 extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }
 
 class Project3 extends Projects
 {
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
     }
 }

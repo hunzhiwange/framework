@@ -178,7 +178,7 @@ class Project extends Container implements IProject
      * @return static
      * @codeCoverageIgnore
      */
-    public static function singletons(?string $path = null)
+    public static function singletons(?string $path = null): IProject
     {
         if (null !== static::$project) {
             return static::$project;
@@ -192,7 +192,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function version()
+    public function version(): string
     {
         return static::VERSION;
     }
@@ -224,7 +224,7 @@ class Project extends Container implements IProject
     /**
      * {@inheritdoc}
      */
-    public function make($name, array $args = [])
+    public function make(string $name, array $args = [])
     {
         $name = $this->getAlias($name);
 
@@ -240,7 +240,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setPath(string $path)
+    public function setPath(string $path): void
     {
         $this->path = $path;
     }
@@ -252,7 +252,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function path(string $path = '')
+    public function path(string $path = ''): string
     {
         return $this->path.$this->normalizePath($path);
     }
@@ -262,7 +262,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setAppPath(string $path)
+    public function setAppPath(string $path): void
     {
         $this->appPath = $path;
     }
@@ -275,7 +275,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function appPath($app = false, string $path = '')
+    public function appPath($app = false, string $path = ''): string
     {
         return ($this->appPath ?? $this->path.DIRECTORY_SEPARATOR.'application').
             ($app ? DIRECTORY_SEPARATOR.$this->normalizeApp($app) : $app).
@@ -289,7 +289,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function themePath($app = false)
+    public function themePath($app = false): string
     {
         return $this->appPath($app).'/ui/theme';
     }
@@ -299,7 +299,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setCommonPath(string $path)
+    public function setCommonPath(string $path): void
     {
         $this->commonPath = $path;
     }
@@ -311,7 +311,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function commonPath(string $path = '')
+    public function commonPath(string $path = ''): string
     {
         return ($this->commonPath ?? $this->path.DIRECTORY_SEPARATOR.'common').
             $this->normalizePath($path);
@@ -322,7 +322,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setRuntimePath(string $path)
+    public function setRuntimePath(string $path): void
     {
         $this->runtimePath = $path;
     }
@@ -334,7 +334,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function runtimePath(string $path = '')
+    public function runtimePath(string $path = ''): string
     {
         return ($this->runtimePath ?? $this->path.DIRECTORY_SEPARATOR.'runtime').
             $this->normalizePath($path);
@@ -345,7 +345,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setStoragePath(string $path)
+    public function setStoragePath(string $path): void
     {
         $this->storagePath = $path;
     }
@@ -357,7 +357,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function storagePath(string $path = '')
+    public function storagePath(string $path = ''): string
     {
         return ($this->storagePath ?? $this->path.DIRECTORY_SEPARATOR.'storage').
             $this->normalizePath($path);
@@ -368,7 +368,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setPublicPath(string $path)
+    public function setPublicPath(string $path): void
     {
         $this->publicPath = $path;
     }
@@ -380,7 +380,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function publicPath(string $path = '')
+    public function publicPath(string $path = ''): string
     {
         return ($this->publicPath ?? $this->path.DIRECTORY_SEPARATOR.'public').
             $this->normalizePath($path);
@@ -391,7 +391,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setThemesPath(string $path)
+    public function setThemesPath(string $path): void
     {
         $this->themesPath = $path;
     }
@@ -403,7 +403,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function themesPath(string $path = '')
+    public function themesPath(string $path = ''): string
     {
         return ($this->themesPath ?? $this->path.DIRECTORY_SEPARATOR.'themes').
             $this->normalizePath($path);
@@ -414,7 +414,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setOptionPath(string $path)
+    public function setOptionPath(string $path): void
     {
         $this->optionPath = $path;
     }
@@ -426,7 +426,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function optionPath(string $path = '')
+    public function optionPath(string $path = ''): string
     {
         return ($this->optionPath ?? $this->path.DIRECTORY_SEPARATOR.'option').
             $this->normalizePath($path);
@@ -437,7 +437,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setI18nPath(string $path)
+    public function setI18nPath(string $path): void
     {
         $this->i18nPath = $path;
     }
@@ -449,7 +449,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function i18nPath($path = null)
+    public function i18nPath(?string $path = null): string
     {
         return ($this->i18nPath ?? $this->path.DIRECTORY_SEPARATOR.'i18n').
             $this->normalizePath($path ?: '');
@@ -460,7 +460,7 @@ class Project extends Container implements IProject
      *
      * @param string $path
      */
-    public function setEnvPath(string $path)
+    public function setEnvPath(string $path): void
     {
         $this->envPath = $path;
     }
@@ -470,7 +470,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function envPath()
+    public function envPath(): string
     {
         return $this->envPath ?: $this->path;
     }
@@ -480,7 +480,7 @@ class Project extends Container implements IProject
      *
      * @param string $file
      */
-    public function setEnvFile($file)
+    public function setEnvFile(string $file): void
     {
         $this->envFile = $file;
     }
@@ -490,7 +490,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function envFile()
+    public function envFile(): string
     {
         return $this->envFile ?: static::DEFAULT_ENV;
     }
@@ -500,7 +500,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function fullEnvPath()
+    public function fullEnvPath(): string
     {
         return $this->envPath().DIRECTORY_SEPARATOR.$this->envFile();
     }
@@ -512,7 +512,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    public function i18nCachedPath($i18n): string
+    public function i18nCachedPath(string $i18n): string
     {
         return $this->runtimePath().'/i18n/'.$i18n.'.php';
     }
@@ -589,17 +589,17 @@ class Project extends Container implements IProject
      *
      * @param string $namespaces
      *
-     * @return null|string
+     * @return string
      * @codeCoverageIgnore
      */
-    public function getPathByComposer($namespaces)
+    public function getPathByComposer(string $namespaces): string
     {
         $namespaces = explode('\\', $namespaces);
 
         $prefix = $this->composer()->getPrefixesPsr4();
 
         if (!isset($prefix[$namespaces[0].'\\'])) {
-            return;
+            return '';
         }
 
         $namespaces[0] = $prefix[$namespaces[0].'\\'][0];
@@ -654,7 +654,7 @@ class Project extends Container implements IProject
      *
      * @param \Leevel\Di\Provider $provider
      */
-    public function callProviderBootstrap(Provider $provider)
+    public function callProviderBootstrap(Provider $provider): void
     {
         if (!method_exists($provider, 'bootstrap')) {
             return;
@@ -671,7 +671,7 @@ class Project extends Container implements IProject
      *
      * @param array $bootstraps
      */
-    public function bootstrap(array $bootstraps)
+    public function bootstrap(array $bootstraps): void
     {
         if ($this->isBootstrap) {
             return;
@@ -694,10 +694,8 @@ class Project extends Container implements IProject
 
     /**
      * 框架基础提供者 register.
-     *
-     * @return $this
      */
-    public function registerProviders()
+    public function registerProviders(): void
     {
         if ($this->isBootstrap) {
             return;
@@ -718,16 +716,12 @@ class Project extends Container implements IProject
                 $this->providerBootstraps[] = $provider;
             }
         }
-
-        return $this;
     }
 
     /**
-     * 执行框架基础提供者引导
-     *
-     * @return $this
+     * 执行框架基础提供者引导.
      */
-    public function bootstrapProviders()
+    public function bootstrapProviders(): void
     {
         if ($this->isBootstrap) {
             return;
@@ -738,8 +732,6 @@ class Project extends Container implements IProject
         }
 
         $this->isBootstrap = true;
-
-        return $this;
     }
 
     /**
@@ -767,9 +759,9 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 注册基础服务
+     * 注册基础服务.
      */
-    protected function registerBaseServices()
+    protected function registerBaseServices(): void
     {
         $this->instance('project', $this);
 
@@ -800,7 +792,7 @@ class Project extends Container implements IProject
      *
      * @codeCoverageIgnore
      */
-    protected function registerBaseProvider()
+    protected function registerBaseProvider(): void
     {
         $this->register(new EventProvider($this));
 
@@ -814,7 +806,7 @@ class Project extends Container implements IProject
      *
      * @param string $provider
      */
-    protected function registerDeferredProvider(string $provider)
+    protected function registerDeferredProvider(string $provider): void
     {
         if (!isset($this->deferredProviders[$provider])) {
             return;
@@ -834,7 +826,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    protected function normalizeApp($app)
+    protected function normalizeApp($app): string
     {
         return strtolower(true === $app ? ($this->make('app_name') ?: 'app') : $app);
     }
@@ -846,7 +838,7 @@ class Project extends Container implements IProject
      *
      * @return string
      */
-    protected function normalizePath(string $path)
+    protected function normalizePath(string $path): string
     {
         return $path ? DIRECTORY_SEPARATOR.$path : $path;
     }

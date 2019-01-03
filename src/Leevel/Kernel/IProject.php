@@ -56,14 +56,14 @@ interface IProject extends IContainer
      *
      * @return static
      */
-    public static function singletons(?string $path = null);
+    public static function singletons(?string $path = null): self;
 
     /**
      * 程序版本.
      *
      * @return string
      */
-    public function version();
+    public function version(): string;
 
     /**
      * 是否以扩展方式运行.
@@ -84,7 +84,7 @@ interface IProject extends IContainer
      *
      * @param string $path
      */
-    public function setPath(string $path);
+    public function setPath(string $path): void;
 
     /**
      * 基础路径.
@@ -93,16 +93,14 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function path(string $path = '');
+    public function path(string $path = ''): string;
 
     /**
      * 设置应用路径.
      *
      * @param string $path
-     *
-     * @return $this
      */
-    public function setAppPath(string $path);
+    public function setAppPath(string $path): void;
 
     /**
      * 应用路径.
@@ -112,7 +110,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function appPath($app = false, string $path = '');
+    public function appPath($app = false, string $path = ''): string;
 
     /**
      * 取得应用主题目录.
@@ -121,16 +119,14 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function themePath($app = false);
+    public function themePath($app = false): string;
 
     /**
      * 设置公共路径.
      *
      * @param string $path
-     *
-     * @return $this
      */
-    public function setCommonPath(string $path);
+    public function setCommonPath(string $path): void;
 
     /**
      * 公共路径.
@@ -139,16 +135,14 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function commonPath(string $path = '');
+    public function commonPath(string $path = ''): string;
 
     /**
      * 设置运行时路径.
      *
      * @param string $path
-     *
-     * @return $this
      */
-    public function setRuntimePath(string $path);
+    public function setRuntimePath(string $path): void;
 
     /**
      * 运行路径.
@@ -157,16 +151,14 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function runtimePath(string $path = '');
+    public function runtimePath(string $path = ''): string;
 
     /**
      * 设置存储路径.
      *
      * @param string $path
-     *
-     * @return $this
      */
-    public function setStoragePath(string $path);
+    public function setStoragePath(string $path): void;
 
     /**
      * 附件路径.
@@ -175,14 +167,14 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function storagePath(string $path = '');
+    public function storagePath(string $path = ''): string;
 
     /**
      * 设置资源路径.
      *
      * @param string $path
      */
-    public function setPublicPath(string $path);
+    public function setPublicPath(string $path): void;
 
     /**
      * 资源路径.
@@ -191,14 +183,14 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function publicPath(string $path = '');
+    public function publicPath(string $path = ''): string;
 
     /**
      * 设置主题路径.
      *
      * @param string $path
      */
-    public function setThemesPath(string $path);
+    public function setThemesPath(string $path): void;
 
     /**
      * 主题路径.
@@ -207,16 +199,14 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function themesPath(string $path = '');
+    public function themesPath(string $path = ''): string;
 
     /**
      * 设置配置路径.
      *
      * @param string $path
-     *
-     * @return $this
      */
-    public function setOptionPath(string $path);
+    public function setOptionPath(string $path): void;
 
     /**
      * 配置路径.
@@ -225,16 +215,14 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function optionPath(string $path = '');
+    public function optionPath(string $path = ''): string;
 
     /**
      * 设置语言包路径.
      *
      * @param string $path
-     *
-     * @return $this
      */
-    public function setI18nPath(string $path);
+    public function setI18nPath(string $path): void;
 
     /**
      * 语言包路径.
@@ -243,46 +231,42 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function i18nPath($path = null);
+    public function i18nPath(?string $path = null): string;
 
     /**
      * 设置环境变量路径.
      *
      * @param string $path
-     *
-     * @return $this
      */
-    public function setEnvPath(string $path);
+    public function setEnvPath(string $path): void;
 
     /**
      * 环境变量路径.
      *
      * @return string
      */
-    public function envPath();
+    public function envPath(): string;
 
     /**
      * 设置环境变量文件.
      *
      * @param string $file
-     *
-     * @return $this
      */
-    public function setEnvFile($file);
+    public function setEnvFile(string $file): void;
 
     /**
      * 取得环境变量文件.
      *
      * @return string
      */
-    public function envFile();
+    public function envFile(): string;
 
     /**
      * 取得环境变量完整路径.
      *
      * @return string
      */
-    public function fullEnvPath();
+    public function fullEnvPath(): string;
 
     /**
      * 返回语言包缓存路径.
@@ -291,7 +275,7 @@ interface IProject extends IContainer
      *
      * @return string
      */
-    public function i18nCachedPath($i18n): string;
+    public function i18nCachedPath(string $i18n): string;
 
     /**
      * 是否存在语言包缓存.
@@ -343,10 +327,10 @@ interface IProject extends IContainer
      *
      * @param string $namespaces
      *
-     * @return null|string
+     * @return string
      * @codeCoverageIgnore
      */
-    public function getPathByComposer($namespaces);
+    public function getPathByComposer(string $namespaces): string;
 
     /**
      * 是否开启 debug.
@@ -383,14 +367,14 @@ interface IProject extends IContainer
      *
      * @param \Leevel\Di\Provider $provider
      */
-    public function callProviderBootstrap(Provider $provider);
+    public function callProviderBootstrap(Provider $provider): void;
 
     /**
      * 初始化项目.
      *
      * @param array $bootstraps
      */
-    public function bootstrap(array $bootstraps);
+    public function bootstrap(array $bootstraps): void;
 
     /**
      * 是否已经初始化引导
@@ -401,17 +385,13 @@ interface IProject extends IContainer
 
     /**
      * 框架基础提供者 register.
-     *
-     * @return $this
      */
-    public function registerProviders();
+    public function registerProviders(): void;
 
     /**
      * 执行框架基础提供者 bootstrap.
-     *
-     * @return $this
      */
-    public function bootstrapProviders();
+    public function bootstrapProviders(): void;
 
     /**
      * 注册服务提供者.
