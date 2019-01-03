@@ -57,7 +57,7 @@ class View implements IView
      *
      * @return $this
      */
-    public function switchView(IViews $theme)
+    public function switchView(IViews $theme): IView
     {
         $assign = $this->getAssign();
 
@@ -75,7 +75,7 @@ class View implements IView
      *
      * @return $this
      */
-    public function assign($name, $value = null)
+    public function assign($name, $value = null): IView
     {
         $this->theme->setVar($name, $value);
 
@@ -83,7 +83,7 @@ class View implements IView
     }
 
     /**
-     * 获取变量赋值
+     * 获取变量赋值.
      *
      * @param null|string $name
      *
@@ -95,13 +95,13 @@ class View implements IView
     }
 
     /**
-     * 删除变量值
+     * 删除变量值.
      *
      * @param array $name
      *
      * @return $this
      */
-    public function deleteAssign(array $name)
+    public function deleteAssign(array $name): IView
     {
         $this->theme->deleteVar($name);
 
@@ -109,13 +109,13 @@ class View implements IView
     }
 
     /**
-     * 清空变量值
+     * 清空变量值.
      *
      * @param null|string $name
      *
      * @return $this
      */
-    public function clearAssign()
+    public function clearAssign(): IView
     {
         $this->theme->clearVar();
 
@@ -131,7 +131,7 @@ class View implements IView
      *
      * @return string
      */
-    public function display(string $file, array $vars = [], ?string $ext = null)
+    public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         return $this->theme->display($file, $vars, $ext, false);
     }

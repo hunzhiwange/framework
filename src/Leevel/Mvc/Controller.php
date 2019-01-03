@@ -55,7 +55,7 @@ abstract class Controller implements IController
      *
      * @return $this
      */
-    public function setView(IView $view)
+    public function setView(IView $view): IController
     {
         $this->view = $view;
 
@@ -69,7 +69,7 @@ abstract class Controller implements IController
      *
      * @return $this
      */
-    public function switchView(IViews $theme)
+    public function switchView(IViews $theme): IView
     {
         $this->checkView();
         $this->view->switchView($theme);
@@ -78,14 +78,14 @@ abstract class Controller implements IController
     }
 
     /**
-     * 变量赋值
+     * 变量赋值.
      *
-     * @param mixed $name
-     * @param mixed $value
+     * @param array|string $name
+     * @param mixed        $value
      *
      * @return $this
      */
-    public function assign($name, $value = null)
+    public function assign($name, $value = null): IView
     {
         $this->checkView();
         $this->view->assign($name, $value);
@@ -94,7 +94,7 @@ abstract class Controller implements IController
     }
 
     /**
-     * 获取变量赋值
+     * 获取变量赋值.
      *
      * @param null|string $name
      *
@@ -108,13 +108,13 @@ abstract class Controller implements IController
     }
 
     /**
-     * 删除变量值
+     * 删除变量值.
      *
      * @param array $name
      *
      * @return $this
      */
-    public function deleteAssign(array $name)
+    public function deleteAssign(array $name): IView
     {
         $this->checkView();
 
@@ -124,11 +124,11 @@ abstract class Controller implements IController
     }
 
     /**
-     * 清空变量值
+     * 清空变量值.
      *
      * @return $this
      */
-    public function clearAssign()
+    public function clearAssign(): IView
     {
         $this->checkView();
         $this->view->clearAssign();
@@ -145,7 +145,7 @@ abstract class Controller implements IController
      *
      * @return string
      */
-    public function display(string $file, array $vars = [], ?string $ext = null)
+    public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         $this->checkView();
 
@@ -155,7 +155,7 @@ abstract class Controller implements IController
     /**
      * 验证 view.
      */
-    protected function checkView()
+    protected function checkView(): void
     {
         if (!$this->view) {
             throw new RuntimeException('View is not set in controller.');

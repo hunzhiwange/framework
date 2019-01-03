@@ -38,5 +38,5 @@ interface IController extends IView
      *
      * @return $this
      */
-    public function setView(IView $view);
+    public function setView(IView $view): self;
 }

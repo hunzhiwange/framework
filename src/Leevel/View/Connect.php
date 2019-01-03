@@ -75,8 +75,8 @@ abstract class Connect
     /**
      * 设置模板变量.
      *
-     * @param mixed $name
-     * @param mixed $value
+     * @param array|string $name
+     * @param mixed        $value
      */
     public function setVar($name, $value = null): void
     {

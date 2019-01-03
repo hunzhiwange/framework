@@ -40,20 +40,20 @@ interface IView
      *
      * @return $this
      */
-    public function switchView(IViews $theme);
+    public function switchView(IViews $theme): self;
 
     /**
-     * 变量赋值
+     * 变量赋值.
      *
      * @param mixed $name
      * @param mixed $value
      *
      * @return $this
      */
-    public function assign($name, $value = null);
+    public function assign($name, $value = null): self;
 
     /**
-     * 获取变量赋值
+     * 获取变量赋值.
      *
      * @param null|string $name
      *
@@ -62,20 +62,20 @@ interface IView
     public function getAssign(?string $name = null);
 
     /**
-     * 删除变量值
+     * 删除变量值.
      *
      * @param array $name
      *
      * @return $this
      */
-    public function deleteAssign(array $name);
+    public function deleteAssign(array $name): self;
 
     /**
-     * 清空变量值
+     * 清空变量值.
      *
      * @return $this
      */
-    public function clearAssign();
+    public function clearAssign(): self;
 
     /**
      * 加载视图文件.
@@ -86,5 +86,5 @@ interface IView
      *
      * @return string
      */
-    public function display(string $file, array $vars = [], ?string $ext = null);
+    public function display(string $file, array $vars = [], ?string $ext = null): string;
 }

@@ -75,7 +75,7 @@ EOF;
      *
      * @param \Leevel\Router\IRouter $router
      */
-    public function handle(IRouter $router)
+    public function handle(IRouter $router): void
     {
         // 处理命名空间路径
         $this->parseNamespace();
@@ -120,7 +120,7 @@ EOF;
      *
      * @return string
      */
-    protected function normalizeAction(string $action)
+    protected function normalizeAction(string $action): string
     {
         if (false !== strpos($action, '-')) {
             $action = str_replace('-', '_', $action);
