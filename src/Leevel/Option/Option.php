@@ -53,11 +53,11 @@ class Option implements IOption, ArrayAccess
     /**
      * 是否存在配置.
      *
-     * @param string $name 配置键值
+     * @param string $name
      *
-     * @return string
+     * @return bool
      */
-    public function has($name = 'app\\')
+    public function has(string $name = 'app\\'): bool
     {
         $name = $this->parseNamespace($name);
         $namespaces = $name[0];
@@ -88,12 +88,12 @@ class Option implements IOption, ArrayAccess
     /**
      * 获取配置.
      *
-     * @param string $name     配置键值
-     * @param mixed  $defaults 配置默认值
+     * @param string $name
+     * @param mixed  $defaults
      *
-     * @return string
+     * @return mixed
      */
-    public function get($name = 'app\\', $defaults = null)
+    public function get(string $name = 'app\\', $defaults = null)
     {
         $name = $this->parseNamespace($name);
         $namespaces = $name[0];
@@ -128,7 +128,7 @@ class Option implements IOption, ArrayAccess
      *
      * @return array
      */
-    public function all()
+    public function all(): array
     {
         return $this->option;
     }
@@ -136,10 +136,10 @@ class Option implements IOption, ArrayAccess
     /**
      * 设置配置.
      *
-     * @param mixed $name  配置键值
-     * @param mixed $value 配置值
+     * @param mixed $name
+     * @param mixed $value
      */
-    public function set($name, $value = null)
+    public function set($name, $value = null): void
     {
         if (is_array($name)) {
             foreach ($name as $key => $value) {
@@ -183,11 +183,9 @@ class Option implements IOption, ArrayAccess
     /**
      * 删除配置.
      *
-     * @param string $name 配置键值
-     *
-     * @return string
+     * @param string $name
      */
-    public function delete($name)
+    public function delete(string $name): void
     {
         $name = $this->parseNamespace($name);
         $namespaces = $name[0];
@@ -230,10 +228,8 @@ class Option implements IOption, ArrayAccess
      * 初始化配置参数.
      *
      * @param mixed $namespaces
-     *
-     * @return bool
      */
-    public function reset($namespaces = null)
+    public function reset($namespaces = null): void
     {
         if (is_array($namespaces)) {
             $this->option = $namespaces;
@@ -242,8 +238,6 @@ class Option implements IOption, ArrayAccess
         } else {
             $this->option = [];
         }
-
-        return true;
     }
 
     /**
@@ -276,9 +270,9 @@ class Option implements IOption, ArrayAccess
      * @param mixed $index
      * @param mixed $newval
      */
-    public function offsetSet($index, $newval)
+    public function offsetSet($index, $newval): void
     {
-        return $this->set($index, $newval);
+        $this->set($index, $newval);
     }
 
     /**
@@ -286,7 +280,7 @@ class Option implements IOption, ArrayAccess
      *
      * @param string $index
      */
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         $this->delete($index);
     }
@@ -298,7 +292,7 @@ class Option implements IOption, ArrayAccess
      *
      * @return array
      */
-    protected function parseNamespace($name)
+    protected function parseNamespace(string $name): array
     {
         if (strpos($name, '\\')) {
             $namespaces = explode('\\', $name);

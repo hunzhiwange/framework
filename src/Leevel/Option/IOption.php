@@ -41,52 +41,48 @@ interface IOption
     /**
      * 是否存在配置.
      *
-     * @param string $name 配置键值
+     * @param string $name
      *
-     * @return string
+     * @return bool
      */
-    public function has($name = 'app\\');
+    public function has(string $name = 'app\\'): bool;
 
     /**
      * 获取配置.
      *
-     * @param string $name     配置键值
-     * @param mixed  $defaults 配置默认值
+     * @param string $name
+     * @param mixed  $defaults
      *
-     * @return string
+     * @return mixed
      */
-    public function get($name = 'app\\', $defaults = null);
+    public function get(string $name = 'app\\', $defaults = null);
 
     /**
      * 返回所有配置.
      *
      * @return array
      */
-    public function all();
+    public function all(): array;
 
     /**
      * 设置配置.
      *
-     * @param mixed $name  配置键值
-     * @param mixed $value 配置值
+     * @param mixed $name
+     * @param mixed $value
      */
-    public function set($name, $value = null);
+    public function set($name, $value = null): void;
 
     /**
      * 删除配置.
      *
-     * @param string $name 配置键值
-     *
-     * @return string
+     * @param string $name
      */
-    public function delete($name);
+    public function delete(string $name): void;
 
     /**
      * 初始化配置参数.
      *
      * @param mixed $namespaces
-     *
-     * @return bool
      */
-    public function reset($namespaces = null);
+    public function reset($namespaces = null): void;
 }
