@@ -65,9 +65,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 logs 服务
+     * 注册 logs 服务.
      */
-    protected function logs()
+    protected function logs(): void
     {
         $this->container->singleton('logs', function (IContainer $container) {
             return new Manager($container);
@@ -75,9 +75,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 log 服务
+     * 注册 log 服务.
      */
-    protected function log()
+    protected function log(): void
     {
         $this->container->singleton('log', function (IContainer $container) {
             return $container['logs']->connect();
@@ -85,9 +85,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 middleware 服务
+     * 注册 middleware 服务.
      */
-    protected function middleware()
+    protected function middleware(): void
     {
         $this->container->singleton('Leevel\\Log\\Middleware\\Log');
     }

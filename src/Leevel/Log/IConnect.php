@@ -39,7 +39,7 @@ interface IConnect
      *
      * @return $this
      */
-    public function setOption(string $name, $value);
+    public function setOption(string $name, $value): self;
 
     /**
      * 日志写入接口.

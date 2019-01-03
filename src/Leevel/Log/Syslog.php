@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Log;
 
 use Monolog\Handler\SyslogHandler;
+use Psr\Log\LoggerInterface;
 
 /**
  * log.syslog.
@@ -63,7 +64,7 @@ class Syslog extends Connect
      *
      * @return \Psr\Log\LoggerInterface
      */
-    protected function makeSyslogHandler()
+    protected function makeSyslogHandler(): LoggerInterface
     {
         $handler = new SyslogHandler($this->option['channel'],
             $this->option['facility'],

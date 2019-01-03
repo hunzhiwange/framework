@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Log;
 
 use Leevel\Event\IDispatch;
+use Monolog\Logger;
 
 /**
  * 日志仓储.
@@ -105,7 +106,7 @@ class Log implements ILog
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): ILog
     {
         $this->option[$name] = $value;
 
@@ -240,7 +241,7 @@ class Log implements ILog
     /**
      * 保存日志信息.
      */
-    public function flush()
+    public function flush(): void
     {
         foreach ($this->logs as $data) {
             $this->saveStore($data);
@@ -318,10 +319,10 @@ class Log implements ILog
      *
      * @return null|\Monolog\Logger
      */
-    public function getMonolog()
+    public function getMonolog(): ?Logger
     {
         if (!$this->isMonolog()) {
-            return;
+            return null;
         }
 
         return $this->connect->getMonolog();
@@ -354,7 +355,7 @@ class Log implements ILog
      *
      * @param array $data
      */
-    protected function saveStore(array $data)
+    protected function saveStore(array $data): void
     {
         $this->connect->flush($data);
     }

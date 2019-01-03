@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
+use Monolog\Logger;
+
 /**
  * ILog 接口.
  *
@@ -102,7 +104,7 @@ interface ILog
      *
      * @return $this
      */
-    public function setOption(string $name, $value);
+    public function setOption(string $name, $value): self;
 
     /**
      * 系统无法使用.
@@ -191,7 +193,7 @@ interface ILog
     /**
      * 保存日志信息.
      */
-    public function flush();
+    public function flush(): void;
 
     /**
      * 清理日志记录.
@@ -216,7 +218,7 @@ interface ILog
      *
      * @return int
      */
-    public function count(?string $level = null);
+    public function count(?string $level = null): int;
 
     /**
      * 是否为 Monolog.
@@ -230,7 +232,7 @@ interface ILog
      *
      * @return null|\Monolog\Logger
      */
-    public function getMonolog();
+    public function getMonolog(): ?Logger;
 
     /**
      * 返回连接.

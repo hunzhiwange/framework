@@ -63,7 +63,7 @@ class File implements IConnect
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IConnect
     {
         $this->option[$name] = $value;
 
