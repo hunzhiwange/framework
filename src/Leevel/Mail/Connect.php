@@ -70,7 +70,7 @@ abstract class Connect implements Swift_Transport
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IConnect
     {
         $this->option[$name] = $value;
 

@@ -124,7 +124,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IMail
     {
         $this->option[$name] = $value;
 
@@ -139,7 +139,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function globalFrom($address, $name = null)
+    public function globalFrom(string $address, ?string $name = null): IMail
     {
         $this->setOption('global_from', compact('address', 'name'));
 
@@ -154,7 +154,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function globalTo($address, $name = null)
+    public function globalTo(string $address, ?string $name = null): IMail
     {
         $this->setOption('global_to', compact('address', 'name'));
 
@@ -169,7 +169,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function view($file, array $data = [])
+    public function view(string $file, array $data = []): IMail
     {
         $this->messageData['html'][] = [
             'file' => $file,
@@ -186,7 +186,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function html($content)
+    public function html(string $content): IMail
     {
         $this->messageData['html'][] = $content;
 
@@ -200,7 +200,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function plain($content)
+    public function plain(string $content): IMail
     {
         $this->messageData['plain'][] = $content;
 
@@ -215,7 +215,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function viewPlain($file, array $data = [])
+    public function viewPlain(string $file, array $data = []): IMail
     {
         $this->messageData['plain'][] = [
             'file' => $file,
@@ -232,7 +232,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function message(Closure $callbacks)
+    public function message(Closure $callbacks): IMail
     {
         $this->callbackMessage($callbacks, $this->makeMessage());
 
@@ -247,7 +247,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function attach($file, Closure $callbacks = null)
+    public function attach(string $file, Closure $callbacks = null): IMail
     {
         $this->makeMessage();
 
@@ -267,7 +267,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    public function attachData($data, $name, Closure $callbacks = null)
+    public function attachData(string $data, string $name, Closure $callbacks = null): IMail
     {
         $this->makeMessage();
 
@@ -284,7 +284,7 @@ class Mail implements IMail
      *
      * @return string
      */
-    public function attachView($file)
+    public function attachView(string $file): string
     {
         $this->makeMessage();
 
@@ -300,7 +300,7 @@ class Mail implements IMail
      *
      * @return string
      */
-    public function attachDataView($data, $name, $contentType = null)
+    public function attachDataView(string $data, string $name, ?string $contentType = null): string
     {
         $this->makeMessage();
 
@@ -316,7 +316,7 @@ class Mail implements IMail
      *
      * @return string
      */
-    public function attachChinese($file)
+    public function attachChinese(string $file): string
     {
         $ext = pathinfo($file, PATHINFO_EXTENSION);
 
@@ -335,7 +335,7 @@ class Mail implements IMail
      *
      * @return int
      */
-    public function send(Closure $callbacks = null, bool $htmlPriority = true)
+    public function send(Closure $callbacks = null, bool $htmlPriority = true): int
     {
         $this->makeMessage();
 
@@ -362,7 +362,7 @@ class Mail implements IMail
      *
      * @return array
      */
-    public function failedRecipients()
+    public function failedRecipients(): array
     {
         return $this->failedRecipients;
     }
@@ -387,7 +387,7 @@ class Mail implements IMail
      *
      * @return string
      */
-    protected function getViewData($file, array $data)
+    protected function getViewData(string $file, array $data): string
     {
         return $this->view->
         clearAssign()->
@@ -404,7 +404,7 @@ class Mail implements IMail
      *
      * @param bool $htmlPriority
      */
-    protected function parseMailContent(bool $htmlPriority = true)
+    protected function parseMailContent(bool $htmlPriority = true): void
     {
         $findBody = false;
 
@@ -458,7 +458,7 @@ class Mail implements IMail
      *
      * @return int
      */
-    protected function sendMessage(Swift_Message $message)
+    protected function sendMessage(Swift_Message $message): int
     {
         return $this->connect->send($message, $this->failedRecipients);
     }
@@ -468,7 +468,7 @@ class Mail implements IMail
      *
      * @return \Swift_Message
      */
-    protected function makeMessage()
+    protected function makeMessage(): Swift_Message
     {
         if (null !== $this->message) {
             return $this->message;
@@ -506,7 +506,7 @@ class Mail implements IMail
      *
      * @return \Swift_Attachment
      */
-    protected function createPathAttachment($file)
+    protected function createPathAttachment(string $file): Swift_Attachment
     {
         return Swift_Attachment::fromPath($file);
     }
@@ -519,7 +519,7 @@ class Mail implements IMail
      *
      * @return \Swift_Attachment
      */
-    protected function createDataAttachment($data, $name)
+    protected function createDataAttachment(string $data, string $name): Swift_Attachment
     {
         return new Swift_Attachment($data, $name);
     }
@@ -532,7 +532,7 @@ class Mail implements IMail
      *
      * @return $this
      */
-    protected function callbackAttachment($attachment, Closure $callbacks = null)
+    protected function callbackAttachment(Swift_Attachment $attachment, Closure $callbacks = null): IMail
     {
         if ($callbacks) {
             $callbacks($attachment, $this);

@@ -73,7 +73,7 @@ class Register extends Provider
     /**
      * 注册 mails 服务
      */
-    protected function mails()
+    protected function mails(): void
     {
         $this->container->singleton('mails', function (IContainer $container) {
             return new Manager($container);
@@ -83,7 +83,7 @@ class Register extends Provider
     /**
      * 注册 mail 服务
      */
-    protected function mail()
+    protected function mail(): void
     {
         $this->container->singleton('mail', function (IContainer $container) {
             return $container['mails']->connect();

@@ -48,7 +48,7 @@ interface IMail
      *
      * @return $this
      */
-    public function setOption(string $name, $value);
+    public function setOption(string $name, $value): self;
 
     /**
      * 设置邮件发送来源.
@@ -58,7 +58,7 @@ interface IMail
      *
      * @return $this
      */
-    public function globalFrom($address, $name = null);
+    public function globalFrom(string $address, ?string $name = null): self;
 
     /**
      * 设置邮件发送地址
@@ -68,7 +68,7 @@ interface IMail
      *
      * @return $this
      */
-    public function globalTo($address, $name = null);
+    public function globalTo(string $address, ?string $name = null): self;
 
     /**
      * 视图 html 邮件内容.
@@ -78,7 +78,7 @@ interface IMail
      *
      * @return $this
      */
-    public function view($file, array $data = []);
+    public function view(string $file, array $data = []): self;
 
     /**
      * html 邮件内容.
@@ -87,7 +87,7 @@ interface IMail
      *
      * @return $this
      */
-    public function html($content);
+    public function html(string $content): self;
 
     /**
      * 纯文本邮件内容.
@@ -96,7 +96,7 @@ interface IMail
      *
      * @return $this
      */
-    public function plain($content);
+    public function plain(string $content): self;
 
     /**
      * 视图纯文本邮件内容.
@@ -106,7 +106,7 @@ interface IMail
      *
      * @return $this
      */
-    public function viewPlain($file, array $data = []);
+    public function viewPlain(string $file, array $data = []): self;
 
     /**
      * 消息回调处理.
@@ -115,7 +115,7 @@ interface IMail
      *
      * @return $this
      */
-    public function message(Closure $callbacks);
+    public function message(Closure $callbacks): self;
 
     /**
      * 添加附件.
@@ -125,7 +125,7 @@ interface IMail
      *
      * @return $this
      */
-    public function attach($file, Closure $callbacks = null);
+    public function attach(string $file, Closure $callbacks = null): self;
 
     /**
      * 添加内存内容附件
@@ -137,7 +137,7 @@ interface IMail
      *
      * @return $this
      */
-    public function attachData($data, $name, Closure $callbacks = null);
+    public function attachData(string $data, string $name, Closure $callbacks = null): self;
 
     /**
      * 图片嵌入邮件.
@@ -146,7 +146,7 @@ interface IMail
      *
      * @return string
      */
-    public function attachView($file);
+    public function attachView(string $file): string;
 
     /**
      * 内存内容图片嵌入邮件.
@@ -157,7 +157,7 @@ interface IMail
      *
      * @return string
      */
-    public function attachDataView($data, $name, $contentType = null);
+    public function attachDataView(string $data, string $name, ?string $contentType = null): string;
 
     /**
      * 格式化中文附件名字.
@@ -166,7 +166,7 @@ interface IMail
      *
      * @return string
      */
-    public function attachChinese($file);
+    public function attachChinese(string $file): string;
 
     /**
      * 发送邮件.
@@ -176,12 +176,12 @@ interface IMail
      *
      * @return int
      */
-    public function send(Closure $callbacks = null, bool $htmlPriority = true);
+    public function send(Closure $callbacks = null, bool $htmlPriority = true): int;
 
     /**
      * 错误消息.
      *
      * @return array
      */
-    public function failedRecipients();
+    public function failedRecipients(): array;
 }
