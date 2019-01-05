@@ -43,16 +43,16 @@ class Safe
      */
     public static function stripslashes($strings, bool $recursive = true)
     {
-        if (true === $recursive and is_array($strings)) { // 递归
+        if (true === $recursive && is_array($strings)) {
             $result = [];
 
             foreach ($strings as $key => $value) {
-                // 如果你只注意到值，却没有注意到 key
                 $result[static::stripslashes($key)] = static::stripslashes($value);
             }
 
             return $result;
         }
+
         if (is_string($strings)) {
             $strings = stripslashes($strings);
         }
@@ -66,15 +66,14 @@ class Safe
      * @param mixed $strings
      * @param bool  $recursive
      *
-     * @return string
+     * @return mixed
      */
     public static function addslashes($strings, bool $recursive = true)
     {
-        if (true === $recursive and is_array($strings)) {
+        if (true === $recursive && is_array($strings)) {
             $result = [];
 
             foreach ($strings as $key => $value) {
-                // 如果你只注意到值，却没有注意到 key
                 $result[static::addslashes($key)] = static::addslashes($value);
             }
 
@@ -95,7 +94,7 @@ class Safe
      *
      * @return string
      */
-    public static function deepReplace(array $search, string $subject)
+    public static function deepReplace(array $search, string $subject): string
     {
         $found = true;
 
@@ -122,7 +121,7 @@ class Safe
      *
      * @return string
      */
-    public static function escUrl(string $url, ?array $protocols = null, bool $show = true)
+    public static function escUrl(string $url, ?array $protocols = null, bool $show = true): string
     {
         $originalUrl = $url;
 
@@ -186,7 +185,7 @@ class Safe
      *
      * @return string
      */
-    public static function filterScript($strings)
+    public static function filterScript(string $strings): string
     {
         return preg_replace([
             '/<\s*script/',
@@ -208,7 +207,7 @@ class Safe
      *
      * @return string
      */
-    public static function cleanHex($strings)
+    public static function cleanHex(string $strings): string
     {
         return preg_replace('![\\][xX]([A-Fa-f0-9]{1,3})!', '', $strings);
     }
@@ -220,7 +219,7 @@ class Safe
      *
      * @return string
      */
-    public static function sqlFilter($strings)
+    public static function sqlFilter(string $strings): string
     {
         return str_replace([
             '/',
@@ -299,7 +298,7 @@ class Safe
      *
      * @return mixed
      */
-    public static function htmlFilter($strings, $maxNum = 20000)
+    public static function htmlFilter($strings, int $maxNum = 20000)
     {
         if (is_array($strings)) {
             $result = [];
@@ -383,7 +382,7 @@ class Safe
      * @param array $limitTime
      * @param int   $time
      */
-    public static function limitTime(array $limitTime, int $time)
+    public static function limitTime(array $limitTime, int $time): void
     {
         if (empty($limitTime)) {
             return;
@@ -419,7 +418,7 @@ class Safe
      * @param string $visitorIp
      * @param array  $limitIp
      */
-    public static function limitIp(string $visitorIp, array $limitIp)
+    public static function limitIp(string $visitorIp, array $limitIp): void
     {
         if (empty($limitIp)) {
             return;
@@ -442,7 +441,7 @@ class Safe
     /**
      * 检测代理.
      */
-    public static function limitAgent()
+    public static function limitAgent(): void
     {
         if (!isset($_SERVER['HTTP_X_FORWARDED_FOR']) &&
             !isset($_SERVER['HTTP_VIA']) &&
@@ -464,7 +463,7 @@ class Safe
      *
      * @return string
      */
-    public static function cleanJs(string $strings)
+    public static function cleanJs(string $strings): string
     {
         $strings = trim($strings);
 
@@ -495,7 +494,7 @@ class Safe
      *
      * @return string
      */
-    public static function text(string $strings, bool $deep = true, array $black = [])
+    public static function text(string $strings, bool $deep = true, array $black = []): string
     {
         if (true === $deep && !$black) {
             $black = [
@@ -526,7 +525,7 @@ class Safe
      *
      * @return string
      */
-    public static function strip(string $strings)
+    public static function strip(string $strings): string
     {
         $strings = trim($strings);
         $strings = static::cleanJs($strings);
@@ -542,7 +541,7 @@ class Safe
      *
      * @return string
      */
-    public static function htmlView(string $strings)
+    public static function htmlView(string $strings): string
     {
         $strings = stripslashes($strings);
         $strings = nl2br($strings);
@@ -555,7 +554,7 @@ class Safe
      *
      * @param mixed $strings
      *
-     * @return string
+     * @return mixed
      */
     public static function htmlspecialchars($strings)
     {
@@ -579,11 +578,11 @@ class Safe
     }
 
     /**
-     * 字符 HTML 实体还原
+     * 字符 HTML 实体还原.
      *
      * @param mixed $strings
      *
-     * @return string
+     * @return mixed
      */
     public static function unHtmlSpecialchars($strings)
     {
@@ -615,9 +614,9 @@ class Safe
      * @param string $strings
      * @param int    $maxLength
      *
-     * @return mixed
+     * @return string
      */
-    public static function shortCheck(string $strings, int $maxLength = 500)
+    public static function shortCheck(string $strings, int $maxLength = 500): string
     {
         $strings = static::lengthLimit($strings, $maxLength);
         $strings = str_replace(["\\'", '\\', '#'], '', $strings);
@@ -632,9 +631,9 @@ class Safe
      * @param string $strings
      * @param int    $maxLength
      *
-     * @return mixed
+     * @return string
      */
-    public static function longCheck(string $strings, int $maxLength = 3000)
+    public static function longCheck(string $strings, int $maxLength = 3000): string
     {
         $strings = static::lengthLimit($strings, $maxLength);
         $strings = str_replace("\\'", '’', $strings);
@@ -650,9 +649,9 @@ class Safe
      * @param string $strings
      * @param int    $maxLength
      *
-     * @return mixed
+     * @return string
      */
-    public static function bigCheck(string $strings, int $maxLength = 20000)
+    public static function bigCheck(string $strings, int $maxLength = 20000): string
     {
         $strings = self::lengthLimit($strings, $maxLength);
         $strings = str_replace("\\'", '’', $strings);
@@ -670,7 +669,7 @@ class Safe
      *
      * @return string
      */
-    public static function lengthLimit(string $strings, int $maxLength)
+    public static function lengthLimit(string $strings, int $maxLength): string
     {
         if (isset($strings[$maxLength])) {
             return ' ';
@@ -682,7 +681,7 @@ class Safe
     /**
      * 签名算法.
      *
-     * @param string $query
+     * @param array  $query
      * @param string $secret
      * @param array  $ignore
      *
