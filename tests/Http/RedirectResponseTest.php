@@ -48,14 +48,6 @@ class RedirectResponseTest extends TestCase
         ));
     }
 
-    public function testRedirectResponseConstructorNullUrl()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot redirect to an empty URL.');
-
-        $response = new RedirectResponse(null);
-    }
-
     public function testRedirectResponseConstructorWrongStatusCode()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -84,13 +76,13 @@ class RedirectResponseTest extends TestCase
         $this->assertSame('baz.beep', $response->getTargetUrl());
     }
 
-    public function testSetTargetUrlNull()
+    public function testSetTargetUrlEmpty()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot redirect to an empty URL.');
 
         $response = new RedirectResponse('foo.bar');
-        $response->setTargetUrl(null);
+        $response->setTargetUrl('');
     }
 
     public function testCreate()

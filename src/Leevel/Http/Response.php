@@ -210,13 +210,13 @@ class Response implements IResponse
     /**
      * 创建一个响应.
      *
-     * @param string $content
-     * @param int    $status
-     * @param array  $headers
+     * @param mixed $content
+     * @param int   $status
+     * @param array $headers
      *
      * @return static
      */
-    public static function create($content = '', int $status = 200, array $headers = [])
+    public static function create($content = '', int $status = 200, array $headers = []): IResponse
     {
         return new static($content, $status, $headers);
     }
@@ -226,7 +226,7 @@ class Response implements IResponse
      *
      * @param \Closure $cookieResolver
      */
-    public static function setCookieResolver(Closure $cookieResolver = null)
+    public static function setCookieResolver(Closure $cookieResolver = null): void
     {
         static::$cookieResolver = $cookieResolver;
 
@@ -258,7 +258,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function send()
+    public function send(): IResponse
     {
         $this->sendHeaders();
 
@@ -272,7 +272,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function sendHeaders()
+    public function sendHeaders(): IResponse
     {
         if (headers_sent()) {
             return $this;
@@ -301,7 +301,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function sendContent()
+    public function sendContent(): IResponse
     {
         echo $this->content;
 
@@ -315,7 +315,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setContent($content)
+    public function setContent($content): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -351,7 +351,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function appendContent(string $content = null)
+    public function appendContent(string $content = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -371,7 +371,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setHeader(string $key, string $value, bool $replace = true)
+    public function setHeader(string $key, string $value, bool $replace = true): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -391,7 +391,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function withHeaders(array $headers)
+    public function withHeaders(array $headers): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -413,7 +413,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function cookie($name, $value = '', array $option = [])
+    public function cookie(string $name, string $value = '', array $option = []): IResponse
     {
         return $this->setCookie($name, $value, $option);
     }
@@ -427,7 +427,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setCookie($name, $value = '', array $option = [])
+    public function setCookie(string $name, string $value = '', array $option = []): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -446,7 +446,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function withCookies(array $cookies, array $option = [])
+    public function withCookies(array $cookies, array $option = []): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -464,7 +464,7 @@ class Response implements IResponse
      *
      * @return array
      */
-    public function getCookies()
+    public function getCookies(): array
     {
         return self::resolveCookie()->all();
     }
@@ -494,7 +494,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setData($data = [], ?int $encodingOptions = null)
+    public function setData($data = [], ?int $encodingOptions = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -528,7 +528,7 @@ class Response implements IResponse
     /**
      * 获取内容.
      *
-     * @return string
+     * @return mixed
      */
     public function getContent()
     {
@@ -538,7 +538,7 @@ class Response implements IResponse
     /**
      * 获取内容.
      *
-     * @return string
+     * @return mixed
      */
     public function content()
     {
@@ -548,7 +548,7 @@ class Response implements IResponse
     /**
      * 获取原始内容.
      *
-     * @return string
+     * @return mixed
      */
     public function getOriginal()
     {
@@ -562,7 +562,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setProtocolVersion(string $protocolVersion)
+    public function setProtocolVersion(string $protocolVersion): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -575,8 +575,6 @@ class Response implements IResponse
 
     /**
      * 获取 HTTP 协议版本.
-     *
-     * @final
      */
     public function getProtocolVersion(): string
     {
@@ -584,14 +582,14 @@ class Response implements IResponse
     }
 
     /**
-     * 设置相应状态码
+     * 设置相应状态码.
      *
-     * @param int   $code
-     * @param mixed $text
+     * @param int         $code
+     * @param null|string $text
      *
      * @return $this
      */
-    public function setStatusCode(int $code, $text = null)
+    public function setStatusCode(int $code, ?string $text = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -623,7 +621,7 @@ class Response implements IResponse
     }
 
     /**
-     * 获取状态码
+     * 获取状态码.
      *
      * @return int
      */
@@ -633,9 +631,9 @@ class Response implements IResponse
     }
 
     /**
-     * 获取状态码
+     * 获取状态码.
      *
-     * @final
+     * @return int
      */
     public function getStatusCode(): int
     {
@@ -649,7 +647,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setCharset(string $charset)
+    public function setCharset(string $charset): IResponse
     {
         return $this->charset($charset);
     }
@@ -661,7 +659,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function charset(string $charset)
+    public function charset(string $charset): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -673,11 +671,11 @@ class Response implements IResponse
     }
 
     /**
-     * 获取编码
+     * 获取编码.
      *
      * @return string
      */
-    public function getCharset()
+    public function getCharset(): ?string
     {
         return $this->charset;
     }
@@ -689,7 +687,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setExpires(DateTime $datetime = null)
+    public function setExpires(DateTime $datetime = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -713,7 +711,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setLastModified(DateTime $datetime = null)
+    public function setLastModified(DateTime $datetime = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -737,7 +735,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setCache(int $minutes)
+    public function setCache(int $minutes): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -757,7 +755,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setNotModified()
+    public function setNotModified(): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -776,7 +774,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setContentType(string $contentType, $charset = null)
+    public function setContentType(string $contentType, ?string $charset = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -802,7 +800,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setContentLength(int $contentLength)
+    public function setContentLength(int $contentLength): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -820,7 +818,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setEtag(string $etag)
+    public function setEtag(string $etag): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -934,9 +932,11 @@ class Response implements IResponse
     /**
      * 是否为表单重定向响应.
      *
+     * @param string $location
+     *
      * @return bool
      */
-    public function isRedirect(string $location = null): bool
+    public function isRedirect(?string $location = null): bool
     {
         return in_array($this->statusCode, [
             201,
@@ -969,7 +969,7 @@ class Response implements IResponse
      *
      * @return string
      */
-    protected function normalizeDateTime(DateTime $datetime)
+    protected function normalizeDateTime(DateTime $datetime): string
     {
         $date = clone $datetime;
 
@@ -985,7 +985,7 @@ class Response implements IResponse
      *
      * @return string
      */
-    protected function contentToJson($content)
+    protected function contentToJson($content): string
     {
         if ($content instanceof IJson) {
             return $content->toJson();
@@ -1005,7 +1005,7 @@ class Response implements IResponse
      *
      * @return bool
      */
-    protected function contentShouldJson($content)
+    protected function contentShouldJson($content): bool
     {
         return $content instanceof IJson ||
                $content instanceof IArray ||

@@ -34,13 +34,13 @@ class ApiResponse extends JsonResponse
     /**
      * 创建一个 API 响应.
      *
-     * @param string $data
-     * @param int    $status
-     * @param array  $headers
+     * @param mixed $data
+     * @param int   $status
+     * @param array $headers
      *
      * @return static
      */
-    public static function create($data = '', int $status = 200, array $headers = [])
+    public static function create($data = '', int $status = 200, array $headers = []): IResponse
     {
         return new static($data, $status, $headers);
     }
@@ -54,7 +54,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function ok($content = '', $text = null)
+    public function ok($content = '', ?string $text = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -74,7 +74,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function created($location = null, $content = '')
+    public function created(?string $location = null, $content = ''): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -99,7 +99,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function accepted($location = null, $content = '')
+    public function accepted(?string $location = null, $content = ''): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -121,7 +121,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function noContent()
+    public function noContent(): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -140,7 +140,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function unprocessableEntity(array $errors = null, ?string $message = null, ?string $text = null)
+    public function unprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -166,7 +166,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function error(?string $message, int $statusCode, ?string $text = null)
+    public function error(?string $message, int $statusCode, ?string $text = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -186,7 +186,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function badRequest(?string $message = null, ?string $text = null)
+    public function badRequest(?string $message = null, ?string $text = null): IResponse
     {
         return $this->error($message, static::HTTP_BAD_REQUEST, $text);
     }
@@ -200,7 +200,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function unauthorized(?string $message = null, ?string $text = null)
+    public function unauthorized(?string $message = null, ?string $text = null): IResponse
     {
         return $this->error($message, static::HTTP_UNAUTHORIZED, $text);
     }
@@ -214,7 +214,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function forbidden(?string $message = null, ?string $text = null)
+    public function forbidden(?string $message = null, ?string $text = null): IResponse
     {
         return $this->error($message, static::HTTP_FORBIDDEN, $text);
     }
@@ -228,7 +228,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function notFound(?string $message = null, ?string $text = null)
+    public function notFound(?string $message = null, ?string $text = null): IResponse
     {
         return $this->error($message, static::HTTP_NOT_FOUND, $text);
     }
@@ -242,7 +242,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function methodNotAllowed(?string $message = null, ?string $text = null)
+    public function methodNotAllowed(?string $message = null, ?string $text = null): IResponse
     {
         return $this->error($message, static::HTTP_METHOD_NOT_ALLOWED, $text);
     }
@@ -256,7 +256,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function tooManyRequests(?string $message = null, ?string $text = null)
+    public function tooManyRequests(?string $message = null, ?string $text = null): IResponse
     {
         return $this->error($message, static::HTTP_TOO_MANY_REQUESTS, $text);
     }
@@ -270,7 +270,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    public function internalServerError(?string $message = null, ?string $text = null)
+    public function internalServerError(?string $message = null, ?string $text = null): IResponse
     {
         return $this->error($message, static::HTTP_INTERNAL_SERVER_ERROR, $text);
     }
@@ -283,7 +283,7 @@ class ApiResponse extends JsonResponse
      *
      * @return $this
      */
-    protected function normalizeErrorMessage(?string $message = null, ?string $text = null)
+    protected function normalizeErrorMessage(?string $message = null, ?string $text = null): IResponse
     {
         return $this->setData([
             'message' => $this->parseErrorMessage($message),
@@ -297,7 +297,7 @@ class ApiResponse extends JsonResponse
      *
      * @return string
      */
-    protected function parseErrorMessage(?string $message = null)
+    protected function parseErrorMessage(?string $message = null): string
     {
         return $message ?: $this->statusText;
     }

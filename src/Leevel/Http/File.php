@@ -58,7 +58,7 @@ class File extends SplFileObject
      *
      * @return \Leevel\Http\File
      */
-    public function move($directory, $name = null)
+    public function move(string $directory, ?string $name = null): self
     {
         $target = $this->getTargetFile($directory, $name);
 
@@ -75,7 +75,7 @@ class File extends SplFileObject
      *
      * @return string
      */
-    protected function getTargetFile($directory, $name = null)
+    protected function getTargetFile(string $directory, ?string $name = null): string
     {
         if (!is_dir($directory)) {
             if (!is_writable(dirname($directory))) {
@@ -104,7 +104,7 @@ class File extends SplFileObject
      * @param string $target
      * @param bool   $isUploaded
      */
-    protected function moveToTarget(string $sourcePath, string $target, bool $isUploaded = false)
+    protected function moveToTarget(string $sourcePath, string $target, bool $isUploaded = false): void
     {
         set_error_handler(function ($type, $msg) {
             throw new FileException($msg);

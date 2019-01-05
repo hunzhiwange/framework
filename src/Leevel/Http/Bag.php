@@ -63,7 +63,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toJson();
     }
@@ -73,17 +73,17 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return array
      */
-    public function all()
+    public function all(): array
     {
         return $this->elements;
     }
 
     /**
-     * 返回元素键值
+     * 返回元素键值.
      *
      * @return array
      */
-    public function keys()
+    public function keys(): array
     {
         return array_keys($this->elements);
     }
@@ -93,7 +93,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param array $elements
      */
-    public function replace(array $elements = [])
+    public function replace(array $elements = []): void
     {
         $this->elements = $elements;
     }
@@ -103,20 +103,20 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param array $elements
      */
-    public function add(array $elements = [])
+    public function add(array $elements = []): void
     {
         $this->elements = array_replace($this->elements, $elements);
     }
 
     /**
-     * 取回元素值
+     * 取回元素值.
      *
      * @param string $key
      * @param mixed  $defaults
      *
      * @return mixed
      */
-    public function get($key, $defaults = null)
+    public function get(string $key, $defaults = null)
     {
         $key = $this->normalize($key);
 
@@ -129,7 +129,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * @param string $key
      * @param mixed  $value
      */
-    public function set($key, $value)
+    public function set(string $key, $value): void
     {
         $key = $this->normalize($key);
 
@@ -143,7 +143,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return bool
      */
-    public function has($key)
+    public function has(string $key): bool
     {
         $key = $this->normalize($key);
 
@@ -155,7 +155,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param string $key
      */
-    public function remove($key)
+    public function remove(string $key): void
     {
         $key = $this->normalize($key);
 
@@ -174,7 +174,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return mixed
      */
-    public function filter($key, $defaults = null, $filter = null, array $options = [])
+    public function filter(string $key, $defaults = null, $filter = null, array $options = [])
     {
         $key = $this->normalize($key);
 
@@ -206,7 +206,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->elements);
     }
@@ -226,7 +226,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -265,7 +265,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return array
      */
-    protected function parseKeyFilter($key, array $filter)
+    protected function parseKeyFilter(string $key, array $filter): array
     {
         if (false !== strpos($key, '|')) {
             $temp = explode('|', $key);
@@ -283,7 +283,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return array
      */
-    protected function parseFilter($filter = null)
+    protected function parseFilter($filter = null): array
     {
         if (null === $filter) {
             return [];
@@ -331,7 +331,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return mixed
      */
-    protected function filterValueWithFunc($value, $filter)
+    protected function filterValueWithFunc($value, string $filter)
     {
         list($filter, $extend) = explode('=', $filter);
 
@@ -380,7 +380,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return mixed
      */
-    protected function filterValueWithCallable($value, $filter)
+    protected function filterValueWithCallable($value, string $filter)
     {
         $value = call_user_func($filter, $value);
 
@@ -412,7 +412,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return int
      */
-    protected function parseFilterId($filter)
+    protected function parseFilterId($filter): int
     {
         $filter = $this->isInt($filter) ? $filter : filter_id($filter);
 
@@ -426,7 +426,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @since bool
      */
-    protected function isInt($value)
+    protected function isInt($value): bool
     {
         if (is_int($value)) {
             return true;
@@ -444,7 +444,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return mixed
      */
-    protected function getPartData($key, $value, $defaults = null)
+    protected function getPartData(string $key, $value, $defaults = null)
     {
         if (!is_array($value)) {
             return $value;
@@ -470,7 +470,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return string
      */
-    protected function normalize($key)
+    protected function normalize(string $key): string
     {
         return $key;
     }

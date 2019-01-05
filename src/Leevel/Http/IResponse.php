@@ -474,20 +474,20 @@ interface IResponse
     /**
      * 创建一个响应.
      *
-     * @param string $content
-     * @param int    $status
-     * @param array  $headers
+     * @param mixed $content
+     * @param int   $status
+     * @param array $headers
      *
      * @return static
      */
-    public static function create($content = '', int $status = 200, array $headers = []);
+    public static function create($content = '', int $status = 200, array $headers = []): self;
 
     /**
      * 设置 COOKIE Resolver.
      *
      * @param \Closure $cookieResolver
      */
-    public static function setCookieResolver(Closure $cookieResolver = null);
+    public static function setCookieResolver(Closure $cookieResolver = null): void;
 
     /**
      * 返回 COOKIE.
@@ -501,21 +501,21 @@ interface IResponse
      *
      * @return $this
      */
-    public function send();
+    public function send(): self;
 
     /**
      * 发送响应头.
      *
      * @return $this
      */
-    public function sendHeaders();
+    public function sendHeaders(): self;
 
     /**
      * 发送响应内容.
      *
      * @return $this
      */
-    public function sendContent();
+    public function sendContent(): self;
 
     /**
      * 设置内容.
@@ -524,7 +524,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setContent($content);
+    public function setContent($content): self;
 
     /**
      * 附加内容.
@@ -533,7 +533,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function appendContent(string $content = null);
+    public function appendContent(?string $content = null): self;
 
     /**
      * 设置响应头.
@@ -544,7 +544,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setHeader(string $key, string $value, bool $replace = true);
+    public function setHeader(string $key, string $value, bool $replace = true): self;
 
     /**
      * 批量设置响应头.
@@ -553,7 +553,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function withHeaders(array $headers);
+    public function withHeaders(array $headers): self;
 
     /**
      * 设置 COOKIE 别名.
@@ -564,7 +564,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function cookie($name, $value = '', array $option = []);
+    public function cookie(string $name, string $value = '', array $option = []): self;
 
     /**
      * 设置 COOKIE.
@@ -575,7 +575,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setCookie($name, $value = '', array $option = []);
+    public function setCookie(string $name, string $value = '', array $option = []): self;
 
     /**
      * 批量设置 COOKIE.
@@ -585,14 +585,14 @@ interface IResponse
      *
      * @return $this
      */
-    public function withCookies(array $cookies, array $option = []);
+    public function withCookies(array $cookies, array $option = []): self;
 
     /**
      * 获取 COOKIE.
      *
      * @return array
      */
-    public function getCookies();
+    public function getCookies(): array;
 
     /**
      * 取回 JSON 数据.
@@ -612,26 +612,26 @@ interface IResponse
      *
      * @return $this
      */
-    public function setData($data = [], ?int $encodingOptions = null);
+    public function setData($data = [], ?int $encodingOptions = null): self;
 
     /**
      * 获取内容.
      *
-     * @return string
+     * @return mixed
      */
     public function getContent();
 
     /**
      * 获取内容.
      *
-     * @return string
+     * @return mixed
      */
     public function content();
 
     /**
      * 获取原始内容.
      *
-     * @return string
+     * @return mixed
      */
     public function getOriginal();
 
@@ -642,36 +642,36 @@ interface IResponse
      *
      * @return $this
      */
-    public function setProtocolVersion(string $protocolVersion);
+    public function setProtocolVersion(string $protocolVersion): self;
 
     /**
      * 获取 HTTP 协议版本.
      *
-     * @final
+     * @return string
      */
     public function getProtocolVersion(): string;
 
     /**
-     * 设置相应状态码
+     * 设置相应状态码.
      *
-     * @param int   $code
-     * @param mixed $text
+     * @param int    $code
+     * @param string $text
      *
      * @return $this
      */
-    public function setStatusCode(int $code, $text = null);
+    public function setStatusCode(int $code, ?string $text = null): self;
 
     /**
-     * 获取状态码
+     * 获取状态码.
      *
      * @return int
      */
     public function status(): int;
 
     /**
-     * 获取状态码
+     * 获取状态码.
      *
-     * @final
+     * @return int
      */
     public function getStatusCode(): int;
 
@@ -682,7 +682,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setCharset(string $charset);
+    public function setCharset(string $charset): self;
 
     /**
      * 编码设置.
@@ -691,14 +691,14 @@ interface IResponse
      *
      * @return $this
      */
-    public function charset(string $charset);
+    public function charset(string $charset): self;
 
     /**
-     * 获取编码
+     * 获取编码.
      *
      * @return string
      */
-    public function getCharset();
+    public function getCharset(): ?string;
 
     /**
      * 设置过期时间.
@@ -707,7 +707,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setExpires(DateTime $datetime = null);
+    public function setExpires(DateTime $datetime = null): self;
 
     /**
      * 设置最后修改时间.
@@ -716,7 +716,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setLastModified(DateTime $datetime = null);
+    public function setLastModified(DateTime $datetime = null): self;
 
     /**
      * 设置缓存.
@@ -725,14 +725,14 @@ interface IResponse
      *
      * @return $this
      */
-    public function setCache(int $minutes);
+    public function setCache(int $minutes): self;
 
     /**
      * 设置响应未修改.
      *
      * @return $this
      */
-    public function setNotModified();
+    public function setNotModified(): self;
 
     /**
      * 设置响应内容类型.
@@ -742,7 +742,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setContentType(string $contentType, $charset = null);
+    public function setContentType(string $contentType, ?string $charset = null): self;
 
     /**
      * 设置响应内容长度.
@@ -751,7 +751,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setContentLength(int $contentLength);
+    public function setContentLength(int $contentLength): self;
 
     /**
      * 设置自定义标识符.
@@ -760,7 +760,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setEtag(string $etag);
+    public function setEtag(string $etag): self;
 
     /**
      * 响应是否为 JSON.
@@ -837,7 +837,7 @@ interface IResponse
      *
      * @return bool
      */
-    public function isRedirect(string $location = null): bool;
+    public function isRedirect(?string $location = null): bool;
 
     /**
      * 是否为空响应.

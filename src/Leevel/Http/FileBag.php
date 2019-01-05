@@ -61,7 +61,7 @@ class FileBag extends Bag
     /**
      * {@inheritdoc}
      */
-    public function replace(array $elements = [])
+    public function replace(array $elements = []): void
     {
         $this->elements = [];
 
@@ -73,7 +73,7 @@ class FileBag extends Bag
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value)
+    public function set(string $key, $value): void
     {
         if (!is_array($value) && !$value instanceof UploadedFile) {
             throw new InvalidArgumentException(
@@ -87,7 +87,7 @@ class FileBag extends Bag
     /**
      * {@inheritdoc}
      */
-    public function add(array $files = [])
+    public function add(array $files = []): void
     {
         foreach ($files as $key => $file) {
             $this->set($key, $file);
@@ -103,7 +103,7 @@ class FileBag extends Bag
      *
      * @return mixed
      */
-    public function getArr($key, array $defaults = [])
+    public function getArr(string $key, array $defaults = [])
     {
         $files = [];
 
@@ -123,7 +123,7 @@ class FileBag extends Bag
      *
      * @return null|\Leevel\Http\UploadedFile
      */
-    protected function convertFile($file)
+    protected function convertFile($file): ?UploadedFile
     {
         if ($file instanceof UploadedFile) {
             return $file;
@@ -147,7 +147,7 @@ class FileBag extends Bag
      *
      * @return array
      */
-    protected function normalizeFile(array $data)
+    protected function normalizeFile(array $data): array
     {
         $result = [];
 
@@ -175,7 +175,7 @@ class FileBag extends Bag
      *
      * @return array
      */
-    protected function normalizeArray(array $elements)
+    protected function normalizeArray(array $elements): array
     {
         $result = [];
 
@@ -227,7 +227,7 @@ class FileBag extends Bag
      *
      * @return array
      */
-    protected function normalizeKey(array $data)
+    protected function normalizeKey(array $data): array
     {
         $keys = array_keys($data);
         sort($keys);

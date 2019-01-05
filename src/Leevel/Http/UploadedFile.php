@@ -102,7 +102,7 @@ class UploadedFile extends File
      *
      * @return null|string
      */
-    public function getOriginalName()
+    public function getOriginalName(): ?string
     {
         return $this->originalName;
     }
@@ -112,7 +112,7 @@ class UploadedFile extends File
      *
      * @return string
      */
-    public function getOriginalExtension()
+    public function getOriginalExtension(): string
     {
         return pathinfo($this->originalName, PATHINFO_EXTENSION);
     }
@@ -122,7 +122,7 @@ class UploadedFile extends File
      *
      * @return null|string
      */
-    public function getMimeType()
+    public function getMimeType(): ?string
     {
         return $this->mimeType;
     }
@@ -132,17 +132,17 @@ class UploadedFile extends File
      *
      * @return int
      */
-    public function getError()
+    public function getError(): int
     {
         return $this->error;
     }
 
     /**
-     * 文件是否上传成功
+     * 文件是否上传成功.
      *
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return UPLOAD_ERR_OK === $this->error &&
             ($this->test ? true : is_uploaded_file($this->getPathname()));
@@ -153,7 +153,7 @@ class UploadedFile extends File
      *
      * @codeCoverageIgnore
      */
-    public function move($directory, $name = null)
+    public function move(string $directory, ?string $name = null): File
     {
         if ($this->isValid()) {
             if ($this->test) {
@@ -176,7 +176,7 @@ class UploadedFile extends File
      * @return int
      * @codeCoverageIgnoreStart
      */
-    public static function getMaxFilesize()
+    public static function getMaxFilesize(): int
     {
         $iniMax = strtolower(ini_get('upload_max_filesize'));
 
@@ -216,7 +216,7 @@ class UploadedFile extends File
      *
      * @return string
      */
-    public function getErrorMessage()
+    public function getErrorMessage(): string
     {
         $errorCode = $this->error;
         $maxFilesize = UPLOAD_ERR_INI_SIZE === $errorCode ? self::getMaxFilesize() / 1024 : 0;

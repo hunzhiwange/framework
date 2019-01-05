@@ -46,7 +46,7 @@ class HeaderBag extends Bag
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         if (!$headers = $this->all()) {
             return '';
@@ -67,7 +67,7 @@ class HeaderBag extends Bag
     /**
      * {@inheritdoc}
      */
-    public function replace(array $elements = [])
+    public function replace(array $elements = []): void
     {
         $this->elements = [];
 
@@ -77,7 +77,7 @@ class HeaderBag extends Bag
     /**
      * {@inheritdoc}
      */
-    public function add(array $elements = [])
+    public function add(array $elements = []): void
     {
         foreach ($elements as $key => $value) {
             $this->set($key, $value);
@@ -87,7 +87,7 @@ class HeaderBag extends Bag
     /**
      * {@inheritdoc}
      */
-    protected function normalize($key)
+    protected function normalize(string $key): string
     {
         $key = str_replace('_', '-', strtolower($key));
 

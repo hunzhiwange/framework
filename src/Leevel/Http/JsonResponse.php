@@ -91,13 +91,13 @@ class JsonResponse extends Response
     /**
      * 创建一个 JSON 响应.
      *
-     * @param string $data
-     * @param int    $status
-     * @param array  $headers
+     * @param mixed $data
+     * @param int   $status
+     * @param array $headers
      *
      * @return static
      */
-    public static function create($data = null, int $status = 200, array $headers = [])
+    public static function create($data = null, int $status = 200, array $headers = []): IResponse
     {
         return new static($data, $status, $headers);
     }
@@ -111,7 +111,7 @@ class JsonResponse extends Response
      *
      * @return static
      */
-    public static function fromJsonString($data = null, $status = 200, $headers = [])
+    public static function fromJsonString(?string $data = null, $status = 200, $headers = []): IResponse
     {
         return new static($data, $status, $headers, true);
     }
@@ -123,7 +123,7 @@ class JsonResponse extends Response
      *
      * @return $this
      */
-    public function setCallback($callback = null)
+    public function setCallback(?string $callback = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -141,7 +141,7 @@ class JsonResponse extends Response
      *
      * @return $this
      */
-    public function setJson($json)
+    public function setJson($json): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -164,7 +164,7 @@ class JsonResponse extends Response
      *
      * @return $this
      */
-    public function setData($data = [], ?int $encodingOptions = null)
+    public function setData($data = [], ?int $encodingOptions = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -209,7 +209,7 @@ class JsonResponse extends Response
      *
      * @return int
      */
-    public function getEncodingOptions()
+    public function getEncodingOptions(): int
     {
         return $this->encodingOptions;
     }
@@ -221,7 +221,7 @@ class JsonResponse extends Response
      *
      * @return $this
      */
-    public function setEncodingOptions(int $encodingOptions)
+    public function setEncodingOptions(int $encodingOptions): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -239,7 +239,7 @@ class JsonResponse extends Response
      *
      * @return bool
      */
-    protected function isJsonData($data)
+    protected function isJsonData($data): bool
     {
         if (!is_scalar($data) && !method_exists($data, '__toString')) {
             return false;
@@ -255,7 +255,7 @@ class JsonResponse extends Response
      *
      * @return $this
      */
-    protected function updateContent()
+    protected function updateContent(): IResponse
     {
         if (null !== $this->callback) {
             $this->headers->set('Content-Type', 'text/javascript');

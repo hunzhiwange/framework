@@ -57,7 +57,7 @@ class FileResponse extends Response
      * @param bool                               $autoEtag
      * @param bool                               $autoLastModified
      */
-    public function __construct($file, int $status = 200, array $headers = [], string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true)
+    public function __construct($file, int $status = 200, array $headers = [], ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true)
     {
         parent::__construct(null, $status, $headers);
 
@@ -76,7 +76,7 @@ class FileResponse extends Response
      *
      * @return static
      */
-    public static function create($file = null, int $status = 200, array $headers = [], $contentDisposition = null, $autoEtag = false, $autoLastModified = true)
+    public static function create($file = null, int $status = 200, array $headers = [], ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): IResponse
     {
         return new static($file, $status, $headers, $contentDisposition, $autoEtag, $autoLastModified);
     }
@@ -91,7 +91,7 @@ class FileResponse extends Response
      *
      * @return $this
      */
-    public function setFile($file, $contentDisposition = null, $autoEtag = false, $autoLastModified = true)
+    public function setFile($file, ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -142,8 +142,10 @@ class FileResponse extends Response
 
     /**
      * 自动设置最后修改时间.
+     *
+     * @return $this
      */
-    public function setAutoLastModified()
+    public function setAutoLastModified(): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -156,8 +158,10 @@ class FileResponse extends Response
 
     /**
      * 自动设置标记.
+     *
+     * @return $this
      */
-    public function setAutoEtag()
+    public function setAutoEtag(): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -173,7 +177,7 @@ class FileResponse extends Response
     /**
      * {@inheritdoc}
      */
-    public function setContent($content)
+    public function setContent($content): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -202,7 +206,7 @@ class FileResponse extends Response
      *
      * @return $this
      */
-    public function setContentDisposition($disposition, $filename = '')
+    public function setContentDisposition(string $disposition, string $filename = ''): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -230,7 +234,7 @@ class FileResponse extends Response
     /**
      * {@inheritdoc}
      */
-    public function sendContent()
+    public function sendContent(): IResponse
     {
         if ($this->checkTControl()) {
             return $this;

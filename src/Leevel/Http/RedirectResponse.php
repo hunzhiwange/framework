@@ -65,11 +65,13 @@ class RedirectResponse extends Response
      * @param int    $status
      * @param array  $headers
      */
-    public function __construct(?string $url, int $status = 302, array $headers = [])
+    public function __construct(?string $url = null, int $status = 302, array $headers = [])
     {
         parent::__construct('', $status, $headers);
 
-        $this->setTargetUrl($url);
+        if ($url) {
+            $this->setTargetUrl($url);
+        }
 
         if (!$this->isRedirect()) {
             throw new InvalidArgumentException(
@@ -85,13 +87,13 @@ class RedirectResponse extends Response
     /**
      * 创建 URL 跳转响应.
      *
-     * @param string $url
-     * @param int    $status
-     * @param array  $headers
+     * @param mixed $url
+     * @param int   $status
+     * @param array $headers
      *
      * @return static
      */
-    public static function create($url = '', int $status = 302, array $headers = [])
+    public static function create($url = '', int $status = 302, array $headers = []): IResponse
     {
         return new static($url, $status, $headers);
     }
@@ -104,7 +106,7 @@ class RedirectResponse extends Response
      *
      * @return $this
      */
-    public function with($key, $value = null)
+    public function with($key, $value = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -124,11 +126,11 @@ class RedirectResponse extends Response
     /**
      * 闪存输入信息.
      *
-     * @param array $input
+     * @param null|array $input
      *
      * @return $this
      */
-    public function withInput(array $input = null)
+    public function withInput(?array $input = null): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -148,7 +150,7 @@ class RedirectResponse extends Response
      *
      * @return $this
      */
-    public function onlyInput(...$args)
+    public function onlyInput(...$args): IResponse
     {
         if (!$args) {
             throw new InvalidArgumentException('Method onlyInput need an args.');
@@ -162,7 +164,7 @@ class RedirectResponse extends Response
      *
      * @return $this
      */
-    public function exceptInput(...$args)
+    public function exceptInput(...$args): IResponse
     {
         if (!$args) {
             throw new InvalidArgumentException('Method exceptInput need an args.');
@@ -179,7 +181,7 @@ class RedirectResponse extends Response
      *
      * @return $this
      */
-    public function withErrors($value, string $key = 'default')
+    public function withErrors($value, string $key = 'default'): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -194,11 +196,11 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 获取目标 URL 地址
+     * 获取目标 URL 地址.
      *
      * @return string
      */
-    public function getTargetUrl()
+    public function getTargetUrl(): string
     {
         return $this->targetUrl;
     }
@@ -210,7 +212,7 @@ class RedirectResponse extends Response
      *
      * @return $this
      */
-    public function setTargetUrl($url)
+    public function setTargetUrl(string $url): IResponse
     {
         if ($this->checkTControl()) {
             return $this;
@@ -245,7 +247,7 @@ class RedirectResponse extends Response
      *
      * @return null|\Leevel\Http\IRequest
      */
-    public function getRequest()
+    public function getRequest(): ?IRequest
     {
         return $this->request;
     }
@@ -255,7 +257,7 @@ class RedirectResponse extends Response
      *
      * @param \Leevel\Http\IRequest $request
      */
-    public function setRequest(IRequest $request)
+    public function setRequest(IRequest $request): void
     {
         $this->request = $request;
     }
@@ -265,7 +267,7 @@ class RedirectResponse extends Response
      *
      * @return null|\Leevel\Session\ISession
      */
-    public function getSession()
+    public function getSession(): ?ISession
     {
         return $this->session;
     }
@@ -275,7 +277,7 @@ class RedirectResponse extends Response
      *
      * @param \Leevel\Session\ISession $session
      */
-    public function setSession(ISession $session)
+    public function setSession(ISession $session): void
     {
         $this->session = $session;
     }

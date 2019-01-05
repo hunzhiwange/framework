@@ -36,7 +36,7 @@ class ServerBag extends Bag
      *
      * @return array
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         $result = [];
 
