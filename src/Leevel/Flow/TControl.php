@@ -52,7 +52,7 @@ trait TControl
      *
      * @return $this
      */
-    public function ifs($value = false)
+    public function ifs($value = false): self
     {
         return $this->setTControl(true, $value ? true : false);
     }
@@ -64,7 +64,7 @@ trait TControl
      *
      * @return $this
      */
-    public function elseIfs($value = false)
+    public function elseIfs($value = false): self
     {
         return $this->setTControl(true, $value ? true : false);
     }
@@ -74,7 +74,7 @@ trait TControl
      *
      * @return $this
      */
-    public function elses()
+    public function elses(): self
     {
         return $this->setTControl(true, !$this->isFlowControlTrue);
     }
@@ -84,7 +84,7 @@ trait TControl
      *
      * @return $this
      */
-    public function endIfs()
+    public function endIfs(): self
     {
         return $this->setTControl(false, false);
     }
@@ -97,7 +97,7 @@ trait TControl
      *
      * @return $this
      */
-    public function setTControl(bool $inFlowControl, bool $isFlowControlTrue)
+    public function setTControl(bool $inFlowControl, bool $isFlowControlTrue): self
     {
         $this->inFlowControl = $inFlowControl;
         $this->isFlowControlTrue = $isFlowControlTrue;
@@ -122,11 +122,8 @@ trait TControl
      *
      * @return bool
      */
-    public function placeholderTControl($method)
+    public function placeholderTControl(string $method): bool
     {
-        return in_array($method, [
-            'placeholder',
-            'foobar',
-        ], true);
+        return in_array($method, ['placeholder', 'foobar'], true);
     }
 }
