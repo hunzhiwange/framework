@@ -79,7 +79,7 @@ abstract class Provider
     /**
      * 注册服务别名.
      */
-    public function registerAlias()
+    public function registerAlias(): void
     {
         if (!static::isDeferred() && $providers = static::providers()) {
             $this->container->alias($providers);

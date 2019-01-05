@@ -42,7 +42,7 @@ use ReflectionParameter;
 class Container implements IContainer, ArrayAccess
 {
     /**
-     * 注册服务
+     * 注册服务.
      *
      * @var array
      */
@@ -63,7 +63,7 @@ class Container implements IContainer, ArrayAccess
     protected $singletons = [];
 
     /**
-     * 别名支持
+     * 别名支持.
      *
      * @var array
      */
@@ -88,9 +88,9 @@ class Container implements IContainer, ArrayAccess
      *
      * @param string $key
      *
-     * @return 设置项
+     * @return mixed
      */
-    public function __get($key)
+    public function __get(string $key)
     {
         return $this[$key];
     }
@@ -101,7 +101,7 @@ class Container implements IContainer, ArrayAccess
      * @param string $key
      * @param mixed  $service
      */
-    public function __set($key, $service)
+    public function __set(string $key, $service): IContainer
     {
         $this[$key] = $service;
 
@@ -130,7 +130,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return $this
      */
-    public function bind($name, $service = null, bool $share = false)
+    public function bind($name, $service = null, bool $share = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -158,7 +158,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return $this
      */
-    public function instance($name, $service = null)
+    public function instance($name, $service = null): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -186,7 +186,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return $this
      */
-    public function singleton($name, $service = null)
+    public function singleton($name, $service = null): IContainer
     {
         return $this->bind($name, $service, true);
     }
@@ -199,7 +199,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return $this
      */
-    public function alias($alias, $value = null)
+    public function alias($alias, $value = null): IContainer
     {
         if (is_array($alias)) {
             foreach ($alias as $key => $item) {
@@ -221,7 +221,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 服务容器返回对象
+     * 服务容器返回对象.
      *
      * @param string $name
      * @param array  $args
@@ -317,7 +317,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @param string $name
      */
-    public function remove(string $name)
+    public function remove(string $name): void
     {
         $name = $this->normalize($name);
 
@@ -430,9 +430,9 @@ class Container implements IContainer, ArrayAccess
      * @param mixed $index
      * @param mixed $newval
      */
-    public function offsetSet($index, $newval)
+    public function offsetSet($index, $newval): void
     {
-        return $this->bind($index, $newval);
+        $this->bind($index, $newval);
     }
 
     /**
@@ -440,7 +440,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @param string $index
      */
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         $this->remove($index);
     }
@@ -450,9 +450,9 @@ class Container implements IContainer, ArrayAccess
      *
      * @param string $name
      *
-     * @return mixed
+     * @return string
      */
-    protected function normalize($name)
+    protected function normalize(string $name): string
     {
         return ltrim($name, '\\');
     }
@@ -464,7 +464,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return string
      */
-    protected function getAlias($name)
+    protected function getAlias(string $name): string
     {
         return $this->alias[$name] ?? $name;
     }
@@ -524,7 +524,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return object
      */
-    protected function getInjectionObject($classname, array $args = [])
+    protected function getInjectionObject(string $classname, array $args = [])
     {
         if (interface_exists($classname)) {
             throw new ContainerInvalidArgumentException(
@@ -550,9 +550,9 @@ class Container implements IContainer, ArrayAccess
      * @param mixed $value
      * @param array $args
      *
-     * @return array|void
+     * @return array
      */
-    protected function normalizeInjectionArgs($value, array $args)
+    protected function normalizeInjectionArgs($value, array $args): array
     {
         list($args, $required, $validArgs) = $this->parseInjection($value, $args);
 
@@ -573,7 +573,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return array
      */
-    protected function parseInjection($injection, array $args = [])
+    protected function parseInjection($injection, array $args = []): array
     {
         $result = [];
         $required = 0;
@@ -672,7 +672,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @param string $argsclass
      *
-     * @return array
+     * @return mixed
      */
     protected function parseClassInstance(string $argsclass)
     {
@@ -770,7 +770,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return array
      */
-    protected function parseReflection($injection)
+    protected function parseReflection($injection): array
     {
         switch (true) {
             case $injection instanceof Closure:
@@ -791,7 +791,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return array
      */
-    protected function parseClosureReflection(Closure $injection)
+    protected function parseClosureReflection(Closure $injection): array
     {
         $reflection = new ReflectionFunction($injection);
         if (!($param = $reflection->getParameters())) {
@@ -808,9 +808,10 @@ class Container implements IContainer, ArrayAccess
      *
      * @return array
      */
-    protected function parseMethodReflection($injection)
+    protected function parseMethodReflection(callable $injection): array
     {
         $reflection = new ReflectionMethod($injection[0], $injection[1]);
+
         if (!($param = $reflection->getParameters())) {
             $param = [];
         }
@@ -825,7 +826,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return array
      */
-    protected function parseClassReflection(string $injection)
+    protected function parseClassReflection(string $injection): array
     {
         $reflection = new ReflectionClass($injection);
 
@@ -855,7 +856,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return mixed
      */
-    protected function newInstanceArgs($classname, $args)
+    protected function newInstanceArgs(string $classname, array $args)
     {
         try { // @codeCoverageIgnore
             return (new ReflectionClass($classname))->newInstanceArgs($args);
@@ -871,7 +872,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return array
      */
-    protected function parseAlias(array $name)
+    protected function parseAlias(array $name): array
     {
         return [
             key($name),

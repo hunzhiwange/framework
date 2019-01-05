@@ -40,31 +40,37 @@ interface IContainer
      *
      * @return $this
      */
-    public function bind($name, $service = null, bool $share = false);
+    public function bind($name, $service = null, bool $share = false): self;
 
     /**
      * 注册为实例.
      *
      * @param mixed $name
      * @param mixed $service
+     *
+     * @return $this
      */
-    public function instance($name, $service);
+    public function instance($name, $service): self;
 
     /**
      * 注册单一实例.
      *
-     * @param string $name
-     * @param mixed  $service
+     * @param array|scalar $name
+     * @param mixed        $service
+     *
+     * @return $this
      */
-    public function singleton($name, $service = null);
+    public function singleton($name, $service = null): self;
 
     /**
      * 设置别名.
      *
      * @param array|string      $alias
      * @param null|array|string $value
+     *
+     * @return $this
      */
-    public function alias($alias, $value = null);
+    public function alias($alias, $value = null): self;
 
     /**
      * 服务容器返回对象
@@ -91,7 +97,7 @@ interface IContainer
      *
      * @param string $name
      */
-    public function remove(string $name);
+    public function remove(string $name): void;
 
     /**
      * 删除协程上下文服务和实例.
