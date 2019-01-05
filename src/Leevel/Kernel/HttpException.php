@@ -68,7 +68,7 @@ class HttpException extends RuntimeException
      *
      * @param int $statusCode
      */
-    public function setStatusCode(int $statusCode)
+    public function setStatusCode(int $statusCode): void
     {
         $this->statusCode = $statusCode;
     }
@@ -88,7 +88,7 @@ class HttpException extends RuntimeException
      *
      * @param array $headers
      */
-    public function setHeaders(array $headers)
+    public function setHeaders(array $headers): void
     {
         $this->headers = $headers;
     }
