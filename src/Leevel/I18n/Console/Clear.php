@@ -54,7 +54,7 @@ class Clear extends Command
      *
      * @param \Leevel\Kernel\IProject $project
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         $this->line('Start to clear i18n.');
 
@@ -78,7 +78,7 @@ class Clear extends Command
      *
      * @param string $cachePath
      */
-    protected function clearCache(string $cachePath)
+    protected function clearCache(string $cachePath): void
     {
         if (!is_file($cachePath)) {
             $this->warn(sprintf('I18n cache file %s have been cleaned up.', $cachePath));

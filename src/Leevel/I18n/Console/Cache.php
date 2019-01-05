@@ -71,7 +71,7 @@ class Cache extends Command
      *
      * @param \Leevel\Kernel\IProject $project
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         $this->project = $project;
         $this->extends = $this->extends();
@@ -129,7 +129,7 @@ class Cache extends Command
      * @param string $cachePath
      * @param array  $data
      */
-    protected function writeCache(string $cachePath, array $data)
+    protected function writeCache(string $cachePath, array $data): void
     {
         $dirname = dirname($cachePath);
 

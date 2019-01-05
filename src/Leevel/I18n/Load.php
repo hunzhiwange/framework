@@ -71,7 +71,7 @@ class Load
      *
      * @return $this
      */
-    public function setI18n(string $i18n)
+    public function setI18n(string $i18n): self
     {
         $this->i18n = $i18n;
 
@@ -85,7 +85,7 @@ class Load
      *
      * @return $this
      */
-    public function addDir(array $dirs)
+    public function addDir(array $dirs): self
     {
         $this->dirs = array_unique(array_merge($this->dirs, $dirs));
 
@@ -116,7 +116,7 @@ class Load
     /**
      * 分析目录中的 PHP 语言包包含的文件.
      *
-     * @param array $dirs 文件地址
+     * @param array $dirs
      *
      * @author 小牛
      *
@@ -154,7 +154,7 @@ class Load
     /**
      * 分析 mo 文件语言包数据.
      *
-     * @param array $files 文件地址
+     * @param array $files
      *
      * @author 小牛
      *
