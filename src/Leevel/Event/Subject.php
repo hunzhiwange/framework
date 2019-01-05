@@ -103,10 +103,8 @@ class Subject implements ISubject, SplSubject
      * 添加一个观察者角色.
      *
      * @param \Closure|\SplObserver|string $observer
-     *
-     * @return $this
      */
-    public function register($observer)
+    public function register($observer): void
     {
         if ($observer instanceof Closure) {
             $observer = new Observer($observer);

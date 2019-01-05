@@ -72,7 +72,7 @@ class Observer implements SplObserver
     /**
      * {@inheritdoc}
      */
-    public function update(SplSubject $subject)
+    public function update(SplSubject $subject): void
     {
         if (method_exists($this, 'handle')) {
             $handle = [$this, 'handle'];

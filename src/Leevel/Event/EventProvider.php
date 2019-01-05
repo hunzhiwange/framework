@@ -45,7 +45,7 @@ abstract class EventProvider extends Provider
      *
      * @param \Leevel\Event\IDispatch $dispatch
      */
-    public function bootstrap(IDispatch $dispatch)
+    public function bootstrap(IDispatch $dispatch): void
     {
         foreach ($this->get() as $event => $listeners) {
             foreach ($listeners as $key => $item) {
@@ -70,7 +70,7 @@ abstract class EventProvider extends Provider
      *
      * @return array
      */
-    public function get()
+    public function get(): array
     {
         return $this->listeners;
     }

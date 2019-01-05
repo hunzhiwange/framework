@@ -35,8 +35,6 @@ interface ISubject
      * 添加一个观察者角色.
      *
      * @param \Closure|\SplObserver|string $observer
-     *
-     * @return $this
      */
-    public function register($observer);
+    public function register($observer): void;
 }
