@@ -46,7 +46,7 @@ class Fso
      *
      * @return string
      */
-    public static function fileContents(string $path)
+    public static function fileContents(string $path): string
     {
         if (is_file($path)) {
             return file_get_contents($path);
@@ -65,7 +65,7 @@ class Fso
      *
      * @return true
      */
-    public static function createDirectory(string $dir, $mode = 0777)
+    public static function createDirectory(string $dir, int $mode = 0777): bool
     {
         if (is_dir($dir)) {
             return true;
@@ -82,7 +82,7 @@ class Fso
      * @param string $dir
      * @param bool   $recursive
      */
-    public static function deleteDirectory(string $dir, bool $recursive = false)
+    public static function deleteDirectory(string $dir, bool $recursive = false): void
     {
         if (!file_exists($dir) || !is_dir($dir)) {
             return;
@@ -118,7 +118,7 @@ class Fso
      * @param string $targetPath
      * @param array  $filter
      */
-    public static function copyDirectory(string $sourcePath, string $targetPath, array $filter = [])
+    public static function copyDirectory(string $sourcePath, string $targetPath, array $filter = []): void
     {
         if (!is_dir($sourcePath)) {
             return;
@@ -162,7 +162,7 @@ class Fso
      * @param \Closure $cal
      * @param array    $filter
      */
-    public static function listDirectory(string $path, bool $recursive, Closure $cal, array $filter = [])
+    public static function listDirectory(string $path, bool $recursive, Closure $cal, array $filter = []): void
     {
         if (!is_dir($path)) {
             return;
@@ -192,7 +192,7 @@ class Fso
      *
      * @return string
      */
-    public static function tidyPath(string $path, bool $unix = true)
+    public static function tidyPath(string $path, bool $unix = true): string
     {
         $path = str_replace('\\', '/', $path);
         $path = preg_replace('|/+|', '/', $path);
@@ -245,7 +245,7 @@ class Fso
      *
      * @return bool
      */
-    public static function createFile(string $path, int $mode = 0666)
+    public static function createFile(string $path, int $mode = 0666): bool
     {
         $dirname = dirname($path);
 
@@ -286,7 +286,7 @@ class Fso
      *
      * @return string
      */
-    public static function getExtension(string $fileName, int $case = 0)
+    public static function getExtension(string $fileName, int $case = 0): string
     {
         $fileName = pathinfo($fileName, PATHINFO_EXTENSION);
 
@@ -308,7 +308,7 @@ class Fso
      *
      * @return string
      */
-    public static function getName(string $path)
+    public static function getName(string $path): string
     {
         return pathinfo($path, PATHINFO_FILENAME);
     }
@@ -320,10 +320,12 @@ class Fso
      * @param string $link
      * @codeCoverageIgnore
      */
-    public static function link(string $target, string $link)
+    public static function link(string $target, string $link): void
     {
         if (DIRECTORY_SEPARATOR !== '\\') {
-            return symlink($target, $link);
+            symlink($target, $link);
+
+            return;
         }
 
         $mode = is_dir($target) ? 'J' : 'H';

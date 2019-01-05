@@ -81,7 +81,7 @@ abstract class Connect
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): IConnect
     {
         $this->option[$name] = $value;
 
@@ -118,7 +118,7 @@ abstract class Connect
      *
      * @return array
      */
-    protected function normalizeOptions(array $option = [])
+    protected function normalizeOptions(array $option = []): array
     {
         return $option ? array_merge($this->option, $option) : $this->option;
     }

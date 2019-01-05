@@ -71,9 +71,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 filesystems 服务
+     * 注册 filesystems 服务.
      */
-    protected function filesystems()
+    protected function filesystems(): void
     {
         $this->container->singleton('filesystems', function (IContainer $container) {
             return new Manager($container);
@@ -81,9 +81,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 filesystem 服务
+     * 注册 filesystem 服务.
      */
-    protected function filesystem()
+    protected function filesystem(): void
     {
         $this->container->singleton('filesystem', function (IContainer $container) {
             return $container['filesystems']->connect();
