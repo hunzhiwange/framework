@@ -55,12 +55,14 @@ class LinkDebugBar extends Command
      *
      * @param \Leevel\Kernel\IProject $project
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         if (file_exists($link = $project->path('www/debugbar'))) {
-            return $this->error(
+            $this->error(
                 sprintf('The `%s` directory already exists.', $link)
             );
+
+            return;
         }
 
         Fso::link(

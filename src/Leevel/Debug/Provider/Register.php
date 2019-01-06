@@ -68,9 +68,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 debug 服务
+     * 注册 debug 服务.
      */
-    protected function debug()
+    protected function debug(): void
     {
         $this->container->singleton('debug', function (IContainer $container) {
             return new Debug($container, $container['option']->get('debug\\'));
@@ -78,9 +78,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 middleware 服务
+     * 注册 middleware 服务.
      */
-    protected function middleware()
+    protected function middleware(): void
     {
         $this->container->singleton('Leevel\\Debug\\Middleware\\Debug');
     }

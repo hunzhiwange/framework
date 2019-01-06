@@ -37,7 +37,7 @@ class FilesCollector extends DataCollector implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function collect()
+    public function collect(): array
     {
         return [
             'messages' => $this->getIncludedFiles(),
@@ -47,7 +47,7 @@ class FilesCollector extends DataCollector implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function getWidgets()
+    public function getWidgets(): array
     {
         $name = $this->getName();
 
@@ -64,7 +64,7 @@ class FilesCollector extends DataCollector implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'files';
     }
@@ -74,7 +74,7 @@ class FilesCollector extends DataCollector implements Renderable
      *
      * @return array
      */
-    protected function getIncludedFiles()
+    protected function getIncludedFiles(): array
     {
         return get_included_files();
     }

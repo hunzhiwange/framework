@@ -64,15 +64,17 @@ class Debug
     }
 
     /**
-     * 请求
+     * 请求.
      *
      * @param \Closure              $next
      * @param \Leevel\Http\IRequest $request
      */
-    public function handle(Closure $next, IRequest $request)
+    public function handle(Closure $next, IRequest $request): void
     {
         if (!$this->project->debug()) {
-            return $next($request);
+            $next($request);
+
+            return;
         }
 
         $this->debug->bootstrap();
@@ -87,10 +89,12 @@ class Debug
      * @param \Leevel\Http\IRequest  $request
      * @param \Leevel\Http\IResponse $response
      */
-    public function terminate(Closure $next, IRequest $request, IResponse $response)
+    public function terminate(Closure $next, IRequest $request, IResponse $response): void
     {
         if (!$this->project->debug()) {
-            return $next($request, $response);
+            $next($request, $response);
+
+            return;
         }
 
         $this->debug->handle($request, $response);

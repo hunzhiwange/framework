@@ -153,7 +153,7 @@ class Debug extends DebugBar
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): self
     {
         $this->option[$name] = $value;
 
@@ -166,7 +166,7 @@ class Debug extends DebugBar
      * @param \Leevel\Http\IRequest  $request
      * @param \Leevel\Http\IResponse $response
      */
-    public function handle(IRequest $request, IResponse $response)
+    public function handle(IRequest $request, IResponse $response): void
     {
         if (!$this->enabled) {
             return;
@@ -201,7 +201,7 @@ class Debug extends DebugBar
     /**
      * 关闭调试.
      */
-    public function disable()
+    public function disable(): void
     {
         $this->enabled = false;
     }
@@ -209,7 +209,7 @@ class Debug extends DebugBar
     /**
      * 启用调试.
      */
-    public function enable()
+    public function enable(): void
     {
         $this->enabled = true;
 
@@ -224,7 +224,7 @@ class Debug extends DebugBar
      * @param mixed  $message
      * @param string $label
      */
-    public function message($message, string $label = 'info')
+    public function message($message, string $label = 'info'): void
     {
         $this->getCollector('messages')->addMessage($message, $label);
     }
@@ -235,7 +235,7 @@ class Debug extends DebugBar
      * @param string $name
      * @param string $label
      */
-    public function time(string $name, ?string $label = null)
+    public function time(string $name, ?string $label = null): void
     {
         $this->getCollector('time')->startMeasure($name, $label);
     }
@@ -245,7 +245,7 @@ class Debug extends DebugBar
      *
      * @param string $name
      */
-    public function end(string $name)
+    public function end(string $name): void
     {
         try {
             $this->getCollector('time')->stopMeasure($name);
@@ -260,7 +260,7 @@ class Debug extends DebugBar
      * @param float  $start
      * @param float  $end
      */
-    public function addTime(string $label, float $start, float $end)
+    public function addTime(string $label, float $start, float $end): void
     {
         $this->getCollector('time')->addMeasure($label, $start, $end);
     }
@@ -271,7 +271,7 @@ class Debug extends DebugBar
      * @param string   $label
      * @param \Closure $closure
      */
-    public function closureTime(string $label, Closure $closure)
+    public function closureTime(string $label, Closure $closure): void
     {
         $this->getCollector('time')->measure($label, $closure);
     }
@@ -281,7 +281,7 @@ class Debug extends DebugBar
      *
      * @param \Throwable $e
      */
-    public function exception(Throwable $e)
+    public function exception(Throwable $e): void
     {
         $this->getCollector('exceptions')->addThrowable($e);
     }
@@ -305,7 +305,7 @@ class Debug extends DebugBar
     /**
      * {@inheritdoc}
      */
-    public function getJavascriptRenderer($baseUrl = null, $basePath = null)
+    public function getJavascriptRenderer($baseUrl = null, $basePath = null): JavascriptRenderer
     {
         return new JavascriptRenderer($this, $baseUrl, $basePath);
     }
@@ -313,7 +313,7 @@ class Debug extends DebugBar
     /**
      * 初始化.
      */
-    public function bootstrap()
+    public function bootstrap(): void
     {
         if ($this->isBootstrap) {
             return;
@@ -351,7 +351,7 @@ class Debug extends DebugBar
     /**
      * 初始化数据.
      */
-    protected function initData()
+    protected function initData(): void
     {
         $this->message('Starts from this moment with QueryPHP.', '');
 

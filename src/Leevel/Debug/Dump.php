@@ -63,7 +63,7 @@ class Dump
      * @param mixed $var
      * @param array $moreVars
      */
-    public static function dumpDie($var, ...$moreVars)
+    public static function dumpDie($var, ...$moreVars): void
     {
         static::dump($var, ...$moreVars);
 
@@ -73,7 +73,7 @@ class Dump
     /**
      * 调试栈信息.
      */
-    public static function backtrace()
+    public static function backtrace(): void
     {
         $result = [];
 

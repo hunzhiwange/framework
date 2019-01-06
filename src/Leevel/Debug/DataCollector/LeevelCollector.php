@@ -55,7 +55,7 @@ class LeevelCollector extends DataCollector implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function collect()
+    public function collect(): array
     {
         $project = $this->project;
 
@@ -68,7 +68,7 @@ class LeevelCollector extends DataCollector implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'leevel';
     }
@@ -76,7 +76,7 @@ class LeevelCollector extends DataCollector implements Renderable
     /**
      * {@inheritdoc}
      */
-    public function getWidgets()
+    public function getWidgets(): array
     {
         return [
             'version' => [
