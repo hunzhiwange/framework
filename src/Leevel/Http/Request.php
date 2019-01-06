@@ -154,7 +154,7 @@ class Request implements IRequest, IArray, ArrayAccess
     protected $action;
 
     /**
-     * 当前语言
+     * 当前语言.
      *
      * @var string
      */
@@ -177,25 +177,25 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 是否存在输入值
+     * 是否存在输入值.
      *
      * @param string $key
      *
      * @return bool
      */
-    public function __isset($key)
+    public function __isset(string $key): bool
     {
         return null !== $this->__get($key);
     }
 
     /**
-     * 获取输入值
+     * 获取输入值.
      *
      * @param string $key
      *
      * @return mixed
      */
-    public function __get($key)
+    public function __get(string $key)
     {
         return $this->get($key);
     }
@@ -221,7 +221,7 @@ class Request implements IRequest, IArray, ArrayAccess
      * @param array  $server
      * @param string $content
      */
-    public function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    public function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], ?string $content = null): void
     {
         $this->query = new Bag($query);
         $this->request = new Bag($request);
@@ -247,7 +247,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return static
      */
-    public static function createFromGlobals()
+    public static function createFromGlobals(): IRequest
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
 
@@ -259,11 +259,11 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 格式化请求的内容.
      *
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IRequest $request
      *
-     * @return \Leevel\Http\Request
+     * @return \Leevel\Http\IRequest
      */
-    public static function normalizeRequestFromContent(IRequest $request)
+    public static function normalizeRequestFromContent(IRequest $request): IRequest
     {
         $contentType = $request->headers->get('CONTENT_TYPE');
         $method = strtoupper($request->server->get('REQUEST_METHOD', self::METHOD_GET));
@@ -295,7 +295,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return mixed
      */
-    public function get($key, $defaults = null)
+    public function get(string $key, $defaults = null)
     {
         $all = $this->all();
 
@@ -402,7 +402,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return mixed
      */
-    public function input($key = null, $defaults = null)
+    public function input(?string $key = null, $defaults = null)
     {
         $input = $this->getInputSource()->all() + $this->query->all();
 
@@ -421,7 +421,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array|string
      */
-    public function query($key = null, $defaults = null)
+    public function query(?string $key = null, $defaults = null)
     {
         return $this->getItem('query', $key, $defaults);
     }
@@ -433,7 +433,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function hasCookie($key)
+    public function hasCookie(string $key): bool
     {
         return null !== $this->cookie($key);
     }
@@ -446,7 +446,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array|string
      */
-    public function cookie($key = null, $defaults = null)
+    public function cookie(?string $key = null, $defaults = null)
     {
         return $this->getItem('cookies', $key, $defaults);
     }
@@ -456,7 +456,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array
      */
-    public function allFiles()
+    public function allFiles(): array
     {
         return $this->files->all();
     }
@@ -470,7 +470,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return null|array|\Leevel\Http\UploadedFile
      */
-    public function file($key = null, $defaults = null)
+    public function file(?string $key = null, $defaults = null)
     {
         if (false === strpos($key, '\\')) {
             return $this->getItem('files', $key, $defaults);
@@ -487,7 +487,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function hasFile($key)
+    public function hasFile(string $key): bool
     {
         $files = $this->file($key);
 
@@ -511,7 +511,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isValidFile($file)
+    public function isValidFile($file): bool
     {
         return $file instanceof SplFileObject && '' !== $file->getPath();
     }
@@ -524,7 +524,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array|string
      */
-    public function header($key = null, $defaults = null)
+    public function header(?string $key = null, $defaults = null)
     {
         return $this->getItem('headers', $key, $defaults);
     }
@@ -537,7 +537,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array|string
      */
-    public function server($key = null, $defaults = null)
+    public function server(?string $key = null, $defaults = null)
     {
         return $this->getItem('server', $key, $defaults);
     }
@@ -551,7 +551,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array|string
      */
-    public function getItem($source, $key, $defaults)
+    public function getItem(string $source, string $key, $defaults)
     {
         if (null === $key) {
             return $this->{$source}->all();
@@ -565,7 +565,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param array $input
      */
-    public function merge(array $input)
+    public function merge(array $input): void
     {
         $this->getInputSource()->add($input);
     }
@@ -575,7 +575,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param array $input
      */
-    public function replace(array $input)
+    public function replace(array $input): void
     {
         $this->getInputSource()->replace($input);
     }
@@ -588,7 +588,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isCli()
+    public function isCli(): bool
     {
         if ('swoole-http-server' === $this->server->get('SERVER_SOFTWARE')) {
             return false;
@@ -604,7 +604,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isRealCli()
+    public function isRealCli(): bool
     {
         return PHP_SAPI === 'cli';
     }
@@ -616,7 +616,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isCgi()
+    public function isCgi(): bool
     {
         return 'cgi' === substr(PHP_SAPI, 0, 3);
     }
@@ -626,7 +626,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isAjax()
+    public function isAjax(): bool
     {
         $field = static::VAR_AJAX;
 
@@ -642,7 +642,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isRealAjax()
+    public function isRealAjax(): bool
     {
         return $this->isXmlHttpRequest();
     }
@@ -652,7 +652,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isXmlHttpRequest()
+    public function isXmlHttpRequest(): bool
     {
         return 'XMLHttpRequest' === $this->headers->get('X_REQUESTED_WITH');
     }
@@ -662,7 +662,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isPjax()
+    public function isPjax(): bool
     {
         $field = static::VAR_PJAX;
 
@@ -678,7 +678,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isRealPjax()
+    public function isRealPjax(): bool
     {
         return null !== $this->headers->get('X_PJAX');
     }
@@ -688,7 +688,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isJson()
+    public function isJson(): bool
     {
         $field = static::VAR_JSON;
 
@@ -704,7 +704,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isRealJson()
+    public function isRealJson(): bool
     {
         $contentType = $this->headers->get('CONTENT_TYPE');
 
@@ -722,11 +722,11 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 是否为接受 json 请求
+     * 是否为接受 json 请求.
      *
      * @return bool
      */
-    public function isAcceptJson()
+    public function isAcceptJson(): bool
     {
         $field = static::VAR_ACCEPT_JSON;
 
@@ -746,7 +746,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isRealAcceptJson()
+    public function isRealAcceptJson(): bool
     {
         $accept = $this->headers->get('ACCEPT');
 
@@ -764,11 +764,11 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 是否为接受任何请求
+     * 是否为接受任何请求.
      *
      * @return bool
      */
-    public function isAcceptAny()
+    public function isAcceptAny(): bool
     {
         $accept = $this->headers->get('ACCEPT');
 
@@ -788,7 +788,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isHead()
+    public function isHead(): bool
     {
         return $this->getMethod() === static::METHOD_HEAD;
     }
@@ -798,7 +798,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isGet()
+    public function isGet(): bool
     {
         return $this->getMethod() === static::METHOD_GET;
     }
@@ -808,7 +808,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isPost()
+    public function isPost(): bool
     {
         return $this->getMethod() === static::METHOD_POST;
     }
@@ -818,7 +818,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isPut()
+    public function isPut(): bool
     {
         return $this->getMethod() === static::METHOD_PUT;
     }
@@ -828,7 +828,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isPatch()
+    public function isPatch(): bool
     {
         return $this->getMethod() === static::METHOD_PATCH;
     }
@@ -838,7 +838,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isPurge()
+    public function isPurge(): bool
     {
         return $this->getMethod() === static::METHOD_PURGE;
     }
@@ -848,7 +848,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isOptions()
+    public function isOptions(): bool
     {
         return $this->getMethod() === static::METHOD_OPTIONS;
     }
@@ -858,7 +858,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isTrace()
+    public function isTrace(): bool
     {
         return $this->getMethod() === static::METHOD_TRACE;
     }
@@ -868,17 +868,17 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isConnect()
+    public function isConnect(): bool
     {
         return $this->getMethod() === static::METHOD_CONNECT;
     }
 
     /**
-     * 获取 IP 地址
+     * 获取 IP 地址.
      *
      * @return string
      */
-    public function getClientIp()
+    public function getClientIp(): string
     {
         return $this->headers->get('CLIENT_IP', $this->server->get('REMOTE_ADDR', '0.0.0.0'));
     }
@@ -888,7 +888,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         if (null !== $this->method) {
             return $this->method;
@@ -916,7 +916,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return $this
      */
-    public function setMethod(string $method)
+    public function setMethod(string $method): IRequest
     {
         $this->method = null;
         $this->server->set('REQUEST_METHOD', $method);
@@ -929,7 +929,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getRealMethod()
+    public function getRealMethod(): string
     {
         return strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
     }
@@ -941,17 +941,17 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isMethod($method)
+    public function isMethod(string $method): bool
     {
         return $this->getMethod() === strtoupper($method);
     }
 
     /**
-     * 返回当前的语言
+     * 返回当前的语言.
      *
      * @return null|string
      */
-    public function language()
+    public function language(): ?string
     {
         return $this->language;
     }
@@ -961,7 +961,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return null|string
      */
-    public function getLanguage()
+    public function getLanguage(): ?string
     {
         return $this->language;
     }
@@ -973,7 +973,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return $this
      */
-    public function setLanguage($language)
+    public function setLanguage(string $language): IRequest
     {
         $this->language = $language;
 
@@ -983,9 +983,9 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取得请求内容.
      *
-     * @return resource|string
+     * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         $resources = is_resource($this->content);
 
@@ -1007,7 +1007,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getRoot()
+    public function getRoot(): string
     {
         return rtrim($this->getSchemeAndHttpHost().$this->getBaseUrl(), '/');
     }
@@ -1017,7 +1017,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getEnter()
+    public function getEnter(): string
     {
         if ($this->isCli()) {
             return '';
@@ -1038,7 +1038,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getScriptName()
+    public function getScriptName(): string
     {
         return $this->server->get('SCRIPT_NAME', $this->server->get('ORIG_SCRIPT_NAME', ''));
     }
@@ -1048,7 +1048,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    public function isSecure()
+    public function isSecure(): bool
     {
         if (in_array($this->server->get('HTTPS'), ['1', 'on'], true)) {
             return true;
@@ -1066,12 +1066,12 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getHttpHost()
+    public function getHttpHost(): string
     {
         $scheme = $this->getScheme();
         $port = $this->getPort();
 
-        if (('http' === $scheme && '80' === $port) || ('https' === $scheme && '443' === $port)) {
+        if (('http' === $scheme && 80 === $port) || ('https' === $scheme && 443 === $port)) {
             return $this->getHost();
         }
 
@@ -1083,7 +1083,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
         $host = $this->headers->get('X_FORWARDED_HOST', $this->headers->get('HOST', ''));
 
@@ -1103,17 +1103,17 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getSchemeAndHttpHost()
+    public function getSchemeAndHttpHost(): string
     {
         return $this->getScheme().'://'.$this->getHttpHost();
     }
 
     /**
-     * 返回当前 URL 地址
+     * 返回当前 URL 地址.
      *
      * @return string
      */
-    public function getUri()
+    public function getUri(): string
     {
         if (null !== $queryString = $this->getQueryString()) {
             $queryString = '?'.$queryString;
@@ -1127,9 +1127,9 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return int
      */
-    public function getPort()
+    public function getPort(): int
     {
-        $port = $this->server->get('SERVER_PORT');
+        $port = (int) $this->server->get('SERVER_PORT');
 
         if (!$port) {
             $port = 'https' === $this->getScheme() ? 443 : 80;
@@ -1143,7 +1143,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getScheme()
+    public function getScheme(): string
     {
         return $this->isSecure() ? 'https' : 'http';
     }
@@ -1153,7 +1153,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return null|string
      */
-    public function getQueryString()
+    public function getQueryString(): ?string
     {
         $queryString = $this->normalizeQueryString($this->server->get('QUERY_STRING'));
 
@@ -1167,7 +1167,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return $this
      */
-    public function setPathInfo($pathInfo)
+    public function setPathInfo(string $pathInfo): IRequest
     {
         $this->pathInfo = $pathInfo;
 
@@ -1179,7 +1179,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getPathInfo()
+    public function getPathInfo(): string
     {
         if (null !== $this->pathInfo) {
             return $this->pathInfo;
@@ -1218,7 +1218,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getBasePath()
+    public function getBasePath(): string
     {
         if (null !== $this->basePath) {
             return $this->basePath;
@@ -1252,7 +1252,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         if (null !== $this->baseUrl) {
             return $this->baseUrl;
@@ -1323,7 +1323,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getRequestUri()
+    public function getRequestUri(): ?string
     {
         if (null !== $this->requestUri) {
             return $this->requestUri;
@@ -1381,12 +1381,10 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param mixed $index
      * @param mixed $newval
-     *
-     * @return mixed
      */
-    public function offsetSet($index, $newval)
+    public function offsetSet($index, $newval): void
     {
-        return $this->getInputSource()->set($index, $newval);
+        $this->getInputSource()->set($index, $newval);
     }
 
     /**
@@ -1394,7 +1392,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param string $index
      */
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         $this->getInputSource()->remove($index);
     }
@@ -1406,7 +1404,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @since bool
      */
-    protected function isInt($value)
+    protected function isInt($value): bool
     {
         if (is_int($value)) {
             return true;
@@ -1422,7 +1420,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    protected function parsePathInfo($pathInfo)
+    protected function parsePathInfo(string $pathInfo): string
     {
         if ($pathInfo) {
             $ext = pathinfo($pathInfo, PATHINFO_EXTENSION);
@@ -1440,11 +1438,11 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 格式化查询参数.
      *
-     * @param string $queryString
+     * @param null|string $queryString
      *
      * @return string
      */
-    protected function normalizeQueryString($queryString)
+    protected function normalizeQueryString(?string $queryString): string
     {
         if (!$queryString && '0' !== $queryString) {
             return '';
@@ -1468,7 +1466,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return \Leevel\Http\Bag
      */
-    protected function getInputSource()
+    protected function getInputSource(): Bag
     {
         return $this->getMethod() === static::METHOD_GET ? $this->query : $this->request;
     }
@@ -1480,7 +1478,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return bool
      */
-    protected function isEmptyString($key)
+    protected function isEmptyString(string $key): bool
     {
         $value = $this->input($key);
 

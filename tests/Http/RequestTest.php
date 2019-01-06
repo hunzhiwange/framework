@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
+use Leevel\Http\IRequest;
 use Leevel\Http\Request;
 use Tests\TestCase;
 
@@ -547,7 +548,7 @@ class RequestContentProxy extends Request
      *
      * @return static
      */
-    public static function createFromGlobals()
+    public static function createFromGlobals(): IRequest
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
 
@@ -556,7 +557,7 @@ class RequestContentProxy extends Request
         return $request;
     }
 
-    public function getContent()
+    public function getContent(): string
     {
         return http_build_query(['_method' => 'PUT', 'content' => 'mycontent'], '', '&');
     }
@@ -569,7 +570,7 @@ class RequestContentApplicationJson extends Request
      *
      * @return static
      */
-    public static function createFromGlobals()
+    public static function createFromGlobals(): IRequest
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
 
@@ -578,7 +579,7 @@ class RequestContentApplicationJson extends Request
         return $request;
     }
 
-    public function getContent()
+    public function getContent(): string
     {
         return '{"name":"admin","password":"123456"}';
     }
