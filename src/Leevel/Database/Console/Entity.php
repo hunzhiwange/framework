@@ -80,8 +80,10 @@ EOF;
 
     /**
      * 响应命令.
+     *
+     * @param \Leevel\Database\Manager $database
      */
-    public function handle(Manager $database)
+    public function handle(Manager $database): void
     {
         $this->database = $database;
 

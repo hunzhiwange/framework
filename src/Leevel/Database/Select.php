@@ -55,7 +55,7 @@ class Select
     /**
      * 数据库连接.
      *
-     * @var Leevel\Database\Connect
+     * @var \Leevel\Database\Connect
      */
     protected $connect;
 
@@ -234,7 +234,7 @@ class Select
      *
      * @return $this
      */
-    public function selfDatabaseSelect()
+    public function selfDatabaseSelect(): self
     {
         return $this;
     }
@@ -246,7 +246,7 @@ class Select
      *
      * @return $this
      */
-    public function sql(bool $flag = true)
+    public function sql(bool $flag = true): self
     {
         $this->onlyMakeSql = $flag;
 
@@ -260,7 +260,7 @@ class Select
      *
      * @return $this
      */
-    public function master(bool $master = false)
+    public function master(bool $master = false): self
     {
         $this->queryParams['master'] = $master;
 
@@ -276,7 +276,7 @@ class Select
      *
      * @return $this
      */
-    public function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])
+    public function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = []): self
     {
         $this->queryParams['fetch_args']['fetch_style'] = $fetchStyle;
 
@@ -297,7 +297,7 @@ class Select
      *
      * @return $this
      */
-    public function asClass(string $className, array $args = [])
+    public function asClass(string $className, array $args = []): self
     {
         $this->queryParams['as_class'] = $className;
         $this->queryParams['class_args'] = $args;
@@ -311,7 +311,7 @@ class Select
      *
      * @return $this
      */
-    public function asDefault()
+    public function asDefault(): self
     {
         $this->queryParams['as_class'] = null;
         $this->queryParams['as_default'] = true;
@@ -326,7 +326,7 @@ class Select
      *
      * @return $this
      */
-    public function asCollection(bool $acollection = true)
+    public function asCollection(bool $acollection = true): self
     {
         $this->queryParams['as_collection'] = $acollection;
 
@@ -400,7 +400,7 @@ class Select
      *
      * @return null|array|int
      */
-    public function insertAll($data, array $bind = [], bool $replace = false, bool $flag = false)
+    public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)
     {
         return $this->safeSql($flag)->
         runNativeSql(
@@ -417,7 +417,7 @@ class Select
      * @param array        $bind
      * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
-     * @return int 影响记录
+     * @return array|int
      */
     public function update($data, array $bind = [], bool $flag = false)
     {
@@ -437,7 +437,7 @@ class Select
      * @param array  $bind
      * @param bool   $flag   指示是否不做任何操作只返回 SQL
      *
-     * @return int
+     * @return array|int
      */
     public function updateColumn(string $column, $value, array $bind = [], bool $flag = false)
     {
@@ -452,7 +452,7 @@ class Select
      * @param array  $bind
      * @param bool   $flag   指示是否不做任何操作只返回 SQL
      *
-     * @return int
+     * @return array|int
      */
     public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
     {
@@ -467,7 +467,7 @@ class Select
      * @param array  $bind
      * @param bool   $flag   指示是否不做任何操作只返回 SQL
      *
-     * @return int
+     * @return array|int
      */
     public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
     {
@@ -481,9 +481,9 @@ class Select
      * @param array       $bind
      * @param bool        $flag 指示是否不做任何操作只返回 SQL
      *
-     * @return int 影响记录
+     * @return array|int
      */
-    public function delete($data = null, array $bind = [], bool $flag = false)
+    public function delete(?string $data = null, array $bind = [], bool $flag = false)
     {
         return $this->safeSql($flag)->
         runNativeSql(
@@ -497,6 +497,8 @@ class Select
      * 清空表重置自增 ID.
      *
      * @param bool $flag 指示是否不做任何操作只返回 SQL
+     *
+     * @return array|int
      */
     public function truncate(bool $flag = false)
     {
@@ -605,7 +607,7 @@ class Select
      *
      * @return array
      */
-    public function list($fieldValue, ?string $fieldKey = null, bool $flag = false)
+    public function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
@@ -656,7 +658,7 @@ class Select
      * @param int      $count
      * @param \Closure $chunk
      */
-    public function chunk(int $count, Closure $chunk)
+    public function chunk(int $count, Closure $chunk): void
     {
         $result = $this->forPage($page = 1, $count)->
 
@@ -680,12 +682,10 @@ class Select
      *
      * @param int     $count
      * @param Closure $each
-     *
-     * @return bool
      */
-    public function each(int $count, Closure $each)
+    public function each(int $count, Closure $each): void
     {
-        return $this->chunk($count, function ($result, $page) use ($each) {
+        $this->chunk($count, function ($result, $page) use ($each) {
             foreach ($result as $key => $value) {
                 if (false === $each($value, $key, $page)) {
                     return false;
@@ -721,7 +721,7 @@ class Select
      * @param string $alias
      * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
-     * @return number
+     * @return mixed
      */
     public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false)
     {
@@ -735,7 +735,7 @@ class Select
      * @param string $alias
      * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
-     * @return number
+     * @return mixed
      */
     public function findMax(string $field, string $alias = 'max_value', bool $flag = false)
     {
@@ -749,7 +749,7 @@ class Select
      * @param string $alias
      * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
-     * @return number
+     * @return mixed
      */
     public function findMin(string $field, string $alias = 'min_value', bool $flag = false)
     {
@@ -763,7 +763,7 @@ class Select
      * @param string $alias
      * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
-     * @return number
+     * @return mixed
      */
     public function findSum(string $field, string $alias = 'sum_value', bool $flag = false)
     {
@@ -891,7 +891,7 @@ class Select
      *
      * @return string
      */
-    public function makeSql(bool $withLogicGroup = false)
+    public function makeSql(bool $withLogicGroup = false): string
     {
         return $this->condition->
         makeSql($withLogicGroup);
@@ -904,7 +904,7 @@ class Select
      *
      * @return $this
      */
-    protected function safeSql(bool $flag = true)
+    protected function safeSql(bool $flag = true): self
     {
         if (true === $this->onlyMakeSql) {
             return $this;
@@ -918,7 +918,7 @@ class Select
     /**
      * 初始化查询条件.
      */
-    protected function initOption()
+    protected function initOption(): void
     {
         $this->queryParams = static::$queryParamsDefault;
     }
@@ -1016,7 +1016,7 @@ class Select
      *
      * @return mixed
      */
-    protected function findAggregateResult($method, $field, $alias, bool $flag = false)
+    protected function findAggregateResult(string $method, string $field, string $alias, bool $flag = false)
     {
         $this->condition->{$method}($field, $alias);
 
@@ -1071,7 +1071,7 @@ class Select
     /**
      * 备份分页查询条件.
      */
-    protected function backupPageArgs()
+    protected function backupPageArgs(): void
     {
         $this->backupPage = [];
         $this->backupPage['query_params'] = $this->queryParams;
@@ -1082,7 +1082,7 @@ class Select
     /**
      * 恢复分页查询条件.
      */
-    protected function restorePageArgs()
+    protected function restorePageArgs(): void
     {
         $this->queryParams = $this->backupPage['query_params'];
         $this->condition->setOption('aggregate', $this->backupPage['aggregate']);

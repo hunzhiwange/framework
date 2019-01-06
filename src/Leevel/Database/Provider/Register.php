@@ -54,7 +54,7 @@ class Register extends Provider
      *
      * @param \Leevel\Event\IDispatch $event
      */
-    public function bootstrap(IDispatch $event)
+    public function bootstrap(IDispatch $event): void
     {
         $this->eventDispatch($event);
 
@@ -84,9 +84,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 databases 服务
+     * 注册 databases 服务.
      */
-    protected function databases()
+    protected function databases(): void
     {
         $this->container->singleton('databases', function (IContainer $container) {
             return new Manager($container);
@@ -94,9 +94,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 database 服务
+     * 注册 database 服务.
      */
-    protected function database()
+    protected function database(): void
     {
         $this->container->singleton('database', function (IContainer $container) {
             return $container['databases']->connect();
@@ -104,9 +104,9 @@ class Register extends Provider
     }
 
     /**
-     * 注册 work 服务
+     * 注册 work 服务.
      */
-    protected function work()
+    protected function work(): void
     {
         $this->container->singleton('work', function (IContainer $container) {
             return new UnitOfWork();
@@ -118,7 +118,7 @@ class Register extends Provider
      *
      * @param \Leevel\Event\IDispatch $event
      */
-    protected function eventDispatch(IDispatch $event)
+    protected function eventDispatch(IDispatch $event): void
     {
         Entity::withEventDispatch($event);
     }
@@ -126,7 +126,7 @@ class Register extends Provider
     /**
      * Meta 设置数据库管理.
      */
-    protected function meta()
+    protected function meta(): void
     {
         Meta::setDatabaseResolver(function () {
             return $this->container['databases'];

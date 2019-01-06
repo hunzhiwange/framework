@@ -247,9 +247,9 @@ class Condition
      * @param array        $bind
      * @param bool         $replace
      *
-     * @return null|array
+     * @return array
      */
-    public function insert($data, array $bind = [], bool $replace = false)
+    public function insert($data, array $bind = [], bool $replace = false): array
     {
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
@@ -294,9 +294,9 @@ class Condition
      * @param array $bind
      * @param bool  $replace
      *
-     * @return null|array
+     * @return array
      */
-    public function insertAll(array $data, array $bind = [], bool $replace = false)
+    public function insertAll(array $data, array $bind = [], bool $replace = false): array
     {
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
@@ -356,9 +356,9 @@ class Condition
      * @param array|string $data
      * @param array        $bind
      *
-     * @return null|array
+     * @return array
      */
-    public function update($data, array $bind = [])
+    public function update($data, array $bind = []): array
     {
         // 绑定参数
         $bind = array_merge($this->getBindParams(), $bind);
@@ -409,9 +409,9 @@ class Condition
      * @param null|string $data
      * @param array       $bind
      *
-     * @return null|array
+     * @return array
      */
-    public function delete(?string $data = null, array $bind = [])
+    public function delete(?string $data = null, array $bind = []): array
     {
         // 构造数据删除
         if (null === $data) {
@@ -451,7 +451,7 @@ class Condition
      *
      * @return array
      */
-    public function truncate()
+    public function truncate(): array
     {
         // 构造 truncate 语句
         $sql = [];
@@ -473,7 +473,7 @@ class Condition
      *
      * @return $this
      */
-    public function forPage(int $page, int $perPage = 15)
+    public function forPage(int $page, int $perPage = 15): self
     {
         return $this->limit(($page - 1) * $perPage, $perPage);
     }
@@ -482,8 +482,10 @@ class Condition
      * 时间控制语句开始.
      *
      * @param string $type
+     *
+     * @return $this
      */
-    public function time(string $type = 'date')
+    public function time(string $type = 'date'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -496,18 +498,24 @@ class Condition
         }
 
         $this->setInTimeCondition($type);
+
+        return $this;
     }
 
     /**
-     * 时间控制语句结束
+     * 时间控制语句结束.
+     *
+     * @return $this
      */
-    public function endTime()
+    public function endTime(): self
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
         $this->setInTimeCondition(null);
+
+        return $this;
     }
 
     /**
@@ -517,7 +525,7 @@ class Condition
      *
      * @return $this
      */
-    public function reset($option = null)
+    public function reset(?string $option = null): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -539,7 +547,7 @@ class Condition
      *
      * @return $this
      */
-    public function prefix(string $prefix)
+    public function prefix(string $prefix): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -558,7 +566,7 @@ class Condition
      *
      * @return $this
      */
-    public function table($table, $cols = '*')
+    public function table($table, $cols = '*'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -589,7 +597,7 @@ class Condition
      *
      * @return $this
      */
-    public function columns($cols = '*', ?string $table = null)
+    public function columns($cols = '*', ?string $table = null): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -612,7 +620,7 @@ class Condition
      *
      * @return $this
      */
-    public function setColumns($cols = '*', ?string $table = null)
+    public function setColumns($cols = '*', ?string $table = null): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -635,7 +643,7 @@ class Condition
      *
      * @return $this
      */
-    public function where(...$arr)
+    public function where(...$arr): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -654,7 +662,7 @@ class Condition
      *
      * @return $this
      */
-    public function orWhere(...$arr)
+    public function orWhere(...$arr): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -673,7 +681,7 @@ class Condition
      *
      * @return $this
      */
-    public function whereExists($exists)
+    public function whereExists($exists): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -691,7 +699,7 @@ class Condition
      *
      * @return $this
      */
-    public function whereNotExists($exists)
+    public function whereNotExists($exists): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -711,7 +719,7 @@ class Condition
      *
      * @return $this
      */
-    public function bind($names, $value = null, $type = PDO::PARAM_STR)
+    public function bind($names, $value = null, int $type = PDO::PARAM_STR): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -750,7 +758,7 @@ class Condition
      *
      * @return $this
      */
-    public function forceIndex($indexs, $type = 'FORCE')
+    public function forceIndex($indexs, $type = 'FORCE'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -783,7 +791,7 @@ class Condition
      *
      * @return $this
      */
-    public function ignoreIndex($indexs)
+    public function ignoreIndex($indexs): self
     {
         return $this->forceIndex($indexs, 'IGNORE');
     }
@@ -797,7 +805,7 @@ class Condition
      *
      * @return $this
      */
-    public function join($table, $cols, $cond)
+    public function join($table, $cols, $cond): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -817,7 +825,7 @@ class Condition
      *
      * @return $this
      */
-    public function union($selects, string $type = 'UNION')
+    public function union($selects, string $type = 'UNION'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -852,7 +860,7 @@ class Condition
      *
      * @return $this
      */
-    public function unionAll($selects)
+    public function unionAll($selects): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -868,7 +876,7 @@ class Condition
      *
      * @return $this
      */
-    public function groupBy($expression)
+    public function groupBy($expression): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -946,7 +954,7 @@ class Condition
      *
      * @return $this
      */
-    public function having(...$arr)
+    public function having(...$arr): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -965,7 +973,7 @@ class Condition
      *
      * @return $this
      */
-    public function orHaving(...$arr)
+    public function orHaving(...$arr): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -985,7 +993,7 @@ class Condition
      *
      * @return $this
      */
-    public function orderBy($expression, string $orderDefault = 'ASC')
+    public function orderBy($expression, string $orderDefault = 'ASC'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1094,7 +1102,7 @@ class Condition
      *
      * @return $this
      */
-    public function latest(string $field = 'create_at')
+    public function latest(string $field = 'create_at'): self
     {
         return $this->orderBy($field, 'DESC');
     }
@@ -1106,7 +1114,7 @@ class Condition
      *
      * @return $this
      */
-    public function oldest(string $field = 'create_at')
+    public function oldest(string $field = 'create_at'): self
     {
         return $this->orderBy($field, 'ASC');
     }
@@ -1118,7 +1126,7 @@ class Condition
      *
      * @return $this
      */
-    public function distinct(bool $flag = true)
+    public function distinct(bool $flag = true): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1137,7 +1145,7 @@ class Condition
      *
      * @return $this
      */
-    public function count(string $field = '*', string $alias = 'row_count')
+    public function count(string $field = '*', string $alias = 'row_count'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1154,7 +1162,7 @@ class Condition
      *
      * @return $this
      */
-    public function avg(string $field, string $alias = 'avg_value')
+    public function avg(string $field, string $alias = 'avg_value'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1171,7 +1179,7 @@ class Condition
      *
      * @return $this
      */
-    public function max(string $field, string $alias = 'max_value')
+    public function max(string $field, string $alias = 'max_value'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1188,7 +1196,7 @@ class Condition
      *
      * @return $this
      */
-    public function min(string $field, string $alias = 'min_value')
+    public function min(string $field, string $alias = 'min_value'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1205,7 +1213,7 @@ class Condition
      *
      * @return $this
      */
-    public function sum(string $field, string $alias = 'sum_value')
+    public function sum(string $field, string $alias = 'sum_value'): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1219,7 +1227,7 @@ class Condition
      *
      * @return $this
      */
-    public function one()
+    public function one(): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1237,7 +1245,7 @@ class Condition
      *
      * @return $this
      */
-    public function all()
+    public function all(): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1257,11 +1265,11 @@ class Condition
     /**
      * 查询几条记录.
      *
-     * @param number $count
+     * @param int $count
      *
      * @return $this
      */
-    public function top(int $count = 30)
+    public function top(int $count = 30): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1278,7 +1286,7 @@ class Condition
      *
      * @return $this
      */
-    public function limit(int $offset = 0, int $count = 0)
+    public function limit(int $offset = 0, int $count = 0): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1302,7 +1310,7 @@ class Condition
      *
      * @return $this
      */
-    public function forUpdate(bool $flag = true)
+    public function forUpdate(bool $flag = true): self
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1320,7 +1328,7 @@ class Condition
      *
      * @return string
      */
-    public function makeSql(bool $withLogicGroup = false)
+    public function makeSql(bool $withLogicGroup = false): string
     {
         $sql = [
             'SELECT',
@@ -1368,7 +1376,7 @@ class Condition
      *
      * @return $this
      */
-    public function setOption(string $name, $value)
+    public function setOption(string $name, $value): self
     {
         $this->options[$name] = $value;
 
@@ -1521,7 +1529,7 @@ class Condition
      *
      * @return string
      */
-    protected function parsePrefix()
+    protected function parsePrefix(): string
     {
         if (empty($this->options['prefix'])) {
             return '';
@@ -1535,7 +1543,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseDistinct()
+    protected function parseDistinct(): string
     {
         if (!$this->options['distinct']) {
             return '';
@@ -1549,7 +1557,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseColumns()
+    protected function parseColumns(): string
     {
         if (empty($this->options['columns'])) {
             return '';
@@ -1586,7 +1594,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseAggregate()
+    protected function parseAggregate(): string
     {
         if (empty($this->options['aggregate'])) {
             return '';
@@ -1612,7 +1620,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseFrom()
+    protected function parseFrom(): string
     {
         if (empty($this->options['from'])) {
             return '';
@@ -1658,7 +1666,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseTable()
+    protected function parseTable(): string
     {
         foreach ($this->options['from'] as $alias => $value) {
             if ($alias === $value['table_name']) {
@@ -1678,7 +1686,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseIndex()
+    protected function parseIndex(): string
     {
         $index = '';
 
@@ -1706,7 +1714,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseWhere(bool $child = false)
+    protected function parseWhere(bool $child = false): string
     {
         if (empty($this->options['where'])) {
             return '';
@@ -1720,7 +1728,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseUnion()
+    protected function parseUnion(): string
     {
         if (empty($this->options['union'])) {
             return '';
@@ -1752,7 +1760,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseOrder()
+    protected function parseOrder(): string
     {
         if (empty($this->options['order'])) {
             return '';
@@ -1766,7 +1774,7 @@ class Condition
      *
      * @return string
      */
-    protected function parseGroup()
+    protected function parseGroup(): string
     {
         if (empty($this->options['group'])) {
             return '';
@@ -1833,7 +1841,7 @@ class Condition
      *
      * @return string
      */
-    protected function analyseCondition(string $condType, bool $child = false)
+    protected function analyseCondition(string $condType, bool $child = false): string
     {
         $sqlCond = [];
         $table = $this->getTable();
@@ -1986,7 +1994,7 @@ class Condition
      *
      * @return $this
      */
-    protected function aliasCondition(string $conditionType, $cond)
+    protected function aliasCondition(string $conditionType, $cond): self
     {
         if (!is_array($cond)) {
             $args = func_get_args();
@@ -2010,7 +2018,7 @@ class Condition
      *
      * @return $this
      */
-    protected function aliatypeAndLogic(string $type, string $logic, $cond)
+    protected function aliatypeAndLogic(string $type, string $logic, $cond): self
     {
         $this->setTypeAndLogic($type, $logic);
 
@@ -2039,7 +2047,7 @@ class Condition
      *
      * @return $this
      */
-    protected function addConditions()
+    protected function addConditions(): self
     {
         $args = func_get_args();
         $table = $this->getTable();
@@ -2216,10 +2224,10 @@ class Condition
     /**
      * 设置条件的一项.
      *
-     * @param array  $items
-     * @param string $type
+     * @param array|string $items
+     * @param string       $type
      */
-    protected function setConditionItem($items, $type = '')
+    protected function setConditionItem($items, string $type = ''): void
     {
         $typeAndLogic = $this->getTypeAndLogic();
 
@@ -2248,7 +2256,7 @@ class Condition
      * @param string $type
      * @param string $logic
      */
-    protected function setTypeAndLogic($type = null, $logic = null)
+    protected function setTypeAndLogic(?string $type = null, ?string $logic = null): void
     {
         if (null !== $type) {
             $this->conditionType = $type;
@@ -2264,7 +2272,7 @@ class Condition
      *
      * @return array
      */
-    protected function getTypeAndLogic()
+    protected function getTypeAndLogic(): array
     {
         return [
             $this->conditionType,
@@ -2280,7 +2288,7 @@ class Condition
      *
      * @return string
      */
-    protected function normalizeColumn(string $field, string $tableName)
+    protected function normalizeColumn(string $field, string $tableName): string
     {
         if (false !== strpos($field, '{') &&
             preg_match('/^{(.+?)}$/', $field, $matches)) {
@@ -2310,11 +2318,11 @@ class Condition
      * @param string                                                                   $joinType
      * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
      * @param mixed                                                                    $cols
-     * @param null|mixed                                                               $cond
+     * @param mixed                                                                    $cond
      *
      * @return $this
      */
-    protected function addJoin(string $joinType, $names, $cols, $cond = null)
+    protected function addJoin(string $joinType, $names, $cols, $cond = null): self
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {
@@ -2458,7 +2466,7 @@ class Condition
      * @param string $tableName
      * @param mixed  $cols
      */
-    protected function addCols(string $tableName, $cols)
+    protected function addCols(string $tableName, $cols): void
     {
         // 处理条件表达式
         if (is_string($cols) &&
@@ -2550,7 +2558,7 @@ class Condition
      *
      * @return $this
      */
-    protected function addAggregate(string $type, string $field, string $alias)
+    protected function addAggregate(string $type, string $field, string $alias): self
     {
         $this->options['columns'] = [];
         $tableName = $this->getTable();
@@ -2590,13 +2598,11 @@ class Condition
     }
 
     /**
-     * 删除参数绑定支持
+     * 删除参数绑定支持.
      *
      * @param int|string $names
-     *
-     * @return bool
      */
-    protected function deleteBindParams($names)
+    protected function deleteBindParams($names): void
     {
         if (isset($this->bindParams[$names])) {
             unset($this->bindParams[$names]);
@@ -2610,8 +2616,10 @@ class Condition
      * @param array $bind
      * @param int   $questionMark
      * @param int   $index
+     *
+     * @return array
      */
-    protected function normalizeBindData(array $data, array $bind = [], int $questionMark = 0, int $index = 0)
+    protected function normalizeBindData(array $data, array $bind = [], int $questionMark = 0, int $index = 0): array
     {
         $fields = $values = [];
         $tableName = $this->getTable();
@@ -2669,7 +2677,7 @@ class Condition
      *
      * @param string $table
      */
-    protected function setTable(string $table)
+    protected function setTable(string $table): void
     {
         $this->table = $table;
     }
@@ -2689,7 +2697,7 @@ class Condition
      *
      * @param bool $isTable
      */
-    protected function setIsTable(bool $isTable = true)
+    protected function setIsTable(bool $isTable = true): void
     {
         $this->isTable = $isTable;
     }
@@ -2774,21 +2782,21 @@ class Condition
     }
 
     /**
-     * 设置当前是否处于时间条件状态
+     * 设置当前是否处于时间条件状态.
      *
      * @param string $inTimeCondition
      */
-    protected function setInTimeCondition($inTimeCondition = null)
+    protected function setInTimeCondition(?string $inTimeCondition = null): void
     {
         $this->inTimeCondition = $inTimeCondition;
     }
 
     /**
-     * 返回当前是否处于时间条件状态
+     * 返回当前是否处于时间条件状态.
      *
      * @return null|string
      */
-    protected function getInTimeCondition()
+    protected function getInTimeCondition(): ?string
     {
         return $this->inTimeCondition;
     }
@@ -2796,7 +2804,7 @@ class Condition
     /**
      * 初始化查询条件.
      */
-    protected function initOption()
+    protected function initOption(): void
     {
         $this->options = static::$optionsDefault;
     }

@@ -57,7 +57,7 @@ interface IConnect
     /**
      * 返回 Pdo 查询连接.
      *
-     * @param mixed $master
+     * @param bool|int $master
      * @note bool false (读服务器) true (写服务器)
      * @note 其它去对应服务器连接ID 0 表示主服务器
      *
@@ -68,12 +68,12 @@ interface IConnect
     /**
      * 查询数据记录.
      *
-     * @param string $sql           sql 语句
-     * @param array  $bindParams    sql 参数绑定
-     * @param mixed  $master
-     * @param int    $fetchType
-     * @param mixed  $fetchArgument
-     * @param array  $ctorArgs
+     * @param string   $sql           sql 语句
+     * @param array    $bindParams    sql 参数绑定
+     * @param bool|int $master
+     * @param int      $fetchType
+     * @param mixed    $fetchArgument
+     * @param array    $ctorArgs
      *
      * @return mixed
      */
@@ -85,7 +85,7 @@ interface IConnect
      * @param string $sql        sql 语句
      * @param array  $bindParams sql 参数绑定
      *
-     * @return int
+     * @return int|string
      */
     public function execute(string $sql, array $bindParams = []);
 
@@ -99,26 +99,26 @@ interface IConnect
     public function transaction(Closure $action);
 
     /**
-     * 启动事务
+     * 启动事务.
      */
-    public function beginTransaction();
+    public function beginTransaction(): void;
 
     /**
      * 检查是否处于事务中.
      *
      * @return bool
      */
-    public function inTransaction();
+    public function inTransaction(): bool;
 
     /**
      * 用于非自动提交状态下面的查询提交.
      */
-    public function commit();
+    public function commit(): void;
 
     /**
      * 事务回滚.
      */
-    public function rollBack();
+    public function rollBack(): void;
 
     /**
      * 获取最后插入 ID 或者列.
@@ -127,7 +127,7 @@ interface IConnect
      *
      * @return string
      */
-    public function lastInsertId(?string $name = null);
+    public function lastInsertId(?string $name = null): string;
 
     /**
      * 获取最近一次查询的 sql 语句.
@@ -146,17 +146,17 @@ interface IConnect
     /**
      * 关闭数据库.
      */
-    public function close();
+    public function close(): void;
 
     /**
      * 释放 PDO 预处理查询.
      */
-    public function freePDOStatement();
+    public function freePDOStatement(): void;
 
     /**
      * 关闭数据库连接.
      */
-    public function closeConnects();
+    public function closeConnects(): void;
 
     /**
      * sql 表达式格式化.
@@ -177,7 +177,7 @@ interface IConnect
      *
      * @return string
      */
-    public function normalizeTableOrColumn(string $name, ?string $alias = null, string $as = null): string;
+    public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string;
 
     /**
      * 字段格式化.
@@ -206,16 +206,16 @@ interface IConnect
      *
      * @return string
      */
-    public function normalizeSqlType(string $sql);
+    public function normalizeSqlType(string $sql): string;
 
     /**
      * 分析绑定参数类型数据.
      *
      * @param mixed $value
      *
-     * @return string
+     * @return int
      */
-    public function normalizeBindParamType($value);
+    public function normalizeBindParamType($value): int;
 
     /**
      * dsn 解析.
@@ -229,8 +229,8 @@ interface IConnect
     /**
      * 取得数据库表名列表.
      *
-     * @param string $dbName
-     * @param mixed  $master
+     * @param string   $dbName
+     * @param bool|int $master
      *
      * @return array
      */
@@ -239,8 +239,8 @@ interface IConnect
     /**
      * 取得数据库表字段信息.
      *
-     * @param string $tableName
-     * @param mixed  $master
+     * @param string   $tableName
+     * @param bool|int $master
      *
      * @return array
      */

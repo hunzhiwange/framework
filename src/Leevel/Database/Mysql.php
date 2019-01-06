@@ -54,8 +54,8 @@ class Mysql extends Connect implements IConnect
     /**
      * 取得数据库表名列表.
      *
-     * @param string $dbName
-     * @param mixed  $master
+     * @param string   $dbName
+     * @param bool|int $master
      *
      * @return array
      */
@@ -79,8 +79,8 @@ class Mysql extends Connect implements IConnect
     /**
      * 取得数据库表字段信息.
      *
-     * @param string $tableName
-     * @param mixed  $master
+     * @param string   $tableName
+     * @param bool|int $master
      *
      * @return array
      */

@@ -37,7 +37,7 @@ class Status extends PhinxStatus
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 

@@ -37,7 +37,7 @@ class Create extends PhinxCreate
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 

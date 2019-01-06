@@ -168,7 +168,7 @@ abstract class Connect
     /**
      * 返回 Pdo 查询连接.
      *
-     * @param mixed $master
+     * @param bool|int $master
      * @note bool false (读服务器) true (写服务器)
      * @note 其它去对应服务器连接ID 0 表示主服务器
      *
@@ -190,12 +190,12 @@ abstract class Connect
     /**
      * 查询数据记录.
      *
-     * @param string $sql           sql 语句
-     * @param array  $bindParams    sql 参数绑定
-     * @param mixed  $master
-     * @param int    $fetchStyle
-     * @param mixed  $fetchArgument
-     * @param array  $ctorArgs
+     * @param string   $sql           sql 语句
+     * @param array    $bindParams    sql 参数绑定
+     * @param bool|int $master
+     * @param int      $fetchStyle
+     * @param mixed    $fetchArgument
+     * @param array    $ctorArgs
      *
      * @return mixed
      */
@@ -243,7 +243,7 @@ abstract class Connect
      * @param string $sql        sql 语句
      * @param array  $bindParams sql 参数绑定
      *
-     * @return int
+     * @return int|string
      */
     public function execute(string $sql, array $bindParams = [])
     {
@@ -317,9 +317,9 @@ abstract class Connect
     }
 
     /**
-     * 启动事务
+     * 启动事务.
      */
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
         $this->transactionLevel++;
 
@@ -349,7 +349,7 @@ abstract class Connect
     /**
      * 用于非自动提交状态下面的查询提交.
      */
-    public function commit()
+    public function commit(): void
     {
         if (0 === $this->transactionLevel) {
             throw new InvalidArgumentException('There was no active transaction.');
@@ -371,7 +371,7 @@ abstract class Connect
     /**
      * 事务回滚.
      */
-    public function rollBack()
+    public function rollBack(): void
     {
         if (0 === $this->transactionLevel) {
             throw new InvalidArgumentException('There was no active transaction.');
@@ -397,7 +397,7 @@ abstract class Connect
      *
      * @param bool $savepoints
      */
-    public function setSavepoints(bool $savepoints)
+    public function setSavepoints(bool $savepoints): void
     {
         $this->transactionWithSavepoints = $savepoints;
     }
@@ -409,7 +409,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function lastInsertId(?string $name = null)
+    public function lastInsertId(?string $name = null): string
     {
         return $this->connect->lastInsertId($name);
     }
@@ -437,7 +437,7 @@ abstract class Connect
     /**
      * 关闭数据库.
      */
-    public function close()
+    public function close(): void
     {
         $this->freePDOStatement();
 
@@ -447,7 +447,7 @@ abstract class Connect
     /**
      * 释放 PDO 预处理查询.
      */
-    public function freePDOStatement()
+    public function freePDOStatement(): void
     {
         $this->pdoStatement = null;
     }
@@ -455,7 +455,7 @@ abstract class Connect
     /**
      * 关闭数据库连接.
      */
-    public function closeConnects()
+    public function closeConnects(): void
     {
         $this->connects = [];
         $this->connect = null;
@@ -602,7 +602,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function normalizeSqlType(string $sql)
+    public function normalizeSqlType(string $sql): string
     {
         $sql = trim($sql);
 
@@ -631,9 +631,9 @@ abstract class Connect
      *
      * @param mixed $value
      *
-     * @return string
+     * @return int
      */
-    public function normalizeBindParamType($value)
+    public function normalizeBindParamType($value): int
     {
         switch (true) {
             case is_int($value):
@@ -657,9 +657,9 @@ abstract class Connect
     /**
      * 连接主服务器.
      *
-     * @return Pdo
+     * @return \PDO
      */
-    protected function writeConnect()
+    protected function writeConnect(): PDO
     {
         return $this->connect = $this->commonConnect($this->option['master'], IConnect::MASTER, true);
     }
@@ -744,11 +744,11 @@ abstract class Connect
     }
 
     /**
-     * pdo　参数绑定.
+     * pdo 参数绑定.
      *
      * @param array $bindParams
      */
-    protected function bindParams(array $bindParams = [])
+    protected function bindParams(array $bindParams = []): void
     {
         foreach ($bindParams as $key => $val) {
             $key = is_numeric($key) ? $key + 1 : ':'.$key;
@@ -774,7 +774,7 @@ abstract class Connect
      *
      * @return array
      */
-    protected function fetchResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [], bool $procedure = false)
+    protected function fetchResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [], bool $procedure = false): array
     {
         if ($procedure) {
             return $this->fetchProcedureResult($fetchStyle, $fetchArgument, $ctorArgs);
@@ -808,7 +808,7 @@ abstract class Connect
      *
      * @return array
      */
-    protected function fetchProcedureResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
+    protected function fetchProcedureResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = []): array
     {
         $result = [];
 
@@ -828,7 +828,7 @@ abstract class Connect
      * @param string $sql
      * @param array  $bindParams
      */
-    protected function setLastSql(string $sql, array $bindParams = [])
+    protected function setLastSql(string $sql, array $bindParams = []): void
     {
         $this->sql = $sql;
         $this->bindParams = $bindParams;
@@ -864,7 +864,7 @@ abstract class Connect
      *
      * @param string $savepointName
      */
-    protected function createSavepoint(string $savepointName)
+    protected function createSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'SAVEPOINT '.$savepointName);
         $this->pdo(true)->exec($sql);
@@ -886,7 +886,7 @@ abstract class Connect
      *
      * @param string $savepointName
      */
-    protected function releaseSavepoint(string $savepointName)
+    protected function releaseSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'RELEASE SAVEPOINT '.$savepointName);
         $this->pdo(true)->exec($sql);
@@ -910,7 +910,7 @@ abstract class Connect
      *
      * @param \PDOException $e
      */
-    protected function pdoException(PDOException $e)
+    protected function pdoException(PDOException $e): void
     {
         $message = $e->getMessage();
 
@@ -926,7 +926,7 @@ abstract class Connect
     /**
      * 初始化查询组件.
      */
-    protected function initSelect()
+    protected function initSelect(): void
     {
         $this->select = new Select($this);
     }
