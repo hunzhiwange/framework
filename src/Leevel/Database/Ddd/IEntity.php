@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\BelongsTo;
 use Leevel\Database\Ddd\Relation\HasMany;
 use Leevel\Database\Ddd\Relation\HasOne;
@@ -215,7 +216,7 @@ interface IEntity
      *
      * @return static
      */
-    public static function make(array $data, bool $fromStorage);
+    public static function make(array $data, bool $fromStorage): self;
 
     /**
      * 批量修改属性.
@@ -321,7 +322,7 @@ interface IEntity
     /**
      * 从数据库重新读取当前对象的属性.
      */
-    public function refresh();
+    public function refresh(): void;
 
     /**
      * 返回关联数据.
@@ -365,7 +366,7 @@ interface IEntity
      * @param string $prop
      * @param mixed  $value
      */
-    public function withRelationProp(string $prop, $value);
+    public function withRelationProp(string $prop, $value): void;
 
     /**
      * 预加载关联.
@@ -410,7 +411,7 @@ interface IEntity
      *
      * @return \Leevel\Database\Ddd\Relation\BelongsTo
      */
-    public function belongsTo($relatedEntityClass, string $targetKey, string $sourceKey): BelongsTo;
+    public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey): BelongsTo;
 
     /**
      * 一对多关联.
@@ -449,7 +450,7 @@ interface IEntity
      *
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public static function withEventDispatch(IDispatch $dispatch = null);
+    public static function withEventDispatch(IDispatch $dispatch = null): void;
 
     /**
      * 注册模型实体事件.
@@ -457,23 +458,21 @@ interface IEntity
      * @param string                                 $event
      * @param \Closure|\Leevel\Event\Observer|string $listener
      */
-    public static function event(string $event, $listener);
+    public static function event(string $event, $listener): void;
 
     /**
      * 执行模型实体事件.
      *
      * @param string $event
      */
-    public function handleEvent(string $event, ...$args);
+    public function handleEvent(string $event, ...$args): void;
 
     /**
      * 验证事件是否受支持
      *
      * @param string $event
-     *
-     * @return bool
      */
-    public static function isSupportEvent(string $event);
+    public static function isSupportEvent(string $event): void;
 
     /**
      * 返回受支持的事件.
@@ -619,7 +618,7 @@ interface IEntity
      *
      * @return \Leevel\Collection\Collection
      */
-    public function collection(array $entity = []);
+    public function collection(array $entity = []): Collection;
 
     /**
      * 获取查询键值

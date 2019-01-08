@@ -89,7 +89,7 @@ class Meta implements IMeta
      *
      * @return $this
      */
-    public static function instance(string $table)
+    public static function instance(string $table): IMeta
     {
         if (!isset(static::$instances[$table])) {
             return static::$instances[$table] = new static($table);
@@ -121,7 +121,7 @@ class Meta implements IMeta
      *
      * @param null|\Closure $databaseResolver
      */
-    public static function setDatabaseResolver(?Closure $databaseResolver = null)
+    public static function setDatabaseResolver(?Closure $databaseResolver = null): void
     {
         static::$databaseResolver = $databaseResolver;
 
@@ -137,7 +137,7 @@ class Meta implements IMeta
      *
      * @return $this
      */
-    public function setConnect($connect = null)
+    public function setConnect($connect = null): IMeta
     {
         $this->connect = self::resolveDatabase()->connect($connect);
 
@@ -167,7 +167,7 @@ class Meta implements IMeta
      *
      * @return int
      */
-    public function update(array $condition, array $saveData)
+    public function update(array $condition, array $saveData): int
     {
         return $this->connect->
         table($this->table)->

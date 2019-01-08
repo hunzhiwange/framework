@@ -120,7 +120,7 @@ class Select
      *
      * @return $this
      */
-    public function eager(array $relation)
+    public function eager(array $relation): self
     {
         $this->preLoads = array_merge(
             $this->preLoads,
@@ -235,8 +235,8 @@ class Select
     /**
      * 根据主键 ID 删除模型实体.
      *
-     * @param array|int $ids
-     * @param mixed     $id
+     * @param array $ids
+     * @param mixed $id
      *
      * @return int
      */
@@ -430,7 +430,7 @@ class Select
      *
      * @return bool
      */
-    protected function isNested(string $name, string $relation)
+    protected function isNested(string $name, string $relation): bool
     {
         return Str::contains($name, '.') && Str::startsWith($name, $relation.'.');
     }
@@ -442,7 +442,7 @@ class Select
      *
      * @return array
      */
-    protected function parseWithRelation(array $relation)
+    protected function parseWithRelation(array $relation): array
     {
         $arr = [];
 
@@ -471,7 +471,7 @@ class Select
      *
      * @return array
      */
-    protected function parseNestedWith(string $name, array $result)
+    protected function parseNestedWith(string $name, array $result): array
     {
         $progress = [];
 
@@ -524,7 +524,7 @@ class Select
      *
      * @return array
      */
-    protected function loadRelation(array $entitys, string $name, Closure $condition)
+    protected function loadRelation(array $entitys, string $name, Closure $condition): array
     {
         $relation = $this->getRelation($name);
 

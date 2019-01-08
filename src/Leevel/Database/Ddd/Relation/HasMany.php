@@ -50,7 +50,7 @@ class HasMany extends Relation
     /**
      * 关联基础查询条件.
      */
-    public function addRelationCondition()
+    public function addRelationCondition(): void
     {
         if (static::$relationCondition) {
             $this->select->where(
@@ -69,7 +69,7 @@ class HasMany extends Relation
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
      */
-    public function preLoadCondition(array $entitys)
+    public function preLoadCondition(array $entitys): void
     {
         $this->select->whereIn(
             $this->targetKey,
@@ -167,7 +167,7 @@ class HasMany extends Relation
      *
      * @return array
      */
-    protected function buildMap(Collection $result)
+    protected function buildMap(Collection $result): array
     {
         $maps = [];
 

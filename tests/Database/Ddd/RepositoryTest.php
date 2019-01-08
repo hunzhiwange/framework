@@ -1615,7 +1615,7 @@ class Demo1Specification extends Specification
         return 'bar' === $this->request['foo'];
     }
 
-    public function handle(Select $select, IEntity $entity)
+    public function handle(Select $select, IEntity $entity): void
     {
         $select->where('id', '>', 3);
     }
@@ -1635,7 +1635,7 @@ class Demo2Specification extends Specification
         return 'world' === $this->request['hello'];
     }
 
-    public function handle(Select $select, IEntity $entity)
+    public function handle(Select $select, IEntity $entity): void
     {
         $select->where('id', '<', 8);
     }

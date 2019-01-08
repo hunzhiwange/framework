@@ -42,7 +42,7 @@ interface IMeta
      *
      * @return $this
      */
-    public static function instance(string $table);
+    public static function instance(string $table): self;
 
     /**
      * 返回数据库管理对象.
@@ -56,7 +56,7 @@ interface IMeta
      *
      * @param null|\Closure $databaseResolver
      */
-    public static function setDatabaseResolver(?Closure $databaseResolver = null);
+    public static function setDatabaseResolver(?Closure $databaseResolver = null): void;
 
     /**
      * 返回数据库元对象连接.
@@ -65,7 +65,7 @@ interface IMeta
      *
      * @return $this
      */
-    public function setConnect($connect = null);
+    public function setConnect($connect = null): self;
 
     /**
      * 新增数据并返回上一次插入 ID.
@@ -84,7 +84,7 @@ interface IMeta
      *
      * @return int
      */
-    public function update(array $condition, array $saveData);
+    public function update(array $condition, array $saveData): int;
 
     /**
      * 删除数据并返回影响行数.

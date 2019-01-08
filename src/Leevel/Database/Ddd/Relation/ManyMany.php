@@ -78,7 +78,7 @@ class ManyMany extends Relation
     /**
      * 关联基础查询条件.
      */
-    public function addRelationCondition()
+    public function addRelationCondition(): void
     {
         if (static::$relationCondition) {
             $this->select->
@@ -105,7 +105,7 @@ class ManyMany extends Relation
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
      */
-    public function preLoadCondition(array $entitys)
+    public function preLoadCondition(array $entitys): void
     {
         $this->select->
 
@@ -163,7 +163,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 查询关联对象
+     * 查询关联对象.
      *
      * @return mixed
      */
@@ -249,9 +249,9 @@ class ManyMany extends Relation
     /**
      * 取回源模型实体对应数据.
      *
-     * @return mixed
+     * @return array
      */
-    protected function getPreLoadSourceValue(array $entitys)
+    protected function getPreLoadSourceValue(array $entitys): array
     {
         $arr = [];
 

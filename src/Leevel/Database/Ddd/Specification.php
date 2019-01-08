@@ -90,7 +90,7 @@ class Specification implements ISpecification
      * @param \Leevel\Database\Ddd\Select  $select
      * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    public function handle(Select $select, IEntity $entity)
+    public function handle(Select $select, IEntity $entity): void
     {
         call_user_func($this->handle, $select, $entity);
     }

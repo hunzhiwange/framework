@@ -126,7 +126,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return static
      */
-    public static function make(IEntity $rootEntity = null, $connect = null)
+    public static function make(IEntity $rootEntity = null, $connect = null): IUnitOfWork
     {
         return new static($rootEntity, $connect);
     }
@@ -134,7 +134,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 执行数据库事务.
      */
-    public function flush()
+    public function flush(): void
     {
         $this->validateClosed();
 
@@ -502,7 +502,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    public function registerManaged(IEntity $entity)
+    public function registerManaged(IEntity $entity): void
     {
         $this->entityStates[spl_object_id($entity)] = self::STATE_MANAGED;
     }
@@ -512,7 +512,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
      */
-    public function setRootEntity(IEntity $rootEntity)
+    public function setRootEntity(IEntity $rootEntity): void
     {
         $this->rootEntity = $rootEntity;
     }
@@ -522,7 +522,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param mixed $connect
      */
-    public function setConnect($connect)
+    public function setConnect($connect): void
     {
         $this->rootEntity->withConnect($connect);
     }
@@ -540,7 +540,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 启动事物.
      */
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
         $this->connect()->beginTransaction();
     }
@@ -548,7 +548,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 事务回滚.
      */
-    public function rollBack()
+    public function rollBack(): void
     {
         $this->connect()->rollBack();
     }
@@ -556,13 +556,13 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 事务自动提交.
      */
-    public function commit()
+    public function commit(): void
     {
         $this->connect()->commit();
     }
 
     /**
-     * 执行数据库事务
+     * 执行数据库事务.
      *
      * @param \Closure $action
      *
@@ -590,7 +590,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 清理工作单元.
      */
-    public function clear()
+    public function clear(): void
     {
         $this->entityCreates = [];
         $this->entityUpdates = [];
@@ -603,7 +603,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 关闭.
      */
-    public function close()
+    public function close(): void
     {
         $this->clear();
         $this->closed = true;
@@ -615,7 +615,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param \Closure                     $callbacks
      */
-    public function on(IEntity $entity, Closure $callbacks)
+    public function on(IEntity $entity, Closure $callbacks): void
     {
         $this->onCallbacks[spl_object_id($entity)] = $callbacks;
     }
@@ -673,7 +673,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 响应仓储.
      */
-    protected function handleRepository()
+    protected function handleRepository(): void
     {
         foreach ($this->entityCreates as $entity) {
             $id = spl_object_id($entity);
@@ -734,7 +734,7 @@ class UnitOfWork implements IUnitOfWork
      * @param string                       $method
      * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    protected function persistNewEntry(string $method, IEntity $entity)
+    protected function persistNewEntry(string $method, IEntity $entity): void
     {
         switch (strtolower($method)) {
             case 'create':
@@ -770,7 +770,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 校验工作单元是否关闭.
      */
-    protected function validateClosed()
+    protected function validateClosed(): void
     {
         if ($this->closed) {
             throw new InvalidArgumentException('Unit of work has closed.');

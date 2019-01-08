@@ -50,7 +50,7 @@ class BelongsTo extends Relation
     /**
      * 关联基础查询条件.
      */
-    public function addRelationCondition()
+    public function addRelationCondition(): void
     {
         if (static::$relationCondition) {
             $this->select->where(
@@ -89,7 +89,7 @@ class BelongsTo extends Relation
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
      */
-    public function preLoadCondition(array $entitys)
+    public function preLoadCondition(array $entitys): void
     {
         $this->select->whereIn(
             $this->targetKey,
@@ -108,7 +108,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 查询关联对象
+     * 查询关联对象.
      *
      * @return mixed
      */

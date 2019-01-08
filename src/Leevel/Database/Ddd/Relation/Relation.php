@@ -180,7 +180,7 @@ abstract class Relation
     }
 
     /**
-     * 获取不带关联条件的关联对象
+     * 获取不带关联条件的关联对象.
      *
      * @param \Closure $returnRelation
      *
@@ -201,14 +201,14 @@ abstract class Relation
     /**
      * 关联基础查询条件.
      */
-    abstract public function addRelationCondition();
+    abstract public function addRelationCondition(): void;
 
     /**
      * 设置预载入关联查询条件.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
      */
-    abstract public function preLoadCondition(array $entitys);
+    abstract public function preLoadCondition(array $entitys): void;
 
     /**
      * 匹配关联查询数据到模型实体 HasMany.
@@ -252,7 +252,7 @@ abstract class Relation
     /**
      * 从模型实体返回查询.
      */
-    protected function getSelectFromEntity()
+    protected function getSelectFromEntity(): void
     {
         $this->select = $this->targetEntity->select();
     }

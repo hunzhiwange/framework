@@ -77,12 +77,12 @@ interface IUnitOfWork
      *
      * @return static
      */
-    public static function make(IEntity $rootEntity = null, $connect = null);
+    public static function make(IEntity $rootEntity = null, $connect = null): self;
 
     /**
      * 执行数据库事务.
      */
-    public function flush();
+    public function flush(): void;
 
     /**
      * 保持实体.
@@ -197,21 +197,21 @@ interface IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    public function registerManaged(IEntity $entity);
+    public function registerManaged(IEntity $entity): void;
 
     /**
      * 设置根实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
      */
-    public function setRootEntity(IEntity $rootEntity);
+    public function setRootEntity(IEntity $rootEntity): void;
 
     /**
      * 设置连接.
      *
      * @param mixed $connect
      */
-    public function setConnect($connect);
+    public function setConnect($connect): void;
 
     /**
      * 返回数据库连接.
@@ -223,20 +223,20 @@ interface IUnitOfWork
     /**
      * 启动事物.
      */
-    public function beginTransaction();
+    public function beginTransaction(): void;
 
     /**
      * 事务回滚.
      */
-    public function rollBack();
+    public function rollBack(): void;
 
     /**
      * 事务自动提交.
      */
-    public function commit();
+    public function commit(): void;
 
     /**
-     * 执行数据库事务
+     * 执行数据库事务.
      *
      * @param \Closure $action
      *
@@ -247,12 +247,12 @@ interface IUnitOfWork
     /**
      * 清理工作单元.
      */
-    public function clear();
+    public function clear(): void;
 
     /**
      * 关闭.
      */
-    public function close();
+    public function close(): void;
 
     /**
      * 取得实体仓储.

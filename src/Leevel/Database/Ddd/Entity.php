@@ -239,7 +239,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $key
      * @param mixed  $value
      */
-    public function __set(string $prop, $value)
+    public function __set(string $prop, $value): void
     {
         $this->offsetSet($prop, $value);
     }
@@ -339,7 +339,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toJson();
     }
@@ -352,7 +352,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return static
      */
-    public static function make(array $data = [], bool $fromStorage = false)
+    public static function make(array $data = [], bool $fromStorage = false): IEntity
     {
         return new static($data, $fromStorage);
     }
@@ -587,7 +587,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 从数据库重新读取当前对象的属性.
      */
-    public function refresh()
+    public function refresh(): void
     {
         $key = $this->primaryKey();
 
@@ -738,7 +738,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $prop
      * @param mixed  $value
      */
-    public function withRelationProp(string $prop, $value)
+    public function withRelationProp(string $prop, $value): void
     {
         $this->validate($prop);
 
@@ -805,7 +805,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Database\Ddd\Relation\BelongsTo
      */
-    public function belongsTo($relatedEntityClass, string $targetKey, string $sourceKey): BelongsTo
+    public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey): BelongsTo
     {
         $entity = new $relatedEntityClass();
 
@@ -877,7 +877,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public static function withEventDispatch(IDispatch $dispatch = null)
+    public static function withEventDispatch(IDispatch $dispatch = null): void
     {
         static::$leevelDispatch = $dispatch;
     }
@@ -888,7 +888,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string                                 $event
      * @param \Closure|\Leevel\Event\Observer|string $listener
      */
-    public static function event(string $event, $listener)
+    public static function event(string $event, $listener): void
     {
         if (null !== static::$leevelDispatch) {
             static::isSupportEvent($event);
@@ -905,7 +905,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $event
      */
-    public function handleEvent(string $event, ...$args)
+    public function handleEvent(string $event, ...$args): void
     {
         if (null === static::$leevelDispatch) {
             return;
@@ -923,10 +923,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 验证事件是否受支持
      *
      * @param string $event
-     *
-     * @return bool
      */
-    public static function isSupportEvent(string $event)
+    public static function isSupportEvent(string $event): void
     {
         if (!in_array($event, static::supportEvent(), true)) {
             throw new InvalidArgumentException(sprintf('Event `%s` do not support.'));
@@ -1341,7 +1339,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $index
      * @param mixed  $newval
      */
-    public function offsetSet($index, $newval)
+    public function offsetSet($index, $newval): void
     {
         $this->withPropValue($index, $newval);
     }
@@ -1363,7 +1361,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $index
      */
-    public function offsetUnset($index)
+    public function offsetUnset($index): void
     {
         $this->offsetSet($index, null);
     }
@@ -1552,7 +1550,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param null|array $fill
      */
-    protected function replaceReal(?array $fill = null)
+    protected function replaceReal(?array $fill = null): void
     {
         $this->leevelReplace = $fill;
         $this->createReal($fill);
@@ -1566,7 +1564,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param bool   $force
      * @param bool   $ignoreReadonly
      */
-    protected function withPropValue(string $prop, $value, bool $force = true, bool $ignoreReadonly = false)
+    protected function withPropValue(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): void
     {
         $prop = $this->normalize($prop);
 
@@ -1663,7 +1661,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $prop
      * @param mixed  $value
      */
-    protected function propSetter(string $prop, $value)
+    protected function propSetter(string $prop, $value): void
     {
         $this->{'set'.ucfirst($this->asProp($prop))}($value);
     }
@@ -1674,7 +1672,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $type
      * @param array  $fill
      */
-    protected function parseAutoFill(string $type, ?array $fill = null)
+    protected function parseAutoFill(string $type, ?array $fill = null): void
     {
         if (null === $fill) {
             return;
@@ -1697,7 +1695,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $prop
      * @param mixed  $value
      */
-    protected function normalizeFill(string $prop, $value)
+    protected function normalizeFill(string $prop, $value): void
     {
         if (null === $value) {
             $camelizeClass = 'fill'.ucfirst($this->asProp($prop));
@@ -1746,7 +1744,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $prop
      */
-    protected function validate(string $prop)
+    protected function validate(string $prop): void
     {
         $prop = $this->normalize($prop);
 
@@ -1814,7 +1812,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return array
      */
-    protected function toArraySource(array $white = [], array $black = [])
+    protected function toArraySource(array $white = [], array $black = []): array
     {
         if ($white || $black) {
             $prop = $this->whiteAndBlack(
