@@ -56,7 +56,7 @@ interface IRepository
     /**
      * 取得所有记录.
      *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      *
      * @return \Leevel\Collection\Collection
      */
@@ -65,8 +65,8 @@ interface IRepository
     /**
      * 取得记录数量.
      *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param string                                            $field
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param string                                                         $field
      *
      * @return int
      */
@@ -75,12 +75,12 @@ interface IRepository
     /**
      * 分页查询记录.
      *
-     * @param int                                               $currentPage
-     * @param int                                               $perPage
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param bool                                              $flag
-     * @param bool                                              $withTotal
-     * @param string                                            $column
+     * @param int                                                            $currentPage
+     * @param int                                                            $perPage
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param bool                                                           $flag
+     * @param bool                                                           $withTotal
+     * @param string                                                         $column
      *
      * @return array
      */
@@ -90,12 +90,12 @@ interface IRepository
      * 分页查询.
      * 可以渲染 HTML.
      *
-     * @param int                                               $currentPage
-     * @param int                                               $perPage
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param bool                                              $flag
-     * @param string                                            $column
-     * @param array                                             $option
+     * @param int                                                            $currentPage
+     * @param int                                                            $perPage
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param bool                                                           $flag
+     * @param string                                                         $column
+     * @param array                                                          $option
      *
      * @return array
      */
@@ -104,11 +104,11 @@ interface IRepository
     /**
      * 创建一个无限数据的分页查询.
      *
-     * @param int                                               $currentPage
-     * @param int                                               $perPage
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param bool                                              $flag
-     * @param array                                             $option
+     * @param int                                                            $currentPage
+     * @param int                                                            $perPage
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param bool                                                           $flag
+     * @param array                                                          $option
      *
      * @return array
      */
@@ -117,11 +117,11 @@ interface IRepository
     /**
      * 创建一个只有上下页的分页查询.
      *
-     * @param int                                               $currentPage
-     * @param int                                               $perPage
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param bool                                              $flag
-     * @param array                                             $option
+     * @param int                                                            $currentPage
+     * @param int                                                            $perPage
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param bool                                                           $flag
+     * @param array                                                          $option
      *
      * @return array
      */
@@ -130,7 +130,7 @@ interface IRepository
     /**
      * 条件查询器.
      *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      *
      * @return \Leevel\Database\Ddd\Select
      */

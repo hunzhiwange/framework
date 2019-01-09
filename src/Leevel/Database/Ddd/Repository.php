@@ -95,7 +95,7 @@ class Repository implements IRepository
     /**
      * 取得所有记录.
      *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      *
      * @return \Leevel\Collection\Collection
      */
@@ -113,8 +113,8 @@ class Repository implements IRepository
     /**
      * 取得记录数量.
      *
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param string                                            $field
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param string                                                         $field
      *
      * @return int
      */
@@ -132,12 +132,12 @@ class Repository implements IRepository
     /**
      * 分页查询记录.
      *
-     * @param int                                               $currentPage
-     * @param int                                               $perPage
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param bool                                              $flag
-     * @param bool                                              $withTotal
-     * @param string                                            $column
+     * @param int                                                            $currentPage
+     * @param int                                                            $perPage
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param bool                                                           $flag
+     * @param bool                                                           $withTotal
+     * @param string                                                         $column
      *
      * @return array
      */
@@ -156,12 +156,12 @@ class Repository implements IRepository
      * 分页查询.
      * 可以渲染 HTML.
      *
-     * @param int                                               $currentPage
-     * @param int                                               $perPage
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param bool                                              $flag
-     * @param string                                            $column
-     * @param array                                             $option
+     * @param int                                                            $currentPage
+     * @param int                                                            $perPage
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param bool                                                           $flag
+     * @param string                                                         $column
+     * @param array                                                          $option
      *
      * @return array
      */
@@ -179,11 +179,11 @@ class Repository implements IRepository
     /**
      * 创建一个无限数据的分页查询.
      *
-     * @param int                                               $currentPage
-     * @param int                                               $perPage
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param bool                                              $flag
-     * @param array                                             $option
+     * @param int                                                            $currentPage
+     * @param int                                                            $perPage
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param bool                                                           $flag
+     * @param array                                                          $option
      *
      * @return array
      */
@@ -201,11 +201,11 @@ class Repository implements IRepository
     /**
      * 创建一个只有上下页的分页查询.
      *
-     * @param int                                               $currentPage
-     * @param int                                               $perPage
-     * @param null|\Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param bool                                              $flag
-     * @param array                                             $option
+     * @param int                                                            $currentPage
+     * @param int                                                            $perPage
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param bool                                                           $flag
+     * @param array                                                          $option
      *
      * @return array
      */
@@ -223,7 +223,7 @@ class Repository implements IRepository
     /**
      * 条件查询器.
      *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
+     * @param array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -323,15 +323,23 @@ class Repository implements IRepository
     /**
      * 处理查询条件.
      *
-     * @param \Closure|\Leevel\Database\Ddd\ISpecification $condition
-     * @param \Leevel\Database\Ddd\Select                  $select
+     * @param array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param \Leevel\Database\Ddd\Select                               $select
      */
     protected function normalizeCondition($condition, Select $select): void
     {
-        if (is_object($condition) && $condition instanceof ISpecification) {
+        if (is_string($condition)) {
+            $select->scope($condition);
+        } elseif (is_object($condition) && $condition instanceof ISpecification) {
             $this->normalizeSpec($select, $condition);
         } elseif (is_object($condition) && $condition instanceof Closure) {
             $condition($select, $this->entity);
+        } elseif (is_array($condition) && count($condition) >= 2) {
+            $tmpCondition = array_shift($condition);
+            $scope = $condition;
+
+            $this->normalizeCondition($tmpCondition, $select);
+            $select->scope($scope);
         } else {
             throw new InvalidArgumentException('Invalid condition type.');
         }
