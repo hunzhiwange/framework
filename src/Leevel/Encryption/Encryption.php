@@ -70,11 +70,7 @@ class Encryption implements IEncryption
      */
     public function __construct(string $key, string $cipher = 'AES-256-CBC', ?string $rsaPrivate = null, ?string $rsaPublic = null)
     {
-        if (!in_array($cipher, openssl_get_cipher_methods(), true)) {
-            throw new InvalidArgumentException(
-                sprintf('Encrypt cipher `%s` was not found.', $cipher)
-            );
-        }
+        $this->validateCipher($cipher);
 
         $this->key = $key;
         $this->cipher = $cipher;
@@ -92,33 +88,11 @@ class Encryption implements IEncryption
      */
     public function encrypt(string $value, int $expiry = 0): string
     {
-        if ($this->rsaPrivate) {
-            $rsaPrivate = openssl_pkey_get_private($this->rsaPrivate);
+        $iv = $this->createIv();
 
-            try {
-                if (openssl_sign($value, $sign, $rsaPrivate)) {
-                    $sign = base64_encode($sign);
-                } else {
-                    throw new InvalidArgumentException('Openssl sign failed.'); // @codeCoverageIgnore
-                }
-            } catch (Throwable $e) {
-                throw new InvalidArgumentException($e->getMessage());
-            }
-        } else {
-            $sign = '';
-        }
+        $value = $this->packData($value, $expiry, $iv);
 
-        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->cipher));
-        $expiry = sprintf('%010d', $expiry ? $expiry + time() : 0);
-        $value = $expiry."\t".base64_encode($value)."\t".base64_encode($iv)."\t".$sign;
-
-        $value = openssl_encrypt($value, $this->cipher, $this->key, OPENSSL_RAW_DATA, $iv);
-
-        if (false === $value) {
-            throw new InvalidArgumentException('Encrypt the data failed.'); // @codeCoverageIgnore
-        }
-
-        return base64_encode(base64_encode($value)."\t".base64_encode($iv));
+        return $this->encryptData($value, $iv);
     }
 
     /**
@@ -130,44 +104,248 @@ class Encryption implements IEncryption
      */
     public function decrypt(string $value): string
     {
-        $value = base64_decode($value, true);
-
-        if (false === $value) {
+        if (false === ($value = $this->decryptData($value))) {
             return '';
         }
 
-        $value = explode("\t", $value);
+        list($data, $iv) = $value;
 
-        if (2 !== count($value)) {
+        return $this->validateData($data, $iv);
+    }
+
+    /**
+     * 校验加密算法.
+     *
+     * @param string $cipher
+     */
+    protected function validateCipher(string $cipher): void
+    {
+        if (!in_array($cipher, openssl_get_cipher_methods(), true)) {
+            throw new InvalidArgumentException(
+                sprintf('Encrypt cipher `%s` was not found.', $cipher)
+            );
+        }
+    }
+
+    /**
+     * 打包数据.
+     *
+     * @param string $value
+     * @param int    $expiry
+     * @param string $iv
+     *
+     * @return string
+     */
+    protected function packData(string $value, int $expiry, string $iv): string
+    {
+        $data = [
+            $this->normalizeExpiry($expiry),
+            base64_encode($value),
+            base64_encode($iv),
+            $this->normalizeSign($value),
+        ];
+
+        return implode("\t", $data);
+    }
+
+    /**
+     * 加密数据.
+     *
+     * @param string $value
+     * @param string $iv
+     *
+     * @return string
+     */
+    protected function encryptData(string $value, string $iv): string
+    {
+        $value = openssl_encrypt($value, $this->cipher, $this->key, OPENSSL_RAW_DATA, $iv);
+
+        if (false === $value) {
+            throw new InvalidArgumentException('Encrypt the data failed.'); // @codeCoverageIgnore
+        }
+
+        return $this->packDataWithIv($value, $iv);
+    }
+
+    /**
+     * 数据加入向量并打包.
+     *
+     * @param string $value
+     * @param string $iv
+     *
+     * @return string
+     */
+    protected function packDataWithIv(string $value, string $iv): string
+    {
+        return base64_encode(base64_encode($value)."\t".base64_encode($iv));
+    }
+
+    /**
+     * 格式化过期时间.
+     *
+     * @param int $expiry
+     *
+     * @return string
+     */
+    protected function normalizeExpiry(int $expiry = 0): string
+    {
+        return sprintf('%010d', $expiry ? $expiry + time() : 0);
+    }
+
+    /**
+     * 创建初始化向量.
+     *
+     * @return string
+     */
+    protected function createIv(): string
+    {
+        return openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->cipher));
+    }
+
+    /**
+     * 获取签名.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function normalizeSign(string $value): string
+    {
+        if (!$this->rsaPrivate) {
             return '';
+        }
+
+        try {
+            $rsaPrivate = openssl_pkey_get_private($this->rsaPrivate);
+
+            if (openssl_sign($value, $sign, $rsaPrivate)) {
+                return base64_encode($sign);
+            }
+
+            throw new InvalidArgumentException('Openssl sign failed.'); // @codeCoverageIgnore
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException($e->getMessage());
+        }
+    }
+
+    /**
+     * 校验数据正确性.
+     *
+     * @param string $data
+     * @param string $iv
+     *
+     * @return bool|string
+     */
+    protected function validateData(string $data, string $iv)
+    {
+        if (false === ($data = $this->unpackData($data))) {
+            return false;
+        }
+
+        if ($data['iv'] !== $iv ||
+            ('0000000000' !== $data['expiry'] && time() > $data['expiry'])) {
+            return false;
+        }
+
+        $result = base64_decode($data['value'], true) ?: false;
+
+        if (false === $result) {
+            return false;
+        }
+
+        return $this->validateSign($result, $data['sign']);
+    }
+
+    /**
+     * 解密数据.
+     *
+     * @param string $value
+     *
+     * @return array|bool
+     */
+    protected function decryptData(string $value)
+    {
+        if (false === ($value = base64_decode($value, true))) {
+            return false;
+        }
+
+        if (false === ($value = $this->unpackDataWithIv($value))) {
+            return false;
         }
 
         $data = openssl_decrypt(
-            base64_decode($value[0], true), $this->cipher, $this->key, OPENSSL_RAW_DATA, base64_decode($value[1], true)
+            $value['value'], $this->cipher, $this->key, OPENSSL_RAW_DATA, $value['iv']
         );
 
         if (false === $data) {
             throw new InvalidArgumentException('Decrypt the data failed.');
         }
 
-        $data = explode("\t", $data);
+        return [$data, base64_encode($value['iv'])];
+    }
 
-        if (4 !== count($data) || $data[2] !== $value[1] ||
-            ('0000000000' !== $data[0] && time() > $data[0])) {
-            return '';
+    /**
+     * 解包带向量的数据.
+     *
+     * @param string $value
+     *
+     * @return array|bool
+     */
+    protected function unpackDataWithIv(string $value)
+    {
+        $data = explode("\t", $value);
+
+        if (2 !== count($data)) {
+            return false;
         }
 
-        $result = base64_decode($data[1], true) ?: '';
+        $key = ['value', 'iv'];
 
-        if (!$result || !$this->rsaPublic) {
-            return $result;
+        $data[0] = base64_decode($data[0], true);
+        $data[1] = base64_decode($data[1], true);
+
+        return array_combine($key, $data);
+    }
+
+    /**
+     * 解包数据.
+     *
+     * @param string $value
+     *
+     * @return array|bool
+     */
+    protected function unpackData(string $value)
+    {
+        $data = explode("\t", $value);
+
+        if (4 !== count($data)) {
+            return false;
         }
 
-        $rsaPrivate = openssl_pkey_get_public($this->rsaPublic);
+        $key = ['expiry', 'value', 'iv', 'sign'];
+
+        return array_combine($key, $data);
+    }
+
+    /**
+     * 验证签名.
+     *
+     * @param string $value
+     * @param string $sign
+     *
+     * @return string
+     */
+    protected function validateSign(string $value, string $sign): string
+    {
+        if (!$this->rsaPublic) {
+            return $value;
+        }
 
         try {
-            if (1 === openssl_verify($result, base64_decode($data[3], true), $rsaPrivate)) {
-                return $result;
+            $rsaPrivate = openssl_pkey_get_public($this->rsaPublic);
+
+            if (1 === openssl_verify($value, base64_decode($sign, true), $rsaPrivate)) {
+                return $value;
             }
 
             throw new InvalidArgumentException('Openssl verify sign failed.'); // @codeCoverageIgnore
