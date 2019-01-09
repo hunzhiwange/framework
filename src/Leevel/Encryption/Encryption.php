@@ -114,20 +114,6 @@ class Encryption implements IEncryption
     }
 
     /**
-     * 校验加密算法.
-     *
-     * @param string $cipher
-     */
-    protected function validateCipher(string $cipher): void
-    {
-        if (!in_array($cipher, openssl_get_cipher_methods(), true)) {
-            throw new InvalidArgumentException(
-                sprintf('Encrypt cipher `%s` was not found.', $cipher)
-            );
-        }
-    }
-
-    /**
      * 打包数据.
      *
      * @param string $value
@@ -146,6 +132,26 @@ class Encryption implements IEncryption
         ];
 
         return implode("\t", $data);
+    }
+
+    /**
+     * 解包数据.
+     *
+     * @param string $value
+     *
+     * @return array|bool
+     */
+    protected function unpackData(string $value)
+    {
+        $data = explode("\t", $value);
+
+        if (4 !== count($data)) {
+            return false;
+        }
+
+        $key = ['expiry', 'value', 'iv', 'sign'];
+
+        return array_combine($key, $data);
     }
 
     /**
@@ -168,6 +174,34 @@ class Encryption implements IEncryption
     }
 
     /**
+     * 解密数据.
+     *
+     * @param string $value
+     *
+     * @return array|bool
+     */
+    protected function decryptData(string $value)
+    {
+        if (false === ($value = base64_decode($value, true))) {
+            return false;
+        }
+
+        if (false === ($value = $this->unpackDataWithIv($value))) {
+            return false;
+        }
+
+        $data = openssl_decrypt(
+            $value['value'], $this->cipher, $this->key, OPENSSL_RAW_DATA, $value['iv']
+        );
+
+        if (false === $data) {
+            throw new InvalidArgumentException('Decrypt the data failed.');
+        }
+
+        return [$data, base64_encode($value['iv'])];
+    }
+
+    /**
      * 数据加入向量并打包.
      *
      * @param string $value
@@ -178,6 +212,29 @@ class Encryption implements IEncryption
     protected function packDataWithIv(string $value, string $iv): string
     {
         return base64_encode(base64_encode($value)."\t".base64_encode($iv));
+    }
+
+    /**
+     * 解包带向量的数据.
+     *
+     * @param string $value
+     *
+     * @return array|bool
+     */
+    protected function unpackDataWithIv(string $value)
+    {
+        $data = explode("\t", $value);
+
+        if (2 !== count($data)) {
+            return false;
+        }
+
+        $key = ['value', 'iv'];
+
+        $data[0] = base64_decode($data[0], true);
+        $data[1] = base64_decode($data[1], true);
+
+        return array_combine($key, $data);
     }
 
     /**
@@ -229,102 +286,45 @@ class Encryption implements IEncryption
     }
 
     /**
+     * 校验加密算法.
+     *
+     * @param string $cipher
+     */
+    protected function validateCipher(string $cipher): void
+    {
+        if (!in_array($cipher, openssl_get_cipher_methods(), true)) {
+            throw new InvalidArgumentException(
+                sprintf('Encrypt cipher `%s` was not found.', $cipher)
+            );
+        }
+    }
+
+    /**
      * 校验数据正确性.
      *
      * @param string $data
      * @param string $iv
      *
-     * @return bool|string
+     * @return string
      */
-    protected function validateData(string $data, string $iv)
+    protected function validateData(string $data, string $iv): string
     {
         if (false === ($data = $this->unpackData($data))) {
-            return false;
+            return '';
         }
 
         if ($data['iv'] !== $iv ||
             ('0000000000' !== $data['expiry'] && time() > $data['expiry'])) {
-            return false;
+            return '';
         }
 
         $result = base64_decode($data['value'], true) ?: false;
 
         if (false === $result) {
-            return false;
+            return '';
         }
 
         return $this->validateSign($result, $data['sign']);
-    }
-
-    /**
-     * 解密数据.
-     *
-     * @param string $value
-     *
-     * @return array|bool
-     */
-    protected function decryptData(string $value)
-    {
-        if (false === ($value = base64_decode($value, true))) {
-            return false;
-        }
-
-        if (false === ($value = $this->unpackDataWithIv($value))) {
-            return false;
-        }
-
-        $data = openssl_decrypt(
-            $value['value'], $this->cipher, $this->key, OPENSSL_RAW_DATA, $value['iv']
-        );
-
-        if (false === $data) {
-            throw new InvalidArgumentException('Decrypt the data failed.');
-        }
-
-        return [$data, base64_encode($value['iv'])];
-    }
-
-    /**
-     * 解包带向量的数据.
-     *
-     * @param string $value
-     *
-     * @return array|bool
-     */
-    protected function unpackDataWithIv(string $value)
-    {
-        $data = explode("\t", $value);
-
-        if (2 !== count($data)) {
-            return false;
-        }
-
-        $key = ['value', 'iv'];
-
-        $data[0] = base64_decode($data[0], true);
-        $data[1] = base64_decode($data[1], true);
-
-        return array_combine($key, $data);
-    }
-
-    /**
-     * 解包数据.
-     *
-     * @param string $value
-     *
-     * @return array|bool
-     */
-    protected function unpackData(string $value)
-    {
-        $data = explode("\t", $value);
-
-        if (4 !== count($data)) {
-            return false;
-        }
-
-        $key = ['expiry', 'value', 'iv', 'sign'];
-
-        return array_combine($key, $data);
     }
 
     /**
