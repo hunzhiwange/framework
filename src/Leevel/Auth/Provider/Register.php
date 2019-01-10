@@ -64,6 +64,16 @@ class Register extends Provider
     }
 
     /**
+     * 是否延迟载入.
+     *
+     * @return bool
+     */
+    public static function isDeferred(): bool
+    {
+        return true;
+    }
+
+    /**
      * 注册 auths 服务
      */
     protected function auths(): void
