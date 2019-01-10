@@ -59,4 +59,14 @@ class Register extends Provider
             ],
         ];
     }
+
+    /**
+     * 是否延迟载入.
+     *
+     * @return bool
+     */
+    public static function isDeferred(): bool
+    {
+        return true;
+    }
 }
