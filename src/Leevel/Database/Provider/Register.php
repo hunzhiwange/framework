@@ -47,6 +47,7 @@ class Register extends Provider
         $this->databases();
         $this->database();
         $this->work();
+        $this->databaseLazyload();
     }
 
     /**
@@ -80,7 +81,18 @@ class Register extends Provider
                 'Leevel\\Database\\Ddd\UnitOfWork',
                 'Leevel\\Database\\Ddd\IUnitOfWork',
             ],
+            'database.lazyload',
         ];
+    }
+
+    /**
+     * 是否延迟载入.
+     *
+     * @return bool
+     */
+    public static function isDeferred(): bool
+    {
+        return true;
     }
 
     /**
@@ -111,6 +123,15 @@ class Register extends Provider
         $this->container->singleton('work', function (IContainer $container) {
             return new UnitOfWork();
         });
+    }
+
+    /**
+     * 注册 database.lazyload 服务.
+     * 仅仅用于占位，必要时用于唤醒数据库服务提供者.
+     */
+    protected function databaseLazyload(): void
+    {
+        $this->container->singleton('database.lazyload');
     }
 
     /**

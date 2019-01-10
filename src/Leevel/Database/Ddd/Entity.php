@@ -867,7 +867,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Event\IDispatch
      */
-    public static function eventDispatch(): IDispatch
+    public static function eventDispatch(): ?IDispatch
     {
         return static::$leevelDispatch;
     }
@@ -890,14 +890,17 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function event(string $event, $listener): void
     {
-        if (null !== static::$leevelDispatch) {
-            static::isSupportEvent($event);
-
-            static::$leevelDispatch->register(
-                "entity.{$event}:".static::class,
-                $listener
-            );
+        if (null === static::$leevelDispatch &&
+            static::lazyloadPlaceholder() && null === static::$leevelDispatch) {
+            return;
         }
+
+        static::isSupportEvent($event);
+
+        static::$leevelDispatch->register(
+            "entity.{$event}:".static::class,
+            $listener
+        );
     }
 
     /**
@@ -1860,6 +1863,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         return $key;
+    }
+
+    /**
+     * 延迟载入占位符.
+     *
+     * @return bool
+     */
+    protected static function lazyloadPlaceholder(): bool
+    {
+        return Lazyload::placeholder();
     }
 
     /**

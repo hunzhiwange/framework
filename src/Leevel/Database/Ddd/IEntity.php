@@ -443,7 +443,7 @@ interface IEntity
      *
      * @return \Leevel\Event\IDispatch
      */
-    public static function eventDispatch(): IDispatch;
+    public static function eventDispatch(): ?IDispatch;
 
     /**
      * 设置模型实体事件处理器.

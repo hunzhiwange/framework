@@ -109,7 +109,8 @@ class Meta implements IMeta
             return static::$resolveDatabase;
         }
 
-        if (!static::$databaseResolver) {
+        if (!static::$databaseResolver &&
+            static::lazyloadPlaceholder() && !static::$databaseResolver) {
             throw new InvalidArgumentException('Database resolver was not set.');
         }
 
@@ -202,5 +203,15 @@ class Meta implements IMeta
     public function select(): DatabaseSelect
     {
         return $this->connect->table($this->table);
+    }
+
+    /**
+     * 延迟载入占位符.
+     *
+     * @return bool
+     */
+    protected static function lazyloadPlaceholder(): bool
+    {
+        return Lazyload::placeholder();
     }
 }
