@@ -40,13 +40,6 @@ use Leevel\Protocol\WebsocketServer;
 class Register extends Provider
 {
     /**
-     * 是否延迟载入.
-     *
-     * @var bool
-     */
-    public static $defer = true;
-
-    /**
      * 注册服务.
      */
     public function register(): void
@@ -83,6 +76,16 @@ class Register extends Provider
                 'Leevel\\Protocol\\Client\\Rpc',
             ],
         ];
+    }
+
+    /**
+     * 是否延迟载入.
+     *
+     * @return bool
+     */
+    public static function isDeferred(): bool
+    {
+        return true;
     }
 
     /**
