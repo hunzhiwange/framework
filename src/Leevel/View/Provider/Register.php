@@ -80,7 +80,17 @@ class Register extends Provider
     }
 
     /**
-     * 注册 view.views 服务
+     * 是否延迟载入.
+     *
+     * @return bool
+     */
+    public static function isDeferred(): bool
+    {
+        return true;
+    }
+
+    /**
+     * 注册 view.views 服务.
      */
     protected function viewViews(): void
     {
@@ -90,7 +100,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 view.view 服务
+     * 注册 view.view 服务.
      */
     protected function viewView(): void
     {
@@ -100,7 +110,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 view.compiler 服务
+     * 注册 view.compiler 服务.
      */
     protected function viewCompiler(): void
     {
@@ -110,7 +120,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 view.parser 服务
+     * 注册 view.parser 服务.
      */
     protected function viewParser(): void
     {
@@ -123,7 +133,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 view.twig.parser 服务
+     * 注册 view.twig.parser 服务.
      */
     protected function viewTwigParser(): void
     {
