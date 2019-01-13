@@ -40,6 +40,6 @@ class CacheLoad extends Facade
      */
     protected static function name(): string
     {
-        return 'cache_load';
+        return 'cache.load';
     }
 }
