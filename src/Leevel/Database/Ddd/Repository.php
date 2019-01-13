@@ -111,6 +111,26 @@ class Repository implements IRepository
     }
 
     /**
+     * 返回一列数据.
+     *
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param mixed                                                          $fieldValue
+     * @param string                                                         $fieldKey
+     *
+     * @return array
+     */
+    public function findList($condition, $fieldValue, ?string $fieldKey = null): array
+    {
+        $select = $this->entity->selfDatabaseSelect();
+
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
+
+        return $select->list($fieldValue, $fieldKey);
+    }
+
+    /**
      * 取得记录数量.
      *
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition

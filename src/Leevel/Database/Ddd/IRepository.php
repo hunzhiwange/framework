@@ -63,6 +63,17 @@ interface IRepository
     public function findAll($condition = null): Collection;
 
     /**
+     * 返回一列数据.
+     *
+     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
+     * @param mixed                                                          $fieldValue
+     * @param string                                                         $fieldKey
+     *
+     * @return array
+     */
+    public function findList($condition, $fieldValue, ?string $fieldKey = null): array;
+
+    /**
      * 取得记录数量.
      *
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
