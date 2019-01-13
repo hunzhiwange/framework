@@ -597,10 +597,11 @@ interface IEntity
      *
      * @param string      $prop
      * @param null|string $enum
+     * @param string      $separate
      *
      * @return mixed
      */
-    public static function enum(string $prop, ?string $enum = null);
+    public static function enum(string $prop, ?string $enum = null, string $separate = ',');
 
     /**
      * 是否存在 enum.
