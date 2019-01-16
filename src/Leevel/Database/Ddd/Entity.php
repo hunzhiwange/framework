@@ -1158,6 +1158,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return false;
         }
 
+        $prop = static::normalize($prop);
+
         $enums = static::STRUCT[$prop][self::ENUM];
 
         if (null === $enum) {
