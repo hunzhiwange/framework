@@ -675,6 +675,48 @@ class Condition
     }
 
     /**
+     * Where 原生查询.
+     *
+     * @param string $raw
+     *
+     * @return $this
+     */
+    public function whereRaw(string $raw): self
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $condition = [];
+        array_unshift($condition, static::LOGIC_AND);
+        array_unshift($condition, 'where');
+        $condition[] = [':string' => '{'.$raw.'}'];
+
+        return $this->aliatypeAndLogic(...$condition);
+    }
+
+    /**
+     * Where 原生 OR 查询.
+     *
+     * @param string $raw
+     *
+     * @return $this
+     */
+    public function orWhereRaw(string $raw): self
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $condition = [];
+        array_unshift($condition, static::LOGIC_OR);
+        array_unshift($condition, 'where');
+        $condition[] = [':string' => '{'.$raw.'}'];
+
+        return $this->aliatypeAndLogic(...$condition);
+    }
+
+    /**
      * exists 方法支持
      *
      * @param mixed $exists
@@ -983,6 +1025,48 @@ class Condition
         array_unshift($arr, 'having');
 
         return $this->aliatypeAndLogic(...$arr);
+    }
+
+    /**
+     * Having 原生查询.
+     *
+     * @param string $raw
+     *
+     * @return $this
+     */
+    public function havingRaw(string $raw): self
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $condition = [];
+        array_unshift($condition, static::LOGIC_AND);
+        array_unshift($condition, 'having');
+        $condition[] = [':string' => '{'.$raw.'}'];
+
+        return $this->aliatypeAndLogic(...$condition);
+    }
+
+    /**
+     * Having 原生 OR 查询.
+     *
+     * @param string $raw
+     *
+     * @return $this
+     */
+    public function orHavingRaw(string $raw): self
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $condition = [];
+        array_unshift($condition, static::LOGIC_OR);
+        array_unshift($condition, 'having');
+        $condition[] = [':string' => '{'.$raw.'}'];
+
+        return $this->aliatypeAndLogic(...$condition);
     }
 
     /**
