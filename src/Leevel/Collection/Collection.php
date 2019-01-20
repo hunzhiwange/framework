@@ -269,8 +269,10 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      */
     public function toArray(): array
     {
-        return array_map(function ($value) {
-            return $value instanceof IArray ? $value->toArray() : $value;
+        $args = func_get_args();
+
+        return array_map(function ($value) use ($args) {
+            return $value instanceof IArray ? $value->toArray(...$args) : $value;
         }, $this->elements);
     }
 
