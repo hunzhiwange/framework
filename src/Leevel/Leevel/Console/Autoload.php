@@ -121,7 +121,7 @@ class Autoload extends Command
         $data = [];
 
         $data[] = file_get_contents($this->project->path('vendor/composer/ClassLoader.php'));
-        $data[] = $this->xxxx($this->dataInit());
+        $data[] = $this->replaceComposerPath($this->dataInit());
         $data[] = $this->dataHelper();
         $data[] = $this->dataLoader();
 
@@ -130,7 +130,14 @@ class Autoload extends Command
         return implode(PHP_EOL.PHP_EOL, $data).PHP_EOL;
     }
 
-    protected function xxxx($content)
+    /**
+     * 替换 composer 路径.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function replaceComposerPath(string $content): string
     {
         return str_replace(
             '\''.$this->project->path('vendor/composer/'),
