@@ -12,28 +12,28 @@ class {{file_name}} extends Entity
     /**
      * database table.
      *
-     * @string
+     * @var string
      */
     const TABLE = '{{table_name}}';
 
     /**
      * primary key.
      *
-     * @string|null
+     * @var string
      */
     const ID = {{primary_key}};
 
     /**
      * auto increment.
      *
-     * @string|null
+     * @var string
      */
     const AUTO = {{auto_increment}};
 
     /**
      * entity struct.
      *
-     * @array
+     * @var array
      */
     const STRUCT = {{struct}};
     {{props}}
