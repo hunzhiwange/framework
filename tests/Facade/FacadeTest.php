@@ -77,7 +77,7 @@ class FacadeTest extends TestCase
         return [
             ['Auth', 'auths', 'Auth'],
             ['Cache', 'caches', 'Cache'],
-            ['CacheLoad', 'cache_load', 'Cache'],
+            ['CacheLoad', 'cache.load', 'Cache'],
             ['Cookie', 'cookie', 'Cookie'],
             ['Database', 'databases', 'Database'],
             ['Db', 'databases', 'Database'],
