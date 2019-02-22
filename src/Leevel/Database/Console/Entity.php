@@ -119,12 +119,13 @@ EOF;
         $columns = $this->getColumns();
 
         return [
-            'file_name'      => ucfirst(Str::camelize($this->argument('name'))),
-            'table_name'     => $this->getTableName(),
-            'primary_key'    => $this->getPrimaryKey($columns),
-            'auto_increment' => $this->getAutoIncrement($columns),
-            'struct'         => $this->getStruct($columns),
-            'props'          => $this->getProps($columns),
+            'file_name'        => ucfirst(Str::camelize($this->argument('name'))),
+            'table_name'       => $this->getTableName(),
+            'primary_key'      => $this->getPrimaryKey($columns),
+            'primary_key_type' => $this->getPrimaryKeyType($columns),
+            'auto_increment'   => $this->getAutoIncrement($columns),
+            'struct'           => $this->getStruct($columns),
+            'props'            => $this->getProps($columns),
         ];
     }
 
@@ -148,6 +149,26 @@ EOF;
         }
 
         return  "'{$columns['primary_key'][0]}'";
+    }
+
+    /**
+     * 获取主键类型信息.
+     *
+     * @param array $columns
+     *
+     * @return string
+     */
+    protected function getPrimaryKeyType(array $columns): string
+    {
+        if (!$columns['primary_key']) {
+            return 'string';
+        }
+
+        if (count($columns['primary_key']) > 1) {
+            return 'array';
+        }
+
+        return 'string';
     }
 
     /**
