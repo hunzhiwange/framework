@@ -514,7 +514,7 @@ class Project extends Container implements IProject
      */
     public function i18nCachedPath(string $i18n): string
     {
-        return $this->runtimePath().'/i18n/'.$i18n.'.php';
+        return $this->commonPath().'/ui/bootstrap/i18n/'.$i18n.'.php';
     }
 
     /**
@@ -540,7 +540,7 @@ class Project extends Container implements IProject
     {
         $cache = getenv('RUNTIME_ENVIRONMENT') ?: 'option';
 
-        return $this->runtimePath().'/bootstrap/'.$cache.'.php';
+        return $this->commonPath().'/ui/bootstrap/'.$cache.'.php';
     }
 
     /**
@@ -560,7 +560,7 @@ class Project extends Container implements IProject
      */
     public function routerCachedPath(): string
     {
-        return $this->runtimePath().'/bootstrap/router.php';
+        return $this->commonPath().'/ui/bootstrap/router.php';
     }
 
     /**
