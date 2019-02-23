@@ -41,7 +41,7 @@ class LoadOptionTest extends TestCase
     protected function tearDown()
     {
         $appPath = __DIR__.'/app';
-        $runtimePath = $appPath.'/runtime';
+        $runtimePath = $appPath.'/common';
 
         if (is_dir($runtimePath)) {
             Fso::deleteDirectory($runtimePath, true);
@@ -61,7 +61,7 @@ class LoadOptionTest extends TestCase
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
 
-        $this->assertSame($appPath.'/runtime/bootstrap/option.php', $project->optionCachedPath());
+        $this->assertSame($appPath.'/common/ui/bootstrap/option.php', $project->optionCachedPath());
         $this->assertFalse($project->isCachedOption());
         $this->assertSame($appPath.'/option', $project->optionPath());
 
@@ -84,7 +84,7 @@ class LoadOptionTest extends TestCase
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
 
-        $this->assertSame($appPath.'/runtime/bootstrap/fooenv.php', $project->optionCachedPath());
+        $this->assertSame($appPath.'/common/ui/bootstrap/fooenv.php', $project->optionCachedPath());
         $this->assertFalse($project->isCachedOption());
         $this->assertSame($appPath.'/option', $project->optionPath());
 
@@ -116,7 +116,7 @@ class LoadOptionTest extends TestCase
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
 
-        $this->assertSame($appPath.'/runtime/bootstrap/notfoundenv.php', $project->optionCachedPath());
+        $this->assertSame($appPath.'/common/ui/bootstrap/notfoundenv.php', $project->optionCachedPath());
         $this->assertFalse($project->isCachedOption());
         $this->assertSame($appPath.'/option', $project->optionPath());
 
@@ -135,12 +135,12 @@ class LoadOptionTest extends TestCase
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
 
-        $this->assertSame($appPath.'/runtime/bootstrap/option.php', $project->optionCachedPath());
+        $this->assertSame($appPath.'/common/ui/bootstrap/option.php', $project->optionCachedPath());
         $this->assertFalse($project->isCachedOption());
         $this->assertSame($appPath.'/option', $project->optionPath());
 
-        mkdir($appPath.'/runtime/bootstrap', 0777, true);
-        file_put_contents($appPath.'/runtime/bootstrap/option.php', file_get_contents($appPath.'/assert/option.php'));
+        mkdir($appPath.'/common/ui/bootstrap', 0777, true);
+        file_put_contents($appPath.'/common/ui/bootstrap/option.php', file_get_contents($appPath.'/assert/option.php'));
 
         $this->assertTrue($project->isCachedOption());
 
