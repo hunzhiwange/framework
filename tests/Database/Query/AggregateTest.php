@@ -30,9 +30,33 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.aggregate",
+ *     path="database/query/aggregate",
+ *     description="数据库聚合查询功能。",
+ * )
  */
 class AggregateTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="记录数量 count",
+     *     description="计算记录数量。
+     *
+     * `函数原型`
+     *
+     * ``` php
+     * public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false);
+     * ```
+     *
+     * ::: tip
+     * 可使用 `findCount()` 或者 `count()->find()` 来统计记录行。
+     * :::
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse()
     {
         $connect = $this->createDatabaseConnectMock();
@@ -129,6 +153,13 @@ eot;
         );
     }
 
+    /**
+     * @api(
+     *     title="平均值 avg",
+     *     description="计算平均值。",
+     *     note="",
+     * )
+     */
     public function testAvg()
     {
         $connect = $this->createDatabaseConnectMock();
@@ -156,6 +187,13 @@ eot;
         );
     }
 
+    /**
+     * @api(
+     *     title="最大值 max",
+     *     description="计算最大值。",
+     *     note="",
+     * )
+     */
     public function testMax()
     {
         $connect = $this->createDatabaseConnectMock();
@@ -183,6 +221,13 @@ eot;
         );
     }
 
+    /**
+     * @api(
+     *     title="最小值 min",
+     *     description="计算最小值。",
+     *     note="",
+     * )
+     */
     public function testMin()
     {
         $connect = $this->createDatabaseConnectMock();
@@ -210,6 +255,13 @@ eot;
         );
     }
 
+    /**
+     * @api(
+     *     title="合计 sum",
+     *     description="计算合计。",
+     *     note="",
+     * )
+     */
     public function testSum()
     {
         $connect = $this->createDatabaseConnectMock();
