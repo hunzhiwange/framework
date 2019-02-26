@@ -91,7 +91,10 @@ class SummaryDoc
      */
     public function doc3()
     {
-        // {{ i + 1 }}
+        /*
+        # _
+        {{ i + 1 }}
+        */
     }
 
     /**
