@@ -30,11 +30,24 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="For 循环",
+ *     path="template/for",
+ *     description="如果我们需要在模板中使用 for 循环，那么通过 for 标签可以很方便地输出。",
+ * )
  */
 class CompilerForTest extends TestCase
 {
     use Compiler;
 
+    /**
+     * @api(
+     *     title="code",
+     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     note="",
+     * )
+     */
     public function testBaseUse()
     {
         $parser = $this->createParser();
@@ -54,9 +67,17 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="node 简单版",
+     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     note="",
+     * )
+     */
     public function testForNode()
     {
         $parser = $this->createParser();
+
         $source = <<<'eot'
 <for start='1'>
     QueryPHP - node - for <br>
@@ -70,7 +91,18 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
 
+    /**
+     * @api(
+     *     title="node 完整版",
+     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     note="",
+     * )
+     */
+    public function testForNode2()
+    {
+        $parser = $this->createParser();
         $source = <<<'eot'
 <for start='1' end='10' var='myValue' step='3'>
     QueryPHP for <br>
@@ -86,6 +118,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="JS 风格版: 例 1",
+     *     description="最终生成一个 foreach 结果，简单的循环。",
+     *     note="",
+     * )
+     */
     public function testForJsStyle()
     {
         $parser = $this->createParser();
@@ -103,6 +142,18 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="JS 风格版: 例 2",
+     *     description="可以使用逗号分割建和值，逗号连接不能有空格。",
+     *     note="",
+     * )
+     */
+    public function testForJsStyle2()
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
 {% for mykey,item in navigation %}
@@ -117,6 +168,18 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="JS 风格版: 例 3",
+     *     description="可以使用空格分割建和值。",
+     *     note="",
+     * )
+     */
+    public function testForJsStyle3()
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
 {% for mykey item in navigation %}
