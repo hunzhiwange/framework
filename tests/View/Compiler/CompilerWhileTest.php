@@ -30,12 +30,25 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="While 循环",
+ *     path="template/while",
+ *     description="QueryPHP 支持 while 语法标签，通过这种方式可以很好地将 PHP 的 while 语法布局出来。",
+ * )
  */
 class CompilerWhileTest extends TestCase
 {
     use Compiler;
 
-    public function testBaseUse()
+    /**
+     * @api(
+     *     title="code",
+     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     note="",
+     * )
+     */
+    public function testCode()
     {
         $parser = $this->createParser();
 
@@ -56,6 +69,18 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="node",
+     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     note="",
+     * )
+     */
+    public function testNode()
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
 {~$i = 10}
