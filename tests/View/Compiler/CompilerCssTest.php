@@ -30,11 +30,24 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="CSS 标签",
+ *     path="template/css",
+ *     description="QueryPHP 支持提供两个简单标签来简化 javascript 和 css 标签输入。",
+ * )
  */
 class CompilerCssTest extends TestCase
 {
     use Compiler;
 
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     note="",
+     * )
+     */
     public function testBaseUse()
     {
         $parser = $this->createParser();
@@ -48,7 +61,7 @@ var hello = 'world';
 .red {
     color: red;
 }
-{/stle}
+{/style}
 eot;
 
         $compiled = <<<'eot'
@@ -60,7 +73,7 @@ var hello = 'world';
 .red {
     color: red;
 }
-{/stle}
+</style>
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
