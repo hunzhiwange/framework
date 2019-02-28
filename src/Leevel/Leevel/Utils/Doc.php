@@ -98,11 +98,9 @@ class Doc
      *
      * @return bool
      */
-    public function handleAndSave(string $className, string $path = ''): bool
+    public function handleAndSave(string $className, ?string $path = null): bool
     {
-        if ($path) {
-            $this->setSavePath($path);
-        }
+        $this->setSavePath($path);
 
         $markdown = trim($this->handle($className));
 
@@ -120,9 +118,13 @@ class Doc
      *
      * @param string $path
      */
-    protected function setSavePath(string $path): void
+    protected function setSavePath(?string $path = null): void
     {
-        $this->savePath = $this->basePath.'/'.$path.'.md';
+        if (null === $path) {
+            $this->savePath = null;
+        } else {
+            $this->savePath = $this->basePath.'/'.$path.'.md';
+        }
     }
 
     /**
