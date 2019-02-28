@@ -30,11 +30,24 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="变量赋值",
+ *     path="template/assign",
+ *     description="可以在模板中进行一些变量的赋值，以便于进行后续计算处理。",
+ * )
  */
 class CompilerAssignTest extends TestCase
 {
     use Compiler;
 
+    /**
+     * @api(
+     *     title="node 版本",
+     *     description="assign 标签也是用于页面快捷赋值，这个还是用起来比较方便。",
+     *     note="",
+     * )
+     */
     public function testBaseUse()
     {
         $parser = $this->createParser();
@@ -51,6 +64,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="node 版本.初始化为 Null 值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNode()
     {
         $parser = $this->createParser();
@@ -66,6 +86,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="node 版本.初始化为指定变量",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNode2()
     {
         $parser = $this->createParser();
@@ -81,6 +108,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="node 版本.初始化为函数格式化变量",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNode3()
     {
         $parser = $this->createParser();
@@ -96,6 +130,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="node 版本.初始化为函数格式化占位变量",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNode4()
     {
         $parser = $this->createParser();
@@ -111,6 +152,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="JS 风格版本",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLet()
     {
         $parser = $this->createParser();
@@ -128,6 +176,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="JS 风格版本.初始化值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLet2()
     {
         $parser = $this->createParser();
@@ -143,6 +198,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="JS 风格版本.初始化为 Null 值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLet3()
     {
         $parser = $this->createParser();
@@ -158,6 +220,13 @@ eot;
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    /**
+     * @api(
+     *     title="JS 风格版本.初始化为 Null 值带上等于符",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLet4()
     {
         $parser = $this->createParser();
