@@ -30,11 +30,24 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="跳出循环",
+ *     path="template/break",
+ *     description="break 和 continue 是各种循环中非常重要的两个流程标记语言，框架当然也会支持它们。",
+ * )
  */
 class CompilerBreakTest extends TestCase
 {
     use Compiler;
 
+    /**
+     * @api(
+     *     title="break 标签",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse()
     {
         $parser = $this->createParser();
@@ -60,6 +73,18 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="ontinue 标签",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testContinue()
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
 <list for=list>

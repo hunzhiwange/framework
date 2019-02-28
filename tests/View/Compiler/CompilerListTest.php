@@ -30,12 +30,25 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="List 循环",
+ *     path="template/list",
+ *     description="list 标签也是用于循环输出，解析后的本质为 foreach，同时 foreach 比较符合大家的习惯。",
+ * )
  */
 class CompilerListTest extends TestCase
 {
     use Compiler;
 
-    public function testBaseUse()
+    /**
+     * @api(
+     *     title="code",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCode()
     {
         $parser = $this->createParser();
 
@@ -52,7 +65,18 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
 
+    /**
+     * @api(
+     *     title="code 省略键值",
+     *     description="有时候我们不需要键值，这个时候我们在模板中写下如下的代码：",
+     *     note="",
+     * )
+     */
+    public function testCodeFull()
+    {
+        $parser = $this->createParser();
         $source = <<<'eot'
 {list $list $value}
     {$value}
@@ -66,7 +90,18 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
 
+    /**
+     * @api(
+     *     title="node",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testNode()
+    {
+        $parser = $this->createParser();
         $source = <<<'eot'
 <list for=list value=my_value key=my_key index=my_index>
     {$my_index} {$my_key} {$my_value}
@@ -82,7 +117,18 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
 
+    /**
+     * @api(
+     *     title="node 省略键值",
+     *     description="有时候我们不需要键值，这个时候我们在模板中写下如下的代码：",
+     *     note="",
+     * )
+     */
+    public function testNodeFull()
+    {
+        $parser = $this->createParser();
         $source = <<<'eot'
 <list for=list>
     {$index} {$key} {$value}

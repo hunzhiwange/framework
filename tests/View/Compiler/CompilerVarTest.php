@@ -44,7 +44,7 @@ class CompilerVarTest extends TestCase
     /**
      * @api(
      *     title="最简单一个普通变量",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="模板标签的 “{” 和 “$” 之间不能有任何的空格，否则标签无效。",
      * )
      */
@@ -67,7 +67,7 @@ eot;
     /**
      * @api(
      *     title="JS 风格变量",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="注意：“{{“ 与内容之间可以有空格,也可以没有，结果一样。",
      * )
      */
@@ -90,7 +90,7 @@ eot;
     /**
      * @api(
      *     title="输出一个数组",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="",
      * )
      */
@@ -113,7 +113,7 @@ eot;
     /**
      * @api(
      *     title="JS 风格输出一个数组",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="",
      * )
      */

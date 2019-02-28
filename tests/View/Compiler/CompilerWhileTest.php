@@ -44,7 +44,7 @@ class CompilerWhileTest extends TestCase
     /**
      * @api(
      *     title="code",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="",
      * )
      */
@@ -74,7 +74,7 @@ eot;
     /**
      * @api(
      *     title="node",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="",
      * )
      */

@@ -44,7 +44,7 @@ class CompilerForTest extends TestCase
     /**
      * @api(
      *     title="code",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="",
      * )
      */
@@ -70,7 +70,7 @@ eot;
     /**
      * @api(
      *     title="node 简单版",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="",
      * )
      */
@@ -96,7 +96,7 @@ eot;
     /**
      * @api(
      *     title="node 完整版",
-     *     description="我们在模板中写下如下的代码和模板编译后的结果。",
+     *     description="",
      *     note="",
      * )
      */
