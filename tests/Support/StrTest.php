@@ -31,6 +31,12 @@ use Tests\TestCase;
  * @since 2018.07.12
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="字符串",
+ *     path="component/support/str",
+ *     description="这里为系统提供的字符串使用的功能文档说明。",
+ * )
  */
 class StrTest extends TestCase
 {
@@ -51,6 +57,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="随机小写字母和数字",
+     *     description="利用本方法可以生成随机数小写字母。",
+     *     note="支持位数和指定字符范围",
+     * )
+     */
     public function testRandAlphaNumLowercase()
     {
         $this->assertSame('', Str::randAlphaNumLowercase(0));
@@ -68,6 +81,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="随机大写字母和数字",
+     *     description="利用本方法可以生成随机数大写字母。",
+     *     note="支持位数和指定字符范围",
+     * )
+     */
     public function testRandAlphaNumUppercase()
     {
         $this->assertSame('', Str::randAlphaNumUppercase(0));
@@ -85,6 +105,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="随机字母",
+     *     description="利用本方法可以生成随机字母。",
+     *     note="支持位数和指定字符范围",
+     * )
+     */
     public function testRandAlpha()
     {
         $this->assertSame('', Str::randAlpha(0));
