@@ -61,7 +61,7 @@ class Doc extends Command
     {
         $this->includeBootstrapFile();
 
-        if (!($files = $this->parseFile())) {
+        if (!($files = $this->parseFiles())) {
             throw new InvalidArgumentException('Files was not found.');
         }
 
@@ -108,7 +108,7 @@ class Doc extends Command
      *
      * @return array
      */
-    protected function parseFile(): array
+    protected function parseFiles(): array
     {
         $fileOrDir = dirname($this->testsDir()).'/'.$this->path();
 
