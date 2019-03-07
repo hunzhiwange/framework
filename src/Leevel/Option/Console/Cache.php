@@ -52,6 +52,13 @@ class Cache extends Command
     protected $description = 'Merge all option file to a file.';
 
     /**
+     * 基础路径.
+     *
+     * @var string
+     */
+    protected $basePath;
+
+    /**
      * 响应命令.
      *
      * @param \Leevel\Kernel\IProject $project
@@ -64,10 +71,43 @@ class Cache extends Command
         $data = $load->loadData($project);
 
         $cachePath = $project->optionCachedPath();
+        $this->basePath = $project->path();
 
         $this->writeCache($cachePath, $data);
 
         $this->info(sprintf('Option cache file %s cache successed.', $cachePath));
+    }
+
+    /**
+     * 计算相对路径
+     * 忽略未包含在基础路径中的缓存相对路径.
+     *
+     * @param string $cachePath
+     *
+     * @return int
+     */
+    protected function computeRelativePath(string $cachePath): int
+    {
+        if (false === strpos($cachePath, $this->basePath)) {
+            return -1;
+        }
+
+        $relativePath = str_replace($this->basePath.'/', '', $cachePath);
+        $relativePath = dirname($relativePath);
+
+        return count(explode('/', $relativePath));
+    }
+
+    /**
+     * 替换相对路径.
+     *
+     * @param string $data
+     *
+     * @return string
+     */
+    protected function replaceRelativePath(string $data): string
+    {
+        return str_replace("'".$this->basePath, '$baseDir.\'', $data);
     }
 
     /**
@@ -90,10 +130,22 @@ class Cache extends Command
             mkdir($dirname, 0777, true);
         }
 
+        $relativePathLevel = $this->computeRelativePath($cachePath);
+        $isRelativePath = $relativePathLevel > -1;
+
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').
-            ' */ ?'.'>'.
-            PHP_EOL.'<?'.'php return '.
+            ' */ ?'.'>';
+
+        if ($isRelativePath) {
+            $content .= PHP_EOL.'<?'.'php $baseDir = dirname(__DIR__, '.$relativePathLevel.'); ?>';
+        }
+
+        $content .= PHP_EOL.'<?'.'php return '.
             var_export($data, true).'; ?'.'>';
+
+        if ($isRelativePath) {
+            $content = $this->replaceRelativePath($content);
+        }
 
         if (!is_writable($dirname) ||
             !file_put_contents($cachePath, $content)) {
