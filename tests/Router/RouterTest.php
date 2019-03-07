@@ -23,7 +23,6 @@ namespace Tests\Router;
 use Leevel\Di\Container;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
-use Leevel\Mvc\IView;
 use Leevel\Router\IRouter;
 use Leevel\Router\Router;
 use Tests\TestCase;
@@ -171,29 +170,6 @@ class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
 
         $result = $router->dispatch($request);
-    }
-
-    public function testControllerExtendsBase()
-    {
-        $pathInfo = '/:tests/hello/extendsBase';
-        $params = [];
-        $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
-
-        $request = $this->createRequest($pathInfo, $params, $method);
-        $router = new Router($container = new Container());
-
-        $container->singleton(IView::class, function () {
-            return $this->createMock(IView::class);
-        });
-
-        $router->setControllerDir($controllerDir);
-
-        $result = $router->dispatch($request);
-
-        $this->assertInstanceof(IResponse::class, $result);
-
-        $this->assertSame('hello extends base', $result->getContent());
     }
 
     /**

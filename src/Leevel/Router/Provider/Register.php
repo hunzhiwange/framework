@@ -23,13 +23,12 @@ namespace Leevel\Router\Provider;
 use Leevel\Cookie\Cookie;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\Http\Request;
 use Leevel\Http\Response;
-use Leevel\Mvc\View;
 use Leevel\Router\Redirect;
 use Leevel\Router\ResponseFactory;
 use Leevel\Router\Router;
 use Leevel\Router\Url;
+use Leevel\Router\View;
 
 /**
  * router 服务提供者.
@@ -83,8 +82,8 @@ class Register extends Provider
                 'Leevel\\Cookie\\ICookie',
             ],
             'view' => [
-                'Leevel\\Mvc\\View',
-                'Leevel\\Mvc\\IView',
+                'Leevel\\Router\\View',
+                'Leevel\\Router\\IView',
             ],
         ];
     }
@@ -169,7 +168,7 @@ class Register extends Provider
     protected function view(): void
     {
         $this->container->singleton('view', function (IContainer $container) {
-            return new view($container['view.view']);
+            return new View($container['view.view']);
         });
     }
 

@@ -24,8 +24,6 @@ use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\Response;
-use Leevel\Mvc\IController;
-use Leevel\Mvc\IView;
 use Leevel\Pipeline\Pipeline;
 use Leevel\Support\TMacro;
 
@@ -663,10 +661,6 @@ class Router implements IRouter
                 $controller = $this->container->make($controllerClass);
                 $method = $this->normalizeForSubdir($matchedAction, true);
             }
-        }
-
-        if ($controller instanceof IController) {
-            $controller->setView($this->container[IView::class]);
         }
 
         if (!method_exists($controller, $method)) {

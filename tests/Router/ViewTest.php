@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Mvc;
 
-use Leevel\Mvc\IView;
-use Leevel\Mvc\View;
+use Leevel\Router\IView;
+use Leevel\Router\View;
 use Leevel\View\Html;
 use Leevel\View\Phpui;
 use Leevel\View\View as Views;

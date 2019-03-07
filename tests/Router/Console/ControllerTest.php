@@ -18,17 +18,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Mvc\Provider;
+namespace Tests\Router\Console;
 
 use Leevel\Di\IContainer;
 use Leevel\Kernel\IProject;
-use Leevel\Mvc\Console\Action;
+use Leevel\Router\Console\Controller;
 use Leevel\Router\IRouter;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
 /**
- * action test.
+ * controller test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -36,89 +36,84 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ActionTest extends TestCase
+class ControllerTest extends TestCase
 {
     use BaseMake;
 
     public function testBaseUse()
     {
-        $file = __DIR__.'/../../Console/BarValue/Hello.php';
+        $file = __DIR__.'/../../Console/BarValue.php';
 
         if (is_file($file)) {
             unlink($file);
         }
 
-        $result = $this->runCommand(new Action(), [
-            'command'     => 'make:action',
-            'controller'  => 'BarValue',
-            'name'        => 'hello',
+        $result = $this->runCommand(new Controller(), [
+            'command'     => 'make:controller',
+            'name'        => 'BarValue',
+            'action'      => 'hello',
             '--namespace' => 'common',
-            '--extend'    => true,
         ], function ($container) {
             $this->initContainerService($container);
         });
 
-        $this->assertContains('action <hello> created successfully.', $result);
+        $this->assertContains('controller <BarValue> created successfully.', $result);
 
-        $this->assertContains('class Hello extends Controller', file_get_contents($file));
+        $this->assertContains('class BarValue', file_get_contents($file));
 
         unlink($file);
-        rmdir(dirname($file));
     }
 
     public function testActionSpecial()
     {
-        $file = __DIR__.'/../../Console/Hello/HelloWorldYes.php';
+        $file = __DIR__.'/../../Console/Hello.php';
 
         if (is_file($file)) {
             unlink($file);
         }
 
-        $result = $this->runCommand(new Action(), [
-            'command'     => 'make:action',
-            'controller'  => 'Hello',
-            'name'        => 'hello-world_Yes',
+        $result = $this->runCommand(new Controller(), [
+            'command'     => 'make:controller',
+            'name'        => 'Hello',
+            'action'      => 'hello-world_Yes',
             '--namespace' => 'common',
-            '--extend'    => true,
         ], function ($container) {
             $this->initContainerService($container);
         });
 
-        $this->assertContains('action <hello-world_Yes> created successfully.', $result);
+        $this->assertContains('controller <Hello> created successfully.', $result);
 
-        $this->assertContains('class HelloWorldYes extends Controller', file_get_contents($file));
+        $this->assertContains('class Hello', file_get_contents($file));
 
-        $this->assertContains('function handle', file_get_contents($file));
+        $this->assertContains('function helloWorldYes', file_get_contents($file));
 
         unlink($file);
-        rmdir(dirname($file));
     }
 
     public function testExtend()
     {
-        $file = __DIR__.'/../../Console/Hello/HelloWorldYes.php';
+        $file = __DIR__.'/../../Console/Hello.php';
 
         if (is_file($file)) {
             unlink($file);
         }
 
-        $result = $this->runCommand(new Action(), [
-            'command'     => 'make:action',
-            'controller'  => 'Hello',
-            'name'        => 'hello-world_Yes',
+        $result = $this->runCommand(new Controller(), [
+            'command'     => 'make:controller',
+            'name'        => 'Hello',
+            'action'      => 'hello-world_Yes',
             '--namespace' => 'common',
         ], function ($container) {
             $this->initContainerService($container);
         });
 
-        $this->assertContains('action <hello-world_Yes> created successfully.', $result);
+        $this->assertContains('controller <Hello> created successfully.', $result);
 
-        $this->assertNotContains('class HelloWorldYes extends Controller', file_get_contents($file));
+        $this->assertNotContains('class Hello extends Controller', file_get_contents($file));
 
-        $this->assertContains('function handle', file_get_contents($file));
+        $this->assertContains('function helloWorldYes', file_get_contents($file));
 
         unlink($file);
-        rmdir(dirname($file));
     }
 
     protected function initContainerService(IContainer $container)

@@ -26,7 +26,6 @@ use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response;
 use Leevel\Http\ResponseHeaderBag;
-use Leevel\Mvc\IView;
 
 /**
  * 响应工厂

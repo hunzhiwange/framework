@@ -22,7 +22,7 @@ namespace Tests\Mail;
 
 use Leevel\Mail\Mail;
 use Leevel\Mail\Smtp;
-use Leevel\Mvc\View;
+use Leevel\Router\View;
 use Leevel\View\Phpui;
 use Leevel\View\View as Views;
 use Swift_Attachment;

@@ -18,21 +18,38 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Mvc;
+namespace Leevel\Router;
 
 use Leevel\View\IView as IViews;
 
 /**
- * IView 接口.
+ * 视图.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.23
+ * @since 2016.11.19
  *
  * @version 1.0
  */
-interface IView
+class View implements IView
 {
+    /**
+     * 视图模板
+     *
+     * @var \Leevel\View\IView
+     */
+    protected $theme;
+
+    /**
+     * 构造函数.
+     *
+     * @param \Leevel\View\IView $theme
+     */
+    public function __construct(IViews $theme)
+    {
+        $this->theme = $theme;
+    }
+
     /**
      * 切换视图.
      *
@@ -40,17 +57,30 @@ interface IView
      *
      * @return $this
      */
-    public function switchView(IViews $theme): self;
+    public function switchView(IViews $theme): IView
+    {
+        $assign = $this->getAssign();
+
+        $this->theme = $theme;
+        $this->assign($assign);
+
+        return $this;
+    }
 
     /**
-     * 变量赋值.
+     * 变量赋值
      *
      * @param mixed $name
      * @param mixed $value
      *
      * @return $this
      */
-    public function assign($name, $value = null): self;
+    public function assign($name, $value = null): IView
+    {
+        $this->theme->setVar($name, $value);
+
+        return $this;
+    }
 
     /**
      * 获取变量赋值.
@@ -59,7 +89,10 @@ interface IView
      *
      * @return mixed
      */
-    public function getAssign(?string $name = null);
+    public function getAssign(?string $name = null)
+    {
+        return $this->theme->getVar($name);
+    }
 
     /**
      * 删除变量值.
@@ -68,14 +101,26 @@ interface IView
      *
      * @return $this
      */
-    public function deleteAssign(array $name): self;
+    public function deleteAssign(array $name): IView
+    {
+        $this->theme->deleteVar($name);
+
+        return $this;
+    }
 
     /**
      * 清空变量值.
      *
+     * @param null|string $name
+     *
      * @return $this
      */
-    public function clearAssign(): self;
+    public function clearAssign(): IView
+    {
+        $this->theme->clearVar();
+
+        return $this;
+    }
 
     /**
      * 加载视图文件.
@@ -86,5 +131,8 @@ interface IView
      *
      * @return string
      */
-    public function display(string $file, array $vars = [], ?string $ext = null): string;
+    public function display(string $file, array $vars = [], ?string $ext = null): string
+    {
+        return $this->theme->display($file, $vars, $ext, false);
+    }
 }

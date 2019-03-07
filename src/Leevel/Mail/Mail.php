@@ -22,7 +22,7 @@ namespace Leevel\Mail;
 
 use Closure;
 use Leevel\Event\IDispatch;
-use Leevel\Mvc\IView;
+use Leevel\Router\IView;
 use Swift_Attachment;
 use Swift_Image;
 use Swift_Message;

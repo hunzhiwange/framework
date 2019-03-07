@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Mvc\Console;
+namespace Leevel\Router\Console;
 
 use Leevel\Console\Argument;
 use Leevel\Console\Make;
@@ -64,10 +64,6 @@ The <info>%command.name%</info> command to make action with project namespace:
 You can also by using the <comment>--namespace</comment> option:
 
   <info>php %command.full_name% controller name --namespace=common</info>
-
-You can also by using the <comment>--extend</comment> option:
-
-  <info>php %command.full_name% controller name --extend</info>
 EOF;
 
     /**
@@ -81,10 +77,7 @@ EOF;
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(
-            __DIR__.'/stub/'.
-            (true === $this->option('extend') ? 'action' : 'action_without_extend')
-        );
+        $this->setTemplatePath(__DIR__.'/stub/action');
 
         $controllerNamespace = $router->getControllerDir();
         $controllerName = ucfirst(Str::camelize($this->argument('controller')));
@@ -169,12 +162,6 @@ EOF;
                 Option::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
                 'app',
-            ],
-            [
-                'extend',
-                'e',
-                Option::VALUE_NONE,
-                'Action with the code that make it extends Leevel\Mvc\Controller',
             ],
         ];
     }
