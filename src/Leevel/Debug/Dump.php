@@ -77,7 +77,7 @@ class Dump
     {
         $result = [];
 
-        foreach (debug_backtrace() as $k => $v) {
+        foreach (debug_backtrace() as $v) {
             if (isset($v['class']) && $v['function']) {
                 $tmp = '\\'.$v['class'].'::'.$v['function'].'()';
             } else {
