@@ -281,6 +281,53 @@ class Cookie implements ICookie
     }
 
     /**
+     * 格式化 COOKIE 为字符串.
+     *
+     * @param array $cookie
+     *
+     * @return string
+     *
+     * @see \Symfony\Component\HttpFoundation\Cookie::__string()
+     */
+    public static function format(array $cookie): string
+    {
+        if (7 !== count($cookie)) {
+            throw new Exception('Invalid cookie data.');
+        }
+
+        $str = $cookie[0].'=';
+
+        if ('' === (string) $cookie[1]) {
+            $str .= 'deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001).'; Max-Age=0';
+        } else {
+            $str .= $cookie[1];
+
+            if (0 !== $cookie[2]) {
+                $str .= '; expires='.gmdate('D, d-M-Y H:i:s T', $cookie[2]).'; Max-Age='.
+                    ($cookie[2] - time() ?: 0);
+            }
+        }
+
+        if ($cookie[3]) {
+            $str .= '; path='.$cookie[3];
+        }
+
+        if ($cookie[4]) {
+            $str .= '; domain='.$cookie[4];
+        }
+
+        if (true === $cookie[5]) {
+            $str .= '; secure';
+        }
+
+        if (true === $cookie[6]) {
+            $str .= '; httponly';
+        }
+
+        return $str;
+    }
+
+    /**
      * 整理配置.
      *
      * @param array $option

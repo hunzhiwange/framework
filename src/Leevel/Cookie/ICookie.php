@@ -136,4 +136,15 @@ interface ICookie
      * @return array
      */
     public function all(): array;
+
+    /**
+     * 格式化 COOKIE 为字符串.
+     *
+     * @param array $cookie
+     *
+     * @return string
+     *
+     * @see \Symfony\Component\HttpFoundation\Cookie::__string()
+     */
+    public static function format(array $cookie): string;
 }
