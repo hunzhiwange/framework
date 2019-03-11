@@ -26,7 +26,7 @@ use Leevel\Kernel\IProject;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
- * PHP 自带的服务器.
+ * PHP 自带的服务器端.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

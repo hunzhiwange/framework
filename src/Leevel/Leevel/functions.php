@@ -104,7 +104,7 @@ class Leevel
     }
 
     /**
-     * 调试变量.
+     * 调试 RoadRunner 变量.
      *
      * @param mixed $var
      * @param array $moreVars
@@ -137,6 +137,20 @@ class Leevel
     public static function backtrace(): void
     {
         Dump::backtrace();
+    }
+
+    /**
+     * 调试 RoadRunner 变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
+     * @return mixed
+     * @codeCoverageIgnore
+     */
+    public static function drr($var, ...$moreVars)
+    {
+        return Dump::dumpRoadRunner($var, ...$moreVars);
     }
 
     /**
@@ -421,6 +435,21 @@ if (!function_exists('db')) {
     function db(): void
     {
         Leevel::backtrace();
+    }
+}
+
+if (!function_exists('drr')) {
+    /**
+     * 调试 RoadRunner 变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
+     * @return mixed
+     */
+    function drr($var, ...$moreVars)
+    {
+        return Leevel::drr($var, ...$moreVars);
     }
 }
 

@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Debug;
 
+use Spiral\Debug;
 use Symfony\Component\VarDumper\VarDumper;
 
 /**
@@ -97,5 +98,35 @@ class Dump
         static::dump(implode(PHP_EOL, array_reverse($result)));
 
         die;
+    }
+
+    /**
+     * 调试 RoadRunner 变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
+     * @return mixed
+     */
+    public static function dumpRoadRunner($var, ...$moreVars)
+    {
+        static $dumper;
+
+        if (null === $dumper) {
+            $dumper = new Debug\Dumper();
+            $dumper->setRenderer(Debug\Dumper::ERROR_LOG, new Debug\Renderer\ConsoleRenderer());
+        }
+
+        $dumper->dump($var, Debug\Dumper::ERROR_LOG);
+
+        foreach ($moreVars as $var) {
+            $dumper->dump($var);
+        }
+
+        if (1 < func_num_args()) {
+            return func_get_args();
+        }
+
+        return $var;
     }
 }
