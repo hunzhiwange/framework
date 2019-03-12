@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Router\Provider;
 
-use Leevel\Cookie\Cookie;
-use Leevel\Cookie\ICookie;
 use Leevel\Di\Container;
 use Leevel\Http\IRequest;
 use Leevel\Option\Option;
@@ -65,8 +63,6 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(Redirect::class, $container->make('redirect'));
         $this->assertInstanceof(IResponseFactory::class, $container->make('response'));
         $this->assertInstanceof(ResponseFactory::class, $container->make('response'));
-        $this->assertInstanceof(ICookie::class, $container->make('cookie'));
-        $this->assertInstanceof(ICookie::class, $container->make('cookie'));
         $this->assertInstanceof(IView::class, $container->make('view'));
         $this->assertInstanceof(View::class, $container->make('view'));
 

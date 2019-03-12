@@ -44,4 +44,82 @@ class ResponseHeaderBag extends HeaderBag
      * @var string
      */
     const DISPOSITION_INLINE = 'inline';
+    /**
+     * Cookie.
+     *
+     * @var \Leevel\Http\ICookie
+     */
+    protected $cookie;
+
+    /**
+     * 构造函数.
+     *
+     * @param array $elements
+     */
+    public function __construct(array $elements = [])
+    {
+        parent::__construct($elements);
+
+        $this->cookie = new Cookie();
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        return $this->cookie->{$method}(...$args);
+    }
+
+    /**
+     * 设置 COOKIE 别名.
+     *
+     * @param string $name
+     * @param string $value
+     * @param array  $option
+     */
+    public function cookie(string $name, string $value = '', array $option = [])
+    {
+        $this->setCookie($name, $value, $option);
+    }
+
+    /**
+     * 设置 COOKIE.
+     *
+     * @param string $name
+     * @param string $value
+     * @param array  $option
+     */
+    public function setCookie(string $name, string $value = '', array $option = []): void
+    {
+        $this->cookie->set($name, $value, $option);
+    }
+
+    /**
+     * 批量设置 COOKIE.
+     *
+     * @param array $cookies
+     * @param array $option
+     */
+    public function withCookies(array $cookies, array $option = []): void
+    {
+        foreach ($cookies as $key => $value) {
+            $this->setCookie($key, $value, $option);
+        }
+    }
+
+    /**
+     * 获取 COOKIE.
+     *
+     * @return array
+     */
+    public function getCookies(): array
+    {
+        return $this->cookie->all();
+    }
 }

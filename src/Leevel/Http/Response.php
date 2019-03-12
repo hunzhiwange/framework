@@ -21,12 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Http;
 
 use ArrayObject;
-use Closure;
 use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 use JsonSerializable;
-use Leevel\Cookie\ICookie;
 use Leevel\Flow\TControl;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -179,20 +177,6 @@ class Response implements IResponse
     protected $isJson = false;
 
     /**
-     * COOKIE Resolver.
-     *
-     * @var \Closure
-     */
-    protected static $cookieResolver;
-
-    /**
-     * COOKIE.
-     *
-     * @var \Leevel\Cookie\ICookie
-     */
-    protected static $resolvedCookie;
-
-    /**
      * 构造函数.
      *
      * @param string $content
@@ -219,38 +203,6 @@ class Response implements IResponse
     public static function create($content = '', int $status = 200, array $headers = []): IResponse
     {
         return new static($content, $status, $headers);
-    }
-
-    /**
-     * 设置 COOKIE Resolver.
-     *
-     * @param \Closure $cookieResolver
-     */
-    public static function setCookieResolver(Closure $cookieResolver = null): void
-    {
-        static::$cookieResolver = $cookieResolver;
-
-        if (null === $cookieResolver) {
-            static::$resolvedCookie = null;
-        }
-    }
-
-    /**
-     * 返回 COOKIE.
-     *
-     * @return \Leevel\Cookie\ICookie
-     */
-    public static function resolveCookie(): ICookie
-    {
-        if (static::$resolvedCookie) {
-            return static::$resolvedCookie;
-        }
-
-        if (!static::$cookieResolver) {
-            throw new InvalidArgumentException('Cookie resolver is not set.');
-        }
-
-        return static::$resolvedCookie = call_user_func(static::$cookieResolver);
     }
 
     /**
@@ -286,10 +238,9 @@ class Response implements IResponse
         // 状态码
         header(sprintf('HTTP/%s %s %s', $this->protocolVersion, $this->statusCode, $this->statusText), true, $this->statusCode);
 
-        if (static::$cookieResolver) {
-            foreach (self::resolveCookie()->all() as $item) {
-                call_user_func_array('setcookie', $item);
-            }
+        // COOKIE
+        foreach ($this->getCookies() as $item) {
+            call_user_func_array('setcookie', $item);
         }
 
         return $this;
@@ -433,7 +384,7 @@ class Response implements IResponse
             return $this;
         }
 
-        self::resolveCookie()->set($name, $value, $option);
+        $this->headers->setCookie($name, $value, $option);
 
         return $this;
     }
@@ -466,7 +417,7 @@ class Response implements IResponse
      */
     public function getCookies(): array
     {
-        return self::resolveCookie()->all();
+        return $this->headers->getCookies();
     }
 
     /**

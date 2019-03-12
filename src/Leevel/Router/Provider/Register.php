@@ -23,7 +23,6 @@ namespace Leevel\Router\Provider;
 use Leevel\Cookie\Cookie;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\Http\Response;
 use Leevel\Router\Redirect;
 use Leevel\Router\ResponseFactory;
 use Leevel\Router\Router;
@@ -52,7 +51,6 @@ class Register extends Provider
         $this->response();
         $this->cookie();
         $this->view();
-        $this->cookieResolver();
     }
 
     /**
@@ -76,10 +74,6 @@ class Register extends Provider
             'response' => [
                 'Leevel\\Router\\IResponseFactory',
                 'Leevel\\Router\\ResponseFactory',
-            ],
-            'cookie' => [
-                'Leevel\\Cookie\\Cookie',
-                'Leevel\\Cookie\\ICookie',
             ],
             'view' => [
                 'Leevel\\Router\\View',
@@ -169,16 +163,6 @@ class Register extends Provider
     {
         $this->container->singleton('view', function (IContainer $container) {
             return new View($container['view.view']);
-        });
-    }
-
-    /**
-     * 设置 COOKIE Resolver.
-     */
-    protected function cookieResolver(): void
-    {
-        Response::setCookieResolver(function () {
-            return $this->container['cookie'];
         });
     }
 }

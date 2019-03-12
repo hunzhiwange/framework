@@ -20,9 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use Closure;
 use DateTime;
-use Leevel\Cookie\ICookie;
 
 /**
  * HTTP 响应接口.
@@ -481,20 +479,6 @@ interface IResponse
      * @return static
      */
     public static function create($content = '', int $status = 200, array $headers = []): self;
-
-    /**
-     * 设置 COOKIE Resolver.
-     *
-     * @param \Closure $cookieResolver
-     */
-    public static function setCookieResolver(Closure $cookieResolver = null): void;
-
-    /**
-     * 返回 COOKIE.
-     *
-     * @return \Leevel\Cookie\ICookie
-     */
-    public static function resolveCookie(): ICookie;
 
     /**
      * 发送 HTTP 响应.

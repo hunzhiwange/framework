@@ -18,10 +18,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Cookie;
+namespace Tests\Http;
 
-use Leevel\Cookie\Cookie;
-use Leevel\Cookie\ICookie;
+use Leevel\Http\Cookie;
 use stdClass;
 use Tests\TestCase;
 
@@ -39,8 +38,6 @@ class CookieTest extends TestCase
     public function testBaseUse()
     {
         $cookie = new Cookie();
-
-        $this->assertInstanceOf(ICookie::class, $cookie);
 
         $cookie->set('foo', 'bar');
 

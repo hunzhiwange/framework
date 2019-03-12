@@ -24,7 +24,6 @@ use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 use JsonSerializable;
-use Leevel\Cookie\ICookie;
 use Leevel\Http\Response;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -403,36 +402,13 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $response->headers->get('foo'));
     }
 
-    public function testCookieResolverNotSet()
-    {
-        Response::setCookieResolver(null);
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Cookie resolver is not set.'
-        );
-
-        $response = new Response();
-
-        $response->cookie('foo', 'bar');
-    }
-
     public function testCookie()
     {
         $response = new Response();
 
-        $cookie = $this->createMock(ICookie::class);
-
-        Response::setCookieResolver(function () use ($cookie) {
-            return $cookie;
-        });
-
-        $cookie->method('set')->willReturn(null);
-        $this->assertNull($cookie->set('foo', 'bar'));
-
         $allCookies = [
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() + 86400,
                 '/',
@@ -440,8 +416,8 @@ class ResponseTest extends TestCase
                 false,
                 false,
             ],
-            'q_hello' => [
-                'q_hello',
+            'hello' => [
+                'hello',
                 'world',
                 time() + 86400,
                 '/',
@@ -451,15 +427,10 @@ class ResponseTest extends TestCase
             ],
         ];
 
-        $cookie->method('all')->willReturn($allCookies);
-        $this->assertSame($allCookies, $cookie->all());
-
         $response->cookie('foo', 'bar');
         $response->withCookies(['hello' => 'world']);
 
         $this->assertSame($allCookies, $response->getCookies());
-
-        Response::setCookieResolver(null);
     }
 
     public function testContent()
@@ -713,17 +684,13 @@ class ResponseTest extends TestCase
 
         endIfs();
 
-        $this->assertSame('hello', $response->getContent());
-        $this->assertTrue($response->isOk());
+        $allCookies = [];
+
+        $this->assertSame($allCookies, $response->getCookies());
     }
 
     public function testSetCookieFlow2()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Cookie resolver is not set.'
-        );
-
         $condition = true;
 
         $response = new Response('hello');
@@ -737,6 +704,20 @@ class ResponseTest extends TestCase
         elses()->
 
         endIfs();
+
+        $allCookies = [
+            'foo' => [
+                'foo',
+                'bar',
+                time() + 86400,
+                '/',
+                '',
+                false,
+                false,
+            ],
+        ];
+
+        $this->assertSame($allCookies, $response->getCookies());
     }
 
     public function testWithCookiesFlow()
@@ -755,17 +736,13 @@ class ResponseTest extends TestCase
 
         endIfs();
 
-        $this->assertSame('hello', $response->getContent());
-        $this->assertTrue($response->isOk());
+        $allCookies = [];
+
+        $this->assertSame($allCookies, $response->getCookies());
     }
 
     public function testWithCookiesFlow2()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Cookie resolver is not set.'
-        );
-
         $condition = true;
 
         $response = new Response('hello');
@@ -780,8 +757,19 @@ class ResponseTest extends TestCase
 
         endIfs();
 
-        $this->assertSame('hello', $response->getContent());
-        $this->assertTrue($response->isOk());
+        $allCookies = [
+            'foo' => [
+                'foo',
+                'bar',
+                time() + 86400,
+                '/',
+                '',
+                false,
+                false,
+            ],
+        ];
+
+        $this->assertSame($allCookies, $response->getCookies());
     }
 
     public function testSetDataFlow()

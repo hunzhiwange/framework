@@ -43,7 +43,6 @@
         "leevel/cache": "self.version",
         "leevel/collection": "self.version",
         "leevel/console": "self.version",
-        "leevel/cookie": "self.version",
         "leevel/database": "self.version",
         "leevel/debug": "self.version",
         "leevel/di": "self.version",

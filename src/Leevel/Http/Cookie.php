@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cookie;
+namespace Leevel\Http;
 
 use Exception;
 
@@ -31,7 +31,7 @@ use Exception;
  *
  * @version 1.0
  */
-class Cookie implements ICookie
+class Cookie
 {
     /**
      * 配置.
@@ -71,7 +71,7 @@ class Cookie implements ICookie
      *
      * @return $this
      */
-    public function setOption(string $name, $value): ICookie
+    public function setOption(string $name, $value): self
     {
         $this->option[$name] = $value;
 
