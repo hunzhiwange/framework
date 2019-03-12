@@ -20,11 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
-use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
-use Tests\Database\Ddd\Entity\EntityWithEnum3;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\TestPropErrorEntity;
 
@@ -139,18 +137,21 @@ eot;
             )
         );
 
-        $this->assertFalse($entity->isEnum('id'));
-        $this->assertFalse($entity->isEnum('title'));
-        $this->assertTrue($entity->isEnum('status'));
         $this->assertSame('启用', $entity->enum('status', '1'));
-        $this->assertSame('关闭', $entity->enum('status', '0'));
+        $this->assertSame('禁用', $entity->enum('status', '0'));
         $this->assertFalse($entity->enum('not', '0'));
         $this->assertFalse($entity->enum('not'));
 
         $data = <<<'eot'
 [
-    "关闭",
-    "启用"
+    [
+        0,
+        "禁用"
+    ],
+    [
+        1,
+        "启用"
+    ]
 ]
 eot;
 
@@ -171,10 +172,16 @@ eot;
         ]);
 
         $data = <<<'eot'
-{
-    "t": "关闭",
-    "f": "启用"
-}
+[
+    [
+        "f",
+        "禁用"
+    ],
+    [
+        "t",
+        "启用"
+    ]
+]
 eot;
 
         $this->assertSame(
@@ -213,15 +220,5 @@ eot;
         ]);
 
         $entity->toArray();
-    }
-
-    public function testEntityWithEnumIsNotArrayWillReturnFalse()
-    {
-        $entity = new EntityWithEnum3([
-            'title'   => 'foo',
-            'status'  => 't',
-        ]);
-
-        $this->assertFalse($entity->enum('status'));
     }
 }

@@ -1166,7 +1166,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return false;
         }
 
-        if (!isset(static::$leevelEnums[$prop])) {
+        if (!isset(static::$leevelEnums[static::class]) ||
+            !isset(static::$leevelEnums[static::class][$prop])) {
             $enums = constant($enumDefined);
             $enums = array_values($enums);
 
@@ -1183,9 +1184,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 $e[1] = Leevel::__($e[1]);
             }
 
-            static::$leevelEnums[$prop] = $enums;
+            static::$leevelEnums[static::class][$prop] = $enums;
         } else {
-            $enums = static::$leevelEnums[$prop];
+            $enums = static::$leevelEnums[static::class][$prop];
         }
 
         if (null === $enum) {
