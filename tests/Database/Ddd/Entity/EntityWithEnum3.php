@@ -44,10 +44,10 @@ class EntityWithEnum3 extends Entity
             'readonly'           => true,
         ],
         'title'       => [],
-        'status'      => [
-            self::ENUM => 'not array',
-        ],
+        'status'      => [],
     ];
+
+    const STATUS_ENUM = 'not array';
 
     private $id;
 

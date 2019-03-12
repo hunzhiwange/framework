@@ -44,12 +44,12 @@ class EntityWithEnum extends Entity
             'readonly'           => true,
         ],
         'title'       => [],
-        'status'      => [
-            self::ENUM => [
-                '0' => '关闭',
-                '1' => '启用',
-            ],
-        ],
+        'status'      => [],
+    ];
+
+    const STATUS_ENUM = [
+        'disable' => [0, '禁用'],
+        'enable'  => [1, '启用'],
     ];
 
     private $id;
