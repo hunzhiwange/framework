@@ -24,8 +24,8 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Mail\Manager;
-use Leevel\Mvc\IView;
 use Leevel\Option\Option;
+use Leevel\Router\IView;
 use Swift_Message;
 use Tests\TestCase;
 

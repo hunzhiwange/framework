@@ -41,7 +41,7 @@ class ResponseFactory implements IResponseFactory
     /**
      * 视图.
      *
-     * @var \Leevel\Mvc\IView
+     * @var \Leevel\Router\IView
      */
     protected $view;
 
@@ -69,7 +69,7 @@ class ResponseFactory implements IResponseFactory
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mvc\IView       $view
+     * @param \Leevel\Router\IView    $view
      * @param \Leevel\Router\Redirect $redirector
      */
     public function __construct(IView $view, Redirect $redirector)
