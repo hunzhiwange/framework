@@ -595,22 +595,13 @@ interface IEntity
      * 获取 enum.
      * 不存在返回 false.
      *
-     * @param string      $prop
-     * @param null|string $enum
-     * @param string      $separate
+     * @param string $prop
+     * @param mixed  $enum
+     * @param string $separate
      *
      * @return mixed
      */
-    public static function enum(string $prop, ?string $enum = null, string $separate = ',');
-
-    /**
-     * 是否存在 enum.
-     *
-     * @param string $prop
-     *
-     * @return bool
-     */
-    public static function isEnum(string $prop): bool;
+    public static function enum(string $prop, $enum = null, string $separate = ',');
 
     /**
      * 创建一个模型实体集合.

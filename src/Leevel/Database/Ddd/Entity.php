@@ -178,6 +178,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected static $leevelUnCamelize = [];
 
     /**
+     * 缓存 ENUM 格式化数据.
+     *
+     * @var array
+     */
+    protected static $leevelEnums = [];
+
+    /**
      * 构造函数.
      *
      * @param array $data
@@ -603,12 +610,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $map = [$this->singlePrimaryKey(), $this->id()];
         }
 
-        $data = $this->metaConnect()->
-        select()->
-
-        where($map)->
-
-        findOne();
+        $data = $this->metaConnect()
+            ->select()
+            ->where($map)
+            ->findOne();
 
         foreach ($data as $k => $v) {
             $this->withPropValue($k, $v, false);
@@ -1146,32 +1151,52 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 获取 enum.
      * 不存在返回 false.
      *
-     * @param string      $prop
-     * @param null|string $enum
-     * @param string      $separate
+     * @param string $prop
+     * @param mixed  $enum
+     * @param string $separate
      *
      * @return mixed
      */
-    public static function enum(string $prop, ?string $enum = null, string $separate = ',')
+    public static function enum(string $prop, $enum = null, string $separate = ',')
     {
-        if (false === static::isEnum($prop)) {
+        $prop = static::normalize($prop);
+        $enumDefined = static::class.'::'.strtoupper($prop).'_ENUM';
+
+        if (!defined($enumDefined)) {
             return false;
         }
 
-        $prop = static::normalize($prop);
+        if (!isset(static::$leevelEnums[$prop])) {
+            $enums = constant($enumDefined);
+            $enums = array_values($enums);
 
-        $enums = static::STRUCT[$prop][self::ENUM];
+            foreach ($enums as &$e) {
+                if (!isset($e[1])) {
+                    throw new InvalidArgumentException(
+                        sprintf(
+                            'Invalid enum in the field `%s` of entity `%s`.',
+                            $prop, static::class
+                        )
+                    );
+                }
 
-        if (null === $enum) {
-            return array_map(function (string $val) {
-                return Leevel::__($val);
-            }, $enums);
+                $e[1] = Leevel::__($e[1]);
+            }
+
+            static::$leevelEnums[$prop] = $enums;
+        } else {
+            $enums = static::$leevelEnums[$prop];
         }
 
-        $enum = explode($separate, $enum);
+        if (null === $enum) {
+            return $enums;
+        }
 
-        $result = array_map(function (string $enum) use ($prop, $enums) {
-            if (!isset($enums[$enum])) {
+        $enums = array_column($enums, 1, 0);
+        $enumSep = explode(',', (string) $enum);
+
+        foreach ($enumSep as $v) {
+            if (!isset($enums[$v]) && !isset($enums[(int) $v])) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Value not a enum in the field `%s` of entity `%s`.',
@@ -1180,34 +1205,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 );
             }
 
-            return Leevel::__($enums[$enum]);
-        }, $enum);
+            $result[] = isset($enums[$v]) ? $enums[$v] : $enums[(int) $v];
+        }
 
         return implode($separate, $result);
-    }
-
-    /**
-     * 是否存在 enum.
-     *
-     * @param string $prop
-     *
-     * @return bool
-     */
-    public static function isEnum(string $prop): bool
-    {
-        $prop = static::normalize($prop);
-
-        if (!static::hasField($prop)) {
-            return false;
-        }
-
-        $tmp = static::STRUCT[$prop];
-
-        if (!isset($tmp[self::ENUM]) || !is_array($tmp[self::ENUM])) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -1299,12 +1300,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return $this->leevelScopeSelect;
         }
 
-        return $this->metaConnect()->
-        select()->
-
-        asClass(static::class, [true])->
-
-        asCollection();
+        return $this->metaConnect()
+            ->select()
+            ->asClass(static::class, [true])
+            ->asCollection();
     }
 
     /**
@@ -1852,7 +1851,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $value = $this->propValue($k);
             $result[$k] = $value;
 
-            $result = static::prepareEnum($k, $result);
+            $result = static::prepareEnum($k, $result, $separate);
         }
 
         return $result;
@@ -1869,16 +1868,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected static function prepareEnum(string $prop, array $data, string $separate = ','): array
     {
-        if (!static::isEnum($prop)) {
+        if (!isset($data[$prop])) {
             return $data;
         }
 
-        $value = $data[$prop];
-
-        if (in_array($value, [null, ''], true)) {
-            $enum = '';
-        } else {
-            $enum = static::enum($prop, (string) $data[$prop], $separate);
+        if (false === ($enum = static::enum($prop, $data[$prop], $separate))) {
+            return $data;
         }
 
         $data[$prop.'_'.self::ENUM] = $enum;
