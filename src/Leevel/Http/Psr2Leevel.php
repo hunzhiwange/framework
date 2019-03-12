@@ -78,8 +78,6 @@ class Psr2Leevel implements IPsr2Leevel
             $psrRequest->getBody()->__toString()
         );
 
-        $request->headers->replace($psrRequest->getHeaders());
-
         return $request;
     }
 

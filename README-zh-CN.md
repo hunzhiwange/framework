@@ -55,6 +55,8 @@ QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://raw
     <img alt="Swoole Version" src="https://img.shields.io/badge/swoole-%3E=4.2.6-brightgreen.svg" /></a>
   <a href="http://pecl.php.net/package/v8js">
     <img alt="V8js Version" src="https://img.shields.io/badge/v8js-%3E=2.1.0-brightgreen.svg" /></a>
+  <a href="https://github.com/spiral/roadrunner">
+    <img alt="Roadrunner Version" src="https://img.shields.io/badge/roadrunner-%3E=1.3.5-brightgreen.svg" /></a>
 </p>
 
 我们认为，PHP 应用程序的性能非常重要，但是工程师开发乐趣也需要被考虑，这就是我们开发 QueryPHP 框架以实现伟大理想的原因。
@@ -63,6 +65,7 @@ QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://raw
 * Leevel - 我们提供了一个可选的 C 扩展来接管框架的核心组件，如 IOC、日志、缓存。
 * Swoole - 使 PHP 开发人员可以编写高性能的异步并发 TCP、UDP、Unix Socket、HTTP，WebSocket 服务。
 * Redis - QueryPHP 实现了缓存组件封装，包括文件、Redis，它们可以降低数据库压力。
+* Roadrunner - RoadRunner 是一个开源的高性能 PHP 应用服务器、负载均衡器和流程管理器。它支持作为一个服务运行，能够在每个项目的基础上扩展其功能。
 
 ```
 Wow! Cool! Query Yet Simple!
