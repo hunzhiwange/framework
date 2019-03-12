@@ -180,7 +180,13 @@ class Debug extends DebugBar
             ) {
             if ($this->option['json'] && is_array($data = $response->getData())) {
                 $jsonRenderer = $this->getJsonRenderer();
-                $data[':trace'] = $jsonRenderer->render();
+
+                if (array_values($data) !== $data) {
+                    $data[':trace'] = $jsonRenderer->render();
+                } else {
+                    $data[] = [':trace' => $jsonRenderer->render()];
+                }
+
                 $response->setData($data);
             }
         } elseif (!($response instanceof RedirectResponse)) {
