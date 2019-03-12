@@ -133,10 +133,11 @@ abstract class Relation
      */
     public function getPreLoad()
     {
-        return $this->targetEntity->select()->
-        preLoadResult(
-            $this->findAll()
-        );
+        return $this->targetEntity
+            ->select()
+            ->preLoadResult(
+                $this->findAll()
+            );
     }
 
     /**

@@ -154,8 +154,7 @@ class Meta implements IMeta
      */
     public function insert(array $saveData)
     {
-        return $this->select()->
-        insert($saveData);
+        return $this->select()->insert($saveData);
     }
 
     /**
@@ -168,10 +167,9 @@ class Meta implements IMeta
      */
     public function update(array $condition, array $saveData): int
     {
-        return $this->select()->
-        where($condition)->
-
-        update($saveData);
+        return $this->select()
+            ->where($condition)
+            ->update($saveData);
     }
 
     /**
@@ -183,10 +181,9 @@ class Meta implements IMeta
      */
     public function delete(array $condition): int
     {
-        return $this->select()->
-        where($condition)->
-
-        delete();
+        return $this->select()
+            ->where($condition)
+            ->delete();
     }
 
     /**

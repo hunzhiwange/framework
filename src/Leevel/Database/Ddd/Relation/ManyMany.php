@@ -81,22 +81,18 @@ class ManyMany extends Relation
     public function addRelationCondition(): void
     {
         if (static::$relationCondition) {
-            $this->select->
-
-            join($this->middleEntity->table(), [
-                'middle_'.$this->middleTargetKey => $this->middleTargetKey,
-                'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
-                    $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
-                ])->
-
-            where(
-                $this->middleEntity->table().'.'.$this->middleSourceKey,
-                $this->getSourceValue()
-            )->
-
-            asDefault()->
-
-            asCollection(false);
+            $this->select
+                ->join($this->middleEntity->table(), [
+                    'middle_'.$this->middleTargetKey => $this->middleTargetKey,
+                    'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
+                        $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
+                    ])
+                    ->where(
+                    $this->middleEntity->table().'.'.$this->middleSourceKey,
+                    $this->getSourceValue()
+                )
+                ->asDefault()
+                ->asCollection(false);
         }
     }
 
@@ -107,22 +103,18 @@ class ManyMany extends Relation
      */
     public function preLoadCondition(array $entitys): void
     {
-        $this->select->
-
-        join($this->middleEntity->table(), [
-            'middle_'.$this->middleTargetKey => $this->middleTargetKey,
-            'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
-                $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
-            ])->
-
-        whereIn(
-            $this->middleEntity->table().'.'.$this->middleSourceKey,
-            $this->getPreLoadSourceValue($entitys)
-        )->
-
-        asDefault()->
-
-        asCollection(false);
+        $this->select
+            ->join($this->middleEntity->table(), [
+                'middle_'.$this->middleTargetKey => $this->middleTargetKey,
+                'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
+                    $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
+                ])
+                ->whereIn(
+                $this->middleEntity->table().'.'.$this->middleSourceKey,
+                $this->getPreLoadSourceValue($entitys)
+            )
+            ->asDefault()
+            ->asCollection(false);
     }
 
     /**
@@ -210,10 +202,11 @@ class ManyMany extends Relation
      */
     public function getPreLoad()
     {
-        return $this->targetEntity->select()->
-        preLoadResult(
-            $this->sourceQuery()
-        );
+        return $this->targetEntity
+            ->select()
+            ->preLoadResult(
+                $this->sourceQuery()
+            );
     }
 
     /**

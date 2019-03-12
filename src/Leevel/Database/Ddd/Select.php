@@ -164,12 +164,10 @@ class Select
      */
     public function find(int $id, array $column = ['*']): IEntity
     {
-        return $this->select->
-        where($this->entity->singlePrimaryKey(), '=', $id)->
-
-        setColumns($column)->
-
-        findOne();
+        return $this->select
+            ->where($this->entity->singlePrimaryKey(), '=', $id)
+            ->setColumns($column)
+            ->findOne();
     }
 
     /**
@@ -186,12 +184,10 @@ class Select
             return $this->entity->collection();
         }
 
-        return $this->select->
-        whereIn($this->entity->singlePrimaryKey(), $ids)->
-
-        setColumns($column)->
-
-        findAll();
+        return $this->select
+            ->whereIn($this->entity->singlePrimaryKey(), $ids)
+            ->setColumns($column)
+            ->findAll();
     }
 
     /**
@@ -210,8 +206,8 @@ class Select
             return $result;
         }
 
-        throw (new EntityNotFoundException())->
-        setEntity(get_class($this->entity));
+        throw (new EntityNotFoundException())
+            ->setEntity(get_class($this->entity));
     }
 
     /**
@@ -245,8 +241,9 @@ class Select
         $count = 0;
 
         $instance = $this->entity->make();
-        $entitys = $instance->whereIn($instance->singlePrimaryKey(), $ids)->
-            findAll();
+        $entitys = $instance
+            ->whereIn($instance->singlePrimaryKey(), $ids)
+            ->findAll();
 
         foreach ($entitys as $value) {
             if ($value->softDelete()) {
