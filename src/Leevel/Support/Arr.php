@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
+use InvalidArgumentException;
+
 /**
  * 数组辅助函数.
  *
@@ -59,5 +61,80 @@ class Arr
         }
 
         return $inputs;
+    }
+
+    /**
+     * 返回白名单过滤后的数据.
+     *
+     * @param array $input
+     * @param array $filter
+     *
+     * @return array
+     */
+    public static function only(array $input, array $filter): array
+    {
+        $result = [];
+
+        foreach ($filter as $f) {
+            if (array_key_exists($f, $input)) {
+                $result[$f] = $input[$f];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * 返回黑名单排除后的数据.
+     *
+     * @param array $input
+     * @param array $filter
+     *
+     * @return array
+     */
+    public static function except(array $input, array $filter): array
+    {
+        foreach ($filter as $f) {
+            if (array_key_exists($f, $input)) {
+                unset($input[$f]);
+            }
+        }
+
+        return $input;
+    }
+
+    /**
+     * 返回过滤后的数据.
+     *
+     * @param array $input
+     * @param array $rules
+     *
+     * @return array
+     */
+    public static function filter(array $input, array $rules): array
+    {
+        foreach ($input as $k => &$v) {
+            if (is_string($v)) {
+                $v = trim($v);
+            }
+
+            if (isset($rules[$k])) {
+                $rule = $rules[$k];
+
+                if (!is_array($rule)) {
+                    throw new InvalidArgumentException('Rule must be an array.');
+                }
+
+                foreach ($rule as $r) {
+                    if (!is_callable($r)) {
+                        throw new InvalidArgumentException('Rule item must be a callback type.');
+                    }
+
+                    $v = $r($v);
+                }
+            }
+        }
+
+        return $input;
     }
 }
