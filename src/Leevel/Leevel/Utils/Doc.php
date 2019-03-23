@@ -168,7 +168,7 @@ class Doc
         }
 
         $data = [];
-        $data[] = $this->formatTitle($info['title'] ?? '');
+        $data[] = $this->formatTitle($info['title'] ?? '', true);
         $data[] = $this->formatDescription($info['description'] ?? '');
         $data[] = $this->formatUsers($reflection);
 
@@ -222,7 +222,7 @@ class Doc
         $data[] = $this->formatNote($info['note'] ?? '');
         $data[] = $this->formatBody($method, $info['lang'] ?? 'php');
 
-        return implode(PHP_EOL, $data);
+        return implode(PHP_EOL, $data).PHP_EOL;
     }
 
     /**
@@ -255,7 +255,7 @@ class Doc
 
         if ($uses) {
             $uses = <<<eot
-** 引入相关类 **
+**引入相关类**
 
 {$uses}
 
