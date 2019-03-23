@@ -66,47 +66,4 @@ class CommandTest extends TestCase
         // error
         $this->assertContains('a error message', $result);
     }
-
-    public function t2estActionSpecial()
-    {
-        $result = $this->runCommand(new Action(), [
-            'command'     => 'make:action',
-            'controller'  => 'Hello',
-            'name'        => 'hello-world_Yes',
-            '--namespace' => 'common',
-        ]);
-
-        $this->assertContains('action <hello-world_Yes> created successfully.', $result);
-
-        $file = __DIR__.'/../../Console/Hello/HelloWorldYes.php';
-
-        $this->assertContains('class HelloWorldYes extends Controller', file_get_contents($file));
-
-        $this->assertContains('function run', file_get_contents($file));
-
-        unlink($file);
-        rmdir(dirname($file));
-    }
-
-    public function t2estExtend()
-    {
-        $result = $this->runCommand(new Action(), [
-            'command'     => 'make:action',
-            'controller'  => 'Hello',
-            'name'        => 'hello-world_Yes',
-            '--namespace' => 'common',
-            '--extend'    => 0,
-        ]);
-
-        $this->assertContains('action <hello-world_Yes> created successfully.', $result);
-
-        $file = __DIR__.'/../../Console/Hello/HelloWorldYes.php';
-
-        $this->assertNotContains('class HelloWorldYes extends Controller', file_get_contents($file));
-
-        $this->assertContains('function run', file_get_contents($file));
-
-        unlink($file);
-        rmdir(dirname($file));
-    }
 }
