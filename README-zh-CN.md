@@ -108,7 +108,7 @@ $php vendor/bin/phpunit tests
 ## 框架文档生成
 
 ```
-$cd /data/codes/queryphp/
+$cd /data/codes/queryphp
 $php leevel make:docwithin test
 ```
 
