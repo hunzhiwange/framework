@@ -106,6 +106,13 @@ $php vendor/bin/phinx migrate
 $php vendor/bin/phpunit tests
 ```
 
+## Make Doc For Framework
+
+```
+$cd /data/codes/queryphp
+$php leevel make:docwithin tests
+```
+
 ## Unified Code Style
 
 ### Install PHP Coding Standards Fixer

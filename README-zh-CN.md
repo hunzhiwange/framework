@@ -105,6 +105,13 @@ $php vendor/bin/phinx migrate
 $php vendor/bin/phpunit tests
 ```
 
+## 框架文档生成
+
+```
+$cd /data/codes/queryphp/
+$php leevel make:docwithin test
+```
+
 ## 统一团队代码风格
 
 ### 安装 PHP 代码格式化工具
