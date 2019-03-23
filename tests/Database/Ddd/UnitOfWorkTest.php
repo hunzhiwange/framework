@@ -38,9 +38,22 @@ use Throwable;
  * @since 2018.10.25
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="事务工作单元",
+ *     path="orm/unitofwork",
+ *     description="用事务工作单元更好地处理数据库相关工作。",
+ * )
  */
 class UnitOfWorkTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="保存一个实体",
+     *     description="",
+     *     note="通过 persist 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
+     * )
+     */
     public function testBaseUse()
     {
         $work = UnitOfWork::make();
@@ -67,6 +80,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('post summary', $post->summary);
     }
 
+    /**
+     * @api(
+     *     title="保存多个实体",
+     *     description="",
+     *     note="底层会开启一个事务，只有全部保存成功才会真正持久化到数据库。",
+     * )
+     */
     public function testPersist()
     {
         $work = UnitOfWork::make();
