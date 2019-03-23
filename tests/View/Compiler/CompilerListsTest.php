@@ -49,7 +49,7 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = $list;
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
@@ -75,7 +75,7 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = array_slice($list, 2, 4);
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
@@ -103,7 +103,7 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = $list;
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
@@ -123,7 +123,7 @@ eot;
 
         $source = <<<'eot'
 <lists name="list" id="vo" mod="2">
-    <?php if ($mod == 0): ?>
+    <?php if (0 === $mod): ?>
         {$vo.title} {$vo.people}
     <?php endif; ?>
 </lists>
@@ -133,13 +133,13 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = $list;
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
             ++$index;
             $mod = $index % 2; ?>
-    <?php if ($mod == 0): ?>
+    <?php if (0 === $mod): ?>
         <?php echo $vo->title; ?> <?php echo $vo->people; ?>
     <?php endif; ?>
         <?php endforeach;
@@ -154,7 +154,7 @@ eot;
         $source = <<<'eot'
 <lists name="list" id="vo" mod="2">
     {$vo.title} {$vo.people}
-    <?php if ($mod == 0): ?>
+    <?php if (0 === $mod): ?>
         <br>
     <?php endif; ?>
 </lists>
@@ -164,14 +164,14 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = $list;
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
             ++$index;
             $mod = $index % 2; ?>
     <?php echo $vo->title; ?> <?php echo $vo->people; ?>
-    <?php if ($mod == 0): ?>
+    <?php if (0 === $mod): ?>
         <br>
     <?php endif; ?>
         <?php endforeach;
@@ -186,7 +186,7 @@ eot;
         $source = <<<'eot'
 <lists name="list" id="vo" mod="2">
     {$vo.title} {$vo.people}
-    <?php if ($mod == 0): ?>
+    <?php if (0 === $mod): ?>
         <br>
     <?php endif; ?>
 </lists>
@@ -196,14 +196,14 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = $list;
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
             ++$index;
             $mod = $index % 2; ?>
     <?php echo $vo->title; ?> <?php echo $vo->people; ?>
-    <?php if ($mod == 0): ?>
+    <?php if (0 === $mod): ?>
         <br>
     <?php endif; ?>
         <?php endforeach;
@@ -225,7 +225,7 @@ eot;
 <?php if (is_array($list)):
     $k = 0;
     $tmp = $list;
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
@@ -251,7 +251,7 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = $list;
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
@@ -286,7 +286,7 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = $list;
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):
@@ -317,7 +317,7 @@ eot;
 <?php if (is_array($list)):
     $index = 0;
     $tmp = array_slice($list, 3);
-    if (count($tmp) == 0):
+    if (0 === count($tmp)):
         echo "";
     else:
         foreach ($tmp as $key => $vo):

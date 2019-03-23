@@ -159,7 +159,7 @@ eot;
     {
         $parser = $this->createParser();
 
-        // 放置 . 被替换加上 () 包裹起来
+        // 防止 . 被替换加上 () 包裹起来
         $source = <<<'eot'
 <include file="($path . '/' . $name)" />
 <include file="Template::tpl('header')" />

@@ -842,7 +842,7 @@ class Compiler implements ICompiler
             $tmp .= '    $tmp = '.$attr['name'].';';
         }
 
-        $tmp .= PHP_EOL.'    if (count($tmp) == 0):'.PHP_EOL.
+        $tmp .= PHP_EOL.'    if (0 === count($tmp)):'.PHP_EOL.
             '        echo "'.$attr['empty'].'";';
         $tmp .= PHP_EOL.'    else:';
         $tmp .= PHP_EOL.'        foreach ($tmp as $'.$attr['key'].
