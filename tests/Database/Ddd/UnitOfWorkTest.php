@@ -128,6 +128,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('foo bar', $post2->summary);
     }
 
+    /**
+     * @api(
+     *     title="新增实体",
+     *     description="",
+     *     note="底层执行的是 insert 语句，只有全部保存成功才会真正持久化到数据库。",
+     * )
+     */
     public function testCreate()
     {
         $work = UnitOfWork::make();
@@ -182,6 +189,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('foo bar', $post2->summary);
     }
 
+    /**
+     * @api(
+     *     title="更新实体",
+     *     description="",
+     *     note="底层执行的是 update 语句，只有全部保存成功才会真正持久化到数据库。",
+     * )
+     */
     public function testUpdate()
     {
         $work = UnitOfWork::make();
@@ -271,6 +285,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new post2 summary', $post2->summary);
     }
 
+    /**
+     * @api(
+     *     title="删除实体",
+     *     description="",
+     *     note="底层执行的是 delete 语句，只有全部保存成功才会真正持久化到数据库。",
+     * )
+     */
     public function testDelete()
     {
         $work = UnitOfWork::make();
@@ -358,6 +379,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($post2After->summary);
     }
 
+    /**
+     * @api(
+     *     title="刷新实体",
+     *     description="",
+     *     note="底层执行的是 select 语句，这个操作会读取数据库最新信息并刷新实体的属性。",
+     * )
+     */
     public function testRefresh()
     {
         $work = UnitOfWork::make();
@@ -407,6 +435,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('hello world', $post->title);
     }
 
+    /**
+     * @api(
+     *     title="手工启动事务 beginTransaction",
+     *     description="",
+     *     note="通常来说事务工作单元会自动帮你处理事务，可以通过手工 beginTransaction，成功 commit 或者失败 rollBack，系统提供了 API 让你也手工开启事务处理。",
+     * )
+     */
     public function testBeginTransaction()
     {
         $work = UnitOfWork::make();
@@ -443,6 +478,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new title', $post->getTitle());
     }
 
+    /**
+     * @api(
+     *     title="执行失败事务回滚 rollBack",
+     *     description="",
+     *     note="底层会自动运行一个事务，如果执行失败自动回滚，不会更新数据库。",
+     * )
+     */
     public function testFlushButRollBack()
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
@@ -470,6 +512,13 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
     }
 
+    /**
+     * @api(
+     *     title="事务包裹在闭包中 transaction",
+     *     description="",
+     *     note="可以将事务包裹在一个闭包中，如果执行失败自动回滚，不会更新数据库。",
+     * )
+     */
     public function testTransaction()
     {
         $work = UnitOfWork::make();
@@ -500,6 +549,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new title', $newPost->getTitle());
     }
 
+    /**
+     * @api(
+     *     title="事务包裹在闭包中失败回滚 transaction ",
+     *     description="",
+     *     note="可以将事务包裹在一个闭包中，执行失败自动回滚测试，不会更新数据库。",
+     * )
+     */
     public function testTransactionAndRollBack()
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
@@ -534,6 +590,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="设置根实体 setRootEntity",
+     *     description="",
+     *     note="系统默认读取基础的数据库配置来处理数据相关信息，设置跟实体可以更改事务处理的数据库连接。",
+     * )
+     */
     public function testSetRootEntity()
     {
         $work = UnitOfWork::make();
@@ -570,6 +633,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new title', $newPost->getTitle());
     }
 
+    /**
+     * @api(
+     *     title="更改数据库连接 setConnect",
+     *     description="",
+     *     note="如果没有存在的连接，则会使用默认的连接。",
+     * )
+     */
     public function testSetConnectNotFoundWillUseDefault()
     {
         $work = UnitOfWork::make();
