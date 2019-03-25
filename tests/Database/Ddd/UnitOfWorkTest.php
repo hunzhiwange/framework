@@ -676,6 +676,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new title', $newPost->getTitle());
     }
 
+    /**
+     * @api(
+     *     title="无实体执行 flush 什么都不做",
+     *     description="",
+     *     note="实际上什么也不会发生。",
+     * )
+     */
     public function testFlushButNotFoundAny()
     {
         $work = UnitOfWork::make(new Post());
@@ -683,6 +690,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($work->flush());
     }
 
+    /**
+     * @api(
+     *     title="实体实体支持缓存",
+     *     description="",
+     *     note="保存两个一样的实体，第二个实体并不会被添加。",
+     * )
+     */
     public function testPersistStageManagedEntityDoNothing()
     {
         $work = UnitOfWork::make();
@@ -730,6 +744,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="重新保存已删除的实体实体",
+     *     description="",
+     *     note="这样被删除的实体并不会被删除。",
+     * )
+     */
     public function testPersistStageRemovedEntity()
     {
         $work = UnitOfWork::make();
@@ -759,6 +780,13 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $connect->table('post')->findCount());
     }
 
+    /**
+     * @api(
+     *     title="注册更新的实体不能重新被创建",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateButAlreadyInUpdates()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -775,6 +803,13 @@ class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
+    /**
+     * @api(
+     *     title="注册删除的实体不能重新被创建",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateButAlreadyInDeletes()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -791,6 +826,13 @@ class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
+    /**
+     * @api(
+     *     title="注册替换的实体不能重新被创建",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateButAlreadyInReplaces()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -807,6 +849,13 @@ class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
+    /**
+     * @api(
+     *     title="不能多次创建同一个实体",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreateManyTimes()
     {
         $this->expectException(\InvalidArgumentException::class);
