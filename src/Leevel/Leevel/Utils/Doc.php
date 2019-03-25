@@ -219,8 +219,8 @@ class Doc
         $data = [];
         $data[] = $this->formatTitle($info['title'] ?? '');
         $data[] = $this->formatDescription($info['description'] ?? '');
-        $data[] = $this->formatNote($info['note'] ?? '');
         $data[] = $this->formatBody($method, $info['lang'] ?? 'php');
+        $data[] = $this->formatNote($info['note'] ?? '');
 
         return implode(PHP_EOL, $data).PHP_EOL;
     }
@@ -435,7 +435,7 @@ eot;
 
         foreach ($comments as $v) {
             $v = trim($v, '* ');
-            $v = ltrim($v, '_'); // 删除占位符
+            $v = trim($v, '_'); // 删除占位符
 
             if ('@api(' === $v) {
                 $findApi = true;
