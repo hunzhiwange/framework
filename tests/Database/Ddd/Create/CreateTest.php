@@ -36,9 +36,32 @@ use Tests\Database\Ddd\Entity\TestEntity;
  * @since 2018.06.29
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="保存实体",
+ *     path="orm/create",
+ *     description="将实体持久化到数据库。",
+ * )
  */
 class CreateTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="创建一个实体",
+     *     description="
+     * _**完整例子**_
+     *
+     * ```
+     * $entity = new TestEntity();
+     * $entity->name = 'foo';
+     * $entity->save()->flush();
+     * ```
+     *
+     * 调用 `save` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待保存的数据。
+     * ",
+     *     note="通过 save 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
+     * )
+     */
     public function testBaseUse()
     {
         $entity = new TestEntity();
@@ -70,7 +93,22 @@ eot;
         );
     }
 
-    public function testConsturctPropBlackAndWhite()
+    /**
+     * @api(
+     *     title="创建一个实体支持构造器白名单",
+     *     description="
+     * _**完整模型**_
+     *
+     * ``` php
+     * ".file_get_contents(\Leevel::path('vendor/hunzhiwange/framework/tests/Database/Ddd/Entity/TestConstructPropWhiteEntity.php'))."
+     * ```
+     *
+     * 调用 `construct_prop_white => true` 来设置字段白名单，一旦设置了白名单只有通过了白名单的数据才能够通过构造器更新模型属性。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testConsturctPropWhite()
     {
         $entity = new TestConstructPropWhiteEntity([
             'id'   => 5,
@@ -81,7 +119,22 @@ eot;
         $this->assertNull($entity->getName());
     }
 
-    public function testConsturctPropBlackAndWhite2()
+    /**
+     * @api(
+     *     title="创建一个实体支持构造器黑名单",
+     *     description="
+     * _**完整模型**_
+     *
+     * ``` php
+     * ".file_get_contents(\Leevel::path('vendor/hunzhiwange/framework/tests/Database/Ddd/Entity/TestConstructPropBlackEntity.php'))."
+     * ```
+     *
+     * 调用 `construct_prop_black => true` 来设置字段黑名单，一旦设置了黑名单处于黑名单的数据无法通过构造器更新模型属性。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testConsturctPropBlack()
     {
         $entity = new TestConstructPropBlackEntity([
             'id'   => 5,
