@@ -598,7 +598,7 @@ class Router implements IRouter
             default:
                 $params = $this->matchedParams();
 
-                if (isset($params['_param0'])) {
+                if (isset($params[static::RESTFUL_ID])) {
                     $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
                 } else {
                     $this->matchedData[static::ACTION] = static::RESTFUL_INDEX;

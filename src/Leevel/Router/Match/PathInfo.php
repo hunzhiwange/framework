@@ -104,7 +104,9 @@ class PathInfo extends Match implements IMatch
             $result[IRouter::APP] = substr(array_shift($path), 1);
         }
 
-        list($path, $result[IRouter::PARAMS]) = $this->normalizePathsAndParams($path);
+        if ($restfulResult = $this->matcheRestful($path)) {
+            return [array_merge($result, $restfulResult), []];
+        }
 
         if (!$path) {
             $result[IRouter::CONTROLLER] = IRouter::DEFAULT_CONTROLLER;
@@ -120,7 +122,7 @@ class PathInfo extends Match implements IMatch
      *
      * @return array
      */
-    protected function matcheMvc(array $path)
+    protected function matcheMvc(array $path): array
     {
         $result = [];
 
@@ -156,30 +158,28 @@ class PathInfo extends Match implements IMatch
     }
 
     /**
-     * 解析路径和参数.
+     * 匹配路由 Restful.
      *
-     * @param array $data
+     * @param array $path
      *
      * @return array
      */
-    protected function normalizePathsAndParams(array $data): array
+    protected function matcheRestful(array $path): array
     {
-        $paths = $params = [];
+        $restfulPath = implode('/', $path);
+        $regex = '/^(\S+)\/('.IRouter::RESTFUL_REGEX.')(\/*\S*)$/';
 
-        $k = 0;
+        if (preg_match($regex, $restfulPath, $matches)) {
+            $result[IRouter::CONTROLLER] = $matches[1];
+            $result[IRouter::PARAMS][IRouter::RESTFUL_ID] = $matches[2];
 
-        foreach ($data as $item) {
-            if (is_numeric($item)) {
-                $params['_param'.$k] = $item;
-                $k++;
-            } else {
-                $paths[] = $item;
+            if ('' !== $matches[3]) {
+                $result[IRouter::ACTION] = substr($matches[3], 1);
             }
+
+            return $result;
         }
 
-        return [
-            $paths,
-            $params,
-        ];
+        return [];
     }
 }

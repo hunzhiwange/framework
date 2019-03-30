@@ -126,6 +126,20 @@ interface IRouter
     const RESTFUL_INDEX = 'index';
 
     /**
+     * restful regex.
+     *
+     * @var string
+     */
+    const RESTFUL_REGEX = '\d+';
+
+    /**
+     * restful id.
+     *
+     * @var string
+     */
+    const RESTFUL_ID = 'id';
+
+    /**
      * 默认应用.
      *
      * @var string
