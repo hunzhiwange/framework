@@ -114,11 +114,9 @@ class Cache extends Command
      */
     protected function data(string $i18n): array
     {
-        $load = (new Load([$this->project->i18nPath()]))->
-
-        setI18n($i18n)->
-
-        addDir($this->extends);
+        $load = (new Load([$this->project->i18nPath()]))
+            ->setI18n($i18n)
+            ->addDir($this->extends);
 
         return $load->loadData();
     }
@@ -135,9 +133,9 @@ class Cache extends Command
 
         if (!is_dir($dirname)) {
             if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                throw new InvalidArgumentException(
-                    sprintf('Unable to create the %s directory.', $dirname)
-                );
+                $e = sprintf('Unable to create the %s directory.', $dirname);
+
+                throw new InvalidArgumentException($e);
             }
 
             mkdir($dirname, 0777, true);
@@ -148,9 +146,9 @@ class Cache extends Command
 
         if (!is_writable($dirname) ||
             !file_put_contents($cachePath, $content)) {
-            throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable.', $dirname)
-            );
+            $e = sprintf('Dir %s is not writeable.', $dirname);
+
+            throw new InvalidArgumentException($e);
         }
 
         chmod($cachePath, 0666 & ~umask());

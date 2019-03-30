@@ -81,9 +81,9 @@ class Cache extends Command
 
         if (!is_dir($dirname)) {
             if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                throw new InvalidArgumentException(
-                    sprintf('Unable to create the %s directory.', $dirname)
-                );
+                $e = sprintf('Unable to create the %s directory.', $dirname);
+
+                throw new InvalidArgumentException($e);
             }
 
             mkdir($dirname, 0777, true);
@@ -94,9 +94,9 @@ class Cache extends Command
 
         if (!is_writable($dirname) ||
             !file_put_contents($cachePath, $content)) {
-            throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable.', $dirname)
-            );
+            $e = sprintf('Dir %s is not writeable.', $dirname);
+
+            throw new InvalidArgumentException($e);
         }
 
         chmod($cachePath, 0666 & ~umask());
