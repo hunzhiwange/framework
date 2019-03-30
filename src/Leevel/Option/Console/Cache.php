@@ -22,7 +22,6 @@ namespace Leevel\Option\Console;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Leevel\Console\Option;
 use Leevel\Kernel\IProject;
 use Leevel\Option\Load;
 

@@ -46,6 +46,7 @@ class CacheTest extends TestCase
             __DIR__.'/dirWriteable',
             __DIR__.'/parentDirWriteable',
             __DIR__.'/dirNotExists',
+            __DIR__.'/assertRelative/relative',
         ];
 
         foreach ($dirs as $dir) {
@@ -137,6 +138,43 @@ class CacheTest extends TestCase
             $this->varJson(
                 (array) (include $cacheFile)
             )
+        );
+
+        unlink($cacheFile);
+        rmdir(dirname($cacheFile));
+    }
+
+    public function testDirRelative()
+    {
+        $cacheFile = __DIR__.'/assertRelative/relative/k/option_cache.php';
+
+        $result = $this->runCommand(
+            new Cache(),
+            [
+                'command' => 'option:cache',
+            ],
+            function ($container) use ($cacheFile) {
+                $this->initContainerService($container, $cacheFile, 'assertRelative');
+            }
+        );
+
+        $result = $this->normalizeContent($result);
+
+        $this->assertContains(
+            $this->normalizeContent('Start to cache option.'),
+            $result
+        );
+
+        $this->assertContains(
+            $this->normalizeContent(sprintf('Option cache file %s cache successed.', $cacheFile)),
+            $result
+        );
+
+        $optionData = (array) (include __DIR__.'/assertRelative/option.php');
+
+        $this->assertSame(
+            $optionData,
+            (array) (include $cacheFile)
         );
 
         unlink($cacheFile);
@@ -235,18 +273,18 @@ class CacheTest extends TestCase
         rmdir(dirname($dirname));
     }
 
-    protected function initContainerService(IContainer $container, string $cacheFile)
+    protected function initContainerService(IContainer $container, string $cacheFile, string $assertDir = 'assert')
     {
         // 注册 project
         $project = $this->createMock(IProject::class);
 
         $this->assertInstanceof(IProject::class, $project);
 
-        $project->method('path')->willReturn(__DIR__.'/assert');
-        $this->assertEquals(__DIR__.'/assert', $project->path());
+        $project->method('path')->willReturn(__DIR__.'/'.$assertDir);
+        $this->assertEquals(__DIR__.'/'.$assertDir, $project->path());
 
-        $project->method('envPath')->willReturn(__DIR__.'/assert');
-        $this->assertEquals(__DIR__.'/assert', $project->envPath());
+        $project->method('envPath')->willReturn(__DIR__.'/'.$assertDir);
+        $this->assertEquals(__DIR__.'/'.$assertDir, $project->envPath());
 
         $project->method('envFile')->willReturn('.env');
         $this->assertEquals('.env', $project->envFile());
@@ -254,8 +292,8 @@ class CacheTest extends TestCase
         $project->method('optionCachedPath')->willReturn($cacheFile);
         $this->assertEquals($cacheFile, $project->optionCachedPath());
 
-        $project->method('optionPath')->willReturn(__DIR__.'/assert/option');
-        $this->assertEquals(__DIR__.'/assert/option', $project->optionPath());
+        $project->method('optionPath')->willReturn(__DIR__.'/'.$assertDir.'/option');
+        $this->assertEquals(__DIR__.'/'.$assertDir.'/option', $project->optionPath());
 
         $container->singleton(IProject::class, $project);
     }
