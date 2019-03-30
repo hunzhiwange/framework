@@ -59,7 +59,9 @@ class Load
     public function __construct(string $dir)
     {
         if (!is_dir($dir)) {
-            throw new RuntimeException(sprintf('Option load dir %s is not exits.', $dir));
+            $e = sprintf('Option load dir %s is not exits.', $dir);
+
+            throw new RuntimeException($e);
         }
 
         $this->dir = $dir;
@@ -242,7 +244,9 @@ class Load
                 }
 
                 if (!is_file($item)) {
-                    throw new RuntimeException(sprintf('Option file %s is not exist.', $item));
+                    $e = sprintf('Option file %s is not exist.', $item);
+
+                    throw new RuntimeException($e);
                 }
 
                 $optionData = array_merge($optionData, include $item);

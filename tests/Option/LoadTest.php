@@ -183,4 +183,33 @@ class LoadTest extends TestCase
 
         $options = ($load = new Load($appPath.'/option'))->loadData($project);
     }
+
+    public function testMergeComposerOptionNewKey()
+    {
+        $appPath = __DIR__.'/app5';
+
+        $project = $this->createMock(IProject::class);
+
+        $this->assertInstanceof(IProject::class, $project);
+
+        $project->method('path')->willReturn($appPath);
+        $this->assertEquals($appPath, $project->path());
+
+        $project->method('envPath')->willReturn($appPath);
+        $this->assertEquals($appPath, $project->envPath());
+
+        $project->method('envFile')->willReturn('.env');
+        $this->assertEquals('.env', $project->envFile());
+
+        $options = ($load = new Load($appPath.'/option'))->loadData($project);
+
+        $data = file_get_contents(__DIR__.'/app5/option.json');
+
+        $this->assertSame(
+            trim($data),
+            $this->varJson(
+                $options
+            )
+        );
+    }
 }
