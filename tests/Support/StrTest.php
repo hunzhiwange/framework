@@ -208,13 +208,11 @@ class StrTest extends TestCase
         );
     }
 
-    public function testStrEncoding()
+    public function testConvertEncoding()
     {
-        $this->assertSame('hello', Str::StrEncoding('hello', 'gbk'));
-
-        $this->assertSame(['key' => 'hello'], Str::StrEncoding(['key' => 'hello'], 'gbk'));
-
-        $this->assertSame('hello', Str::StrEncoding('hello', 'gbk', 'gbk'));
+        $this->assertSame('hello', Str::convertEncoding('hello', 'gbk', 'utf8'));
+        $sourceConvert = Str::convertEncoding($source = '故事', 'gbk', 'utf8');
+        $this->assertSame($source, Str::convertEncoding($sourceConvert, 'utf8', 'gbk'));
     }
 
     public function testSubstr()

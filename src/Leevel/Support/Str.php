@@ -281,28 +281,9 @@ class Str
      *
      * @return mixed
      */
-    public static function strEncoding($contents, string $fromChar, string $toChar = 'utf-8')
+    public static function convertEncoding($contents, string $fromChar, string $toChar)
     {
-        if (empty($contents) ||
-            (!is_array($contents) && !is_string($contents)) ||
-            strtolower($fromChar) === strtolower($toChar)) {
-            return $contents;
-        }
-
-        if (is_string($contents)) {
-            return mb_convert_encoding($contents, $toChar, $fromChar);
-        }
-
-        foreach ($contents as $key => $val) {
-            $tmp = static::strEncoding($key, $fromChar, $toChar);
-            $contents[$tmp] = static::strEncoding($val, $fromChar, $toChar);
-
-            if ($key !== $tmp) {
-                unset($contents[$tmp]);
-            }
-        }
-
-        return $contents;
+        return mb_convert_encoding($contents, $fromChar, $toChar);
     }
 
     /**
