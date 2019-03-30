@@ -51,7 +51,7 @@ class CreateTest extends TestCase
      *     description="
      * _**完整例子**_
      *
-     * ```
+     * ``` php
      * $entity = new TestEntity();
      * $entity->name = 'foo';
      * $entity->save()->flush();
