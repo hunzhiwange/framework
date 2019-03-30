@@ -122,12 +122,16 @@ class Arr
                 $rule = $rules[$k];
 
                 if (!is_array($rule)) {
-                    throw new InvalidArgumentException('Rule must be an array.');
+                    $e = sprintf('Rule of `%s` must be an array.', $k);
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 foreach ($rule as $r) {
                     if (!is_callable($r)) {
-                        throw new InvalidArgumentException('Rule item must be a callback type.');
+                        $e = sprintf('Rule item of `%s` must be a callback type.', $k);
+
+                        throw new InvalidArgumentException($e);
                     }
 
                     $v = $r($v);
