@@ -47,6 +47,21 @@ class ComposerOption
     protected $loaded;
 
     /**
+     * 支持的配置项
+     * 其它信息将被过滤掉.
+     *
+     * @return array
+     */
+    protected $supportedOptions = [
+        'providers',
+        'ignores',
+        'commands',
+        'options',
+        'i18ns',
+        'metas',
+    ];
+
+    /**
      * 构造函数.
      *
      * @param string $path
@@ -110,7 +125,7 @@ class ComposerOption
     {
         $result = [];
 
-        foreach ($this->getSupportedOptions() as $item) {
+        foreach ($this->supportedOptions as $item) {
             $result[$item] = array_merge($olds[$item] ?? [], $options[$item] ?? []);
         }
 
@@ -146,7 +161,7 @@ class ComposerOption
     {
         $result = [];
 
-        foreach ($this->getSupportedOptions() as $item) {
+        foreach ($this->supportedOptions as $item) {
             $tmp = $options[$item] ?? [];
 
             if (!is_array($tmp)) {
@@ -185,23 +200,5 @@ class ComposerOption
     protected function getFileContent(string $path): array
     {
         return json_decode(file_get_contents($path), true);
-    }
-
-    /**
-     * 支持的配置项
-     * 其它信息将被过滤掉.
-     *
-     * @return array
-     */
-    protected function getSupportedOptions(): array
-    {
-        return [
-            'providers',
-            'ignores',
-            'commands',
-            'options',
-            'i18ns',
-            'metas',
-        ];
     }
 }
