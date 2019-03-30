@@ -279,9 +279,9 @@ class Str
      * @param string $fromChar
      * @param string $toChar
      *
-     * @return mixed
+     * @return string
      */
-    public static function convertEncoding($contents, string $fromChar, string $toChar)
+    public static function convertEncoding($contents, string $fromChar, string $toChar): string
     {
         return mb_convert_encoding($contents, $fromChar, $toChar);
     }

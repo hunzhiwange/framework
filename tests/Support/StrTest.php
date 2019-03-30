@@ -40,6 +40,13 @@ use Tests\TestCase;
  */
 class StrTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="随机字母数字",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse()
     {
         $this->assertSame('', Str::randAlphaNum(0));
@@ -129,6 +136,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="随机小写字母",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRandAlphaLowercase()
     {
         $this->assertSame('', Str::randAlphaLowercase(0));
@@ -146,6 +160,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="随机大写字母",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRandAlphaUppercase()
     {
         $this->assertSame('', Str::randAlphaUppercase(0));
@@ -163,6 +184,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="随机数字",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRandNum()
     {
         $this->assertSame('', Str::randNum(0));
@@ -180,6 +208,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="随机字中文",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRandChinese()
     {
         $this->assertSame('', Str::randChinese(0));
@@ -197,6 +232,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="随机字符串",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRandStr()
     {
         $this->assertSame('', Str::randStr(0, ''));
@@ -208,6 +250,13 @@ class StrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="编码转换",
+     *     description="这里只是简单的对函数调用一次 `mb_convert_encoding($contents, $fromChar, $toChar)`。",
+     *     note="",
+     * )
+     */
     public function testConvertEncoding()
     {
         $this->assertSame('hello', Str::convertEncoding('hello', 'gbk', 'utf8'));
@@ -215,6 +264,13 @@ class StrTest extends TestCase
         $this->assertSame($source, Str::convertEncoding($sourceConvert, 'utf8', 'gbk'));
     }
 
+    /**
+     * @api(
+     *     title="字符串截取",
+     *     description="这里只是简单的对函数调用一次 `mb_substr($strings, $start, $length, $charset)`。",
+     *     note="",
+     * )
+     */
     public function testSubstr()
     {
         $this->assertSame('我', Str::substr('我是人', 0, 1));
@@ -222,6 +278,13 @@ class StrTest extends TestCase
         $this->assertSame('人', Str::substr('我是人', 2));
     }
 
+    /**
+     * @api(
+     *     title="日期格式化",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFormatDate()
     {
         $time = time();
@@ -241,6 +304,13 @@ class StrTest extends TestCase
         $this->assertTrue(in_array(Str::formatDate($time - 40, ['seconds' => '秒之前']), ['40 秒之前', '41 秒之前', '42 秒之前'], true));
     }
 
+    /**
+     * @api(
+     *     title="文件大小格式化",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFormatBytes()
     {
         $this->assertSame('2.4G', Str::formatBytes(2573741824));
@@ -256,6 +326,13 @@ class StrTest extends TestCase
         $this->assertSame('100', Str::formatBytes(100, false));
     }
 
+    /**
+     * @api(
+     *     title="下划线转驼峰",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCamelize()
     {
         $this->assertSame('helloWorld', Str::camelize('helloWorld'));
@@ -267,6 +344,13 @@ class StrTest extends TestCase
         $this->assertSame('helloWorld', Str::camelize('hello-world', '-'));
     }
 
+    /**
+     * @api(
+     *     title="驼峰转下划线",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUnCamelize()
     {
         $this->assertSame('hello_world', Str::unCamelize('hello_world'));
@@ -278,6 +362,13 @@ class StrTest extends TestCase
         $this->assertSame('hello-world', Str::unCamelize('helloWorld', '-'));
     }
 
+    /**
+     * @api(
+     *     title="判断字符串中是否包含给定的字符开始",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testStartsWith()
     {
         $this->assertFalse(Str::startsWith('foo', 'hello'));
@@ -285,6 +376,13 @@ class StrTest extends TestCase
         $this->assertTrue(Str::startsWith('foo bar', 'foo'));
     }
 
+    /**
+     * @api(
+     *     title="判断字符串中是否包含给定的字符结尾",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEndsWith()
     {
         $this->assertFalse(Str::endsWith('foo', 'hello'));
@@ -292,6 +390,13 @@ class StrTest extends TestCase
         $this->assertTrue(Str::endsWith('foo bar', 'bar'));
     }
 
+    /**
+     * @api(
+     *     title="判断字符串中是否包含给定的字符串集合",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testContains()
     {
         $this->assertFalse(Str::contains('foo', ''));
