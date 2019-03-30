@@ -254,7 +254,7 @@ class CacheTest extends TestCase
                 'command' => 'option:cache',
             ],
             function ($container) use ($cacheFile, $optionData) {
-                $this->initContainerService($container, $cacheFile, $optionData);
+                $this->initContainerService($container, $cacheFile);
             }
         );
 
