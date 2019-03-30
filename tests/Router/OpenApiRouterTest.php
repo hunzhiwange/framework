@@ -112,6 +112,25 @@ class OpenApiRouterTest extends TestCase
         );
     }
 
+    public function testAppGroup()
+    {
+        $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
+
+        $scandir = __DIR__.'/Apps/AppGroup';
+
+        $openApiRouter->addScandir($scandir);
+        $result = $openApiRouter->handle();
+
+        $data = file_get_contents($scandir.'/router.json');
+
+        $this->assertSame(
+            trim($data),
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
     public function testAddScandirButNotFound()
     {
         $scandir = __DIR__.'/Apps/PetstorenNotFound';

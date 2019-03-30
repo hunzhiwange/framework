@@ -1,0 +1,32 @@
+{
+    "base_paths": [],
+    "group_paths": [],
+    "groups": [
+        "\/pet",
+        "\/store",
+        "\/user"
+    ],
+    "routers": {
+        "get": {
+            "a": {
+                "_": {
+                    "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/{petId2:[A-Za-z]+}\/": {
+                        "bind": "\\Tests\\Router\\Apps\\AppWithoutExternalDocs\\Controllers\\Pet@petLeevel",
+                        "var": [
+                            "petId",
+                            "petId2"
+                        ]
+                    },
+                    "regex": [
+                        "~^(?|\/api\/v1\/petLeevel\/([A-Za-z]+)\/([A-Za-z]+)\/)$~x"
+                    ],
+                    "map": [
+                        {
+                            "3": "\/api\/v1\/petLeevel\/{petId:[A-Za-z]+}\/{petId2:[A-Za-z]+}\/"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
