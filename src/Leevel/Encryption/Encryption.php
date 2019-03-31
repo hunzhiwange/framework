@@ -67,6 +67,8 @@ class Encryption implements IEncryption
      *
      * @param string $key
      * @param string $cipher
+     * @param string $rsaPrivate
+     * @param string $rsaPublic
      */
     public function __construct(string $key, string $cipher = 'AES-256-CBC', ?string $rsaPrivate = null, ?string $rsaPublic = null)
     {
@@ -279,7 +281,8 @@ class Encryption implements IEncryption
                 return base64_encode($sign);
             }
 
-            throw new InvalidArgumentException('Openssl sign failed.'); // @codeCoverageIgnore
+            // 在 error_reporting(0) 场景下签名 $rsaPrivate 错误的情况下才会执行
+            throw new InvalidArgumentException('Openssl sign failed.');
         } catch (Throwable $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
@@ -293,9 +296,9 @@ class Encryption implements IEncryption
     protected function validateCipher(string $cipher): void
     {
         if (!in_array($cipher, openssl_get_cipher_methods(), true)) {
-            throw new InvalidArgumentException(
-                sprintf('Encrypt cipher `%s` was not found.', $cipher)
-            );
+            $e = sprintf('Encrypt cipher `%s` was not found.', $cipher);
+
+            throw new InvalidArgumentException($e);
         }
     }
 
@@ -342,13 +345,14 @@ class Encryption implements IEncryption
         }
 
         try {
-            $rsaPrivate = openssl_pkey_get_public($this->rsaPublic);
+            $rsaPublic = openssl_pkey_get_public($this->rsaPublic);
 
-            if (1 === openssl_verify($value, base64_decode($sign, true), $rsaPrivate)) {
+            if (1 === openssl_verify($value, base64_decode($sign, true), $rsaPublic)) {
                 return $value;
             }
 
-            throw new InvalidArgumentException('Openssl verify sign failed.'); // @codeCoverageIgnore
+            // 在 error_reporting(0) 场景下签名 $rsaPublic 错误的情况下才会执行
+            throw new InvalidArgumentException('Openssl verify sign failed.');
         } catch (Throwable $e) {
             throw new InvalidArgumentException($e->getMessage());
         }

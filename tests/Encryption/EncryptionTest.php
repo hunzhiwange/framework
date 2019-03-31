@@ -32,9 +32,30 @@ use Tests\TestCase;
  * @since 2018.07.11
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="加密解密",
+ *     path="component/encryption",
+ *     description="字符串加密解密支持。",
+ * )
  */
 class EncryptionTest extends TestCase
 {
+    protected function tearDown()
+    {
+        if (isset($GLOBALS['RUNTIME_ERROR_REPORTING'])) {
+            error_reporting($GLOBALS['RUNTIME_ERROR_REPORTING']);
+            unset($GLOBALS['RUNTIME_ERROR_REPORTING']);
+        }
+    }
+
+    /**
+     * @api(
+     *     title="加密解密基本功能",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse()
     {
         $encryption = new Encryption('encode-key');
@@ -63,6 +84,13 @@ class EncryptionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="加密解密 AES-128-CBC",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUse128()
     {
         $encryption = new Encryption('encode-key', 'AES-128-CBC');
@@ -130,6 +158,13 @@ class EncryptionTest extends TestCase
         $this->assertSame('', $encryption->decrypt($data));
     }
 
+    /**
+     * @api(
+     *     title="加密解密支持过期时间",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDecryptButExpired()
     {
         $encryption = new Encryption('encode-key');
@@ -145,6 +180,13 @@ class EncryptionTest extends TestCase
         $this->assertSame('', $encryption->decrypt($data));
     }
 
+    /**
+     * @api(
+     *     title="加密解密支持 RSA 校验",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithPublicAndPrimaryKey()
     {
         $encryption = new Encryption(
@@ -184,7 +226,7 @@ class EncryptionTest extends TestCase
 
         $sourceMessage = '123456';
 
-        $encodeMessage = $encryption->encrypt($sourceMessage);
+        $encryption->encrypt($sourceMessage);
     }
 
     public function testWithPublicKeyButPrimanyIsInvalid()
@@ -212,5 +254,94 @@ class EncryptionTest extends TestCase
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
+    }
+
+    public function testUnpackDataFailed()
+    {
+        $encryption = new Encryption('encode-key');
+
+        $result = $this->invokeTestMethod($encryption, 'unpackData', ['errordata']);
+
+        $this->assertFalse($result);
+    }
+
+    public function testValidateDataForUnpackDataFailed()
+    {
+        $encryption = new Encryption('encode-key');
+
+        $result = $this->invokeTestMethod($encryption, 'validateData', ['errordata', '']);
+
+        $this->assertSame($result, '');
+    }
+
+    public function testValidateDataForBase64DecodeFailed()
+    {
+        $encryption = new Encryption('encode-key');
+        $expiry = '0000000000';
+
+        // 返回 false 例子
+        // https://www.php.net/manual/vote-note.php?id=118801&page=function.base64-decode&vote=down
+        $value = '$VGhpcyBpcyBhbiBlbmNvZGVkIHN0cmluZw==';
+
+        $iv = 'testiv';
+        $sign = '';
+
+        $data = implode("\t", [$expiry, $value, $iv, $sign]);
+
+        $result = $this->invokeTestMethod($encryption, 'validateData', [$data, 'testiv']);
+        $this->assertSame($result, '');
+    }
+
+    public function testNormalizeSignFailed()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Openssl sign failed.'
+        );
+
+        $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();
+        error_reporting(0);
+
+        $errorRsaPrivateKey = str_replace(
+            '-----END PRIVATE KEY-----',
+            'error'.PHP_EOL.'-----END PRIVATE KEY-----',
+            file_get_contents(__DIR__.'/assert/rsa_private_key.pem')
+        );
+
+        $encryption = new Encryption(
+            'encode-key', 'AES-256-CBC',
+            $errorRsaPrivateKey,
+            file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
+        );
+
+        $data = 'data';
+        $this->invokeTestMethod($encryption, 'normalizeSign', [$data]);
+    }
+
+    public function testValidateSignFailed()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Openssl verify sign failed.'
+        );
+
+        $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();
+        error_reporting(0);
+
+        $errorRsaPublicKey = str_replace(
+            '-----END PRIVATE KEY-----',
+            'error'.PHP_EOL.'-----END PRIVATE KEY-----',
+            file_get_contents(__DIR__.'/assert/rsa_public_key.pem')
+        );
+
+        $encryption = new Encryption(
+            'encode-key', 'AES-256-CBC',
+            file_get_contents(__DIR__.'/assert/rsa_private_key.pem'),
+            $errorRsaPublicKey
+        );
+
+        $data = 'data';
+        $sign = '';
+        $this->invokeTestMethod($encryption, 'validateSign', [$data, $sign]);
     }
 }
