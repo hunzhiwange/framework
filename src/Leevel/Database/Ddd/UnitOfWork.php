@@ -175,25 +175,25 @@ class UnitOfWork implements IUnitOfWork
         $entityState = $this->getEntityState($entity, self::STATE_NEW);
 
         switch ($entityState) {
-              case self::STATE_MANAGED:
-                  break;
-              case self::STATE_NEW:
-                    $this->persistNewEntry($method, $entity);
+            case self::STATE_MANAGED:
+                break;
+            case self::STATE_NEW:
+                $this->persistNewEntry($method, $entity);
 
-                  break;
-              case self::STATE_REMOVED:
-                  if (isset($this->entityDeletes[$id])) {
-                      unset($this->entityDeletes[$id]);
-                  }
+                break;
+            case self::STATE_REMOVED:
+                if (isset($this->entityDeletes[$id])) {
+                    unset($this->entityDeletes[$id]);
+                }
 
-                  $this->entityStates[$id] = self::STATE_MANAGED;
+                $this->entityStates[$id] = self::STATE_MANAGED;
 
-                  break;
-             case self::STATE_DETACHED:
-             default:
-                  throw new InvalidArgumentException(
-                      sprintf('Detached entity `%s` cannot be persist.', get_class($entity))
-                  );
+                break;
+            case self::STATE_DETACHED:
+            default:
+                $e = sprintf('Detached entity `%s` cannot be persist.', get_class($entity));
+
+                throw new InvalidArgumentException($e);
         }
 
         return $this;
@@ -222,9 +222,9 @@ class UnitOfWork implements IUnitOfWork
                 break;
              case self::STATE_DETACHED:
              default:
-                  throw new InvalidArgumentException(
-                      sprintf('Detached entity `%s` cannot be remove.', get_class($entity))
-                  );
+                $e = sprintf('Detached entity `%s` cannot be remove.', get_class($entity));
+
+                throw new InvalidArgumentException($e);
         }
 
         return $this;
@@ -244,27 +244,27 @@ class UnitOfWork implements IUnitOfWork
         $id = spl_object_id($entity);
 
         if (isset($this->entityUpdates[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Updated entity `%s` cannot be added for create.', get_class($entity))
-            );
+            $e = sprintf('Updated entity `%s` cannot be added for create.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityDeletes[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Deleted entity `%s` cannot be added for create.', get_class($entity))
-            );
+            $e = sprintf('Deleted entity `%s` cannot be added for create.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityReplaces[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Replaced entity `%s` cannot be added for create.', get_class($entity))
-            );
+            $e = sprintf('Replaced entity `%s` cannot be added for create.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityCreates[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Entity `%s` cannot be added for twice.', get_class($entity))
-            );
+            $e = sprintf('Entity `%s` cannot be added for twice.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->entityCreates[$id] = $entity;
@@ -299,33 +299,33 @@ class UnitOfWork implements IUnitOfWork
         $id = spl_object_id($entity);
 
         if (!$entity->id()) {
-            throw new InvalidArgumentException(
-                sprintf('Entity `%s` has no identity for update.', get_class($entity))
-            );
+            $e = sprintf('Entity `%s` has no identity for update.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityDeletes[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Deleted entity `%s` cannot be added for update.', get_class($entity))
-            );
+            $e = sprintf('Deleted entity `%s` cannot be added for update.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityCreates[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Created entity `%s` cannot be added for update.', get_class($entity))
-            );
+            $e = sprintf('Created entity `%s` cannot be added for update.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityReplaces[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Replaced entity `%s` cannot be added for update.', get_class($entity))
-            );
+            $e = sprintf('Replaced entity `%s` cannot be added for update.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityUpdates[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Entity `%s` cannot be updated for twice.', get_class($entity))
-            );
+            $e = sprintf('Entity `%s` cannot be updated for twice.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->entityUpdates[$id] = $entity;
@@ -360,27 +360,27 @@ class UnitOfWork implements IUnitOfWork
         $id = spl_object_id($entity);
 
         if (isset($this->entityDeletes[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Deleted entity `%s` cannot be added for replace.', get_class($entity))
-            );
+            $e = sprintf('Deleted entity `%s` cannot be added for replace.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityCreates[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Created entity `%s` cannot be added for replace.', get_class($entity))
-            );
+            $e = sprintf('Created entity `%s` cannot be added for replace.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityUpdates[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Updated entity `%s` cannot be added for replace.', get_class($entity))
-            );
+            $e = sprintf('Updated entity `%s` cannot be added for replace.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityReplaces[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Entity `%s` cannot be replaced for twice.', get_class($entity))
-            );
+            $e = sprintf('Entity `%s` cannot be replaced for twice.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->entityReplaces[$id] = $entity;
@@ -421,9 +421,9 @@ class UnitOfWork implements IUnitOfWork
         }
 
         if (!$entity->id()) {
-            throw new InvalidArgumentException(
-                sprintf('Entity `%s` has no identity for delete.', get_class($entity))
-            );
+            $e = sprintf('Entity `%s` has no identity for delete.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if (isset($this->entityUpdates[$id])) {
@@ -435,9 +435,9 @@ class UnitOfWork implements IUnitOfWork
         }
 
         if (isset($this->entityDeletes[$id])) {
-            throw new InvalidArgumentException(
-                sprintf('Entity `%s` cannot be deleted for twice.', get_class($entity))
-            );
+            $e = sprintf('Entity `%s` cannot be deleted for twice.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->entityDeletes[$id] = $entity;
@@ -487,9 +487,9 @@ class UnitOfWork implements IUnitOfWork
         $this->validateClosed();
 
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
-            throw new InvalidArgumentException(
-                sprintf('Entity `%s` was not managed.', get_class($entity))
-            );
+            $e = sprintf('Entity `%s` was not managed.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->repository($entity)->refresh($entity);
