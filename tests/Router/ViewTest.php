@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Mvc;
+namespace Tests\Router;
 
 use Leevel\Router\IView;
 use Leevel\Router\View;
