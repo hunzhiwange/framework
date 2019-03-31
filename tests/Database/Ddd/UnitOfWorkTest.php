@@ -1236,13 +1236,13 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $post = new Post(['title' => 'new']);
-        $guest_book = new Guestbook([]);
+        $guestBook = new Guestbook([]);
 
         $work->persist($post);
-        $work->persist($guest_book);
+        $work->persist($guestBook);
 
-        $work->on($post, function ($p) use ($guest_book) {
-            $guest_book->content = 'guest_book content was post id is '.$p->id;
+        $work->on($post, function ($p) use ($guestBook) {
+            $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
         $work->flush($post);
@@ -1259,13 +1259,13 @@ class UnitOfWorkTest extends TestCase
         $work = UnitOfWork::make();
 
         $post = new Post(['title' => 'new']);
-        $guest_book = new Guestbook([]);
+        $guestBook = new Guestbook([]);
 
         $work->replace($post);
-        $work->replace($guest_book);
+        $work->replace($guestBook);
 
-        $work->on($post, function ($p) use ($guest_book) {
-            $guest_book->content = 'guest_book content was post id is '.$p->id;
+        $work->on($post, function ($p) use ($guestBook) {
+            $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
         $work->flush($post);
@@ -1298,13 +1298,13 @@ class UnitOfWorkTest extends TestCase
         ]));
 
         $post = new Post(['id' => 1, 'title' => 'new'], true);
-        $guest_book = new Guestbook(['id' => 1], true);
+        $guestBook = new Guestbook(['id' => 1], true);
 
         $work->update($post);
-        $work->update($guest_book);
+        $work->update($guestBook);
 
-        $work->on($post, function ($p) use ($guest_book) {
-            $guest_book->content = 'guest_book content was post id is '.$p->id;
+        $work->on($post, function ($p) use ($guestBook) {
+            $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
         $work->flush($post);
@@ -1312,6 +1312,36 @@ class UnitOfWorkTest extends TestCase
         $newGuestbook = Guestbook::find(1);
 
         $this->assertSame('guest_book content was post id is 1', $newGuestbook->content);
+
+        $work->clear();
+    }
+
+    public function testOnCallbacksForDelete()
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $post = Post::find(1);
+        $work->persist($post)->remove($post);
+
+        $work->on($post, function ($p) {
+            $this->assertSame('1', $p->id);
+        });
+
+        $work->flush($post);
+
+        $newPost = Post::find(1);
+
+        $this->assertNull($newPost->id);
 
         $work->clear();
     }
@@ -1529,6 +1559,11 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(1, $connect->table('composite_id')->findCount());
+    }
+
+    public function testCoroutineContext()
+    {
+        $this->assertTrue(UnitOfWork::coroutineContext());
     }
 
     protected function getDatabaseTable(): array
