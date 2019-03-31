@@ -31,9 +31,22 @@ use Tests\TestCase;
  * @since 2018.07.15
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="安全过滤",
+ *     path="component/safe",
+ *     description="可以对用户输入数据进行过滤。",
+ * )
  */
 class SafeTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="添加模式转义和移除魔术方法转义",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse()
     {
         $strings = "O'Reilly?";
@@ -51,6 +64,13 @@ class SafeTest extends TestCase
         $this->assertSame($arrays, Safe::stripslashes($outs));
     }
 
+    /**
+     * @api(
+     *     title="深度过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDeepReplace()
     {
         $strings = 'You should eat fruits, vegetables, and fiber every day.';
@@ -59,6 +79,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::deepReplace(['shoule', 'day'], $strings));
     }
 
+    /**
+     * @api(
+     *     title="url 安全过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEscUrl()
     {
         $strings = 'You should eat fruits, vegetables, and fiber every day.';
@@ -82,6 +109,13 @@ class SafeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="过滤 script",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFilterScript()
     {
         $strings = '<script>hello world.';
@@ -90,6 +124,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::filterScript($strings));
     }
 
+    /**
+     * @api(
+     *     title="过滤十六进制字符串",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCleanHex()
     {
         $strings = '0x63hello 0x6f world.';
@@ -409,6 +450,13 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::bigCheck($strings, 5));
     }
 
+    /**
+     * @api(
+     *     title="签名算法支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSignature()
     {
         $query = [
@@ -421,6 +469,13 @@ class SafeTest extends TestCase
         $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
     }
 
+    /**
+     * @api(
+     *     title="签名算法支持忽略字段",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSignatureWithIgnore()
     {
         $query = [
@@ -435,6 +490,13 @@ class SafeTest extends TestCase
         $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
     }
 
+    /**
+     * @api(
+     *     title="签名算法支持子数组",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSignatureWithSubArray()
     {
         $query = [
