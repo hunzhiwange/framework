@@ -434,4 +434,19 @@ class SafeTest extends TestCase
 
         $this->assertSame('dc6cfa1e1f6eaf29c73622f4d4c54be57d545c1d7c377dade88faccb5a79d2d8', $signature);
     }
+
+    public function testSignatureWithSubArray()
+    {
+        $query = [
+            'foo'   => 'bar',
+            'hello' => 'world',
+            'sub'   => [
+                'hello' => 'world',
+            ],
+        ];
+
+        $signature = Safe::signature($query, '123456');
+
+        $this->assertSame('2bd98c89629fae202c680b33430eb9c909b25f4e8a8dca91752fabd1e14735d1', $signature);
+    }
 }
