@@ -145,7 +145,8 @@ class Select
             return $this;
         } catch (ConditionNotFoundException $e) {
             // 不使用反射
-            if (method_exists($this->connect, $method) && is_callable([$this->connect, $method])) {
+            if (method_exists($this->connect, $method) &&
+                is_callable([$this->connect, $method])) {
                 return $this->connect->{$method}(...$args);
             }
         }

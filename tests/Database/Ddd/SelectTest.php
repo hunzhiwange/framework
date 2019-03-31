@@ -579,6 +579,42 @@ eot;
         );
     }
 
+    public function testLastSql()
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame('1', $connect->
+        table('post')->
+        insert([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]));
+
+        $select = new Select(new Post());
+        $post = $select->find(1);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame('1', $post->id);
+        $this->assertSame('1', $post->userId);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('post summary', $post->summary);
+
+        $sql = <<<'eot'
+[
+    "SELECT `post`.* FROM `post` WHERE `post`.`id` = 1 LIMIT 1",
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $select->lastSql()
+            )
+        );
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'post_content'];
