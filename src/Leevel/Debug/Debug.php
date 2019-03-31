@@ -49,6 +49,8 @@ use Throwable;
 /**
  * 调试器.
  *
+ * I actually copied a lot of ideas from laravel-debugbar project.
+ *
  * @method void emergency($message)
  * @method void alert($message)
  * @method void critical($message)

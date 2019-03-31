@@ -47,6 +47,12 @@ use Tests\TestCase;
  * @since 2018.09.24
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Debug",
+ *     path="component/debug",
+ *     description="添加一个组件调试。",
+ * )
  */
 class DebugTest extends TestCase
 {
@@ -85,6 +91,22 @@ class DebugTest extends TestCase
         $this->assertContains('Starts from this moment with QueryPHP.', $content);
     }
 
+    /**
+     * @api(
+     *     title="JSON 关联数组调试",
+     *     description="关联数组结构会在尾部追加一个选项 `:trace` 用于调试。
+     *
+     * _**返回结构**_
+     *
+     * ``` php
+     * $response = [\"foo\" => \"bar\", \":trace\" => []];
+     * ```
+     *
+     * 关联数组在尾部追加一个选项作为调试信息，这与非关联数组有所不同。
+     * ",
+     *     note="",
+     * )
+     */
     public function testJson()
     {
         $debug = $this->createDebug();
@@ -109,6 +131,53 @@ class DebugTest extends TestCase
         $this->assertContains('Starts from this moment with QueryPHP.', $content);
     }
 
+    /**
+     * @api(
+     *     title="JSON 非关联数组调试",
+     *     description="非关联数组结构会在尾部追加一个 `:trace` 用于调试。
+     *
+     * _**返回结构**_
+     *
+     * ``` php
+     * $response = [\"foo\", \"bar\", [\":trace\" => []]];
+     * ```
+     *
+     * 非关联数组在尾部追加一个调试信息，将不会破坏返回接口的 JSON 结构。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testJsonForNotAssociativeArray()
+    {
+        $debug = $this->createDebug();
+
+        $this->assertFalse($debug->isBootstrap());
+
+        $debug->bootstrap();
+
+        $this->assertTrue($debug->isBootstrap());
+
+        $request = new Request();
+        $response = new JsonResponse(['foo', 'bar']);
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertContains('"foo","bar",{":trace":{', $content);
+
+        $this->assertContains('"php":{"version":', $content);
+
+        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+    }
+
+    /**
+     * @api(
+     *     title="关闭调试",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDisable()
     {
         $debug = $this->createDebug();
@@ -147,6 +216,13 @@ class DebugTest extends TestCase
         $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
     }
 
+    /**
+     * @api(
+     *     title="启用调试",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEnable()
     {
         $debug = $this->createDebug();
@@ -191,6 +267,13 @@ class DebugTest extends TestCase
         $this->assertContains('Starts from this moment with QueryPHP.', $content);
     }
 
+    /**
+     * @api(
+     *     title="启用调试但是未初始化",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testEnableWithoutBootstrap()
     {
         $debug = $this->createDebug();
@@ -277,6 +360,20 @@ class DebugTest extends TestCase
      * @dataProvider getMessageLevelsData
      *
      * @param string $level
+     *
+     * @api(
+     *     title="调试消息等级",
+     *     description="
+     * _**支持的消息类型**_
+     *
+     * ``` php
+     * ".\Leevel\Leevel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')."
+     * ```
+     *
+     * 系统支持多种消息类型，可以参考这个进行调试。
+     * ",
+     *     note="",
+     * )
      */
     public function testMessageLevelsData(string $level)
     {
@@ -316,6 +413,13 @@ class DebugTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="调试 Session",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithSession()
     {
         $debug = $this->createDebug();
@@ -340,6 +444,13 @@ class DebugTest extends TestCase
         $this->assertContains('"session":{"test_session":"test_value"},', $content);
     }
 
+    /**
+     * @api(
+     *     title="调试 Log",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithLog()
     {
         $debug = $this->createDebugWithLog();
@@ -371,6 +482,13 @@ class DebugTest extends TestCase
         $this->assertContains('test_log_debug debug: []', $content);
     }
 
+    /**
+     * @api(
+     *     title="调试时间",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testTime()
     {
         $debug = $this->createDebug();
@@ -397,6 +515,13 @@ class DebugTest extends TestCase
         $this->assertContains('"measures":[{"label":"time_test","start":', $content);
     }
 
+    /**
+     * @api(
+     *     title="调试带有标签的时间",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testTimeWithLabel()
     {
         $debug = $this->createDebug();
