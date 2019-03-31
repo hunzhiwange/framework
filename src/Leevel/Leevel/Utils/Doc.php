@@ -79,7 +79,7 @@ class Doc
      */
     public function handle(string $className): string
     {
-        $this->parseFileContnet($reflection = new ReflectionClass($className));
+        $this->lines = $this->parseFileContnet($reflection = new ReflectionClass($className));
 
         if (!($markdown = $this->parseClassContent($reflection))) {
             return '';
@@ -114,6 +114,26 @@ class Doc
     }
 
     /**
+     * 获取方法内容.
+     *
+     * @param string $className
+     * @param string $method
+     * @param bool   $isDoc
+     *
+     * @return string
+     */
+    public static function getMethodBody(string $className, string $method, bool $isDoc = false): string
+    {
+        $doc = new static('');
+
+        $lines = $doc->parseFileContnet(new ReflectionClass($className));
+
+        $method = new ReflectionMethod($className, $method);
+
+        return $doc->parseMethodBody($lines, $method, $isDoc);
+    }
+
+    /**
      * 设置保存路径.
      *
      * @param string $path
@@ -145,12 +165,12 @@ class Doc
      * 解析文档内容.
      *
      * @param \ReflectionClass $reflection
+     *
+     * @return array
      */
-    protected function parseFileContnet(ReflectionClass $reflection): void
+    protected function parseFileContnet(ReflectionClass $reflection): array
     {
-        $lines = explode(PHP_EOL, file_get_contents($reflection->getFileName()));
-
-        $this->lines = $lines;
+        return explode(PHP_EOL, file_get_contents($reflection->getFileName()));
     }
 
     /**
