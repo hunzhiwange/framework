@@ -25,7 +25,6 @@ use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Page\IPage;
 use Leevel\Page\Page;
-use PDO;
 
 /**
  * 数据库查询器
@@ -181,9 +180,9 @@ class Select
                 $keys = explode('And', $method);
 
                 if (count($keys) !== count($args)) {
-                    throw new InvalidArgumentException(
-                        'Parameters of findBy or findAllBy was not matched.'
-                    );
+                    $e = 'Parameters of findBy or findAllBy was not matched.';
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 if (!$isKeep) {
@@ -192,21 +191,21 @@ class Select
                     }, $keys);
                 }
 
-                return $this->where(
-                    array_combine($keys, $args)
-                )->{'find'.($isOne ? 'One' : 'All')}();
+                $method = 'find'.($isOne ? 'One' : 'All');
+
+                return $this
+                    ->where(array_combine($keys, $args))
+                    ->{$method}();
             }
 
-            return $this->top((int) ($method))->
-            find();
+            return $this
+                ->top((int) ($method))
+                ->find();
         }
 
-        throw new InvalidArgumentException(
-            sprintf(
-                'Select do not implement magic method %s.',
-                $method
-            )
-        );
+        $e = sprintf('Select do not implement magic method %s.', $method);
+
+        throw new InvalidArgumentException($e);
     }
 
     /**
@@ -362,12 +361,13 @@ class Select
             return $this->find(null, $flag);
         }
 
-        return $this->safeSql($flag)->
-        runNativeSql(...[
-            'select',
-            $data,
-            $bind,
-        ]);
+        return $this
+            ->safeSql($flag)
+            ->runNativeSql(...[
+                'select',
+                $data,
+                $bind,
+            ]);
     }
 
     /**
@@ -382,12 +382,13 @@ class Select
      */
     public function insert($data, array $bind = [], bool $replace = false, bool $flag = false)
     {
-        return $this->safeSql($flag)->
-        runNativeSql(
-            ...$this->condition->
-
-            insert($data, $bind, $replace)
-        );
+        return $this
+            ->safeSql($flag)
+            ->runNativeSql(
+                ...$this
+                    ->condition
+                    ->insert($data, $bind, $replace)
+            );
     }
 
     /**
@@ -402,12 +403,13 @@ class Select
      */
     public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)
     {
-        return $this->safeSql($flag)->
-        runNativeSql(
-            ...$this->condition->
-
-            insertAll($data, $bind, $replace)
-        );
+        return $this
+            ->safeSql($flag)
+            ->runNativeSql(
+                ...$this
+                    ->condition
+                    ->insertAll($data, $bind, $replace)
+            );
     }
 
     /**
@@ -421,12 +423,13 @@ class Select
      */
     public function update($data, array $bind = [], bool $flag = false)
     {
-        return $this->safeSql($flag)->
-        runNativeSql(
-            ...$this->condition->
-
-            update($data, $bind)
-        );
+        return $this
+            ->safeSql($flag)
+            ->runNativeSql(
+                ...$this
+                    ->condition
+                    ->update($data, $bind)
+            );
     }
 
     /**
@@ -485,12 +488,13 @@ class Select
      */
     public function delete(?string $data = null, array $bind = [], bool $flag = false)
     {
-        return $this->safeSql($flag)->
-        runNativeSql(
-            ...$this->condition->
-
-            delete($data, $bind)
-        );
+        return $this
+            ->safeSql($flag)
+            ->runNativeSql(
+                ...$this
+                    ->condition
+                    ->delete($data, $bind)
+            );
     }
 
     /**
@@ -502,12 +506,13 @@ class Select
      */
     public function truncate(bool $flag = false)
     {
-        return $this->safeSql($flag)->
-        runNativeSql(
-            ...$this->condition->
-
-            truncate()
-        );
+        return $this
+            ->safeSql($flag)
+            ->runNativeSql(
+                ...$this
+                    ->condition
+                    ->truncate()
+            );
     }
 
     /**
@@ -521,8 +526,9 @@ class Select
     {
         $this->condition->one();
 
-        return $this->safeSql($flag)->
-        query();
+        return $this
+            ->safeSql($flag)
+            ->query();
     }
 
     /**
@@ -536,8 +542,9 @@ class Select
     {
         $this->condition->all();
 
-        return $this->safeSql($flag)->
-        query();
+        return $this
+            ->safeSql($flag)
+            ->query();
     }
 
     /**
@@ -554,8 +561,9 @@ class Select
             $this->condition->top($num);
         }
 
-        return $this->safeSql($flag)->
-        query();
+        return $this
+            ->safeSql($flag)
+            ->query();
     }
 
     /**
@@ -568,15 +576,15 @@ class Select
      */
     public function value(string $field, bool $flag = false)
     {
-        $this->condition->setColumns($field)->
+        $this
+            ->condition
+            ->setColumns($field)
+            ->one();
 
-        one();
-
-        $result = (array) $this->safeSql($flag)->
-
-        asDefault()->
-
-        query();
+        $result = (array) $this
+            ->safeSql($flag)
+            ->asDefault()
+            ->query();
 
         if (true === $this->onlyMakeSql) {
             return $result;
@@ -624,11 +632,10 @@ class Select
 
         $this->condition->setColumns($fields);
 
-        $tmps = $this->safeSql($flag)->
-
-        asDefault()->
-
-        findAll();
+        $tmps = $this
+            ->safeSql($flag)
+            ->asDefault()
+            ->findAll();
 
         if (true === $this->onlyMakeSql) {
             return $tmps;
@@ -671,9 +678,9 @@ class Select
 
             $page++;
 
-            $result = $this->forPage($page, $count)->
-
-            findAll();
+            $result = $this
+                ->forPage($page, $count)
+                ->findAll();
         }
     }
 
@@ -792,9 +799,10 @@ class Select
                 'total_record' => $withTotal ? $this->pageCount($column) : null,
                 'from'         => $from,
             ],
-            $this->limit($from, $perPage)->
-
-            findAll($flag), self::PAGE => true,
+            $this
+                ->limit($from, $perPage)
+                ->findAll($flag),
+            self::PAGE => true,
         ];
     }
 
@@ -816,9 +824,10 @@ class Select
 
         return [
             $page,
-            $this->limit($page->getFromRecord(), $perPage)->
-
-            findAll($flag), self::PAGE => true,
+            $this
+                ->limit($page->getFromRecord(), $perPage)
+                ->findAll($flag),
+            self::PAGE => true,
         ];
     }
 
@@ -838,9 +847,10 @@ class Select
 
         return [
             $page,
-            $this->limit($page->getFromRecord(), $perPage)->
-
-            findAll($flag), self::PAGE => true,
+            $this
+                ->limit($page->getFromRecord(), $perPage)
+                ->findAll($flag),
+            self::PAGE => true,
         ];
     }
 
@@ -860,9 +870,10 @@ class Select
 
         return [
             $page,
-            $this->limit($page->getFromRecord(), $perPage)->
-
-            findAll($flag), self::PAGE => true,
+            $this
+                ->limit($page->getFromRecord(), $perPage)
+                ->findAll($flag),
+            self::PAGE => true,
         ];
     }
 
@@ -985,12 +996,9 @@ class Select
         $className = $this->queryParams['as_class'];
 
         if (!class_exists($className)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The class of query `%s` was not found.',
-                    $className
-                )
-            );
+            $e = sprintf('The class of query `%s` was not found.', $className);
+
+            throw new InvalidArgumentException($e);
         }
 
         foreach ($data as $key => $tmp) {
@@ -1020,11 +1028,10 @@ class Select
     {
         $this->condition->{$method}($field, $alias);
 
-        $result = $this->safeSql($flag)->
-
-        asDefault()->
-
-        query();
+        $result = $this
+            ->safeSql($flag)
+            ->asDefault()
+            ->query();
 
         if (true === $this->onlyMakeSql) {
             return $result;
@@ -1051,9 +1058,9 @@ class Select
         }
 
         if ($sqlType !== $nativeType) {
-            throw new InvalidArgumentException(
-                sprintf('The SQL type `%s` must be consistent with the provided `%s`.', $sqlType, $nativeType)
-            );
+            $e = sprintf('The SQL type `%s` must be consistent with the provided `%s`.', $sqlType, $nativeType);
+
+            throw new InvalidArgumentException($e);
         }
 
         $args = [$data, $bindParams];
@@ -1063,9 +1070,9 @@ class Select
             return $args;
         }
 
-        return $this->connect->{
-            'select' === $nativeType ? 'query' : 'execute'
-        }(...$args);
+        $type = 'select' === $nativeType ? 'query' : 'execute';
+
+        return $this->connect->{$type}(...$args);
     }
 
     /**
