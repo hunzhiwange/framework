@@ -172,7 +172,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         if ($this->coroutineContext($service)) {
-            $this->coroutineInstances[$name][$this->coroutineUid()] = $service;
+            $this->coroutineInstances[$this->coroutineUid()][$name] = $service;
         } else {
             $this->instances[$name] = $service;
         }
@@ -263,7 +263,7 @@ class Container implements IContainer, ArrayAccess
         // 单一实例
         if (in_array($name, $this->singletons, true)) {
             if ($this->coroutineContext($instance)) {
-                return $this->coroutineInstances[$name][$this->coroutineUid()] = $instance;
+                return $this->coroutineInstances[$this->coroutineUid()][$name] = $instance;
             }
 
             return $this->instances[$name] = $instance;
@@ -403,6 +403,19 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
+     * 协程服务或者实例是否存在.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function existsCoroutine(string $name): bool
+    {
+        return false !== $this->coroutineUid() &&
+            isset($this->coroutineInstances[$this->coroutineUid()], $this->coroutineInstances[$this->coroutineUid()][$name]);
+    }
+
+    /**
      * 实现 ArrayAccess::offsetExits.
      *
      * @param string $index
@@ -503,19 +516,6 @@ class Container implements IContainer, ArrayAccess
         }
 
         return $this->coroutine->uid();
-    }
-
-    /**
-     * 协程服务或者实例是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    protected function existsCoroutine(string $name): bool
-    {
-        return false !== $this->coroutineUid() &&
-            isset($this->coroutineInstances[$this->coroutineUid()], $this->coroutineInstances[$this->coroutineUid()][$name]);
     }
 
     /**

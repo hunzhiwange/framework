@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Di;
 
 use Leevel\Di\Container;
+use Leevel\Di\ICoroutine;
 use stdClass;
 use Tests\TestCase;
 
@@ -354,7 +355,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Class Tests\Di\Test9 is not instantiable.'
+            'Class Tests\\Di\\Test9 is not instantiable.'
         );
 
         $container = new Container();
@@ -397,7 +398,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Class Tests\Di\TestNotFound does not exist'
+            'Class Tests\\Di\\TestNotFound does not exist'
         );
 
         $container = new Container();
@@ -452,6 +453,70 @@ class ContainerTest extends TestCase
         $result = $container->call([$obj, 'handle'], $args);
 
         $this->assertSame(['test24' => 'hello', 'test25' => 'world', 'three' => 'more'], $result);
+    }
+
+    public function testCoroutine()
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('context')->willReturn(true);
+        $this->assertTrue($coroutine->context(Test26::class));
+
+        $coroutine->method('uid')->willReturn(2);
+        $this->assertSame(2, $coroutine->uid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+        $this->assertInstanceOf(ICoroutine::class, $container->getCoroutine());
+
+        $container->instance('test', new Test26());
+
+        $this->assertInstanceOf(Test26::class, $container->make('test'));
+        $this->assertTrue($container->existsCoroutine('test'));
+    }
+
+    public function testRemoveCoroutine()
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('context')->willReturn(true);
+        $this->assertTrue($coroutine->context(Test26::class));
+
+        $coroutine->method('uid')->willReturn(2);
+        $this->assertSame(2, $coroutine->uid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+
+        $container->instance('test', new Test26());
+
+        $this->assertInstanceOf(Test26::class, $container->make('test'));
+        $this->assertTrue($container->existsCoroutine('test'));
+
+        $container->removeCoroutine('test');
+        $this->assertFalse($container->existsCoroutine('test'));
+    }
+
+    public function testRemoveCoroutineAll()
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('context')->willReturn(true);
+        $this->assertTrue($coroutine->context(Test26::class));
+
+        $coroutine->method('uid')->willReturn(2);
+        $this->assertSame(2, $coroutine->uid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+
+        $container->instance('test', new Test26());
+
+        $this->assertInstanceOf(Test26::class, $container->make('test'));
+        $this->assertTrue($container->existsCoroutine('test'));
+
+        $container->removeCoroutine();
+        $this->assertFalse($container->existsCoroutine('test'));
     }
 }
 
@@ -625,4 +690,8 @@ class Test25
     {
         $this->prop = $prop;
     }
+}
+
+class Test26
+{
 }

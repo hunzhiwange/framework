@@ -128,4 +128,13 @@ interface IContainer
      * @return \Leevel\Di\ICoroutine
      */
     public function getCoroutine(): ?ICoroutine;
+
+    /**
+     * 协程服务或者实例是否存在.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function existsCoroutine(string $name): bool;
 }
