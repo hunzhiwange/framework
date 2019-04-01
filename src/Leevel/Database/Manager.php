@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
+use InvalidArgumentException;
 use Leevel\Event\IDispatch;
 use Leevel\Manager\Manager as Managers;
 
@@ -119,22 +120,23 @@ class Manager extends Managers
     protected function parseDatabaseOption(array $option): array
     {
         $temp = $option;
+        $type = ['distributed', 'separate', 'driver', 'master', 'slave'];
 
-        foreach (array_keys($option) as $type) {
-            if (in_array($type, ['distributed', 'separate', 'driver', 'master', 'slave'], true)) {
-                if (isset($temp[$type])) {
-                    unset($temp[$type]);
+        foreach (array_keys($option) as $t) {
+            if (in_array($t, $type, true)) {
+                if (isset($temp[$t])) {
+                    unset($temp[$t]);
                 }
-            } else {
-                if (isset($option[$type])) {
-                    unset($option[$type]);
-                }
+            } elseif (isset($option[$t])) {
+                unset($option[$t]);
             }
         }
 
-        foreach (['master', 'slave'] as $type) {
-            if (!is_array($option[$type])) {
-                $option[$type] = [];
+        foreach (['master', 'slave'] as $t) {
+            if (!is_array($option[$t])) {
+                $e = sprintf('Database option `%s` must be an array.', $t);
+
+                throw new InvalidArgumentException($e);
             }
         }
 

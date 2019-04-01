@@ -115,7 +115,7 @@ eot;
         );
     }
 
-    public function testParseDatabaseOptionDistributedIsTrue2()
+    public function testParseDatabaseOptionDistributedIsTrueWithTwoDimensionalArray()
     {
         $manager = $this->createDatabaseManager();
 
@@ -188,6 +188,35 @@ eot;
             $data,
             $this->varJson($optionNew)
         );
+    }
+
+    public function testParseDatabaseOptionMasterAndSlaveMustBeAnArray()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Database option `slave` must be an array.'
+        );
+
+        $manager = $this->createDatabaseManager();
+
+        $option = [
+            'driver'   => 'mysql',
+            'host'     => '127.0.0.1',
+            'port'     => 3306,
+            'name'     => 'test',
+            'user'     => 'root',
+            'password' => '123456',
+            'charset'  => 'utf8',
+            'options'  => [
+                PDO::ATTR_PERSISTENT => false,
+            ],
+            'separate'           => false,
+            'distributed'        => true,
+            'master'             => [],
+            'slave'              => 'notarray',
+        ];
+
+        $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
     }
 
     protected function getDatabaseTable(): array
