@@ -128,6 +128,8 @@ interface IRouter
     /**
      * restful regex.
      *
+     * @todo 支持自定义 restful regex
+     *
      * @var string
      */
     const RESTFUL_REGEX = '\d+';
