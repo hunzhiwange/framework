@@ -1819,4 +1819,136 @@ eot;
             )
         );
     }
+
+    public function testWhereRawFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, options_id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->whereRaw('FIND_IN_SET(1, goods_id)')
+                    ->elses()
+                    ->whereRaw('FIND_IN_SET(1, options_id)')
+                    ->endIfs()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testWhereRawFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, goods_id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->whereRaw('FIND_IN_SET(1, goods_id)')
+                    ->elses()
+                    ->whereRaw('FIND_IN_SET(1, options_id)')
+                    ->endIfs()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testOrWhereRawFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, options_id) OR FIND_IN_SET(1, goods_id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->whereRaw('FIND_IN_SET(1, goods_id)')
+                    ->orWhereRaw('FIND_IN_SET(1, options_id)')
+                    ->elses()
+                    ->whereRaw('FIND_IN_SET(1, options_id)')
+                    ->orWhereRaw('FIND_IN_SET(1, goods_id)')
+                    ->endIfs()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testOrWhereRawFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->whereRaw('FIND_IN_SET(1, goods_id)')
+                    ->orWhereRaw('FIND_IN_SET(1, options_id)')
+                    ->elses()
+                    ->whereRaw('FIND_IN_SET(1, options_id)')
+                    ->orWhereRaw('FIND_IN_SET(1, goods_id)')
+                    ->endIfs()
+                    ->findAll(true)
+            )
+        );
+    }
 }

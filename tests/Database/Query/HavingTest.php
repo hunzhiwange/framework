@@ -1303,4 +1303,140 @@ eot;
             )
         );
     }
+
+    public function testHavingRawFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(2, id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test', 'name as id,tname as value,id')
+                    ->groupBy('name')
+                    ->ifs($condition)
+                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->elses()
+                    ->havingRaw('FIND_IN_SET(2, id)')
+                    ->endIfs()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testHavingRawFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(1, id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test', 'name as id,tname as value,id')
+                    ->groupBy('name')
+                    ->ifs($condition)
+                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->elses()
+                    ->havingRaw('FIND_IN_SET(2, id)')
+                    ->endIfs()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testOrHavingRawFlow()
+    {
+        $condition = false;
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(1, id) OR FIND_IN_SET(2, value)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test', 'name as id,tname as value,id')
+                    ->groupBy('name')
+                    ->ifs($condition)
+                    ->havingRaw('FIND_IN_SET(2, id)')
+                    ->orHavingRaw('FIND_IN_SET(1, value)')
+                    ->elses()
+                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->orHavingRaw('FIND_IN_SET(2, value)')
+                    ->endIfs()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testOrHavingRawFlow2()
+    {
+        $condition = true;
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(2, id) OR FIND_IN_SET(1, value)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test', 'name as id,tname as value,id')
+                    ->groupBy('name')
+                    ->ifs($condition)
+                    ->havingRaw('FIND_IN_SET(2, id)')
+                    ->orHavingRaw('FIND_IN_SET(1, value)')
+                    ->elses()
+                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->orHavingRaw('FIND_IN_SET(2, value)')
+                    ->endIfs()
+                    ->findAll(true)
+            )
+        );
+    }
 }
