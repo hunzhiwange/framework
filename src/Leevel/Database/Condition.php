@@ -690,7 +690,7 @@ class Condition
         $condition = [];
         array_unshift($condition, static::LOGIC_AND);
         array_unshift($condition, 'where');
-        $condition[] = [':string' => '{'.$raw.'}'];
+        $condition[] = [':stringSimple' => '{'.$raw.'}'];
 
         return $this->aliatypeAndLogic(...$condition);
     }
@@ -711,7 +711,7 @@ class Condition
         $condition = [];
         array_unshift($condition, static::LOGIC_OR);
         array_unshift($condition, 'where');
-        $condition[] = [':string' => '{'.$raw.'}'];
+        $condition[] = [':stringSimple' => '{'.$raw.'}'];
 
         return $this->aliatypeAndLogic(...$condition);
     }
@@ -1043,7 +1043,7 @@ class Condition
         $condition = [];
         array_unshift($condition, static::LOGIC_AND);
         array_unshift($condition, 'having');
-        $condition[] = [':string' => '{'.$raw.'}'];
+        $condition[] = [':stringSimple' => '{'.$raw.'}'];
 
         return $this->aliatypeAndLogic(...$condition);
     }
@@ -1064,7 +1064,7 @@ class Condition
         $condition = [];
         array_unshift($condition, static::LOGIC_OR);
         array_unshift($condition, 'having');
-        $condition[] = [':string' => '{'.$raw.'}'];
+        $condition[] = [':stringSimple' => '{'.$raw.'}'];
 
         return $this->aliatypeAndLogic(...$condition);
     }
@@ -1940,8 +1940,18 @@ class Condition
 
             // 特殊处理
             if (is_string($key)) {
-                if (in_array($key, [':string'], true)) {
+                // 嵌套 string
+                if (':string' === $key) {
                     $sqlCond[] = implode(' AND ', $cond);
+                } elseif (':stringSimple' === $key) {
+                    foreach ($cond as $c) {
+                        // 逻辑连接符
+                        if (in_array($c, [static::LOGIC_AND, static::LOGIC_OR], true)) {
+                            $sqlCond[] = strtoupper($c);
+                        } else {
+                            $sqlCond[] = $c;
+                        }
+                    }
                 }
             } elseif (is_array($cond)) {
                 // 表达式支持
@@ -2050,10 +2060,11 @@ class Condition
                         );
                 } elseif (in_array($cond[1], ['between', 'not between'], true)) {
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
-                        throw new InvalidArgumentException(
+                        $e =
                             'The [not] between parameter value must be '.
-                            'an array which not less than two elements.'
-                        );
+                            'an array which not less than two elements.';
+
+                        throw new InvalidArgumentException($e);
                     }
 
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2][0].' AND '.$cond[2][1];
@@ -2101,6 +2112,8 @@ class Condition
      * @param mixed  $cond
      *
      * @return $this
+     *
+     * @todo 代码复杂度过高，需要重构
      */
     protected function aliatypeAndLogic(string $type, string $logic, $cond): self
     {
@@ -2138,9 +2151,7 @@ class Condition
 
         // 整理多个参数到二维数组
         if (!is_array($args[0])) {
-            $conditions = [
-                $args,
-            ];
+            $conditions = [$args];
         } else {
             // 一维数组统一成二维数组格式
             $oneImension = false;
@@ -2154,9 +2165,7 @@ class Condition
             }
 
             if (true === $oneImension) {
-                $conditions = [
-                    $args[0],
-                ];
+                $conditions = [$args[0]];
             } else {
                 $conditions = $args[0];
             }
@@ -2169,12 +2178,12 @@ class Condition
             }
 
             // 字符串表达式
-            if (is_string($key) && ':string' === $key) {
+            if (is_string($key) && in_array($key, [':string', ':stringSimple'], true)) {
                 // 不符合规则抛出异常
                 if (!is_string($tmp)) {
-                    throw new InvalidArgumentException(
-                        sprintf('String type only supports string,but %s given.', gettype($tmp))
-                    );
+                    $e = sprintf('String type only supports string,but %s given.', gettype($tmp));
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 // 表达式支持
@@ -2186,7 +2195,7 @@ class Condition
                     );
                 }
 
-                $this->setConditionItem($tmp, ':string');
+                $this->setConditionItem($tmp, $key);
             }
 
             // 子表达式
@@ -2230,9 +2239,9 @@ class Condition
             ], true)) {
                 // having 不支持 [not] exists
                 if ('having' === $this->getTypeAndLogic()[0]) {
-                    throw new InvalidArgumentException(
-                        'Having do not support [not] exists.'
-                    );
+                    $e = 'Having do not support [not] exists.';
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 if (is_object($tmp) && ($tmp instanceof self || $tmp instanceof Select)) {
@@ -2317,12 +2326,17 @@ class Condition
 
         // 字符串类型
         if ($type) {
-            if (empty($this->options[$typeAndLogic[0]][$type])) {
-                $this->options[$typeAndLogic[0]][] = $typeAndLogic[1];
-                $this->options[$typeAndLogic[0]][$type] = [];
+            // 支持嵌套的 string
+            if (':string' === $type) {
+                if (empty($this->options[$typeAndLogic[0]][$type])) {
+                    $this->options[$typeAndLogic[0]][] = $typeAndLogic[1];
+                    $this->options[$typeAndLogic[0]][$type] = [];
+                }
+                $this->options[$typeAndLogic[0]][$type][] = $items;
+            } elseif (':stringSimple' === $type) {
+                $this->options[$typeAndLogic[0]][$type][] = $typeAndLogic[1];
+                $this->options[$typeAndLogic[0]][$type][] = $items;
             }
-
-            $this->options[$typeAndLogic[0]][$type][] = $items;
         } else {
             // 格式化时间
             if (($inTimeCondition = $this->getInTimeCondition())) {
