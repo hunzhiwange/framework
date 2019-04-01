@@ -118,7 +118,9 @@ class Container implements IContainer, ArrayAccess
      */
     public function __call(string $method, array $args)
     {
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        $e = sprintf('Method %s is not exits.', $method);
+
+        throw new BadMethodCallException($e);
     }
 
     /**
@@ -527,12 +529,9 @@ class Container implements IContainer, ArrayAccess
     protected function getInjectionObject(string $classname, array $args = [])
     {
         if (interface_exists($classname)) {
-            throw new ContainerInvalidArgumentException(
-                sprintf(
-                    'Interface %s cannot be normalize because not binded.',
-                    $classname
-                )
-            );
+            $e = sprintf('Interface %s cannot be normalize because not binded.', $classname);
+
+            throw new ContainerInvalidArgumentException($e);
         }
 
         if (!class_exists($classname)) {
@@ -557,9 +556,9 @@ class Container implements IContainer, ArrayAccess
         list($args, $required, $validArgs) = $this->parseInjection($value, $args);
 
         if ($validArgs < $required) {
-            throw new ContainerInvalidArgumentException(
-                sprintf('There are %d required args,but %d gived.', $required, $validArgs)
-            );
+            $e = sprintf('There are %d required args,but %d gived.', $required, $validArgs);
+
+            throw new ContainerInvalidArgumentException($e);
         }
 
         return $args;
@@ -682,10 +681,9 @@ class Container implements IContainer, ArrayAccess
             case $result = $this->parseClassNotExists($argsclass):
                 break;
             default:
-                throw new InvalidArgumentException(
-                    sprintf('Class or interface %s is not register in container', $argsclass)
-                );
+                $e = sprintf('Class or interface %s is not register in container', $argsclass);
 
+                throw new InvalidArgumentException($e);
                 break;
         }
 
@@ -717,23 +715,17 @@ class Container implements IContainer, ArrayAccess
             $result = $this->make($itemMake);
 
             if (!is_object($result)) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        'Class or interface %s is register in container is not object.',
-                        $argsclass
-                    )
-                );
+                $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
+
+                throw new InvalidArgumentException($e);
             }
 
             return $result;
         }
 
-        throw new InvalidArgumentException(
-            sprintf(
-                'Class or interface %s is not register in container',
-                $argsclass
-            )
-        );
+        $e = sprintf('Class or interface %s is not register in container', $argsclass);
+
+        throw new InvalidArgumentException($e);
     }
 
     /**
@@ -752,12 +744,9 @@ class Container implements IContainer, ArrayAccess
         $result = $this->make($argsclass);
 
         if (!is_object($result)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Class or interface %s is register in container is not object.',
-                    $argsclass
-                )
-            );
+            $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
+
+            throw new InvalidArgumentException($e);
         }
 
         return $result;
@@ -794,6 +783,7 @@ class Container implements IContainer, ArrayAccess
     protected function parseClosureReflection(Closure $injection): array
     {
         $reflection = new ReflectionFunction($injection);
+
         if (!($param = $reflection->getParameters())) {
             $param = [];
         }
@@ -831,9 +821,9 @@ class Container implements IContainer, ArrayAccess
         $reflection = new ReflectionClass($injection);
 
         if (!$reflection->isInstantiable()) {
-            throw new InvalidArgumentException(
-                sprintf('Class %s is not instantiable.', $injection)
-            );
+            $e = sprintf('Class %s is not instantiable.', $injection);
+
+            throw new InvalidArgumentException($e);
         }
 
         $param = [];
@@ -874,9 +864,6 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseAlias(array $name): array
     {
-        return [
-            key($name),
-            current($name),
-        ];
+        return [key($name), current($name)];
     }
 }
