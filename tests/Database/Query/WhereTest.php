@@ -59,6 +59,11 @@ eot;
                 findAll(true)
             )
         );
+    }
+
+    public function testBaseUse2()
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -82,6 +87,11 @@ eot;
                 1
             )
         );
+    }
+
+    public function testBaseUse3()
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -963,6 +973,11 @@ eot;
                 findAll(true)
             )
         );
+    }
+
+    public function testSupportSubandSuborMore()
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
 [
@@ -1748,6 +1763,59 @@ eot;
                 })->
 
                 findAll(true)
+            )
+        );
+    }
+
+    public function testWhereRaw()
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` WHERE FIND_IN_SET(1, goods_id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('hello')
+                    ->whereRaw('FIND_IN_SET(1, goods_id)')
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testOrWhereRaw()
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `hello`.* FROM `hello` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('hello')
+                    ->whereRaw('FIND_IN_SET(1, goods_id)')
+                    ->orWhereRaw('FIND_IN_SET(1, options_id)')
+                    ->findAll(true)
             )
         );
     }

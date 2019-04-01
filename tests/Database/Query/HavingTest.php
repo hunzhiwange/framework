@@ -1248,4 +1248,59 @@ eot;
             )
         );
     }
+
+    public function testHavingRaw()
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(1, id)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test', 'name as id,tname as value,id')
+                    ->groupBy('name')
+                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testOrHavingRaw()
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+[
+    "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id`,`test`.`value` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(1, id) OR FIND_IN_SET(1, value)",
+    [],
+    false,
+    null,
+    null,
+    []
+]
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test', 'name as id,tname as value,id,value')
+                    ->groupBy('name')
+                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->orHavingRaw('FIND_IN_SET(1, value)')
+                    ->findAll(true)
+            )
+        );
+    }
 }
