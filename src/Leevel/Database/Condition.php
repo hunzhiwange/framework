@@ -1688,15 +1688,10 @@ class Condition
 
         foreach ($this->options['aggregate'] as $item) {
             list(, $field, $alias) = $item;
-
-            if ($alias) {
-                $columns[] = $field.' AS '.$alias;
-            } else {
-                $columns[] = $field;
-            }
+            $columns[] = $field.' AS '.$alias;
         }
 
-        return empty($columns) ? '' : implode(',', $columns);
+        return $columns ? implode(',', $columns) : '';
     }
 
     /**
