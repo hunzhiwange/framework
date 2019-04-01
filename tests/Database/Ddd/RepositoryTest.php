@@ -1767,6 +1767,132 @@ eot;
         );
     }
 
+    public function testFindList()
+    {
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world'.$i,
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $repository = new Repository(new Post());
+
+        $result = $repository->findList(null, 'summary', 'title');
+
+        $this->assertInternalType('array', $result);
+
+        $data = <<<'eot'
+{
+    "hello world0": "post summary",
+    "hello world1": "post summary",
+    "hello world2": "post summary",
+    "hello world3": "post summary",
+    "hello world4": "post summary",
+    "hello world5": "post summary",
+    "hello world6": "post summary",
+    "hello world7": "post summary",
+    "hello world8": "post summary",
+    "hello world9": "post summary"
+}
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
+    public function testFindListFieldValueIsArray()
+    {
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world'.$i,
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $repository = new Repository(new Post());
+
+        $result = $repository->findList(null, ['summary', 'title']);
+
+        $this->assertInternalType('array', $result);
+
+        $data = <<<'eot'
+{
+    "hello world0": "post summary",
+    "hello world1": "post summary",
+    "hello world2": "post summary",
+    "hello world3": "post summary",
+    "hello world4": "post summary",
+    "hello world5": "post summary",
+    "hello world6": "post summary",
+    "hello world7": "post summary",
+    "hello world8": "post summary",
+    "hello world9": "post summary"
+}
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
+    public function testFindListWithCondition()
+    {
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect->
+            table('post')->
+            insert([
+                'title'   => 'hello world'.$i,
+                'user_id' => 1,
+                'summary' => 'post summary',
+            ]);
+        }
+
+        $repository = new Repository(new Post());
+
+        $result = $repository->findList(function (Select $select) {
+            $select->where('id', '>', 5);
+        }, ['summary', 'title']);
+
+        $this->assertInternalType('array', $result);
+
+        $data = <<<'eot'
+{
+    "hello world5": "post summary",
+    "hello world6": "post summary",
+    "hello world7": "post summary",
+    "hello world8": "post summary",
+    "hello world9": "post summary"
+}
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post'];
