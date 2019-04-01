@@ -2424,9 +2424,9 @@ class Condition
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {
-            throw new InvalidArgumentException(
-                'JOIN queries cannot be used while using UNION queries.'
-            );
+            $e = 'JOIN queries cannot be used while using UNION queries.';
+
+            throw new InvalidArgumentException($e);
         }
 
         // 是否分析 schema，子表达式不支持
@@ -2438,9 +2438,9 @@ class Condition
 
             foreach ($tmp as $alias => $names) {
                 if (!is_string($alias)) {
-                    throw new InvalidArgumentException(
-                        sprintf('Alias must be string,but %s given.', gettype($alias))
-                    );
+                    $e = sprintf('Alias must be string,but %s given.', gettype($alias));
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 break;
@@ -2491,9 +2491,7 @@ class Condition
                 $table = $names;
             }
         } else {
-            throw new InvalidArgumentException(
-                'Invalid table name.'
-            );
+            throw new InvalidArgumentException('Invalid table name.');
         }
 
         // 确定 table_name 和 schema
@@ -2583,9 +2581,8 @@ class Condition
         // 还原
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
-                $cols[
-                    array_search('{'.base64_encode($tmp).'}', $cols, true)
-                ] = '{'.$tmp.'}';
+                $key = array_search('{'.base64_encode($tmp).'}', $cols, true);
+                $cols[$key] = '{'.$tmp.'}';
             }
         }
 
@@ -2595,54 +2592,48 @@ class Condition
         }
 
         foreach ($cols as $alias => $col) {
-            if (is_string($col)) {
-                // 处理条件表达式
-                if (is_string($col) &&
-                    false !== strpos($col, ',') &&
-                    false !== strpos($col, '{') &&
-                    preg_match_all('/{(.+?)}/', $col, $subMatches)) {
-                    $col = str_replace(
-                        $subMatches[1][0],
-                        base64_encode($subMatches[1][0]),
-                        $col
-                    );
+            // 处理条件表达式
+            if (false !== strpos($col, ',') &&
+                false !== strpos($col, '{') &&
+                preg_match_all('/{(.+?)}/', $col, $subMatches)) {
+                $col = str_replace(
+                    $subMatches[1][0],
+                    base64_encode($subMatches[1][0]),
+                    $col
+                );
+            }
+
+            $col = Arr::normalize($col);
+
+            // 还原
+            if (!empty($subMatches)) {
+                foreach ($subMatches[1] as $tmp) {
+                    $key = array_search('{'.base64_encode($tmp).'}', $col, true);
+                    $col[$key] = '{'.$tmp.'}';
+                }
+            }
+
+            // 将包含多个字段的字符串打散
+            foreach (Arr::normalize($col) as $col) {
+                $currentTableName = $tableName;
+
+                // 检查是不是 "字段名 AS 别名"这样的形式
+                if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $col, $matches)) {
+                    $col = $matches[1];
+                    $alias = $matches[2];
                 }
 
-                $col = Arr::normalize($col);
-
-                // 还原
-                if (!empty($subMatches)) {
-                    foreach ($subMatches[1] as $tmp) {
-                        $col[
-                            array_search('{'.base64_encode($tmp).'}', $col, true)
-                        ] = '{'.$tmp.'}';
-                    }
+                // 检查字段名是否包含表名称
+                if (preg_match('/(.+)\.(.+)/', $col, $matches)) {
+                    $currentTableName = $matches[1];
+                    $col = $matches[2];
                 }
 
-                // 将包含多个字段的字符串打散
-                foreach (Arr::normalize($col) as $col) {
-                    $currentTableName = $tableName;
-
-                    // 检查是不是 "字段名 AS 别名"这样的形式
-                    if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $col, $matches)) {
-                        $col = $matches[1];
-                        $alias = $matches[2];
-                    }
-
-                    // 检查字段名是否包含表名称
-                    if (preg_match('/(.+)\.(.+)/', $col, $matches)) {
-                        $currentTableName = $matches[1];
-                        $col = $matches[2];
-                    }
-
-                    $this->options['columns'][] = [
-                        $currentTableName,
-                        $col,
-                        is_string($alias) ? $alias : null,
-                    ];
-                }
-            } else {
-                $this->options['columns'][] = [$tableName, $col, is_string($alias) ? $alias : null];
+                $this->options['columns'][] = [
+                    $currentTableName,
+                    $col,
+                    is_string($alias) ? $alias : null,
+                ];
             }
         }
     }
