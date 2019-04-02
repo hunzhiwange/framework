@@ -133,27 +133,6 @@ class Request implements IRequest, IArray, ArrayAccess
     protected $pathInfo;
 
     /**
-     * 应用名字.
-     *
-     * @var string
-     */
-    protected $app;
-
-    /**
-     * 控制器名字.
-     *
-     * @var string
-     */
-    protected $controller;
-
-    /**
-     * 方法名字.
-     *
-     * @var string
-     */
-    protected $action;
-
-    /**
      * 当前语言.
      *
      * @var string
@@ -236,9 +215,6 @@ class Request implements IRequest, IArray, ArrayAccess
         $this->requestUri = null;
         $this->method = null;
         $this->pathInfo = null;
-        $this->app = null;
-        $this->controller = null;
-        $this->action = null;
         $this->language = null;
     }
 
