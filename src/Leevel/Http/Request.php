@@ -1378,22 +1378,6 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 判断字符串是否为数字.
-     *
-     * @param mixed $value
-     *
-     * @since bool
-     */
-    protected function isInt($value): bool
-    {
-        if (is_int($value)) {
-            return true;
-        }
-
-        return ctype_digit((string) $value);
-    }
-
-    /**
      * pathinfo 处理.
      *
      * @param string $pathInfo

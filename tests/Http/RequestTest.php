@@ -467,6 +467,14 @@ class RequestTest extends TestCase
         $this->assertSame('/', $request->getPathInfo());
     }
 
+    public function testGetPathInfoWithExt()
+    {
+        $server = [];
+        $server['REQUEST_URI'] = '/path/info.html';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/path/info', $request->getPathInfo());
+    }
+
     public function testIsJson()
     {
         $request = new Request();
@@ -1034,6 +1042,22 @@ class RequestTest extends TestCase
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('bar', $request['foo']);
         $this->assertNull($request['notfound']);
+    }
+
+    public function testOffsetSet()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('bar', $request['foo']);
+        $request['foo'] = 'newbar';
+        $this->assertSame('newbar', $request['foo']);
+    }
+
+    public function testOffsetUnset()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('bar', $request['foo']);
+        unset($request['foo']);
+        $this->assertNull($request['foo']);
     }
 
     protected function createTempFile()
