@@ -222,7 +222,8 @@ eot;
         $json = <<<'eot'
 {
     "input": "test",
-    "hello": "world"
+    "hello": "world",
+    "notfound": null
 }
 eot;
 
