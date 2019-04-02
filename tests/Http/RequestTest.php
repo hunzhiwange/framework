@@ -22,6 +22,7 @@ namespace Tests\Http;
 
 use Leevel\Http\IRequest;
 use Leevel\Http\Request;
+use Leevel\Http\UploadedFile;
 use Tests\TestCase;
 
 /**
@@ -38,11 +39,22 @@ use Tests\TestCase;
  */
 class RequestTest extends TestCase
 {
-    /**
-     * 初始化.
-     */
     protected function setUp()
     {
+        $dir = sys_get_temp_dir().'/form_test';
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+    }
+
+    protected function tearDown()
+    {
+        foreach (glob(sys_get_temp_dir().'/form_test/*') as $file) {
+            unlink($file);
+        }
+
+        rmdir(sys_get_temp_dir().'/form_test');
     }
 
     /**
@@ -544,6 +556,278 @@ class RequestTest extends TestCase
     {
         $request = new Request(['foo' => 'bar']);
         $this->assertTrue(isset($request->foo));
+        $this->assertFalse(isset($request->helloNot));
+    }
+
+    public function testMagicGet()
+    {
+        $request = new Request(['foo' => 'bar']);
+        $this->assertSame('bar', $request->foo);
+    }
+
+    public function testMagicGetNotFound()
+    {
+        $request = new Request(['foo' => 'bar']);
+        $this->assertNull($request->helloNot);
+    }
+
+    public function testCoroutineContext()
+    {
+        $this->assertTrue(Request::coroutineContext());
+    }
+
+    public function testExists()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertTrue($request->exists(['foo']));
+        $this->assertTrue($request->exists(['foo', 'hello']));
+        $this->assertFalse($request->exists(['notFound']));
+    }
+
+    public function testHas()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world', 'e' => '']);
+        $this->assertTrue($request->has(['foo']));
+        $this->assertTrue($request->has(['foo', 'hello']));
+        $this->assertTrue($request->has(['notFound']));
+        $this->assertFalse($request->has(['e']));
+    }
+
+    public function testOnly()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame(['foo' => 'bar'], $request->only(['foo']));
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->only(['foo', 'hello']));
+        $this->assertSame(['foo' => 'bar', 'not' => null], $request->only(['foo', 'not']));
+    }
+
+    public function testExcept()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame(['hello' => 'world'], $request->except(['foo']));
+        $this->assertSame([], $request->except(['foo', 'hello']));
+        $this->assertSame(['hello' => 'world'], $request->except(['foo', 'not']));
+    }
+
+    public function testInput()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('bar', $request->input('foo'));
+        $this->assertNull($request->input('not'));
+        $this->assertSame('world', $request->input('hello'));
+    }
+
+    public function testInputAll()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->input());
+    }
+
+    public function testInputNullWithDefault()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('default', $request->input('not', 'default'));
+    }
+
+    public function testQuery()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('bar', $request->query('foo'));
+        $this->assertNull($request->query('not'));
+        $this->assertSame('world', $request->query('hello'));
+    }
+
+    public function testQueryAll()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query());
+    }
+
+    public function testQueryNullWithDefault()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('default', $request->query('not', 'default'));
+    }
+
+    public function testCookie()
+    {
+        $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('bar', $request->cookie('foo'));
+        $this->assertNull($request->cookie('not'));
+        $this->assertSame('world', $request->cookie('hello'));
+    }
+
+    public function testCookieAll()
+    {
+        $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->cookie());
+    }
+
+    public function testCookieNullWithDefault()
+    {
+        $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('default', $request->cookie('not', 'default'));
+    }
+
+    public function testHasCookie()
+    {
+        $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
+        $this->assertTrue($request->hasCookie('foo'));
+        $this->assertFalse($request->hasCookie('not'));
+    }
+
+    public function testFile()
+    {
+        $tmpFile = $this->createTempFile();
+
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+
+        $files = [
+            'file' => [
+                'name'     => basename($tmpFile),
+                'type'     => 'text/plain',
+                'tmp_name' => $tmpFile,
+                'error'    => 0,
+                'size'     => null,
+            ],
+        ];
+
+        $request = new Request([], [], [], [], $files);
+        $this->assertInstanceOf(UploadedFile::class, $request->file('file'));
+        $this->assertEquals($file, $request->file('file'));
+        $this->assertNull($request->file('not'));
+    }
+
+    public function testFileAll()
+    {
+        $tmpFile = $this->createTempFile();
+
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+
+        $files = [
+            'file' => [
+                'name'     => basename($tmpFile),
+                'type'     => 'text/plain',
+                'tmp_name' => $tmpFile,
+                'error'    => 0,
+                'size'     => null,
+            ],
+        ];
+
+        $request = new Request([], [], [], [], $files);
+        $files = $request->file();
+        $this->assertInstanceOf(UploadedFile::class, $files['file']);
+        $this->assertEquals($file, $files['file']);
+        $this->assertInternalType('array', $files);
+        $this->assertSame(1, count($files));
+    }
+
+    public function testHasFile()
+    {
+        $tmpFile = $this->createTempFile();
+
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+
+        $files = [
+            'file' => [
+                'name'     => basename($tmpFile),
+                'type'     => 'text/plain',
+                'tmp_name' => $tmpFile,
+                'error'    => 0,
+                'size'     => null,
+            ],
+        ];
+
+        $request = new Request([], [], [], [], $files);
+        $this->assertTrue($request->hasFile('file'));
+        $this->assertEquals($file, $request->file('file'));
+        $this->assertFalse($request->hasFile('not'));
+    }
+
+    public function testMultiFile()
+    {
+        $tmpFile = $this->createTempFile();
+        $tmpFile2 = $this->createTempFile();
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+        $file2 = new UploadedFile($tmpFile2, basename($tmpFile2), 'text/plain');
+
+        $files = [
+            'file' => [
+                'name'     => [basename($tmpFile), basename($tmpFile2)],
+                'type'     => ['text/plain', 'text/plain'],
+                'tmp_name' => [$tmpFile, $tmpFile2],
+                'error'    => [0, 0],
+                'size'     => [null, null],
+            ],
+        ];
+
+        $request = new Request([], [], [], [], $files);
+        $files = $request->file();
+        $this->assertInstanceOf(UploadedFile::class, $files['file\\0']);
+        $this->assertInstanceOf(UploadedFile::class, $files['file\\1']);
+        $this->assertEquals($file, $files['file\\0']);
+        $this->assertEquals($file2, $files['file\\1']);
+        $this->assertInternalType('array', $files);
+        $this->assertSame(2, count($files));
+    }
+
+    public function testMultiFileGetArr()
+    {
+        $tmpFile = $this->createTempFile();
+        $tmpFile2 = $this->createTempFile();
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+        $file2 = new UploadedFile($tmpFile2, basename($tmpFile2), 'text/plain');
+
+        $files = [
+            'file' => [
+                'name'     => [basename($tmpFile), basename($tmpFile2)],
+                'type'     => ['text/plain', 'text/plain'],
+                'tmp_name' => [$tmpFile, $tmpFile2],
+                'error'    => [0, 0],
+                'size'     => [null, null],
+            ],
+        ];
+
+        $request = new Request([], [], [], [], $files);
+        $files = $request->file('file\\');
+        $this->assertInstanceOf(UploadedFile::class, $files[0]);
+        $this->assertInstanceOf(UploadedFile::class, $files[1]);
+        $this->assertInstanceOf(UploadedFile::class, $request->file('file\\0')[0]);
+        $this->assertInstanceOf(UploadedFile::class, $request->file('file\\1')[0]);
+        $this->assertEquals($file, $files[0]);
+        $this->assertEquals($file2, $files[1]);
+        $this->assertInternalType('array', $files);
+        $this->assertSame(2, count($files));
+    }
+
+    public function testHeader()
+    {
+        $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
+        $this->assertSame('127.0.0.1', $request->header('host'));
+        $this->assertSame('127.0.0.1', $request->header('HOST'));
+        $this->assertSame('https://www.queryphp.com', $request->header('referer'));
+        $this->assertSame('https://www.queryphp.com', $request->header('REFERER'));
+    }
+
+    public function testHeaderAll()
+    {
+        $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
+        $this->assertSame(['host' => '127.0.0.1', 'referer' => 'https://www.queryphp.com'], $request->header());
+    }
+
+    public function testHeaderNullWithDefault()
+    {
+        $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
+        $this->assertNull($request->header('notFound'));
+        $this->assertSame('default', $request->header('notFound', 'default'));
+    }
+
+    protected function createTempFile()
+    {
+        $tempFile = sys_get_temp_dir().'/form_test/'.md5(time().rand()).'.tmp';
+        file_put_contents($tempFile, '1');
+
+        return $tempFile;
     }
 }
 
