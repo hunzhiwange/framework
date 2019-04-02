@@ -146,15 +146,15 @@ interface IRequest
     /**
      * 重置或者初始化.
      *
-     * @param array  $query
-     * @param array  $request
-     * @param array  $params
-     * @param array  $cookies
-     * @param array  $files
-     * @param array  $server
-     * @param string $content
+     * @param array                $query
+     * @param array                $request
+     * @param array                $params
+     * @param array                $cookies
+     * @param array                $files
+     * @param array                $server
+     * @param null|resource|string $content
      */
-    public function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], ?string $content = null): void;
+    public function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null): void;
 
     /**
      * 全局变量创建一个 Request.
