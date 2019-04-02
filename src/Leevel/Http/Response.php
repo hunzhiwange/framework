@@ -285,9 +285,9 @@ class Response implements IResponse
         if (null !== $content &&
             !is_scalar($content) &&
             !is_callable([$content, '__toString'])) {
-            throw new UnexpectedValueException(
-                sprintf('The Response content must be a scalar or object implementing __toString(), %s given.', gettype($content))
-            );
+            $e = sprintf('The Response content must be a scalar or object implementing __toString(), %s given.', gettype($content));
+
+            throw new UnexpectedValueException($e);
         }
 
         $this->content = (string) $content;
@@ -549,19 +549,13 @@ class Response implements IResponse
         $this->statusCode = $code;
 
         if ($this->isInvalid()) {
-            throw new InvalidArgumentException(
-                sprintf('The HTTP status code %s is not valid.', $code)
-            );
+            $e = sprintf('The HTTP status code %s is not valid.', $code);
+
+            throw new InvalidArgumentException($e);
         }
 
         if (null === $text) {
             $this->statusText = self::$statusTexts[$code] ?? 'unknown status';
-
-            return $this;
-        }
-
-        if (false === $text) {
-            $this->statusText = '';
 
             return $this;
         }
