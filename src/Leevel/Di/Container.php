@@ -118,7 +118,7 @@ class Container implements IContainer, ArrayAccess
      */
     public function __call(string $method, array $args)
     {
-        $e = sprintf('Method %s is not exits.', $method);
+        $e = sprintf('Method `%s` is not exits.', $method);
 
         throw new BadMethodCallException($e);
     }
@@ -246,17 +246,17 @@ class Container implements IContainer, ArrayAccess
 
         // 生成实例
         if (!isset($this->services[$name])) {
-            return $this->getInjectionObject($name, $args);
-        }
-
-        if (!is_string($this->services[$name]) && is_callable($this->services[$name])) {
-            array_unshift($args, $this);
-            $instance = call_user_func_array($this->services[$name], $args);
+            $instance = $this->getInjectionObject($name, $args);
         } else {
-            if (is_string($this->services[$name])) {
-                $instance = $this->getInjectionObject($this->services[$name], $args);
+            if (!is_string($this->services[$name]) && is_callable($this->services[$name])) {
+                array_unshift($args, $this);
+                $instance = call_user_func_array($this->services[$name], $args);
             } else {
-                $instance = $this->services[$name];
+                if (is_string($this->services[$name])) {
+                    $instance = $this->getInjectionObject($this->services[$name], $args);
+                } else {
+                    $instance = $this->services[$name];
+                }
             }
         }
 
@@ -524,7 +524,7 @@ class Container implements IContainer, ArrayAccess
      * @param string $classname
      * @param array  $args
      *
-     * @return object
+     * @return object|string
      */
     protected function getInjectionObject(string $classname, array $args = [])
     {
@@ -591,7 +591,7 @@ class Container implements IContainer, ArrayAccess
                         } elseif ($item->isDefaultValueAvailable()) {
                             $data = $item->getDefaultValue();
                         } else {
-                            $data = $this->parseClassInstance($argsclass);
+                            $data = $this->parseClassFromContainer($argsclass);
                         }
 
                         $required++;
@@ -667,30 +667,6 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 解析反射参数类实例.
-     *
-     * @param string $argsclass
-     *
-     * @return mixed
-     */
-    protected function parseClassInstance(string $argsclass)
-    {
-        switch (true) {
-            case $result = $this->parseClassFromContainer($argsclass):
-                break;
-            case $result = $this->parseClassNotExists($argsclass):
-                break;
-            default:
-                $e = sprintf('Class or interface %s is not register in container', $argsclass);
-
-                throw new InvalidArgumentException($e);
-                break;
-        }
-
-        return $result;
-    }
-
-    /**
      * 从服务容器中获取解析反射参数类实例.
      *
      * @param string $argsclass
@@ -701,47 +677,13 @@ class Container implements IContainer, ArrayAccess
     {
         $itemMake = $this->make($argsclass);
 
-        if (is_string($itemMake)) {
-            return false;
-        }
-
         // 实例对象
         if (is_object($itemMake)) {
             return $itemMake;
         }
 
         // 接口绑定实现
-        if (class_exists($itemMake)) {
-            $result = $this->make($itemMake);
-
-            if (!is_object($result)) {
-                $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
-
-                throw new InvalidArgumentException($e);
-            }
-
-            return $result;
-        }
-
-        $e = sprintf('Class or interface %s is not register in container', $argsclass);
-
-        throw new InvalidArgumentException($e);
-    }
-
-    /**
-     * 独立类作为解析反射参数类实例.
-     *
-     * @param string $argsclass
-     *
-     * @return bool|object
-     */
-    protected function parseClassNotExists(string $argsclass)
-    {
-        if (!class_exists($argsclass)) {
-            return false;
-        }
-
-        $result = $this->make($argsclass);
+        $result = $this->make($itemMake);
 
         if (!is_object($result)) {
             $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
@@ -838,7 +780,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 动态创建实例对象.
      * zephir 版本会执行到 newInstanceWithoutConstructor.
-     * 例子：Class Tests\Event\ListenerNotExtends does not
+     * 例子：Class Tests\\Event\\ListenerNotExtends does not
      * have a constructor, so you cannot pass any constructor arguments.
      *
      * @param string $classname
