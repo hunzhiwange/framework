@@ -76,9 +76,7 @@ class Arr
         $result = [];
 
         foreach ($filter as $f) {
-            if (array_key_exists($f, $input)) {
-                $result[$f] = $input[$f];
-            }
+            $result[$f] = $input[$f] ?? null;
         }
 
         return $result;
