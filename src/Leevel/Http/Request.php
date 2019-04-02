@@ -1283,11 +1283,13 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $basename = basename($url);
+
         if (empty($basename) || !strpos(rawurldecode($requestUri), $basename)) {
             return $this->baseUrl = '';
         }
 
-        if ((strlen($requestUri) >= strlen($url)) && ((false !== ($pos = strpos($requestUri, $url))) && (0 !== $pos))) {
+        if ((strlen($requestUri) >= strlen($url)) &&
+            ((false !== ($pos = strpos($requestUri, $url))) && (0 !== $pos))) {
             $url = substr($requestUri, 0, $pos + strlen($url));
         }
 
@@ -1349,7 +1351,9 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function offsetGet($index)
     {
-        return data_get($this->all(), $index);
+        $all = $this->all();
+
+        return $all[$index] ?? null;
     }
 
     /**

@@ -443,6 +443,7 @@ class RequestTest extends TestCase
         $server['ORIG_SCRIPT_NAME'] = '/index.php';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
+        $this->assertSame('', $request->getBasePath()); // 缓存
     }
 
     public function testGetPathInfo()
@@ -995,6 +996,44 @@ class RequestTest extends TestCase
         $request = new Request([], [], [], [], [], [], $text);
         $this->assertSame('hello', $request->getContent());
         unlink($file);
+    }
+
+    public function testGetRoot()
+    {
+        $request = new Request([], [], [], [], [], ['SERVER_NAME' => 'servername', 'SERVER_PORT' => '90']);
+        $this->assertSame('http://servername:90', $request->getRoot());
+    }
+
+    public function testGetEnter()
+    {
+        $request = new Request();
+        $this->assertSame('', $request->getEnter());
+    }
+
+    public function testGetEnterWasNotEmpty()
+    {
+        $request = new Request([], [], [], [], [], ['SERVER_SOFTWARE' => 'swoole-http-server', 'SCRIPT_NAME' => '/base/web/index_dev.php']);
+        $this->assertSame('/base/web', $request->getEnter());
+    }
+
+    public function testToArray()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->toArray());
+    }
+
+    public function testOffsetExists()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertTrue(isset($request['foo']));
+        $this->assertFalse(isset($request['notfound']));
+    }
+
+    public function testOffsetGet()
+    {
+        $request = new Request(['foo' => 'bar', 'hello' => 'world']);
+        $this->assertSame('bar', $request['foo']);
+        $this->assertNull($request['notfound']);
     }
 
     protected function createTempFile()
