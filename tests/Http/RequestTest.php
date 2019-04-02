@@ -88,6 +88,15 @@ class RequestTest extends TestCase
         $this->assertSame($request->getLanguage(), 'zh-cn');
     }
 
+    public function testLanguageAlia()
+    {
+        $request = new Request();
+
+        $request->setLanguage('zh-cn');
+
+        $this->assertSame($request->language(), 'zh-cn');
+    }
+
     /**
      * 测试 getUri 方法.
      */
@@ -820,6 +829,172 @@ class RequestTest extends TestCase
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertNull($request->header('notFound'));
         $this->assertSame('default', $request->header('notFound', 'default'));
+    }
+
+    public function testServer()
+    {
+        $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
+        $this->assertSame('127.0.0.1', $request->server('HTTP_HOST'));
+        $this->assertSame('https://www.queryphp.com', $request->server('HTTP_REFERER'));
+    }
+
+    public function testServerAll()
+    {
+        $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
+        $this->assertSame(['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com'], $request->server());
+    }
+
+    public function testServiceNullWithDefault()
+    {
+        $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
+        $this->assertNull($request->server('notFound'));
+        $this->assertSame('default', $request->server('notFound', 'default'));
+    }
+
+    public function testMerge()
+    {
+        $request = new Request(['foo' => 'bar']);
+        $this->assertSame(['foo' => 'bar'], $request->input());
+        $request->merge(['hello' => 'world']);
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->input());
+    }
+
+    public function testReplace()
+    {
+        $request = new Request(['foo' => 'bar']);
+        $this->assertSame(['foo' => 'bar'], $request->input());
+        $request->replace(['hello' => 'world']);
+        $this->assertSame(['hello' => 'world'], $request->input());
+    }
+
+    public function testIsCli()
+    {
+        $request = new Request();
+        $this->assertTrue($request->isCli());
+    }
+
+    public function testIsCliForSwoole()
+    {
+        $request = new Request([], [], [], [], [], ['SERVER_SOFTWARE' => 'swoole-http-server']);
+        $this->assertFalse($request->isCli());
+    }
+
+    public function testIsCgi()
+    {
+        $request = new Request();
+        $this->assertFalse($request->isCgi());
+    }
+
+    public function testIsJsonForContentType()
+    {
+        $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json']);
+        $this->assertTrue($request->isJson());
+    }
+
+    public function testIsJsonForContentTypeButIsHtml()
+    {
+        $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'text/html']);
+        $this->assertFalse($request->isJson());
+    }
+
+    public function testIsGet()
+    {
+        $request = new Request();
+        $this->assertTrue($request->isGet());
+    }
+
+    public function testIsGetWillReturnTrue()
+    {
+        $request = new Request();
+        $request->setMethod(IRequest::METHOD_GET);
+        $this->assertTrue($request->isGet());
+    }
+
+    /**
+     * @dataProvider provideIsMethod
+     *
+     * @param mixed $method
+     */
+    public function testIsMethodCheck(string $method)
+    {
+        $request = new Request();
+        $isMethod = 'is'.ucfirst($method);
+        $this->assertFalse($request->{$isMethod}());
+    }
+
+    /**
+     * @dataProvider provideIsMethod
+     *
+     * @param mixed $method
+     */
+    public function testIsMethodCheckWillReturnTrue(string $method)
+    {
+        $request = new Request();
+        $isMethod = 'is'.ucfirst($method);
+        $constMethod = 'METHOD_'.strtoupper($method);
+        $request->setMethod(constant(IRequest::class.'::'.$constMethod));
+        $this->assertTrue($request->{$isMethod}());
+    }
+
+    public function provideIsMethod()
+    {
+        return [
+            ['put'],
+            ['patch'],
+            ['post'],
+            ['head'],
+            ['options'],
+            ['purge'],
+            ['trace'],
+            ['connect'],
+        ];
+    }
+
+    public function testGetClientIp()
+    {
+        $request = new Request([], [], [], [], [], ['HTTP_CLIENT_IP' => '127.0.0.1']);
+        $this->assertSame('127.0.0.1', $request->getClientIp());
+    }
+
+    public function testGetClientIpWithRemoteAddr()
+    {
+        $request = new Request([], [], [], [], [], ['REMOTE_ADDR' => '127.0.0.1']);
+        $this->assertSame('127.0.0.1', $request->getClientIp());
+    }
+
+    public function testGetClientIpWithDefault()
+    {
+        $request = new Request();
+        $this->assertSame('0.0.0.0', $request->getClientIp());
+    }
+
+    public function testGetRealMethod()
+    {
+        $request = new Request();
+        $this->assertSame('GET', $request->getRealMethod());
+    }
+
+    public function testGetContent()
+    {
+        $request = new Request([], [], [], [], [], [], 'helloworld');
+        $this->assertSame('helloworld', $request->getContent());
+    }
+
+    public function testGetContentFromPhpInput()
+    {
+        $request = new Request();
+        $this->assertSame('', $request->getContent());
+    }
+
+    public function testGetContentFromResource()
+    {
+        $file = __DIR__.'/testGetContentFromResource.txt';
+        file_put_contents($file, 'hello');
+        $text = fopen($file, 'r');
+        $this->assertInternalType('resource', $text);
+        $request = new Request([], [], [], [], [], [], $text);
+        $this->assertSame('hello', $request->getContent());
+        unlink($file);
     }
 
     protected function createTempFile()
