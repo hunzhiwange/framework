@@ -68,7 +68,7 @@ class FunctionsTest extends TestCase
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Method notFoundCallback is not exits.'
+            'Method `notFoundCallback` is not exits.'
         );
 
         Leevel::notFoundCallback();
