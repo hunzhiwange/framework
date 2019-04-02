@@ -539,6 +539,12 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isMethod('POST'));
         $this->assertFalse($request->isMethod('post'));
     }
+
+    public function testMagicIsset()
+    {
+        $request = new Request(['foo' => 'bar']);
+        $this->assertTrue(isset($request->foo));
+    }
 }
 
 class RequestContentProxy extends Request
