@@ -518,6 +518,76 @@ class ContainerTest extends TestCase
         $container->removeCoroutine();
         $this->assertFalse($container->existsCoroutine('test'));
     }
+
+    public function testCoroutineWasSingleton()
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('context')->willReturn(true);
+        $this->assertTrue($coroutine->context(Test26::class));
+
+        $coroutine->method('uid')->willReturn(2);
+        $this->assertSame(2, $coroutine->uid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+        $this->assertInstanceOf(ICoroutine::class, $container->getCoroutine());
+
+        $container->singleton('test', new Test26());
+
+        $this->assertInstanceOf(Test26::class, $container->make('test'));
+        $this->assertTrue($container->existsCoroutine('test'));
+    }
+
+    public function testClassArgsClassAsStringContainer()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Class or interface Tests\\Di\\Test27 is register in container is not object.'
+        );
+
+        $container = new Container();
+
+        $container->instance(Test27::class); // instance 直接的将直接返回字符串
+        $container->make(Test28::class);
+    }
+
+    public function testClassArgsASingleClass()
+    {
+        $container = new Container();
+        $test = $container->make(Test28::class);
+        $this->assertSame('world', $test->hello());
+    }
+
+    public function testMagicGet()
+    {
+        $container = new Container();
+
+        $container->bind('foo', 'bar');
+
+        $this->assertSame('bar', $container->foo);
+    }
+
+    public function testMagicSet()
+    {
+        $container = new Container();
+
+        $container->foo = 'bar';
+
+        $this->assertSame('bar', $container->foo);
+    }
+
+    public function testMagicCallException()
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage(
+            'Method `callNotFound` is not exits.'
+        );
+
+        $container = new Container();
+
+        $container->callNotFound();
+    }
 }
 
 class Test1
@@ -694,4 +764,42 @@ class Test25
 
 class Test26
 {
+}
+
+class Test27
+{
+    public function hello(): string
+    {
+        return 'world';
+    }
+}
+
+class Test28
+{
+    private $test;
+
+    public function __construct(Test27 $test)
+    {
+        $this->test = $test;
+    }
+
+    public function hello()
+    {
+        return $this->test->hello();
+    }
+}
+
+class Test29
+{
+    private $test;
+
+    public function __construct(TestNotFoundNotFound $test)
+    {
+        $this->test = $test;
+    }
+
+    public function hello()
+    {
+        return $this->test->hello();
+    }
 }
