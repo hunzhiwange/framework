@@ -588,6 +588,19 @@ class ContainerTest extends TestCase
 
         $container->callNotFound();
     }
+
+    public function testClear()
+    {
+        $container = new Container();
+
+        $container->instance('foo', 'bar');
+
+        $this->assertSame('bar', $container->make('foo'));
+        $this->assertSame('notfound', $container->make('notfound'));
+
+        $container->clear();
+        $this->assertSame('foo', $container->make('foo'));
+    }
 }
 
 class Test1

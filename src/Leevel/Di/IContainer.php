@@ -116,6 +116,11 @@ interface IContainer
     public function exists(string $name): bool;
 
     /**
+     * 清理容器.
+     */
+    public function clear(): void;
+
+    /**
      * 设置协程.
      *
      * @param \Leevel\Di\ICoroutine $coroutine

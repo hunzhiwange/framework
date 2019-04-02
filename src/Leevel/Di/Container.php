@@ -383,6 +383,25 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
+     * 清理容器.
+     */
+    public function clear(): void
+    {
+        $prop = [
+            'services',
+            'instances',
+            'singletons',
+            'coroutineInstances',
+        ];
+
+        foreach ($prop as $item) {
+            $this->{$item} = [];
+        }
+
+        $this->alias = [];
+    }
+
+    /**
      * 设置协程.
      *
      * @param \Leevel\Di\ICoroutine $coroutine
