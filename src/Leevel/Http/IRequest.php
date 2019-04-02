@@ -330,7 +330,7 @@ interface IRequest
      *
      * @return array|string
      */
-    public function getItem(string $source, string $key, $defaults);
+    public function getItem(string $source, ?string $key, $defaults);
 
     /**
      * 合并输入.

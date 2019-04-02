@@ -472,11 +472,11 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function file(?string $key = null, $defaults = null)
     {
-        if (false === strpos($key, '\\')) {
+        if (!$key || false === strpos($key, '\\')) {
             return $this->getItem('files', $key, $defaults);
         }
 
-        return $this->files->getArr($key, $defaults);
+        return $this->files->getArr($key, is_array($defaults) ? $defaults : []);
     }
 
     /**
@@ -551,7 +551,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return array|string
      */
-    public function getItem(string $source, string $key, $defaults)
+    public function getItem(string $source, ?string $key, $defaults)
     {
         if (null === $key) {
             return $this->{$source}->all();
