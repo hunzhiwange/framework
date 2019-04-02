@@ -155,7 +155,7 @@ class FileBagTest extends TestCase
         ]);
 
         $files = $bag->all();
-        $this->assertEquals($file, $files['child\file']);
+        $this->assertEquals($file, $files['child\\file']);
     }
 
     public function testShouldConvertNestedUploadedFilesWithPhpBug()

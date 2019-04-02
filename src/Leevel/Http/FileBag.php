@@ -76,9 +76,9 @@ class FileBag extends Bag
     public function set(string $key, $value): void
     {
         if (!is_array($value) && !$value instanceof UploadedFile) {
-            throw new InvalidArgumentException(
-                'An uploaded file must be an array or an instance of UploadedFile.'
-            );
+            $e = 'An uploaded file must be an array or an instance of UploadedFile.';
+
+            throw new InvalidArgumentException($e);
         }
 
         parent::set($key, $this->convertFile($value));
@@ -160,9 +160,9 @@ class FileBag extends Bag
         $keys = $this->normalizeKey($result);
 
         if ($keys !== static::$fileKeys) {
-            throw new InvalidArgumentException(
-                sprintf('An array uploaded file must be contain keys %s.', implode(',', static::$fileKeys))
-            );
+            $e = sprintf('An array uploaded file must be contain keys %s.', implode(',', static::$fileKeys));
+
+            throw new InvalidArgumentException($e);
         }
 
         return $result;
@@ -182,7 +182,9 @@ class FileBag extends Bag
         foreach ($elements as $key => $value) {
             if (is_array($value)) {
                 if (false === array_key_exists('name', $value)) {
-                    throw new InvalidArgumentException('An uploaded file must be contain key name.');
+                    $e = 'An uploaded file must be contain key name.';
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 if (isset($value['name']) && is_array($value['name'])) {
@@ -191,15 +193,15 @@ class FileBag extends Bag
 
                         foreach (static::$fileKeys as $fileKey) {
                             if (!array_key_exists($fileKey, $value)) {
-                                throw new InvalidArgumentException(
-                                    sprintf('An uploaded file must be contain key %s.', $fileKey)
-                                );
+                                $e = sprintf('An uploaded file must be contain key %s.', $fileKey);
+
+                                throw new InvalidArgumentException($e);
                             }
 
                             if (!array_key_exists($index, $value[$fileKey])) {
-                                throw new InvalidArgumentException(
-                                    sprintf('An uploaded file must be contain %s in key %s.', $index, $fileKey)
-                                );
+                                $e = sprintf('An uploaded file must be contain %s in key %s.', $index, $fileKey);
+
+                                throw new InvalidArgumentException($e);
                             }
 
                             $element[$fileKey] = $value[$fileKey][$index] ?? '';
