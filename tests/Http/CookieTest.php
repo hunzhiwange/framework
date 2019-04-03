@@ -98,40 +98,11 @@ class CookieTest extends TestCase
 
     public function testSetWithOptionExpire()
     {
-        $cookie = new Cookie();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cookie expire date must greater than or equal 0.');
 
+        $cookie = new Cookie();
         $cookie->set('foo', 'bar', ['expire' => -10]);
-
-        $this->assertSame([
-            'foo' => [
-                'foo',
-                'bar',
-                time() - 31536000,
-                '/',
-                '',
-                false,
-                false,
-            ],
-        ], $cookie->all());
-    }
-
-    public function testSetWithOptionExpire2()
-    {
-        $cookie = new Cookie();
-
-        $cookie->set('foo', 'bar', ['expire' => -50]);
-
-        $this->assertSame([
-            'foo' => [
-                'foo',
-                'bar',
-                time() - 31536000,
-                '/',
-                '',
-                false,
-                false,
-            ],
-        ], $cookie->all());
     }
 
     public function testSetWithOptionExpire3()
@@ -156,7 +127,7 @@ class CookieTest extends TestCase
     public function testSetException()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Cookie value must be scalar or null.');
+        $this->expectExceptionMessage('Cookie value must be string,array or null.');
 
         $cookie = new Cookie();
 
@@ -545,5 +516,87 @@ class CookieTest extends TestCase
         $this->assertSame([
             'datakey_3' => 'datavalue_3',
         ], $cookie->get('foo'));
+    }
+
+    public function testFormat()
+    {
+        $cookie = new Cookie();
+        $cookie->set('foo', 'datakey_1');
+        $test = $cookie->all()['foo'];
+        $str = 'foo=datakey_1; expires='.gmdate('D, d-M-Y H:i:s T', $test[2]).'; Max-Age=86400; path=/';
+        $this->assertSame($str, $cookie->format($test));
+    }
+
+    public function testFormatWithExpire()
+    {
+        $cookie = new Cookie();
+        $cookie->set('foo', 'datakey_1', ['expire' => 60]);
+        $test = $cookie->all()['foo'];
+        $str = 'foo=datakey_1; expires='.gmdate('D, d-M-Y H:i:s T', $test[2]).'; Max-Age=60; path=/';
+        $this->assertSame($str, $cookie->format($test));
+    }
+
+    public function testFormatWithDomain()
+    {
+        $cookie = new Cookie();
+        $cookie->set('foo', 'datakey_1', ['domain' => 'queryphp.com']);
+        $test = $cookie->all()['foo'];
+        $str = 'foo=datakey_1; expires='.gmdate('D, d-M-Y H:i:s T', $test[2]).'; Max-Age=86400; path=/; domain=queryphp.com';
+        $this->assertSame($str, $cookie->format($test));
+    }
+
+    public function testFormatWithHttponly()
+    {
+        $cookie = new Cookie();
+        $cookie->set('foo', 'datakey_1', ['httponly' => true]);
+        $test = $cookie->all()['foo'];
+        $str = 'foo=datakey_1; expires='.gmdate('D, d-M-Y H:i:s T', $test[2]).'; Max-Age=86400; path=/; httponly';
+        $this->assertSame($str, $cookie->format($test));
+    }
+
+    public function testFormatWithSecure()
+    {
+        $cookie = new Cookie();
+        $cookie->set('foo', 'datakey_1', ['secure' => true]);
+        $test = $cookie->all()['foo'];
+        $str = 'foo=datakey_1; expires='.gmdate('D, d-M-Y H:i:s T', $test[2]).'; Max-Age=86400; path=/; secure';
+        $this->assertSame($str, $cookie->format($test));
+    }
+
+    public function testFormatWithDelete()
+    {
+        $cookie = new Cookie();
+        $cookie->set('foo', 'datakey_1');
+        $cookie->delete('foo');
+        $test = $cookie->all()['foo'];
+        $str = 'foo=deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001).'; Max-Age=0; path=/';
+        $this->assertSame($str, $cookie->format($test));
+    }
+
+    public function testFormatWithDeleteWhenSetEmptyString()
+    {
+        $cookie = new Cookie();
+        $cookie->set('foo', '');
+        $test = $cookie->all()['foo'];
+        $str = 'foo=deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001).'; Max-Age=0; path=/';
+        $this->assertSame($str, $cookie->format($test));
+    }
+
+    public function testFormatWithDeleteWhenSetNull()
+    {
+        $cookie = new Cookie();
+        $cookie->set('foo', null);
+        $test = $cookie->all()['foo'];
+        $str = 'foo=deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001).'; Max-Age=0; path=/';
+        $this->assertSame($str, $cookie->format($test));
+    }
+
+    public function testFormatInvalidCookieData()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid cookie data.');
+
+        $cookie = new Cookie();
+        $cookie->format([]);
     }
 }

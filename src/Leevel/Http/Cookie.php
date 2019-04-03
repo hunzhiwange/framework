@@ -81,28 +81,28 @@ class Cookie
     /**
      * 设置 COOKIE.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      */
-    public function set(string $name, $value = '', array $option = []): void
+    public function set(string $name, $value = null, array $option = []): void
     {
         $option = $this->normalizeOptions($option);
 
         if (is_array($value)) {
             $value = json_encode($value);
-        }
-
-        if (!is_scalar($value) && null !== $value) {
-            throw new Exception('Cookie value must be scalar or null.');
+        } elseif (!is_string($value) && null !== $value) {
+            throw new Exception('Cookie value must be string,array or null.');
         }
 
         $option['expire'] = (int) ($option['expire']);
 
+        if ($option['expire'] < 0) {
+            throw new Exception('Cookie expire date must greater than or equal 0.');
+        }
+
         if ($option['expire'] > 0) {
             $option['expire'] = time() + $option['expire'];
-        } elseif ($option['expire'] < 0) {
-            $option['expire'] = time() - 31536000;
         }
 
         // 对应 setcookie 的参数
