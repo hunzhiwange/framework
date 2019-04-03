@@ -18,7 +18,8 @@
         "leevel/session": "1.0.*",
         "leevel/support": "1.0.*",
         "leevel/flow": "1.0.*",
-        "psr/http-message": "^1.0.1"
+        "psr/http-message": "^1.0.1",
+        "zendframework/zend-diactoros": "^2.1.1"
     },
     "autoload": {
         "psr-4": {
