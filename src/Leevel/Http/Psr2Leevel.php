@@ -108,19 +108,22 @@ class Psr2Leevel implements IPsr2Leevel
     /**
      * 转换上传文件结构.
      *
-     * @param array $uploadedFiles
+     * @param array  $uploadedFiles
+     * @param string $parent
      *
      * @return array
      */
-    protected function getFiles(array $uploadedFiles): array
+    protected function getFiles(array $uploadedFiles, string $parent = ''): array
     {
         $files = [];
 
         foreach ($uploadedFiles as $key => $value) {
+            $key = ($parent ? $parent.'\\' : '').$key;
+
             if ($value instanceof UploadedFileInterface) {
                 $files[$key] = $this->createUploadedFile($value);
             } else {
-                $files[$key] = $this->getFiles($value);
+                $files = array_merge($files, $this->getFiles($value, $key));
             }
         }
 
@@ -148,7 +151,7 @@ class Psr2Leevel implements IPsr2Leevel
 
         return new UploadedFile(
             $temporaryPath,
-            null === $clientFileName ? '' : $clientFileName,
+            $clientFileName ?: '',
             $psrUploadedFile->getClientMediaType(),
             $psrUploadedFile->getError()
         );
