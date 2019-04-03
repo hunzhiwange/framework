@@ -39,6 +39,7 @@ class Psr2LeevelTest extends TestCase
 {
     public function testBaseUse()
     {
+        // see https://github.com/symfony/psr-http-message-bridge/blob/master/Tests/Factory/HttpFoundationFactoryTest.php#L57
         $uploadedFiles = [
             'doc1'   => $this->createUploadedFile('Doc 1', UPLOAD_ERR_OK, 'doc1.txt', 'text/plain'),
             'nested' => [
