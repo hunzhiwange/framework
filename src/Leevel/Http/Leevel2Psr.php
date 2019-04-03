@@ -52,13 +52,8 @@ class Leevel2Psr implements ILeevel2Psr
      */
     public function createRequest(IRequest $leevelRequest): ServerRequestInterface
     {
-        if (!function_exists('\\Zend\\Diactoros\\normalizeServer')) { /** @codeCoverageIgnore */
-            require_once dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/normalize_server.php'; // @codeCoverageIgnore
-        } // @codeCoverageIgnore
+        $this->validateHelpers();
 
-        if (!function_exists('\\Zend\\Diactoros\\normalizeUploadedFiles')) { /** @codeCoverageIgnore */
-            require_once dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/create_uploaded_file.php'; // @codeCoverageIgnore
-        } /** @codeCoverageIgnore */
         $server = \Zend\Diactoros\normalizeServer($leevelRequest->server->all());
         $headers = $leevelRequest->headers->all();
 
@@ -183,5 +178,21 @@ class Leevel2Psr implements ILeevel2Psr
             $leevelUploadedFile->getOriginalName(),
             $leevelUploadedFile->getMimeType()
         );
+    }
+
+    /**
+     * 校验助手函数.
+     *
+     * @codeCoverageIgnore
+     */
+    protected function validateHelpers(): void
+    {
+        if (!function_exists('\\Zend\\Diactoros\\normalizeServer')) {
+            require_once dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/normalize_server.php';
+        }
+
+        if (!function_exists('\\Zend\\Diactoros\\normalizeUploadedFiles')) {
+            require_once dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/create_uploaded_file.php';
+        }
     }
 }
