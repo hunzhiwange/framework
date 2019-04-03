@@ -52,14 +52,23 @@ class Leevel2Psr implements ILeevel2Psr
      */
     public function createRequest(IRequest $leevelRequest): ServerRequestInterface
     {
-        $server = DiactorosRequestFactory::normalizeServer($leevelRequest->server->all());
+        // @codeCoverageIgnoreStart
+        if (!function_exists('\\Zend\\Diactoros\\normalizeServer')) {
+            require_once dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/normalize_server.php';
+        }
+
+        if (!function_exists('\\Zend\\Diactoros\\normalizeUploadedFiles')) {
+            require_once dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/create_uploaded_file.php';
+        }
+        /** @codeCoverageIgnoreEnd */
+        $server = \Zend\Diactoros\normalizeServer($leevelRequest->server->all());
         $headers = $leevelRequest->headers->all();
 
         $body = new DiactorosStream($this->normalizeContent($leevelRequest->getContent()));
 
         $request = new ServerRequest(
             $server,
-            DiactorosRequestFactory::normalizeFiles($this->getFiles($leevelRequest->files->all())),
+            \Zend\Diactoros\normalizeUploadedFiles($this->getFiles($leevelRequest->files->all())),
             $leevelRequest->getSchemeAndHttpHost().$leevelRequest->getRequestUri(),
             $leevelRequest->getMethod(),
             $body,
