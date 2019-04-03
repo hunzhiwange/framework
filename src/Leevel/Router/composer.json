@@ -17,7 +17,8 @@
         "leevel/http": "1.0.*",
         "leevel/pipeline": "1.0.*",
         "leevel/di": "1.0.*",
-        "zircote/swagger-php": "^3.0.0"
+        "zircote/swagger-php": "^3.0.0",
+        "doctrine/annotations": "^1.6.1"
     },
     "autoload": {
         "psr-4": {

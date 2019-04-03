@@ -32,6 +32,7 @@
         "gettext/gettext": "^4.6.0",
         "fzaninotto/faker": "^1.6",
         "zircote/swagger-php": "^3.0.1",
+        "doctrine/annotations": "^1.6.1",
         "maximebf/debugbar": "~1.15.0",
         "leric/php-thrift": "0.10.0",
         "spiral/dumper": "^1.1.3",
