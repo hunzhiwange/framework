@@ -22,6 +22,7 @@ use Leevel\Debug\Dump;
 use Leevel\Di\IContainer;
 use Leevel\Leevel\Project;
 use Leevel\Log\ILog;
+use Leevel\Support\Fn;
 
 /**
  * 函数库.
@@ -44,7 +45,11 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        return call_user_func_array([static::singletons(), $method], $args);
+        return (new Fn())(function () use ($method, $args) {
+            $fn = '\\Leevel\\Leevel\\Helper\\'.$method;
+
+            return $fn(...$args);
+        });
     }
 
     /**
@@ -271,7 +276,7 @@ class Leevel
      *
      * @return string
      */
-    public static function encrypt(string $value, int $expiry = 0): string
+    public static function encrypt2(string $value, int $expiry = 0): string
     {
         return static::project('encryption')->encrypt($value, $expiry);
     }
@@ -522,5 +527,20 @@ if (!function_exists('debug_end')) {
         if (isset($GLOBALS[$key])) {
             unset($GLOBALS[$key]);
         }
+    }
+}
+
+if (!function_exists('fn')) {
+    /**
+     * 自动导入函数.
+     *
+     * @param \Closure $call
+     * @param array    $args
+     *
+     * @return mixed
+     */
+    function fn(Closure $fn, ...$args)
+    {
+        return (new Fn())($fn, ...$args);
     }
 }
