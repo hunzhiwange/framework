@@ -99,7 +99,9 @@ class Fn
      */
     protected function isFn(string $fn): bool
     {
-        return $this->isFnExists($fn);
+        class_exists($fn);
+
+        return function_exists($fn);
     }
 
     /**
@@ -117,7 +119,7 @@ class Fn
 
         $fnPrefix = substr($fn, 0, strpos($fn, '_'));
 
-        return $this->isFnExists($fnPrefix);
+        return $this->isFn($fnPrefix);
     }
 
     /**
@@ -135,20 +137,6 @@ class Fn
 
         $fnIndex = substr($fn, 0, strripos($fn, '\\')).'\\index';
 
-        return $this->isFnExists($fnIndex);
-    }
-
-    /**
-     * 函数是否存在.
-     *
-     * @param string $fn
-     *
-     * @return bool
-     */
-    protected function isFnExists(string $fn): bool
-    {
-        class_exists($fn);
-
-        return function_exists($fn);
+        return $this->isFn($fnIndex);
     }
 }
