@@ -120,7 +120,7 @@ class Autoload extends Command
     {
         $data = [];
 
-        $data[] = file_get_contents($this->project->path('vendor/composer/ClassLoader.php'));
+        $data[] = $this->replaceIncludeFile(file_get_contents($this->project->path('vendor/composer/ClassLoader.php')));
         $data[] = $this->replaceComposerPath($this->dataInit());
         $data[] = $this->dataHelper();
         $data[] = $this->dataLoader();
@@ -128,6 +128,18 @@ class Autoload extends Command
         unlink($this->project->path('vendor/composer/ComposerStaticInit.php'));
 
         return implode(PHP_EOL.PHP_EOL, $data).PHP_EOL;
+    }
+
+    /**
+     * 替换导入文件.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function replaceIncludeFile(string $content): string
+    {
+        return str_replace('include $file;', 'include_once $file;', $content);
     }
 
     /**
@@ -230,6 +242,13 @@ $loader->register(true);
 
 spl_autoload_register(function (string $className) use(&$loader) {
     static $loaded;
+
+    /**
+     * Just a function.
+     */
+    if (preg_match('/\\\\([a-z])+/', $className)) {
+        return;
+    }
 
     if (null === $loaded) {
         /**
@@ -415,9 +434,9 @@ eot;
 
         if (!is_dir($dirname)) {
             if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                throw new InvalidArgumentException(
-                    sprintf('Unable to create the %s directory.', $dirname)
-                );
+                $e = sprintf('Unable to create the %s directory.', $dirname);
+
+                throw new InvalidArgumentException($e);
             }
 
             mkdir($dirname, 0777, true);
@@ -425,9 +444,9 @@ eot;
 
         if (!is_writable($dirname) ||
             !file_put_contents($cachePath, $data)) {
-            throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable.', $dirname)
-            );
+            $e = sprintf('Dir %s is not writeable.', $dirname);
+
+            throw new InvalidArgumentException($e);
         }
 
         chmod($cachePath, 0666 & ~umask());
