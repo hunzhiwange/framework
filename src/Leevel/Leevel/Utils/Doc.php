@@ -134,6 +134,47 @@ class Doc
     }
 
     /**
+     * 获取类内容.
+     *
+     * @param string $className
+     *
+     * @return string
+     */
+    public static function getClassBody(string $className): string
+    {
+        $doc = new static('');
+
+        $lines = $doc->parseFileContnet($reflectionClass = new ReflectionClass($className));
+
+        $startLine = $reflectionClass->getStartLine() - 1;
+        $endLine = $reflectionClass->getEndLine();
+        $hasUse = false;
+        $result = [];
+        $result[] = 'namespace '.$reflectionClass->getNamespaceName().';';
+        $result[] = '';
+
+        foreach ($lines as $k => $v) {
+            if ($k < $startLine || $k >= $endLine) {
+                // 适用于一个文件只有一个类的情况
+                if ($k < $startLine && 0 === strpos($v, 'use ')) {
+                    $result[] = $v;
+                    $hasUse = true;
+                }
+
+                continue;
+            }
+
+            if ($k === $startLine && true === $hasUse) {
+                $result[] = '';
+            }
+
+            $result[] = $v;
+        }
+
+        return implode(PHP_EOL, $result);
+    }
+
+    /**
      * 设置保存路径.
      *
      * @param string $path
@@ -366,7 +407,9 @@ eot;
                 break;
             }
 
-            if (0 === strpos($v, 'use ') && !in_array($v, ['use Tests\TestCase;'], true)) {
+            if (0 === strpos($v, 'use ') &&
+                !in_array($v, ['use Tests\TestCase;'], true) &&
+                false === strpos($v, '\\Fixtures\\')) {
                 $result[] = ' * '.$v;
             }
         }
