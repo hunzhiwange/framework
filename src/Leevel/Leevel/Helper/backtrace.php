@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Debug\Dump;
-use Leevel\Support\TFn;
 
 /**
  * 调试栈信息.
@@ -31,14 +30,4 @@ use Leevel\Support\TFn;
 function backtrace(): void
 {
     Dump::backtrace();
-}
-
-/**
- * 函数式类.
- *
- * @codeCoverageIgnore
- */
-class backtrace
-{
-    use TFn;
 }

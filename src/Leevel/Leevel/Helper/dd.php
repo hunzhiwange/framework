@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Debug\Dump;
-use Leevel\Support\TFn;
 
 /**
  * 调试变量并中断.
@@ -33,14 +32,4 @@ use Leevel\Support\TFn;
 function dd($var, ...$moreVars): void
 {
     Dump::dumpDie($var, ...$moreVars);
-}
-
-/**
- * 函数式类.
- *
- * @codeCoverageIgnore
- */
-class dd
-{
-    use TFn;
 }

@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Encryption\Facade\Encryption;
-use Leevel\Support\TFn;
 
 /**
  * 加密字符串.
@@ -38,12 +37,4 @@ use Leevel\Support\TFn;
 function encrypt(string $value, int $expiry = 0): string
 {
     return Encryption::encrypt($value, $expiry);
-}
-
-/**
- * 函数式类.
- */
-class encrypt
-{
-    use TFn;
 }

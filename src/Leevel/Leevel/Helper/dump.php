@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Debug\Dump as DebugDump;
-use Leevel\Support\TFn;
 
 /**
  * 调试变量.
@@ -35,14 +34,4 @@ use Leevel\Support\TFn;
 function dump($var, ...$moreVars)
 {
     return DebugDump::dump($var, ...$moreVars);
-}
-
-/**
- * 函数式类.
- *
- * @codeCoverageIgnore
- */
-class dump
-{
-    use TFn;
 }

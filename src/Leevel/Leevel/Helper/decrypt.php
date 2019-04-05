@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Encryption\Facade\Encryption;
-use Leevel\Support\TFn;
 
 /**
  * 解密字符串.
@@ -33,12 +32,4 @@ use Leevel\Support\TFn;
 function decrypt(string $value): string
 {
     return Encryption::decrypt($value);
-}
-
-/**
- * 函数式类.
- */
-class decrypt
-{
-    use TFn;
 }
