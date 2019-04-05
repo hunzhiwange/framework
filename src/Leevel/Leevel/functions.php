@@ -18,7 +18,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Leevel\Debug\Dump;
 use Leevel\Di\IContainer;
 use Leevel\Leevel\Project;
 use Leevel\Log\ILog;
@@ -106,56 +105,6 @@ class Leevel
     public static function app(?string $instance = null, array $args = [])
     {
         return static::project($instance, $args);
-    }
-
-    /**
-     * 调试 RoadRunner 变量.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     *
-     * @return mixed
-     * @codeCoverageIgnore
-     */
-    public static function dump($var, ...$moreVars)
-    {
-        return Dump::dump($var, ...$moreVars);
-    }
-
-    /**
-     * 调试变量并中断.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     * @codeCoverageIgnore
-     */
-    public static function dd($var, ...$moreVars): void
-    {
-        Dump::dumpDie($var, ...$moreVars);
-    }
-
-    /**
-     * 调试栈信息.
-     *
-     * @codeCoverageIgnore
-     */
-    public static function backtrace(): void
-    {
-        Dump::backtrace();
-    }
-
-    /**
-     * 调试 RoadRunner 变量.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     *
-     * @return mixed
-     * @codeCoverageIgnore
-     */
-    public static function drr($var, ...$moreVars)
-    {
-        return Dump::dumpRoadRunner($var, ...$moreVars);
     }
 
     /**
