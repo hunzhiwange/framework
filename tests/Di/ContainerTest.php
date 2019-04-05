@@ -23,6 +23,28 @@ namespace Tests\Di;
 use Leevel\Di\Container;
 use Leevel\Di\ICoroutine;
 use stdClass;
+use Tests\Di\Fixtures\ITest2;
+use Tests\Di\Fixtures\ITest3;
+use Tests\Di\Fixtures\ITest8;
+use Tests\Di\Fixtures\Test1;
+use Tests\Di\Fixtures\Test10;
+use Tests\Di\Fixtures\Test2;
+use Tests\Di\Fixtures\Test20;
+use Tests\Di\Fixtures\Test21;
+use Tests\Di\Fixtures\Test22;
+use Tests\Di\Fixtures\Test23;
+use Tests\Di\Fixtures\Test24;
+use Tests\Di\Fixtures\Test25;
+use Tests\Di\Fixtures\Test26;
+use Tests\Di\Fixtures\Test27;
+use Tests\Di\Fixtures\Test28;
+use Tests\Di\Fixtures\Test3;
+use Tests\Di\Fixtures\Test4;
+use Tests\Di\Fixtures\Test5;
+use Tests\Di\Fixtures\Test6;
+use Tests\Di\Fixtures\Test7;
+use Tests\Di\Fixtures\Test8;
+use Tests\Di\Fixtures\Test9;
 use Tests\TestCase;
 
 /**
@@ -33,9 +55,28 @@ use Tests\TestCase;
  * @since 2018.05.27
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="IOC 容器",
+ *     path="architecture/ioc",
+ *     description="IOC 容器是整个框架最核心的部分，负责服务的管理和解耦组件。
+ *
+ * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。",
+ * )
  */
 class ContainerTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="闭包绑定",
+     *     description="闭包属于惰性，真正使用的时候才会执行。
+     *
+     * 我们可以通过 `bind` 来绑定一个闭包，通过 `make` 来运行服务，第二次运行如果是单例则直接使用生成后的结果，否则会每次执行闭包的代码。
+     *
+     * 通常来说，系统大部分服务都是单例来提升性能和共享。",
+     *     note="",
+     * )
+     */
     public function testBindClosure()
     {
         $container = new Container();
@@ -47,6 +88,13 @@ class ContainerTest extends TestCase
         $this->assertSame('bar', $container->make('foo'));
     }
 
+    /**
+     * @api(
+     *     title="闭包绑定单例",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSingletonClosure()
     {
         $container = new Container();
@@ -61,6 +109,13 @@ class ContainerTest extends TestCase
         $this->assertSame($singleton, $container->make('singleton'));
     }
 
+    /**
+     * @api(
+     *     title="类直接生成本身",
+     *     description="一个独立的类可以直接生成，而不需要提前注册到容器中。",
+     *     note="",
+     * )
+     */
     public function testClass()
     {
         $container = new Container();
@@ -68,6 +123,13 @@ class ContainerTest extends TestCase
         $this->assertInstanceOf(Test1::class, $container->make(Test1::class));
     }
 
+    /**
+     * @api(
+     *     title="类单例",
+     *     description="类也可以注册为单例。",
+     *     note="",
+     * )
+     */
     public function testSingletonClass()
     {
         $container = new Container();
@@ -77,6 +139,13 @@ class ContainerTest extends TestCase
         $this->assertSame($container->make(Test1::class), $container->make(Test1::class));
     }
 
+    /**
+     * @api(
+     *     title="接口绑定",
+     *     description="可以为接口绑定实现。",
+     *     note="",
+     * )
+     */
     public function testInterface()
     {
         $container = new Container();
@@ -87,13 +156,42 @@ class ContainerTest extends TestCase
         $this->assertInstanceOf(ITest2::class, $container->make(Test2::class));
     }
 
+    /**
+     * @api(
+     *     title="接口绑定接口作为构造器参数",
+     *     description="接口可以作为控制器参数来做依赖注入。
+     *
+     * _**ITest2 定义**_
+     *
+     * ``` php
+     * ".\Leevel\Leevel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)."
+     * ```
+     *
+     * _**Test2 定义**_
+     *
+     * ``` php
+     * ".\Leevel\Leevel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)."
+     * ```
+     *
+     * _**Test3 定义**_
+     *
+     * ``` php
+     * ".\Leevel\Leevel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)."
+     * ```
+     *
+     * 通过 `Test3` 的构造函数注入 `ITest2` 的实现 `Test2`，通过 IOC 容器可以实现代码解耦。
+     * ",
+     *     note="",
+     * )
+     */
     public function testInterface2()
     {
         $container = new Container();
 
         $container->bind(ITest2::class, Test2::class);
 
-        $this->assertInstanceOf(ITest2::class, $container->make(Test3::class)->arg1);
+        $this->assertInstanceOf(ITest2::class, $test2 = $container->make(Test3::class)->arg1);
+        $this->assertInstanceOf(Test2::class, $test2);
     }
 
     public function testInterface3()
@@ -355,7 +453,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Class Tests\\Di\\Test9 is not instantiable.'
+            'Class Tests\\Di\\Fixtures\\Test9 is not instantiable.'
         );
 
         $container = new Container();
@@ -398,7 +496,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Class Tests\\Di\\TestNotFound does not exist'
+            'Class Tests\\Di\\Fixtures\\TestNotFound does not exist'
         );
 
         $container = new Container();
@@ -543,7 +641,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Class or interface Tests\\Di\\Test27 is register in container is not object.'
+            'Class or interface Tests\\Di\\Fixtures\\Test27 is register in container is not object.'
         );
 
         $container = new Container();
@@ -600,219 +698,5 @@ class ContainerTest extends TestCase
 
         $container->clear();
         $this->assertSame('foo', $container->make('foo'));
-    }
-}
-
-class Test1
-{
-}
-
-interface ITest2
-{
-}
-
-class Test2 implements ITest2
-{
-}
-
-interface ITest3
-{
-}
-
-class Test3 implements ITest3
-{
-    public $arg1;
-
-    public function __construct(ITest2 $arg1)
-    {
-        $this->arg1 = $arg1;
-    }
-}
-
-class Test4 implements ITest3
-{
-    public $arg1;
-
-    public function __construct(Test3 $arg1)
-    {
-        $this->arg1 = $arg1;
-    }
-}
-
-class Test5 implements ITest3
-{
-    public $arg1;
-
-    public $arg2;
-
-    public function __construct(Test3 $arg1, $arg2 = 'hello default')
-    {
-        $this->arg1 = $arg1;
-        $this->arg2 = $arg2;
-    }
-}
-
-class Test6
-{
-    public $arg1;
-
-    public $arg2;
-
-    public $arg3;
-
-    public function __construct($arg1, $arg2, $arg3)
-    {
-        $this->arg1 = $arg1;
-        $this->arg2 = $arg2;
-        $this->arg3 = $arg3;
-    }
-}
-
-class Test7
-{
-}
-
-interface ITest8
-{
-}
-
-class Test8 implements ITest8
-{
-    public function func1()
-    {
-        return func_get_args();
-    }
-
-    public function func2($arg1 = 'hello')
-    {
-        return func_get_args();
-    }
-
-    public static function staticFunc3()
-    {
-        return func_get_args();
-    }
-
-    public function handle()
-    {
-        return ['call handle'];
-    }
-}
-
-class Test9
-{
-    protected function __construct()
-    {
-    }
-
-    public function hello()
-    {
-        return 'world9';
-    }
-}
-
-class Test10
-{
-    public function hello(TestNotFound $test)
-    {
-        return 'test10';
-    }
-}
-
-class Test20
-{
-    public function handle(Test21 $arg1, Test22 $arg2)
-    {
-        return ['test21' => $arg1->prop, 'test22' => $arg2->prop];
-    }
-}
-
-class Test21
-{
-    public $prop;
-
-    public function __construct(?string $prop = null)
-    {
-        $this->prop = $prop;
-    }
-}
-
-class Test22
-{
-    public $prop;
-
-    public function __construct(?string $prop = null)
-    {
-        $this->prop = $prop;
-    }
-}
-
-class Test23
-{
-    public function handle(Test24 $arg1, Test25 $arg2, string $arg3)
-    {
-        return ['test24' => $arg1->prop, 'test25' => $arg2->prop, 'three' => $arg3];
-    }
-}
-
-class Test24
-{
-    public $prop;
-
-    public function __construct(?string $prop = null)
-    {
-        $this->prop = $prop;
-    }
-}
-
-class Test25
-{
-    public $prop;
-
-    public function __construct(?string $prop = null)
-    {
-        $this->prop = $prop;
-    }
-}
-
-class Test26
-{
-}
-
-class Test27
-{
-    public function hello(): string
-    {
-        return 'world';
-    }
-}
-
-class Test28
-{
-    private $test;
-
-    public function __construct(Test27 $test)
-    {
-        $this->test = $test;
-    }
-
-    public function hello()
-    {
-        return $this->test->hello();
-    }
-}
-
-class Test29
-{
-    private $test;
-
-    public function __construct(TestNotFoundNotFound $test)
-    {
-        $this->test = $test;
-    }
-
-    public function hello()
-    {
-        return $this->test->hello();
     }
 }
