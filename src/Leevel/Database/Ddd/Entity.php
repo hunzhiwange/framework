@@ -196,9 +196,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         foreach (['TABLE', 'ID', 'AUTO', 'STRUCT'] as $item) {
             if (!defined($className.'::'.$item)) {
-                throw new InvalidArgumentException(
-                    sprintf('The entity const %s was not defined.', $item)
-                );
+                $e = sprintf('The entity const %s was not defined.', $item);
+
+                throw new InvalidArgumentException($e);
             }
         }
 
@@ -276,9 +276,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         // getter
         if (0 === strpos($method, 'get')) {
             if (!method_exists($this, 'getter')) {
-                throw new InvalidArgumentException(
-                    sprintf('The entity `%s` `%s` method was not defined.', static::class, 'getter')
-                );
+                $e = sprintf('The entity `%s` `%s` method was not defined.', static::class, 'getter');
+
+                throw new InvalidArgumentException($e);
             }
 
             return $this->getter(lcfirst(substr($method, 3)));
@@ -287,9 +287,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         // setter
         if (0 === strpos($method, 'set')) {
             if (!method_exists($this, 'setter')) {
-                throw new InvalidArgumentException(
-                    sprintf('The entity `%s` `%s` method was not defined.', static::class, 'setter')
-                );
+                $e = sprintf('The entity `%s` `%s` method was not defined.', static::class, 'setter');
+
+                throw new InvalidArgumentException($e);
             }
 
             $this->setter(lcfirst(substr($method, 3)), $args[0] ?? null);
@@ -470,9 +470,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function destroy(): IEntity
     {
         if (null === $this->primaryKey()) {
-            throw new InvalidArgumentException(
-                sprintf('Entity %s has no primary key.', static::class)
-            );
+            $e = sprintf('Entity %s has no primary key.', static::class);
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->leevelFlushed = false;
@@ -599,9 +599,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $key = $this->primaryKey();
 
         if (null === $key) {
-            throw new InvalidArgumentException(
-                sprintf('Entity %s do not have primary key.', static::class)
-            );
+            $e = sprintf('Entity %s do not have primary key.', static::class);
+
+            throw new InvalidArgumentException($e);
         }
 
         if (is_array($key)) {
@@ -610,7 +610,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $map = [$this->singlePrimaryKey(), $this->id()];
         }
 
-        $data = $this->metaConnect()
+        $data = $this
+            ->metaConnect()
             ->select()
             ->where($map)
             ->findOne();
@@ -935,7 +936,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function isSupportEvent(string $event): void
     {
         if (!in_array($event, static::supportEvent(), true)) {
-            throw new InvalidArgumentException(sprintf('Event `%s` do not support.'));
+            $e = sprintf('Event `%s` do not support.');
+
+            throw new InvalidArgumentException($e);
         }
     }
 
@@ -1099,12 +1102,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $key = static::primaryKey();
 
         if (!is_string($key)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Entity %s do not have primary key or composite id not supported.',
-                    static::class
-                )
-            );
+            $e = sprintf('Entity %s do not have primary key or composite id not supported.', static::class);
+
+            throw new InvalidArgumentException($e);
         }
 
         return $key;
@@ -1173,12 +1173,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
             foreach ($enums as &$e) {
                 if (!isset($e[1])) {
-                    throw new InvalidArgumentException(
-                        sprintf(
-                            'Invalid enum in the field `%s` of entity `%s`.',
-                            $prop, static::class
-                        )
-                    );
+                    $e = sprintf('Invalid enum in the field `%s` of entity `%s`.', $prop, static::class);
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 $e[1] = Leevel::__($e[1]);
@@ -1198,12 +1195,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         foreach ($enumSep as $v) {
             if (!isset($enums[$v]) && !isset($enums[(int) $v])) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        'Value not a enum in the field `%s` of entity `%s`.',
-                        $prop, static::class
-                    )
-                );
+                $e = sprintf('Value not a enum in the field `%s` of entity `%s`.', $prop, static::class);
+
+                throw new InvalidArgumentException($e);
             }
 
             $result[] = isset($enums[$v]) ? $enums[$v] : $enums[(int) $v];
@@ -1268,9 +1262,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function idCondition(): array
     {
         if (null === (($ids = $this->id()))) {
-            throw new InvalidArgumentException(
-                sprintf('Entity %s has no primary key data.', static::class)
-            );
+            $e = sprintf('Entity %s has no primary key data.', static::class);
+
+            throw new InvalidArgumentException($e);
         }
 
         if (!is_array($ids)) {
@@ -1301,7 +1295,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return $this->leevelScopeSelect;
         }
 
-        return $this->metaConnect()
+        return $this
+            ->metaConnect()
             ->select()
             ->asClass(static::class, [true])
             ->asCollection();
@@ -1464,9 +1459,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         if (!$saveData) {
             if (null === (($primaryKey = $this->primaryKeys()))) {
-                throw new InvalidArgumentException(
-                    sprintf('Entity %s has no primary key.', static::class)
-                );
+                $e = sprintf('Entity %s has no primary key.', static::class);
+
+                throw new InvalidArgumentException($e);
             }
 
             foreach ($primaryKey as $value) {
@@ -1589,9 +1584,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->validate($prop);
 
         if ($this->isRelation($prop)) {
-            throw new InvalidArgumentException(
-                sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class)
-            );
+            $e = sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class);
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->propSetter($prop, $value);
@@ -1603,9 +1598,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         if (false === $ignoreReadonly &&
             isset(static::STRUCT[$prop]['readonly']) &&
             true === static::STRUCT[$prop]['readonly']) {
-            throw new InvalidArgumentException(
-                sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class)
-            );
+            $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
+
+            throw new InvalidArgumentException($e);
         }
 
         if (in_array($prop, $this->leevelChangedProp, true)) {
@@ -1653,9 +1648,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $prop = $this->asProp($prop);
 
         if (!property_exists($this, $prop)) {
-            throw new InvalidArgumentException(
-                sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this))
-            );
+            $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
+
+            throw new InvalidArgumentException($e);
         }
 
         return true;
@@ -1767,9 +1762,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $prop = $this->normalize($prop);
 
         if (!$this->hasProp($prop)) {
-            throw new InvalidArgumentException(
-                sprintf('Entity `%s` prop or field of struct `%s` was not defined.', get_class($this), $prop)
-            );
+            $e = sprintf('Entity `%s` prop or field of struct `%s` was not defined.', get_class($this), $prop);
+
+            throw new InvalidArgumentException($e);
         }
     }
 
@@ -1783,9 +1778,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         foreach ($field as $v) {
             if (!isset($defined[$v])) {
-                throw new InvalidArgumentException(
-                    sprintf('Relation `%s` field was not defined.', $v)
-                );
+                $e = sprintf('Relation `%s` field was not defined.', $v);
+
+                throw new InvalidArgumentException($e);
             }
         }
     }
@@ -1799,12 +1794,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function validateRelationField(IEntity $entity, string $field): void
     {
         if (!$entity->hasField($field)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The field `%s`.`%s` of entity `%s` was not defined.',
-                    $entity->table(), $field, get_class($entity)
-                )
+            $e = sprintf(
+                'The field `%s`.`%s` of entity `%s` was not defined.',
+                $entity->table(), $field, get_class($entity)
             );
+
+            throw new InvalidArgumentException($e);
         }
     }
 
