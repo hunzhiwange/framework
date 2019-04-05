@@ -458,12 +458,13 @@ if (!function_exists('fn')) {
     /**
      * 自动导入函数.
      *
-     * @param \Closure $call
-     * @param array    $args
+     * @param \Closure|string $call
+     * @param array           $args
+     * @param mixed           $fn
      *
      * @return mixed
      */
-    function fn(Closure $fn, ...$args)
+    function fn($fn, ...$args)
     {
         return (new Fn())($fn, ...$args);
     }

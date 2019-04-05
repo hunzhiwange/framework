@@ -37,17 +37,27 @@ class Fn
     /**
      * 自动导入函数.
      *
-     * @param \Closure $call
-     * @param array    $args
+     * @param \Closure|string $fn
+     * @param array           $args
      *
      * @return mixed
      */
-    public function __invoke(Closure $fn, ...$args)
+    public function __invoke($fn, ...$args)
     {
+        if (!is_string($fn) && !($fn instanceof Closure)) {
+            $e = sprintf('Fn first args must be Closure or string.');
+
+            throw new Error($e);
+        }
+
         try {
             return $fn(...$args);
         } catch (Error $th) {
-            $fnName = $this->normalizeFn($th);
+            if (is_string($fn)) {
+                $fnName = $fn;
+            } else {
+                $fnName = $this->normalizeFn($th);
+            }
 
             foreach (['Fn', 'Prefix', 'Index'] as $type) {
                 if ($this->{'is'.$type}($fnName)) {
@@ -119,6 +129,10 @@ class Fn
      */
     protected function isIndex(string $fn): bool
     {
+        if (false === strpos($fn, '\\')) {
+            return false;
+        }
+
         $fnIndex = substr($fn, 0, strripos($fn, '\\')).'\\index';
 
         return $this->isFnExists($fnIndex);
