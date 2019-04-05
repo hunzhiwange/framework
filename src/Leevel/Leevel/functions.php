@@ -44,11 +44,9 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        return (new Fn())(function () use ($method, $args) {
-            $fn = '\\Leevel\\Leevel\\Helper\\'.$method;
+        $fn = '\\Leevel\\Leevel\\Helper\\'.$method;
 
-            return $fn(...$args);
-        });
+        return (new Fn())($fn, ...$args);
     }
 
     /**
