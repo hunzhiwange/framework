@@ -269,31 +269,6 @@ class Leevel
     }
 
     /**
-     * 加密字符串.
-     *
-     * @param string $value
-     * @param int    $expiry
-     *
-     * @return string
-     */
-    public static function encrypt2(string $value, int $expiry = 0): string
-    {
-        return static::project('encryption')->encrypt($value, $expiry);
-    }
-
-    /**
-     * 解密字符串.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public static function decrypt(string $value): string
-    {
-        return static::project('encryption')->decrypt($value);
-    }
-
-    /**
      * 设置或者获取 session 值
      *
      * @param null|array|string $key
