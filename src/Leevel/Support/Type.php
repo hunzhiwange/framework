@@ -151,9 +151,9 @@ class Type
         if (!static::vars($types, 'string') && !static::arr($types, [
             'string',
         ])) {
-            throw new InvalidArgumentException(
-                'The parameter must be string or an array of string elements.'
-            );
+            $e = 'The parameter must be string or an array of string elements.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (is_string($types)) {
