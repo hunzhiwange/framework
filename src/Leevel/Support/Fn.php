@@ -49,7 +49,7 @@ class Fn
         try {
             return $fn(...$args);
         } catch (Error $th) {
-            $fnName = is_string($fn) ? $fn : $this->normalizeFn($th);
+            $fnName = $this->normalizeFn($fn, $th);
 
             if ($this->match($fnName)) {
                 return $fn(...$args);
@@ -94,22 +94,25 @@ class Fn
     /**
      * 整理函数名字.
      *
+     * @param string $fn
      * @param \Error $th
      *
      * @return string
      */
-    protected function normalizeFn(Error $th): string
+    protected function normalizeFn(string $fn, Error $th): string
     {
         $message = $th->getMessage();
-        $fnMessage = 'Call to undefined function ';
+        $undefinedFn = 'Call to undefined function ';
 
-        if (0 !== strpos($message, $fnMessage)) {
+        if (0 !== strpos($message, $undefinedFn)) {
             throw $th;
         }
 
-        $fn = substr($message, strlen($fnMessage), -2);
+        if (is_string($fn)) {
+            return $fn;
+        }
 
-        return $fn;
+        return substr($message, strlen($undefinedFn), -2);
     }
 
     /**
