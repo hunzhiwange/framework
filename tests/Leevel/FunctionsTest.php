@@ -127,16 +127,16 @@ class FunctionsTest extends TestCase
         $log->method('log')->willReturn(null);
         $this->assertNull($log->log(ILog::INFO, 'bar', []));
 
-        $app = new App3();
+        $app = Apps::singletons();
 
-        $app->singleton('logs', function () use ($log) {
+        $app->singleton('log', function () use ($log) {
             return $log;
         });
 
-        Leevel2::setApp($app);
+        $this->assertInstanceof(ILog::class, Leevels::log());
+        $this->assertNull(Leevels::log('bar', [], ILog::INFO));
 
-        $this->assertInstanceof(ILog::class, Leevel2::log());
-        $this->assertNull(Leevel2::log('bar', [], ILog::INFO));
+        $app->clear();
     }
 
     public function testOption()
@@ -149,17 +149,17 @@ class FunctionsTest extends TestCase
         $option->method('get')->willReturn('bar');
         $this->assertSame('bar', $option->get('foo'));
 
-        $app = new App3();
+        $app = Apps::singletons();
 
         $app->singleton('option', function () use ($option) {
             return $option;
         });
 
-        Leevel2::setApp($app);
+        $this->assertInstanceof(IOption::class, Leevels::option());
+        $this->assertNull(Leevels::option(['foo' => 'bar']));
+        $this->assertSame('bar', Leevels::option('foo'));
 
-        $this->assertInstanceof(IOption::class, Leevel2::option());
-        $this->assertNull(Leevel2::option(['foo' => 'bar']));
-        $this->assertSame('bar', Leevel2::option('foo'));
+        $app->clear();
     }
 
     public function testCache()
@@ -173,18 +173,17 @@ class FunctionsTest extends TestCase
         $this->assertSame('bar', $cache->get('foo'));
 
         $cache = new Cache($cache);
+        $app = Apps::singletons();
 
-        $app = new App3();
-
-        $app->singleton('caches', function () use ($cache) {
+        $app->singleton(ICache::class, function () use ($cache) {
             return $cache;
         });
 
-        Leevel2::setApp($app);
+        $this->assertInstanceof(ICache::class, Leevels::cache());
+        $this->assertNull(Leevels::cache(['foo' => 'bar']));
+        $this->assertSame('bar', Leevels::cache('foo'));
 
-        $this->assertInstanceof(ICache::class, Leevel2::cache());
-        $this->assertNull(Leevel2::cache(['foo' => 'bar']));
-        $this->assertSame('bar', Leevel2::cache('foo'));
+        $app->clear();
     }
 
     public function testEncryptAndEecrypt()
