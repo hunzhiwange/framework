@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
+use I18nMock;
 use Leevel\Di\Container;
+use Leevel\Leevel\App;
 use Leevel\Support\Facade;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
@@ -43,6 +45,7 @@ class EntityTest extends TestCase
     {
         Facade::setContainer(null);
         Facade::remove();
+        App::singletons()->clear();
     }
 
     public function testPropNotDefined()
@@ -78,7 +81,7 @@ class EntityTest extends TestCase
         $entity->postContent = 5;
     }
 
-    public function t2estDatabaseResolverWasNotSet()
+    public function testDatabaseResolverWasNotSet()
     {
         $this->metaWithoutDatabase();
 
@@ -111,6 +114,8 @@ class EntityTest extends TestCase
 
     public function testEntityWithEnum()
     {
+        $this->initI18n();
+
         $entity = new EntityWithEnum([
             'title'   => 'foo',
             'status'  => '1',
@@ -178,6 +183,8 @@ eot;
 
     public function testEntityWithEnum2()
     {
+        $this->initI18n();
+
         $entity = new EntityWithEnum2([
             'title'   => 'foo',
             'status'  => 't',
@@ -232,5 +239,17 @@ eot;
         ]);
 
         $entity->toArray();
+    }
+
+    protected function initI18n()
+    {
+        $app = App::singletons();
+        $app->clear();
+
+        $app->singleton('i18n', function (): I18nMock {
+            return new I18nMock();
+        });
+
+        Facade::setContainer($app);
     }
 }

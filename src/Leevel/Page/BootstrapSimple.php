@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Leevel;
+use Leevel\I18n\Facade\I18n;
 
 /**
  * BootstrapSimple 分页渲染.
@@ -100,7 +100,7 @@ class BootstrapSimple extends Bootstrap
                 $this->replace(
                     $this->page->parsePrevRenderPrev()
                 ),
-                Leevel::__('上一页')
+                I18n::__('上一页')
             );
         }
 
@@ -108,7 +108,7 @@ class BootstrapSimple extends Bootstrap
             '<li class="disabled%s"><a aria-label="Previous">'.
                 '<span aria-hidden="true">%s</span></a></li>',
             'justify' === $this->option['align'] ? ' previous' : '',
-            Leevel::__('上一页')
+            I18n::__('上一页')
         );
     }
 
@@ -127,7 +127,7 @@ class BootstrapSimple extends Bootstrap
                 $this->replace(
                     $this->page->getCurrentPage() + 1
                 ),
-                Leevel::__('下一页')
+                I18n::__('下一页')
             );
         }
 
@@ -135,7 +135,7 @@ class BootstrapSimple extends Bootstrap
             '<li class="disabled%s"><a aria-label="Next">'.
                 '<span aria-hidden="true">%s</span></a></li>',
             'justify' === $this->option['align'] ? ' next' : '',
-            Leevel::__('下一页')
+            I18n::__('下一页')
         );
     }
 

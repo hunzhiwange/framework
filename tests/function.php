@@ -27,18 +27,18 @@ declare(strict_types=1);
  *
  * @version 1.0
  */
-
-namespace Leevel\Leevel\Helper;
-
-/**
- * lang.
- *
- * @param string $text
- * @param array  $arr
- *
- * @return string
- */
-function __(string $text, ...$arr)
+class I18nMock
 {
-    return sprintf($text, ...$arr);
+    /**
+     * lang.
+     *
+     * @param string $text
+     * @param array  $arr
+     *
+     * @return string
+     */
+    public function __(string $text, ...$arr)
+    {
+        return sprintf($text, ...$arr);
+    }
 }

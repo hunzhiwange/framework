@@ -20,9 +20,12 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
+use I18nMock;
 use Leevel\Collection\Collection;
+use Leevel\Leevel\App;
 use Leevel\Page\IPage;
 use Leevel\Page\Page;
+use Leevel\Support\Facade;
 use PDO;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -906,6 +909,8 @@ eot;
 
     public function testPageHtml()
     {
+        $this->initI18n();
+
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -993,10 +998,14 @@ eot;
             $data,
             $page->toJson()
         );
+
+        $this->clearI18n();
     }
 
     public function testPageMacro()
     {
+        $this->initI18n();
+
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -1084,10 +1093,14 @@ eot;
             $data,
             $page->toJson()
         );
+
+        $this->clearI18n();
     }
 
     public function testPagePrevNext()
     {
+        $this->initI18n();
+
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -1175,6 +1188,8 @@ eot;
             $data,
             $page->toJson()
         );
+
+        $this->clearI18n();
     }
 
     public function testRunNativeSqlWithProcedureAsSelect()
@@ -1219,6 +1234,25 @@ eot;
     protected function getDatabaseTable(): array
     {
         return ['guest_book'];
+    }
+
+    protected function initI18n()
+    {
+        $app = App::singletons();
+        $app->clear();
+
+        $app->singleton('i18n', function (): I18nMock {
+            return new I18nMock();
+        });
+
+        Facade::setContainer($app);
+    }
+
+    protected function clearI18n()
+    {
+        Facade::setContainer(null);
+        Facade::remove();
+        App::singletons()->clear();
     }
 }
 

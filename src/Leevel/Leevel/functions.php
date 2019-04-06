@@ -63,7 +63,7 @@ if (!function_exists('__')) {
      */
     function __(string $text, ...$arr): string
     {
-        return Leevel::__($text, ...$arr);
+        return I18n::__($text, ...$arr);
     }
 }
 

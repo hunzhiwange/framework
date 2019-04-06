@@ -23,7 +23,6 @@ namespace Leevel\Database\Ddd;
 use ArrayAccess;
 use InvalidArgumentException;
 use JsonSerializable;
-use Leevel;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\BelongsTo;
 use Leevel\Database\Ddd\Relation\HasMany;
@@ -33,6 +32,7 @@ use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\DuplicateKeyException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
+use Leevel\I18n\Facade\I18n;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str;
@@ -1178,7 +1178,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                     throw new InvalidArgumentException($e);
                 }
 
-                $e[1] = Leevel::__($e[1]);
+                $e[1] = I18n::__($e[1]);
             }
 
             static::$leevelEnums[static::class][$prop] = $enums;

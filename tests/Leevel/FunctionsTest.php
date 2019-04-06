@@ -49,6 +49,9 @@ class FunctionsTest extends TestCase
     public function testBaseUse()
     {
         $app = Leevel::app();
+        $app->clear();
+        $app->instance('app', $app);
+        $app->instance('app', $app);
 
         $this->assertInstanceof(IContainer::class, $app);
         $this->assertInstanceof(Container::class, $app);
@@ -57,9 +60,7 @@ class FunctionsTest extends TestCase
         // 等效
         $this->assertInstanceof(App::class, $app->make('app'));
         $this->assertSame('fooNotFound', $app->make('fooNotFound'));
-        $this->assertInstanceof(App::class, Leevel::app('app'));
-        $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
-        $this->assertInstanceof(App::class, Leevel::app('app'));
+        $this->assertInsdtanceof(App::class, Leevel::app('app'));
         $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
 
         $app->clear();
