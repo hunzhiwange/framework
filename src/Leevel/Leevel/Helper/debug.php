@@ -40,7 +40,7 @@ function debug_start(string $tag): void
  *
  * @param string   $tag
  * @param \Closure $call
- * @param array    ...$args
+ * @param array    $args
  * @codeCoverageIgnore
  */
 function debug_on(string $tag, Closure $call = null, ...$args): void
@@ -53,6 +53,10 @@ function debug_on(string $tag, Closure $call = null, ...$args): void
         } else {
             if (!function_exists('Leevel\\Leevel\\Helper\\dump')) {
                 include_once __DIR__.'/dump.php';
+            }
+
+            if (empty($args)) {
+                $args[] = '';
             }
 
             dump(sprintf('----- `%s` start -----', $tag));
