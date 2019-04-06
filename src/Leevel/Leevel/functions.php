@@ -115,17 +115,4 @@ class Leevel
 
         return call_user_func_array($i18n, $arr);
     }
-
-    /**
-     * 获取语言.
-     *
-     * @param string $text
-     * @param array  $arr
-     *
-     * @return string
-     */
-    public static function gettext(string $text, ...$arr): string
-    {
-        return static::__($text, ...$arr);
-    }
 }
