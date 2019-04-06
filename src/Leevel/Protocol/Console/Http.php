@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
-use Leevel\Kernel\Facade\Leevel;
+use Leevel\Kernel\Facade\App;
 use Leevel\Protocol\Console\Base\Server as BaseServer;
 use Leevel\Protocol\IServer;
 
@@ -74,7 +74,7 @@ EOF;
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('http.server');
+        return App::make('http.server');
     }
 
     /**
@@ -84,6 +84,6 @@ EOF;
      */
     protected function getVersion(): string
     {
-        return 'Http Server Version '.Leevel::version().PHP_EOL;
+        return 'Http Server Version '.App::version().PHP_EOL;
     }
 }

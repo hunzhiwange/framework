@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
-use Leevel\Kernel\Facade\Leevel;
+use Leevel\Kernel\Facade\App;
 use Leevel\Protocol\Console\Base\Status as BaseStatus;
 use Leevel\Protocol\IServer;
 
@@ -57,7 +57,7 @@ class WebsocketStatus extends BaseStatus
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('websocket.server');
+        return App::make('websocket.server');
     }
 
     /**
@@ -67,6 +67,6 @@ class WebsocketStatus extends BaseStatus
      */
     protected function getVersion(): string
     {
-        return 'Websocket Status Version '.Leevel::version().PHP_EOL;
+        return 'Websocket Status Version '.App::version().PHP_EOL;
     }
 }

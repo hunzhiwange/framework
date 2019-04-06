@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Kernel\Facade\Leevel;
+use Leevel\Kernel\Facade\App;
 use Leevel\Router\Facade\Url;
 
 /**
@@ -82,6 +82,6 @@ class ScanRouter
      */
     protected function appPath(): string
     {
-        return Leevel::appPath();
+        return App::appPath();
     }
 }

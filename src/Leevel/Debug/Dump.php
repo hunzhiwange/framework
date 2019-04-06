@@ -86,7 +86,7 @@ class Dump
             }
 
             if (0 === strpos($tmp, '\\PHPUnit\\') || in_array($tmp, [
-                'db()', '\Leevel::backtrace()',
+                'backtrace()', '\Leevel::backtrace()',
                 '\Leevel\Debug\Dump::backtrace()',
             ], true)) {
                 continue;

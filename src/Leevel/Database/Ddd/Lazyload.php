@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Leevel;
+use Leevel\Kernel\Facade\App;
 
 /**
  * 数据库组件 lazyload.
@@ -41,7 +41,7 @@ class Lazyload
      */
     public static function placeholder(): bool
     {
-        Leevel::make('database.lazyload');
+        App::make('database.lazyload');
 
         return true;
     }

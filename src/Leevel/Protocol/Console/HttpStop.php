@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
-use Leevel\Kernel\Facade\Leevel;
+use Leevel\Kernel\Facade\App;
 use Leevel\Protocol\Console\Base\Stop as BaseStop;
 use Leevel\Protocol\IServer;
 
@@ -57,7 +57,7 @@ class HttpStop extends BaseStop
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('http.server');
+        return App::make('http.server');
     }
 
     /**
@@ -67,6 +67,6 @@ class HttpStop extends BaseStop
      */
     protected function getVersion(): string
     {
-        return 'Http Stop Version '.Leevel::version().PHP_EOL;
+        return 'Http Stop Version '.App::version().PHP_EOL;
     }
 }

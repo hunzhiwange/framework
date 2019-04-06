@@ -23,9 +23,8 @@ namespace Leevel\Protocol\Console\Base;
 use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
-use Leevel\Kernel\Facade\Leevel;
+use Leevel\Kernel\Facade\App;
 use Leevel\Protocol\IServer;
-use Swoole\Process;
 
 /**
  * swoole http 服务启动.
@@ -83,7 +82,7 @@ abstract class Server extends Command
     {
         $show = [];
 
-        $basePath = Leevel::path();
+        $basePath = App::path();
 
         foreach ($option as $key => $val) {
             if (is_array($val)) {

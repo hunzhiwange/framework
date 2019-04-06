@@ -18,8 +18,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-/*
- * 函数库
+/**
+ * 函数库.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -28,17 +28,17 @@ declare(strict_types=1);
  * @version 1.0
  */
 
-if (!function_exists('__')) {
-    /**
-     * lang.
-     *
-     * @param string $text
-     * @param array  $arr
-     *
-     * @return string
-     */
-    function __(string $text, ...$arr)
-    {
-        return sprintf($text, ...$arr);
-    }
+namespace Leevel\Leevel\Helper;
+
+/**
+ * lang.
+ *
+ * @param string $text
+ * @param array  $arr
+ *
+ * @return string
+ */
+function __(string $text, ...$arr)
+{
+    return sprintf($text, ...$arr);
 }

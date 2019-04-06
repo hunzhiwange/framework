@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
-use Leevel\Kernel\Facade\Leevel;
+use Leevel\Kernel\Facade\App;
 use Leevel\Protocol\Console\Base\Reload as BaseReload;
 use Leevel\Protocol\IServer;
 
@@ -57,7 +57,7 @@ class RpcReload extends BaseReload
      */
     protected function createServer(): IServer
     {
-        return Leevel::make('rpc.server');
+        return App::make('rpc.server');
     }
 
     /**
@@ -67,6 +67,6 @@ class RpcReload extends BaseReload
      */
     protected function getVersion(): string
     {
-        return 'Rpc Reload Version '.Leevel::version().PHP_EOL;
+        return 'Rpc Reload Version '.App::version().PHP_EOL;
     }
 }
