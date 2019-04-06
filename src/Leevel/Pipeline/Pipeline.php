@@ -205,11 +205,7 @@ class Pipeline implements IPipeline
             throw new InvalidArgumentException('Stage is invalid.');
         }
 
-        return [
-            $stage,
-            $method,
-            $params,
-        ];
+        return [$stage, $method, $params];
     }
 
     /**
@@ -231,9 +227,6 @@ class Pipeline implements IPipeline
             return ctype_digit($item) ? (int) $item : $item;
         }, $args);
 
-        return [
-            $name,
-            $args,
-        ];
+        return [$name, $args];
     }
 }
