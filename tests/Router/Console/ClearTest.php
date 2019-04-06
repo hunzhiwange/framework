@@ -93,13 +93,13 @@ class ClearTest extends TestCase
 
     protected function initContainerService(IContainer $container, string $cacheFile)
     {
-        $project = $this->createMock(IApp::class);
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('routerCachedPath')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $project->routerCachedPath());
+        $app->method('routerCachedPath')->willReturn($cacheFile);
+        $this->assertEquals($cacheFile, $app->routerCachedPath());
 
-        $container->singleton(IApp::class, $project);
+        $container->singleton(IApp::class, $app);
     }
 }

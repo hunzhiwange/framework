@@ -56,18 +56,18 @@ class LoadOptionTest extends TestCase
     {
         $bootstrap = new LoadOption();
 
-        $project = new App3($appPath = __DIR__.'/app');
+        $app = new App3($appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $project);
-        $this->assertInstanceof(Container::class, $project);
+        $this->assertInstanceof(IContainer::class, $app);
+        $this->assertInstanceof(Container::class, $app);
 
-        $this->assertSame($appPath.'/common/ui/bootstrap/option.php', $project->optionCachedPath());
-        $this->assertFalse($project->isCachedOption());
-        $this->assertSame($appPath.'/option', $project->optionPath());
+        $this->assertSame($appPath.'/common/ui/bootstrap/option.php', $app->optionCachedPath());
+        $this->assertFalse($app->isCachedOption());
+        $this->assertSame($appPath.'/option', $app->optionPath());
 
-        $this->assertNull($bootstrap->handle($project, true));
+        $this->assertNull($bootstrap->handle($app, true));
 
-        $option = $project->make('option');
+        $option = $app->make('option');
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));
@@ -79,18 +79,18 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $project = new App3($appPath = __DIR__.'/app');
+        $app = new App3($appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $project);
-        $this->assertInstanceof(Container::class, $project);
+        $this->assertInstanceof(IContainer::class, $app);
+        $this->assertInstanceof(Container::class, $app);
 
-        $this->assertSame($appPath.'/common/ui/bootstrap/fooenv.php', $project->optionCachedPath());
-        $this->assertFalse($project->isCachedOption());
-        $this->assertSame($appPath.'/option', $project->optionPath());
+        $this->assertSame($appPath.'/common/ui/bootstrap/fooenv.php', $app->optionCachedPath());
+        $this->assertFalse($app->isCachedOption());
+        $this->assertSame($appPath.'/option', $app->optionPath());
 
-        $this->assertNull($bootstrap->handle($project, true));
+        $this->assertNull($bootstrap->handle($app, true));
 
-        $option = $project->make('option');
+        $option = $app->make('option');
 
         $this->assertSame('testing', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));
@@ -111,16 +111,16 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $project = new App3($appPath);
+        $app = new App3($appPath);
 
-        $this->assertInstanceof(IContainer::class, $project);
-        $this->assertInstanceof(Container::class, $project);
+        $this->assertInstanceof(IContainer::class, $app);
+        $this->assertInstanceof(Container::class, $app);
 
-        $this->assertSame($appPath.'/common/ui/bootstrap/notfoundenv.php', $project->optionCachedPath());
-        $this->assertFalse($project->isCachedOption());
-        $this->assertSame($appPath.'/option', $project->optionPath());
+        $this->assertSame($appPath.'/common/ui/bootstrap/notfoundenv.php', $app->optionCachedPath());
+        $this->assertFalse($app->isCachedOption());
+        $this->assertSame($appPath.'/option', $app->optionPath());
 
-        $bootstrap->handle($project, true);
+        $bootstrap->handle($app, true);
     }
 
     public function testLoadCached()
@@ -130,23 +130,23 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $project = new App3($appPath = __DIR__.'/app');
+        $app = new App3($appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $project);
-        $this->assertInstanceof(Container::class, $project);
+        $this->assertInstanceof(IContainer::class, $app);
+        $this->assertInstanceof(Container::class, $app);
 
-        $this->assertSame($appPath.'/common/ui/bootstrap/option.php', $project->optionCachedPath());
-        $this->assertFalse($project->isCachedOption());
-        $this->assertSame($appPath.'/option', $project->optionPath());
+        $this->assertSame($appPath.'/common/ui/bootstrap/option.php', $app->optionCachedPath());
+        $this->assertFalse($app->isCachedOption());
+        $this->assertSame($appPath.'/option', $app->optionPath());
 
         mkdir($appPath.'/common/ui/bootstrap', 0777, true);
         file_put_contents($appPath.'/common/ui/bootstrap/option.php', file_get_contents($appPath.'/assert/option.php'));
 
-        $this->assertTrue($project->isCachedOption());
+        $this->assertTrue($app->isCachedOption());
 
-        $this->assertNull($bootstrap->handle($project, true));
+        $this->assertNull($bootstrap->handle($app, true));
 
-        $option = $project->make('option');
+        $option = $app->make('option');
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));

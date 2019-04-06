@@ -275,26 +275,26 @@ class CacheTest extends TestCase
 
     protected function initContainerService(IContainer $container, string $cacheFile, string $assertDir = 'assert')
     {
-        // 注册 project
-        $project = $this->createMock(IApp::class);
+        // 注册 app
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('path')->willReturn(__DIR__.'/'.$assertDir);
-        $this->assertEquals(__DIR__.'/'.$assertDir, $project->path());
+        $app->method('path')->willReturn(__DIR__.'/'.$assertDir);
+        $this->assertEquals(__DIR__.'/'.$assertDir, $app->path());
 
-        $project->method('envPath')->willReturn(__DIR__.'/'.$assertDir);
-        $this->assertEquals(__DIR__.'/'.$assertDir, $project->envPath());
+        $app->method('envPath')->willReturn(__DIR__.'/'.$assertDir);
+        $this->assertEquals(__DIR__.'/'.$assertDir, $app->envPath());
 
-        $project->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $project->envFile());
+        $app->method('envFile')->willReturn('.env');
+        $this->assertEquals('.env', $app->envFile());
 
-        $project->method('optionCachedPath')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $project->optionCachedPath());
+        $app->method('optionCachedPath')->willReturn($cacheFile);
+        $this->assertEquals($cacheFile, $app->optionCachedPath());
 
-        $project->method('optionPath')->willReturn(__DIR__.'/'.$assertDir.'/option');
-        $this->assertEquals(__DIR__.'/'.$assertDir.'/option', $project->optionPath());
+        $app->method('optionPath')->willReturn(__DIR__.'/'.$assertDir.'/option');
+        $this->assertEquals(__DIR__.'/'.$assertDir.'/option', $app->optionPath());
 
-        $container->singleton(IApp::class, $project);
+        $container->singleton(IApp::class, $app);
     }
 }

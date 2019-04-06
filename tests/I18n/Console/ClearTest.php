@@ -190,20 +190,20 @@ class ClearTest extends TestCase
 
     protected function initContainerService(IContainer $container, string $cacheFile)
     {
-        // 注册 project
-        $project = new App2();
-        $this->assertInstanceof(IApp::class, $project);
+        // 注册 app
+        $app = new App2();
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->setCacheFile($cacheFile);
+        $app->setCacheFile($cacheFile);
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
             $this->assertEquals(
                 str_replace('[i18n]', $i18n, $cacheFile),
-                $project->i18nCachedPath($i18n)
+                $app->i18nCachedPath($i18n)
             );
         }
 
-        $container->singleton(IApp::class, $project);
+        $container->singleton(IApp::class, $app);
 
         // 注册 option
         $option = new Option([
@@ -217,7 +217,7 @@ class ClearTest extends TestCase
             ],
         ]);
 
-        $project->singleton('option', function () use ($option) {
+        $app->singleton('option', function () use ($option) {
             return $option;
         });
 

@@ -56,17 +56,17 @@ class KernelTest extends TestCase
      */
     public function testBaseUse(bool $debug)
     {
-        $project = new AppKernel();
+        $app = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
         $response = $this->createMock(IResponse::class);
 
         $router = $this->createRouter($response);
-        $this->createOption($project, $debug);
-        $this->createLog($project);
-        $this->createRuntime($project);
+        $this->createOption($app, $debug);
+        $this->createLog($app);
+        $this->createRuntime($app);
 
-        $kernel = new Kernel1($project, $router);
+        $kernel = new Kernel1($app, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
@@ -83,17 +83,17 @@ class KernelTest extends TestCase
 
     public function testWithResponseIsJson()
     {
-        $project = new AppKernel();
+        $app = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
         $response = new JsonResponse(['foo' => 'bar']);
 
         $router = $this->createRouter($response);
-        $this->createOption($project, true);
-        $this->createLog($project);
-        $this->createRuntime($project);
+        $this->createOption($app, true);
+        $this->createLog($app);
+        $this->createRuntime($app);
 
-        $kernel = new Kernel1($project, $router);
+        $kernel = new Kernel1($app, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
@@ -103,17 +103,17 @@ class KernelTest extends TestCase
 
     public function testWithResponseIsJson2()
     {
-        $project = new AppKernel();
+        $app = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
         $response = (new ApiResponse())->ok(['foo' => 'bar']);
 
         $router = $this->createRouter($response);
-        $this->createOption($project, true);
-        $this->createLog($project);
-        $this->createRuntime($project);
+        $this->createOption($app, true);
+        $this->createLog($app);
+        $this->createRuntime($app);
 
-        $kernel = new Kernel1($project, $router);
+        $kernel = new Kernel1($app, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
@@ -123,17 +123,17 @@ class KernelTest extends TestCase
 
     public function testWithResponseIsJson3()
     {
-        $project = new AppKernel();
+        $app = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
         $response = new Response(['foo' => 'bar']);
 
         $router = $this->createRouter($response);
-        $this->createOption($project, true);
-        $this->createLog($project);
-        $this->createRuntime($project);
+        $this->createOption($app, true);
+        $this->createLog($app);
+        $this->createRuntime($app);
 
-        $kernel = new Kernel1($project, $router);
+        $kernel = new Kernel1($app, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
@@ -143,16 +143,16 @@ class KernelTest extends TestCase
 
     public function testRouterWillThrowException()
     {
-        $project = new AppKernel();
+        $app = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
 
         $router = $this->createRouterWithException();
-        $this->createOption($project, true);
-        $this->createLog($project);
-        $this->createRuntimeWithRender($project);
+        $this->createOption($app, true);
+        $this->createLog($app);
+        $this->createRuntimeWithRender($app);
 
-        $kernel = new Kernel1($project, $router);
+        $kernel = new Kernel1($app, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
@@ -165,16 +165,16 @@ class KernelTest extends TestCase
 
     public function testRouterWillThrowError()
     {
-        $project = new AppKernel();
+        $app = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
 
         $router = $this->createRouterWithError();
-        $this->createOption($project, true);
-        $this->createLog($project);
-        $this->createRuntimeWithRender($project);
+        $this->createOption($app, true);
+        $this->createLog($app);
+        $this->createRuntimeWithRender($app);
 
-        $kernel = new Kernel1($project, $router);
+        $kernel = new Kernel1($app, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
@@ -184,42 +184,42 @@ class KernelTest extends TestCase
         $this->assertContains('<span class="exc-title-primary">ErrorException</span>', $resultResponse->getContent());
     }
 
-    protected function createLog(IApp $project): void
+    protected function createLog(IApp $app): void
     {
         $log = $this->createMock(ILog::class);
         $log->method('all')->willReturn([]);
         $this->assertSame([], $log->all());
 
-        $project->singleton(ILog::class, function () use ($log) {
+        $app->singleton(ILog::class, function () use ($log) {
             return $log;
         });
     }
 
-    protected function createOption(IApp $project, bool $debug): void
+    protected function createOption(IApp $app, bool $debug): void
     {
         $option = $this->createMock(IOption::class);
         $option->method('get')->willReturn($debug);
         $this->assertSame($debug, $option->get('debug'));
 
-        $project->singleton('option', function () use ($option) {
+        $app->singleton('option', function () use ($option) {
             return $option;
         });
     }
 
-    protected function createRuntime(IApp $project): void
+    protected function createRuntime(IApp $app): void
     {
         $runtime = $this->createMock(IRuntime::class);
 
-        $project->singleton(IRuntime::class, function () use ($runtime) {
+        $app->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
         });
     }
 
-    protected function createRuntimeWithRender(IApp $project): void
+    protected function createRuntimeWithRender(IApp $app): void
     {
-        $runtime = new Runtime1($project);
+        $runtime = new Runtime1($app);
 
-        $project->singleton(IRuntime::class, function () use ($runtime) {
+        $app->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
         });
     }

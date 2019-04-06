@@ -53,10 +53,10 @@ class RegisterRuntimeTest extends TestCase
 
         $bootstrap = new RegisterRuntime();
 
-        $project = new App4($appPath = __DIR__.'/app');
+        $app = new App4($appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $project);
-        $this->assertInstanceof(Container::class, $project);
+        $this->assertInstanceof(IContainer::class, $app);
+        $this->assertInstanceof(Container::class, $app);
 
         $this->invokeTestMethod($bootstrap, 'setErrorHandle', [400, 'foo.']);
     }
@@ -65,7 +65,7 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $project = new App4($appPath = __DIR__.'/app');
+        $app = new App4($appPath = __DIR__.'/app');
 
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
     }
@@ -74,14 +74,14 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $project = new App4($appPath = __DIR__.'/app');
+        $app = new App4($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isCli')->willReturn(true);
         $this->assertTrue($request->isCli());
 
-        $project->singleton('request', function () use ($request) {
+        $app->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -90,14 +90,14 @@ class RegisterRuntimeTest extends TestCase
         $runtime->method('renderForConsole')->willReturn(null);
         $this->assertNull($runtime->renderForConsole(new ConsoleOutput(), new Exception()));
 
-        $project->singleton(IRuntime::class, function () use ($runtime) {
+        $app->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
         });
 
-        $bootstrap->handle($project, true);
+        $bootstrap->handle($app, true);
 
-        $this->assertInstanceof(IContainer::class, $project);
-        $this->assertInstanceof(Container::class, $project);
+        $this->assertInstanceof(IContainer::class, $app);
+        $this->assertInstanceof(Container::class, $app);
 
         $e = new Exception('foo.');
 
@@ -112,14 +112,14 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $project = new App4($appPath = __DIR__.'/app');
+        $app = new App4($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isCli')->willReturn(false);
         $this->assertFalse($request->isCli());
 
-        $project->singleton('request', function () use ($request) {
+        $app->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -132,14 +132,14 @@ class RegisterRuntimeTest extends TestCase
         $runtime->method('render')->willReturn($response);
         $this->assertSame($response, $runtime->render($request, $e));
 
-        $project->singleton(IRuntime::class, function () use ($runtime) {
+        $app->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
         });
 
-        $bootstrap->handle($project, true);
+        $bootstrap->handle($app, true);
 
-        $this->assertInstanceof(IContainer::class, $project);
-        $this->assertInstanceof(Container::class, $project);
+        $this->assertInstanceof(IContainer::class, $app);
+        $this->assertInstanceof(Container::class, $app);
 
         $this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$e]);
 
@@ -152,7 +152,7 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $project = new App4($appPath = __DIR__.'/app');
+        $app = new App4($appPath = __DIR__.'/app');
 
         $error = ['message' => 'foo.', 'type' => 5, 'file' => 'a.txt', 'line' => 5];
 

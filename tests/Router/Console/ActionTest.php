@@ -94,10 +94,10 @@ class ActionTest extends TestCase
 
     protected function initContainerService(IContainer $container)
     {
-        // 注册 project
-        $project = $this->createMock(IApp::class);
+        // 注册 app
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
         // 注册 router
         $router = $this->createMock(IRouter::class);

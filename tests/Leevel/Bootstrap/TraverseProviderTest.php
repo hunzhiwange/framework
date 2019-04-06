@@ -42,29 +42,29 @@ class TraverseProviderTest extends TestCase
     {
         $bootstrap = new TraverseProvider();
 
-        $project = new App2($appPath = __DIR__.'/app');
+        $app = new App2($appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $project);
-        $this->assertInstanceof(Container::class, $project);
+        $this->assertInstanceof(IContainer::class, $app);
+        $this->assertInstanceof(Container::class, $app);
 
         $option = new OptionTest();
 
-        $project->singleton('option', function () use ($option) {
+        $app->singleton('option', function () use ($option) {
             return $option;
         });
 
-        $this->assertNull($bootstrap->handle($project));
+        $this->assertNull($bootstrap->handle($app));
 
         // for deferredAlias
         $this->assertArrayNotHasKey('providerDeferTest1', $_SERVER);
-        $this->assertSame('bar', $project->make('foo'));
-        $this->assertSame('bar', $project->make(ProviderDeferTest1::class));
+        $this->assertSame('bar', $app->make('foo'));
+        $this->assertSame('bar', $app->make(ProviderDeferTest1::class));
         $this->assertSame(1, $_SERVER['providerDeferTest1']);
 
         // for providers
         $this->assertSame(1, $_SERVER['testRegisterProvidersRegister']);
         $this->assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
-        $this->assertTrue($project->isBootstrap());
+        $this->assertTrue($app->isBootstrap());
 
         unset(
             $_SERVER['providerDeferTest1'],
@@ -134,7 +134,7 @@ class ProviderDeferTest1 extends Provider
 
 class ProviderTest3 extends Provider
 {
-    public function __construct(App2 $project)
+    public function __construct(App2 $app)
     {
     }
 

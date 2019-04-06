@@ -235,15 +235,15 @@ class CacheTest extends TestCase
 
     protected function initContainerService(IContainer $container, string $cacheFile, array $routerData)
     {
-        // 注册 project
-        $project = $this->createMock(IApp::class);
+        // 注册 app
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('routerCachedPath')->willReturn($cacheFile);
-        $this->assertEquals($cacheFile, $project->routerCachedPath());
+        $app->method('routerCachedPath')->willReturn($cacheFile);
+        $this->assertEquals($cacheFile, $app->routerCachedPath());
 
-        $container->singleton(IApp::class, $project);
+        $container->singleton(IApp::class, $app);
 
         // 注册 routerProvider
         $router = $this->createMock(RouterProvider::class);

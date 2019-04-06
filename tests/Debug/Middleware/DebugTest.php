@@ -51,9 +51,9 @@ class DebugTest extends TestCase
     public function testBaseUse()
     {
         $debug = $this->createDebug();
-        $project = $debug->getApp();
+        $app = $debug->getApp();
 
-        $middleware = new MiddlewareDebug($project, $debug);
+        $middleware = new MiddlewareDebug($app, $debug);
 
         $request = $this->createRequest('http://127.0.0.1');
 
@@ -70,9 +70,9 @@ class DebugTest extends TestCase
     public function testTerminate()
     {
         $debug = $this->createDebug();
-        $project = $debug->getApp();
+        $app = $debug->getApp();
 
-        $middleware = new MiddlewareDebug($project, $debug);
+        $middleware = new MiddlewareDebug($app, $debug);
 
         $request = $this->createRequest('http://127.0.0.1');
         $response = new JsonResponse(['foo' => 'bar']);
@@ -104,9 +104,9 @@ class DebugTest extends TestCase
     public function testHandleWithDebugIsFalse()
     {
         $debug = $this->createDebug(false);
-        $project = $debug->getApp();
+        $app = $debug->getApp();
 
-        $middleware = new MiddlewareDebug($project, $debug);
+        $middleware = new MiddlewareDebug($app, $debug);
 
         $request = $this->createRequest('http://127.0.0.1');
 
@@ -123,9 +123,9 @@ class DebugTest extends TestCase
     public function testTerminateWithDebugIsFalse()
     {
         $debug = $this->createDebug(false);
-        $project = $debug->getApp();
+        $app = $debug->getApp();
 
-        $middleware = new MiddlewareDebug($project, $debug);
+        $middleware = new MiddlewareDebug($app, $debug);
 
         $request = $this->createRequest('http://127.0.0.1');
         $response = new JsonResponse(['foo' => 'bar']);
@@ -174,22 +174,22 @@ class DebugTest extends TestCase
 
     protected function createApp(bool $debug = true): App
     {
-        $project = new App();
+        $app = new App();
 
-        $project->instance('session', $this->createSession());
+        $app->instance('session', $this->createSession());
 
-        $project->instance('log', $this->createLog());
+        $app->instance('log', $this->createLog());
 
-        $project->instance('option', $this->createOption($debug));
+        $app->instance('option', $this->createOption($debug));
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
         $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
-        $project->singleton(IDispatch::class, $eventDispatch);
+        $app->singleton(IDispatch::class, $eventDispatch);
 
-        return $project;
+        return $app;
     }
 
     protected function createSession(): ISession
