@@ -142,18 +142,6 @@ class Leevel
     }
 
     /**
-     * 返回默认值
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    public static function value($value)
-    {
-        return $value instanceof Closure ? $value() : $value;
-    }
-
-    /**
      * 获取语言.
      *
      * @param string $text
