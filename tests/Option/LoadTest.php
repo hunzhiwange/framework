@@ -39,23 +39,23 @@ class LoadTest extends TestCase
     {
         $appPath = __DIR__.'/app1';
 
-        $project = $this->createMock(IApp::class);
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->path());
+        $app->method('path')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->path());
 
-        $project->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->envPath());
+        $app->method('envPath')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->envPath());
 
-        $project->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $project->envFile());
+        $app->method('envFile')->willReturn('.env');
+        $this->assertEquals('.env', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($project);
+        $options = ($load = new Load($appPath.'/option'))->loadData($app);
 
         // 多次调用会存在缓存
-        $optionCaches = $load->loadData($project);
+        $optionCaches = $load->loadData($app);
 
         $data = file_get_contents(__DIR__.'/app1/option.json');
 
@@ -93,20 +93,20 @@ class LoadTest extends TestCase
 
         $appPath = __DIR__.'/app2';
 
-        $project = $this->createMock(IApp::class);
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->path());
+        $app->method('path')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->path());
 
-        $project->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->envPath());
+        $app->method('envPath')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->envPath());
 
-        $project->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $project->envFile());
+        $app->method('envFile')->willReturn('.env');
+        $this->assertEquals('.env', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($project);
+        $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
 
     public function testMergeComposerOptionException()
@@ -118,20 +118,20 @@ class LoadTest extends TestCase
             sprintf('Option file %s is not exist.', $appPath.'/option/extend/test.php')
         );
 
-        $project = $this->createMock(IApp::class);
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->path());
+        $app->method('path')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->path());
 
-        $project->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->envPath());
+        $app->method('envPath')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->envPath());
 
-        $project->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $project->envFile());
+        $app->method('envFile')->willReturn('.env');
+        $this->assertEquals('.env', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($project);
+        $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
 
     public function testEnvException()
@@ -143,20 +143,20 @@ class LoadTest extends TestCase
             sprintf('Unable to read the environment file at %s.', $appPath.'/.env.notexist')
         );
 
-        $project = $this->createMock(IApp::class);
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->path());
+        $app->method('path')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->path());
 
-        $project->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->envPath());
+        $app->method('envPath')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->envPath());
 
-        $project->method('envFile')->willReturn('.env.notexist');
-        $this->assertEquals('.env.notexist', $project->envFile());
+        $app->method('envFile')->willReturn('.env.notexist');
+        $this->assertEquals('.env.notexist', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($project);
+        $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
 
     public function testEnvException2()
@@ -168,40 +168,40 @@ class LoadTest extends TestCase
             'Dotenv values containing spaces must be surrounded by quotes.'
         );
 
-        $project = $this->createMock(IApp::class);
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->path());
+        $app->method('path')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->path());
 
-        $project->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->envPath());
+        $app->method('envPath')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->envPath());
 
-        $project->method('envFile')->willReturn('.env.wrong');
-        $this->assertEquals('.env.wrong', $project->envFile());
+        $app->method('envFile')->willReturn('.env.wrong');
+        $this->assertEquals('.env.wrong', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($project);
+        $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
 
     public function testMergeComposerOptionNewKey()
     {
         $appPath = __DIR__.'/app5';
 
-        $project = $this->createMock(IApp::class);
+        $app = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IApp::class, $project);
+        $this->assertInstanceof(IApp::class, $app);
 
-        $project->method('path')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->path());
+        $app->method('path')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->path());
 
-        $project->method('envPath')->willReturn($appPath);
-        $this->assertEquals($appPath, $project->envPath());
+        $app->method('envPath')->willReturn($appPath);
+        $this->assertEquals($appPath, $app->envPath());
 
-        $project->method('envFile')->willReturn('.env');
-        $this->assertEquals('.env', $project->envFile());
+        $app->method('envFile')->willReturn('.env');
+        $this->assertEquals('.env', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($project);
+        $options = ($load = new Load($appPath.'/option'))->loadData($app);
 
         $data = file_get_contents(__DIR__.'/app5/option.json');
 

@@ -1041,7 +1041,7 @@ eot;
     {
         $router = new Router($container);
 
-        $container->singleton('project', new ContainerAnnotation());
+        $container->singleton('app', new ContainerAnnotation());
         $container->singleton('url', new UrlAnnotation());
         $container->singleton('router', $router);
 
@@ -1067,7 +1067,7 @@ eot;
     protected function facadeClear()
     {
         // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
+        Facade::remove('app');
         Facade::remove('url');
         Facade::remove('router');
     }

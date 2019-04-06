@@ -72,7 +72,7 @@ class RouterProviderTest extends TestCase
         );
 
         // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
+        Facade::remove('app');
         Facade::remove('url');
         Facade::remove('router');
         Facade::setContainer(null);
@@ -116,7 +116,7 @@ class RouterProviderTest extends TestCase
         );
 
         // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
+        Facade::remove('app');
         Facade::remove('url');
         Facade::remove('router');
         Facade::setContainer(null);
@@ -128,12 +128,12 @@ class RouterProviderTest extends TestCase
     {
         $router = new Router($container);
 
-        $container->singleton('project', new Container1());
+        $container->singleton('app', new Container1());
         $container->singleton('url', new Url2());
         $container->singleton('router', $router);
 
         // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
+        Facade::remove('app');
         Facade::remove('url');
         Facade::remove('router');
 

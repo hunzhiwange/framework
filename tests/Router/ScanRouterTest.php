@@ -54,7 +54,7 @@ class ScanRouterTest extends TestCase
         );
 
         // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
+        Facade::remove('app');
         Facade::remove('url');
         Facade::remove('router');
         Facade::setContainer(null);
@@ -93,12 +93,12 @@ class ScanRouterTest extends TestCase
             'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
         ]);
 
-        $container->singleton('project', $container);
+        $container->singleton('app', $container);
         $container->singleton('url', new Url1());
         $container->singleton('router', $router);
 
         // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('project');
+        Facade::remove('app');
         Facade::remove('url');
         Facade::remove('router');
 

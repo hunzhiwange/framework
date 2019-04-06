@@ -43,18 +43,18 @@ class KernelConsoleTest extends TestCase
 {
     public function testBaseUse()
     {
-        $project = new AppKernelConsole();
+        $app = new AppKernelConsole();
 
-        $this->createOption($project);
+        $this->createOption($app);
 
-        $kernel = new KernelConsole1($project);
+        $kernel = new KernelConsole1($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertSame(0, $kernel->handle());
     }
 
-    protected function createOption(IApp $project): void
+    protected function createOption(IApp $app): void
     {
         $map = [
             ['console\\template', null, []],
@@ -72,7 +72,7 @@ class KernelConsoleTest extends TestCase
             'Tests\\Leevel\\Commands\\Console',
         ], $option->get('_composer.commands'));
 
-        $project->singleton('option', function () use ($option) {
+        $app->singleton('option', function () use ($option) {
             return $option;
         });
     }
@@ -90,7 +90,7 @@ class KernelConsole1 extends KernelConsole
             return $this->consoleApplication;
         }
 
-        return $this->consoleApplication = new Application1($this->project, $this->project->version());
+        return $this->consoleApplication = new Application1($this->app, $this->app->version());
     }
 }
 

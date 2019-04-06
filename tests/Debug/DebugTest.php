@@ -455,7 +455,7 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebugWithLog();
 
-        $project = $debug->getApp();
+        $app = $debug->getApp();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -466,7 +466,7 @@ class DebugTest extends TestCase
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
-        $log = $project->make('log');
+        $log = $app->make('log');
 
         $log->info('test_log', ['exends' => 'bar']);
         $log->debug('test_log_debug');
@@ -792,18 +792,18 @@ class DebugTest extends TestCase
 
     protected function createAppWithLog(): App
     {
-        $project = new App();
+        $app = new App();
 
-        $project->instance('session', $this->createSession());
+        $app->instance('session', $this->createSession());
 
-        $project->instance('option', $this->createOption());
+        $app->instance('option', $this->createOption());
 
-        $eventDispatch = new Dispatch($project);
-        $project->singleton(IDispatch::class, $eventDispatch);
+        $eventDispatch = new Dispatch($app);
+        $app->singleton(IDispatch::class, $eventDispatch);
 
-        $project->instance('log', $this->createLog($eventDispatch));
+        $app->instance('log', $this->createLog($eventDispatch));
 
-        return $project;
+        return $app;
     }
 
     protected function createDebug(): Debug
@@ -813,22 +813,22 @@ class DebugTest extends TestCase
 
     protected function createApp(): App
     {
-        $project = new App();
+        $app = new App();
 
-        $project->instance('session', $this->createSession());
+        $app->instance('session', $this->createSession());
 
-        $project->instance('log', $this->createLog());
+        $app->instance('log', $this->createLog());
 
-        $project->instance('option', $this->createOption());
+        $app->instance('option', $this->createOption());
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
         $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
-        $project->singleton(IDispatch::class, $eventDispatch);
+        $app->singleton(IDispatch::class, $eventDispatch);
 
-        return $project;
+        return $app;
     }
 
     protected function createSession(): ISession
