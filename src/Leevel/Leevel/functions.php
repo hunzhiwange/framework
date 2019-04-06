@@ -21,6 +21,50 @@ declare(strict_types=1);
 use Leevel\Support\Fn;
 use Leevel\Support\Str;
 
+if (!function_exists('fn')) {
+    /**
+     * 自动导入函数.
+     *
+     * @param \Closure|string $call
+     * @param array           $args
+     * @param mixed           $fn
+     *
+     * @return mixed
+     */
+    function fn($fn, ...$args)
+    {
+        return (new Fn())($fn, ...$args);
+    }
+}
+
+if (!function_exists('__')) {
+    /**
+     * 获取语言.
+     *
+     * @param string $text
+     * @param array  $arr
+     *
+     * @return string
+     */
+    function __(string $text, ...$arr): string
+    {
+        return Leevel::__($text, ...$arr);
+    }
+}
+
+if (!function_exists('spl_object_id')) {
+    /**
+     * 兼容 7.2 spl_object_id.
+     *
+     * @param object $obj
+     *
+     * @return string
+     */
+    function spl_object_id($obj): string
+    {
+        return spl_object_hash($obj);
+    }
+}
 /**
  * 函数库.
  *
@@ -83,118 +127,5 @@ class Leevel
     public static function gettext(string $text, ...$arr): string
     {
         return static::__($text, ...$arr);
-    }
-}
-
-if (!function_exists('__')) {
-    /**
-     * 获取语言.
-     *
-     * @param string $text
-     * @param array  $arr
-     *
-     * @return string
-     */
-    function __(string $text, ...$arr): string
-    {
-        return Leevel::__($text, ...$arr);
-    }
-}
-
-if (!function_exists('gettext')) {
-    /**
-     * 获取语言.
-     *
-     * @param string $text
-     * @param array  $arr
-     *
-     * @return string
-     */
-    function gettext(string $text, ...$arr): string
-    {
-        return Leevel::__($text, ...$arr);
-    }
-}
-
-if (!function_exists('dump')) {
-    /**
-     * 调试变量.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     *
-     * @return mixed
-     */
-    function dump($var, ...$moreVars)
-    {
-        return Leevel::dump($var, ...$moreVars);
-    }
-}
-
-if (!function_exists('dd')) {
-    /**
-     * 调试变量并中断.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     */
-    function dd($var, ...$moreVars): void
-    {
-        Leevel::dd($var, ...$moreVars);
-    }
-}
-
-if (!function_exists('db')) {
-    /**
-     * 调试栈信息.
-     */
-    function db(): void
-    {
-        Leevel::backtrace();
-    }
-}
-
-if (!function_exists('drr')) {
-    /**
-     * 调试 RoadRunner 变量.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     *
-     * @return mixed
-     */
-    function drr($var, ...$moreVars)
-    {
-        return Leevel::drr($var, ...$moreVars);
-    }
-}
-
-if (!function_exists('spl_object_id')) {
-    /**
-     * 兼容 7.2 spl_object_id.
-     *
-     * @param object $obj
-     *
-     * @return string
-     */
-    function spl_object_id($obj): string
-    {
-        return spl_object_hash($obj);
-    }
-}
-
-if (!function_exists('fn')) {
-    /**
-     * 自动导入函数.
-     *
-     * @param \Closure|string $call
-     * @param array           $args
-     * @param mixed           $fn
-     *
-     * @return mixed
-     */
-    function fn($fn, ...$args)
-    {
-        return (new Fn())($fn, ...$args);
     }
 }
