@@ -74,37 +74,6 @@ class Leevel
     }
 
     /**
-     * 返回项目容器或者注入.
-     *
-     * @param null|string $instance
-     * @param array       $args
-     *
-     * @return \Leevel\Leevel\Project|mixed
-     */
-    public static function project(?string $instance = null, array $args = [])
-    {
-        if (null === $instance) {
-            return static::singletons();
-        }
-
-        return static::singletons()->make($instance, $args);
-    }
-
-    /**
-     * 返回项目容器或者注入
-     * project 别名函数.
-     *
-     * @param null|string $instance
-     * @param array       $args
-     *
-     * @return \Leevel\Leevel\Project|mixed
-     */
-    public static function app(?string $instance = null, array $args = [])
-    {
-        return static::project($instance, $args);
-    }
-
-    /**
      * 获取语言.
      *
      * @param string $text
