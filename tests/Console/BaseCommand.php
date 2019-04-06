@@ -61,6 +61,7 @@ trait BaseCommand
         $result = $output->fetch();
 
         Facade::setContainer(null);
+        Facade::remove();
 
         return $result;
     }

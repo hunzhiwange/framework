@@ -106,7 +106,7 @@ class FacadeTest extends TestCase
 
 class Service1
 {
-    public function hello(string $facade)
+    public function hello(string $facade): string
     {
         return $facade;
     }

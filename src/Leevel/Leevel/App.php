@@ -768,6 +768,7 @@ class App extends Container implements IApp
         $this->alias([
             'app' => [
                 'Leevel\\Leevel\\App',
+                'Leevel\\Di\\Container',
                 'Leevel\\Di\\IContainer',
                 'Leevel\\Kernel\\IApp',
             ],

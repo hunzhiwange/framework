@@ -39,6 +39,12 @@ use Tests\Database\Ddd\Entity\TestPropErrorEntity;
  */
 class EntityTest extends TestCase
 {
+    protected function tearDown()
+    {
+        Facade::setContainer(null);
+        Facade::remove();
+    }
+
     public function testPropNotDefined()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -72,7 +78,7 @@ class EntityTest extends TestCase
         $entity->postContent = 5;
     }
 
-    public function testDatabaseResolverWasNotSet()
+    public function t2estDatabaseResolverWasNotSet()
     {
         $this->metaWithoutDatabase();
 
@@ -87,8 +93,6 @@ class EntityTest extends TestCase
 
         $entity = new Post(['title' => 'foo']);
         $entity->create()->flush();
-
-        Facade::setContainer(null);
     }
 
     public function testWithProps()

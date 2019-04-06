@@ -70,6 +70,7 @@ trait BaseMake
         $result = $output->fetch();
 
         Facade::setContainer(null);
+        Facade::remove();
 
         return $result;
     }
