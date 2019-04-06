@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd;
 
+use Leevel\Di\Container;
+use Leevel\Support\Facade;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
@@ -79,8 +81,14 @@ class EntityTest extends TestCase
             'Database resolver was not set.'
         );
 
+        $container = new Container();
+        $container->instance('app', $container);
+        Facade::setContainer($container);
+
         $entity = new Post(['title' => 'foo']);
         $entity->create()->flush();
+
+        Facade::setContainer(null);
     }
 
     public function testWithProps()
