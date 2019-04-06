@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Leevel;
 
-use Leevel as Leevels;
+use Leevel;
 use Leevel\Cache\Cache;
 use Leevel\Cache\ICache;
 use Leevel\Cache\IConnect as IConnectCache;
@@ -28,7 +28,6 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Encryption\IEncryption;
 use Leevel\I18n\II18n;
-use Leevel\Kernel\IApp;
 use Leevel\Leevel\App as Apps;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;
@@ -136,8 +135,8 @@ class FunctionsTest extends TestCase
             return $log;
         });
 
-        $this->assertInstanceof(ILog::class, Leevels::log());
-        $this->assertNull(Leevels::log('bar', [], ILog::INFO));
+        $this->assertInstanceof(ILog::class, Leevel::log());
+        $this->assertNull(Leevel::log('bar', [], ILog::INFO));
 
         $app->clear();
     }
@@ -159,9 +158,9 @@ class FunctionsTest extends TestCase
             return $option;
         });
 
-        $this->assertInstanceof(IOption::class, Leevels::option());
-        $this->assertNull(Leevels::option(['foo' => 'bar']));
-        $this->assertSame('bar', Leevels::option('foo'));
+        $this->assertInstanceof(IOption::class, Leevel::option());
+        $this->assertNull(Leevel::option(['foo' => 'bar']));
+        $this->assertSame('bar', Leevel::option('foo'));
 
         $app->clear();
     }
@@ -184,9 +183,9 @@ class FunctionsTest extends TestCase
             return $cache;
         });
 
-        $this->assertInstanceof(ICache::class, Leevels::cache());
-        $this->assertNull(Leevels::cache(['foo' => 'bar']));
-        $this->assertSame('bar', Leevels::cache('foo'));
+        $this->assertInstanceof(ICache::class, Leevel::cache());
+        $this->assertNull(Leevel::cache(['foo' => 'bar']));
+        $this->assertSame('bar', Leevel::cache('foo'));
 
         $app->clear();
     }
@@ -208,8 +207,8 @@ class FunctionsTest extends TestCase
             return $encryption;
         });
 
-        $this->assertSame('foobar-helloworld', Leevels::encrypt('foo', 3600));
-        $this->assertSame('foo', Leevels::decrypt('foobar-helloworld'));
+        $this->assertSame('foobar-helloworld', Leevel::encrypt('foo', 3600));
+        $this->assertSame('foo', Leevel::decrypt('foobar-helloworld'));
 
         $app->clear();
     }
@@ -231,9 +230,9 @@ class FunctionsTest extends TestCase
             return $session;
         });
 
-        $this->assertInstanceof(ISession::class, Leevels::session());
-        $this->assertNull(Leevels::session(['foo' => 'bar']));
-        $this->assertSame('bar', Leevels::session('foo'));
+        $this->assertInstanceof(ISession::class, Leevel::session());
+        $this->assertNull(Leevel::session(['foo' => 'bar']));
+        $this->assertSame('bar', Leevel::session('foo'));
 
         $app->clear();
     }
@@ -255,8 +254,8 @@ class FunctionsTest extends TestCase
             return $session;
         });
 
-        $this->assertNull(Leevels::flash(['foo' => 'bar']));
-        $this->assertSame('bar', Leevels::flash('foo'));
+        $this->assertNull(Leevel::flash(['foo' => 'bar']));
+        $this->assertSame('bar', Leevel::flash('foo'));
 
         $app->clear();
     }
@@ -275,7 +274,7 @@ class FunctionsTest extends TestCase
             return $url;
         });
 
-        $this->assertSame('/goods?foo=bar', Leevels::url('/goods', ['foo' => 'bar']));
+        $this->assertSame('/goods?foo=bar', Leevel::url('/goods', ['foo' => 'bar']));
 
         $app->clear();
     }
@@ -302,47 +301,10 @@ class FunctionsTest extends TestCase
             return $i18n;
         });
 
-        $this->assertSame('hello', Leevels::__('hello'));
-        $this->assertSame('hello foo', Leevels::__('hello %s', 'foo'));
-        $this->assertSame('hello 5', Leevels::__('hello %d', 5));
+        $this->assertSame('hello', Leevel::__('hello'));
+        $this->assertSame('hello foo', Leevel::__('hello %s', 'foo'));
+        $this->assertSame('hello 5', Leevel::__('hello %d', 5));
 
         $app->clear();
-    }
-}
-
-class App2 extends Apps
-{
-    protected function registerBaseProvider(): void
-    {
-    }
-}
-
-class App3 extends Apps
-{
-    protected function registerBaseProvider(): void
-    {
-    }
-}
-
-class Leevel extends Leevels
-{
-    protected static function singletons(): IContainer
-    {
-        return new App2($appPath = __DIR__.'/app');
-    }
-}
-
-class Leevel2 extends Leevels
-{
-    protected static $app;
-
-    public static function setApp(IApp $app)
-    {
-        self::$app = $app;
-    }
-
-    protected static function singletons(): IContainer
-    {
-        return self::$app;
     }
 }
