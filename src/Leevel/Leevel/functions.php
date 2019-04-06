@@ -18,8 +18,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Leevel\Di\IContainer;
-use Leevel\Leevel\Project;
 use Leevel\Support\Fn;
 
 /**
@@ -84,17 +82,6 @@ class Leevel
     public static function gettext(string $text, ...$arr): string
     {
         return static::__($text, ...$arr);
-    }
-
-    /**
-     * 返回容器.
-     *
-     * @return \Leevel\Di\IContainer
-     * @codeCoverageIgnore
-     */
-    protected static function singletons(): IContainer
-    {
-        return Project::singletons();
     }
 }
 
@@ -192,64 +179,6 @@ if (!function_exists('spl_object_id')) {
     function spl_object_id($obj): string
     {
         return spl_object_hash($obj);
-    }
-}
-
-if (!function_exists('debug_start')) {
-    /**
-     * Debug 标记.
-     *
-     * @param string $tag
-     * @codeCoverageIgnore
-     */
-    function debug_start(string $tag): void
-    {
-        $key = 'LEEVEL_DEBUG_'.$tag;
-
-        $GLOBALS[$key] = true;
-    }
-}
-
-if (!function_exists('debug_on')) {
-    /**
-     * Debug 进行时.
-     *
-     * @param string   $tag
-     * @param \Closure $call
-     * @param array    ...$args
-     * @codeCoverageIgnore
-     */
-    function debug_on(string $tag, Closure $call = null, ...$args): void
-    {
-        $key = 'LEEVEL_DEBUG_'.$tag;
-
-        if (isset($GLOBALS[$key])) {
-            if (null !== $call) {
-                $call(...$args);
-            } else {
-                dump(sprintf('----- `%s` start -----', $tag));
-                dump(...$args);
-                dump(sprintf('----- `%s` end -----', $tag));
-                echo PHP_EOL;
-            }
-        }
-    }
-}
-
-if (!function_exists('debug_end')) {
-    /**
-     * 清理 Debug 标记.
-     *
-     * @param string $tag
-     * @codeCoverageIgnore
-     */
-    function debug_end(string $tag): void
-    {
-        $key = 'LEEVEL_DEBUG_'.$tag;
-
-        if (isset($GLOBALS[$key])) {
-            unset($GLOBALS[$key]);
-        }
     }
 }
 
