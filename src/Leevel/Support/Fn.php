@@ -94,12 +94,17 @@ class Fn
      * 一个函数一个文件.
      *
      * @param string $fn
+     * @param string $cl
      *
      * @return bool
      */
-    protected function isFn(string $fn): bool
+    protected function isFn(string $fn, string $cl = ''): bool
     {
-        class_exists($fn);
+        if (!$cl) {
+            $cl = $fn;
+        }
+
+        class_exists($cl);
 
         return function_exists($fn);
     }
@@ -119,7 +124,7 @@ class Fn
 
         $fnPrefix = substr($fn, 0, strpos($fn, '_'));
 
-        return $this->isFn($fnPrefix);
+        return $this->isFn($fn, $fnPrefix);
     }
 
     /**
@@ -137,6 +142,6 @@ class Fn
 
         $fnIndex = substr($fn, 0, strripos($fn, '\\')).'\\index';
 
-        return $this->isFn($fnIndex);
+        return $this->isFn($fn, $fnIndex);
     }
 }
