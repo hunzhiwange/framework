@@ -28,7 +28,7 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Encryption\IEncryption;
 use Leevel\I18n\II18n;
-use Leevel\Leevel\App as Apps;
+use Leevel\Leevel\App;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;
 use Leevel\Router\IUrl;
@@ -52,14 +52,14 @@ class FunctionsTest extends TestCase
 
         $this->assertInstanceof(IContainer::class, $app);
         $this->assertInstanceof(Container::class, $app);
-        $this->assertInstanceof(Apps::class, $app);
+        $this->assertInstanceof(App::class, $app);
 
         // 等效
-        $this->assertInstanceof(Apps::class, $app->make('app'));
+        $this->assertInstanceof(App::class, $app->make('app'));
         $this->assertSame('fooNotFound', $app->make('fooNotFound'));
-        $this->assertInstanceof(Apps::class, Leevel::app('app'));
+        $this->assertInstanceof(App::class, Leevel::app('app'));
         $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
-        $this->assertInstanceof(Apps::class, Leevel::app('app'));
+        $this->assertInstanceof(App::class, Leevel::app('app'));
         $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
 
         $app->clear();
@@ -128,7 +128,7 @@ class FunctionsTest extends TestCase
         $log->method('log')->willReturn(null);
         $this->assertNull($log->log(ILog::INFO, 'bar', []));
 
-        $app = Apps::singletons();
+        $app = App::singletons();
         $app->clear();
 
         $app->singleton(ILog::class, function () use ($log) {
@@ -151,7 +151,7 @@ class FunctionsTest extends TestCase
         $option->method('get')->willReturn('bar');
         $this->assertSame('bar', $option->get('foo'));
 
-        $app = Apps::singletons();
+        $app = App::singletons();
         $app->clear();
 
         $app->singleton(IOption::class, function () use ($option) {
@@ -176,7 +176,7 @@ class FunctionsTest extends TestCase
         $this->assertSame('bar', $cache->get('foo'));
 
         $cache = new Cache($cache);
-        $app = Apps::singletons();
+        $app = App::singletons();
         $app->clear();
 
         $app->singleton(ICache::class, function () use ($cache) {
@@ -200,7 +200,7 @@ class FunctionsTest extends TestCase
         $encryption->method('decrypt')->willReturn('foo');
         $this->assertSame('foo', $encryption->decrypt('foobar-helloworld'));
 
-        $app = Apps::singletons();
+        $app = App::singletons();
         $app->clear();
 
         $app->singleton(IEncryption::class, function () use ($encryption) {
@@ -223,7 +223,7 @@ class FunctionsTest extends TestCase
         $session->method('get')->willReturn('bar');
         $this->assertSame('bar', $session->get('foo'));
 
-        $app = Apps::singletons();
+        $app = App::singletons();
         $app->clear();
 
         $app->singleton(ISession::class, function () use ($session) {
@@ -247,7 +247,7 @@ class FunctionsTest extends TestCase
         $session->method('getFlash')->willReturn('bar');
         $this->assertSame('bar', $session->getFlash('foo'));
 
-        $app = Apps::singletons();
+        $app = App::singletons();
         $app->clear();
 
         $app->singleton(ISession::class, function () use ($session) {
@@ -267,7 +267,7 @@ class FunctionsTest extends TestCase
         $url->method('make')->willReturn('/goods?foo=bar');
         $this->assertSame('/goods?foo=bar', $url->make('/goods', ['foo' => 'bar']));
 
-        $app = Apps::singletons();
+        $app = App::singletons();
         $app->clear();
 
         $app->singleton(IUrl::class, function () use ($url) {
@@ -294,7 +294,7 @@ class FunctionsTest extends TestCase
         $this->assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
         $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
-        $app = Apps::singletons();
+        $app = App::singletons();
         $app->clear();
 
         $app->singleton(II18n::class, function () use ($i18n) {
