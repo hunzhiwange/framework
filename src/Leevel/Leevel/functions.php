@@ -154,49 +154,6 @@ class Leevel
     }
 
     /**
-     * 设置或者获取 cache 值
-     *
-     * @param null|array|string $key
-     * @param mixed             $defaults
-     * @param array             $option
-     *
-     * @return mixed
-     */
-    public static function cache($key = null, $defaults = null, array $option = [])
-    {
-        if (null === $key) {
-            return static::project('caches');
-        }
-
-        if (is_array($key)) {
-            return static::project('caches')->put($key, null, $option);
-        }
-
-        return static::project('caches')->get($key, $defaults, $option);
-    }
-
-    /**
-     * 设置或者获取 session 值
-     *
-     * @param null|array|string $key
-     * @param mixed             $defaults
-     *
-     * @return mixed
-     */
-    public static function session($key = null, $defaults = null)
-    {
-        if (null === $key) {
-            return static::project('sessions');
-        }
-
-        if (is_array($key)) {
-            return static::project('sessions')->put($key);
-        }
-
-        return static::project('sessions')->get($key, $defaults);
-    }
-
-    /**
      * 设置或者获取 flash 值.
      *
      * @param null|array|string $key
