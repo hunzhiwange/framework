@@ -154,21 +154,6 @@ class Leevel
     }
 
     /**
-     * 生成路由地址
-     *
-     * @param string      $url
-     * @param array       $params
-     * @param string      $subdomain
-     * @param bool|string $suffix
-     *
-     * @return string
-     */
-    public static function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
-    {
-        return static::project('url')->make($url, $params, $subdomain, $suffix);
-    }
-
-    /**
      * 获取语言.
      *
      * @param string $text
