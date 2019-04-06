@@ -22,7 +22,7 @@ namespace Leevel\Session\Console;
 
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * session 文件缓存清理.
@@ -53,13 +53,13 @@ class Clear extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
         $this->line('Start to clear cache session.');
 
-        Fso::deleteDirectory($cachePath = $project->runtimePath('session'), true);
+        Fso::deleteDirectory($cachePath = $app->runtimePath('session'), true);
 
         $this->info(sprintf('Session files in path %s cache clear successed.', $cachePath));
     }

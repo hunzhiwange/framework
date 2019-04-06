@@ -22,7 +22,7 @@ namespace Leevel\Leevel\Console;
 
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * public 资源目录创建软连接到 www.
@@ -53,11 +53,11 @@ class LinkPublic extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        if (file_exists($link = $project->path('www/public'))) {
+        if (file_exists($link = $app->path('www/public'))) {
             $this->error(
                 sprintf('The `%s` directory already exists.', $link)
             );
@@ -66,7 +66,7 @@ class LinkPublic extends Command
         }
 
         Fso::link(
-            $path = $project->publicPath(), $link
+            $path = $app->publicPath(), $link
         );
 
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));

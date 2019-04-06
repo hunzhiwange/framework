@@ -58,7 +58,7 @@ class Entity extends Make
      * @var string
      */
     protected $help = <<<'EOF'
-The <info>%command.name%</info> command to make entity with project namespace:
+The <info>%command.name%</info> command to make entity with app namespace:
 
   <info>php %command.full_name% name</info>
 

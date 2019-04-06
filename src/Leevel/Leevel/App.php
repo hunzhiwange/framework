@@ -24,13 +24,13 @@ use Composer\Autoload\ClassLoader;
 use Leevel\Di\Container;
 use Leevel\Di\Provider;
 use Leevel\Event\Provider\Register as EventProvider;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Log\Provider\Register as LogProvider;
 use Leevel\Router\Provider\Register as RouterProvider;
 use RuntimeException;
 
 /**
- * 项目管理.
+ * 应用管理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -38,17 +38,17 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class Project extends Container implements IProject
+class App extends Container implements IApp
 {
     /**
-     * 当前项目实例.
+     * 当前应用实例.
      *
      * @var static
      */
-    protected static $project;
+    protected static $app;
 
     /**
-     * 项目基础路径.
+     * 应用基础路径.
      *
      * @var string
      */
@@ -147,7 +147,7 @@ class Project extends Container implements IProject
 
     /**
      * 构造函数
-     * 项目中通过 singletons 生成单一实例.
+     * 应用中通过 singletons 生成单一实例.
      *
      * @param string $path
      */
@@ -167,24 +167,24 @@ class Project extends Container implements IProject
      */
     public function __clone()
     {
-        throw new RuntimeException('Project disallowed clone.');
+        throw new RuntimeException('App disallowed clone.');
     }
 
     /**
-     * 返回项目.
+     * 返回应用.
      *
      * @param string $path
      *
      * @return static
      * @codeCoverageIgnore
      */
-    public static function singletons(?string $path = null): IProject
+    public static function singletons(?string $path = null): IApp
     {
-        if (null !== static::$project) {
-            return static::$project;
+        if (null !== static::$app) {
+            return static::$app;
         }
 
-        return static::$project = new static($path);
+        return static::$app = new static($path);
     }
 
     /**
@@ -236,7 +236,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置项目路径.
+     * 设置应用路径.
      *
      * @param string $path
      */
@@ -667,7 +667,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 初始化项目.
+     * 初始化应用.
      *
      * @param array $bootstraps
      */
@@ -763,14 +763,13 @@ class Project extends Container implements IProject
      */
     protected function registerBaseServices(): void
     {
-        $this->instance('project', $this);
+        $this->instance('app', $this);
 
         $this->alias([
-            'project' => [
-                'Leevel\\Leevel\\Project',
+            'app' => [
+                'Leevel\\Leevel\\App',
                 'Leevel\\Di\\IContainer',
-                'Leevel\\Kernel\\IProject',
-                'app',
+                'Leevel\\Kernel\\IApp',
             ],
             'request' => [
                 'Leevel\\Http\\IRequest',

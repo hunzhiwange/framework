@@ -24,8 +24,8 @@ use ErrorException;
 use Exception;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernel;
-use Leevel\Kernel\IProject;
 use Leevel\Kernel\IRuntime;
 use Leevel\Leevel\Bootstrap\LoadI18n;
 use Leevel\Leevel\Bootstrap\LoadOption;
@@ -46,11 +46,11 @@ use Throwable;
 abstract class Kernel implements IKernel
 {
     /**
-     * 项目.
+     * 应用.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * 路由.
@@ -60,7 +60,7 @@ abstract class Kernel implements IKernel
     protected $router;
 
     /**
-     * 项目初始化执行.
+     * 应用初始化执行.
      *
      * @var array
      */
@@ -74,12 +74,12 @@ abstract class Kernel implements IKernel
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IProject $project
-     * @param \Leevel\Router\IRouter  $router
+     * @param \Leevel\Kernel\IApp    $app
+     * @param \Leevel\Router\IRouter $router
      */
-    public function __construct(IProject $project, IRouter $router)
+    public function __construct(IApp $app, IRouter $router)
     {
-        $this->project = $project;
+        $this->app = $app;
         $this->router = $router;
     }
 
@@ -140,17 +140,17 @@ abstract class Kernel implements IKernel
      */
     public function bootstrap(): void
     {
-        $this->project->bootstrap($this->bootstraps);
+        $this->app->bootstrap($this->bootstraps);
     }
 
     /**
-     * 返回项目.
+     * 返回应用.
      *
-     * @return \Leevel\Kernel\IProject
+     * @return \Leevel\Kernel\IApp
      */
-    public function getProject(): IProject
+    public function getApp(): IApp
     {
-        return $this->project;
+        return $this->app;
     }
 
     /**
@@ -160,7 +160,7 @@ abstract class Kernel implements IKernel
      */
     protected function getRuntime(): IRuntime
     {
-        return $this->project->make(IRuntime::class);
+        return $this->app->make(IRuntime::class);
     }
 
     /**
@@ -170,7 +170,7 @@ abstract class Kernel implements IKernel
      */
     protected function registerBaseService(IRequest $request): void
     {
-        $this->project->instance('request', $request);
+        $this->app->instance('request', $request);
     }
 
     /**

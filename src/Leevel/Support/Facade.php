@@ -38,7 +38,7 @@ use RuntimeException;
 abstract class Facade
 {
     /**
-     * 项目容器.
+     * 应用容器.
      *
      * @var \Leevel\Di\IContainer
      */

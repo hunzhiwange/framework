@@ -36,7 +36,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 class Application extends SymfonyApplication implements IApplication
 {
     /**
-     * 项目容器.
+     * 应用容器.
      *
      * @var \Leevel\Di\IContainer
      */
@@ -98,7 +98,7 @@ class Application extends SymfonyApplication implements IApplication
     }
 
     /**
-     * 返回项目容器.
+     * 返回应用容器.
      *
      * @return \Leevel\Di\Container
      */

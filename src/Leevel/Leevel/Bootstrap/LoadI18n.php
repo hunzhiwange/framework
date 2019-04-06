@@ -23,7 +23,7 @@ namespace Leevel\Leevel\Bootstrap;
 use Exception;
 use Leevel\I18n\I18n;
 use Leevel\I18n\Load;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * 读取语言包.
@@ -39,25 +39,25 @@ class LoadI18n
     /**
      * 响应.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        $i18nDefault = $project['option']['i18n\\default'];
+        $i18nDefault = $app['option']['i18n\\default'];
 
-        if ($project->isCachedI18n($i18nDefault)) {
-            $data = (array) include $project->i18nCachedPath($i18nDefault);
+        if ($app->isCachedI18n($i18nDefault)) {
+            $data = (array) include $app->i18nCachedPath($i18nDefault);
         } else {
-            $load = (new Load([$project->i18nPath()]))->
+            $load = (new Load([$app->i18nPath()]))->
 
             setI18n($i18nDefault)->
 
-            addDir($this->getExtend($project));
+            addDir($this->getExtend($app));
 
             $data = $load->loadData();
         }
 
-        $project->instance('i18n', $i18n = new I18n($i18nDefault));
+        $app->instance('i18n', $i18n = new I18n($i18nDefault));
 
         $i18n->addtext($i18nDefault, $data);
     }
@@ -65,15 +65,15 @@ class LoadI18n
     /**
      * 获取扩展语言包.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      *
      * @return array
      */
-    public function getExtend(IProject $project): array
+    public function getExtend(IApp $app): array
     {
-        $extend = $project['option']->get('_composer.i18ns', []);
+        $extend = $app['option']->get('_composer.i18ns', []);
 
-        $path = $project->path();
+        $path = $app->path();
 
         $extend = array_map(function (string $item) use ($path) {
             if (!is_file($item)) {

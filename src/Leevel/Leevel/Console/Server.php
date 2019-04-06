@@ -22,7 +22,7 @@ namespace Leevel\Leevel\Console;
 
 use Leevel\Console\Command;
 use Leevel\Console\Option;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -54,18 +54,18 @@ class Server extends Command
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        $this->project = $project;
+        $this->app = $app;
 
         $this->line("<info>The QueryPHP server started:</info> <http://{$this->host()}:{$this->port()}>");
 
@@ -120,7 +120,7 @@ class Server extends Command
      */
     protected function server(): string
     {
-        return $this->option('server') ?: $this->project->path('www');
+        return $this->option('server') ?: $this->app->path('www');
     }
 
     /**

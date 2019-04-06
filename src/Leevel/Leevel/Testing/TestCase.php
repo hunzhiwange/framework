@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Testing;
 
-use Leevel\Leevel\Project;
+use Leevel\Leevel\App;
 use Leevel\Support\Facade;
 use PHPUnit\Framework\TestCase as TestCases;
 
@@ -39,19 +39,19 @@ abstract class TestCase extends TestCases
     use Helper;
 
     /**
-     * 创建的项目.
+     * 创建的应用.
      *
-     * @var \Leevel\Leevel\Project
+     * @var \Leevel\Leevel\App
      */
-    protected $project;
+    protected $app;
 
     /**
      * Setup.
      */
     protected function setUp()
     {
-        if (!$this->project) {
-            $this->project = $this->createProject();
+        if (!$this->app) {
+            $this->app = $this->createApp();
         }
 
         Facade::remove();
@@ -62,7 +62,7 @@ abstract class TestCase extends TestCases
      */
     protected function tearDown()
     {
-        $this->project = null;
+        $this->app = null;
     }
 
     /**
@@ -73,9 +73,9 @@ abstract class TestCase extends TestCases
     abstract protected function makeLogsDir(): array;
 
     /**
-     * 初始化项目.
+     * 初始化应用.
      *
-     * @return \Leevel\Leevel\Project
+     * @return \Leevel\Leevel\App
      */
-    abstract protected function createProject(): Project;
+    abstract protected function createApp(): App;
 }

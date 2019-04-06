@@ -22,7 +22,7 @@ namespace Leevel\I18n\Console;
 
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * 语言包缓存清理.
@@ -52,17 +52,17 @@ class Clear extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
         $this->line('Start to clear i18n.');
 
-        Fso::listDirectory($project->i18nPath(), false, function ($item) use ($project) {
+        Fso::listDirectory($app->i18nPath(), false, function ($item) use ($app) {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
 
-                $cachePath = $project->i18nCachedPath($i18n);
+                $cachePath = $app->i18nCachedPath($i18n);
 
                 $this->clearCache($cachePath);
 

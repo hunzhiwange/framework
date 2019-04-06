@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Console;
 
 use Leevel\Console\Command;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * 自动加载缓存清理.
@@ -52,13 +52,13 @@ class AutoloadClear extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
         $this->line('Start to clear cache autoload.');
 
-        $cachePath = $project->runtimePath('autoload.php');
+        $cachePath = $app->runtimePath('autoload.php');
 
         $this->clearCache($cachePath);
 

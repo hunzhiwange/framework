@@ -25,7 +25,7 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
 /**
- * IProject 接口.
+ * 应用接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -33,7 +33,7 @@ use Leevel\Di\Provider;
  *
  * @version 1.0
  */
-interface IProject extends IContainer
+interface IApp extends IContainer
 {
     /**
      * QueryPHP 版本.
@@ -50,7 +50,7 @@ interface IProject extends IContainer
     const DEFAULT_ENV = '.env';
 
     /**
-     * 返回项目.
+     * 返回应用.
      *
      * @param string $path
      *
@@ -80,7 +80,7 @@ interface IProject extends IContainer
     public function console(): bool;
 
     /**
-     * 设置项目路径.
+     * 设置应用路径.
      *
      * @param string $path
      */
@@ -370,7 +370,7 @@ interface IProject extends IContainer
     public function callProviderBootstrap(Provider $provider): void;
 
     /**
-     * 初始化项目.
+     * 初始化应用.
      *
      * @param array $bootstraps
      */

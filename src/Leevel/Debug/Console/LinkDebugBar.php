@@ -22,7 +22,7 @@ namespace Leevel\Debug\Console;
 
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * debuger 资源目录创建软连接到 www.
@@ -53,11 +53,11 @@ class LinkDebugBar extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        if (file_exists($link = $project->path('www/debugbar'))) {
+        if (file_exists($link = $app->path('www/debugbar'))) {
             $this->error(
                 sprintf('The `%s` directory already exists.', $link)
             );
@@ -66,7 +66,7 @@ class LinkDebugBar extends Command
         }
 
         Fso::link(
-            $path = $project->path('vendor/maximebf/debugbar/src/DebugBar/Resources'), $link
+            $path = $app->path('vendor/maximebf/debugbar/src/DebugBar/Resources'), $link
         );
 
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));

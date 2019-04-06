@@ -53,7 +53,7 @@ abstract class Command extends SymfonyCommand
     const DEFAULT_VERBOSITY = OutputInterface::VERBOSITY_NORMAL;
 
     /**
-     * 项目容器.
+     * 应用容器.
      *
      * @var \Leevel\Di\IContainer
      */

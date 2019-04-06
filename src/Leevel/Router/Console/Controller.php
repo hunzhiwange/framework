@@ -57,7 +57,7 @@ class Controller extends Make
      * @var string
      */
     protected $help = <<<'EOF'
-The <info>%command.name%</info> command to make controller with project namespace:
+The <info>%command.name%</info> command to make controller with app namespace:
 
   <info>php %command.full_name% name action</info>
 

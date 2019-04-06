@@ -22,7 +22,7 @@ namespace Leevel\Router\Console;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Router\RouterProvider;
 
 /**
@@ -53,16 +53,16 @@ class Cache extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject       $project
+     * @param \Leevel\Kernel\IApp           $app
      * @param \Leevel\Router\RouterProvider $routerProvider
      */
-    public function handle(IProject $project, RouterProvider $routerProvider): void
+    public function handle(IApp $app, RouterProvider $routerProvider): void
     {
         $this->line('Start to cache router.');
 
         $data = $routerProvider->getRouters();
 
-        $cachePath = $project->routerCachedPath();
+        $cachePath = $app->routerCachedPath();
 
         $this->writeCache($cachePath, $data);
 

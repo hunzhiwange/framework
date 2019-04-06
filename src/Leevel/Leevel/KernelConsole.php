@@ -24,8 +24,8 @@ use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
 use Leevel\Http\Request;
+use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernelConsole;
-use Leevel\Kernel\IProject;
 use Leevel\Leevel\Bootstrap\LoadI18n;
 use Leevel\Leevel\Bootstrap\LoadOption;
 use Leevel\Leevel\Bootstrap\RegisterRuntime;
@@ -45,11 +45,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class KernelConsole implements IKernelConsole
 {
     /**
-     * 项目.
+     * 应用.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * 命令行应用.
@@ -59,7 +59,7 @@ abstract class KernelConsole implements IKernelConsole
     protected $consoleApplication;
 
     /**
-     * 项目初始化执行.
+     * 应用初始化执行.
      *
      * @var array
      */
@@ -73,11 +73,11 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function __construct(IProject $project)
+    public function __construct(IApp $app)
     {
-        $this->project = $project;
+        $this->app = $app;
     }
 
     /**
@@ -119,17 +119,17 @@ abstract class KernelConsole implements IKernelConsole
      */
     public function bootstrap(): void
     {
-        $this->project->bootstrap($this->bootstraps);
+        $this->app->bootstrap($this->bootstraps);
     }
 
     /**
-     * 返回项目.
+     * 返回应用.
      *
-     * @return \Leevel\Kernel\IProject
+     * @return \Leevel\Kernel\IApp
      */
-    public function getProject(): IProject
+    public function getApp(): IApp
     {
-        return $this->project;
+        return $this->app;
     }
 
     /**
@@ -144,7 +144,7 @@ abstract class KernelConsole implements IKernelConsole
             return $this->consoleApplication;
         }
 
-        return $this->consoleApplication = new Application($this->project, $this->project->version());
+        return $this->consoleApplication = new Application($this->app, $this->app->version());
     }
 
     /**
@@ -152,7 +152,7 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function registerBaseService(): void
     {
-        $this->project->instance('request', Request::createFromGlobals());
+        $this->app->instance('request', Request::createFromGlobals());
     }
 
     /**
@@ -171,7 +171,7 @@ abstract class KernelConsole implements IKernelConsole
     protected function setGlobalReplace(): void
     {
         Make::setGlobalReplace(
-            $this->project['option']->get('console\\template') ?: []
+            $this->app['option']->get('console\\template') ?: []
         );
     }
 
@@ -213,7 +213,7 @@ abstract class KernelConsole implements IKernelConsole
         $data = [];
 
         foreach ($namespaces as $item) {
-            $data[$item] = $this->project->getPathByComposer($item);
+            $data[$item] = $this->app->getPathByComposer($item);
         }
 
         return (new Load())->addNamespace($data)->loadData();
@@ -226,6 +226,6 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function getCommands(): array
     {
-        return $this->project['option']->get('_composer.commands');
+        return $this->app['option']->get('_composer.commands');
     }
 }

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Helper;
 
-use Leevel\Leevel\Project;
+use Leevel\Leevel\App;
 use Leevel\Option\IOption;
 
 /**
@@ -33,7 +33,7 @@ use Leevel\Option\IOption;
  */
 function option($key = null, $defaults = null)
 {
-    $service = Project::singletons()
+    $service = App::singletons()
         ->make(IOption::class);
 
     if (null === $key) {

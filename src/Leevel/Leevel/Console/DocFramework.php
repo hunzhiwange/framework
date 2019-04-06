@@ -22,7 +22,7 @@ namespace Leevel\Leevel\Console;
 
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 
 /**
@@ -54,14 +54,14 @@ class DocFramework extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
-     * @param \Leevel\Option\IOption  $option
+     * @param \Leevel\Kernel\IApp    $app
+     * @param \Leevel\Option\IOption $option
      */
-    public function handle(IProject $project, IOption $option): void
+    public function handle(IApp $app, IOption $option): void
     {
         $input = [
             'path'      => $this->path(),
-            'testsdir'  => $project->path('vendor/hunzhiwange/framework/tests'),
+            'testsdir'  => $app->path('vendor/hunzhiwange/framework/tests'),
             'outputdir' => $option->get('console\\framework_doc_outputdir'),
         ];
 

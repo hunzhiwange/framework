@@ -23,7 +23,7 @@ namespace Leevel\Option;
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidFileException;
 use Dotenv\Exception\InvalidPathException;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use RuntimeException;
 
 /**
@@ -70,25 +70,25 @@ class Load
     /**
      * 载入配置数据.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      *
      * @return array
      */
-    public function loadData(IProject $project): array
+    public function loadData(IApp $app): array
     {
         if ($this->loaded) {
             return $this->loaded;
         }
 
-        $env = $this->loadEnvData($project);
+        $env = $this->loadEnvData($app);
 
-        $composer = $this->loadComposerOption($project->path());
+        $composer = $this->loadComposerOption($app->path());
 
         $data = $this->loadOptionData();
 
         // 读取额外的配置
         if ($composer['options']) {
-            $data = $this->mergeComposerOption($data, $project, $composer['options']);
+            $data = $this->mergeComposerOption($data, $app, $composer['options']);
         }
 
         // 环境变量
@@ -108,17 +108,17 @@ class Load
     /**
      * 载入环境变量数据.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      *
      * @return array
      */
-    protected function loadEnvData(IProject $project): array
+    protected function loadEnvData(IApp $app): array
     {
         $oldEnv = $_ENV;
         $_ENV = [];
 
         try {
-            (new Dotenv($project->envPath(), $project->envFile()))->overload();
+            (new Dotenv($app->envPath(), $app->envFile()))->overload();
         } catch (InvalidPathException $e) {
             throw new RuntimeException($e->getMessage());
         } catch (InvalidFileException $e) {
@@ -219,17 +219,17 @@ class Load
     /**
      * 合并 composer 配置数据.
      *
-     * @param array                   $options
-     * @param \Leevel\Kernel\IProject $project
-     * @param array                   $optionFiles
+     * @param array               $options
+     * @param \Leevel\Kernel\IApp $app
+     * @param array               $optionFiles
      *
      * @return array
      */
-    protected function mergeComposerOption(array $options, IProject $project, array $optionFiles): array
+    protected function mergeComposerOption(array $options, IApp $app, array $optionFiles): array
     {
         $data = [];
 
-        $path = $project->path();
+        $path = $app->path();
 
         foreach ($optionFiles as $key => $files) {
             if (!is_array($files)) {

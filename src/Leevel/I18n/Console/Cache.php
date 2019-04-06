@@ -24,7 +24,7 @@ use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
 use Leevel\I18n\Load;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Leevel\Bootstrap\LoadI18n;
 
 /**
@@ -55,9 +55,9 @@ class Cache extends Command
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * 扩展语言包目录.
@@ -69,22 +69,22 @@ class Cache extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        $this->project = $project;
+        $this->app = $app;
         $this->extends = $this->extends();
 
         $this->line('Start to cache i18n.');
 
-        Fso::listDirectory($project->i18nPath(), false, function ($item) use ($project) {
+        Fso::listDirectory($app->i18nPath(), false, function ($item) use ($app) {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
 
                 $data = $this->data($i18n);
 
-                $cachePath = $project->i18nCachedPath($i18n);
+                $cachePath = $app->i18nCachedPath($i18n);
 
                 $this->writeCache($cachePath, $data);
 
@@ -102,7 +102,7 @@ class Cache extends Command
      */
     protected function extends(): array
     {
-        return (new LoadI18n())->getExtend($this->project);
+        return (new LoadI18n())->getExtend($this->app);
     }
 
     /**
@@ -114,7 +114,7 @@ class Cache extends Command
      */
     protected function data(string $i18n): array
     {
-        $load = (new Load([$this->project->i18nPath()]))
+        $load = (new Load([$this->app->i18nPath()]))
             ->setI18n($i18n)
             ->addDir($this->extends);
 

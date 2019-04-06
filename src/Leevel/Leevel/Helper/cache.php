@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Cache\ICache;
-use Leevel\Leevel\Project;
+use Leevel\Leevel\App;
 
 /**
  * 设置或者获取 cache 值
@@ -34,7 +34,7 @@ use Leevel\Leevel\Project;
  */
 function cache($key = null, $defaults = null, array $option = [])
 {
-    $service = Project::singletons()
+    $service = App::singletons()
         ->make(ICache::class);
 
     if (null === $key) {

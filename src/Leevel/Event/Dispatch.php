@@ -34,7 +34,7 @@ use Leevel\Di\IContainer;
 class Dispatch implements IDispatch
 {
     /**
-     * 项目容器.
+     * 应用容器.
      *
      * @var \Leevel\Di\IContainer
      */

@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\View\Console;
 
 use Leevel\Console\Command;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 use Leevel\View\Compiler;
 use Leevel\View\IView;
@@ -60,9 +60,9 @@ class Cache extends Command
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * 视图分析器.
@@ -81,12 +81,12 @@ class Cache extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
-     * @param \Leevel\Option\IOption  $option
+     * @param \Leevel\Kernel\IApp    $app
+     * @param \Leevel\Option\IOption $option
      */
-    public function handle(IProject $project, IOption $option): void
+    public function handle(IApp $app, IOption $option): void
     {
-        $this->project = $project;
+        $this->app = $app;
         $this->parser = $this->createParser();
         $this->html = $this->getHtmlView();
 
@@ -156,7 +156,7 @@ class Cache extends Command
      */
     protected function paths(): array
     {
-        return array_merge([$this->project->themesPath()], $this->composerPaths());
+        return array_merge([$this->app->themesPath()], $this->composerPaths());
     }
 
     /**
@@ -166,7 +166,7 @@ class Cache extends Command
      */
     protected function composerPaths(): array
     {
-        $path = $this->project->path().'/composer.json';
+        $path = $this->app->path().'/composer.json';
 
         if (!is_file($path)) {
             return [];
@@ -177,7 +177,7 @@ class Cache extends Command
         $paths = !empty($options['extra']['leevel-console']['view-cache']['paths']) ?
             $options['extra']['leevel-console']['view-cache']['paths'] : [];
 
-        $path = $this->project->path();
+        $path = $this->app->path();
 
         $paths = array_map(function (string $value) use ($path) {
             if (!is_file($value)) {
@@ -228,7 +228,7 @@ class Cache extends Command
      */
     protected function getHtmlView(): IView
     {
-        return $this->project->make('view.views')->connect('html');
+        return $this->app->make('view.views')->connect('html');
     }
 
     /**

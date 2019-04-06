@@ -24,7 +24,7 @@ use Closure;
 use Leevel\Debug\Debug as Debugs;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * Debug 中间件.
@@ -38,11 +38,11 @@ use Leevel\Kernel\IProject;
 class Debug
 {
     /**
-     * 项目管理.
+     * 应用管理.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * debug 管理.
@@ -54,12 +54,12 @@ class Debug
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IProject $project
-     * @param \Leevel\Debug\Debug     $debug
+     * @param \Leevel\Kernel\IApp $app
+     * @param \Leevel\Debug\Debug $debug
      */
-    public function __construct(IProject $project, Debugs $debug)
+    public function __construct(IApp $app, Debugs $debug)
     {
-        $this->project = $project;
+        $this->app = $app;
         $this->debug = $debug;
     }
 
@@ -71,7 +71,7 @@ class Debug
      */
     public function handle(Closure $next, IRequest $request): void
     {
-        if (!$this->project->debug()) {
+        if (!$this->app->debug()) {
             $next($request);
 
             return;
@@ -91,7 +91,7 @@ class Debug
      */
     public function terminate(Closure $next, IRequest $request, IResponse $response): void
     {
-        if (!$this->project->debug()) {
+        if (!$this->app->debug()) {
             $next($request, $response);
 
             return;

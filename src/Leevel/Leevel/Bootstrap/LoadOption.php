@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Bootstrap;
 
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Option\Load;
 use Leevel\Option\Option;
 use Leevel\Support\Facade;
@@ -40,29 +40,29 @@ class LoadOption
     /**
      * 响应.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        $this->checkRuntimeEnv($project);
+        $this->checkRuntimeEnv($app);
 
-        if ($project->isCachedOption()) {
-            $data = (array) include $project->optionCachedPath();
+        if ($app->isCachedOption()) {
+            $data = (array) include $app->optionCachedPath();
 
             $this->setEnvs($data['app']['_env']);
         } else {
-            $load = new Load($project->optionPath());
+            $load = new Load($app->optionPath());
 
-            $data = $load->loadData($project);
+            $data = $load->loadData($app);
         }
 
-        $project->instance('option', $option = new Option($data));
+        $app->instance('option', $option = new Option($data));
 
         $test = 2 === func_num_args();
 
         if (!$test) {
             // @codeCoverageIgnoreStart
-            Facade::setContainer($project);
+            Facade::setContainer($app);
 
             $this->initialization($option);
             // @codeCoverageIgnoreEnd
@@ -72,9 +72,9 @@ class LoadOption
     /**
      * 载入运行时环境变量.
      *
-     * @param \Leevel\Kernel\IProject $projecty
+     * @param \Leevel\Kernel\IApp $appy
      */
-    protected function checkRuntimeEnv(IProject $project): void
+    protected function checkRuntimeEnv(IApp $app): void
     {
         if (!getenv('RUNTIME_ENVIRONMENT')) {
             return;
@@ -83,11 +83,11 @@ class LoadOption
         $file = '.'.getenv('RUNTIME_ENVIRONMENT');
 
         // 校验运行时环境，防止测试用例清空非测试库的业务数据
-        if (!is_file($fullFile = $project->envPath().'/'.$file)) {
+        if (!is_file($fullFile = $app->envPath().'/'.$file)) {
             throw new RuntimeException(sprintf('Env file `%s` was not found.', $fullFile));
         }
 
-        $project->setEnvFile($file);
+        $app->setEnvFile($file);
     }
 
     /**

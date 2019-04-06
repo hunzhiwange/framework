@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\I18n\II18n;
-use Leevel\Leevel\Project;
+use Leevel\Leevel\App;
 
 /**
  * 获取语言.
@@ -33,7 +33,7 @@ use Leevel\Leevel\Project;
  */
 function __(string $text, ...$arr): string
 {
-    $service = Project::singletons()
+    $service = App::singletons()
         ->make(II18n::class);
 
     return $service->gettext($text, ...$arr);

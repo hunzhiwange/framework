@@ -170,7 +170,7 @@ class Psr2Leevel implements IPsr2Leevel
     /**
      * 创建 COOKIE 结构.
      *
-     * Some snippets have been taken from the Guzzle project: https://github.com/guzzle/guzzle/blob/5.3/src/Cookie/SetCookie.php#L34
+     * Some snippets have been taken from the Guzzle app: https://github.com/guzzle/guzzle/blob/5.3/src/Cookie/SetCookie.php#L34
      *
      * @param string $cookie
      *

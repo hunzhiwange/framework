@@ -23,8 +23,8 @@ namespace Leevel\Leevel\Console;
 use Leevel\Console\Command;
 use Leevel\Http\Leevel2Psr;
 use Leevel\Http\Psr2Leevel;
+use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernel;
-use Leevel\Kernel\IProject;
 use Spiral\Goridge\StreamRelay;
 use Spiral\RoadRunner\PSR7Client;
 use Spiral\RoadRunner\Worker;
@@ -61,13 +61,13 @@ class RoadRunnerServer extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
         ini_set('display_errors', 'stderr');
 
-        $kernel = $project->make(IKernel::class);
+        $kernel = $app->make(IKernel::class);
         list($psr7, $psr2Leevel, $leevel2Psr) = $this->getPsrBridge();
 
         while ($req = $psr7->acceptRequest()) {

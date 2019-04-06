@@ -41,7 +41,7 @@ use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Throwable;
@@ -49,7 +49,7 @@ use Throwable;
 /**
  * 调试器.
  *
- * I actually copied a lot of ideas from laravel-debugbar project.
+ * I actually copied a lot of ideas from laravel-debugbar app.
  *
  * @method void emergency($message)
  * @method void alert($message)
@@ -72,9 +72,9 @@ class Debug extends DebugBar
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * 是否启用调试.
@@ -104,12 +104,12 @@ class Debug extends DebugBar
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IProject $project
-     * @param array                   $option
+     * @param \Leevel\Kernel\IApp $app
+     * @param array               $option
      */
-    public function __construct(IProject $project, array $option = [])
+    public function __construct(IApp $app, array $option = [])
     {
-        $this->project = $project;
+        $this->app = $app;
 
         $this->option = array_merge($this->option, $option);
     }
@@ -138,13 +138,13 @@ class Debug extends DebugBar
     }
 
     /**
-     * 返回项目管理.
+     * 返回应用管理.
      *
-     * @return \Leevel\Kernel\IProject
+     * @return \Leevel\Kernel\IApp
      */
-    public function getProject(): IProject
+    public function getApp(): IApp
     {
-        return $this->project;
+        return $this->app;
     }
 
     /**
@@ -334,9 +334,9 @@ class Debug extends DebugBar
         $this->addCollector(new MemoryCollector());
         $this->addCollector(new ExceptionsCollector());
         $this->addCollector(new ConfigCollector());
-        $this->addCollector(new LeevelCollector($this->project));
-        $this->addCollector(new SessionCollector($this->project->make('session')));
-        $this->addCollector(new FilesCollector($this->project));
+        $this->addCollector(new LeevelCollector($this->app));
+        $this->addCollector(new SessionCollector($this->app->make('session')));
+        $this->addCollector(new FilesCollector($this->app));
         $this->addCollector(new LogsCollector());
 
         $this->initData();
@@ -363,7 +363,7 @@ class Debug extends DebugBar
     {
         $this->message('Starts from this moment with QueryPHP.', '');
 
-        $this->getCollector('config')->setData($this->project->make('option')->all());
+        $this->getCollector('config')->setData($this->app->make('option')->all());
     }
 
     /**
@@ -397,6 +397,6 @@ class Debug extends DebugBar
      */
     protected function getEventDispatch(): IDispatch
     {
-        return $this->project->make(IDispatch::class);
+        return $this->app->make(IDispatch::class);
     }
 }

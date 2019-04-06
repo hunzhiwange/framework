@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Encryption\IEncryption;
-use Leevel\Leevel\Project;
+use Leevel\Leevel\App;
 
 /**
  * 解密字符串.
@@ -32,7 +32,7 @@ use Leevel\Leevel\Project;
  */
 function decrypt(string $value): string
 {
-    $service = Project::singletons()
+    $service = App::singletons()
         ->make(IEncryption::class);
 
     return $service->decrypt($value);

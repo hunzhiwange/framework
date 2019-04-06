@@ -57,9 +57,9 @@ interface IKernel
     public function bootstrap(): void;
 
     /**
-     * 返回项目.
+     * 返回应用.
      *
-     * @return \Leevel\Kernel\IProject
+     * @return \Leevel\Kernel\IApp
      */
-    public function getProject(): IProject;
+    public function getApp(): IApp;
 }

@@ -44,7 +44,7 @@ if (!function_exists('app')) {
      * @param null|string $service
      * @param array       $args
      *
-     * @return \Leevel\Leevel\Project|mixed
+     * @return \Leevel\Leevel\App|mixed
      */
     function app(?string $service = null, array $args = [])
     {

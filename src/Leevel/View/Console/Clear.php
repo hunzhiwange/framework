@@ -22,7 +22,7 @@ namespace Leevel\View\Console;
 
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * 视图缓存清理.
@@ -53,13 +53,13 @@ class Clear extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
         $this->line('Start to clear cache view.');
 
-        Fso::deleteDirectory($cachePath = $project->runtimePath('theme'), true);
+        Fso::deleteDirectory($cachePath = $app->runtimePath('theme'), true);
 
         $this->info(sprintf('View files in path %s cache clear successed.', $cachePath));
     }

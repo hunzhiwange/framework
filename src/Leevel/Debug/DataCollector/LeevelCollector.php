@@ -22,7 +22,7 @@ namespace Leevel\Debug\DataCollector;
 
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * 框架基础信息收集器.
@@ -36,20 +36,20 @@ use Leevel\Kernel\IProject;
 class LeevelCollector extends DataCollector implements Renderable
 {
     /**
-     * 项目管理.
+     * 应用管理.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function __construct(IProject $project)
+    public function __construct(IApp $app)
     {
-        $this->project = $project;
+        $this->app = $app;
     }
 
     /**
@@ -57,11 +57,11 @@ class LeevelCollector extends DataCollector implements Renderable
      */
     public function collect(): array
     {
-        $project = $this->project;
+        $app = $this->app;
 
         return [
-            'version'     => $project::VERSION,
-            'environment' => $project->environment(),
+            'version'     => $app::VERSION,
+            'environment' => $app->environment(),
         ];
     }
 

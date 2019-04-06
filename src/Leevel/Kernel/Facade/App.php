@@ -23,7 +23,7 @@ namespace Leevel\Kernel\Facade;
 use Leevel\Support\Facade;
 
 /**
- * 门面 leevel.
+ * 门面 app.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Leevel\Support\Facade;
  *
  * @version 1.0
  */
-class Leevel extends Facade
+class App extends Facade
 {
     /**
      * 返回门面名字.
@@ -40,6 +40,6 @@ class Leevel extends Facade
      */
     protected static function name(): string
     {
-        return 'project';
+        return 'app';
     }
 }

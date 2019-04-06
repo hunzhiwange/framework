@@ -22,7 +22,7 @@ namespace Leevel\Leevel\Console;
 
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * apis 文档目录创建软连接到 apis.
@@ -53,11 +53,11 @@ class LinkApis extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        if (file_exists($link = $project->path('www/apis'))) {
+        if (file_exists($link = $app->path('www/apis'))) {
             $this->error(
                 sprintf('The `%s` directory already exists.', $link)
             );
@@ -66,7 +66,7 @@ class LinkApis extends Command
         }
 
         Fso::link(
-            $path = $project->path('apis'), $link
+            $path = $app->path('apis'), $link
         );
 
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));

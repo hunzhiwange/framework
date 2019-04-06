@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Helper;
 
-use Leevel\Leevel\Project;
+use Leevel\Leevel\App;
 use Leevel\Router\IUrl;
 
 /**
@@ -35,7 +35,7 @@ use Leevel\Router\IUrl;
  */
 function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
 {
-    $service = Project::singletons()
+    $service = App::singletons()
         ->make(IUrl::class);
 
     return $service->make($url, $params, $subdomain, $suffix);

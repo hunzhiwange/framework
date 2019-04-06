@@ -51,7 +51,7 @@ interface IApplication
     public function normalizeCommands(array $commands): void;
 
     /**
-     * 返回项目容器.
+     * 返回应用容器.
      *
      * @return \Leevel\Di\Container
      */

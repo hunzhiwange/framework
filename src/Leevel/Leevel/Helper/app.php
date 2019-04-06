@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Helper;
 
-use Leevel\Leevel\Project;
+use Leevel\Leevel\App;
 
 /**
  * 返回应用容器或者注入.
@@ -28,11 +28,11 @@ use Leevel\Leevel\Project;
  * @param null|string $service
  * @param array       $args
  *
- * @return \Leevel\Leevel\Project|mixed
+ * @return \Leevel\Leevel\App|mixed
  */
 function app(?string $service = null, array $args = [])
 {
-    $app = Project::singletons();
+    $app = App::singletons();
 
     if (null === $service) {
         return $app;

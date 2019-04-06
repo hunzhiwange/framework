@@ -22,7 +22,7 @@ namespace Leevel\Leevel\Bootstrap;
 
 use ErrorException;
 use Exception;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Kernel\IRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
@@ -41,18 +41,18 @@ class RegisterRuntime
     /**
      * 容器.
      *
-     * @var \Leevel\Di\IProject
+     * @var \Leevel\Di\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * 响应.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        $this->project = $project;
+        $this->app = $app;
 
         $test = 2 === func_num_args();
 
@@ -66,7 +66,7 @@ class RegisterRuntime
 
             register_shutdown_function([$this, 'registerShutdownFunction']);
 
-            if ('production' === $project->environment()) {
+            if ('production' === $app->environment()) {
                 ini_set('display_errors', 'Off');
             }
             // @codeCoverageIgnoreEnd
@@ -129,7 +129,7 @@ class RegisterRuntime
         }
         // @codeCoverageIgnoreEnd
 
-        if ($this->project->console()) {
+        if ($this->app->console()) {
             $this->renderConsoleResponse($e);
         } else {
             $this->renderHttpResponse($e);
@@ -153,7 +153,7 @@ class RegisterRuntime
      */
     protected function renderHttpResponse(Exception $e): void
     {
-        $this->getRuntime()->render($this->project['request'], $e)->send();
+        $this->getRuntime()->render($this->app['request'], $e)->send();
     }
 
     /**
@@ -177,6 +177,6 @@ class RegisterRuntime
      */
     protected function getRuntime(): IRuntime
     {
-        return $this->project->make(IRuntime::class);
+        return $this->app->make(IRuntime::class);
     }
 }

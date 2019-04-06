@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Helper;
 
-use Leevel\Leevel\Project;
+use Leevel\Leevel\App;
 use Leevel\Session\ISession;
 
 /**
@@ -33,7 +33,7 @@ use Leevel\Session\ISession;
  */
 function session($key = null, $defaults = null)
 {
-    $service = Project::singletons()
+    $service = App::singletons()
         ->make(ISession::class);
 
     if (null === $key) {

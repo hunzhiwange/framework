@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Bootstrap;
 
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * 遍历服务提供者.
@@ -36,12 +36,12 @@ class TraverseProvider
     /**
      * 响应.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        $project->registerProviders();
+        $app->registerProviders();
 
-        $project->bootstrapProviders();
+        $app->bootstrapProviders();
     }
 }

@@ -22,7 +22,7 @@ namespace Leevel\Leevel\Console;
 
 use Leevel\Console\Command;
 use Leevel\Filesystem\Fso;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * storage 附件目录创建软连接到 www.
@@ -53,11 +53,11 @@ class LinkStorage extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        if (file_exists($link = $project->path('www/storage'))) {
+        if (file_exists($link = $app->path('www/storage'))) {
             $this->error(
                 sprintf('The `%s` directory already exists.', $link)
             );
@@ -66,7 +66,7 @@ class LinkStorage extends Command
         }
 
         Fso::link(
-            $path = $project->storagePath(), $link
+            $path = $app->storagePath(), $link
         );
 
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));

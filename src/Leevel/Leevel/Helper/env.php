@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 /**
- * 取得项目的环境变量.支持 boolean, empty 和 null.
+ * 取得应用的环境变量.支持 boolean, empty 和 null.
  *
  * @param mixed $name
  * @param mixed $defaults

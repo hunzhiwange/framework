@@ -23,7 +23,7 @@ namespace Leevel\Leevel\Console;
 use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 
 /**
  * 优化 composer 自动加载.
@@ -54,9 +54,9 @@ class Autoload extends Command
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Kernel\IProject
+     * @var \Leevel\Kernel\IApp
      */
-    protected $project;
+    protected $app;
 
     /**
      * Composer 生成的随机 hash.
@@ -68,11 +68,11 @@ class Autoload extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IProject $project): void
+    public function handle(IApp $app): void
     {
-        $this->project = $project;
+        $this->app = $app;
 
         $this->line('Start to cache autoload.');
 
@@ -108,7 +108,7 @@ class Autoload extends Command
      */
     protected function autoloadCachedPath(): string
     {
-        return $this->project->path('vendor/autoloadLeevel.php');
+        return $this->app->path('vendor/autoloadLeevel.php');
     }
 
     /**
@@ -120,12 +120,12 @@ class Autoload extends Command
     {
         $data = [];
 
-        $data[] = $this->replaceIncludeFile(file_get_contents($this->project->path('vendor/composer/ClassLoader.php')));
+        $data[] = $this->replaceIncludeFile(file_get_contents($this->app->path('vendor/composer/ClassLoader.php')));
         $data[] = $this->replaceComposerPath($this->dataInit());
         $data[] = $this->dataHelper();
         $data[] = $this->dataLoader();
 
-        unlink($this->project->path('vendor/composer/ComposerStaticInit.php'));
+        unlink($this->app->path('vendor/composer/ComposerStaticInit.php'));
 
         return implode(PHP_EOL.PHP_EOL, $data).PHP_EOL;
     }
@@ -152,7 +152,7 @@ class Autoload extends Command
     protected function replaceComposerPath(string $content): string
     {
         return str_replace(
-            '\''.$this->project->path('vendor/composer/'),
+            '\''.$this->app->path('vendor/composer/'),
             'LEEVEL_COMPOSER . \'/',
             $content
         );
@@ -346,15 +346,15 @@ eot;
             return $staticClass;
         }
 
-        $content = file_get_contents($this->project->path('vendor/autoload.php'));
+        $content = file_get_contents($this->app->path('vendor/autoload.php'));
 
         if (preg_match('/ComposerAutoloaderInit(\S{32})::getLoader/', $content, $matches)) {
             $staticContent = file_get_contents(
-                $this->project->path('vendor/composer/autoload_static.php')
+                $this->app->path('vendor/composer/autoload_static.php')
             );
 
             file_put_contents(
-                $staticPath = $this->project->path('vendor/composer/ComposerStaticInit.php'),
+                $staticPath = $this->app->path('vendor/composer/ComposerStaticInit.php'),
                 str_replace('ComposerStaticInit'.$matches[1], 'ComposerStaticInit', $staticContent)
             );
 
@@ -391,7 +391,7 @@ eot;
      */
     protected function appNamespaces(): array
     {
-        $path = $this->project->path().'/composer.json';
+        $path = $this->app->path().'/composer.json';
 
         if (!is_file($path)) {
             return [];
