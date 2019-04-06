@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Provider;
 
-use Leevel\Cookie\Cookie;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Http\Cookie;
 use Leevel\Router\Redirect;
 use Leevel\Router\ResponseFactory;
 use Leevel\Router\Router;
