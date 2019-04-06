@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 use Leevel\Di\IContainer;
 use Leevel\Leevel\Project;
-use Leevel\Log\ILog;
 use Leevel\Support\Fn;
 
 /**
@@ -152,45 +151,6 @@ class Leevel
     public static function value($value)
     {
         return $value instanceof Closure ? $value() : $value;
-    }
-
-    /**
-     * 日志.
-     *
-     * @param null|string $message = null
-     * @param array       $context
-     * @param string      $level
-     *
-     * @return mixed
-     */
-    public static function log(?string $message = null, array $context = [], string $level = ILog::INFO)
-    {
-        if (null === $message) {
-            return static::project('logs');
-        }
-
-        static::project('logs')->log($level, $message, $context);
-    }
-
-    /**
-     * 设置或者获取 option 值
-     *
-     * @param null|array|string $key
-     * @param mixed             $defaults
-     *
-     * @return mixed
-     */
-    public static function option($key = null, $defaults = null)
-    {
-        if (null === $key) {
-            return static::project('option');
-        }
-
-        if (is_array($key)) {
-            return static::project('option')->set($key);
-        }
-
-        return static::project('option')->get($key, $defaults);
     }
 
     /**

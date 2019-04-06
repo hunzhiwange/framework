@@ -20,25 +20,26 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Helper;
 
-use Leevel\Encryption\IEncryption;
 use Leevel\Leevel\Project;
+use Leevel\Log\ILog;
 
 /**
- * 加密字符串.
+ * 日志.
  *
- * @param string $value
- * @param int    $expiry
+ * @param null|string $message = null
+ * @param array       $context
+ * @param string      $level
  *
- * @since 2016.11.26
- *
- * @version 1.0
- *
- * @return string
+ * @return mixed
  */
-function encrypt(string $value, int $expiry = 0): string
+function log(?string $message = null, array $context = [], string $level = ILog::INFO)
 {
     $service = Project::singletons()
-        ->make(IEncryption::class);
+        ->make(ILog::class);
 
-    return $service->encrypt($value, $expiry);
+    if (null === $message) {
+        return $service;
+    }
+
+    $service->log($level, $message, $context);
 }

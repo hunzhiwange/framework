@@ -20,25 +20,29 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Helper;
 
-use Leevel\Encryption\IEncryption;
 use Leevel\Leevel\Project;
+use Leevel\Option\IOption;
 
 /**
- * 加密字符串.
+ * 设置或者获取 option 值
  *
- * @param string $value
- * @param int    $expiry
+ * @param null|array|string $key
+ * @param mixed             $defaults
  *
- * @since 2016.11.26
- *
- * @version 1.0
- *
- * @return string
+ * @return mixed
  */
-function encrypt(string $value, int $expiry = 0): string
+function option($key = null, $defaults = null)
 {
     $service = Project::singletons()
-        ->make(IEncryption::class);
+        ->make(IOption::class);
 
-    return $service->encrypt($value, $expiry);
+    if (null === $key) {
+        return $service;
+    }
+
+    if (is_array($key)) {
+        $service->set($key);
+    }
+
+    return $service->get($key, $defaults);
 }
