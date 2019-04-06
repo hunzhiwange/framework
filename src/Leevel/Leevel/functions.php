@@ -154,27 +154,6 @@ class Leevel
     }
 
     /**
-     * 设置或者获取 flash 值.
-     *
-     * @param null|array|string $key
-     * @param mixed             $defaults
-     *
-     * @return mixed
-     */
-    public static function flash($key = null, $defaults = null)
-    {
-        if (null === $key) {
-            return static::project('sessions');
-        }
-
-        if (is_array($key)) {
-            return static::project('sessions')->flashs($key);
-        }
-
-        return static::project('sessions')->getFlash($key, $defaults);
-    }
-
-    /**
      * 生成路由地址
      *
      * @param string      $url

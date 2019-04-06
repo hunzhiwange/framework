@@ -21,28 +21,24 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Leevel\Project;
-use Leevel\Option\IOption;
+use Leevel\Session\ISession;
 
 /**
- * 设置或者获取 option 值
+ * 设置或者获取 flash 值.
  *
- * @param null|array|string $key
- * @param mixed             $defaults
+ * @param array|string $key
+ * @param mixed        $defaults
  *
  * @return mixed
  */
-function option($key = null, $defaults = null)
+function flash($key, $defaults = null)
 {
     $service = Project::singletons()
-        ->make(IOption::class);
-
-    if (null === $key) {
-        return $service;
-    }
+        ->make(ISession::class);
 
     if (is_array($key)) {
-        return $service->set($key);
+        return $service->flashs($key);
     }
 
-    return $service->get($key, $defaults);
+    return $service->getFlash($key, $defaults);
 }
