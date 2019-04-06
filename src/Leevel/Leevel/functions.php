@@ -105,43 +105,6 @@ class Leevel
     }
 
     /**
-     * 取得项目的环境变量.支持 boolean, empty 和 null.
-     *
-     * @param mixed $name
-     * @param mixed $defaults
-     *
-     * @return mixed
-     */
-    public static function env(string $name, $defaults = null)
-    {
-        if (false === $value = getenv($name)) {
-            $value = static::value($defaults);
-        }
-
-        switch ($value) {
-            case 'true':
-            case '(true)':
-                return true;
-            case 'false':
-            case '(false)':
-                return false;
-            case 'empty':
-            case '(empty)':
-                return '';
-            case 'null':
-            case '(null)':
-                return;
-        }
-
-        if (is_string($value) && strlen($value) > 1 &&
-            '"' === $value[0] && '"' === $value[strlen($value) - 1]) {
-            return substr($value, 1, -1);
-        }
-
-        return $value;
-    }
-
-    /**
      * 获取语言.
      *
      * @param string $text
