@@ -19,6 +19,7 @@ declare(strict_types=1);
  */
 
 use Leevel\Support\Fn;
+use Leevel\Support\Str;
 
 /**
  * 函数库.
@@ -41,7 +42,7 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Leevel\\Helper\\'.$method;
+        $fn = '\\Leevel\\Leevel\\Helper\\'.Str::unCamelize($method);
 
         return (new Fn())($fn, ...$args);
     }
