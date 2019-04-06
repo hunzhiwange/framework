@@ -196,16 +196,16 @@ class FunctionsTest extends TestCase
         $encryption->method('decrypt')->willReturn('foo');
         $this->assertSame('foo', $encryption->decrypt('foobar-helloworld'));
 
-        $app = new App3();
+        $app = Apps::singletons();
 
-        $app->singleton('encryption', function () use ($encryption) {
+        $app->singleton(IEncryption::class, function () use ($encryption) {
             return $encryption;
         });
 
-        Leevel2::setApp($app);
+        $this->assertSame('foobar-helloworld', Leevels::encrypt('foo', 3600));
+        $this->assertSame('foo', Leevels::decrypt('foobar-helloworld'));
 
-        $this->assertSame('foobar-helloworld', Leevel2::encrypt('foo', 3600));
-        $this->assertSame('foo', Leevel2::decrypt('foobar-helloworld'));
+        $app->clear();
     }
 
     public function testSession()
@@ -218,17 +218,17 @@ class FunctionsTest extends TestCase
         $session->method('get')->willReturn('bar');
         $this->assertSame('bar', $session->get('foo'));
 
-        $app = new App3();
+        $app = Apps::singletons();
 
-        $app->singleton('sessions', function () use ($session) {
+        $app->singleton(ISession::class, function () use ($session) {
             return $session;
         });
 
-        Leevel2::setApp($app);
+        $this->assertInstanceof(ISession::class, Leevels::session());
+        $this->assertNull(Leevels::session(['foo' => 'bar']));
+        $this->assertSame('bar', Leevels::session('foo'));
 
-        $this->assertInstanceof(ISession::class, Leevel2::session());
-        $this->assertNull(Leevel2::session(['foo' => 'bar']));
-        $this->assertSame('bar', Leevel2::session('foo'));
+        $app->clear();
     }
 
     public function testFlash()
@@ -241,17 +241,16 @@ class FunctionsTest extends TestCase
         $session->method('getFlash')->willReturn('bar');
         $this->assertSame('bar', $session->getFlash('foo'));
 
-        $app = new App3();
+        $app = Apps::singletons();
 
-        $app->singleton('sessions', function () use ($session) {
+        $app->singleton(ISession::class, function () use ($session) {
             return $session;
         });
 
-        Leevel2::setApp($app);
+        $this->assertNull(Leevels::flash(['foo' => 'bar']));
+        $this->assertSame('bar', Leevels::flash('foo'));
 
-        $this->assertInstanceof(ISession::class, Leevel2::flash());
-        $this->assertNull(Leevel2::flash(['foo' => 'bar']));
-        $this->assertSame('bar', Leevel2::flash('foo'));
+        $app->clear();
     }
 
     public function testUrl()
@@ -261,15 +260,15 @@ class FunctionsTest extends TestCase
         $url->method('make')->willReturn('/goods?foo=bar');
         $this->assertSame('/goods?foo=bar', $url->make('/goods', ['foo' => 'bar']));
 
-        $app = new App3();
+        $app = Apps::singletons();
 
-        $app->singleton('url', function () use ($url) {
+        $app->singleton(IUrl::class, function () use ($url) {
             return $url;
         });
 
-        Leevel2::setApp($app);
+        $this->assertSame('/goods?foo=bar', Leevels::url('/goods', ['foo' => 'bar']));
 
-        $this->assertSame('/goods?foo=bar', Leevel2::url('/goods', ['foo' => 'bar']));
+        $app->clear();
     }
 
     public function testGettextWithI18n()
@@ -287,21 +286,17 @@ class FunctionsTest extends TestCase
         $this->assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
         $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
-        $app = new App3();
+        $app = Apps::singletons();
 
         $app->singleton('i18n', function () use ($i18n) {
             return $i18n;
         });
 
-        Leevel2::setApp($app);
+        $this->assertSame('hello', Leevels::__('hello'));
+        $this->assertSame('hello foo', Leevels::__('hello %s', 'foo'));
+        $this->assertSame('hello 5', Leevels::__('hello %d', 5));
 
-        $this->assertSame('hello', Leevel2::gettext('hello'));
-        $this->assertSame('hello foo', Leevel2::gettext('hello %s', 'foo'));
-        $this->assertSame('hello 5', Leevel2::gettext('hello %d', 5));
-
-        $this->assertSame('hello', Leevel2::__('hello'));
-        $this->assertSame('hello foo', Leevel2::__('hello %s', 'foo'));
-        $this->assertSame('hello 5', Leevel2::__('hello %d', 5));
+        $app->clear();
     }
 }
 
