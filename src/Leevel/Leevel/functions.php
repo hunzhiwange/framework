@@ -37,6 +37,21 @@ if (!function_exists('fn')) {
     }
 }
 
+if (!function_exists('app')) {
+    /**
+     * 返回应用容器或者注入.
+     *
+     * @param null|string $service
+     * @param array       $args
+     *
+     * @return \Leevel\Leevel\Project|mixed
+     */
+    function app(?string $service = null, array $args = [])
+    {
+        return Leevel::app($service, $args);
+    }
+}
+
 if (!function_exists('__')) {
     /**
      * 获取语言.
@@ -49,6 +64,59 @@ if (!function_exists('__')) {
     function __(string $text, ...$arr): string
     {
         return Leevel::__($text, ...$arr);
+    }
+}
+
+if (!function_exists('dump')) {
+    /**
+     * 调试变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
+     * @return mixed
+     */
+    function dump($var, ...$moreVars)
+    {
+        return Leevel::dump($var, ...$moreVars);
+    }
+}
+
+if (!function_exists('dd')) {
+    /**
+     * 调试变量并中断.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     */
+    function dd($var, ...$moreVars): void
+    {
+        Leevel::dd($var, ...$moreVars);
+    }
+}
+
+if (!function_exists('drr')) {
+    /**
+     * 调试 RoadRunner 变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
+     * @return mixed
+     */
+    function drr($var, ...$moreVars)
+    {
+        return Leevel::drr($var, ...$moreVars);
+    }
+}
+
+if (!function_exists('backtrace')) {
+    /**
+     * 调试栈信息.
+     */
+    function backtrace(): void
+    {
+        Leevel::backtrace();
     }
 }
 
