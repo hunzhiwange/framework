@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Option\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Option\Console\Clear;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
@@ -93,13 +93,13 @@ class ClearTest extends TestCase
 
     protected function initContainerService(IContainer $container, string $cacheFile)
     {
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('optionCachedPath')->willReturn($cacheFile);
         $this->assertEquals($cacheFile, $project->optionCachedPath());
 
-        $container->singleton(IProject::class, $project);
+        $container->singleton(IApp::class, $project);
     }
 }

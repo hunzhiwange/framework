@@ -23,8 +23,8 @@ namespace Tests\Leevel\Bootstrap;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Fso;
+use Leevel\Leevel\App as Apps;
 use Leevel\Leevel\Bootstrap\LoadI18n;
-use Leevel\Leevel\Project as Projects;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
@@ -43,7 +43,7 @@ class LoadI18nTest extends TestCase
     {
         $bootstrap = new LoadI18n();
 
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -84,7 +84,7 @@ class LoadI18nTest extends TestCase
     {
         $bootstrap = new LoadI18n();
 
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -137,7 +137,7 @@ class LoadI18nTest extends TestCase
 
         $bootstrap = new LoadI18n();
 
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -163,7 +163,7 @@ class LoadI18nTest extends TestCase
     }
 }
 
-class Project extends Projects
+class App extends Apps
 {
     protected function registerBaseProvider(): void
     {

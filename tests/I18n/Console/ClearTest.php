@@ -23,8 +23,8 @@ namespace Tests\I18n\Console;
 use Leevel\Di\IContainer;
 use Leevel\I18n\Console\Cache;
 use Leevel\I18n\Console\Clear;
-use Leevel\Kernel\IProject;
-use Leevel\Leevel\Project as Projects;
+use Leevel\Kernel\IApp;
+use Leevel\Leevel\App as Apps;
 use Leevel\Option\IOption;
 use Leevel\Option\Option;
 use Tests\Console\BaseCommand;
@@ -191,8 +191,8 @@ class ClearTest extends TestCase
     protected function initContainerService(IContainer $container, string $cacheFile)
     {
         // 注册 project
-        $project = new Project2();
-        $this->assertInstanceof(IProject::class, $project);
+        $project = new App2();
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->setCacheFile($cacheFile);
 
@@ -203,7 +203,7 @@ class ClearTest extends TestCase
             );
         }
 
-        $container->singleton(IProject::class, $project);
+        $container->singleton(IApp::class, $project);
 
         // 注册 option
         $option = new Option([
@@ -225,7 +225,7 @@ class ClearTest extends TestCase
     }
 }
 
-class Project2 extends Projects
+class App2 extends Apps
 {
     protected $cacheFile;
 

@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Router\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Router\Console\Controller;
 use Leevel\Router\IRouter;
 use Tests\Console\BaseMake;
@@ -119,9 +119,9 @@ class ControllerTest extends TestCase
     protected function initContainerService(IContainer $container)
     {
         // 注册 project
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         // 注册 router
         $router = $this->createMock(IRouter::class);

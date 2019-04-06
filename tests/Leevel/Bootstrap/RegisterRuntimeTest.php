@@ -28,8 +28,8 @@ use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Kernel\IRuntime;
+use Leevel\Leevel\App as Apps;
 use Leevel\Leevel\Bootstrap\RegisterRuntime;
-use Leevel\Leevel\Project as Projects;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
 
@@ -53,7 +53,7 @@ class RegisterRuntimeTest extends TestCase
 
         $bootstrap = new RegisterRuntime();
 
-        $project = new Project4($appPath = __DIR__.'/app');
+        $project = new App4($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -65,7 +65,7 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $project = new Project4($appPath = __DIR__.'/app');
+        $project = new App4($appPath = __DIR__.'/app');
 
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
     }
@@ -74,7 +74,7 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $project = new Project4($appPath = __DIR__.'/app');
+        $project = new App4($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -112,7 +112,7 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $project = new Project4($appPath = __DIR__.'/app');
+        $project = new App4($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -152,7 +152,7 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $project = new Project4($appPath = __DIR__.'/app');
+        $project = new App4($appPath = __DIR__.'/app');
 
         $error = ['message' => 'foo.', 'type' => 5, 'file' => 'a.txt', 'line' => 5];
 
@@ -163,7 +163,7 @@ class RegisterRuntimeTest extends TestCase
     }
 }
 
-class Project4 extends Projects
+class App4 extends Apps
 {
     protected function registerBaseProvider(): void
     {

@@ -23,8 +23,8 @@ namespace Tests\Leevel\Bootstrap;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Fso;
+use Leevel\Leevel\App as Apps;
 use Leevel\Leevel\Bootstrap\LoadOption;
-use Leevel\Leevel\Project as Projects;
 use Tests\TestCase;
 
 /**
@@ -56,7 +56,7 @@ class LoadOptionTest extends TestCase
     {
         $bootstrap = new LoadOption();
 
-        $project = new Project3($appPath = __DIR__.'/app');
+        $project = new App3($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -79,7 +79,7 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $project = new Project3($appPath = __DIR__.'/app');
+        $project = new App3($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -111,7 +111,7 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $project = new Project3($appPath);
+        $project = new App3($appPath);
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -130,7 +130,7 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $project = new Project3($appPath = __DIR__.'/app');
+        $project = new App3($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -160,7 +160,7 @@ class LoadOptionTest extends TestCase
     }
 }
 
-class Project3 extends Projects
+class App3 extends Apps
 {
     protected function registerBaseProvider(): void
     {

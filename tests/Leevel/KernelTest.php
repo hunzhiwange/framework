@@ -27,11 +27,11 @@ use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Response;
+use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernel;
-use Leevel\Kernel\IProject;
 use Leevel\Kernel\IRuntime;
+use Leevel\Leevel\App as Apps;
 use Leevel\Leevel\Kernel;
-use Leevel\Leevel\Project as Projects;
 use Leevel\Leevel\Runtime;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;
@@ -56,7 +56,7 @@ class KernelTest extends TestCase
      */
     public function testBaseUse(bool $debug)
     {
-        $project = new ProjectKernel();
+        $project = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
         $response = $this->createMock(IResponse::class);
@@ -68,7 +68,7 @@ class KernelTest extends TestCase
 
         $kernel = new Kernel1($project, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
-        $this->assertInstanceof(IProject::class, $kernel->getProject());
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
     }
@@ -83,7 +83,7 @@ class KernelTest extends TestCase
 
     public function testWithResponseIsJson()
     {
-        $project = new ProjectKernel();
+        $project = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
         $response = new JsonResponse(['foo' => 'bar']);
@@ -95,7 +95,7 @@ class KernelTest extends TestCase
 
         $kernel = new Kernel1($project, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
-        $this->assertInstanceof(IProject::class, $kernel->getProject());
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
@@ -103,7 +103,7 @@ class KernelTest extends TestCase
 
     public function testWithResponseIsJson2()
     {
-        $project = new ProjectKernel();
+        $project = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
         $response = (new ApiResponse())->ok(['foo' => 'bar']);
@@ -115,7 +115,7 @@ class KernelTest extends TestCase
 
         $kernel = new Kernel1($project, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
-        $this->assertInstanceof(IProject::class, $kernel->getProject());
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
@@ -123,7 +123,7 @@ class KernelTest extends TestCase
 
     public function testWithResponseIsJson3()
     {
-        $project = new ProjectKernel();
+        $project = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
         $response = new Response(['foo' => 'bar']);
@@ -135,7 +135,7 @@ class KernelTest extends TestCase
 
         $kernel = new Kernel1($project, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
-        $this->assertInstanceof(IProject::class, $kernel->getProject());
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
@@ -143,7 +143,7 @@ class KernelTest extends TestCase
 
     public function testRouterWillThrowException()
     {
-        $project = new ProjectKernel();
+        $project = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
 
@@ -154,7 +154,7 @@ class KernelTest extends TestCase
 
         $kernel = new Kernel1($project, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
-        $this->assertInstanceof(IProject::class, $kernel->getProject());
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
         $this->assertContains('hello foo bar.', $resultResponse->getContent());
@@ -165,7 +165,7 @@ class KernelTest extends TestCase
 
     public function testRouterWillThrowError()
     {
-        $project = new ProjectKernel();
+        $project = new AppKernel();
 
         $request = $this->createMock(IRequest::class);
 
@@ -176,7 +176,7 @@ class KernelTest extends TestCase
 
         $kernel = new Kernel1($project, $router);
         $this->assertInstanceof(IKernel::class, $kernel);
-        $this->assertInstanceof(IProject::class, $kernel->getProject());
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
 
@@ -184,7 +184,7 @@ class KernelTest extends TestCase
         $this->assertContains('<span class="exc-title-primary">ErrorException</span>', $resultResponse->getContent());
     }
 
-    protected function createLog(IProject $project): void
+    protected function createLog(IApp $project): void
     {
         $log = $this->createMock(ILog::class);
         $log->method('all')->willReturn([]);
@@ -195,7 +195,7 @@ class KernelTest extends TestCase
         });
     }
 
-    protected function createOption(IProject $project, bool $debug): void
+    protected function createOption(IApp $project, bool $debug): void
     {
         $option = $this->createMock(IOption::class);
         $option->method('get')->willReturn($debug);
@@ -206,7 +206,7 @@ class KernelTest extends TestCase
         });
     }
 
-    protected function createRuntime(IProject $project): void
+    protected function createRuntime(IApp $project): void
     {
         $runtime = $this->createMock(IRuntime::class);
 
@@ -215,7 +215,7 @@ class KernelTest extends TestCase
         });
     }
 
-    protected function createRuntimeWithRender(IProject $project): void
+    protected function createRuntimeWithRender(IApp $project): void
     {
         $runtime = new Runtime1($project);
 
@@ -260,7 +260,7 @@ class Kernel1 extends Kernel
     }
 }
 
-class ProjectKernel extends Projects
+class AppKernel extends Apps
 {
     protected function registerBaseProvider(): void
     {

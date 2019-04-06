@@ -23,8 +23,8 @@ namespace Tests\Leevel\Bootstrap;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Leevel\App as Apps;
 use Leevel\Leevel\Bootstrap\TraverseProvider;
-use Leevel\Leevel\Project as Projects;
 use Tests\TestCase;
 
 /**
@@ -42,7 +42,7 @@ class TraverseProviderTest extends TestCase
     {
         $bootstrap = new TraverseProvider();
 
-        $project = new Project2($appPath = __DIR__.'/app');
+        $project = new App2($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -74,7 +74,7 @@ class TraverseProviderTest extends TestCase
     }
 }
 
-class Project2 extends Projects
+class App2 extends Apps
 {
     protected function registerBaseProvider(): void
     {
@@ -134,7 +134,7 @@ class ProviderDeferTest1 extends Provider
 
 class ProviderTest3 extends Provider
 {
-    public function __construct(Project2 $project)
+    public function __construct(App2 $project)
     {
     }
 

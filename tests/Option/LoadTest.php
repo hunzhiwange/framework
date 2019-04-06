@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Option;
 
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Option\Load;
 use Tests\TestCase;
 
@@ -39,9 +39,9 @@ class LoadTest extends TestCase
     {
         $appPath = __DIR__.'/app1';
 
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('path')->willReturn($appPath);
         $this->assertEquals($appPath, $project->path());
@@ -93,9 +93,9 @@ class LoadTest extends TestCase
 
         $appPath = __DIR__.'/app2';
 
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('path')->willReturn($appPath);
         $this->assertEquals($appPath, $project->path());
@@ -118,9 +118,9 @@ class LoadTest extends TestCase
             sprintf('Option file %s is not exist.', $appPath.'/option/extend/test.php')
         );
 
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('path')->willReturn($appPath);
         $this->assertEquals($appPath, $project->path());
@@ -143,9 +143,9 @@ class LoadTest extends TestCase
             sprintf('Unable to read the environment file at %s.', $appPath.'/.env.notexist')
         );
 
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('path')->willReturn($appPath);
         $this->assertEquals($appPath, $project->path());
@@ -168,9 +168,9 @@ class LoadTest extends TestCase
             'Dotenv values containing spaces must be surrounded by quotes.'
         );
 
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('path')->willReturn($appPath);
         $this->assertEquals($appPath, $project->path());
@@ -188,9 +188,9 @@ class LoadTest extends TestCase
     {
         $appPath = __DIR__.'/app5';
 
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('path')->willReturn($appPath);
         $this->assertEquals($appPath, $project->path());

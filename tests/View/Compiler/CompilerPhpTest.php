@@ -67,7 +67,7 @@ eot;
      * @api(
      *     title="原始 PHP",
      *     description="",
-     *     note="不过这种方式来使用 PHP 脚本，这是我们大力推荐的写法，用最原始的 PHP 开发项目是我们共同的追求。",
+     *     note="不过这种方式来使用 PHP 脚本，这是我们大力推荐的写法，用最原始的 PHP 开发应用是我们共同的追求。",
      * )
      */
     public function testPhpSelf()

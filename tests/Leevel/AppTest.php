@@ -25,11 +25,11 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Filesystem\Fso;
 use Leevel\Http\IRequest;
-use Leevel\Leevel\Project as Projects;
+use Leevel\Leevel\App as Apps;
 use Tests\TestCase;
 
 /**
- * project test.
+ * app test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -37,11 +37,11 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ProjectTest extends TestCase
+class AppTest extends TestCase
 {
     public function testBaseUse()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -54,24 +54,24 @@ class ProjectTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'Project disallowed clone.'
+            'App disallowed clone.'
         );
 
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $project2 = clone $project;
     }
 
     public function testVersion()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
-        $this->assertSame(Project::VERSION, $project->version());
+        $this->assertSame(App::VERSION, $project->version());
     }
 
     public function testRunWithExtension()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         if (extension_loaded('leevel')) {
             $this->assertTrue($project->runWithExtension());
@@ -82,14 +82,14 @@ class ProjectTest extends TestCase
 
     public function testConsole()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertTrue($project->console());
     }
 
     public function testConsole2()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -105,7 +105,7 @@ class ProjectTest extends TestCase
 
     public function testConsole3()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -121,7 +121,7 @@ class ProjectTest extends TestCase
 
     public function testSetPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $project->setPath(__DIR__.'/foo');
 
@@ -130,7 +130,7 @@ class ProjectTest extends TestCase
 
     public function testAppPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -157,7 +157,7 @@ class ProjectTest extends TestCase
 
     public function testAppPath2()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -173,7 +173,7 @@ class ProjectTest extends TestCase
 
     public function testSetAppPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -193,7 +193,7 @@ class ProjectTest extends TestCase
 
     public function testPathTheme()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/application/ui/theme', $project->themePath());
         $this->assertSame($appPath.'/application/blog/ui/theme', $project->themePath('blog'));
@@ -201,7 +201,7 @@ class ProjectTest extends TestCase
 
     public function testCommonPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/common', $project->commonPath());
         $this->assertSame($appPath.'/common/foobar', $project->commonPath('foobar'));
@@ -209,7 +209,7 @@ class ProjectTest extends TestCase
 
     public function testSetCommonPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/common', $project->commonPath());
         $this->assertSame($appPath.'/common/foobar', $project->commonPath('foobar'));
@@ -222,7 +222,7 @@ class ProjectTest extends TestCase
 
     public function testRuntimePath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/runtime', $project->runtimePath());
         $this->assertSame($appPath.'/runtime/foobar', $project->runtimePath('foobar'));
@@ -230,7 +230,7 @@ class ProjectTest extends TestCase
 
     public function testSetRuntimePath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/runtime', $project->runtimePath());
         $this->assertSame($appPath.'/runtime/foobar', $project->runtimePath('foobar'));
@@ -243,7 +243,7 @@ class ProjectTest extends TestCase
 
     public function testStoragePath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/storage', $project->storagePath());
         $this->assertSame($appPath.'/storage/foobar', $project->storagePath('foobar'));
@@ -251,7 +251,7 @@ class ProjectTest extends TestCase
 
     public function testSetStoragePath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/storage', $project->storagePath());
         $this->assertSame($appPath.'/storage/foobar', $project->storagePath('foobar'));
@@ -264,7 +264,7 @@ class ProjectTest extends TestCase
 
     public function testOptionPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/option', $project->optionPath());
         $this->assertSame($appPath.'/option/foobar', $project->optionPath('foobar'));
@@ -272,7 +272,7 @@ class ProjectTest extends TestCase
 
     public function testSetOptionPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/option', $project->optionPath());
         $this->assertSame($appPath.'/option/foobar', $project->optionPath('foobar'));
@@ -285,7 +285,7 @@ class ProjectTest extends TestCase
 
     public function testI18nPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/i18n', $project->i18nPath());
         $this->assertSame($appPath.'/i18n/foobar', $project->i18nPath('foobar'));
@@ -293,7 +293,7 @@ class ProjectTest extends TestCase
 
     public function testSetI18nPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/i18n', $project->i18nPath());
         $this->assertSame($appPath.'/i18n/foobar', $project->i18nPath('foobar'));
@@ -306,14 +306,14 @@ class ProjectTest extends TestCase
 
     public function testEnvPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath, $project->envPath());
     }
 
     public function testSetEnvPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath, $project->envPath());
 
@@ -324,14 +324,14 @@ class ProjectTest extends TestCase
 
     public function testEnvFile()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame('.env', $project->envFile());
     }
 
     public function testSetEnvFile()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame('.env', $project->envFile());
 
@@ -342,7 +342,7 @@ class ProjectTest extends TestCase
 
     public function testFullEnvPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/.env', $project->fullEnvPath());
 
@@ -357,7 +357,7 @@ class ProjectTest extends TestCase
 
     public function testI18nCachedPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/common/ui/bootstrap/i18n/zh-CN.php', $project->i18nCachedPath('zh-CN'));
         $this->assertSame($appPath.'/common/ui/bootstrap/i18n/zh-TW.php', $project->i18nCachedPath('zh-TW'));
@@ -366,7 +366,7 @@ class ProjectTest extends TestCase
 
     public function testIsCachedI18n()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertFalse($project->isCachedI18n('zh-CN'));
 
@@ -381,14 +381,14 @@ class ProjectTest extends TestCase
 
     public function testOptionCachedPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/common/ui/bootstrap/option.php', $project->optionCachedPath());
     }
 
     public function testIsCachedOption()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertFalse($project->isCachedOption());
 
@@ -403,14 +403,14 @@ class ProjectTest extends TestCase
 
     public function testRouterCachedPath()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertSame($appPath.'/common/ui/bootstrap/router.php', $project->routerCachedPath());
     }
 
     public function testIsCachedRouter()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $this->assertFalse($project->isCachedRouter());
 
@@ -425,7 +425,7 @@ class ProjectTest extends TestCase
 
     public function testDebug()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $option = $this->createMock(IRequest::class);
 
@@ -441,7 +441,7 @@ class ProjectTest extends TestCase
 
     public function testDebug2()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $option = $this->createMock(IRequest::class);
 
@@ -457,7 +457,7 @@ class ProjectTest extends TestCase
 
     public function testDevelopment()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $option = $this->createMock(IRequest::class);
 
@@ -473,7 +473,7 @@ class ProjectTest extends TestCase
 
     public function testDevelopment2()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $option = $this->createMock(IRequest::class);
 
@@ -489,7 +489,7 @@ class ProjectTest extends TestCase
 
     public function testEnvironment()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $option = $this->createMock(IRequest::class);
 
@@ -505,7 +505,7 @@ class ProjectTest extends TestCase
 
     public function testMakeProvider()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $project->makeProvider(ProviderTest1::class);
 
@@ -516,7 +516,7 @@ class ProjectTest extends TestCase
 
     public function testCallProviderBootstrap()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $project->callProviderBootstrap(new ProviderTest1($project));
 
@@ -533,7 +533,7 @@ class ProjectTest extends TestCase
 
     public function testBootstrap()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $project->bootstrap([BootstrapTest1::class, BootstrapTest2::class]);
 
@@ -545,7 +545,7 @@ class ProjectTest extends TestCase
 
     public function testBootstrap2()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $project->bootstrap([BootstrapTest1::class, BootstrapTest2::class]);
 
@@ -568,7 +568,7 @@ class ProjectTest extends TestCase
 
     public function testRegisterProviders()
     {
-        $project = new Project($appPath = __DIR__.'/app');
+        $project = new App($appPath = __DIR__.'/app');
 
         $option = new OptionTest();
 
@@ -610,7 +610,7 @@ class ProjectTest extends TestCase
     }
 }
 
-class Project extends Projects
+class App extends Apps
 {
     protected function registerBaseProvider(): void
     {
@@ -619,7 +619,7 @@ class Project extends Projects
 
 class ProviderTest1 extends Provider
 {
-    public function __construct(Project $project)
+    public function __construct(App $project)
     {
         $_SERVER['testMakeProvider'] = 1;
     }
@@ -631,7 +631,7 @@ class ProviderTest1 extends Provider
 
 class ProviderTest2 extends Provider
 {
-    public function __construct(Project $project)
+    public function __construct(App $project)
     {
     }
 
@@ -714,7 +714,7 @@ class ProviderDeferTest1 extends Provider
 
 class ProviderTest3 extends Provider
 {
-    public function __construct(Project $project)
+    public function __construct(App $project)
     {
     }
 

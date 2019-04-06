@@ -26,7 +26,7 @@ use Leevel\Event\IDispatch;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
-use Leevel\Leevel\Project as Projects;
+use Leevel\Leevel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
 use Leevel\Log\Log;
@@ -51,7 +51,7 @@ class DebugTest extends TestCase
     public function testBaseUse()
     {
         $debug = $this->createDebug();
-        $project = $debug->getProject();
+        $project = $debug->getApp();
 
         $middleware = new MiddlewareDebug($project, $debug);
 
@@ -70,7 +70,7 @@ class DebugTest extends TestCase
     public function testTerminate()
     {
         $debug = $this->createDebug();
-        $project = $debug->getProject();
+        $project = $debug->getApp();
 
         $middleware = new MiddlewareDebug($project, $debug);
 
@@ -104,7 +104,7 @@ class DebugTest extends TestCase
     public function testHandleWithDebugIsFalse()
     {
         $debug = $this->createDebug(false);
-        $project = $debug->getProject();
+        $project = $debug->getApp();
 
         $middleware = new MiddlewareDebug($project, $debug);
 
@@ -123,7 +123,7 @@ class DebugTest extends TestCase
     public function testTerminateWithDebugIsFalse()
     {
         $debug = $this->createDebug(false);
-        $project = $debug->getProject();
+        $project = $debug->getApp();
 
         $middleware = new MiddlewareDebug($project, $debug);
 
@@ -169,12 +169,12 @@ class DebugTest extends TestCase
 
     protected function createDebug(bool $debug = true): Debug
     {
-        return new Debug($this->createProject($debug));
+        return new Debug($this->createApp($debug));
     }
 
-    protected function createProject(bool $debug = true): Project
+    protected function createApp(bool $debug = true): App
     {
-        $project = new Project();
+        $project = new App();
 
         $project->instance('session', $this->createSession());
 
@@ -240,7 +240,7 @@ class DebugTest extends TestCase
     }
 }
 
-class Project extends Projects
+class App extends Apps
 {
     protected function registerBaseProvider(): void
     {

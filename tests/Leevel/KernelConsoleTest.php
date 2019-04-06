@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Tests\Leevel;
 
 use Leevel\Console\Application;
+use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernelConsole;
-use Leevel\Kernel\IProject;
+use Leevel\Leevel\App as Apps;
 use Leevel\Leevel\KernelConsole;
-use Leevel\Leevel\Project as Projects;
 use Leevel\Option\IOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,18 +43,18 @@ class KernelConsoleTest extends TestCase
 {
     public function testBaseUse()
     {
-        $project = new ProjectKernelConsole();
+        $project = new AppKernelConsole();
 
         $this->createOption($project);
 
         $kernel = new KernelConsole1($project);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
-        $this->assertInstanceof(IProject::class, $kernel->getProject());
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertSame(0, $kernel->handle());
     }
 
-    protected function createOption(IProject $project): void
+    protected function createOption(IApp $project): void
     {
         $map = [
             ['console\\template', null, []],
@@ -94,7 +94,7 @@ class KernelConsole1 extends KernelConsole
     }
 }
 
-class ProjectKernelConsole extends Projects
+class AppKernelConsole extends Apps
 {
     public function getPathByComposer(string $namespaces): string
     {

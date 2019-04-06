@@ -30,7 +30,7 @@ use Leevel\Http\Response;
 use Leevel\Kernel\InternalServerErrorHttpException;
 use Leevel\Kernel\MethodNotAllowedHttpException;
 use Leevel\Kernel\NotFoundHttpException;
-use Leevel\Leevel\Project as Projects;
+use Leevel\Leevel\App as Apps;
 use Leevel\Leevel\Runtime;
 use Leevel\Log\ILog;
 use Leevel\Option\Option;
@@ -49,7 +49,7 @@ class RuntimeTest extends TestCase
 {
     public function testBaseUse()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
@@ -89,7 +89,7 @@ class RuntimeTest extends TestCase
 
     public function testExceptionItSelfWithReport()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $runtime = new Runtime11($project);
 
@@ -106,7 +106,7 @@ class RuntimeTest extends TestCase
 
     public function testRender()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -138,7 +138,7 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithCustomRenderMethod()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -171,7 +171,7 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithCustomRenderMethod2()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -204,7 +204,7 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithCustomRenderMethodToJson()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -237,7 +237,7 @@ class RuntimeTest extends TestCase
 
     public function testRenderToJson()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -273,7 +273,7 @@ class RuntimeTest extends TestCase
 
     public function testRendorWithHttpExceptionView()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -301,7 +301,7 @@ class RuntimeTest extends TestCase
 
     public function testRendorWithHttpExceptionViewFor404()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -329,7 +329,7 @@ class RuntimeTest extends TestCase
 
     public function testRendorWithHttpExceptionViewButNotFoundView()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -355,7 +355,7 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithDebugIsOff()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -392,7 +392,7 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithDebugIsOn()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -427,7 +427,7 @@ class RuntimeTest extends TestCase
 
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -460,7 +460,7 @@ class RuntimeTest extends TestCase
             sprintf('Exception file %s is not extis.', __DIR__.'/assert/notFoundDefault.php')
         );
 
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -481,7 +481,7 @@ class RuntimeTest extends TestCase
 
     public function testRenderForEntityNotFoundException()
     {
-        $project = new ProjectRuntime($appPath = __DIR__.'/app');
+        $project = new AppRuntime($appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
@@ -517,7 +517,7 @@ class RuntimeTest extends TestCase
     }
 }
 
-class ProjectRuntime extends Projects
+class AppRuntime extends Apps
 {
     protected function registerBaseProvider(): void
     {

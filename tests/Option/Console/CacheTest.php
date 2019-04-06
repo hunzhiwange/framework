@@ -22,7 +22,7 @@ namespace Tests\Option\Console;
 
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Fso;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Option\Console\Cache;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
@@ -276,9 +276,9 @@ class CacheTest extends TestCase
     protected function initContainerService(IContainer $container, string $cacheFile, string $assertDir = 'assert')
     {
         // 注册 project
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('path')->willReturn(__DIR__.'/'.$assertDir);
         $this->assertEquals(__DIR__.'/'.$assertDir, $project->path());
@@ -295,6 +295,6 @@ class CacheTest extends TestCase
         $project->method('optionPath')->willReturn(__DIR__.'/'.$assertDir.'/option');
         $this->assertEquals(__DIR__.'/'.$assertDir.'/option', $project->optionPath());
 
-        $container->singleton(IProject::class, $project);
+        $container->singleton(IApp::class, $project);
     }
 }

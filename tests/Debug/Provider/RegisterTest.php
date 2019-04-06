@@ -25,7 +25,7 @@ use Leevel\Debug\Provider\Register;
 use Leevel\Event\IDispatch;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
-use Leevel\Leevel\Project as Projects;
+use Leevel\Leevel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
 use Leevel\Log\Log;
@@ -49,7 +49,7 @@ class RegisterTest extends TestCase
 {
     public function testBaseUse()
     {
-        $test = new Register($project = $this->createProject());
+        $test = new Register($project = $this->createApp());
 
         $test->register();
 
@@ -75,9 +75,9 @@ class RegisterTest extends TestCase
         $this->assertContains('Starts from this moment with QueryPHP.', $content);
     }
 
-    protected function createProject(): Project
+    protected function createApp(): App
     {
-        $project = new Project();
+        $project = new App();
 
         $project->instance('session', $this->createSession());
 
@@ -142,7 +142,7 @@ class RegisterTest extends TestCase
     }
 }
 
-class Project extends Projects
+class App extends Apps
 {
     protected function registerBaseProvider(): void
     {

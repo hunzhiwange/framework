@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Router\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Kernel\IProject;
+use Leevel\Kernel\IApp;
 use Leevel\Router\Console\Clear;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
@@ -93,13 +93,13 @@ class ClearTest extends TestCase
 
     protected function initContainerService(IContainer $container, string $cacheFile)
     {
-        $project = $this->createMock(IProject::class);
+        $project = $this->createMock(IApp::class);
 
-        $this->assertInstanceof(IProject::class, $project);
+        $this->assertInstanceof(IApp::class, $project);
 
         $project->method('routerCachedPath')->willReturn($cacheFile);
         $this->assertEquals($cacheFile, $project->routerCachedPath());
 
-        $container->singleton(IProject::class, $project);
+        $container->singleton(IApp::class, $project);
     }
 }

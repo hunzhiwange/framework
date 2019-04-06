@@ -28,8 +28,8 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Encryption\IEncryption;
 use Leevel\I18n\II18n;
-use Leevel\Kernel\IProject;
-use Leevel\Leevel\Project as Projects;
+use Leevel\Kernel\IApp;
+use Leevel\Leevel\App as Apps;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;
 use Leevel\Router\IUrl;
@@ -53,14 +53,14 @@ class FunctionsTest extends TestCase
 
         $this->assertInstanceof(IContainer::class, $project);
         $this->assertInstanceof(Container::class, $project);
-        $this->assertInstanceof(Projects::class, $project);
+        $this->assertInstanceof(Apps::class, $project);
 
         // 等效
-        $this->assertInstanceof(Projects::class, $project->make('project'));
+        $this->assertInstanceof(Apps::class, $project->make('project'));
         $this->assertSame('fooNotFound', $project->make('fooNotFound'));
-        $this->assertInstanceof(Projects::class, Leevel::project('project'));
+        $this->assertInstanceof(Apps::class, Leevel::project('project'));
         $this->assertSame('fooNotFound', Leevel::project('fooNotFound'));
-        $this->assertInstanceof(Projects::class, Leevel::app('project'));
+        $this->assertInstanceof(Apps::class, Leevel::app('project'));
         $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
     }
 
@@ -127,13 +127,13 @@ class FunctionsTest extends TestCase
         $log->method('log')->willReturn(null);
         $this->assertNull($log->log(ILog::INFO, 'bar', []));
 
-        $project = new Project3();
+        $project = new App3();
 
         $project->singleton('logs', function () use ($log) {
             return $log;
         });
 
-        Leevel2::setProject($project);
+        Leevel2::setApp($project);
 
         $this->assertInstanceof(ILog::class, Leevel2::log());
         $this->assertNull(Leevel2::log('bar', [], ILog::INFO));
@@ -149,13 +149,13 @@ class FunctionsTest extends TestCase
         $option->method('get')->willReturn('bar');
         $this->assertSame('bar', $option->get('foo'));
 
-        $project = new Project3();
+        $project = new App3();
 
         $project->singleton('option', function () use ($option) {
             return $option;
         });
 
-        Leevel2::setProject($project);
+        Leevel2::setApp($project);
 
         $this->assertInstanceof(IOption::class, Leevel2::option());
         $this->assertNull(Leevel2::option(['foo' => 'bar']));
@@ -174,13 +174,13 @@ class FunctionsTest extends TestCase
 
         $cache = new Cache($cache);
 
-        $project = new Project3();
+        $project = new App3();
 
         $project->singleton('caches', function () use ($cache) {
             return $cache;
         });
 
-        Leevel2::setProject($project);
+        Leevel2::setApp($project);
 
         $this->assertInstanceof(ICache::class, Leevel2::cache());
         $this->assertNull(Leevel2::cache(['foo' => 'bar']));
@@ -197,13 +197,13 @@ class FunctionsTest extends TestCase
         $encryption->method('decrypt')->willReturn('foo');
         $this->assertSame('foo', $encryption->decrypt('foobar-helloworld'));
 
-        $project = new Project3();
+        $project = new App3();
 
         $project->singleton('encryption', function () use ($encryption) {
             return $encryption;
         });
 
-        Leevel2::setProject($project);
+        Leevel2::setApp($project);
 
         $this->assertSame('foobar-helloworld', Leevel2::encrypt('foo', 3600));
         $this->assertSame('foo', Leevel2::decrypt('foobar-helloworld'));
@@ -219,13 +219,13 @@ class FunctionsTest extends TestCase
         $session->method('get')->willReturn('bar');
         $this->assertSame('bar', $session->get('foo'));
 
-        $project = new Project3();
+        $project = new App3();
 
         $project->singleton('sessions', function () use ($session) {
             return $session;
         });
 
-        Leevel2::setProject($project);
+        Leevel2::setApp($project);
 
         $this->assertInstanceof(ISession::class, Leevel2::session());
         $this->assertNull(Leevel2::session(['foo' => 'bar']));
@@ -242,13 +242,13 @@ class FunctionsTest extends TestCase
         $session->method('getFlash')->willReturn('bar');
         $this->assertSame('bar', $session->getFlash('foo'));
 
-        $project = new Project3();
+        $project = new App3();
 
         $project->singleton('sessions', function () use ($session) {
             return $session;
         });
 
-        Leevel2::setProject($project);
+        Leevel2::setApp($project);
 
         $this->assertInstanceof(ISession::class, Leevel2::flash());
         $this->assertNull(Leevel2::flash(['foo' => 'bar']));
@@ -262,13 +262,13 @@ class FunctionsTest extends TestCase
         $url->method('make')->willReturn('/goods?foo=bar');
         $this->assertSame('/goods?foo=bar', $url->make('/goods', ['foo' => 'bar']));
 
-        $project = new Project3();
+        $project = new App3();
 
         $project->singleton('url', function () use ($url) {
             return $url;
         });
 
-        Leevel2::setProject($project);
+        Leevel2::setApp($project);
 
         $this->assertSame('/goods?foo=bar', Leevel2::url('/goods', ['foo' => 'bar']));
     }
@@ -288,13 +288,13 @@ class FunctionsTest extends TestCase
         $this->assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
         $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
-        $project = new Project3();
+        $project = new App3();
 
         $project->singleton('i18n', function () use ($i18n) {
             return $i18n;
         });
 
-        Leevel2::setProject($project);
+        Leevel2::setApp($project);
 
         $this->assertSame('hello', Leevel2::gettext('hello'));
         $this->assertSame('hello foo', Leevel2::gettext('hello %s', 'foo'));
@@ -306,14 +306,14 @@ class FunctionsTest extends TestCase
     }
 }
 
-class Project2 extends Projects
+class App2 extends Apps
 {
     protected function registerBaseProvider(): void
     {
     }
 }
 
-class Project3 extends Projects
+class App3 extends Apps
 {
     protected function registerBaseProvider(): void
     {
@@ -324,7 +324,7 @@ class Leevel extends Leevels
 {
     protected static function singletons(): IContainer
     {
-        return new Project2($appPath = __DIR__.'/app');
+        return new App2($appPath = __DIR__.'/app');
     }
 }
 
@@ -332,7 +332,7 @@ class Leevel2 extends Leevels
 {
     protected static $project;
 
-    public static function setProject(IProject $project)
+    public static function setApp(IApp $project)
     {
         self::$project = $project;
     }
