@@ -44,28 +44,50 @@ class Fn
      */
     public function __invoke($fn, ...$args)
     {
-        if (!is_string($fn) && !($fn instanceof Closure)) {
-            $e = sprintf('Fn first args must be Closure or string.');
-
-            throw new Error($e);
-        }
+        $this->validate($fn);
 
         try {
             return $fn(...$args);
         } catch (Error $th) {
-            if (is_string($fn)) {
-                $fnName = $fn;
-            } else {
-                $fnName = $this->normalizeFn($th);
-            }
+            $fnName = is_string($fn) ? $fn : $this->normalizeFn($th);
 
-            foreach (['Fn', 'Prefix', 'Index'] as $type) {
-                if ($this->{'is'.$type}($fnName)) {
-                    return $fn(...$args);
-                }
+            if ($this->match($fnName)) {
+                return $fn(...$args);
             }
 
             throw $th;
+        }
+    }
+
+    /**
+     * 匹配函数.
+     *
+     * @param string $fn
+     *
+     * @return bool
+     */
+    protected function match(string $fn): bool
+    {
+        foreach (['Fn', 'Prefix', 'Index'] as $type) {
+            if ($this->{'is'.$type}($fn)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 校验类型.
+     *
+     * @param \Closure|string $fn
+     */
+    protected function validate($fn)
+    {
+        if (!is_string($fn) && !($fn instanceof Closure)) {
+            $e = sprintf('Fn first args must be Closure or string.');
+
+            throw new Error($e);
         }
     }
 
