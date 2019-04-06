@@ -22,7 +22,6 @@ namespace Leevel\Router\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\Http\Cookie;
 use Leevel\Router\Redirect;
 use Leevel\Router\ResponseFactory;
 use Leevel\Router\Router;
@@ -49,7 +48,6 @@ class Register extends Provider
         $this->url();
         $this->redirect();
         $this->response();
-        $this->cookie();
         $this->view();
     }
 
@@ -143,16 +141,6 @@ class Register extends Provider
             setViewSuccessTemplate($option->get('view\\success'))->
 
             setViewFailTemplate($option->get('view\\fail'));
-        });
-    }
-
-    /**
-     * 注册 cookie 服务
-     */
-    protected function cookie(): void
-    {
-        $this->container->singleton('cookie', function (IContainer $container) {
-            return new Cookie($container['option']->get('cookie\\'));
         });
     }
 
