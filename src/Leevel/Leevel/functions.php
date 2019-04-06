@@ -90,29 +90,4 @@ class Leevel
 
         return (new Fn())($fn, ...$args);
     }
-
-    /**
-     * 获取语言.
-     *
-     * @param string $text
-     * @param array  $arr
-     *
-     * @return string
-     */
-    public static function __(string $text, ...$arr): string
-    {
-        static $i18n;
-
-        if (null === $i18n) {
-            if (!is_object($i18n = static::project('i18n'))) { /** @codeCoverageIgnore */
-                $i18n = 'sprintf'; // @codeCoverageIgnore
-            } else {
-                $i18n = [$i18n, 'gettext'];
-            }
-        }
-
-        array_unshift($arr, $text);
-
-        return call_user_func_array($i18n, $arr);
-    }
 }
