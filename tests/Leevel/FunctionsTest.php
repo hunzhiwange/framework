@@ -62,13 +62,15 @@ class FunctionsTest extends TestCase
         $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
         $this->assertInstanceof(Apps::class, Leevel::app('app'));
         $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
+
+        $app->clear();
     }
 
     public function testCallStaticException()
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(\Error::class);
         $this->expectExceptionMessage(
-            'Method `notFoundCallback` is not exits.'
+            'Call to undefined function \\Leevel\\Leevel\\Helper\\not_found_callback()'
         );
 
         Leevel::notFoundCallback();
@@ -128,8 +130,9 @@ class FunctionsTest extends TestCase
         $this->assertNull($log->log(ILog::INFO, 'bar', []));
 
         $app = Apps::singletons();
+        $app->clear();
 
-        $app->singleton('log', function () use ($log) {
+        $app->singleton(ILog::class, function () use ($log) {
             return $log;
         });
 
@@ -150,8 +153,9 @@ class FunctionsTest extends TestCase
         $this->assertSame('bar', $option->get('foo'));
 
         $app = Apps::singletons();
+        $app->clear();
 
-        $app->singleton('option', function () use ($option) {
+        $app->singleton(IOption::class, function () use ($option) {
             return $option;
         });
 
@@ -174,6 +178,7 @@ class FunctionsTest extends TestCase
 
         $cache = new Cache($cache);
         $app = Apps::singletons();
+        $app->clear();
 
         $app->singleton(ICache::class, function () use ($cache) {
             return $cache;
@@ -197,6 +202,7 @@ class FunctionsTest extends TestCase
         $this->assertSame('foo', $encryption->decrypt('foobar-helloworld'));
 
         $app = Apps::singletons();
+        $app->clear();
 
         $app->singleton(IEncryption::class, function () use ($encryption) {
             return $encryption;
@@ -219,6 +225,7 @@ class FunctionsTest extends TestCase
         $this->assertSame('bar', $session->get('foo'));
 
         $app = Apps::singletons();
+        $app->clear();
 
         $app->singleton(ISession::class, function () use ($session) {
             return $session;
@@ -242,6 +249,7 @@ class FunctionsTest extends TestCase
         $this->assertSame('bar', $session->getFlash('foo'));
 
         $app = Apps::singletons();
+        $app->clear();
 
         $app->singleton(ISession::class, function () use ($session) {
             return $session;
@@ -261,6 +269,7 @@ class FunctionsTest extends TestCase
         $this->assertSame('/goods?foo=bar', $url->make('/goods', ['foo' => 'bar']));
 
         $app = Apps::singletons();
+        $app->clear();
 
         $app->singleton(IUrl::class, function () use ($url) {
             return $url;
@@ -287,8 +296,9 @@ class FunctionsTest extends TestCase
         $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
         $app = Apps::singletons();
+        $app->clear();
 
-        $app->singleton('i18n', function () use ($i18n) {
+        $app->singleton(II18n::class, function () use ($i18n) {
             return $i18n;
         });
 
