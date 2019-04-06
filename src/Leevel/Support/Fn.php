@@ -69,7 +69,7 @@ class Fn
     protected function match(string $fn): bool
     {
         foreach (['Fn', 'Prefix', 'Index'] as $type) {
-            if ($this->{'is'.$type}($fn)) {
+            if ($this->{'match'.$type}($fn)) {
                 return true;
             }
         }
@@ -113,14 +113,14 @@ class Fn
     }
 
     /**
-     * 一个函数一个文件.
+     * 匹配一个函数一个文件.
      *
      * @param string $fn
      * @param string $cl
      *
      * @return bool
      */
-    protected function isFn(string $fn, string $cl = ''): bool
+    protected function matchFn(string $fn, string $cl = ''): bool
     {
         if (!$cl) {
             $cl = $fn;
@@ -132,13 +132,13 @@ class Fn
     }
 
     /**
-     * 前缀分隔一组函数.
+     * 匹配前缀分隔一组函数.
      *
      * @param string $fn
      *
      * @return bool
      */
-    protected function isPrefix(string $fn): bool
+    protected function matchPrefix(string $fn): bool
     {
         if (false === strpos($fn, '_')) {
             return false;
@@ -146,17 +146,17 @@ class Fn
 
         $fnPrefix = substr($fn, 0, strpos($fn, '_'));
 
-        return $this->isFn($fn, $fnPrefix);
+        return $this->matchFn($fn, $fnPrefix);
     }
 
     /**
-     * 基于 index 索引.
+     * 匹配基于 index 索引.
      *
      * @param string $fn
      *
      * @return bool
      */
-    protected function isIndex(string $fn): bool
+    protected function matchIndex(string $fn): bool
     {
         if (false === strpos($fn, '\\')) {
             return false;
@@ -164,6 +164,6 @@ class Fn
 
         $fnIndex = substr($fn, 0, strripos($fn, '\\')).'\\index';
 
-        return $this->isFn($fn, $fnIndex);
+        return $this->matchFn($fn, $fnIndex);
     }
 }
