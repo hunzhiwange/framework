@@ -82,7 +82,7 @@ class Fn
      *
      * @param \Closure|string $fn
      */
-    protected function validate($fn)
+    protected function validate($fn): void
     {
         if (!is_string($fn) && !($fn instanceof Closure)) {
             $e = sprintf('Fn first args must be Closure or string.');
@@ -119,17 +119,17 @@ class Fn
      * 匹配一个函数一个文件.
      *
      * @param string $fn
-     * @param string $cl
+     * @param string $virtualClass
      *
      * @return bool
      */
-    protected function matchFn(string $fn, string $cl = ''): bool
+    protected function matchFn(string $fn, string $virtualClass = ''): bool
     {
-        if (!$cl) {
-            $cl = $fn;
+        if (!$virtualClass) {
+            $virtualClass = $fn;
         }
 
-        class_exists($cl);
+        class_exists($virtualClass);
 
         return function_exists($fn);
     }
