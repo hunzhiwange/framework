@@ -94,12 +94,12 @@ class Fn
     /**
      * 整理函数名字.
      *
-     * @param string $fn
-     * @param \Error $th
+     * @param \Closure|string $fn
+     * @param \Error          $th
      *
      * @return string
      */
-    protected function normalizeFn(string $fn, Error $th): string
+    protected function normalizeFn($fn, Error $th): string
     {
         $message = $th->getMessage();
         $undefinedFn = 'Call to undefined function ';
