@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption;
 
+use Leevel\Support\Fn;
+use Leevel\Support\Str;
 use RuntimeException;
 
 /**
@@ -33,6 +35,21 @@ use RuntimeException;
  */
 class Safe
 {
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        $fn = '\\Leevel\\Encryption\\Safe\\'.Str::unCamelize($method);
+
+        return (new Fn())($fn, ...$args);
+    }
+
     /**
      * 移除魔术方法转义.
      *
@@ -676,37 +693,5 @@ class Safe
         }
 
         return $strings;
-    }
-
-    /**
-     * 签名算法.
-     *
-     * @param array  $query
-     * @param string $secret
-     * @param array  $ignore
-     *
-     * @return string
-     */
-    public static function signature(array $query, string $secret, array $ignore = []): string
-    {
-        foreach ($ignore as $v) {
-            if (isset($query[$v])) {
-                unset($query[$v]);
-            }
-        }
-
-        ksort($query);
-
-        $sign = '';
-
-        foreach ($query as $k => $v) {
-            if (!is_array($v)) {
-                $sign .= $k.'='.$v;
-            } else {
-                $sign .= $k.self::signature($v, $secret, $ignore);
-            }
-        }
-
-        return hash_hmac('sha256', $sign, $secret);
     }
 }
