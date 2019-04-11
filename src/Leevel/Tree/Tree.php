@@ -34,7 +34,7 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class Tree implements ITree, IJson, IArray
+class Tree implements IJson, IArray
 {
     /**
      * 子父关系映射.
