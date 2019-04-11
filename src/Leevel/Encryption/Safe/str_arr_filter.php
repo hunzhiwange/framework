@@ -18,38 +18,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption;
+namespace Leevel\Encryption\Safe;
 
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
+if (!function_exists('Leevel\\Encryption\\Safe\\sql_filter')) {
+    include_once __DIR__.'/sql_filter.php';
 }
 
 /**
- * 安全函数.
+ * string array 过滤.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param mixed $strings
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return mixed
  */
-class Safe
+function str_arr_filter($strings)
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Encryption\\Safe\\'.un_camelize($method);
+    $result = '';
 
-        return (new Fn())($fn, ...$args);
+    if (!is_array($strings)) {
+        $strings = explode(',', $strings);
     }
+
+    $strings = array_map(function ($str) {
+        return sql_filter($str);
+    }, $strings);
+
+    foreach ($strings as $val) {
+        if ('' !== $val) {
+            $result .= "'".$val."',";
+        }
+    }
+
+    return preg_replace('/,$/', '', $result);
 }

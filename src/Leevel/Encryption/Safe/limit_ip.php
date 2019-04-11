@@ -18,38 +18,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption;
+namespace Leevel\Encryption\Safe;
 
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+use RuntimeException;
 
 /**
- * 安全函数.
+ * IP 访问限制.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @param string $visitorIp
+ * @param array  $limitIp
  */
-class Safe
+function limit_ip(string $visitorIp, array $limitIp): void
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Encryption\\Safe\\'.un_camelize($method);
+    if (empty($limitIp)) {
+        return;
+    }
 
-        return (new Fn())($fn, ...$args);
+    foreach ($limitIp as $ip) {
+        if (!preg_match("/{$ip}/", $visitorIp)) {
+            continue;
+        }
+
+        $e = sprintf('You IP %s are banned,you cannot access this.', $visitorIp);
+
+        throw new RuntimeException($e);
     }
 }

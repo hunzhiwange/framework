@@ -411,43 +411,43 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::unHtmlspecialchars($strings));
     }
 
-    public function testShortCheck()
+    public function testShortLimit()
     {
         $strings = 'i a # > here';
         $out = 'i a  &gt; here';
 
-        $this->assertSame($out, Safe::shortCheck($strings));
+        $this->assertSame($out, Safe::shortLimit($strings));
 
         $strings = 'i a # > here';
         $out = '';
 
-        $this->assertSame($out, Safe::shortCheck($strings, 5));
+        $this->assertSame($out, Safe::shortLimit($strings, 5));
     }
 
-    public function testLongCheck()
+    public function testLongLimit()
     {
         $strings = 'i a # > here';
         $out = 'i a # &gt; here';
 
-        $this->assertSame($out, Safe::longCheck($strings));
+        $this->assertSame($out, Safe::longLimit($strings));
 
         $strings = 'i a # > here';
         $out = '';
 
-        $this->assertSame($out, Safe::longCheck($strings, 5));
+        $this->assertSame($out, Safe::longLimit($strings, 5));
     }
 
-    public function testBigCheck()
+    public function testBigLimit()
     {
         $strings = 'i a <script  # > here';
         $out = 'i a  # > here';
 
-        $this->assertSame($out, Safe::bigCheck($strings));
+        $this->assertSame($out, Safe::bigLimit($strings));
 
         $strings = 'i <script a # > here';
         $out = ' ';
 
-        $this->assertSame($out, Safe::bigCheck($strings, 5));
+        $this->assertSame($out, Safe::bigLimit($strings, 5));
     }
 
     /**

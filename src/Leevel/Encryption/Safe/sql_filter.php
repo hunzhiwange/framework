@@ -18,38 +18,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption;
-
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+namespace Leevel\Encryption\Safe;
 
 /**
- * 安全函数.
+ * sql 过滤.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param string $strings
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Safe
+function sql_filter(string $strings): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Encryption\\Safe\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
-    }
+    return str_replace([
+        '/',
+        '\\',
+        "'",
+        '#',
+        ' ',
+        '  ',
+        '%',
+        '&',
+        '\\(',
+        '\\)',
+    ], '', $strings);
 }

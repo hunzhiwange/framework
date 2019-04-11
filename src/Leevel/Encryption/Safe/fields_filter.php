@@ -18,38 +18,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption;
+namespace Leevel\Encryption\Safe;
 
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
+if (!function_exists('Leevel\\Encryption\\Safe\\sql_filter')) {
+    include_once __DIR__.'/sql_filter.php';
 }
 
 /**
- * 安全函数.
+ * 字段过滤.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param mixed $fields
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return mixed
  */
-class Safe
+function fields_filter($fields)
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Encryption\\Safe\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
+    if (!is_array($fields)) {
+        $fields = explode(',', $fields);
     }
+
+    $fields = array_map(function ($str) {
+        return sql_filter($str);
+    }, $fields);
+
+    $fields = implode(',', $fields);
+    $fields = preg_replace('/^,|,$/', '', $fields);
+
+    return $fields;
 }

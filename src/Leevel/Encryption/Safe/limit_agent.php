@@ -18,38 +18,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Encryption;
+namespace Leevel\Encryption\Safe;
 
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+use RuntimeException;
 
 /**
- * 安全函数.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.05
- *
- * @version 1.0
+ * 检测代理.
  */
-class Safe
+function limit_agent(): void
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Encryption\\Safe\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
+    if (!isset($_SERVER['HTTP_X_FORWARDED_FOR']) &&
+        !isset($_SERVER['HTTP_VIA']) &&
+        !isset($_SERVER['HTTP_PROXY_CONNECTION']) &&
+        !isset($_SERVER['HTTP_USER_AGENT_VIA'])) {
+        return;
     }
+
+    $e = 'Proxy Connection denied.Your request was forbidden due to the '.
+        'administrator has set to deny all proxy connection.';
+
+    throw new RuntimeException($e);
 }
