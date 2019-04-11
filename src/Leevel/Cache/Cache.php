@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 use Closure;
-use Leevel\Support\TMacro;
 
 /**
  * cache 仓储.
@@ -34,10 +33,6 @@ use Leevel\Support\TMacro;
  */
 class Cache implements ICache
 {
-    use TMacro {
-        __call as macroCall;
-    }
-
     /**
      * 缓存连接对象
      *
@@ -65,10 +60,6 @@ class Cache implements ICache
      */
     public function __call(string $method, array $args)
     {
-        if (static::hasMacro($method)) {
-            return $this->macroCall($method, $args);
-        }
-
         return $this->connect->{$method}(...$args);
     }
 
@@ -82,9 +73,7 @@ class Cache implements ICache
     public function put($keys, $value = null, array $option = []): void
     {
         if (!is_array($keys)) {
-            $keys = [
-                $keys => $value,
-            ];
+            $keys = [$keys => $value];
         }
 
         foreach ($keys as $key => $value) {

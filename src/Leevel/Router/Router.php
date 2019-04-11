@@ -25,7 +25,6 @@ use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\Response;
 use Leevel\Pipeline\Pipeline;
-use Leevel\Support\TMacro;
 
 /**
  * 路由解析
@@ -39,8 +38,6 @@ use Leevel\Support\TMacro;
  */
 class Router implements IRouter
 {
-    use TMacro;
-
     /**
      * IOC Container.
      *

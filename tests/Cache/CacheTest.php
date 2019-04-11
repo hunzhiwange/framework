@@ -200,17 +200,4 @@ class CacheTest extends TestCase
         $this->assertFalse($cache->get('hello'));
         $this->assertFalse(is_file($filePath));
     }
-
-    public function testMacro()
-    {
-        $cache = new Cache(new File([
-            'path' => __DIR__.'/cache',
-        ]));
-
-        $cache->macro('hello', function ($item) {
-            return $item;
-        });
-
-        $this->assertSame('world', $cache->hello('world'));
-    }
 }

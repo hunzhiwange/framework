@@ -29,7 +29,6 @@ use IteratorAggregate;
 use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
-use Leevel\Support\TMacro;
 use Leevel\Support\Type;
 use stdClass;
 
@@ -44,8 +43,6 @@ use stdClass;
  */
 class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Countable, JsonSerializable
 {
-    use TMacro;
-
     /**
      * 元素合集.
      *

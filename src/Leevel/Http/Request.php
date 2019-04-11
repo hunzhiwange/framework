@@ -22,7 +22,6 @@ namespace Leevel\Http;
 
 use ArrayAccess;
 use Leevel\Support\IArray;
-use Leevel\Support\TMacro;
 use SplFileObject;
 
 /**
@@ -39,8 +38,6 @@ use SplFileObject;
  */
 class Request implements IRequest, IArray, ArrayAccess
 {
-    use TMacro;
-
     /**
      * GET Bag.
      *
