@@ -22,6 +22,10 @@ namespace Leevel\Leevel\Helper;
 
 use Closure;
 
+if (!function_exists('Leevel\\Leevel\\Helper\\dump')) {
+    include_once __DIR__.'/dump.php';
+}
+
 /**
  * Debug 标记.
  *
@@ -51,10 +55,6 @@ function debug_on(string $tag, Closure $call = null, ...$args): void
         if (null !== $call) {
             $call(...$args);
         } else {
-            if (!function_exists('Leevel\\Leevel\\Helper\\dump')) {
-                include_once __DIR__.'/dump.php';
-            }
-
             if (empty($args)) {
                 $args[] = '';
             }

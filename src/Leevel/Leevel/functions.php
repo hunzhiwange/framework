@@ -19,13 +19,17 @@ declare(strict_types=1);
  */
 
 use Leevel\Support\Fn;
-use Leevel\Support\Str;
+use function Leevel\Support\Str\un_camelize;
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
+}
 
 if (!function_exists('fn')) {
     /**
      * 自动导入函数.
      *
-     * @param \Closure|string $call
+     * @param \Closure|string $fn
      * @param array           $args
      * @param mixed           $fn
      *
@@ -154,7 +158,7 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Leevel\\Helper\\'.Str::unCamelize($method);
+        $fn = '\\Leevel\\Leevel\\Helper\\'.un_camelize($method);
 
         return (new Fn())($fn, ...$args);
     }
