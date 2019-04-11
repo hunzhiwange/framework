@@ -42,11 +42,30 @@ use function Tests\Support\Fixtures\Fn\testgroup_fn2;
  * @api(
  *     title="函数惰性加载",
  *     path="architecture/fn",
- *     description="使用函数惰性加载可以更好地管理辅助方法，避免载入过多无用的辅助函数，并且可以提高性能。",
+ *     description="使用函数惰性加载可以更好地管理辅助方法，避免载入过多无用的辅助函数，并且可以提高性能。
+ *
+ * 可以引入一个辅助函数来简化
+ *
+ * ``` php
+ * use Leevel\Support\Fn;
+ *
+ * function fn($fn, ...$args)
+ * {
+ *     return (new Fn())($fn, ...$args);
+ * }
+ * ```
+ * ",
  * )
  */
 class FnTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="字符串调用分组函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGroup(): void
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1'));
@@ -64,6 +83,13 @@ class FnTest extends TestCase
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\testgroup_fn2'));
     }
 
+    /**
+     * @api(
+     *     title="闭包调用已载入的分组函数",
+     *     description="函数载入一次后面就都存在了，甚至可以直接使用函数。",
+     *     note="",
+     * )
+     */
     public function testGroupWithClosureWithFuncWasLoaded(): void
     {
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1'));
@@ -82,6 +108,13 @@ class FnTest extends TestCase
         $this->assertSame('hello world2', $result);
     }
 
+    /**
+     * @api(
+     *     title="闭包调用分组函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGroupWithClosure(): void
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\testgroup2_fn1'));
@@ -103,6 +136,13 @@ class FnTest extends TestCase
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\testgroup2_fn2'));
     }
 
+    /**
+     * @api(
+     *     title="字符串调用单个文件函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSingleFn(): void
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\single_fn'));
@@ -114,6 +154,13 @@ class FnTest extends TestCase
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\single_fn'));
     }
 
+    /**
+     * @api(
+     *     title="闭包调用单个文件函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSingleFnWithClosure(): void
     {
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\single_fn'));
@@ -125,6 +172,13 @@ class FnTest extends TestCase
         $this->assertSame('hello single fn', $result);
     }
 
+    /**
+     * @api(
+     *     title="字符串调用 index 索引函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIndex(): void
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\foo_bar'));
@@ -140,6 +194,13 @@ class FnTest extends TestCase
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\foo_bar'));
     }
 
+    /**
+     * @api(
+     *     title="闭包调用 index 索引函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIndexWithClosure(): void
     {
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\foo_bar'));
@@ -157,6 +218,13 @@ class FnTest extends TestCase
         $this->assertSame('foo bar haha', $result);
     }
 
+    /**
+     * @api(
+     *     title="闭包调用多个函数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIndexWithClosureWithMulti(): void
     {
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\foo_bar'));
