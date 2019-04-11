@@ -27,7 +27,7 @@ namespace Leevel\Encryption\Safe;
  *
  * @return mixed
  */
-function un_htmlSpecialchars($data)
+function un_htmlspecialchars($data)
 {
     if (!is_array($data)) {
         $data = (array) $data;
