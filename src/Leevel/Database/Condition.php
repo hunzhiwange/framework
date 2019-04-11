@@ -22,7 +22,7 @@ namespace Leevel\Database;
 
 use Closure;
 use InvalidArgumentException;
-use Leevel\Flow\TControl;
+use Leevel\Flow\FlowControl;
 use Leevel\Support\Arr;
 use Leevel\Support\Type;
 use PDO;
@@ -39,7 +39,7 @@ use PDO;
  */
 class Condition
 {
-    use TControl;
+    use FlowControl;
 
     /**
      * And 逻辑运算符.
@@ -216,7 +216,7 @@ class Condition
      */
     public function __call(string $method, array $args)
     {
-        if ($this->placeholderTControl($method)) {
+        if ($this->placeholderFlowControl($method)) {
             return $this;
         }
 
@@ -487,7 +487,7 @@ class Condition
      */
     public function time(string $type = 'date'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -509,7 +509,7 @@ class Condition
      */
     public function endTime(): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -527,7 +527,7 @@ class Condition
      */
     public function reset(?string $option = null): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -549,7 +549,7 @@ class Condition
      */
     public function prefix(string $prefix): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -568,7 +568,7 @@ class Condition
      */
     public function table($table, $cols = '*'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -599,7 +599,7 @@ class Condition
      */
     public function columns($cols = '*', ?string $table = null): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -622,7 +622,7 @@ class Condition
      */
     public function setColumns($cols = '*', ?string $table = null): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -645,7 +645,7 @@ class Condition
      */
     public function where(...$arr): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -664,7 +664,7 @@ class Condition
      */
     public function orWhere(...$arr): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -683,7 +683,7 @@ class Condition
      */
     public function whereRaw(string $raw): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -704,7 +704,7 @@ class Condition
      */
     public function orWhereRaw(string $raw): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -725,7 +725,7 @@ class Condition
      */
     public function whereExists($exists): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -743,7 +743,7 @@ class Condition
      */
     public function whereNotExists($exists): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -763,7 +763,7 @@ class Condition
      */
     public function bind($names, $value = null, int $type = PDO::PARAM_STR): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -802,7 +802,7 @@ class Condition
      */
     public function forceIndex($indexs, $type = 'FORCE'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -849,7 +849,7 @@ class Condition
      */
     public function join($table, $cols, $cond): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -869,7 +869,7 @@ class Condition
      */
     public function union($selects, string $type = 'UNION'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -904,7 +904,7 @@ class Condition
      */
     public function unionAll($selects): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -920,7 +920,7 @@ class Condition
      */
     public function groupBy($expression): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -998,7 +998,7 @@ class Condition
      */
     public function having(...$arr): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1017,7 +1017,7 @@ class Condition
      */
     public function orHaving(...$arr): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1036,7 +1036,7 @@ class Condition
      */
     public function havingRaw(string $raw): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1057,7 +1057,7 @@ class Condition
      */
     public function orHavingRaw(string $raw): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1079,7 +1079,7 @@ class Condition
      */
     public function orderBy($expression, string $orderDefault = 'ASC'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1212,7 +1212,7 @@ class Condition
      */
     public function distinct(bool $flag = true): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1231,7 +1231,7 @@ class Condition
      */
     public function count(string $field = '*', string $alias = 'row_count'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1248,7 +1248,7 @@ class Condition
      */
     public function avg(string $field, string $alias = 'avg_value'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1265,7 +1265,7 @@ class Condition
      */
     public function max(string $field, string $alias = 'max_value'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1282,7 +1282,7 @@ class Condition
      */
     public function min(string $field, string $alias = 'min_value'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1299,7 +1299,7 @@ class Condition
      */
     public function sum(string $field, string $alias = 'sum_value'): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1313,7 +1313,7 @@ class Condition
      */
     public function one(): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1331,7 +1331,7 @@ class Condition
      */
     public function all(): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1355,7 +1355,7 @@ class Condition
      */
     public function top(int $count = 30): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1372,7 +1372,7 @@ class Condition
      */
     public function limit(int $offset = 0, int $count = 0): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1396,7 +1396,7 @@ class Condition
      */
     public function forUpdate(bool $flag = true): self
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1508,7 +1508,7 @@ class Condition
             return false;
         }
 
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1554,7 +1554,7 @@ class Condition
             return false;
         }
 
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -1597,7 +1597,7 @@ class Condition
             return false;
         }
 
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 

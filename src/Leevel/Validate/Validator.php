@@ -27,7 +27,7 @@ use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
-use Leevel\Flow\TControl;
+use Leevel\Flow\FlowControl;
 use Leevel\Support\Arr;
 use Leevel\Support\Str;
 
@@ -42,7 +42,7 @@ use Leevel\Support\Str;
  */
 class Validator implements IValidator
 {
-    use TControl;
+    use FlowControl;
 
     /**
      * IOC 容器.
@@ -169,7 +169,7 @@ class Validator implements IValidator
      */
     public function __call(string $method, array $args)
     {
-        if ($this->placeholderTControl($method)) {
+        if ($this->placeholderFlowControl($method)) {
             return $this;
         }
 
@@ -301,7 +301,7 @@ class Validator implements IValidator
      */
     public function data(array $datas): IValidator
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -319,7 +319,7 @@ class Validator implements IValidator
      */
     public function addData(array $datas): IValidator
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -348,7 +348,7 @@ class Validator implements IValidator
      */
     public function rule(array $rules, Closure $callbacks = null): IValidator
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -369,7 +369,7 @@ class Validator implements IValidator
      */
     public function addRule(array $rules, Closure $callbacks = null): IValidator
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -399,7 +399,7 @@ class Validator implements IValidator
      */
     public function message(array $messages): IValidator
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -417,7 +417,7 @@ class Validator implements IValidator
      */
     public function addMessage(array $messages): IValidator
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -448,7 +448,7 @@ class Validator implements IValidator
      */
     public function name(array $names): IValidator
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -466,7 +466,7 @@ class Validator implements IValidator
      */
     public function addName(array $names): IValidator
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 

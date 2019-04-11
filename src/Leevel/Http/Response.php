@@ -25,10 +25,9 @@ use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 use JsonSerializable;
-use Leevel\Flow\TControl;
+use Leevel\Flow\FlowControl;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
-use Leevel\Support\TMacro;
 use UnexpectedValueException;
 
 /**
@@ -45,8 +44,7 @@ use UnexpectedValueException;
  */
 class Response implements IResponse
 {
-    use TControl;
-    use TMacro;
+    use FlowControl;
 
     /**
      * 响应头.
@@ -268,7 +266,7 @@ class Response implements IResponse
      */
     public function setContent($content): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -304,7 +302,7 @@ class Response implements IResponse
      */
     public function appendContent(string $content = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -324,7 +322,7 @@ class Response implements IResponse
      */
     public function setHeader(string $key, string $value, bool $replace = true): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -344,7 +342,7 @@ class Response implements IResponse
      */
     public function withHeaders(array $headers): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -380,7 +378,7 @@ class Response implements IResponse
      */
     public function setCookie(string $name, string $value = '', array $option = []): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -399,7 +397,7 @@ class Response implements IResponse
      */
     public function withCookies(array $cookies, array $option = []): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -447,7 +445,7 @@ class Response implements IResponse
      */
     public function setData($data = [], ?int $encodingOptions = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -515,7 +513,7 @@ class Response implements IResponse
      */
     public function setProtocolVersion(string $protocolVersion): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -542,7 +540,7 @@ class Response implements IResponse
      */
     public function setStatusCode(int $code, ?string $text = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -606,7 +604,7 @@ class Response implements IResponse
      */
     public function charset(string $charset): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -634,7 +632,7 @@ class Response implements IResponse
      */
     public function setExpires(DateTime $datetime = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -658,7 +656,7 @@ class Response implements IResponse
      */
     public function setLastModified(DateTime $datetime = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -682,7 +680,7 @@ class Response implements IResponse
      */
     public function setCache(int $minutes): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -702,7 +700,7 @@ class Response implements IResponse
      */
     public function setNotModified(): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -721,7 +719,7 @@ class Response implements IResponse
      */
     public function setContentType(string $contentType, ?string $charset = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -747,7 +745,7 @@ class Response implements IResponse
      */
     public function setContentLength(int $contentLength): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -765,7 +763,7 @@ class Response implements IResponse
      */
     public function setEtag(string $etag): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 

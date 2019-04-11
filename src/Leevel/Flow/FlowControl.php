@@ -29,7 +29,7 @@ namespace Leevel\Flow;
  *
  * @version 1.0
  */
-trait TControl
+trait FlowControl
 {
     /**
      * 逻辑代码是否处于条件表达式中.
@@ -54,7 +54,7 @@ trait TControl
      */
     public function ifs($value = false): self
     {
-        return $this->setTControl(true, $value ? true : false);
+        return $this->setFlowControl(true, $value ? true : false);
     }
 
     /**
@@ -66,7 +66,7 @@ trait TControl
      */
     public function elseIfs($value = false): self
     {
-        return $this->setTControl(true, $value ? true : false);
+        return $this->setFlowControl(true, $value ? true : false);
     }
 
     /**
@@ -76,7 +76,7 @@ trait TControl
      */
     public function elses(): self
     {
-        return $this->setTControl(true, !$this->isFlowControlTrue);
+        return $this->setFlowControl(true, !$this->isFlowControlTrue);
     }
 
     /**
@@ -86,7 +86,7 @@ trait TControl
      */
     public function endIfs(): self
     {
-        return $this->setTControl(false, false);
+        return $this->setFlowControl(false, false);
     }
 
     /**
@@ -97,7 +97,7 @@ trait TControl
      *
      * @return $this
      */
-    public function setTControl(bool $inFlowControl, bool $isFlowControlTrue): self
+    public function setFlowControl(bool $inFlowControl, bool $isFlowControlTrue): self
     {
         $this->inFlowControl = $inFlowControl;
         $this->isFlowControlTrue = $isFlowControlTrue;
@@ -110,7 +110,7 @@ trait TControl
      *
      * @return bool
      */
-    public function checkTControl(): bool
+    public function checkFlowControl(): bool
     {
         return $this->inFlowControl && !$this->isFlowControlTrue;
     }
@@ -122,8 +122,8 @@ trait TControl
      *
      * @return bool
      */
-    public function placeholderTControl(string $method): bool
+    public function placeholderFlowControl(string $method): bool
     {
-        return in_array($method, ['placeholder', 'foobar'], true);
+        return in_array($method, ['placeholder', 'foobar', '_'], true);
     }
 }

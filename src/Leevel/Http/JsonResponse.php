@@ -125,7 +125,7 @@ class JsonResponse extends Response
      */
     public function setCallback(?string $callback = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -143,7 +143,7 @@ class JsonResponse extends Response
      */
     public function setJson($json): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -166,7 +166,7 @@ class JsonResponse extends Response
      */
     public function setData($data = [], ?int $encodingOptions = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -223,7 +223,7 @@ class JsonResponse extends Response
      */
     public function setEncodingOptions(int $encodingOptions): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 

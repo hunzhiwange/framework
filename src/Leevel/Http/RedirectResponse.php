@@ -108,7 +108,7 @@ class RedirectResponse extends Response
      */
     public function with($key, $value = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -132,7 +132,7 @@ class RedirectResponse extends Response
      */
     public function withInput(?array $input = null): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -183,7 +183,7 @@ class RedirectResponse extends Response
      */
     public function withErrors($value, string $key = 'default'): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -214,7 +214,7 @@ class RedirectResponse extends Response
      */
     public function setTargetUrl(string $url): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 

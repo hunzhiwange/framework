@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Flow;
 
-use Leevel\Flow\TControl;
+use Leevel\Flow\FlowControl;
 use Tests\TestCase;
 
 /**
@@ -32,7 +32,7 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class TControlTest extends TestCase
+class FlowControlTest extends TestCase
 {
     public function testBaseUse()
     {
@@ -136,7 +136,7 @@ class TControlTest extends TestCase
         $this->assertSame('condition2', $value);
     }
 
-    public function testPlaceholderTControl()
+    public function testPlaceholderFlowControl()
     {
         $test = new Test1();
 
@@ -147,13 +147,13 @@ class TControlTest extends TestCase
 
 class Test1
 {
-    use TControl;
+    use FlowControl;
 
     protected $value = [];
 
     public function __call(string $method, array $args)
     {
-        if ($this->placeholderTControl($method)) {
+        if ($this->placeholderFlowControl($method)) {
             return $this;
         }
     }
@@ -165,7 +165,7 @@ class Test1
 
     public function condition1()
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -176,7 +176,7 @@ class Test1
 
     public function condition2()
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -187,7 +187,7 @@ class Test1
 
     public function condition3()
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -198,7 +198,7 @@ class Test1
 
     public function condition4()
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -209,7 +209,7 @@ class Test1
 
     public function condition5()
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 

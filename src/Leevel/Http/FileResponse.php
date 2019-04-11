@@ -93,7 +93,7 @@ class FileResponse extends Response
      */
     public function setFile($file, ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -147,7 +147,7 @@ class FileResponse extends Response
      */
     public function setAutoLastModified(): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -163,7 +163,7 @@ class FileResponse extends Response
      */
     public function setAutoEtag(): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -179,7 +179,7 @@ class FileResponse extends Response
      */
     public function setContent($content): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -208,7 +208,7 @@ class FileResponse extends Response
      */
     public function setContentDisposition(string $disposition, string $filename = ''): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
@@ -236,7 +236,7 @@ class FileResponse extends Response
      */
     public function sendContent(): IResponse
     {
-        if ($this->checkTControl()) {
+        if ($this->checkFlowControl()) {
             return $this;
         }
 
