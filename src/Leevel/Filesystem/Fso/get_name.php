@@ -18,38 +18,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem;
-
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+namespace Leevel\Filesystem\Fso;
 
 /**
- * File System Object 管理.
+ * 获取文件名字.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param string $path
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Fso
+function get_name(string $path): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
-    }
+    return pathinfo($path, PATHINFO_FILENAME);
 }

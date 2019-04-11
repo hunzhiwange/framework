@@ -18,38 +18,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem;
-
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+namespace Leevel\Filesystem\Fso;
 
 /**
- * File System Object 管理.
+ * 获取上传文件扩展名.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param string $fileName 文件名
+ * @param int    $case     格式化参数 0 默认，1 转为大小 ，转为大小
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Fso
+function get_extension(string $fileName, int $case = 0): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
+    $fileName = pathinfo($fileName, PATHINFO_EXTENSION);
 
-        return (new Fn())($fn, ...$args);
+    if (1 === $case) {
+        return strtoupper($fileName);
     }
+
+    if (2 === $case) {
+        return strtolower($fileName);
+    }
+
+    return $fileName;
 }

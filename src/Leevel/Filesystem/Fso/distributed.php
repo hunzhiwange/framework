@@ -18,38 +18,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem;
-
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+namespace Leevel\Filesystem\Fso;
 
 /**
- * File System Object 管理.
+ * 根据 ID 获取打散目录.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param int $dataId
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return array
  */
-class Fso
+function distributed(int $dataId): array
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
+    $dataId = abs((int) $dataId);
+    $dataId = sprintf('%09d', $dataId); // 格式化为 9 位数，前面不够填充 0
 
-        return (new Fn())($fn, ...$args);
-    }
+    return [
+        substr($dataId, 0, 3).'/'.
+            substr($dataId, 3, 2).'/'.
+            substr($dataId, 5, 2).'/',
+        substr($dataId, -2),
+    ];
 }

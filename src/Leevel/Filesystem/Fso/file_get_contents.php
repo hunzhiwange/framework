@@ -18,38 +18,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem;
+namespace Leevel\Filesystem\Fso;
 
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+use RuntimeException;
 
 /**
- * File System Object 管理.
+ * 取得文件内容.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param string $path
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Fso
+function file_get_contents(string $path): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
+    if (is_file($path)) {
+        return file_get_contents($path);
     }
+
+    $e = sprintf('File %s does not exist', $path);
+
+    throw new RuntimeException($e);
 }

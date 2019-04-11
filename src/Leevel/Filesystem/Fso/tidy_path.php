@@ -18,38 +18,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem;
-
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+namespace Leevel\Filesystem\Fso;
 
 /**
- * File System Object 管理.
+ * 整理目录斜线风格
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param string $path
+ * @param bool   $unix
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Fso
+function tidy_path(string $path, bool $unix = true): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
+    $path = str_replace('\\', '/', $path);
+    $path = preg_replace('|/+|', '/', $path);
+    $path = str_replace(':/', ':\\', $path);
 
-        return (new Fn())($fn, ...$args);
+    if (!$unix) {
+        $path = str_replace('/', '\\', $path);
     }
+
+    return rtrim($path, '\\/');
 }

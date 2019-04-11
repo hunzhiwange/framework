@@ -18,38 +18,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem;
-
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+namespace Leevel\Filesystem\Fso;
 
 /**
- * File System Object 管理.
+ * 创建软连接.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @param string $target
+ * @param string $link
+ * @codeCoverageIgnore
  */
-class Fso
+function link(string $target, string $link): void
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
+    if (DIRECTORY_SEPARATOR !== '\\') {
+        symlink($target, $link);
 
-        return (new Fn())($fn, ...$args);
+        return;
     }
+
+    $mode = is_dir($target) ? 'J' : 'H';
+
+    exec("mklink /{$mode} \"{$link}\" \"{$target}\"");
 }

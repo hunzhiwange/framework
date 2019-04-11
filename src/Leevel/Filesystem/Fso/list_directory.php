@@ -18,38 +18,37 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Filesystem;
+namespace Leevel\Filesystem\Fso;
 
-use Leevel\Support\Fn;
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+use Closure;
+use DirectoryIterator;
 
 /**
- * File System Object 管理.
+ * 浏览目录.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @param string   $path
+ * @param bool     $recursive
+ * @param \Closure $cal
+ * @param array    $filter
  */
-class Fso
+function list_directory(string $path, bool $recursive, Closure $cal, array $filter = []): void
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
+    if (!is_dir($path)) {
+        return;
+    }
 
-        return (new Fn())($fn, ...$args);
+    $instance = new DirectoryIterator($path);
+
+    foreach ($instance as $file) {
+        if ($file->isDot() ||
+            in_array($file->getFilename(), $filter, true)) {
+            continue;
+        }
+
+        $cal($file);
+
+        if (true === $recursive && $file->isDir()) {
+            list_directory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
+        }
     }
 }
