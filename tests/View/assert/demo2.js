@@ -1,1 +1,0 @@
-dump('hello v8 demo2.js!');
