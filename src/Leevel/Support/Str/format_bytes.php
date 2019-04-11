@@ -18,37 +18,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support;
-
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once __DIR__.'/Str/un_camelize.php';
-}
+namespace Leevel\Support\Str;
 
 /**
- * 字符串.
+ * 文件大小格式化.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param int  $fileSize
+ * @param bool $withUnit
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Str
+function format_bytes(int $fileSize, bool $withUnit = true): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Support\\Str\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
+    if ($fileSize >= 1073741824) {
+        $fileSize = round($fileSize / 1073741824, 2).($withUnit ? 'G' : '');
+    } elseif ($fileSize >= 1048576) {
+        $fileSize = round($fileSize / 1048576, 2).($withUnit ? 'M' : '');
+    } elseif ($fileSize >= 1024) {
+        $fileSize = round($fileSize / 1024, 2).($withUnit ? 'K' : '');
+    } else {
+        $fileSize = $fileSize.($withUnit ? 'B' : '');
     }
+
+    return $fileSize;
 }

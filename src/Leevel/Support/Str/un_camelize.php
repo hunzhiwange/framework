@@ -18,37 +18,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support;
-
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once __DIR__.'/Str/un_camelize.php';
-}
+namespace Leevel\Support\Str;
 
 /**
- * 字符串.
+ * 驼峰转下划线
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param string $value
+ * @param string $separator
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Str
+function un_camelize(string $value, string $separator = '_'): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Support\\Str\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
-    }
+    return strtolower(
+        preg_replace(
+            '/([a-z])([A-Z])/',
+            '$1'.$separator.'$2',
+            $value
+        )
+    );
 }

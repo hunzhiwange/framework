@@ -18,37 +18,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support;
-
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once __DIR__.'/Str/un_camelize.php';
-}
+namespace Leevel\Support\Str;
 
 /**
- * 字符串.
+ * 字符串编码转换.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param mixed  $contents
+ * @param string $fromChar
+ * @param string $toChar
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Str
+function convert_encoding($contents, string $fromChar, string $toChar): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Support\\Str\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
-    }
+    return mb_convert_encoding($contents, $fromChar, $toChar);
 }

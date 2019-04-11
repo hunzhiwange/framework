@@ -18,37 +18,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support;
+namespace Leevel\Support\Str;
 
-use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once __DIR__.'/Str/un_camelize.php';
+if (!function_exists('Leevel\\Support\\Str\\rand_str')) {
+    include_once __DIR__.'/rand_str.php';
 }
 
 /**
- * 字符串.
+ * 随机大写字母数字.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param int    $length
+ * @param string $charBox
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return string
  */
-class Str
+function rand_alpha_num_uppercase(int $length, ?string $charBox = null): string
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Support\\Str\\'.un_camelize($method);
-
-        return (new Fn())($fn, ...$args);
+    if (!$length) {
+        return '';
     }
+
+    if (null === $charBox) {
+        $charBox = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    } else {
+        $charBox = strtoupper($charBox);
+    }
+
+    return rand_str($length, $charBox);
 }
