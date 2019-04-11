@@ -52,16 +52,16 @@ class SafeTest extends TestCase
         $strings = "O'Reilly?";
         $out = "O\\'Reilly?";
 
-        $this->assertSame($out, Safe::addslashes($strings));
+        $this->assertSame($out, Safe::customAddslashes($strings));
 
-        $this->assertSame($strings, Safe::stripslashes($out));
+        $this->assertSame($strings, Safe::customStripslashes($out));
 
         $arrays = ["O'Reilly?" => "O'Reilly?"];
         $outs = ["O\\'Reilly?" => "O\\'Reilly?"];
 
-        $this->assertSame($outs, Safe::addslashes($arrays));
+        $this->assertSame($outs, Safe::customAddslashes($arrays));
 
-        $this->assertSame($arrays, Safe::stripslashes($outs));
+        $this->assertSame($arrays, Safe::customStripslashes($outs));
     }
 
     /**
@@ -385,17 +385,17 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::htmlView($strings));
     }
 
-    public function testHtmlspecialchars()
+    public function testCustomHtmlspecialchars()
     {
         $strings = 'i a < here';
         $out = 'i a &lt; here';
 
-        $this->assertSame($out, Safe::htmlspecialchars($strings));
+        $this->assertSame($out, Safe::customHtmlspecialchars($strings));
 
         $strings = ['i a < here', 'i a > here'];
         $out = ['i a &lt; here', 'i a &gt; here'];
 
-        $this->assertSame($out, Safe::htmlspecialchars($strings));
+        $this->assertSame($out, Safe::customHtmlspecialchars($strings));
     }
 
     public function testUnHtmlSpecialchars()
@@ -403,12 +403,12 @@ class SafeTest extends TestCase
         $strings = 'i a &lt; here';
         $out = 'i a < here';
 
-        $this->assertSame($out, Safe::unHtmlSpecialchars($strings));
+        $this->assertSame($out, Safe::unHtmlspecialchars($strings));
 
         $strings = ['i a &lt; here', 'i a &gt; here'];
         $out = ['i a < here', 'i a > here'];
 
-        $this->assertSame($out, Safe::unHtmlSpecialchars($strings));
+        $this->assertSame($out, Safe::unHtmlspecialchars($strings));
     }
 
     public function testShortCheck()

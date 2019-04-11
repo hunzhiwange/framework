@@ -21,8 +21,12 @@ declare(strict_types=1);
 namespace Leevel\Encryption;
 
 use Leevel\Support\Fn;
-use Leevel\Support\Str;
 use RuntimeException;
+use function Leevel\Support\Str\un_camelize;
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
+}
 
 /**
  * 安全函数.
@@ -45,176 +49,9 @@ class Safe
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Encryption\\Safe\\'.Str::unCamelize($method);
+        $fn = '\\Leevel\\Encryption\\Safe\\'.un_camelize($method);
 
         return (new Fn())($fn, ...$args);
-    }
-
-    /**
-     * 移除魔术方法转义.
-     *
-     * @param mixed $strings
-     * @param bool  $recursive
-     *
-     * @return mixed
-     */
-    public static function stripslashes($strings, bool $recursive = true)
-    {
-        if (true === $recursive && is_array($strings)) {
-            $result = [];
-
-            foreach ($strings as $key => $value) {
-                $result[static::stripslashes($key)] = static::stripslashes($value);
-            }
-
-            return $result;
-        }
-
-        if (is_string($strings)) {
-            $strings = stripslashes($strings);
-        }
-
-        return $strings;
-    }
-
-    /**
-     * 添加模式转义.
-     *
-     * @param mixed $strings
-     * @param bool  $recursive
-     *
-     * @return mixed
-     */
-    public static function addslashes($strings, bool $recursive = true)
-    {
-        if (true === $recursive && is_array($strings)) {
-            $result = [];
-
-            foreach ($strings as $key => $value) {
-                $result[static::addslashes($key)] = static::addslashes($value);
-            }
-
-            return $result;
-        }
-        if (is_string($strings)) {
-            $strings = addslashes($strings);
-        }
-
-        return $strings;
-    }
-
-    /**
-     * 深度过滤.
-     *
-     * @param array  $search
-     * @param string $subject
-     *
-     * @return string
-     */
-    public static function deepReplace(array $search, string $subject): string
-    {
-        $found = true;
-
-        while ($found) {
-            $found = false;
-
-            foreach ($search as $val) {
-                while (false !== strpos($subject, $val)) {
-                    $found = true;
-                    $subject = str_replace($val, '', $subject);
-                }
-            }
-        }
-
-        return $subject;
-    }
-
-    /**
-     * url 安全过滤.
-     *
-     * @param string $url
-     * @param array  $protocols
-     * @param bool   $show
-     *
-     * @return string
-     */
-    public static function escUrl(string $url, ?array $protocols = null, bool $show = true): string
-    {
-        $originalUrl = $url;
-
-        if ('' === trim($url)) {
-            return $url;
-        }
-
-        $url = preg_replace('|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\\x80-\\xff]|i', '', $url);
-
-        // 回车编码
-        $url = static::deepReplace([
-            '%0d',
-            '%0a',
-            '%0D',
-            '%0A',
-        ], $url);
-
-        // 防止拼写错误
-        $url = str_replace(';//', '://', $url);
-
-        // 加上 http:// ，防止导入一个脚本如 php，从而引发安全问题
-        if (false === strpos($url, ':') &&
-            '/' !== substr($url, 0, 1) &&
-            '#' !== substr($url, 0, 1) &&
-            !preg_match('/^[a-z0-9-]+?\.php/i', $url)) {
-            $url = 'http://'.$url;
-        }
-
-        if (true === $show) {
-            $url = str_replace('&amp;', '&#038;', $url);
-            $url = str_replace("'", '&#039;', $url);
-        }
-
-        // 协议检查
-        if (!is_array($protocols)) {
-            $protocols = [
-                'http',
-                'https',
-                'ftp',
-                'ftps',
-                'mailto',
-                'news',
-                'irc',
-                'gopher',
-                'nntp',
-                'feed',
-                'telnet',
-                'mms',
-                'rtsp',
-                'svn',
-            ];
-        }
-
-        return $url;
-    }
-
-    /**
-     * 过滤 script.
-     *
-     * @param sting $strings
-     *
-     * @return string
-     */
-    public static function filterScript(string $strings): string
-    {
-        return preg_replace([
-            '/<\s*script/',
-            '/<\s*\/\s*script\s*>/',
-            '/<\\?/',
-            '/\\?>/',
-        ], [
-            '&lt;script',
-            '&lt;/script&gt;',
-            '&lt;?',
-            '?&gt;',
-        ], $strings);
     }
 
     /**
@@ -299,7 +136,7 @@ class Safe
         $strings = preg_replace(
                 '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
                 '&\\1',
-                static::htmlspecialchars($strings)
+                static::customHtmlspecialchars($strings)
             );
 
         $strings = str_replace('　', '', $strings);
@@ -552,80 +389,6 @@ class Safe
     }
 
     /**
-     * 字符 HTML 安全显示.
-     *
-     * @param string $strings
-     *
-     * @return string
-     */
-    public static function htmlView(string $strings): string
-    {
-        $strings = stripslashes($strings);
-        $strings = nl2br($strings);
-
-        return $strings;
-    }
-
-    /**
-     * 字符 HTML 安全实体.
-     *
-     * @param mixed $strings
-     *
-     * @return mixed
-     */
-    public static function htmlspecialchars($strings)
-    {
-        if (!is_array($strings)) {
-            $strings = (array) $strings;
-        }
-
-        $strings = array_map(function ($strings) {
-            if (is_string($strings)) {
-                $strings = htmlspecialchars(trim($strings));
-            }
-
-            return $strings;
-        }, $strings);
-
-        if (1 === count($strings)) {
-            $strings = reset($strings);
-        }
-
-        return $strings;
-    }
-
-    /**
-     * 字符 HTML 实体还原.
-     *
-     * @param mixed $strings
-     *
-     * @return mixed
-     */
-    public static function unHtmlSpecialchars($strings)
-    {
-        if (!is_array($strings)) {
-            $strings = (array) $strings;
-        }
-
-        $strings = array_map(function ($strings) {
-            $strings = strtr(
-                $strings,
-                array_flip(
-                    get_html_translation_table(HTML_SPECIALCHARS)
-                )
-            );
-
-            return $strings;
-        }, $strings);
-
-        if (1 === count($strings)) {
-            $strings = reset($strings);
-        }
-
-        return $strings;
-    }
-
-    /**
      * 短字符串长度验证
      *
      * @param string $strings
@@ -637,7 +400,7 @@ class Safe
     {
         $strings = static::lengthLimit($strings, $maxLength);
         $strings = str_replace(["\\'", '\\', '#'], '', $strings);
-        $strings = static::htmlspecialchars($strings);
+        $strings = static::customHtmlspecialchars($strings);
 
         return preg_replace('/　+/', '', trim($strings));
     }
@@ -654,7 +417,7 @@ class Safe
     {
         $strings = static::lengthLimit($strings, $maxLength);
         $strings = str_replace("\\'", '’', $strings);
-        $strings = static::htmlspecialchars($strings);
+        $strings = static::customHtmlspecialchars($strings);
         $strings = nl2br($strings);
 
         return $strings;
