@@ -252,34 +252,6 @@ class StrTest extends TestCase
 
     /**
      * @api(
-     *     title="编码转换",
-     *     description="这里只是简单的对函数调用一次 `mb_convert_encoding($contents, $fromChar, $toChar)`。",
-     *     note="",
-     * )
-     */
-    public function testConvertEncoding()
-    {
-        $this->assertSame('hello', Str::convertEncoding('hello', 'gbk', 'utf8'));
-        $sourceConvert = Str::convertEncoding($source = '故事', 'gbk', 'utf8');
-        $this->assertSame($source, Str::convertEncoding($sourceConvert, 'utf8', 'gbk'));
-    }
-
-    /**
-     * @api(
-     *     title="字符串截取",
-     *     description="这里只是简单的对函数调用一次 `mb_substr($strings, $start, $length, $charset)`。",
-     *     note="",
-     * )
-     */
-    public function testSubstr()
-    {
-        $this->assertSame('我', Str::substr('我是人', 0, 1));
-        $this->assertSame('我是', Str::substr('我是人', 0, 2));
-        $this->assertSame('人', Str::substr('我是人', 2));
-    }
-
-    /**
-     * @api(
      *     title="日期格式化",
      *     description="",
      *     note="",

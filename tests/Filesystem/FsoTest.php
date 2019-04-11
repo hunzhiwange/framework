@@ -51,21 +51,6 @@ class FsoTest extends TestCase
         }
     }
 
-    public function testBaseUse()
-    {
-        $file = __DIR__.'/hello.txt';
-
-        file_put_contents($file, 'foo');
-
-        $this->assertSame('foo', Fso::fileContents($file));
-
-        unlink($file);
-
-        $this->expectException(\RuntimeException::class);
-
-        Fso::fileContents($file);
-    }
-
     public function testCreateDirectory()
     {
         $dir = __DIR__.'/createDirectory';
