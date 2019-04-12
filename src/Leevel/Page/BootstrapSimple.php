@@ -20,7 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Leevel\I18n\Facade\I18n;
+use function Leevel\I18n\Helper\gettext as __;
+
+if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
+    include_once dirname(__DIR__).'/I18n/Helper/gettext.php';
+}
 
 /**
  * BootstrapSimple 分页渲染.
@@ -100,7 +104,7 @@ class BootstrapSimple extends Bootstrap
                 $this->replace(
                     $this->page->parsePrevRenderPrev()
                 ),
-                I18n::__('上一页')
+                __('上一页')
             );
         }
 
@@ -108,7 +112,7 @@ class BootstrapSimple extends Bootstrap
             '<li class="disabled%s"><a aria-label="Previous">'.
                 '<span aria-hidden="true">%s</span></a></li>',
             'justify' === $this->option['align'] ? ' previous' : '',
-            I18n::__('上一页')
+            __('上一页')
         );
     }
 
@@ -127,7 +131,7 @@ class BootstrapSimple extends Bootstrap
                 $this->replace(
                     $this->page->getCurrentPage() + 1
                 ),
-                I18n::__('下一页')
+                __('下一页')
             );
         }
 
@@ -135,7 +139,7 @@ class BootstrapSimple extends Bootstrap
             '<li class="disabled%s"><a aria-label="Next">'.
                 '<span aria-hidden="true">%s</span></a></li>',
             'justify' === $this->option['align'] ? ' next' : '',
-            I18n::__('下一页')
+            __('下一页')
         );
     }
 

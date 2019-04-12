@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Page;
 
 use I18nMock;
+use Leevel\I18n\II18n;
 use Leevel\Leevel\App;
 use Leevel\Page\Bootstrap;
 use Leevel\Page\Defaults;
@@ -45,7 +46,7 @@ class PageTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton('i18n', function (): I18nMock {
+        $app->singleton(II18n::class, function (): I18nMock {
             return new I18nMock();
         });
 

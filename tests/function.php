@@ -41,4 +41,17 @@ class I18nMock
     {
         return sprintf($text, ...$arr);
     }
+
+    /**
+     * lang.
+     *
+     * @param string $text
+     * @param array  $arr
+     *
+     * @return string
+     */
+    public function gettext(string $text, ...$arr)
+    {
+        return sprintf($text, ...$arr);
+    }
 }

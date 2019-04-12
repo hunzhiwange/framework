@@ -20,7 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Leevel\I18n\Facade\I18n;
+use function Leevel\I18n\Helper\gettext as __;
+
+if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
+    include_once dirname(__DIR__).'/I18n/Helper/gettext.php';
+}
 
 /**
  * 默认分页渲染.
@@ -176,7 +180,7 @@ class Defaults implements IRender
 
         return sprintf(
             '<span class="pagination-total">%s</span>',
-            I18n::__('共 %d 条', $this->page->getTotalRecord() ?: 0)
+            __('共 %d 条', $this->page->getTotalRecord() ?: 0)
         );
     }
 
@@ -332,9 +336,9 @@ class Defaults implements IRender
                 'this.getAttribute(\'link\').replace( \'{jump}\', this.value); }" '.
                 'onfocus="this.select();" min="1" value="1" number="true" '.
                 'class="pagination-editor">%s</span>',
-            I18n::__('前往'),
+            __('前往'),
             $this->replace('{jump}'),
-            I18n::__('页')
+            __('页')
         );
     }
 
