@@ -27,13 +27,26 @@ if (!function_exists('Leevel\\Leevel\\Helper\\dump')) {
 /**
  * 性能基准测试.
  *
- * @param int   $time
- * @param array $call
+ * @param array|int $time
+ * @param array     $call
  * @codeCoverageIgnore
  */
-function benchmark(int $time = 1, ...$call): void
+function benchmark($time = 1, ...$call): void
 {
     $prev = [];
+    $normalPrint = false;
+
+    if (is_array($time)) {
+        switch (count($time)) {
+            case 2:
+                list($time, $normalPrint) = $time;
+
+                break;
+            default:
+                throw new RuntimeException('Invalid argument `time`.');
+                break;
+        }
+    }
 
     foreach ($call as $i => $c) {
         ob_start();
@@ -43,17 +56,23 @@ function benchmark(int $time = 1, ...$call): void
         if (0 === $i) {
             $timeTrend = $memoryTrend = 0;
         } else {
-            $timeTrend = $current[0] ? round(($prev[0] - $current[0]) / $current[0], 10) * 100 : 100;
-            $memoryTrend = $current[1] ? round(($prev[1] - $current[1]) / $current[1], 10) * 100 : 100;
+            $timeTrend = $prev[0] ? round(($current[0] - $prev[0]) / $prev[0], 10) * 100 : 100;
+            $memoryTrend = $prev[1] ? round(($current[1] - $prev[1]) / $prev[1], 10) * 100 : 100;
         }
 
-        dump([
+        $data = [
             'Index'           => $i,
             'Time(s)'         => $current[0],
             'Memory(s)'       => $current[1],
             'Time trend(%)'   => $timeTrend,
             'Memory trend(%)' => $memoryTrend,
-        ]);
+        ];
+
+        if (true === $normalPrint) {
+            var_dump($data);
+        } else {
+            dump($data);
+        }
 
         $prev = $current;
     }
