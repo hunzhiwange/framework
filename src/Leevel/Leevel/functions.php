@@ -21,11 +21,9 @@ declare(strict_types=1);
 use Leevel\Leevel\App;
 use Leevel\Support\Fn;
 use Leevel\Support\FunctionNotFoundException;
+use function Leevel\Leevel\Helper\app as apps;
+use function Leevel\Leevel\Helper\gettext;
 use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
 
 if (!function_exists('fn')) {
     /**
@@ -54,7 +52,9 @@ if (!function_exists('app')) {
      */
     function app(?string $service = null, array $args = [])
     {
-        return Leevel::app($service, $args);
+        return fn(function () use ($service, $args) {
+            return apps($service, $args);
+        });
     }
 }
 
@@ -69,7 +69,9 @@ if (!function_exists('__')) {
      */
     function __(string $text, ...$arr): string
     {
-        return I18n::__($text, ...$arr);
+        return fn(function () use ($text, $arr) {
+            return gettext($text, $arr);
+        });
     }
 }
 
@@ -160,7 +162,11 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Leevel\\Helper\\'.un_camelize($method);
+        $method = fn(function () use ($method) {
+            return un_camelize($method);
+        });
+
+        $fn = '\\Leevel\\Leevel\\Helper\\'.$method;
 
         try {
             return (new Fn())($fn, ...$args);

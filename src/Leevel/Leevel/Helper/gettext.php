@@ -31,7 +31,7 @@ use Leevel\Leevel\App;
  *
  * @return string
  */
-function __(string $text, ...$arr): string
+function gettext(string $text, ...$arr): string
 {
     $service = App::singletons()
         ->make(II18n::class);
