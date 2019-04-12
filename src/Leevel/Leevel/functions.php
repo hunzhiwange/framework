@@ -25,6 +25,10 @@ use function Leevel\Leevel\Helper\app as apps;
 use function Leevel\Leevel\Helper\gettext;
 use function Leevel\Support\Str\un_camelize;
 
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include_once __DIR__.'/Str/un_camelize.php';
+}
+
 if (!function_exists('fn')) {
     /**
      * 自动导入函数.
@@ -162,11 +166,7 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        $method = fn(function () use ($method) {
-            return un_camelize($method);
-        });
-
-        $fn = '\\Leevel\\Leevel\\Helper\\'.$method;
+        $fn = '\\Leevel\\Leevel\\Helper\\'.un_camelize($method);
 
         try {
             return (new Fn())($fn, ...$args);
