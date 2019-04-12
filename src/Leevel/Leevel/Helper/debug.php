@@ -20,10 +20,60 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Helper;
 
-use Closure;
+use RuntimeException;
 
 if (!function_exists('Leevel\\Leevel\\Helper\\dump')) {
     include_once __DIR__.'/dump.php';
+}
+
+/**
+ * Debug 调试.
+ *
+ * @param array|string $tag
+ * @param array        $args
+ * @codeCoverageIgnore
+ */
+function debug($tag, ...$args): void
+{
+    if (!is_array($tag) && !is_string($tag)) {
+        throw new RuntimeException('Tag must be string or array.');
+    }
+
+    $normalPrint = false;
+
+    if (is_array($tag)) {
+        switch (count($tag)) {
+            case 2:
+                list($tag, $call) = $tag;
+
+                break;
+            case 3:
+                list($tag, $call, $normalPrint) = $tag;
+
+                break;
+            default:
+                throw new RuntimeException('Invalid argument `tag`.');
+                break;
+        }
+    }
+
+    $key = 'LEEVEL_DEBUG_'.$tag;
+
+    if (isset($GLOBALS[$key])) {
+        array_unshift($args, $tag);
+
+        if (null !== $call) {
+            $call(...$args);
+        } else {
+            if (true === $normalPrint) {
+                var_dump($args);
+            } else {
+                dump($args);
+            }
+        }
+
+        unset($GLOBALS[$key]);
+    }
 }
 
 /**
@@ -32,52 +82,9 @@ if (!function_exists('Leevel\\Leevel\\Helper\\dump')) {
  * @param string $tag
  * @codeCoverageIgnore
  */
-function debug_start(string $tag): void
+function debug_tag(string $tag): void
 {
     $key = 'LEEVEL_DEBUG_'.$tag;
 
     $GLOBALS[$key] = true;
-}
-
-/**
- * Debug 进行时.
- *
- * @param string   $tag
- * @param \Closure $call
- * @param array    $args
- * @codeCoverageIgnore
- */
-function debug_on(string $tag, Closure $call = null, ...$args): void
-{
-    $key = 'LEEVEL_DEBUG_'.$tag;
-
-    if (isset($GLOBALS[$key])) {
-        if (null !== $call) {
-            $call(...$args);
-        } else {
-            if (empty($args)) {
-                $args[] = '';
-            }
-
-            dump(sprintf('----- `%s` start -----', $tag));
-            dump(...$args);
-            dump(sprintf('----- `%s` end -----', $tag));
-            echo PHP_EOL;
-        }
-    }
-}
-
-/**
- * 清理 Debug 标记.
- *
- * @param string $tag
- * @codeCoverageIgnore
- */
-function debug_end(string $tag): void
-{
-    $key = 'LEEVEL_DEBUG_'.$tag;
-
-    if (isset($GLOBALS[$key])) {
-        unset($GLOBALS[$key]);
-    }
 }
