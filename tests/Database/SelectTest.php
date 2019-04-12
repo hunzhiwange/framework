@@ -25,7 +25,6 @@ use Leevel\Collection\Collection;
 use Leevel\Leevel\App;
 use Leevel\Page\IPage;
 use Leevel\Page\Page;
-use Leevel\Support\Facade;
 use PDO;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -1244,14 +1243,10 @@ eot;
         $app->singleton('i18n', function (): I18nMock {
             return new I18nMock();
         });
-
-        Facade::setContainer($app);
     }
 
     protected function clearI18n()
     {
-        Facade::setContainer(null);
-        Facade::remove();
         App::singletons()->clear();
     }
 }

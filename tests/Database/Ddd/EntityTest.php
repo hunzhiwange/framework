@@ -23,7 +23,6 @@ namespace Tests\Database\Ddd;
 use I18nMock;
 use Leevel\Di\Container;
 use Leevel\Leevel\App;
-use Leevel\Support\Facade;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
@@ -43,8 +42,6 @@ class EntityTest extends TestCase
 {
     protected function tearDown()
     {
-        Facade::setContainer(null);
-        Facade::remove();
         App::singletons()->clear();
     }
 
@@ -92,7 +89,6 @@ class EntityTest extends TestCase
 
         $container = new Container();
         $container->instance('app', $container);
-        Facade::setContainer($container);
 
         $entity = new Post(['title' => 'foo']);
         $entity->create()->flush();
@@ -249,7 +245,5 @@ eot;
         $app->singleton('i18n', function (): I18nMock {
             return new I18nMock();
         });
-
-        Facade::setContainer($app);
     }
 }

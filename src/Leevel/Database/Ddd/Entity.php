@@ -32,10 +32,14 @@ use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\DuplicateKeyException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
-use Leevel\I18n\Facade\I18n;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str;
+use function Leevel\I18n\Helper\gettext as __;
+
+if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
+    include_once dirname(__DIR__, 2).'/I18n/Helper/gettext.php';
+}
 
 /**
  * 模型实体 Object Relational Mapping.
@@ -1178,7 +1182,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                     throw new InvalidArgumentException($e);
                 }
 
-                $e[1] = I18n::__($e[1]);
+                $e[1] = __($e[1]);
             }
 
             static::$leevelEnums[static::class][$prop] = $enums;

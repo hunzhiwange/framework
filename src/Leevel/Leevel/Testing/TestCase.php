@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Testing;
 
 use Leevel\Leevel\App;
-use Leevel\Support\Facade;
 use PHPUnit\Framework\TestCase as TestCases;
 
 /**
@@ -53,8 +52,6 @@ abstract class TestCase extends TestCases
         if (!$this->app) {
             $this->app = $this->createApp();
         }
-
-        Facade::remove();
     }
 
     /**

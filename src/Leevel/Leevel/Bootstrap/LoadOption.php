@@ -23,7 +23,6 @@ namespace Leevel\Leevel\Bootstrap;
 use Leevel\Kernel\IApp;
 use Leevel\Option\Load;
 use Leevel\Option\Option;
-use Leevel\Support\Facade;
 use RuntimeException;
 
 /**
@@ -62,8 +61,6 @@ class LoadOption
 
         if (!$test) {
             // @codeCoverageIgnoreStart
-            Facade::setContainer($app);
-
             $this->initialization($option);
             // @codeCoverageIgnoreEnd
         }

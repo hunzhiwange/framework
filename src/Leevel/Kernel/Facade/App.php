@@ -43,8 +43,6 @@ class App
      */
     public static function __callStatic(string $method, array $args)
     {
-        return Apps::singletons()
-            ->make('app')
-            ->{$method}(...$args);
+        return Apps::singletons()->{$method}(...$args);
     }
 }
