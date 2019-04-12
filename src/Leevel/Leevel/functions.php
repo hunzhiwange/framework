@@ -18,7 +18,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Leevel\Leevel\App;
 use Leevel\Support\Fn;
+use Leevel\Support\FunctionNotFoundException;
 use function Leevel\Support\Str\un_camelize;
 
 if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
@@ -160,6 +162,10 @@ class Leevel
     {
         $fn = '\\Leevel\\Leevel\\Helper\\'.un_camelize($method);
 
-        return (new Fn())($fn, ...$args);
+        try {
+            return (new Fn())($fn, ...$args);
+        } catch (FunctionNotFoundException $th) {
+            return App::singletons()->{$method}(...$args);
+        }
     }
 }

@@ -55,7 +55,7 @@ class Fn
                 return $fn(...$args);
             }
 
-            throw $th;
+            throw new FunctionNotFoundException($th->getMessage());
         }
     }
 

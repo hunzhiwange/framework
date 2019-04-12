@@ -243,7 +243,7 @@ class FnTest extends TestCase
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\not_found_not_found'));
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\foo_bar'));
 
-        $this->expectException(\Error::class);
+        $this->expectException(\Leevel\Support\FunctionNotFoundException::class);
         $this->expectExceptionMessage(
             'Call to undefined function Tests\\Support\\Fixtures\\Fn\\not_found_not_found()'
         );
@@ -280,7 +280,7 @@ class FnTest extends TestCase
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\func_was_not_found'));
 
-        $this->expectException(\Error::class);
+        $this->expectException(\Leevel\Support\FunctionNotFoundException::class);
         $this->expectExceptionMessage(
             'Call to undefined function Tests\\Support\\Fixtures\\Fn\\func_was_not_found()'
         );
@@ -292,7 +292,7 @@ class FnTest extends TestCase
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\testgroup_not_found'));
 
-        $this->expectException(\Error::class);
+        $this->expectException(\Leevel\Support\FunctionNotFoundException::class);
         $this->expectExceptionMessage(
             'Call to undefined function Tests\\Support\\Fixtures\\Fn\\testgroup_not_found()'
         );
@@ -318,7 +318,7 @@ class FnTest extends TestCase
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\fnwithoutunderline'));
 
-        $this->expectException(\Error::class);
+        $this->expectException(\Leevel\Support\FunctionNotFoundException::class);
         $this->expectExceptionMessage(
             'Call to undefined function Tests\\Support\\Fixtures\\Fn\\fnwithoutunderline()'
         );
@@ -330,7 +330,7 @@ class FnTest extends TestCase
     {
         $this->assertFalse(function_exists('fnwithoutbackslash'));
 
-        $this->expectException(\Error::class);
+        $this->expectException(\Leevel\Support\FunctionNotFoundException::class);
         $this->expectExceptionMessage(
             'Call to undefined function fnwithoutbackslash()'
         );
