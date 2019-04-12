@@ -22,6 +22,7 @@ namespace Tests\Cache\Redis;
 
 use Leevel\Cache\Redis\PhpRedis;
 use Redis;
+use RedisException;
 use Tests\TestCase;
 
 /**
@@ -39,6 +40,12 @@ class PhpRedisTest extends TestCase
     {
         if (!extension_loaded('redis')) {
             $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+
+        try {
+            $this->makePhpRedis();
+        } catch (RedisException $th) {
+            $this->markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 

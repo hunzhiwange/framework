@@ -24,6 +24,7 @@ use Leevel\Cache\Cache;
 use Leevel\Session\ISession;
 use Leevel\Session\Redis;
 use Leevel\Session\Session;
+use RedisException;
 use SessionHandlerInterface;
 use Tests\TestCase;
 
@@ -42,6 +43,12 @@ class RedisTest extends TestCase
     {
         if (!extension_loaded('redis')) {
             $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+
+        try {
+            $this->createRedisSessionHandler();
+        } catch (RedisException $th) {
+            $this->markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 
