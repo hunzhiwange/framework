@@ -130,16 +130,6 @@ if (!function_exists('drr')) {
     }
 }
 
-if (!function_exists('backtrace')) {
-    /**
-     * 调试栈信息.
-     */
-    function backtrace(): void
-    {
-        Leevel::backtrace();
-    }
-}
-
 if (!function_exists('spl_object_id')) {
     /**
      * 兼容 7.2 spl_object_id.

@@ -72,35 +72,6 @@ class Dump
     }
 
     /**
-     * 调试栈信息.
-     */
-    public static function backtrace(): void
-    {
-        $result = [];
-
-        foreach (debug_backtrace() as $v) {
-            if (isset($v['class']) && $v['function']) {
-                $tmp = '\\'.$v['class'].'::'.$v['function'].'()';
-            } else {
-                $tmp = $v['function'].'()';
-            }
-
-            if (0 === strpos($tmp, '\\PHPUnit\\') || in_array($tmp, [
-                'backtrace()', '\Leevel::backtrace()',
-                '\Leevel\Debug\Dump::backtrace()',
-            ], true)) {
-                continue;
-            }
-
-            $result[] = $tmp;
-        }
-
-        static::dump(implode(PHP_EOL, array_reverse($result)));
-
-        die;
-    }
-
-    /**
      * 调试 RoadRunner 变量.
      *
      * @param mixed $var
