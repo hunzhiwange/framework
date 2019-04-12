@@ -45,6 +45,7 @@ if (!function_exists('fn')) {
             if (in_array($fn, $loaded, true)) {
                 return $fn(...$args);
             }
+
             $loaded[] = $fn;
         }
 
