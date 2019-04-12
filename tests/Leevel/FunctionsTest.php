@@ -309,9 +309,9 @@ class FunctionsTest extends TestCase
             return $i18n;
         });
 
-        $this->assertSame('hello', Leevel::__('hello'));
-        $this->assertSame('hello foo', Leevel::__('hello %s', 'foo'));
-        $this->assertSame('hello 5', Leevel::__('hello %d', 5));
+        $this->assertSame('hello', Leevel::gettext('hello'));
+        $this->assertSame('hello foo', Leevel::gettext('hello %s', 'foo'));
+        $this->assertSame('hello 5', Leevel::gettext('hello %d', 5));
 
         $app->clear();
     }
