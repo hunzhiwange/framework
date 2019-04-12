@@ -21,8 +21,6 @@ declare(strict_types=1);
 use Leevel\Leevel\App;
 use Leevel\Support\Fn;
 use Leevel\Support\FunctionNotFoundException;
-use function Leevel\Leevel\Helper\app as apps;
-use function Leevel\Leevel\Helper\gettext;
 use function Leevel\Support\Str\un_camelize;
 
 if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
@@ -41,7 +39,20 @@ if (!function_exists('fn')) {
      */
     function fn($fn, ...$args)
     {
-        return (new Fn())($fn, ...$args);
+        static $loaded = [], $instance;
+
+        if (is_string($fn)) {
+            if (in_array($fn, $loaded, true)) {
+                return $fn(...$args);
+            }
+            $loaded[] = $fn;
+        }
+
+        if (null === $instance) {
+            $instance = new Fn();
+        }
+
+        return $instance->__invoke($fn, ...$args);
     }
 }
 
@@ -56,9 +67,7 @@ if (!function_exists('app')) {
      */
     function app(?string $service = null, array $args = [])
     {
-        return fn(function () use ($service, $args) {
-            return apps($service, $args);
-        });
+        return fn('Leevel\\Leevel\\Helper\\app', $service, $args);
     }
 }
 
@@ -73,9 +82,7 @@ if (!function_exists('__')) {
      */
     function __(string $text, ...$arr): string
     {
-        return fn(function () use ($text, $arr) {
-            return gettext($text, $arr);
-        });
+        return fn('Leevel\\I18n\\Helper\\gettext', $text, ...$arr);
     }
 }
 
