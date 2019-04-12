@@ -26,7 +26,7 @@ use function Leevel\Leevel\Helper\gettext;
 use function Leevel\Support\Str\un_camelize;
 
 if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once __DIR__.'/Str/un_camelize.php';
+    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
 }
 
 if (!function_exists('fn')) {
