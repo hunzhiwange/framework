@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Event\Facade;
 
-use Leevel\Support\Facade;
+use Leevel\Leevel\App;
 
 /**
  * 门面 event.
@@ -31,15 +31,20 @@ use Leevel\Support\Facade;
  *
  * @version 1.0
  */
-class Event extends Facade
+class Event
 {
     /**
-     * 返回门面名字.
+     * call.
      *
-     * @return string
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
      */
-    protected static function name(): string
+    public static function __callStatic(string $method, array $args)
     {
-        return 'event';
+        return App::singletons()
+            ->make('event')
+            ->{$method}(...$args);
     }
 }

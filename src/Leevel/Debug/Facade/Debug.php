@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Debug\Facade;
 
-use Leevel\Support\Facade;
+use Leevel\Leevel\App;
 
 /**
  * 门面 debug.
@@ -31,8 +31,23 @@ use Leevel\Support\Facade;
  *
  * @version 1.0
  */
-class Debug extends Facade
+class Debug
 {
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        return App::singletons()
+            ->make('auths')
+            ->{$method}(...$args);
+    }
+
     /**
      * 返回门面名字.
      *

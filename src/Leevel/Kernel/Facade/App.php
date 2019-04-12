@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Facade;
 
-use Leevel\Support\Facade;
+use Leevel\Leevel\App as Apps;
 
 /**
  * 门面 app.
@@ -31,15 +31,20 @@ use Leevel\Support\Facade;
  *
  * @version 1.0
  */
-class App extends Facade
+class App
 {
     /**
-     * 返回门面名字.
+     * call.
      *
-     * @return string
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
      */
-    protected static function name(): string
+    public static function __callStatic(string $method, array $args)
     {
-        return 'app';
+        return Apps::singletons()
+            ->make('app')
+            ->{$method}(...$args);
     }
 }

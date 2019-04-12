@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Log\Facade;
 
-use Leevel\Support\Facade;
+use Leevel\Leevel\App;
 
 /**
  * 门面 log.
@@ -31,15 +31,20 @@ use Leevel\Support\Facade;
  *
  * @version 1.0
  */
-class Log extends Facade
+class Log
 {
     /**
-     * 返回门面名字.
+     * call.
      *
-     * @return string
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
      */
-    protected static function name(): string
+    public static function __callStatic(string $method, array $args)
     {
-        return 'logs';
+        return App::singletons()
+            ->make('logs')
+            ->{$method}(...$args);
     }
 }

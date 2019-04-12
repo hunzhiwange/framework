@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Option\Facade;
 
-use Leevel\Support\Facade;
+use Leevel\Leevel\App;
 
 /**
  * 门面 option.
@@ -31,15 +31,20 @@ use Leevel\Support\Facade;
  *
  * @version 1.0
  */
-class Option extends Facade
+class Option
 {
     /**
-     * 返回门面名字.
+     * call.
      *
-     * @return string
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
      */
-    protected static function name(): string
+    public static function __callStatic(string $method, array $args)
     {
-        return 'option';
+        return App::singletons()
+            ->make('option')
+            ->{$method}(...$args);
     }
 }

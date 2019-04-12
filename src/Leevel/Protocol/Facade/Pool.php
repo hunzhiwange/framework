@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Facade;
 
-use Leevel\Support\Facade;
+use Leevel\Leevel\App;
 
 /**
  * 门面 pool.
@@ -31,15 +31,20 @@ use Leevel\Support\Facade;
  *
  * @version 1.0
  */
-class Pool extends Facade
+class Pool
 {
     /**
-     * 返回门面名字.
+     * call.
      *
-     * @return string
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
      */
-    protected static function name(): string
+    public static function __callStatic(string $method, array $args)
     {
-        return 'pool';
+        return App::singletons()
+            ->make('pool')
+            ->{$method}(...$args);
     }
 }
