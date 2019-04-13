@@ -18,20 +18,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Log\Helper;
 
-use Leevel\Debug\Dump;
+use Leevel\Leevel\App;
 
 /**
- * 调试 RoadRunner 变量.
+ * 日志.
  *
- * @param mixed $var
- * @param array $moreVars
+ * @param null|string $message = null
+ * @param array       $context
+ * @param string      $level
  *
  * @return mixed
- * @codeCoverageIgnore
  */
-function drr($var, ...$moreVars)
+function log(?string $message = null, array $context = [], string $level = ILog::INFO)
 {
-    return Dump::dumpRoadRunner($var, ...$moreVars);
+    $service = App::singletons()->make('logs');
+
+    if (null === $message) {
+        return $service;
+    }
+
+    $service->log($level, $message, $context);
 }

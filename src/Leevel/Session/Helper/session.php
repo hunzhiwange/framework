@@ -18,26 +18,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Session\Helper;
 
 use Leevel\Leevel\App;
 
 /**
- * 日志.
+ * 设置或者获取 session 值
  *
- * @param null|string $message = null
- * @param array       $context
- * @param string      $level
+ * @param null|array|string $key
+ * @param mixed             $defaults
  *
  * @return mixed
  */
-function log(?string $message = null, array $context = [], string $level = ILog::INFO)
+function session($key = null, $defaults = null)
 {
-    $service = App::singletons()->make('logs');
+    $service = App::singletons()->make('sessions');
 
-    if (null === $message) {
+    if (null === $key) {
         return $service;
     }
 
-    $service->log($level, $message, $context);
+    if (is_array($key)) {
+        return $service->put($key);
+    }
+
+    return $service->get($key, $defaults);
 }

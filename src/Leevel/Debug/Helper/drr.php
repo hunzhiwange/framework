@@ -18,32 +18,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Debug\Helper;
 
-use Leevel\Cache\ICache;
-use Leevel\Leevel\App;
+use Leevel\Debug\Dump;
 
 /**
- * 设置或者获取 cache 值
+ * 调试 RoadRunner 变量.
  *
- * @param null|array|string $key
- * @param mixed             $defaults
- * @param array             $option
+ * @param mixed $var
+ * @param array $moreVars
  *
  * @return mixed
+ * @codeCoverageIgnore
  */
-function cache($key = null, $defaults = null, array $option = [])
+function drr($var, ...$moreVars)
 {
-    $service = App::singletons()
-        ->make(ICache::class);
-
-    if (null === $key) {
-        return $service;
-    }
-
-    if (is_array($key)) {
-        return $service->put($key, null, $option);
-    }
-
-    return $service->get($key, $defaults, $option);
+    return Dump::dumpRoadRunner($var, ...$moreVars);
 }

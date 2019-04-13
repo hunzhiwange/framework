@@ -18,29 +18,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Kernel\Helper;
 
 use Leevel\Leevel\App;
 
 /**
- * 设置或者获取 session 值
+ * 返回应用容器或者注入.
  *
- * @param null|array|string $key
- * @param mixed             $defaults
+ * @param null|string $service
+ * @param array       $args
  *
- * @return mixed
+ * @return \Leevel\Leevel\App|mixed
  */
-function session($key = null, $defaults = null)
+function app(?string $service = null, array $args = [])
 {
-    $service = App::singletons()->make('sessions');
+    $app = App::singletons();
 
-    if (null === $key) {
-        return $service;
+    if (null === $service) {
+        return $app;
     }
 
-    if (is_array($key)) {
-        return $service->put($key);
-    }
-
-    return $service->get($key, $defaults);
+    return $app->make($service, $args);
 }

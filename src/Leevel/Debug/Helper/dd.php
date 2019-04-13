@@ -18,25 +18,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Debug\Helper;
 
-use Leevel\Leevel\App;
+use Leevel\Debug\Dump;
 
 /**
- * 返回应用容器或者注入.
+ * 调试变量并中断.
  *
- * @param null|string $service
- * @param array       $args
- *
- * @return \Leevel\Leevel\App|mixed
+ * @param mixed $var
+ * @param array $moreVars
+ * @codeCoverageIgnore
  */
-function app(?string $service = null, array $args = [])
+function dd($var, ...$moreVars): void
 {
-    $app = App::singletons();
-
-    if (null === $service) {
-        return $app;
-    }
-
-    return $app->make($service, $args);
+    Dump::dumpDie($var, ...$moreVars);
 }

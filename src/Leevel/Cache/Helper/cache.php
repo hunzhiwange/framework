@@ -18,20 +18,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Cache\Helper;
 
-use Leevel\Debug\Dump as DebugDump;
+use Leevel\Leevel\App;
 
 /**
- * 调试变量.
+ * 设置或者获取 cache 值
  *
- * @param mixed $var
- * @param array $moreVars
+ * @param null|array|string $key
+ * @param mixed             $defaults
+ * @param array             $option
  *
  * @return mixed
- * @codeCoverageIgnore
  */
-function dump($var, ...$moreVars)
+function cache($key = null, $defaults = null, array $option = [])
 {
-    return DebugDump::dump($var, ...$moreVars);
+    $service = App::singletons()->make('caches');
+
+    if (null === $key) {
+        return $service;
+    }
+
+    if (is_array($key)) {
+        return $service->put($key, null, $option);
+    }
+
+    return $service->get($key, $defaults, $option);
 }

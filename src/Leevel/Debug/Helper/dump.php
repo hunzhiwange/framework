@@ -18,18 +18,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Debug\Helper;
 
-use Leevel\Debug\Dump;
+use Leevel\Debug\Dump as DebugDump;
 
 /**
- * 调试变量并中断.
+ * 调试变量.
  *
  * @param mixed $var
  * @param array $moreVars
+ *
+ * @return mixed
  * @codeCoverageIgnore
  */
-function dd($var, ...$moreVars): void
+function dump($var, ...$moreVars)
 {
-    Dump::dumpDie($var, ...$moreVars);
+    return DebugDump::dump($var, ...$moreVars);
 }

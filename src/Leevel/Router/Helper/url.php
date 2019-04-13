@@ -18,25 +18,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Router\Helper;
 
 use Leevel\Leevel\App;
 
 /**
- * 加密字符串.
+ * 生成路由地址
  *
- * @param string $value
- * @param int    $expiry
- *
- * @since 2016.11.26
- *
- * @version 1.0
+ * @param string      $url
+ * @param array       $params
+ * @param string      $subdomain
+ * @param bool|string $suffix
  *
  * @return string
  */
-function encrypt(string $value, int $expiry = 0): string
+function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
 {
     return App::singletons()
-        ->make('encryption')
-        ->encrypt($value, $expiry);
+        ->make('url')
+        ->make($url, $params, $subdomain, $suffix);
 }

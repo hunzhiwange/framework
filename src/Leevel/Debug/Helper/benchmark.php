@@ -18,9 +18,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Debug\Helper;
 
-if (!function_exists('Leevel\\Leevel\\Helper\\dump')) {
+if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
     include_once __DIR__.'/dump.php';
 }
 
