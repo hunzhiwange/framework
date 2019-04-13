@@ -57,6 +57,7 @@ class CompilerForTest extends TestCase
     QueryPHP - 代码版本for <br>
 {/for}
 eot;
+        $hell = 0;
 
         $compiled = <<<'eot'
 <?php for ($i=1;$i<10;$i++): ?>
