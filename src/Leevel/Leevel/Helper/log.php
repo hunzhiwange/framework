@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Leevel\App;
-use Leevel\Log\ILog;
 
 /**
  * 日志.
@@ -34,8 +33,7 @@ use Leevel\Log\ILog;
  */
 function log(?string $message = null, array $context = [], string $level = ILog::INFO)
 {
-    $service = App::singletons()
-        ->make(ILog::class);
+    $service = App::singletons()->make('logs');
 
     if (null === $message) {
         return $service;

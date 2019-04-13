@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Leevel\App;
-use Leevel\Router\IUrl;
 
 /**
  * 生成路由地址
@@ -35,8 +34,7 @@ use Leevel\Router\IUrl;
  */
 function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
 {
-    $service = App::singletons()
-        ->make(IUrl::class);
-
-    return $service->make($url, $params, $subdomain, $suffix);
+    return App::singletons()
+        ->make('url')
+        ->make($url, $params, $subdomain, $suffix);
 }

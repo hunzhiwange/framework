@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Leevel\Helper;
 
-use Leevel\Encryption\IEncryption;
 use Leevel\Leevel\App;
 
 /**
@@ -37,8 +36,7 @@ use Leevel\Leevel\App;
  */
 function encrypt(string $value, int $expiry = 0): string
 {
-    $service = App::singletons()
-        ->make(IEncryption::class);
-
-    return $service->encrypt($value, $expiry);
+    return App::singletons()
+        ->make('encryption')
+        ->encrypt($value, $expiry);
 }

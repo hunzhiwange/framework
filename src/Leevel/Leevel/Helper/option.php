@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Leevel\App;
-use Leevel\Option\IOption;
 
 /**
  * 设置或者获取 option 值
@@ -33,8 +32,7 @@ use Leevel\Option\IOption;
  */
 function option($key = null, $defaults = null)
 {
-    $service = App::singletons()
-        ->make(IOption::class);
+    $service = App::singletons()->make('option');
 
     if (null === $key) {
         return $service;

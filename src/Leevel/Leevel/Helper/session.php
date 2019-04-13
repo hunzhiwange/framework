@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Helper;
 
 use Leevel\Leevel\App;
-use Leevel\Session\ISession;
 
 /**
  * 设置或者获取 session 值
@@ -33,8 +32,7 @@ use Leevel\Session\ISession;
  */
 function session($key = null, $defaults = null)
 {
-    $service = App::singletons()
-        ->make(ISession::class);
+    $service = App::singletons()->make('sessions');
 
     if (null === $key) {
         return $service;
