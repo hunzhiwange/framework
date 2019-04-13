@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Log\Helper;
 
 use Leevel\Leevel\App;
+use Leevel\Log\ILog;
 
 /**
  * 日志.

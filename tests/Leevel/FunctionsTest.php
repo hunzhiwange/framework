@@ -139,7 +139,7 @@ class FunctionsTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton(ILog::class, function () use ($log) {
+        $app->singleton('logs', function () use ($log) {
             return $log;
         });
 
@@ -162,7 +162,7 @@ class FunctionsTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton(IOption::class, function () use ($option) {
+        $app->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -187,7 +187,7 @@ class FunctionsTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton(ICache::class, function () use ($cache) {
+        $app->singleton('caches', function () use ($cache) {
             return $cache;
         });
 
@@ -211,7 +211,7 @@ class FunctionsTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton(IEncryption::class, function () use ($encryption) {
+        $app->singleton('encryption', function () use ($encryption) {
             return $encryption;
         });
 
@@ -234,7 +234,7 @@ class FunctionsTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton(ISession::class, function () use ($session) {
+        $app->singleton('sessions', function () use ($session) {
             return $session;
         });
 
@@ -258,7 +258,7 @@ class FunctionsTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton(ISession::class, function () use ($session) {
+        $app->singleton('sessions', function () use ($session) {
             return $session;
         });
 
@@ -278,7 +278,7 @@ class FunctionsTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton(IUrl::class, function () use ($url) {
+        $app->singleton('url', function () use ($url) {
             return $url;
         });
 
@@ -305,7 +305,7 @@ class FunctionsTest extends TestCase
         $app = App::singletons();
         $app->clear();
 
-        $app->singleton(II18n::class, function () use ($i18n) {
+        $app->singleton('i18n', function () use ($i18n) {
             return $i18n;
         });
 
