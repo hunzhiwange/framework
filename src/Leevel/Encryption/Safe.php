@@ -23,10 +23,6 @@ namespace Leevel\Encryption;
 use Leevel\Support\Fn;
 use function Leevel\Support\Str\un_camelize;
 
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
-
 /**
  * 安全函数.
  *
@@ -52,4 +48,8 @@ class Safe
 
         return (new Fn())($fn, ...$args);
     }
+}
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include dirname(__DIR__).'/Support/Str/un_camelize.php';
 }

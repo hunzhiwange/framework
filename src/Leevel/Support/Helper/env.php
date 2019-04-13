@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Helper;
 
-if (!function_exists('Leevel\\Support\\Helper\\value')) {
-    include_once __DIR__.'/value.php';
-}
-
 /**
  * 取得应用的环境变量.支持 boolean, empty 和 null.
  *
@@ -59,4 +55,8 @@ function env(string $name, $defaults = null)
     }
 
     return $value;
+}
+
+if (!function_exists('Leevel\\Support\\Helper\\value')) {
+    include __DIR__.'/value.php';
 }

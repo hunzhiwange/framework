@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
-    include_once __DIR__.'/length_limit.php';
-}
-
 /**
  * html 过滤.
  *
@@ -59,4 +55,8 @@ function html_filter($data, int $maxNum = 20000)
     $data = str_replace('　', '', $data);
 
     return $data;
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
+    include __DIR__.'/length_limit.php';
 }

@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\clean_js')) {
-    include_once __DIR__.'/clean_js.php';
-}
-
 /**
  * 字符过滤 JS 和 HTML 标签.
  *
@@ -38,4 +34,8 @@ function strip(string $strings): string
     $strings = strip_tags($strings);
 
     return $strings;
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\clean_js')) {
+    include __DIR__.'/clean_js.php';
 }

@@ -19,41 +19,22 @@ declare(strict_types=1);
  */
 
 use Leevel\Leevel\App;
-use Leevel\Support\Fn;
 use Leevel\Support\FunctionNotFoundException;
+use function Leevel\Support\Helper\fn as fns;
 use function Leevel\Support\Str\un_camelize;
-
-include dirname(__DIR__).'/Support/Str/un_camelize.php';
 
 if (!function_exists('fn')) {
     /**
      * 自动导入函数.
      *
-     * @param \Closure|string $fn
-     * @param array           $args
-     * @param mixed           $fn
+     * @param callable|\Closure|string $fn
+     * @param array                    $args
      *
      * @return mixed
      */
     function fn($fn, ...$args)
     {
-        static $instance, $loaded = [];
-
-        if (is_string($fn) && in_array($fn, $loaded, true)) {
-            return $fn(...$args);
-        }
-
-        if (null === $instance) {
-            $instance = new Fn();
-        }
-
-        $result = $instance->__invoke($fn, ...$args);
-
-        if (is_string($fn)) {
-            $loaded[] = $fn;
-        }
-
-        return $result;
+        return fns($fn, ...$args);
     }
 }
 
@@ -163,4 +144,12 @@ class Leevel
             return App::singletons()->{$method}(...$args);
         }
     }
+}
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include dirname(__DIR__).'/Support/Str/un_camelize.php';
+}
+
+if (!function_exists('Leevel\\Support\\Helper\\fn')) {
+    include dirname(__DIR__).'/Support/Helper/fn.php';
 }

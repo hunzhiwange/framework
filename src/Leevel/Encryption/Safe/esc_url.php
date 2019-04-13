@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\deep_replace')) {
-    include_once __DIR__.'/deep_replace.php';
-}
-
 /**
  * url 安全过滤.
  *
@@ -70,4 +66,8 @@ function esc_url(string $url, ?array $protocols = null, bool $show = true): stri
     }
 
     return $url;
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\deep_replace')) {
+    include __DIR__.'/deep_replace.php';
 }

@@ -20,14 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
-    include_once __DIR__.'/length_limit.php';
-}
-
-if (!function_exists('Leevel\\Encryption\\Safe\\custom_htmlspecialchars')) {
-    include_once __DIR__.'/custom_htmlspecialchars.php';
-}
-
 /**
  * 长字符串长度验证
  *
@@ -44,4 +36,12 @@ function long_limit(string $strings, int $maxLength = 3000): string
     $strings = nl2br($strings);
 
     return $strings;
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
+    include __DIR__.'/length_limit.php';
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\custom_htmlspecialchars')) {
+    include __DIR__.'/custom_htmlspecialchars.php';
 }

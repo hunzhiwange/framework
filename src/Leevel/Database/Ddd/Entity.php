@@ -37,10 +37,6 @@ use Leevel\Support\IJson;
 use Leevel\Support\Str;
 use function Leevel\I18n\Helper\gettext as __;
 
-if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
-    include_once dirname(__DIR__, 2).'/I18n/Helper/gettext.php';
-}
-
 /**
  * 模型实体 Object Relational Mapping.
  * 为最大化避免 getter setter 属性与系统冲突
@@ -1942,4 +1938,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         return static::$leevelCamelize[$prop] = Str::camelize($prop);
     }
+}
+
+if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
+    include dirname(__DIR__, 2).'/I18n/Helper/gettext.php';
 }

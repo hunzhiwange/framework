@@ -20,12 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use Leevel\Support\Fn;
+use function Leevel\Support\Helper\fn;
 use function Leevel\Support\Str\un_camelize;
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
 
 /**
  * File System Object 管理.
@@ -50,6 +46,14 @@ class Fso
     {
         $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
 
-        return (new Fn())($fn, ...$args);
+        return fn($fn, ...$args);
     }
+}
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include dirname(__DIR__).'/Support/Str/un_camelize.php';
+}
+
+if (!function_exists('Leevel\\Support\\Helper\\fn')) {
+    include dirname(__DIR__).'/Support/Helper/fn.php';
 }

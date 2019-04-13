@@ -22,10 +22,6 @@ namespace Leevel\Filesystem\Fso;
 
 use DirectoryIterator;
 
-if (!function_exists('Leevel\\Filesystem\\Fso\\create_directory')) {
-    include_once __DIR__.'/create_directory.php';
-}
-
 /**
  * 复制目录.
  *
@@ -67,4 +63,8 @@ function copy_directory(string $sourcePath, string $targetPath, array $filter = 
             }
         }
     }
+}
+
+if (!function_exists('Leevel\\Filesystem\\Fso\\create_directory')) {
+    include __DIR__.'/create_directory.php';
 }

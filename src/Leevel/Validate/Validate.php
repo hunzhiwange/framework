@@ -21,12 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use Leevel\Di\IContainer;
-use Leevel\I18n\Facade\I18n;
 use function Leevel\I18n\Helper\gettext as __;
-
-if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
-    include_once dirname(__DIR__).'/I18n/Helper/gettext.php';
-}
 
 /**
  * 验证工厂.
@@ -150,4 +145,8 @@ class Validate implements IValidate
             'unique'                                       => __('{field} 不能出现重复值'),
         ]);
     }
+}
+
+if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
+    include dirname(__DIR__).'/I18n/Helper/gettext.php';
 }

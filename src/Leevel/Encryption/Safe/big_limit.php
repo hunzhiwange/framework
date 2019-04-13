@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
-    include_once __DIR__.'/length_limit.php';
-}
-
 /**
  * 超长字符串长度验证
  *
@@ -40,4 +36,8 @@ function big_limit(string $strings, int $maxLength = 20000): string
     $strings = str_replace('</script ', '', $strings);
 
     return $strings;
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
+    include __DIR__.'/length_limit.php';
 }

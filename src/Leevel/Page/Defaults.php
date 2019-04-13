@@ -22,10 +22,6 @@ namespace Leevel\Page;
 
 use function Leevel\I18n\Helper\gettext as __;
 
-if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
-    include_once dirname(__DIR__).'/I18n/Helper/gettext.php';
-}
-
 /**
  * 默认分页渲染.
  *
@@ -351,4 +347,8 @@ class Defaults implements IRender
     {
         return '</div>';
     }
+}
+
+if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
+    include dirname(__DIR__).'/I18n/Helper/gettext.php';
 }

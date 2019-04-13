@@ -22,10 +22,6 @@ namespace Leevel\Support;
 
 use function Leevel\Support\Str\un_camelize;
 
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once __DIR__.'/Str/un_camelize.php';
-}
-
 /**
  * 字符串.
  *
@@ -51,4 +47,8 @@ class Str
 
         return (new Fn())($fn, ...$args);
     }
+}
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include __DIR__.'/Str/un_camelize.php';
 }

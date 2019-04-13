@@ -20,14 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
-    include_once __DIR__.'/length_limit.php';
-}
-
-if (!function_exists('Leevel\\Encryption\\Safe\\custom_htmlspecialchars')) {
-    include_once __DIR__.'/custom_htmlspecialchars.php';
-}
-
 /**
  * 短字符串长度验证
  *
@@ -43,4 +35,12 @@ function short_limit(string $strings, int $maxLength = 500): string
     $strings = custom_htmlspecialchars($strings);
 
     return preg_replace('/　+/', '', trim($strings));
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
+    include __DIR__.'/length_limit.php';
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\custom_htmlspecialchars')) {
+    include __DIR__.'/custom_htmlspecialchars.php';
 }

@@ -22,10 +22,6 @@ namespace Leevel\Debug\Helper;
 
 use RuntimeException;
 
-if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
-    include_once __DIR__.'/dump.php';
-}
-
 /**
  * Debug 调试.
  *
@@ -87,4 +83,8 @@ function debug_tag(string $tag): void
     $key = 'LEEVEL_DEBUG_'.$tag;
 
     $GLOBALS[$key] = true;
+}
+
+if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
+    include __DIR__.'/dump.php';
 }

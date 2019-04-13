@@ -20,14 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
-    include_once __DIR__.'/length_limit.php';
-}
-
-if (!function_exists('Leevel\\Encryption\\Safe\\custom_htmlspecialchars')) {
-    include_once __DIR__.'/custom_htmlspecialchars.php';
-}
-
 /**
  * 字符过滤.
  *
@@ -59,4 +51,12 @@ function str_filter($data, int $maxNum = 20000)
     $data = str_replace('　', '', $data);
 
     return $data;
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
+    include __DIR__.'/length_limit.php';
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\custom_htmlspecialchars')) {
+    include __DIR__.'/custom_htmlspecialchars.php';
 }

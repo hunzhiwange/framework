@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\clean_js')) {
-    include_once __DIR__.'/clean_js.php';
-}
-
 /**
  * 字符串文本化.
  *
@@ -55,4 +51,8 @@ function text(string $strings, bool $deep = true, array $black = []): string
     $strings = str_replace("'", '', $strings);
 
     return $strings;
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\clean_js')) {
+    include __DIR__.'/clean_js.php';
 }

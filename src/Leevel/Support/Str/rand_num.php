@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Str;
 
-if (!function_exists('Leevel\\Support\\Str\\rand_str')) {
-    include_once __DIR__.'/rand_str.php';
-}
-
 /**
  * 随机数字.
  *
@@ -43,4 +39,8 @@ function rand_num(int $length, ?string $charBox = null): string
     }
 
     return rand_str($length, $charBox);
+}
+
+if (!function_exists('Leevel\\Support\\Str\\rand_str')) {
+    include __DIR__.'/rand_str.php';
 }

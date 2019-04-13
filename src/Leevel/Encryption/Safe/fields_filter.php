@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Safe;
 
-if (!function_exists('Leevel\\Encryption\\Safe\\sql_filter')) {
-    include_once __DIR__.'/sql_filter.php';
-}
-
 /**
  * 字段过滤.
  *
@@ -45,4 +41,8 @@ function fields_filter($fields)
     $fields = preg_replace('/^,|,$/', '', $fields);
 
     return $fields;
+}
+
+if (!function_exists('Leevel\\Encryption\\Safe\\sql_filter')) {
+    include __DIR__.'/sql_filter.php';
 }

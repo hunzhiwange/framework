@@ -20,10 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Debug\Helper;
 
-if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
-    include_once __DIR__.'/dump.php';
-}
-
 /**
  * 性能基准测试.
  *
@@ -102,4 +98,8 @@ function benchmark_call($call, int $time = 1): array
         round($endTime - $startTime, 10),
         round($endMemory - $startMemory, 10),
     ];
+}
+
+if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
+    include __DIR__.'/dump.php';
 }

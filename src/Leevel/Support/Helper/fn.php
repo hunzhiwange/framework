@@ -18,29 +18,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support\Str;
+namespace Leevel\Support\Helper;
+
+use Leevel\Support\Fn as Fns;
 
 /**
- * 随机字母数字.
+ * 自动导入函数.
  *
- * @param int    $length
- * @param string $charBox
+ * @param callable|\Closure|string $fn
+ * @param array                    $args
  *
- * @return string
+ * @return mixed
  */
-function rand_alpha_num(int $length, ?string $charBox = null): string
+function fn($fn, ...$args)
 {
-    if (!$length) {
-        return '';
+    static $instance, $loaded = [];
+
+    if (is_string($fn) && in_array($fn, $loaded, true)) {
+        return $fn(...$args);
     }
 
-    if (null === $charBox) {
-        $charBox = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    if (null === $instance) {
+        $instance = new Fns();
     }
 
-    return rand_str($length, $charBox);
-}
+    $result = $instance->__invoke($fn, ...$args);
 
-if (!function_exists('Leevel\\Support\\Str\\rand_str')) {
-    include __DIR__.'/rand_str.php';
+    if (is_string($fn)) {
+        $loaded[] = $fn;
+    }
+
+    return $result;
 }
