@@ -18,9 +18,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Leevel\Helper;
+namespace Leevel\Support\Helper;
 
-if (!function_exists('Leevel\\Leevel\\Helper\\value')) {
+if (!function_exists('Leevel\\Support\\Helper\\value')) {
     include_once __DIR__.'/value.php';
 }
 

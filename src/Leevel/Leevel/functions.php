@@ -68,7 +68,7 @@ if (!function_exists('app')) {
      */
     function app(?string $service = null, array $args = [])
     {
-        return fn('Leevel\\Leevel\\Helper\\app', $service, $args);
+        return fn('Leevel\\Kernel\\Helper\\app', $service, $args);
     }
 }
 
@@ -98,7 +98,7 @@ if (!function_exists('dump')) {
      */
     function dump($var, ...$moreVars)
     {
-        return Leevel::dump($var, ...$moreVars);
+        return fn('Leevel\\Debug\\Helper\\dump', $var, ...$moreVars);
     }
 }
 
@@ -111,7 +111,7 @@ if (!function_exists('dd')) {
      */
     function dd($var, ...$moreVars): void
     {
-        Leevel::dd($var, ...$moreVars);
+        fn('Leevel\\Debug\\Helper\\dd', $var, ...$moreVars);
     }
 }
 
@@ -126,7 +126,7 @@ if (!function_exists('drr')) {
      */
     function drr($var, ...$moreVars)
     {
-        return Leevel::drr($var, ...$moreVars);
+        return fn('Leevel\\Debug\\Helper\\drr', $var, ...$moreVars);
     }
 }
 
