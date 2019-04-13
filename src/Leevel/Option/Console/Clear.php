@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Option\Console;
 
 use Leevel\Console\Command;
-use Leevel\Console\Option;
 use Leevel\Kernel\IApp;
 
 /**

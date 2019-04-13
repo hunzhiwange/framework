@@ -38,10 +38,10 @@ class Bar extends Command
     protected $description = 'This is a foo command';
 
     protected $help = <<<'EOF'
-The <info>%command.name%</info> command to show how to make a command:
-
-  <info>php %command.full_name%</info>
-EOF;
+        The <info>%command.name%</info> command to show how to make a command:
+        
+          <info>php %command.full_name%</info>
+        EOF;
 
     public function handle()
     {

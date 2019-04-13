@@ -158,7 +158,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data);
 
-        $this->assertSame(4, count($collection));
+        $this->assertCount(4, $collection);
     }
 
     public function testArrayAccess()
@@ -394,23 +394,23 @@ class CollectionTest extends TestCase
         $collection = new Collection($data);
 
         $data = <<<'eot'
-[
-    [
-        "hello",
-        "world"
-    ],
-    [
-        "hello",
-        "world"
-    ],
-    [
-        "hello",
-        "world"
-    ],
-    "foo",
-    "bar"
-]
-eot;
+            [
+                [
+                    "hello",
+                    "world"
+                ],
+                [
+                    "hello",
+                    "world"
+                ],
+                [
+                    "hello",
+                    "world"
+                ],
+                "foo",
+                "bar"
+            ]
+            eot;
 
         $this->assertSame(
             $data,

@@ -38,11 +38,11 @@ class DeleteTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "DELETE FROM `test` WHERE `test`.`id` = 1 ORDER BY `test`.`id` DESC LIMIT 1",
-    []
-]
-eot;
+            [
+                "DELETE FROM `test` WHERE `test`.`id` = 1 ORDER BY `test`.`id` DESC LIMIT 1",
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -67,11 +67,11 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "DELETE t FROM `test` `t` INNER JOIN `hello` `h` ON `h`.`name` = `t`.`content` WHERE `t`.`id` = 1",
-    []
-]
-eot;
+            [
+                "DELETE t FROM `test` `t` INNER JOIN `hello` `h` ON `h`.`name` = `t`.`content` WHERE `t`.`id` = 1",
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

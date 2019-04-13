@@ -53,28 +53,28 @@ class CompilerTagselfTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<tagself>
-   <if condition="$name eq 1 "> value1
-      <elseif condition="$name eq 2" />value2
-      <else /> value3
-   </if>
-</tagself>
-
-{tagself}
-     {{i + 1}}
-     {$value}
-{/tagself}
-eot;
+            <tagself>
+               <if condition="$name eq 1 "> value1
+                  <elseif condition="$name eq 2" />value2
+                  <else /> value3
+               </if>
+            </tagself>
+            
+            {tagself}
+                 {{i + 1}}
+                 {$value}
+            {/tagself}
+            eot;
 
         $compiled = <<<'eot'
-<if condition="$name eq 1 "> value1
-      <elseif condition="$name eq 2" />value2
-      <else /> value3
-   </if>
-
-{{i + 1}}
-     {$value}
-eot;
+            <if condition="$name eq 1 "> value1
+                  <elseif condition="$name eq 2" />value2
+                  <else /> value3
+               </if>
+            
+            {{i + 1}}
+                 {$value}
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

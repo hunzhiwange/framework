@@ -39,15 +39,15 @@ class TableTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `posts`.* FROM `posts`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `posts`.* FROM `posts`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -59,15 +59,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `posts`.* FROM `mydb`.`posts`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `posts`.* FROM `mydb`.`posts`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -80,15 +80,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `p`.* FROM `mydb`.`posts` `p`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `p`.* FROM `mydb`.`posts` `p`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -106,15 +106,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `posts`.`title`,`posts`.`body` FROM `posts`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `posts`.`title`,`posts`.`body` FROM `posts`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -126,15 +126,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `posts`.`title` AS `t`,`posts`.`name`,`posts`.`remark`,`posts`.`value` FROM `mydb`.`posts`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `posts`.`title` AS `t`,`posts`.`name`,`posts`.`remark`,`posts`.`value` FROM `mydb`.`posts`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -157,15 +157,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `foo`.* FROM `foo`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `foo`.* FROM `foo`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -194,15 +194,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -245,15 +245,15 @@ eot;
         $subSql = $connect->table('test')->makeSql(true);
 
         $sql = <<<'eot'
-[
-    "SELECT `a`.* FROM (SELECT `test`.* FROM `test`) a",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `a`.* FROM (SELECT `test`.* FROM `test`) a",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -272,15 +272,15 @@ eot;
         $subSql = $connect->table('test');
 
         $sql = <<<'eot'
-[
-    "SELECT `bb`.* FROM (SELECT `test`.* FROM `test`) bb",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `bb`.* FROM (SELECT `test`.* FROM `test`) bb",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -299,15 +299,15 @@ eot;
         $subSql = $connect->table('test')->databaseCondition();
 
         $sql = <<<'eot'
-[
-    "SELECT `bb`.* FROM (SELECT `test`.* FROM `test`) bb",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `bb`.* FROM (SELECT `test`.* FROM `test`) bb",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -324,15 +324,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `b`.* FROM (SELECT `world`.* FROM `world`) b",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `b`.* FROM (SELECT `world`.* FROM `world`) b",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -351,15 +351,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `guest_book`.* FROM (SELECT `guest_book`.* FROM `guest_book`) guest_book",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `guest_book`.* FROM (SELECT `guest_book`.* FROM `guest_book`) guest_book",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -378,15 +378,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `world`.`remark`,`hello`.`name`,`hello`.`value` FROM (SELECT `world`.* FROM `world`) world INNER JOIN `hello` ON `hello`.`name` = `world`.`name`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `world`.`remark`,`hello`.`name`,`hello`.`value` FROM (SELECT `world`.* FROM `world`) world INNER JOIN `hello` ON `hello`.`name` = `world`.`name`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

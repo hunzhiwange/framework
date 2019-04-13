@@ -38,15 +38,15 @@ class GroupByTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`id`,`test`.`name`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`id`,`test`.`name`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -62,15 +62,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `post`.`id`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `post`.`id`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -85,15 +85,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY SUM(`test`.`num`)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY SUM(`test`.`num`)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -108,15 +108,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`title`,`test`.`id`,concat('1234',`test`.`id`,'ttt')",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`title`,`test`.`id`,concat('1234',`test`.`id`,'ttt')",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -131,15 +131,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`title`,`test`.`id`,`test`.`ttt`,`test`.`value`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`title`,`test`.`id`,`test`.`ttt`,`test`.`value`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -161,15 +161,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`name`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`name`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -198,15 +198,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`id`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`id`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

@@ -104,7 +104,7 @@ class HasManyTest extends TestCase
             $n++;
         }
 
-        $this->assertSame(6, count($comment));
+        $this->assertCount(6, $comment);
     }
 
     public function testEager()
@@ -155,7 +155,7 @@ class HasManyTest extends TestCase
         $posts = Post::eager(['comment'])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(2, count($posts));
+        $this->assertCount(2, $posts);
 
         $min = 5;
 

@@ -127,7 +127,7 @@ class PipelineTest extends TestCase
     public function testPipelineWithSendNoneParams()
     {
         $pipe = function (Closure $next) {
-            $this->assertSame(1, count(func_get_args()));
+            $this->assertCount(1, func_get_args());
         };
 
         $result = (new Pipeline(new Container()))->

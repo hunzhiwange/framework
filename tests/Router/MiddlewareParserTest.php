@@ -43,16 +43,16 @@ class MiddlewareParserTest extends TestCase
         $this->assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
-{
-    "handle": [
-        "Tests\\Router\\Middlewares\\Demo2@handle"
-    ],
-    "terminate": [
-        "Tests\\Router\\Middlewares\\Demo1@terminate",
-        "Tests\\Router\\Middlewares\\Demo2@terminate"
-    ]
-}
-eot;
+            {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo2@handle"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate",
+                    "Tests\\Router\\Middlewares\\Demo2@terminate"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -69,17 +69,17 @@ eot;
         $this->assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
-{
-    "handle": [
-        "Tests\\Router\\Middlewares\\Demo2@handle",
-        "Tests\\Router\\Middlewares\\Demo3@handle:20,foo"
-    ],
-    "terminate": [
-        "Tests\\Router\\Middlewares\\Demo1@terminate",
-        "Tests\\Router\\Middlewares\\Demo2@terminate"
-    ]
-}
-eot;
+            {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo2@handle",
+                    "Tests\\Router\\Middlewares\\Demo3@handle:20,foo"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate",
+                    "Tests\\Router\\Middlewares\\Demo2@terminate"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -96,15 +96,15 @@ eot;
         $this->assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
-{
-    "handle": [
-        "Tests\\Router\\Middlewares\\Demo3@handle:20,foo"
-    ],
-    "terminate": [
-        "Tests\\Router\\Middlewares\\Demo1@terminate"
-    ]
-}
-eot;
+            {
+                "handle": [
+                    "Tests\\Router\\Middlewares\\Demo3@handle:20,foo"
+                ],
+                "terminate": [
+                    "Tests\\Router\\Middlewares\\Demo1@terminate"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $data,

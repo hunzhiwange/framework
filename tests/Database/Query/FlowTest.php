@@ -38,15 +38,15 @@ class FlowTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 ORDER BY `test`.`name` DESC LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 ORDER BY `test`.`name` DESC LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $id = 2;
 
@@ -70,15 +70,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $id = 1;
 
@@ -103,15 +103,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $id = 3;
 
@@ -136,15 +136,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $id = 4;
 
@@ -174,15 +174,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`id` = 4 ORDER BY `test`.`name` DESC LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`id` = 4 ORDER BY `test`.`name` DESC LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $id = 2;
 
@@ -208,15 +208,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $id = 3;
 
@@ -243,15 +243,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $id = 5;
 

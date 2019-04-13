@@ -53,14 +53,14 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        <assign name="helloWorld" value="say hello to the world" />
-        <assign name="test.hello" value="hello" />
-        eot;
+            <assign name="helloWorld" value="say hello to the world" />
+            <assign name="test.hello" value="hello" />
+            eot;
 
         $compiled = <<<'eot'
-        <?php $helloWorld = 'say hello to the world'; ?>
-        <?php $test->hello = 'hello'; ?>
-        eot;
+            <?php $helloWorld = 'say hello to the world'; ?>
+            <?php $test->hello = 'hello'; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -77,12 +77,12 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        <assign name="test.hello" />
-        eot;
+            <assign name="test.hello" />
+            eot;
 
         $compiled = <<<'eot'
-        <?php $test->hello = null; ?>
-        eot;
+            <?php $test->hello = null; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -99,12 +99,12 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        <assign name="test.hello" value="$hello" />
-        eot;
+            <assign name="test.hello" value="$hello" />
+            eot;
 
         $compiled = <<<'eot'
-        <?php $test->hello = $hello; ?>
-        eot;
+            <?php $test->hello = $hello; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -121,12 +121,12 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        <assign name="test.hello" value="$hello|md5" />
-        eot;
+            <assign name="test.hello" value="$hello|md5" />
+            eot;
 
         $compiled = <<<'eot'
-        <?php $test->hello = md5($hello); ?>
-        eot;
+            <?php $test->hello = md5($hello); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -143,12 +143,12 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        <assign name="test.hello" value="$hello|test=0,1|foo=**" />
-        eot;
+            <assign name="test.hello" value="$hello|test=0,1|foo=**" />
+            eot;
 
         $compiled = <<<'eot'
-        <?php $test->hello = foo(test($hello, 0,1)); ?>
-        eot;
+            <?php $test->hello = foo(test($hello, 0,1)); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -165,14 +165,14 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        {% let foo = 'foo' %}
-        {% let hello = hello . 'foo' %}
-        eot;
+            {% let foo = 'foo' %}
+            {% let hello = hello . 'foo' %}
+            eot;
 
         $compiled = <<<'eot'
-        <?php $foo = 'foo'; ?>
-        <?php $hello = $hello . 'foo'; ?>
-        eot;
+            <?php $foo = 'foo'; ?>
+            <?php $hello = $hello . 'foo'; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -189,12 +189,12 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        {% let foo 'foo' %}
-        eot;
+            {% let foo 'foo' %}
+            eot;
 
         $compiled = <<<'eot'
-        <?php $foo = 'foo'; ?>
-        eot;
+            <?php $foo = 'foo'; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -211,12 +211,12 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        {% let foo %}
-        eot;
+            {% let foo %}
+            eot;
 
         $compiled = <<<'eot'
-        <?php $foo = null; ?>
-        eot;
+            <?php $foo = null; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -233,12 +233,12 @@ class CompilerAssignTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-        {% let foo = %}
-        eot;
+            {% let foo = %}
+            eot;
 
         $compiled = <<<'eot'
-        <?php $foo = null; ?>
-        eot;
+            <?php $foo = null; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

@@ -39,15 +39,15 @@ class WhereTest extends TestCase
 
         // 字段 （表达式） 值
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -66,15 +66,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -94,15 +94,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`name` > '狗蛋' AND `test`.`value` LIKE '小鸭子'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`name` > '狗蛋' AND `test`.`value` LIKE '小鸭子'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -126,15 +126,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -148,15 +148,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术' AND `test`.`value` <> '结局'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术' AND `test`.`value` <> '结局'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -179,15 +179,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术' OR `test`.`value` <> '结局'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术' OR `test`.`value` <> '结局'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -208,15 +208,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 100",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 100",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -230,15 +230,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 10",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 10",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -253,15 +253,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 100 AND `test`.`name` BETWEEN 5 AND 22",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 100 AND `test`.`name` BETWEEN 5 AND 22",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -284,15 +284,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -306,15 +306,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -334,15 +334,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN (2,50)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN (2,50)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -356,15 +356,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ('1','10')",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ('1','10')",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -379,15 +379,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN (2,50)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN (2,50)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -407,15 +407,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT IN (2,50)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT IN (2,50)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -429,15 +429,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT IN ('1','10')",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT IN ('1','10')",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -457,15 +457,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IS NULL",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IS NULL",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -496,15 +496,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IS NOT NULL",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IS NOT NULL",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -535,15 +535,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '5'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '5'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -574,15 +574,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT LIKE '5'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT LIKE '5'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -613,15 +613,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -639,15 +639,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql`)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql`)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $subSelect = $connect->table('subsql');
 
@@ -668,15 +668,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE EXISTS (select *from d_sub)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE EXISTS (select *from d_sub)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $subSelect = $connect->table('subsql');
 
@@ -695,15 +695,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $subSelect = $connect->table('subsql');
 
@@ -731,15 +731,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE NOT EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE NOT EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -762,15 +762,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5 OR (`test`.`votes` > 100 AND `test`.`title` <> 'Admin')",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5 OR (`test`.`votes` > 100 AND `test`.`title` <> 'Admin')",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -788,15 +788,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5 OR `test`.`name` = '小牛' AND (`test`.`votes` > 100 OR `test`.`title` <> 'Admin')",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5 OR `test`.`name` = '小牛' AND (`test`.`votes` > 100 OR `test`.`title` <> 'Admin')",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -822,15 +822,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.`post`,`test`.`value`,concat(\"tt_\",`test`.`id`) FROM `test` WHERE concat(\"hello_\",`test`.`posts`) = `test`.`id`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.`post`,`test`.`value`,concat(\"tt_\",`test`.`id`) FROM `test` WHERE concat(\"hello_\",`test`.`posts`) = `test`.`id`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -849,15 +849,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = '故事' AND `test`.`name` IN (1,2,3) AND `test`.`weidao` BETWEEN '40' AND '100' AND `test`.`value` IS NULL AND `test`.`remark` IS NOT NULL AND `test`.`goods` = '东亚商品' AND `test`.`hello` = 'world'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = '故事' AND `test`.`name` IN (1,2,3) AND `test`.`weidao` BETWEEN '40' AND '100' AND `test`.`value` IS NULL AND `test`.`remark` IS NOT NULL AND `test`.`goods` = '东亚商品' AND `test`.`hello` = 'world'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -884,15 +884,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`name` = 11 and `post`.`value` = 22 and concat(\"tt_\",`test`.`id`)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`name` = 11 and `post`.`value` = 22 and concat(\"tt_\",`test`.`id`)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -949,15 +949,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`hello` = 'world' OR (`test`.`id` LIKE '你好')",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`hello` = 'world' OR (`test`.`id` LIKE '你好')",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
         $this->assertSame(
             $sql,
             $this->varJson(
@@ -980,15 +980,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`hello` = '111' OR (`test`.`id` LIKE '你好' AND `test`.`value` = 'helloworld') AND (`test`.`id2` LIKE '你好2' OR `test`.`value2` = 'helloworld2' OR (`test`.`child_one` > '123' AND `test`.`child_two` LIKE '123'))",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`hello` = '111' OR (`test`.`id` LIKE '你好' AND `test`.`value` = 'helloworld') AND (`test`.`id2` LIKE '你好2' OR `test`.`value2` = 'helloworld2' OR (`test`.`child_one` > '123' AND `test`.`child_two` LIKE '123'))",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1043,15 +1043,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '6'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '6'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1080,15 +1080,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '5'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '5'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1117,15 +1117,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`value` <> 'bar'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`value` <> 'bar'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1154,15 +1154,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`value` <> 'foo'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`value` <> 'foo'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1191,15 +1191,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `bar`.* FROM `bar` WHERE `bar`.`id` = 2)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `bar`.* FROM `bar` WHERE `bar`.`id` = 2)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1236,15 +1236,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `foo`.* FROM `foo` WHERE `foo`.`id` = 2)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `foo`.* FROM `foo` WHERE `foo`.`id` = 2)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1281,15 +1281,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE NOT EXISTS (SELECT `bar`.* FROM `bar` WHERE `bar`.`id` = 2)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE NOT EXISTS (SELECT `bar`.* FROM `bar` WHERE `bar`.`id` = 2)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1326,15 +1326,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `foo`.* FROM `foo` WHERE `foo`.`id` = 2)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `foo`.* FROM `foo` WHERE `foo`.`id` = 2)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1369,15 +1369,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`name` = 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`name` = 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1428,15 +1428,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1) AND 100",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1) AND 100",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1457,15 +1457,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1),100)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1),100)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1486,15 +1486,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT 1) AND 100",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT 1) AND 100",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1513,15 +1513,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT 1),100)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT 1),100)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1540,15 +1540,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $select = $connect->table('foo', 'id')->one();
 
@@ -1569,15 +1569,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $select = $connect->table('foo', 'id')->one();
 
@@ -1598,15 +1598,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $condition = $connect->table('foo', 'id')->one()->databaseCondition();
 
@@ -1627,15 +1627,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $condition = $connect->table('foo', 'id')->one()->databaseCondition();
 
@@ -1656,15 +1656,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `world`.* FROM `world`)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `world`.* FROM `world`)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1685,15 +1685,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `test`.* FROM `test`)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $subSql = $connect->table('test')->makeSql(true);
 
@@ -1714,15 +1714,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `test`.* FROM `test`)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $subSql = $connect->table('test');
 
@@ -1743,15 +1743,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` = (SELECT `test`.`id` FROM `test` WHERE `test`.`id` = 1)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` = (SELECT `test`.`id` FROM `test` WHERE `test`.`id` = 1)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1772,15 +1772,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `hello`.* FROM `hello` WHERE FIND_IN_SET(1, goods_id)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `hello`.* FROM `hello` WHERE FIND_IN_SET(1, goods_id)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1798,15 +1798,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `hello`.* FROM `hello` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `hello`.* FROM `hello` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1827,15 +1827,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, options_id)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, options_id)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1859,15 +1859,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, goods_id)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, goods_id)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1891,15 +1891,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, options_id) OR FIND_IN_SET(1, goods_id)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, options_id) OR FIND_IN_SET(1, goods_id)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -1925,15 +1925,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

@@ -133,7 +133,7 @@ class LoadOption
             date_default_timezone_set($option->get('time_zone', 'UTC'));
         }
 
-        if (PHP_SAPI === 'cli') {
+        if (\PHP_SAPI === 'cli') {
             return;
         }
 

@@ -307,14 +307,14 @@ class SessionTest extends TestCase
         $session->flash('hello', 'world');
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.new.key": [
-        "hello"
-    ],
-    "flash.old.key": []
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.new.key": [
+                    "hello"
+                ],
+                "flash.old.key": []
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -326,18 +326,18 @@ eot;
         $session->flash('foo', ['bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.new.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.old.key": [],
-    "flash.data.foo": [
-        "bar"
-    ]
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.new.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.old.key": [],
+                "flash.data.foo": [
+                    "bar"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -354,16 +354,16 @@ eot;
         $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.new.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.old.key": [],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.new.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.old.key": [],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -380,13 +380,13 @@ eot;
         $session->nowFlash('hello', 'world');
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [
-        "hello"
-    ]
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [
+                    "hello"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -403,15 +403,15 @@ eot;
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -428,15 +428,15 @@ eot;
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -448,16 +448,16 @@ eot;
         $session->rebuildFlash();
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [],
-    "flash.data.foo": "bar",
-    "flash.new.key": [
-        "hello",
-        "foo"
-    ]
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [],
+                "flash.data.foo": "bar",
+                "flash.new.key": [
+                    "hello",
+                    "foo"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -474,15 +474,15 @@ eot;
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -494,16 +494,16 @@ eot;
         $session->keepFlash(['hello', 'foo']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [],
-    "flash.data.foo": "bar",
-    "flash.new.key": [
-        "hello",
-        "foo"
-    ]
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [],
+                "flash.data.foo": "bar",
+                "flash.new.key": [
+                    "hello",
+                    "foo"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -520,15 +520,15 @@ eot;
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -540,16 +540,16 @@ eot;
         $session->keepFlash(['hello', 'foo']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [],
-    "flash.data.foo": "bar",
-    "flash.new.key": [
-        "hello",
-        "foo"
-    ]
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [],
+                "flash.data.foo": "bar",
+                "flash.new.key": [
+                    "hello",
+                    "foo"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -585,16 +585,16 @@ eot;
         $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.new.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.old.key": [],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.new.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.old.key": [],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -606,14 +606,14 @@ eot;
         $session->deleteFlash(['hello', 'foo']);
 
         $flash = <<<'eot'
-{
-    "flash.new.key": [],
-    "flash.old.key": [
-        "hello",
-        "foo"
-    ]
-}
-eot;
+            {
+                "flash.new.key": [],
+                "flash.old.key": [
+                    "hello",
+                    "foo"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -630,16 +630,16 @@ eot;
         $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.new.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.old.key": [],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.new.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.old.key": [],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -651,16 +651,16 @@ eot;
         $session->deleteFlash(['hello']);
 
         $flash = <<<'eot'
-{
-    "flash.new.key": {
-        "1": "foo"
-    },
-    "flash.old.key": [
-        "hello"
-    ],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.new.key": {
+                    "1": "foo"
+                },
+                "flash.old.key": [
+                    "hello"
+                ],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -677,16 +677,16 @@ eot;
         $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.new.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.old.key": [],
-    "flash.data.foo": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.new.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.old.key": [],
+                "flash.data.foo": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -698,14 +698,14 @@ eot;
         $session->clearFlash();
 
         $flash = <<<'eot'
-{
-    "flash.new.key": [],
-    "flash.old.key": [
-        "hello",
-        "foo"
-    ]
-}
-eot;
+            {
+                "flash.new.key": [],
+                "flash.old.key": [
+                    "hello",
+                    "foo"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -723,21 +723,21 @@ eot;
         $session->flashs(['hello2' => 'world', 'foo2' => 'bar']);
 
         $flash = <<<'eot'
-{
-    "flash.data.hello": "world",
-    "flash.old.key": [
-        "hello",
-        "foo"
-    ],
-    "flash.data.foo": "bar",
-    "flash.data.hello2": "world",
-    "flash.new.key": [
-        "hello2",
-        "foo2"
-    ],
-    "flash.data.foo2": "bar"
-}
-eot;
+            {
+                "flash.data.hello": "world",
+                "flash.old.key": [
+                    "hello",
+                    "foo"
+                ],
+                "flash.data.foo": "bar",
+                "flash.data.hello2": "world",
+                "flash.new.key": [
+                    "hello2",
+                    "foo2"
+                ],
+                "flash.data.foo2": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,
@@ -749,15 +749,15 @@ eot;
         $session->unregisterFlash();
 
         $flash = <<<'eot'
-{
-    "flash.old.key": [
-        "hello2",
-        "foo2"
-    ],
-    "flash.data.hello2": "world",
-    "flash.data.foo2": "bar"
-}
-eot;
+            {
+                "flash.old.key": [
+                    "hello2",
+                    "foo2"
+                ],
+                "flash.data.hello2": "world",
+                "flash.data.foo2": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $flash,

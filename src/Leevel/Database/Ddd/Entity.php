@@ -32,10 +32,10 @@ use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\DuplicateKeyException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
+use function Leevel\I18n\Helper\gettext as __;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str;
-use function Leevel\I18n\Helper\gettext as __;
 
 /**
  * 模型实体 Object Relational Mapping.

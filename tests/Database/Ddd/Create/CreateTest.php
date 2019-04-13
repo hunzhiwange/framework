@@ -78,12 +78,12 @@ class CreateTest extends TestCase
         $entity->save();
 
         $data = <<<'eot'
-[
-    {
-        "name": "foo"
-    }
-]
-eot;
+            [
+                {
+                    "name": "foo"
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -155,12 +155,12 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-[
-    {
-        "name": "foo"
-    }
-]
-eot;
+            [
+                {
+                    "name": "foo"
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -187,12 +187,12 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-[
-    {
-        "id": null
-    }
-]
-eot;
+            [
+                {
+                    "id": null
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -209,16 +209,16 @@ eot;
         $entity->save([], []);
 
         $data = <<<'eot'
-[
-    {
-        "name": "name for create_fill",
-        "description": "set description.",
-        "address": "address is set now.",
-        "foo_bar": "foo bar.",
-        "hello": "hello field."
-    }
-]
-eot;
+            [
+                {
+                    "name": "name for create_fill",
+                    "description": "set description.",
+                    "address": "address is set now.",
+                    "foo_bar": "foo bar.",
+                    "hello": "hello field."
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -235,12 +235,12 @@ eot;
         $entity->save([], ['address']);
 
         $data = <<<'eot'
-[
-    {
-        "address": "address is set now."
-    }
-]
-eot;
+            [
+                {
+                    "address": "address is set now."
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,

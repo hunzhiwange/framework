@@ -316,11 +316,11 @@ class Doc
 
         if ($uses) {
             $uses = <<<eot
-**引入相关类**
+                **引入相关类**
+                
+                {$uses}
 
-{$uses}
-
-eot;
+                eot;
         }
 
         return $uses;
@@ -353,11 +353,11 @@ eot;
     {
         if ($note) {
             $note = <<<eot
-::: tip
-{$note}
-:::
-    
-eot;
+                ::: tip
+                {$note}
+                :::
+                    
+                eot;
         }
 
         return $note;
@@ -377,11 +377,11 @@ eot;
 
         if ($body) {
             $body = <<<eot
-``` {$lang}
-{$body}
-```
-    
-eot;
+                ``` {$lang}
+                {$body}
+                ```
+                    
+                eot;
         }
 
         return $body;

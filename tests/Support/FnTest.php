@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Support;
 
 use Leevel\Support\Fn;
-use Tests\TestCase;
 use function Tests\Support\Fixtures\Fn\foo_bar;
 use function Tests\Support\Fixtures\Fn\not_found_not_found;
 use function Tests\Support\Fixtures\Fn\single_fn;
@@ -29,6 +28,7 @@ use function Tests\Support\Fixtures\Fn\testgroup2_fn1;
 use function Tests\Support\Fixtures\Fn\testgroup2_fn2;
 use function Tests\Support\Fixtures\Fn\testgroup_fn1;
 use function Tests\Support\Fixtures\Fn\testgroup_fn2;
+use Tests\TestCase;
 
 /**
  * fn test.

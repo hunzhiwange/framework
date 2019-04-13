@@ -45,15 +45,15 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test`",
-    [],
-    true,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test`",
+                [],
+                true,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -72,15 +72,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -145,15 +145,15 @@ eot;
         findAll();
 
         $json = <<<'eot'
-[
-    "tom",
-    "tom",
-    "tom",
-    "tom",
-    "tom",
-    "tom"
-]
-eot;
+            [
+                "tom",
+                "tom",
+                "tom",
+                "tom",
+                "tom",
+                "tom"
+            ]
+            eot;
 
         $this->assertSame(
             $json,
@@ -184,11 +184,11 @@ eot;
         findOne();
 
         $json = <<<'eot'
-{
-    "name": "tom",
-    "content": "I love movie."
-}
-eot;
+            {
+                "name": "tom",
+                "content": "I love movie."
+            }
+            eot;
 
         $this->assertSame(
             $json,
@@ -224,13 +224,13 @@ eot;
         findOne();
 
         $json = <<<'eot'
-{
-    "name": "tom",
-    "content": "I love movie.",
-    "arg1": "foo",
-    "arg2": "bar"
-}
-eot;
+            {
+                "name": "tom",
+                "content": "I love movie.",
+                "arg1": "foo",
+                "arg2": "bar"
+            }
+            eot;
 
         $this->assertSame(
             $json,
@@ -276,24 +276,24 @@ eot;
         findAll();
 
         $json = <<<'eot'
-{
-    "tom": [
-        "I love movie.",
-        "I love movie.",
-        "I love movie.",
-        "I love movie.",
-        "I love movie.",
-        "I love movie."
-    ],
-    "hello": [
-        "Test.",
-        "Test.",
-        "Test.",
-        "Test.",
-        "Test."
-    ]
-}
-eot;
+            {
+                "tom": [
+                    "I love movie.",
+                    "I love movie.",
+                    "I love movie.",
+                    "I love movie.",
+                    "I love movie.",
+                    "I love movie."
+                ],
+                "hello": [
+                    "Test.",
+                    "Test.",
+                    "Test.",
+                    "Test.",
+                    "Test."
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $json,
@@ -324,11 +324,11 @@ eot;
         findOne();
 
         $json = <<<'eot'
-{
-    "name": "tom",
-    "content": "I love movie."
-}
-eot;
+            {
+                "name": "tom",
+                "content": "I love movie."
+            }
+            eot;
 
         $this->assertSame(
             $json,
@@ -384,11 +384,11 @@ eot;
         findOne();
 
         $json = <<<'eot'
-{
-    "name": "tom",
-    "content": "I love movie."
-}
-eot;
+            {
+                "name": "tom",
+                "content": "I love movie."
+            }
+            eot;
 
         $this->assertSame(
             $json,
@@ -424,8 +424,8 @@ eot;
         findOne();
 
         $json = <<<'eot'
-[]
-eot;
+            []
+            eot;
 
         $this->assertSame(
             $json,
@@ -458,33 +458,33 @@ eot;
         findAll();
 
         $json = <<<'eot'
-[
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    }
-]
-eot;
+            [
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $json,
@@ -494,7 +494,7 @@ eot;
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(6, count($result));
+        $this->assertCount(6, $result);
 
         $n = 0;
 
@@ -531,33 +531,33 @@ eot;
         findAll();
 
         $json = <<<'eot'
-[
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    },
-    {
-        "name": "tom",
-        "content": "I love movie."
-    }
-]
-eot;
+            [
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $json,
@@ -567,7 +567,7 @@ eot;
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(6, count($result));
+        $this->assertCount(6, $result);
 
         $n = 0;
 
@@ -624,10 +624,10 @@ eot;
         list('name');
 
         $json = <<<'eot'
-[
-    "tom"
-]
-eot;
+            [
+                "tom"
+            ]
+            eot;
 
         $this->assertSame(
             $json,
@@ -654,10 +654,10 @@ eot;
         list('content', 'name');
 
         $json = <<<'eot'
-{
-    "tom": "I love movie."
-}
-eot;
+            {
+                "tom": "I love movie."
+            }
+            eot;
 
         $this->assertSame(
             $json,
@@ -684,10 +684,10 @@ eot;
         list('content,name');
 
         $json = <<<'eot'
-{
-    "tom": "I love movie."
-}
-eot;
+            {
+                "tom": "I love movie."
+            }
+            eot;
 
         $this->assertSame(
             $json,
@@ -714,10 +714,10 @@ eot;
         list(['content'], 'name');
 
         $json = <<<'eot'
-{
-    "tom": "I love movie."
-}
-eot;
+            {
+                "tom": "I love movie."
+            }
+            eot;
 
         $this->assertSame(
             $json,
@@ -756,7 +756,7 @@ eot;
             $this->assertSame('I love movie.', $result[1]->content);
             $this->assertContains(date('Y-m-d'), $result[1]->create_at);
 
-            $this->assertSame(2, count($result));
+            $this->assertCount(2, $result);
             $this->assertSame($n, $page);
 
             $n++;
@@ -792,7 +792,7 @@ eot;
             $this->assertSame('I love movie.', $result[1]->content);
             $this->assertContains(date('Y-m-d'), $result[1]->create_at);
 
-            $this->assertSame(2, count($result));
+            $this->assertCount(2, $result);
             $this->assertSame($n, $page);
 
             // It will break.
@@ -876,7 +876,7 @@ eot;
         page(1);
 
         $this->assertInternalType('array', $page);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
 
         $n = 0;
 
@@ -890,13 +890,13 @@ eot;
         }
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_record": 26,
-    "from": 0
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_record": 26,
+                "from": 0
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -926,7 +926,7 @@ eot;
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
 
         $n = 0;
 
@@ -940,8 +940,8 @@ eot;
         }
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 26 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 26 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -964,16 +964,16 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_page": 3,
-    "total_record": 26,
-    "total_macro": false,
-    "from": 0,
-    "to": 10
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_page": 3,
+                "total_record": 26,
+                "total_macro": false,
+                "from": 0,
+                "to": 10
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -990,8 +990,8 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":10,"current_page":1,"total_page":3,"total_record":26,"total_macro":false,"from":0,"to":10}
-eot;
+            {"per_page":10,"current_page":1,"total_page":3,"total_record":26,"total_macro":false,"from":0,"to":10}
+            eot;
 
         $this->assertSame(
             $data,
@@ -1021,7 +1021,7 @@ eot;
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
 
         $n = 0;
 
@@ -1035,8 +1035,8 @@ eot;
         }
 
         $data = <<<'eot'
-<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=6';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=6';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -1059,16 +1059,16 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_page": 100000000,
-    "total_record": 999999999,
-    "total_macro": true,
-    "from": 0,
-    "to": null
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_page": 100000000,
+                "total_record": 999999999,
+                "total_macro": true,
+                "from": 0,
+                "to": null
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1085,8 +1085,8 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":10,"current_page":1,"total_page":100000000,"total_record":999999999,"total_macro":true,"from":0,"to":null}
-eot;
+            {"per_page":10,"current_page":1,"total_page":100000000,"total_record":999999999,"total_macro":true,"from":0,"to":null}
+            eot;
 
         $this->assertSame(
             $data,
@@ -1116,7 +1116,7 @@ eot;
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        $this->assertSame(15, count($result));
+        $this->assertCount(15, $result);
 
         $n = 0;
 
@@ -1130,8 +1130,8 @@ eot;
         }
 
         $data = <<<'eot'
-<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -1154,16 +1154,16 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "per_page": 15,
-    "current_page": 1,
-    "total_page": null,
-    "total_record": null,
-    "total_macro": false,
-    "from": 0,
-    "to": null
-}
-eot;
+            {
+                "per_page": 15,
+                "current_page": 1,
+                "total_page": null,
+                "total_record": null,
+                "total_macro": false,
+                "from": 0,
+                "to": null
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1180,8 +1180,8 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":15,"current_page":1,"total_page":null,"total_record":null,"total_macro":false,"from":0,"to":null}
-eot;
+            {"per_page":15,"current_page":1,"total_page":null,"total_record":null,"total_macro":false,"from":0,"to":null}
+            eot;
 
         $this->assertSame(
             $data,
@@ -1198,11 +1198,11 @@ eot;
         $sql = $connect->sql(true)->select('CALL hello()');
 
         $data = <<<'eot'
-[
-    "CALL hello()",
-    []
-]
-eot;
+            [
+                "CALL hello()",
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $data,

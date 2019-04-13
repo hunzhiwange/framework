@@ -244,8 +244,8 @@ class FileResponse extends Response
             return parent::sendContent();
         }
 
-        $out = fopen('php://output', 'wb');
-        $file = fopen($this->file->getPathname(), 'rb');
+        $out = fopen('php://output', 'w');
+        $file = fopen($this->file->getPathname(), 'r');
         stream_copy_to_stream($file, $out);
         fclose($out);
         fclose($file);

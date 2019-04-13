@@ -40,230 +40,230 @@ class CompilerListsTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<lists name="list" id="vo">
-    {$vo.title}  {$vo.people}
-</lists>
-eot;
+            <lists name="list" id="vo">
+                {$vo.title}  {$vo.people}
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = $list;
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % 2; ?>
-    <?php echo $vo->title; ?>  <?php echo $vo->people; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = $list;
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % 2; ?>
+                <?php echo $vo->title; ?>  <?php echo $vo->people; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<lists name="list" id="vo" offset="2" length='4'>
-    {$vo.title} {$vo.people}
-</lists>
-eot;
+            <lists name="list" id="vo" offset="2" length='4'>
+                {$vo.title} {$vo.people}
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = array_slice($list, 2, 4);
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % 2; ?>
-    <?php echo $vo->title; ?> <?php echo $vo->people; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = array_slice($list, 2, 4);
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % 2; ?>
+                <?php echo $vo->title; ?> <?php echo $vo->people; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<lists name="list" id="vo" mod="2">
-    <?php if ($mod == 1): ?>
-        {$vo.title} {$vo.people}
-    <?php endif; ?>
-</lists>
-eot;
+            <lists name="list" id="vo" mod="2">
+                <?php if ($mod == 1): ?>
+                    {$vo.title} {$vo.people}
+                <?php endif; ?>
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = $list;
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % 2; ?>
-    <?php if ($mod == 1): ?>
-        <?php echo $vo->title; ?> <?php echo $vo->people; ?>
-    <?php endif; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = $list;
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % 2; ?>
+                <?php if ($mod == 1): ?>
+                    <?php echo $vo->title; ?> <?php echo $vo->people; ?>
+                <?php endif; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<lists name="list" id="vo" mod="2">
-    <?php if (0 === $mod): ?>
-        {$vo.title} {$vo.people}
-    <?php endif; ?>
-</lists>
-eot;
+            <lists name="list" id="vo" mod="2">
+                <?php if (0 === $mod): ?>
+                    {$vo.title} {$vo.people}
+                <?php endif; ?>
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = $list;
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % 2; ?>
-    <?php if (0 === $mod): ?>
-        <?php echo $vo->title; ?> <?php echo $vo->people; ?>
-    <?php endif; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = $list;
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % 2; ?>
+                <?php if (0 === $mod): ?>
+                    <?php echo $vo->title; ?> <?php echo $vo->people; ?>
+                <?php endif; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<lists name="list" id="vo" mod="2">
-    {$vo.title} {$vo.people}
-    <?php if (0 === $mod): ?>
-        <br>
-    <?php endif; ?>
-</lists>
-eot;
+            <lists name="list" id="vo" mod="2">
+                {$vo.title} {$vo.people}
+                <?php if (0 === $mod): ?>
+                    <br>
+                <?php endif; ?>
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = $list;
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % 2; ?>
-    <?php echo $vo->title; ?> <?php echo $vo->people; ?>
-    <?php if (0 === $mod): ?>
-        <br>
-    <?php endif; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = $list;
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % 2; ?>
+                <?php echo $vo->title; ?> <?php echo $vo->people; ?>
+                <?php if (0 === $mod): ?>
+                    <br>
+                <?php endif; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<lists name="list" id="vo" mod="2">
-    {$vo.title} {$vo.people}
-    <?php if (0 === $mod): ?>
-        <br>
-    <?php endif; ?>
-</lists>
-eot;
+            <lists name="list" id="vo" mod="2">
+                {$vo.title} {$vo.people}
+                <?php if (0 === $mod): ?>
+                    <br>
+                <?php endif; ?>
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = $list;
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % 2; ?>
-    <?php echo $vo->title; ?> <?php echo $vo->people; ?>
-    <?php if (0 === $mod): ?>
-        <br>
-    <?php endif; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = $list;
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % 2; ?>
+                <?php echo $vo->title; ?> <?php echo $vo->people; ?>
+                <?php if (0 === $mod): ?>
+                    <br>
+                <?php endif; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<lists name="list" id="vo" index="k">
-    {$k} {$vo.people}
-</lists>
-eot;
+            <lists name="list" id="vo" index="k">
+                {$k} {$vo.people}
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $k = 0;
-    $tmp = $list;
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$k;
-            $mod = $k % 2; ?>
-    <?php echo $k; ?> <?php echo $vo->people; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $k = 0;
+                $tmp = $list;
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$k;
+                        $mod = $k % 2; ?>
+                <?php echo $k; ?> <?php echo $vo->people; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<lists name="list" id="vo">
-    key: {$key}
-</lists>
-eot;
+            <lists name="list" id="vo">
+                key: {$key}
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = $list;
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % 2; ?>
-    key: <?php echo $key; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = $list;
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % 2; ?>
+                key: <?php echo $key; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -273,32 +273,32 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{~$mod = 4}
-
-<lists name="list" id="vo" mod="mod">
-    {$vo.title}  {$vo.people}
-</lists>
-eot;
+            {~$mod = 4}
+            
+            <lists name="list" id="vo" mod="mod">
+                {$vo.title}  {$vo.people}
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php $mod = 4; ?>
-
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = $list;
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % $mod; ?>
-    <?php echo $vo->title; ?>  <?php echo $vo->people; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php $mod = 4; ?>
+            
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = $list;
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % $mod; ?>
+                <?php echo $vo->title; ?>  <?php echo $vo->people; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -308,28 +308,28 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<lists name="list" id="vo" offset="3">
-    {$vo.title}  {$vo.people}
-</lists>
-eot;
+            <lists name="list" id="vo" offset="3">
+                {$vo.title}  {$vo.people}
+            </lists>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)):
-    $index = 0;
-    $tmp = array_slice($list, 3);
-    if (0 === count($tmp)):
-        echo "";
-    else:
-        foreach ($tmp as $key => $vo):
-            ++$index;
-            $mod = $index % 2; ?>
-    <?php echo $vo->title; ?>  <?php echo $vo->people; ?>
-        <?php endforeach;
-    endif;
-else:
-    echo "";
-endif; ?>
-eot;
+            <?php if (is_array($list)):
+                $index = 0;
+                $tmp = array_slice($list, 3);
+                if (0 === count($tmp)):
+                    echo "";
+                else:
+                    foreach ($tmp as $key => $vo):
+                        ++$index;
+                        $mod = $index % 2; ?>
+                <?php echo $vo->title; ?>  <?php echo $vo->people; ?>
+                    <?php endforeach;
+                endif;
+            else:
+                echo "";
+            endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

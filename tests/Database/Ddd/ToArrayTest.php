@@ -42,15 +42,15 @@ class ToArrayTest extends TestCase
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-{
-    "id": null,
-    "name": "实体名字",
-    "description": "goods name",
-    "address": "四川成都",
-    "foo_bar": "foo",
-    "hello": "hello world"
-}
-eot;
+            {
+                "id": null,
+                "name": "实体名字",
+                "description": "goods name",
+                "address": "四川成都",
+                "foo_bar": "foo",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -65,15 +65,15 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-{
-    "id": null,
-    "name": "实体名字",
-    "description": "goods name",
-    "address": "四川成都",
-    "foo_bar": "foo",
-    "hello": "hello world"
-}
-eot;
+            {
+                "id": null,
+                "name": "实体名字",
+                "description": "goods name",
+                "address": "四川成都",
+                "foo_bar": "foo",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -83,10 +83,10 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "name": "实体名字"
-}
-eot;
+            {
+                "name": "实体名字"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -97,11 +97,11 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "name": "实体名字",
-    "description": "goods name"
-}
-eot;
+            {
+                "name": "实体名字",
+                "description": "goods name"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -112,12 +112,12 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "name": "实体名字",
-    "description": "goods name",
-    "hello": "hello world"
-}
-eot;
+            {
+                "name": "实体名字",
+                "description": "goods name",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -133,15 +133,15 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-{
-    "id": null,
-    "name": "实体名字",
-    "description": "goods name",
-    "address": "四川成都",
-    "foo_bar": "foo",
-    "hello": "hello world"
-}
-eot;
+            {
+                "id": null,
+                "name": "实体名字",
+                "description": "goods name",
+                "address": "四川成都",
+                "foo_bar": "foo",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -151,14 +151,14 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "id": null,
-    "description": "goods name",
-    "address": "四川成都",
-    "foo_bar": "foo",
-    "hello": "hello world"
-}
-eot;
+            {
+                "id": null,
+                "description": "goods name",
+                "address": "四川成都",
+                "foo_bar": "foo",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -169,13 +169,13 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "id": null,
-    "address": "四川成都",
-    "foo_bar": "foo",
-    "hello": "hello world"
-}
-eot;
+            {
+                "id": null,
+                "address": "四川成都",
+                "foo_bar": "foo",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -186,12 +186,12 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "id": null,
-    "description": "goods name",
-    "hello": "hello world"
-}
-eot;
+            {
+                "id": null,
+                "description": "goods name",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -207,15 +207,15 @@ eot;
         $entity = $this->makeEntity();
 
         $data = <<<'eot'
-{
-    "id": null,
-    "name": "实体名字",
-    "description": "goods name",
-    "address": "四川成都",
-    "foo_bar": "foo",
-    "hello": "hello world"
-}
-eot;
+            {
+                "id": null,
+                "name": "实体名字",
+                "description": "goods name",
+                "address": "四川成都",
+                "foo_bar": "foo",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -225,10 +225,10 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "hello": "hello world"
-}
-eot;
+            {
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -244,11 +244,11 @@ eot;
         $entity = $this->makeWhiteEntity();
 
         $data = <<<'eot'
-{
-    "description": "goods name",
-    "foo_bar": "foo"
-}
-eot;
+            {
+                "description": "goods name",
+                "foo_bar": "foo"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -263,13 +263,13 @@ eot;
         $entity = $this->makeBlackEntity();
 
         $data = <<<'eot'
-{
-    "id": null,
-    "name": "实体名字",
-    "address": "四川成都",
-    "hello": "hello world"
-}
-eot;
+            {
+                "id": null,
+                "name": "实体名字",
+                "address": "四川成都",
+                "hello": "hello world"
+            }
+            eot;
 
         $this->assertSame(
             $data,

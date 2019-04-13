@@ -38,15 +38,15 @@ class FindDynamicsTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` LIMIT 0,10",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` LIMIT 0,10",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -60,15 +60,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` LIMIT 3,10",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` LIMIT 3,10",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -83,15 +83,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`user_name` = '1111' LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`user_name` = '1111' LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -106,15 +106,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`UserName` = '1111' LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`UserName` = '1111' LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -129,15 +129,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`user_name` = '1111' AND `test`.`sex` = '222'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`user_name` = '1111' AND `test`.`sex` = '222'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -152,15 +152,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`UserName` = '1111' AND `test`.`Sex` = '222'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`UserName` = '1111' AND `test`.`Sex` = '222'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

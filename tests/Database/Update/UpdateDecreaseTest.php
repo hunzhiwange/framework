@@ -38,11 +38,11 @@ class UpdateDecreaseTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`num` = `test`.`num`-3 WHERE `test`.`id` = 503",
-    []
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`num` = `test`.`num`-3 WHERE `test`.`id` = 503",
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -63,13 +63,13 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`num` = `test`.`num`-3 WHERE `test`.`id` = ?",
-    [
-        503
-    ]
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`num` = `test`.`num`-3 WHERE `test`.`id` = ?",
+                [
+                    503
+                ]
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

@@ -55,15 +55,15 @@ class UpdateTest extends TestCase
         $entity->save();
 
         $data = <<<'eot'
-[
-    {
-        "id": 1
-    },
-    {
-        "name": "foo"
-    }
-]
-eot;
+            [
+                {
+                    "id": 1
+                },
+                {
+                    "name": "foo"
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -83,15 +83,15 @@ eot;
         $entity->save();
 
         $data = <<<'eot'
-[
-    {
-        "id": 5
-    },
-    {
-        "name": "foo"
-    }
-]
-eot;
+            [
+                {
+                    "id": 5
+                },
+                {
+                    "name": "foo"
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -127,19 +127,19 @@ eot;
         $entity->save([], []);
 
         $data = <<<'eot'
-[
-    {
-        "id": 5
-    },
-    {
-        "name": "name for update_fill",
-        "description": "set description.",
-        "address": "address is set now.",
-        "foo_bar": "foo bar.",
-        "hello": "hello field."
-    }
-]
-eot;
+            [
+                {
+                    "id": 5
+                },
+                {
+                    "name": "name for update_fill",
+                    "description": "set description.",
+                    "address": "address is set now.",
+                    "foo_bar": "foo bar.",
+                    "hello": "hello field."
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -156,16 +156,16 @@ eot;
         $entity->save([], ['address', 'hello']);
 
         $data = <<<'eot'
-[
-    {
-        "id": 5
-    },
-    {
-        "address": "address is set now.",
-        "hello": "hello field."
-    }
-]
-eot;
+            [
+                {
+                    "id": 5
+                },
+                {
+                    "address": "address is set now.",
+                    "hello": "hello field."
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,

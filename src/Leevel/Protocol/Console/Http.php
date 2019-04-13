@@ -56,16 +56,16 @@ class Http extends BaseServer
      * @var string
      */
     protected $help = <<<'EOF'
-The <info>%command.name%</info> command to start http server:
-
-  <info>php %command.full_name%</info>
-
-You can also by using the <comment>--daemonize</comment> option:
-
-  <info>php %command.full_name% --daemonize</info>
-
-  <info>php %command.full_name% -d</info>
-EOF;
+        The <info>%command.name%</info> command to start http server:
+        
+          <info>php %command.full_name%</info>
+        
+        You can also by using the <comment>--daemonize</comment> option:
+        
+          <info>php %command.full_name% --daemonize</info>
+        
+          <info>php %command.full_name% -d</info>
+        EOF;
 
     /**
      * 创建 server.

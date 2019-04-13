@@ -243,7 +243,7 @@ class App extends Container implements IApp
     public function console(): bool
     {
         if (!is_object($this->make('request'))) {
-            return PHP_SAPI === 'cli';
+            return \PHP_SAPI === 'cli';
         }
 
         return $this['request']->isCli();
@@ -305,8 +305,8 @@ class App extends Container implements IApp
      */
     public function appPath($app = false, string $path = ''): string
     {
-        return ($this->appPath ?? $this->path.DIRECTORY_SEPARATOR.'application').
-            ($app ? DIRECTORY_SEPARATOR.$this->normalizeApp($app) : $app).
+        return ($this->appPath ?? $this->path.\DIRECTORY_SEPARATOR.'application').
+            ($app ? \DIRECTORY_SEPARATOR.$this->normalizeApp($app) : $app).
             $this->normalizePath($path);
     }
 
@@ -341,7 +341,7 @@ class App extends Container implements IApp
      */
     public function commonPath(string $path = ''): string
     {
-        return ($this->commonPath ?? $this->path.DIRECTORY_SEPARATOR.'common').
+        return ($this->commonPath ?? $this->path.\DIRECTORY_SEPARATOR.'common').
             $this->normalizePath($path);
     }
 
@@ -364,7 +364,7 @@ class App extends Container implements IApp
      */
     public function runtimePath(string $path = ''): string
     {
-        return ($this->runtimePath ?? $this->path.DIRECTORY_SEPARATOR.'runtime').
+        return ($this->runtimePath ?? $this->path.\DIRECTORY_SEPARATOR.'runtime').
             $this->normalizePath($path);
     }
 
@@ -387,7 +387,7 @@ class App extends Container implements IApp
      */
     public function storagePath(string $path = ''): string
     {
-        return ($this->storagePath ?? $this->path.DIRECTORY_SEPARATOR.'storage').
+        return ($this->storagePath ?? $this->path.\DIRECTORY_SEPARATOR.'storage').
             $this->normalizePath($path);
     }
 
@@ -410,7 +410,7 @@ class App extends Container implements IApp
      */
     public function publicPath(string $path = ''): string
     {
-        return ($this->publicPath ?? $this->path.DIRECTORY_SEPARATOR.'public').
+        return ($this->publicPath ?? $this->path.\DIRECTORY_SEPARATOR.'public').
             $this->normalizePath($path);
     }
 
@@ -433,7 +433,7 @@ class App extends Container implements IApp
      */
     public function themesPath(string $path = ''): string
     {
-        return ($this->themesPath ?? $this->path.DIRECTORY_SEPARATOR.'themes').
+        return ($this->themesPath ?? $this->path.\DIRECTORY_SEPARATOR.'themes').
             $this->normalizePath($path);
     }
 
@@ -456,7 +456,7 @@ class App extends Container implements IApp
      */
     public function optionPath(string $path = ''): string
     {
-        return ($this->optionPath ?? $this->path.DIRECTORY_SEPARATOR.'option').
+        return ($this->optionPath ?? $this->path.\DIRECTORY_SEPARATOR.'option').
             $this->normalizePath($path);
     }
 
@@ -479,7 +479,7 @@ class App extends Container implements IApp
      */
     public function i18nPath(?string $path = null): string
     {
-        return ($this->i18nPath ?? $this->path.DIRECTORY_SEPARATOR.'i18n').
+        return ($this->i18nPath ?? $this->path.\DIRECTORY_SEPARATOR.'i18n').
             $this->normalizePath($path ?: '');
     }
 
@@ -530,7 +530,7 @@ class App extends Container implements IApp
      */
     public function fullEnvPath(): string
     {
-        return $this->envPath().DIRECTORY_SEPARATOR.$this->envFile();
+        return $this->envPath().\DIRECTORY_SEPARATOR.$this->envFile();
     }
 
     /**
@@ -913,6 +913,6 @@ class App extends Container implements IApp
      */
     protected function normalizePath(string $path): string
     {
-        return $path ? DIRECTORY_SEPARATOR.$path : $path;
+        return $path ? \DIRECTORY_SEPARATOR.$path : $path;
     }
 }

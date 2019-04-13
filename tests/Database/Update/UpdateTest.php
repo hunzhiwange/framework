@@ -38,16 +38,16 @@ class UpdateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
-    {
-        "name": [
-            "小猪",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
+                {
+                    "name": [
+                        "小猪",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -68,16 +68,16 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 FOR UPDATE",
-    {
-        "name": [
-            "小猪",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 FOR UPDATE",
+                {
+                    "name": [
+                        "小猪",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -100,16 +100,16 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 LIMIT 0,2",
-    {
-        "name": [
-            "小猪",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 LIMIT 0,2",
+                {
+                    "name": [
+                        "小猪",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -132,16 +132,16 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 ORDER BY `test`.`id` DESC",
-    {
-        "name": [
-            "小猪",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 ORDER BY `test`.`id` DESC",
+                {
+                    "name": [
+                        "小猪",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -164,16 +164,16 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` `t` INNER JOIN `hello` `h` ON `t`.`id` = `h`.`size` SET `t`.`name` = :name WHERE `t`.`id` = 503",
-    {
-        "name": [
-            "小猪",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "UPDATE `test` `t` INNER JOIN `hello` `h` ON `t`.`id` = `h`.`size` SET `t`.`name` = :name WHERE `t`.`id` = 503",
+                {
+                    "name": [
+                        "小猪",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -196,17 +196,17 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`name` = :hello,`test`.`value` = :questionmark_0 WHERE `test`.`id` = 503",
-    {
-        "questionmark_0": [
-            "小牛逼",
-            2
-        ],
-        "hello": "hello world!"
-    }
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`name` = :hello,`test`.`value` = :questionmark_0 WHERE `test`.`id` = 503",
+                {
+                    "questionmark_0": [
+                        "小牛逼",
+                        2
+                    ],
+                    "hello": "hello world!"
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -237,11 +237,11 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
-    []
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

@@ -73,13 +73,13 @@ class ValidatorTest extends TestCase
         $this->assertInstanceof(IValidator::class, $validate);
 
         $rule = <<<'eot'
-{
-    "name": [
-        "required",
-        "max_length:10"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "required",
+                    "max_length:10"
+                ]
+            }
+            eot;
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -110,13 +110,13 @@ eot;
         );
 
         $rule = <<<'eot'
-{
-    "name": [
-        "required",
-        "max_length:10"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "required",
+                    "max_length:10"
+                ]
+            }
+            eot;
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -147,12 +147,12 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -180,12 +180,12 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -217,12 +217,12 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -254,12 +254,12 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -305,8 +305,8 @@ eot;
         });
 
         $rule = <<<'eot'
-[]
-eot;
+            []
+            eot;
 
         $this->assertSame(
             $rule,
@@ -328,12 +328,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -362,13 +362,13 @@ eot;
         $validate->addRule(['name' => 'required|min_length:20']);
 
         $rule = <<<'eot'
-{
-    "name": [
-        "required",
-        "min_length:20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "required",
+                    "min_length:20"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $rule,
@@ -381,12 +381,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -419,8 +419,8 @@ eot;
         });
 
         $rule = <<<'eot'
-[]
-eot;
+            []
+            eot;
 
         $this->assertSame(
             $rule,
@@ -442,12 +442,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -472,12 +472,12 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -492,12 +492,12 @@ eot;
         $validate->message(['min_length' => '{field} not min {rule}']);
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 not min 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 not min 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -512,12 +512,12 @@ eot;
         $validate->addMessage(['min_length' => '{field} foo bar {rule}']);
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 foo bar 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 foo bar 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -532,12 +532,12 @@ eot;
         $validate->addMessage(['name' => ['min_length' => '{field} hello world {rule}']]);
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 hello world 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 hello world 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -565,12 +565,12 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -585,12 +585,12 @@ eot;
         $validate->addMessage(['min_length' => '{field} not min {rule}']);
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 not min 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 not min 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -605,12 +605,12 @@ eot;
         $validate->addMessage(['name' => ['min_length' => '{field} haha {rule}']]);
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 haha 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 haha 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -625,12 +625,12 @@ eot;
         $validate->addMessage(['name.min_length' => '{field} hehe {rule}']);
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 hehe 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 hehe 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -661,12 +661,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name.sub.sub": [
-        "name.sub.sub 不能为空"
-    ]
-}
-eot;
+            {
+                "name.sub.sub": [
+                    "name.sub.sub 不能为空"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -681,12 +681,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name.sub.sub": [
-        "字段 name.sub.sub 不能为空"
-    ]
-}
-eot;
+            {
+                "name.sub.sub": [
+                    "字段 name.sub.sub 不能为空"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -701,12 +701,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name.sub.sub": [
-        "sub name.sub.sub must have value"
-    ]
-}
-eot;
+            {
+                "name.sub.sub": [
+                    "sub name.sub.sub must have value"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -734,12 +734,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name.sub.sub": [
-        "name.sub.sub 不能为空"
-    ]
-}
-eot;
+            {
+                "name.sub.sub": [
+                    "name.sub.sub 不能为空"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -764,12 +764,12 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -785,12 +785,12 @@ eot;
         $validate->name(['name' => 'username']);
 
         $error = <<<'eot'
-{
-    "name": [
-        "username 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "username 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -805,12 +805,12 @@ eot;
         $validate->addName(['name' => 'hello world']);
 
         $error = <<<'eot'
-{
-    "name": [
-        "hello world 不满足最小长度 20"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "hello world 不满足最小长度 20"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -838,12 +838,12 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "地名 不满足最小长度 5"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "地名 不满足最小长度 5"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -861,12 +861,12 @@ eot;
         $validate->rule(['name' => 'required|minl:9']);
 
         $error = <<<'eot'
-{
-    "name": [
-        "地名 不满足最小长度 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "地名 不满足最小长度 9"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -883,12 +883,12 @@ eot;
         $validate->rule(['name' => 'required|min2:11']);
 
         $error = <<<'eot'
-{
-    "name": [
-        "地名 不满足最小长度 11"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "地名 不满足最小长度 11"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -1284,13 +1284,13 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "地名 不能为空",
-        "地名 只能是字母"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "地名 不能为空",
+                    "地名 只能是字母"
+                ]
+            }
+            eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -1309,12 +1309,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name": [
-        "地名 不能为空"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "地名 不能为空"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -1353,12 +1353,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name": [
-        "地名 不能为空"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "地名 不能为空"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -1373,12 +1373,12 @@ eot;
         $this->assertTrue($validate->fail());
 
         $error = <<<'eot'
-{
-    "name": [
-        "地名 不能为空"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "地名 不能为空"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -1415,12 +1415,12 @@ eot;
         $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $message = <<<'eot'
-{
-    "name.required": "test {field} required message",
-    "nafoo.required": "test {field} required message",
-    "nabar.required": "test {field} required message"
-}
-eot;
+            {
+                "name.required": "test {field} required message",
+                "nafoo.required": "test {field} required message",
+                "nabar.required": "test {field} required message"
+            }
+            eot;
 
         $this->assertSame(
             $message,
@@ -1430,12 +1430,12 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "name": "",
-    "nafoo": "",
-    "nabar": ""
-}
-eot;
+            {
+                "name": "",
+                "nafoo": "",
+                "nabar": ""
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1446,18 +1446,18 @@ eot;
         );
 
         $rule = <<<'eot'
-{
-    "name": [
-        "required"
-    ],
-    "nafoo": [
-        "required"
-    ],
-    "nabar": [
-        "required"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "required"
+                ],
+                "nafoo": [
+                    "required"
+                ],
+                "nabar": [
+                    "required"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $rule,
@@ -1468,18 +1468,18 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "test 地名 required message"
-    ],
-    "nafoo": [
-        "test foo required message"
-    ],
-    "nabar": [
-        "test bar required message"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "test 地名 required message"
+                ],
+                "nafoo": [
+                    "test foo required message"
+                ],
+                "nabar": [
+                    "test bar required message"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -1517,12 +1517,12 @@ eot;
         $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $message = <<<'eot'
-{
-    "name.required": "test {field} required message",
-    "nafoo.required": "test {field} required message",
-    "nabar.required": "test {field} required message"
-}
-eot;
+            {
+                "name.required": "test {field} required message",
+                "nafoo.required": "test {field} required message",
+                "nabar.required": "test {field} required message"
+            }
+            eot;
 
         $this->assertSame(
             $message,
@@ -1532,12 +1532,12 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "name": "",
-    "nafoo": "",
-    "nabar": ""
-}
-eot;
+            {
+                "name": "",
+                "nafoo": "",
+                "nabar": ""
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1548,18 +1548,18 @@ eot;
         );
 
         $rule = <<<'eot'
-{
-    "name": [
-        "required"
-    ],
-    "nafoo": [
-        "required"
-    ],
-    "nabar": [
-        "required"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "required"
+                ],
+                "nafoo": [
+                    "required"
+                ],
+                "nabar": [
+                    "required"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $rule,
@@ -1570,18 +1570,18 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "test 地名 required message"
-    ],
-    "nafoo": [
-        "test foo required message"
-    ],
-    "nabar": [
-        "test bar required message"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "test 地名 required message"
+                ],
+                "nafoo": [
+                    "test foo required message"
+                ],
+                "nabar": [
+                    "test bar required message"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -1619,12 +1619,12 @@ eot;
         $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $data = <<<'eot'
-{
-    "name": "",
-    "nafoo": "",
-    "nabar": ""
-}
-eot;
+            {
+                "name": "",
+                "nafoo": "",
+                "nabar": ""
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1634,18 +1634,18 @@ eot;
         );
 
         $rule = <<<'eot'
-{
-    "name": [
-        "required"
-    ],
-    "nafoo": [
-        "required"
-    ],
-    "nabar": [
-        "required"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "required"
+                ],
+                "nafoo": [
+                    "required"
+                ],
+                "nabar": [
+                    "required"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $rule,
@@ -1656,18 +1656,18 @@ eot;
         );
 
         $error = <<<'eot'
-{
-    "name": [
-        "地名 不能为空"
-    ],
-    "nafoo": [
-        "foo 不能为空"
-    ],
-    "nabar": [
-        "bar 不能为空"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "地名 不能为空"
+                ],
+                "nafoo": [
+                    "foo 不能为空"
+                ],
+                "nabar": [
+                    "bar 不能为空"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,

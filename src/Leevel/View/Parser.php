@@ -554,7 +554,7 @@ class Parser implements IParser
             foreach ($res[0] as $index => &$tagSource) {
                 $nodeName = $res[$nodeNameIndex][$index];
                 $nodeTopName = $res[$nodeTopNameIndex][$index];
-                $nodeType = $res[$tailSlasheIndex][$index] === '/' ? 'tail' : 'head';
+                $nodeType = '/' === $res[$tailSlasheIndex][$index] ? 'tail' : 'head';
 
                 // 将节点名称统一为小写
                 $nodeName = strtolower($nodeName);
@@ -616,7 +616,7 @@ class Parser implements IParser
 
             // 单标签节点
             if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
-                if ($nodeTag[$tag['name']]['single'] !== true) {
+                if (true !== $nodeTag[$tag['name']]['single']) {
                     throw new InvalidArgumentException(
                         sprintf(
                             '%s type nodes must be used in pairs, and no corresponding tail tags are found.',

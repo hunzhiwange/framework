@@ -142,7 +142,7 @@ class SelectTest extends TestCase
         $posts = $select->findMany([1, 2]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(2, count($posts));
+        $this->assertCount(2, $posts);
 
         $post1 = $posts[0];
         $this->assertInstanceof(Post::class, $post1);
@@ -163,7 +163,7 @@ class SelectTest extends TestCase
         $posts = $select->findMany([]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(0, count($posts));
+        $this->assertCount(0, $posts);
     }
 
     public function testFindManyWithoutResults()
@@ -172,7 +172,7 @@ class SelectTest extends TestCase
         $posts = $select->findMany([1, 2]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(0, count($posts));
+        $this->assertCount(0, $posts);
     }
 
     public function testSoftDelete()
@@ -349,7 +349,7 @@ class SelectTest extends TestCase
         $posts = $select->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(2, count($posts));
+        $this->assertCount(2, $posts);
 
         $this->assertFalse($post->softDeleted());
         $this->assertSame(1, $select->softDestroy([1]));
@@ -358,12 +358,12 @@ class SelectTest extends TestCase
         $posts = $select->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(2, count($posts));
+        $this->assertCount(2, $posts);
 
         $posts = $select->withoutSoftDeleted()->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(1, count($posts));
+        $this->assertCount(1, $posts);
     }
 
     public function testOnlySoftDeleted()
@@ -391,7 +391,7 @@ class SelectTest extends TestCase
         $posts = $select->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(2, count($posts));
+        $this->assertCount(2, $posts);
 
         $this->assertFalse($post->softDeleted());
         $this->assertSame(1, $select->softDestroy([1]));
@@ -400,12 +400,12 @@ class SelectTest extends TestCase
         $posts = $select->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(2, count($posts));
+        $this->assertCount(2, $posts);
 
         $posts = $select->onlySoftDeleted()->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(1, count($posts));
+        $this->assertCount(1, $posts);
     }
 
     public function testDeleteAtColumnNotFound()
@@ -438,27 +438,27 @@ class SelectTest extends TestCase
         $posts = $select->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(10, count($posts));
+        $this->assertCount(10, $posts);
 
         $result1 = Post::test()->findAll();
 
         $this->assertInstanceof(Collection::class, $result1);
-        $this->assertSame(6, count($result1));
+        $this->assertCount(6, $result1);
 
         $result2 = Post::test2()->findAll();
 
         $this->assertInstanceof(Collection::class, $result2);
-        $this->assertSame(9, count($result2));
+        $this->assertCount(9, $result2);
 
         $result3 = Post::scope('test,test2')->findAll();
 
         $this->assertInstanceof(Collection::class, $result3);
-        $this->assertSame(5, count($result3));
+        $this->assertCount(5, $result3);
 
         $result4 = Post::scope(['test', 'test2'])->findAll();
 
         $this->assertInstanceof(Collection::class, $result4);
-        $this->assertSame(5, count($result4));
+        $this->assertCount(5, $result4);
     }
 
     public function testScopeClosure()
@@ -480,21 +480,21 @@ class SelectTest extends TestCase
         $posts = $select->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(10, count($posts));
+        $this->assertCount(10, $posts);
 
         $result1 = Post::scope(function (DatabaseSelect $select) {
             $select->where('id', '>', 5);
         })->findAll();
 
         $this->assertInstanceof(Collection::class, $result1);
-        $this->assertSame(5, count($result1));
+        $this->assertCount(5, $result1);
 
         $result2 = Post::scope(function (DatabaseSelect $select) {
             $select->where('id', '>', 7);
         })->findAll();
 
         $this->assertInstanceof(Collection::class, $result2);
-        $this->assertSame(3, count($result2));
+        $this->assertCount(3, $result2);
     }
 
     public function testFindPage()
@@ -536,7 +536,7 @@ class SelectTest extends TestCase
         list($page, $posts) = $select->page(1, 10);
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(2, count($posts));
+        $this->assertCount(2, $posts);
 
         $post1 = $posts[0];
         $this->assertInstanceof(Post::class, $post1);
@@ -563,13 +563,13 @@ class SelectTest extends TestCase
         $this->assertSame('I am content with big data2.', $postContent->content);
 
         $sql = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_record": 2,
-    "from": 0
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_record": 2,
+                "from": 0
+            }
+            eot;
 
         $this->assertSame(
             $sql,
@@ -601,11 +601,11 @@ eot;
         $this->assertSame('post summary', $post->summary);
 
         $sql = <<<'eot'
-[
-    "SELECT `post`.* FROM `post` WHERE `post`.`id` = 1 LIMIT 1",
-    []
-]
-eot;
+            [
+                "SELECT `post`.* FROM `post` WHERE `post`.`id` = 1 LIMIT 1",
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

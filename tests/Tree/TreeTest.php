@@ -42,19 +42,19 @@ class TreeTest extends TestCase
         ]);
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 2,
-                "data": "world"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -67,23 +67,23 @@ eot;
         $tree->setNode(5, 1, 'foo');
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 2,
-                "data": "world"
-            },
-            {
-                "value": 5,
-                "data": "foo"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world"
+                        },
+                        {
+                            "value": 5,
+                            "data": "foo"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -96,27 +96,27 @@ eot;
         $tree->setNode(6, 1, 'bar', true);
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 6,
-                "data": "bar"
-            },
-            {
-                "value": 2,
-                "data": "world"
-            },
-            {
-                "value": 5,
-                "data": "foo"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 6,
+                            "data": "bar"
+                        },
+                        {
+                            "value": 2,
+                            "data": "world"
+                        },
+                        {
+                            "value": 5,
+                            "data": "foo"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -129,33 +129,33 @@ eot;
         $tree->setNode(8, 6, 'subbar');
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 6,
-                "data": "bar",
-                "children": [
-                    {
-                        "value": 8,
-                        "data": "subbar"
-                    }
-                ]
-            },
-            {
-                "value": 2,
-                "data": "world"
-            },
-            {
-                "value": 5,
-                "data": "foo"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 6,
+                            "data": "bar",
+                            "children": [
+                                {
+                                    "value": 8,
+                                    "data": "subbar"
+                                }
+                            ]
+                        },
+                        {
+                            "value": 2,
+                            "data": "world"
+                        },
+                        {
+                            "value": 5,
+                            "data": "foo"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -165,8 +165,8 @@ eot;
         );
 
         $json = <<<'eot'
-[{"value":1,"data":"hello","children":[{"value":6,"data":"bar","children":[{"value":8,"data":"subbar"}]},{"value":2,"data":"world"},{"value":5,"data":"foo"}]}]
-eot;
+            [{"value":1,"data":"hello","children":[{"value":6,"data":"bar","children":[{"value":8,"data":"subbar"}]},{"value":2,"data":"world"},{"value":5,"data":"foo"}]}]
+            eot;
 
         $this->assertSame(
             $json,
@@ -179,39 +179,39 @@ eot;
         $tree = $this->providerTree();
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 2,
-                "data": "world"
-            },
-            {
-                "value": 3,
-                "data": "foo",
-                "children": [
-                    {
-                        "value": 5,
-                        "data": "subfoo",
-                        "children": [
-                            {
-                                "value": 6,
-                                "data": "subsubfoo"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "value": 4,
-                "data": "bar"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world"
+                        },
+                        {
+                            "value": 3,
+                            "data": "foo",
+                            "children": [
+                                {
+                                    "value": 5,
+                                    "data": "subfoo",
+                                    "children": [
+                                        {
+                                            "value": 6,
+                                            "data": "subsubfoo"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "value": 4,
+                            "data": "bar"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -221,19 +221,19 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 5,
-        "data": "subfoo",
-        "children": [
-            {
-                "value": 6,
-                "data": "subsubfoo"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 5,
+                    "data": "subfoo",
+                    "children": [
+                        {
+                            "value": 6,
+                            "data": "subsubfoo"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -243,10 +243,10 @@ eot;
         );
 
         $nodes = <<<'eot'
-{
-    "1": 1
-}
-eot;
+            {
+                "1": 1
+            }
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -256,11 +256,11 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    5,
-    6
-]
-eot;
+            [
+                5,
+                6
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -306,10 +306,10 @@ eot;
         $tree = $this->providerTree();
 
         $nodes = <<<'eot'
-[
-    1
-]
-eot;
+            [
+                1
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -319,10 +319,10 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    3
-]
-eot;
+            [
+                3
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -332,11 +332,11 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    3,
-    5
-]
-eot;
+            [
+                3,
+                5
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -346,11 +346,11 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    1,
-    3
-]
-eot;
+            [
+                1,
+                3
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -360,12 +360,12 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    1,
-    3,
-    5
-]
-eot;
+            [
+                1,
+                3,
+                5
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -419,19 +419,19 @@ eot;
         ]);
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 2,
-                "data": "world"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -446,19 +446,19 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 2,
-                "data": "world => foo"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world => foo"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $tree->setData(2, 'world => foo');
 
@@ -483,19 +483,19 @@ eot;
         ]);
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 2,
-                "data": "world"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -505,19 +505,19 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    {
-        "value1": 1,
-        "data1": "hello",
-        "children": [
-            {
-                "value1": 2,
-                "data1": "world"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value1": 1,
+                    "data1": "hello",
+                    "children": [
+                        {
+                            "value1": 2,
+                            "data1": "world"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -530,21 +530,21 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "label": "hello",
-        "children": [
-            {
-                "value": 2,
-                "data": "world",
-                "label": "world"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "label": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world",
+                            "label": "world"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,
@@ -558,19 +558,19 @@ eot;
         );
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 5,
-        "data": "subfoo",
-        "children": [
-            {
-                "value": 6,
-                "data": "subsubfoo"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 5,
+                    "data": "subfoo",
+                    "children": [
+                        {
+                            "value": 6,
+                            "data": "subsubfoo"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         // 可以返回子树
         $tree = $this->providerTree();
@@ -600,19 +600,19 @@ eot;
         ]);
 
         $nodes = <<<'eot'
-[
-    {
-        "value": 1,
-        "data": "hello",
-        "children": [
-            {
-                "value": 2,
-                "data": "world"
-            }
-        ]
-    }
-]
-eot;
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world"
+                        }
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $nodes,

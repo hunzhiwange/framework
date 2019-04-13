@@ -396,15 +396,15 @@ class RouterTest extends TestCase
         $this->assertSame('hello throughMiddleware', $result->getContent());
 
         $data = <<<'eot'
-[
-    "Demo2::handle",
-    "Demo3::handle(arg1:10,arg2:hello@handle)",
-    "DemoForGroup::handle",
-    "Demo1::terminate",
-    "Demo2::terminate",
-    "DemoForGroup::terminate"
-]
-eot;
+            [
+                "Demo2::handle",
+                "Demo3::handle(arg1:10,arg2:hello@handle)",
+                "DemoForGroup::handle",
+                "Demo1::terminate",
+                "Demo2::terminate",
+                "DemoForGroup::terminate"
+            ]
+            eot;
 
         $this->assertSame(
             $data,

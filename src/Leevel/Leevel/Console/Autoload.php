@@ -208,17 +208,17 @@ class ComposerStaticInit
     protected function dataHelper(): string
     {
         return <<<'eot'
-/**
- * Ignore the helper functions.
- * Because most of them are useless.
- */
-foreach (ComposerStaticInit::$files as $fileIdentifier => $_) {
-    $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
-}
-
-require_once LEEVEL_COMPOSER.'/../hunzhiwange/framework/src/Leevel/Leevel/functions.php';
-require_once LEEVEL_COMPOSER.'/../../common/Infra/functions.php';
-eot;
+            /**
+             * Ignore the helper functions.
+             * Because most of them are useless.
+             */
+            foreach (ComposerStaticInit::$files as $fileIdentifier => $_) {
+                $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
+            }
+            
+            require_once LEEVEL_COMPOSER.'/../hunzhiwange/framework/src/Leevel/Leevel/functions.php';
+            require_once LEEVEL_COMPOSER.'/../../common/Infra/functions.php';
+            eot;
     }
 
     /**
@@ -229,41 +229,41 @@ eot;
     protected function dataLoader(): string
     {
         $data = <<<'eot'
-/**
- * Set loader.
- */
-if (!isset($GLOBALS['__composer_autoload_leevel'])) {
-    $GLOBALS['__composer_autoload_leevel'] = new ClassLoader();
-}
-
-$loader =  $GLOBALS['__composer_autoload_leevel'];
-call_user_func(ComposerStaticInit::getInitializer($loader));
-$loader->register(true);
-
-spl_autoload_register(function (string $className) use(&$loader) {
-    static $loaded;
-
-    /**
-     * Just a function.
-     */
-    if (preg_match('/\\\\([a-z])+/', $className)) {
-        return;
-    }
-
-    if (null === $loaded) {
-        /**
-         * Load all if necessary.
-         */
-        require_once __DIR__ . '/composer/autoload_static.php';
-        call_user_func(ComposerStaticInit{HASH}::getInitializer($loader));
-        $loaded = true;
-    }
-
-    $loader->loadClass($className);
- });
-
-return $loader;
-eot;
+            /**
+             * Set loader.
+             */
+            if (!isset($GLOBALS['__composer_autoload_leevel'])) {
+                $GLOBALS['__composer_autoload_leevel'] = new ClassLoader();
+            }
+            
+            $loader =  $GLOBALS['__composer_autoload_leevel'];
+            call_user_func(ComposerStaticInit::getInitializer($loader));
+            $loader->register(true);
+            
+            spl_autoload_register(function (string $className) use(&$loader) {
+                static $loaded;
+            
+                /**
+                 * Just a function.
+                 */
+                if (preg_match('/\\\\([a-z])+/', $className)) {
+                    return;
+                }
+            
+                if (null === $loaded) {
+                    /**
+                     * Load all if necessary.
+                     */
+                    require_once __DIR__ . '/composer/autoload_static.php';
+                    call_user_func(ComposerStaticInit{HASH}::getInitializer($loader));
+                    $loaded = true;
+                }
+            
+                $loader->loadClass($className);
+             });
+            
+            return $loader;
+            eot;
 
         $data = str_replace('{HASH}', $this->composerHash, $data);
 

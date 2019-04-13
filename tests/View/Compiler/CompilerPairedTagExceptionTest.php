@@ -54,9 +54,9 @@ class CompilerPairedTagExceptionTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<list for=list>
-</badend>
-eot;
+            <list for=list>
+            </badend>
+            eot;
 
         $parser->doCompile($source, null, true);
     }
@@ -71,11 +71,11 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<for start='1'>
-    <if condition="($id eq 1) OR ($id gt 100)">one
-</for>
-    </if>
-eot;
+            <for start='1'>
+                <if condition="($id eq 1) OR ($id gt 100)">one
+            </for>
+                </if>
+            eot;
 
         $parser->doCompile($source, null, true);
     }
@@ -94,11 +94,11 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<for start='1'>
-    <if condition="($id eq 1) OR ($id gt 100)">one
-</for>
-    </if>
-eot;
+            <for start='1'>
+                <if condition="($id eq 1) OR ($id gt 100)">one
+            </for>
+                </if>
+            eot;
 
         file_put_contents($file, $source);
 
@@ -110,18 +110,18 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{for $i=1;$i<10;$i++}
-    {if $foo}
-{/for}
-    {/if}
-eot;
+            {for $i=1;$i<10;$i++}
+                {if $foo}
+            {/for}
+                {/if}
+            eot;
 
         $compiled = <<<'eot'
-<?php for ($i=1;$i<10;$i++): ?>
-    <?php if ($foo): ?>
-<?php endfor; ?>
-    <?php endif; ?>
-eot;
+            <?php for ($i=1;$i<10;$i++): ?>
+                <?php if ($foo): ?>
+            <?php endfor; ?>
+                <?php endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

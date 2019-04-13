@@ -74,15 +74,15 @@ class SeccodeTest extends TestCase
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 160,
-    "1": 60,
-    "2": 3,
-    "3": "width=\"160\" height=\"60\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 160,
+                "1": 60,
+                "2": 3,
+                "3": "width=\"160\" height=\"60\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -111,15 +111,15 @@ eot;
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 160,
-    "1": 60,
-    "2": 3,
-    "3": "width=\"160\" height=\"60\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 160,
+                "1": 60,
+                "2": 3,
+                "3": "width=\"160\" height=\"60\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -150,15 +150,15 @@ eot;
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 200,
-    "1": 100,
-    "2": 3,
-    "3": "width=\"200\" height=\"100\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 200,
+                "1": 100,
+                "2": 3,
+                "3": "width=\"200\" height=\"100\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -192,15 +192,15 @@ eot;
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 160,
-    "1": 60,
-    "2": 3,
-    "3": "width=\"160\" height=\"60\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 160,
+                "1": 60,
+                "2": 3,
+                "3": "width=\"160\" height=\"60\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -272,15 +272,15 @@ eot;
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 160,
-    "1": 60,
-    "2": 3,
-    "3": "width=\"160\" height=\"60\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 160,
+                "1": 60,
+                "2": 3,
+                "3": "width=\"160\" height=\"60\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -312,15 +312,15 @@ eot;
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 16,
-    "1": 16,
-    "2": 3,
-    "3": "width=\"16\" height=\"16\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 16,
+                "1": 16,
+                "2": 3,
+                "3": "width=\"16\" height=\"16\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -351,15 +351,15 @@ eot;
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 999,
-    "1": 999,
-    "2": 3,
-    "3": "width=\"999\" height=\"999\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 999,
+                "1": 999,
+                "2": 3,
+                "3": "width=\"999\" height=\"999\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -387,15 +387,15 @@ eot;
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 160,
-    "1": 60,
-    "2": 3,
-    "3": "width=\"160\" height=\"60\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 160,
+                "1": 60,
+                "2": 3,
+                "3": "width=\"160\" height=\"60\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -424,15 +424,15 @@ eot;
         $info = getimagesize($file);
 
         $data = <<<'eot'
-{
-    "0": 160,
-    "1": 60,
-    "2": 3,
-    "3": "width=\"160\" height=\"60\"",
-    "bits": 8,
-    "mime": "image\/png"
-}
-eot;
+            {
+                "0": 160,
+                "1": 60,
+                "2": 3,
+                "3": "width=\"160\" height=\"60\"",
+                "bits": 8,
+                "mime": "image\/png"
+            }
+            eot;
 
         $this->assertSame(
             $data,

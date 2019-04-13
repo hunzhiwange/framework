@@ -87,7 +87,7 @@ class ManyMany extends Relation
                     'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
                         $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
                     ])
-                    ->where(
+                ->where(
                     $this->middleEntity->table().'.'.$this->middleSourceKey,
                     $this->getSourceValue()
                 )
@@ -109,7 +109,7 @@ class ManyMany extends Relation
                 'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
                     $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
                 ])
-                ->whereIn(
+            ->whereIn(
                 $this->middleEntity->table().'.'.$this->middleSourceKey,
                 $this->getPreLoadSourceValue($entitys)
             )

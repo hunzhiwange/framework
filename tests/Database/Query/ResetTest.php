@@ -38,15 +38,15 @@ class ResetTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `newtable`.* FROM `newtable` WHERE `newtable`.`new` = 'world'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `newtable`.* FROM `newtable` WHERE `newtable`.`new` = 'world'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -68,15 +68,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`new` LIKE 'new'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`new` LIKE 'new'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -106,15 +106,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`id` = 5 AND `test`.`name` LIKE 'me' AND `test`.`foo` LIKE 'bar'",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`id` = 5 AND `test`.`name` LIKE 'me' AND `test`.`foo` LIKE 'bar'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -151,15 +151,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `foo`.* FROM `foo`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `foo`.* FROM `foo`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

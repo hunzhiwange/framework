@@ -579,7 +579,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isRealCli(): bool
     {
-        return PHP_SAPI === 'cli';
+        return \PHP_SAPI === 'cli';
     }
 
     /**
@@ -591,7 +591,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isCgi(): bool
     {
-        return 'cgi' === substr(PHP_SAPI, 0, 3);
+        return 'cgi' === substr(\PHP_SAPI, 0, 3);
     }
 
     /**
@@ -1211,7 +1211,7 @@ class Request implements IRequest, IArray, ArrayAccess
             $basePath = $baseUrl;
         }
 
-        if ('\\' === DIRECTORY_SEPARATOR) {
+        if ('\\' === \DIRECTORY_SEPARATOR) {
             $basePath = str_replace('\\', '/', $basePath);
         }
 

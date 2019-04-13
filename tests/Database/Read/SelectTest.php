@@ -38,13 +38,13 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "select *from test where id = ?",
-    [
-        1
-    ]
-]
-eot;
+            [
+                "select *from test where id = ?",
+                [
+                    1
+                ]
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -58,15 +58,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test`",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -81,15 +81,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -106,15 +106,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $select = $connect->table('test')->
 

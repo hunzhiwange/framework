@@ -55,18 +55,18 @@ class RedirectTest extends TestCase
         $this->assertNull($response->getSession());
 
         $content = <<<'eot'
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/foo/bar" />
-        <title>Redirecting to http://www.queryphp.com/foo/bar</title>
-    </head>
-    <body>
-        Redirecting to <a href="http://www.queryphp.com/foo/bar">http://www.queryphp.com/foo/bar</a>.
-    </body>
-</html>
-eot;
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/foo/bar" />
+                    <title>Redirecting to http://www.queryphp.com/foo/bar</title>
+                </head>
+                <body>
+                    Redirecting to <a href="http://www.queryphp.com/foo/bar">http://www.queryphp.com/foo/bar</a>.
+                </body>
+            </html>
+            eot;
 
         $this->assertSame($content, $response->getContent());
     }
@@ -87,18 +87,18 @@ eot;
         $this->assertNull($response->getSession());
 
         $content = <<<'eot'
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="refresh" content="0;url=/foo/bar" />
-        <title>Redirecting to /foo/bar</title>
-    </head>
-    <body>
-        Redirecting to <a href="/foo/bar">/foo/bar</a>.
-    </body>
-</html>
-eot;
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta http-equiv="refresh" content="0;url=/foo/bar" />
+                    <title>Redirecting to /foo/bar</title>
+                </head>
+                <body>
+                    Redirecting to <a href="/foo/bar">/foo/bar</a>.
+                </body>
+            </html>
+            eot;
 
         $this->assertSame($content, $response->getContent());
     }

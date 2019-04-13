@@ -111,36 +111,36 @@ class ManagerTest extends TestCase
         $optionNew = $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
 
         $data = <<<'eot'
-{
-    "driver": "mysql",
-    "separate": false,
-    "distributed": true,
-    "master": {
-        "host": "127.0.0.1",
-        "port": 3306,
-        "name": "test",
-        "user": "root",
-        "password": "123456",
-        "charset": "utf8",
-        "options": {
-            "12": false
-        }
-    },
-    "slave": [
-        {
-            "host": "127.0.0.1",
-            "port": 3306,
-            "name": "test",
-            "user": "root",
-            "password": "123456",
-            "charset": "utf8",
-            "options": {
-                "12": false
+            {
+                "driver": "mysql",
+                "separate": false,
+                "distributed": true,
+                "master": {
+                    "host": "127.0.0.1",
+                    "port": 3306,
+                    "name": "test",
+                    "user": "root",
+                    "password": "123456",
+                    "charset": "utf8",
+                    "options": {
+                        "12": false
+                    }
+                },
+                "slave": [
+                    {
+                        "host": "127.0.0.1",
+                        "port": 3306,
+                        "name": "test",
+                        "user": "root",
+                        "password": "123456",
+                        "charset": "utf8",
+                        "options": {
+                            "12": false
+                        }
+                    }
+                ]
             }
-        }
-    ]
-}
-eot;
+            eot;
 
         $this->assertSame(
             $data,
@@ -182,47 +182,47 @@ eot;
         $optionNew = $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
 
         $data = <<<'eot'
-{
-    "driver": "mysql",
-    "separate": false,
-    "distributed": true,
-    "master": {
-        "host": "127.0.0.1",
-        "port": 3306,
-        "name": "test",
-        "user": "root",
-        "password": "123456",
-        "charset": "utf8",
-        "options": {
-            "12": false
-        }
-    },
-    "slave": [
-        {
-            "host": "127.0.0.1",
-            "port": 3306,
-            "name": "test",
-            "user": "root",
-            "password": "123456",
-            "charset": "utf8",
-            "options": {
-                "12": false
+            {
+                "driver": "mysql",
+                "separate": false,
+                "distributed": true,
+                "master": {
+                    "host": "127.0.0.1",
+                    "port": 3306,
+                    "name": "test",
+                    "user": "root",
+                    "password": "123456",
+                    "charset": "utf8",
+                    "options": {
+                        "12": false
+                    }
+                },
+                "slave": [
+                    {
+                        "host": "127.0.0.1",
+                        "port": 3306,
+                        "name": "test",
+                        "user": "root",
+                        "password": "123456",
+                        "charset": "utf8",
+                        "options": {
+                            "12": false
+                        }
+                    },
+                    {
+                        "password": "123456",
+                        "host": "127.0.0.1",
+                        "port": 3306,
+                        "name": "test",
+                        "user": "root",
+                        "charset": "utf8",
+                        "options": {
+                            "12": false
+                        }
+                    }
+                ]
             }
-        },
-        {
-            "password": "123456",
-            "host": "127.0.0.1",
-            "port": 3306,
-            "name": "test",
-            "user": "root",
-            "charset": "utf8",
-            "options": {
-                "12": false
-            }
-        }
-    ]
-}
-eot;
+            eot;
 
         $this->assertSame(
             $data,

@@ -38,11 +38,11 @@ class TruncateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "TRUNCATE TABLE `test`",
-    []
-]
-eot;
+            [
+                "TRUNCATE TABLE `test`",
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

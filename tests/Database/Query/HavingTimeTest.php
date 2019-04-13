@@ -38,15 +38,15 @@ class HavingTimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $value = strtotime('+5 month');
         $value2 = $value + 1;
@@ -73,15 +73,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
@@ -109,15 +109,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
@@ -145,15 +145,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
@@ -181,15 +181,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, 5, 1, $date['year']);
@@ -217,15 +217,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, 5, 1, $date['year']);
@@ -253,15 +253,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, 5, 1, $date['year']);
@@ -289,15 +289,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $value = mktime(0, 0, 0, 1, 1, 2018);
         $value2 = $value + 1;
@@ -324,15 +324,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $value = mktime(0, 0, 0, 1, 1, 2018);
         $value2 = $value + 1;
@@ -359,15 +359,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $value = mktime(0, 0, 0, 1, 1, 2018);
         $value2 = $value + 1;
@@ -394,15 +394,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $value = strtotime('+5 month');
         $value2 = $value + 1;
@@ -436,15 +436,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $value = strtotime('+5 month');
         $value2 = $value + 1;
@@ -477,15 +477,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
@@ -517,15 +517,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $value = mktime(0, 0, 0, 5, 1, $date['year']);
@@ -557,15 +557,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $value = mktime(0, 0, 0, 1, 1, 2018);
         $value2 = $value + 1;
@@ -596,15 +596,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_year` = %s AND `test`.`create_month` = %s AND `test`.`create_day` = %s AND `test`.`create_date` = %s LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_year` = %s AND `test`.`create_month` = %s AND `test`.`create_day` = %s AND `test`.`create_date` = %s LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $year = mktime(0, 0, 0, 1, 1, 2018);
@@ -657,15 +657,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_year` = %s AND `test`.`create_month` = %s AND `test`.`create_day` = %s AND `test`.`create_date` = %s LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_year` = %s AND `test`.`create_month` = %s AND `test`.`create_day` = %s AND `test`.`create_date` = %s LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $year = mktime(0, 0, 0, 1, 1, 2018);
@@ -793,15 +793,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
@@ -847,15 +847,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $time = mktime(0, 0, 0, 5, 1, $date['year']);
@@ -901,15 +901,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d AND `test`.`create_at` = 6",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d AND `test`.`create_at` = 6",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
@@ -953,15 +953,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d AND `test`.`create_at` = %d",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d AND `test`.`create_at` = %d",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $date = getdate();
         $time1 = mktime(0, 0, 0, $date['mon'], 5, $date['year']);

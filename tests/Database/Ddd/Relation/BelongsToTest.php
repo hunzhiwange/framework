@@ -93,7 +93,7 @@ class BelongsToTest extends TestCase
         $posts = Post::limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(0, count($posts));
+        $this->assertCount(0, $posts);
 
         $connect = $this->createDatabaseConnect();
 
@@ -116,7 +116,7 @@ class BelongsToTest extends TestCase
         $posts = Post::eager(['user'])->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(5, count($posts));
+        $this->assertCount(5, $posts);
 
         foreach ($posts as $value) {
             $user = $value->user;
@@ -160,12 +160,12 @@ class BelongsToTest extends TestCase
         $posts = Post::limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(0, count($posts));
+        $this->assertCount(0, $posts);
 
         $posts = Post::eager(['user'])->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(0, count($posts));
+        $this->assertCount(0, $posts);
     }
 
     protected function getDatabaseTable(): array

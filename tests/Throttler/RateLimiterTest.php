@@ -66,44 +66,44 @@ class RateLimiterTest extends TestCase
         $time0 = $time - 1;
 
         $header = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time}
+            }
+            eot;
 
         $header2 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time2}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time2}
+            }
+            eot;
 
         $header3 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time3}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time3}
+            }
+            eot;
 
         $header0 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time0}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time0}
+            }
+            eot;
 
         $this->assertTrue(
             in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3, $header0], true)
@@ -132,44 +132,44 @@ eot;
         $time0 = $time - 1;
 
         $header = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time}
+            }
+            eot;
 
         $header2 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time2}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time2}
+            }
+            eot;
 
         $header3 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time3}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time3}
+            }
+            eot;
 
         $header0 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time0}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time0}
+            }
+            eot;
 
         $this->assertTrue(
             in_array($this->varJson($rateLimiter->header()), [$header, $header2, $header3, $header0], true)
@@ -217,44 +217,44 @@ eot;
         $time0 = $time - 1;
 
         $header = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time}
+            }
+            eot;
 
         $header2 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time2}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time2}
+            }
+            eot;
 
         $header3 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time3}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time3}
+            }
+            eot;
 
         $header0 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time0}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time0}
+            }
+            eot;
 
         $this->assertTimeRange(
             $this->varJson(
@@ -271,44 +271,44 @@ eot;
         $rateLimiter->limit(80);
 
         $header = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 80,
-    "X-RateLimit-Remaining": 79,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 80,
+                "X-RateLimit-Remaining": 79,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time}
+            }
+            eot;
 
         $header2 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 80,
-    "X-RateLimit-Remaining": 79,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time2}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 80,
+                "X-RateLimit-Remaining": 79,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time2}
+            }
+            eot;
 
         $header3 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 80,
-    "X-RateLimit-Remaining": 79,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time3}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 80,
+                "X-RateLimit-Remaining": 79,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time3}
+            }
+            eot;
 
         $header0 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 80,
-    "X-RateLimit-Remaining": 79,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time0}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 80,
+                "X-RateLimit-Remaining": 79,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time0}
+            }
+            eot;
 
         $this->assertTimeRange(
             $this->varJson(
@@ -330,44 +330,44 @@ eot;
         $time0 = $time - 1;
 
         $header = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 80,
-    "X-RateLimit-Remaining": 79,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 80,
+                "X-RateLimit-Remaining": 79,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time}
+            }
+            eot;
 
         $header2 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 80,
-    "X-RateLimit-Remaining": 79,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time2}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 80,
+                "X-RateLimit-Remaining": 79,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time2}
+            }
+            eot;
 
         $header3 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 80,
-    "X-RateLimit-Remaining": 79,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time3}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 80,
+                "X-RateLimit-Remaining": 79,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time3}
+            }
+            eot;
 
         $header0 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 80,
-    "X-RateLimit-Remaining": 79,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time0}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 80,
+                "X-RateLimit-Remaining": 79,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time0}
+            }
+            eot;
 
         $this->assertTimeRange(
             $this->varJson(
@@ -394,44 +394,44 @@ eot;
         $time0 = $time - 1;
 
         $header = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time}
+            }
+            eot;
 
         $header2 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time2}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time2}
+            }
+            eot;
 
         $header3 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time3}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time3}
+            }
+            eot;
 
         $header0 = <<<eot
-{
-    "X-RateLimit-Time": 60,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time0}
-}
-eot;
+            {
+                "X-RateLimit-Time": 60,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time0}
+            }
+            eot;
 
         $this->assertTimeRange(
             $this->varJson(
@@ -448,44 +448,44 @@ eot;
         $rateLimiter->time(80);
 
         $header = <<<eot
-{
-    "X-RateLimit-Time": 80,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time}
-}
-eot;
+            {
+                "X-RateLimit-Time": 80,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time}
+            }
+            eot;
 
         $header2 = <<<eot
-{
-    "X-RateLimit-Time": 80,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time2}
-}
-eot;
+            {
+                "X-RateLimit-Time": 80,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time2}
+            }
+            eot;
 
         $header3 = <<<eot
-{
-    "X-RateLimit-Time": 80,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time3}
-}
-eot;
+            {
+                "X-RateLimit-Time": 80,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time3}
+            }
+            eot;
 
         $header0 = <<<eot
-{
-    "X-RateLimit-Time": 80,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time0}
-}
-eot;
+            {
+                "X-RateLimit-Time": 80,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time0}
+            }
+            eot;
 
         $this->assertTimeRange(
             $this->varJson(
@@ -502,44 +502,44 @@ eot;
         $this->assertFalse($rateLimiter->attempt());
 
         $header = <<<eot
-{
-    "X-RateLimit-Time": 80,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time}
-}
-eot;
+            {
+                "X-RateLimit-Time": 80,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time}
+            }
+            eot;
 
         $header2 = <<<eot
-{
-    "X-RateLimit-Time": 80,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time2}
-}
-eot;
+            {
+                "X-RateLimit-Time": 80,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time2}
+            }
+            eot;
 
         $header3 = <<<eot
-{
-    "X-RateLimit-Time": 80,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time3}
-}
-eot;
+            {
+                "X-RateLimit-Time": 80,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time3}
+            }
+            eot;
 
         $header0 = <<<eot
-{
-    "X-RateLimit-Time": 80,
-    "X-RateLimit-Limit": 60,
-    "X-RateLimit-Remaining": 59,
-    "X-RateLimit-RetryAfter": 0,
-    "X-RateLimit-Reset": {$time0}
-}
-eot;
+            {
+                "X-RateLimit-Time": 80,
+                "X-RateLimit-Limit": 60,
+                "X-RateLimit-Remaining": 59,
+                "X-RateLimit-RetryAfter": 0,
+                "X-RateLimit-Reset": {$time0}
+            }
+            eot;
 
         $this->assertTimeRange(
             $this->varJson(

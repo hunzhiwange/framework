@@ -53,12 +53,12 @@ class CompilerPhpTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<php>echo 'Hello,world!';</php>
-eot;
+            <php>echo 'Hello,world!';</php>
+            eot;
 
         $compiled = <<<'eot'
-<?php echo 'Hello,world!'; ?>
-eot;
+            <?php echo 'Hello,world!'; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -75,12 +75,12 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<?php echo 'Hello,world!'; ?>
-eot;
+            <?php echo 'Hello,world!'; ?>
+            eot;
 
         $compiled = <<<'eot'
-<?php echo 'Hello,world!'; ?>
-eot;
+            <?php echo 'Hello,world!'; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -98,20 +98,20 @@ eot;
 
         // 错误的写法
         $source = <<<'eot'
-<php>
-    {if $hello == ''}
-        Yet !
-    {/if}
-</php>
-eot;
+            <php>
+                {if $hello == ''}
+                    Yet !
+                {/if}
+            </php>
+            eot;
 
         $compiled = <<<'eot'
-<?php 
-    <?php if ($hello == ''): ?>
-        Yet !
-    <?php endif; ?>
- ?>
-eot;
+            <?php 
+                <?php if ($hello == ''): ?>
+                    Yet !
+                <?php endif; ?>
+             ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

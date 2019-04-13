@@ -38,15 +38,15 @@ class ForceIndexTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) IGNORE INDEX(testindex) WHERE `test`.`id` = 5",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) IGNORE INDEX(testindex) WHERE `test`.`id` = 5",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -69,15 +69,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) WHERE `test`.`id` = 2",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) WHERE `test`.`id` = 2",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -98,15 +98,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` IGNORE INDEX(nameindex,statusindex) WHERE `test`.`id` = 6",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` IGNORE INDEX(nameindex,statusindex) WHERE `test`.`id` = 6",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -145,15 +145,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` IGNORE INDEX(testindex) WHERE `test`.`id` = 5",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` IGNORE INDEX(testindex) WHERE `test`.`id` = 5",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -184,15 +184,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) WHERE `test`.`id` = 5",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) WHERE `test`.`id` = 5",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

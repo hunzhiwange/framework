@@ -44,20 +44,20 @@ class ConnectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $sql = <<<'eot'
-[
-    "INSERT INTO `guest_book` (`guest_book`.`name`,`guest_book`.`content`) VALUES (:name,:content)",
-    {
-        "name": [
-            "小鸭子",
-            2
-        ],
-        "content": [
-            "吃饭饭",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "INSERT INTO `guest_book` (`guest_book`.`name`,`guest_book`.`content`) VALUES (:name,:content)",
+                {
+                    "name": [
+                        "小鸭子",
+                        2
+                    ],
+                    "content": [
+                        "吃饭饭",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $data = ['name' => '小鸭子', 'content' => '吃饭饭'];
 
@@ -386,13 +386,13 @@ eot;
         $connect = $this->createDatabaseConnect();
 
         $sqlProcedure = <<<'eot'
-DROP PROCEDURE IF EXISTS `test_procedure`;
-CREATE PROCEDURE `test_procedure`(IN min INT)
-    BEGIN
-    SELECT `name` FROM `guest_book` WHERE id > min;
-    SELECT `content` FROM `guest_book` WHERE id > min+1;
-    END;
-eot;
+            DROP PROCEDURE IF EXISTS `test_procedure`;
+            CREATE PROCEDURE `test_procedure`(IN min INT)
+                BEGIN
+                SELECT `name` FROM `guest_book` WHERE id > min;
+                SELECT `content` FROM `guest_book` WHERE id > min+1;
+                END;
+            eot;
 
         $connect->execute($sqlProcedure);
 
@@ -409,22 +409,22 @@ eot;
         $result = $connect->query('CALL test_procedure(0)');
 
         $sql = <<<'eot'
-[
-    [
-        {
-            "name": "tom"
-        },
-        {
-            "name": "tom"
-        }
-    ],
-    [
-        {
-            "content": "I love movie."
-        }
-    ]
-]
-eot;
+            [
+                [
+                    {
+                        "name": "tom"
+                    },
+                    {
+                        "name": "tom"
+                    }
+                ],
+                [
+                    {
+                        "content": "I love movie."
+                    }
+                ]
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

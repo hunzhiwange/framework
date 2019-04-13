@@ -38,16 +38,16 @@ class UpdateColumnTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
-    {
-        "name": [
-            "小小小鸟，怎么也飞不高。",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
+                {
+                    "name": [
+                        "小小小鸟，怎么也飞不高。",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -68,11 +68,11 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
-    []
-]
-eot;
+            [
+                "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

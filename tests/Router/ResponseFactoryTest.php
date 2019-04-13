@@ -513,18 +513,18 @@ class ResponseFactoryTest extends TestCase
         $response = $factory->redirect('hello/world');
 
         $content = <<<'eot'
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/hello/world" />
-        <title>Redirecting to http://www.queryphp.com/hello/world</title>
-    </head>
-    <body>
-        Redirecting to <a href="http://www.queryphp.com/hello/world">http://www.queryphp.com/hello/world</a>.
-    </body>
-</html>
-eot;
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/hello/world" />
+                    <title>Redirecting to http://www.queryphp.com/hello/world</title>
+                </head>
+                <body>
+                    Redirecting to <a href="http://www.queryphp.com/hello/world">http://www.queryphp.com/hello/world</a>.
+                </body>
+            </html>
+            eot;
 
         $this->assertInstanceof(IResponse::class, $response);
         $this->assertInstanceof(Response::class, $response);
@@ -544,18 +544,18 @@ eot;
         $response = $factory->redirect('hello/world', ['foo' => 'bar']);
 
         $content = <<<'eot'
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/hello/world?foo=bar" />
-        <title>Redirecting to http://www.queryphp.com/hello/world?foo=bar</title>
-    </head>
-    <body>
-        Redirecting to <a href="http://www.queryphp.com/hello/world?foo=bar">http://www.queryphp.com/hello/world?foo=bar</a>.
-    </body>
-</html>
-eot;
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta http-equiv="refresh" content="0;url=http://www.queryphp.com/hello/world?foo=bar" />
+                    <title>Redirecting to http://www.queryphp.com/hello/world?foo=bar</title>
+                </head>
+                <body>
+                    Redirecting to <a href="http://www.queryphp.com/hello/world?foo=bar">http://www.queryphp.com/hello/world?foo=bar</a>.
+                </body>
+            </html>
+            eot;
 
         $this->assertInstanceof(IResponse::class, $response);
         $this->assertInstanceof(Response::class, $response);
@@ -575,18 +575,18 @@ eot;
         $response = $factory->redirectRaw('http://queryphp.com/raw');
 
         $content = <<<'eot'
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="refresh" content="0;url=http://queryphp.com/raw" />
-        <title>Redirecting to http://queryphp.com/raw</title>
-    </head>
-    <body>
-        Redirecting to <a href="http://queryphp.com/raw">http://queryphp.com/raw</a>.
-    </body>
-</html>
-eot;
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta http-equiv="refresh" content="0;url=http://queryphp.com/raw" />
+                    <title>Redirecting to http://queryphp.com/raw</title>
+                </head>
+                <body>
+                    Redirecting to <a href="http://queryphp.com/raw">http://queryphp.com/raw</a>.
+                </body>
+            </html>
+            eot;
 
         $this->assertInstanceof(IResponse::class, $response);
         $this->assertInstanceof(Response::class, $response);
@@ -606,18 +606,18 @@ eot;
         $response = $factory->redirectRaw('http://queryphp.com/raw?foo=bar');
 
         $content = <<<'eot'
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="refresh" content="0;url=http://queryphp.com/raw?foo=bar" />
-        <title>Redirecting to http://queryphp.com/raw?foo=bar</title>
-    </head>
-    <body>
-        Redirecting to <a href="http://queryphp.com/raw?foo=bar">http://queryphp.com/raw?foo=bar</a>.
-    </body>
-</html>
-eot;
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta http-equiv="refresh" content="0;url=http://queryphp.com/raw?foo=bar" />
+                    <title>Redirecting to http://queryphp.com/raw?foo=bar</title>
+                </head>
+                <body>
+                    Redirecting to <a href="http://queryphp.com/raw?foo=bar">http://queryphp.com/raw?foo=bar</a>.
+                </body>
+            </html>
+            eot;
 
         $this->assertInstanceof(IResponse::class, $response);
         $this->assertInstanceof(Response::class, $response);

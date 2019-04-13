@@ -120,7 +120,7 @@ class HasOneTest extends TestCase
         $posts = Post::eager(['post_content'])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(6, count($posts));
+        $this->assertCount(6, $posts);
 
         foreach ($posts as $value) {
             $postContent = $value->postContent;

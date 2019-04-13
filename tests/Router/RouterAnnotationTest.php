@@ -130,11 +130,11 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('hello plus for petLeevel, params petId is hello', $response->getContent());
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "Demo2::handle"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "Demo2::handle"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -148,14 +148,14 @@ eot;
         ]);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "Demo2::handle",
-    "DemoForAll::terminate",
-    "Demo1::terminate",
-    "Demo2::terminate"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "Demo2::handle",
+                "DemoForAll::terminate",
+                "Demo1::terminate",
+                "Demo2::terminate"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -198,11 +198,11 @@ eot;
         $this->assertSame('hello plus for basePath normalize', $response->getContent());
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "DemoForBasePath::handle"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "DemoForBasePath::handle"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -216,12 +216,12 @@ eot;
         ]);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "DemoForBasePath::handle",
-    "DemoForAll::terminate"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "DemoForBasePath::handle",
+                "DemoForAll::terminate"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -654,11 +654,11 @@ eot;
         $result = $router->dispatch($request);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "Demo2::handle"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "Demo2::handle"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -672,14 +672,14 @@ eot;
         ]);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "Demo2::handle",
-    "DemoForAll::terminate",
-    "Demo1::terminate",
-    "Demo2::terminate"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "Demo2::handle",
+                "DemoForAll::terminate",
+                "Demo1::terminate",
+                "Demo2::terminate"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -725,12 +725,12 @@ eot;
         $result = $router->dispatch($request);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "Demo2::handle",
-    "Demo3::handle(arg1:10,arg2:world)"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "Demo2::handle",
+                "Demo3::handle(arg1:10,arg2:world)"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -744,15 +744,15 @@ eot;
         ]);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "Demo2::handle",
-    "Demo3::handle(arg1:10,arg2:world)",
-    "DemoForAll::terminate",
-    "Demo1::terminate",
-    "Demo2::terminate"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "Demo2::handle",
+                "Demo3::handle(arg1:10,arg2:world)",
+                "DemoForAll::terminate",
+                "Demo1::terminate",
+                "Demo2::terminate"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -798,13 +798,13 @@ eot;
         $result = $router->dispatch($request);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "Demo2::handle",
-    "Demo3::handle(arg1:10,arg2:world)",
-    "DemoForBasePath::handle"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "Demo2::handle",
+                "Demo3::handle(arg1:10,arg2:world)",
+                "DemoForBasePath::handle"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -818,16 +818,16 @@ eot;
         ]);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "Demo2::handle",
-    "Demo3::handle(arg1:10,arg2:world)",
-    "DemoForBasePath::handle",
-    "DemoForAll::terminate",
-    "Demo1::terminate",
-    "Demo2::terminate"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "Demo2::handle",
+                "Demo3::handle(arg1:10,arg2:world)",
+                "DemoForBasePath::handle",
+                "DemoForAll::terminate",
+                "Demo1::terminate",
+                "Demo2::terminate"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -873,10 +873,10 @@ eot;
         $result = $router->dispatch($request);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle"
-]
-eot;
+            [
+                "DemoForAll::handle"
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -890,12 +890,12 @@ eot;
         ]);
 
         $data = <<<'eot'
-[
-    "DemoForAll::handle",
-    "DemoForAll::terminate",
-    "Demo1::terminate"
-]
-eot;
+            [
+                "DemoForAll::handle",
+                "DemoForAll::terminate",
+                "Demo1::terminate"
+            ]
+            eot;
 
         $this->assertSame(
             $data,

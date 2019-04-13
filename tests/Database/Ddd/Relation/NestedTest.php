@@ -43,7 +43,7 @@ class NestedTest extends TestCase
         $posts = Post::limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(0, count($posts));
+        $this->assertCount(0, $posts);
 
         $connect = $this->createDatabaseConnect();
 
@@ -98,7 +98,7 @@ class NestedTest extends TestCase
         $posts = Post::eager(['user.role'])->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertSame(5, count($posts));
+        $this->assertCount(5, $posts);
 
         $post = Post::where('id', 1)->findOne();
 
@@ -149,7 +149,7 @@ class NestedTest extends TestCase
         $this->assertSame('会员', $user2['name']);
         $this->assertSame('会员', $user2->getName());
 
-        $this->assertSame(2, count($role));
+        $this->assertCount(2, $role);
         $this->assertSame('1', $role[0]['id']);
         $this->assertSame('管理员', $role[0]['name']);
         $this->assertSame('3', $role[1]['id']);

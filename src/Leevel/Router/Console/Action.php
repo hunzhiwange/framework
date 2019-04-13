@@ -57,14 +57,14 @@ class Action extends Make
      * @var string
      */
     protected $help = <<<'EOF'
-The <info>%command.name%</info> command to make action with app namespace:
-
-  <info>php %command.full_name% controller name</info>
-
-You can also by using the <comment>--namespace</comment> option:
-
-  <info>php %command.full_name% controller name --namespace=common</info>
-EOF;
+        The <info>%command.name%</info> command to make action with app namespace:
+        
+          <info>php %command.full_name% controller name</info>
+        
+        You can also by using the <comment>--namespace</comment> option:
+        
+          <info>php %command.full_name% controller name --namespace=common</info>
+        EOF;
 
     /**
      * 响应命令.

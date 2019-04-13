@@ -53,16 +53,16 @@ class CompilerListTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{list $list $key $value}
-    {$key} - {$value}
-{/list}
-eot;
+            {list $list $key $value}
+                {$key} - {$value}
+            {/list}
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)): foreach($list as $key => $value): ?>
-    <?php echo $key; ?> - <?php echo $value; ?>
-<?php endforeach; endif; ?>
-eot;
+            <?php if (is_array($list)): foreach($list as $key => $value): ?>
+                <?php echo $key; ?> - <?php echo $value; ?>
+            <?php endforeach; endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -78,16 +78,16 @@ eot;
     {
         $parser = $this->createParser();
         $source = <<<'eot'
-{list $list $value}
-    {$value}
-{/list}
-eot;
+            {list $list $value}
+                {$value}
+            {/list}
+            eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)): foreach($list as $value): ?>
-    <?php echo $value; ?>
-<?php endforeach; endif; ?>
-eot;
+            <?php if (is_array($list)): foreach($list as $value): ?>
+                <?php echo $value; ?>
+            <?php endforeach; endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -103,18 +103,18 @@ eot;
     {
         $parser = $this->createParser();
         $source = <<<'eot'
-<list for=list value=my_value key=my_key index=my_index>
-    {$my_index} {$my_key} {$my_value}
-</list>
-eot;
+            <list for=list value=my_value key=my_key index=my_index>
+                {$my_index} {$my_key} {$my_value}
+            </list>
+            eot;
 
         $compiled = <<<'eot'
-<?php $my_index = 1; ?>
-<?php if (is_array($list)): foreach ($list as $my_key => $my_value): ?>
-    <?php echo $my_index; ?> <?php echo $my_key; ?> <?php echo $my_value; ?>
-<?php $my_index++; ?>
-<?php endforeach; endif; ?>
-eot;
+            <?php $my_index = 1; ?>
+            <?php if (is_array($list)): foreach ($list as $my_key => $my_value): ?>
+                <?php echo $my_index; ?> <?php echo $my_key; ?> <?php echo $my_value; ?>
+            <?php $my_index++; ?>
+            <?php endforeach; endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -130,18 +130,18 @@ eot;
     {
         $parser = $this->createParser();
         $source = <<<'eot'
-<list for=list>
-    {$index} {$key} {$value}
-</list>
-eot;
+            <list for=list>
+                {$index} {$key} {$value}
+            </list>
+            eot;
 
         $compiled = <<<'eot'
-<?php $index = 1; ?>
-<?php if (is_array($list)): foreach ($list as $key => $value): ?>
-    <?php echo $index; ?> <?php echo $key; ?> <?php echo $value; ?>
-<?php $index++; ?>
-<?php endforeach; endif; ?>
-eot;
+            <?php $index = 1; ?>
+            <?php if (is_array($list)): foreach ($list as $key => $value): ?>
+                <?php echo $index; ?> <?php echo $key; ?> <?php echo $value; ?>
+            <?php $index++; ?>
+            <?php endforeach; endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

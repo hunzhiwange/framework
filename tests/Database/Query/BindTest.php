@@ -39,20 +39,20 @@ class BindTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
-    {
-        "id": [
-            1,
-            2
-        ]
-    },
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                {
+                    "id": [
+                        1,
+                        2
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -68,20 +68,20 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
-    {
-        "id": [
-            1,
-            1
-        ]
-    },
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                {
+                    "id": [
+                        1,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -98,20 +98,20 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
-    {
-        "id": [
-            1,
-            1
-        ]
-    },
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                {
+                    "id": [
+                        1,
+                        1
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -128,24 +128,24 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id AND `test`.`hello` LIKE :name",
-    {
-        "id": [
-            1,
-            1
-        ],
-        "name": [
-            "小鸭子",
-            2
-        ]
-    },
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id AND `test`.`hello` LIKE :name",
+                {
+                    "id": [
+                        1,
+                        1
+                    ],
+                    "name": [
+                        "小鸭子",
+                        2
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -164,24 +164,24 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = ? AND `test`.`hello` LIKE ?",
-    [
-        [
-            5,
-            1
-        ],
-        [
-            "小鸭子",
-            2
-        ]
-    ],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = ? AND `test`.`hello` LIKE ?",
+                [
+                    [
+                        5,
+                        1
+                    ],
+                    [
+                        "小鸭子",
+                        2
+                    ]
+                ],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -207,20 +207,20 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`name` = :name",
-    {
-        "name": [
-            1,
-            2
-        ]
-    },
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`name` = :name",
+                {
+                    "name": [
+                        1,
+                        2
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -253,20 +253,20 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
-    {
-        "id": [
-            1,
-            2
-        ]
-    },
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                {
+                    "id": [
+                        1,
+                        2
+                    ]
+                },
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

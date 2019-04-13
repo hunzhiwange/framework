@@ -38,15 +38,15 @@ class SqlTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -62,13 +62,13 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "delete from test where id = ?",
-    [
-        22
-    ]
-]
-eot;
+            [
+                "delete from test where id = ?",
+                [
+                    22
+                ]
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -81,15 +81,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

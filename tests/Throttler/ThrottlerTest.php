@@ -57,11 +57,11 @@ class ThrottlerTest extends TestCase
         $this->assertInstanceof(Cache::class, $rateLimiter->getCache());
 
         // with_cache
-        $this->assertSame(1, count($this->getTestProperty($throttler, 'rateLimiter')));
+        $this->assertCount(1, $this->getTestProperty($throttler, 'rateLimiter'));
         $rateLimiter2 = $throttler->create('baseuse');
         $this->assertFalse($rateLimiter2->attempt());
         $this->assertFalse($rateLimiter2->tooManyAttempt());
-        $this->assertSame(1, count($this->getTestProperty($throttler, 'rateLimiter')));
+        $this->assertCount(1, $this->getTestProperty($throttler, 'rateLimiter'));
 
         $path = __DIR__.'/cache2';
 

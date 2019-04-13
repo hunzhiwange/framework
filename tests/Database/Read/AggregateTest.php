@@ -38,15 +38,15 @@ class AggregateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT COUNT(*) AS row_count FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT COUNT(*) AS row_count FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -74,15 +74,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT COUNT(*) AS row_count2 FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT COUNT(*) AS row_count2 FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -102,15 +102,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT AVG(`test`.`num`) AS avg_value FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT AVG(`test`.`num`) AS avg_value FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -138,15 +138,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT AVG(`test`.`num`) AS avg_value2 FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT AVG(`test`.`num`) AS avg_value2 FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -166,15 +166,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT MAX(`test`.`num`) AS max_value FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT MAX(`test`.`num`) AS max_value FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -202,15 +202,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT MAX(`test`.`num`) AS max_value2 FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT MAX(`test`.`num`) AS max_value2 FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -230,15 +230,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT MIN(`test`.`num`) AS min_value FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT MIN(`test`.`num`) AS min_value FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -266,15 +266,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT MIN(`test`.`num`) AS min_value2 FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT MIN(`test`.`num`) AS min_value2 FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -294,15 +294,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT SUM(`test`.`num`) AS sum_value FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT SUM(`test`.`num`) AS sum_value FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -330,15 +330,15 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "SELECT SUM(`test`.`num`) AS sum_value2 FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT SUM(`test`.`num`) AS sum_value2 FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -358,15 +358,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT AVG(`test`.`num`) AS avg_value FROM `test` LIMIT 1",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT AVG(`test`.`num`) AS avg_value FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

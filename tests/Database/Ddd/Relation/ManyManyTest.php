@@ -117,7 +117,7 @@ class ManyManyTest extends TestCase
         $this->assertSame('会员', $user2['name']);
         $this->assertSame('会员', $user2->getName());
 
-        $this->assertSame(2, count($role));
+        $this->assertCount(2, $role);
         $this->assertSame('1', $role[0]['id']);
         $this->assertSame('管理员', $role[0]['name']);
         $this->assertSame('3', $role[1]['id']);
@@ -212,7 +212,7 @@ class ManyManyTest extends TestCase
         $this->assertSame('会员', $user2['name']);
         $this->assertSame('会员', $user2->getName());
 
-        $this->assertSame(2, count($role));
+        $this->assertCount(2, $role);
         $this->assertSame('1', $role[0]['id']);
         $this->assertSame('管理员', $role[0]['name']);
         $this->assertSame('3', $role[1]['id']);
@@ -309,7 +309,7 @@ class ManyManyTest extends TestCase
         $role = $user->role;
 
         $this->assertInstanceof(Collection::class, $role);
-        $this->assertSame(0, count($role));
+        $this->assertCount(0, $role);
     }
 
     protected function getDatabaseTable(): array

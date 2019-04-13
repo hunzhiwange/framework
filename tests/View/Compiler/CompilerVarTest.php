@@ -54,12 +54,12 @@ class CompilerVarTest extends TestCase
 
         // 普通变量
         $source = <<<'eot'
-{$name}
-eot;
+            {$name}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $name; ?>
-eot;
+            <?php echo $name; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -77,12 +77,12 @@ eot;
 
         // JS 风格变量
         $source = <<<'eot'
-{{ value }}
-eot;
+            {{ value }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $value; ?>
-eot;
+            <?php echo $value; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -100,12 +100,12 @@ eot;
 
         // 数组支持
         $source = <<<'eot'
-我的梦想是写好”{$value['name']}“，我相信”{$value['description']}“。
-eot;
+            我的梦想是写好”{$value['name']}“，我相信”{$value['description']}“。
+            eot;
 
         $compiled = <<<'eot'
-我的梦想是写好”<?php echo $value['name']; ?>“，我相信”<?php echo $value['description']; ?>“。
-eot;
+            我的梦想是写好”<?php echo $value['name']; ?>“，我相信”<?php echo $value['description']; ?>“。
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -123,12 +123,12 @@ eot;
 
         // JS 风格数组支持
         $source = <<<'eot'
-{{ value['test'] }}
-eot;
+            {{ value['test'] }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $value['test']; ?>
-eot;
+            <?php echo $value['test']; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -146,12 +146,12 @@ eot;
 
         // 输出一个对象
         $source = <<<'eot'
-我的梦想是写好”{$demo->name}“，我相信”{$demo->description}“。
-eot;
+            我的梦想是写好”{$demo->name}“，我相信”{$demo->description}“。
+            eot;
 
         $compiled = <<<'eot'
-我的梦想是写好”<?php echo $demo->name; ?>“，我相信”<?php echo $demo->description; ?>“。
-eot;
+            我的梦想是写好”<?php echo $demo->name; ?>“，我相信”<?php echo $demo->description; ?>“。
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -170,20 +170,20 @@ eot;
         // JS 风格输出一个对象
         // . 周围有空格表示变量
         $source = <<<'eot'
-<li><a href="{{ item.href }}">{{ item.caption }}</a></li>
-eot;
+            <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+            eot;
 
         $source = <<<'eot'
-{{ a.b }}
-{{ a . b }}
-{{ a->b }}
-eot;
+            {{ a.b }}
+            {{ a . b }}
+            {{ a->b }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $a->b; ?>
-<?php echo $a . $b; ?>
-<?php echo $a->b; ?>
-eot;
+            <?php echo $a->b; ?>
+            <?php echo $a . $b; ?>
+            <?php echo $a->b; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -201,12 +201,12 @@ eot;
 
         // 对象无限层级支持
         $source = <<<'eot'
-我的梦想是写好”{$demo->name->child->child->child}“，我相信”{$demo->description}“。
-eot;
+            我的梦想是写好”{$demo->name->child->child->child}“，我相信”{$demo->description}“。
+            eot;
 
         $compiled = <<<'eot'
-我的梦想是写好”<?php echo $demo->name->child->child->child; ?>“，我相信”<?php echo $demo->description; ?>“。
-eot;
+            我的梦想是写好”<?php echo $demo->name->child->child->child; ?>“，我相信”<?php echo $demo->description; ?>“。
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -224,12 +224,12 @@ eot;
 
         // 对象数组点语法支持
         $source = <<<'eot'
-我的梦想是写好”{$demo.name}“，我相信”{$demo.description}“。
-eot;
+            我的梦想是写好”{$demo.name}“，我相信”{$demo.description}“。
+            eot;
 
         $compiled = <<<'eot'
-我的梦想是写好”<?php echo $demo->name; ?>“，我相信”<?php echo $demo->description; ?>“。
-eot;
+            我的梦想是写好”<?php echo $demo->name; ?>“，我相信”<?php echo $demo->description; ?>“。
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -247,12 +247,12 @@ eot;
 
         // 支持无限级对象属性
         $source = <<<'eot'
-我的梦想是写好”{$demo.name.one.two.three.four}“，我相信”{$demo.description.one.two.three.four}“。
-eot;
+            我的梦想是写好”{$demo.name.one.two.three.four}“，我相信”{$demo.description.one.two.three.four}“。
+            eot;
 
         $compiled = <<<'eot'
-我的梦想是写好”<?php echo $demo->name->one->two->three->four; ?>“，我相信”<?php echo $demo->description->one->two->three->four; ?>“。
-eot;
+            我的梦想是写好”<?php echo $demo->name->one->two->three->four; ?>“，我相信”<?php echo $demo->description->one->two->three->four; ?>“。
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -270,14 +270,14 @@ eot;
 
         // 变量之间的加减法运算
         $source = <<<'eot'
-{$value+$value2}
-{$value-$value2}
-eot;
+            {$value+$value2}
+            {$value-$value2}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $value+$value2; ?>
-<?php echo $value-$value2; ?>
-eot;
+            <?php echo $value+$value2; ?>
+            <?php echo $value-$value2; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -295,20 +295,20 @@ eot;
 
         // 变量之间的乘除余数
         $source = <<<'eot'
-{$value + 9 +10}
-{$value * $value2 * 10}
-{$value / $value2}
-{$value3+$list['key']}
-{$value3%$list['key']}
-eot;
+            {$value + 9 +10}
+            {$value * $value2 * 10}
+            {$value / $value2}
+            {$value3+$list['key']}
+            {$value3%$list['key']}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $value + 9 +10; ?>
-<?php echo $value * $value2 * 10; ?>
-<?php echo $value / $value2; ?>
-<?php echo $value3+$list['key']; ?>
-<?php echo $value3%$list['key']; ?>
-eot;
+            <?php echo $value + 9 +10; ?>
+            <?php echo $value * $value2 * 10; ?>
+            <?php echo $value / $value2; ?>
+            <?php echo $value3+$list['key']; ?>
+            <?php echo $value3%$list['key']; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -326,12 +326,12 @@ eot;
 
         // 变量之间的连接字符
         $source = <<<'eot'
-{$value3.'start - '.$value.$value2.'- end'}
-eot;
+            {$value3.'start - '.$value.$value2.'- end'}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $value3.'start - '.$value.$value2.'- end'; ?>
-eot;
+            <?php echo $value3.'start - '.$value.$value2.'- end'; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -349,14 +349,14 @@ eot;
 
         // 变量之间的加减法运算
         $source = <<<'eot'
-{{ value+value2 }}
-{{ value-value2 }}
-eot;
+            {{ value+value2 }}
+            {{ value-value2 }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $value+$value2; ?>
-<?php echo $value-$value2; ?>
-eot;
+            <?php echo $value+$value2; ?>
+            <?php echo $value-$value2; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -374,20 +374,20 @@ eot;
 
         // 变量之间的乘除余数
         $source = <<<'eot'
-{{ value + 9 +10 }}
-{{ value * value2 * 10 }}
-{{ value / value2 }}
-{{ value3+list['key'] }}
-{{ value3%list['key'] }}
-eot;
+            {{ value + 9 +10 }}
+            {{ value * value2 * 10 }}
+            {{ value / value2 }}
+            {{ value3+list['key'] }}
+            {{ value3%list['key'] }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $value + 9 +10; ?>
-<?php echo $value * $value2 * 10; ?>
-<?php echo $value / $value2; ?>
-<?php echo $value3+$list['key']; ?>
-<?php echo $value3%$list['key']; ?>
-eot;
+            <?php echo $value + 9 +10; ?>
+            <?php echo $value * $value2 * 10; ?>
+            <?php echo $value / $value2; ?>
+            <?php echo $value3+$list['key']; ?>
+            <?php echo $value3%$list['key']; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -405,12 +405,12 @@ eot;
 
         // 变量之间的连接字符
         $source = <<<'eot'
-{{ value3.'start - '. value. value2.'end' }}
-eot;
+            {{ value3.'start - '. value. value2.'end' }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $value3.'start - '. $value. $value2.'end'; ?>
-eot;
+            <?php echo $value3.'start - '. $value. $value2.'end'; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -443,23 +443,23 @@ eot;
 
         // base
         $source = <<<'eot'
-{$varName|function1|function2=arg1,arg2,**}
-eot;
+            {$varName|function1|function2=arg1,arg2,**}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo function2(arg1,arg2,function1($varName)); ?>
-eot;
+            <?php echo function2(arg1,arg2,function1($varName)); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 模板中如果不加 ** 的格式为
         $source = <<<'eot'
-{$varName|function1|function2=arg1,arg2}
-eot;
+            {$varName|function1|function2=arg1,arg2}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo function2(function1($varName), arg1,arg2); ?>
-eot;
+            <?php echo function2(function1($varName), arg1,arg2); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -477,12 +477,12 @@ eot;
 
         // 例 1
         $source = <<<'eot'
-{$content|strtoupper|substr=0,3}
-eot;
+            {$content|strtoupper|substr=0,3}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo substr(strtoupper($content), 0,3); ?>
-eot;
+            <?php echo substr(strtoupper($content), 0,3); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -500,12 +500,12 @@ eot;
 
         // 例 2
         $source = <<<'eot'
-{$date|date="Y-m-d",**}
-eot;
+            {$date|date="Y-m-d",**}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo date("Y-m-d",$date); ?>
-eot;
+            <?php echo date("Y-m-d",$date); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -523,12 +523,12 @@ eot;
 
         // 例 3
         $source = <<<'eot'
-{:function1($var)}
-eot;
+            {:function1($var)}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo function1($var); ?>
-eot;
+            <?php echo function1($var); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -546,14 +546,14 @@ eot;
 
         // 静态方法
         $source = <<<'eot'
-{~$currentTime=time()}
-{$currentTime|\Leevel\Support\Str::formatDate}
-eot;
+            {~$currentTime=time()}
+            {$currentTime|\Leevel\Support\Str::formatDate}
+            eot;
 
         $compiled = <<<'eot'
-<?php $currentTime=time(); ?>
-<?php echo \Leevel\Support\Str::formatDate($currentTime); ?>
-eot;
+            <?php $currentTime=time(); ?>
+            <?php echo \Leevel\Support\Str::formatDate($currentTime); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -571,23 +571,23 @@ eot;
 
         // 执行方法但不输出
         $source = <<<'eot'
-{~function1($var)}
-eot;
+            {~function1($var)}
+            eot;
 
         $compiled = <<<'eot'
-<?php function1($var); ?>
-eot;
+            <?php function1($var); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 1
         $source = <<<'eot'
-{~echo('Hello world!')}
-eot;
+            {~echo('Hello world!')}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo('Hello world!'); ?>
-eot;
+            <?php echo('Hello world!'); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -605,12 +605,12 @@ eot;
 
         // 对象方法
         $source = <<<'eot'
-{$demo->test()}
-eot;
+            {$demo->test()}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo $demo->test(); ?>
-eot;
+            <?php echo $demo->test(); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -635,20 +635,20 @@ eot;
 
         // 三元运算符
         $source = <<<'eot'
-{~$name=''}
-{$name|default="Hello，我最爱的雪碧！"}
-
-{~$name='肯德基更配！'}
-{$name|default="Hello，我最爱的雪碧！"}
-eot;
+            {~$name=''}
+            {$name|default="Hello，我最爱的雪碧！"}
+            
+            {~$name='肯德基更配！'}
+            {$name|default="Hello，我最爱的雪碧！"}
+            eot;
 
         $compiled = <<<'eot'
-<?php $name=''; ?>
-<?php echo $name ?: "Hello，我最爱的雪碧！"; ?>
-
-<?php $name='肯德基更配！'; ?>
-<?php echo $name ?: "Hello，我最爱的雪碧！"; ?>
-eot;
+            <?php $name=''; ?>
+            <?php echo $name ?: "Hello，我最爱的雪碧！"; ?>
+            
+            <?php $name='肯德基更配！'; ?>
+            <?php echo $name ?: "Hello，我最爱的雪碧！"; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -666,47 +666,47 @@ eot;
 
         // 例 1
         $source = <<<'eot'
-{{ var|escape }}
-{{ var|e }}
-eot;
+            {{ var|escape }}
+            {{ var|e }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo escape($var); ?>
-<?php echo e($var); ?>
-eot;
+            <?php echo escape($var); ?>
+            <?php echo e($var); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 2
         $source = <<<'eot'
-{{ list|join=',' }}
-eot;
+            {{ list|join=',' }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo join($list, ','); ?>
-eot;
+            <?php echo join($list, ','); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 3
         $source = <<<'eot'
-{{ data|convert_encoding='iso-2022-jp', 'UTF-8') }}
-eot;
+            {{ data|convert_encoding='iso-2022-jp', 'UTF-8') }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo convert_encoding($data, 'iso-2022-jp', 'UTF-8')); ?>
-eot;
+            <?php echo convert_encoding($data, 'iso-2022-jp', 'UTF-8')); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 4
         $source = <<<'eot'
-{{ data|convert_encoding='iso-2022-jp', **, 'UTF-8') }}
-eot;
+            {{ data|convert_encoding='iso-2022-jp', **, 'UTF-8') }}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo convert_encoding('iso-2022-jp', $data, 'UTF-8')); ?>
-eot;
+            <?php echo convert_encoding('iso-2022-jp', $data, 'UTF-8')); ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

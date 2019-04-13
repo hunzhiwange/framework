@@ -47,11 +47,11 @@ trait Database
 
         foreach ($tables as $table) {
             $sql = <<<'eot'
-[
-    "TRUNCATE TABLE `%s`",
-    []
-]
-eot;
+                [
+                    "TRUNCATE TABLE `%s`",
+                    []
+                ]
+                eot;
             $this->assertSame(
                 sprintf($sql, $table),
                 $this->varJson(

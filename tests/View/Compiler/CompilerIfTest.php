@@ -40,106 +40,106 @@ class CompilerIfTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{if $id==1}
-    我的值为1，我为if下的内容。
-{elseif $id==2}
-    我的值为2，我为elseif下的内容。
-{else}
-    我的值为{$id}，我不是谁的谁！
-{/if}
-eot;
+            {if $id==1}
+                我的值为1，我为if下的内容。
+            {elseif $id==2}
+                我的值为2，我为elseif下的内容。
+            {else}
+                我的值为{$id}，我不是谁的谁！
+            {/if}
+            eot;
 
         $compiled = <<<'eot'
-<?php if ($id==1): ?>
-    我的值为1，我为if下的内容。
-<?php elseif ($id==2): ?>
-    我的值为2，我为elseif下的内容。
-<?php else: ?>
-    我的值为<?php echo $id; ?>，我不是谁的谁！
-<?php endif; ?>
-eot;
+            <?php if ($id==1): ?>
+                我的值为1，我为if下的内容。
+            <?php elseif ($id==2): ?>
+                我的值为2，我为elseif下的内容。
+            <?php else: ?>
+                我的值为<?php echo $id; ?>，我不是谁的谁！
+            <?php endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-{if $a->name == 1}
-    a
-{/if}
-
-{if hello::run() == 1}
-    b
-{/if}
-eot;
+            {if $a->name == 1}
+                a
+            {/if}
+            
+            {if hello::run() == 1}
+                b
+            {/if}
+            eot;
 
         $compiled = <<<'eot'
-<?php if ($a->name == 1): ?>
-    a
-<?php endif; ?>
-
-<?php if (hello::run() == 1): ?>
-    b
-<?php endif; ?>
-eot;
+            <?php if ($a->name == 1): ?>
+                a
+            <?php endif; ?>
+            
+            <?php if (hello::run() == 1): ?>
+                b
+            <?php endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<if condition="($id eq 1) OR ($id gt 100)">one
-    <elseif condition="$id eq 2" />two?
-    <else />other?
-</if>
-eot;
+            <if condition="($id eq 1) OR ($id gt 100)">one
+                <elseif condition="$id eq 2" />two?
+                <else />other?
+            </if>
+            eot;
 
         $compiled = <<<'eot'
-<?php if (($id == 1) OR ($id > 100)): ?>one
-    <?php elseif ($id == 2): ?>two?
-    <?php else: ?>other?
-<?php endif; ?>
-eot;
+            <?php if (($id == 1) OR ($id > 100)): ?>one
+                <?php elseif ($id == 2): ?>two?
+                <?php else: ?>other?
+            <?php endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-<if condition="$a.name == 1">
-    one
-</if>
-
-<if condition="hello::run() == 1">
-    two
-</if>
-eot;
+            <if condition="$a.name == 1">
+                one
+            </if>
+            
+            <if condition="hello::run() == 1">
+                two
+            </if>
+            eot;
 
         $compiled = <<<'eot'
-<?php if ($a->name == 1): ?>
-    one
-<?php endif; ?>
-
-<?php if (hello::run() == 1): ?>
-    two
-<?php endif; ?>
-eot;
+            <?php if ($a->name == 1): ?>
+                one
+            <?php endif; ?>
+            
+            <?php if (hello::run() == 1): ?>
+                two
+            <?php endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-{% if length(users) > 0 %}
-a
-{% elseif foo.bar > 0 %}
-b
-{% else %}
-c
-{% /if %}
-eot;
+            {% if length(users) > 0 %}
+            a
+            {% elseif foo.bar > 0 %}
+            b
+            {% else %}
+            c
+            {% /if %}
+            eot;
 
         $compiled = <<<'eot'
-<?php if (length($users) > 0): ?>
-a
-<?php elseif ($foo->bar > 0): ?>
-b
-<?php else: ?>
-c
-<?php endif; ?>
-eot;
+            <?php if (length($users) > 0): ?>
+            a
+            <?php elseif ($foo->bar > 0): ?>
+            b
+            <?php else: ?>
+            c
+            <?php endif; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

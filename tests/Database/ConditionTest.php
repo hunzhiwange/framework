@@ -38,15 +38,15 @@ class ConditionTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test` LIMIT 114,6",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test` LIMIT 114,6",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -65,15 +65,15 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT 2",
-    [],
-    false,
-    null,
-    null,
-    []
-]
-eot;
+            [
+                "SELECT 2",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -92,10 +92,10 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "SELECT `test`.* FROM `test`"
-]
-eot;
+            [
+                "SELECT `test`.* FROM `test`"
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -114,10 +114,10 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "(SELECT `test`.* FROM `test`)"
-]
-eot;
+            [
+                "(SELECT `test`.* FROM `test`)"
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

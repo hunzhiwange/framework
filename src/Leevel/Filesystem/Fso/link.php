@@ -29,7 +29,7 @@ namespace Leevel\Filesystem\Fso;
  */
 function link(string $target, string $link): void
 {
-    if (DIRECTORY_SEPARATOR !== '\\') {
+    if (\DIRECTORY_SEPARATOR !== '\\') {
         symlink($target, $link);
 
         return;

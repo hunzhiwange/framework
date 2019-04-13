@@ -58,18 +58,18 @@ class Entity extends Make
      * @var string
      */
     protected $help = <<<'EOF'
-The <info>%command.name%</info> command to make entity with app namespace:
-
-  <info>php %command.full_name% name</info>
-
-You can also by using the <comment>--namespace</comment> option:
-
-  <info>php %command.full_name% name --namespace=common</info>
-
-You can also by using the <comment>--table</comment> option:
-
-  <info>php %command.full_name% name --table=test</info>
-EOF;
+        The <info>%command.name%</info> command to make entity with app namespace:
+        
+          <info>php %command.full_name% name</info>
+        
+        You can also by using the <comment>--namespace</comment> option:
+        
+          <info>php %command.full_name% name --namespace=common</info>
+        
+        You can also by using the <comment>--table</comment> option:
+        
+          <info>php %command.full_name% name --table=test</info>
+        EOF;
 
     /**
      * 数据库仓储.

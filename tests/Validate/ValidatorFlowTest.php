@@ -387,12 +387,12 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 bar min 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 bar min 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -427,12 +427,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 foo min 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 foo min 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -467,12 +467,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 bar min 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 bar min 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -507,12 +507,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 foo min 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 foo min 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -547,12 +547,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 hello bar 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 hello bar 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -587,12 +587,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "用户名 hello foo 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "用户名 hello foo 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -627,12 +627,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "bar 不满足最小长度 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "bar 不满足最小长度 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -667,12 +667,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "foo 不满足最小长度 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "foo 不满足最小长度 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -707,12 +707,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "bar 不满足最小长度 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "bar 不满足最小长度 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,
@@ -747,12 +747,12 @@ eot;
         $this->assertSame(['name' => '小牛神'], $validate->getData());
 
         $error = <<<'eot'
-{
-    "name": [
-        "foo 不满足最小长度 9"
-    ]
-}
-eot;
+            {
+                "name": [
+                    "foo 不满足最小长度 9"
+                ]
+            }
+            eot;
 
         $this->assertSame(
             $error,

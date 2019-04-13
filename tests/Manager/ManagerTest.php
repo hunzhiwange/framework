@@ -158,20 +158,20 @@ class ManagerTest extends TestCase
     {
         $manager = $this->createManager();
 
-        $this->assertSame(0, count($manager->getConnects()));
+        $this->assertCount(0, $manager->getConnects());
 
         $manager->connect('foo');
         $manager->connect('bar');
 
-        $this->assertSame(2, count($manager->getConnects()));
+        $this->assertCount(2, $manager->getConnects());
 
         $manager->disconnect('foo');
 
-        $this->assertSame(1, count($manager->getConnects()));
+        $this->assertCount(1, $manager->getConnects());
 
         $manager->disconnect('bar');
 
-        $this->assertSame(0, count($manager->getConnects()));
+        $this->assertCount(0, $manager->getConnects());
     }
 
     public function testSetDefaultDriver()

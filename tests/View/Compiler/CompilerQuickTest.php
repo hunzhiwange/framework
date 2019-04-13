@@ -40,41 +40,41 @@ class CompilerQuickTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{# 我是一个注释 #}
-
-{#
-    我是两行注释
-  Thank U!
-#}
-eot;
+            {# 我是一个注释 #}
+            
+            {#
+                我是两行注释
+              Thank U!
+            #}
+            eot;
 
         $compiled = <<<'eot'
- 
-
- 
-eot;
+             
+            
+             
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-{~$value = 'Make QueryPHP greater !'}
-{$value}
-eot;
+            {~$value = 'Make QueryPHP greater !'}
+            {$value}
+            eot;
 
         $compiled = <<<'eot'
-<?php $value = 'Make QueryPHP greater !'; ?>
-<?php echo $value; ?>
-eot;
+            <?php $value = 'Make QueryPHP greater !'; ?>
+            <?php echo $value; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-{:'Hello QueryPHP!'}
-eot;
+            {:'Hello QueryPHP!'}
+            eot;
 
         $compiled = <<<'eot'
-<?php echo 'Hello QueryPHP!'; ?>
-eot;
+            <?php echo 'Hello QueryPHP!'; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

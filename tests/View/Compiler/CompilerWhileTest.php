@@ -53,20 +53,20 @@ class CompilerWhileTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{~$i = 10}
-{while $i>0}
-    {$i}Hello QueryPHP !<br>
-    {~$i--}
-{/while}
-eot;
+            {~$i = 10}
+            {while $i>0}
+                {$i}Hello QueryPHP !<br>
+                {~$i--}
+            {/while}
+            eot;
 
         $compiled = <<<'eot'
-<?php $i = 10; ?>
-<?php while ($i>0): ?>
-    <?php echo $i; ?>Hello QueryPHP !<br>
-    <?php $i--; ?>
-<?php endwhile; ?>
-eot;
+            <?php $i = 10; ?>
+            <?php while ($i>0): ?>
+                <?php echo $i; ?>Hello QueryPHP !<br>
+                <?php $i--; ?>
+            <?php endwhile; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -83,20 +83,20 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{~$i = 10}
-<while condition="$i gt 0">
-    {$i}Hello QueryPHP !<br>
-    {~$i--}
-</while>
-eot;
+            {~$i = 10}
+            <while condition="$i gt 0">
+                {$i}Hello QueryPHP !<br>
+                {~$i--}
+            </while>
+            eot;
 
         $compiled = <<<'eot'
-<?php $i = 10; ?>
-<?php while($i > 0): ?>
-    <?php echo $i; ?>Hello QueryPHP !<br>
-    <?php $i--; ?>
-<?php endwhile; ?>
-eot;
+            <?php $i = 10; ?>
+            <?php while($i > 0): ?>
+                <?php echo $i; ?>Hello QueryPHP !<br>
+                <?php $i--; ?>
+            <?php endwhile; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }

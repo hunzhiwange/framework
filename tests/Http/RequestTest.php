@@ -737,7 +737,7 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(UploadedFile::class, $files['file']);
         $this->assertEquals($file, $files['file']);
         $this->assertInternalType('array', $files);
-        $this->assertSame(1, count($files));
+        $this->assertCount(1, $files);
     }
 
     public function testHasFile()
@@ -786,7 +786,7 @@ class RequestTest extends TestCase
         $this->assertEquals($file, $files['file\\0']);
         $this->assertEquals($file2, $files['file\\1']);
         $this->assertInternalType('array', $files);
-        $this->assertSame(2, count($files));
+        $this->assertCount(2, $files);
     }
 
     public function testMultiFileGetArr()
@@ -815,7 +815,7 @@ class RequestTest extends TestCase
         $this->assertEquals($file, $files[0]);
         $this->assertEquals($file2, $files[1]);
         $this->assertInternalType('array', $files);
-        $this->assertSame(2, count($files));
+        $this->assertCount(2, $files);
     }
 
     public function testHeader()

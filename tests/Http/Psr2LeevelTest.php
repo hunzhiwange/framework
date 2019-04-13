@@ -70,7 +70,7 @@ class Psr2LeevelTest extends TestCase
         $this->assertEquals('bar', $leevelRequest->query->get('query2'));
 
         $files = $leevelRequest->files->all();
-        $this->assertSame(3, count($files));
+        $this->assertCount(3, $files);
         $this->assertEquals('doc1.txt', $files['doc1']->getOriginalName());
         $this->assertEquals('doc2.txt', $files['nested\\docs\\0']->getOriginalName());
         $this->assertEquals('doc3.txt', $files['nested\\docs\\1']->getOriginalName());

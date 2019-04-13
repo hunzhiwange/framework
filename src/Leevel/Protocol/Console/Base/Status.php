@@ -23,7 +23,6 @@ namespace Leevel\Protocol\Console\Base;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
 use Leevel\Protocol\IServer;
-use Swoole\Process;
 
 /**
  * swoole 服务列表.

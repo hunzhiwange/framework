@@ -38,20 +38,20 @@ class InsertTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
-    {
-        "name": [
-            "小鸭子",
-            2
-        ],
-        "value": [
-            "吃饭饭",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
+                {
+                    "name": [
+                        "小鸭子",
+                        2
+                    ],
+                    "value": [
+                        "吃饭饭",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $data = ['name' => '小鸭子', 'value' => '吃饭饭'];
 
@@ -72,20 +72,20 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)",
-    {
-        "name": [
-            "小鸭子",
-            2
-        ],
-        "questionmark_0": [
-            "吃肉",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)",
+                {
+                    "name": [
+                        "小鸭子",
+                        2
+                    ],
+                    "questionmark_0": [
+                        "吃肉",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $data = ['name' => '小鸭子', 'value' => '[?]'];
 
@@ -101,17 +101,17 @@ eot;
         );
 
         $sql = <<<'eot'
-[
-    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
-    {
-        "name": [
-            "小鸭子",
-            2
-        ],
-        "value": "呱呱呱"
-    }
-]
-eot;
+            [
+                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
+                {
+                    "name": [
+                        "小鸭子",
+                        2
+                    ],
+                    "value": "呱呱呱"
+                }
+            ]
+            eot;
 
         $data = ['name' => '小鸭子', 'value' => '[:value]'];
 
@@ -133,20 +133,20 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)",
-    {
-        "name": [
-            "小鸭子",
-            2
-        ],
-        "questionmark_0": [
-            "吃鱼",
-            2
-        ]
-    }
-]
-eot;
+            [
+                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)",
+                {
+                    "name": [
+                        "小鸭子",
+                        2
+                    ],
+                    "questionmark_0": [
+                        "吃鱼",
+                        2
+                    ]
+                }
+            ]
+            eot;
 
         $data = ['name' => '小鸭子', 'value' => '[?]'];
 
@@ -169,17 +169,17 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
-    {
-        "name": [
-            "小鸭子",
-            2
-        ],
-        "value": "呱呱呱"
-    }
-]
-eot;
+            [
+                "REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)",
+                {
+                    "name": [
+                        "小鸭子",
+                        2
+                    ],
+                    "value": "呱呱呱"
+                }
+            ]
+            eot;
 
         $data = ['name' => '小鸭子', 'value' => '[:value]'];
 
@@ -200,17 +200,17 @@ eot;
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
-[
-    "REPLACE INTO `test` (`test`.`name`,`test`.`test`.`value`) VALUES (:name,:value)",
-    {
-        "name": [
-            "小鸭子",
-            2
-        ],
-        "value": "呱呱呱"
-    }
-]
-eot;
+            [
+                "REPLACE INTO `test` (`test`.`name`,`test`.`test`.`value`) VALUES (:name,:value)",
+                {
+                    "name": [
+                        "小鸭子",
+                        2
+                    ],
+                    "value": "呱呱呱"
+                }
+            ]
+            eot;
 
         $data = ['name' => '小鸭子', 'test.value' => '[:value]'];
 

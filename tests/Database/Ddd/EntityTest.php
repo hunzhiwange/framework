@@ -121,10 +121,10 @@ class EntityTest extends TestCase
         $this->assertSame('1', $entity->status);
 
         $data = <<<'eot'
-{
-    "title": "foo"
-}
-eot;
+            {
+                "title": "foo"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -134,13 +134,13 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "id": null,
-    "title": "foo",
-    "status": "1",
-    "status_enum": "启用"
-}
-eot;
+            {
+                "id": null,
+                "title": "foo",
+                "status": "1",
+                "status_enum": "启用"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -156,17 +156,17 @@ eot;
         $this->assertFalse($entity->enum('not'));
 
         $data = <<<'eot'
-[
-    [
-        0,
-        "禁用"
-    ],
-    [
-        1,
-        "启用"
-    ]
-]
-eot;
+            [
+                [
+                    0,
+                    "禁用"
+                ],
+                [
+                    1,
+                    "启用"
+                ]
+            ]
+            eot;
 
         $this->assertSame(
             $data,
@@ -187,17 +187,17 @@ eot;
         ]);
 
         $data = <<<'eot'
-[
-    [
-        "f",
-        "禁用"
-    ],
-    [
-        "t",
-        "启用"
-    ]
-]
-eot;
+            [
+                [
+                    "f",
+                    "禁用"
+                ],
+                [
+                    "t",
+                    "启用"
+                ]
+            ]
+            eot;
 
         $this->assertSame(
             $data,

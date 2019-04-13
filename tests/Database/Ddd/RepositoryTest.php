@@ -163,7 +163,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(4, count($result));
+        $this->assertCount(4, $result);
     }
 
     public function testSpecWithClass()
@@ -196,7 +196,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(4, count($result));
+        $this->assertCount(4, $result);
     }
 
     public function testExpr()
@@ -237,7 +237,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(4, count($result));
+        $this->assertCount(4, $result);
     }
 
     public function testFindAllBySpecWithClosure()
@@ -277,7 +277,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($andSpec);
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(4, count($result));
+        $this->assertCount(4, $result);
     }
 
     public function testFindAllBySpecWithClass()
@@ -308,7 +308,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($andSpec);
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(4, count($result));
+        $this->assertCount(4, $result);
     }
 
     public function testFindAllByExpr()
@@ -347,7 +347,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($specExpr);
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(4, count($result));
+        $this->assertCount(4, $result);
     }
 
     public function testFindCountBySpecWithClosure()
@@ -488,7 +488,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($notSpec);
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
     }
 
     public function testFindAllBySpecWithClosureForNotButValueIsTrue()
@@ -523,7 +523,7 @@ class RepositoryTest extends TestCase
         $result = $repository->findAll($notSpec);
 
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(7, count($result));
+        $this->assertCount(7, $result);
     }
 
     public function testSpecWithOrFirstIsNo()
@@ -564,7 +564,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(7, count($result));
+        $this->assertCount(7, $result);
     }
 
     public function testSpecWithOrFirstIsYes()
@@ -605,7 +605,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(6, count($result));
+        $this->assertCount(6, $result);
     }
 
     public function testSpecWithOrFirstIsNoSecondAlsoIsNo()
@@ -646,7 +646,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
     }
 
     public function testSpecMake()
@@ -678,7 +678,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(6, count($result));
+        $this->assertCount(6, $result);
     }
 
     public function testSpecificationExpressionMake()
@@ -1334,7 +1334,7 @@ class RepositoryTest extends TestCase
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(7, count($result));
+        $this->assertCount(7, $result);
     }
 
     public function testConditionTypeIsInvalid()
@@ -1369,16 +1369,16 @@ class RepositoryTest extends TestCase
 
         $this->assertInternalType('array', $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_record": 10,
-    "from": 0
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_record": 10,
+                "from": 0
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1414,16 +1414,16 @@ eot;
 
         $this->assertInternalType('array', $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(7, count($result));
+        $this->assertCount(7, $result);
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_record": 7,
-    "from": 0
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_record": 7,
+                "from": 0
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1454,7 +1454,7 @@ eot;
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
     }
 
     public function testFindPageHtmlWithCondition()
@@ -1484,7 +1484,7 @@ eot;
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(7, count($result));
+        $this->assertCount(7, $result);
     }
 
     public function testFindPageMacro()
@@ -1508,7 +1508,7 @@ eot;
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
     }
 
     public function testFindPageMacroWithCondition()
@@ -1538,7 +1538,7 @@ eot;
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(7, count($result));
+        $this->assertCount(7, $result);
     }
 
     public function testFindPagePrevNext()
@@ -1562,7 +1562,7 @@ eot;
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(10, count($result));
+        $this->assertCount(10, $result);
     }
 
     public function testFindPagePrevNextWithCondition()
@@ -1592,7 +1592,7 @@ eot;
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(7, count($result));
+        $this->assertCount(7, $result);
     }
 
     public function testFindPageWithOnlyScope()
@@ -1617,16 +1617,16 @@ eot;
 
         $this->assertInternalType('array', $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(6, count($result));
+        $this->assertCount(6, $result);
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_record": 6,
-    "from": 0
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_record": 6,
+                "from": 0
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1658,16 +1658,16 @@ eot;
 
         $this->assertInternalType('array', $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(6, count($result));
+        $this->assertCount(6, $result);
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_record": 6,
-    "from": 0
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_record": 6,
+                "from": 0
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1703,16 +1703,16 @@ eot;
 
         $this->assertInternalType('array', $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(3, count($result));
+        $this->assertCount(3, $result);
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_record": 3,
-    "from": 0
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_record": 3,
+                "from": 0
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1748,16 +1748,16 @@ eot;
 
         $this->assertInternalType('array', $page);
         $this->assertInstanceof(Collection::class, $result);
-        $this->assertSame(3, count($result));
+        $this->assertCount(3, $result);
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_record": 3,
-    "from": 0
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_record": 3,
+                "from": 0
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1788,19 +1788,19 @@ eot;
         $this->assertInternalType('array', $result);
 
         $data = <<<'eot'
-{
-    "hello world0": "post summary",
-    "hello world1": "post summary",
-    "hello world2": "post summary",
-    "hello world3": "post summary",
-    "hello world4": "post summary",
-    "hello world5": "post summary",
-    "hello world6": "post summary",
-    "hello world7": "post summary",
-    "hello world8": "post summary",
-    "hello world9": "post summary"
-}
-eot;
+            {
+                "hello world0": "post summary",
+                "hello world1": "post summary",
+                "hello world2": "post summary",
+                "hello world3": "post summary",
+                "hello world4": "post summary",
+                "hello world5": "post summary",
+                "hello world6": "post summary",
+                "hello world7": "post summary",
+                "hello world8": "post summary",
+                "hello world9": "post summary"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1831,19 +1831,19 @@ eot;
         $this->assertInternalType('array', $result);
 
         $data = <<<'eot'
-{
-    "hello world0": "post summary",
-    "hello world1": "post summary",
-    "hello world2": "post summary",
-    "hello world3": "post summary",
-    "hello world4": "post summary",
-    "hello world5": "post summary",
-    "hello world6": "post summary",
-    "hello world7": "post summary",
-    "hello world8": "post summary",
-    "hello world9": "post summary"
-}
-eot;
+            {
+                "hello world0": "post summary",
+                "hello world1": "post summary",
+                "hello world2": "post summary",
+                "hello world3": "post summary",
+                "hello world4": "post summary",
+                "hello world5": "post summary",
+                "hello world6": "post summary",
+                "hello world7": "post summary",
+                "hello world8": "post summary",
+                "hello world9": "post summary"
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -1876,14 +1876,14 @@ eot;
         $this->assertInternalType('array', $result);
 
         $data = <<<'eot'
-{
-    "hello world5": "post summary",
-    "hello world6": "post summary",
-    "hello world7": "post summary",
-    "hello world8": "post summary",
-    "hello world9": "post summary"
-}
-eot;
+            {
+                "hello world5": "post summary",
+                "hello world6": "post summary",
+                "hello world7": "post summary",
+                "hello world8": "post summary",
+                "hello world9": "post summary"
+            }
+            eot;
 
         $this->assertSame(
             $data,

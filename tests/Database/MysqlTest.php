@@ -50,51 +50,51 @@ class MysqlTest extends TestCase
         $result = $connect->tableColumns('guest_book');
 
         $sql = <<<'eot'
-{
-    "list": {
-        "id": {
-            "name": "id",
-            "type": "int",
-            "length": "int",
-            "primary_key": true,
-            "auto_increment": true,
-            "default": null,
-            "comment": ""
-        },
-        "name": {
-            "name": "name",
-            "type": "varchar",
-            "length": "varchar",
-            "primary_key": false,
-            "auto_increment": false,
-            "default": null,
-            "comment": ""
-        },
-        "content": {
-            "name": "content",
-            "type": "longtext",
-            "length": null,
-            "primary_key": false,
-            "auto_increment": false,
-            "default": null,
-            "comment": "评论内容"
-        },
-        "create_at": {
-            "name": "create_at",
-            "type": "timestamp",
-            "length": null,
-            "primary_key": false,
-            "auto_increment": false,
-            "default": "CURRENT_TIMESTAMP",
-            "comment": "创建时间"
-        }
-    },
-    "primary_key": [
-        "id"
-    ],
-    "auto_increment": "id"
-}
-eot;
+            {
+                "list": {
+                    "id": {
+                        "name": "id",
+                        "type": "int",
+                        "length": "int",
+                        "primary_key": true,
+                        "auto_increment": true,
+                        "default": null,
+                        "comment": ""
+                    },
+                    "name": {
+                        "name": "name",
+                        "type": "varchar",
+                        "length": "varchar",
+                        "primary_key": false,
+                        "auto_increment": false,
+                        "default": null,
+                        "comment": ""
+                    },
+                    "content": {
+                        "name": "content",
+                        "type": "longtext",
+                        "length": null,
+                        "primary_key": false,
+                        "auto_increment": false,
+                        "default": null,
+                        "comment": "评论内容"
+                    },
+                    "create_at": {
+                        "name": "create_at",
+                        "type": "timestamp",
+                        "length": null,
+                        "primary_key": false,
+                        "auto_increment": false,
+                        "default": "CURRENT_TIMESTAMP",
+                        "comment": "创建时间"
+                    }
+                },
+                "primary_key": [
+                    "id"
+                ],
+                "auto_increment": "id"
+            }
+            eot;
 
         $this->assertSame(
             $sql,

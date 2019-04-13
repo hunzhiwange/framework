@@ -49,12 +49,12 @@ class DeleteTest extends TestCase
         $entity->destroy();
 
         $data = <<<'eot'
-[
-    {
-        "id": 5
-    }
-]
-eot;
+            [
+                {
+                    "id": 5
+                }
+            ]
+            eot;
 
         $this->assertSame(
             $data,

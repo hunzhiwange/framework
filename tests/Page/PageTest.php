@@ -61,8 +61,8 @@ class PageTest extends TestCase
         $this->assertInstanceof(IPage::class, $page);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 52 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 52 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -85,16 +85,16 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 1,
-    "total_page": 6,
-    "total_record": 52,
-    "total_macro": false,
-    "from": 0,
-    "to": 10
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 1,
+                "total_page": 6,
+                "total_record": 52,
+                "total_macro": false,
+                "from": 0,
+                "to": 10
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -111,8 +111,8 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":10,"current_page":1,"total_page":6,"total_record":52,"total_macro":false,"from":0,"to":10}
-eot;
+            {"per_page":10,"current_page":1,"total_page":6,"total_record":52,"total_macro":false,"from":0,"to":10}
+            eot;
 
         $this->assertSame(
             $data,
@@ -127,8 +127,8 @@ eot;
         $this->assertInstanceof(IPage::class, $page);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 52 条</span> <button class="btn-prev" onclick="window.location.href='?page=1';">&#8249;</button> <ul class="pager">  <li class="number"><a href="?page=1">1</a></li><li class="number active"><a>2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=3';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 52 条</span> <button class="btn-prev" onclick="window.location.href='?page=1';">&#8249;</button> <ul class="pager">  <li class="number"><a href="?page=1">1</a></li><li class="number active"><a>2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=3';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -151,16 +151,16 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "per_page": 10,
-    "current_page": 2,
-    "total_page": 6,
-    "total_record": 52,
-    "total_macro": false,
-    "from": 10,
-    "to": 20
-}
-eot;
+            {
+                "per_page": 10,
+                "current_page": 2,
+                "total_page": 6,
+                "total_record": 52,
+                "total_macro": false,
+                "from": 10,
+                "to": 20
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -177,8 +177,8 @@ eot;
         );
 
         $data = <<<'eot'
-{"per_page":10,"current_page":2,"total_page":6,"total_record":52,"total_macro":false,"from":10,"to":20}
-eot;
+            {"per_page":10,"current_page":2,"total_page":6,"total_record":52,"total_macro":false,"from":10,"to":20}
+            eot;
 
         $this->assertSame(
             $data,
@@ -195,8 +195,8 @@ eot;
         $this->assertSame('hello', $page->getFragment());
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 52 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2#hello">2</a></li><li class="number"><a href="?page=3#hello">3</a></li><li class="number"><a href="?page=4#hello">4</a></li><li class="number"><a href="?page=5#hello">5</a></li><li class="number"><a href="?page=6#hello">6</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2#hello';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}#hello" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 52 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2#hello">2</a></li><li class="number"><a href="?page=3#hello">3</a></li><li class="number"><a href="?page=4#hello">4</a></li><li class="number"><a href="?page=5#hello">5</a></li><li class="number"><a href="?page=6#hello">6</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2#hello';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}#hello" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -204,8 +204,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2#hello">2</a></li><li class=""><a href="?page=3#hello">3</a></li><li class=""><a href="?page=4#hello">4</a></li><li class=""><a href="?page=5#hello">5</a></li><li class=""><a href="?page=6#hello">6</a></li>  <li><a aria-label="Next" href="?page=2#hello"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2#hello">2</a></li><li class=""><a href="?page=3#hello">3</a></li><li class=""><a href="?page=4#hello">4</a></li><li class=""><a href="?page=5#hello">5</a></li><li class=""><a href="?page=6#hello">6</a></li>  <li><a aria-label="Next" href="?page=2#hello"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -213,8 +213,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="..."> <ul class="pager"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=2#hello"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="..."> <ul class="pager"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=2#hello"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -233,8 +233,8 @@ eot;
         $this->assertSame(20, $page->getPerPage());
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 52 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 52 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -242,8 +242,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li>  <li><a aria-label="Next" href="?page=2"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li>  <li><a aria-label="Next" href="?page=2"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -251,8 +251,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="..."> <ul class="pager"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=2"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="..."> <ul class="pager"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=2"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -267,8 +267,8 @@ eot;
         ]);
 
         $data = <<<'eot'
-<div class="pagination"> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> </div>
-eot;
+            <div class="pagination"> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -276,8 +276,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li><li class=""><a href="?page=4">4</a></li><li class=""><a href="?page=5">5</a></li><li class=""><a href="?page=6">6</a></li>  <li><a aria-label="Next" href="?page=2"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li><li class=""><a href="?page=4">4</a></li><li class=""><a href="?page=5">5</a></li><li class=""><a href="?page=6">6</a></li>  <li><a aria-label="Next" href="?page=2"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -285,8 +285,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="..."> <ul class="pager"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=2"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="..."> <ul class="pager"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=2"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -305,8 +305,8 @@ eot;
         $page->appends(['hello' => 'world']);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?foo=bar&foo1=bar1&hello=world&page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?foo=bar&foo1=bar1&hello=world&page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -316,8 +316,8 @@ eot;
         $page->parameter(['hello' => 'world']);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?hello=world&page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?hello=world&page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -325,8 +325,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>    <li class="disabled"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>    <li class="disabled"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -334,8 +334,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="..."> <ul class="pager"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <li class="disabled"><a aria-label="Next"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="..."> <ul class="pager"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <li class="disabled"><a aria-label="Next"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -348,8 +348,8 @@ eot;
         $page = new Page(1, 5, 3);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -359,8 +359,8 @@ eot;
         $page->renderOption('small', true);
 
         $data = <<<'eot'
-<div class="pagination pagination-small"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination pagination-small"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -372,8 +372,8 @@ eot;
         );
 
         $data = <<<'eot'
-<button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button>
-eot;
+            <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button>
+            eot;
 
         $this->assertSame(
             $data,
@@ -381,8 +381,8 @@ eot;
         );
 
         $data = <<<'eot'
-<li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li> <ul class="pagination">    </ul> <li class="disabled"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-eot;
+            <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li> <ul class="pagination">    </ul> <li class="disabled"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+            eot;
 
         $this->assertSame(
             $data,
@@ -390,8 +390,8 @@ eot;
         );
 
         $data = <<<'eot'
-<li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <ul class="pager">    </ul> <li class="disabled"><a aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
-eot;
+            <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">上一页</span></a></li> <ul class="pager">    </ul> <li class="disabled"><a aria-label="Next"><span aria-hidden="true">下一页</span></a></li>
+            eot;
 
         $this->assertSame(
             $data,
@@ -406,8 +406,8 @@ eot;
         $page->url('/hello');
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 5 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="/hello?page=2">2</a></li>  </ul> <button class="btn-next" onclick="window.location.href='/hello?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="/hello?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 5 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="/hello?page=2">2</a></li>  </ul> <button class="btn-next" onclick="window.location.href='/hello?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="/hello?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -422,8 +422,8 @@ eot;
         $page->setRender('bootstrap');
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2">2</a></li>  <li><a aria-label="Next" href="?page=2"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2">2</a></li>  <li><a aria-label="Next" href="?page=2"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -436,8 +436,8 @@ eot;
         $page = new Page(1, null, 25);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 25 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 25 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -456,8 +456,8 @@ eot;
         $this->assertSame('page2', $page->getPageName());
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 25 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page2=2">2</a></li><li class="number"><a href="?page2=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page2=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page2={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 25 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page2=2">2</a></li><li class="number"><a href="?page2=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page2=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page2={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -472,8 +472,8 @@ eot;
         $page->currentPage(3);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 30 条</span> <button class="btn-prev" onclick="window.location.href='?page=2';">&#8249;</button> <ul class="pager">  <li class="number"><a href="?page=1">1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number active"><a>3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=8';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li><li><a href="?page=10">10</a></li> </ul> <button class="btn-next" onclick="window.location.href='?page=4';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 30 条</span> <button class="btn-prev" onclick="window.location.href='?page=2';">&#8249;</button> <ul class="pager">  <li class="number"><a href="?page=1">1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number active"><a>3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=8';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li><li><a href="?page=10">10</a></li> </ul> <button class="btn-next" onclick="window.location.href='?page=4';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -481,8 +481,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li><a aria-label="Previous" href="?page=2"><span aria-hidden="true">&laquo;</span></a></li>  <li class=""><a href="?page=1">1</a></li><li class=""><a href="?page=2">2</a></li><li class=" active"><a>3</a></li><li class=""><a href="?page=4">4</a></li><li class=""><a href="?page=5">5</a></li><li class=""><a href="?page=6">6</a></li> <li><a href="?page=8">...</a></li><li><a href="?page=10">10</a></li> <li><a aria-label="Next" href="?page=4"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li><a aria-label="Previous" href="?page=2"><span aria-hidden="true">&laquo;</span></a></li>  <li class=""><a href="?page=1">1</a></li><li class=""><a href="?page=2">2</a></li><li class=" active"><a>3</a></li><li class=""><a href="?page=4">4</a></li><li class=""><a href="?page=5">5</a></li><li class=""><a href="?page=6">6</a></li> <li><a href="?page=8">...</a></li><li><a href="?page=10">10</a></li> <li><a aria-label="Next" href="?page=4"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -492,8 +492,8 @@ eot;
         $page->currentPage(6);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 30 条</span> <button class="btn-prev" onclick="window.location.href='?page=5';">&#8249;</button> <ul class="pager"> <li class=""><a href="?page=1" >1</a></li><li onclick="window.location.href='?page=1';" class="btn-quickprev" onmouseenter="this.innerHTML='&laquo;';" onmouseleave="this.innerHTML='...';">...</li> <li class="number"><a href="?page=1">1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number active"><a>6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=10';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li><li><a href="?page=10">10</a></li> </ul> <button class="btn-next" onclick="window.location.href='?page=7';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 30 条</span> <button class="btn-prev" onclick="window.location.href='?page=5';">&#8249;</button> <ul class="pager"> <li class=""><a href="?page=1" >1</a></li><li onclick="window.location.href='?page=1';" class="btn-quickprev" onmouseenter="this.innerHTML='&laquo;';" onmouseleave="this.innerHTML='...';">...</li> <li class="number"><a href="?page=1">1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number active"><a>6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=10';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li><li><a href="?page=10">10</a></li> </ul> <button class="btn-next" onclick="window.location.href='?page=7';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -501,8 +501,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li><a aria-label="Previous" href="?page=5"><span aria-hidden="true">&laquo;</span></a></li> <li class=""><a href="?page=1" >1</a></li><li><a href="?page=1">...</a></li> <li class=""><a href="?page=1">1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li><li class=""><a href="?page=4">4</a></li><li class=""><a href="?page=5">5</a></li><li class=" active"><a>6</a></li> <li><a href="?page=10">...</a></li><li><a href="?page=10">10</a></li> <li><a aria-label="Next" href="?page=7"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li><a aria-label="Previous" href="?page=5"><span aria-hidden="true">&laquo;</span></a></li> <li class=""><a href="?page=1" >1</a></li><li><a href="?page=1">...</a></li> <li class=""><a href="?page=1">1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li><li class=""><a href="?page=4">4</a></li><li class=""><a href="?page=5">5</a></li><li class=" active"><a>6</a></li> <li><a href="?page=10">...</a></li><li><a href="?page=10">10</a></li> <li><a aria-label="Next" href="?page=7"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -510,8 +510,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="..."> <ul class="pager"> <li class=""><a aria-label="Previous" href="?page=5"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=7"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="..."> <ul class="pager"> <li class=""><a aria-label="Previous" href="?page=5"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=7"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -528,8 +528,8 @@ eot;
         $page->range(4);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 40 条</span> <button class="btn-prev" onclick="window.location.href='?page=6';">&#8249;</button> <ul class="pager">  <li class="number"><a href="?page=1">1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li><li class="number active"><a>7</a></li><li class="number"><a href="?page=8">8</a></li><li class="number"><a href="?page=9">9</a></li><li class="number"><a href="?page=10">10</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=14';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li><li><a href="?page=14">14</a></li> </ul> <button class="btn-next" onclick="window.location.href='?page=8';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination"> <span class="pagination-total">共 40 条</span> <button class="btn-prev" onclick="window.location.href='?page=6';">&#8249;</button> <ul class="pager">  <li class="number"><a href="?page=1">1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li><li class="number active"><a>7</a></li><li class="number"><a href="?page=8">8</a></li><li class="number"><a href="?page=9">9</a></li><li class="number"><a href="?page=10">10</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=14';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li><li><a href="?page=14">14</a></li> </ul> <button class="btn-next" onclick="window.location.href='?page=8';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -537,8 +537,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li><a aria-label="Previous" href="?page=6"><span aria-hidden="true">&laquo;</span></a></li>  <li class=""><a href="?page=1">1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li><li class=""><a href="?page=4">4</a></li><li class=""><a href="?page=5">5</a></li><li class=""><a href="?page=6">6</a></li><li class=" active"><a>7</a></li><li class=""><a href="?page=8">8</a></li><li class=""><a href="?page=9">9</a></li><li class=""><a href="?page=10">10</a></li> <li><a href="?page=14">...</a></li><li><a href="?page=14">14</a></li> <li><a aria-label="Next" href="?page=8"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li><a aria-label="Previous" href="?page=6"><span aria-hidden="true">&laquo;</span></a></li>  <li class=""><a href="?page=1">1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li><li class=""><a href="?page=4">4</a></li><li class=""><a href="?page=5">5</a></li><li class=""><a href="?page=6">6</a></li><li class=" active"><a>7</a></li><li class=""><a href="?page=8">8</a></li><li class=""><a href="?page=9">9</a></li><li class=""><a href="?page=10">10</a></li> <li><a href="?page=14">...</a></li><li><a href="?page=14">14</a></li> <li><a aria-label="Next" href="?page=8"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -546,8 +546,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="..."> <ul class="pager"> <li class=""><a aria-label="Previous" href="?page=6"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=8"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="..."> <ul class="pager"> <li class=""><a aria-label="Previous" href="?page=6"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=8"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -562,8 +562,8 @@ eot;
         $page->currentPage(44);
 
         $data = <<<'eot'
-<div class="pagination">  <button class="btn-prev" onclick="window.location.href='?page=43';">&#8249;</button> <ul class="pager"> <li class=""><a href="?page=1" >1</a></li><li onclick="window.location.href='?page=39';" class="btn-quickprev" onmouseenter="this.innerHTML='&laquo;';" onmouseleave="this.innerHTML='...';">...</li> <li class="number"><a href="?page=42">42</a></li><li class="number"><a href="?page=43">43</a></li><li class="number active"><a>44</a></li><li class="number"><a href="?page=45">45</a></li><li class="number"><a href="?page=46">46</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=49';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='?page=45';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination">  <button class="btn-prev" onclick="window.location.href='?page=43';">&#8249;</button> <ul class="pager"> <li class=""><a href="?page=1" >1</a></li><li onclick="window.location.href='?page=39';" class="btn-quickprev" onmouseenter="this.innerHTML='&laquo;';" onmouseleave="this.innerHTML='...';">...</li> <li class="number"><a href="?page=42">42</a></li><li class="number"><a href="?page=43">43</a></li><li class="number active"><a>44</a></li><li class="number"><a href="?page=45">45</a></li><li class="number"><a href="?page=46">46</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=49';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='?page=45';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -571,8 +571,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination"> <li><a aria-label="Previous" href="?page=43"><span aria-hidden="true">&laquo;</span></a></li> <li class=""><a href="?page=1" >1</a></li><li><a href="?page=39">...</a></li> <li class=""><a href="?page=42">42</a></li><li class=""><a href="?page=43">43</a></li><li class=" active"><a>44</a></li><li class=""><a href="?page=45">45</a></li><li class=""><a href="?page=46">46</a></li> <li><a href="?page=49">...</a></li> <li><a aria-label="Next" href="?page=45"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination"> <li><a aria-label="Previous" href="?page=43"><span aria-hidden="true">&laquo;</span></a></li> <li class=""><a href="?page=1" >1</a></li><li><a href="?page=39">...</a></li> <li class=""><a href="?page=42">42</a></li><li class=""><a href="?page=43">43</a></li><li class=" active"><a>44</a></li><li class=""><a href="?page=45">45</a></li><li class=""><a href="?page=46">46</a></li> <li><a href="?page=49">...</a></li> <li><a aria-label="Next" href="?page=45"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -580,8 +580,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="..."> <ul class="pager"> <li class=""><a aria-label="Previous" href="?page=43"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=45"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="..."> <ul class="pager"> <li class=""><a aria-label="Previous" href="?page=43"><span aria-hidden="true">上一页</span></a></li> <li class=""><a aria-label="Next" href="?page=45"><span aria-hidden="true">下一页</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -596,8 +596,8 @@ eot;
         $page->addParameter('page', 5);
 
         $data = <<<'eot'
-<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
-eot;
+            <div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -605,16 +605,16 @@ eot;
         );
 
         $data = <<<'eot'
-{
-    "per_page": 3,
-    "current_page": 1,
-    "total_page": null,
-    "total_record": null,
-    "total_macro": false,
-    "from": 0,
-    "to": null
-}
-eot;
+            {
+                "per_page": 3,
+                "current_page": 1,
+                "total_page": null,
+                "total_record": null,
+                "total_macro": false,
+                "from": 0,
+                "to": null
+            }
+            eot;
 
         $this->assertSame(
             $data,
@@ -631,8 +631,8 @@ eot;
         $page->currentPage(8);
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination pagination-lg"> <li><a aria-label="Previous" href="?page=7"><span aria-hidden="true">&laquo;</span></a></li> <li class=""><a href="?page=1" >1</a></li><li><a href="?page=3">...</a></li> <li class=""><a href="?page=6">6</a></li><li class=""><a href="?page=7">7</a></li><li class=" active"><a>8</a></li><li class=""><a href="?page=9">9</a></li><li class=""><a href="?page=10">10</a></li> <li><a href="?page=13">...</a></li><li><a href="?page=14">14</a></li> <li><a aria-label="Next" href="?page=9"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination pagination-lg"> <li><a aria-label="Previous" href="?page=7"><span aria-hidden="true">&laquo;</span></a></li> <li class=""><a href="?page=1" >1</a></li><li><a href="?page=3">...</a></li> <li class=""><a href="?page=6">6</a></li><li class=""><a href="?page=7">7</a></li><li class=" active"><a>8</a></li><li class=""><a href="?page=9">9</a></li><li class=""><a href="?page=10">10</a></li> <li><a href="?page=13">...</a></li><li><a href="?page=14">14</a></li> <li><a aria-label="Next" href="?page=9"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -640,8 +640,8 @@ eot;
         );
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination pagination-sm"> <li><a aria-label="Previous" href="?page=7"><span aria-hidden="true">&laquo;</span></a></li> <li class=""><a href="?page=1" >1</a></li><li><a href="?page=3">...</a></li> <li class=""><a href="?page=6">6</a></li><li class=""><a href="?page=7">7</a></li><li class=" active"><a>8</a></li><li class=""><a href="?page=9">9</a></li><li class=""><a href="?page=10">10</a></li> <li><a href="?page=13">...</a></li><li><a href="?page=14">14</a></li> <li><a aria-label="Next" href="?page=9"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination pagination-sm"> <li><a aria-label="Previous" href="?page=7"><span aria-hidden="true">&laquo;</span></a></li> <li class=""><a href="?page=1" >1</a></li><li><a href="?page=3">...</a></li> <li class=""><a href="?page=6">6</a></li><li class=""><a href="?page=7">7</a></li><li class=" active"><a>8</a></li><li class=""><a href="?page=9">9</a></li><li class=""><a href="?page=10">10</a></li> <li><a href="?page=13">...</a></li><li><a href="?page=14">14</a></li> <li><a aria-label="Next" href="?page=9"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,
@@ -658,8 +658,8 @@ eot;
         ]);
 
         $data = <<<'eot'
-<div class="pagination"> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> </div>
-eot;
+            <div class="pagination"> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> </div>
+            eot;
 
         $this->assertSame(
             $data,
@@ -671,8 +671,8 @@ eot;
         ]);
 
         $data = <<<'eot'
-<nav aria-label="navigation"> <ul class="pagination pagination-lg"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li>  <li><a aria-label="Next" href="?page=2"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
-eot;
+            <nav aria-label="navigation"> <ul class="pagination pagination-lg"> <li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>  <li class=" active"><a>1</a></li><li class=""><a href="?page=2">2</a></li><li class=""><a href="?page=3">3</a></li>  <li><a aria-label="Next" href="?page=2"><span aria-hidden="true">&raquo;</span></a></li> </ul> </nav>
+            eot;
 
         $this->assertSame(
             $data,

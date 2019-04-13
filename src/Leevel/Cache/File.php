@@ -84,7 +84,7 @@ class File extends Connect implements IConnect
             throw new InvalidArgumentException('Cache path is not readable.');
         }
 
-        $fp = fopen($cachePath, 'rb');
+        $fp = fopen($cachePath, 'r');
         flock($fp, LOCK_SH);
 
         // 头部的 41 个字节存储了安全代码

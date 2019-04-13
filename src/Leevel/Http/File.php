@@ -91,7 +91,7 @@ class File extends SplFileObject
             );
         }
 
-        $target = rtrim($directory, '/\\').DIRECTORY_SEPARATOR.
+        $target = rtrim($directory, '/\\').\DIRECTORY_SEPARATOR.
             (null === $name ? $this->getBasename() : $name);
 
         return $target;
