@@ -23,8 +23,7 @@ namespace Tests\Console;
 use Closure;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
-use Leevel\Di\Container;
-use Leevel\Support\Facade;
+use Leevel\Leevel\App;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -41,13 +40,12 @@ trait BaseCommand
 {
     protected function runCommand(Command $command, array $inputs, Closure $call)
     {
-        $container = new Container();
+        $container = App::singletons();
+        $container->clear();
 
         $application = new Application($container, '1.0');
 
         $application->setAutoExit(false);
-
-        Facade::setContainer($container);
 
         call_user_func($call, $container, $application);
 
@@ -60,8 +58,7 @@ trait BaseCommand
 
         $result = $output->fetch();
 
-        Facade::setContainer(null);
-        Facade::remove();
+        $container->clear();
 
         return $result;
     }

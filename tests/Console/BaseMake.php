@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Tests\Console;
 
 use Closure;
+use Composer\Autoload\ClassLoader;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
-use Leevel\Di\Container;
-use Leevel\Support\Facade;
+use Leevel\Leevel\App;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -41,22 +41,20 @@ trait BaseMake
 {
     protected function runCommand(Command $command, array $inputs, Closure $call = null)
     {
-        $container = new ContainerMock();
+        $container = App::singletons();
+        $container->clear();
+        $container->setAppPath(__DIR__);
+        $container->setComposer(new ComposerMock());
 
         $application = new Application($container, '1.0');
 
         $application->setAutoExit(false);
-
-        Facade::setContainer($container);
 
         if ($call) {
             call_user_func($call, $container, $application);
         }
 
         $application->add($command);
-
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('router');
 
         $container->singleton('router', function () {
             return new RouterService();
@@ -69,8 +67,7 @@ trait BaseMake
 
         $result = $output->fetch();
 
-        Facade::setContainer(null);
-        Facade::remove();
+        $container->clear();
 
         return $result;
     }
@@ -84,15 +81,12 @@ class RouterService
     }
 }
 
-class ContainerMock extends Container
+class ComposerMock extends ClassLoader
 {
-    public function getPathByComposer($namespaces)
+    public function getPrefixesPsr4()
     {
-        return __DIR__;
-    }
-
-    public function appPath(?string $app = null)
-    {
-        return __DIR__;
+        return [
+            'Common\\' => [__DIR__],
+        ];
     }
 }

@@ -20,11 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Leevel\Di\Container;
+use Leevel\Leevel\App;
 use Leevel\Router\MiddlewareParser;
 use Leevel\Router\Router;
 use Leevel\Router\ScanRouter;
-use Leevel\Support\Facade;
 use Tests\TestCase;
 
 /**
@@ -53,11 +52,7 @@ class ScanRouterTest extends TestCase
             )
         );
 
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('app');
-        Facade::remove('url');
-        Facade::remove('router');
-        Facade::setContainer(null);
+        App::singletons()->clear();
     }
 
     protected function createMiddlewareParser(): MiddlewareParser
@@ -67,7 +62,9 @@ class ScanRouterTest extends TestCase
 
     protected function createRouter(): Router
     {
-        $router = new Router($container = new Leevel1());
+        $container = App::singletons();
+        $container->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $router = new Router($container);
 
         $router->setMiddlewareGroups([
             'group1' => [
@@ -97,22 +94,7 @@ class ScanRouterTest extends TestCase
         $container->singleton('url', new Url1());
         $container->singleton('router', $router);
 
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('app');
-        Facade::remove('url');
-        Facade::remove('router');
-
-        Facade::setContainer($container);
-
         return $router;
-    }
-}
-
-class Leevel1 extends Container
-{
-    public function appPath()
-    {
-        return __DIR__.'/Apps/AppScanRouter';
     }
 }
 

@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Facade;
 
-use Leevel\Di\Container;
-use Leevel\Support\Facade;
+use Leevel\Leevel\App;
 use Tests\TestCase;
 
 /**
@@ -44,13 +43,10 @@ class FacadeTest extends TestCase
      */
     public function testBaseUse(string $facade, string $serviceName, string $package)
     {
-        Facade::setContainer($container = new Container());
+        $container = App::singletons();
+        $container->clear();
 
         $className = 'Leevel\\'.$package.'\\Facade\\'.$facade;
-
-        $test = new $className();
-
-        $this->assertSame($container, $test->container());
 
         $container->singleton($serviceName, function () {
             return new Service1();
@@ -67,9 +63,7 @@ class FacadeTest extends TestCase
             call_user_func([$className, 'hello'], $facade)
         );
 
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove($serviceName);
-        Facade::setContainer(null);
+        $container->clear();
     }
 
     public function getBaseUseData()
@@ -85,7 +79,6 @@ class FacadeTest extends TestCase
             ['Event', 'event', 'Event'],
             ['Filesystem', 'filesystems', 'Filesystem'],
             ['I18n', 'i18n', 'I18n'],
-            ['App', 'app', 'Kernel'],
             ['Log', 'logs', 'Log'],
             ['Mail', 'mails', 'Mail'],
             ['Option', 'option', 'Option'],
@@ -101,6 +94,21 @@ class FacadeTest extends TestCase
             ['Pool', 'pool', 'Protocol'],
             ['Rpc', 'rpc', 'Protocol'],
         ];
+    }
+
+    public function testApp()
+    {
+        $container = App::singletons();
+        $container->clear();
+
+        $className = 'Leevel\\Kernel\\Facade\\App';
+
+        $this->assertSame(
+            '/foo',
+            call_user_func([$className, 'path'], 'foo')
+        );
+
+        $container->clear();
     }
 }
 

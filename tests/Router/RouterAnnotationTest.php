@@ -25,9 +25,9 @@ use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\Request;
+use Leevel\Leevel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
-use Leevel\Support\Facade;
 use Tests\TestCase;
 
 /**
@@ -43,8 +43,7 @@ class RouterAnnotationTest extends TestCase
 {
     protected function setUp()
     {
-        $this->facadeClear();
-        Facade::setContainer(null);
+        $this->containerClear();
     }
 
     protected function tearDown()
@@ -59,7 +58,7 @@ class RouterAnnotationTest extends TestCase
         $method = 'GET';
         $controllerDir = 'Router\\Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $router = $this->createRouter($container);
@@ -75,7 +74,7 @@ class RouterAnnotationTest extends TestCase
 
     public function testBaseRouterData()
     {
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $container->singleton('router', $router = $this->createRouter($container));
 
@@ -97,9 +96,6 @@ class RouterAnnotationTest extends TestCase
                 ]
             )
         );
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedPetLeevel()
@@ -109,7 +105,7 @@ class RouterAnnotationTest extends TestCase
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -170,9 +166,6 @@ eot;
         );
 
         unset($GLOBALS['demo_middlewares']);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedBasePathNormalize()
@@ -182,7 +175,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -239,9 +232,6 @@ eot;
         );
 
         unset($GLOBALS['demo_middlewares']);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedButMethodNotFound()
@@ -256,7 +246,7 @@ eot;
         $method = 'PUT';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -271,9 +261,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testFirstLetterNotMatched()
@@ -288,7 +275,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -303,9 +290,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testGroupNotMatched()
@@ -320,7 +304,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -335,9 +319,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testRegexNotMatched()
@@ -352,7 +333,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -367,9 +348,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedButSchemeNotMatched()
@@ -384,7 +362,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -399,9 +377,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedAndSchemeMatched()
@@ -411,7 +386,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -428,9 +403,6 @@ eot;
         $result = $router->dispatch($request);
 
         $this->assertSame('barMatchedScheme', $result->getContent());
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedButDomainNotMatched()
@@ -445,7 +417,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $container->singleton('router', $router = $this->createRouter($container));
@@ -460,9 +432,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedAndDomainMatched()
@@ -472,7 +441,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params, [], [], ['HTTP_HOST' => 'queryphp.com']);
         $request->setPathInfo($pathInfo);
@@ -492,9 +461,6 @@ eot;
         $result = $router->dispatch($request);
 
         $this->assertSame('barMatchedDomain', $result->getContent());
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedAndDomainWithVarMatched()
@@ -504,7 +470,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params, [], [], ['HTTP_HOST' => 'foo-vip.bar.queryphp.com']);
         $request->setPathInfo($pathInfo);
@@ -526,9 +492,6 @@ eot;
         $result = $router->dispatch($request);
 
         $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedAndDomainWithVarNotMatched()
@@ -543,7 +506,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params, [], [], ['HTTP_HOST' => '123.queryphp.com']);
         $request->setPathInfo($pathInfo);
@@ -565,9 +528,6 @@ eot;
         $result = $router->dispatch($request);
 
         $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMatchedWithExtendVar()
@@ -577,7 +537,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -597,9 +557,6 @@ eot;
         $result = $router->dispatch($request);
 
         $this->assertSame('withExtendVar and params are {"args1":"hello","args2":"world"}', $result->getContent());
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testBindNotSet()
@@ -614,7 +571,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -632,9 +589,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testBindNotSet2()
@@ -649,7 +603,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -667,9 +621,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMiddleware()
@@ -679,7 +630,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -741,8 +692,6 @@ eot;
         $this->assertSame('Middleware matched', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMiddleware2()
@@ -752,7 +701,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -816,8 +765,6 @@ eot;
         $this->assertSame('Middleware matched 2', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMiddleware3()
@@ -827,7 +774,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -893,8 +840,6 @@ eot;
         $this->assertSame('Middleware matched 3', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testMiddleware4()
@@ -904,7 +849,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -963,8 +908,6 @@ eot;
         $this->assertSame('Middleware matched 4', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testBindNotFound()
@@ -979,7 +922,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -997,9 +940,6 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     public function testBindNotFound2()
@@ -1014,7 +954,7 @@ eot;
         $method = 'GET';
         $controllerDir = 'Controllers';
 
-        $container = new ContainerAnnotation();
+        $container = $this->createContainer();
 
         $request = new Request([], [], $params);
         $request->setPathInfo($pathInfo);
@@ -1032,21 +972,15 @@ eot;
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-
-        $this->facadeClear();
-        Facade::setContainer(null);
     }
 
     protected function createRouter(Container $container): Router
     {
         $router = new Router($container);
 
-        $container->singleton('app', new ContainerAnnotation());
+        $container->singleton('app', $container);
         $container->singleton('url', new UrlAnnotation());
         $container->singleton('router', $router);
-
-        $this->facadeClear();
-        Facade::setContainer($container);
 
         return $router;
     }
@@ -1064,25 +998,18 @@ eot;
         return $request;
     }
 
-    protected function facadeClear()
+    protected function createContainer(): App
     {
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('app');
-        Facade::remove('url');
-        Facade::remove('router');
-    }
-}
+        $container = App::singletons();
+        $container->setAppPath(__DIR__.'/Apps/AppForAnnotation');
+        $container->setRouterCachedPath(__DIR__.'/router_cached.php');
 
-class ContainerAnnotation extends Container
-{
-    public function routerCachedPath(): string
-    {
-        return __DIR__.'/router_cached.php';
+        return $container;
     }
 
-    public function appPath()
+    protected function containerClear()
     {
-        return __DIR__.'/Apps/AppForAnnotation';
+        App::singletons()->clear();
     }
 }
 

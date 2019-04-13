@@ -44,17 +44,7 @@ class Debug
     public static function __callStatic(string $method, array $args)
     {
         return App::singletons()
-            ->make('auths')
+            ->make('debug')
             ->{$method}(...$args);
-    }
-
-    /**
-     * 返回门面名字.
-     *
-     * @return string
-     */
-    protected static function name(): string
-    {
-        return 'debug';
     }
 }

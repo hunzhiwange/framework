@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Tests\Router;
 
 use Leevel\Di\Container;
+use Leevel\Leevel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
-use Leevel\Support\Facade;
 use Tests\TestCase;
 
 /**
@@ -48,7 +48,9 @@ class RouterProviderTest extends TestCase
 
     public function testBaseUse()
     {
-        $container = new Container1();
+        $container = App::singletons();
+        $container->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $container->setRouterCachedPath(__DIR__.'/router_cached.php');
 
         $container->singleton('router', $router = $this->createRouter($container));
 
@@ -71,16 +73,14 @@ class RouterProviderTest extends TestCase
             )
         );
 
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('app');
-        Facade::remove('url');
-        Facade::remove('router');
-        Facade::setContainer(null);
+        App::singletons()->clear();
     }
 
     public function testRouterIsCache()
     {
-        $container = new Container1();
+        $container = App::singletons();
+        $container->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $container->setRouterCachedPath(__DIR__.'/router_cached.php');
 
         $container->singleton('router', $router = $this->createRouter($container));
 
@@ -115,11 +115,7 @@ class RouterProviderTest extends TestCase
             )
         );
 
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('app');
-        Facade::remove('url');
-        Facade::remove('router');
-        Facade::setContainer(null);
+        App::singletons()->clear();
 
         unlink($routerCached);
     }
@@ -128,31 +124,11 @@ class RouterProviderTest extends TestCase
     {
         $router = new Router($container);
 
-        $container->singleton('app', new Container1());
+        $container->singleton('app', $container);
         $container->singleton('url', new Url2());
         $container->singleton('router', $router);
 
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('app');
-        Facade::remove('url');
-        Facade::remove('router');
-
-        Facade::setContainer($container);
-
         return $router;
-    }
-}
-
-class Container1 extends Container
-{
-    public function routerCachedPath(): string
-    {
-        return __DIR__.'/router_cached.php';
-    }
-
-    public function appPath()
-    {
-        return __DIR__.'/Apps/AppScanRouter';
     }
 }
 
