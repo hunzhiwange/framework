@@ -23,9 +23,7 @@ use Leevel\Support\Fn;
 use Leevel\Support\FunctionNotFoundException;
 use function Leevel\Support\Str\un_camelize;
 
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include_once dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
+include dirname(__DIR__).'/Support/Str/un_camelize.php';
 
 if (!function_exists('fn')) {
     /**
@@ -59,7 +57,7 @@ if (!function_exists('fn')) {
     }
 }
 
-if (!function_exists('helper')) {
+if (!function_exists('h')) {
     /**
      * 助手函数调用.
      *
@@ -68,7 +66,7 @@ if (!function_exists('helper')) {
      *
      * @return mixed
      */
-    function helper(string $method, ...$args)
+    function h(string $method, ...$args)
     {
         $map = [
             'benchmark' => 'Debug',
@@ -122,49 +120,6 @@ if (!function_exists('__')) {
     }
 }
 
-if (!function_exists('dump')) {
-    /**
-     * 调试变量.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     *
-     * @return mixed
-     */
-    function dump($var, ...$moreVars)
-    {
-        return fn('Leevel\\Debug\\Helper\\dump', $var, ...$moreVars);
-    }
-}
-
-if (!function_exists('dd')) {
-    /**
-     * 调试变量并中断.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     */
-    function dd($var, ...$moreVars): void
-    {
-        fn('Leevel\\Debug\\Helper\\dd', $var, ...$moreVars);
-    }
-}
-
-if (!function_exists('drr')) {
-    /**
-     * 调试 RoadRunner 变量.
-     *
-     * @param mixed $var
-     * @param array $moreVars
-     *
-     * @return mixed
-     */
-    function drr($var, ...$moreVars)
-    {
-        return fn('Leevel\\Debug\\Helper\\drr', $var, ...$moreVars);
-    }
-}
-
 if (!function_exists('spl_object_id')) {
     /**
      * 兼容 7.2 spl_object_id.
@@ -203,7 +158,7 @@ class Leevel
         $unCamelize = un_camelize($method);
 
         try {
-            return helper($unCamelize, ...$args);
+            return h($unCamelize, ...$args);
         } catch (FunctionNotFoundException $th) {
             return App::singletons()->{$method}(...$args);
         }
