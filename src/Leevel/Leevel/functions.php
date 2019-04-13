@@ -38,7 +38,7 @@ if (!function_exists('fn')) {
     }
 }
 
-if (!function_exists('h')) {
+if (!function_exists('hl')) {
     /**
      * 助手函数调用.
      *
@@ -47,7 +47,7 @@ if (!function_exists('h')) {
      *
      * @return mixed
      */
-    function h(string $method, ...$args)
+    function hl(string $method, ...$args)
     {
         $map = [
             'benchmark' => 'Debug',
@@ -139,7 +139,7 @@ class Leevel
         $unCamelize = un_camelize($method);
 
         try {
-            return h($unCamelize, ...$args);
+            return hl($unCamelize, ...$args);
         } catch (FunctionNotFoundException $th) {
             return App::singletons()->{$method}(...$args);
         }
