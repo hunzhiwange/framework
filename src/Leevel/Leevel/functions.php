@@ -70,43 +70,25 @@ if (!function_exists('helper')) {
      */
     function helper(string $method, ...$args)
     {
-        static $map;
-
-        if (null === $map) {
-            $map = helper_map();
-        }
+        $map = [
+            'benchmark' => 'Debug',
+            'dd'        => 'Debug',
+            'drr'       => 'Debug',
+            'dump'      => 'Debug',
+            'decrypt'   => 'Encryption',
+            'encrypt'   => 'Encryption',
+            'gettext'   => 'I18n',
+            'app'       => 'Kernel',
+            'url'       => 'Router',
+            'flash'     => 'Session',
+            'env'       => 'Support',
+            'value'     => 'Support',
+        ];
 
         $component = $map[$method] ?? ucfirst($method);
         $fn = sprintf('\\Leevel\\%s\\Helper\\%s', $component, $method);
 
         return fn($fn, ...$args);
-    }
-
-    /**
-     * 助手函数隐射.
-     *
-     * @return array
-     */
-    function helper_map(): array
-    {
-        $baseMap = [
-            'Debug'      => ['benchmark', 'dd', 'drr', 'dump'],
-            'Encryption' => ['decrypt', 'encrypt'],
-            'I18n'       => ['gettext'],
-            'Kernel'     => ['app'],
-            'Router'     => ['url'],
-            'Session'    => ['flash'],
-            'Support'    => ['env', 'value'],
-        ];
-        $map = [];
-
-        foreach ($baseMap as $component => $fns) {
-            foreach ($fns as $v) {
-                $map[$v] = $component;
-            }
-        }
-
-        return $map;
     }
 }
 
