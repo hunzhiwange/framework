@@ -269,6 +269,13 @@ interface IApp extends IContainer
     public function fullEnvPath(): string;
 
     /**
+     * 设置语言包缓存路径.
+     *
+     * @param string $i18nCachedPath
+     */
+    public function setI18nCachedPath(string $i18nCachedPath): void;
+
+    /**
      * 返回语言包缓存路径.
      *
      * @param string $i18n
@@ -287,6 +294,13 @@ interface IApp extends IContainer
     public function isCachedI18n(string $i18n): bool;
 
     /**
+     * 设置配置缓存路径.
+     *
+     * @param string $optionCachedPath
+     */
+    public function setOptionCachedPath(string $optionCachedPath): void;
+
+    /**
      * 返回配置缓存路径.
      *
      * @return string
@@ -299,6 +313,13 @@ interface IApp extends IContainer
      * @return bool
      */
     public function isCachedOption(): bool;
+
+    /**
+     * 设置路由缓存路径.
+     *
+     * @param string $routerCachedPath
+     */
+    public function setRouterCachedPath(string $routerCachedPath);
 
     /**
      * 返回路由缓存路径.
@@ -315,10 +336,16 @@ interface IApp extends IContainer
     public function isCachedRouter(): bool;
 
     /**
-     * 取得 composer.
+     * 设置 Composer 对象.
+     *
+     * @param \Composer\Autoload\ClassLoader $composer
+     */
+    public function setComposer(ClassLoader $composer): void;
+
+    /**
+     * 取得 Composer 对象.
      *
      * @return \Composer\Autoload\ClassLoader
-     * @codeCoverageIgnore
      */
     public function composer(): ClassLoader;
 
@@ -328,7 +355,6 @@ interface IApp extends IContainer
      * @param string $namespaces
      *
      * @return string
-     * @codeCoverageIgnore
      */
     public function getPathByComposer(string $namespaces): string;
 

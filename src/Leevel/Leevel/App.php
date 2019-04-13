@@ -125,6 +125,27 @@ class App extends Container implements IApp
     protected $envFile;
 
     /**
+     * 语言包缓存路径.
+     *
+     * @var string
+     */
+    protected $i18nCachedPath;
+
+    /**
+     * 配置缓存路径.
+     *
+     * @var string
+     */
+    protected $optionCachedPath;
+
+    /**
+     * 路由缓存路径.
+     *
+     * @var string
+     */
+    protected $routerCachedPath;
+
+    /**
      * 延迟载入服务提供者.
      *
      * @var array
@@ -144,6 +165,13 @@ class App extends Container implements IApp
      * @var bool
      */
     protected $isBootstrap = false;
+
+    /**
+     * Composer 对象
+     *
+     * @var \Composer\Autoload\ClassLoader
+     */
+    protected $composer;
 
     /**
      * 构造函数
@@ -506,6 +534,16 @@ class App extends Container implements IApp
     }
 
     /**
+     * 设置语言包缓存路径.
+     *
+     * @param string $i18nCachedPath
+     */
+    public function setI18nCachedPath(string $i18nCachedPath): void
+    {
+        $this->i18nCachedPath = $i18nCachedPath;
+    }
+
+    /**
      * 返回语言包缓存路径.
      *
      * @param string $i18n
@@ -514,7 +552,9 @@ class App extends Container implements IApp
      */
     public function i18nCachedPath(string $i18n): string
     {
-        return $this->commonPath().'/ui/bootstrap/i18n/'.$i18n.'.php';
+        $basePath = $this->i18nCachedPath ?: $this->commonPath().'/ui/bootstrap/i18n';
+
+        return $basePath.'/'.$i18n.'.php';
     }
 
     /**
@@ -530,6 +570,16 @@ class App extends Container implements IApp
     }
 
     /**
+     * 设置配置缓存路径.
+     *
+     * @param string $optionCachedPath
+     */
+    public function setOptionCachedPath(string $optionCachedPath): void
+    {
+        $this->optionCachedPath = $optionCachedPath;
+    }
+
+    /**
      * 返回配置缓存路径.
      *
      * @since 2018.11.23 支持不同环境变量的缓存路径
@@ -538,9 +588,11 @@ class App extends Container implements IApp
      */
     public function optionCachedPath(): string
     {
+        $basePath = $this->optionCachedPath ?: $this->commonPath().'/ui/bootstrap';
+
         $cache = getenv('RUNTIME_ENVIRONMENT') ?: 'option';
 
-        return $this->commonPath().'/ui/bootstrap/'.$cache.'.php';
+        return $basePath.'/'.$cache.'.php';
     }
 
     /**
@@ -554,13 +606,23 @@ class App extends Container implements IApp
     }
 
     /**
+     * 设置路由缓存路径.
+     *
+     * @param string $routerCachedPath
+     */
+    public function setRouterCachedPath(string $routerCachedPath)
+    {
+        $this->routerCachedPath = $routerCachedPath;
+    }
+
+    /**
      * 返回路由缓存路径.
      *
      * @return string
      */
     public function routerCachedPath(): string
     {
-        return $this->commonPath().'/ui/bootstrap/router.php';
+        return $this->routerCachedPath ?: $this->commonPath().'/ui/bootstrap/router.php';
     }
 
     /**
@@ -574,14 +636,25 @@ class App extends Container implements IApp
     }
 
     /**
-     * 取得 composer.
+     * 设置 Composer 对象.
+     *
+     * @param \Composer\Autoload\ClassLoader $composer
+     * @codeCoverageIgnore
+     */
+    public function setComposer(ClassLoader $composer): void
+    {
+        $this->composer = $composer;
+    }
+
+    /**
+     * 取得 Composer 对象.
      *
      * @return \Composer\Autoload\ClassLoader
      * @codeCoverageIgnore
      */
     public function composer(): ClassLoader
     {
-        return require $this->path.'/vendor/autoload.php';
+        return $this->composer;
     }
 
     /**
