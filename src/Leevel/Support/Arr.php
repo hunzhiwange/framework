@@ -20,7 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use InvalidArgumentException;
+use function Leevel\Support\Helper\fn;
+use function Leevel\Support\Str\un_camelize;
 
 /**
  * 数组辅助函数.
@@ -34,109 +35,25 @@ use InvalidArgumentException;
 class Arr
 {
     /**
-     * 数组数据格式化.
+     * call.
      *
-     * @param mixed  $inputs
-     * @param string $delimiter
-     * @param bool   $allowedEmpty
+     * @param string $method
+     * @param array  $args
      *
      * @return mixed
      */
-    public static function normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false)
+    public static function __callStatic(string $method, array $args)
     {
-        if (is_array($inputs) || is_string($inputs)) {
-            if (!is_array($inputs)) {
-                $inputs = explode($delimiter, $inputs);
-            }
+        $fn = '\\Leevel\\Support\\Arr\\'.un_camelize($method);
 
-            $inputs = array_filter($inputs);
-
-            if (true === $allowedEmpty) {
-                return $inputs;
-            }
-
-            $inputs = array_map('trim', $inputs);
-
-            return array_filter($inputs, 'strlen');
-        }
-
-        return $inputs;
+        return fn($fn, ...$args);
     }
+}
 
-    /**
-     * 返回白名单过滤后的数据.
-     *
-     * @param array $input
-     * @param array $filter
-     *
-     * @return array
-     */
-    public static function only(array $input, array $filter): array
-    {
-        $result = [];
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include __DIR__.'/Str/un_camelize.php';
+}
 
-        foreach ($filter as $f) {
-            $result[$f] = $input[$f] ?? null;
-        }
-
-        return $result;
-    }
-
-    /**
-     * 返回黑名单排除后的数据.
-     *
-     * @param array $input
-     * @param array $filter
-     *
-     * @return array
-     */
-    public static function except(array $input, array $filter): array
-    {
-        foreach ($filter as $f) {
-            if (array_key_exists($f, $input)) {
-                unset($input[$f]);
-            }
-        }
-
-        return $input;
-    }
-
-    /**
-     * 返回过滤后的数据.
-     *
-     * @param array $input
-     * @param array $rules
-     *
-     * @return array
-     */
-    public static function filter(array $input, array $rules): array
-    {
-        foreach ($input as $k => &$v) {
-            if (is_string($v)) {
-                $v = trim($v);
-            }
-
-            if (isset($rules[$k])) {
-                $rule = $rules[$k];
-
-                if (!is_array($rule)) {
-                    $e = sprintf('Rule of `%s` must be an array.', $k);
-
-                    throw new InvalidArgumentException($e);
-                }
-
-                foreach ($rule as $r) {
-                    if (!is_callable($r)) {
-                        $e = sprintf('Rule item of `%s` must be a callback type.', $k);
-
-                        throw new InvalidArgumentException($e);
-                    }
-
-                    $v = $r($v);
-                }
-            }
-        }
-
-        return $input;
-    }
+if (!function_exists('Leevel\\Support\\Helper\\fn')) {
+    include __DIR__.'/Helper/fn.php';
 }

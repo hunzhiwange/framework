@@ -18,42 +18,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support;
-
-use function Leevel\Support\Helper\fn;
-use function Leevel\Support\Str\un_camelize;
+namespace Leevel\Support\Arr;
 
 /**
- * 字符串.
+ * 数组数据格式化.
  *
- * @author Xiangmin Liu <635750556@qq.com>
+ * @param mixed  $inputs
+ * @param string $delimiter
+ * @param bool   $allowedEmpty
  *
- * @since 2017.04.05
- *
- * @version 1.0
+ * @return mixed
  */
-class Str
+function normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false)
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $fn = '\\Leevel\\Support\\Str\\'.un_camelize($method);
+    if (is_array($inputs) || is_string($inputs)) {
+        if (!is_array($inputs)) {
+            $inputs = explode($delimiter, $inputs);
+        }
 
-        return fn($fn, ...$args);
+        $inputs = array_filter($inputs);
+
+        if (true === $allowedEmpty) {
+            return $inputs;
+        }
+
+        $inputs = array_map('trim', $inputs);
+
+        return array_filter($inputs, 'strlen');
     }
-}
 
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include __DIR__.'/Str/un_camelize.php';
-}
-
-if (!function_exists('Leevel\\Support\\Helper\\fn')) {
-    include __DIR__.'/Helper/fn.php';
+    return $inputs;
 }
