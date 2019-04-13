@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use InvalidArgumentException;
-use Leevel\Support\Arr;
+use function Leevel\Support\Arr\normalize;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
@@ -377,7 +377,7 @@ class OpenApiRouter
     {
         if (!empty($router['middlewares'])) {
             $router['middlewares'] = $this->middlewareParser->handle(
-                Arr::normalize($router['middlewares'])
+                normalize($router['middlewares'])
             );
         }
 
@@ -698,7 +698,7 @@ class OpenApiRouter
 
             if (!empty($value['middlewares'])) {
                 $value['middlewares'] = $this->middlewareParser->handle(
-                    Arr::normalize($value['middlewares'])
+                    normalize($value['middlewares'])
                 );
             }
 
@@ -744,4 +744,8 @@ class OpenApiRouter
 
         return \OpenApi\scan($this->scandirs);
     }
+}
+
+if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
+    include dirname(__DIR__).'/Support/Arr/normalize.php';
 }

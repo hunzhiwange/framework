@@ -28,7 +28,7 @@ use Exception;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Flow\FlowControl;
-use Leevel\Support\Arr;
+use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Str;
 
 /**
@@ -2133,7 +2133,7 @@ class Validator implements IValidator
      */
     protected function arrayRuleItem($rules): array
     {
-        return Arr::normalize($rules, '|');
+        return normalize($rules, '|');
     }
 
     /**
@@ -2528,9 +2528,9 @@ class Validator implements IValidator
             return $this->callClassExtend($extends, $parameter);
         }
 
-        throw new InvalidArgumentException(
-            sprintf('Extend in rule %s is not valid.', $rule)
-        );
+        $e = sprintf('Extend in rule %s is not valid.', $rule);
+
+        throw new InvalidArgumentException($e);
     }
 
     /**
@@ -2544,4 +2544,8 @@ class Validator implements IValidator
     {
         return call_user_func($callbacks, $this->getData());
     }
+}
+
+if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
+    include dirname(__DIR__).'/Support/Arr/normalize.php';
 }

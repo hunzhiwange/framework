@@ -23,8 +23,7 @@ namespace Leevel\Database;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Flow\FlowControl;
-use Leevel\Support\Arr;
-use Leevel\Support\Type;
+use function Leevel\Support\Arr\normalize;
 use PDO;
 
 /**
@@ -813,10 +812,10 @@ class Condition
         }
 
         $type = strtoupper($type);
-        $indexs = Arr::normalize($indexs);
+        $indexs = normalize($indexs);
 
         foreach ($indexs as $value) {
-            $value = Arr::normalize($value);
+            $value = normalize($value);
 
             foreach ($value as $tmp) {
                 $this->options['index'][$type][] = $tmp;
@@ -935,7 +934,7 @@ class Condition
             );
         }
 
-        $expression = Arr::normalize($expression);
+        $expression = normalize($expression);
 
         // 还原
         if (!empty($matches)) {
@@ -961,7 +960,7 @@ class Condition
                 );
             }
 
-            $value = Arr::normalize($value);
+            $value = normalize($value);
 
             // 还原
             if (!empty($subMatches)) {
@@ -1098,7 +1097,7 @@ class Condition
             );
         }
 
-        $expression = Arr::normalize($expression);
+        $expression = normalize($expression);
 
         // 还原
         if (!empty($matches)) {
@@ -1124,7 +1123,7 @@ class Condition
                 );
             }
 
-            $value = Arr::normalize($value);
+            $value = normalize($value);
 
             // 还原
             if (!empty($subMatches)) {
@@ -2571,7 +2570,7 @@ class Condition
             );
         }
 
-        $cols = Arr::normalize($cols);
+        $cols = normalize($cols);
 
         // 还原
         if (!empty($matches)) {
@@ -2598,7 +2597,7 @@ class Condition
                 );
             }
 
-            $col = Arr::normalize($col);
+            $col = normalize($col);
 
             // 还原
             if (!empty($subMatches)) {
@@ -2609,7 +2608,7 @@ class Condition
             }
 
             // 将包含多个字段的字符串打散
-            foreach (Arr::normalize($col) as $col) {
+            foreach (normalize($col) as $col) {
                 $currentTableName = $tableName;
 
                 // 检查是不是 "字段名 AS 别名"这样的形式
@@ -2892,4 +2891,8 @@ class Condition
     {
         $this->options = static::$optionsDefault;
     }
+}
+
+if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
+    include dirname(__DIR__).'/Support/Arr/normalize.php';
 }

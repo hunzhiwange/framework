@@ -25,7 +25,7 @@ use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Select as DatabaseSelect;
-use Leevel\Support\Arr;
+use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Str;
 
 /**
@@ -346,7 +346,7 @@ class Select
             $scope(...$args);
             $this->entity->withScopeSelect($scopeSelect);
         } else {
-            foreach (Arr::normalize($scope) as $value) {
+            foreach (normalize($scope) as $value) {
                 $value = 'scope'.ucfirst($value);
 
                 if (method_exists($this->entity, $value)) {
@@ -531,4 +531,8 @@ class Select
 
         return $relation->matchPreLoad($entitys, $relation->getPreLoad(), $name);
     }
+}
+
+if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
+    include dirname(__DIR__).'/Support/Arr/normalize.php';
 }
