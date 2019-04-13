@@ -61,7 +61,7 @@ QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://raw
 
 我们认为，PHP 应用程序的性能非常重要，但是工程师开发乐趣也需要被考虑，这就是我们开发 QueryPHP 框架以实现伟大理想的原因。
 
-* PHP 7 - 我们选择 7.1.3 最为最低版本，因为 PHP7 相对于早期版本具有独特的优势。
+* PHP 7 - 我们选择 7.3.2 最为最低版本，因为 PHP 7 相对于早期版本具有独特的优势。
 * Leevel - 我们提供了一个可选的 C 扩展来接管框架的核心组件，如 IOC、日志、缓存。
 * Swoole - 使 PHP 开发人员可以编写高性能的异步并发 TCP、UDP、Unix Socket、HTTP，WebSocket 服务。
 * Redis - QueryPHP 实现了缓存组件封装，包括文件、Redis，它们可以降低数据库压力。
