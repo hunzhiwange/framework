@@ -39,21 +39,74 @@ if (!function_exists('fn')) {
      */
     function fn($fn, ...$args)
     {
-        static $loaded = [], $instance;
+        static $instance, $loaded = [];
 
-        if (is_string($fn)) {
-            if (in_array($fn, $loaded, true)) {
-                return $fn(...$args);
-            }
-
-            $loaded[] = $fn;
+        if (is_string($fn) && in_array($fn, $loaded, true)) {
+            return $fn(...$args);
         }
 
         if (null === $instance) {
             $instance = new Fn();
         }
 
-        return $instance->__invoke($fn, ...$args);
+        $result = $instance->__invoke($fn, ...$args);
+
+        if (is_string($fn)) {
+            $loaded[] = $fn;
+        }
+
+        return $result;
+    }
+}
+
+if (!function_exists('helper')) {
+    /**
+     * 助手函数调用.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    function helper(string $method, ...$args)
+    {
+        static $map;
+
+        if (null === $map) {
+            $map = helper_map();
+        }
+
+        $component = $map[$method] ?? ucfirst($method);
+        $fn = sprintf('\\Leevel\\%s\\Helper\\%s', $component, $method);
+
+        return fn($fn, ...$args);
+    }
+
+    /**
+     * 助手函数隐射.
+     *
+     * @return array
+     */
+    function helper_map(): array
+    {
+        $baseMap = [
+            'Debug'      => ['benchmark', 'dd', 'drr', 'dump'],
+            'Encryption' => ['decrypt', 'encrypt'],
+            'I18n'       => ['gettext'],
+            'Kernel'     => ['app'],
+            'Router'     => ['url'],
+            'Session'    => ['flash'],
+            'Support'    => ['env', 'value'],
+        ];
+        $map = [];
+
+        foreach ($baseMap as $component => $fns) {
+            foreach ($fns as $v) {
+                $map[$v] = $component;
+            }
+        }
+
+        return $map;
     }
 }
 
@@ -143,6 +196,7 @@ if (!function_exists('spl_object_id')) {
         return spl_object_hash($obj);
     }
 }
+
 /**
  * 函数库.
  *
@@ -164,10 +218,10 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Leevel\\Helper\\'.un_camelize($method);
+        $unCamelize = un_camelize($method);
 
         try {
-            return (new Fn())($fn, ...$args);
+            return helper($unCamelize, ...$args);
         } catch (FunctionNotFoundException $th) {
             return App::singletons()->{$method}(...$args);
         }
