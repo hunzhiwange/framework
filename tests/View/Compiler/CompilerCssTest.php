@@ -53,28 +53,28 @@ class CompilerCssTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{script}
-var hello = 'world';
-{/script}
+        {script}
+        var hello = 'world';
+        {/script}
 
-{style}
-.red {
-    color: red;
-}
-{/style}
-eot;
+        {style}
+        .red {
+            color: red;
+        }
+        {/style}
+        eot;
 
         $compiled = <<<'eot'
-<script type="text/javascript">
-var hello = 'world';
-</script>
+        <script type="text/javascript">
+        var hello = 'world';
+        </script>
 
-<style type="text/css">
-.red {
-    color: red;
-}
-</style>
-eot;
+        <style type="text/css">
+        .red {
+            color: red;
+        }
+        </style>
+        eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
