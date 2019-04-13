@@ -53,17 +53,16 @@ class CompilerForTest extends TestCase
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{for $i=1;$i<10;$i++}
-    QueryPHP - 代码版本for <br>
-{/for}
-eot;
-        $hell = 0;
+            {for $i=1;$i<10;$i++}
+                QueryPHP - 代码版本for <br>
+            {/for}
+            eot;
 
         $compiled = <<<'eot'
-<?php for ($i=1;$i<10;$i++): ?>
-    QueryPHP - 代码版本for <br>
-<?php endfor; ?>
-eot;
+            <?php for ($i=1;$i<10;$i++): ?>
+                QueryPHP - 代码版本for <br>
+            <?php endfor; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -80,16 +79,16 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<for start='1'>
-    QueryPHP - node - for <br>
-</for>
-eot;
+            <for start='1'>
+                QueryPHP - node - for <br>
+            </for>
+            eot;
 
         $compiled = <<<'eot'
-<?php for ($var = 1; $var <= 0; $var += 1): ?>
-    QueryPHP - node - for <br>
-<?php endfor; ?>
-eot;
+            <?php for ($var = 1; $var <= 0; $var += 1): ?>
+                QueryPHP - node - for <br>
+            <?php endfor; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -105,16 +104,16 @@ eot;
     {
         $parser = $this->createParser();
         $source = <<<'eot'
-<for start='1' end='10' var='myValue' step='3'>
-    QueryPHP for <br>
-</for>
-eot;
+            <for start='1' end='10' var='myValue' step='3'>
+                QueryPHP for <br>
+            </for>
+            eot;
 
         $compiled = <<<'eot'
-<?php for ($myValue = 1; $myValue <= 10; $myValue += 3): ?>
-    QueryPHP for <br>
-<?php endfor; ?>
-eot;
+            <?php for ($myValue = 1; $myValue <= 10; $myValue += 3): ?>
+                QueryPHP for <br>
+            <?php endfor; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -131,16 +130,16 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{% for item in navigation %}
-    <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
-{% /for %}
-eot;
+            {% for item in navigation %}
+                <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+            {% /for %}
+            eot;
 
         $compiled = <<<'eot'
-<?php foreach ($navigation as $key => $item): ?>
-    <li><a href="<?php echo $item->href; ?>"><?php echo $item->caption; ?></a></li>
-<?php endforeach; ?>
-eot;
+            <?php foreach ($navigation as $key => $item): ?>
+                <li><a href="<?php echo $item->href; ?>"><?php echo $item->caption; ?></a></li>
+            <?php endforeach; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -157,16 +156,16 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{% for mykey,item in navigation %}
-    <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
-{% /for %}
-eot;
+            {% for mykey,item in navigation %}
+                <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+            {% /for %}
+            eot;
 
         $compiled = <<<'eot'
-<?php foreach ($navigation as $mykey => $item): ?>
-    <li><a href="<?php echo $item->href; ?>"><?php echo $item->caption; ?></a></li>
-<?php endforeach; ?>
-eot;
+            <?php foreach ($navigation as $mykey => $item): ?>
+                <li><a href="<?php echo $item->href; ?>"><?php echo $item->caption; ?></a></li>
+            <?php endforeach; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -183,16 +182,16 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{% for mykey item in navigation %}
-    <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
-{% /for %}
-eot;
+            {% for mykey item in navigation %}
+                <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+            {% /for %}
+            eot;
 
         $compiled = <<<'eot'
-<?php foreach ($navigation as $mykey => $item): ?>
-    <li><a href="<?php echo $item->href; ?>"><?php echo $item->caption; ?></a></li>
-<?php endforeach; ?>
-eot;
+            <?php foreach ($navigation as $mykey => $item): ?>
+                <li><a href="<?php echo $item->href; ?>"><?php echo $item->caption; ?></a></li>
+            <?php endforeach; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
@@ -207,9 +206,9 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{% for item navigation %}
-{% /for %}
-eot;
+            {% for item navigation %}
+            {% /for %}
+            eot;
 
         $parser->doCompile($source, null, true);
     }
@@ -224,9 +223,9 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{% for key item navigation %}
-{% /for %}
-eot;
+            {% for key item navigation %}
+            {% /for %}
+            eot;
 
         $parser->doCompile($source, null, true);
     }
@@ -236,16 +235,16 @@ eot;
         $parser = $this->createParser();
 
         $source = <<<'eot'
-<for start='10' end='1' var='myValue' step='3' type='-'>
-    QueryPHP for <br>
-</for>
-eot;
+            <for start='10' end='1' var='myValue' step='3' type='-'>
+                QueryPHP for <br>
+            </for>
+            eot;
 
         $compiled = <<<'eot'
-<?php for ($myValue = 10; $myValue >= 1; $myValue -= 3): ?>
-    QueryPHP for <br>
-<?php endfor; ?>
-eot;
+            <?php for ($myValue = 10; $myValue >= 1; $myValue -= 3): ?>
+                QueryPHP for <br>
+            <?php endfor; ?>
+            eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
