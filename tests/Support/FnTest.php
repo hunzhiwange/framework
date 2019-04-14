@@ -270,7 +270,7 @@ class FnTest extends TestCase
     {
         $this->expectException(\Error::class);
         $this->expectExceptionMessage(
-            'Fn first args must be Closure or string.'
+            'Function name must be a string'
         );
 
         (new Fn())(5);

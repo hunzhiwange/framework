@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use Closure;
 use Error;
 
 /**
@@ -44,8 +43,6 @@ class Fn
      */
     public function __invoke($fn, ...$args)
     {
-        $this->validate($fn);
-
         try {
             return $fn(...$args);
         } catch (Error $th) {
@@ -75,20 +72,6 @@ class Fn
         }
 
         return false;
-    }
-
-    /**
-     * 校验类型.
-     *
-     * @param \Closure|string $fn
-     */
-    protected function validate($fn): void
-    {
-        if (!is_string($fn) && !($fn instanceof Closure)) {
-            $e = sprintf('Fn first args must be Closure or string.');
-
-            throw new Error($e);
-        }
     }
 
     /**
