@@ -101,20 +101,6 @@ if (!function_exists('__')) {
     }
 }
 
-if (!function_exists('spl_object_id')) {
-    /**
-     * 兼容 7.2 spl_object_id.
-     *
-     * @param object $obj
-     *
-     * @return string
-     */
-    function spl_object_id($obj): string
-    {
-        return spl_object_hash($obj);
-    }
-}
-
 /**
  * 函数库.
  *
