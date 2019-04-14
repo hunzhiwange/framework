@@ -63,7 +63,7 @@ interface ISession
      * 设置 session.
      *
      * @param string $name
-     * @param mxied  $value
+     * @param mixed  $value
      */
     public function set(string $name, $value): void;
 
@@ -122,7 +122,7 @@ interface ISession
      * @param string $name
      * @param mixed  $value
      *
-     * @return mxied
+     * @return mixed
      */
     public function get(string $name, $value = null);
 

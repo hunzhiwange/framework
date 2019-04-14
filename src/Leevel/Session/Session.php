@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Support\Str;
+use function Leevel\Support\Str\rand_alpha_num;
 use RuntimeException;
 use SessionHandlerInterface;
 
@@ -147,7 +147,7 @@ class Session implements ISession
      * 设置 session.
      *
      * @param string $name
-     * @param mxied  $value
+     * @param mixed  $value
      */
     public function set(string $name, $value): void
     {
@@ -262,7 +262,7 @@ class Session implements ISession
      * @param string $name
      * @param mixed  $value
      *
-     * @return mxied
+     * @return mixed
      */
     public function get(string $name, $value = null)
     {
@@ -574,7 +574,7 @@ class Session implements ISession
      */
     protected function generateSessionId(): string
     {
-        return sha1($this->parseMicrotime().'.'.time().'.'.Str::randAlphaNum(32));
+        return sha1($this->parseMicrotime().'.'.time().'.'.rand_alpha_num(32));
     }
 
     /**
@@ -740,4 +740,8 @@ class Session implements ISession
     {
         return 'prev.url.key';
     }
+}
+
+if (!function_exists('Leevel\\Support\\Str\\rand_alpha_num')) {
+    include dirname(__DIR__).'/Support/Str/rand_alpha_num.php';
 }
