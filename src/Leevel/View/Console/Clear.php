@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\View\Console;
 
 use Leevel\Console\Command;
-use Leevel\Filesystem\Fso;
+use function Leevel\Filesystem\Fso\delete_directory;
 use Leevel\Kernel\IApp;
 
 /**
@@ -59,7 +59,7 @@ class Clear extends Command
     {
         $this->line('Start to clear cache view.');
 
-        Fso::deleteDirectory($cachePath = $app->runtimePath('theme'), true);
+        delete_directory($cachePath = $app->runtimePath('theme'), true);
 
         $this->info(sprintf('View files in path %s cache clear successed.', $cachePath));
     }
@@ -83,4 +83,8 @@ class Clear extends Command
     {
         return [];
     }
+}
+
+if (!function_exists('Leevel\\Filesystem\\Fso\\delete_directory')) {
+    include dirname(__DIR__, 2).'/Filesystem/Fso/delete_directory.php';
 }

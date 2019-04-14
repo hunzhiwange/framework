@@ -24,7 +24,7 @@ use DirectoryIterator;
 use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
-use Leevel\Filesystem\Fso;
+use function Leevel\Filesystem\Fso\list_directory;
 use Leevel\Leevel\Utils\ClassParser;
 use Leevel\Leevel\Utils\Doc as UtilsDoc;
 
@@ -117,7 +117,7 @@ class Doc extends Command
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
-            Fso::listDirectory($fileOrDir, true, function (DirectoryIterator $file) use (&$result) {
+            list_directory($fileOrDir, true, function (DirectoryIterator $file) use (&$result) {
                 if ($file->isFile()) {
                     $result[] = $file->getPathname();
                 }
@@ -204,4 +204,8 @@ class Doc extends Command
     {
         return [];
     }
+}
+
+if (!function_exists('Leevel\\Filesystem\\Fso\\list_directory')) {
+    include dirname(__DIR__, 2).'/Filesystem/Fso/list_directory.php';
 }

@@ -22,7 +22,7 @@ namespace Leevel\I18n\Console;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Leevel\Filesystem\Fso;
+use function Leevel\Filesystem\Fso\list_directory;
 use Leevel\I18n\Load;
 use Leevel\Kernel\IApp;
 use Leevel\Leevel\Bootstrap\LoadI18n;
@@ -78,7 +78,7 @@ class Cache extends Command
 
         $this->line('Start to cache i18n.');
 
-        Fso::listDirectory($app->i18nPath(), false, function ($item) use ($app) {
+        list_directory($app->i18nPath(), false, function ($item) use ($app) {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
 
@@ -173,4 +173,8 @@ class Cache extends Command
     {
         return [];
     }
+}
+
+if (!function_exists('Leevel\\Filesystem\\Fso\\list_directory')) {
+    include dirname(__DIR__, 2).'/Filesystem/Fso/list_directory.php';
 }

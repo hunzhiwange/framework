@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Process;
 
-use Leevel\Filesystem\Fso;
+use function Leevel\Filesystem\Fso\list_directory;
 use Leevel\Option\IOption;
 use Leevel\Protocol\IServer;
 
@@ -149,7 +149,7 @@ class HotOverload extends Process
                 continue;
             }
 
-            Fso::listDirectory($dir, true, function ($file) use (&$files) {
+            list_directory($dir, true, function ($file) use (&$files) {
                 if ($file->isFile()) {
                     if (in_array($file->getExtension(), ['php'], true)) {
                         $files[] = $file->getPath().'/'.$file->getFilename();
@@ -186,4 +186,8 @@ class HotOverload extends Process
     {
         fwrite(STDOUT, $log.PHP_EOL);
     }
+}
+
+if (!function_exists('Leevel\\Filesystem\\Fso\\list_directory')) {
+    include dirname(__DIR__, 2).'/Filesystem/Fso/list_directory.php';
 }

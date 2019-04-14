@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Leevel\Console;
 
 use Leevel\Console\Command;
-use Leevel\Filesystem\Fso;
+use function Leevel\Filesystem\Fso\link;
 use Leevel\Kernel\IApp;
 
 /**
@@ -65,7 +65,7 @@ class LinkStorage extends Command
             return;
         }
 
-        Fso::link(
+        link(
             $path = $app->storagePath(), $link
         );
 
@@ -91,4 +91,8 @@ class LinkStorage extends Command
     {
         return [];
     }
+}
+
+if (!function_exists('Leevel\\Filesystem\\Fso\link')) {
+    include dirname(__DIR__, 2).'/Filesystem/Fso/link.php';
 }
