@@ -207,17 +207,28 @@ class ComposerStaticInit
      */
     protected function dataHelper(): string
     {
-        return <<<'eot'
+        $autoloadFiles = [];
+
+        foreach ($this->files() as $file) {
+            foreach ($this->appHelpers() as $whiteFile) {
+                if (false !== strpos($file, $whiteFile)) {
+                    $autoloadFiles[] = "require_once '".$this->replaceComposerPath($file)."';";
+                }
+            }
+        }
+
+        $autoloadFiles = $this->replaceComposerPath(implode(PHP_EOL, $autoloadFiles));
+
+        return <<<eot
             /**
              * Ignore the helper functions.
              * Because most of them are useless.
              */
-            foreach (ComposerStaticInit::$files as $fileIdentifier => $_) {
-                $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
+            foreach (ComposerStaticInit::\$files as \$fileIdentifier => \$_) {
+                \$GLOBALS['__composer_autoload_files'][\$fileIdentifier] = true;
             }
-            
-            require_once LEEVEL_COMPOSER.'/../hunzhiwange/framework/src/Leevel/Leevel/functions.php';
-            require_once LEEVEL_COMPOSER.'/../../common/Infra/functions.php';
+
+            {$autoloadFiles}
             eot;
     }
 
@@ -327,7 +338,7 @@ class ComposerStaticInit
      */
     protected function files(): array
     {
-        $optimizeNamespaces = $this->optimizeNamespaces();
+        $this->optimizeNamespaces();
         $composerStaticClass = $this->composerStaticClass();
 
         return $composerStaticClass::$files;
@@ -385,7 +396,7 @@ class ComposerStaticInit
     }
 
     /**
-     * 取得应用的 composer 配置.
+     * 取得应用的 composer 命名空间配置.
      *
      * @return array
      */
@@ -399,15 +410,35 @@ class ComposerStaticInit
 
         $options = $this->getFileContent($path);
 
-        $appNamespaces = !empty($options['autoload']['psr-4']) ?
-            array_map(function (string $value) {
-                return rtrim($value, '\\');
-            }, array_keys($options['autoload']['psr-4'])) : [];
+        $appNamespaces = $options['autoload']['psr-4'] ?? [];
 
-        $extraNamespaces = !empty($options['extra']['leevel-console']['autoload']['namespaces']) ?
-            $options['extra']['leevel-console']['autoload']['namespaces'] : [];
+        if ($appNamespaces) {
+            $appNamespaces = array_map(function (string $value) {
+                return rtrim($value, '\\');
+            }, array_keys($appNamespaces));
+        }
+
+        $extraNamespaces = $options['extra']['leevel-console']['autoload']['namespaces'] ?? [];
 
         return array_merge($appNamespaces, $extraNamespaces);
+    }
+
+    /**
+     * 取得应用的 composer 自动载入助手文件配置.
+     *
+     * @return array
+     */
+    protected function appHelpers(): array
+    {
+        $path = $this->app->path().'/composer.json';
+
+        if (!is_file($path)) {
+            return [];
+        }
+
+        $options = $this->getFileContent($path);
+
+        return $options['extra']['leevel-console']['autoload']['files'] ?? [];
     }
 
     /**
