@@ -24,7 +24,8 @@ use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
 use Leevel\Database\Manager;
-use Leevel\Support\Str;
+use function Leevel\Support\Str\camelize;
+use function Leevel\Support\Str\un_camelize;
 
 /**
  * 生成模型实体.
@@ -97,7 +98,7 @@ class Entity extends Make
         $this->setSaveFilePath(
             $this->getNamespacePath().
             'Domain/Entity/'.
-            ucfirst(Str::camelize($this->argument('name'))).'.php'
+            ucfirst(camelize($this->argument('name'))).'.php'
         );
 
         $this->setCustomReplaceKeyValue($this->getReplace());
@@ -119,7 +120,7 @@ class Entity extends Make
         $columns = $this->getColumns();
 
         return [
-            'file_name'        => ucfirst(Str::camelize($this->argument('name'))),
+            'file_name'        => ucfirst(camelize($this->argument('name'))),
             'table_name'       => $this->getTableName(),
             'primary_key'      => $this->getPrimaryKey($columns),
             'primary_key_type' => $this->getPrimaryKeyType($columns),
@@ -223,7 +224,7 @@ class Entity extends Make
         foreach ($columns['list'] as $val) {
             $comment = $val['comment'] ?: $val['name'];
 
-            $propName = Str::camelize($val['name']);
+            $propName = camelize($val['name']);
 
             $type = in_array($val['type'], ['tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint'], true) ?
                 'int' : 'string';
@@ -254,7 +255,7 @@ class Entity extends Make
             return $this->option('table');
         }
 
-        return Str::unCamelize($this->argument('name'));
+        return un_camelize($this->argument('name'));
     }
 
     /**
@@ -306,4 +307,12 @@ class Entity extends Make
             ],
         ];
     }
+}
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include dirname(__DIR__).'/Support/Str/un_camelize.php';
+}
+
+if (!function_exists('Leevel\\Support\\Str\\camelize')) {
+    include dirname(__DIR__).'/Support/Str/camelize.php';
 }
