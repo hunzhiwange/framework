@@ -64,7 +64,7 @@ if (!function_exists('hl')) {
         ];
 
         $component = $map[$method] ?? ucfirst($method);
-        $fn = sprintf('\\Leevel\\%s\\Helper\\%s', $component, $method);
+        $fn = '\\Leevel\\'.$component.'\\Helper\\'.$method;
 
         return fn($fn, ...$args);
     }
