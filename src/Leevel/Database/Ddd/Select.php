@@ -534,6 +534,7 @@ class Select
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
     include dirname(__DIR__, 2).'/Support/Arr/normalize.php';
 }
@@ -545,3 +546,4 @@ if (!function_exists('Leevel\\Support\\Str\\contains')) {
 if (!function_exists('Leevel\\Support\\Str\\starts_with')) {
     include dirname(__DIR__, 2).'/Support/Str/starts_with.php';
 }
+// @codeCoverageIgnoreEnd

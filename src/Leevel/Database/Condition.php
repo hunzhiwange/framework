@@ -2893,6 +2893,8 @@ class Condition
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
     include dirname(__DIR__).'/Support/Arr/normalize.php';
 }
+// @codeCoverageIgnoreEnd

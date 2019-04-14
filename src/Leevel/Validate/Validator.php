@@ -2547,6 +2547,7 @@ class Validator implements IValidator
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
     include dirname(__DIR__).'/Support/Arr/normalize.php';
 }
@@ -2558,3 +2559,4 @@ if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
 if (!function_exists('Leevel\\Support\\Str\\camelize')) {
     include dirname(__DIR__).'/Support/Str/camelize.php';
 }
+// @codeCoverageIgnoreEnd

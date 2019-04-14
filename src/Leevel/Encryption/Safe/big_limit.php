@@ -38,6 +38,8 @@ function big_limit(string $strings, int $maxLength = 20000): string
     return $strings;
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
     include __DIR__.'/length_limit.php';
 }
+// @codeCoverageIgnoreEnd

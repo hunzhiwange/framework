@@ -1941,6 +1941,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
     include dirname(__DIR__, 2).'/I18n/Helper/gettext.php';
 }
@@ -1952,3 +1953,4 @@ if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
 if (!function_exists('Leevel\\Support\\Str\\camelize')) {
     include dirname(__DIR__, 2).'/Support/Str/camelize.php';
 }
+// @codeCoverageIgnoreEnd

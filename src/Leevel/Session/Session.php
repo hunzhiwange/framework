@@ -742,6 +742,8 @@ class Session implements ISession
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Str\\rand_alpha_num')) {
     include dirname(__DIR__).'/Support/Str/rand_alpha_num.php';
 }
+// @codeCoverageIgnoreEnd

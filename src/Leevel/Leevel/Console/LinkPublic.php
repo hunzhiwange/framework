@@ -93,6 +93,8 @@ class LinkPublic extends Command
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Filesystem\\Fso\link')) {
     include dirname(__DIR__, 2).'/Filesystem/Fso/link.php';
 }
+// @codeCoverageIgnoreEnd

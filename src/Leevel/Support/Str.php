@@ -50,6 +50,7 @@ class Str
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
     include __DIR__.'/Str/un_camelize.php';
 }
@@ -57,3 +58,4 @@ if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
 if (!function_exists('Leevel\\Support\\Helper\\fn')) {
     include __DIR__.'/Helper/fn.php';
 }
+// @codeCoverageIgnoreEnd

@@ -41,6 +41,8 @@ function rand_alpha_num(int $length, ?string $charBox = null): string
     return rand_str($length, $charBox);
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Str\\rand_str')) {
     include __DIR__.'/rand_str.php';
 }
+// @codeCoverageIgnoreEnd

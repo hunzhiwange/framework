@@ -167,6 +167,8 @@ class Action extends Make
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Str\\camelize')) {
     include dirname(__DIR__, 2).'/Support/Str/camelize.php';
 }
+// @codeCoverageIgnoreEnd

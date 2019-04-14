@@ -146,6 +146,7 @@ class Leevel
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
     include dirname(__DIR__).'/Support/Str/un_camelize.php';
 }
@@ -153,3 +154,4 @@ if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
 if (!function_exists('Leevel\\Support\\Helper\\fn')) {
     include dirname(__DIR__).'/Support/Helper/fn.php';
 }
+// @codeCoverageIgnoreEnd

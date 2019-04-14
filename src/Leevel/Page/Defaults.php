@@ -349,6 +349,8 @@ class Defaults implements IRender
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
     include dirname(__DIR__).'/I18n/Helper/gettext.php';
 }
+// @codeCoverageIgnoreEnd

@@ -53,6 +53,7 @@ function str_filter($data, int $maxNum = 20000)
     return $data;
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
     include __DIR__.'/length_limit.php';
 }
@@ -60,3 +61,4 @@ if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
 if (!function_exists('Leevel\\Encryption\\Safe\\custom_htmlspecialchars')) {
     include __DIR__.'/custom_htmlspecialchars.php';
 }
+// @codeCoverageIgnoreEnd

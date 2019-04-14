@@ -36,6 +36,8 @@ function strip(string $strings): string
     return $strings;
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Encryption\\Safe\\clean_js')) {
     include __DIR__.'/clean_js.php';
 }
+// @codeCoverageIgnoreEnd

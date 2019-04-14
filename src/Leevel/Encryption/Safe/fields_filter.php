@@ -43,6 +43,8 @@ function fields_filter($fields)
     return $fields;
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Encryption\\Safe\\sql_filter')) {
     include __DIR__.'/sql_filter.php';
 }
+// @codeCoverageIgnoreEnd

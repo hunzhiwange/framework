@@ -101,6 +101,8 @@ function benchmark_call($call, int $time = 1): array
     ];
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
     include __DIR__.'/dump.php';
 }
+// @codeCoverageIgnoreEnd

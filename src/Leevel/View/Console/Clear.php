@@ -85,6 +85,8 @@ class Clear extends Command
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Filesystem\\Fso\\delete_directory')) {
     include dirname(__DIR__, 2).'/Filesystem/Fso/delete_directory.php';
 }
+// @codeCoverageIgnoreEnd

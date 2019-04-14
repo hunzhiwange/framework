@@ -645,9 +645,11 @@ class Seccode implements ISeccode
         $rand = 'rand_'.$autoType;
         $randMethod = '\\Leevel\\Support\\Str\\'.$rand;
 
+        // @codeCoverageIgnoreStart
         if (!function_exists($randMethod)) {
             include dirname(__DIR__).'/Support/Str/'.$rand.'.php';
         }
+        // @codeCoverageIgnoreEnd
 
         $this->code($randMethod($size));
     }

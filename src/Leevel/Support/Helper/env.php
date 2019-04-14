@@ -57,6 +57,8 @@ function env(string $name, $defaults = null)
     return $value;
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Helper\\value')) {
     include __DIR__.'/value.php';
 }
+// @codeCoverageIgnoreEnd

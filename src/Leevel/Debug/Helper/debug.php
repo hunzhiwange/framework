@@ -86,6 +86,8 @@ function debug_tag(string $tag): void
     $GLOBALS[$key] = true;
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
     include __DIR__.'/dump.php';
 }
+// @codeCoverageIgnoreEnd

@@ -53,6 +53,8 @@ function text(string $strings, bool $deep = true, array $black = []): string
     return $strings;
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Encryption\\Safe\\clean_js')) {
     include __DIR__.'/clean_js.php';
 }
+// @codeCoverageIgnoreEnd

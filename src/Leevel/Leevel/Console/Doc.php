@@ -206,6 +206,8 @@ class Doc extends Command
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Filesystem\\Fso\\list_directory')) {
     include dirname(__DIR__, 2).'/Filesystem/Fso/list_directory.php';
 }
+// @codeCoverageIgnoreEnd
