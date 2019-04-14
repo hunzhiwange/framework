@@ -26,7 +26,8 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Select as DatabaseSelect;
 use function Leevel\Support\Arr\normalize;
-use Leevel\Support\Str;
+use function Leevel\Support\Str\contains;
+use function Leevel\Support\Str\starts_with;
 
 /**
  * 模型实体查询.
@@ -429,7 +430,7 @@ class Select
      */
     protected function isNested(string $name, string $relation): bool
     {
-        return Str::contains($name, '.') && Str::startsWith($name, $relation.'.');
+        return contains($name, '.') && starts_with($name, $relation.'.');
     }
 
     /**
@@ -535,4 +536,12 @@ class Select
 
 if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
     include dirname(__DIR__).'/Support/Arr/normalize.php';
+}
+
+if (!function_exists('Leevel\\Support\\Str\\contains')) {
+    include dirname(__DIR__).'/Support/Str/contains.php';
+}
+
+if (!function_exists('Leevel\\Support\\Str\\starts_with')) {
+    include dirname(__DIR__).'/Support/Str/starts_with.php';
 }

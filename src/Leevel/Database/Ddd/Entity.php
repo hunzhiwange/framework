@@ -35,7 +35,8 @@ use Leevel\Event\IDispatch;
 use function Leevel\I18n\Helper\gettext as __;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
-use Leevel\Support\Str;
+use function Leevel\Support\Str\camelize;
+use function Leevel\Support\Str\un_camelize;
 
 /**
  * 模型实体 Object Relational Mapping.
@@ -1920,7 +1921,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return static::$leevelUnCamelize[$prop];
         }
 
-        return static::$leevelUnCamelize[$prop] = Str::unCamelize($prop);
+        return static::$leevelUnCamelize[$prop] = un_camelize($prop);
     }
 
     /**
@@ -1936,10 +1937,18 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return static::$leevelCamelize[$prop];
         }
 
-        return static::$leevelCamelize[$prop] = Str::camelize($prop);
+        return static::$leevelCamelize[$prop] = camelize($prop);
     }
 }
 
 if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
     include dirname(__DIR__, 2).'/I18n/Helper/gettext.php';
+}
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include dirname(__DIR__, 2).'/Support/Str/un_camelize.php';
+}
+
+if (!function_exists('Leevel\\Support\\Str\\camelize')) {
+    include dirname(__DIR__, 2).'/Support/Str/camelize.php';
 }
