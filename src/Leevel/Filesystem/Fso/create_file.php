@@ -23,23 +23,25 @@ namespace Leevel\Filesystem\Fso;
 use InvalidArgumentException;
 
 /**
- * 新建文件.
+ * 创建文件.
  *
  * @param string $path
+ * @param string $content
  * @param int    $mode
- *
- * @return bool
  */
-function create_file(string $path, int $mode = 0666): bool
+function create_file(string $path, ?string $content = null, int $mode = 0666): void
 {
     $dirname = dirname($path);
 
     if (is_file($dirname)) {
-        throw new InvalidArgumentException('Dir cannot be a file.');
+        $e = sprintf('Dir `%s` cannot be a file.', $dirname);
+
+        throw new InvalidArgumentException($e);
     }
 
     if (!is_dir($dirname)) {
-        if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
+        if (is_dir(dirname($dirname)) &&
+            !is_writable(dirname($dirname))) {
             $e = sprintf('Unable to create the %s directory.', $dirname);
 
             throw new InvalidArgumentException($e);
@@ -49,14 +51,15 @@ function create_file(string $path, int $mode = 0666): bool
     }
 
     if (!is_writable($dirname) || !($file = fopen($path, 'a'))) {
-        $e = sprintf('The directory "%s" is not writable', $dirname);
+        $e = sprintf('Dir `%s` is not writeable.', $dirname);
 
         throw new InvalidArgumentException($e);
     }
 
-    $mode = $mode & ~umask();
+    chmod($path, $mode & ~umask());
+    fclose($file);
 
-    chmod($path, $mode);
-
-    return fclose($file);
+    if ($content) {
+        file_put_contents($path, $content);
+    }
 }

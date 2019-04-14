@@ -34,20 +34,23 @@ use Tests\TestCase;
  */
 class FsoTest extends TestCase
 {
+    protected function setUp()
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown()
     {
-        // for testCreateFile3
-        $sourcePath = __DIR__.'/createFile2';
+        $dirs = [
+            __DIR__.'/createFile2',
+            __DIR__.'/createFile5',
+            __DIR__.'/foo',
+        ];
 
-        if (is_dir($sourcePath)) {
-            rmdir($sourcePath);
-        }
-
-        // for testCreateFile5
-        $sourcePath2 = __DIR__.'/createFile5';
-
-        if (is_dir($sourcePath2)) {
-            rmdir($sourcePath2);
+        foreach ($dirs as $dir) {
+            if (is_dir($dir)) {
+                Fso::deleteDirectory($dir, true);
+            }
         }
     }
 
@@ -261,7 +264,7 @@ class FsoTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Dir cannot be a file.'
+            sprintf('Dir `%s` cannot be a file.', $file)
         );
 
         Fso::createFile($file.'/demo.txt');
@@ -274,7 +277,7 @@ class FsoTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf('The directory "%s" is not writable', $sourcePath)
+            sprintf('Dir `%s` is not writeable.', $sourcePath)
         );
 
         if (is_dir($sourcePath)) {
