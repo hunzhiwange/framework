@@ -23,6 +23,8 @@ namespace Leevel\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
+use function Zend\Diactoros\normalizeServer;
+use function Zend\Diactoros\normalizeUploadedFiles;
 use Zend\Diactoros\Response as DiactorosResponse;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Stream as DiactorosStream;
@@ -52,16 +54,14 @@ class Leevel2Psr implements ILeevel2Psr
      */
     public function createRequest(IRequest $leevelRequest): ServerRequestInterface
     {
-        $this->validateHelpers();
-
-        $server = \Zend\Diactoros\normalizeServer($leevelRequest->server->all());
+        $server = normalizeServer($leevelRequest->server->all());
         $headers = $leevelRequest->headers->all();
 
         $body = new DiactorosStream($this->normalizeContent($leevelRequest->getContent()));
 
         $request = new ServerRequest(
             $server,
-            \Zend\Diactoros\normalizeUploadedFiles($this->getFiles($leevelRequest->files->all())),
+            normalizeUploadedFiles($this->getFiles($leevelRequest->files->all())),
             $leevelRequest->getSchemeAndHttpHost().$leevelRequest->getRequestUri(),
             $leevelRequest->getMethod(),
             $body,
@@ -179,20 +179,12 @@ class Leevel2Psr implements ILeevel2Psr
             $leevelUploadedFile->getMimeType()
         );
     }
+}
 
-    /**
-     * 校验助手函数.
-     *
-     * @codeCoverageIgnore
-     */
-    protected function validateHelpers(): void
-    {
-        if (!function_exists('\\Zend\\Diactoros\\normalizeServer')) {
-            require_once dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/normalize_server.php';
-        }
+if (!function_exists('\\Zend\\Diactoros\\normalizeServer')) {
+    include dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/normalize_server.php';
+}
 
-        if (!function_exists('\\Zend\\Diactoros\\normalizeUploadedFiles')) {
-            require_once dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/create_uploaded_file.php';
-        }
-    }
+if (!function_exists('\\Zend\\Diactoros\\normalizeUploadedFiles')) {
+    include dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/create_uploaded_file.php';
 }

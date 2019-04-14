@@ -25,6 +25,7 @@ use function Leevel\Support\Arr\normalize;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
+use function OpenApi\scan;
 
 /**
  * OpenApi 注解路由
@@ -736,16 +737,16 @@ class OpenApiRouter
      */
     protected function makeOpenApi(): OpenApi
     {
-        // @codeCoverageIgnoreStart
-        if (!function_exists('\\OpenApi\\scan')) {
-            require_once dirname(__DIR__, 5).'/zircote/swagger-php/src/functions.php';
-        }
-        // @codeCoverageIgnoreEnd
-
-        return \OpenApi\scan($this->scandirs);
+        return scan($this->scandirs);
     }
 }
 
+// @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
     include dirname(__DIR__).'/Support/Arr/normalize.php';
 }
+
+if (!function_exists('\\OpenApi\\scan')) {
+    include dirname(__DIR__, 5).'/zircote/swagger-php/src/functions.php';
+}
+// @codeCoverageIgnoreEnd
