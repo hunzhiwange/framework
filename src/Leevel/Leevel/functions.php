@@ -19,7 +19,6 @@ declare(strict_types=1);
  */
 
 use Leevel\Leevel\App;
-use Leevel\Support\FunctionNotFoundException;
 use function Leevel\Support\Helper\fn as fns;
 use function Leevel\Support\Str\un_camelize;
 
@@ -122,13 +121,13 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        $unCamelize = un_camelize($method);
+        $app = App::singletons();
 
-        try {
-            return hl($unCamelize, ...$args);
-        } catch (FunctionNotFoundException $th) {
-            return App::singletons()->{$method}(...$args);
+        if (method_exists($app, $method)) {
+            return $app->{$method}(...$args);
         }
+
+        return hl(un_camelize($method), ...$args);
     }
 }
 

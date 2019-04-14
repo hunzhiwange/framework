@@ -75,9 +75,9 @@ class FunctionsTest extends TestCase
 
     public function testCallStaticException()
     {
-        $this->expectException(\BadMethodCallException::class);
+        $this->expectException(\Leevel\Support\FunctionNotFoundException::class);
         $this->expectExceptionMessage(
-            'Method `notFoundCallback` is not exits.'
+            'Call to undefined function \\Leevel\\Not_found_callback\\Helper\\not_found_callback()'
         );
 
         Leevel::notFoundCallback();
