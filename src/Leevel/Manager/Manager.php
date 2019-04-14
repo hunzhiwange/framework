@@ -88,7 +88,7 @@ abstract class Manager
      *
      * @return object
      */
-    public function connect($options = null)
+    public function connect($options = null): object
     {
         list($options, $unique) = $this->parseOptionAndUnique($options);
 
@@ -110,7 +110,7 @@ abstract class Manager
      *
      * @return object
      */
-    public function reconnect($options = [])
+    public function reconnect($options = []): object
     {
         $this->disconnect($options);
 
@@ -202,7 +202,7 @@ abstract class Manager
      *
      * @return object
      */
-    abstract protected function createConnect($connect);
+    abstract protected function createConnect(object $connect): object;
 
     /**
      * 取得连接名字.
@@ -224,14 +224,12 @@ abstract class Manager
      *
      * @return object
      */
-    protected function makeConnect(string $connect, array $options = [])
+    protected function makeConnect(string $connect, array $options = []): object
     {
         if (null === $this->getContainerOption('connect.'.$connect)) {
-            throw new Exception(
-                sprintf(
-                    'Connect driver %s not exits.', $connect
-                )
-            );
+            $e = sprintf('Connect driver %s not exits.', $connect);
+
+            throw new Exception($e);
         }
 
         return $this->createConnect(
@@ -247,7 +245,7 @@ abstract class Manager
      *
      * @return object
      */
-    protected function createConnectCommon(string $connect, array $options = [])
+    protected function createConnectCommon(string $connect, array $options = []): object
     {
         return $this->{'makeConnect'.ucwords($connect)}($options);
     }

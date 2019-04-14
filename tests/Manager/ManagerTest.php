@@ -262,7 +262,7 @@ class Test1 extends Manager
         return 'test1';
     }
 
-    protected function createConnect($connect)
+    protected function createConnect(object $connect): object
     {
         return new Bag($connect);
     }

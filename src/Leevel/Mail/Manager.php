@@ -50,7 +50,7 @@ class Manager extends Managers
      *
      * @return object
      */
-    protected function createConnect($connect)
+    protected function createConnect(object $connect): object
     {
         return new Mail($connect,
             $this->container['view'],
