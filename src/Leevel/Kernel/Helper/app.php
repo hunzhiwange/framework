@@ -25,8 +25,8 @@ use Leevel\Leevel\App;
 /**
  * 返回应用容器或者注入.
  *
- * @param null|string $service
- * @param array       $args
+ * @param string $service
+ * @param array  $args
  *
  * @return \Leevel\Leevel\App|mixed
  */

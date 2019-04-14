@@ -19,8 +19,7 @@ declare(strict_types=1);
  */
 
 use Leevel\Leevel\App;
-use function Leevel\Support\Helper\fn as fns;
-use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Fn as Fns;
 
 if (!function_exists('fn')) {
     /**
@@ -30,10 +29,27 @@ if (!function_exists('fn')) {
      * @param array                    $args
      *
      * @return mixed
+     * @codeCoverageIgnore
      */
     function fn($fn, ...$args)
     {
-        return fns($fn, ...$args);
+        static $instance, $loaded = [];
+
+        if (is_string($fn) && in_array($fn, $loaded, true)) {
+            return $fn(...$args);
+        }
+
+        if (null === $instance) {
+            $instance = new Fns();
+        }
+
+        $result = $instance->__invoke($fn, ...$args);
+
+        if (is_string($fn)) {
+            $loaded[] = $fn;
+        }
+
+        return $result;
     }
 }
 
@@ -74,14 +90,21 @@ if (!function_exists('app')) {
     /**
      * 返回应用容器或者注入.
      *
-     * @param null|string $service
-     * @param array       $args
+     * @param string $service
+     * @param array  $args
      *
      * @return \Leevel\Leevel\App|mixed
+     * @codeCoverageIgnore
      */
     function app(?string $service = null, array $args = [])
     {
-        return fn('Leevel\\Kernel\\Helper\\app', $service, $args);
+        $app = App::singletons();
+
+        if (null === $service) {
+            return $app;
+        }
+
+        return $app->make($service, $args);
     }
 }
 
@@ -93,10 +116,13 @@ if (!function_exists('__')) {
      * @param array  $arr
      *
      * @return string
+     * @codeCoverageIgnore
      */
     function __(string $text, ...$arr): string
     {
-        return fn('Leevel\\I18n\\Helper\\gettext', $text, ...$arr);
+        return App::singletons()
+            ->make('i18n')
+            ->gettext($text, ...$arr);
     }
 }
 
@@ -127,16 +153,8 @@ class Leevel
             return $app->{$method}(...$args);
         }
 
-        return hl(un_camelize($method), ...$args);
+        $method = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $method));
+
+        return hl($method, ...$args);
     }
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
-
-if (!function_exists('Leevel\\Support\\Helper\\fn')) {
-    include dirname(__DIR__).'/Support/Helper/fn.php';
-}
-// @codeCoverageIgnoreEnd
