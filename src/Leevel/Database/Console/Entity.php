@@ -311,10 +311,10 @@ class Entity extends Make
 
 // @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include dirname(__DIR__).'/Support/Str/un_camelize.php';
+    include dirname(__DIR__, 2).'/Support/Str/un_camelize.php';
 }
 
 if (!function_exists('Leevel\\Support\\Str\\camelize')) {
-    include dirname(__DIR__).'/Support/Str/camelize.php';
+    include dirname(__DIR__, 2).'/Support/Str/camelize.php';
 }
 // @codeCoverageIgnoreEnd
