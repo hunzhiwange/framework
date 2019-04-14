@@ -29,7 +29,8 @@ use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Flow\FlowControl;
 use function Leevel\Support\Arr\normalize;
-use Leevel\Support\Str;
+use function Leevel\Support\Str\camelize;
+use function Leevel\Support\Str\un_camelize;
 
 /**
  * Validator 数据验证器.
@@ -174,7 +175,7 @@ class Validator implements IValidator
         }
 
         if (0 === strpos($method, 'validate')) {
-            $extend = Str::unCamelize(substr($method, 8));
+            $extend = un_camelize(substr($method, 8));
 
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $args);
@@ -195,7 +196,7 @@ class Validator implements IValidator
                 return $this->{$extend}(...$parameter);
             }
 
-            $extend = Str::unCamelize($method);
+            $extend = un_camelize($method);
 
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $parameter);
@@ -2290,7 +2291,7 @@ class Validator implements IValidator
             return;
         }
 
-        $camelizeRule = ucwords(Str::camelize($rule));
+        $camelizeRule = ucwords(camelize($rule));
         $method = 'validate'.$camelizeRule;
         $className = '\\Leevel\\Validate\\'.$camelizeRule.'Rule';
 
@@ -2548,4 +2549,12 @@ class Validator implements IValidator
 
 if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
     include dirname(__DIR__).'/Support/Arr/normalize.php';
+}
+
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include dirname(__DIR__).'/Support/Str/un_camelize.php';
+}
+
+if (!function_exists('Leevel\\Support\\Str\\camelize')) {
+    include dirname(__DIR__).'/Support/Str/camelize.php';
 }
