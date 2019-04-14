@@ -535,13 +535,13 @@ class Select
 }
 
 if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
-    include dirname(__DIR__).'/Support/Arr/normalize.php';
+    include dirname(__DIR__, 2).'/Support/Arr/normalize.php';
 }
 
 if (!function_exists('Leevel\\Support\\Str\\contains')) {
-    include dirname(__DIR__).'/Support/Str/contains.php';
+    include dirname(__DIR__, 2).'/Support/Str/contains.php';
 }
 
 if (!function_exists('Leevel\\Support\\Str\\starts_with')) {
-    include dirname(__DIR__).'/Support/Str/starts_with.php';
+    include dirname(__DIR__, 2).'/Support/Str/starts_with.php';
 }
