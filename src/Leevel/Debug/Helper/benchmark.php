@@ -82,6 +82,7 @@ function benchmark($time = 1, ...$call): void
  * @param int                     $time
  *
  * @return array
+ * @codeCoverageIgnore
  */
 function benchmark_call($call, int $time = 1): array
 {
