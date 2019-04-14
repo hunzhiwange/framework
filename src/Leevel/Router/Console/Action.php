@@ -24,7 +24,7 @@ use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
 use Leevel\Router\IRouter;
-use Leevel\Support\Str;
+use function Leevel\Support\Str\camelize;
 
 /**
  * 生成方法器.
@@ -80,7 +80,7 @@ class Action extends Make
         $this->setTemplatePath(__DIR__.'/stub/action');
 
         $controllerNamespace = $router->getControllerDir();
-        $controllerName = ucfirst(Str::camelize($this->argument('controller')));
+        $controllerName = ucfirst(camelize($this->argument('controller')));
 
         $action = ucfirst($this->normalizeAction($this->argument('name')));
 
@@ -165,4 +165,8 @@ class Action extends Make
             ],
         ];
     }
+}
+
+if (!function_exists('Leevel\\Support\\Str\\camelize')) {
+    include dirname(__DIR__, 2).'/Support/Str/camelize.php';
 }
