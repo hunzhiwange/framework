@@ -29,7 +29,7 @@ use IteratorAggregate;
 use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
-use Leevel\Support\Type;
+use function Leevel\Support\Type\type_these;
 use stdClass;
 
 /**
@@ -338,13 +338,13 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
             return;
         }
 
-        if (Type::these($value, $this->type)) {
+        if (type_these($value, $this->type)) {
             return;
         }
 
-        throw new InvalidArgumentException(
-            sprintf('Collection type %s validation failed.', implode(',', $this->type))
-        );
+        $e = sprintf('Collection type %s validation failed.', implode(',', $this->type));
+
+        throw new InvalidArgumentException($e);
     }
 
     /**
@@ -383,3 +383,9 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
         return [$elements];
     }
 }
+
+// @codeCoverageIgnoreStart
+if (!function_exists('Leevel\\Support\\Type\\type_these')) {
+    include dirname(__DIR__).'/Support/Type/type_these.php';
+}
+// @codeCoverageIgnoreEnd

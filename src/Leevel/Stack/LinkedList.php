@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Stack;
 
 use InvalidArgumentException;
-use Leevel\Support\Type;
+use function Leevel\Support\Type\type_these;
 use SplDoublyLinkedList;
 
 /**
@@ -117,11 +117,11 @@ class LinkedList extends SplDoublyLinkedList
     public function validate($value): void
     {
         if (!$this->checkType($value)) {
-            throw new InvalidArgumentException(
-                sprintf('The linkedlist element type verification failed, and the allowed type is %s.',
-                    implode(',', $this->type)
-                )
+            $e = sprintf('The linkedlist element type verification failed, and the allowed type is %s.',
+                implode(',', $this->type)
             );
+
+            throw new InvalidArgumentException($e);
         }
     }
 
@@ -138,6 +138,12 @@ class LinkedList extends SplDoublyLinkedList
             return true;
         }
 
-        return Type::these($value, $this->type);
+        return type_these($value, $this->type);
     }
 }
+
+// @codeCoverageIgnoreStart
+if (!function_exists('Leevel\\Support\\Type\\type_these')) {
+    include dirname(__DIR__).'/Support/Type/type_these.php';
+}
+// @codeCoverageIgnoreEnd

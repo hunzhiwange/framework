@@ -23,7 +23,7 @@ namespace Leevel\Validate;
 use InvalidArgumentException;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
-use Leevel\Support\Type;
+use function Leevel\Support\Type\type_array;
 
 /**
  * 不能重复值验证规则.
@@ -88,8 +88,10 @@ class UniqueRule extends Rule implements IRule
      */
     public static function rule(string $entity, ?string $field = null, $exceptId = null, ?string $primaryKey = null, ...$additional): string
     {
-        if (!Type::arr($additional, ['string'])) {
-            throw new InvalidArgumentException('Unique additional conditions must be string.');
+        if (!type_array($additional, ['string'])) {
+            $e = 'Unique additional conditions must be string.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $tmp = [];
@@ -165,9 +167,9 @@ class UniqueRule extends Rule implements IRule
             }
 
             if (!class_exists($entityClass)) {
-                throw new InvalidArgumentException(
-                    sprintf('Validate entity `%s` was not found.', $entityClass)
-                );
+                $e = sprintf('Validate entity `%s` was not found.', $entityClass);
+
+                throw new InvalidArgumentException($e);
             }
 
             $entity = new $entityClass();
@@ -176,9 +178,9 @@ class UniqueRule extends Rule implements IRule
         }
 
         if (!($entity instanceof IEntity)) {
-            throw new InvalidArgumentException(
-                sprintf('Validate entity `%s` must be an entity.', get_class($entity))
-            );
+            $e = sprintf('Validate entity `%s` must be an entity.', get_class($entity));
+
+            throw new InvalidArgumentException($e);
         }
 
         if ($connect) {
@@ -224,7 +226,9 @@ class UniqueRule extends Rule implements IRule
         if (($num = count($this->parameter)) >= 4) {
             for ($i = 4; $i < $num; $i += 2) {
                 if (!isset($this->parameter[$i + 1])) {
-                    throw new InvalidArgumentException('Unique additional conditions must be paired.');
+                    $e = 'Unique additional conditions must be paired.';
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 if (false !== strpos($this->parameter[$i], self::SEPARATE)) {
@@ -239,3 +243,9 @@ class UniqueRule extends Rule implements IRule
         }
     }
 }
+
+// @codeCoverageIgnoreStart
+if (!function_exists('Leevel\\Support\\Type\\type_array')) {
+    include dirname(__DIR__).'/Support/Type/type_array.php';
+}
+// @codeCoverageIgnoreEn

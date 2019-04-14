@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use Closure;
-use InvalidArgumentException;
+use function Leevel\Support\Helper\fn;
+use function Leevel\Support\Str\un_camelize;
 
 /**
  * 类型判断辅助函数.
@@ -35,173 +35,27 @@ use InvalidArgumentException;
 class Type
 {
     /**
-     * 验证 PHP 各种变量类型.
+     * call.
      *
-     * @param mixed  $value
-     * @param string $type
+     * @param string $method
+     * @param array  $args
      *
-     * @return bool
+     * @return mixed
      */
-    public static function vars($value, string $type): bool
+    public static function __callStatic(string $method, array $args)
     {
-        // 整理参数，以支持 array:int 格式
-        $tmp = explode(':', $type);
-        $type = strtolower($tmp[0]);
+        $fn = '\\Leevel\\Support\\Type\\'.un_camelize($method);
 
-        switch ($type) {
-            // 字符串
-            case 'str':
-            case 'string':
-                return is_string($value);
-            // 整数
-            case 'int':
-            case 'integer':
-                return is_int($value);
-            // 浮点
-            case 'float':
-            case 'double':
-                return is_float($value);
-            // 布尔
-            case 'bool':
-            case 'boolean':
-                return is_bool($value);
-            // 数字
-            case 'num':
-            case 'numeric':
-                return is_numeric($value);
-            // 标量（所有基础类型）
-            case 'base':
-            case 'scalar':
-                return is_scalar($value);
-            // 外部资源
-            case 'handle':
-            case 'resource':
-                return is_resource($value);
-            // 闭包
-            case 'closure':
-                return $value instanceof Closure;
-            // 数组
-            case 'arr':
-            case 'array':
-                if (!empty($tmp[1])) {
-                    $tmp[1] = explode(',', $tmp[1]);
-
-                    return static::arr($value, $tmp[1]);
-                }
-
-                return is_array($value);
-            // 对象
-            case 'obj':
-            case 'object':
-                return is_object($value);
-            // null
-            case 'null':
-                return null === $value;
-            // 回调函数
-            case 'callback':
-                return is_callable($value, false);
-            // 类或者接口检验
-            default:
-                return $value instanceof $type;
-        }
-    }
-
-    /**
-     * 判断字符串是否为数字.
-     *
-     * @param mixed $value
-     *
-     * @since bool
-     */
-    public static function num($value): bool
-    {
-        if (is_numeric($value)) {
-            return true;
-        }
-
-        return !preg_match('/[^\\d-.,]/', trim($value, '\''));
-    }
-
-    /**
-     * 判断字符串是否为整数.
-     *
-     * @param mixed $value
-     *
-     * @since bool
-     */
-    public static function ints($value): bool
-    {
-        if (is_int($value)) {
-            return true;
-        }
-
-        return ctype_digit((string) $value);
-    }
-
-    /**
-     * 验证参数是否为指定的类型集合.
-     *
-     * @param mixed $value
-     * @param mixed $types
-     *
-     * @return bool
-     */
-    public static function these($value, $types): bool
-    {
-        if (!static::vars($types, 'string') && !static::arr($types, [
-            'string',
-        ])) {
-            $e = 'The parameter must be string or an array of string elements.';
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (is_string($types)) {
-            $types = (array) $types;
-        }
-
-        // 类型检查
-        foreach ($types as $item) {
-            if (static::vars($value, $item)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * 验证数组中的每一项格式化是否正确.
-     *
-     * @param mixed $arr
-     * @param array $types
-     *
-     * @return bool
-     */
-    public static function arr($arr, array $types): bool
-    {
-        // 不是数组直接返回
-        if (!is_array($arr)) {
-            return false;
-        }
-
-        // 判断数组内部每一个值是否为给定的类型
-        foreach ($arr as $value) {
-            $ret = false;
-
-            foreach ($types as $item) {
-                if (static::vars($value, $item)) {
-                    $ret = true;
-
-                    break;
-                }
-            }
-
-            if (!$ret) {
-                return false;
-            }
-        }
-
-        return true;
+        return fn($fn, ...$args);
     }
 }
+
+// @codeCoverageIgnoreStart
+if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
+    include __DIR__.'/Str/un_camelize.php';
+}
+
+if (!function_exists('Leevel\\Support\\Helper\\fn')) {
+    include __DIR__.'/Helper/fn.php';
+}
+// @codeCoverageIgnoreEnd

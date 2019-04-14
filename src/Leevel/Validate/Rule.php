@@ -36,7 +36,7 @@ abstract class Rule
     /**
      * 字段.
      *
-     * @var array
+     * @var string
      */
     protected $field;
 
