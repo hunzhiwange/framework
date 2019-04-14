@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Seccode;
 
 use InvalidArgumentException;
-use Leevel\Support\Str;
 
 /**
  * 验证码
@@ -142,9 +141,9 @@ class Seccode implements ISeccode
 
             if (!is_dir($dirname)) {
                 if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                    throw new InvalidArgumentException(
-                        sprintf('Unable to create the %s directory.', $dirname)
-                    );
+                    $e = sprintf('Unable to create the %s directory.', $dirname);
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 mkdir($dirname, 0777, true);
@@ -500,9 +499,9 @@ class Seccode implements ISeccode
             function_exists('imageSX') &&
             function_exists('imageSY')) {
             if (!is_dir($backgroundPath)) {
-                throw new InvalidArgumentException(
-                    sprintf('Background path %s is not exists.', $backgroundPath)
-                );
+                $e = sprintf('Background path %s is not exists.', $backgroundPath);
+
+                throw new InvalidArgumentException($e);
             }
 
             $background = glob($backgroundPath.'/*.*');
@@ -606,9 +605,9 @@ class Seccode implements ISeccode
             $this->option['font_path'];
 
         if (!is_dir($fontPath)) {
-            throw new InvalidArgumentException(
-                sprintf('Font path %s is not exits.', $fontPath)
-            );
+            $e = sprintf('Font path %s is not exits.', $fontPath);
+
+            throw new InvalidArgumentException($e);
         }
 
         $ttf = glob($fontPath.'/*.*');
@@ -629,23 +628,28 @@ class Seccode implements ISeccode
     protected function autoCode(int $size, string $autoType = self::ALPHA_UPPERCASE): void
     {
         if ($size < 1) {
-            throw new InvalidArgumentException(
-                sprintf('Code must be greater than %d.', 0)
-            );
+            $e = sprintf('Code must be greater than %d.', 0);
+
+            throw new InvalidArgumentException($e);
         }
 
         if (!in_array($autoType, $this->getAllowedAutoType(), true)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Code type must be these %s.',
-                    implode(',', $this->getAllowedAutoType())
-                )
+            $e = sprintf(
+                'Code type must be these %s.',
+                implode(',', $this->getAllowedAutoType())
             );
+
+            throw new InvalidArgumentException($e);
         }
 
-        $this->code(
-            Str::{'rand'.ucwords(Str::camelize($autoType))}($size)
-        );
+        $rand = 'rand_'.$autoType;
+        $randMethod = '\\Leevel\\Support\\Str\\'.$rand;
+
+        if (!function_exists($randMethod)) {
+            include dirname(__DIR__).'/Support/Str/'.$rand.'.php';
+        }
+
+        $this->code($randMethod($size));
     }
 
     /**
