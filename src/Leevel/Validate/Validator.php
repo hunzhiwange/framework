@@ -583,40 +583,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 是否为日期
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateDate(string $field, $datas, array $parameter): bool
-    {
-        if ($datas instanceof DateTime) {
-            return true;
-        }
-
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        if (false === strtotime((string) ($datas))) {
-            return false;
-        }
-
-        $datas = date_parse($datas);
-
-        if (false === $datas['year'] ||
-            false === $datas['month'] ||
-            false === $datas['day']) {
-            return false;
-        }
-
-        return checkdate($datas['month'], $datas['day'], $datas['year']);
-    }
-
-    /**
      * 是否为时间.
      *
      * @param string $field
@@ -699,29 +665,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证是否为布尔值
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateBoolean($field, $datas, array $parameter): bool
-    {
-        return in_array($datas, [
-            true,
-            false,
-            0,
-            1,
-            '0',
-            '1',
-            't',
-            'f',
-        ], true);
-    }
-
-    /**
      * 两个字段是否相同.
      *
      * @param string $field
@@ -769,28 +712,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 长度验证
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateStrlen(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        $datas = (string) ($datas);
-
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return strlen($datas) === (int) $parameter[0];
-    }
-
-    /**
      * 验证 IP 许可.
      *
      * @param string $field
@@ -822,28 +743,6 @@ class Validator implements IValidator
     protected function validateDenyIp(string $field, $datas, array $parameter): bool
     {
         return !$this->validateAllowedIp($field, $datas, $parameter);
-    }
-
-    /**
-     * 数据是否满足正则条件.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateRegex(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        $datas = (string) ($datas);
-
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return preg_match($parameter[0], $datas) > 0;
     }
 
     /**
@@ -925,10 +824,7 @@ class Validator implements IValidator
             list($rule, $parameter) = $this->parseRule($rule);
 
             if (in_array($rule, $rules, true)) {
-                return [
-                    $rule,
-                    $parameter,
-                ];
+                return [$rule, $parameter];
             }
         }
     }
