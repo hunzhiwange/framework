@@ -135,7 +135,7 @@ class SummaryDoc
     /**
      * @api(
      *     title="扩展支持",
-     *     description="为了更好地追随时代的潮流，系统扩展支持了流行的模板引擎 Twig，例外还支持基于 v8js 的服务端运行 Javascript 代码，以及 PHPUI 桌面应用开发。
+     *     description="为了更好地追随时代的潮流，系统扩展支持了流行的模板引擎 Twig，例外还支持 PHP 自身作为 UI 模板。
      *
      * 第三方的教程留给大家自行探索，其乐无穷。",
      *     note="",
