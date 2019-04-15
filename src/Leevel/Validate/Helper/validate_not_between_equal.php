@@ -20,23 +20,23 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use InvalidArgumentException;
-
 /**
- * 数据参数长度校验.
+ * 未处于 betweenEqual 范围，包含等于.
  *
- * @param string $rule
- * @param array  $parameter
- * @param int    $limitLength
+ * @param mixed $datas
+ * @param array $parameter
+ *
+ * @return bool
  */
-function check_parameter_length(string $rule, array $parameter, int $limitLength): void
+function validate_not_between_equal($datas, array $parameter): bool
 {
-    if (count($parameter) < $limitLength) {
-        $e = sprintf(
-            'The rule `%s` requires at least %d arguments.', $rule,
-            $limitLength
-        );
+    check_parameter_length('not_between_equal', $parameter, 2);
 
-        throw new InvalidArgumentException($e);
-    }
+    return $datas <= $parameter[0] || $datas >= $parameter[1];
 }
+
+// @codeCoverageIgnoreStart
+if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
+    include __DIR__.'/check_parameter_length.php';
+}
+// @codeCoverageIgnoreEnd

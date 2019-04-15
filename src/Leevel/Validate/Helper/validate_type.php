@@ -20,23 +20,23 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use InvalidArgumentException;
-
 /**
- * 数据参数长度校验.
+ * 数据类型验证
  *
- * @param string $rule
- * @param array  $parameter
- * @param int    $limitLength
+ * @param mixed $datas
+ * @param array $parameter
+ *
+ * @return bool
  */
-function check_parameter_length(string $rule, array $parameter, int $limitLength): void
+function validate_type($datas, array $parameter): bool
 {
-    if (count($parameter) < $limitLength) {
-        $e = sprintf(
-            'The rule `%s` requires at least %d arguments.', $rule,
-            $limitLength
-        );
+    check_parameter_length('type', $parameter, 1);
 
-        throw new InvalidArgumentException($e);
-    }
+    return gettype($datas) === $parameter[0];
 }
+
+// @codeCoverageIgnoreStart
+if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
+    include __DIR__.'/check_parameter_length.php';
+}
+// @codeCoverageIgnoreEnd

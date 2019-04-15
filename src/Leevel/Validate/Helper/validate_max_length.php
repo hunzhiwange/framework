@@ -20,23 +20,29 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use InvalidArgumentException;
-
 /**
- * 数据参数长度校验.
+ * 验证数据最大长度.
  *
- * @param string $rule
- * @param array  $parameter
- * @param int    $limitLength
+ * @param mixed $datas
+ * @param array $parameter
+ *
+ * @return bool
  */
-function check_parameter_length(string $rule, array $parameter, int $limitLength): void
+function validate_max_length($datas, array $parameter): bool
 {
-    if (count($parameter) < $limitLength) {
-        $e = sprintf(
-            'The rule `%s` requires at least %d arguments.', $rule,
-            $limitLength
-        );
-
-        throw new InvalidArgumentException($e);
+    if (!is_scalar($datas)) {
+        return false;
     }
+
+    $datas = (string) ($datas);
+
+    check_parameter_length('max_length', $parameter, 1);
+
+    return mb_strlen($datas, 'utf-8') <= (int) $parameter[0];
 }
+
+// @codeCoverageIgnoreStart
+if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
+    include __DIR__.'/check_parameter_length.php';
+}
+// @codeCoverageIgnoreEnd
