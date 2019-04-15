@@ -500,7 +500,7 @@ class ComposerStaticInit
      */
     protected function ignore(): bool
     {
-        return $this->option('ignore') ? true : false;
+        return $this->option('ignore');
     }
 
     /**
@@ -530,10 +530,9 @@ class ComposerStaticInit
             ],
             [
                 'ignore',
-                null,
-                Option::VALUE_OPTIONAL,
+                'i',
+                Option::VALUE_NONE,
                 'Ignore composer itself.',
-                null,
             ],
         ];
     }

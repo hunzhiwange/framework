@@ -173,7 +173,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param string $key
      *
-     * @return array|string
+     * @return array|bool|string
      */
     public function option(?string $key = null)
     {
