@@ -813,22 +813,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 大于.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateGreaterThan(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return $datas > $parameter[0];
-    }
-
-    /**
      * 大于或者全等.
      *
      * @param string $field
@@ -842,70 +826,6 @@ class Validator implements IValidator
         $this->checkParameterLength($field, $parameter, 1);
 
         return $datas > $parameter[0] || $datas === $parameter[0];
-    }
-
-    /**
-     * 小于.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateLessThan(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return $datas < $parameter[0];
-    }
-
-    /**
-     * 小于或者全等.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateEqualLessThan(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return $datas < $parameter[0] || $datas === $parameter[0];
-    }
-
-    /**
-     * 两个值是否相同.
-     * 全等匹配，为了严禁.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateEqual(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return $datas === $parameter[0];
-    }
-
-    /**
-     * 两个值是否不相同.
-     * 全等匹配，为了严禁.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateNotEqual(string $field, $datas, array $parameter): bool
-    {
-        return !$this->validateEqual($field, $datas, $parameter);
     }
 
     /**
@@ -936,36 +856,6 @@ class Validator implements IValidator
     protected function validateDifferent(string $field, $datas, array $parameter): bool
     {
         return !$this->validateEqualTo($field, $datas, $parameter);
-    }
-
-    /**
-     * 两个值是否完全相同.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateSame(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return $datas === $parameter[0];
-    }
-
-    /**
-     * 两个值是否不完全相同.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateNotSame(string $field, $datas, array $parameter): bool
-    {
-        return !$this->validateSame($field, $datas, $parameter);
     }
 
     /**
