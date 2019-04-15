@@ -174,15 +174,11 @@ class Router implements IRouter
             return;
         }
 
-        (new Pipeline($this->container))->
-
-        send([$passed])->
-
-        send($passedExtend)->
-
-        through($middlewares[$method])->
-
-        then();
+        (new Pipeline($this->container))
+            ->send([$passed])
+            ->send($passedExtend)
+            ->through($middlewares[$method])
+            ->then();
     }
 
     /**
