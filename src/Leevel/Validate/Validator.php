@@ -23,7 +23,6 @@ namespace Leevel\Validate;
 use BadMethodCallException;
 use Closure;
 use DateTime;
-use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
@@ -192,6 +191,21 @@ class Validator implements IValidator
             $parameter[] = $args;
             unset($args);
 
+            $fn = '\\Leevel\\Validate\\Helper\\validate_'.un_camelize($method);
+
+            if (function_exists($fn)) {
+                array_shift($parameter);
+
+                return $fn(...$parameter);
+            }
+            if (is_file($rulePath = __DIR__.'/Helper/validate_'.un_camelize($method).'.php')) {
+                include $rulePath;
+
+                array_shift($parameter);
+
+                return $fn(...$parameter);
+            }
+
             if (method_exists($this, $extend)) {
                 return $this->{$extend}(...$parameter);
             }
@@ -203,9 +217,9 @@ class Validator implements IValidator
             }
         }
 
-        throw new BadMethodCallException(
-            sprintf('Method %s is not exits.', $method)
-        );
+        $e = sprintf('Method %s is not exits.', $method);
+
+        throw new BadMethodCallException($e);
     }
 
     /**
@@ -569,28 +583,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 不能为空.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateRequired(string $field, $datas, array $parameter): bool
-    {
-        if (null === $datas) {
-            return false;
-        }
-
-        if (is_string($datas) && '' === trim($datas)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * 是否为日期
      *
      * @param string $field
@@ -640,30 +632,6 @@ class Validator implements IValidator
         $parse = date_parse_from_format($parameter[0], $datas);
 
         return 0 === $parse['error_count'] && 0 === $parse['warning_count'];
-    }
-
-    /**
-     * 是否为正确的时区.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateTimezone(string $field, $datas, array $parameter): bool
-    {
-        try {
-            if (!is_string($datas)) {
-                return false;
-            }
-
-            new DateTimeZone($datas);
-        } catch (Exception $e) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -731,103 +699,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 检测字符串中的字符是否都是数字，负数和小数会检测不通过.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateDigit(string $field, $datas, array $parameter): bool
-    {
-        return ctype_digit($datas);
-    }
-
-    /**
-     * 是否双精度浮点数.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateDouble(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) ($datas)) > 0;
-    }
-
-    /**
-     * 是否可接受的.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateAccepted(string $field, $datas, array $parameter): bool
-    {
-        return $this->validateRequired($field, $datas, $parameter) &&
-            in_array($datas, [
-                'yes',
-                'on',
-                't',
-                '1',
-                1,
-                true,
-                'true',
-            ], true);
-    }
-
-    /**
-     * 是否整型数字.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateInteger(string $field, $datas, array $parameter): bool
-    {
-        return false !== filter_var($datas, FILTER_VALIDATE_INT);
-    }
-
-    /**
-     * 验证是否为浮点数.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateFloat(string $field, $datas, array $parameter): bool
-    {
-        return false !== filter_var($datas, FILTER_VALIDATE_FLOAT);
-    }
-
-    /**
-     * 验证是否为数组.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateArray(string $field, $datas, array $parameter): bool
-    {
-        return is_array($datas);
-    }
-
-    /**
      * 验证是否为布尔值
      *
      * @param string $field
@@ -848,20 +719,6 @@ class Validator implements IValidator
             't',
             'f',
         ], true);
-    }
-
-    /**
-     * 是否为数字.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateNumber(string $field, $datas, array $parameter): bool
-    {
-        return is_numeric($datas);
     }
 
     /**
@@ -953,48 +810,6 @@ class Validator implements IValidator
     protected function validateNotIn(string $field, $datas, array $parameter): bool
     {
         return !$this->validateIn($field, $datas, $parameter);
-    }
-
-    /**
-     * 是否为合法的 IP 地址
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateIp(string $field, $datas, array $parameter): bool
-    {
-        return false !== filter_var($datas, FILTER_VALIDATE_IP);
-    }
-
-    /**
-     * 是否为 ipv4.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateIpv4(string $field, $datas, array $parameter): bool
-    {
-        return false !== filter_var($datas, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
-    }
-
-    /**
-     * 是否为 ipv6.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateIpv6(string $field, $datas, array $parameter): bool
-    {
-        return false !== filter_var($datas, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
     }
 
     /**
@@ -1171,449 +986,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证值下限.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateMin(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return $datas > $parameter[0] || $datas === $parameter[0];
-    }
-
-    /**
-     * 值是否为空.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateEmpty(string $field, $datas, array $parameter): bool
-    {
-        return empty($datas);
-    }
-
-    /**
-     * 值是否不为空.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateNotEmpty(string $field, $datas, array $parameter): bool
-    {
-        return !$this->validateEmpty($field, $datas, $parameter);
-    }
-
-    /**
-     * 是否为 null.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateNull(string $field, $datas, array $parameter): bool
-    {
-        return null === $datas;
-    }
-
-    /**
-     * 是否不为 null.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateNotNull(string $field, $datas, array $parameter): bool
-    {
-        return !$this->validateNull($field, $datas, $parameter);
-    }
-
-    /**
-     * 是否为英文字母.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateAlpha(string $field, $datas, array $parameter): bool
-    {
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[A-Za-z]+$/', $datas) > 0;
-    }
-
-    /**
-     * 是否为大写英文字母.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateAlphaUpper(string $field, $datas, array $parameter): bool
-    {
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[A-Z]+$/', $datas) > 0;
-    }
-
-    /**
-     * 是否为小写英文字母.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateAlphaLower(string $field, $datas, array $parameter): bool
-    {
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[a-z]+$/', $datas) > 0;
-    }
-
-    /**
-     * 字符串是否为数字和字母.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateAlphaNum(string $field, $datas, array $parameter): bool
-    {
-        if (is_int($datas)) {
-            return true;
-        }
-
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[A-Za-z0-9]+$/', (string) ($datas)) > 0;
-    }
-
-    /**
-     * 字符串是否为数字、下划线、短横线和字母.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateAlphaDash(string $field, $datas, array $parameter): bool
-    {
-        if (is_int($datas)) {
-            return true;
-        }
-
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[A-Za-z0-9\-\_]+$/', $datas) > 0;
-    }
-
-    /**
-     * 是否为中文.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateChinese(string $field, $datas, array $parameter): bool
-    {
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $datas) > 0;
-    }
-
-    /**
-     * 是否为中文、数字和字母.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateChineseAlphaNum(string $field, $datas, array $parameter): bool
-    {
-        if (is_int($datas)) {
-            return true;
-        }
-
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', $datas) > 0;
-    }
-
-    /**
-     * 是否为中文、数字、下划线、短横线和字母.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateChineseAlphaDash(string $field, $datas, array $parameter): bool
-    {
-        if (is_int($datas)) {
-            return true;
-        }
-
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[\x{4e00}-\x{9fa5}A-Za-z0-9\-\_]+$/u', $datas) > 0;
-    }
-
-    /**
-     * 是否为大陆身份证
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateIdCard(string $field, $datas, array $parameter): bool
-    {
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return preg_match(
-            '/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}(\d|x|X)$/',
-            $datas
-        ) > 0;
-    }
-
-    /**
-     * 是否为中国邮政编码
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateZipCode(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[1-9]\d{5}$/', (string) ($datas)) > 0;
-    }
-
-    /**
-     * 是否为 QQ 号码
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateQq(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        return preg_match('/^[1-9]\d{4,11}$/', (string) ($datas)) > 0;
-    }
-
-    /**
-     * 值是否为电话号码或者手机号码
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validatePhone(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        $datas = (string) ($datas);
-
-        return (11 === strlen($datas) &&
-            preg_match('/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $datas)) ||
-            preg_match('/^\d{3,4}-?\d{7,9}$/', $datas);
-    }
-
-    /**
-     * 值是否为手机号码
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateMobile(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        $datas = (string) ($datas);
-
-        return 11 === strlen($datas) && preg_match(
-            '/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/',
-            $datas
-        );
-    }
-
-    /**
-     * 值是否为电话号码
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateTelephone(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        $datas = (string) ($datas);
-
-        return preg_match('/^\d{3,4}-?\d{7,9}$/', $datas) > 0;
-    }
-
-    /**
-     * 值是否为银行卡等符合 luhn 算法.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateLuhn(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas)) {
-            return false;
-        }
-
-        $datas = (string) ($datas);
-
-        if (!preg_match('/^[0-9]+$/', $datas)) {
-            return false;
-        }
-
-        $total = 0;
-
-        for ($i = strlen($datas); $i >= 1; $i--) {
-            $index = $i - 1;
-
-            if (0 === $i % 2) {
-                $total += $datas[$index];
-            } else {
-                $m = $datas[$index] * 2;
-
-                if ($m > 9) {
-                    $m = (int) ($m / 10) + $m % 10;
-                }
-
-                $total += $m;
-            }
-        }
-
-        return 0 === ($total % 10);
-    }
-
-    /**
-     * 验证是否为有效的 url 或者 IP 地址
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     * @codeCoverageIgnore
-     */
-    protected function validateActiveUrl(string $field, $datas, array $parameter): bool
-    {
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        return checkdnsrr($datas);
-    }
-
-    /**
-     * 验证是否为 url 地址
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateUrl(string $field, $datas, array $parameter): bool
-    {
-        return false !== filter_var($datas, FILTER_VALIDATE_URL);
-    }
-
-    /**
-     * 是否为电子邮件.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateEmail(string $field, $datas, array $parameter): bool
-    {
-        return false !== filter_var($datas, FILTER_VALIDATE_EMAIL);
-    }
-
-    /**
      * 长度验证
      *
      * @param string $field
@@ -1649,34 +1021,6 @@ class Validator implements IValidator
         $this->checkParameterLength($field, $parameter, 1);
 
         return gettype($datas) === $parameter[0];
-    }
-
-    /**
-     * 验证是否都是小写.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateLower(string $field, $datas, array $parameter): bool
-    {
-        return ctype_lower($datas);
-    }
-
-    /**
-     * 验证是否都是大写.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateUpper(string $field, $datas, array $parameter): bool
-    {
-        return ctype_upper($datas);
     }
 
     /**
@@ -1755,26 +1099,6 @@ class Validator implements IValidator
     protected function validateDenyIp(string $field, $datas, array $parameter): bool
     {
         return !$this->validateAllowedIp($field, $datas, $parameter);
-    }
-
-    /**
-     * 验证是否为正常的 JSON 字符串.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateJson(string $field, $datas, array $parameter): bool
-    {
-        if (!is_scalar($datas) && !method_exists($datas, '__toString')) {
-            return false;
-        }
-
-        json_decode((string) ($datas));
-
-        return JSON_ERROR_NONE === json_last_error();
     }
 
     /**
@@ -1918,12 +1242,12 @@ class Validator implements IValidator
     protected function checkParameterLength(string $field, array $parameter, int $limitLength): void
     {
         if (count($parameter) < $limitLength) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The rule %s requires at least %d arguments.', $field,
-                    $limitLength
-                )
+            $e = sprintf(
+                'The rule %s requires at least %d arguments.', $field,
+                $limitLength
             );
+
+            throw new InvalidArgumentException($e);
         }
     }
 
@@ -2294,23 +1618,49 @@ class Validator implements IValidator
         $camelizeRule = ucwords(camelize($rule));
         $method = 'validate'.$camelizeRule;
         $className = '\\Leevel\\Validate\\'.$camelizeRule.'Rule';
+        $fn = '\\Leevel\\Validate\\Helper\\validate_'.$rule;
+        $isFn = false;
 
-        if (class_exists($className)) {
-            if ($this->container) {
-                $validateRule = $this->container->make($className);
-            } else {
-                $validateRule = new $className();
-            }
+        if (function_exists($fn)) {
+            $isFn = true;
 
-            if (false === $validateRule->validate($field, $fieldValue, $parameter)) {
+            if (!$fn($fieldValue, $parameter, $field)) {
                 $this->addFailure($field, $rule, $parameter);
 
                 return false;
             }
-        } elseif (!$this->{$method}($field, $fieldValue, $parameter)) {
-            $this->addFailure($field, $rule, $parameter);
+        } else {
+            if (is_file($rulePath = __DIR__.'/Helper/validate_'.$rule.'.php')) {
+                include $rulePath;
 
-            return false;
+                $isFn = true;
+
+                if (!$fn($fieldValue, $parameter, $field)) {
+                    $this->addFailure($field, $rule, $parameter);
+
+                    return false;
+                }
+            }
+        }
+
+        if (false === $isFn) {
+            if (class_exists($className)) {
+                if ($this->container) {
+                    $validateRule = $this->container->make($className);
+                } else {
+                    $validateRule = new $className();
+                }
+
+                if (false === $validateRule->validate($field, $fieldValue, $parameter)) {
+                    $this->addFailure($field, $rule, $parameter);
+
+                    return false;
+                }
+            } elseif (!$this->{$method}($field, $fieldValue, $parameter)) {
+                $this->addFailure($field, $rule, $parameter);
+
+                return false;
+            }
         }
 
         unset($fieldValue);
@@ -2494,9 +1844,9 @@ class Validator implements IValidator
         }
 
         if (!is_object($extend = $this->container->make($className))) {
-            throw new InvalidArgumentException(
-                sprintf('Extend class %s is not valid.', $className)
-            );
+            $e = sprintf('Extend class %s is not valid.', $className);
+
+            throw new InvalidArgumentException($e);
         }
 
         $parameter[] = $this;

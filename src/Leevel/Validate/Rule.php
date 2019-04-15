@@ -78,12 +78,12 @@ abstract class Rule
     protected function checkParameterLength(string $field, array $parameter, int $limitLength): void
     {
         if (count($parameter) < $limitLength) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The rule %s requires at least %d arguments.', $field,
-                    $limitLength
-                )
+            $e = sprintf(
+                'The rule %s requires at least %d arguments.', $field,
+                $limitLength
             );
+
+            throw new InvalidArgumentException($e);
         }
     }
 }
