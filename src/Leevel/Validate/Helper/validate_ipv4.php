@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为 ipv4.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_ipv4($datas): bool
+function validate_ipv4($value): bool
 {
-    return false !== filter_var($datas, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+    return false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
 }

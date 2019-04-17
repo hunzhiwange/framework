@@ -25,22 +25,22 @@ use InvalidArgumentException;
 /**
  * 数据是否满足正则条件.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_regex($datas, array $parameter): bool
+function validate_regex($value, array $parameter): bool
 {
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    $datas = (string) ($datas);
+    $value = (string) ($value);
 
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return preg_match($parameter[0], $datas) > 0;
+    return preg_match($parameter[0], $value) > 0;
 }

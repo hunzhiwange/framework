@@ -23,17 +23,17 @@ namespace Leevel\Validate\Helper;
 /**
  * 验证是否为正常的 JSON 字符串.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_json($datas): bool
+function validate_json($value): bool
 {
-    if (!is_scalar($datas) && !method_exists($datas, '__toString')) {
+    if (!is_scalar($value) && !method_exists($value, '__toString')) {
         return false;
     }
 
-    json_decode((string) ($datas));
+    json_decode((string) ($value));
 
     return JSON_ERROR_NONE === json_last_error();
 }

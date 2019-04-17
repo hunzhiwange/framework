@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为合法的 IP 地址
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_ip($datas): bool
+function validate_ip($value): bool
 {
-    return false !== filter_var($datas, FILTER_VALIDATE_IP);
+    return false !== filter_var($value, FILTER_VALIDATE_IP);
 }

@@ -26,18 +26,18 @@ use Exception;
 /**
  * 是否为正确的时区.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_timezone($datas): bool
+function validate_timezone($value): bool
 {
     try {
-        if (!is_string($datas)) {
+        if (!is_string($value)) {
             return false;
         }
 
-        new DateTimeZone($datas);
+        new DateTimeZone($value);
     } catch (Exception $e) {
         return false;
     }

@@ -25,19 +25,19 @@ use InvalidArgumentException;
 /**
  * 两个字段是否相同.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  * @param array $meta
  *
  * @return bool
  */
-function validate_equal_to($datas, array $parameter, array $meta = []): bool
+function validate_equal_to($value, array $parameter, array $meta = []): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return $datas === get_field_value($meta, $parameter[0]);
+    return $value === get_field_value($meta, $parameter[0]);
 }
 
 // @codeCoverageIgnoreStart

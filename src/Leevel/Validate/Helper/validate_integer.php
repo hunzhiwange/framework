@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否整型数字.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_integer($datas): bool
+function validate_integer($value): bool
 {
-    return false !== filter_var($datas, FILTER_VALIDATE_INT);
+    return false !== filter_var($value, FILTER_VALIDATE_INT);
 }

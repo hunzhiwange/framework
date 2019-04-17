@@ -23,15 +23,15 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为英文字母.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_alpha($datas): bool
+function validate_alpha($value): bool
 {
-    if (!is_string($datas)) {
+    if (!is_string($value)) {
         return false;
     }
 
-    return preg_match('/^[A-Za-z]+$/', $datas) > 0;
+    return preg_match('/^[A-Za-z]+$/', $value) > 0;
 }

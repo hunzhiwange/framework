@@ -23,13 +23,13 @@ namespace Leevel\Validate\Helper;
 /**
  * 验证是否为布尔值
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_boolean($datas): bool
+function validate_boolean($value): bool
 {
-    return in_array($datas, [
+    return in_array($value, [
         true,
         false,
         0,

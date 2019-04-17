@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 检测字符串中的字符是否都是数字，负数和小数会检测不通过.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_digit($datas): bool
+function validate_digit($value): bool
 {
-    return ctype_digit($datas);
+    return ctype_digit($value);
 }

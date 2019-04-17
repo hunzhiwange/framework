@@ -23,17 +23,17 @@ namespace Leevel\Validate\Helper;
 /**
  * 不能为空.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_required($datas): bool
+function validate_required($value): bool
 {
-    if (null === $datas) {
+    if (null === $value) {
         return false;
     }
 
-    if (is_string($datas) && '' === trim($datas)) {
+    if (is_string($value) && '' === trim($value)) {
         return false;
     }
 

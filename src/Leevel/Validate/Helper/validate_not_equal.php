@@ -26,16 +26,16 @@ use InvalidArgumentException;
  * 两个值是否不相同.
  * 全等匹配，为了严禁.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_not_equal($datas, array $parameter): bool
+function validate_not_equal($value, array $parameter): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return $datas !== $parameter[0];
+    return $value !== $parameter[0];
 }

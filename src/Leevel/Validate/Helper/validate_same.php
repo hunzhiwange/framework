@@ -25,16 +25,16 @@ use InvalidArgumentException;
 /**
  * 两个值是否完全相同.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_same($datas, array $parameter): bool
+function validate_same($value, array $parameter): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return $datas === $parameter[0];
+    return $value === $parameter[0];
 }

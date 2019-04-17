@@ -25,18 +25,18 @@ use InvalidArgumentException;
 /**
  * 是否为时间.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_date_format($datas, array $parameter): bool
+function validate_date_format($value, array $parameter): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    $parse = date_parse_from_format($parameter[0], $datas);
+    $parse = date_parse_from_format($parameter[0], $value);
 
     return 0 === $parse['error_count'] && 0 === $parse['warning_count'];
 }

@@ -23,31 +23,31 @@ namespace Leevel\Validate\Helper;
 /**
  * 值是否为银行卡等符合 luhn 算法.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_luhn($datas): bool
+function validate_luhn($value): bool
 {
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    $datas = (string) ($datas);
+    $value = (string) ($value);
 
-    if (!preg_match('/^[0-9]+$/', $datas)) {
+    if (!preg_match('/^[0-9]+$/', $value)) {
         return false;
     }
 
     $total = 0;
 
-    for ($i = strlen($datas); $i >= 1; $i--) {
+    for ($i = strlen($value); $i >= 1; $i--) {
         $index = $i - 1;
 
         if (0 === $i % 2) {
-            $total += $datas[$index];
+            $total += $value[$index];
         } else {
-            $m = $datas[$index] * 2;
+            $m = $value[$index] * 2;
 
             if ($m > 9) {
                 $m = (int) ($m / 10) + $m % 10;

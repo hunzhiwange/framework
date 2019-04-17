@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为数字.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_number($datas): bool
+function validate_number($value): bool
 {
-    return is_numeric($datas);
+    return is_numeric($value);
 }

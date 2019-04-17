@@ -25,16 +25,16 @@ use InvalidArgumentException;
 /**
  * 是否处于某个范围.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_in($datas, array $parameter): bool
+function validate_in($value, array $parameter): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return in_array($datas, $parameter, true);
+    return in_array($value, $parameter, true);
 }

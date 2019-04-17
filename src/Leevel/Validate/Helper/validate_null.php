@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为 null.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_null($datas): bool
+function validate_null($value): bool
 {
-    return null === $datas;
+    return null === $value;
 }

@@ -23,19 +23,19 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为中文、数字和字母.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_chinese_alpha_num($datas): bool
+function validate_chinese_alpha_num($value): bool
 {
-    if (is_int($datas)) {
+    if (is_int($value)) {
         return true;
     }
 
-    if (!is_string($datas)) {
+    if (!is_string($value)) {
         return false;
     }
 
-    return preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', $datas) > 0;
+    return preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', $value) > 0;
 }

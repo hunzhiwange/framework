@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 验证是否为数组.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_array($datas): bool
+function validate_array($value): bool
 {
-    return is_array($datas);
+    return is_array($value);
 }

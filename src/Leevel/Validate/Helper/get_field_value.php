@@ -23,28 +23,28 @@ namespace Leevel\Validate\Helper;
 /**
  * 获取字段的值
  *
- * @param array  $datas
+ * @param array  $value
  * @param string $field
  *
  * @return mixed
  */
-function get_field_value(array $datas, string $field)
+function get_field_value(array $value, string $field)
 {
     if (false === strpos($field, '.')) {
-        if (isset($datas[$field])) {
-            return $datas[$field];
+        if (isset($value[$field])) {
+            return $value[$field];
         }
     } else {
         $part = explode('.', $field);
 
         foreach ($part as $p) {
-            if (!isset($datas[$p])) {
+            if (!isset($value[$p])) {
                 return;
             }
 
-            $datas = $datas[$p];
+            $value = $value[$p];
         }
 
-        return $datas;
+        return $value;
     }
 }

@@ -23,15 +23,15 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为中国邮政编码
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_zip_code($datas): bool
+function validate_zip_code($value): bool
 {
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    return preg_match('/^[1-9]\d{5}$/', (string) ($datas)) > 0;
+    return preg_match('/^[1-9]\d{5}$/', (string) ($value)) > 0;
 }

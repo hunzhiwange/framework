@@ -25,31 +25,31 @@ use DateTime;
 /**
  * 是否为日期
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_date($datas): bool
+function validate_date($value): bool
 {
-    if ($datas instanceof DateTime) {
+    if ($value instanceof DateTime) {
         return true;
     }
 
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    if (false === strtotime((string) ($datas))) {
+    if (false === strtotime((string) ($value))) {
         return false;
     }
 
-    $datas = date_parse($datas);
+    $value = date_parse($value);
 
-    if (false === $datas['year'] ||
-        false === $datas['month'] ||
-        false === $datas['day']) {
+    if (false === $value['year'] ||
+        false === $value['month'] ||
+        false === $value['day']) {
         return false;
     }
 
-    return checkdate($datas['month'], $datas['day'], $datas['year']);
+    return checkdate($value['month'], $value['day'], $value['year']);
 }

@@ -25,16 +25,16 @@ use InvalidArgumentException;
 /**
  * 验证值下限.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_min($datas, array $parameter): bool
+function validate_min($value, array $parameter): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return $datas > $parameter[0] || $datas === $parameter[0];
+    return $value > $parameter[0] || $value === $parameter[0];
 }

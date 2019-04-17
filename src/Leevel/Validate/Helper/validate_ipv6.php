@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为 ipv6.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_ipv6($datas): bool
+function validate_ipv6($value): bool
 {
-    return false !== filter_var($datas, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
+    return false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
 }

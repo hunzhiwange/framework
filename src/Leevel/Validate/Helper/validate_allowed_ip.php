@@ -25,14 +25,14 @@ use InvalidArgumentException;
 /**
  * 验证 IP 许可.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_allowed_ip($datas, array $parameter): bool
+function validate_allowed_ip($value, array $parameter): bool
 {
-    if (!is_string($datas)) {
+    if (!is_string($value)) {
         return false;
     }
 
@@ -40,5 +40,5 @@ function validate_allowed_ip($datas, array $parameter): bool
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return in_array($datas, $parameter, true);
+    return in_array($value, $parameter, true);
 }

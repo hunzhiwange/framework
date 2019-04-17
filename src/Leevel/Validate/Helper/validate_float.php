@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 验证是否为浮点数.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_float($datas): bool
+function validate_float($value): bool
 {
-    return false !== filter_var($datas, FILTER_VALIDATE_FLOAT);
+    return false !== filter_var($value, FILTER_VALIDATE_FLOAT);
 }

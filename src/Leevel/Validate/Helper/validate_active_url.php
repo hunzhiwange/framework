@@ -23,16 +23,16 @@ namespace Leevel\Validate\Helper;
 /**
  * 验证是否为有效的 url 或者 IP 地址
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  * @codeCoverageIgnore
  */
-function validate_active_url($datas): bool
+function validate_active_url($value): bool
 {
-    if (!is_string($datas)) {
+    if (!is_string($value)) {
         return false;
     }
 
-    return checkdnsrr($datas);
+    return checkdnsrr($value);
 }

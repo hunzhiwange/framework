@@ -23,18 +23,18 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为大陆身份证
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_id_card($datas): bool
+function validate_id_card($value): bool
 {
-    if (!is_string($datas)) {
+    if (!is_string($value)) {
         return false;
     }
 
     return preg_match(
         '/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}(\d|x|X)$/',
-        $datas
+        $value
     ) > 0;
 }

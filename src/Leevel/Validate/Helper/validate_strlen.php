@@ -25,22 +25,22 @@ use InvalidArgumentException;
 /**
  * 长度验证
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_strlen($datas, array $parameter): bool
+function validate_strlen($value, array $parameter): bool
 {
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    $datas = (string) ($datas);
+    $value = (string) ($value);
 
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return strlen($datas) === (int) $parameter[0];
+    return strlen($value) === (int) $parameter[0];
 }

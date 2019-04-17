@@ -23,15 +23,15 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否双精度浮点数.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_double($datas): bool
+function validate_double($value): bool
 {
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) ($datas)) > 0;
+    return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) ($value)) > 0;
 }

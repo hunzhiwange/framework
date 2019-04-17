@@ -23,15 +23,15 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为 QQ 号码
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_qq($datas): bool
+function validate_qq($value): bool
 {
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    return preg_match('/^[1-9]\d{4,11}$/', (string) ($datas)) > 0;
+    return preg_match('/^[1-9]\d{4,11}$/', (string) ($value)) > 0;
 }

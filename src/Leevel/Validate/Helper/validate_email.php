@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为电子邮件.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_email($datas): bool
+function validate_email($value): bool
 {
-    return false !== filter_var($datas, FILTER_VALIDATE_EMAIL);
+    return false !== filter_var($value, FILTER_VALIDATE_EMAIL);
 }

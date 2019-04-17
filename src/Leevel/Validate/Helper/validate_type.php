@@ -25,16 +25,16 @@ use InvalidArgumentException;
 /**
  * 数据类型验证
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_type($datas, array $parameter): bool
+function validate_type($value, array $parameter): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return gettype($datas) === $parameter[0];
+    return gettype($value) === $parameter[0];
 }

@@ -23,19 +23,19 @@ namespace Leevel\Validate\Helper;
 /**
  * 字符串是否为数字、下划线、短横线和字母.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_alpha_dash($datas): bool
+function validate_alpha_dash($value): bool
 {
-    if (is_int($datas)) {
+    if (is_int($value)) {
         return true;
     }
 
-    if (!is_string($datas)) {
+    if (!is_string($value)) {
         return false;
     }
 
-    return preg_match('/^[A-Za-z0-9\-\_]+$/', $datas) > 0;
+    return preg_match('/^[A-Za-z0-9\-\_]+$/', $value) > 0;
 }

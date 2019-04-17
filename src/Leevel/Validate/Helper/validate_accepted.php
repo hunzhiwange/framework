@@ -23,14 +23,14 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否可接受的.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_accepted($datas): bool
+function validate_accepted($value): bool
 {
-    return validate_required($datas) &&
-        in_array($datas, [
+    return validate_required($value) &&
+        in_array($value, [
             'yes',
             'on',
             't',

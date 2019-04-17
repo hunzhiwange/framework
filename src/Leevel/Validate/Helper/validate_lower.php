@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 验证是否都是小写.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_lower($datas): bool
+function validate_lower($value): bool
 {
-    return ctype_lower($datas);
+    return ctype_lower($value);
 }

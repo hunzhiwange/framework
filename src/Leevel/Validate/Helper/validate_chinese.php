@@ -23,15 +23,15 @@ namespace Leevel\Validate\Helper;
 /**
  * 是否为中文.
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_chinese($datas): bool
+function validate_chinese($value): bool
 {
-    if (!is_string($datas)) {
+    if (!is_string($value)) {
         return false;
     }
 
-    return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $datas) > 0;
+    return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $value) > 0;
 }

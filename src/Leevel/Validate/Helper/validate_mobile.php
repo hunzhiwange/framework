@@ -23,20 +23,20 @@ namespace Leevel\Validate\Helper;
 /**
  * 值是否为手机号码
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_mobile($datas): bool
+function validate_mobile($value): bool
 {
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    $datas = (string) ($datas);
+    $value = (string) ($value);
 
-    return 11 === strlen($datas) && preg_match(
+    return 11 === strlen($value) && preg_match(
         '/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/',
-        $datas
+        $value
     );
 }

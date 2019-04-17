@@ -23,11 +23,11 @@ namespace Leevel\Validate\Helper;
 /**
  * 验证是否为 url 地址
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_url($datas): bool
+function validate_url($value): bool
 {
-    return false !== filter_var($datas, FILTER_VALIDATE_URL);
+    return false !== filter_var($value, FILTER_VALIDATE_URL);
 }

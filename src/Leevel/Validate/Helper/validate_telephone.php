@@ -23,17 +23,17 @@ namespace Leevel\Validate\Helper;
 /**
  * 值是否为电话号码
  *
- * @param mixed $datas
+ * @param mixed $value
  *
  * @return bool
  */
-function validate_telephone($datas): bool
+function validate_telephone($value): bool
 {
-    if (!is_scalar($datas)) {
+    if (!is_scalar($value)) {
         return false;
     }
 
-    $datas = (string) ($datas);
+    $value = (string) ($value);
 
-    return preg_match('/^\d{3,4}-?\d{7,9}$/', $datas) > 0;
+    return preg_match('/^\d{3,4}-?\d{7,9}$/', $value) > 0;
 }

@@ -25,17 +25,17 @@ use InvalidArgumentException;
 /**
  * 处于 betweenEqual 范围，包含全等.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_between_equal($datas, array $parameter): bool
+function validate_between_equal($value, array $parameter): bool
 {
     if (2 > count($parameter)) {
         throw new InvalidArgumentException('At least 2 parameter.');
     }
 
-    return ($datas > $parameter[0] || $datas === $parameter[0]) &&
-        ($datas < $parameter[1] || $datas === $parameter[1]);
+    return ($value > $parameter[0] || $value === $parameter[0]) &&
+        ($value < $parameter[1] || $value === $parameter[1]);
 }

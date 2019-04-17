@@ -25,16 +25,16 @@ use InvalidArgumentException;
 /**
  * 小于.
  *
- * @param mixed $datas
+ * @param mixed $value
  * @param array $parameter
  *
  * @return bool
  */
-function validate_less_than($datas, array $parameter): bool
+function validate_less_than($value, array $parameter): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return $datas < $parameter[0];
+    return $value < $parameter[0];
 }
