@@ -1057,7 +1057,7 @@ class ValidatorTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The rule `min_length` requires at least 1 arguments.'
+            'At least 1 parameter.'
         );
 
         $validate = new Validator(

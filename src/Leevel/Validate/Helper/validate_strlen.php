@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use InvalidArgumentException;
+
 /**
  * 长度验证
  *
@@ -36,13 +38,9 @@ function validate_strlen($datas, array $parameter): bool
 
     $datas = (string) ($datas);
 
-    check_parameter_length('strlen', $parameter, 1);
+    if (1 > count($parameter)) {
+        throw new InvalidArgumentException('At least 1 parameter.');
+    }
 
     return strlen($datas) === (int) $parameter[0];
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
-    include __DIR__.'/check_parameter_length.php';
-}
-// @codeCoverageIgnoreEnd

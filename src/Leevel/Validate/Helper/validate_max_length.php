@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use InvalidArgumentException;
+
 /**
  * 验证数据最大长度.
  *
@@ -36,13 +38,9 @@ function validate_max_length($datas, array $parameter): bool
 
     $datas = (string) ($datas);
 
-    check_parameter_length('max_length', $parameter, 1);
+    if (1 > count($parameter)) {
+        throw new InvalidArgumentException('At least 1 parameter.');
+    }
 
     return mb_strlen($datas, 'utf-8') <= (int) $parameter[0];
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
-    include __DIR__.'/check_parameter_length.php';
-}
-// @codeCoverageIgnoreEnd

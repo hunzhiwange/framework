@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use InvalidArgumentException;
+
 /**
  * 未处于 between 范围，不包含等于.
  *
@@ -30,14 +32,10 @@ namespace Leevel\Validate\Helper;
  */
 function validate_not_between($datas, array $parameter): bool
 {
-    check_parameter_length('not_between', $parameter, 2);
+    if (2 > count($parameter)) {
+        throw new InvalidArgumentException('At least 2 parameter.');
+    }
 
     return !(($datas > $parameter[0] || $datas === $parameter[0]) &&
         ($datas < $parameter[1] || $datas === $parameter[1]));
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
-    include __DIR__.'/check_parameter_length.php';
-}
-// @codeCoverageIgnoreEnd

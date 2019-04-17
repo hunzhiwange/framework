@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use InvalidArgumentException;
+
 /**
  * 是否处于某个范围.
  *
@@ -30,13 +32,9 @@ namespace Leevel\Validate\Helper;
  */
 function validate_in($datas, array $parameter): bool
 {
-    check_parameter_length('in', $parameter, 1);
+    if (1 > count($parameter)) {
+        throw new InvalidArgumentException('At least 1 parameter.');
+    }
 
     return in_array($datas, $parameter, true);
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
-    include __DIR__.'/check_parameter_length.php';
-}
-// @codeCoverageIgnoreEnd

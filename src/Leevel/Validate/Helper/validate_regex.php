@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use InvalidArgumentException;
+
 /**
  * 数据是否满足正则条件.
  *
@@ -36,13 +38,9 @@ function validate_regex($datas, array $parameter): bool
 
     $datas = (string) ($datas);
 
-    check_parameter_length('regex', $parameter, 1);
+    if (1 > count($parameter)) {
+        throw new InvalidArgumentException('At least 1 parameter.');
+    }
 
     return preg_match($parameter[0], $datas) > 0;
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
-    include __DIR__.'/check_parameter_length.php';
-}
-// @codeCoverageIgnoreEnd

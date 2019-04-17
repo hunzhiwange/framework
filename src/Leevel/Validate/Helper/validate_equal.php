@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use InvalidArgumentException;
+
 /**
  * 两个值是否相同.
  * 全等匹配，为了严禁.
@@ -31,13 +33,9 @@ namespace Leevel\Validate\Helper;
  */
 function validate_equal($datas, array $parameter): bool
 {
-    check_parameter_length('equal', $parameter, 1);
+    if (1 > count($parameter)) {
+        throw new InvalidArgumentException('At least 1 parameter.');
+    }
 
     return $datas === $parameter[0];
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Validate\\Helper\\check_parameter_length')) {
-    include __DIR__.'/check_parameter_length.php';
-}
-// @codeCoverageIgnoreEnd

@@ -501,9 +501,9 @@ class Validator implements IValidator
     public function alias(string $name, string $alias): IValidator
     {
         if (in_array($name, $this->getSkipRule(), true)) {
-            throw new InvalidArgumentException(
-                sprintf('You cannot set alias for skip rule %s.', $name)
-            );
+            $e = sprintf('You cannot set alias for skip rule %s.', $name);
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->alias[$alias] = $name;
