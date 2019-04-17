@@ -583,24 +583,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 是否为时间.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateDateFormat(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        $parse = date_parse_from_format($parameter[0], $datas);
-
-        return 0 === $parse['error_count'] && 0 === $parse['warning_count'];
-    }
-
-    /**
      * 验证在给定日期之后.
      *
      * @param string $field
@@ -665,22 +647,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 两个字段是否相同.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateEqualTo(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return $datas === $this->getFieldValue($parameter[0]);
-    }
-
-    /**
      * 两个字段是否不同.
      *
      * @param string $field
@@ -692,57 +658,6 @@ class Validator implements IValidator
     protected function validateDifferent(string $field, $datas, array $parameter): bool
     {
         return !$this->validateEqualTo($field, $datas, $parameter);
-    }
-
-    /**
-     * 验证值上限.
-     * 小于或者全等.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateMax(string $field, $datas, array $parameter): bool
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return $datas < $parameter[0] || $datas === $parameter[0];
-    }
-
-    /**
-     * 验证 IP 许可.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateAllowedIp(string $field, $datas, array $parameter): bool
-    {
-        if (!is_string($datas)) {
-            return false;
-        }
-
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return in_array($datas, $parameter, true);
-    }
-
-    /**
-     * 验证 IP 禁用.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateDenyIp(string $field, $datas, array $parameter): bool
-    {
-        return !$this->validateAllowedIp($field, $datas, $parameter);
     }
 
     /**
@@ -1243,7 +1158,7 @@ class Validator implements IValidator
         if (function_exists($fn)) {
             $isFn = true;
 
-            if (!$fn($fieldValue, $parameter, $field)) {
+            if (!$fn($fieldValue, $parameter, $this->datas)) {
                 $this->addFailure($field, $rule, $parameter);
 
                 return false;
@@ -1254,7 +1169,7 @@ class Validator implements IValidator
 
                 $isFn = true;
 
-                if (!$fn($fieldValue, $parameter, $field)) {
+                if (!$fn($fieldValue, $parameter, $this->datas)) {
                     $this->addFailure($field, $rule, $parameter);
 
                     return false;
