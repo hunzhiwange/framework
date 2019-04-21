@@ -109,7 +109,7 @@ class ControllerTest extends TestCase
 
         $this->assertStringContainsString('controller <Hello> created successfully.', $result);
 
-        $this->assertNotContains('class Hello extends Controller', file_get_contents($file));
+        $this->assertStringNotContainsString('class Hello extends Controller', file_get_contents($file));
 
         $this->assertStringContainsString('function helloWorldYes', file_get_contents($file));
 

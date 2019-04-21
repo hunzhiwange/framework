@@ -148,9 +148,9 @@ class DebugTest extends TestCase
 
             $content = $response->getContent();
 
-            $this->assertNotContains('{"foo":"bar",":trace":', $content);
-            $this->assertNotContains('"php":{"version":', $content);
-            $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+            $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
+            $this->assertStringNotContainsString('"php":{"version":', $content);
+            $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
             $this->assertSame('{"foo":"bar"}', $content);
         }, $request, $response));
     }

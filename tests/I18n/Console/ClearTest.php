@@ -130,7 +130,7 @@ class ClearTest extends TestCase
                 $result
             );
 
-            $this->assertNotContains(
+            $this->assertStringNotContainsString(
                 sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n),
                 $result
             );

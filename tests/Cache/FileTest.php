@@ -125,7 +125,7 @@ class FileTest extends TestCase
         $filePath = __DIR__.'/cacheFile/setOption2.php';
         $this->assertTrue(is_file($filePath));
 
-        $this->assertNotContains('s:3:"bar"', file_get_contents($filePath));
+        $this->assertStringNotContainsString('s:3:"bar"', file_get_contents($filePath));
 
         $file->delete('setOption2');
     }
@@ -268,7 +268,7 @@ class FileTest extends TestCase
 
         $this->assertTrue(is_file($filePath));
 
-        $this->assertNotContains('s:5:"world"', file_get_contents($filePath));
+        $this->assertStringNotContainsString('s:5:"world"', file_get_contents($filePath));
 
         unlink($filePath);
     }

@@ -209,11 +209,11 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertNotContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertNotContains('"php":{"version":', $content);
+        $this->assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -242,11 +242,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertNotContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertNotContains('"php":{"version":', $content);
+        $this->assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
 
         $this->assertTrue($debug->isBootstrap());
 
@@ -287,11 +287,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertNotContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertNotContains('"php":{"version":', $content);
+        $this->assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -331,11 +331,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertNotContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertNotContains('"php":{"version":', $content);
+        $this->assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
 
         $this->assertTrue($debug->isBootstrap());
 
@@ -724,11 +724,11 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertNotContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringNotContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertNotContains('"php":{"version":', $content);
+        $this->assertStringNotContainsString('"php":{"version":', $content);
 
-        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     public function testSetOptionWithoutJavascriptAndConsole()
@@ -772,15 +772,15 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertNotContains('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
+        $this->assertStringNotContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
 
-        $this->assertNotContains('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
+        $this->assertStringNotContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
 
-        $this->assertNotContains('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
+        $this->assertStringNotContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
 
-        $this->assertNotContains("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
+        $this->assertStringNotContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
 
-        $this->assertNotContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
 
         $this->assertSame('', $content);
     }

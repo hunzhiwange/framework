@@ -60,7 +60,7 @@ class ClearTest extends TestCase
             $result
         );
 
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             sprintf('Option cache files %s have been cleaned up.', $cacheFile),
             $result
         );

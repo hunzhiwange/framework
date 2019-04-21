@@ -60,7 +60,7 @@ class ClearTest extends TestCase
             $result
         );
 
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             sprintf('Router cache file %s have been cleaned up.', $cacheFile),
             $result
         );
