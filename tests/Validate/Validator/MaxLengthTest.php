@@ -41,7 +41,7 @@ class MaxLengthTest extends TestCase
      * @param mixed  $value
      * @param string $parameter
      */
-    public function testBaseUse($value, string $parameter)
+    public function testBaseUse($value, $parameter)
     {
         $validate = new Validator(
             [
@@ -78,7 +78,7 @@ class MaxLengthTest extends TestCase
      * @param mixed  $value
      * @param string $parameter
      */
-    public function testBad($value, string $parameter)
+    public function testBad($value, $parameter)
     {
         $validate = new Validator(
             [
