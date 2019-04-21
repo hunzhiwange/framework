@@ -97,13 +97,13 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            $this->assertContains(
+            $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache file %s cache successed.',
@@ -118,7 +118,7 @@ class CacheTest extends TestCase
             unlink($cacheFileForI18n);
         }
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('I18n cache files cache successed.'),
             $result
         );
@@ -159,13 +159,13 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            $this->assertContains(
+            $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache file %s cache successed.',
@@ -180,7 +180,7 @@ class CacheTest extends TestCase
             unlink($cacheFileForI18n);
         }
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('I18n cache files cache successed.'),
             $result
         );
@@ -234,12 +234,12 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent(sprintf('Dir %s is not writeable.', $dirname)),
             $result
         );
@@ -295,12 +295,12 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent(sprintf('Unable to create the %s directory.', $dirname)),
             $result
         );

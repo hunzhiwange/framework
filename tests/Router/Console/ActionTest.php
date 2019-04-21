@@ -57,9 +57,9 @@ class ActionTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertContains('action <hello> created successfully.', $result);
+        $this->assertStringContainsString('action <hello> created successfully.', $result);
 
-        $this->assertContains('class Hello', file_get_contents($file));
+        $this->assertStringContainsString('class Hello', file_get_contents($file));
 
         unlink($file);
         rmdir(dirname($file));
@@ -82,11 +82,11 @@ class ActionTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertContains('action <hello-world_Yes> created successfully.', $result);
+        $this->assertStringContainsString('action <hello-world_Yes> created successfully.', $result);
 
-        $this->assertContains('class HelloWorldYes', file_get_contents($file));
+        $this->assertStringContainsString('class HelloWorldYes', file_get_contents($file));
 
-        $this->assertContains('function handle', file_get_contents($file));
+        $this->assertStringContainsString('function handle', file_get_contents($file));
 
         unlink($file);
         rmdir(dirname($file));

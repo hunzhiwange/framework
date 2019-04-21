@@ -157,10 +157,10 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
-        $this->assertContains('hello foo bar.', $resultResponse->getContent());
+        $this->assertStringContainsString('hello foo bar.', $resultResponse->getContent());
 
-        $this->assertContains('<span>hello foo bar.</span>', $resultResponse->getContent());
-        $this->assertContains('<span class="exc-title-primary">Exception</span>', $resultResponse->getContent());
+        $this->assertStringContainsString('<span>hello foo bar.</span>', $resultResponse->getContent());
+        $this->assertStringContainsString('<span class="exc-title-primary">Exception</span>', $resultResponse->getContent());
     }
 
     public function testRouterWillThrowError()
@@ -180,8 +180,8 @@ class KernelTest extends TestCase
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
 
-        $this->assertContains('<span>hello bar foo.</span>', $resultResponse->getContent());
-        $this->assertContains('<span class="exc-title-primary">ErrorException</span>', $resultResponse->getContent());
+        $this->assertStringContainsString('<span>hello bar foo.</span>', $resultResponse->getContent());
+        $this->assertStringContainsString('<span class="exc-title-primary">ErrorException</span>', $resultResponse->getContent());
     }
 
     protected function createLog(IApp $app): void

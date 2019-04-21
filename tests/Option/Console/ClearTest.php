@@ -55,7 +55,7 @@ class ClearTest extends TestCase
             }
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             sprintf('Option cache file %s cache clear successed.', $cacheFile),
             $result
         );
@@ -80,12 +80,12 @@ class ClearTest extends TestCase
             }
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             sprintf('Option cache file %s cache clear successed.', $cacheFile),
             $result
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             sprintf('Option cache file %s have been cleaned up.', $cacheFile),
             $result
         );

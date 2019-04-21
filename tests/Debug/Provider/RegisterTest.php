@@ -68,11 +68,11 @@ class RegisterTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     protected function createApp(): App

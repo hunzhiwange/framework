@@ -212,7 +212,7 @@ class SelectTest extends TestCase
         $this->assertSame('1', $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertContains(date('Y-m-d'), $post1->delete_at);
+        $this->assertStringContainsString(date('Y-m-d'), $post1->delete_at);
 
         $post2 = Post::find(2);
         $this->assertInstanceof(Post::class, $post2);
@@ -259,7 +259,7 @@ class SelectTest extends TestCase
         $this->assertSame('1', $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertContains(date('Y-m-d'), $post1->delete_at);
+        $this->assertStringContainsString(date('Y-m-d'), $post1->delete_at);
 
         $post2 = Post::find(2);
         $this->assertInstanceof(Post::class, $post2);
@@ -306,7 +306,7 @@ class SelectTest extends TestCase
         $this->assertSame('1', $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertContains(date('Y-m-d'), $post1->delete_at);
+        $this->assertStringContainsString(date('Y-m-d'), $post1->delete_at);
 
         $post2 = Post::find(2);
         $this->assertInstanceof(Post::class, $post2);

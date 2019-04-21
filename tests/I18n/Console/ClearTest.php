@@ -78,13 +78,13 @@ class ClearTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            $this->assertContains(
+            $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache file %s cache successed.',
@@ -97,7 +97,7 @@ class ClearTest extends TestCase
             $this->assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
         }
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('I18n cache files cache successed.'),
             $result
         );
@@ -114,13 +114,13 @@ class ClearTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to clear i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            $this->assertContains(
+            $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache file %s clear successed.',
@@ -136,7 +136,7 @@ class ClearTest extends TestCase
             );
         }
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('I18n cache files clear successed.'),
             $result
         );
@@ -158,13 +158,13 @@ class ClearTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to clear i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            $this->assertContains(
+            $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache file %s clear successed.',
@@ -174,7 +174,7 @@ class ClearTest extends TestCase
                 $result
             );
 
-            $this->assertContains(
+            $this->assertStringContainsString(
                 $this->normalizeContent(
                     sprintf('I18n cache file %s have been cleaned up.', $cacheFileForI18n)
                 ),
@@ -182,7 +182,7 @@ class ClearTest extends TestCase
             );
         }
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('I18n cache files clear successed.'),
             $result
         );

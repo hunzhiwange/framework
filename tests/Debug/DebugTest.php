@@ -80,15 +80,15 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
+        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
 
-        $this->assertContains('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
+        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
 
-        $this->assertContains('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
+        $this->assertStringContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
 
-        $this->assertContains("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
+        $this->assertStringContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -124,11 +124,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -164,11 +164,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"foo","bar",{":trace":{', $content);
+        $this->assertStringContainsString('"foo","bar",{":trace":{', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -195,11 +195,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
 
         $debug->disable();
 
@@ -260,11 +260,11 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -305,11 +305,11 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     public function testEnableTwiceSameWithOne()
@@ -349,11 +349,11 @@ class DebugTest extends TestCase
 
         $content = $response2->getContent();
 
-        $this->assertContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     /**
@@ -394,14 +394,14 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
 
-        $this->assertContains('{"message":"hello","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
-        $this->assertContains('{"message":"world","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
+        $this->assertStringContainsString('{"message":"hello","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
+        $this->assertStringContainsString('{"message":"world","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
     }
 
     public function getMessageLevelsData()
@@ -441,7 +441,7 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"session":{"test_session":"test_value"},', $content);
+        $this->assertStringContainsString('"session":{"test_session":"test_value"},', $content);
     }
 
     /**
@@ -475,11 +475,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"logs":{"count":2,', $content);
+        $this->assertStringContainsString('"logs":{"count":2,', $content);
 
-        $this->assertContains('test_log info: {\"exends\":\"bar\"}', $content);
+        $this->assertStringContainsString('test_log info: {\"exends\":\"bar\"}', $content);
 
-        $this->assertContains('test_log_debug debug: []', $content);
+        $this->assertStringContainsString('test_log_debug debug: []', $content);
     }
 
     /**
@@ -510,9 +510,9 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"time":{"start"', $content);
+        $this->assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertContains('"measures":[{"label":"time_test","start":', $content);
+        $this->assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
     }
 
     /**
@@ -543,9 +543,9 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"time":{"start"', $content);
+        $this->assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertContains('"measures":[{"label":"time_label","start":', $content);
+        $this->assertStringContainsString('"measures":[{"label":"time_label","start":', $content);
     }
 
     public function testEndWithNoStartDoNothing()
@@ -567,9 +567,9 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"time":{"start"', $content);
+        $this->assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertContains('"measures":[]', $content);
+        $this->assertStringContainsString('"measures":[]', $content);
     }
 
     public function testAddTime()
@@ -591,17 +591,17 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"time":{"start"', $content);
+        $this->assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertContains('"measures":[{"label":"time_test","start":1', $content);
+        $this->assertStringContainsString('"measures":[{"label":"time_test","start":1', $content);
 
-        $this->assertContains('"end":5,', $content);
+        $this->assertStringContainsString('"end":5,', $content);
 
-        $this->assertContains('"relative_end":5,', $content);
+        $this->assertStringContainsString('"relative_end":5,', $content);
 
-        $this->assertContains('"duration":4,', $content);
+        $this->assertStringContainsString('"duration":4,', $content);
 
-        $this->assertContains('"duration_str":"4s",', $content);
+        $this->assertStringContainsString('"duration_str":"4s",', $content);
     }
 
     public function testClosureTime()
@@ -624,9 +624,9 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"time":{"start"', $content);
+        $this->assertStringContainsString('"time":{"start"', $content);
 
-        $this->assertContains('"measures":[{"label":"time_test","start":', $content);
+        $this->assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
     }
 
     public function testException()
@@ -648,17 +648,17 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"exceptions":{"count":1,"exceptions":[', $content);
+        $this->assertStringContainsString('"exceptions":{"count":1,"exceptions":[', $content);
 
-        $this->assertContains('"type":"Exception",', $content);
+        $this->assertStringContainsString('"type":"Exception",', $content);
 
-        $this->assertContains('"message":"test_exception",', $content);
+        $this->assertStringContainsString('"message":"test_exception",', $content);
 
-        $this->assertContains('"code":0,', $content);
+        $this->assertStringContainsString('"code":0,', $content);
 
-        $this->assertContains('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
+        $this->assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
-        $this->assertContains('$debug->exception(new Exception(\'test_exception\'));', $content);
+        $this->assertStringContainsString('$debug->exception(new Exception(\'test_exception\'));', $content);
     }
 
     public function testExceptionWithError()
@@ -680,17 +680,17 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('"exceptions":{"count":1,"exceptions":[', $content);
+        $this->assertStringContainsString('"exceptions":{"count":1,"exceptions":[', $content);
 
-        $this->assertContains('"type":"Error",', $content);
+        $this->assertStringContainsString('"type":"Error",', $content);
 
-        $this->assertContains('"message":"test_error",', $content);
+        $this->assertStringContainsString('"message":"test_error",', $content);
 
-        $this->assertContains('"code":0,', $content);
+        $this->assertStringContainsString('"code":0,', $content);
 
-        $this->assertContains('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
+        $this->assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
-        $this->assertContains('$debug->exception(new Error(\'test_error\'));', $content);
+        $this->assertStringContainsString('$debug->exception(new Error(\'test_error\'));', $content);
     }
 
     public function testSetOptionWithoutJson()
@@ -710,11 +710,11 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('{"foo":"bar",":trace":', $content);
+        $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        $this->assertContains('"php":{"version":', $content);
+        $this->assertStringContainsString('"php":{"version":', $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
 
         $debug->setOption('json', false);
 
@@ -753,15 +753,15 @@ class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        $this->assertContains('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
+        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
 
-        $this->assertContains('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
+        $this->assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
 
-        $this->assertContains('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
+        $this->assertStringContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
 
-        $this->assertContains("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
+        $this->assertStringContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
 
-        $this->assertContains('Starts from this moment with QueryPHP.', $content);
+        $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
 
         $debug->setOption('javascript', false);
         $debug->setOption('console', false);

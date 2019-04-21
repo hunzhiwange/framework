@@ -45,25 +45,25 @@ class CommandTest extends TestCase
             $application->normalizeCommands([Test1::class]);
         });
 
-        $this->assertContains('call other command test.', $result);
-        $this->assertContains('load1 test1', $result);
+        $this->assertStringContainsString('call other command test.', $result);
+        $this->assertStringContainsString('load1 test1', $result);
 
         // argument and option
-        $this->assertContains('argument is {"command":"call:other"}', $result);
-        $this->assertContains('option is {"help":false,"quiet":false,"verbose":false,"version":false,"ansi":false,"no-ansi":false,"no-interaction":false}', $result);
+        $this->assertStringContainsString('argument is {"command":"call:other"}', $result);
+        $this->assertStringContainsString('option is {"help":false,"quiet":false,"verbose":false,"version":false,"ansi":false,"no-ansi":false,"no-interaction":false}', $result);
 
         // table
-        $this->assertContains('| Item  | Value |', $result);
-        $this->assertContains('| hello | world |', $result);
-        $this->assertContains('| foo   | bar   |', $result);
+        $this->assertStringContainsString('| Item  | Value |', $result);
+        $this->assertStringContainsString('| hello | world |', $result);
+        $this->assertStringContainsString('| foo   | bar   |', $result);
 
         // time
-        $this->assertContains(']test time', $result);
+        $this->assertStringContainsString(']test time', $result);
 
         // question
-        $this->assertContains('a question', $result);
+        $this->assertStringContainsString('a question', $result);
 
         // error
-        $this->assertContains('a error message', $result);
+        $this->assertStringContainsString('a error message', $result);
     }
 }

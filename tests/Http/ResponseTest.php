@@ -168,7 +168,7 @@ class ResponseTest extends TestCase
         ob_start();
         $response->sendContent();
         $string = ob_get_clean();
-        $this->assertContains('test response rendering', $string);
+        $this->assertStringContainsString('test response rendering', $string);
     }
 
     public function testSetJsonData()

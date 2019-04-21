@@ -110,7 +110,7 @@ class CacheTest extends TestCase
         $this->assertSame('bar', $cache->get('foo'));
 
         $this->assertTrue(is_file($filePath));
-        $this->assertContains('s:5:"world"', file_get_contents($filePath));
+        $this->assertStringContainsString('s:5:"world"', file_get_contents($filePath));
 
         $cache->delete('hello');
         $cache->delete('hello2');

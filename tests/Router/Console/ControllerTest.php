@@ -57,9 +57,9 @@ class ControllerTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertContains('controller <BarValue> created successfully.', $result);
+        $this->assertStringContainsString('controller <BarValue> created successfully.', $result);
 
-        $this->assertContains('class BarValue', file_get_contents($file));
+        $this->assertStringContainsString('class BarValue', file_get_contents($file));
 
         unlink($file);
     }
@@ -81,11 +81,11 @@ class ControllerTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertContains('controller <Hello> created successfully.', $result);
+        $this->assertStringContainsString('controller <Hello> created successfully.', $result);
 
-        $this->assertContains('class Hello', file_get_contents($file));
+        $this->assertStringContainsString('class Hello', file_get_contents($file));
 
-        $this->assertContains('function helloWorldYes', file_get_contents($file));
+        $this->assertStringContainsString('function helloWorldYes', file_get_contents($file));
 
         unlink($file);
     }
@@ -107,11 +107,11 @@ class ControllerTest extends TestCase
             $this->initContainerService($container);
         });
 
-        $this->assertContains('controller <Hello> created successfully.', $result);
+        $this->assertStringContainsString('controller <Hello> created successfully.', $result);
 
         $this->assertNotContains('class Hello extends Controller', file_get_contents($file));
 
-        $this->assertContains('function helloWorldYes', file_get_contents($file));
+        $this->assertStringContainsString('function helloWorldYes', file_get_contents($file));
 
         unlink($file);
     }

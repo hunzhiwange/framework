@@ -83,12 +83,12 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache option.'),
             $result
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent(sprintf('Option cache file %s cache successed.', $cacheFile)),
             $result
         );
@@ -121,12 +121,12 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache option.'),
             $result
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent(sprintf('Option cache file %s cache successed.', $cacheFile)),
             $result
         );
@@ -160,12 +160,12 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache option.'),
             $result
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent(sprintf('Option cache file %s cache successed.', $cacheFile)),
             $result
         );
@@ -213,12 +213,12 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache option.'),
             $result
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent(sprintf('Dir %s is not writeable.', $dirname)),
             $result
         );
@@ -260,12 +260,12 @@ class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent('Start to cache option.'),
             $result
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $this->normalizeContent(sprintf('Unable to create the %s directory.', $dirname)),
             $result
         );

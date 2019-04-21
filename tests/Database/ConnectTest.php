@@ -84,7 +84,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData->id);
         $this->assertSame('小鸭子', $insertData->name);
         $this->assertSame('吃饭饭', $insertData->content);
-        $this->assertContains(date('Y-m-d'), $insertData->create_at);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData->create_at);
     }
 
     public function testQuery()
@@ -103,7 +103,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertContains(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
     public function testExecute()
@@ -117,7 +117,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData['id']);
         $this->assertSame('小鸭子', $insertData['name']);
         $this->assertSame('喜欢游泳', $insertData['content']);
-        $this->assertContains(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
     public function testQueryOnlyAllowedSelect()
@@ -160,7 +160,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertContains(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
     public function testSelectWithBind()
@@ -179,7 +179,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertContains(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
     public function testInsert()
@@ -194,7 +194,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertContains(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
     public function testUpdate()
@@ -209,7 +209,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertContains(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
 
         $this->assertSame(1, $connect->update('update guest_book set name = "小牛" where id = ?', [1]));
 
@@ -219,7 +219,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData['id']);
         $this->assertSame('小牛', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertContains(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
     public function testDelete()
@@ -234,7 +234,7 @@ class ConnectTest extends TestCase
         $this->assertSame('1', $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertContains(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
 
         $this->assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
 

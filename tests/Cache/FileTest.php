@@ -112,7 +112,7 @@ class FileTest extends TestCase
 
         $this->assertTrue(is_file($filePath));
 
-        $this->assertContains('s:3:"bar"', file_get_contents($filePath));
+        $this->assertStringContainsString('s:3:"bar"', file_get_contents($filePath));
 
         $file->delete('setOption');
 
@@ -260,7 +260,7 @@ class FileTest extends TestCase
 
         $this->assertTrue(is_file($filePath));
 
-        $this->assertContains('s:5:"world"', file_get_contents($filePath));
+        $this->assertStringContainsString('s:5:"world"', file_get_contents($filePath));
 
         $file->set('withOption', 'world', [
             'serialize' => false,

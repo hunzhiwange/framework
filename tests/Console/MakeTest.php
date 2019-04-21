@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Console;
 
-use Leevel\Console\Make;
 use Leevel\Filesystem\Fso;
 use Tests\Console\Command\MakeFile;
 use Tests\TestCase;
@@ -59,16 +58,16 @@ class MakeTest extends TestCase
             'name'        => 'test',
         ]);
 
-        $this->assertContains('test <test> created successfully.', $result);
+        $this->assertStringContainsString('test <test> created successfully.', $result);
 
         $file = __DIR__.'/Command/cache/test';
 
-        $this->assertContains('hello make file', $content = file_get_contents($file));
+        $this->assertStringContainsString('hello make file', $content = file_get_contents($file));
 
-        $this->assertContains('hello key1', $content);
-        $this->assertContains('hello key2', $content);
-        $this->assertContains('hello key3', $content);
-        $this->assertContains('hello key4', $content);
+        $this->assertStringContainsString('hello key1', $content);
+        $this->assertStringContainsString('hello key2', $content);
+        $this->assertStringContainsString('hello key3', $content);
+        $this->assertStringContainsString('hello key4', $content);
 
         unlink($file);
         rmdir(dirname($file));
@@ -86,7 +85,7 @@ class MakeTest extends TestCase
             'name'        => 'test2',
         ]);
 
-        $this->assertContains('File is already exits.', $result);
+        $this->assertStringContainsString('File is already exits.', $result);
 
         unlink($file);
         rmdir($dirname);
@@ -107,7 +106,7 @@ class MakeTest extends TestCase
             'name'        => 'test3',
         ]);
 
-        $this->assertContains('Can not write file.', $result);
+        $this->assertStringContainsString('Can not write file.', $result);
 
         rmdir($dirname);
     }
@@ -123,7 +122,7 @@ class MakeTest extends TestCase
             'template'        => 'notFound',
         ]);
 
-        $this->assertContains('Stub not found.', $result);
+        $this->assertStringContainsString('Stub not found.', $result);
     }
 
     public function testFileParentDirIsNotWritable()
@@ -142,7 +141,7 @@ class MakeTest extends TestCase
             'cache'       => 'cacheParentDir/sub',
         ]);
 
-        $this->assertContains('Unable to create the', $result);
+        $this->assertStringContainsString('Unable to create the', $result);
 
         rmdir($dirname);
     }
