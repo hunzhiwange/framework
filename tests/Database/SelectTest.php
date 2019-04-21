@@ -112,7 +112,7 @@ class SelectTest extends TestCase
 
         findOne();
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
 
         $this->assertSame('1', $result['id']);
         $this->assertSame('tom', $result['name']);
@@ -434,7 +434,7 @@ class SelectTest extends TestCase
             )
         );
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
     }
 
     public function testAsCollectionAsDefaultFindAll()
@@ -875,7 +875,7 @@ class SelectTest extends TestCase
 
         page(1);
 
-        $this->assertInternalType('array', $page);
+        $this->assertIsArray($page);
         $this->assertCount(10, $result);
 
         $n = 0;

@@ -264,7 +264,7 @@ class RuntimeTest extends TestCase
 
         $this->assertInstanceof(IResponse::class, $resultResponse = $runtime->render($request, $e));
 
-        $this->assertInternalType('array', $content = json_decode($resultResponse->getContent(), true));
+        $this->assertIsArray($content = json_decode($resultResponse->getContent(), true));
         $this->assertArrayHasKey('error', $content);
         $this->assertSame('Tests\\Leevel\\Exception1', $content['error']['type']);
         $this->assertSame('hello world', $content['error']['message']);

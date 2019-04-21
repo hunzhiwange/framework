@@ -82,7 +82,7 @@ class Leevel2PsrTest extends TestCase
         $this->assertSame(['REQUEST_URI' => 'http://queryphp.com/hello.html'], $psrRequest->getServerParams());
 
         $uploadFiles = $psrRequest->getUploadedFiles();
-        $this->assertInternalType('array', $uploadFiles);
+        $this->assertIsArray($uploadFiles);
         $this->assertCount(2, $uploadFiles);
         $this->assertInstanceOf(UploadedFile::class, $uploadFiles['file\\0']);
         $this->assertInstanceOf(UploadedFile::class, $uploadFiles['file\\1']);

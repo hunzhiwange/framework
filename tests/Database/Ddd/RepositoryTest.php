@@ -1367,7 +1367,7 @@ class RepositoryTest extends TestCase
 
         list($page, $result) = $repository->findPage(1, 10);
 
-        $this->assertInternalType('array', $page);
+        $this->assertIsArray($page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(10, $result);
 
@@ -1412,7 +1412,7 @@ class RepositoryTest extends TestCase
 
         list($page, $result) = $repository->findPage(1, 10, $condition);
 
-        $this->assertInternalType('array', $page);
+        $this->assertIsArray($page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(7, $result);
 
@@ -1615,7 +1615,7 @@ class RepositoryTest extends TestCase
 
         list($page, $result) = $repository->findPage(1, 10, 'test');
 
-        $this->assertInternalType('array', $page);
+        $this->assertIsArray($page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(6, $result);
 
@@ -1656,7 +1656,7 @@ class RepositoryTest extends TestCase
 
         list($page, $result) = $repository->findPage(1, 10, 'test,test');
 
-        $this->assertInternalType('array', $page);
+        $this->assertIsArray($page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(6, $result);
 
@@ -1701,7 +1701,7 @@ class RepositoryTest extends TestCase
 
         list($page, $result) = $repository->findPage(1, 10, [$condition, 'test']);
 
-        $this->assertInternalType('array', $page);
+        $this->assertIsArray($page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(3, $result);
 
@@ -1746,7 +1746,7 @@ class RepositoryTest extends TestCase
 
         list($page, $result) = $repository->findPage(1, 10, [$condition, 'test', 'test']);
 
-        $this->assertInternalType('array', $page);
+        $this->assertIsArray($page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(3, $result);
 
@@ -1785,7 +1785,7 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findList(null, 'summary', 'title');
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
 
         $data = <<<'eot'
             {
@@ -1828,7 +1828,7 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findList(null, ['summary', 'title']);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
 
         $data = <<<'eot'
             {
@@ -1873,7 +1873,7 @@ class RepositoryTest extends TestCase
             $select->where('id', '>', 5);
         }, ['summary', 'title']);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
 
         $data = <<<'eot'
             {

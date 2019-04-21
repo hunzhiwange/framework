@@ -736,7 +736,7 @@ class RequestTest extends TestCase
         $files = $request->file();
         $this->assertInstanceOf(UploadedFile::class, $files['file']);
         $this->assertEquals($file, $files['file']);
-        $this->assertInternalType('array', $files);
+        $this->assertIsArray($files);
         $this->assertCount(1, $files);
     }
 
@@ -785,7 +785,7 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(UploadedFile::class, $files['file\\1']);
         $this->assertEquals($file, $files['file\\0']);
         $this->assertEquals($file2, $files['file\\1']);
-        $this->assertInternalType('array', $files);
+        $this->assertIsArray($files);
         $this->assertCount(2, $files);
     }
 
@@ -814,7 +814,7 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(UploadedFile::class, $request->file('file\\1')[0]);
         $this->assertEquals($file, $files[0]);
         $this->assertEquals($file2, $files[1]);
-        $this->assertInternalType('array', $files);
+        $this->assertIsArray($files);
         $this->assertCount(2, $files);
     }
 
@@ -1000,7 +1000,7 @@ class RequestTest extends TestCase
         $file = __DIR__.'/testGetContentFromResource.txt';
         file_put_contents($file, 'hello');
         $text = fopen($file, 'r');
-        $this->assertInternalType('resource', $text);
+        $this->assertIsResource($text);
         $request = new Request([], [], [], [], [], [], $text);
         $this->assertSame('hello', $request->getContent());
         unlink($file);
