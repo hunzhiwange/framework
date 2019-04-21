@@ -47,7 +47,7 @@ abstract class TestCase extends TestCases
     /**
      * Setup.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!$this->app) {
             $this->app = $this->createApp();
@@ -57,7 +57,7 @@ abstract class TestCase extends TestCases
     /**
      * tearDown.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->app = null;
     }

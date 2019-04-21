@@ -21,16 +21,13 @@
         "symfony/process": "~4.0",
         "symfony/finder": "~4.0",
         "clio/clio": "@stable",
-        "robmorgan/phinx": "^0.9.2",
         "vlucas/phpdotenv": "~2.2",
         "nesbot/carbon": "~1.20",
         "league/flysystem": "^1.0.8",
         "monolog/monolog": "^1.23",
         "swiftmailer/swiftmailer": "6.0.2",
-        "nunomaduro/collision": "~2.0",
         "twig/twig": "~2.0",
         "gettext/gettext": "^4.6.0",
-        "fzaninotto/faker": "^1.6",
         "zircote/swagger-php": "^3.0.1",
         "doctrine/annotations": "^1.6.1",
         "maximebf/debugbar": "~1.15.0",
@@ -74,8 +71,11 @@
     },
     "require-dev": {
         "php-coveralls/php-coveralls":"^2.1",
-        "phpunit/phpunit": "~7.0",
-        "codedungeon/phpunit-result-printer": "^0.20.1"
+        "phpunit/phpunit": "~8.0",
+        "codedungeon/phpunit-result-printer": "^0.26.2",
+        "nunomaduro/collision": "~2.0",
+        "fzaninotto/faker": "^1.6",
+        "robmorgan/phinx": "^0.9.2"
     },
     "suggest": {
         "ext-swoole": "Required to use swoole.",
