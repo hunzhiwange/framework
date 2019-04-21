@@ -35,12 +35,12 @@ use Tests\TestCase;
  */
 class TypeTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tearDown();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $testFile = __DIR__.'/test.txt';
 

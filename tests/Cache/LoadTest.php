@@ -42,7 +42,7 @@ use Tests\TestCase;
  */
 class LoadTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $files = [
             'Tests.Cache.Pieces.Test1.php',

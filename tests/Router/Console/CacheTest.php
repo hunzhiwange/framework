@@ -41,7 +41,7 @@ class CacheTest extends TestCase
 {
     use BaseCommand;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $dirs = [
             __DIR__.'/dirWriteable',
@@ -55,7 +55,7 @@ class CacheTest extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->setUp();
     }

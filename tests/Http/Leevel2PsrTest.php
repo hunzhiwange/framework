@@ -39,7 +39,7 @@ use Zend\Diactoros\UploadedFile;
  */
 class Leevel2PsrTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $dir = sys_get_temp_dir().'/form_test';
 
@@ -48,7 +48,7 @@ class Leevel2PsrTest extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach (glob(sys_get_temp_dir().'/form_test/*') as $file) {
             unlink($file);

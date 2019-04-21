@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class PhpRedisTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!extension_loaded('redis')) {
             $this->markTestSkipped('Redis extension must be loaded before use.');

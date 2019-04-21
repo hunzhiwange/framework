@@ -36,14 +36,14 @@ abstract class DatabaseTestCase extends TestCase
 {
     use Database;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->clearDatabaseTable();
 
         $this->metaWithDatabase();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->clearDatabaseTable();
 

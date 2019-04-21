@@ -41,7 +41,7 @@ use Tests\TestCase;
  */
 class EncryptionTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($GLOBALS['RUNTIME_ERROR_REPORTING'])) {
             error_reporting($GLOBALS['RUNTIME_ERROR_REPORTING']);

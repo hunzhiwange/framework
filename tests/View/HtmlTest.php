@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class HtmlTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Fso::deleteDirectory(__DIR__.'/cache_html', true);
     }

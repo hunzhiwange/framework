@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class UploadedFileTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!ini_get('file_uploads')) {
             $this->markTestSkipped('file_uploads is disabled in php.ini.');

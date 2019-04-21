@@ -41,7 +41,7 @@ use Tests\TestCase;
  */
 class FileResponseTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $files = [
             __DIR__.'/assert/setFileWithNotReadable_test.txt',

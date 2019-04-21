@@ -10,3 +10,4 @@ package-lock.json
 /split.sh
 /tests.sh
 /release.sh
+.phpunit.result.cache

@@ -41,12 +41,12 @@ use Tests\TestCase;
  */
 class RouterAnnotationTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->containerClear();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->setUp();
     }

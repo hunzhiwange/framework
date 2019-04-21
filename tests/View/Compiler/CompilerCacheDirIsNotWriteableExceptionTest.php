@@ -36,7 +36,7 @@ class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
 {
     use Compiler;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Fso::deleteDirectory(__DIR__.'/cacheWriteable', true);
         Fso::deleteDirectory(__DIR__.'/parentDirCacheWriteable', true);

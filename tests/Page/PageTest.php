@@ -39,7 +39,7 @@ use Tests\TestCase;
  */
 class PageTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $app = App::singletons();
         $app->clear();
@@ -49,7 +49,7 @@ class PageTest extends TestCase
         });
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         App::singletons()->clear();
     }

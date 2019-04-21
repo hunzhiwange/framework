@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ValidatorFlowTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $app = App::singletons();
         $app->clear();
@@ -49,7 +49,7 @@ class ValidatorFlowTest extends TestCase
         Validate::initMessages();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         App::singletons()->clear();
     }

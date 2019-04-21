@@ -38,7 +38,7 @@ use Tests\TestCase;
  */
 class TokenTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $path = __DIR__.'/cacheFile';
 

@@ -38,7 +38,7 @@ use Tests\TestCase;
  */
 class ThrottlerTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $key = sha1('127.0.0.1@foobar');
         $dirPath = __DIR__.'/cache';

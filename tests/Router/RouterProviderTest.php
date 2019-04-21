@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class RouterProviderTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $file = __DIR__.'/router_cached.php';
 

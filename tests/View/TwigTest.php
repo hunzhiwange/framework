@@ -37,7 +37,7 @@ use Twig_Loader_Filesystem;
  */
 class TwigTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Fso::deleteDirectory(__DIR__.'/cache', true);
     }

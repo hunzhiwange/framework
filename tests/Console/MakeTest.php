@@ -38,7 +38,7 @@ class MakeTest extends TestCase
 {
     use BaseMake;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $dirs = [
             __DIR__.'/Command/cache',

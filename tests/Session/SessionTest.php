@@ -38,7 +38,7 @@ use Tests\TestCase;
  */
 class SessionTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache';
 

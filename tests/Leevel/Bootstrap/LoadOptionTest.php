@@ -38,7 +38,7 @@ use Tests\TestCase;
  */
 class LoadOptionTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $appPath = __DIR__.'/app';
         $runtimePath = $appPath.'/common';

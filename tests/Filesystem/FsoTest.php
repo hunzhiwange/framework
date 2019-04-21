@@ -34,12 +34,12 @@ use Tests\TestCase;
  */
 class FsoTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tearDown();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $dirs = [
             __DIR__.'/createFile2',

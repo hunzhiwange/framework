@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class FileTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // for testWriteException
         $path = __DIR__.'/write';

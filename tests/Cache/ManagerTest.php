@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $path = __DIR__.'/cacheManager';
 

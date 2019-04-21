@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class SeccodeTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         // for mac php
         if (!function_exists('imagettftext')) {
@@ -42,7 +42,7 @@ class SeccodeTest extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $dirnames = [
             __DIR__.'/backgroundEmpty',

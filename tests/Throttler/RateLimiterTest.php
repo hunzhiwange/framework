@@ -38,12 +38,12 @@ use Tests\TestCase;
  */
 class RateLimiterTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tearDown();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache';
 
