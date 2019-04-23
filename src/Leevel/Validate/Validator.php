@@ -1015,7 +1015,7 @@ class Validator implements IValidator
         if (function_exists($fn)) {
             $isFn = true;
 
-            if (!$fn($fieldValue, $parameter, $this->datas)) {
+            if (!$fn($fieldValue, $parameter, $this)) {
                 $this->addFailure($field, $rule, $parameter);
 
                 return false;
@@ -1026,7 +1026,7 @@ class Validator implements IValidator
 
                 $isFn = true;
 
-                if (!$fn($fieldValue, $parameter, $this->datas)) {
+                if (!$fn($fieldValue, $parameter, $this)) {
                     $this->addFailure($field, $rule, $parameter);
 
                     return false;

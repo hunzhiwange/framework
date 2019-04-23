@@ -21,27 +21,22 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
+use Leevel\Validate\IValidator;
 
 /**
  * 两个字段是否不同.
  *
- * @param mixed $value
- * @param array $parameter
- * @param array $meta
+ * @param mixed                       $value
+ * @param array                       $parameter
+ * @param \Leevel\Validate\IValidator $validator
  *
  * @return bool
  */
-function validate_different($value, array $parameter, array $meta = []): bool
+function validate_different($value, array $parameter, IValidator $validator): bool
 {
     if (1 > count($parameter)) {
         throw new InvalidArgumentException('At least 1 parameter.');
     }
 
-    return $value !== get_field_value($meta, $parameter[0]);
+    return $value !== $validator->getFieldValue($parameter[0]);
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Validate\\Helper\\get_field_value')) {
-    include __DIR__.'/get_field_value.php';
-}
-// @codeCoverageIgnoreEnd
