@@ -264,4 +264,23 @@ interface IValidator
      * @param array $messages
      */
     public static function initMessages(array $messages): void;
+
+    /**
+     * 尝试读取格式化条件.
+     *
+     * @param string       $field
+     * @param array|string $rules
+     *
+     * @return array
+     */
+    public function getParseRule(string $field, $rules): array;
+
+    /**
+     * 获取字段的值
+     *
+     * @param string $rule
+     *
+     * @return mixed
+     */
+    public function getFieldValue(string $rule);
 }

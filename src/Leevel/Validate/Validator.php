@@ -573,9 +573,9 @@ class Validator implements IValidator
      * @param string       $field
      * @param array|string $rules
      *
-     * @return array|void
+     * @return array
      */
-    public function getParseRule(string $field, $rules)
+    public function getParseRule(string $field, $rules): array
     {
         $rules = (array) $rules;
 
@@ -586,6 +586,8 @@ class Validator implements IValidator
                 return [$rule, $parameter];
             }
         }
+
+        return [];
     }
 
     /**
