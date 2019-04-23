@@ -22,8 +22,6 @@ namespace Leevel\Validate;
 
 use BadMethodCallException;
 use Closure;
-use DateTime;
-use Exception;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Flow\FlowControl;
@@ -198,6 +196,7 @@ class Validator implements IValidator
 
                 return $fn(...$parameter);
             }
+
             if (is_file($rulePath = __DIR__.'/Helper/validate_'.un_camelize($method).'.php')) {
                 include $rulePath;
 
@@ -583,67 +582,53 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证在给定日期之后.
+     * 尝试读取格式化条件.
      *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
+     * @param string       $field
+     * @param array|string $rules
      *
-     * @return bool
+     * @return array|void
      */
-    protected function validateAfter(string $field, $datas, array $parameter): bool
+    public function getParseRule(string $field, $rules)
     {
-        if (!is_string($datas)) {
-            return false;
-        }
+        $rules = (array) $rules;
 
-        $this->checkParameterLength($field, $parameter, 1);
+        foreach ($this->rules[$field] as $rule) {
+            list($rule, $parameter) = $this->parseRule($rule);
 
-        if ($format = $this->getDateFormat($field)) {
-            return $this->doAfterWithFormat($format, $datas, $parameter);
-        }
-
-        if (!($time = strtotime($parameter[0]))) {
-            if (null === ($tmp = $this->getFieldValue($parameter[0]))) {
-                return false;
+            if (in_array($rule, $rules, true)) {
+                return [$rule, $parameter];
             }
-
-            return strtotime($datas) > strtotime($tmp);
         }
-
-        return strtotime($datas) > $time;
     }
 
     /**
-     * 验证在给定日期之前.
+     * 获取字段的值
      *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
+     * @param string $rule
      *
-     * @return bool
+     * @return mixed
      */
-    protected function validateBefore(string $field, $datas, array $parameter): bool
+    public function getFieldValue(string $rule)
     {
-        if (!is_string($datas)) {
-            return false;
-        }
+        if (false === strpos($rule, '.')) {
+            if (isset($this->datas[$rule])) {
+                return $this->datas[$rule];
+            }
+        } else {
+            $parts = explode('.', $rule);
+            $datas = $this->datas;
 
-        $this->checkParameterLength($field, $parameter, 1);
+            foreach ($parts as $part) {
+                if (!isset($datas[$part])) {
+                    return;
+                }
 
-        if ($format = $this->getDateFormat($field)) {
-            return $this->doBeforeWithFormat($format, $datas, $parameter);
-        }
-
-        if (!($time = strtotime($parameter[0]))) {
-            if (null === ($tmp = $this->getFieldValue($parameter[0]))) {
-                return false;
+                $datas = $datas[$part];
             }
 
-            return strtotime($datas) < strtotime($tmp);
+            return $datas;
         }
-
-        return strtotime($datas) < $time;
     }
 
     /**
@@ -658,131 +643,6 @@ class Validator implements IValidator
     protected function validateDifferent(string $field, $datas, array $parameter): bool
     {
         return !$this->validateEqualTo($field, $datas, $parameter);
-    }
-
-    /**
-     * 验证在给定日期之前.
-     *
-     * @param string $format
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function doBeforeWithFormat(string $format, $datas, array $parameter): bool
-    {
-        $parameter[0] = $this->getFieldValue($parameter[0]) ?: $parameter[0];
-
-        return $this->doCheckBeforeAfter($format, $datas, $parameter[0]);
-    }
-
-    /**
-     * 验证在给定日期之后.
-     *
-     * @param string $format
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function doAfterWithFormat(string $format, $datas, array $parameter): bool
-    {
-        $parameter[0] = $this->getFieldValue($parameter[0]) ?: $parameter[0];
-
-        return $this->doCheckBeforeAfter($format, $parameter[0], $datas);
-    }
-
-    /**
-     * 验证日期顺序.
-     *
-     * @param string $format
-     * @param string $first
-     * @param string $second
-     *
-     * @return bool
-     */
-    protected function doCheckBeforeAfter(string $format, string $first, string $second): bool
-    {
-        $before = $this->makeDateTimeFormat($format, $first);
-        $after = $this->makeDateTimeFormat($format, $second);
-
-        return $before && $after && $before < $after;
-    }
-
-    /**
-     * 获取时间格式化.
-     *
-     * @param string $field
-     *
-     * @return string|void
-     */
-    protected function getDateFormat(string $field)
-    {
-        if ($result = $this->getParseRule($field, 'date_format')) {
-            return $result[1][0];
-        }
-    }
-
-    /**
-     * 尝试读取格式化条件.
-     *
-     * @param string       $field
-     * @param array|string $rules
-     *
-     * @return array|void
-     */
-    protected function getParseRule(string $field, $rules)
-    {
-        $rules = (array) $rules;
-
-        foreach ($this->rules[$field] as $rule) {
-            list($rule, $parameter) = $this->parseRule($rule);
-
-            if (in_array($rule, $rules, true)) {
-                return [$rule, $parameter];
-            }
-        }
-    }
-
-    /**
-     * 创建 DateTime 实例.
-     *
-     * @param string $format
-     * @param string $value
-     *
-     * @return \DateTime|void
-     */
-    protected function makeDateTimeFormat(string $format, string $value)
-    {
-        $date = DateTime::createFromFormat($format, $value);
-
-        if ($date) {
-            return $date;
-        }
-
-        try {
-            return new DateTime($value);
-        } catch (Exception $e) {
-        }
-    }
-
-    /**
-     * 数据是否满足正则条件.
-     *
-     * @param string $field
-     * @param array  $parameter
-     * @param int    $limitLength
-     */
-    protected function checkParameterLength(string $field, array $parameter, int $limitLength): void
-    {
-        if (count($parameter) < $limitLength) {
-            $e = sprintf(
-                'The rule %s requires at least %d arguments.', $field,
-                $limitLength
-            );
-
-            throw new InvalidArgumentException($e);
-        }
     }
 
     /**
@@ -954,10 +814,7 @@ class Validator implements IValidator
             $parameter = $this->parseParameters($rule, $parameter);
         }
 
-        return [
-            trim($rule),
-            $parameter,
-        ];
+        return [trim($rule), $parameter];
     }
 
     /**
@@ -1185,7 +1042,7 @@ class Validator implements IValidator
                     $validateRule = new $className();
                 }
 
-                if (false === $validateRule->validate($field, $fieldValue, $parameter)) {
+                if (false === $validateRule->validate($field, $fieldValue, $parameter, $this)) {
                     $this->addFailure($field, $rule, $parameter);
 
                     return false;
@@ -1296,35 +1153,6 @@ class Validator implements IValidator
     protected function parseFieldName(string $field): string
     {
         return $this->names[$field] ?? $field;
-    }
-
-    /**
-     * 获取字段的值
-     *
-     * @param string $rule
-     *
-     * @return mixed
-     */
-    protected function getFieldValue(string $rule)
-    {
-        if (false === strpos($rule, '.')) {
-            if (isset($this->datas[$rule])) {
-                return $this->datas[$rule];
-            }
-        } else {
-            $parts = explode('.', $rule);
-            $datas = $this->datas;
-
-            foreach ($parts as $part) {
-                if (!isset($datas[$part])) {
-                    return;
-                }
-
-                $datas = $datas[$part];
-            }
-
-            return $datas;
-        }
     }
 
     /**
