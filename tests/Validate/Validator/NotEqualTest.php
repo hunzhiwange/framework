@@ -37,8 +37,8 @@ class NotEqualTest extends TestCase
     /**
      * @dataProvider baseUseProvider
      *
-     * @param mixed  $value
-     * @param string $parameter
+     * @param mixed $value
+     * @param mixed $parameter
      */
     public function testBaseUse($value, $parameter)
     {
@@ -74,8 +74,8 @@ class NotEqualTest extends TestCase
     /**
      * @dataProvider badProvider
      *
-     * @param mixed  $value
-     * @param string $parameter
+     * @param mixed $value
+     * @param mixed $parameter
      */
     public function testBad($value, $parameter)
     {
