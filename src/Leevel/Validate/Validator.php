@@ -189,24 +189,10 @@ class Validator implements IValidator
             $parameter[] = $args;
             unset($args);
 
-            $fn = '\\Leevel\\Validate\\Helper\\validate_'.un_camelize($method);
-
-            if (function_exists($fn)) {
+            if (false !== ($fn = $this->findFnRule(un_camelize($method)))) {
                 array_shift($parameter);
 
                 return $fn(...$parameter);
-            }
-
-            if (is_file($rulePath = __DIR__.'/Helper/validate_'.un_camelize($method).'.php')) {
-                include $rulePath;
-
-                array_shift($parameter);
-
-                return $fn(...$parameter);
-            }
-
-            if (method_exists($this, $extend)) {
-                return $this->{$extend}(...$parameter);
             }
 
             $extend = un_camelize($method);
@@ -270,7 +256,7 @@ class Validator implements IValidator
         unset($skipRule);
 
         foreach ($this->afters as $after) {
-            call_user_func($after);
+            $after();
         }
 
         return 0 === count($this->errorMessages);
@@ -536,7 +522,7 @@ class Validator implements IValidator
     public function after(Closure $callbacks): IValidator
     {
         $this->afters[] = function () use ($callbacks) {
-            return call_user_func($callbacks, $this);
+            return $callbacks($this);
         };
 
         return $this;
@@ -1008,55 +994,59 @@ class Validator implements IValidator
 
         $camelizeRule = ucwords(camelize($rule));
         $method = 'validate'.$camelizeRule;
-        $className = '\\Leevel\\Validate\\'.$camelizeRule.'Rule';
-        $fn = '\\Leevel\\Validate\\Helper\\validate_'.$rule;
-        $isFn = false;
 
-        if (function_exists($fn)) {
-            $isFn = true;
-
+        if (false !== ($fn = $this->findFnRule($rule))) {
             if (!$fn($fieldValue, $parameter, $this)) {
                 $this->addFailure($field, $rule, $parameter);
 
                 return false;
             }
-        } else {
-            if (is_file($rulePath = __DIR__.'/Helper/validate_'.$rule.'.php')) {
-                include $rulePath;
-
-                $isFn = true;
-
-                if (!$fn($fieldValue, $parameter, $this)) {
-                    $this->addFailure($field, $rule, $parameter);
-
-                    return false;
-                }
+        } elseif (class_exists($className = '\\Leevel\\Validate\\'.$camelizeRule.'Rule')) {
+            if ($this->container) {
+                $validateRule = $this->container->make($className);
+            } else {
+                $validateRule = new $className();
             }
-        }
 
-        if (false === $isFn) {
-            if (class_exists($className)) {
-                if ($this->container) {
-                    $validateRule = $this->container->make($className);
-                } else {
-                    $validateRule = new $className();
-                }
-
-                if (false === $validateRule->validate($field, $fieldValue, $parameter, $this)) {
-                    $this->addFailure($field, $rule, $parameter);
-
-                    return false;
-                }
-            } elseif (!$this->{$method}($field, $fieldValue, $parameter)) {
+            if (false === $validateRule->validate($field, $fieldValue, $parameter, $this)) {
                 $this->addFailure($field, $rule, $parameter);
 
                 return false;
             }
+        } elseif (!$this->{$method}($field, $fieldValue, $parameter)) {
+            $this->addFailure($field, $rule, $parameter);
+
+            return false;
         }
 
         unset($fieldValue);
 
         return true;
+    }
+
+    /**
+     * 是否为函数验证规则.
+     *
+     * @param string $rule
+     *
+     * @return bool|string
+     */
+    protected function findFnRule(string $rule)
+    {
+        $fn = '\\Leevel\\Validate\\Helper\\validate_'.$rule;
+
+        if (function_exists($fn)) {
+            return $fn;
+        }
+        $rulePath = __DIR__.'/Helper/validate_'.$rule.'.php';
+
+        if (is_file($rulePath)) {
+            include $rulePath;
+
+            return $fn;
+        }
+
+        return false;
     }
 
     /**
@@ -1213,10 +1203,7 @@ class Validator implements IValidator
 
         $parameter[] = $this;
 
-        return call_user_func_array([
-            $extend,
-            $method,
-        ], $parameter);
+        return $extend->{$method}(...$parameter);
     }
 
     /**
@@ -1234,7 +1221,7 @@ class Validator implements IValidator
         if (is_callable($extends)) {
             $parameter[] = $this;
 
-            return call_user_func_array($extends, $parameter);
+            return $extends(...$parameter);
         }
 
         if (is_string($extends)) {
@@ -1255,7 +1242,7 @@ class Validator implements IValidator
      */
     protected function isCallbackValid(Closure $callbacks): bool
     {
-        return call_user_func($callbacks, $this->getData());
+        return $callbacks($this->getData());
     }
 }
 
