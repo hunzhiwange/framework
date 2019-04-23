@@ -618,20 +618,6 @@ class Validator implements IValidator
     }
 
     /**
-     * 两个字段是否不同.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateDifferent(string $field, $datas, array $parameter): bool
-    {
-        return !$this->validateEqualTo($field, $datas, $parameter);
-    }
-
-    /**
      * 转换消息为数组.
      *
      * @param array $messages
