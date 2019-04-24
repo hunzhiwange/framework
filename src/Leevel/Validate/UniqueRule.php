@@ -34,7 +34,7 @@ use function Leevel\Support\Type\type_array;
  *
  * @version 1.0
  */
-class UniqueRule extends Rule implements IRule
+class UniqueRule
 {
     /**
      * 占位符.
@@ -53,24 +53,26 @@ class UniqueRule extends Rule implements IRule
     /**
      * 校验.
      *
-     * @param string $field
-     * @param mixed  $datas
+     * @param mixed  $value
      * @param array  $parameter
+     * @param string $field
      *
      * @return bool
      */
-    public function validate(string $field, $datas, array $parameter): bool
+    public function validate($value, array $parameter, string $field): bool
     {
-        $this->initArgs($field, $datas, $parameter);
+        if (1 > count($parameter)) {
+            throw new InvalidArgumentException('At least 1 parameter.');
+        }
 
-        if (false === $this->validateArgs()) {
+        if (!is_string($parameter[0]) && !is_object($parameter[0])) {
             return false;
         }
 
-        $select = $this->normalizeSelect();
+        $select = $this->normalizeSelect($value, $parameter, $field);
 
-        $this->parseExceptId($select);
-        $this->parseAdditional($select);
+        $this->parseExceptId($select, $parameter);
+        $this->parseAdditional($select, $parameter);
 
         return 0 === $select->findCount();
     }
@@ -107,44 +109,30 @@ class UniqueRule extends Rule implements IRule
     }
 
     /**
-     * 校验基本参数.
-     *
-     * @return bool
-     */
-    protected function validateArgs(): bool
-    {
-        $this->checkParameterLength($this->field, $this->parameter, 1);
-
-        if (!is_string($this->parameter[0]) && !is_object($this->parameter[0])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * 取得查询.
+     *
+     * @param array  $parameter
+     * @param mixed  $value
+     * @param string $field
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    protected function normalizeSelect(): Select
+    protected function normalizeSelect($value, array $parameter, string $field): Select
     {
-        $entity = $this->parseEntity();
+        $entity = $this->parseEntity($parameter);
 
-        $field = $this->field;
-
-        if (isset($this->parameter[1]) && self::PLACEHOLDER !== $this->parameter[1]) {
-            $field = $this->parameter[1];
+        if (isset($parameter[1]) && self::PLACEHOLDER !== $parameter[1]) {
+            $field = $parameter[1];
         }
 
         if (false !== strpos($field, self::SEPARATE)) {
             $select = $entity->selfDatabaseSelect();
 
             foreach (explode(self::SEPARATE, $field) as $v) {
-                $select->where($v, $this->datas);
+                $select->where($v, $value);
             }
         } else {
-            $select = $entity->where($field, $this->datas);
+            $select = $entity->where($field, $value);
         }
 
         return $select;
@@ -153,17 +141,19 @@ class UniqueRule extends Rule implements IRule
     /**
      * 分析实体.
      *
+     * @param array $parameter*
+     *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    protected function parseEntity(): IEntity
+    protected function parseEntity(array $parameter): IEntity
     {
         $connect = null;
 
-        if (is_string($this->parameter[0])) {
-            if (false !== strpos($this->parameter[0], self::SEPARATE)) {
-                list($connect, $entityClass) = explode(self::SEPARATE, $this->parameter[0]);
+        if (is_string($parameter[0])) {
+            if (false !== strpos($parameter[0], self::SEPARATE)) {
+                list($connect, $entityClass) = explode(self::SEPARATE, $parameter[0]);
             } else {
-                $entityClass = $this->parameter[0];
+                $entityClass = $parameter[0];
             }
 
             if (!class_exists($entityClass)) {
@@ -174,7 +164,7 @@ class UniqueRule extends Rule implements IRule
 
             $entity = new $entityClass();
         } else {
-            $entity = $this->parameter[0];
+            $entity = $parameter[0];
         }
 
         if (!($entity instanceof IEntity)) {
@@ -194,24 +184,25 @@ class UniqueRule extends Rule implements IRule
      * 排除主键.
      *
      * @param \Leevel\Database\Ddd\Select $select
+     * @param array                       $parameter
      */
-    protected function parseExceptId(Select $select): void
+    protected function parseExceptId(Select $select, array $parameter): void
     {
-        if (isset($this->parameter[2]) && self::PLACEHOLDER !== $this->parameter[2]) {
+        if (isset($parameter[2]) && self::PLACEHOLDER !== $parameter[2]) {
             $withoutPrimary = true;
 
-            if (!empty($this->parameter[3]) && self::PLACEHOLDER !== $this->parameter[3]) {
-                $primaryKey = $this->parameter[3];
+            if (!empty($parameter[3]) && self::PLACEHOLDER !== $parameter[3]) {
+                $primaryKey = $parameter[3];
             } else {
-                if (is_string($tmp = $select->entity()->primaryKey())) {
-                    $primaryKey = $tmp;
+                if (is_string($_ = $select->entity()->primaryKey())) {
+                    $primaryKey = $_;
                 } else {
                     $withoutPrimary = false;
                 }
             }
 
             if ($withoutPrimary) {
-                $select->where($primaryKey, '<>', $this->parameter[2]);
+                $select->where($primaryKey, '<>', $parameter[2]);
             }
         }
     }
@@ -220,25 +211,26 @@ class UniqueRule extends Rule implements IRule
      * 额外条件.
      *
      * @param \Leevel\Database\Ddd\Select $select
+     * @param array                       $parameter
      */
-    protected function parseAdditional(Select $select): void
+    protected function parseAdditional(Select $select, array $parameter): void
     {
-        if (($num = count($this->parameter)) >= 4) {
+        if (($num = count($parameter)) >= 4) {
             for ($i = 4; $i < $num; $i += 2) {
-                if (!isset($this->parameter[$i + 1])) {
+                if (!isset($parameter[$i + 1])) {
                     $e = 'Unique additional conditions must be paired.';
 
                     throw new InvalidArgumentException($e);
                 }
 
-                if (false !== strpos($this->parameter[$i], self::SEPARATE)) {
-                    list($field, $operator) = explode(self::SEPARATE, $this->parameter[$i]);
+                if (false !== strpos($parameter[$i], self::SEPARATE)) {
+                    list($field, $operator) = explode(self::SEPARATE, $parameter[$i]);
                 } else {
-                    $field = $this->parameter[$i];
+                    $field = $parameter[$i];
                     $operator = '=';
                 }
 
-                $select->where($field, $operator, $this->parameter[$i + 1]);
+                $select->where($field, $operator, $parameter[$i + 1]);
             }
         }
     }

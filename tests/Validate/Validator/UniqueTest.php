@@ -153,7 +153,7 @@ class UniqueTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The rule name requires at least 1 arguments.'
+            'At least 1 parameter.'
         );
 
         $validate = new Validator(
@@ -208,14 +208,14 @@ class UniqueTest extends TestCase
     {
         $rule = new UniqueRule();
 
-        $this->assertFalse($rule->validate('field', 'value', [['arr']]));
+        $this->assertFalse($rule->validate('value', [['arr']], 'field'));
     }
 
     public function testValidateArgsIsEntity()
     {
         $rule = new UniqueRule();
 
-        $this->assertTrue($rule->validate('name', 'value', [new Guestbook()]));
+        $this->assertTrue($rule->validate('value', [new Guestbook()], 'name'));
 
         $connect = $this->createDatabaseConnect();
 
@@ -225,7 +225,7 @@ class UniqueTest extends TestCase
             'name'   => 'value',
         ]));
 
-        $this->assertFalse($rule->validate('name', 'value', [new Guestbook()]));
+        $this->assertFalse($rule->validate('value', [new Guestbook()], 'name'));
     }
 
     public function testValidateArgsIsObjectButNotIsEntity()
@@ -237,7 +237,7 @@ class UniqueTest extends TestCase
 
         $rule = new UniqueRule();
 
-        $rule->validate('name', 'value', [new DemoUnique1()]);
+        $rule->validate('value', [new DemoUnique1()], 'name');
     }
 
     public function testValidateArgsIsStringButNotIsEntity()
@@ -249,7 +249,7 @@ class UniqueTest extends TestCase
 
         $rule = new UniqueRule();
 
-        $rule->validate('name', 'value', ['Tests\\Validate\\Validator\\DemoUnique1']);
+        $rule->validate('value', ['Tests\\Validate\\Validator\\DemoUnique1'], 'name');
     }
 
     public function testValidateWithValidateField()

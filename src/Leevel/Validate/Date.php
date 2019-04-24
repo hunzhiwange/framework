@@ -45,15 +45,15 @@ trait Date
     /**
      * 校验日期.
      *
-     * @param string                      $field
      * @param mixed                       $value
      * @param array                       $parameter
+     * @param string                      $field
      * @param \Leevel\Validate\IValidator $validator
      * @param bool                        $before
      *
      * @return bool
      */
-    public function validateDate(string $field, $value, array $parameter, IValidator $validator, bool $before = false): bool
+    public function validateDate($value, array $parameter, string $field, IValidator $validator, bool $before = false): bool
     {
         if (!is_string($value)) {
             return false;

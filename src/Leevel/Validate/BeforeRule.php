@@ -36,15 +36,15 @@ class BeforeRule
     /**
      * 校验.
      *
-     * @param string $field
      * @param mixed  $value
      * @param array  $parameter
+     * @param string $field
      * @param mixed  $validator
      *
      * @return bool
      */
-    public function validate(string $field, $value, array $parameter, $validator): bool
+    public function validate($value, array $parameter, string $field, $validator): bool
     {
-        return $this->validateDate($field, $value, $parameter, $validator, true);
+        return $this->validateDate($value, $parameter, $field, $validator, true);
     }
 }

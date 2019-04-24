@@ -36,15 +36,15 @@ class AfterRule
     /**
      * 校验.
      *
-     * @param string                      $field
      * @param mixed                       $value
      * @param array                       $parameter
+     * @param string                      $field
      * @param \Leevel\Validate\IValidator $validator
      *
      * @return bool
      */
-    public function validate(string $field, $value, array $parameter, IValidator $validator): bool
+    public function validate($value, array $parameter, string $field, IValidator $validator): bool
     {
-        return $this->validateDate($field, $value, $parameter, $validator);
+        return $this->validateDate($value, $parameter, $field, $validator);
     }
 }
