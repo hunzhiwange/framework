@@ -43,11 +43,24 @@ class PostContent extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function change(): void
     {
-        $table = $this->table('post_content', ['id' => false]);
-        $table->addColumn('post_id', 'integer', ['length' => 11]);
-        $table->addColumn('content', 'text', ['comment' => '文章内容']);
-        $table->create();
+        $this->struct();
+    }
+
+    /**
+     * struct.
+     */
+    private function struct(): void
+    {
+        $sql = <<<'EOT'
+            CREATE TABLE `post_content` (
+                `post_id` int(11) NOT NULL,
+                `content` text NOT NULL COMMENT '文章内容',
+                KEY `post_id` (`post_id`) USING BTREE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            EOT;
+
+        $this->execute($sql);
     }
 }

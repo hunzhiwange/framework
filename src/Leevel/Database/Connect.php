@@ -919,10 +919,10 @@ abstract class Connect
     {
         $message = $e->getMessage();
 
+        // 模拟数据库 replace
         if ('23000' === $e->getCode() &&
-            false !== strpos($message, 'Duplicate entry') &&
-            false !== strpos($message, 'for key \'PRIMARY\'')) {
-            throw new DuplicateKeyException($message);
+            false !== strpos($message, 'Duplicate entry')) {
+            throw new ReplaceException($message);
         }
 
         throw $e;

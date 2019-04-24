@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\IEntity;
 
 /**
  * TestToArrayBlackEntity.
@@ -64,7 +65,7 @@ class TestToArrayBlackEntity extends Entity
 
     private $hello;
 
-    public function setter(string $prop, $value): Entity
+    public function setter(string $prop, $value): IEntity
     {
         $this->{$this->prop($prop)} = $value;
 

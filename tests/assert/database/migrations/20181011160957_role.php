@@ -43,11 +43,25 @@ class Role extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function change(): void
     {
-        $table = $this->table('role');
-        $table->addColumn('name', 'string', ['limit' => 64]);
-        $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
-        $table->create();
+        $this->struct();
+    }
+
+    /**
+     * struct.
+     */
+    private function struct(): void
+    {
+        $sql = <<<'EOT'
+            CREATE TABLE `role` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `name` varchar(64) NOT NULL,
+                `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            EOT;
+
+        $this->execute($sql);
     }
 }

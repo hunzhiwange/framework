@@ -65,27 +65,27 @@ class BelongsToTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->getterId());
         $this->assertSame('1', $post->user_id);
         $this->assertSame('1', $post->userId);
         $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getUserId());
+        $this->assertSame('1', $post->getterUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getTitle());
+        $this->assertSame('hello world', $post->getterTitle());
         $this->assertSame('Say hello to the world.', $post->summary);
         $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getSummary());
+        $this->assertSame('Say hello to the world.', $post->getterSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame('1', $user->getterId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        $this->assertSame('niu', $user->getterName());
     }
 
     public function testEager()

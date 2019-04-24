@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace {{namespace}}\Domain\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\IEntity;
 
 {{file_comment}}
 class {{file_name}} extends Entity
@@ -45,7 +46,7 @@ class {{file_name}} extends Entity
      *
      * @return $this
      */
-    public function setter(string $prop, $value): Entity
+    public function setter(string $prop, $value): IEntity
     {
         $this->{$this->prop($prop)} = $value;
 

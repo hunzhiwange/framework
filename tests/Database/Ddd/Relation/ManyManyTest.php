@@ -90,10 +90,10 @@ class ManyManyTest extends TestCase
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame('1', $user->getterId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        $this->assertSame('niu', $user->getterName());
 
         $role = $user->role;
 
@@ -103,19 +103,19 @@ class ManyManyTest extends TestCase
 
         $this->assertSame('1', $user1->id);
         $this->assertSame('1', $user1['id']);
-        $this->assertSame('1', $user1->getId());
+        $this->assertSame('1', $user1->getterId());
         $this->assertSame('管理员', $user1->name);
         $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getName());
+        $this->assertSame('管理员', $user1->getterName());
 
         $user2 = $role[1];
 
         $this->assertSame('3', $user2->id);
         $this->assertSame('3', $user2['id']);
-        $this->assertSame('3', $user2->getId());
+        $this->assertSame('3', $user2->getterId());
         $this->assertSame('会员', $user2->name);
         $this->assertSame('会员', $user2['name']);
-        $this->assertSame('会员', $user2->getName());
+        $this->assertSame('会员', $user2->getterName());
 
         $this->assertCount(2, $role);
         $this->assertSame('1', $role[0]['id']);
@@ -185,10 +185,10 @@ class ManyManyTest extends TestCase
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame('1', $user->getterId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        $this->assertSame('niu', $user->getterName());
 
         $role = $user->role;
 
@@ -198,19 +198,19 @@ class ManyManyTest extends TestCase
 
         $this->assertSame('1', $user1->id);
         $this->assertSame('1', $user1['id']);
-        $this->assertSame('1', $user1->getId());
+        $this->assertSame('1', $user1->getterId());
         $this->assertSame('管理员', $user1->name);
         $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getName());
+        $this->assertSame('管理员', $user1->getterName());
 
         $user2 = $role[1];
 
         $this->assertSame('3', $user2->id);
         $this->assertSame('3', $user2['id']);
-        $this->assertSame('3', $user2->getId());
+        $this->assertSame('3', $user2->getterId());
         $this->assertSame('会员', $user2->name);
         $this->assertSame('会员', $user2['name']);
-        $this->assertSame('会员', $user2->getName());
+        $this->assertSame('会员', $user2->getterName());
 
         $this->assertCount(2, $role);
         $this->assertSame('1', $role[0]['id']);
@@ -301,10 +301,10 @@ class ManyManyTest extends TestCase
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame('1', $user->getterId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getName());
+        $this->assertSame('niu', $user->getterName());
 
         $role = $user->role;
 

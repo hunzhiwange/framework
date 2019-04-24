@@ -75,7 +75,7 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->getterId());
         $this->assertSame(1, $post->userId);
         $this->assertSame('post summary', $post->summary);
     }
@@ -117,13 +117,13 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->getterId());
         $this->assertSame(1, $post->userId);
         $this->assertSame('post summary', $post->summary);
 
         $this->assertSame('2', $post2->id);
         $this->assertSame('2', $post2['id']);
-        $this->assertSame('2', $post2->getId());
+        $this->assertSame('2', $post2->getterId());
         $this->assertSame(2, $post2->userId);
         $this->assertSame('foo bar', $post2->summary);
     }
@@ -178,13 +178,13 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->getterId());
         $this->assertSame(1, $post->userId);
         $this->assertSame('post summary', $post->summary);
 
         $this->assertSame('2', $post2->id);
         $this->assertSame('2', $post2['id']);
-        $this->assertSame('2', $post2->getId());
+        $this->assertSame('2', $post2->getterId());
         $this->assertSame(2, $post2->userId);
         $this->assertSame('foo bar', $post2->summary);
     }
@@ -232,14 +232,14 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->getterId());
         $this->assertSame('1', $post->userId);
         $this->assertSame('post summary', $post->summary);
         $this->assertSame('hello world', $post->title);
 
         $this->assertSame('2', $post2->id);
         $this->assertSame('2', $post2['id']);
-        $this->assertSame('2', $post2->getId());
+        $this->assertSame('2', $post2->getterId());
         $this->assertSame('2', $post2->userId);
         $this->assertSame('foo bar', $post2->summary);
         $this->assertSame('hello world', $post2->title);
@@ -272,14 +272,14 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->getterId());
         $this->assertSame('1', $post->userId);
         $this->assertSame('new post title', $post->title);
         $this->assertSame('new post summary', $post->summary);
 
         $this->assertSame('2', $post2->id);
         $this->assertSame('2', $post2['id']);
-        $this->assertSame('2', $post2->getId());
+        $this->assertSame('2', $post2->getterId());
         $this->assertSame('2', $post2->userId);
         $this->assertSame('new post2 title', $post2->title);
         $this->assertSame('new post2 summary', $post2->summary);
@@ -328,14 +328,14 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->getterId());
         $this->assertSame('1', $post->userId);
         $this->assertSame('post summary', $post->summary);
         $this->assertSame('hello world', $post->title);
 
         $this->assertSame('2', $post2->id);
         $this->assertSame('2', $post2['id']);
-        $this->assertSame('2', $post2->getId());
+        $this->assertSame('2', $post2->getterId());
         $this->assertSame('2', $post2->userId);
         $this->assertSame('foo bar', $post2->summary);
         $this->assertSame('hello world', $post2->title);
@@ -366,14 +366,14 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertNull($postAfter->id);
         $this->assertNull($postAfter['id']);
-        $this->assertNull($postAfter->getId());
+        $this->assertNull($postAfter->getterId());
         $this->assertNull($postAfter->userId);
         $this->assertNull($postAfter->title);
         $this->assertNull($postAfter->summary);
 
         $this->assertNull($post2After->id);
         $this->assertNull($post2After['id']);
-        $this->assertNull($post2After->getId());
+        $this->assertNull($post2After->getterId());
         $this->assertNull($post2After->userId);
         $this->assertNull($post2After->title);
         $this->assertNull($post2After->summary);
@@ -409,16 +409,16 @@ class UnitOfWorkTest extends TestCase
             'summary' => 'old',
         ], true);
 
-        $this->assertSame(1, $post->getId());
-        $this->assertSame('old', $post->getSummary());
-        $this->assertSame('old', $post->getTitle());
+        $this->assertSame(1, $post->getterId());
+        $this->assertSame('old', $post->getterSummary());
+        $this->assertSame('old', $post->getterTitle());
 
         $work->persist($post);
         $work->refresh($post);
 
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('post summary', $post->getSummary());
-        $this->assertSame('hello world', $post->getTitle());
+        $this->assertSame('1', $post->getterId());
+        $this->assertSame('post summary', $post->getterSummary());
+        $this->assertSame('hello world', $post->getterTitle());
 
         $work->flush();
 
@@ -429,7 +429,7 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->getterId());
         $this->assertSame('1', $post->userId);
         $this->assertSame('post summary', $post->summary);
         $this->assertSame('hello world', $post->title);
@@ -474,8 +474,8 @@ class UnitOfWorkTest extends TestCase
             $work->rollBack();
         }
 
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('new title', $post->getTitle());
+        $this->assertSame('1', $post->getterId());
+        $this->assertSame('new title', $post->getterTitle());
     }
 
     /**
@@ -487,7 +487,7 @@ class UnitOfWorkTest extends TestCase
      */
     public function testFlushButRollBack()
     {
-        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
+        $this->expectException(\Leevel\Database\ReplaceException::class);
         $this->expectExceptionMessage(
             'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
         );
@@ -545,8 +545,8 @@ class UnitOfWorkTest extends TestCase
 
         $newPost = Post::find(1);
 
-        $this->assertSame('1', $newPost->getId());
-        $this->assertSame('new title', $newPost->getTitle());
+        $this->assertSame('1', $newPost->getterId());
+        $this->assertSame('new title', $newPost->getterTitle());
     }
 
     /**
@@ -558,7 +558,7 @@ class UnitOfWorkTest extends TestCase
      */
     public function testTransactionAndRollBack()
     {
-        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
+        $this->expectException(\Leevel\Database\ReplaceException::class);
         $this->expectExceptionMessage(
             'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key \'PRIMARY\''
         );
@@ -624,13 +624,13 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('new title', $post->getTitle());
+        $this->assertSame('1', $post->getterId());
+        $this->assertSame('new title', $post->getterTitle());
 
         $newPost = Post::find(1);
 
-        $this->assertSame('1', $newPost->getId());
-        $this->assertSame('new title', $newPost->getTitle());
+        $this->assertSame('1', $newPost->getterId());
+        $this->assertSame('new title', $newPost->getterTitle());
     }
 
     /**
@@ -667,13 +667,13 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('new title', $post->getTitle());
+        $this->assertSame('1', $post->getterId());
+        $this->assertSame('new title', $post->getterTitle());
 
         $newPost = Post::find(1);
 
-        $this->assertSame('1', $newPost->getId());
-        $this->assertSame('new title', $newPost->getTitle());
+        $this->assertSame('1', $newPost->getterId());
+        $this->assertSame('new title', $newPost->getterTitle());
     }
 
     /**
@@ -733,9 +733,9 @@ class UnitOfWorkTest extends TestCase
 
         $post = Post::find(1);
 
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('hello world', $post->getTitle());
-        $this->assertSame('post summary', $post->getSummary());
+        $this->assertSame('1', $post->getterId());
+        $this->assertSame('hello world', $post->getterTitle());
+        $this->assertSame('post summary', $post->getterSummary());
 
         $work->delete($post);
 
@@ -767,9 +767,9 @@ class UnitOfWorkTest extends TestCase
 
         $post = Post::find(1);
 
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('hello world', $post->getTitle());
-        $this->assertSame('post summary', $post->getSummary());
+        $this->assertSame('1', $post->getterId());
+        $this->assertSame('hello world', $post->getterTitle());
+        $this->assertSame('post summary', $post->getterSummary());
 
         $work->delete($post);
 

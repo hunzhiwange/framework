@@ -18,19 +18,54 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Database;
+namespace Tests\Database\Ddd\Entity;
 
-use RuntimeException;
+use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\IEntity;
 
 /**
- * 主键重复异常.
+ * TestUnique.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.11.21
+ * @since 2019.04.24
  *
  * @version 1.0
  */
-class DuplicateKeyException extends RuntimeException
+class TestUnique extends Entity
 {
+    const TABLE = 'test_unique';
+
+    const ID = 'id';
+
+    const AUTO = 'id';
+
+    const STRUCT = [
+        'id' => [
+            'readonly'             => true,
+        ],
+        'name'       => [],
+        'create_at'  => [],
+        'identity'   => [],
+    ];
+
+    private $id;
+
+    private $name;
+
+    private $createAt;
+
+    private $identity;
+
+    public function setter(string $prop, $value): IEntity
+    {
+        $this->{$this->prop($prop)} = $value;
+
+        return $this;
+    }
+
+    public function getter(string $prop)
+    {
+        return $this->{$this->prop($prop)};
+    }
 }

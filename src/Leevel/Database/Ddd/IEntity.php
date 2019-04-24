@@ -648,4 +648,23 @@ interface IEntity
      * @return \Leevel\Database\Ddd\IMeta
      */
     public static function meta($connect = null): IMeta;
+
+    /**
+     * setter.
+     *
+     * @param string $prop
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setter(string $prop, $value): self;
+
+    /**
+     * getter.
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    public function getter(string $prop);
 }

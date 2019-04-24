@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\IMeta;
 use Leevel\Database\Ddd\Meta;
 
@@ -50,7 +51,7 @@ class TestEventEntity extends Entity
 
     private $name;
 
-    public function setter(string $prop, $value): Entity
+    public function setter(string $prop, $value): IEntity
     {
         $this->{$this->prop($prop)} = $value;
 

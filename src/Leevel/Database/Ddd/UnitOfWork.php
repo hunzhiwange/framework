@@ -105,6 +105,18 @@ class UnitOfWork implements IUnitOfWork
             const ID = null;
             const AUTO = null;
             const STRUCT = [];
+
+            public function setter(string $prop, $value): IEntity
+            {
+                $this->{$this->prop($prop)} = $value;
+
+                return $this;
+            }
+
+            public function getter(string $prop)
+            {
+                return $this->{$this->prop($prop)};
+            }
         };
     }
 

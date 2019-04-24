@@ -18,49 +18,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd\Entity;
+namespace Leevel\Database;
 
-use Leevel\Database\Ddd\Entity;
-use Leevel\Database\Ddd\IEntity;
+use PDOException;
 
 /**
- * CompositeId.
+ * Replace 异常.
+ *
+ * 用于模拟数据库 replace.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.10.31
+ * @since 2018.11.21
+ * @since v1.0.0-beta.1@2019.04.24 如果是插入出现 unique 的唯一值重复也并入这样的错误
  *
  * @version 1.0
  */
-class CompositeId extends Entity
+class ReplaceException extends PDOException
 {
-    const TABLE = 'composite_id';
-
-    const ID = ['id1', 'id2'];
-
-    const AUTO = null;
-
-    const STRUCT = [
-        'id1'      => [],
-        'id2'      => [],
-        'name'     => [],
-    ];
-
-    private $id1;
-
-    private $id2;
-
-    private $name;
-
-    public function setter(string $prop, $value): IEntity
-    {
-        $this->{$this->prop($prop)} = $value;
-
-        return $this;
-    }
-
-    public function getter(string $prop)
-    {
-        return $this->{$this->prop($prop)};
-    }
 }

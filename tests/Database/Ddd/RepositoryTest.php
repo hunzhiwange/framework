@@ -31,6 +31,7 @@ use Leevel\Page\IPage;
 use Leevel\Page\Page;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
+use Tests\Database\Ddd\Entity\TestUnique;
 
 /**
  * repository test.
@@ -1280,6 +1281,39 @@ class RepositoryTest extends TestCase
         $this->assertSame('', $newPost2->summary);
     }
 
+    public function testReplaceUnique(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame('1', $connect
+            ->table('test_unique')
+            ->insert([
+                'name'     => 'hello world',
+                'identity' => 'hello',
+            ])
+        );
+
+        $testUniqueData = TestUnique::find(1);
+
+        $this->assertInstanceof(TestUnique::class, $testUniqueData);
+        $this->assertSame('1', $testUniqueData->id);
+        $this->assertSame('hello world', $testUniqueData->name);
+        $this->assertSame('hello', $testUniqueData->identity);
+
+        $testUnique = new TestUnique(['id' => 1, 'name' => 'hello new', 'identity' => 'hello']);
+
+        $repository = new Repository($testUnique);
+
+        $repository->replace($testUnique);
+
+        $testUniqueData = TestUnique::find(1);
+
+        $this->assertInstanceof(TestUnique::class, $testUniqueData);
+        $this->assertSame('1', $testUniqueData->id);
+        $this->assertSame('hello new', $testUniqueData->name);
+        $this->assertSame('hello', $testUniqueData->identity);
+    }
+
     public function testDeleteFlushed()
     {
         $connect = $this->createDatabaseConnect();
@@ -1895,7 +1929,7 @@ class RepositoryTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post'];
+        return ['post', 'test_unique'];
     }
 }
 

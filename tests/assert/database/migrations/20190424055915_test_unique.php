@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-class CompositeId extends AbstractMigration
+class TestUnique extends AbstractMigration
 {
     /**
      * Change Method.
@@ -54,11 +54,13 @@ class CompositeId extends AbstractMigration
     private function struct(): void
     {
         $sql = <<<'EOT'
-            CREATE TABLE `composite_id` (
-                `id1` int(11) NOT NULL,
-                `id2` int(11) NOT NULL,
-                `name` varchar(32) NOT NULL,
-                PRIMARY KEY (`id1`,`id2`)
+            CREATE TABLE `test_unique` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `name` varchar(64) NOT NULL,
+                `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                `identity` varchar(64) NOT NULL COMMENT '唯一标识符',
+                PRIMARY KEY (`id`),
+                UNIQUE KEY `identity` (`identity`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             EOT;
 

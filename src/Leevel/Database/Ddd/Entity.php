@@ -29,7 +29,7 @@ use Leevel\Database\Ddd\Relation\HasMany;
 use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Relation\ManyMany;
 use Leevel\Database\Ddd\Relation\Relation;
-use Leevel\Database\DuplicateKeyException;
+use Leevel\Database\ReplaceException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
 use function Leevel\I18n\Helper\gettext as __;
@@ -40,10 +40,9 @@ use function Leevel\Support\Str\un_camelize;
 
 /**
  * 模型实体 Object Relational Mapping.
- * 为最大化避免 getter setter 属性与系统冲突
- * 系统自身的属性均加前缀 leevel，设置以 with 开头, 获取数据不带 get.
- * 包含 Leevel\Database\Connect[包含继承], Leevel\Database\Select.
- * ORM 主要基于妖怪的 QeePHP V2 设计灵感.
+ * 为最大化避免 getter setter 属性与系统冲突，getFoo 修改为 getterFoo，setBar 修改为 setterBar
+ * 系统自身的属性均加前缀 leevel，设置以 with 开头.
+ * ORM 主要基于妖怪大神的 QeePHP V2 设计灵感，查询器基于这个版本构建.
  * 例外参照了 Laravel 关联模型实现设计.
  * Doctrine 和 Java Hibernate 中关于 getter setter 的设计
  *
@@ -51,6 +50,7 @@ use function Leevel\Support\Str\un_camelize;
  *
  * @since 2017.04.27
  * @since 2018.10 进行一次大规模重构
+ * @since 1.0.0-beta.1 2019.04.24 getFoo 修改为 getterFoo，setBar 修改为 setterBar
  * @see https://github.com/dualface/qeephp2_x
  * @see https://github.com/laravel/framework
  * @see https://github.com/doctrine/doctrine2
@@ -275,25 +275,25 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function __call(string $method, array $args)
     {
         // getter
-        if (0 === strpos($method, 'get')) {
+        if (0 === strpos($method, 'getter')) {
             if (!method_exists($this, 'getter')) {
                 $e = sprintf('The entity `%s` `%s` method was not defined.', static::class, 'getter');
 
                 throw new InvalidArgumentException($e);
             }
 
-            return $this->getter(lcfirst(substr($method, 3)));
+            return $this->getter(lcfirst(substr($method, 6)));
         }
 
         // setter
-        if (0 === strpos($method, 'set')) {
+        if (0 === strpos($method, 'setter')) {
             if (!method_exists($this, 'setter')) {
                 $e = sprintf('The entity `%s` `%s` method was not defined.', static::class, 'setter');
 
                 throw new InvalidArgumentException($e);
             }
 
-            $this->setter(lcfirst(substr($method, 3)), $args[0] ?? null);
+            $this->setter(lcfirst(substr($method, 6)), $args[0] ?? null);
 
             return $this;
         }
@@ -506,7 +506,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         try {
             $result = call_user_func_array($this->leevelFlush, $this->leevelFlushData);
-        } catch (DuplicateKeyException $e) {
+        } catch (ReplaceException $e) {
             if (false === $this->leevelReplace) {
                 throw $e;
             }
@@ -1666,7 +1666,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function propGetter(string $prop)
     {
-        return $this->{'get'.ucfirst($this->asProp($prop))}();
+        return $this->{'getter'.ucfirst($this->asProp($prop))}();
     }
 
     /**
@@ -1677,7 +1677,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function propSetter(string $prop, $value): void
     {
-        $this->{'set'.ucfirst($this->asProp($prop))}($value);
+        $this->{'setter'.ucfirst($this->asProp($prop))}($value);
     }
 
     /**

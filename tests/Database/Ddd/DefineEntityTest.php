@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\IEntity;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\TestEntity;
 
@@ -82,11 +83,34 @@ class DefineEntityTest extends TestCase
 
 class Test1Entity extends Entity
 {
+    public function setter(string $prop, $value): IEntity
+    {
+        $this->{$this->prop($prop)} = $value;
+
+        return $this;
+    }
+
+    public function getter(string $prop)
+    {
+        return $this->{$this->prop($prop)};
+    }
 }
 
 class Test2Entity extends Entity
 {
     const TABLE = 'test2';
+
+    public function setter(string $prop, $value): IEntity
+    {
+        $this->{$this->prop($prop)} = $value;
+
+        return $this;
+    }
+
+    public function getter(string $prop)
+    {
+        return $this->{$this->prop($prop)};
+    }
 }
 
 class Test3Entity extends Entity
@@ -96,6 +120,18 @@ class Test3Entity extends Entity
     const ID = [
         'id',
     ];
+
+    public function setter(string $prop, $value): IEntity
+    {
+        $this->{$this->prop($prop)} = $value;
+
+        return $this;
+    }
+
+    public function getter(string $prop)
+    {
+        return $this->{$this->prop($prop)};
+    }
 }
 
 class Test4Entity extends Entity
@@ -107,4 +143,16 @@ class Test4Entity extends Entity
     ];
 
     const AUTO = 'id';
+
+    public function setter(string $prop, $value): IEntity
+    {
+        $this->{$this->prop($prop)} = $value;
+
+        return $this;
+    }
+
+    public function getter(string $prop)
+    {
+        return $this->{$this->prop($prop)};
+    }
 }

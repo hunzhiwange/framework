@@ -18,7 +18,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Phinx\Db\Adapter\MysqlAdapter;
 use Phinx\Migration\AbstractMigration;
 
 class GuestBook extends AbstractMigration
@@ -44,12 +43,26 @@ class GuestBook extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function change(): void
     {
-        $table = $this->table('guest_book');
-        $table->addColumn('name', 'string', ['limit' => 64]);
-        $table->addColumn('content', 'string', ['limit' => MysqlAdapter::TEXT_MEDIUM, 'comment' => '评论内容']);
-        $table->addColumn('create_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP', 'comment' => '创建时间']);
-        $table->create();
+        $this->struct();
+    }
+
+    /**
+     * struct.
+     */
+    private function struct(): void
+    {
+        $sql = <<<'EOT'
+            CREATE TABLE `guest_book` (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `name` varchar(64) NOT NULL,
+                `content` longtext NOT NULL COMMENT '评论内容',
+                `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            EOT;
+
+        $this->execute($sql);
     }
 }
