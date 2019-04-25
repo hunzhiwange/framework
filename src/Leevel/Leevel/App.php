@@ -552,7 +552,7 @@ class App extends Container implements IApp
      */
     public function i18nCachedPath(string $i18n): string
     {
-        $basePath = $this->i18nCachedPath ?: $this->commonPath().'/ui/bootstrap/i18n';
+        $basePath = $this->i18nCachedPath ?: $this->path().'/bootstrap/i18n';
 
         return $basePath.'/'.$i18n.'.php';
     }
@@ -588,7 +588,7 @@ class App extends Container implements IApp
      */
     public function optionCachedPath(): string
     {
-        $basePath = $this->optionCachedPath ?: $this->commonPath().'/ui/bootstrap';
+        $basePath = $this->optionCachedPath ?: $this->path().'/bootstrap';
 
         $cache = getenv('RUNTIME_ENVIRONMENT') ?: 'option';
 
@@ -622,7 +622,7 @@ class App extends Container implements IApp
      */
     public function routerCachedPath(): string
     {
-        return $this->routerCachedPath ?: $this->commonPath().'/ui/bootstrap/router.php';
+        return $this->routerCachedPath ?: $this->path().'/bootstrap/router.php';
     }
 
     /**

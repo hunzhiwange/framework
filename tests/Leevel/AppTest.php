@@ -359,9 +359,9 @@ class AppTest extends TestCase
     {
         $app = new App($appPath = __DIR__.'/app');
 
-        $this->assertSame($appPath.'/common/ui/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
-        $this->assertSame($appPath.'/common/ui/bootstrap/i18n/zh-TW.php', $app->i18nCachedPath('zh-TW'));
-        $this->assertSame($appPath.'/common/ui/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
+        $this->assertSame($appPath.'/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+        $this->assertSame($appPath.'/bootstrap/i18n/zh-TW.php', $app->i18nCachedPath('zh-TW'));
+        $this->assertSame($appPath.'/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
     }
 
     public function testIsCachedI18n()
@@ -370,9 +370,9 @@ class AppTest extends TestCase
 
         $this->assertFalse($app->isCachedI18n('zh-CN'));
 
-        mkdir($appPath.'/common/ui/bootstrap/i18n', 0777, true);
+        mkdir($appPath.'/bootstrap/i18n', 0777, true);
 
-        file_put_contents($langPath = $appPath.'/common/ui/bootstrap/i18n/zh-CN.php', 'foo');
+        file_put_contents($langPath = $appPath.'/bootstrap/i18n/zh-CN.php', 'foo');
 
         $this->assertTrue($app->isCachedI18n('zh-CN'));
 
@@ -383,7 +383,7 @@ class AppTest extends TestCase
     {
         $app = new App($appPath = __DIR__.'/app');
 
-        $this->assertSame($appPath.'/common/ui/bootstrap/option.php', $app->optionCachedPath());
+        $this->assertSame($appPath.'/bootstrap/option.php', $app->optionCachedPath());
     }
 
     public function testIsCachedOption()
@@ -392,9 +392,9 @@ class AppTest extends TestCase
 
         $this->assertFalse($app->isCachedOption());
 
-        mkdir($appPath.'/common/ui/bootstrap', 0777, true);
+        mkdir($appPath.'/bootstrap', 0777, true);
 
-        file_put_contents($optionPath = $appPath.'/common/ui/bootstrap/option.php', 'foo');
+        file_put_contents($optionPath = $appPath.'/bootstrap/option.php', 'foo');
 
         $this->assertTrue($app->isCachedOption());
 
@@ -405,7 +405,7 @@ class AppTest extends TestCase
     {
         $app = new App($appPath = __DIR__.'/app');
 
-        $this->assertSame($appPath.'/common/ui/bootstrap/router.php', $app->routerCachedPath());
+        $this->assertSame($appPath.'/bootstrap/router.php', $app->routerCachedPath());
     }
 
     public function testIsCachedRouter()
@@ -414,9 +414,9 @@ class AppTest extends TestCase
 
         $this->assertFalse($app->isCachedRouter());
 
-        mkdir($appPath.'/common/ui/bootstrap', 0777, true);
+        mkdir($appPath.'/bootstrap', 0777, true);
 
-        file_put_contents($routerPath = $appPath.'/common/ui/bootstrap/router.php', 'foo');
+        file_put_contents($routerPath = $appPath.'/bootstrap/router.php', 'foo');
 
         $this->assertTrue($app->isCachedRouter());
 

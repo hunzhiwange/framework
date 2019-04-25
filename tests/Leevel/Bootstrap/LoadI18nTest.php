@@ -66,7 +66,7 @@ class LoadI18nTest extends TestCase
         });
 
         $this->assertSame('en-US', $app['option']['i18n\\default']);
-        $this->assertSame($appPath.'/common/ui/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
+        $this->assertSame($appPath.'/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         $this->assertFalse($app->isCachedI18n('en-US'));
         $this->assertSame($appPath.'/i18n', $app->i18nPath());
 
@@ -107,12 +107,12 @@ class LoadI18nTest extends TestCase
         });
 
         $this->assertSame('en-US', $app['option']['i18n\\default']);
-        $this->assertSame($appPath.'/common/ui/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
+        $this->assertSame($appPath.'/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         $this->assertFalse($app->isCachedI18n('en-US'));
         $this->assertSame($appPath.'/i18n', $app->i18nPath());
 
-        mkdir($appPath.'/common/ui/bootstrap/i18n', 0777, true);
-        file_put_contents($appPath.'/common/ui/bootstrap/i18n/en-US.php', file_get_contents($appPath.'/assert/en-US.php'));
+        mkdir($appPath.'/bootstrap/i18n', 0777, true);
+        file_put_contents($appPath.'/bootstrap/i18n/en-US.php', file_get_contents($appPath.'/assert/en-US.php'));
 
         $this->assertTrue($app->isCachedI18n('en-US'));
 
@@ -125,7 +125,7 @@ class LoadI18nTest extends TestCase
         $this->assertSame('Total 5', $i18n->gettext('共 %d 条', 5));
         $this->assertSame('Go to', $i18n->gettext('前往'));
 
-        Fso::deleteDirectory($appPath.'/common', true);
+        Fso::deleteDirectory($appPath.'/bootstrap', true);
     }
 
     public function testExtendI18nDirNotFound()
