@@ -768,7 +768,7 @@ class UnitOfWork implements IUnitOfWork
      */
     public function on(IEntity $entity, Closure $callbacks): void
     {
-        $this->onCallbacks[spl_object_id($entity)] = $callbacks;
+        $this->onCallbacks[spl_object_id($entity)][] = $callbacks;
     }
 
     /**
@@ -1111,19 +1111,21 @@ class UnitOfWork implements IUnitOfWork
     protected function handleRepository(): void
     {
         foreach (['Before', '', 'After'] as $position) {
-            foreach (['create', 'replace', 'update', 'delete'] as $type) {
-                $flag = $type.'sFlag'.$position;
+            foreach (['creates', 'replaces', 'updates', 'deletes'] as $type) {
+                $flag = $type.'Flag'.$position;
 
                 if ($this->{$flag}) {
                     $flags = $this->{$flag};
                     asort($flags);
 
                     foreach ($flags as $id => $_) {
-                        $entity = $this->{'entity'.ucfirst($type).'s'}[$id];
-                        $this->repository($entity)->{$type}($entity);
+                        $entity = $this->{'entity'.ucfirst($type)}[$id];
+                        $this->repository($entity)->{substr($type, 0, -1)}($entity);
 
                         if (isset($this->onCallbacks[$id])) {
-                            $this->onCallbacks[$id]($entity);
+                            foreach ($this->onCallbacks[$id] as $c) {
+                                $c($entity, $this);
+                            }
                         }
 
                         $this->entityStates[$id] = self::STATE_DETACHED;
