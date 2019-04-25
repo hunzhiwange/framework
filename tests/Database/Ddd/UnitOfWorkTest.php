@@ -189,6 +189,60 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('foo bar', $post2->summary);
     }
 
+    public function testCreateBefore()
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]);
+
+        $post2 = new Post([
+            'title'   => 'hello world',
+            'user_id' => 2,
+            'summary' => 'foo bar',
+        ]);
+
+        $this->assertNull($post->id);
+        $this->assertNull($post2->id);
+        $this->assertFalse($work->created($post));
+        $this->assertFalse($work->created($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $work->create($post);
+        $work->createBefore($post2);
+
+        $this->assertTrue($work->created($post));
+        $this->assertTrue($work->created($post2));
+        $this->assertTrue($work->registered($post));
+        $this->assertTrue($work->registered($post2));
+
+        $work->flush();
+
+        $this->assertFalse($work->created($post));
+        $this->assertFalse($work->created($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $this->assertSame('2', $post->id);
+        $this->assertSame('2', $post['id']);
+        $this->assertSame('2', $post->getterId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+
+        $this->assertSame('1', $post2->id);
+        $this->assertSame('1', $post2['id']);
+        $this->assertSame('1', $post2->getterId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('foo bar', $post2->summary);
+    }
+
     /**
      * @api(
      *     title="更新实体",

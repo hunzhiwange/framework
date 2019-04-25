@@ -85,31 +85,94 @@ interface IUnitOfWork
     public function flush(): void;
 
     /**
-     * 保持实体.
+     * 保持实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $method
      *
      * @return $this
      */
-    public function persist(IEntity $entity): self;
+    public function persistBefore(IEntity $entity, string $method = 'save'): self;
+
+    /**
+     * 保持实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $method
+     *
+     * @return $this
+     */
+    public function persist(IEntity $entity, string $method = 'save'): self;
+
+    /**
+     * 保持实体到后置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $method
+     *
+     * @return $this
+     */
+    public function persisteAfter(IEntity $entity, string $method = 'save'): self;
+
+    /**
+     * 移除实体到前置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return $this
+     */
+    public function removeBefore(IEntity $entity, int $priority = 500): self;
 
     /**
      * 移除实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
      *
      * @return $this
      */
-    public function remove(IEntity $entity): self;
+    public function remove(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 移除实体到后置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return $this
+     */
+    public function removeAfter(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册新建实体到前置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return $this
+     */
+    public function createBefore(IEntity $entity, int $priority = 500): self;
 
     /**
      * 注册新建实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
      *
      * @return $this
      */
-    public function create(IEntity $entity): self;
+    public function create(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册新建实体到前置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return $this
+     */
+    public function createAfter(IEntity $entity, int $priority = 500): self;
 
     /**
      * 实体是否已经注册新增.
@@ -121,13 +184,34 @@ interface IUnitOfWork
     public function created(IEntity $entity): bool;
 
     /**
-     * 注册更新实体.
+     * 注册更新实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
      *
      * @return $this
      */
-    public function update(IEntity $entity): self;
+    public function updateBefore(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return $this
+     */
+    public function update(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册更新实体到后置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return $this
+     */
+    public function updateAfter(IEntity $entity, int $priority = 500): self;
 
     /**
      * 实体是否已经注册更新.
@@ -139,13 +223,34 @@ interface IUnitOfWork
     public function updated(IEntity $entity): bool;
 
     /**
-     * 注册不存在则新增否则更新实体.
+     * 注册不存在则新增否则更新实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priorit
      *
      * @return $this
      */
-    public function replace(IEntity $entity): self;
+    public function replaceBefore(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册不存在则新增否则更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priorit
+     *
+     * @return $this
+     */
+    public function replace(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册不存在则新增否则更新实体到后置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priorit
+     *
+     * @return $this
+     */
+    public function replaceAfter(IEntity $entity, int $priority = 500): self;
 
     /**
      * 实体是否已经注册不存在则新增否则更新.
@@ -157,13 +262,34 @@ interface IUnitOfWork
     public function replaced(IEntity $entity): bool;
 
     /**
-     * 注册删除实体.
+     * 注册删除实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
      *
      * @return $this
      */
-    public function delete(IEntity $entity): self;
+    public function deleteBefore(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册删除实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return $this
+     */
+    public function delete(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册删除实体到后置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return $this
+     */
+    public function deleteAfter(IEntity $entity, int $priority = 500): self;
 
     /**
      * 实体是否已经注册删除.
