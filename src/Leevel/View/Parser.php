@@ -660,7 +660,7 @@ class Parser implements IParser
                 $themeNode['position'] = $this->getPosition($compiled, $source, $start);
                 $themeNode = $this->normalizeThemeStruct($themeNode);
 
-                // 标签body
+                // 标签 body
                 $start = $tag['position']['end'] + 1;
                 $len = $tailTag['position']['start'] - $start;
 
