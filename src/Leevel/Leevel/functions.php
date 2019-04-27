@@ -126,6 +126,34 @@ if (!function_exists('__')) {
     }
 }
 
+if (!function_exists('dump')) {
+    /**
+     * 调试变量.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     *
+     * @return mixed
+     */
+    function dump($var, ...$moreVars)
+    {
+        return hl('dump', $var, ...$moreVars);
+    }
+}
+
+if (!function_exists('dd')) {
+    /**
+     * 调试变量并中断.
+     *
+     * @param mixed $var
+     * @param array $moreVars
+     */
+    function dd($var, ...$moreVars): void
+    {
+        hl('dd', $var, ...$moreVars);
+    }
+}
+
 /**
  * 函数库.
  *
