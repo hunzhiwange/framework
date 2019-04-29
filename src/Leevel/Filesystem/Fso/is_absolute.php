@@ -31,3 +31,7 @@ function is_absolute(string $path): bool
 {
     return preg_match('/^(\/|[a-z]:)/i', $path) ? true : false;
 }
+
+class is_absolute
+{
+}

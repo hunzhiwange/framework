@@ -40,3 +40,7 @@ function tidy_path(string $path, bool $unix = true): string
 
     return rtrim($path, '\\/');
 }
+
+class tidy_path
+{
+}

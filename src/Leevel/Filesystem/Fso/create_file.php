@@ -63,3 +63,7 @@ function create_file(string $path, ?string $content = null, int $mode = 0666): v
         file_put_contents($path, $content);
     }
 }
+
+class create_file
+{
+}

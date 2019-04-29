@@ -69,8 +69,4 @@ class copy_directory
 {
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Filesystem\\Fso\\create_directory')) {
-    include __DIR__.'/create_directory.php';
-}
-// @codeCoverageIgnoreEnd
+fns(create_directory::class);

@@ -39,3 +39,7 @@ function distributed(int $dataId): array
         substr($dataId, -2),
     ];
 }
+
+class distributed
+{
+}

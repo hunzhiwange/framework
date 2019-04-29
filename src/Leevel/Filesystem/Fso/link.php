@@ -39,3 +39,7 @@ function link(string $target, string $link): void
 
     exec("mklink /{$mode} \"{$link}\" \"{$target}\"");
 }
+
+class link
+{
+}

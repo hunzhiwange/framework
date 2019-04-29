@@ -31,3 +31,7 @@ function get_name(string $path): string
 {
     return pathinfo($path, PATHINFO_FILENAME);
 }
+
+class get_name
+{
+}

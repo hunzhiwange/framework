@@ -56,3 +56,7 @@ function delete_directory(string $dir, bool $recursive = false): void
         rmdir($dir);
     }
 }
+
+class delete_directory
+{
+}

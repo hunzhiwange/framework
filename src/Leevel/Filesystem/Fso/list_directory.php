@@ -52,3 +52,7 @@ function list_directory(string $path, bool $recursive, Closure $cal, array $filt
         }
     }
 }
+
+class list_directory
+{
+}

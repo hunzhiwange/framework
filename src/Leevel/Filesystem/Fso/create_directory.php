@@ -38,3 +38,7 @@ function create_directory(string $dir, int $mode = 0777): bool
 
     return true;
 }
+
+class create_directory
+{
+}

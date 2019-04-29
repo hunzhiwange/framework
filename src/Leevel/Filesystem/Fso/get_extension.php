@@ -42,3 +42,7 @@ function get_extension(string $fileName, int $case = 0): string
 
     return $fileName;
 }
+
+class get_extension
+{
+}
