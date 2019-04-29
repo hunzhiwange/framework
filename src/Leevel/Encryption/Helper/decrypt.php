@@ -35,3 +35,7 @@ function decrypt(string $value): string
         ->make('encryption')
         ->decrypt($value);
 }
+
+class decrypt
+{
+}

@@ -38,3 +38,7 @@ function url(string $url, array $params = [], string $subdomain = 'www', $suffix
         ->make('url')
         ->make($url, $params, $subdomain, $suffix);
 }
+
+class url
+{
+}

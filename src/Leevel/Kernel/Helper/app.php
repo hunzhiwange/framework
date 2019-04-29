@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Helper;
 
-use Leevel\Leevel\App;
+use Leevel\Leevel\App as Apps;
 
 /**
  * 返回应用容器或者注入.
@@ -32,11 +32,15 @@ use Leevel\Leevel\App;
  */
 function app(?string $service = null, array $args = [])
 {
-    $app = App::singletons();
+    $app = Apps::singletons();
 
     if (null === $service) {
         return $app;
     }
 
     return $app->make($service, $args);
+}
+
+class app
+{
 }

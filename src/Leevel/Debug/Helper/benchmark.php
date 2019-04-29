@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Debug\Helper;
 
+use Leevel\Debug\Dump;
+
 /**
  * 性能基准测试.
  *
@@ -68,7 +70,7 @@ function benchmark($time = 1, ...$call): void
         if (true === $normalPrint) {
             var_dump($data);
         } else {
-            dump($data);
+            Dump::dump($data);
         }
 
         $prev = $current;
@@ -102,8 +104,6 @@ function benchmark_call($call, int $time = 1): array
     ];
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
-    include __DIR__.'/dump.php';
+class benchmark
+{
 }
-// @codeCoverageIgnoreEnd

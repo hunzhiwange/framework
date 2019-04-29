@@ -40,3 +40,7 @@ function flash($key, $defaults = null)
 
     return $service->getFlash($key, $defaults);
 }
+
+class flash
+{
+}

@@ -42,3 +42,7 @@ function log(?string $message = null, array $context = [], string $level = ILog:
 
     $service->log($level, $message, $context);
 }
+
+class log
+{
+}

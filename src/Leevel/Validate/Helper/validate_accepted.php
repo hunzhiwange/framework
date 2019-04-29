@@ -45,4 +45,7 @@ function validate_accepted($value): bool
 if (!function_exists('Leevel\\Validate\\Helper\\validate_required')) {
     include __DIR__.'/validate_required.php';
 }
-// @codeCoverageIgnoreEnd
+/** @codeCoverageIgnoreEnd */
+class validate_accepted
+{
+}

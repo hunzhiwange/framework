@@ -40,3 +40,7 @@ function encrypt(string $value, int $expiry = 0): string
         ->make('encryption')
         ->encrypt($value, $expiry);
 }
+
+class encrypt
+{
+}

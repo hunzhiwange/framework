@@ -44,3 +44,7 @@ function option($key = null, $defaults = null)
 
     return $service->get($key, $defaults);
 }
+
+class option
+{
+}

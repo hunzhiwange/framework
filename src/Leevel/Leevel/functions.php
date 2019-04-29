@@ -18,6 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Leevel\Debug\Dump;
 use Leevel\Leevel\App;
 
 if (!function_exists('hl')) {
@@ -33,9 +34,7 @@ if (!function_exists('hl')) {
     {
         $map = [
             'benchmark' => 'Debug',
-            'dd'        => 'Debug',
             'drr'       => 'Debug',
-            'dump'      => 'Debug',
             'decrypt'   => 'Encryption',
             'encrypt'   => 'Encryption',
             'gettext'   => 'I18n',
@@ -102,7 +101,7 @@ if (!function_exists('dump')) {
      */
     function dump($var, ...$moreVars)
     {
-        return hl('dump', $var, ...$moreVars);
+        return Dump::dump($var, ...$moreVars);
     }
 }
 
@@ -115,7 +114,7 @@ if (!function_exists('dd')) {
      */
     function dd($var, ...$moreVars): void
     {
-        hl('dd', $var, ...$moreVars);
+        Dump::dumpDie($var, ...$moreVars);
     }
 }
 

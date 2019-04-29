@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Debug\Helper;
 
+use Leevel\Debug\Dump;
 use RuntimeException;
 
 /**
@@ -65,7 +66,7 @@ function debug($tag, ...$args): void
             if (true === $normalPrint) {
                 var_dump($args);
             } else {
-                dump($args);
+                Dump::dump($args);
             }
         }
 
@@ -85,9 +86,3 @@ function debug_tag(string $tag): void
 
     $GLOBALS[$key] = true;
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Debug\\Helper\\dump')) {
-    include __DIR__.'/dump.php';
-}
-// @codeCoverageIgnoreEnd

@@ -45,3 +45,7 @@ function cache($key = null, $defaults = null, array $option = [])
 
     return $service->get($key, $defaults, $option);
 }
+
+class cache
+{
+}

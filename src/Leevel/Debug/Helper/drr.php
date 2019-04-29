@@ -35,3 +35,7 @@ function drr($var, ...$moreVars)
 {
     return Dump::dumpRoadRunner($var, ...$moreVars);
 }
+
+class drr
+{
+}

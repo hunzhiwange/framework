@@ -36,3 +36,7 @@ function gettext(string $text, ...$arr): string
         ->make('i18n')
         ->gettext($text, ...$arr);
 }
+
+class gettext
+{
+}
