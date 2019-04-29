@@ -22,12 +22,9 @@ namespace Leevel\View\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\Kernel\IApp;
 use Leevel\View\Compiler;
 use Leevel\View\Manager;
 use Leevel\View\Parser;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
 
 /**
  * view 服务提供者.
@@ -49,7 +46,6 @@ class Register extends Provider
         $this->viewView();
         $this->viewCompiler();
         $this->viewParser();
-        $this->viewTwigParser();
     }
 
     /**
@@ -75,7 +71,6 @@ class Register extends Provider
                 'Leevel\\View\\Parser',
                 'Leevel\\View\\IParser',
             ],
-            'view.twig.parser',
         ];
     }
 
@@ -125,25 +120,9 @@ class Register extends Provider
     protected function viewParser(): void
     {
         $this->container->singleton('view.parser', function (IContainer $container) {
-            return (new Parser($container['view.compiler']))->
-            registerCompilers()->
-
-            registerParsers();
-        });
-    }
-
-    /**
-     * 注册 view.twig.parser 服务.
-     */
-    protected function viewTwigParser(): void
-    {
-        $this->container->singleton('view.twig.parser', function (IApp $app) {
-            return new Twig_Environment(new Twig_Loader_Filesystem(), [
-                'auto_reload'      => true,
-                'debug'            => false,
-                'strict_variables' => true,
-                'cache'            => $app->runtimePath('theme'),
-            ]);
+            return (new Parser($container['view.compiler']))
+                ->registerCompilers()
+                ->registerParsers();
         });
     }
 }

@@ -42,8 +42,6 @@ if (!function_exists('hl')) {
             'app'       => 'Kernel',
             'url'       => 'Router',
             'flash'     => 'Session',
-            'env'       => 'Support',
-            'value'     => 'Support',
         ];
 
         $component = $map[$method] ?? ucfirst($method);
@@ -151,5 +149,18 @@ class Leevel
         $method = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $method));
 
         return hl($method, ...$args);
+    }
+
+    /**
+     * 取得应用的环境变量.支持 boolean, empty 和 null.
+     *
+     * @param mixed $name
+     * @param mixed $defaults
+     *
+     * @return mixed
+     */
+    public static function env(string $name, $defaults = null)
+    {
+        return env($name, $defaults);
     }
 }

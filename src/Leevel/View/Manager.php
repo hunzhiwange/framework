@@ -81,31 +81,6 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 twig 模板驱动.
-     *
-     * @param array $options
-     *
-     * @return \Leevel\View\Twig
-     */
-    protected function makeConnectTwig(array $options = []): Twig
-    {
-        $options = $this->normalizeConnectOption('twig', $options);
-        $options = array_merge(
-            $options, $this->viewOptionCommon()
-        );
-
-        $container = $this->container;
-
-        $twig = new Twig($options);
-
-        $twig->setParseResolver(function () use ($container) {
-            return $container['view.twig.parser'];
-        });
-
-        return $twig;
-    }
-
-    /**
      * 创建 phpui 模板驱动.
      *
      * @param array $options
@@ -120,23 +95,6 @@ class Manager extends Managers
         );
 
         return new Phpui($options);
-    }
-
-    /**
-     * 创建 v8 模板驱动.
-     *
-     * @param array $options
-     *
-     * @return \Leevel\View\V8
-     */
-    protected function makeConnectV8(array $options = []): V8
-    {
-        $options = $this->normalizeConnectOption('v8', $options);
-        $options = array_merge(
-            $options, $this->viewOptionCommon()
-        );
-
-        return new V8($options);
     }
 
     /**

@@ -15,8 +15,7 @@
         "php": "^7.3.2",
         "leevel/support": "1.0.*",
         "leevel/manager": "1.0.*",
-        "leevel/stack": "1.0.*",
-        "twig/twig": "~2.0"
+        "leevel/stack": "1.0.*"
     },
     "autoload": {
         "psr-4": {
