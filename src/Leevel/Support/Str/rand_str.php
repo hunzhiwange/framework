@@ -36,3 +36,7 @@ function rand_str(int $length, string $charBox): string
 
     return substr(str_shuffle($charBox), 0, $length);
 }
+
+class rand_str
+{
+}

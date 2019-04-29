@@ -45,3 +45,7 @@ function camelize(string $value, string $separator = '_'): string
         $separator
     );
 }
+
+class camelize
+{
+}

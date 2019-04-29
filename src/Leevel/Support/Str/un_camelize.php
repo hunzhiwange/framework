@@ -38,3 +38,7 @@ function un_camelize(string $value, string $separator = '_'): string
         )
     );
 }
+
+class un_camelize
+{
+}

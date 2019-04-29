@@ -52,3 +52,7 @@ function format_date(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-
 
     return date($dateFormat, $dateTemp);
 }
+
+class format_date
+{
+}

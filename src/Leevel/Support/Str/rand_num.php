@@ -38,11 +38,9 @@ function rand_num(int $length, ?string $charBox = null): string
         $charBox = '0123456789';
     }
 
-    return rand_str($length, $charBox);
+    return fn(rand_str::class, $length, $charBox);
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Str\\rand_str')) {
-    include __DIR__.'/rand_str.php';
+class rand_num
+{
 }
-// @codeCoverageIgnoreEnd

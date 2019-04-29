@@ -37,3 +37,7 @@ function contains(string $toSearched, string $search): bool
 
     return false;
 }
+
+class contains
+{
+}

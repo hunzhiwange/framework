@@ -36,3 +36,7 @@ function ends_with(string $toSearched, string $search): bool
 
     return false;
 }
+
+class ends_with
+{
+}

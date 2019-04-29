@@ -82,3 +82,7 @@ function rand_chinese(int $length, ?string $charBox = null): string
 
     return $result;
 }
+
+class rand_chinese
+{
+}

@@ -37,3 +37,7 @@ function starts_with(string $toSearched, string $search): bool
 
     return false;
 }
+
+class starts_with
+{
+}

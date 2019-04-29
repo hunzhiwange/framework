@@ -42,3 +42,7 @@ function format_bytes(int $fileSize, bool $withUnit = true): string
 
     return $fileSize;
 }
+
+class format_bytes
+{
+}
