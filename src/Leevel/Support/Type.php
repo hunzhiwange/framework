@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use function Leevel\Support\Helper\fn;
 use function Leevel\Support\Str\un_camelize;
 
 /**
@@ -53,9 +52,5 @@ class Type
 // @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
     include __DIR__.'/Str/un_camelize.php';
-}
-
-if (!function_exists('Leevel\\Support\\Helper\\fn')) {
-    include __DIR__.'/Helper/fn.php';
 }
 // @codeCoverageIgnoreEnd

@@ -35,3 +35,7 @@ function type_int($value): bool
 
     return ctype_digit((string) $value);
 }
+
+class type_int
+{
+}

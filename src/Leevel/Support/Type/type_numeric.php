@@ -35,3 +35,7 @@ function type_numeric($value): bool
 
     return !preg_match('/[^\\d\-\.,]/', trim($value, '\''));
 }
+
+class type_numeric
+{
+}

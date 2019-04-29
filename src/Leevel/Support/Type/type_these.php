@@ -53,12 +53,8 @@ function type_these($value, $types): bool
     return false;
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Type\\type')) {
-    include __DIR__.'/type.php';
+class type_these
+{
 }
 
-if (!function_exists('Leevel\\Support\\Type\\type_array')) {
-    include __DIR__.'/type_array.php';
-}
-// @codeCoverageIgnoreEnd
+fns(type::class, type_array::class);

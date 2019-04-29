@@ -55,8 +55,8 @@ function type_array($arr, array $types): bool
     return true;
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Type\\type')) {
-    include __DIR__.'/type.php';
+class type_array
+{
 }
-// @codeCoverageIgnoreEnd
+
+fns(type::class);
