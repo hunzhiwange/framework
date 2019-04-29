@@ -182,4 +182,14 @@ trait Helper
     {
         $this->assertTrue(in_array($data, $timeRange, true));
     }
+
+    /**
+     * 断言真别名.
+     *
+     * @param bool $data
+     */
+    protected function assert(bool $data): void
+    {
+        $this->assertTrue($data);
+    }
 }
