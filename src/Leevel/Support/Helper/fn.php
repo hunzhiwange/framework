@@ -20,33 +20,19 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Helper;
 
-use Leevel\Support\Fn as Fns;
-
 /**
  * 自动导入函数.
  *
- * @param callable|\Closure|string $fn
- * @param array                    $args
+ * @param string $fn
+ * @param array  $args
  *
  * @return mixed
  */
-function fn($fn, ...$args)
+function fn(string $fn, ...$args)
 {
-    static $instance, $loaded = [];
+    return \fn($fn)(...$args);
+}
 
-    if (is_string($fn) && in_array($fn, $loaded, true)) {
-        return $fn(...$args);
-    }
-
-    if (null === $instance) {
-        $instance = new Fns();
-    }
-
-    $result = $instance->__invoke($fn, ...$args);
-
-    if (is_string($fn)) {
-        $loaded[] = $fn;
-    }
-
-    return $result;
+class fn
+{
 }

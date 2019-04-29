@@ -26,3 +26,7 @@ function helper_fn_throw()
 {
     throw new Error('not');
 }
+
+class helper_fn_throw
+{
+}

@@ -19,39 +19,6 @@ declare(strict_types=1);
  */
 
 use Leevel\Leevel\App;
-use Leevel\Support\Fn as Fns;
-
-if (!function_exists('fn')) {
-    /**
-     * 自动导入函数.
-     *
-     * @param callable|\Closure|string $fn
-     * @param array                    $args
-     *
-     * @return mixed
-     * @codeCoverageIgnore
-     */
-    function fn($fn, ...$args)
-    {
-        static $instance, $loaded = [];
-
-        if (is_string($fn) && in_array($fn, $loaded, true)) {
-            return $fn(...$args);
-        }
-
-        if (null === $instance) {
-            $instance = new Fns();
-        }
-
-        $result = $instance->__invoke($fn, ...$args);
-
-        if (is_string($fn)) {
-            $loaded[] = $fn;
-        }
-
-        return $result;
-    }
-}
 
 if (!function_exists('hl')) {
     /**

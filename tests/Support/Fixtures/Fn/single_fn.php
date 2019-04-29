@@ -33,3 +33,7 @@ function single_fn(): string
 {
     return 'hello single fn';
 }
+
+class single_fn
+{
+}
