@@ -42,3 +42,7 @@ function sql_filter(string $strings): string
         '\\)',
     ], '', $strings);
 }
+
+class sql_filter
+{
+}

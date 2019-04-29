@@ -51,3 +51,7 @@ function signature(array $query, string $secret, array $ignore = []): string
 
     return hash_hmac('sha256', $sign, $secret);
 }
+
+class signature
+{
+}

@@ -50,3 +50,7 @@ function un_htmlspecialchars($data)
 
     return $data;
 }
+
+class un_htmlspecialchars
+{
+}

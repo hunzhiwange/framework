@@ -57,3 +57,7 @@ function limit_time(array $limitTime, int $time): void
 
     throw new RuntimeException($e);
 }
+
+class limit_time
+{
+}

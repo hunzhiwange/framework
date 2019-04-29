@@ -48,3 +48,7 @@ function clean_js(string $strings): string
 
     return $strings;
 }
+
+class clean_js
+{
+}

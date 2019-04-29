@@ -57,8 +57,8 @@ function html_filter($data, int $maxNum = 20000)
     return $data;
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
-    include __DIR__.'/length_limit.php';
+class html_filter
+{
 }
-// @codeCoverageIgnoreEnd
+
+fns(length_limit::class);

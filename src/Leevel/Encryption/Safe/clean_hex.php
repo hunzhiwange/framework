@@ -31,3 +31,7 @@ function clean_hex(string $strings): string
 {
     return preg_replace('![\\][xX]([A-Fa-f0-9]{1,3})!', '', $strings);
 }
+
+class clean_hex
+{
+}

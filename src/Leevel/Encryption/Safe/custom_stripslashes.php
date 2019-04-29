@@ -46,3 +46,7 @@ function custom_stripslashes($data, bool $recursive = true)
 
     return $data;
 }
+
+class custom_stripslashes
+{
+}

@@ -68,8 +68,8 @@ function esc_url(string $url, ?array $protocols = null, bool $show = true): stri
     return $url;
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Encryption\\Safe\\deep_replace')) {
-    include __DIR__.'/deep_replace.php';
+class esc_url
+{
 }
-// @codeCoverageIgnoreEnd
+
+fns(deep_replace::class);

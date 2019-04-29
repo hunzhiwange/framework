@@ -45,3 +45,7 @@ function deep_replace(array $search, string $subject): string
 
     return $subject;
 }
+
+class deep_replace
+{
+}

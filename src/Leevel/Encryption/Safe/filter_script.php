@@ -41,3 +41,7 @@ function filter_script(string $strings): string
         '?&gt;',
     ], $strings);
 }
+
+class filter_script
+{
+}

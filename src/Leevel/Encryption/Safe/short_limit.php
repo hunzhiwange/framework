@@ -37,12 +37,8 @@ function short_limit(string $strings, int $maxLength = 500): string
     return preg_replace('/　+/', '', trim($strings));
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Encryption\\Safe\\length_limit')) {
-    include __DIR__.'/length_limit.php';
+class short_limit
+{
 }
 
-if (!function_exists('Leevel\\Encryption\\Safe\\custom_htmlspecialchars')) {
-    include __DIR__.'/custom_htmlspecialchars.php';
-}
-// @codeCoverageIgnoreEnd
+fns(length_limit::class, custom_htmlspecialchars::class);

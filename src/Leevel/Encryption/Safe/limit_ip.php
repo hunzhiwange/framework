@@ -44,3 +44,7 @@ function limit_ip(string $visitorIp, array $limitIp): void
         throw new RuntimeException($e);
     }
 }
+
+class limit_ip
+{
+}

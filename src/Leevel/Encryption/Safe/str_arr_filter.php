@@ -48,8 +48,8 @@ function str_arr_filter($strings)
     return preg_replace('/,$/', '', $result);
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Encryption\\Safe\\sql_filter')) {
-    include __DIR__.'/sql_filter.php';
+class str_arr_filter
+{
 }
-// @codeCoverageIgnoreEnd
+
+fns(sql_filter::class);

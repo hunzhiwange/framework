@@ -46,3 +46,7 @@ function custom_addslashes($data, bool $recursive = true)
 
     return $data;
 }
+
+class custom_addslashes
+{
+}

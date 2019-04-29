@@ -39,3 +39,7 @@ function limit_agent(): void
 
     throw new RuntimeException($e);
 }
+
+class limit_agent
+{
+}

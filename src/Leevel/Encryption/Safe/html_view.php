@@ -34,3 +34,7 @@ function html_view(string $strings): string
 
     return $strings;
 }
+
+class html_view
+{
+}

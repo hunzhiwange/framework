@@ -36,3 +36,7 @@ function length_limit(string $strings, int $maxLength): string
 
     return $strings;
 }
+
+class length_limit
+{
+}

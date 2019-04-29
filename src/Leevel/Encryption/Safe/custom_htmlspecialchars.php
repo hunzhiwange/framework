@@ -47,3 +47,7 @@ function custom_htmlspecialchars($data)
 
     return $data;
 }
+
+class custom_htmlspecialchars
+{
+}

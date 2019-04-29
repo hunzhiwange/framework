@@ -41,3 +41,7 @@ function int_arr_filter($data)
 
     return implode(',', $data);
 }
+
+class int_arr_filter
+{
+}
