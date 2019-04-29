@@ -119,16 +119,6 @@ class FunctionsTest extends TestCase
         ];
     }
 
-    public function testEnvWithValue()
-    {
-        $this->assertNull(Leevel::env('testNotFound'));
-        $this->assertSame('foo', Leevel::env('testNotFound', 'foo'));
-        $this->assertSame('e10adc3949ba59abbe56e057f20f883e', Leevel::env('foo', function () {
-            return md5('123456');
-        }));
-        $this->assertSame('__fooBar', Leevel::env('foo', '__fooBar'));
-    }
-
     public function testLog()
     {
         $log = $this->createMock(ILog::class);

@@ -17,6 +17,9 @@
         "leevel/di": "1.0.*"
     },
     "autoload": {
+        "files": [
+            "src/Leevel/Support/functions.php"
+        ],
         "psr-4": {
             "Leevel\\Support\\": ""
         }

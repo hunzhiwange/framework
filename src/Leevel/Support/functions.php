@@ -98,3 +98,42 @@ if (!function_exists('fns')) {
         throw new FunctionNotFoundException($e);
     }
 }
+
+if (!function_exists('env')) {
+    /**
+     * 取得应用的环境变量.支持 boolean, empty 和 null.
+     *
+     * @param mixed $name
+     * @param mixed $defaults
+     *
+     * @return mixed
+     */
+    function env(string $name, $defaults = null)
+    {
+        if (false === $value = getenv($name)) {
+            $value = $defaults;
+        }
+
+        switch ($value) {
+            case 'true':
+            case '(true)':
+                return true;
+            case 'false':
+            case '(false)':
+                return false;
+            case 'empty':
+            case '(empty)':
+                return '';
+            case 'null':
+            case '(null)':
+                return;
+        }
+
+        if (is_string($value) && strlen($value) > 1 &&
+            '"' === $value[0] && '"' === $value[strlen($value) - 1]) {
+            return substr($value, 1, -1);
+        }
+
+        return $value;
+    }
+}
