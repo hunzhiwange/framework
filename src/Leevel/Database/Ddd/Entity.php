@@ -32,11 +32,14 @@ use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\ReplaceException;
 use Leevel\Database\Select as DatabaseSelect;
 use Leevel\Event\IDispatch;
+use Leevel\I18n\Helper\gettext;
 use function Leevel\I18n\Helper\gettext as __;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use function Leevel\Support\Str\camelize;
+use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
  * 模型实体 Object Relational Mapping.
@@ -1941,16 +1944,4 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
-    include dirname(__DIR__, 2).'/I18n/Helper/gettext.php';
-}
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include dirname(__DIR__, 2).'/Support/Str/un_camelize.php';
-}
-
-if (!function_exists('Leevel\\Support\\Str\\camelize')) {
-    include dirname(__DIR__, 2).'/Support/Str/camelize.php';
-}
-// @codeCoverageIgnoreEnd
+fns(un_camelize::class, camelize::class, gettext::class);

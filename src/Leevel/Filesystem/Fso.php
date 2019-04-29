@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Filesystem;
 
 use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
  * File System Object 管理.
@@ -49,8 +50,4 @@ class Fso
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
-// @codeCoverageIgnoreEnd
+fns(un_camelize::class);

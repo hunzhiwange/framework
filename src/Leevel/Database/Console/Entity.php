@@ -25,7 +25,9 @@ use Leevel\Console\Make;
 use Leevel\Console\Option;
 use Leevel\Database\Manager;
 use function Leevel\Support\Str\camelize;
+use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
  * 生成模型实体.
@@ -309,12 +311,4 @@ class Entity extends Make
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include dirname(__DIR__, 2).'/Support/Str/un_camelize.php';
-}
-
-if (!function_exists('Leevel\\Support\\Str\\camelize')) {
-    include dirname(__DIR__, 2).'/Support/Str/camelize.php';
-}
-// @codeCoverageIgnoreEnd
+fns(un_camelize::class, camelize::class);

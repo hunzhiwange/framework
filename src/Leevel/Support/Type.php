@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Support;
 
 use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
  * 类型判断辅助函数.
@@ -49,8 +50,4 @@ class Type
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include __DIR__.'/Str/un_camelize.php';
-}
-// @codeCoverageIgnoreEnd
+fns(un_camelize::class);

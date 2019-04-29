@@ -25,6 +25,7 @@ use Closure;
 use InvalidArgumentException;
 use Leevel\Support\FunctionNotFoundException;
 use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 use PHPUnit\Framework\TestCase;
 use Traversable;
 
@@ -369,8 +370,4 @@ class Assert
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
-// @codeCoverageIgnoreEnd
+fns(un_camelize::class);

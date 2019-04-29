@@ -26,8 +26,11 @@ use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Flow\FlowControl;
 use function Leevel\Support\Arr\normalize;
+use Leevel\Support\Arr\normalize;
 use function Leevel\Support\Str\camelize;
+use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
  * Validator 数据验证器.
@@ -1234,16 +1237,4 @@ class Validator implements IValidator
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
-    include dirname(__DIR__).'/Support/Arr/normalize.php';
-}
-
-if (!function_exists('Leevel\\Support\\Str\\un_camelize')) {
-    include dirname(__DIR__).'/Support/Str/un_camelize.php';
-}
-
-if (!function_exists('Leevel\\Support\\Str\\camelize')) {
-    include dirname(__DIR__).'/Support/Str/camelize.php';
-}
-// @codeCoverageIgnoreEnd
+fns(normalize::class, un_camelize::class, camelize::class);
