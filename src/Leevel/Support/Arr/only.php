@@ -38,3 +38,7 @@ function only(array $input, array $filter): array
 
     return $result;
 }
+
+class only
+{
+}

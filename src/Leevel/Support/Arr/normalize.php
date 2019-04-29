@@ -49,3 +49,7 @@ function normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false)
 
     return $inputs;
 }
+
+class normalize
+{
+}

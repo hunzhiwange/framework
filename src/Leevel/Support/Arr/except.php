@@ -38,3 +38,7 @@ function except(array $input, array $filter): array
 
     return $input;
 }
+
+class except
+{
+}

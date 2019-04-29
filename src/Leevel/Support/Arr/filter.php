@@ -60,3 +60,7 @@ function filter(array $input, array $rules): array
 
     return $input;
 }
+
+class filter
+{
+}
