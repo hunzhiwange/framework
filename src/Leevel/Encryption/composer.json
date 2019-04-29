@@ -13,7 +13,8 @@
     }],
     "require": {
         "php": "^7.3.2",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "leevel/support": "1.0.*"
     },
     "autoload": {
         "psr-4": {

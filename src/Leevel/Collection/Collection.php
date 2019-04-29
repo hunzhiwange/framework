@@ -30,6 +30,7 @@ use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use function Leevel\Support\Type\type_these;
+use Leevel\Support\Type\type_these;
 use stdClass;
 
 /**
@@ -384,8 +385,4 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Type\\type_these')) {
-    include dirname(__DIR__).'/Support/Type/type_these.php';
-}
-// @codeCoverageIgnoreEnd
+fns(type_these::class);

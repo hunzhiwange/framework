@@ -24,6 +24,7 @@ use Closure;
 use InvalidArgumentException;
 use Leevel\Flow\FlowControl;
 use function Leevel\Support\Arr\normalize;
+use Leevel\Support\Arr\normalize;
 use PDO;
 
 /**
@@ -2893,8 +2894,4 @@ class Condition
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
-    include dirname(__DIR__).'/Support/Arr/normalize.php';
-}
-// @codeCoverageIgnoreEnd
+fns(normalize::class);

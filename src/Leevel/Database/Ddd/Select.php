@@ -26,8 +26,11 @@ use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Select as DatabaseSelect;
 use function Leevel\Support\Arr\normalize;
+use Leevel\Support\Arr\normalize;
 use function Leevel\Support\Str\contains;
+use Leevel\Support\Str\contains;
 use function Leevel\Support\Str\starts_with;
+use Leevel\Support\Str\starts_with;
 
 /**
  * 模型实体查询.
@@ -534,16 +537,4 @@ class Select
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
-    include dirname(__DIR__, 2).'/Support/Arr/normalize.php';
-}
-
-if (!function_exists('Leevel\\Support\\Str\\contains')) {
-    include dirname(__DIR__, 2).'/Support/Str/contains.php';
-}
-
-if (!function_exists('Leevel\\Support\\Str\\starts_with')) {
-    include dirname(__DIR__, 2).'/Support/Str/starts_with.php';
-}
-// @codeCoverageIgnoreEnd
+fns(normalize::class, contains::class, starts_with::class);
