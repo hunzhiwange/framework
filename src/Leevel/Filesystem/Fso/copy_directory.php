@@ -65,6 +65,10 @@ function copy_directory(string $sourcePath, string $targetPath, array $filter = 
     }
 }
 
+class copy_directory
+{
+}
+
 // @codeCoverageIgnoreStart
 if (!function_exists('Leevel\\Filesystem\\Fso\\create_directory')) {
     include __DIR__.'/create_directory.php';
