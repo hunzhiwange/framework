@@ -13,6 +13,7 @@
     }],
     "require": {
         "php": "^7.3.2",
+        "leevel/support": "1.0.*",
         "maximebf/debugbar": "~1.15.0",
         "spiral/dumper": "^1.1.3"
     },

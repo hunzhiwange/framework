@@ -12,7 +12,9 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": "^7.3.2"
+        "php": "^7.3.2",
+        "leevel/support": "1.0.*",
+        "leevel/filesystem": "1.0.*"
     },
     "autoload": {
         "psr-4": {
