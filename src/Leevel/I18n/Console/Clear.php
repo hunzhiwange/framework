@@ -22,6 +22,7 @@ namespace Leevel\I18n\Console;
 
 use Leevel\Console\Command;
 use function Leevel\Filesystem\Fso\list_directory;
+use Leevel\Filesystem\Fso\list_directory;
 use Leevel\Kernel\IApp;
 
 /**
@@ -110,8 +111,4 @@ class Clear extends Command
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Filesystem\\Fso\\list_directory')) {
-    include dirname(__DIR__, 2).'/Filesystem/Fso/list_directory.php';
-}
-// @codeCoverageIgnoreEnd
+fns(list_directory::class);

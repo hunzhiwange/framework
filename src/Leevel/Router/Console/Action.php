@@ -25,6 +25,7 @@ use Leevel\Console\Make;
 use Leevel\Console\Option;
 use Leevel\Router\IRouter;
 use function Leevel\Support\Str\camelize;
+use Leevel\Support\Str\camelize;
 
 /**
  * 生成方法器.
@@ -167,8 +168,4 @@ class Action extends Make
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Str\\camelize')) {
-    include dirname(__DIR__, 2).'/Support/Str/camelize.php';
-}
-// @codeCoverageIgnoreEnd
+fns(camelize::class);

@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 use function Leevel\Support\Str\rand_alpha_num;
+use Leevel\Support\Str\rand_alpha_num;
 use RuntimeException;
 use SessionHandlerInterface;
 
@@ -742,8 +743,4 @@ class Session implements ISession
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Str\\rand_alpha_num')) {
-    include dirname(__DIR__).'/Support/Str/rand_alpha_num.php';
-}
-// @codeCoverageIgnoreEnd
+fns(rand_alpha_num::class);

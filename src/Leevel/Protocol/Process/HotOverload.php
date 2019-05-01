@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Process;
 
 use function Leevel\Filesystem\Fso\list_directory;
+use Leevel\Filesystem\Fso\list_directory;
 use Leevel\Option\IOption;
 use Leevel\Protocol\IServer;
 
@@ -188,8 +189,4 @@ class HotOverload extends Process
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Filesystem\\Fso\\list_directory')) {
-    include dirname(__DIR__, 2).'/Filesystem/Fso/list_directory.php';
-}
-// @codeCoverageIgnoreEnd
+fns(list_directory::class);

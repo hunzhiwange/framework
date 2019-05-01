@@ -22,6 +22,7 @@ namespace Leevel\Router;
 
 use InvalidArgumentException;
 use function Leevel\Support\Arr\normalize;
+use Leevel\Support\Arr\normalize;
 use OpenApi\Annotations\OpenApi;
 use OpenApi\Annotations\PathItem;
 use OpenApi\Context;
@@ -741,12 +742,4 @@ class OpenApiRouter
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Arr\\normalize')) {
-    include dirname(__DIR__).'/Support/Arr/normalize.php';
-}
-
-if (!function_exists('\\OpenApi\\scan')) {
-    include dirname(__DIR__, 5).'/zircote/swagger-php/src/functions.php';
-}
-// @codeCoverageIgnoreEnd
+fns(normalize::class);

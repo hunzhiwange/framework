@@ -1357,10 +1357,7 @@ class Compiler implements ICompiler
     {
         if ('global' === $type) {
             $content = Parser::globalEncode($content);
-        } elseif (in_array($type, [
-            'revert',
-            'include',
-        ], true)) {
+        } elseif (in_array($type, ['revert', 'include'], true)) {
             $content = base64_decode($content, true);
         } else {
             $content = Parser::revertEncode($content);

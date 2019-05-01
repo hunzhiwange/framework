@@ -22,6 +22,7 @@ namespace Leevel\Leevel\Console;
 
 use Leevel\Console\Command;
 use function Leevel\Filesystem\Fso\link;
+use Leevel\Filesystem\Fso\link;
 use Leevel\Kernel\IApp;
 
 /**
@@ -93,8 +94,4 @@ class LinkPublic extends Command
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Filesystem\\Fso\link')) {
-    include dirname(__DIR__, 2).'/Filesystem/Fso/link.php';
-}
-// @codeCoverageIgnoreEnd
+fns(link::class);

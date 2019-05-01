@@ -22,6 +22,7 @@ namespace Leevel\View\Console;
 
 use Leevel\Console\Command;
 use function Leevel\Filesystem\Fso\delete_directory;
+use Leevel\Filesystem\Fso\delete_directory;
 use Leevel\Kernel\IApp;
 
 /**
@@ -85,8 +86,4 @@ class Clear extends Command
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Filesystem\\Fso\\delete_directory')) {
-    include dirname(__DIR__, 2).'/Filesystem/Fso/delete_directory.php';
-}
-// @codeCoverageIgnoreEnd
+fns(delete_directory::class);

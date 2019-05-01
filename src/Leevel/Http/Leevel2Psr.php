@@ -180,13 +180,3 @@ class Leevel2Psr implements ILeevel2Psr
         );
     }
 }
-
-// @codeCoverageIgnoreStart
-if (!function_exists('\\Zend\\Diactoros\\normalizeServer')) {
-    include dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/normalize_server.php';
-}
-
-if (!function_exists('\\Zend\\Diactoros\\normalizeUploadedFiles')) {
-    include dirname(__DIR__, 5).'/zendframework/zend-diactoros/src/functions/create_uploaded_file.php';
-}
-// @codeCoverageIgnoreEnd

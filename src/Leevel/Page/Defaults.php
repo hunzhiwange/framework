@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
+use Leevel\I18n\Helper\gettext;
 use function Leevel\I18n\Helper\gettext as __;
 
 /**
@@ -349,8 +350,4 @@ class Defaults implements IRender
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
-    include dirname(__DIR__).'/I18n/Helper/gettext.php';
-}
-// @codeCoverageIgnoreEnd
+fns(gettext::class);

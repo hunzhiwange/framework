@@ -22,6 +22,7 @@ namespace Leevel\Stack;
 
 use InvalidArgumentException;
 use function Leevel\Support\Type\type_these;
+use Leevel\Support\Type\type_these;
 use SplDoublyLinkedList;
 
 /**
@@ -142,8 +143,4 @@ class LinkedList extends SplDoublyLinkedList
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Type\\type_these')) {
-    include dirname(__DIR__).'/Support/Type/type_these.php';
-}
-// @codeCoverageIgnoreEnd
+fns(type_these::class);
