@@ -20,8 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Option\Console;
 
-use InvalidArgumentException;
 use Leevel\Console\Command;
+use Leevel\Filesystem\Fso\create_file;
+use function Leevel\Filesystem\Fso\create_file;
 use Leevel\Kernel\IApp;
 use Leevel\Option\Load;
 
@@ -117,18 +118,6 @@ class Cache extends Command
      */
     protected function writeCache(string $cachePath, array $data): void
     {
-        $dirname = dirname($cachePath);
-
-        if (!is_dir($dirname)) {
-            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                $e = sprintf('Unable to create the %s directory.', $dirname);
-
-                throw new InvalidArgumentException($e);
-            }
-
-            mkdir($dirname, 0777, true);
-        }
-
         $relativePathLevel = $this->computeRelativePath($cachePath);
         $isRelativePath = $relativePathLevel > -1;
 
@@ -146,14 +135,7 @@ class Cache extends Command
             $content = $this->replaceRelativePath($content);
         }
 
-        if (!is_writable($dirname) ||
-            !file_put_contents($cachePath, $content)) {
-            $e = sprintf('Dir %s is not writeable.', $dirname);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        chmod($cachePath, 0666 & ~umask());
+        create_file($cachePath, $content);
     }
 
     /**
@@ -176,3 +158,5 @@ class Cache extends Command
         return [];
     }
 }
+
+fns(create_file::class);

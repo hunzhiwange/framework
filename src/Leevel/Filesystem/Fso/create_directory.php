@@ -20,21 +20,28 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Fso;
 
+use RuntimeException;
+
 /**
  * 创建目录.
  *
  * @param string $dir
- * @param number $mode
+ * @param int    $mode
+ * @param bool   $writableValid
  *
  * @return true
  */
-function create_directory(string $dir, int $mode = 0777): bool
+function create_directory(string $dir, int $mode = 0777, bool $writableValid = true): bool
 {
-    if (is_dir($dir)) {
-        return true;
+    if (!is_dir($dir)) {
+        mkdir($dir, $mode, true);
     }
 
-    mkdir($dir, $mode, true);
+    if (true === $writableValid && !is_writable($dir)) {
+        $e = sprintf('Unable to write in the %s directory.', $dir);
+
+        throw new RuntimeException($e);
+    }
 
     return true;
 }

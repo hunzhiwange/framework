@@ -20,8 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Console;
 
-use InvalidArgumentException;
 use Leevel\Console\Command;
+use Leevel\Filesystem\Fso\create_file;
+use function Leevel\Filesystem\Fso\create_file;
 use Leevel\Kernel\IApp;
 use Leevel\Router\RouterProvider;
 
@@ -77,29 +78,10 @@ class Cache extends Command
      */
     protected function writeCache(string $cachePath, array $data): void
     {
-        $dirname = dirname($cachePath);
-
-        if (!is_dir($dirname)) {
-            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                $e = sprintf('Unable to create the %s directory.', $dirname);
-
-                throw new InvalidArgumentException($e);
-            }
-
-            mkdir($dirname, 0777, true);
-        }
-
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>'.
             PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
 
-        if (!is_writable($dirname) ||
-            !file_put_contents($cachePath, $content)) {
-            $e = sprintf('Dir %s is not writeable.', $dirname);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        chmod($cachePath, 0666 & ~umask());
+        create_file($cachePath, $content);
     }
 
     /**
@@ -122,3 +104,5 @@ class Cache extends Command
         return [];
     }
 }
+
+fns(create_file::class);

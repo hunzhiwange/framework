@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
+use function Leevel\Filesystem\Fso\create_directory;
+use Leevel\Filesystem\Fso\create_directory;
 use SplFileObject;
 
 /**
@@ -77,22 +79,10 @@ class File extends SplFileObject
      */
     protected function getTargetFile(string $directory, ?string $name = null): string
     {
-        if (!is_dir($directory)) {
-            if (!is_writable(dirname($directory))) {
-                throw new FileException(
-                    sprintf('Unable to create the %s directory.', $directory)
-                );
-            }
-
-            mkdir($directory, 0777, true);
-        } elseif (!is_writable($directory)) {
-            throw new FileException(
-                sprintf('Unable to write in the %s directory.', $directory)
-            );
-        }
+        create_directory($directory);
 
         $target = rtrim($directory, '/\\').\DIRECTORY_SEPARATOR.
-            (null === $name ? $this->getBasename() : $name);
+            ($name ?? $this->getBasename());
 
         return $target;
     }
@@ -118,3 +108,5 @@ class File extends SplFileObject
         chmod($target, 0666 & ~umask());
     }
 }
+
+fns(create_directory::class);

@@ -20,7 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Console;
 
-use InvalidArgumentException;
+use function Leevel\Filesystem\Fso\create_file;
+use Leevel\Filesystem\Fso\create_file;
 use RuntimeException;
 
 /**
@@ -153,31 +154,13 @@ abstract class Make extends Command
         $saveFilePath = $this->getSaveFilePath();
 
         if (is_file($saveFilePath)) {
-            throw new RuntimeException(
-                'File is already exits.'.PHP_EOL.
-                $this->formatFile($saveFilePath)
-            );
+            $e = 'File is already exits.'.PHP_EOL.
+                $this->formatFile($saveFilePath);
+
+            throw new RuntimeException($e);
         }
 
-        $dirname = dirname($saveFilePath);
-
-        if (!is_dir($dirname)) {
-            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                throw new InvalidArgumentException(
-                    sprintf('Unable to create the %s directory.', $dirname)
-                );
-            }
-
-            mkdir($dirname, 0777, true);
-        }
-
-        if (!is_writable($dirname) ||
-            !file_put_contents($saveFilePath, $this->getTemplateResult())) {
-            throw new RuntimeException(
-                'Can not write file.'.PHP_EOL.
-                $this->formatFile($saveFilePath)
-            );
-        }
+        create_file($saveFilePath, $this->getTemplateResult());
     }
 
     /**
@@ -232,10 +215,7 @@ abstract class Make extends Command
 
         $replace = array_values($replaceKeyValue);
 
-        return [
-            $sourceKey,
-            $replace,
-        ];
+        return [$sourceKey, $replace];
     }
 
     /**
@@ -245,10 +225,12 @@ abstract class Make extends Command
      */
     protected function getDefaultReplaceKeyValue(): array
     {
-        return array_merge([
+        $defaultReplace = [
             'namespace' => $this->getNamespace(),
             'date_y'    => date('Y'),
-        ], $this->getCustomReplaceKeyValue());
+        ];
+
+        return array_merge($defaultReplace, $this->getCustomReplaceKeyValue());
     }
 
     /**
@@ -278,9 +260,9 @@ abstract class Make extends Command
      */
     protected function getNamespacePath(): string
     {
-        if ('/' === ($namespacePath = $this->getContainer()->getPathByComposer($this->getNamespace()).'/')) {
-            $namespacePath = $this->getContainer()->appPath(lcfirst($this->getNamespace())).'/';
-        }
+        $namespacePath = $this
+            ->getContainer()
+            ->namespacePath($this->getNamespace().'\\index', true).'/';
 
         return $namespacePath;
     }
@@ -398,3 +380,5 @@ abstract class Make extends Command
         return $file;
     }
 }
+
+fns(create_file::class);

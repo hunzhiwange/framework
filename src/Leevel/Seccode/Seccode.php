@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Seccode;
 
 use InvalidArgumentException;
+use Leevel\Filesystem\Fso\create_directory;
 
 /**
  * 验证码
@@ -137,18 +138,7 @@ class Seccode implements ISeccode
         $this->makeTtfFont($resImage);
 
         if ($outPath) {
-            $dirname = dirname($outPath);
-
-            if (!is_dir($dirname)) {
-                if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                    $e = sprintf('Unable to create the %s directory.', $dirname);
-
-                    throw new InvalidArgumentException($e);
-                }
-
-                mkdir($dirname, 0777, true);
-            }
-
+            fn(create_directory::class, dirname($outPath));
             imagepng($resImage, $outPath, 9);
         } else {
             // @codeCoverageIgnoreStart
@@ -309,9 +299,7 @@ class Seccode implements ISeccode
     {
         if (!function_exists('imagettftext')) {
             // @codeCoverageIgnoreStart
-            throw new InvalidArgumentException(
-                'Function imagettftext is not exits.'
-            );
+            throw new InvalidArgumentException('Function imagettftext is not exits.');
             // @codeCoverageIgnoreEnd
         }
 
@@ -642,16 +630,9 @@ class Seccode implements ISeccode
             throw new InvalidArgumentException($e);
         }
 
-        $rand = 'rand_'.$autoType;
-        $randMethod = '\\Leevel\\Support\\Str\\'.$rand;
+        $randMethod = '\\Leevel\\Support\\Str\\rand_'.$autoType;
 
-        // @codeCoverageIgnoreStart
-        if (!function_exists($randMethod)) {
-            include dirname(__DIR__).'/Support/Str/'.$rand.'.php';
-        }
-        // @codeCoverageIgnoreEnd
-
-        $this->code($randMethod($size));
+        $this->code(fn($randMethod, $size));
     }
 
     /**

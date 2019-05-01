@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 use InvalidArgumentException;
+use Leevel\Filesystem\Fso\create_file;
+use function Leevel\Filesystem\Fso\create_file;
 
 /**
  * 文件缓存.
@@ -210,26 +212,9 @@ class File extends Connect implements IConnect
      */
     protected function writeData(string $fileName, string $data): void
     {
-        $dirname = dirname($fileName);
+        create_file($fileName);
 
-        if (!is_dir($dirname)) {
-            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                throw new InvalidArgumentException(
-                    sprintf('Unable to create the %s directory.', $dirname)
-                );
-            }
-
-            mkdir($dirname, 0777, true);
-        }
-
-        if (!is_writable($dirname) ||
-            !file_put_contents($fileName, $data, LOCK_EX)) {
-            throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable.', $dirname)
-            );
-        }
-
-        chmod($fileName, 0666 & ~umask());
+        file_put_contents($fileName, $data, LOCK_EX);
     }
 
     /**
@@ -267,3 +252,5 @@ class File extends Connect implements IConnect
         ], '.', parent::getCacheName($name));
     }
 }
+
+fns(create_file::class);

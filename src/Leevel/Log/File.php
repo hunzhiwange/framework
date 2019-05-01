@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Log;
 
 use InvalidArgumentException;
+use Leevel\Filesystem\Fso\create_directory;
 
 /**
  * log.file.
@@ -114,21 +115,7 @@ class File implements IConnect
         $dirname = dirname($filePath);
 
         if (!is_file($filePath)) {
-            if (!is_dir($dirname)) {
-                if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                    throw new InvalidArgumentException(
-                        sprintf('Unable to create the %s directory.', $dirname)
-                    );
-                }
-
-                mkdir($dirname, 0777, true);
-            }
-
-            if (!is_writable($dirname)) {
-                throw new InvalidArgumentException(
-                    sprintf('Dir %s is not writeable.', $dirname)
-                );
-            }
+            fn(create_directory::class, $dirname);
         }
 
         // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php

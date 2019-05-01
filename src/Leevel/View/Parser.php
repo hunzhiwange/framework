@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\View;
 
 use InvalidArgumentException;
+use Leevel\Filesystem\Fso\create_file;
 use Leevel\Stack\Stack;
 
 /**
@@ -790,29 +791,10 @@ class Parser implements IParser
      */
     protected function makeCacheFile(string $cachePath, string &$compiled): void
     {
-        $dirname = dirname($cachePath);
-
-        if (!is_dir($dirname)) {
-            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                throw new InvalidArgumentException(
-                    sprintf('Unable to create the %s directory.', $dirname)
-                );
-            }
-
-            mkdir($dirname, 0777, true);
-        }
-
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').
             ' */ ?'.'>'.PHP_EOL.$compiled;
 
-        if (!is_writable($dirname) ||
-            !file_put_contents($cachePath, $content)) {
-            throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable.', $dirname)
-            );
-        }
-
-        chmod($cachePath, 0666 & ~umask());
+        fn(create_file::class, $cachePath, $content);
     }
 
     /**

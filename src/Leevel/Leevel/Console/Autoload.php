@@ -23,6 +23,8 @@ namespace Leevel\Leevel\Console;
 use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
+use Leevel\Filesystem\Fso\create_file;
+use function Leevel\Filesystem\Fso\create_file;
 use Leevel\Kernel\IApp;
 
 /**
@@ -461,26 +463,7 @@ class ComposerStaticInit
      */
     protected function writeCache(string $cachePath, string $data): void
     {
-        $dirname = dirname($cachePath);
-
-        if (!is_dir($dirname)) {
-            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                $e = sprintf('Unable to create the %s directory.', $dirname);
-
-                throw new InvalidArgumentException($e);
-            }
-
-            mkdir($dirname, 0777, true);
-        }
-
-        if (!is_writable($dirname) ||
-            !file_put_contents($cachePath, $data)) {
-            $e = sprintf('Dir %s is not writeable.', $dirname);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        chmod($cachePath, 0666 & ~umask());
+        create_file($cachePath, $data);
     }
 
     /**
@@ -537,3 +520,5 @@ class ComposerStaticInit
         ];
     }
 }
+
+fns(create_file::class);

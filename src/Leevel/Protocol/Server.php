@@ -22,9 +22,9 @@ namespace Leevel\Protocol;
 
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
+use Leevel\Filesystem\Fso\create_directory;
 use Leevel\Protocol\Process as ProtocolProcess;
 use Swoole\Process;
-use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
 
 /**
@@ -395,23 +395,7 @@ abstract class Server
             throw new InvalidArgumentException('Pid path is not set');
         }
 
-        $dirname = dirname($this->option['pid_path']);
-
-        if (!is_dir($dirname)) {
-            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
-                throw new InvalidArgumentException(
-                    sprintf('Unable to create the %s directory.', $dirname)
-                );
-            }
-
-            mkdir($dirname, 0777, true);
-        }
-
-        if (!is_writable($dirname)) {
-            throw new InvalidArgumentException(
-                sprintf('Pid dir is not writable'.$dirname)
-            );
-        }
+        fn(create_directory::class, dirname($this->option['pid_path']));
     }
 
     /**
