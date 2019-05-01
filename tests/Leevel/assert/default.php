@@ -21,7 +21,7 @@ declare(strict_types=1);
 /**
  * 默认模板
  */
-$title = isset($type) ? $type : 'Whoops!';
+$title = $type ?? 'Whoops!';
 
 if (!isset($message)) {
     $message = 'Unknown error.';
