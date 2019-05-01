@@ -190,7 +190,7 @@ class Validator implements IValidator
             $parameter[] = $args;
             unset($args);
 
-            if (false !== ($fn = $this->findFnRule(un_camelize($method)))) {
+            if (class_exists($fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method))) {
                 array_shift($parameter);
 
                 return $fn(...$parameter);
@@ -981,16 +981,13 @@ class Validator implements IValidator
             return;
         }
 
-        $camelizeRule = ucwords(camelize($rule));
-        $method = 'validate'.$camelizeRule;
-
-        if (false !== ($fn = $this->findFnRule($rule))) {
+        if (class_exists($fn = __NAMESPACE__.'\\Helper\\validate_'.$rule)) {
             if (!$fn($fieldValue, $parameter, $this)) {
                 $this->addFailure($field, $rule, $parameter);
 
                 return false;
             }
-        } elseif (class_exists($className = __NAMESPACE__.'\\'.$camelizeRule.'Rule')) {
+        } elseif (class_exists($className = __NAMESPACE__.'\\'.($camelizeRule = ucwords(camelize($rule))).'Rule')) {
             if ($this->container) {
                 $validateRule = $this->container->make($className);
             } else {
@@ -1002,7 +999,7 @@ class Validator implements IValidator
 
                 return false;
             }
-        } elseif (!$this->{$method}($fieldValue, $parameter, $this, $field)) {
+        } elseif (!$this->{'validate'.$camelizeRule}($fieldValue, $parameter, $this, $field)) {
             $this->addFailure($field, $rule, $parameter);
 
             return false;
@@ -1011,31 +1008,6 @@ class Validator implements IValidator
         unset($fieldValue);
 
         return true;
-    }
-
-    /**
-     * 是否为函数验证规则.
-     *
-     * @param string $rule
-     *
-     * @return bool|string
-     */
-    protected function findFnRule(string $rule)
-    {
-        $fn = __NAMESPACE__.'\\Helper\\validate_'.$rule;
-
-        if (function_exists($fn)) {
-            return $fn;
-        }
-        $rulePath = __DIR__.'/Helper/validate_'.$rule.'.php';
-
-        if (is_file($rulePath)) {
-            include $rulePath;
-
-            return $fn;
-        }
-
-        return false;
     }
 
     /**
