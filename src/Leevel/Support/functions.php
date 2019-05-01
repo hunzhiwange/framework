@@ -32,30 +32,28 @@ if (!function_exists('fn')) {
     function fn(string $fn, ...$args)
     {
         if (!function_exists($fn)) {
-            fns($fn);
+            fn_exists($fn);
         }
 
         return $fn(...$args);
     }
 }
 
-if (!function_exists('fns')) {
+if (!function_exists('fn_exists')) {
     /**
-     * 自动导入函数文件.
+     * 判断惰性加载函数是否存在.
+     *
+     * 系统会自动搜索并导入函数文件.
      *
      * @param string $fn
-     * @param array  $moreFn
+     * @param bool   $throwException
      *
-     * @return string
+     * @return bool
      */
-    function fns(string $fn, ...$moreFn): string
+    function fn_exists(string $fn, bool $throwException = true): bool
     {
         if (function_exists($fn)) {
-            foreach ($moreFn as $m) {
-                fns($m);
-            }
-
-            return $fn;
+            return true;
         }
 
         foreach (['fn', 'prefix', 'index'] as $type) {
@@ -85,23 +83,23 @@ if (!function_exists('fns')) {
             class_exists($virtualClass);
 
             if (function_exists($fn)) {
-                foreach ($moreFn as $m) {
-                    fns($m);
-                }
-
-                return $fn;
+                return true;
             }
         }
 
-        $e = sprintf('Call to undefined function %s()', $fn);
+        if (true === $throwException) {
+            $e = sprintf('Call to undefined function %s()', $fn);
 
-        throw new FunctionNotFoundException($e);
+            throw new FunctionNotFoundException($e);
+        }
+
+        return false;
     }
 }
 
 if (!function_exists('env')) {
     /**
-     * 取得应用的环境变量.支持 boolean, empty 和 null.
+     * 取得应用的环境变量.支持 bool, empty 和 null.
      *
      * @param mixed $name
      * @param mixed $defaults
