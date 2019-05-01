@@ -59,3 +59,7 @@ function validate_luhn($value): bool
 
     return 0 === $total % 10;
 }
+
+class validate_luhn
+{
+}

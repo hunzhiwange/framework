@@ -35,3 +35,7 @@ function validate_zip_code($value): bool
 
     return preg_match('/^[1-9]\d{5}$/', (string) ($value)) > 0;
 }
+
+class validate_zip_code
+{
+}

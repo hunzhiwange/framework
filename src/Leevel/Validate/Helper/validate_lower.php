@@ -31,3 +31,7 @@ function validate_lower($value): bool
 {
     return ctype_lower($value);
 }
+
+class validate_lower
+{
+}

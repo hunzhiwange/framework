@@ -31,3 +31,7 @@ function validate_ipv6($value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
 }
+
+class validate_ipv6
+{
+}

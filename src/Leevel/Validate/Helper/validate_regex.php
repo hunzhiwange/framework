@@ -44,3 +44,7 @@ function validate_regex($value, array $parameter): bool
 
     return preg_match($parameter[0], $value) > 0;
 }
+
+class validate_regex
+{
+}

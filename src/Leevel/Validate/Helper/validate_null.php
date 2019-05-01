@@ -31,3 +31,7 @@ function validate_null($value): bool
 {
     return null === $value;
 }
+
+class validate_null
+{
+}

@@ -53,3 +53,7 @@ function validate_date($value): bool
 
     return checkdate($value['month'], $value['day'], $value['year']);
 }
+
+class validate_date
+{
+}

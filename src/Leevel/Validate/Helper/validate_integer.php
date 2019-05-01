@@ -31,3 +31,7 @@ function validate_integer($value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_INT);
 }
+
+class validate_integer
+{
+}

@@ -35,3 +35,7 @@ function validate_chinese($value): bool
 
     return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $value) > 0;
 }
+
+class validate_chinese
+{
+}

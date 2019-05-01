@@ -40,3 +40,7 @@ function validate_different($value, array $parameter, IValidator $validator): bo
 
     return $value !== $validator->getFieldValue($parameter[0]);
 }
+
+class validate_different
+{
+}

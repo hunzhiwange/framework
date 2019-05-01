@@ -44,3 +44,7 @@ function validate_strlen($value, array $parameter): bool
 
     return strlen($value) === (int) $parameter[0];
 }
+
+class validate_strlen
+{
+}

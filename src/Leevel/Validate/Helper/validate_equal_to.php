@@ -40,3 +40,7 @@ function validate_equal_to($value, array $parameter, IValidator $validator): boo
 
     return $value === $validator->getFieldValue($parameter[0]);
 }
+
+class validate_equal_to
+{
+}

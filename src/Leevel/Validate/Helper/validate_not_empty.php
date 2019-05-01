@@ -31,3 +31,7 @@ function validate_not_empty($value): bool
 {
     return !empty($value);
 }
+
+class validate_not_empty
+{
+}

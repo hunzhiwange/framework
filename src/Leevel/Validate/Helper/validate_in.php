@@ -38,3 +38,7 @@ function validate_in($value, array $parameter): bool
 
     return in_array($value, $parameter, true);
 }
+
+class validate_in
+{
+}

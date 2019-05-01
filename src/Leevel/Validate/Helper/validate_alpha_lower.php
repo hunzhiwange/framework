@@ -35,3 +35,7 @@ function validate_alpha_lower($value): bool
 
     return preg_match('/^[a-z]+$/', $value) > 0;
 }
+
+class validate_alpha_lower
+{
+}

@@ -37,3 +37,7 @@ function validate_telephone($value): bool
 
     return preg_match('/^\d{3,4}-?\d{7,9}$/', $value) > 0;
 }
+
+class validate_telephone
+{
+}

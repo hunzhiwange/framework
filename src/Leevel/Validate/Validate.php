@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use Leevel\Di\IContainer;
+use Leevel\I18n\Helper\gettext;
 use function Leevel\I18n\Helper\gettext as __;
 
 /**
@@ -147,8 +148,4 @@ class Validate implements IValidate
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\I18n\\Helper\\gettext')) {
-    include dirname(__DIR__).'/I18n/Helper/gettext.php';
-}
-// @codeCoverageIgnoreEnd
+fns(gettext::class);

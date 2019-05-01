@@ -39,3 +39,7 @@ function validate_required($value): bool
 
     return true;
 }
+
+class validate_required
+{
+}

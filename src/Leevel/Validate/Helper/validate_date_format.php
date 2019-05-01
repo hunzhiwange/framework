@@ -40,3 +40,7 @@ function validate_date_format($value, array $parameter): bool
 
     return 0 === $parse['error_count'] && 0 === $parse['warning_count'];
 }
+
+class validate_date_format
+{
+}

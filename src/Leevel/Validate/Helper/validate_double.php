@@ -35,3 +35,7 @@ function validate_double($value): bool
 
     return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) ($value)) > 0;
 }
+
+class validate_double
+{
+}

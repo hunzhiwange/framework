@@ -39,3 +39,7 @@ function validate_chinese_alpha_dash($value): bool
 
     return preg_match('/^[\x{4e00}-\x{9fa5}A-Za-z0-9\-\_]+$/u', $value) > 0;
 }
+
+class validate_chinese_alpha_dash
+{
+}

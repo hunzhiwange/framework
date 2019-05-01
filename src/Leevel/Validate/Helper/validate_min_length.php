@@ -44,3 +44,7 @@ function validate_min_length($value, array $parameter): bool
 
     return mb_strlen($value, 'utf-8') >= (int) $parameter[0];
 }
+
+class validate_min_length
+{
+}

@@ -38,3 +38,7 @@ function validate_type($value, array $parameter): bool
 
     return gettype($value) === $parameter[0];
 }
+
+class validate_type
+{
+}

@@ -38,3 +38,7 @@ function validate_greater_than($value, array $parameter): bool
 
     return $value > $parameter[0];
 }
+
+class validate_greater_than
+{
+}

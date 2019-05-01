@@ -31,3 +31,7 @@ function validate_email($value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_EMAIL);
 }
+
+class validate_email
+{
+}

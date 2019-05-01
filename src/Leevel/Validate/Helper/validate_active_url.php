@@ -36,3 +36,7 @@ function validate_active_url($value): bool
 
     return checkdnsrr($value);
 }
+
+class validate_active_url
+{
+}

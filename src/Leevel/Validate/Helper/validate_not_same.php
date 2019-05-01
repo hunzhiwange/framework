@@ -38,3 +38,7 @@ function validate_not_same($value, array $parameter): bool
 
     return $value !== $parameter[0];
 }
+
+class validate_not_same
+{
+}

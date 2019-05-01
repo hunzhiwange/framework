@@ -38,3 +38,7 @@ function validate_same($value, array $parameter): bool
 
     return $value === $parameter[0];
 }
+
+class validate_same
+{
+}

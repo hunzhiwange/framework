@@ -37,3 +37,7 @@ function validate_json($value): bool
 
     return JSON_ERROR_NONE === json_last_error();
 }
+
+class validate_json
+{
+}

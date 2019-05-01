@@ -38,13 +38,13 @@ class AfterRule
      *
      * @param mixed                       $value
      * @param array                       $parameter
-     * @param string                      $field
      * @param \Leevel\Validate\IValidator $validator
+     * @param string                      $field
      *
      * @return bool
      */
-    public function validate($value, array $parameter, string $field, IValidator $validator): bool
+    public function validate($value, array $parameter, IValidator $validator, string $field): bool
     {
-        return $this->validateDate($value, $parameter, $field, $validator);
+        return $this->validateDate($value, $parameter, $validator, $field);
     }
 }

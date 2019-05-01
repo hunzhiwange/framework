@@ -31,3 +31,7 @@ function validate_digit($value): bool
 {
     return ctype_digit($value);
 }
+
+class validate_digit
+{
+}

@@ -40,3 +40,7 @@ function validate_boolean($value): bool
         'f',
     ], true);
 }
+
+class validate_boolean
+{
+}

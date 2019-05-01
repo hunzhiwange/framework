@@ -31,3 +31,7 @@ function validate_array($value): bool
 {
     return is_array($value);
 }
+
+class validate_array
+{
+}

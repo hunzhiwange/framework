@@ -39,3 +39,7 @@ function validate_equal($value, array $parameter): bool
 
     return $value === $parameter[0];
 }
+
+class validate_equal
+{
+}

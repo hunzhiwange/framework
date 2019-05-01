@@ -38,3 +38,7 @@ function validate_min($value, array $parameter): bool
 
     return $value > $parameter[0] || $value === $parameter[0];
 }
+
+class validate_min
+{
+}

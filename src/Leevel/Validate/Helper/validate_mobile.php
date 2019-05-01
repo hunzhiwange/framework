@@ -40,3 +40,7 @@ function validate_mobile($value): bool
         $value
     );
 }
+
+class validate_mobile
+{
+}

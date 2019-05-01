@@ -31,3 +31,7 @@ function validate_ip($value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_IP);
 }
+
+class validate_ip
+{
+}

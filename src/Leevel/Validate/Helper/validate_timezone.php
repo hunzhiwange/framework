@@ -44,3 +44,7 @@ function validate_timezone($value): bool
 
     return true;
 }
+
+class validate_timezone
+{
+}

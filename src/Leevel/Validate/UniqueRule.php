@@ -24,6 +24,7 @@ use InvalidArgumentException;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
 use function Leevel\Support\Type\type_array;
+use Leevel\Support\Type\type_array;
 
 /**
  * 不能重复值验证规则.
@@ -53,13 +54,14 @@ class UniqueRule
     /**
      * 校验.
      *
-     * @param mixed  $value
-     * @param array  $parameter
-     * @param string $field
+     * @param mixed                       $value
+     * @param array                       $parameter
+     * @param \Leevel\Validate\IValidator $validator
+     * @param string                      $field
      *
      * @return bool
      */
-    public function validate($value, array $parameter, string $field): bool
+    public function validate($value, array $parameter, IValidator $validator, string $field): bool
     {
         if (1 > count($parameter)) {
             throw new InvalidArgumentException('At least 1 parameter.');
@@ -236,8 +238,4 @@ class UniqueRule
     }
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Support\\Type\\type_array')) {
-    include dirname(__DIR__).'/Support/Type/type_array.php';
-}
-// @codeCoverageIgnoreEn
+fns(type_array::class);

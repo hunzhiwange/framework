@@ -31,3 +31,7 @@ function validate_number($value): bool
 {
     return is_numeric($value);
 }
+
+class validate_number
+{
+}

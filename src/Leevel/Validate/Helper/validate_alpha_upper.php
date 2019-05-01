@@ -35,3 +35,7 @@ function validate_alpha_upper($value): bool
 
     return preg_match('/^[A-Z]+$/', $value) > 0;
 }
+
+class validate_alpha_upper
+{
+}

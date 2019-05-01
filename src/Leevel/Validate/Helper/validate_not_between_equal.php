@@ -38,3 +38,7 @@ function validate_not_between_equal($value, array $parameter): bool
 
     return $value <= $parameter[0] || $value >= $parameter[1];
 }
+
+class validate_not_between_equal
+{
+}

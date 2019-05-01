@@ -42,3 +42,7 @@ function validate_deny_ip($value, array $parameter): bool
 
     return !in_array($value, $parameter, true);
 }
+
+class validate_deny_ip
+{
+}

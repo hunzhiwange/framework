@@ -31,3 +31,7 @@ function validate_url($value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_URL);
 }
+
+class validate_url
+{
+}

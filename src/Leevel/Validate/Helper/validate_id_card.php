@@ -38,3 +38,7 @@ function validate_id_card($value): bool
         $value
     ) > 0;
 }
+
+class validate_id_card
+{
+}

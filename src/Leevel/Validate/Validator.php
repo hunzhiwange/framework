@@ -185,9 +185,7 @@ class Validator implements IValidator
         if (count($args) > 0) {
             $extend = 'validate'.ucfirst($method);
 
-            $parameter = [
-                'foobar',
-            ];
+            $parameter = [''];
             $parameter[] = array_shift($args);
             $parameter[] = $args;
             unset($args);
@@ -999,12 +997,12 @@ class Validator implements IValidator
                 $validateRule = new $className();
             }
 
-            if (false === $validateRule->validate($fieldValue, $parameter, $field, $this)) {
+            if (false === $validateRule->validate($fieldValue, $parameter, $this, $field)) {
                 $this->addFailure($field, $rule, $parameter);
 
                 return false;
             }
-        } elseif (!$this->{$method}($fieldValue, $parameter, $field)) {
+        } elseif (!$this->{$method}($fieldValue, $parameter, $this, $field)) {
             $this->addFailure($field, $rule, $parameter);
 
             return false;

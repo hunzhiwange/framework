@@ -35,3 +35,7 @@ function validate_qq($value): bool
 
     return preg_match('/^[1-9]\d{4,11}$/', (string) ($value)) > 0;
 }
+
+class validate_qq
+{
+}

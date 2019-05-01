@@ -39,3 +39,7 @@ function validate_alpha_dash($value): bool
 
     return preg_match('/^[A-Za-z0-9\-\_]+$/', $value) > 0;
 }
+
+class validate_alpha_dash
+{
+}

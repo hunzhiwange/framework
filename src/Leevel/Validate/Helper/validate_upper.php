@@ -31,3 +31,7 @@ function validate_upper($value): bool
 {
     return ctype_upper($value);
 }
+
+class validate_upper
+{
+}

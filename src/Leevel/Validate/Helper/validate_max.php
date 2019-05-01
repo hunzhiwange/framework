@@ -39,3 +39,7 @@ function validate_max($value, array $parameter): bool
 
     return $value < $parameter[0] || $value === $parameter[0];
 }
+
+class validate_max
+{
+}

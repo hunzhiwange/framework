@@ -47,13 +47,13 @@ trait Date
      *
      * @param mixed                       $value
      * @param array                       $parameter
-     * @param string                      $field
      * @param \Leevel\Validate\IValidator $validator
+     * @param string                      $field
      * @param bool                        $before
      *
      * @return bool
      */
-    public function validateDate($value, array $parameter, string $field, IValidator $validator, bool $before = false): bool
+    public function validateDate($value, array $parameter, IValidator $validator, string $field, bool $before = false): bool
     {
         if (!is_string($value)) {
             return false;

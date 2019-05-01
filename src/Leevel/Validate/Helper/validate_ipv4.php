@@ -31,3 +31,7 @@ function validate_ipv4($value): bool
 {
     return false !== filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
 }
+
+class validate_ipv4
+{
+}

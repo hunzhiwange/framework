@@ -41,11 +41,8 @@ function validate_accepted($value): bool
         ], true);
 }
 
-// @codeCoverageIgnoreStart
-if (!function_exists('Leevel\\Validate\\Helper\\validate_required')) {
-    include __DIR__.'/validate_required.php';
-}
-/** @codeCoverageIgnoreEnd */
 class validate_accepted
 {
 }
+
+fns(validate_required::class);

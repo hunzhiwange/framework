@@ -42,3 +42,7 @@ function validate_allowed_ip($value, array $parameter): bool
 
     return in_array($value, $parameter, true);
 }
+
+class validate_allowed_ip
+{
+}
