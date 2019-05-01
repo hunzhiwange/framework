@@ -537,4 +537,7 @@ class Select
     }
 }
 
-fns(normalize::class, contains::class, starts_with::class);
+// import fn.
+class_exists(normalize::class);
+class_exists(contains::class);
+class_exists(starts_with::class);

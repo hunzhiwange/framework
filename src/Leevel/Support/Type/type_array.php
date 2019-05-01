@@ -59,4 +59,5 @@ class type_array
 {
 }
 
-fns(type::class);
+// import fn.
+class_exists(type::class);

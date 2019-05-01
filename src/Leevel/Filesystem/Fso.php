@@ -50,4 +50,5 @@ class Fso
     }
 }
 
-fns(un_camelize::class);
+// import fn.
+class_exists(un_camelize::class);

@@ -1207,4 +1207,7 @@ class Validator implements IValidator
     }
 }
 
-fns(normalize::class, un_camelize::class, camelize::class);
+// import fn.
+class_exists(normalize::class);
+class_exists(un_camelize::class);
+class_exists(camelize::class);

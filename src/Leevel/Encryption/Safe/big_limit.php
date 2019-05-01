@@ -42,4 +42,5 @@ class big_limit
 {
 }
 
-fns(length_limit::class);
+// import fn.
+class_exists(length_limit::class);

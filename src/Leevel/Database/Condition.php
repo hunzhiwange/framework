@@ -2894,4 +2894,5 @@ class Condition
     }
 }
 
-fns(normalize::class);
+// import fn.
+class_exists(normalize::class);

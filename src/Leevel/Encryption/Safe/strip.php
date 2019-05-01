@@ -40,4 +40,5 @@ class strip
 {
 }
 
-fns(clean_js::class);
+// import fn.
+class_exists(clean_js::class);

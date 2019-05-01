@@ -743,4 +743,5 @@ class Session implements ISession
     }
 }
 
-fns(rand_alpha_num::class);
+// import fn.
+class_exists(rand_alpha_num::class);

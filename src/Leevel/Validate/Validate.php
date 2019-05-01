@@ -148,4 +148,5 @@ class Validate implements IValidate
     }
 }
 
-fns(gettext::class);
+// import fn.
+class_exists(gettext::class);

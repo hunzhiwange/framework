@@ -238,4 +238,5 @@ class UniqueRule
     }
 }
 
-fns(type_array::class);
+// import fn.
+class_exists(type_array::class);

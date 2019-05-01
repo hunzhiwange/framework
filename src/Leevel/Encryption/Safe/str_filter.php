@@ -57,4 +57,6 @@ class str_filter
 {
 }
 
-fns(length_limit::class, custom_htmlspecialchars::class);
+// import fn.
+class_exists(length_limit::class);
+class_exists(custom_htmlspecialchars::class);

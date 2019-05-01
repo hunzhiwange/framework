@@ -143,4 +143,5 @@ class LinkedList extends SplDoublyLinkedList
     }
 }
 
-fns(type_these::class);
+// import fn.
+class_exists(type_these::class);

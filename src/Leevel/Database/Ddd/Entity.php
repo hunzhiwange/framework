@@ -1944,4 +1944,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 }
 
-fns(un_camelize::class, camelize::class, gettext::class);
+// import fn.
+class_exists(un_camelize::class);
+class_exists(camelize::class);
+class_exists(gettext::class);

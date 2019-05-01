@@ -161,4 +161,5 @@ class BootstrapSimple extends Bootstrap
     }
 }
 
-fns(gettext::class);
+// import fn.
+class_exists(gettext::class);

@@ -57,4 +57,6 @@ class type_these
 {
 }
 
-fns(type::class, type_array::class);
+// import fn.
+class_exists(type::class);
+class_exists(type_array::class);

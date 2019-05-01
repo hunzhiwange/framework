@@ -94,4 +94,5 @@ class LinkStorage extends Command
     }
 }
 
-fns(link::class);
+// import fn.
+class_exists(link::class);

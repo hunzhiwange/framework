@@ -72,4 +72,5 @@ class esc_url
 {
 }
 
-fns(deep_replace::class);
+// import fn.
+class_exists(deep_replace::class);

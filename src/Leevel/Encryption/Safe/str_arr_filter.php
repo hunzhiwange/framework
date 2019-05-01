@@ -52,4 +52,5 @@ class str_arr_filter
 {
 }
 
-fns(sql_filter::class);
+// import fn.
+class_exists(sql_filter::class);

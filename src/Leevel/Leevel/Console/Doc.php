@@ -207,4 +207,5 @@ class Doc extends Command
     }
 }
 
-fns(list_directory::class);
+// import fn.
+class_exists(list_directory::class);

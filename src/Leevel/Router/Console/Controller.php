@@ -165,4 +165,5 @@ class Controller extends Make
     }
 }
 
-fns(camelize::class);
+// import fn.
+class_exists(camelize::class);

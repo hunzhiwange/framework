@@ -158,4 +158,6 @@ class Cache extends Command
     }
 }
 
-fns(list_directory::class, create_file::class);
+// import fn.
+class_exists(list_directory::class);
+class_exists(create_file::class);

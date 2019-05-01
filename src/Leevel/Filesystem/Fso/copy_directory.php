@@ -69,4 +69,5 @@ class copy_directory
 {
 }
 
-fns(create_directory::class);
+// import fn.
+class_exists(create_directory::class);

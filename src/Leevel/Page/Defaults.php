@@ -350,4 +350,5 @@ class Defaults implements IRender
     }
 }
 
-fns(gettext::class);
+// import fn.
+class_exists(gettext::class);

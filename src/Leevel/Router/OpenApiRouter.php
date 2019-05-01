@@ -742,4 +742,5 @@ class OpenApiRouter
     }
 }
 
-fns(normalize::class);
+// import fn.
+class_exists(normalize::class);

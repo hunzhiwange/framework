@@ -45,4 +45,5 @@ class validate_accepted
 {
 }
 
-fns(validate_required::class);
+// import fn.
+class_exists(validate_required::class);

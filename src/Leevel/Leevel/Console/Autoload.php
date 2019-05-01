@@ -521,4 +521,5 @@ class ComposerStaticInit
     }
 }
 
-fns(create_file::class);
+// import fn.
+class_exists(create_file::class);

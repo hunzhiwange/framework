@@ -61,4 +61,5 @@ class html_filter
 {
 }
 
-fns(length_limit::class);
+// import fn.
+class_exists(length_limit::class);
