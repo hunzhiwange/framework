@@ -385,4 +385,5 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     }
 }
 
-fns(type_these::class);
+// import fn.
+class_exists(type_these::class);
