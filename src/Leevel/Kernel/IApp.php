@@ -350,13 +350,18 @@ interface IApp extends IContainer
     public function composer(): ClassLoader;
 
     /**
-     * 获取命名空间路径.
+     * 获取命名空间目录真实路径.
      *
-     * @param string $namespaces
+     * 一般用于获取文件 PSR4 所在的命名空间，当然如果存在命名空间。
+     * 基于某个具体的类查询该类目录的真实路径。
+     * 为简化开发和提升性能，必须提供具体的存在的类才能够获取目录的真实路径。
+     *
+     * @param string $specificClass
+     * @param bool   $throwException
      *
      * @return string
      */
-    public function getPathByComposer(string $namespaces): string;
+    public function namespacePath(string $specificClass, bool $throwException = true): string;
 
     /**
      * 是否开启 debug.

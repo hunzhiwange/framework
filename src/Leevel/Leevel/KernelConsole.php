@@ -213,7 +213,7 @@ abstract class KernelConsole implements IKernelConsole
         $data = [];
 
         foreach ($namespaces as $item) {
-            $data[$item] = $this->app->getPathByComposer($item);
+            $data[$item] = $this->app->namespacePath($item.'\\index');
         }
 
         return (new Load())->addNamespace($data)->loadData();

@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Console;
 
+use function Leevel\Support\Str\ends_with;
+use Leevel\Support\Str\ends_with;
 use RuntimeException;
 
 /**
@@ -103,11 +105,21 @@ class Load
                 throw new RuntimeException(sprintf('Console load dir %s is not exits.', $dir));
             }
 
-            $files = array_merge($files, array_map(function ($item) use ($key) {
+            $currentFiles = glob($dir.'/*.php');
+            $currentFiles = array_map(function ($item) use ($key) {
                 return $key.'\\'.basename($item, '.php');
-            }, glob($dir.'/*.php')));
+            }, $currentFiles);
+
+            // 忽略索引
+            $currentFiles = array_filter($currentFiles, function ($item) {
+                return !ends_with($item, '\\index');
+            });
+
+            $files = array_merge($files, $currentFiles);
         }
 
         return $files;
     }
 }
+
+fns(ends_with::class);
