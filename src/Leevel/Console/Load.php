@@ -122,4 +122,5 @@ class Load
     }
 }
 
-fns(ends_with::class);
+// import fn.
+class_exists(ends_with::class);
