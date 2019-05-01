@@ -44,7 +44,7 @@ class Str
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Support\\Str\\'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Str\\'.un_camelize($method);
 
         return fn($fn, ...$args);
     }

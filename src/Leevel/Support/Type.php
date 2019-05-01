@@ -44,7 +44,7 @@ class Type
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Support\\Type\\'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Type\\'.un_camelize($method);
 
         return fn($fn, ...$args);
     }

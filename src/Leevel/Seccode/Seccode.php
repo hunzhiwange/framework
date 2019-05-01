@@ -630,7 +630,7 @@ class Seccode implements ISeccode
             throw new InvalidArgumentException($e);
         }
 
-        $randMethod = '\\Leevel\\Support\\Str\\rand_'.$autoType;
+        $randMethod = 'Leevel\\Support\\Str\\rand_'.$autoType;
 
         $this->code(fn($randMethod, $size));
     }

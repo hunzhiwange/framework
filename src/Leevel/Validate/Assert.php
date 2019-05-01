@@ -175,7 +175,7 @@ class Assert
 
         // 验证
         try {
-            $fn = '\\Leevel\\Validate\\Helper\\validate_'.un_camelize($method);
+            $fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method);
 
             if (!$multi) {
                 $multi[] = $args;
@@ -269,7 +269,7 @@ class Assert
 
         // 验证
         try {
-            $fn = '\\Leevel\\Validate\\Helper\\validate_'.un_camelize($method);
+            $fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method);
 
             if (!$multi) {
                 $multi[] = $args;

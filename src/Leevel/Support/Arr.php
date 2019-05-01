@@ -44,7 +44,7 @@ class Arr
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Support\\Arr\\'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Arr\\'.un_camelize($method);
 
         return fn($fn, ...$args);
     }

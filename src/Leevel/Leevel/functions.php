@@ -44,7 +44,7 @@ if (!function_exists('hl')) {
         ];
 
         $component = $map[$method] ?? ucfirst($method);
-        $fn = '\\Leevel\\'.$component.'\\Helper\\'.$method;
+        $fn = 'Leevel\\'.$component.'\\Helper\\'.$method;
 
         return fn($fn, ...$args);
     }

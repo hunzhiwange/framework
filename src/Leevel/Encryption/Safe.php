@@ -44,7 +44,7 @@ class Safe
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Encryption\\Safe\\'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Safe\\'.un_camelize($method);
 
         return fn($fn, ...$args);
     }

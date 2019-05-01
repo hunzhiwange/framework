@@ -44,7 +44,7 @@ class Fso
      */
     public static function __callStatic(string $method, array $args)
     {
-        $fn = '\\Leevel\\Filesystem\\Fso\\'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Fso\\'.un_camelize($method);
 
         return fn($fn, ...$args);
     }

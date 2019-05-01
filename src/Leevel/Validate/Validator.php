@@ -990,7 +990,7 @@ class Validator implements IValidator
 
                 return false;
             }
-        } elseif (class_exists($className = '\\Leevel\\Validate\\'.$camelizeRule.'Rule')) {
+        } elseif (class_exists($className = __NAMESPACE__.'\\'.$camelizeRule.'Rule')) {
             if ($this->container) {
                 $validateRule = $this->container->make($className);
             } else {
@@ -1022,7 +1022,7 @@ class Validator implements IValidator
      */
     protected function findFnRule(string $rule)
     {
-        $fn = '\\Leevel\\Validate\\Helper\\validate_'.$rule;
+        $fn = __NAMESPACE__.'\\Helper\\validate_'.$rule;
 
         if (function_exists($fn)) {
             return $fn;
