@@ -22,7 +22,7 @@ use Leevel\Support\FunctionNotFoundException;
 
 if (!function_exists('fn')) {
     /**
-     * 执行函数.
+     * 执行惰性加载函数.
      *
      * @param string $fn
      * @param array  $args
