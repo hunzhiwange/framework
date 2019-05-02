@@ -22,6 +22,7 @@ namespace Leevel\View;
 
 use InvalidArgumentException;
 use Leevel\Filesystem\Fso\create_file;
+use function Leevel\Filesystem\Fso\create_file;
 use Leevel\Stack\Stack;
 
 /**
@@ -794,7 +795,7 @@ class Parser implements IParser
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').
             ' */ ?'.'>'.PHP_EOL.$compiled;
 
-        fn(create_file::class, $cachePath, $content);
+        create_file($cachePath, $content);
     }
 
     /**
@@ -1173,3 +1174,6 @@ class Parser implements IParser
             '</code></pre>';
     }
 }
+
+// import fn.
+class_exists(create_file::class);
