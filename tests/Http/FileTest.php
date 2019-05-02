@@ -122,9 +122,9 @@ class FileTest extends TestCase
         $filePath = __DIR__.'/assert/test_writeable.txt';
         $targetPath = __DIR__.'/assert/target/notWriteable/test_writeable.txt';
 
-        $this->expectException(\Leevel\Http\FileException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Unable to write in the %s directory.', dirname($targetPath))
+            sprintf('Dir `%s` is not writeable.', dirname($targetPath))
         );
 
         if (is_file($filePath)) {
@@ -158,9 +158,9 @@ class FileTest extends TestCase
         $filePath = __DIR__.'/assert/test_writeable.txt';
         $targetPath = __DIR__.'/assert/target/notWriteable/sub/test_writeable.txt';
 
-        $this->expectException(\Leevel\Http\FileException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Unable to create the %s directory.', dirname($targetPath))
+            sprintf('Dir `%s` is not writeable.', dirname(dirname($targetPath)))
         );
 
         if (is_file($filePath)) {
