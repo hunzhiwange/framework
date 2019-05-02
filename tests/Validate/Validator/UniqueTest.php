@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Di\Container;
+use Leevel\Validate\IValidator;
 use Leevel\Validate\UniqueRule;
 use Leevel\Validate\Validator;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -208,14 +209,14 @@ class UniqueTest extends TestCase
     {
         $rule = new UniqueRule();
 
-        $this->assertFalse($rule->validate('value', [['arr']], 'field'));
+        $this->assertFalse($rule->validate('value', [['arr']], $this->createMock(IValidator::class), 'field'));
     }
 
     public function testValidateArgsIsEntity()
     {
         $rule = new UniqueRule();
 
-        $this->assertTrue($rule->validate('value', [new Guestbook()], 'name'));
+        $this->assertTrue($rule->validate('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
 
         $connect = $this->createDatabaseConnect();
 
@@ -225,7 +226,7 @@ class UniqueTest extends TestCase
             'name'   => 'value',
         ]));
 
-        $this->assertFalse($rule->validate('value', [new Guestbook()], 'name'));
+        $this->assertFalse($rule->validate('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
     }
 
     public function testValidateArgsIsObjectButNotIsEntity()
@@ -237,7 +238,7 @@ class UniqueTest extends TestCase
 
         $rule = new UniqueRule();
 
-        $rule->validate('value', [new DemoUnique1()], 'name');
+        $rule->validate('value', [new DemoUnique1()], $this->createMock(IValidator::class), 'name');
     }
 
     public function testValidateArgsIsStringButNotIsEntity()
@@ -249,7 +250,7 @@ class UniqueTest extends TestCase
 
         $rule = new UniqueRule();
 
-        $rule->validate('value', ['Tests\\Validate\\Validator\\DemoUnique1'], 'name');
+        $rule->validate('value', ['Tests\\Validate\\Validator\\DemoUnique1'], $this->createMock(IValidator::class), 'name');
     }
 
     public function testValidateWithValidateField()

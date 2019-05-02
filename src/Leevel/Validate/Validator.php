@@ -982,7 +982,7 @@ class Validator implements IValidator
         }
 
         if (class_exists($fn = __NAMESPACE__.'\\Helper\\validate_'.$rule)) {
-            if (!$fn($fieldValue, $parameter, $this)) {
+            if (!$fn($fieldValue, $parameter, $this, $field)) {
                 $this->addFailure($field, $rule, $parameter);
 
                 return false;
