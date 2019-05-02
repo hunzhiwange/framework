@@ -46,9 +46,9 @@ class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
     {
         $dirname = __DIR__.'/cacheWriteable';
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Dir %s is not writeable.', $dirname)
+            sprintf('Dir `%s` is not writeable.', $dirname)
         );
 
         $parser = $this->createParser();
@@ -68,9 +68,9 @@ class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
     {
         $dirname = __DIR__.'/parentDirCacheWriteable/sub';
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Unable to create the %s directory.', $dirname)
+            sprintf('Dir `%s` is not writeable.', dirname($dirname))
         );
 
         $parser = $this->createParser();
