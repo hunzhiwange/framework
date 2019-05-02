@@ -438,7 +438,7 @@ class Router implements IRouter
      */
     protected function normalizeMatchedData(string $matche): array
     {
-        $matche = 'Leevel\Router\Match\\'.$matche;
+        $matche = __NAMESPACE__.'\\Match\\'.$matche;
 
         return (new $matche())->matche($this, $this->request);
     }

@@ -650,7 +650,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
         if (null === $render || is_string($render)) {
             $render = $render ?: $this->getRender();
-            $render = 'Leevel\Page\\'.ucfirst($render);
+            $render = __NAMESPACE__.'\\'.ucfirst($render);
             $render = new $render($this);
         } elseif (!$render instanceof IRender) {
             throw new RuntimeException('Unsupported render type.');
