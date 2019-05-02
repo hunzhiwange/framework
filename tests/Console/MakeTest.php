@@ -106,7 +106,7 @@ class MakeTest extends TestCase
             'name'        => 'test3',
         ]);
 
-        $this->assertStringContainsString('Can not write file.', $result);
+        $this->assertStringContainsString('is not writeable.', $result);
 
         rmdir($dirname);
     }
