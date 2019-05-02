@@ -306,7 +306,7 @@ class FileTest extends TestCase
         $path = __DIR__.'/write';
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Dir %s is not writeable.', $path));
+        $this->expectExceptionMessage(sprintf('Dir `%s` is not writeable.', $path));
 
         $file = new File([
             'path' => $path,
