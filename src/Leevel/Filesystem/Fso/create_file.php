@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Fso;
 
-use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * 创建文件.
@@ -36,24 +36,15 @@ function create_file(string $path, ?string $content = null, int $mode = 0666): v
     if (is_file($dirname)) {
         $e = sprintf('Dir `%s` cannot be a file.', $dirname);
 
-        throw new InvalidArgumentException($e);
+        throw new RuntimeException($e);
     }
 
-    if (!is_dir($dirname)) {
-        if (is_dir(dirname($dirname)) &&
-            !is_writable(dirname($dirname))) {
-            $e = sprintf('Unable to create the %s directory.', $dirname);
+    create_directory($dirname);
 
-            throw new InvalidArgumentException($e);
-        }
-
-        mkdir($dirname, 0777, true);
-    }
-
-    if (!is_writable($dirname) || !($file = fopen($path, 'a'))) {
+    if (!$file = fopen($path, 'a')) {
         $e = sprintf('Dir `%s` is not writeable.', $dirname);
 
-        throw new InvalidArgumentException($e);
+        throw new RuntimeException($e);
     }
 
     chmod($path, $mode & ~umask());
@@ -67,3 +58,6 @@ function create_file(string $path, ?string $content = null, int $mode = 0666): v
 class create_file
 {
 }
+
+// import fn.
+class_exists(create_directory::class);

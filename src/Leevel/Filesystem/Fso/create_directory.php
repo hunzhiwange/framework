@@ -34,11 +34,17 @@ use RuntimeException;
 function create_directory(string $dir, int $mode = 0777, bool $writableValid = true): bool
 {
     if (!is_dir($dir)) {
+        if (is_dir($parDir = dirname($dir)) && !is_writable($parDir)) {
+            $e = sprintf('Dir `%s` is not writeable.', $parDir);
+
+            throw new RuntimeException($e);
+        }
+
         mkdir($dir, $mode, true);
     }
 
     if (true === $writableValid && !is_writable($dir)) {
-        $e = sprintf('Unable to write in the %s directory.', $dir);
+        $e = sprintf('Dir `%s` is not writeable.', $dir);
 
         throw new RuntimeException($e);
     }

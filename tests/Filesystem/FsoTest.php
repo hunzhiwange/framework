@@ -42,6 +42,7 @@ class FsoTest extends TestCase
     protected function tearDown(): void
     {
         $dirs = [
+            __DIR__.'/createFile',
             __DIR__.'/createFile2',
             __DIR__.'/createFile5',
             __DIR__.'/foo',
@@ -262,7 +263,7 @@ class FsoTest extends TestCase
     {
         $file = __DIR__.'/FsoTest.php';
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
             sprintf('Dir `%s` cannot be a file.', $file)
         );
@@ -275,7 +276,7 @@ class FsoTest extends TestCase
         $sourcePath = __DIR__.'/createFile2';
         $file = $sourcePath.'/hello2.txt';
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
             sprintf('Dir `%s` is not writeable.', $sourcePath)
         );
@@ -320,9 +321,9 @@ class FsoTest extends TestCase
         $sourcePath = __DIR__.'/createFile5/sub';
         $file = $sourcePath.'/hello5.txt';
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Unable to create the %s directory.', $sourcePath)
+            sprintf('Dir `%s` is not writeable.', dirname($sourcePath))
         );
 
         if (is_dir($sourcePath)) {
