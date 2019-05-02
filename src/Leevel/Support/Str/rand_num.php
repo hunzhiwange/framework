@@ -38,9 +38,12 @@ function rand_num(int $length, ?string $charBox = null): string
         $charBox = '0123456789';
     }
 
-    return fn(rand_str::class, $length, $charBox);
+    return rand_str($length, $charBox);
 }
 
 class rand_num
 {
 }
+
+// import fn.
+class_exists(rand_str::class);

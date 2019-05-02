@@ -22,6 +22,7 @@ namespace Leevel\Log;
 
 use InvalidArgumentException;
 use Leevel\Filesystem\Fso\create_directory;
+use function Leevel\Filesystem\Fso\create_directory;
 
 /**
  * log.file.
@@ -115,7 +116,7 @@ class File implements IConnect
         $dirname = dirname($filePath);
 
         if (!is_file($filePath)) {
-            fn(create_directory::class, $dirname);
+            create_directory($dirname);
         }
 
         // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
@@ -148,3 +149,6 @@ class File implements IConnect
             ($level ? $level.'/' : '').date($this->option['name']).'.log';
     }
 }
+
+// import fn.
+class_exists(create_directory::class);

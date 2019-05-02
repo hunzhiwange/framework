@@ -46,7 +46,11 @@ class Type
     {
         $fn = __NAMESPACE__.'\\Type\\'.un_camelize($method);
 
-        return fn($fn, ...$args);
+        if (!function_exists($fn)) {
+            class_exists($fn);
+        }
+
+        return $fn(...$args);
     }
 }
 

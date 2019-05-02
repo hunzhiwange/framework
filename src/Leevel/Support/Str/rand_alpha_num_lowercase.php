@@ -40,9 +40,12 @@ function rand_alpha_num_lowercase(int $length, ?string $charBox = null): string
         $charBox = strtolower($charBox);
     }
 
-    return fn(rand_str::class, $length, $charBox);
+    return rand_str($length, $charBox);
 }
 
 class rand_alpha_num_lowercase
 {
 }
+
+// import fn.
+class_exists(rand_str::class);

@@ -40,9 +40,12 @@ function rand_alpha_uppercase(int $length, ?string $charBox = null): string
         $charBox = strtoupper($charBox);
     }
 
-    return fn(rand_str::class, $length, $charBox);
+    return rand_str($length, $charBox);
 }
 
 class rand_alpha_uppercase
 {
 }
+
+// import fn.
+class_exists(rand_str::class);

@@ -23,6 +23,7 @@ namespace Leevel\Protocol;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Fso\create_directory;
+use function Leevel\Filesystem\Fso\create_directory;
 use Leevel\Protocol\Process as ProtocolProcess;
 use Swoole\Process;
 use Swoole\Server as SwooleServer;
@@ -395,7 +396,7 @@ abstract class Server
             throw new InvalidArgumentException('Pid path is not set');
         }
 
-        fn(create_directory::class, dirname($this->option['pid_path']));
+        create_directory(dirname($this->option['pid_path']));
     }
 
     /**
@@ -525,3 +526,6 @@ abstract class Server
         }
     }
 }
+
+// import fn.
+class_exists(create_directory::class);

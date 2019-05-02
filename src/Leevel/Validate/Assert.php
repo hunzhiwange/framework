@@ -182,7 +182,11 @@ class Assert
             }
 
             foreach ($multi as $m) {
-                if (false === fn($fn, ...$m)) {
+                if (!function_exists($fn)) {
+                    class_exists($fn);
+                }
+
+                if (false === $fn(...$m)) {
                     if (false === $this->lazy) {
                         throw new AssertException($message);
                     }
@@ -276,7 +280,11 @@ class Assert
             }
 
             foreach ($multi as $m) {
-                if (false === fn($fn, ...$m)) {
+                if (!function_exists($fn)) {
+                    class_exists($fn);
+                }
+
+                if (false === $fn(...$m)) {
                     throw new AssertException($message);
                 }
 

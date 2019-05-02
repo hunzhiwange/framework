@@ -22,6 +22,7 @@ namespace Leevel\Seccode;
 
 use InvalidArgumentException;
 use Leevel\Filesystem\Fso\create_directory;
+use function Leevel\Filesystem\Fso\create_directory;
 
 /**
  * 验证码
@@ -138,7 +139,7 @@ class Seccode implements ISeccode
         $this->makeTtfFont($resImage);
 
         if ($outPath) {
-            fn(create_directory::class, dirname($outPath));
+            create_directory(dirname($outPath));
             imagepng($resImage, $outPath, 9);
         } else {
             // @codeCoverageIgnoreStart
@@ -686,3 +687,6 @@ class Seccode implements ISeccode
         return (int) (mt_rand($numFirst, $numSecond));
     }
 }
+
+// import fn.
+class_exists(create_directory::class);

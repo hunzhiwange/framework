@@ -38,9 +38,12 @@ function rand_alpha(int $length, ?string $charBox = null): string
         $charBox = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     }
 
-    return fn(rand_str::class, $length, $charBox);
+    return rand_str($length, $charBox);
 }
 
 class rand_alpha
 {
 }
+
+// import fn.
+class_exists(rand_str::class);
