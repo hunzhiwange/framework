@@ -83,10 +83,9 @@ class RouterService
 
 class ComposerMock extends ClassLoader
 {
-    public function getPrefixesPsr4()
+    public function findFile($class)
     {
-        return [
-            'Common\\' => [__DIR__],
-        ];
+        // mock for `\\Common\\index`
+        return __DIR__.'/index.php';
     }
 }

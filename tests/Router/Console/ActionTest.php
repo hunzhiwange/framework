@@ -52,7 +52,7 @@ class ActionTest extends TestCase
             'command'     => 'make:action',
             'controller'  => 'BarValue',
             'name'        => 'hello',
-            '--namespace' => 'common',
+            '--namespace' => 'Common',
         ], function ($container) {
             $this->initContainerService($container);
         });
@@ -96,12 +96,10 @@ class ActionTest extends TestCase
     {
         // 注册 app
         $app = $this->createMock(IApp::class);
-
         $this->assertInstanceof(IApp::class, $app);
 
         // 注册 router
         $router = $this->createMock(IRouter::class);
-
         $this->assertInstanceof(IRouter::class, $router);
 
         $router->method('getControllerDir')->willReturn('');
