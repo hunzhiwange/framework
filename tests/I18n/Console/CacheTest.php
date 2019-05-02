@@ -240,7 +240,7 @@ class CacheTest extends TestCase
         );
 
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Dir %s is not writeable.', $dirname)),
+            $this->normalizeContent(sprintf('Dir `%s` is not writeable.', $dirname)),
             $result
         );
 
@@ -301,7 +301,7 @@ class CacheTest extends TestCase
         );
 
         $this->assertStringContainsString(
-            $this->normalizeContent(sprintf('Unable to create the %s directory.', $dirname)),
+            $this->normalizeContent(sprintf('Dir `%s` is not writeable.', dirname($dirname))),
             $result
         );
 
