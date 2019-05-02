@@ -141,7 +141,7 @@ class MakeTest extends TestCase
             'cache'       => 'cacheParentDir/sub',
         ]);
 
-        $this->assertStringContainsString('Unable to create the', $result);
+        $this->assertStringContainsString('is not writeable.', $result);
 
         rmdir($dirname);
     }
