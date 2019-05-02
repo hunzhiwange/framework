@@ -519,9 +519,9 @@ class SeccodeTest extends TestCase
         $file = __DIR__.'/parentDirWriteable/sub/hello.png';
         $sourcePath = dirname($file);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Unable to create the %s directory.', $sourcePath)
+            sprintf('Dir `%s` is not writeable.', dirname($sourcePath))
         );
 
         $seccode = new Seccode([
