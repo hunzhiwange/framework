@@ -96,7 +96,7 @@ class KernelConsole1 extends KernelConsole
 
 class AppKernelConsole extends Apps
 {
-    public function getPathByComposer(string $namespaces): string
+    public function namespacePath(string $specificClass, bool $throwException = true): string
     {
         return __DIR__.'/Commands/Console';
     }

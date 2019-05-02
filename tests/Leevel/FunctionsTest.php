@@ -77,7 +77,7 @@ class FunctionsTest extends TestCase
     {
         $this->expectException(\Leevel\Support\FunctionNotFoundException::class);
         $this->expectExceptionMessage(
-            'Call to undefined function \\Leevel\\Not_found_callback\\Helper\\not_found_callback()'
+            'Call to undefined function Leevel\\Not_found_callback\\Helper\\not_found_callback()'
         );
 
         Leevel::notFoundCallback();
