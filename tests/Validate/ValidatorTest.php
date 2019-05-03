@@ -978,7 +978,7 @@ class ValidatorTest extends TestCase
             ]
         );
 
-        $validate->extend('custom_rule', function ($datas, array $parameter, string $field): bool {
+        $validate->extend('custom_rule', function ($datas, array $parameter, IValidator $validator, string $field): bool {
             if (1 === $datas) {
                 return true;
             }
@@ -1740,7 +1740,7 @@ class ValidatorTest extends TestCase
 
 class ExtendClassTest1
 {
-    public function handle($datas, array $parameter, string $field): bool
+    public function handle($datas, array $parameter, IValidator $validator, string $field): bool
     {
         if (1 === $datas) {
             return true;
@@ -1749,7 +1749,7 @@ class ExtendClassTest1
         return false;
     }
 
-    public function handle2($datas, array $parameter, string $field): bool
+    public function handle2($datas, array $parameter, IValidator $validator, string $field): bool
     {
         if (2 === $datas) {
             return true;
@@ -1761,7 +1761,7 @@ class ExtendClassTest1
 
 class ExtendClassTest2
 {
-    public function handle($datas, array $parameter, string $field): bool
+    public function handle($datas, array $parameter, IValidator $validator, string $field): bool
     {
         if (3 === $datas) {
             return true;
