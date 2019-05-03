@@ -305,7 +305,7 @@ class FileTest extends TestCase
     {
         $path = __DIR__.'/write';
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Dir `%s` is not writeable.', $path));
 
         $file = new File([
@@ -327,8 +327,10 @@ class FileTest extends TestCase
     {
         $path = __DIR__.'/parentWrite/sub';
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Unable to create the %s directory.', $path));
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf('Dir `%s` is not writeable.', dirname($path))
+        );
 
         $file = new File([
             'path' => $path,
