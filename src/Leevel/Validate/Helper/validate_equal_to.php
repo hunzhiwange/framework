@@ -34,8 +34,8 @@ use Leevel\Validate\IValidator;
  */
 function validate_equal_to($value, array $parameter, IValidator $validator): bool
 {
-    if (1 > count($parameter)) {
-        throw new InvalidArgumentException('At least 1 parameter.');
+    if (!array_key_exists(0, $parameter)) {
+        throw new InvalidArgumentException('Missing the first element of parameter.');
     }
 
     return $value === $validator->getFieldValue($parameter[0]);

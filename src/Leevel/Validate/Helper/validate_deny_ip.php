@@ -36,8 +36,8 @@ function validate_deny_ip($value, array $parameter): bool
         return false;
     }
 
-    if (1 > count($parameter)) {
-        throw new InvalidArgumentException('At least 1 parameter.');
+    if (!array_key_exists(0, $parameter)) {
+        throw new InvalidArgumentException('Missing the first element of parameter.');
     }
 
     return !in_array($value, $parameter, true);

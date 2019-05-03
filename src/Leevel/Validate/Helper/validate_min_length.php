@@ -38,8 +38,8 @@ function validate_min_length($value, array $parameter): bool
 
     $value = (string) ($value);
 
-    if (1 > count($parameter)) {
-        throw new InvalidArgumentException('At least 1 parameter.');
+    if (!array_key_exists(0, $parameter)) {
+        throw new InvalidArgumentException('Missing the first element of parameter.');
     }
 
     return mb_strlen($value, 'utf-8') >= (int) $parameter[0];

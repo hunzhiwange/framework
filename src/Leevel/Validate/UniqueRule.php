@@ -63,8 +63,8 @@ class UniqueRule
      */
     public function validate($value, array $parameter, IValidator $validator, string $field): bool
     {
-        if (1 > count($parameter)) {
-            throw new InvalidArgumentException('At least 1 parameter.');
+        if (!array_key_exists(0, $parameter)) {
+            throw new InvalidArgumentException('Missing the first element of parameter.');
         }
 
         if (!is_string($parameter[0]) && !is_object($parameter[0])) {

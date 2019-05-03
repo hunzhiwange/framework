@@ -38,8 +38,8 @@ function validate_strlen($value, array $parameter): bool
 
     $value = (string) ($value);
 
-    if (1 > count($parameter)) {
-        throw new InvalidArgumentException('At least 1 parameter.');
+    if (!array_key_exists(0, $parameter)) {
+        throw new InvalidArgumentException('Missing the first element of parameter.');
     }
 
     return strlen($value) === (int) $parameter[0];

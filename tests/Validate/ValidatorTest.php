@@ -1057,7 +1057,7 @@ class ValidatorTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'At least 1 parameter.'
+            'Missing the first element of parameter.'
         );
 
         $validate = new Validator(

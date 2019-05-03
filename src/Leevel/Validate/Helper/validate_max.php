@@ -33,8 +33,8 @@ use InvalidArgumentException;
  */
 function validate_max($value, array $parameter): bool
 {
-    if (1 > count($parameter)) {
-        throw new InvalidArgumentException('At least 1 parameter.');
+    if (!array_key_exists(0, $parameter)) {
+        throw new InvalidArgumentException('Missing the first element of parameter.');
     }
 
     return $value < $parameter[0] || $value === $parameter[0];
