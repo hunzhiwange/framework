@@ -18,19 +18,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel;
+namespace Leevel\Kernel\Exception;
 
 use Exception;
 
 /**
- * 用户操作异常.
+ * 错误请求
+ * 服务器不理解请求的语法: 400.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.10.01
+ * @since 2018.04.29
  *
  * @version 1.0
  */
-class HandleException extends Exception
+class BadRequestHttpException extends HttpException
 {
+    /**
+     * 构造函数.
+     *
+     * @param null|string $message
+     * @param int         $code
+     * @param \Exception  $previous
+     */
+    public function __construct($message = null, $code = 0, Exception $previous = null)
+    {
+        parent::__construct(400, $message, $code, $previous);
+    }
 }

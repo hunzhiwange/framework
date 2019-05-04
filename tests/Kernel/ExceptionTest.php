@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
-use Leevel\Kernel\HttpException;
+use Leevel\Kernel\Exception\HttpException;
 use RuntimeException;
 use Tests\TestCase;
 
@@ -67,7 +67,7 @@ class ExceptionTest extends TestCase
      */
     public function testHttpException(string $exception, int $code, string $message)
     {
-        $exceptionName = 'Leevel\Kernel\\'.$exception;
+        $exceptionName = 'Leevel\\Kernel\\Exception\\'.$exception;
 
         $e = new $exceptionName($message);
 

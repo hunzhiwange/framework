@@ -18,13 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel;
+namespace Leevel\Kernel\Exception;
 
 use Exception;
 
 /**
- * 错误请求
- * 服务器不理解请求的语法: 400.
+ * 服务器内部错误
+ * 服务器遇到错误，无法完成请求: 500.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Exception;
  *
  * @version 1.0
  */
-class BadRequestHttpException extends HttpException
+class InternalServerErrorHttpException extends HttpException
 {
     /**
      * 构造函数.
@@ -43,6 +43,6 @@ class BadRequestHttpException extends HttpException
      */
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        parent::__construct(400, $message, $code, $previous);
+        parent::__construct(500, $message, $code, $previous);
     }
 }

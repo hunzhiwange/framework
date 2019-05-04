@@ -18,13 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel;
+namespace Leevel\Kernel\Exception;
 
 use Exception;
 
 /**
- * 服务器内部错误
- * 服务器遇到错误，无法完成请求: 500.
+ * 无法处理的实体
+ * 请求格式正确，但是由于含有语义错误，无法响应: 422.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Exception;
  *
  * @version 1.0
  */
-class InternalServerErrorHttpException extends HttpException
+class UnprocessableEntityHttpException extends HttpException
 {
     /**
      * 构造函数.
@@ -43,6 +43,6 @@ class InternalServerErrorHttpException extends HttpException
      */
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        parent::__construct(500, $message, $code, $previous);
+        parent::__construct(422, $message, $code, $previous);
     }
 }

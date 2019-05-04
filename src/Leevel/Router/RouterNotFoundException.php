@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Kernel\NotFoundHttpException;
+use Leevel\Kernel\Exception\NotFoundHttpException;
 
 /**
  * 路由未找到异常.
