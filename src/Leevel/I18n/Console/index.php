@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Debug\Console;
+namespace Leevel\I18n\Console;
 
 class index
 {

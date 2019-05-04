@@ -113,7 +113,7 @@
                 "Leevel\\Database\\Console",
                 "Leevel\\Debug\\Console",
                 "Leevel\\I18n\\Console",
-                "Leevel\\Leevel\\Console",
+                "Leevel\\Kernel\\Console",
                 "Leevel\\Log\\Console",
                 "Leevel\\Option\\Console",
                 "Leevel\\Protocol\\Console",
