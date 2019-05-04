@@ -45,13 +45,6 @@ use Traversable;
 class Assert
 {
     /**
-     * PHPUnit.
-     *
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected static $phpUnit;
-
-    /**
      * 校验值
      *
      * @var mixed
@@ -87,6 +80,13 @@ class Assert
     protected $error = [];
 
     /**
+     * PHPUnit.
+     *
+     * @var \PHPUnit\Framework\TestCase
+     */
+    protected static $phpUnit;
+
+    /**
      * 构造函数.
      *
      * @param mixed       $value
@@ -118,92 +118,17 @@ class Assert
 
         array_unshift($args, $this->value);
 
-        // if (!array_key_exists(0, $args)) {
-        //     throw new InvalidArgumentException('Missing the first argument.');
-        // }
-        //dump($args);
-        if (count($args) >= 2 && is_string($args[array_key_last($args)])) {
-            $message = array_pop($args);
-        } else {
-            $message = $this->message ?: 'No exception messsage specified.';
+        if (false === self::validateAssert($method, $args)) {
+            $message = self::normalizeMessage($args, $this->message);
+
+            if (false === $this->lazy) {
+                throw new AssertException($message);
+            }
+
+            $this->error[] = $message;
         }
 
-        // 可选
-        $optional = false;
-
-        if (0 === strpos($method, 'optional')) {
-            $optional = true;
-
-            if (null === $args[0]) {
-                self::countPhpUnit();
-
-                return true;
-            }
-
-            $method = substr($method, 8);
-        }
-
-        // 多个，可支持 optionalMulti
-        $multi = [];
-
-        if (0 === stripos($method, 'multi')) {
-            if (!is_array($args[0]) && !$args instanceof Traversable) {
-                $e = sprintf('Invalid first argument for multi assert.');
-
-                throw new InvalidArgumentException($e);
-            }
-
-            $argsSource = $args;
-
-            foreach ($args[0] as $v) {
-                if (null === $v && true === $optional) {
-                    continue;
-                }
-
-                $argsSource[0] = $v;
-                $multi[] = $argsSource;
-            }
-
-            if (!$multi) {
-                self::countPhpUnit();
-
-                return true;
-            }
-
-            $method = substr($method, 5);
-        }
-
-        // 验证
-        try {
-            $fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method);
-
-            if (!$multi) {
-                $multi[] = $args;
-            }
-
-            foreach ($multi as $m) {
-                if (!function_exists($fn)) {
-                    class_exists($fn);
-                }
-
-                if (false === $fn(...$m)) {
-                    if (false === $this->lazy) {
-                        throw new AssertException($message);
-                    }
-                    $this->error[] = $message;
-
-                    return $this;
-                }
-
-                self::countPhpUnit();
-            }
-
-            return $this;
-        } catch (FunctionNotFoundException $th) {
-            $e = sprintf('Method `%s` is not exits.', $method);
-
-            throw new BadMethodCallException($e);
-        }
+        return $this;
     }
 
     /**
@@ -216,84 +141,10 @@ class Assert
      */
     public static function __callStatic(string $method, array $args)
     {
-        if (!array_key_exists(0, $args)) {
-            throw new InvalidArgumentException('Missing the first argument.');
-        }
+        if (false === self::validateAssert($method, $args)) {
+            $message = self::normalizeMessage($args);
 
-        if (3 > count($args) && is_string($args[array_key_last($args)])) {
-            $message = array_pop($args);
-        } else {
-            $message = 'No exception messsage specified.';
-        }
-
-        // 可选
-        $optional = false;
-
-        if (0 === strpos($method, 'optional')) {
-            $optional = true;
-
-            if (null === $args[0]) {
-                self::countPhpUnit();
-
-                return true;
-            }
-
-            $method = substr($method, 8);
-        }
-
-        // 多个，可支持 optionalMulti
-        $multi = [];
-
-        if (0 === stripos($method, 'multi')) {
-            if (!is_array($args[0]) && !$args instanceof Traversable) {
-                $e = sprintf('Invalid first argument for multi assert.');
-
-                throw new InvalidArgumentException($e);
-            }
-
-            $argsSource = $args;
-
-            foreach ($args[0] as $v) {
-                if (null === $v && true === $optional) {
-                    continue;
-                }
-
-                $argsSource[0] = $v;
-                $multi[] = $argsSource;
-            }
-
-            if (!$multi) {
-                self::countPhpUnit();
-
-                return true;
-            }
-
-            $method = substr($method, 5);
-        }
-
-        // 验证
-        try {
-            $fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method);
-
-            if (!$multi) {
-                $multi[] = $args;
-            }
-
-            foreach ($multi as $m) {
-                if (!function_exists($fn)) {
-                    class_exists($fn);
-                }
-
-                if (false === $fn(...$m)) {
-                    throw new AssertException($message);
-                }
-
-                self::countPhpUnit();
-            }
-        } catch (FunctionNotFoundException $th) {
-            $e = sprintf('Method `%s` is not exits.', $method);
-
-            throw new BadMethodCallException($e);
+            throw new AssertException($message);
         }
     }
 
@@ -344,12 +195,12 @@ class Assert
      */
     public function flush(Closure $format = null): bool
     {
-        $this->error;
-
         if ($this->error) {
-            if ($format) {
-                $e = $format($this->error);
+            if (!$format) {
+                $format = 'json_encode';
             }
+
+            $e = $format($this->error);
 
             throw new AssertException($e);
         }
@@ -365,6 +216,163 @@ class Assert
     public static function setPhpUnit(TestCase $phpUnit = null): void
     {
         self::$phpUnit = $phpUnit;
+    }
+
+    /**
+     * 校验断言
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return bool
+     */
+    protected static function validateAssert(string $method, array $args): bool
+    {
+        if (!array_key_exists(0, $args)) {
+            throw new InvalidArgumentException('Missing the first argument.');
+        }
+
+        // 匹配可选
+        if (true === $result = self::matchOptional($method, $args)) {
+            return true;
+        }
+
+        list($method, $optional) = $result;
+
+        // 匹配多个值，可支持 optionalMulti
+        if (true === $result = self::matchMulti($method, $args, $optional)) {
+            return true;
+        }
+
+        list($method, $multi) = $result;
+
+        // 验证
+        if (false === self::validateRule($method, $multi)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 参数校验和消息整理.
+     *
+     * @param array       $args
+     * @param null|string $message
+     *
+     * @return string
+     */
+    protected static function normalizeMessage(array $args, ?string $message = null): string
+    {
+        if (count($args) >= 2 && is_string($args[array_key_last($args)])) {
+            $message = array_pop($args);
+        } else {
+            $message = $message ?? 'No exception messsage specified.';
+        }
+
+        return $message;
+    }
+
+    /**
+     * 匹配可选规则.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return array|bool
+     */
+    protected static function matchOptional(string $method, array $args)
+    {
+        if (0 !== strpos($method, 'optional')) {
+            return [$method, false];
+        }
+
+        if (null === $args[0]) {
+            self::countPhpUnit();
+
+            return true;
+        }
+
+        $method = substr($method, 8);
+
+        return [$method, true];
+    }
+
+    /**
+     * 匹配多个值
+     *
+     * @param string $method
+     * @param array  $args
+     * @param bool   $optional
+     *
+     * @return array|bool
+     */
+    protected static function matchMulti(string $method, array $args, bool $optional)
+    {
+        if (0 !== stripos($method, 'multi')) {
+            return [$method, [$args]];
+        }
+
+        if (!is_array($args[0]) && !$args instanceof Traversable) {
+            $e = sprintf('Invalid first argument for multi assert.');
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $multi = [];
+        $argsSource = $args;
+
+        foreach ($args[0] as $v) {
+            if (null === $v && true === $optional) {
+                continue;
+            }
+
+            $argsSource[0] = $v;
+            $multi[] = $argsSource;
+        }
+
+        if (!$multi) {
+            self::countPhpUnit();
+
+            return true;
+        }
+
+        $method = substr($method, 5);
+
+        return [$method, $multi];
+    }
+
+    /**
+     * 校验规则.
+     *
+     * @param string $method
+     * @param array  $multi
+     *
+     * @return bool
+     */
+    protected static function validateRule(string $method, array $multi): bool
+    {
+        try {
+            $fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method);
+
+            foreach ($multi as $m) {
+                if (!function_exists($fn)) {
+                    class_exists($fn);
+                }
+
+                if (false === $fn(...$m)) {
+                    return false;
+                }
+
+                self::countPhpUnit();
+            }
+        } catch (FunctionNotFoundException $th) {
+            $e = sprintf('Method `%s` is not exits.', $method);
+
+            throw new BadMethodCallException($e);
+        }
+
+        return true;
     }
 
     /**
