@@ -58,8 +58,8 @@ interface IRuntime
     /**
      * 命令行渲染.
      *
-     * @param \sSymfony\Component\Console\Output\OutputInterface $output
-     * @param \Exception                                         $e
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Exception                                        $e
      */
     public function renderForConsole(OutputInterface $output, Exception $e): void;
 }

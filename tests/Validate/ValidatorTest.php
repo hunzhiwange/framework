@@ -22,7 +22,7 @@ namespace Tests\Validate;
 
 use I18nMock;
 use Leevel\Di\Container;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Validate\IValidator;
 use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;

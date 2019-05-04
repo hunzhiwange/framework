@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Log\Helper;
 
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Log\ILog;
 
 /**

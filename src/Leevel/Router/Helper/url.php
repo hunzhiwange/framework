@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Helper;
 
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 
 /**
  * 生成路由地址

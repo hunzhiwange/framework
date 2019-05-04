@@ -22,7 +22,7 @@ namespace Tests\Database;
 
 use I18nMock;
 use Leevel\Collection\Collection;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Page\IPage;
 use Leevel\Page\Page;
 use PDO;

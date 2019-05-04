@@ -25,7 +25,7 @@ use Leevel\Debug\Provider\Register;
 use Leevel\Event\IDispatch;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
-use Leevel\Leevel\App as Apps;
+use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
 use Leevel\Log\Log;

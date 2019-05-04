@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Facade;
 
-use Leevel\Leevel\App as Apps;
+use Leevel\Kernel\App as Apps;
 
 /**
  * 门面 app.

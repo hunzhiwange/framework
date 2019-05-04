@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\I18n\Helper;
 
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 
 /**
  * 获取语言.

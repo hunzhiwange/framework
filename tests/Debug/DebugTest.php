@@ -28,7 +28,7 @@ use Leevel\Event\IDispatch;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
-use Leevel\Leevel\App as Apps;
+use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
 use Leevel\Log\Log;
@@ -367,7 +367,7 @@ class DebugTest extends TestCase
      * _**支持的消息类型**_
      *
      * ``` php
-     * ".\Leevel\Leevel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')."
+     * ".\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')."
      * ```
      *
      * 系统支持多种消息类型，可以参考这个进行调试。

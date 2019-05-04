@@ -164,19 +164,19 @@ class ContainerTest extends TestCase
      * _**ITest2 定义**_
      *
      * ``` php
-     * ".\Leevel\Leevel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)."
+     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)."
      * ```
      *
      * _**Test2 定义**_
      *
      * ``` php
-     * ".\Leevel\Leevel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)."
+     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)."
      * ```
      *
      * _**Test3 定义**_
      *
      * ``` php
-     * ".\Leevel\Leevel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)."
+     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)."
      * ```
      *
      * 通过 `Test3` 的构造函数注入 `ITest2` 的实现 `Test2`，通过 IOC 容器可以实现代码解耦。

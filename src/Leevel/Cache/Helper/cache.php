@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Helper;
 
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 
 /**
  * 设置或者获取 cache 值

@@ -22,7 +22,7 @@ namespace Tests\Database\Ddd;
 
 use I18nMock;
 use Leevel\Di\Container;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;

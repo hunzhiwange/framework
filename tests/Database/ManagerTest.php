@@ -48,7 +48,7 @@ class ManagerTest extends TestCase
      * `数据库配置`
      *
      * ``` php
-     * ".\Leevel\Leevel\Utils\Doc::getMethodBody(\Tests\Database::class, 'createDatabaseManager')."
+     * ".\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database::class, 'createDatabaseManager')."
      * ```
      *
      * 请使用这样的格式来定义连接，系统会自动帮你访问数据库。

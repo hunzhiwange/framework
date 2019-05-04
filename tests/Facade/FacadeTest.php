@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Facade;
 
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Tests\TestCase;
 
 /**

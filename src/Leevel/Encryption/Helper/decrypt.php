@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 
 /**
  * 解密字符串.

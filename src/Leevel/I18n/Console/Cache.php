@@ -26,8 +26,8 @@ use function Leevel\Filesystem\Fso\create_file;
 use function Leevel\Filesystem\Fso\list_directory;
 use Leevel\Filesystem\Fso\list_directory;
 use Leevel\I18n\Load;
+use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\IApp;
-use Leevel\Leevel\Bootstrap\LoadI18n;
 
 /**
  * 语言包缓存.

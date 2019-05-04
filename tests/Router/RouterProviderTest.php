@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Router;
 
 use Leevel\Di\Container;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
 use Tests\TestCase;

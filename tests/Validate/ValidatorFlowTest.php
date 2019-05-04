@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Validate;
 
 use I18nMock;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
 use Tests\TestCase;

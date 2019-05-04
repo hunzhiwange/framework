@@ -22,7 +22,7 @@ namespace Tests\Validate\Provider;
 
 use I18nMock;
 use Leevel\Di\Container;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Validate\IValidate;
 use Leevel\Validate\Provider\Register;
 use Tests\TestCase;

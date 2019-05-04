@@ -100,7 +100,7 @@ class CreateTest extends TestCase
      * _**完整模型**_
      *
      * ``` php
-     * ".\Leevel\Leevel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity::class)."
+     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity::class)."
      * ```
      *
      * 调用 `construct_prop_white => true` 来设置字段白名单，一旦设置了白名单只有通过了白名单的数据才能够通过构造器更新模型属性。
@@ -126,7 +126,7 @@ class CreateTest extends TestCase
      * _**完整模型**_
      *
      * ``` php
-     * ".\Leevel\Leevel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropBlackEntity::class)."
+     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropBlackEntity::class)."
      * ```
      *
      * 调用 `construct_prop_black => true` 来设置字段黑名单，一旦设置了黑名单处于黑名单的数据无法通过构造器更新模型属性。

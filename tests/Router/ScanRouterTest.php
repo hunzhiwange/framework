@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Router\MiddlewareParser;
 use Leevel\Router\Router;
 use Leevel\Router\ScanRouter;

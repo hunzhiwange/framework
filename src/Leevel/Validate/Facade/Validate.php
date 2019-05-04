@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Facade;
 
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 
 /**
  * 门面 validate.

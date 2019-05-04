@@ -24,7 +24,7 @@ use Closure;
 use Composer\Autoload\ClassLoader;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 

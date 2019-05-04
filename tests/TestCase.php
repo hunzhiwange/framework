@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Leevel\Leevel\Testing\Helper as BaseHelper;
+use Leevel\Kernel\Testing\Helper as BaseHelper;
 use PHPUnit\Framework\TestCase as TestCases;
 
 /**

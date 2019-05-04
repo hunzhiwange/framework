@@ -25,7 +25,7 @@ use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\Request;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
 use Tests\TestCase;

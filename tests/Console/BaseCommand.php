@@ -23,7 +23,7 @@ namespace Tests\Console;
 use Closure;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 

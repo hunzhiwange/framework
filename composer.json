@@ -84,7 +84,7 @@
     "autoload": {
         "files": [
             "src/Leevel/Support/functions.php",
-            "src/Leevel/Leevel/functions.php"
+            "src/Leevel/Kernel/functions.php"
         ],
         "psr-4": {
             "Leevel\\": "src\\Leevel"

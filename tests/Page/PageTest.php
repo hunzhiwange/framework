@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Page;
 
 use I18nMock;
-use Leevel\Leevel\App;
+use Leevel\Kernel\App;
 use Leevel\Page\Bootstrap;
 use Leevel\Page\Defaults;
 use Leevel\Page\IPage;

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Helper;
 
-use Leevel\Leevel\App as Apps;
+use Leevel\Kernel\App as Apps;
 
 /**
  * 返回应用容器或者注入.
@@ -28,7 +28,7 @@ use Leevel\Leevel\App as Apps;
  * @param string $service
  * @param array  $args
  *
- * @return \Leevel\Leevel\App|mixed
+ * @return \Leevel\Kernel\App|mixed
  */
 function app(?string $service = null, array $args = [])
 {
