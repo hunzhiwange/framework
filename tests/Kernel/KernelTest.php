@@ -198,8 +198,20 @@ class KernelTest extends TestCase
     protected function createOption(IApp $app, bool $debug): void
     {
         $option = $this->createMock(IOption::class);
-        $option->method('get')->willReturn($debug);
+
+        $option
+            ->method('get')
+            ->will($this->returnCallback(function (string $k) use ($debug) {
+                $map = [
+                    'debug'       => $debug,
+                    'environment' => 'development',
+                ];
+
+                return $map[$k];
+            }));
+
         $this->assertSame($debug, $option->get('debug'));
+        $this->assertSame('development', $option->get('environment'));
 
         $app->singleton('option', function () use ($option) {
             return $option;

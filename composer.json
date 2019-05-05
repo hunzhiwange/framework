@@ -66,13 +66,13 @@
         "leevel/throttler": "self.version",
         "leevel/tree": "self.version",
         "leevel/validate": "self.version",
-        "leevel/view": "self.version"
+        "leevel/view": "self.version",
+        "nunomaduro/collision": "~3.0"
     },
     "require-dev": {
         "php-coveralls/php-coveralls":"^2.1",
         "phpunit/phpunit": "~8.0",
         "codedungeon/phpunit-result-printer": "^0.26.2",
-        "nunomaduro/collision": "~3.0",
         "fzaninotto/faker": "^1.6",
         "robmorgan/phinx": "^0.9.2"
     },

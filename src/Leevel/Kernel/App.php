@@ -691,7 +691,8 @@ class App extends Container implements IApp
      */
     public function debug(): bool
     {
-        return $this->make('option')->get('debug');
+        return 'production' !== $this->environment() &&
+            $this->make('option')->get('debug');
     }
 
     /**

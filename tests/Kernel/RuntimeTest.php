@@ -119,7 +119,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => true,
+                'debug'       => true,
+                'environment' => 'development',
             ],
         ]);
 
@@ -151,7 +152,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => true,
+                'debug'       => true,
+                'environment' => 'development',
             ],
         ]);
 
@@ -184,7 +186,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => true,
+                'debug'       => true,
+                'environment' => 'development',
             ],
         ]);
 
@@ -217,7 +220,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => true,
+                'debug'       => true,
+                'environment' => 'development',
             ],
         ]);
 
@@ -250,7 +254,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => true,
+                'debug'       => true,
+                'environment' => 'development',
             ],
         ]);
 
@@ -277,7 +282,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => false,
+                'debug'       => false,
+                'environment' => 'development',
             ],
         ]);
 
@@ -305,7 +311,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => false,
+                'debug'       => false,
+                'environment' => 'development',
             ],
         ]);
 
@@ -333,7 +340,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => true,
+                'debug'       => true,
+                'environment' => 'development',
             ],
         ]);
 
@@ -368,7 +376,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => false,
+                'debug'       => false,
+                'environment' => 'development',
             ],
         ]);
 
@@ -405,7 +414,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => true,
+                'debug'       => true,
+                'environment' => 'development',
             ],
         ]);
 
@@ -431,7 +441,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => false,
+                'debug'       => false,
+                'environment' => 'development',
             ],
         ]);
 
@@ -464,7 +475,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => false,
+                'debug'       => false,
+                'environment' => 'development',
             ],
         ]);
 
@@ -494,7 +506,8 @@ class RuntimeTest extends TestCase
 
         $option = new Option([
             'app' => [
-                'debug' => false,
+                'debug'       => false,
+                'environment' => 'development',
             ],
         ]);
 

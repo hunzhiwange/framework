@@ -26,6 +26,7 @@ use Leevel\Di\Provider;
 use Leevel\Filesystem\Fso;
 use Leevel\Http\IRequest;
 use Leevel\Kernel\App as Apps;
+use Leevel\Option\IOption;
 use Tests\TestCase;
 
 /**
@@ -427,9 +428,20 @@ class AppTest extends TestCase
     {
         $app = new App($appPath = __DIR__.'/app');
 
-        $option = $this->createMock(IRequest::class);
+        $option = $this->createMock(IOption::class);
 
-        $option->method('get')->willReturn(true);
+        $option
+            ->method('get')
+            ->will($this->returnCallback(function (string $k) {
+                $map = [
+                    'debug'       => true,
+                    'environment' => 'development',
+                ];
+
+                return $map[$k];
+            }));
+
+        $this->assertSame('development', $option->get('environment'));
         $this->assertTrue($option->get('debug'));
 
         $app->singleton('option', function () use ($option) {
@@ -443,9 +455,20 @@ class AppTest extends TestCase
     {
         $app = new App($appPath = __DIR__.'/app');
 
-        $option = $this->createMock(IRequest::class);
+        $option = $this->createMock(IOption::class);
 
-        $option->method('get')->willReturn(false);
+        $option
+            ->method('get')
+            ->will($this->returnCallback(function (string $k) {
+                $map = [
+                    'debug'       => false,
+                    'environment' => 'development',
+                ];
+
+                return $map[$k];
+            }));
+
+        $this->assertSame('development', $option->get('environment'));
         $this->assertFalse($option->get('debug'));
 
         $app->singleton('option', function () use ($option) {
