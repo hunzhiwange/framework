@@ -20,52 +20,32 @@ declare(strict_types=1);
 
 namespace Leevel\Auth\Facade;
 
-use Leevel\Auth\Manager;
-use Leevel\Di\Container;
-
 /**
- * 门面 auth.
+ * 门面 auth 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.09.08
+ * @since 2019.05.06
  *
  * @version 1.0
+ *
+ * @see \Leevel\Auth\IAuth 请保持接口设计的一致性
  */
-class Auth implements IAuth
+interface IAuth
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::connect()->{$method}(...$args);
-    }
-
     /**
      * 用户是否已经登录.
      *
      * @return bool
      */
-    public static function isLogin(): bool
-    {
-        return self::connect()->isLogin();
-    }
+    public static function isLogin(): bool;
 
     /**
      * 获取登录信息.
      *
      * @return array
      */
-    public static function getLogin(): array
-    {
-        return self::connect()->getLogin();
-    }
+    public static function getLogin(): array;
 
     /**
      * 登录写入数据.
@@ -73,46 +53,24 @@ class Auth implements IAuth
      * @param array $data
      * @param int   $loginTime
      */
-    public static function login(array $data, int $loginTime = 0): void
-    {
-        self::connect()->login($data, $loginTime);
-    }
+    public static function login(array $data, int $loginTime = 0): void;
 
     /**
      * 登出.
      */
-    public static function logout(): void
-    {
-        self::connect()->logout();
-    }
+    public static function logout(): void;
 
     /**
      * 设置认证名字.
      *
      * @param string $tokenName
      */
-    public static function setTokenName(string $tokenName): void
-    {
-        self::connect()->setTokenName($tokenName);
-    }
+    public static function setTokenName(string $tokenName): void;
 
     /**
      * 取得认证名字.
      *
      * @return string
      */
-    public static function getTokenName(): string
-    {
-        return self::connect()->getTokenName();
-    }
-
-    /**
-     * auths 服务
-     *
-     * @return \Leevel\Auth\Manager
-     */
-    protected static function connect(): Manager
-    {
-        return Container::singletons()->make('auths');
-    }
+    public static function getTokenName(): string;
 }
