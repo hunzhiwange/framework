@@ -18,13 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Auth\Facade;
+namespace Leevel\Auth\Proxy;
 
 use Leevel\Auth\Manager;
 use Leevel\Di\Container;
 
 /**
- * 门面 auth.
+ * 代理 auth.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
