@@ -18,18 +18,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cache;
+namespace Leevel\Cache\Proxy;
+
+use Leevel\Cache\ICache as IBaseCache;
 
 /**
- * ICache 接口.
+ * 代理 cache 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.23
+ * @since 2019.05.07
  *
  * @version 1.0
  *
- * @see \Leevel\Cache\Proxy\Cache 请保持接口设计的一致性
+ * @see \Leevel\Cache\ICache 请保持接口设计的一致性
  */
 interface ICache
 {
@@ -39,7 +41,7 @@ interface ICache
      * @param array|string $keys
      * @param mixed        $value
      */
-    public function put($keys, $value = null): void;
+    public static function put($keys, $value = null): void;
 
     /**
      * 缓存存在读取否则重新设置.
@@ -50,7 +52,7 @@ interface ICache
      *
      * @return mixed
      */
-    public function remember(string $name, $data, array $option = []);
+    public static function remember(string $name, $data, array $option = []);
 
     /**
      * 设置配置.
@@ -58,9 +60,9 @@ interface ICache
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Cache\ICache
      */
-    public function setOption(string $name, $value): self;
+    public static function setOption(string $name, $value): IBaseCache;
 
     /**
      * 获取缓存.
@@ -71,7 +73,7 @@ interface ICache
      *
      * @return mixed
      */
-    public function get(string $name, $defaults = false, array $option = []);
+    public static function get(string $name, $defaults = false, array $option = []);
 
     /**
      * 设置缓存.
@@ -80,24 +82,24 @@ interface ICache
      * @param mixed  $data
      * @param array  $option
      */
-    public function set(string $name, $data, array $option = []): void;
+    public static function set(string $name, $data, array $option = []): void;
 
     /**
      * 清除缓存.
      *
      * @param string $name
      */
-    public function delete(string $name): void;
+    public static function delete(string $name): void;
 
     /**
      * 返回缓存句柄.
      *
      * @return mixed
      */
-    public function handle();
+    public static function handle();
 
     /**
      * 关闭.
      */
-    public function close();
+    public static function close();
 }

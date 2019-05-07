@@ -20,15 +20,15 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Helper;
 
-use Leevel\Cache\Cache as CacheCache;
+use Leevel\Cache\ICache;
 use Leevel\Di\Container;
 
 /**
  * cache 服务
  *
- * @return \Leevel\Cache\Cache
+ * @return \Leevel\Cache\ICache
  */
-function cache(): CacheCache
+function cache(): ICache
 {
     return Container::singletons()->make('caches');
 }
