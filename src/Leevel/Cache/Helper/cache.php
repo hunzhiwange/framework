@@ -20,30 +20,43 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Helper;
 
+use Leevel\Cache\ICache;
 use Leevel\Di\Container;
 
 /**
- * 设置或者获取 cache 值
+ * cache 服务
  *
- * @param null|array|string $key
- * @param mixed             $defaults
- * @param array             $option
+ * @return \Leevel\Cache\ICache
+ */
+function cache(): ICache
+{
+    return Container::singletons()->make('caches');
+}
+
+/**
+ * 获取 cache 值
+ *
+ * @param string $key
+ * @param mixed  $defaults
+ * @param array  $option
  *
  * @return mixed
  */
-function cache($key = null, $defaults = null, array $option = [])
+function cache_get(string $key, $defaults = null, array $option = [])
 {
-    $service = Container::singletons()->make('caches');
+    return cache()->get($key, $defaults, $option);
+}
 
-    if (null === $key) {
-        return $service;
-    }
-
-    if (is_array($key)) {
-        return $service->put($key, null, $option);
-    }
-
-    return $service->get($key, $defaults, $option);
+/**
+ * 设置 cache 值
+ *
+ * @param array|string $key
+ * @param mixed        $value
+ * @param array        $option
+ */
+function cache_set($key, $value = null, array $option = []): void
+{
+    cache()->put($key, $value, $option);
 }
 
 class cache
