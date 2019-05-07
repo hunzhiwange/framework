@@ -54,10 +54,14 @@ if (!function_exists('app')) {
     /**
      * 返回 IOC 容器或者容器中的服务.
      *
-     * 提升工程师用户体验，为常用服务加入返回类型.
+     * app:\Leevel\Kernel\App
+     * auths:\Leevel\Auth\Manager
+     * caches:\Leevel\Cache\Manager
      *
      * @param string $service
      * @param array  $args
+     *
+     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|Leevel\Di\Container|\Leevel\Kernel\App|mixed
      * @codeCoverageIgnore
      */
     function app(?string $service = 'app', array $args = [])
@@ -68,18 +72,7 @@ if (!function_exists('app')) {
             return $container;
         }
 
-        /**
-         * 智能提示.
-         *
-         * app:\Leevel\Kernel\App
-         * auths:\Leevel\Auth\Manager
-         * caches:\Leevel\Cache\Manager
-         *
-         * @var \Leevel\Auth\Manager|\Leevel\Cache\Manager|\Leevel\Kernel\App
-         */
-        $data = $container->make($service);
-
-        return $data;
+        return $container->make($service);
     }
 }
 
@@ -95,9 +88,10 @@ if (!function_exists('__')) {
      */
     function __(string $text, ...$arr): string
     {
-        return Container::singletons()
-            ->make('i18n')
-            ->gettext($text, ...$arr);
+        /** @var \Leevel\I18n\I18n $service */
+        $service = Container::singletons()->make('i18n');
+
+        return $service->gettext($text, ...$arr);
     }
 }
 
@@ -150,7 +144,7 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        /** @var \Leevel\Kernel\IApp $app */
+        /** @var \Leevel\Kernel\App $app */
         $app = Container::singletons()->make('app');
         $container = $app->container();
 

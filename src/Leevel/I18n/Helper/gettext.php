@@ -32,9 +32,10 @@ use Leevel\Di\Container;
  */
 function gettext(string $text, ...$arr): string
 {
-    return Container::singletons()
-        ->make('i18n')
-        ->gettext($text, ...$arr);
+    /** @var \Leevel\I18n\I18n $service */
+    $service = Container::singletons()->make('i18n');
+
+    return $service->gettext($text, ...$arr);
 }
 
 class gettext

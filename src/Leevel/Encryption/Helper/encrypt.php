@@ -36,9 +36,10 @@ use Leevel\Di\Container;
  */
 function encrypt(string $value, int $expiry = 0): string
 {
-    return Container::singletons()
-        ->make('encryption')
-        ->encrypt($value, $expiry);
+    /** @var \Leevel\Encryption\Encryption $service */
+    $service = Container::singletons()->make('encryption');
+
+    return $service->encrypt($value, $expiry);
 }
 
 class encrypt
