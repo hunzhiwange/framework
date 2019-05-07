@@ -19,7 +19,7 @@ declare(strict_types=1);
  */
 
 use Leevel\Debug\Dump;
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 if (!function_exists('hl')) {
     /**
@@ -52,23 +52,42 @@ if (!function_exists('hl')) {
 
 if (!function_exists('app')) {
     /**
-     * 返回应用容器或者注入.
+     * 返回 IOC 容器或者容器中的服务.
+     *
+     * 提升工程师用户体验，为常用服务加入返回类型.
      *
      * @param string $service
      * @param array  $args
-     *
-     * @return \Leevel\Kernel\App|mixed
      * @codeCoverageIgnore
      */
-    function app(?string $service = null, array $args = [])
+    function app(?string $service = 'app', array $args = [])
     {
-        $app = App::singletons();
+        $container = Container::singletons();
 
         if (null === $service) {
-            return $app;
+            return $container;
         }
 
-        return $app->make($service, $args);
+        switch ($service) {
+            case 'app':
+                /** @var \Leevel\Kernel\IApp $app */
+                $app = $container->make('app');
+
+                return $app;
+
+                break;
+            case 'auths':
+                /** @var \Leevel\Auth\Manager $auths */
+                $auths = $container->make('auths');
+
+                return $auths;
+
+                break;
+            default:
+                return $container->make($service);
+
+                break;
+        }
     }
 }
 
@@ -84,7 +103,7 @@ if (!function_exists('__')) {
      */
     function __(string $text, ...$arr): string
     {
-        return App::singletons()
+        return Container::singletons()
             ->make('i18n')
             ->gettext($text, ...$arr);
     }
@@ -139,10 +158,15 @@ class Leevel
      */
     public static function __callStatic(string $method, array $args)
     {
-        $app = App::singletons();
+        /** @var \Leevel\Kernel\IApp $app */
+        $app = Container::singletons()->make('app');
+        $container = $app->container();
 
         if (method_exists($app, $method)) {
             return $app->{$method}(...$args);
+        }
+        if (method_exists($container, $method)) {
+            return $container->{$method}(...$args);
         }
 
         $method = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $method));
