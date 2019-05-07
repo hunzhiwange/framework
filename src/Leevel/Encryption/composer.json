@@ -14,6 +14,7 @@
     "require": {
         "php": "^7.3.2",
         "ext-openssl": "*",
+        "leevel/di": "1.0.*",
         "leevel/support": "1.0.*"
     },
     "autoload": {

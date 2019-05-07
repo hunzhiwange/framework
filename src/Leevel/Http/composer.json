@@ -13,7 +13,6 @@
     }],
     "require": {
         "php": "^7.3.2",
-        "leevel/cookie": "1.0.*",
         "leevel/router": "1.0.*",
         "leevel/session": "1.0.*",
         "leevel/support": "1.0.*",

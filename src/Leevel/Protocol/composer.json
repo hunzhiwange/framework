@@ -13,6 +13,7 @@
     }],
     "require": {
         "php": "^7.3.2",
+        "leevel/di": "1.0.*",
         "leevel/support": "1.0.*",
         "leevel/filesystem": "1.0.*",
         "leric/php-thrift": "0.10.0"
