@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Proxy\Facade;
+namespace Leevel\Cache\Proxy;
 
 use Leevel\Di\Container;
 
@@ -31,7 +31,7 @@ use Leevel\Di\Container;
  *
  * @version 1.0
  */
-class CacheLoad
+class Load
 {
     /**
      * call.
