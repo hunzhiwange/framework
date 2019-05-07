@@ -638,24 +638,14 @@ abstract class Connect
         switch (true) {
             case is_int($value):
                 return PDO::PARAM_INT;
-
-                break;
             case is_bool($value):
                 return PDO::PARAM_BOOL;
-
-                break;
             case null === $value:
                 return PDO::PARAM_NULL;
-
-                break;
             case is_string($value):
                 return PDO::PARAM_STR;
-
-                break;
             default:
                 return PDO::PARAM_STMT;
-
-                break;
         }
     }
 

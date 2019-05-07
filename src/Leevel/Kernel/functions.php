@@ -74,19 +74,13 @@ if (!function_exists('app')) {
                 $app = $container->make('app');
 
                 return $app;
-
-                break;
             case 'auths':
                 /** @var \Leevel\Auth\Manager $auths */
                 $auths = $container->make('auths');
 
                 return $auths;
-
-                break;
             default:
                 return $container->make($service);
-
-                break;
         }
     }
 }
