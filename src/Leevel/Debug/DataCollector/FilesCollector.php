@@ -49,8 +49,6 @@ class FilesCollector extends DataCollector implements Renderable
      */
     public function getWidgets(): array
     {
-        $name = $this->getName();
-
         return [
             'files' => [
                 'icon'    => 'files-o',
