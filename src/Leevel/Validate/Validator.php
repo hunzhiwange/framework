@@ -254,8 +254,6 @@ class Validator implements IValidator
             }
         }
 
-        unset($skipRule);
-
         foreach ($this->afters as $after) {
             $after();
         }
@@ -1005,8 +1003,6 @@ class Validator implements IValidator
             return false;
         }
 
-        unset($fieldValue);
-
         return true;
     }
 
@@ -1076,8 +1072,6 @@ class Validator implements IValidator
         }, $message);
 
         $this->errorMessages[$field][] = $message;
-
-        unset($replace, $message);
     }
 
     /**
