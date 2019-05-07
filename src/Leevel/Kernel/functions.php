@@ -68,20 +68,18 @@ if (!function_exists('app')) {
             return $container;
         }
 
-        switch ($service) {
-            case 'app':
-                /** @var \Leevel\Kernel\IApp $app */
-                $app = $container->make('app');
+        /**
+         * 智能提示.
+         *
+         * app:\Leevel\Kernel\App
+         * auths:\Leevel\Auth\Manager
+         * caches:\Leevel\Cache\Manager
+         *
+         * @var \Leevel\Auth\Manager|\Leevel\Cache\Manager|\Leevel\Kernel\App
+         */
+        $data = $container->make($service);
 
-                return $app;
-            case 'auths':
-                /** @var \Leevel\Auth\Manager $auths */
-                $auths = $container->make('auths');
-
-                return $auths;
-            default:
-                return $container->make($service);
-        }
+        return $data;
     }
 }
 
