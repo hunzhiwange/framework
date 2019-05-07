@@ -32,7 +32,7 @@ use Leevel\Http\IRequest;
  *
  * @version 1.0
  */
-class Token extends Connect implements IConnect
+class Token extends Auth implements IAuth
 {
     /**
      * 验证

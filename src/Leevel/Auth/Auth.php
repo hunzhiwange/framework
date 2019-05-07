@@ -21,43 +21,126 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 /**
- * auth 仓储.
+ * auth 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.11.08
+ * @since 2017.09.07
  *
  * @version 1.0
  */
-class Auth implements IAuth
+abstract class Auth
 {
     /**
-     * auth 连接对象
+     * 配置.
      *
-     * @var \leevel\Auth\IConnect
+     * @var array
      */
-    protected $connect;
+    protected $option = [
+        'token' => null,
+    ];
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Auth\IConnect $connect
+     * @param array $option
      */
-    public function __construct(IConnect $connect)
+    public function __construct(array $option = [])
     {
-        $this->connect = $connect;
+        $this->option = array_merge($this->option, $option);
     }
 
     /**
-     * call.
+     * 用户是否已经登录.
      *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
+     * @return bool
      */
-    public function __call(string $method, array $args)
+    public function isLogin(): bool
     {
-        return $this->connect->{$method}(...$args);
+        return $this->getLogin() ? true : false;
+    }
+
+    /**
+     * 获取登录信息.
+     *
+     * @return array
+     */
+    public function getLogin(): array
+    {
+        return $this->tokenData();
+    }
+
+    /**
+     * 登录写入数据.
+     *
+     * @param array $data
+     * @param int   $loginTime
+     */
+    public function login(array $data, int $loginTime = 0): void
+    {
+        $this->tokenPersistence($data, $loginTime);
+    }
+
+    /**
+     * 登出.
+     */
+    public function logout(): void
+    {
+        $this->tokenDelete();
+    }
+
+    /**
+     * 设置认证名字.
+     *
+     * @param string $tokenName
+     */
+    public function setTokenName(string $tokenName): void
+    {
+        $this->option['token'] = $tokenName;
+    }
+
+    /**
+     * 取得认证名字.
+     *
+     * @return string
+     */
+    public function getTokenName(): string
+    {
+        if (!$this->option['token']) {
+            throw new AuthException('Token name was not set.');
+        }
+
+        return $this->option['token'];
+    }
+
+    /**
+     * 认证信息持久化.
+     *
+     * @param array $data
+     * @param int   $loginTime
+     */
+    protected function tokenPersistence(array $data, int $loginTime = 0): void
+    {
+        $this->setPersistence($this->getTokenName(), json_encode($data), $loginTime);
+    }
+
+    /**
+     * 认证信息获取.
+     *
+     * @return array
+     */
+    protected function tokenData(): array
+    {
+        $data = $this->getPersistence($this->getTokenName());
+
+        return $data ? json_decode($data, true) : [];
+    }
+
+    /**
+     * 认证信息删除.
+     */
+    protected function tokenDelete(): void
+    {
+        $this->deletePersistence($this->getTokenName());
     }
 }

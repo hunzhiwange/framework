@@ -31,7 +31,7 @@ use Leevel\Session\ISession;
  *
  * @version 1.0
  */
-class Session extends Connect implements IConnect
+class Session extends Auth implements IAuth
 {
     /**
      * session.

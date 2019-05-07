@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Auth\Provider;
 
+use Leevel\Auth\Auth;
+use Leevel\Auth\IAuth;
 use Leevel\Auth\Manager;
+use Leevel\Auth\Middleware\Auth as MiddlewareAuth;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
@@ -52,14 +55,9 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'auths' => [
-                'Leevel\\Auth\\Manager',
-            ],
-            'auth' => [
-                'Leevel\\Auth\\Auth',
-                'Leevel\\Auth\\IAuth',
-            ],
-            'Leevel\\Auth\\Middleware\\Auth',
+            'auths' => Manager::class,
+            'auth'  => [IAuth::class, Auth::class],
+            MiddlewareAuth::class,
         ];
     }
 
@@ -78,7 +76,7 @@ class Register extends Provider
      */
     protected function auths(): void
     {
-        $this->container->singleton('auths', function (IContainer $container) {
+        $this->container->singleton('auths', function (IContainer $container): Manager {
             return new Manager($container);
         });
     }
@@ -88,7 +86,7 @@ class Register extends Provider
      */
     protected function auth(): void
     {
-        $this->container->singleton('auth', function (IContainer $container) {
+        $this->container->singleton('auth', function (IContainer $container): Auth {
             return $container['auths']->connect();
         });
     }
