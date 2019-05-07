@@ -22,6 +22,7 @@ namespace Leevel\Kernel\Bootstrap;
 
 use Exception;
 use Leevel\I18n\I18n;
+use Leevel\I18n\II18n;
 use Leevel\I18n\Load;
 use Leevel\Kernel\IApp;
 
@@ -43,21 +44,28 @@ class LoadI18n
      */
     public function handle(IApp $app): void
     {
-        $i18nDefault = $app['option']['i18n\\default'];
+        $i18nDefault = $app
+            ->container()
+            ->make('option')
+            ->get('i18n\\default');
 
         if ($app->isCachedI18n($i18nDefault)) {
             $data = (array) include $app->i18nCachedPath($i18nDefault);
         } else {
-            $load = (new Load([$app->i18nPath()]))->
-
-            setI18n($i18nDefault)->
-
-            addDir($this->getExtend($app));
+            $load = (new Load([$app->i18nPath()]))
+                ->setI18n($i18nDefault)
+                ->addDir($this->getExtend($app));
 
             $data = $load->loadData();
         }
 
-        $app->instance('i18n', $i18n = new I18n($i18nDefault));
+        $app
+            ->container()
+            ->instance('i18n', $i18n = new I18n($i18nDefault));
+
+        $app
+            ->container()
+            ->alias('i18n', [II18n::class, I18n::class]);
 
         $i18n->addtext($i18nDefault, $data);
     }
@@ -71,7 +79,10 @@ class LoadI18n
      */
     public function getExtend(IApp $app): array
     {
-        $extend = $app['option']->get('_composer.i18ns', []);
+        $extend = $app
+            ->container()
+            ->make('option')
+            ->get('_composer.i18ns', []);
 
         $path = $app->path();
 
@@ -81,7 +92,9 @@ class LoadI18n
             }
 
             if (!is_dir($item)) {
-                throw new Exception(sprintf('I18n dir %s is not exist.', $item));
+                $e = sprintf('I18n dir %s is not exist.', $item);
+
+                throw new Exception($e);
             }
 
             return $item;

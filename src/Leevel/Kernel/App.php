@@ -21,8 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Composer\Autoload\ClassLoader;
-use Leevel\Di\Container;
-use Leevel\Di\Provider;
+use Leevel\Di\IContainer;
 use Leevel\Event\Provider\Register as EventProvider;
 use Leevel\Log\Provider\Register as LogProvider;
 use Leevel\Router\Provider\Register as RouterProvider;
@@ -37,14 +36,14 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class App extends Container implements IApp
+class App implements IApp
 {
     /**
-     * 当前应用实例.
+     * IOC 容器.
      *
-     * @var static
+     * @var \Leevel\Di\IContainer
      */
-    protected static $app;
+    protected $container;
 
     /**
      * 应用基础路径.
@@ -145,73 +144,19 @@ class App extends Container implements IApp
     protected $routerCachedPath;
 
     /**
-     * 延迟载入服务提供者.
-     *
-     * @var array
-     */
-    protected $deferredProviders = [];
-
-    /**
-     * 服务提供者引导
-     *
-     * @var array
-     */
-    protected $providerBootstraps = [];
-
-    /**
-     * 是否已经初始化引导
-     *
-     * @var bool
-     */
-    protected $isBootstrap = false;
-
-    /**
-     * Composer 对象
-     *
-     * @var \Composer\Autoload\ClassLoader
-     */
-    protected $composer;
-
-    /**
      * 构造函数
      * 应用中通过 singletons 生成单一实例.
      *
-     * @param string $path
+     * @param \Leevel\Di\IContainer $container
+     * @param string                $path
      */
-    public function __construct(?string $path = null)
+    public function __construct(IContainer $container, string $path)
     {
-        if ($path) {
-            $this->setPath($path);
-        }
+        $this->container = $container;
 
-        $this->registerBaseServices();
+        $this->setPath($path);
 
         $this->registerBaseProvider();
-    }
-
-    /**
-     * 禁止克隆.
-     */
-    public function __clone()
-    {
-        throw new RuntimeException('App disallowed clone.');
-    }
-
-    /**
-     * 返回应用.
-     *
-     * @param string $path
-     *
-     * @return static
-     * @codeCoverageIgnore
-     */
-    public static function singletons(?string $path = null): IApp
-    {
-        if (null !== static::$app) {
-            return static::$app;
-        }
-
-        return static::$app = new static($path);
     }
 
     /**
@@ -241,25 +186,11 @@ class App extends Container implements IApp
      */
     public function console(): bool
     {
-        if (!is_object($this->make('request'))) {
+        if (!is_object($this->container->make('request'))) {
             return \PHP_SAPI === 'cli';
         }
 
-        return $this['request']->isCli();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function make(string $name, array $args = [])
-    {
-        $name = $this->getAlias($name);
-
-        if (isset($this->deferredProviders[$name])) {
-            $this->registerDeferredProvider($name);
-        }
-
-        return parent::make($name, $args);
+        return $this->container->make('request')->isCli();
     }
 
     /**
@@ -635,28 +566,6 @@ class App extends Container implements IApp
     }
 
     /**
-     * 设置 Composer 对象.
-     *
-     * @param \Composer\Autoload\ClassLoader $composer
-     * @codeCoverageIgnore
-     */
-    public function setComposer(ClassLoader $composer): void
-    {
-        $this->composer = $composer;
-    }
-
-    /**
-     * 取得 Composer 对象.
-     *
-     * @return \Composer\Autoload\ClassLoader
-     * @codeCoverageIgnore
-     */
-    public function composer(): ClassLoader
-    {
-        return $this->composer;
-    }
-
-    /**
      * 获取命名空间目录真实路径.
      *
      * 一般用于获取文件 PSR4 所在的命名空间，当然如果存在命名空间。
@@ -671,7 +580,15 @@ class App extends Container implements IApp
      */
     public function namespacePath(string $specificClass, bool $throwException = true): string
     {
-        if (false === $path = $this->composer()->findFile($specificClass)) {
+        $composer = $this->container->make('composer');
+
+        if (!$composer instanceof ClassLoader) {
+            $e = 'Composer was not register to container.';
+
+            throw new RuntimeException($e);
+        }
+
+        if (false === $path = $composer->findFile($specificClass)) {
             if (true === $throwException) {
                 $e = sprintf('Specific class `%s` for finding namespaces was not found.', $specificClass);
 
@@ -692,7 +609,7 @@ class App extends Container implements IApp
     public function debug(): bool
     {
         return 'production' !== $this->environment() &&
-            $this->make('option')->get('debug');
+            $this->container->make('option')->get('debug');
     }
 
     /**
@@ -712,36 +629,9 @@ class App extends Container implements IApp
      */
     public function environment(): string
     {
-        return $this->make('option')->get('environment');
-    }
-
-    /**
-     * 创建服务提供者.
-     *
-     * @param string $provider
-     *
-     * @return \Leevel\Di\Provider
-     */
-    public function makeProvider(string $provider): Provider
-    {
-        return new $provider($this);
-    }
-
-    /**
-     * 执行 bootstrap.
-     *
-     * @param \Leevel\Di\Provider $provider
-     */
-    public function callProviderBootstrap(Provider $provider): void
-    {
-        if (!method_exists($provider, 'bootstrap')) {
-            return;
-        }
-
-        $this->call([
-            $provider,
-            'bootstrap',
-        ]);
+        return $this->container
+            ->make('option')
+            ->get('environment');
     }
 
     /**
@@ -751,7 +641,7 @@ class App extends Container implements IApp
      */
     public function bootstrap(array $bootstraps): void
     {
-        if ($this->isBootstrap) {
+        if ($this->container->isBootstrap()) {
             return;
         }
 
@@ -761,108 +651,28 @@ class App extends Container implements IApp
     }
 
     /**
-     * 是否已经初始化引导
-     *
-     * @return bool
-     */
-    public function isBootstrap(): bool
-    {
-        return $this->isBootstrap;
-    }
-
-    /**
      * 框架基础提供者 register.
      */
     public function registerProviders(): void
     {
-        if ($this->isBootstrap) {
-            return;
-        }
+        list($deferredProviders, $deferredAlias) = $this->container
+            ->make('option')
+            ->get('_deferred_providers', [[], []]);
 
-        list($this->deferredProviders, $deferredAlias) = $this->make('option')->get('_deferred_providers', [[], []]);
-
-        foreach ($deferredAlias as $alias) {
-            $this->alias($alias);
-        }
-
-        $providers = $this->make('option')->get('_composer.providers', []);
-
-        foreach ($providers as $provider) {
-            $provider = $this->register($provider);
-
-            if (method_exists($provider, 'bootstrap')) {
-                $this->providerBootstraps[] = $provider;
-            }
-        }
+        $this->container->registerProviders(
+            $this->container->make('option')->get('_composer.providers', []),
+            $deferredProviders, $deferredAlias
+        );
     }
 
     /**
-     * 执行框架基础提供者引导.
-     */
-    public function bootstrapProviders(): void
-    {
-        if ($this->isBootstrap) {
-            return;
-        }
-
-        foreach ($this->providerBootstraps as $item) {
-            $this->callProviderBootstrap($item);
-        }
-
-        $this->isBootstrap = true;
-    }
-
-    /**
-     * 注册服务提供者.
+     * 返回 IOC 容器.
      *
-     * @param \Leevel\Di\Provider|string $provider
-     *
-     * @return \Leevel\Di\Provider
+     * @return \Leevel\Di\IContainer
      */
-    public function register($provider): Provider
+    public function container(): IContainer
     {
-        if (is_string($provider)) {
-            $provider = $this->makeProvider($provider);
-        }
-
-        if (method_exists($provider, 'register')) {
-            $provider->register();
-        }
-
-        if ($this->isBootstrap()) {
-            $this->callProviderBootstrap($provider);
-        }
-
-        return $provider;
-    }
-
-    /**
-     * 注册基础服务.
-     */
-    protected function registerBaseServices(): void
-    {
-        $this->instance('app', $this);
-
-        $this->alias([
-            'app' => [
-                'Leevel\\Leevel\\App',
-                'Leevel\\Di\\Container',
-                'Leevel\\Di\\IContainer',
-                'Leevel\\Kernel\\IApp',
-            ],
-            'request' => [
-                'Leevel\\Http\\IRequest',
-                'Leevel\\Http\\Request',
-            ],
-            'option' => [
-                'Leevel\\Option\\IOption',
-                'Leevel\\Option\\Option',
-            ],
-            'i18n' => [
-                'Leevel\\I18n\\I18n',
-                'Leevel\\I18n\\II18n',
-            ],
-        ]);
+        return $this->container;
     }
 
     /**
@@ -872,29 +682,11 @@ class App extends Container implements IApp
      */
     protected function registerBaseProvider(): void
     {
-        $this->register(new EventProvider($this));
+        $this->container->register(new EventProvider($this->container));
 
-        $this->register(new LogProvider($this));
+        $this->container->register(new LogProvider($this->container));
 
-        $this->register(new RouterProvider($this));
-    }
-
-    /**
-     * 注册延迟载入服务提供者.
-     *
-     * @param string $provider
-     */
-    protected function registerDeferredProvider(string $provider): void
-    {
-        if (!isset($this->deferredProviders[$provider])) {
-            return;
-        }
-
-        $providerInstance = $this->register($this->deferredProviders[$provider]);
-
-        $this->callProviderBootstrap($providerInstance);
-
-        unset($this->deferredProviders[$provider]);
+        $this->container->register(new RouterProvider($this->container));
     }
 
     /**
@@ -906,7 +698,7 @@ class App extends Container implements IApp
      */
     protected function normalizeApp($app): string
     {
-        return strtolower(true === $app ? ($this->make('app_name') ?: 'app') : $app);
+        return strtolower(true === $app ? ($this->container->make('app_name') ?: 'app') : $app);
     }
 
     /**

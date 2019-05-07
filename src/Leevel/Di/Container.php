@@ -42,6 +42,13 @@ use ReflectionParameter;
 class Container implements IContainer, ArrayAccess
 {
     /**
+     * 当前应用实例.
+     *
+     * @var static
+     */
+    protected static $instance;
+
+    /**
      * 注册服务.
      *
      * @var array
@@ -84,6 +91,35 @@ class Container implements IContainer, ArrayAccess
     protected $coroutineInstances = [];
 
     /**
+     * 是否已经初始化引导
+     *
+     * @var bool
+     */
+    protected $isBootstrap = false;
+
+    /**
+     * 延迟载入服务提供者.
+     *
+     * @var array
+     */
+    protected $deferredProviders = [];
+
+    /**
+     * 服务提供者引导
+     *
+     * @var array
+     */
+    protected $providerBootstraps = [];
+
+    /**
+     * 禁止克隆.
+     */
+    public function __clone()
+    {
+        throw new RuntimeException('Ioc container disallowed clone.');
+    }
+
+    /**
      * 捕捉支持属性参数.
      *
      * @param string $key
@@ -121,6 +157,20 @@ class Container implements IContainer, ArrayAccess
         $e = sprintf('Method `%s` is not exits.', $method);
 
         throw new BadMethodCallException($e);
+    }
+
+    /**
+     * 生成 IOC 容器.
+     *
+     * @return static
+     */
+    public static function singletons(): IContainer
+    {
+        if (null !== static::$instance) {
+            return static::$instance;
+        }
+
+        return static::$instance = new static();
     }
 
     /**
@@ -234,6 +284,10 @@ class Container implements IContainer, ArrayAccess
     {
         // 别名
         $name = $this->getAlias($name);
+
+        if (isset($this->deferredProviders[$name])) {
+            $this->registerDeferredProvider($name);
+        }
 
         // 存在直接返回
         if (isset($this->instances[$name])) {
@@ -402,6 +456,92 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
+     * 执行 bootstrap.
+     *
+     * @param \Leevel\Di\Provider $provider
+     */
+    public function callProviderBootstrap(Provider $provider): void
+    {
+        if (!method_exists($provider, 'bootstrap')) {
+            return;
+        }
+
+        $this->call([$provider, 'bootstrap']);
+    }
+
+    /**
+     * 创建服务提供者.
+     *
+     * @param string $provider
+     *
+     * @return \Leevel\Di\Provider
+     */
+    public function makeProvider(string $provider): Provider
+    {
+        return new $provider($this);
+    }
+
+    /**
+     * 注册服务提供者.
+     *
+     * @param \Leevel\Di\Provider|string $provider
+     *
+     * @return \Leevel\Di\Provider
+     */
+    public function register($provider): Provider
+    {
+        if (is_string($provider)) {
+            $provider = $this->makeProvider($provider);
+        }
+
+        if (method_exists($provider, 'register')) {
+            $provider->register();
+        }
+
+        if ($this->isBootstrap) {
+            $this->callProviderBootstrap($provider);
+        }
+
+        return $provider;
+    }
+
+    /**
+     * 是否已经初始化引导.
+     *
+     * @return bool
+     */
+    public function isBootstrap(): bool
+    {
+        return $this->isBootstrap;
+    }
+
+    /**
+     * 框架基础提供者 register.
+     */
+    public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
+    {
+        if ($this->isBootstrap) {
+            return;
+        }
+
+        $this->deferredProviders = $deferredProviders;
+
+        foreach ($deferredAlias as $alias) {
+            $this->alias($alias);
+        }
+
+        foreach ($providers as $provider) {
+            $provider = $this->register($provider);
+
+            if (method_exists($provider, 'bootstrap')) {
+                $this->providerBootstraps[] = $provider;
+            }
+        }
+
+        $this->bootstrapProviders();
+    }
+
+    /**
      * 设置协程.
      *
      * @param \Leevel\Di\ICoroutine $coroutine
@@ -477,6 +617,40 @@ class Container implements IContainer, ArrayAccess
     public function offsetUnset($index): void
     {
         $this->remove($index);
+    }
+
+    /**
+     * 执行框架基础提供者引导.
+     */
+    protected function bootstrapProviders(): void
+    {
+        if ($this->isBootstrap) {
+            return;
+        }
+
+        foreach ($this->providerBootstraps as $item) {
+            $this->callProviderBootstrap($item);
+        }
+
+        $this->isBootstrap = true;
+    }
+
+    /**
+     * 注册延迟载入服务提供者.
+     *
+     * @param string $provider
+     */
+    protected function registerDeferredProvider(string $provider): void
+    {
+        if (!isset($this->deferredProviders[$provider])) {
+            return;
+        }
+
+        $providerInstance = $this->register($this->deferredProviders[$provider]);
+
+        $this->callProviderBootstrap($providerInstance);
+
+        unset($this->deferredProviders[$provider]);
     }
 
     /**

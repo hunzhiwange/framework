@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Bootstrap;
 
 use Leevel\Kernel\IApp;
+use Leevel\Option\IOption;
 use Leevel\Option\Load;
 use Leevel\Option\Option;
 use RuntimeException;
@@ -55,7 +56,13 @@ class LoadOption
             $data = $load->loadData($app);
         }
 
-        $app->instance('option', $option = new Option($data));
+        $app
+            ->container()
+            ->instance('option', $option = new Option($data));
+
+        $app
+            ->container()
+            ->alias('option', [IOption::class, Option::class]);
 
         $test = 2 === func_num_args();
 

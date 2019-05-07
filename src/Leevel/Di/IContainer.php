@@ -121,6 +121,43 @@ interface IContainer
     public function clear(): void;
 
     /**
+     * 执行 bootstrap.
+     *
+     * @param \Leevel\Di\Provider $provider
+     */
+    public function callProviderBootstrap(Provider $provider): void;
+
+    /**
+     * 创建服务提供者.
+     *
+     * @param string $provider
+     *
+     * @return \Leevel\Di\Provider
+     */
+    public function makeProvider(string $provider): Provider;
+
+    /**
+     * 注册服务提供者.
+     *
+     * @param \Leevel\Di\Provider|string $provider
+     *
+     * @return \Leevel\Di\Provider
+     */
+    public function register($provider): Provider;
+
+    /**
+     * 是否已经初始化引导.
+     *
+     * @return bool
+     */
+    public function isBootstrap(): bool;
+
+    /**
+     * 框架基础提供者 register.
+     */
+    public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void;
+
+    /**
      * 设置协程.
      *
      * @param \Leevel\Di\ICoroutine $coroutine

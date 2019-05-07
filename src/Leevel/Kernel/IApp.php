@@ -20,9 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel;
 
-use Composer\Autoload\ClassLoader;
 use Leevel\Di\IContainer;
-use Leevel\Di\Provider;
 
 /**
  * 应用接口.
@@ -33,10 +31,10 @@ use Leevel\Di\Provider;
  *
  * @version 1.0
  */
-interface IApp extends IContainer
+interface IApp
 {
     /**
-     * QueryPHP 版本.
+     * Leevel 版本.
      *
      * @var string
      */
@@ -48,15 +46,6 @@ interface IApp extends IContainer
      * @var string
      */
     const DEFAULT_ENV = '.env';
-
-    /**
-     * 返回应用.
-     *
-     * @param string $path
-     *
-     * @return static
-     */
-    public static function singletons(?string $path = null): self;
 
     /**
      * 程序版本.
@@ -336,20 +325,6 @@ interface IApp extends IContainer
     public function isCachedRouter(): bool;
 
     /**
-     * 设置 Composer 对象.
-     *
-     * @param \Composer\Autoload\ClassLoader $composer
-     */
-    public function setComposer(ClassLoader $composer): void;
-
-    /**
-     * 取得 Composer 对象.
-     *
-     * @return \Composer\Autoload\ClassLoader
-     */
-    public function composer(): ClassLoader;
-
-    /**
      * 获取命名空间目录真实路径.
      *
      * 一般用于获取文件 PSR4 所在的命名空间，当然如果存在命名空间。
@@ -385,22 +360,6 @@ interface IApp extends IContainer
     public function environment(): string;
 
     /**
-     * 创建服务提供者.
-     *
-     * @param string $provider
-     *
-     * @return \Leevel\Di\Provider
-     */
-    public function makeProvider(string $provider): Provider;
-
-    /**
-     * 执行 bootstrap.
-     *
-     * @param \Leevel\Di\Provider $provider
-     */
-    public function callProviderBootstrap(Provider $provider): void;
-
-    /**
      * 初始化应用.
      *
      * @param array $bootstraps
@@ -408,28 +367,14 @@ interface IApp extends IContainer
     public function bootstrap(array $bootstraps): void;
 
     /**
-     * 是否已经初始化引导
-     *
-     * @return bool
-     */
-    public function isBootstrap(): bool;
-
-    /**
      * 框架基础提供者 register.
      */
     public function registerProviders(): void;
 
     /**
-     * 执行框架基础提供者 bootstrap.
-     */
-    public function bootstrapProviders(): void;
-
-    /**
-     * 注册服务提供者.
+     * 返回 IOC 容器.
      *
-     * @param \Leevel\Di\Provider|string $provider
-     *
-     * @return \Leevel\Di\Provider
+     * @return \Leevel\Di\IContainer
      */
-    public function register($provider): Provider;
+    public function container(): IContainer;
 }

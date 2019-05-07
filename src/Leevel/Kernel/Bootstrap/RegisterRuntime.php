@@ -143,7 +143,9 @@ class RegisterRuntime
      */
     protected function renderConsoleResponse(Exception $e): void
     {
-        $this->getRuntime()->renderForConsole(new ConsoleOutput(), $e);
+        $this
+            ->getRuntime()
+            ->renderForConsole(new ConsoleOutput(), $e);
     }
 
     /**
@@ -153,7 +155,14 @@ class RegisterRuntime
      */
     protected function renderHttpResponse(Exception $e): void
     {
-        $this->getRuntime()->render($this->app['request'], $e)->send();
+        $request = $this->app
+            ->container()
+            ->make('request');
+
+        $this
+            ->getRuntime()
+            ->render($request, $e)
+            ->send();
     }
 
     /**
@@ -177,6 +186,8 @@ class RegisterRuntime
      */
     protected function getRuntime(): IRuntime
     {
-        return $this->app->make(IRuntime::class);
+        return $this->app
+            ->container()
+            ->make(IRuntime::class);
     }
 }

@@ -22,8 +22,10 @@ namespace Leevel\Kernel;
 
 use ErrorException;
 use Exception;
+use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\Bootstrap\RegisterRuntime;
@@ -71,10 +73,11 @@ abstract class Kernel implements IKernel
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IApp    $app
-     * @param \Leevel\Router\IRouter $router
+     * @param \Leevel\Kernel\IContainer $container
+     * @param \Leevel\Kernel\IApp       $app
+     * @param \Leevel\Router\IRouter    $router
      */
-    public function __construct(IApp $app, IRouter $router)
+    public function __construct(IContainer $container, IApp $app, IRouter $router)
     {
         $this->app = $app;
         $this->router = $router;
@@ -157,7 +160,9 @@ abstract class Kernel implements IKernel
      */
     protected function getRuntime(): IRuntime
     {
-        return $this->app->make(IRuntime::class);
+        return $this->app
+            ->container()
+            ->make(IRuntime::class);
     }
 
     /**
@@ -167,7 +172,13 @@ abstract class Kernel implements IKernel
      */
     protected function registerBaseService(IRequest $request): void
     {
-        $this->app->instance('request', $request);
+        $this->app
+            ->container()
+            ->instance('request', $request);
+
+        $this->app
+            ->container()
+            ->alias('request', [IRequest::class, Request::class]);
     }
 
     /**
@@ -225,8 +236,6 @@ abstract class Kernel implements IKernel
      */
     protected function middlewareTerminate(IRequest $request, IResponse $response): void
     {
-        $this->router->throughMiddleware($request, [
-            $response,
-        ]);
+        $this->router->throughMiddleware($request, [$response]);
     }
 }

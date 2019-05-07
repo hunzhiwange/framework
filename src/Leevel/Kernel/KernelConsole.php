@@ -23,6 +23,7 @@ namespace Leevel\Kernel;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
+use Leevel\Http\IRequest;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\Bootstrap\LoadOption;
@@ -142,7 +143,7 @@ abstract class KernelConsole implements IKernelConsole
             return $this->consoleApplication;
         }
 
-        return $this->consoleApplication = new Application($this->app, $this->app->version());
+        return $this->consoleApplication = new Application($this->app->container(), $this->app->version());
     }
 
     /**
@@ -150,7 +151,13 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function registerBaseService(): void
     {
-        $this->app->instance('request', Request::createFromGlobals());
+        $this->app
+            ->container()
+            ->instance('request', Request::createFromGlobals());
+
+        $this->app
+            ->container()
+            ->alias('request', [IRequest::class, Request::class]);
     }
 
     /**
@@ -168,9 +175,12 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function setGlobalReplace(): void
     {
-        Make::setGlobalReplace(
-            $this->app['option']->get('console\\template') ?: []
-        );
+        $replace = $this->app
+            ->container()
+            ->make('option')
+            ->get('console\\template') ?: [];
+
+        Make::setGlobalReplace($replace);
     }
 
     /**
@@ -214,7 +224,9 @@ abstract class KernelConsole implements IKernelConsole
             $data[$item] = $this->app->namespacePath($item.'\\index');
         }
 
-        return (new Load())->addNamespace($data)->loadData();
+        return (new Load())
+            ->addNamespace($data)
+            ->loadData();
     }
 
     /**
@@ -224,6 +236,9 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function getCommands(): array
     {
-        return $this->app['option']->get('_composer.commands');
+        return $this->app
+            ->container()
+            ->make('option')
+            ->get('_composer.commands');
     }
 }

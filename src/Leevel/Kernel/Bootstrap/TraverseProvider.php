@@ -41,7 +41,5 @@ class TraverseProvider
     public function handle(IApp $app): void
     {
         $app->registerProviders();
-
-        $app->bootstrapProviders();
     }
 }

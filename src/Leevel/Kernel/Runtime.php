@@ -22,7 +22,6 @@ namespace Leevel\Kernel;
 
 use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
-use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
@@ -48,20 +47,20 @@ use Whoops\Run;
 abstract class Runtime implements IRuntime
 {
     /**
-     * 容器.
+     * 应用.
      *
-     * @var \Leevel\Di\IContainer
+     * @var \Leevel\Kernel\IApp
      */
-    protected $container;
+    protected $app;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Di\IContainer $container
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function __construct(IContainer $container)
+    public function __construct(IApp $app)
     {
-        $this->container = $container;
+        $this->app = $app;
     }
 
     /**
@@ -80,12 +79,12 @@ abstract class Runtime implements IRuntime
         // @codeCoverageIgnoreStart
         try {
             // 系统核心组件遇到异常，直接抛出异常
-            if (!is_object($this->container->make('option'))) {
+            if (!is_object($this->app->container()->make('option'))) {
                 echo $this->renderExceptionWithWhoops($e);
                 exit();
             }
 
-            $log = $this->container->make(ILog::class);
+            $log = $this->app->container()->make(ILog::class);
         } catch (Exception $e) {
             throw $e;
         }
@@ -183,7 +182,7 @@ abstract class Runtime implements IRuntime
      */
     protected function makeHttpResponse(Exception $e): IResponse
     {
-        if ($this->container->debug()) {
+        if ($this->app->debug()) {
             return $this->convertExceptionToResponse($e);
         }
 
@@ -243,7 +242,7 @@ abstract class Runtime implements IRuntime
      */
     protected function renderExceptionContent(Exception $e): string
     {
-        if ($this->container->debug()) {
+        if ($this->app->debug()) {
             return $this->renderExceptionWithWhoops($e);
         }
 
@@ -348,7 +347,7 @@ abstract class Runtime implements IRuntime
      */
     protected function makeJsonResponseHandler(): JsonResponseHandler
     {
-        return (new JsonResponseHandler())->addTraceToOutput($this->container->debug());
+        return (new JsonResponseHandler())->addTraceToOutput($this->app->debug());
     }
 
     /**
@@ -413,6 +412,6 @@ abstract class Runtime implements IRuntime
      */
     protected function filterPhysicalPath(string $path): string
     {
-        return str_replace($this->container->path().'/', '', $path);
+        return str_replace($this->app->path().'/', '', $path);
     }
 }
