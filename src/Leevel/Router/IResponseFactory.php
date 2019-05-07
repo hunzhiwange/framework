@@ -310,6 +310,8 @@ interface IResponseFactory
      * 设置视图正确模板
      *
      * @param string $template
+     *
+     * @return $this
      */
     public function setViewSuccessTemplate(string $template): self;
 
@@ -318,7 +320,7 @@ interface IResponseFactory
      *
      * @param string $template
      *
-     * @return \Leevel\Http\ApiResponse
+     * @return $this
      */
     public function setViewFailTemplate(string $template): self;
 }
