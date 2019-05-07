@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Auth\Proxy;
 
+use Leevel\Auth\Manager;
+
 /**
  * 代理 auth 接口.
  *
@@ -73,4 +75,11 @@ interface IAuth
      * @return string
      */
     public static function getTokenName(): string;
+
+    /**
+     * 代理服务
+     *
+     * @return \Leevel\Auth\Manager
+     */
+    public static function proxy(): Manager;
 }

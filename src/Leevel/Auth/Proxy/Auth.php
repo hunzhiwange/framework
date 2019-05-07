@@ -44,7 +44,7 @@ class Auth implements IAuth
      */
     public static function __callStatic(string $method, array $args)
     {
-        return self::connect()->{$method}(...$args);
+        return self::proxy()->{$method}(...$args);
     }
 
     /**
@@ -54,7 +54,7 @@ class Auth implements IAuth
      */
     public static function isLogin(): bool
     {
-        return self::connect()->isLogin();
+        return self::proxy()->isLogin();
     }
 
     /**
@@ -64,7 +64,7 @@ class Auth implements IAuth
      */
     public static function getLogin(): array
     {
-        return self::connect()->getLogin();
+        return self::proxy()->getLogin();
     }
 
     /**
@@ -75,7 +75,7 @@ class Auth implements IAuth
      */
     public static function login(array $data, int $loginTime = 0): void
     {
-        self::connect()->login($data, $loginTime);
+        self::proxy()->login($data, $loginTime);
     }
 
     /**
@@ -83,7 +83,7 @@ class Auth implements IAuth
      */
     public static function logout(): void
     {
-        self::connect()->logout();
+        self::proxy()->logout();
     }
 
     /**
@@ -93,7 +93,7 @@ class Auth implements IAuth
      */
     public static function setTokenName(string $tokenName): void
     {
-        self::connect()->setTokenName($tokenName);
+        self::proxy()->setTokenName($tokenName);
     }
 
     /**
@@ -103,15 +103,15 @@ class Auth implements IAuth
      */
     public static function getTokenName(): string
     {
-        return self::connect()->getTokenName();
+        return self::proxy()->getTokenName();
     }
 
     /**
-     * auths 服务
+     * 代理服务
      *
      * @return \Leevel\Auth\Manager
      */
-    protected static function connect(): Manager
+    public static function proxy(): Manager
     {
         return Container::singletons()->make('auths');
     }
