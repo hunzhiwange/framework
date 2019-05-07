@@ -23,6 +23,7 @@ namespace Leevel\Event\Provider;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Event\Dispatch;
+use Leevel\Event\IDispatch;
 
 /**
  * event 服务提供者.
@@ -40,7 +41,7 @@ class Register extends Provider
      */
     public function register(): void
     {
-        $this->container->singleton('event', function (IContainer $container) {
+        $this->container->singleton('event', function (IContainer $container): Dispatch {
             return new Dispatch($container);
         });
     }
@@ -53,10 +54,7 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'event' => [
-                'Leevel\\Event\\Dispatch',
-                'Leevel\\Event\\IDispatch',
-            ],
+            'event' => [IDispatch::class, Dispatch::class],
         ];
     }
 }

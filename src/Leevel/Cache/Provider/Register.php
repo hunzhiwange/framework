@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Provider;
 
+use Leevel\Cache\Cache;
+use Leevel\Cache\ICache;
 use Leevel\Cache\Load;
 use Leevel\Cache\Manager;
 use Leevel\Di\IContainer;
@@ -54,16 +56,9 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'caches' => [
-                'Leevel\\Cache\\Manager',
-            ],
-            'cache' => [
-                'Leevel\\Cache\\Cache',
-                'Leevel\\Cache\\ICache',
-            ],
-            'cache.load' => [
-                'Leevel\\Cache\\Load',
-            ],
+            'caches'     => Manager::class,
+            'cache'      => [ICache::class, Cache::class],
+            'cache.load' => Load::class,
         ];
     }
 
@@ -80,7 +75,7 @@ class Register extends Provider
      */
     protected function caches(): void
     {
-        $this->container->singleton('caches', function (IContainer $container) {
+        $this->container->singleton('caches', function (IContainer $container): Manager {
             return new Manager($container);
         });
     }
@@ -90,7 +85,7 @@ class Register extends Provider
      */
     protected function cache(): void
     {
-        $this->container->singleton('cache', function (IContainer $container) {
+        $this->container->singleton('cache', function (IContainer $container): Cache {
             return $container['caches']->connect();
         });
     }
@@ -100,7 +95,7 @@ class Register extends Provider
      */
     protected function cacheLoad(): void
     {
-        $this->container->singleton('cache.load', function (IContainer $container) {
+        $this->container->singleton('cache.load', function (IContainer $container): Load {
             return new Load($container, $container['cache']);
         });
     }

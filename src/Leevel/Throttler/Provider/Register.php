@@ -22,6 +22,7 @@ namespace Leevel\Throttler\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Throttler\IThrottler;
 use Leevel\Throttler\Throttler;
 
 /**
@@ -52,11 +53,8 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'throttler' => [
-                'Leevel\\Throttler\\Throttler',
-                'Leevel\\Throttler\\IThrottler',
-            ],
-            'Leevel\\Throttler\\Middleware\\Throttler',
+            'throttler' => [IThrottler::class, Throttler::class],
+            MiddlewareThrottler::class,
         ];
     }
 
@@ -73,11 +71,12 @@ class Register extends Provider
      */
     protected function throttler(): void
     {
-        $this->container->singleton('throttler', function (IContainer $container) {
-            return (new Throttler($container['caches']->
-            connect($container['option']['throttler\\driver'])))->
+        $this->container->singleton('throttler', function (IContainer $container): Throttler {
+            $cache = $container['caches']
+                ->connect($container['option']['throttler\\driver']);
 
-            setRequest($container['request']);
+            return (new Throttler($cache))
+                ->setRequest($container['request']);
         });
     }
 
@@ -86,6 +85,6 @@ class Register extends Provider
      */
     protected function middleware(): void
     {
-        $this->container->singleton('Leevel\\Throttler\\Middleware\\Throttler');
+        $this->container->singleton(MiddlewareThrottler::class);
     }
 }

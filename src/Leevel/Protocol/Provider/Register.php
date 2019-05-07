@@ -24,6 +24,7 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Protocol\Client\Rpc;
 use Leevel\Protocol\HttpServer;
+use Leevel\Protocol\IPool;
 use Leevel\Protocol\Pool;
 use Leevel\Protocol\RpcServer;
 use Leevel\Protocol\WebsocketServer;
@@ -59,22 +60,11 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'http.server' => [
-                'Leevel\\Protocol\\Http\\Server',
-            ],
-            'websocket.server' => [
-                'Leevel\\Protocol\\Websocket\\Server',
-            ],
-            'rpc.server' => [
-                'Leevel\\Protocol\\RpcServer',
-            ],
-            'pool' => [
-                'Leevel\\Protocol\\Pool',
-                'Leevel\\Protocol\\IPool',
-            ],
-            'rpc' => [
-                'Leevel\\Protocol\\Client\\Rpc',
-            ],
+            'http.server'      => HttpServer::class,
+            'websocket.server' => WebsocketServer::class,
+            'rpc.server'       => RpcServer::class,
+            'pool'             => [IPool::class, Pool::class],
+            'rpc'              => Rpc::class,
         ];
     }
 
@@ -93,7 +83,7 @@ class Register extends Provider
      */
     protected function httpServer(): void
     {
-        $this->container->singleton('http.server', function (IContainer $container) {
+        $this->container->singleton('http.server', function (IContainer $container): HttpServer {
             return new HttpServer(
                 $container,
                 array_merge(
@@ -109,7 +99,7 @@ class Register extends Provider
      */
     protected function websocketServer(): void
     {
-        $this->container->singleton('websocket.server', function (IContainer $container) {
+        $this->container->singleton('websocket.server', function (IContainer $container): WebsocketServer {
             return new WebsocketServer(
                 $container,
                 array_merge(
@@ -125,7 +115,7 @@ class Register extends Provider
      */
     protected function rpcServer(): void
     {
-        $this->container->singleton('rpc.server', function (IContainer $container) {
+        $this->container->singleton('rpc.server', function (IContainer $container): RpcServer {
             return new RpcServer(
                 $container,
                 array_merge(
@@ -141,7 +131,7 @@ class Register extends Provider
      */
     protected function pool(): void
     {
-        $this->container->singleton('pool', function (IContainer $container) {
+        $this->container->singleton('pool', function (IContainer $container): Pool {
             return new Pool($container);
         });
     }
@@ -151,7 +141,7 @@ class Register extends Provider
      */
     protected function rpc(): void
     {
-        $this->container->singleton('rpc', function (IContainer $container) {
+        $this->container->singleton('rpc', function (): Rpc {
             return new Rpc();
         });
     }

@@ -20,9 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Provider;
 
+use Leevel\Database\Database;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\IUnitOfWork;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\UnitOfWork;
+use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
@@ -46,7 +49,7 @@ class Register extends Provider
     {
         $this->databases();
         $this->database();
-        $this->work();
+        $this->unitofwork();
         $this->databaseLazyload();
     }
 
@@ -70,17 +73,9 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'databases' => [
-                'Leevel\\Database\\Manager',
-            ],
-            'database' => [
-                'Leevel\\Database\\Database',
-                'Leevel\\Database\\IDatabase',
-            ],
-            'work' => [
-                'Leevel\\Database\\Ddd\UnitOfWork',
-                'Leevel\\Database\\Ddd\IUnitOfWork',
-            ],
+            'databases'  => Manager::class,
+            'database'   => [IDatabase::class, Database::class],
+            'unitofwork' => [IUnitOfWork::class, UnitOfWork::class],
             'database.lazyload',
         ];
     }
@@ -100,7 +95,7 @@ class Register extends Provider
      */
     protected function databases(): void
     {
-        $this->container->singleton('databases', function (IContainer $container) {
+        $this->container->singleton('databases', function (IContainer $container): Manager {
             return new Manager($container);
         });
     }
@@ -110,17 +105,17 @@ class Register extends Provider
      */
     protected function database(): void
     {
-        $this->container->singleton('database', function (IContainer $container) {
+        $this->container->singleton('database', function (IContainer $container): Database {
             return $container['databases']->connect();
         });
     }
 
     /**
-     * 注册 work 服务.
+     * 注册 unitofwork 服务.
      */
-    protected function work(): void
+    protected function unitofwork(): void
     {
-        $this->container->singleton('work', function (IContainer $container) {
+        $this->container->singleton('unitofwork', function (IContainer $container): UnitOfWork {
             return new UnitOfWork();
         });
     }
@@ -149,7 +144,7 @@ class Register extends Provider
      */
     protected function meta(): void
     {
-        Meta::setDatabaseResolver(function () {
+        Meta::setDatabaseResolver(function (): Manager {
             return $this->container['databases'];
         });
     }

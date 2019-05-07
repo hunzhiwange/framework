@@ -23,8 +23,12 @@ namespace Leevel\View\Provider;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\View\Compiler;
+use Leevel\View\ICompiler;
+use Leevel\View\IParser;
+use Leevel\View\IView;
 use Leevel\View\Manager;
 use Leevel\View\Parser;
+use Leevel\View\View;
 
 /**
  * view 服务提供者.
@@ -56,21 +60,10 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'view.views' => [
-                'Leevel\\View\\Manager',
-            ],
-            'view.view' => [
-                'Leevel\\View\\View',
-                'Leevel\\View\\IView',
-            ],
-            'view.compiler' => [
-                'Leevel\\View\\Compiler',
-                'Leevel\\View\\ICompiler',
-            ],
-            'view.parser' => [
-                'Leevel\\View\\Parser',
-                'Leevel\\View\\IParser',
-            ],
+            'view.views'    => Manager::class,
+            'view.view'     => [IView::class, View::class],
+            'view.compiler' => [ICompiler::class, Compiler::class],
+            'view.parser'   => [IParser::class, Parser::class],
         ];
     }
 
@@ -89,7 +82,7 @@ class Register extends Provider
      */
     protected function viewViews(): void
     {
-        $this->container->singleton('view.views', function (IContainer $container) {
+        $this->container->singleton('view.views', function (IContainer $container): Manager {
             return new Manager($container);
         });
     }
@@ -99,7 +92,7 @@ class Register extends Provider
      */
     protected function viewView(): void
     {
-        $this->container->singleton('view.view', function (IContainer $container) {
+        $this->container->singleton('view.view', function (IContainer $container): IView {
             return $container['view.views']->connect();
         });
     }
@@ -109,7 +102,7 @@ class Register extends Provider
      */
     protected function viewCompiler(): void
     {
-        $this->container->singleton('view.compiler', function (IContainer $container) {
+        $this->container->singleton('view.compiler', function (): Compiler {
             return new Compiler();
         });
     }
@@ -119,7 +112,7 @@ class Register extends Provider
      */
     protected function viewParser(): void
     {
-        $this->container->singleton('view.parser', function (IContainer $container) {
+        $this->container->singleton('view.parser', function (IContainer $container): Parser {
             return (new Parser($container['view.compiler']))
                 ->registerCompilers()
                 ->registerParsers();

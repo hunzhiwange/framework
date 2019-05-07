@@ -22,6 +22,10 @@ namespace Leevel\Router\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Router\IResponseFactory;
+use Leevel\Router\IRouter;
+use Leevel\Router\IUrl;
+use Leevel\Router\IView;
 use Leevel\Router\Redirect;
 use Leevel\Router\ResponseFactory;
 use Leevel\Router\Router;
@@ -59,24 +63,11 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'router' => [
-                'Leevel\\Router\\Router',
-                'Leevel\\Router\\IRouter',
-            ],
-            'url' => [
-                'Leevel\\Router\\Url',
-            ],
-            'redirect' => [
-                'Leevel\\Router\\Redirect',
-            ],
-            'response' => [
-                'Leevel\\Router\\IResponseFactory',
-                'Leevel\\Router\\ResponseFactory',
-            ],
-            'view' => [
-                'Leevel\\Router\\View',
-                'Leevel\\Router\\IView',
-            ],
+            'router'   => [IRouter::class, Router::class],
+            'url'      => [IUrl::class, Url::class],
+            'redirect' => Redirect::class,
+            'response' => [IResponseFactory::class, ResponseFactory::class],
+            'view'     => [IView::class, View::class],
         ];
     }
 
@@ -85,7 +76,7 @@ class Register extends Provider
      */
     protected function router(): void
     {
-        $this->container->singleton('router', function (IContainer $container) {
+        $this->container->singleton('router', function (IContainer $container): Router {
             return new Router($container);
         });
     }
@@ -95,7 +86,7 @@ class Register extends Provider
      */
     protected function url(): void
     {
-        $this->container->singleton('url', function (IContainer $container) {
+        $this->container->singleton('url', function (IContainer $container): Url {
             $option = $container['option'];
             $router = $container['router'];
 
@@ -118,7 +109,7 @@ class Register extends Provider
      */
     protected function redirect(): void
     {
-        $this->container->singleton('redirect', function (IContainer $container) {
+        $this->container->singleton('redirect', function (IContainer $container): Redirect {
             $redirect = new Redirect($container['url']);
 
             if (isset($container['session'])) {
@@ -134,13 +125,12 @@ class Register extends Provider
      */
     protected function response(): void
     {
-        $this->container->singleton('response', function (IContainer $container) {
+        $this->container->singleton('response', function (IContainer $container): ResponseFactory {
             $option = $container['option'];
 
-            return (new ResponseFactory($container['view'], $container['redirect']))->
-            setViewSuccessTemplate($option->get('view\\success'))->
-
-            setViewFailTemplate($option->get('view\\fail'));
+            return (new ResponseFactory($container['view'], $container['redirect']))
+                ->setViewSuccessTemplate($option->get('view\\success'))
+                ->setViewFailTemplate($option->get('view\\fail'));
         });
     }
 
@@ -149,7 +139,7 @@ class Register extends Provider
      */
     protected function view(): void
     {
-        $this->container->singleton('view', function (IContainer $container) {
+        $this->container->singleton('view', function (IContainer $container): View {
             return new View($container['view.view']);
         });
     }

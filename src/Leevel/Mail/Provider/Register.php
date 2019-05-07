@@ -22,6 +22,8 @@ namespace Leevel\Mail\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Mail\IMail;
+use Leevel\Mail\Mail;
 use Leevel\Mail\Manager;
 
 /**
@@ -52,13 +54,8 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'mails' => [
-                'Leevel\\Mail\\Manager',
-            ],
-            'mail' => [
-                'Leevel\\Mail\\Mail',
-                'Leevel\\Mail\\IMail',
-            ],
+            'mails' => Manager::class,
+            'mail'  => [IMail::class, Mail::class],
         ];
     }
 
@@ -75,7 +72,7 @@ class Register extends Provider
      */
     protected function mails(): void
     {
-        $this->container->singleton('mails', function (IContainer $container) {
+        $this->container->singleton('mails', function (IContainer $container): Manager {
             return new Manager($container);
         });
     }
@@ -85,7 +82,7 @@ class Register extends Provider
      */
     protected function mail(): void
     {
-        $this->container->singleton('mail', function (IContainer $container) {
+        $this->container->singleton('mail', function (IContainer $container): IMail {
             return $container['mails']->connect();
         });
     }

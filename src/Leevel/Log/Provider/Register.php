@@ -22,7 +22,10 @@ namespace Leevel\Log\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Log\ILog;
+use Leevel\Log\Log;
 use Leevel\Log\Manager;
+use Leevel\Log\Middleware\Log as MiddlewareLog;
 
 /**
  * log 服务提供者.
@@ -53,14 +56,9 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'logs' => [
-                'Leevel\\Log\\Manager',
-            ],
-            'log' => [
-                'Leevel\\Log\\Log',
-                'Leevel\\Log\\ILog',
-            ],
-            'Leevel\\Log\\Middleware\\Log',
+            'logs' => Manager::class,
+            'log'  => [ILog::class, Log::class],
+            MiddlewareLog::class,
         ];
     }
 
@@ -69,7 +67,7 @@ class Register extends Provider
      */
     protected function logs(): void
     {
-        $this->container->singleton('logs', function (IContainer $container) {
+        $this->container->singleton('logs', function (IContainer $container): Manager {
             return new Manager($container);
         });
     }
@@ -79,7 +77,7 @@ class Register extends Provider
      */
     protected function log(): void
     {
-        $this->container->singleton('log', function (IContainer $container) {
+        $this->container->singleton('log', function (IContainer $container): ILog {
             return $container['logs']->connect();
         });
     }
@@ -89,6 +87,6 @@ class Register extends Provider
      */
     protected function middleware(): void
     {
-        $this->container->singleton('Leevel\\Log\\Middleware\\Log');
+        $this->container->singleton(MiddlewareLog::class);
     }
 }

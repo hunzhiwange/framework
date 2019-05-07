@@ -22,6 +22,7 @@ namespace Leevel\Validate\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Validate\IValidate;
 use Leevel\Validate\Validate;
 
 /**
@@ -40,7 +41,7 @@ class Register extends Provider
      */
     public function register(): void
     {
-        $this->container->singleton('validate', function (IContainer $container) {
+        $this->container->singleton('validate', function (IContainer $container): Validate {
             return new Validate($container);
         });
     }
@@ -53,10 +54,7 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'validate' => [
-                'Leevel\\Validate\\Validate',
-                'Leevel\\Validate\\IValidate',
-            ],
+            'validate' => [Validate::class, IValidate::class],
         ];
     }
 

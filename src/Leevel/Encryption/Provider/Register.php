@@ -23,6 +23,7 @@ namespace Leevel\Encryption\Provider;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Encryption\Encryption;
+use Leevel\Encryption\IEncryption;
 
 /**
  * encryption 服务提供者.
@@ -40,7 +41,7 @@ class Register extends Provider
      */
     public function register(): void
     {
-        $this->container->singleton('encryption', function (IContainer $container) {
+        $this->container->singleton('encryption', function (IContainer $container): Encryption {
             $option = $container['option'];
 
             return new Encryption(
@@ -58,10 +59,7 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'encryption' => [
-                'Leevel\\Encryption\\Encryption',
-                'Leevel\\Encryption\\IEncryption',
-            ],
+            'encryption' => [IEncryption::class, Encryption::class],
         ];
     }
 

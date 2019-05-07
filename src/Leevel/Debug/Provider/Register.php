@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Debug\Provider;
 
 use Leevel\Debug\Debug;
+use Leevel\Debug\Middleware\Debug as MiddlewareDebug;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
@@ -52,10 +53,8 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'debug' => [
-                'Leevel\\Debug\\Debug',
-            ],
-            'Leevel\\Debug\\Middleware\\Debug',
+            'debug' => Debug::class,
+            MiddlewareDebug::class,
         ];
     }
 
@@ -72,8 +71,8 @@ class Register extends Provider
      */
     protected function debug(): void
     {
-        $this->container->singleton('debug', function (IContainer $container) {
-            return new Debug($container, $container['option']->get('debug\\'));
+        $this->container->singleton('debug', function (IContainer $container): Debug {
+            return new Debug($container, $container->make('option')->get('debug\\'));
         });
     }
 
@@ -82,6 +81,6 @@ class Register extends Provider
      */
     protected function middleware(): void
     {
-        $this->container->singleton('Leevel\\Debug\\Middleware\\Debug');
+        $this->container->singleton(MiddlewareDebug::class);
     }
 }

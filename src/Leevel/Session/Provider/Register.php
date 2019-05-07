@@ -22,7 +22,10 @@ namespace Leevel\Session\Provider;
 
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Session\ISession;
 use Leevel\Session\Manager;
+use Leevel\Session\Middleware\Session as MiddlewareSession;
+use Leevel\Session\Session;
 
 /**
  * session 服务提供者.
@@ -53,14 +56,9 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'sessions' => [
-                'Leevel\\Session\\Manager',
-            ],
-            'session' => [
-                'Leevel\\Session\\Session',
-                'Leevel\\Session\\ISession',
-            ],
-            'Leevel\\Session\\Middleware\\Session',
+            'sessions' => Manager::class,
+            'session'  => [ISession::class, Session::class],
+            MiddlewareSession::class,
         ];
     }
 
@@ -79,7 +77,7 @@ class Register extends Provider
      */
     protected function sessions(): void
     {
-        $this->container->singleton('sessions', function (IContainer $container) {
+        $this->container->singleton('sessions', function (IContainer $container): Manager {
             return new Manager($container);
         });
     }
@@ -89,7 +87,7 @@ class Register extends Provider
      */
     protected function session(): void
     {
-        $this->container->singleton('session', function (IContainer $container) {
+        $this->container->singleton('session', function (IContainer $container): ISession {
             return $container['sessions']->connect();
         });
     }
@@ -99,6 +97,6 @@ class Register extends Provider
      */
     protected function middleware(): void
     {
-        $this->container->singleton('Leevel\\Session\\Middleware\\Session');
+        $this->container->singleton(MiddlewareSession::class);
     }
 }
