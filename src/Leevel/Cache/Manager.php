@@ -32,8 +32,100 @@ use Leevel\Manager\Manager as Managers;
  *
  * @version 1.0
  */
-class Manager extends Managers
+class Manager extends Managers implements ICache
 {
+    /**
+     * 批量插入.
+     *
+     * @param array|string $keys
+     * @param mixed        $value
+     */
+    public function put($keys, $value = null): void
+    {
+        $this->connect()->put($keys, $value);
+    }
+
+    /**
+     * 缓存存在读取否则重新设置.
+     *
+     * @param string $name
+     * @param mixed  $data
+     * @param array  $option
+     *
+     * @return mixed
+     */
+    public function remember(string $name, $data, array $option = [])
+    {
+        return $this->connect()->remember($name, $data, $option);
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setOption(string $name, $value): ICache
+    {
+        return $this->connect()->setOption($name, $value);
+    }
+
+    /**
+     * 获取缓存.
+     *
+     * @param string $name
+     * @param mixed  $defaults
+     * @param array  $option
+     *
+     * @return mixed
+     */
+    public function get(string $name, $defaults = false, array $option = [])
+    {
+        return $this->connect()->get($name, $defaults, $option);
+    }
+
+    /**
+     * 设置缓存.
+     *
+     * @param string $name
+     * @param mixed  $data
+     * @param array  $option
+     */
+    public function set(string $name, $data, array $option = []): void
+    {
+        $this->connect()->set($name, $data, $option);
+    }
+
+    /**
+     * 清除缓存.
+     *
+     * @param string $name
+     */
+    public function delete(string $name): void
+    {
+        $this->connect()->delete($name);
+    }
+
+    /**
+     * 返回缓存句柄.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        return $this->connect()->handle();
+    }
+
+    /**
+     * 关闭.
+     */
+    public function close()
+    {
+        $this->connect()->close();
+    }
+
     /**
      * 取得配置命名空间.
      *
@@ -53,7 +145,7 @@ class Manager extends Managers
      */
     protected function createConnect(object $connect): object
     {
-        return new Cache($connect);
+        return $connect;
     }
 
     /**

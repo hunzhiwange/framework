@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Cache\Cache;
 use Leevel\Cache\File as CacheFile;
 
 /**
@@ -61,10 +60,10 @@ class File extends Connect
     /**
      * 文件缓存.
      *
-     * @return \Leevel\Cache\Cache
+     * @return \Leevel\Cache\File
      */
-    public function createCache(): Cache
+    public function createCache(): CacheFile
     {
-        return new Cache(new CacheFile($this->option));
+        return new CacheFile($this->option);
     }
 }

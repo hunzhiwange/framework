@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Cache\Cache;
 use Leevel\Cache\Redis as CacheRedis;
 use Leevel\Cache\Redis\PhpRedis;
 
@@ -66,14 +65,12 @@ class Redis extends Connect
     /**
      * redis 缓存.
      *
-     * @return \Leevel\Cache\Cache
+     * @return \Leevel\Cache\Redis
      */
-    public function createCache(): Cache
+    public function createCache(): CacheRedis
     {
-        return new Cache(
-            new CacheRedis(
-                new PhpRedis($this->option), $this->option
-            )
+        return new CacheRedis(
+            new PhpRedis($this->option), $this->option
         );
     }
 }

@@ -18,12 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cache\Facade;
+namespace Leevel\Proxy\Facade;
 
 use Leevel\Di\Container;
 
 /**
- * 门面 cache.
+ * 代理 cache.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

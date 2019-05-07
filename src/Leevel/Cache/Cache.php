@@ -23,7 +23,7 @@ namespace Leevel\Cache;
 use Closure;
 
 /**
- * cache 仓储.
+ * cache 抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,36 +31,30 @@ use Closure;
  *
  * @version 1.0
  */
-class Cache implements ICache
+abstract class Cache
 {
     /**
-     * 缓存连接对象
+     * 缓存服务句柄.
      *
-     * @var \Leevel\Cache\IConnect
+     * @var handle
      */
-    protected $connect;
+    protected $handle;
+
+    /**
+     * 配置.
+     *
+     * @var array
+     */
+    protected $option = [];
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Cache\IConnect $connect
+     * @param array $option
      */
-    public function __construct(IConnect $connect)
+    public function __construct(array $option = [])
     {
-        $this->connect = $connect;
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        return $this->connect->{$method}(...$args);
+        $this->option = array_merge($this->option, $option);
     }
 
     /**
@@ -77,7 +71,7 @@ class Cache implements ICache
         }
 
         foreach ($keys as $key => $value) {
-            $this->connect->set($key, $value, $option);
+            $this->set($key, $value, $option);
         }
     }
 
@@ -92,7 +86,7 @@ class Cache implements ICache
      */
     public function remember(string $name, $data, array $option = [])
     {
-        if (false !== ($result = $this->connect->get($name, false, $option))) {
+        if (false !== ($result = $this->get($name, false, $option))) {
             return $result;
         }
 
@@ -100,8 +94,99 @@ class Cache implements ICache
             $data = $data($name);
         }
 
-        $this->connect->set($name, $data, $option);
+        $this->set($name, $data, $option);
 
         return $data;
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setOption(string $name, $value): ICache
+    {
+        $this->option[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * 返回缓存句柄.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        return $this->handle;
+    }
+
+    /**
+     * 获取缓存名字.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function getCacheName(string $name): string
+    {
+        return $name;
+    }
+
+    /**
+     * 读取缓存时间配置.
+     *
+     * @param string $id
+     * @param int    $defaultTime
+     *
+     * @return int
+     */
+    protected function cacheTime(string $id, int $defaultTime = 0): int
+    {
+        if (!$this->option['time_preset']) {
+            return $defaultTime;
+        }
+
+        if (isset($this->option['time_preset'][$id])) {
+            return $this->option['time_preset'][$id];
+        }
+
+        foreach ($this->option['time_preset'] as $key => $value) {
+            if (preg_match($this->prepareRegexForWildcard($key), $id, $res)) {
+                return $this->option['time_preset'][$key];
+            }
+        }
+
+        return $defaultTime;
+    }
+
+    /**
+     * 通配符正则.
+     *
+     * @param string $regex
+     *
+     * @return string
+     */
+    protected function prepareRegexForWildcard(string $regex): string
+    {
+        $regex = preg_quote($regex, '/');
+        $regex = '/^'.str_replace('\*', '(\S*)', $regex).'$/';
+
+        return $regex;
+    }
+
+    /**
+     * 整理配置.
+     *
+     * @param array $option
+     *
+     * @return array
+     */
+    protected function normalizeOptions(array $option = []): array
+    {
+        return $option ? array_merge($this->option, $option) : $this->option;
     }
 }

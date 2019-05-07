@@ -31,7 +31,7 @@ use Leevel\Cache\Redis\IConnect as RedisIConnect;
  *
  * @version 1.0
  */
-class Redis extends Connect implements IConnect
+class Redis extends Cache implements ICache
 {
     /**
      * 配置.

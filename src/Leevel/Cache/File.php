@@ -33,7 +33,7 @@ use function Leevel\Filesystem\Fso\create_file;
  *
  * @version 1.0
  */
-class File extends Connect implements IConnect
+class File extends Cache implements ICache
 {
     /**
      * 缓存文件头部.
