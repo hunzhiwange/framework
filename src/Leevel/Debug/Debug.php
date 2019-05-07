@@ -35,13 +35,13 @@ use Leevel\Debug\DataCollector\FilesCollector;
 use Leevel\Debug\DataCollector\LeevelCollector;
 use Leevel\Debug\DataCollector\LogsCollector;
 use Leevel\Debug\DataCollector\SessionCollector;
+use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Http\ApiResponse;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
-use Leevel\Kernel\IApp;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Throwable;
@@ -72,9 +72,9 @@ class Debug extends DebugBar
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Kernel\IApp
+     * @var \Leevel\Di\IContainer
      */
-    protected $app;
+    protected $container;
 
     /**
      * 是否启用调试.
@@ -104,12 +104,12 @@ class Debug extends DebugBar
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IApp $app
-     * @param array               $option
+     * @param \Leevel\Di\IContainer $container
+     * @param array                 $option
      */
-    public function __construct(IApp $app, array $option = [])
+    public function __construct(IContainer $container, array $option = [])
     {
-        $this->app = $app;
+        $this->container = $container;
 
         $this->option = array_merge($this->option, $option);
     }
@@ -140,11 +140,11 @@ class Debug extends DebugBar
     /**
      * 返回应用管理.
      *
-     * @return \Leevel\Kernel\IApp
+     * @return \Leevel\Di\IContainer
      */
-    public function getApp(): IApp
+    public function getContainer(): IContainer
     {
-        return $this->app;
+        return $this->container;
     }
 
     /**
@@ -334,9 +334,9 @@ class Debug extends DebugBar
         $this->addCollector(new MemoryCollector());
         $this->addCollector(new ExceptionsCollector());
         $this->addCollector(new ConfigCollector());
-        $this->addCollector(new LeevelCollector($this->app));
-        $this->addCollector(new SessionCollector($this->app->make('session')));
-        $this->addCollector(new FilesCollector($this->app));
+        $this->addCollector(new LeevelCollector($this->container->make('app')));
+        $this->addCollector(new SessionCollector($this->container->make('session')));
+        $this->addCollector(new FilesCollector());
         $this->addCollector(new LogsCollector());
 
         $this->initData();
@@ -363,7 +363,9 @@ class Debug extends DebugBar
     {
         $this->message('Starts from this moment with QueryPHP.', '');
 
-        $this->getCollector('config')->setData($this->app->make('option')->all());
+        $this
+            ->getCollector('config')
+            ->setData($this->container->make('option')->all());
     }
 
     /**
@@ -374,7 +376,9 @@ class Debug extends DebugBar
         $this->getEventDispatch()->
 
         register(IConnect::SQL_EVENT, function (string $event, string $sql, array $bindParams = []) {
-            $this->getCollector('logs')->addMessage($sql.': '.json_encode($bindParams, JSON_UNESCAPED_UNICODE), 'sql');
+            $this->
+                getCollector('logs')
+                    ->addMessage($sql.': '.json_encode($bindParams, JSON_UNESCAPED_UNICODE), 'sql');
         });
     }
 
@@ -386,7 +390,9 @@ class Debug extends DebugBar
         $this->getEventDispatch()->
 
         register(ILog::LOG_EVENT, function (string $event, string $level, string $message, array $context = []) {
-            $this->getCollector('logs')->addMessage(File::formatMessage($level, $message, $context), $level);
+            $this
+                ->getCollector('logs')
+                ->addMessage(File::formatMessage($level, $message, $context), $level);
         });
     }
 
@@ -397,6 +403,6 @@ class Debug extends DebugBar
      */
     protected function getEventDispatch(): IDispatch
     {
-        return $this->app->make(IDispatch::class);
+        return $this->container->make(IDispatch::class);
     }
 }
