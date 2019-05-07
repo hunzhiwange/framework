@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\I18n\Helper;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
  * 获取语言.
@@ -32,7 +32,7 @@ use Leevel\Kernel\App;
  */
 function gettext(string $text, ...$arr): string
 {
-    return App::singletons()
+    return Container::singletons()
         ->make('i18n')
         ->gettext($text, ...$arr);
 }

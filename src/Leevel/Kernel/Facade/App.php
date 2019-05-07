@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Facade;
 
-use Leevel\Kernel\App as Apps;
+use Leevel\Di\Container;
 
 /**
  * 门面 app.
@@ -43,6 +43,8 @@ class App
      */
     public static function __callStatic(string $method, array $args)
     {
-        return Apps::singletons()->{$method}(...$args);
+        return Container::singletons()
+            ->make('app')
+            ->{$method}(...$args);
     }
 }

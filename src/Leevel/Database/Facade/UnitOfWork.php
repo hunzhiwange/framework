@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Facade;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
- * 门面 work.
+ * 门面 unitofwork.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Leevel\Kernel\App;
  *
  * @version 1.0
  */
-class Work
+class UnitOfWork
 {
     /**
      * call.
@@ -43,8 +43,8 @@ class Work
      */
     public static function __callStatic(string $method, array $args)
     {
-        return App::singletons()
-            ->make('work')
+        return Container::singletons()
+            ->make('unitofwork')
             ->{$method}(...$args);
     }
 }

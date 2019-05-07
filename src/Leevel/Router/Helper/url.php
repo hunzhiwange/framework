@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Helper;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
  * 生成路由地址
@@ -34,7 +34,7 @@ use Leevel\Kernel\App;
  */
 function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
 {
-    return App::singletons()
+    return Container::singletons()
         ->make('url')
         ->make($url, $params, $subdomain, $suffix);
 }

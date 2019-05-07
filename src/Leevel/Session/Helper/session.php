@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Session\Helper;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
  * 设置或者获取 session 值
@@ -32,7 +32,7 @@ use Leevel\Kernel\App;
  */
 function session($key = null, $defaults = null)
 {
-    $service = App::singletons()->make('sessions');
+    $service = Container::singletons()->make('sessions');
 
     if (null === $key) {
         return $service;

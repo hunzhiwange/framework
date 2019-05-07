@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Helper;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
  * 设置或者获取 cache 值
@@ -33,7 +33,7 @@ use Leevel\Kernel\App;
  */
 function cache($key = null, $defaults = null, array $option = [])
 {
-    $service = App::singletons()->make('caches');
+    $service = Container::singletons()->make('caches');
 
     if (null === $key) {
         return $service;

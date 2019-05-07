@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Option\Helper;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
  * 设置或者获取 option 值
@@ -32,7 +32,7 @@ use Leevel\Kernel\App;
  */
 function option($key = null, $defaults = null)
 {
-    $service = App::singletons()->make('option');
+    $service = Container::singletons()->make('option');
 
     if (null === $key) {
         return $service;

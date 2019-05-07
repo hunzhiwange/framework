@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Log\Helper;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 use Leevel\Log\ILog;
 
 /**
@@ -34,7 +34,7 @@ use Leevel\Log\ILog;
  */
 function log(?string $message = null, array $context = [], string $level = ILog::INFO)
 {
-    $service = App::singletons()->make('logs');
+    $service = Container::singletons()->make('logs');
 
     if (null === $message) {
         return $service;

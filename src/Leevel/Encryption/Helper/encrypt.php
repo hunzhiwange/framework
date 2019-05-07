@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Helper;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
  * 加密字符串.
@@ -36,7 +36,7 @@ use Leevel\Kernel\App;
  */
 function encrypt(string $value, int $expiry = 0): string
 {
-    return App::singletons()
+    return Container::singletons()
         ->make('encryption')
         ->encrypt($value, $expiry);
 }

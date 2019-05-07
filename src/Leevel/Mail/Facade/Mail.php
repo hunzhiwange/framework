@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Mail\Facade;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
  * 门面 mail.
@@ -43,7 +43,7 @@ class Mail
      */
     public static function __callStatic(string $method, array $args)
     {
-        return App::singletons()
+        return Container::singletons()
             ->make('mails')
             ->{$method}(...$args);
     }

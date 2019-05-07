@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Throttler\Facade;
 
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 
 /**
  * 门面 throttler.
@@ -43,7 +43,7 @@ class Throttler
      */
     public static function __callStatic(string $method, array $args)
     {
-        return App::singletons()
+        return Container::singletons()
             ->make('throttler')
             ->{$method}(...$args);
     }
