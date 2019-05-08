@@ -18,12 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Database\Facade;
+namespace Leevel\Database\Proxy;
 
 use Leevel\Di\Container;
 
 /**
- * 门面 unitofwork.
+ * 代理 unitofwork.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

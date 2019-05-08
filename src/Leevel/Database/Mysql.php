@@ -31,7 +31,7 @@ use PDO;
  *
  * @version 1.0
  */
-class Mysql extends Connect implements IConnect
+class Mysql extends Database implements IDatabase
 {
     /**
      * dsn 解析.

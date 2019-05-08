@@ -30,7 +30,7 @@ use DebugBar\DataCollector\RequestDataCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use DebugBar\DebugBar;
 use Exception;
-use Leevel\Database\IConnect;
+use Leevel\Database\IDatabase;
 use Leevel\Debug\DataCollector\FilesCollector;
 use Leevel\Debug\DataCollector\LeevelCollector;
 use Leevel\Debug\DataCollector\LogsCollector;
@@ -373,13 +373,13 @@ class Debug extends DebugBar
      */
     protected function databaseEventDispatch(): void
     {
-        $this->getEventDispatch()->
-
-        register(IConnect::SQL_EVENT, function (string $event, string $sql, array $bindParams = []) {
-            $this->
-                getCollector('logs')
+        $this
+            ->getEventDispatch()
+            ->register(IDatabase::SQL_EVENT, function (string $event, string $sql, array $bindParams = []) {
+                $this
+                    ->getCollector('logs')
                     ->addMessage($sql.': '.json_encode($bindParams, JSON_UNESCAPED_UNICODE), 'sql');
-        });
+            });
     }
 
     /**
@@ -387,13 +387,12 @@ class Debug extends DebugBar
      */
     protected function logEventDispatch(): void
     {
-        $this->getEventDispatch()->
-
-        register(ILog::LOG_EVENT, function (string $event, string $level, string $message, array $context = []) {
-            $this
-                ->getCollector('logs')
-                ->addMessage(File::formatMessage($level, $message, $context), $level);
-        });
+        $this->getEventDispatch()
+            ->register(ILog::LOG_EVENT, function (string $event, string $level, string $message, array $context = []) {
+                $this
+                    ->getCollector('logs')
+                    ->addMessage(File::formatMessage($level, $message, $context), $level);
+            });
     }
 
     /**

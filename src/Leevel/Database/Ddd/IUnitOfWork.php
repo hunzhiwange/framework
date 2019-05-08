@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use Leevel\Database\IConnect;
+use Leevel\Database\IDatabase;
 
 /**
  * 工作单元接口.
@@ -342,9 +342,9 @@ interface IUnitOfWork
     /**
      * 返回数据库连接.
      *
-     * @return \Leevel\Database\IConnect
+     * @return \Leevel\Database\IDatabase
      */
-    public function connect(): IConnect;
+    public function connect(): IDatabase;
 
     /**
      * 启动事物.

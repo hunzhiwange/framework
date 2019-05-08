@@ -22,7 +22,7 @@ namespace Leevel\Database\Ddd;
 
 use Closure;
 use InvalidArgumentException;
-use Leevel\Database\IConnect;
+use Leevel\Database\IDatabase;
 use Throwable;
 
 /**
@@ -669,9 +669,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 返回数据库连接.
      *
-     * @return \Leevel\Database\IConnect
+     * @return \Leevel\Database\IDatabase
      */
-    public function connect(): IConnect
+    public function connect(): IDatabase
     {
         return $this->rootEntity->databaseConnect();
     }

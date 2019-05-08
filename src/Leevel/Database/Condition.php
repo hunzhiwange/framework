@@ -85,7 +85,7 @@ class Condition
     /**
      * 数据库连接.
      *
-     * @var Leevel\Database\IConnect
+     * @var Leevel\Database\IDatabase
      */
     protected $connect;
 
@@ -197,9 +197,9 @@ class Condition
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\IConnect $connect
+     * @param \Leevel\Database\IDatabase $connect
      */
-    public function __construct(IConnect $connect)
+    public function __construct(IDatabase $connect)
     {
         $this->connect = $connect;
 

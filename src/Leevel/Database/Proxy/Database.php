@@ -18,20 +18,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Database\Facade;
+namespace Leevel\Database\Proxy;
 
 use Leevel\Di\Container;
 
 /**
- * 门面 db 别名.
+ * 代理 database.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.08.31
+ * @since 2017.06.10
  *
  * @version 1.0
  */
-class Db
+class Database
 {
     /**
      * call.

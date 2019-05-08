@@ -67,7 +67,7 @@ class Meta implements IMeta
     /**
      * 表连接.
      *
-     * @var \Leevel\Database\IConnect
+     * @var \Leevel\Database\IDatabase
      */
     protected $connect;
 
