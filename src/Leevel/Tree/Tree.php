@@ -59,9 +59,9 @@ class Tree implements IJson, IArray
     {
         foreach ($nodes as $node) {
             if (!is_array($node) || 3 !== count($node)) {
-                throw new RuntimeException(
-                    'The node must be an array of three elements.'
-                );
+                $e = 'The node must be an array of three elements.';
+
+                throw new RuntimeException($e);
             }
 
             $this->setNode($node[0], $node[1], $node[2]);
@@ -81,17 +81,11 @@ class Tree implements IJson, IArray
         $this->data[$id] = $value;
 
         if ($priority) {
-            $tmp = [
-                $id => $parent,
-            ];
+            $this->map = [$id => $parent];
 
             foreach ($this->map as $key => $value) {
-                $tmp[$key] = $value;
+                $this->map[$key] = $value;
             }
-
-            $this->map = $tmp;
-
-            unset($tmp);
         } else {
             $this->map[$id] = $parent;
         }
