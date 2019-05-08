@@ -29,7 +29,7 @@ namespace Leevel\Cache;
  *
  * @version 1.0
  *
- * @see \Leevel\Cache\Proxy\Cache 请保持接口设计的一致性
+ * @see \Leevel\Cache\Proxy\ICache 请保持接口设计的一致性
  */
 interface ICache
 {
