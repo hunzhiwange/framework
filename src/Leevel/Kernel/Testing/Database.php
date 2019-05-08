@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Testing;
 
-use Leevel\Database\Facade\Db;
+use Leevel\Database\Proxy\Db;
 
 /**
  * 数据库助手方法.

@@ -23,7 +23,7 @@ namespace Leevel\Protocol\Console\Base;
 use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
-use Leevel\Kernel\Facade\App;
+use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\IServer;
 
 /**

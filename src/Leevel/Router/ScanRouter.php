@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Kernel\Facade\App;
-use Leevel\Router\Facade\Url;
+use Leevel\Kernel\Proxy\App;
+use Leevel\Router\Proxy\Url;
 
 /**
  * openapi 路由扫描.

@@ -25,8 +25,8 @@ use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request as HttpRequest;
-use Leevel\Kernel\Facade\App;
 use Leevel\Kernel\IKernel;
+use Leevel\Kernel\Proxy\App;
 use Leevel\Router\IRouter;
 
 /**

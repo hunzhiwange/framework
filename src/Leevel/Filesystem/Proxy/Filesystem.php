@@ -18,55 +18,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Protocol\Console;
+namespace Leevel\Filesystem\Proxy;
 
-use Leevel\Kernel\Proxy\App;
-use Leevel\Protocol\Console\Base\Status as BaseStatus;
-use Leevel\Protocol\IServer;
+use Leevel\Di\Container;
 
 /**
- * Http 服务列表.
+ * 代理 filesystem.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.12.26
+ * @since 2017.08.29
  *
  * @version 1.0
- * @codeCoverageIgnore
  */
-class HttpStatus extends BaseStatus
+class Filesystem
 {
     /**
-     * 命令名字.
+     * call.
      *
-     * @var string
-     */
-    protected $name = 'http:status';
-
-    /**
-     * 命令行描述.
+     * @param string $method
+     * @param array  $args
      *
-     * @var string
+     * @return mixed
      */
-    protected $description = 'Status of http service';
-
-    /**
-     * 创建 server.
-     *
-     * @return \Leevel\Protocol\IServer
-     */
-    protected function createServer(): IServer
+    public static function __callStatic(string $method, array $args)
     {
-        return App::make('http.server');
-    }
-
-    /**
-     * 返回 Version.
-     *
-     * @return string
-     */
-    protected function getVersion(): string
-    {
-        return 'Http Status Version '.App::version().PHP_EOL;
+        return Container::singletons()
+            ->make('filesystems')
+            ->{$method}(...$args);
     }
 }

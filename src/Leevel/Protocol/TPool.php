@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Leevel\Protocol\Facade\Pool;
+use Leevel\Protocol\Proxy\Pool;
 
 /**
  * 对象池归还.

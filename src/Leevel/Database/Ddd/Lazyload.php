@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Leevel\Kernel\Facade\App;
+use Leevel\Kernel\Proxy\App;
 
 /**
  * 数据库组件 lazyload.
