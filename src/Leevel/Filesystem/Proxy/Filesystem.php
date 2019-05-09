@@ -339,7 +339,7 @@ class Filesystem implements IFilesystem
     }
 
     /**
-     * 创建获取更新文件.
+     * 创建或者更新文件.
      *
      * @param string $path
      * @param string $contents
