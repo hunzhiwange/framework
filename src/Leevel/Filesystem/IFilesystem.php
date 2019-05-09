@@ -33,6 +33,8 @@ use League\Flysystem\PluginInterface;
  * @since 2019.05.09 基于接口 \League\Flysystem\FilesystemInterface 添加系统的接口，防止未来变化和使用强类型
  *
  * @version 1.0
+ *
+ * @see \Leevel\Filesystem\Proxy\IFilesystem 请保持接口设计的一致性
  */
 interface IFilesystem
 {
@@ -174,7 +176,7 @@ interface IFilesystem
      *
      * @return bool
      */
-    public function writeStream(string $path, resource $resource, array $config = []): bool;
+    public function writeStream(string $path, $resource, array $config = []): bool;
 
     /**
      * 更新现有文件.
@@ -201,7 +203,7 @@ interface IFilesystem
      *
      * @return bool
      */
-    public function updateStream(string $path, resource $resource, array $config = []): bool;
+    public function updateStream(string $path, $resource, array $config = []): bool;
 
     /**
      * 重命名文件.
@@ -295,7 +297,7 @@ interface IFilesystem
      *
      * @return bool
      */
-    public function putStream(string $path, resource $resource, array $config = []): bool;
+    public function putStream(string $path, $resource, array $config = []): bool;
 
     /**
      * 读取并删除一个文件.

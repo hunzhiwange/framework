@@ -23,20 +23,20 @@ namespace Leevel\Filesystem\Proxy;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
-use Leevel\Di\Container;
 use Leevel\Filesystem\IFilesystem as IBaseFilesystem;
-use Leevel\Filesystem\Manager;
 
 /**
- * 代理 filesystem.
+ * 代理 filesystem 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.08.29
+ * @since 2019.05.09
  *
  * @version 1.0
+ *
+ * @see \Leevel\Filesystem\IFilesystem 请保持接口设计的一致性
  */
-class Filesystem implements IFilesystem
+interface IFilesystem
 {
     /**
      * 设置配置.
@@ -46,20 +46,14 @@ class Filesystem implements IFilesystem
      *
      * @return \Leevel\Filesystem\IFilesystem
      */
-    public static function setOption(string $name, $value): IBaseFilesystem
-    {
-        return self::proxy()->setOption($name, $value);
-    }
+    public static function setOption(string $name, $value): IBaseFilesystem;
 
     /**
      * 创建连接.
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public static function makeAdapter(): AdapterInterface
-    {
-        return self::proxy()->makeAdapter();
-    }
+    public static function makeAdapter(): AdapterInterface;
 
     /**
      * 判断文件是否存在.
@@ -68,10 +62,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function has(string $path): bool
-    {
-        return self::proxy()->has($path);
-    }
+    public static function has(string $path): bool;
 
     /**
      * 读取文件.
@@ -82,10 +73,7 @@ class Filesystem implements IFilesystem
      *
      * @return false|string
      */
-    public static function read(string $path)
-    {
-        return self::proxy()->read($path);
-    }
+    public static function read(string $path);
 
     /**
      * 从路径读取流数据.
@@ -96,10 +84,7 @@ class Filesystem implements IFilesystem
      *
      * @return false|resource
      */
-    public static function readStream(string $path)
-    {
-        return self::proxy()->readStream($path);
-    }
+    public static function readStream(string $path);
 
     /**
      * 读取文件目录.
@@ -109,10 +94,7 @@ class Filesystem implements IFilesystem
      *
      * @return array
      */
-    public static function listContents(string $directory = '', bool $recursive = false): array
-    {
-        return self::proxy()->listContents($directory, $recursive);
-    }
+    public static function listContents(string $directory = '', bool $recursive = false): array;
 
     /**
      * 获取文件元数据.
@@ -123,10 +105,7 @@ class Filesystem implements IFilesystem
      *
      * @return array|false
      */
-    public static function getMetadata(string $path)
-    {
-        return self::proxy()->getMetadata($path);
-    }
+    public static function getMetadata(string $path);
 
     /**
      * 获取文件大小.
@@ -137,10 +116,7 @@ class Filesystem implements IFilesystem
      *
      * @return false|int
      */
-    public static function getSize(string $path)
-    {
-        return self::proxy()->getSize($path);
-    }
+    public static function getSize(string $path);
 
     /**
      * 获取文件的 mime 类型.
@@ -151,10 +127,7 @@ class Filesystem implements IFilesystem
      *
      * @return false|string
      */
-    public static function getMimetype(string $path)
-    {
-        return self::proxy()->getMimetype($path);
-    }
+    public static function getMimetype(string $path);
 
     /**
      * 获取文件的时间戳.
@@ -165,10 +138,7 @@ class Filesystem implements IFilesystem
      *
      * @return false|string
      */
-    public static function getTimestamp(string $path)
-    {
-        return self::proxy()->getTimestamp($path);
-    }
+    public static function getTimestamp(string $path);
 
     /**
      * 获取文件的可见性.
@@ -179,10 +149,7 @@ class Filesystem implements IFilesystem
      *
      * @return false|string public|private|false
      */
-    public static function getVisibility(string $path)
-    {
-        return self::proxy()->getVisibility($path);
-    }
+    public static function getVisibility(string $path);
 
     /**
      * 写一个新文件.
@@ -195,10 +162,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function write(string $path, string $contents, array $config = []): bool
-    {
-        return self::proxy()->write($path, $contents, $config);
-    }
+    public static function write(string $path, string $contents, array $config = []): bool;
 
     /**
      * 使用流写入新文件.
@@ -212,10 +176,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function writeStream(string $path, $resource, array $config = []): bool
-    {
-        return self::proxy()->writeStream($path, $resource, $config);
-    }
+    public static function writeStream(string $path, $resource, array $config = []): bool;
 
     /**
      * 更新现有文件.
@@ -228,10 +189,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function update(string $path, string $contents, array $config = []): bool
-    {
-        return self::proxy()->update($path, $contents, $config);
-    }
+    public static function update(string $path, string $contents, array $config = []): bool;
 
     /**
      * 使用流更新现有文件.
@@ -245,10 +203,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function updateStream(string $path, $resource, array $config = []): bool
-    {
-        return self::proxy()->updateStream($path, $resource, $config);
-    }
+    public static function updateStream(string $path, $resource, array $config = []): bool;
 
     /**
      * 重命名文件.
@@ -261,10 +216,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function rename(string $path, string $newpath): bool
-    {
-        return self::proxy()->rename($path, $newpath);
-    }
+    public static function rename(string $path, string $newpath): bool;
 
     /**
      * 复制文件.
@@ -277,10 +229,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function copy(string $path, string $newpath): bool
-    {
-        return self::proxy()->copy($path, $newpath);
-    }
+    public static function copy(string $path, string $newpath): bool;
 
     /**
      * 删除文件.
@@ -291,10 +240,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function delete(string $path): bool
-    {
-        return self::proxy()->delete($path);
-    }
+    public static function delete(string $path): bool;
 
     /**
      * 删除文件夹.
@@ -305,10 +251,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function deleteDir(string $dirname): bool
-    {
-        return self::proxy()->deleteDir($dirname);
-    }
+    public static function deleteDir(string $dirname): bool;
 
     /**
      * 创建一个文件夹.
@@ -318,10 +261,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function createDir(string $dirname, array $config = []): bool
-    {
-        return self::proxy()->createDir($dirname, $config);
-    }
+    public static function createDir(string $dirname, array $config = []): bool;
 
     /**
      * 设置文件的可见性.
@@ -333,10 +273,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function setVisibility(string $path, $visibility): bool
-    {
-        return self::proxy()->setVisibility($path, $visibility);
-    }
+    public static function setVisibility(string $path, $visibility): bool;
 
     /**
      * 创建获取更新文件.
@@ -347,10 +284,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function put(string $path, string $contents, array $config = []): bool
-    {
-        return self::proxy()->put($path, $contents, $config);
-    }
+    public static function put(string $path, string $contents, array $config = []): bool;
 
     /**
      * 使用流创建或者更新文件.
@@ -363,10 +297,7 @@ class Filesystem implements IFilesystem
      *
      * @return bool
      */
-    public static function putStream(string $path, $resource, array $config = []): bool
-    {
-        return self::proxy()->putStream($path, $resource, $config);
-    }
+    public static function putStream(string $path, $resource, array $config = []): bool;
 
     /**
      * 读取并删除一个文件.
@@ -377,10 +308,7 @@ class Filesystem implements IFilesystem
      *
      * @return false|string
      */
-    public static function readAndDelete(string $path)
-    {
-        return self::proxy()->readAndDelete($path);
-    }
+    public static function readAndDelete(string $path);
 
     /**
      * 注册一个插件.
@@ -389,18 +317,5 @@ class Filesystem implements IFilesystem
      *
      * @return \League\Flysystem\FilesystemInterface
      */
-    public static function addPlugin(PluginInterface $plugin): FilesystemInterface
-    {
-        return self::proxy()->addPlugin($plugin);
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Filesystem\Manager
-     */
-    public static function proxy(): Manager
-    {
-        return Container::singletons()->make('filesystems');
-    }
+    public static function addPlugin(PluginInterface $plugin): FilesystemInterface;
 }

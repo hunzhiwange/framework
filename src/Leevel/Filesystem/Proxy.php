@@ -209,7 +209,7 @@ trait Proxy
      *
      * @return bool
      */
-    public function writeStream(string $path, resource $resource, array $config = []): bool
+    public function writeStream(string $path, $resource, array $config = []): bool
     {
         return $this->proxy()->writeStream($path, $resource, $config);
     }
@@ -242,7 +242,7 @@ trait Proxy
      *
      * @return bool
      */
-    public function updateStream(string $path, resource $resource, array $config = []): bool
+    public function updateStream(string $path, $resource, array $config = []): bool
     {
         return $this->proxy()->updateStream($path, $resource, $config);
     }
@@ -360,7 +360,7 @@ trait Proxy
      *
      * @return bool
      */
-    public function putStream(string $path, resource $resource, array $config = []): bool
+    public function putStream(string $path, $resource, array $config = []): bool
     {
         return $this->proxy()->putStream($path, $resource, $config);
     }
