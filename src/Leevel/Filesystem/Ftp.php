@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Filesystem;
 
 use League\Flysystem\Adapter\Ftp as AdapterFtp;
+use League\Flysystem\AdapterInterface;
 
 /**
  * filesystem.ftp.
@@ -33,7 +34,7 @@ use League\Flysystem\Adapter\Ftp as AdapterFtp;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Ftp extends Connect implements IConnect
+class Ftp extends Filesystem implements IFilesystem
 {
     /**
      * 配置.
@@ -71,7 +72,7 @@ class Ftp extends Connect implements IConnect
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeConnect()
+    public function makeAdapter(): AdapterInterface
     {
         return new AdapterFtp($this->option);
     }

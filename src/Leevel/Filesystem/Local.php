@@ -22,6 +22,7 @@ namespace Leevel\Filesystem;
 
 use InvalidArgumentException;
 use League\Flysystem\Adapter\Local as AdapterLocal;
+use League\Flysystem\AdapterInterface;
 
 /**
  * filesystem.local.
@@ -33,7 +34,7 @@ use League\Flysystem\Adapter\Local as AdapterLocal;
  *
  * @version 1.0
  */
-class Local extends Connect implements IConnect
+class Local extends Filesystem implements IFilesystem
 {
     /**
      * 配置.
@@ -52,12 +53,12 @@ class Local extends Connect implements IConnect
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeConnect()
+    public function makeAdapter(): AdapterInterface
     {
         if (empty($this->option['path'])) {
-            throw new InvalidArgumentException(
-                'The local requires path option.'
-            );
+            $e = 'The local requires path option.';
+
+            throw new InvalidArgumentException($e);
         }
 
         return new AdapterLocal(

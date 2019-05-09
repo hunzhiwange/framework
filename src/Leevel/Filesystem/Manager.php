@@ -25,39 +25,26 @@ use Leevel\Manager\Manager as Managers;
 /**
  * filesystem 入口.
  *
- * @method bool                                  has(string $path)
- * @method false|string                          read(string $path)
- * @method false|resource                        readStream(string $path)
- * @method array                                 listContents(string $directory = '', bool $recursive = false)
- * @method array|false                           getMetadata(string $path)
- * @method false|int                             getSize(string $path)
- * @method false|string                          getMimetype(string $path)
- * @method false|int                             getTimestamp(string $path)
- * @method false|string                          getVisibility(string $path)
- * @method bool                                  write(string $path, string $contents, array $config = [])
- * @method bool                                  writeStream(string $path, resource $resource, array $config = [])
- * @method bool                                  update(string $path, string $contents, array $config = [])
- * @method bool                                  updateStream(string $path, resource $resource, array $config = [])
- * @method bool                                  rename(string $path, string $newpath)
- * @method bool                                  copy(string $path, string $newpath)
- * @method bool                                  delete(string $path)
- * @method bool                                  deleteDir(string $dirname)
- * @method bool                                  createDir(string $dirname, array $config = [])
- * @method bool                                  setVisibility(sring $path, string $visibility)
- * @method bool                                  put(string $path, string $contents, array $config = [])
- * @method bool                                  putStream(string $path, resource $resource, array $config = [])
- * @method string                                readAndDelete(string $path)
- * @method \League\Flysystem\Handler             get(string $path, \League\Flysystem\Handler $handler = null)
- * @method \League\Flysystem\FilesystemInterface addPlugin(\League\Flysystem\PluginInterface $plugin)
- *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.08.29
  *
  * @version 1.0
  */
-class Manager extends Managers
+class Manager extends Managers implements IFilesystem
 {
+    use Proxy;
+
+    /**
+     * 返回代理.
+     *
+     * @return \Leevel\Filesystem\IFilesystem
+     */
+    protected function proxy(): IFilesystem
+    {
+        return $this->connect();
+    }
+
     /**
      * 取得配置命名空间.
      *
@@ -77,7 +64,7 @@ class Manager extends Managers
      */
     protected function createConnect(object $connect): object
     {
-        return new Filesystem($connect);
+        return $connect;
     }
 
     /**

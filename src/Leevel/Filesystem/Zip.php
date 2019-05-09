@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Filesystem;
 
 use InvalidArgumentException;
+use League\Flysystem\AdapterInterface;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
 /**
@@ -34,7 +35,7 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Zip extends Connect implements IConnect
+class Zip extends Filesystem implements IFilesystem
 {
     /**
      * 配置.
@@ -50,18 +51,18 @@ class Zip extends Connect implements IConnect
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeConnect()
+    public function makeAdapter(): AdapterInterface
     {
         if (empty($this->option['path'])) {
-            throw new InvalidArgumentException(
-                'The zip requires path option.'
-            );
+            $e = 'The zip requires path option.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (!class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
-            throw new InvalidArgumentException(
-                'Please run composer require league/flysystem-ziparchive.'
-            );
+            $e = 'Please run composer require league/flysystem-ziparchive.';
+
+            throw new InvalidArgumentException($e);
         }
 
         return new ZipArchiveAdapter($this->option['path']);

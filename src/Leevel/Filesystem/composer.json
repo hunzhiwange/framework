@@ -15,7 +15,8 @@
         "php": "^7.3.2",
         "leevel/di": "1.0.*",
         "leevel/support": "1.0.*",
-        "leevel/manager": "1.0.*"
+        "leevel/manager": "1.0.*",
+        "league/flysystem": "^1.0.8"
     },
     "require-dev": {
         "league/flysystem-sftp": "^1.0",

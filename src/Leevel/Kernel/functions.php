@@ -57,11 +57,12 @@ if (!function_exists('app')) {
      * app:\Leevel\Kernel\App
      * auths:\Leevel\Auth\Manager
      * caches:\Leevel\Cache\Manager
+     * filesystems:\Leevel\Filesystem\Manager
      *
      * @param string $service
      * @param array  $args
      *
-     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|Leevel\Di\Container|\Leevel\Kernel\App|mixed
+     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|Leevel\Di\Container|\Leevel\Filesystem\Manager|\Leevel\Kernel\App|mixed
      * @codeCoverageIgnore
      */
     function app(?string $service = 'app', array $args = [])
