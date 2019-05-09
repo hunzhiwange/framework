@@ -103,7 +103,7 @@ abstract class Filesystem
     /**
      * 返回代理.
      *
-     * @return \Leevel\Filesystem\IFilesystem
+     * @return \League\Flysystem\Filesystem
      */
     protected function proxy(): LeagueFilesystem
     {

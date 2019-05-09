@@ -33,64 +33,7 @@ use Leevel\Manager\Manager as Managers;
  */
 class Manager extends Managers implements IAuth
 {
-    /**
-     * 用户是否已经登录.
-     *
-     * @return bool
-     */
-    public function isLogin(): bool
-    {
-        return $this->connect()->isLogin();
-    }
-
-    /**
-     * 获取登录信息.
-     *
-     * @return array
-     */
-    public function getLogin(): array
-    {
-        return $this->connect()->getLogin();
-    }
-
-    /**
-     * 登录写入数据.
-     *
-     * @param array $data
-     * @param int   $loginTime
-     */
-    public function login(array $data, int $loginTime = 0): void
-    {
-        $this->connect()->login($data, $loginTime);
-    }
-
-    /**
-     * 登出.
-     */
-    public function logout(): void
-    {
-        $this->connect()->logout();
-    }
-
-    /**
-     * 设置认证名字.
-     *
-     * @param string $tokenName
-     */
-    public function setTokenName(string $tokenName): void
-    {
-        $this->connect()->setTokenName($tokenName);
-    }
-
-    /**
-     * 取得认证名字.
-     *
-     * @return string
-     */
-    public function getTokenName(): string
-    {
-        return $this->connect()->getTokenName();
-    }
+    use Proxy;
 
     /**
      * 返回默认驱动.
