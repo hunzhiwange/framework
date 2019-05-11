@@ -31,8 +31,10 @@ use Leevel\Manager\Manager as Managers;
  *
  * @version 1.0
  */
-class Manager extends Managers
+class Manager extends Managers implements ISession
 {
+    use Proxy;
+
     /**
      * 返回 session 配置.
      *
