@@ -31,8 +31,10 @@ use Leevel\Manager\Manager as Managers;
  *
  * @version 1.0
  */
-class Manager extends Managers
+class Manager extends Managers implements IView
 {
+    use Proxy;
+
     /**
      * 取得配置命名空间.
      *
@@ -52,7 +54,7 @@ class Manager extends Managers
      */
     protected function createConnect(object $connect): object
     {
-        return new View($connect);
+        return $connect;
     }
 
     /**
@@ -105,8 +107,8 @@ class Manager extends Managers
     protected function viewOptionCommon(): array
     {
         return [
-            'theme_path' => $this->container->themesPath(),
-            'cache_path' => $this->container->runtimePath('theme'),
+            'theme_path' => $this->container->make('app')->themesPath(),
+            'cache_path' => $this->container->make('app')->runtimePath('theme'),
         ];
     }
 }

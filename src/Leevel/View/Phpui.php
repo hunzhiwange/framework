@@ -29,7 +29,7 @@ namespace Leevel\View;
  *
  * @version 1.0
  */
-class Phpui extends Connect implements IConnect
+class Phpui extends View implements IView
 {
     /**
      * 配置.

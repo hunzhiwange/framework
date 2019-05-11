@@ -21,16 +21,29 @@ declare(strict_types=1);
 namespace Leevel\View;
 
 /**
- * IConnect 接口.
+ * 代理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.23
+ * @since 2019.05.11
  *
  * @version 1.0
  */
-interface IConnect
+trait Proxy
 {
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setOption(string $name, $value): IView
+    {
+        return $this->proxy()->setOption($name, $value);
+    }
+
     /**
      * 加载视图文件.
      *
@@ -41,7 +54,10 @@ interface IConnect
      *
      * @return string|void
      */
-    public function display(string $file, array $vars = [], ?string $ext = null, bool $display = true);
+    public function display(string $file, array $vars = [], ?string $ext = null, bool $display = true)
+    {
+        return $this->proxy()->display($file, $vars, $ext, $display);
+    }
 
     /**
      * 设置模板变量.
@@ -49,7 +65,10 @@ interface IConnect
      * @param mixed $name
      * @param mixed $value
      */
-    public function setVar($name, $value = null): void;
+    public function setVar($name, $value = null): void
+    {
+        $this->proxy()->setVar($name, $value);
+    }
 
     /**
      * 获取变量值.
@@ -58,17 +77,36 @@ interface IConnect
      *
      * @return mixed
      */
-    public function getVar(string $name = null);
+    public function getVar(string $name = null)
+    {
+        return $this->proxy()->getVar($name);
+    }
 
     /**
      * 删除变量值.
      *
      * @param array $name
      */
-    public function deleteVar(array $name): void;
+    public function deleteVar(array $name): void
+    {
+        $this->proxy()->deleteVar($name);
+    }
 
     /**
      * 清空变量值.
      */
-    public function clearVar(): void;
+    public function clearVar(): void
+    {
+        $this->proxy()->clearVar();
+    }
+
+    /**
+     * 返回代理.
+     *
+     * @return \Leevel\View\IView
+     */
+    protected function proxy(): IView
+    {
+        return $this->connect();
+    }
 }

@@ -32,12 +32,12 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class Html extends Connect implements IConnect
+class Html extends View implements IView
 {
     /**
      * 视图分析器.
      *
-     * @var \Leevel\View\iparser
+     * @var \Leevel\View\IParser
      */
     protected $parser;
 

@@ -25,10 +25,60 @@ namespace Leevel\View;
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.01.10
+ * @since 2017.04.23
  *
  * @version 1.0
  */
 interface IView
 {
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setOption(string $name, $value): self;
+
+    /**
+     * 加载视图文件.
+     *
+     * @param string $file    视图文件地址
+     * @param array  $vars
+     * @param string $ext     后缀
+     * @param bool   $display 是否显示
+     *
+     * @return string|void
+     */
+    public function display(string $file, array $vars = [], ?string $ext = null, bool $display = true);
+
+    /**
+     * 设置模板变量.
+     *
+     * @param mixed $name
+     * @param mixed $value
+     */
+    public function setVar($name, $value = null): void;
+
+    /**
+     * 获取变量值.
+     *
+     * @param null|string $name
+     *
+     * @return mixed
+     */
+    public function getVar(string $name = null);
+
+    /**
+     * 删除变量值.
+     *
+     * @param array $name
+     */
+    public function deleteVar(array $name): void;
+
+    /**
+     * 清空变量值.
+     */
+    public function clearVar(): void;
 }

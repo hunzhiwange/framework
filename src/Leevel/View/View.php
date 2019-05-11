@@ -20,44 +20,171 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
+use RuntimeException;
+
 /**
- * view 仓储.
+ * 模板处理抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.01.10
+ * @since 2016.11.18
  *
  * @version 1.0
  */
-class View implements IView
+abstract class View
 {
     /**
-     * 连接驱动.
+     * 变量值.
      *
-     * @var \Leevel\View\IConnect
+     * @var array
      */
-    protected $connect;
+    protected $vars = [];
+
+    /**
+     * 配置.
+     *
+     * @var array
+     */
+    protected $option = [];
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\View\IConnect $connect
+     * @param array $option
      */
-    public function __construct(IConnect $connect)
+    public function __construct(array $option = [])
     {
-        $this->connect = $connect;
+        $this->option = array_merge($this->option, $option);
     }
 
     /**
-     * call.
+     * 设置配置.
      *
-     * @param string $method
-     * @param array  $args
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function setOption(string $name, $value): IView
+    {
+        $this->option[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * 设置模板变量.
+     *
+     * @param array|string $name
+     * @param mixed        $value
+     */
+    public function setVar($name, $value = null): void
+    {
+        if (is_array($name)) {
+            $this->vars = array_merge($this->vars, $name);
+        } else {
+            $this->vars[$name] = $value;
+        }
+    }
+
+    /**
+     * 获取变量值.
+     *
+     * @param null|string $name
      *
      * @return mixed
      */
-    public function __call(string $method, array $args)
+    public function getVar(?string $name = null)
     {
-        return $this->connect->{$method}(...$args);
+        if (null === $name) {
+            return $this->vars;
+        }
+
+        return $this->vars[$name] ?? null;
+    }
+
+    /**
+     * 删除变量值.
+     *
+     * @param array $name
+     */
+    public function deleteVar(array $name): void
+    {
+        foreach ($name as $item) {
+            if (isset($this->vars[$item])) {
+                unset($this->vars[$item]);
+            }
+        }
+    }
+
+    /**
+     * 清空变量值.
+     *
+     * @param null|string $name
+     */
+    public function clearVar(): void
+    {
+        $this->vars = [];
+    }
+
+    /**
+     * 分析展示的视图文件.
+     *
+     * @param string $file
+     * @param string $ext
+     *
+     * @return string
+     */
+    protected function parseDisplayFile(?string $file = null, ?string $ext = ''): string
+    {
+        if (!is_file($file)) {
+            $file = $this->parseFile($file, $ext);
+        }
+
+        if (!is_file($file)) {
+            $e = sprintf('Template file %s does not exist.', $file);
+
+            throw new RuntimeException($e);
+        }
+
+        return $file;
+    }
+
+    /**
+     * 分析模板真实路径.
+     *
+     * @param string $tpl
+     * @param string $ext
+     *
+     * @return string
+     */
+    protected function parseFile(?string $tpl = null, ?string $ext = ''): string
+    {
+        $tpl = trim(str_replace('->', '.', $tpl));
+
+        // 完整路径或者变量以及表达式路径
+        if (pathinfo($tpl, PATHINFO_EXTENSION) ||
+            0 === strpos($tpl, '$') || false !== strpos($tpl, '(')) {
+            return $this->formatFile($tpl);
+        }
+
+        if (!$this->option['theme_path']) {
+            throw new RuntimeException('Theme path must be set.');
+        }
+
+        return $this->option['theme_path'].'/'.$tpl.
+            ($ext ?: $this->option['suffix']);
+    }
+
+    /**
+     * 格式化文件名.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function formatFile(string $content): string
+    {
+        return str_replace([':', '+'], ['->', '::'], $content);
     }
 }
