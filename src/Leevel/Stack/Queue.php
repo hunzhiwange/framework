@@ -60,12 +60,12 @@ class Queue extends LinkedList implements IStackQueue
     public function validate($value): void
     {
         if (!$this->checkType($value)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The queue element type verification failed, and the allowed type is %s.',
-                    implode(',', $this->type)
-                )
+            $e = sprintf(
+                'The queue element type verification failed, and the allowed type is %s.',
+                implode(',', $this->type)
             );
+
+            throw new InvalidArgumentException($e);
         }
     }
 }
