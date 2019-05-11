@@ -18,95 +18,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Log;
+namespace Leevel\Log\Proxy;
 
+use Leevel\Log\ILog as IBaseLog;
 use Monolog\Logger;
 
 /**
- * ILog 接口.
+ * 代理 log 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.23
+ * @since 2019.05.11
  *
  * @version 1.0
  *
- * @see \Leevel\Log\Proxy\ILog 请保持接口设计的一致性
+ * @see \Leevel\Log\ILog 请保持接口设计的一致性
  */
 interface ILog
 {
-    /**
-     * debug.
-     *
-     * @var string
-     */
-    const DEBUG = 'debug';
-
-    /**
-     * info.
-     *
-     * @var string
-     */
-    const INFO = 'info';
-
-    /**
-     * notice.
-     *
-     * @var string
-     */
-    const NOTICE = 'notice';
-
-    /**
-     * warning.
-     *
-     * @var string
-     */
-    const WARNING = 'warning';
-
-    /**
-     * error.
-     *
-     * @var string
-     */
-    const ERROR = 'error';
-
-    /**
-     * critical.
-     *
-     * @var string
-     */
-    const CRITICAL = 'critical';
-
-    /**
-     * alert.
-     *
-     * @var string
-     */
-    const ALERT = 'alert';
-
-    /**
-     * emergency.
-     *
-     * @var string
-     */
-    const EMERGENCY = 'emergency';
-
-    /**
-     * 日志事件.
-     *
-     * @var string
-     */
-    const LOG_EVENT = 'log.log';
-
     /**
      * 设置配置.
      *
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Log\ILog
      */
-    public function setOption(string $name, $value): self;
+    public static function setOption(string $name, $value): IBaseLog;
 
     /**
      * 系统无法使用.
@@ -114,7 +52,7 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function emergency(string $message, array $context = []): void;
+    public static function emergency(string $message, array $context = []): void;
 
     /**
      * 必须立即采取行动.
@@ -125,7 +63,7 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function alert(string $message, array $context = []): void;
+    public static function alert(string $message, array $context = []): void;
 
     /**
      * 临界条件.
@@ -135,7 +73,7 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function critical(string $message, array $context = []): void;
+    public static function critical(string $message, array $context = []): void;
 
     /**
      * 运行时错误，不需要立即处理.
@@ -144,7 +82,7 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function error(string $message, array $context = []): void;
+    public static function error(string $message, array $context = []): void;
 
     /**
      * 非错误的异常事件.
@@ -155,7 +93,7 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function warning(string $message, array $context = []): void;
+    public static function warning(string $message, array $context = []): void;
 
     /**
      * 正常重要事件.
@@ -163,7 +101,7 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function notice(string $message, array $context = []): void;
+    public static function notice(string $message, array $context = []): void;
 
     /**
      * 想记录的日志.
@@ -173,7 +111,7 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function info(string $message, array $context = []): void;
+    public static function info(string $message, array $context = []): void;
 
     /**
      * 调试信息.
@@ -181,7 +119,7 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function debug(string $message, array $context = []): void;
+    public static function debug(string $message, array $context = []): void;
 
     /**
      * 记录特定级别的日志信息.
@@ -190,19 +128,19 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function log(string $level, string $message, array $context = []): void;
+    public static function log(string $level, string $message, array $context = []): void;
 
     /**
      * 保存日志信息.
      */
-    public function flush(): void;
+    public static function flush(): void;
 
     /**
      * 清理日志记录.
      *
      * @param string $level
      */
-    public function clear(?string $level = null): void;
+    public static function clear(?string $level = null): void;
 
     /**
      * 获取日志记录.
@@ -211,7 +149,7 @@ interface ILog
      *
      * @return array
      */
-    public function all(?string $level = null): array;
+    public static function all(?string $level = null): array;
 
     /**
      * 获取日志记录数量.
@@ -220,26 +158,26 @@ interface ILog
      *
      * @return int
      */
-    public function count(?string $level = null): int;
+    public static function count(?string $level = null): int;
 
     /**
      * 是否为 Monolog.
      *
      * @return bool
      */
-    public function isMonolog(): bool;
+    public static function isMonolog(): bool;
 
     /**
      * 取得 Monolog.
      *
      * @return null|\Monolog\Logger
      */
-    public function getMonolog(): ?Logger;
+    public static function getMonolog(): ?Logger;
 
     /**
      * 存储日志.
      *
      * @param array $data
      */
-    public function store(array $data): void;
+    public static function store(array $data): void;
 }

@@ -31,8 +31,10 @@ use Leevel\Manager\Manager as Managers;
  *
  * @version 1.0
  */
-class Manager extends Managers
+class Manager extends Managers implements ILog
 {
+    use Proxy;
+
     /**
      * 取得配置命名空间.
      *

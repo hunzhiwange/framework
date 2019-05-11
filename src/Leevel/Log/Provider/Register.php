@@ -77,7 +77,7 @@ class Register extends Provider
      */
     protected function log(): void
     {
-        $this->container->singleton('log', function (IContainer $container)/*: ILog*/ {
+        $this->container->singleton('log', function (IContainer $container): ILog {
             return $container['logs']->connect();
         });
     }

@@ -23,81 +23,16 @@ namespace Leevel\Log;
 use Monolog\Logger;
 
 /**
- * ILog 接口.
+ * 代理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.23
+ * @since 2019.05.11
  *
  * @version 1.0
- *
- * @see \Leevel\Log\Proxy\ILog 请保持接口设计的一致性
  */
-interface ILog
+trait Proxy
 {
-    /**
-     * debug.
-     *
-     * @var string
-     */
-    const DEBUG = 'debug';
-
-    /**
-     * info.
-     *
-     * @var string
-     */
-    const INFO = 'info';
-
-    /**
-     * notice.
-     *
-     * @var string
-     */
-    const NOTICE = 'notice';
-
-    /**
-     * warning.
-     *
-     * @var string
-     */
-    const WARNING = 'warning';
-
-    /**
-     * error.
-     *
-     * @var string
-     */
-    const ERROR = 'error';
-
-    /**
-     * critical.
-     *
-     * @var string
-     */
-    const CRITICAL = 'critical';
-
-    /**
-     * alert.
-     *
-     * @var string
-     */
-    const ALERT = 'alert';
-
-    /**
-     * emergency.
-     *
-     * @var string
-     */
-    const EMERGENCY = 'emergency';
-
-    /**
-     * 日志事件.
-     *
-     * @var string
-     */
-    const LOG_EVENT = 'log.log';
-
     /**
      * 设置配置.
      *
@@ -106,7 +41,10 @@ interface ILog
      *
      * @return $this
      */
-    public function setOption(string $name, $value): self;
+    public function setOption(string $name, $value): ILog
+    {
+        return $this->proxy()->setOption($name, $value);
+    }
 
     /**
      * 系统无法使用.
@@ -114,7 +52,10 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function emergency(string $message, array $context = []): void;
+    public function emergency(string $message, array $context = []): void
+    {
+        $this->proxy()->emergency($message, $context);
+    }
 
     /**
      * 必须立即采取行动.
@@ -125,7 +66,10 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function alert(string $message, array $context = []): void;
+    public function alert(string $message, array $context = []): void
+    {
+        $this->proxy()->alert($message, $context);
+    }
 
     /**
      * 临界条件.
@@ -135,7 +79,10 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function critical(string $message, array $context = []): void;
+    public function critical(string $message, array $context = []): void
+    {
+        $this->proxy()->critical($message, $context);
+    }
 
     /**
      * 运行时错误，不需要立即处理.
@@ -144,7 +91,10 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function error(string $message, array $context = []): void;
+    public function error(string $message, array $context = []): void
+    {
+        $this->proxy()->error($message, $context);
+    }
 
     /**
      * 非错误的异常事件.
@@ -155,7 +105,10 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function warning(string $message, array $context = []): void;
+    public function warning(string $message, array $context = []): void
+    {
+        $this->proxy()->warning($message, $context);
+    }
 
     /**
      * 正常重要事件.
@@ -163,7 +116,10 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function notice(string $message, array $context = []): void;
+    public function notice(string $message, array $context = []): void
+    {
+        $this->proxy()->notice($message, $context);
+    }
 
     /**
      * 想记录的日志.
@@ -173,7 +129,10 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function info(string $message, array $context = []): void;
+    public function info(string $message, array $context = []): void
+    {
+        $this->proxy()->info($message, $context);
+    }
 
     /**
      * 调试信息.
@@ -181,7 +140,10 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function debug(string $message, array $context = []): void;
+    public function debug(string $message, array $context = []): void
+    {
+        $this->proxy()->debug($message, $context);
+    }
 
     /**
      * 记录特定级别的日志信息.
@@ -190,19 +152,28 @@ interface ILog
      * @param string $message
      * @param array  $context
      */
-    public function log(string $level, string $message, array $context = []): void;
+    public function log(string $level, string $message, array $context = []): void
+    {
+        $this->proxy()->log($level, $message, $context);
+    }
 
     /**
      * 保存日志信息.
      */
-    public function flush(): void;
+    public function flush(): void
+    {
+        $this->proxy()->flush();
+    }
 
     /**
      * 清理日志记录.
      *
      * @param string $level
      */
-    public function clear(?string $level = null): void;
+    public function clear(?string $level = null): void
+    {
+        $this->proxy()->clear($level);
+    }
 
     /**
      * 获取日志记录.
@@ -211,7 +182,10 @@ interface ILog
      *
      * @return array
      */
-    public function all(?string $level = null): array;
+    public function all(?string $level = null): array
+    {
+        return $this->proxy()->all($level);
+    }
 
     /**
      * 获取日志记录数量.
@@ -220,26 +194,48 @@ interface ILog
      *
      * @return int
      */
-    public function count(?string $level = null): int;
+    public function count(?string $level = null): int
+    {
+        return $this->proxy()->count($level);
+    }
 
     /**
      * 是否为 Monolog.
      *
      * @return bool
      */
-    public function isMonolog(): bool;
+    public function isMonolog(): bool
+    {
+        return $this->proxy()->isMonolog();
+    }
 
     /**
      * 取得 Monolog.
      *
      * @return null|\Monolog\Logger
      */
-    public function getMonolog(): ?Logger;
+    public function getMonolog(): ?Logger
+    {
+        return $this->proxy()->getMonolog();
+    }
 
     /**
      * 存储日志.
      *
      * @param array $data
      */
-    public function store(array $data): void;
+    public function store(array $data): void
+    {
+        $this->proxy()->store($data);
+    }
+
+    /**
+     * 返回代理.
+     *
+     * @return \Leevel\Log\ILog
+     */
+    protected function proxy(): ILog
+    {
+        return $this->connect();
+    }
 }
