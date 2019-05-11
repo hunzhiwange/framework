@@ -62,7 +62,7 @@ class Manager extends Managers
      */
     protected function createConnect(object $connect): object
     {
-        return new Session($connect, $this->getCommonOption());
+        return $connect;
     }
 
     /**

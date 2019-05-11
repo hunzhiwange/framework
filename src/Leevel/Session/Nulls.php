@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use SessionHandlerInterface;
-
 /**
  * session.nulls.
  *
@@ -31,18 +29,47 @@ use SessionHandlerInterface;
  *
  * @version 1.0
  */
-class Nulls implements SessionHandlerInterface
+class Nulls extends Session implements ISession
 {
     /**
-     * {@inheritdoc}
+     * 配置.
+     *
+     * @var array
      */
-    public function open($savePath, $sessionName): bool
+    protected $option = [
+        'id'         => null,
+        'name'       => null,
+    ];
+
+    /**
+     * 构造函数.
+     *
+     * @param array $option
+     */
+    public function __construct(array $option = [])
+    {
+        $this->option = array_merge($this->option, $option);
+
+        $this->setName($this->option['name']);
+    }
+
+    /**
+     * open.
+     *
+     * @param string $savePath
+     * @param string $sessionName
+     *
+     * @return bool
+     */
+    public function open(string $savePath, string $sessionName): bool
     {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * close.
+     *
+     * @return bool
      */
     public function close(): bool
     {
@@ -50,41 +77,51 @@ class Nulls implements SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * read.
+     *
+     * @param string $sessionId
+     *
+     * @return string
      */
-    public function read($sessionid): string
+    public function read(string $sessionId): string
     {
         return serialize([]);
     }
 
     /**
-     * {@inheritdoc}
+     * write.
+     *
+     * @param string $sessionId
+     * @param string $sessionData
+     *
+     * @return bool
      */
-    public function write($sessionid, $sessiondata): bool
+    public function write(string $sessionId, string $sessionData): bool
     {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * destroy.
+     *
+     * @param string $sessionId
+     *
+     * @return bool
      */
-    public function destroy($sessionid): bool
+    public function destroy(string $sessionId): bool
     {
         return true;
     }
 
     /**
-     * {@inheritdoc}
+     * gc.
+     *
+     * @param int $maxLifetime
+     *
+     * @return int
      */
-    public function gc($maxlifetime): int
+    public function gc(int $maxLifetime): int
     {
         return 0;
-    }
-
-    /**
-     * 返回缓存仓储.
-     */
-    public function getCache()
-    {
     }
 }

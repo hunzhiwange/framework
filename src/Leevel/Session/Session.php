@@ -20,22 +20,30 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
+use Leevel\Cache\ICache;
 use function Leevel\Support\Str\rand_alpha_num;
 use Leevel\Support\Str\rand_alpha_num;
 use RuntimeException;
-use SessionHandlerInterface;
 
 /**
- * session 仓储.
+ * session 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
+ * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
  * @since 2017.04.17
  *
  * @version 1.0
  */
-class Session implements ISession
+abstract class Session
 {
+    /**
+     * 缓存仓储.
+     *
+     * @var \Leevel\Cache\ICache
+     */
+    protected $cache;
+
     /**
      * session ID.
      * 相当于 session_id.
@@ -51,13 +59,6 @@ class Session implements ISession
      * @var string
      */
     protected $name;
-
-    /**
-     * session handler.
-     *
-     * @var \SessionHandlerInterface
-     */
-    protected $connect;
 
     /**
      * session 是否开启.
@@ -78,22 +79,16 @@ class Session implements ISession
      *
      * @var array
      */
-    protected $option = [
-        'id'             => null,
-        'name'           => null,
-    ];
+    protected $option = [];
 
     /**
      * 构造函数.
      *
-     * @param \SessionHandlerInterface $connect
-     * @param array                    $option
+     * @param \Leevel\Cache\ICache $cache
      */
-    public function __construct(SessionHandlerInterface $connect, array $option = [])
+    public function __construct(ICache $cache)
     {
-        $this->connect = $connect;
-
-        $this->option = array_merge($this->option, $option);
+        $this->cache = $cache;
 
         $this->setName($this->option['name']);
     }
@@ -122,14 +117,12 @@ class Session implements ISession
     public function save(): void
     {
         if (!$this->isStart()) {
-            throw new RuntimeException(
-                'Session is not start yet.'
-            );
+            throw new RuntimeException('Session is not start yet.');
         }
 
         $this->unregisterFlash();
 
-        $this->connect->write($this->getId(), serialize($this->datas));
+        $this->write($this->getId(), serialize($this->datas));
 
         $this->started = false;
     }
@@ -489,10 +482,10 @@ class Session implements ISession
     /**
      * 终止会话.
      */
-    public function destroy(): void
+    public function destroySession(): void
     {
         $this->clear();
-        $this->connect->destroy($this->getId());
+        $this->destroy($this->getId());
 
         $this->id = null;
         $this->started = false;
@@ -559,13 +552,108 @@ class Session implements ISession
     }
 
     /**
-     * 返回连接.
+     * 返回缓存仓储.
      *
-     * @return \SessionHandlerInterface
+     * @return \Leevel\Cache\ICache
      */
-    public function getConnect(): SessionHandlerInterface
+    public function getCache(): ?ICache
     {
-        return $this->connect;
+        return $this->cache;
+    }
+
+    /**
+     * open.
+     *
+     * @param string $savePath
+     * @param string $sessionName
+     *
+     * @return bool
+     */
+    public function open(string $savePath, string $sessionName): bool
+    {
+        return true;
+    }
+
+    /**
+     * close.
+     *
+     * @return bool
+     */
+    public function close(): bool
+    {
+        return true;
+    }
+
+    /**
+     * read.
+     *
+     * @param string $sessionId
+     *
+     * @return string
+     */
+    public function read(string $sessionId): string
+    {
+        return serialize($this->cache->get(
+            $this->getSessionName($sessionId), []
+        ) ?: []);
+    }
+
+    /**
+     * write.
+     *
+     * @param string $sessionId
+     * @param string $sessionData
+     *
+     * @return bool
+     */
+    public function write(string $sessionId, string $sessionData): bool
+    {
+        $this->cache->set(
+            $this->getSessionName($sessionId),
+            unserialize($sessionData)
+        );
+
+        return true;
+    }
+
+    /**
+     * destroy.
+     *
+     * @param string $sessionId
+     *
+     * @return bool
+     */
+    public function destroy(string $sessionId): bool
+    {
+        $this->cache->delete(
+            $this->getSessionName($sessionId)
+        );
+
+        return true;
+    }
+
+    /**
+     * gc.
+     *
+     * @param int $maxLifetime
+     *
+     * @return int
+     */
+    public function gc(int $maxLifetime): int
+    {
+        return 0;
+    }
+
+    /**
+     * 获取 session 名字.
+     *
+     * @param string $sessionId
+     *
+     * @return string
+     */
+    protected function getSessionName(string $sessionId): string
+    {
+        return $sessionId;
     }
 
     /**
@@ -617,7 +705,7 @@ class Session implements ISession
      */
     protected function loadDataFromConnect(): array
     {
-        return unserialize($this->connect->read($this->getId()));
+        return unserialize($this->read($this->getId()));
     }
 
     /**

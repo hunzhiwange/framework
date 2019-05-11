@@ -32,7 +32,7 @@ use Leevel\Cache\Redis\PhpRedis;
  *
  * @version 1.0
  */
-class Redis extends Connect
+class Redis extends Session implements ISession
 {
     /**
      * 配置.
@@ -40,6 +40,8 @@ class Redis extends Connect
      * @var array
      */
     protected $option = [
+        'id'         => null,
+        'name'       => null,
         'host'       => '127.0.0.1',
         'port'       => 6379,
         'password'   => '',
@@ -69,8 +71,6 @@ class Redis extends Connect
      */
     public function createCache(): CacheRedis
     {
-        return new CacheRedis(
-            new PhpRedis($this->option), $this->option
-        );
+        return new CacheRedis(new PhpRedis($this->option), $this->option);
     }
 }

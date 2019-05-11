@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use SessionHandlerInterface;
+use Leevel\Cache\ICache;
 
 /**
  * ISession 接口.
@@ -30,6 +30,8 @@ use SessionHandlerInterface;
  * @since 2017.04.11
  *
  * @version 1.0
+ *
+ * @see \SessionHandlerInterface 底层接口参考
  */
 interface ISession
 {
@@ -236,7 +238,7 @@ interface ISession
     /**
      * 终止会话.
      */
-    public function destroy(): void;
+    public function destroySession(): void;
 
     /**
      * session 是否已经启动.
@@ -279,9 +281,63 @@ interface ISession
     public function regenerateId(): string;
 
     /**
-     * 返回连接.
+     * 返回缓存仓储.
      *
-     * @return \SessionHandlerInterface
+     * @return \Leevel\Cache\ICache
      */
-    public function getConnect(): SessionHandlerInterface;
+    public function getCache(): ?ICache;
+
+    /**
+     * open.
+     *
+     * @param string $savePath
+     * @param string $sessionName
+     *
+     * @return bool
+     */
+    public function open(string $savePath, string $sessionName): bool;
+
+    /**
+     * close.
+     *
+     * @return bool
+     */
+    public function close(): bool;
+
+    /**
+     * read.
+     *
+     * @param string $sessionId
+     *
+     * @return string
+     */
+    public function read(string $sessionId): string;
+
+    /**
+     * write.
+     *
+     * @param string $sessionId
+     * @param string $sessionData
+     *
+     * @return bool
+     */
+    public function write(string $sessionId, string $sessionData): bool;
+
+    /**
+     * destroy.
+     *
+     * @param string $sessionId
+     *
+     * @return bool
+     */
+    public function destroy(string $sessionId): bool;
+
+    /**
+     * gc.
+     *
+     * @param int $maxLifetime
+     *
+     * @return int
+     */
+    public function gc(int $maxLifetime): int;
 }

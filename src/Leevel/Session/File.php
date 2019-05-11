@@ -31,7 +31,7 @@ use Leevel\Cache\File as CacheFile;
  *
  * @version 1.0
  */
-class File extends Connect
+class File extends Session implements ISession
 {
     /**
      * 配置.
@@ -39,6 +39,8 @@ class File extends Connect
      * @var array
      */
     protected $option = [
+        'id'          => null,
+        'name'        => null,
         'time_preset' => [],
         'expire'      => 86400,
         'path'        => '',
