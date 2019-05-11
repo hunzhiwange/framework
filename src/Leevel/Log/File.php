@@ -25,7 +25,7 @@ use Leevel\Filesystem\Fso\create_directory;
 use function Leevel\Filesystem\Fso\create_directory;
 
 /**
- * log.file.
+ * 文件日志.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -33,7 +33,7 @@ use function Leevel\Filesystem\Fso\create_directory;
  *
  * @version 1.0
  */
-class File implements IConnect
+class File extends Log implements ILog
 {
     /**
      * 配置.
@@ -41,49 +41,36 @@ class File implements IConnect
      * @var array
      */
     protected $option = [
-        'channel' => 'development',
-        'name'    => 'Y-m-d H',
-        'size'    => 2097152,
-        'path'    => '',
+        'levels'   => [
+            ILog::DEBUG,
+            ILog::INFO,
+            ILog::NOTICE,
+            ILog::WARNING,
+            ILog::ERROR,
+            ILog::CRITICAL,
+            ILog::ALERT,
+            ILog::EMERGENCY,
+        ],
+        'buffer'      => true,
+        'buffer_size' => 100,
+        'channel'     => 'development',
+        'name'        => 'Y-m-d H',
+        'size'        => 2097152,
+        'path'        => '',
     ];
 
     /**
-     * 构造函数.
+     * 存储日志.
      *
-     * @param array $option
+     * @param array $data
      */
-    public function __construct(array $option = [])
+    public function store(array $data): void
     {
-        $this->option = array_merge($this->option, $option);
-    }
-
-    /**
-     * 设置配置.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return $this
-     */
-    public function setOption(string $name, $value): IConnect
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * 日志写入接口.
-     *
-     * @param array $datas
-     */
-    public function flush(array $datas): void
-    {
-        $level = $datas[0][0];
+        $level = $data[0][0];
 
         $this->checkSize($filepath = $this->normalizePath($level));
 
-        foreach ($datas as $value) {
+        foreach ($data as $value) {
             error_log(self::formatMessage(...$value), 3, $filepath);
         }
     }

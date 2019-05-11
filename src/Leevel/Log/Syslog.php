@@ -20,11 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
+use Leevel\Event\IDispatch;
 use Monolog\Handler\SyslogHandler;
 use Psr\Log\LoggerInterface;
 
 /**
- * log.syslog.
+ * 系统日志.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +33,7 @@ use Psr\Log\LoggerInterface;
  *
  * @version 1.0
  */
-class Syslog extends Connect
+class Syslog extends Log implements ILog
 {
     /**
      * 配置.
@@ -42,19 +43,34 @@ class Syslog extends Connect
      * @var array
      */
     protected $option = [
-        'channel'  => 'development',
-        'facility' => LOG_USER,
-        'level'    => ILog::DEBUG,
+        'levels'   => [
+            ILog::DEBUG,
+            ILog::INFO,
+            ILog::NOTICE,
+            ILog::WARNING,
+            ILog::ERROR,
+            ILog::CRITICAL,
+            ILog::ALERT,
+            ILog::EMERGENCY,
+        ],
+        'buffer'      => true,
+        'buffer_size' => 100,
+        'channel'     => 'development',
+        'facility'    => LOG_USER,
+        'level'       => ILog::DEBUG,
     ];
 
     /**
      * 构造函数.
      *
-     * @param array $option
+     * @param array                   $option
+     * @param \Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(array $option = [])
+    public function __construct(array $option = [], IDispatch $dispatch = null)
     {
-        parent::__construct($option);
+        parent::__construct($option, $dispatch);
+
+        $this->createMonolog();
 
         $this->makeSyslogHandler();
     }

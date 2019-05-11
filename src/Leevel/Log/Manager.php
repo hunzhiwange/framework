@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use Leevel\Event\IDispatch;
 use Leevel\Manager\Manager as Managers;
 
 /**
@@ -53,10 +52,7 @@ class Manager extends Managers
      */
     protected function createConnect(object $connect): object
     {
-        return new Log($connect,
-            $this->getCommonOption(),
-            $this->container->make(IDispatch::class)
-        );
+        return $connect;
     }
 
     /**
@@ -69,7 +65,8 @@ class Manager extends Managers
     protected function makeConnectFile(array $options = []): File
     {
         return new File(
-            $this->normalizeConnectOption('file', $options)
+            $this->normalizeConnectOption('file', $options),
+            $this->container->make('event')
         );
     }
 
@@ -83,7 +80,8 @@ class Manager extends Managers
     protected function makeConnectSyslog(array $options = []): Syslog
     {
         return new Syslog(
-            $this->normalizeConnectOption('syslog', $options)
+            $this->normalizeConnectOption('syslog', $options),
+            $this->container->make('event')
         );
     }
 }

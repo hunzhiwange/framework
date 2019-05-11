@@ -27,7 +27,7 @@ use Monolog\Logger;
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.11
+ * @since 2017.04.23
  *
  * @version 1.0
  */
@@ -235,9 +235,9 @@ interface ILog
     public function getMonolog(): ?Logger;
 
     /**
-     * 返回连接.
+     * 存储日志.
      *
-     * @return \Leevel\Log\IConnect
+     * @param array $data
      */
-    public function getConnect(): IConnect;
+    public function store(array $data): void;
 }

@@ -21,25 +21,34 @@ declare(strict_types=1);
 namespace Leevel\Log;
 
 use Leevel\Event\IDispatch;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 
 /**
- * 日志仓储.
+ * 日志驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.03.03
+ * @since 2017.09.01
  *
  * @version 1.0
  */
-class Log implements ILog
+abstract class Log
 {
     /**
-     * 存储连接对象
+     * Monolog.
      *
-     * @var \Leevel\Log\IConnect
+     * @var \Monolog\Logger
      */
-    protected $connect;
+    protected $monolog;
+
+    /**
+     * 事件处理器.
+     *
+     * @var \Leevel\Event\IDispatch
+     */
+    protected $dispatch;
 
     /**
      * 当前记录的日志信息.
@@ -56,11 +65,20 @@ class Log implements ILog
     protected $count = 0;
 
     /**
-     * 事件处理器.
+     * Monolog 支持日志级别.
      *
-     * @var \Leevel\Event\IDispatch
+     * @var array
      */
-    protected $dispatch;
+    protected $supportLevel = [
+        ILog::DEBUG     => Logger::DEBUG,
+        ILog::INFO      => Logger::INFO,
+        ILog::NOTICE    => Logger::NOTICE,
+        ILog::WARNING   => Logger::WARNING,
+        ILog::ERROR     => Logger::ERROR,
+        ILog::CRITICAL  => Logger::CRITICAL,
+        ILog::ALERT     => Logger::ALERT,
+        ILog::EMERGENCY => Logger::EMERGENCY,
+    ];
 
     /**
      * 配置.
@@ -69,32 +87,29 @@ class Log implements ILog
      */
     protected $option = [
         'levels'   => [
-            self::DEBUG,
-            self::INFO,
-            self::NOTICE,
-            self::WARNING,
-            self::ERROR,
-            self::CRITICAL,
-            self::ALERT,
-            self::EMERGENCY,
+            ILog::DEBUG,
+            ILog::INFO,
+            ILog::NOTICE,
+            ILog::WARNING,
+            ILog::ERROR,
+            ILog::CRITICAL,
+            ILog::ALERT,
+            ILog::EMERGENCY,
         ],
         'buffer'      => true,
         'buffer_size' => 100,
+        'channel'     => 'development',
     ];
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Log\IConnect    $connect
      * @param array                   $option
      * @param \Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(IConnect $connect, array $option = [], IDispatch $dispatch = null)
+    public function __construct(array $option = [], IDispatch $dispatch = null)
     {
-        $this->connect = $connect;
-
         $this->option = array_merge($this->option, $option);
-
         $this->dispatch = $dispatch;
     }
 
@@ -121,7 +136,7 @@ class Log implements ILog
      */
     public function emergency(string $message, array $context = []): void
     {
-        $this->log(static::EMERGENCY, $message, $context);
+        $this->log(ILog::EMERGENCY, $message, $context);
     }
 
     /**
@@ -135,7 +150,7 @@ class Log implements ILog
      */
     public function alert(string $message, array $context = []): void
     {
-        $this->log(static::ALERT, $message, $context);
+        $this->log(ILog::ALERT, $message, $context);
     }
 
     /**
@@ -148,7 +163,7 @@ class Log implements ILog
      */
     public function critical(string $message, array $context = []): void
     {
-        $this->log(static::CRITICAL, $message, $context);
+        $this->log(ILog::CRITICAL, $message, $context);
     }
 
     /**
@@ -160,7 +175,7 @@ class Log implements ILog
      */
     public function error(string $message, array $context = []): void
     {
-        $this->log(static::ERROR, $message, $context);
+        $this->log(ILog::ERROR, $message, $context);
     }
 
     /**
@@ -174,7 +189,7 @@ class Log implements ILog
      */
     public function warning(string $message, array $context = []): void
     {
-        $this->log(static::WARNING, $message, $context);
+        $this->log(ILog::WARNING, $message, $context);
     }
 
     /**
@@ -185,7 +200,7 @@ class Log implements ILog
      */
     public function notice(string $message, array $context = []): void
     {
-        $this->log(static::NOTICE, $message, $context);
+        $this->log(ILog::NOTICE, $message, $context);
     }
 
     /**
@@ -198,7 +213,7 @@ class Log implements ILog
      */
     public function info(string $message, array $context = []): void
     {
-        $this->log(static::INFO, $message, $context);
+        $this->log(ILog::INFO, $message, $context);
     }
 
     /**
@@ -209,7 +224,7 @@ class Log implements ILog
      */
     public function debug(string $message, array $context = []): void
     {
-        $this->log(static::DEBUG, $message, $context);
+        $this->log(ILog::DEBUG, $message, $context);
     }
 
     /**
@@ -244,7 +259,7 @@ class Log implements ILog
     public function flush(): void
     {
         foreach ($this->logs as $data) {
-            $this->saveStore($data);
+            $this->store($data);
         }
 
         $this->clear();
@@ -311,7 +326,7 @@ class Log implements ILog
      */
     public function isMonolog(): bool
     {
-        return method_exists($this->connect, 'getMonolog');
+        return null !== $this->monolog;
     }
 
     /**
@@ -321,21 +336,29 @@ class Log implements ILog
      */
     public function getMonolog(): ?Logger
     {
-        if (!$this->isMonolog()) {
-            return null;
-        }
-
-        return $this->connect->getMonolog();
+        return $this->monolog;
     }
 
     /**
-     * 返回连接.
+     * 存储日志.
      *
-     * @return \Leevel\Log\IConnect
+     * @param array $data
      */
-    public function getConnect(): IConnect
+    public function store(array $data): void
     {
-        return $this->connect;
+        foreach ($data as $value) {
+            $method = $this->normalizeLevel(array_shift($value));
+
+            $this->monolog->{$method}(...$value);
+        }
+    }
+
+    /**
+     * 创建 monolog.
+     */
+    protected function createMonolog(): void
+    {
+        $this->monolog = new Logger($this->option['channel']);
     }
 
     /**
@@ -346,17 +369,63 @@ class Log implements ILog
     protected function handleDispatch(array $data): void
     {
         if ($this->dispatch) {
-            $this->dispatch->handle(self::LOG_EVENT, ...$data);
+            $this->dispatch->handle(ILog::LOG_EVENT, ...$data);
         }
     }
 
     /**
-     * 存储日志.
+     * 设置默认格式化.
      *
-     * @param array $data
+     * @param \Monolog\Handler\HandlerInterface $handler
+     *
+     * @return \Monolog\Handler\HandlerInterface
      */
-    protected function saveStore(array $data): void
+    protected function normalizeHandler(HandlerInterface $handler): HandlerInterface
     {
-        $this->connect->flush($data);
+        return $handler->setFormatter($this->lineFormatter());
+    }
+
+    /**
+     * 默认行格式化.
+     *
+     * @return \Monolog\Formatter\LineFormatter
+     */
+    protected function lineFormatter(): LineFormatter
+    {
+        return new LineFormatter(null, null, true, true);
+    }
+
+    /**
+     * 格式化级别
+     * 不支持级别归并到 DEBUG.
+     *
+     * @param string $level
+     *
+     * @return string
+     */
+    protected function normalizeLevel(string $level): string
+    {
+        if (!in_array($level, array_keys($this->supportLevel), true)) {
+            return ILog::DEBUG;
+        }
+
+        return $level;
+    }
+
+    /**
+     * 获取 Monolog 级别
+     * 不支持级别归并到 DEBUG.
+     *
+     * @param string $level
+     *
+     * @return int
+     */
+    protected function normalizeMonologLevel(string $level): int
+    {
+        if (isset($this->supportLevel[$level])) {
+            return $this->supportLevel[$level];
+        }
+
+        return $this->supportLevel[ILog::DEBUG];
     }
 }
