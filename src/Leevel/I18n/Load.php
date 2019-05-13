@@ -130,7 +130,9 @@ class Load
 
         foreach ($dirs as $dir) {
             if (!is_dir($dir)) {
-                throw new RuntimeException(sprintf('I18n load dir %s is not exits.', $dir));
+                $e = sprintf('I18n load dir %s is not exits.', $dir);
+
+                throw new RuntimeException($e);
             }
 
             $files = array_merge($files, $this->getMoFiles($dir));
