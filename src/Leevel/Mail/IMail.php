@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Mail;
 
 use Closure;
+use Swift_Events_EventListener;
+use Swift_Mime_SimpleMessage;
 
 /**
  * IMail 接口.
@@ -30,6 +32,8 @@ use Closure;
  * @since 2017.08.26
  *
  * @version 1.0
+ *
+ * @see \Swift_Transport 接口参考，加入强类型
  */
 interface IMail
 {
@@ -49,6 +53,13 @@ interface IMail
      * @return $this
      */
     public function setOption(string $name, $value): self;
+
+    /**
+     * 创建 transport.
+     *
+     * @return mixed
+     */
+    public function makeTransport();
 
     /**
      * 设置邮件发送来源.
@@ -176,7 +187,7 @@ interface IMail
      *
      * @return int
      */
-    public function send(Closure $callbacks = null, bool $htmlPriority = true): int;
+    public function sendMail(Closure $callbacks = null, bool $htmlPriority = true): int;
 
     /**
      * 错误消息.
@@ -184,4 +195,45 @@ interface IMail
      * @return array
      */
     public function failedRecipients(): array;
+
+    /**
+     * 传输机制是否已经启动.
+     *
+     * @return bool
+     */
+    public function isStarted(): bool;
+
+    /**
+     * 启动传输机制.
+     */
+    public function start(): void;
+
+    /**
+     * 停止传输机制.
+     */
+    public function stop(): void;
+
+    /**
+     * 检查此传输机制是否处于活动状态.
+     *
+     * @return bool
+     */
+    public function ping(): bool;
+
+    /**
+     * 发送消息.
+     *
+     * @param \Swift_Mime_SimpleMessage $message
+     * @param array                     $failedRecipients
+     *
+     * @return int
+     */
+    public function send(Swift_Mime_SimpleMessage $message, ?array &$failedRecipients = null): int;
+
+    /**
+     * 注册一个插件.
+     *
+     * @param \Swift_Events_EventListener $plugin
+     */
+    public function registerPlugin(Swift_Events_EventListener $plugin): void;
 }

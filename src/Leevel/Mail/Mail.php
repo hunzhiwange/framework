@@ -24,11 +24,14 @@ use Closure;
 use Leevel\Event\IDispatch;
 use Leevel\Router\IView;
 use Swift_Attachment;
+use Swift_Events_EventListener;
 use Swift_Image;
+use Swift_Mailer;
 use Swift_Message;
+use Swift_Mime_SimpleMessage;
 
 /**
- * mail 存储.
+ * mail 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -36,19 +39,21 @@ use Swift_Message;
  *
  * @version 1.0
  */
-class Mail implements IMail
+abstract class Mail implements IMail
 {
+    use ProxyMessage;
+
     /**
-     * 连接驱动.
+     * swift mailer.
      *
-     * @var \Leevel\Mail\IConnect
+     * @var \Swift_Mailer
      */
-    protected $connect;
+    protected $swiftMailer;
 
     /**
      * 视图.
      *
-     * @var \leevel\Mvc\IView
+     * @var \leevel\Router\IView
      */
     protected $view;
 
@@ -69,7 +74,7 @@ class Mail implements IMail
     /**
      * 消息.
      *
-     * @var \Leevel\Mail\Message
+     * @var \Swift_Message
      */
     protected $message;
 
@@ -102,18 +107,30 @@ class Mail implements IMail
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mail\IConnect        $connect
-     * @param \leevel\Mvc\IView            $view
+     * @param \Leevel\Router\IView         $view
      * @param null|\Leevel\Event\IDispatch $dispatch
      * @param array                        $option
      */
-    public function __construct(IConnect $connect, IView $view, IDispatch $dispatch = null, array $option = [])
+    public function __construct(IView $view, IDispatch $dispatch = null, array $option = [])
     {
-        $this->connect = $connect;
         $this->view = $view;
         $this->dispatch = $dispatch;
-
         $this->option = array_merge($this->option, $option);
+
+        $this->swiftMailer();
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        $this->message->{$method}(...$args);
     }
 
     /**
@@ -335,7 +352,7 @@ class Mail implements IMail
      *
      * @return int
      */
-    public function send(Closure $callbacks = null, bool $htmlPriority = true): int
+    public function sendMail(Closure $callbacks = null, bool $htmlPriority = true): int
     {
         $this->makeMessage();
 
@@ -368,6 +385,75 @@ class Mail implements IMail
     }
 
     /**
+     * 传输机制是否已经启动.
+     *
+     * @return bool
+     */
+    public function isStarted(): bool
+    {
+        return $this->swiftMailer->isStarted();
+    }
+
+    /**
+     * 启动传输机制.
+     */
+    public function start(): void
+    {
+        $this->swiftMailer->start();
+    }
+
+    /**
+     * 停止传输机制.
+     */
+    public function stop(): void
+    {
+        $this->swiftMailer->stop();
+    }
+
+    /**
+     * 检查此传输机制是否处于活动状态.
+     *
+     * @return bool
+     */
+    public function ping(): bool
+    {
+        return $this->swiftMailer->ping();
+    }
+
+    /**
+     * 发送消息.
+     *
+     * @param \Swift_Mime_SimpleMessage $message
+     * @param array                     $failedRecipients
+     *
+     * @return int
+     */
+    public function send(Swift_Mime_SimpleMessage $message, ?array &$failedRecipients = null): int
+    {
+        return $this->swiftMailer->send($message, $failedRecipients);
+    }
+
+    /**
+     * 注册一个插件.
+     *
+     * @param \Swift_Events_EventListener $plugin
+     */
+    public function registerPlugin(Swift_Events_EventListener $plugin): void
+    {
+        $this->swiftMailer->registerPlugin($plugin);
+    }
+
+    /**
+     * 返回代理.
+     *
+     * @return \Swift_Message
+     */
+    protected function proxyMessage(): Swift_Message
+    {
+        return $this->message;
+    }
+
+    /**
      * 事件派发.
      *
      * @param \Swift_Message $message
@@ -389,14 +475,11 @@ class Mail implements IMail
      */
     protected function getViewData(string $file, array $data): string
     {
-        return $this->view->
-        clearAssign()->
-
-        assign('mail', $this)->
-
-        assign($data)->
-
-        display($file, [], null);
+        return $this->view
+            ->clearAssign()
+            ->assign('mail', $this)
+            ->assign($data)
+            ->display($file, [], null);
     }
 
     /**
@@ -460,7 +543,7 @@ class Mail implements IMail
      */
     protected function sendMessage(Swift_Message $message): int
     {
-        return $this->connect->send($message, $this->failedRecipients);
+        return $this->send($message, $this->failedRecipients);
     }
 
     /**
@@ -541,5 +624,17 @@ class Mail implements IMail
         $this->message->attach($attachment);
 
         return $this;
+    }
+
+    /**
+     * 生成 swift mailer.
+     *
+     * @return \Swift_Mailer
+     */
+    protected function swiftMailer(): Swift_Mailer
+    {
+        return $this->swiftMailer = new Swift_Mailer(
+            $this->makeTransport()
+        );
     }
 }

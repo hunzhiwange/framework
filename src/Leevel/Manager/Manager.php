@@ -325,9 +325,7 @@ abstract class Manager
      */
     protected function getCommonOption(): array
     {
-        return $this->filterCommonOption(
-            $this->getContainerOption()
-        );
+        return $this->filterCommonOption($this->getContainerOption());
     }
 
     /**
@@ -355,10 +353,7 @@ abstract class Manager
      */
     protected function defaultCommonOption(): array
     {
-        return [
-            'default',
-            'connect',
-        ];
+        return ['default', 'connect'];
     }
 
     /**

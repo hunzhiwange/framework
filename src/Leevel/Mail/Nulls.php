@@ -23,7 +23,7 @@ namespace Leevel\Mail;
 use Swift_NullTransport;
 
 /**
- * mail.nulls.
+ * nulls 邮件.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Swift_NullTransport;
  *
  * @version 1.0
  */
-class Nulls extends Connect implements IConnect
+class Nulls extends Mail implements IMail
 {
     /**
      * 配置.

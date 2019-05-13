@@ -52,11 +52,7 @@ class Manager extends Managers
      */
     protected function createConnect(object $connect): object
     {
-        return new Mail($connect,
-            $this->container['view'],
-            $this->container['event'],
-            $this->getCommonOption()
-        );
+        return $connect;
     }
 
     /**
@@ -69,6 +65,8 @@ class Manager extends Managers
     protected function makeConnectNulls(array $options = []): Nulls
     {
         return new Nulls(
+            $this->container['view'],
+            $this->container['event'],
             $this->normalizeConnectOption('nulls', $options)
         );
     }
@@ -83,6 +81,8 @@ class Manager extends Managers
     protected function makeConnectSmtp(array $options = []): Smtp
     {
         return new Smtp(
+            $this->container['view'],
+            $this->container['event'],
             $this->normalizeConnectOption('smtp', $options)
         );
     }
@@ -97,22 +97,9 @@ class Manager extends Managers
     protected function makeConnectSendmail(array $options = []): Sendmail
     {
         return new Sendmail(
+            $this->container['view'],
+            $this->container['event'],
             $this->normalizeConnectOption('sendmail', $options)
         );
-    }
-
-    /**
-     * 过滤全局配置项.
-     *
-     * @return array
-     */
-    protected function defaultCommonOption(): array
-    {
-        return [
-            'default',
-            'connect',
-            'global_from',
-            'global_to',
-        ];
     }
 }

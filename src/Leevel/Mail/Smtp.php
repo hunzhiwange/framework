@@ -23,7 +23,7 @@ namespace Leevel\Mail;
 use Swift_SmtpTransport;
 
 /**
- * mail.smtp.
+ * smtp 邮件.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Swift_SmtpTransport;
  *
  * @version 1.0
  */
-class Smtp extends Connect implements IConnect
+class Smtp extends Mail implements IMail
 {
     /**
      * 配置.
@@ -39,6 +39,14 @@ class Smtp extends Connect implements IConnect
      * @var array
      */
     protected $option = [
+        'global_from' => [
+            'address' => null,
+            'name'    => null,
+        ],
+        'global_to' => [
+            'address' => null,
+            'name'    => null,
+        ],
         'host'       => 'smtp.qq.com',
         'port'       => 465,
         'username'   => null,
