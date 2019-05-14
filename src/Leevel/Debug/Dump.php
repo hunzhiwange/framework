@@ -39,7 +39,7 @@ class Dump
      * 调试变量.
      *
      * @param mixed $var
-     * @param array $moreVars
+     * @param array ...$moreVars
      *
      * @return mixed
      */
@@ -62,7 +62,7 @@ class Dump
      * 调试变量并中断.
      *
      * @param mixed $var
-     * @param array $moreVars
+     * @param array ...$moreVars
      */
     public static function dumpDie($var, ...$moreVars): void
     {
@@ -75,7 +75,7 @@ class Dump
      * 调试 RoadRunner 变量.
      *
      * @param mixed $var
-     * @param array $moreVars
+     * @param array ...$moreVars
      *
      * @return mixed
      */
