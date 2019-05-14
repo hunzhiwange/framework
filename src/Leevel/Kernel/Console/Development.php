@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use Leevel\Console\Command;
+use Leevel\Console\Option;
 
 /**
  * 开发模式清理系统缓存.
@@ -55,8 +56,6 @@ class Development extends Command
     {
         $this->line('Start to clears caches.');
 
-        $this->callAutoload();
-
         $this->callI18n();
 
         $this->callLog();
@@ -69,17 +68,10 @@ class Development extends Command
 
         $this->callView();
 
+        $this->callAutoload();
+
         $this->line('');
         $this->info('Caches cleared successed.');
-    }
-
-    /**
-     * 执行清理 autoload 缓存.
-     */
-    protected function callAutoload(): void
-    {
-        $this->line('');
-        $this->call('autoload:clear');
     }
 
     /**
@@ -137,6 +129,28 @@ class Development extends Command
     }
 
     /**
+     * 执行 autoload 缓存.
+     */
+    protected function callAutoload(): void
+    {
+        $this->line('');
+        $this->call('autoload', [
+            '--composer' => $this->composer(),
+            '--dev'      => true,
+        ]);
+    }
+
+    /**
+     * 取得 Composer 路径.
+     *
+     * @return string
+     */
+    protected function composer(): string
+    {
+        return $this->option('composer');
+    }
+
+    /**
      * 命令参数.
      *
      * @return array
@@ -153,6 +167,14 @@ class Development extends Command
      */
     protected function getOptions(): array
     {
-        return [];
+        return [
+            [
+                'composer',
+                null,
+                Option::VALUE_OPTIONAL,
+                'Where is composer.',
+                'composer',
+            ],
+        ];
     }
 }
