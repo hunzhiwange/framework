@@ -1,0 +1,16 @@
+parameters:
+    level: 0
+    paths:
+        - src
+        - tests
+    autoload_files:
+        - %currentWorkingDirectory%/src/Leevel/Cache/Helper/cache.php
+    excludes_analyse:
+        - %currentWorkingDirectory%/src/Leevel/Cache/Redis/PhpRedis.php
+        - %currentWorkingDirectory%/src/Leevel/Database
+        - %currentWorkingDirectory%/src/Leevel/Protocol
+    bootstrap: %currentWorkingDirectory%/phpstan-bootstrap.php
+    ignoreErrors:
+        - '#[a-zA-Z0-9_]+::__construct\(\) does not call parent constructor from [a-zA-Z0-9_]+.#'
+        - '#Instantiated class League\\Flysystem\\Sftp\\SftpAdapter not found.#'
+        - '#Instantiated class League\\Flysystem\\ZipArchive\\ZipArchiveAdapter not found.#'

@@ -8,3 +8,4 @@
 .coveralls.yml export-ignore
 phpunit.xml.dist export-ignore
 phpunit.xml.html export-ignore
+/build export-ignore
