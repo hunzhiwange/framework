@@ -20,7 +20,14 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Leevel\Database\Console\Virtual\Status as VirtualStatus;
 use Phinx\Console\Command\Status as PhinxStatus;
+
+if (class_exists(PhinxStatus::class)) {
+    class_alias(PhinxStatus::class, __NAMESPACE__.'\\BaseStatus');
+} else {
+    class_alias(VirtualStatus::class, __NAMESPACE__.'\\BaseStatus');
+}
 
 /**
  * 数据库打印所有迁移脚本和他们的状态
@@ -32,7 +39,7 @@ use Phinx\Console\Command\Status as PhinxStatus;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Status extends PhinxStatus
+class Status extends BaseStatus
 {
     /**
      * Configures the current command.

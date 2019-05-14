@@ -20,7 +20,14 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Leevel\Database\Console\Virtual\Rollback as VirtualRollback;
 use Phinx\Console\Command\Rollback as PhinxRollback;
+
+if (class_exists(PhinxRollback::class)) {
+    class_alias(PhinxRollback::class, __NAMESPACE__.'\\BaseRollback');
+} else {
+    class_alias(VirtualRollback::class, __NAMESPACE__.'\\BaseRollback');
+}
 
 /**
  * 数据库迁移回滚数据库脚本.
@@ -32,7 +39,7 @@ use Phinx\Console\Command\Rollback as PhinxRollback;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Rollback extends PhinxRollback
+class Rollback extends BaseRollback
 {
     /**
      * Configures the current command.

@@ -18,67 +18,47 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Kernel\Console;
+namespace Leevel\Database\Console\Virtual;
 
 use Leevel\Console\Command;
-use Leevel\Kernel\IApp;
+use RuntimeException;
 
 /**
- * 自动加载缓存清理.
+ * 虚拟数据库迁移创建一个脚本.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.09.04
+ * @since 2019.05.14
  *
  * @version 1.0
  * @codeCoverageIgnore
  */
-class AutoloadClear extends Command
+class Create extends Command
 {
     /**
      * 命令名字.
      *
      * @var string
      */
-    protected $name = 'autoload:clear';
+    protected $name = 'migrate:create';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Clear cache of autoload.';
+    protected $description = 'Just a virtual migrate:create.';
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IApp $app): void
+    public function handle(): void
     {
-        $this->line('Start to clear cache autoload.');
+        $e = 'If you execute command `composer dump-autoload --optimize --no-dev`,'.
+            'then this will not be available.'.PHP_EOL.
+            'Phinx belongs to development dependence and `composer dump-autoload --optimize` is ok.';
 
-        $cachePath = $app->runtimePath('autoload.php');
-
-        $this->clearCache($cachePath);
-
-        $this->info(sprintf('Autoload file %s cache clear successed.', $cachePath));
-    }
-
-    /**
-     * 删除缓存.
-     *
-     * @param string $cachePath
-     */
-    protected function clearCache(string $cachePath): void
-    {
-        if (!is_file($cachePath)) {
-            $this->warn('Autoload cache files have been cleaned up.');
-
-            return;
-        }
-
-        unlink($cachePath);
+        throw new RuntimeException($e);
     }
 
     /**

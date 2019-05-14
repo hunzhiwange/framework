@@ -228,7 +228,10 @@ class Cache extends Command
      */
     protected function getHtmlView(): IView
     {
-        return $this->app->make('view.views')->connect('html');
+        return $this->app
+            ->container()
+            ->make('view.views')
+            ->connect('html');
     }
 
     /**

@@ -20,7 +20,14 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Leevel\Database\Console\Virtual\Migrate as VirtualMigrate;
 use Phinx\Console\Command\Migrate as PhinxMigrate;
+
+if (class_exists(PhinxMigrate::class)) {
+    class_alias(PhinxMigrate::class, __NAMESPACE__.'\\BaseMigrate');
+} else {
+    class_alias(VirtualMigrate::class, __NAMESPACE__.'\\BaseMigrate');
+}
 
 /**
  * 数据库迁移运行数据库脚本.
@@ -32,7 +39,7 @@ use Phinx\Console\Command\Migrate as PhinxMigrate;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Migrate extends PhinxMigrate
+class Migrate extends BaseMigrate
 {
     /**
      * Configures the current command.

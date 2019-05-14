@@ -431,7 +431,7 @@ class OpenApiRouter
      */
     protected function parseRouterRegex(string $path, array $router): array
     {
-        list($router['regex'], $router['var']) = $this->ruleRegex($path, $router);
+        list($router['regex'], $router['var']) = $this->ruleRegex($path);
 
         return $router;
     }

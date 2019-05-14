@@ -20,7 +20,14 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Leevel\Database\Console\Virtual\Breakpoint as VirtualBreakpoint;
 use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
+
+if (class_exists(PhinxBreakpoint::class)) {
+    class_alias(PhinxBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint');
+} else {
+    class_alias(VirtualBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint');
+}
 
 /**
  * 数据库迁移设置断点.
@@ -32,7 +39,7 @@ use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Breakpoint extends PhinxBreakpoint
+class Breakpoint extends BaseBreakpoint
 {
     /**
      * Configures the current command.

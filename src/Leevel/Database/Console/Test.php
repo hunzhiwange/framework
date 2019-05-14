@@ -20,7 +20,14 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Leevel\Database\Console\Virtual\Test as VirtualTest;
 use Phinx\Console\Command\Test as PhinxTest;
+
+if (class_exists(PhinxTest::class)) {
+    class_alias(PhinxTest::class, __NAMESPACE__.'\\BaseTest');
+} else {
+    class_alias(VirtualTest::class, __NAMESPACE__.'\\BaseTest');
+}
 
 /**
  * 数据库测试环境是否正常.
@@ -32,7 +39,7 @@ use Phinx\Console\Command\Test as PhinxTest;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Test extends PhinxTest
+class Test extends BaseTest
 {
     /**
      * Configures the current command.

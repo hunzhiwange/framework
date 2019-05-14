@@ -20,7 +20,14 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use Leevel\Database\Console\Virtual\SeedCreate as VirtualSeedCreate;
 use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
+
+if (class_exists(PhinxSeedCreate::class)) {
+    class_alias(PhinxSeedCreate::class, __NAMESPACE__.'\\BaseSeedCreate');
+} else {
+    class_alias(VirtualSeedCreate::class, __NAMESPACE__.'\\BaseSeedCreate');
+}
 
 /**
  * 数据库测试数据.
@@ -32,7 +39,7 @@ use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Seedcreate extends PhinxSeedCreate
+class Seedcreate extends BaseSeedCreate
 {
     /**
      * Configures the current command.

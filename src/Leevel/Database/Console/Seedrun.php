@@ -20,7 +20,14 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
-use Phinx\Console\Command\SeedRun as PhinxSeedRun;
+use Leevel\Database\Console\Virtual\SeedRun as VirtualSeedRun;
+use Phinx\Console\Command\Seedrun as PhinxSeedRun;
+
+if (class_exists(PhinxSeedRun::class)) {
+    class_alias(PhinxSeedRun::class, __NAMESPACE__.'\\BaseSeedRun');
+} else {
+    class_alias(VirtualSeedRun::class, __NAMESPACE__.'\\BaseSeedRun');
+}
 
 /**
  * 数据库执行测试数据.
@@ -32,7 +39,7 @@ use Phinx\Console\Command\SeedRun as PhinxSeedRun;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Seedrun extends PhinxSeedRun
+class Seedrun extends BaseSeedRun
 {
     /**
      * Configures the current command.

@@ -139,6 +139,10 @@ abstract class Runtime implements IRuntime
      */
     public function renderForConsole(OutputInterface $output, Exception $e): void
     {
+        if (!class_exists(CollisionProvider::class)) {
+            throw $e;
+        }
+
         $handler = (new CollisionProvider())
             ->register()
             ->getHandler()
