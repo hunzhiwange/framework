@@ -25,7 +25,7 @@ if (!function_exists('fn')) {
      * 执行惰性加载函数.
      *
      * @param string $fn
-     * @param array  $args
+     * @param array  ...$args
      *
      * @return mixed
      */
@@ -56,6 +56,8 @@ if (!function_exists('fn_exists')) {
             return true;
         }
 
+        $virtualClass = null;
+
         foreach (['fn', 'prefix', 'index'] as $type) {
             switch ($type) {
                 case 'fn':
@@ -63,21 +65,25 @@ if (!function_exists('fn_exists')) {
 
                     break;
                 case 'prefix':
-                    if (false === strpos($fn, '_')) {
+                    if (false === $position = strpos($fn, '_')) {
                         continue 2;
                     }
 
-                    $virtualClass = substr($fn, 0, strpos($fn, '_'));
+                    $virtualClass = substr($fn, 0, $position);
 
                     break;
                 case 'index':
-                    if (false === strpos($fn, '\\')) {
+                    if (false === $position = strripos($fn, '\\')) {
                         continue 2;
                     }
 
-                    $virtualClass = substr($fn, 0, strripos($fn, '\\')).'\\index';
+                    $virtualClass = substr($fn, 0, $position).'\\index';
 
                     break;
+            }
+
+            if (!$virtualClass) {
+                return false;
             }
 
             class_exists($virtualClass);

@@ -33,7 +33,7 @@ function normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false)
 {
     if (is_array($inputs) || is_string($inputs)) {
         if (!is_array($inputs)) {
-            $inputs = explode($delimiter, $inputs);
+            $inputs = (array) explode($delimiter, $inputs);
         }
 
         $inputs = array_filter($inputs);

@@ -35,7 +35,7 @@ function un_camelize(string $value, string $separator = '_'): string
             '/([a-z])([A-Z])/',
             '$1'.$separator.'$2',
             $value
-        )
+        ) ?: ''
     );
 }
 
