@@ -23,6 +23,7 @@ namespace Leevel\Throttler\Provider;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Throttler\IThrottler;
+use Leevel\Throttler\Middleware\Throttler as MiddlewareThrottler;
 use Leevel\Throttler\Throttler;
 
 /**
