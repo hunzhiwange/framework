@@ -39,9 +39,9 @@ use Throwable;
 class RegisterRuntime
 {
     /**
-     * 容器.
+     * 应用.
      *
-     * @var \Leevel\Di\IApp
+     * @var \Leevel\Kernel\IApp
      */
     protected $app;
 

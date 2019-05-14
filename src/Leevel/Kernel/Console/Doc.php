@@ -56,6 +56,20 @@ class Doc extends Command
     protected $description = 'Markdown generation based on test cases.';
 
     /**
+     * 文档解析器.
+     *
+     * @var \Leevel\Kernel\Utils\Doc
+     */
+    protected $utilsDoc;
+
+    /**
+     * 类名字分析器.
+     *
+     * @var \Leevel\Kernel\Utils\ClassParser
+     */
+    protected $classParser;
+
+    /**
      * 响应命令.
      */
     public function handle(): void

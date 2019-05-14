@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Testing;
 
+use Closure;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -168,7 +169,7 @@ trait Helper
             $result = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
         );
 
-        return $result;
+        return $result ?: '';
     }
 
     /**
@@ -176,7 +177,7 @@ trait Helper
      * 程序可能在数秒不等的时间内执行，需要给定一个范围.
      *
      * @param string $data
-     * @param array  $timeRange
+     * @param array  ...$timeRange
      */
     protected function assertTimeRange(string $data, ...$timeRange): void
     {
@@ -191,5 +192,22 @@ trait Helper
     protected function assert(bool $data): void
     {
         $this->assertTrue($data);
+    }
+
+    /**
+     * 读取缓存区数据.
+     *
+     * @param \Closure $call
+     *
+     * @return string
+     */
+    protected function obGetContents(Closure $call): string
+    {
+        ob_start();
+        $call();
+        $contents = ob_get_contents();
+        ob_end_clean();
+
+        return $contents ?: '';
     }
 }

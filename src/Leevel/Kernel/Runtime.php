@@ -174,6 +174,22 @@ abstract class Runtime implements IRuntime
     }
 
     /**
+     * 获取 HTTP 状态的异常模板
+     *
+     * @param Exception $e
+     *
+     * @return string
+     */
+    abstract public function getHttpExceptionView(Exception $e): string;
+
+    /**
+     * 获取 HTTP 状态的默认异常模板
+     *
+     * @return string
+     */
+    abstract public function getDefaultHttpExceptionView(): string;
+
+    /**
      * HTTP 响应异常.
      *
      * @param \Exception $e

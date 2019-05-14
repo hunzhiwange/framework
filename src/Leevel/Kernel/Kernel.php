@@ -22,7 +22,6 @@ namespace Leevel\Kernel;
 
 use ErrorException;
 use Exception;
-use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\Request;
@@ -73,11 +72,10 @@ abstract class Kernel implements IKernel
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IContainer $container
-     * @param \Leevel\Kernel\IApp       $app
-     * @param \Leevel\Router\IRouter    $router
+     * @param \Leevel\Kernel\IApp    $app
+     * @param \Leevel\Router\IRouter $router
      */
-    public function __construct(IContainer $container, IApp $app, IRouter $router)
+    public function __construct(IApp $app, IRouter $router)
     {
         $this->app = $app;
         $this->router = $router;
