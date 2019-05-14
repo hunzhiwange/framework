@@ -31,12 +31,12 @@ use Closure;
  *
  * @version 1.0
  */
-abstract class Cache
+abstract class Cache implements ICache
 {
     /**
      * 缓存服务句柄.
      *
-     * @var handle
+     * @var mixed
      */
     protected $handle;
 

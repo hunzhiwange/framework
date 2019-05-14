@@ -32,12 +32,12 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class PhpRedis implements IConnect
+class PhpRedis implements IRedis
 {
     /**
      * redis 句柄.
      *
-     * @var handle
+     * @var \Redis
      */
     protected $handle;
 
@@ -92,9 +92,9 @@ class PhpRedis implements IConnect
     /**
      * 返回缓存句柄.
      *
-     * @return mixed
+     * @return object
      */
-    public function handle()
+    public function handle(): object
     {
         return $this->handle;
     }

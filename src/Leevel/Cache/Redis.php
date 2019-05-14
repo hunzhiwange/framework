@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use Leevel\Cache\Redis\IConnect as RedisIConnect;
+use Leevel\Cache\Redis\IRedis;
 
 /**
  * redis 扩展缓存.
@@ -47,10 +47,10 @@ class Redis extends Cache implements ICache
     /**
      * 构造函数.
      *
-     * @param \Leevel\Cache\Redis\IConnect $handle
-     * @param array                        $option
+     * @param \Leevel\Cache\Redis\IRedis $handle
+     * @param array                      $option
      */
-    public function __construct(RedisIConnect $handle, array $option = [])
+    public function __construct(IRedis $handle, array $option = [])
     {
         parent::__construct($option);
 

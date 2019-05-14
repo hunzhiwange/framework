@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Cache\Redis;
 
 /**
- * IConnect 接口.
+ * IRedis 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -29,14 +29,14 @@ namespace Leevel\Cache\Redis;
  *
  * @version 1.0
  */
-interface IConnect
+interface IRedis
 {
     /**
      * 返回缓存句柄.
      *
-     * @return mixed
+     * @return object
      */
-    public function handle();
+    public function handle(): object;
 
     /**
      * 获取缓存.
