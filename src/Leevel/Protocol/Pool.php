@@ -63,11 +63,11 @@ class Pool implements IPool
      * 获取一个对象.
      *
      * @param string $className
-     * @param array  $args
+     * @param array  ...$args
      *
-     * @return \Object
+     * @return object
      */
-    public function get(string $className, ...$args)
+    public function get(string $className, ...$args): object
     {
         $this->valid($className);
         $className = $this->normalize($className);
@@ -93,9 +93,9 @@ class Pool implements IPool
     /**
      * 返还一个对象.
      *
-     * @param \Object $obj
+     * @param object $obj
      */
-    public function back($obj): void
+    public function back(object $obj): void
     {
         if (method_exists($obj, 'destruct')) {
             $obj->destruct();

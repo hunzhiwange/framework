@@ -61,7 +61,7 @@ class I18n implements II18n
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  $arr
+     * @param array  ...$arr
      *
      * @return string
      */
@@ -74,7 +74,7 @@ class I18n implements II18n
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  $arr
+     * @param array  ...$arr
      *
      * @return string
      */

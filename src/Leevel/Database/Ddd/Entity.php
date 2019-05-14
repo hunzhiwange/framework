@@ -917,6 +917,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 执行模型实体事件.
      *
      * @param string $event
+     * @param array  ...$args
      */
     public function handleEvent(string $event, ...$args): void
     {

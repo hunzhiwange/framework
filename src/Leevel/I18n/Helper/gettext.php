@@ -26,7 +26,7 @@ use Leevel\Di\Container;
  * 获取语言.
  *
  * @param string $text
- * @param array  $arr
+ * @param array  ...$arr
  *
  * @return string
  */

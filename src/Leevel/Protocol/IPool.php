@@ -37,18 +37,18 @@ interface IPool
      * 获取一个对象.
      *
      * @param string $className
-     * @param array  $args
+     * @param array  ...$args
      *
-     * @return \Object
+     * @return object
      */
-    public function get(string $className, ...$args);
+    public function get(string $className, ...$args): object;
 
     /**
      * 返还一个对象.
      *
-     * @param \Object $obj
+     * @param object $obj
      */
-    public function back($obj): void;
+    public function back(object $obj): void;
 
     /**
      * 获取对象栈.

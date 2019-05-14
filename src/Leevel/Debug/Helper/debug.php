@@ -27,7 +27,7 @@ use RuntimeException;
  * Debug 调试.
  *
  * @param array|string $tag
- * @param array        $args
+ * @param array        ...$args
  * @codeCoverageIgnore
  */
 function debug($tag, ...$args): void
@@ -37,6 +37,7 @@ function debug($tag, ...$args): void
     }
 
     $normalPrint = false;
+    $call = null;
 
     if (is_array($tag)) {
         switch (count($tag)) {

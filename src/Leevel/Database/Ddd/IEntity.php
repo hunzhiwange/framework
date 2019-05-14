@@ -464,6 +464,7 @@ interface IEntity
      * 执行模型实体事件.
      *
      * @param string $event
+     * @param array  ...$args
      */
     public function handleEvent(string $event, ...$args): void;
 

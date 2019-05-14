@@ -35,7 +35,7 @@ interface II18n
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  $arr
+     * @param array  ...$arr
      *
      * @return string
      */
@@ -45,7 +45,7 @@ interface II18n
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  $arr
+     * @param array  ...$arr
      *
      * @return string
      */

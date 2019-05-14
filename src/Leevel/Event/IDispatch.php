@@ -35,7 +35,7 @@ interface IDispatch
      * 执行一个事件.
      *
      * @param object|string $event
-     * @param array         $params
+     * @param array         ...$params
      */
     public function handle($event, ...$params): void;
 

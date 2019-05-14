@@ -86,7 +86,7 @@ class UniqueRule
      * @param string $field
      * @param mixed  $exceptId
      * @param string $primaryKey
-     * @param array  $additional
+     * @param array  ...$additional
      *
      * @return string
      */

@@ -20,13 +20,15 @@ declare(strict_types=1);
 
 namespace Leevel\Debug\Helper;
 
+use Closure;
 use Leevel\Debug\Dump;
+use RuntimeException;
 
 /**
  * 性能基准测试.
  *
  * @param array|int $time
- * @param array     $call
+ * @param array     ...$call
  * @codeCoverageIgnore
  */
 function benchmark($time = 1, ...$call): void
@@ -80,13 +82,13 @@ function benchmark($time = 1, ...$call): void
 /**
  * 执行一个调用.
  *
- * @param callable|closure|string $call
- * @param int                     $time
+ * @param \Closure $call
+ * @param int      $time
  *
  * @return array
  * @codeCoverageIgnore
  */
-function benchmark_call($call, int $time = 1): array
+function benchmark_call(Closure $call, int $time = 1): array
 {
     $startTime = microtime(true);
     $startMemory = memory_get_usage();

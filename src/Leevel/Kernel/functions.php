@@ -26,7 +26,7 @@ if (!function_exists('hl')) {
      * 助手函数调用.
      *
      * @param string $method
-     * @param array  $args
+     * @param array  ...$args
      *
      * @return mixed
      */
@@ -82,7 +82,7 @@ if (!function_exists('__')) {
      * 获取语言.
      *
      * @param string $text
-     * @param array  $arr
+     * @param array  ...$arr
      *
      * @return string
      * @codeCoverageIgnore
@@ -101,7 +101,7 @@ if (!function_exists('dump')) {
      * 调试变量.
      *
      * @param mixed $var
-     * @param array $moreVars
+     * @param array ...$moreVars
      *
      * @return mixed
      */
@@ -116,7 +116,7 @@ if (!function_exists('dd')) {
      * 调试变量并中断.
      *
      * @param mixed $var
-     * @param array $moreVars
+     * @param array ...$moreVars
      */
     function dd($var, ...$moreVars): void
     {

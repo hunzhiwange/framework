@@ -26,7 +26,7 @@ use Leevel\Debug\Dump;
  * 调试 RoadRunner 变量.
  *
  * @param mixed $var
- * @param array $moreVars
+ * @param array ...$moreVars
  *
  * @return mixed
  * @codeCoverageIgnore
