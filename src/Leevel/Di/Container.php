@@ -29,6 +29,7 @@ use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
+use RuntimeException;
 
 /**
  * IOC 容器.
@@ -162,7 +163,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 生成 IOC 容器.
      *
-     * @return static
+     * @return \Leevel\Di\IContainer
      */
     public static function singletons(): IContainer
     {
@@ -777,6 +778,8 @@ class Container implements IContainer, ArrayAccess
             try {
                 switch (true) {
                     case $argsclass = $this->parseParameterClass($item):
+                        $argsclass = (string) $argsclass;
+
                         if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsclass) {
                             $data = array_shift($args);
                         } elseif (array_key_exists($argsclass, $args)) {
