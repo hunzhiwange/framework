@@ -28,11 +28,13 @@ use DirectoryIterator;
  * @param string $sourcePath
  * @param string $targetPath
  * @param array  $filter
+ *
+ * @return bool
  */
-function copy_directory(string $sourcePath, string $targetPath, array $filter = []): void
+function copy_directory(string $sourcePath, string $targetPath, array $filter = []): bool
 {
     if (!is_dir($sourcePath)) {
-        return;
+        return false;
     }
 
     $instance = new DirectoryIterator($sourcePath);
@@ -46,23 +48,25 @@ function copy_directory(string $sourcePath, string $targetPath, array $filter = 
         $newPath = $targetPath.'/'.$file->getFilename();
 
         if ($file->isFile()) {
-            if (!is_dir($newPath)) {
-                create_directory(dirname($newPath));
+            if (!is_dir($newPath) && !create_directory(dirname($newPath))) {
+                return false;
             }
 
             if (!copy($file->getRealPath(), $newPath)) {
-                return;
+                return false;
             }
         } elseif ($file->isDir()) {
-            if (!is_dir($newPath)) {
-                create_directory($newPath);
+            if (!is_dir($newPath) && !create_directory($newPath)) {
+                return false;
             }
 
             if (!copy_directory($file->getRealPath(), $newPath, $filter)) {
-                return;
+                return false;
             }
         }
     }
+
+    return true;
 }
 
 class copy_directory

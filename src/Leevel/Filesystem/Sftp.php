@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
+use InvalidArgumentException;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Sftp\SftpAdapter;
 
