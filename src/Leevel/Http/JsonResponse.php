@@ -49,7 +49,7 @@ class JsonResponse extends Response
     /**
      * 响应内容.
      *
-     * @var sting
+     * @var string
      */
     protected $data;
 

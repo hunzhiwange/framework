@@ -47,7 +47,7 @@ class ResponseHeaderBag extends HeaderBag
     /**
      * Cookie.
      *
-     * @var \Leevel\Http\ICookie
+     * @var \Leevel\Http\Cookie
      */
     protected $cookie;
 

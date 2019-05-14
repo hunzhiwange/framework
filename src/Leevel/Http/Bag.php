@@ -335,6 +335,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     {
         list($filter, $extend) = explode('=', $filter);
 
+        $evals = null;
+
         if ('default' === $filter) {
             if (!is_numeric($extend) && !preg_match('/^[A-Z\_]+$/', $extend)) {
                 $extend = "'".$extend."'";

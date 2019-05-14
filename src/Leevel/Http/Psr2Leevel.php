@@ -178,6 +178,8 @@ class Psr2Leevel implements IPsr2Leevel
      */
     protected function createCookie(string $cookie): array
     {
+        $cookieName = $cookieValue = null;
+
         foreach (explode(';', $cookie) as $part) {
             $part = trim($part);
 
@@ -224,7 +226,9 @@ class Psr2Leevel implements IPsr2Leevel
         }
 
         if (!isset($cookieName)) {
-            throw new InvalidArgumentException('The value of the Set-Cookie header is malformed.');
+            $e = 'The value of the Set-Cookie header is malformed.';
+
+            throw new InvalidArgumentException($e);
         }
 
         return [
