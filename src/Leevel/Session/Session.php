@@ -508,7 +508,7 @@ abstract class Session
      */
     public function setName(?string $name = null): void
     {
-        $this->name = $name ?: static::SESSION_NAME;
+        $this->name = $name ?: ISession::SESSION_NAME;
     }
 
     /**
