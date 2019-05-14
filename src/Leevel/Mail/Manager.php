@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Mail;
 
 use Leevel\Manager\Manager as Managers;
-use Swift_Message;
 
 /**
  * mail 入口.
@@ -50,11 +49,11 @@ class Manager extends Managers implements IMail
     /**
      * 返回代理.
      *
-     * @return \Swift_Message
+     * @return \Leevel\Mail\IMail
      */
-    protected function proxyMessage(): Swift_Message
+    protected function proxyMessage(): IMail
     {
-        return $this->connect()->proxyMessage();
+        return $this->connect();
     }
 
     /**
