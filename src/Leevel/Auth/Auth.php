@@ -29,7 +29,7 @@ namespace Leevel\Auth;
  *
  * @version 1.0
  */
-abstract class Auth
+abstract class Auth implements IAuth
 {
     /**
      * 配置.
@@ -143,4 +143,29 @@ abstract class Auth
     {
         $this->deletePersistence($this->getTokenName());
     }
+
+    /**
+     * 数据持久化.
+     *
+     * @param string $key
+     * @param string $value
+     * @param int    $expire
+     */
+    abstract protected function setPersistence(string $key, string $value, int $expire = 0): void;
+
+    /**
+     * 获取持久化数据.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    abstract protected function getPersistence(string $key);
+
+    /**
+     * 删除持久化数据.
+     *
+     * @param string $key
+     */
+    abstract protected function deletePersistence(string $key): void;
 }
