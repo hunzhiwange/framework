@@ -48,7 +48,7 @@ class ResponseFactory implements IResponseFactory
     /**
      * 跳转实例.
      *
-     * @var \Leevel\Router\Redirector
+     * @var \Leevel\Router\Redirect
      */
     protected $redirector;
 

@@ -399,7 +399,7 @@ class OpenApiRouter
 
         if ($router['domain'] && false !== strpos($router['domain'], '{')) {
             list($router['domain_regex'], $router['domain_var']) =
-                $this->ruleRegex($router['domain'], $router, true);
+                $this->ruleRegex($router['domain'], true);
         }
 
         if (!$router['domain']) {
@@ -605,7 +605,7 @@ class OpenApiRouter
      *
      * @return array
      */
-    protected function ruleRegex(string $rule, array $routers, bool $forSingleRegex = false): array
+    protected function ruleRegex(string $rule, bool $forSingleRegex = false): array
     {
         $routerVar = [];
 
@@ -614,7 +614,7 @@ class OpenApiRouter
             'replace' => [],
         ];
 
-        $rule = preg_replace_callback('/{(.+?)}/', function ($matches) use ($routers, &$routerVar, &$mapRegex) {
+        $rule = preg_replace_callback('/{(.+?)}/', function ($matches) use (&$routerVar, &$mapRegex) {
             if (false !== strpos($matches[1], ':')) {
                 list($routerVar[], $regex) = explode(':', $matches[1]);
             } else {
