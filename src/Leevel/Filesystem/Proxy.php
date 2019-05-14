@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
 
@@ -46,16 +45,6 @@ trait Proxy
     public function setOption(string $name, $value): IFilesystem
     {
         return $this->proxy()->setOption($name, $value);
-    }
-
-    /**
-     * 创建连接.
-     *
-     * @return \League\Flysystem\AdapterInterface
-     */
-    public function makeAdapter(): AdapterInterface
-    {
-        return $this->proxy()->makeAdapter();
     }
 
     /**

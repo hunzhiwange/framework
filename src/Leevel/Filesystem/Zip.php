@@ -51,7 +51,7 @@ class Zip extends Filesystem implements IFilesystem
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeAdapter(): AdapterInterface
+    protected function makeAdapter(): AdapterInterface
     {
         if (empty($this->option['path'])) {
             $e = 'The zip requires path option.';

@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
 
@@ -47,13 +46,6 @@ interface IFilesystem
      * @return $this
      */
     public function setOption(string $name, $value): self;
-
-    /**
-     * 创建连接.
-     *
-     * @return \League\Flysystem\AdapterInterface
-     */
-    public function makeAdapter(): AdapterInterface;
 
     /**
      * 判断文件是否存在.

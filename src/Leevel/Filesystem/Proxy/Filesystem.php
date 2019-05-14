@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Proxy;
 
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
 use Leevel\Di\Container;
@@ -49,16 +48,6 @@ class Filesystem implements IFilesystem
     public static function setOption(string $name, $value): IBaseFilesystem
     {
         return self::proxy()->setOption($name, $value);
-    }
-
-    /**
-     * 创建连接.
-     *
-     * @return \League\Flysystem\AdapterInterface
-     */
-    public static function makeAdapter(): AdapterInterface
-    {
-        return self::proxy()->makeAdapter();
     }
 
     /**

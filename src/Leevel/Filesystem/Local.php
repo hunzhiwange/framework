@@ -53,7 +53,7 @@ class Local extends Filesystem implements IFilesystem
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeAdapter(): AdapterInterface
+    protected function makeAdapter(): AdapterInterface
     {
         if (empty($this->option['path'])) {
             $e = 'The local requires path option.';

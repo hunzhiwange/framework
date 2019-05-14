@@ -70,7 +70,7 @@ class Sftp extends Filesystem implements IFilesystem
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeAdapter(): AdapterInterface
+    protected function makeAdapter(): AdapterInterface
     {
         if (!class_exists('League\Flysystem\Sftp\SftpAdapter')) {
             $e = 'Please run composer require league/flysystem-sftp.';

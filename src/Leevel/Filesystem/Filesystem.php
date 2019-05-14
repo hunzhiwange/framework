@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
+use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
@@ -109,6 +110,13 @@ abstract class Filesystem
     {
         return $this->filesystem;
     }
+
+    /**
+     * 创建连接.
+     *
+     * @return \League\Flysystem\AdapterInterface
+     */
+    abstract protected function makeAdapter(): AdapterInterface;
 
     /**
      * 生成 Filesystem.

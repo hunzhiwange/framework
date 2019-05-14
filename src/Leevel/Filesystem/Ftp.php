@@ -72,7 +72,7 @@ class Ftp extends Filesystem implements IFilesystem
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeAdapter(): AdapterInterface
+    protected function makeAdapter(): AdapterInterface
     {
         return new AdapterFtp($this->option);
     }

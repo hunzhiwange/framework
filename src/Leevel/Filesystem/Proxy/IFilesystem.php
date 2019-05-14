@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Proxy;
 
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
 use Leevel\Filesystem\IFilesystem as IBaseFilesystem;
@@ -47,13 +46,6 @@ interface IFilesystem
      * @return \Leevel\Filesystem\IFilesystem
      */
     public static function setOption(string $name, $value): IBaseFilesystem;
-
-    /**
-     * 创建连接.
-     *
-     * @return \League\Flysystem\AdapterInterface
-     */
-    public static function makeAdapter(): AdapterInterface;
 
     /**
      * 判断文件是否存在.
