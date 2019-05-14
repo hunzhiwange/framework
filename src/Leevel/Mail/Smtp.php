@@ -57,9 +57,9 @@ class Smtp extends Mail implements IMail
     /**
      * 创建 transport.
      *
-     * @return mixed
+     * @return object
      */
-    public function makeTransport()
+    protected function makeTransport(): object
     {
         $transport = new Swift_SmtpTransport(
             $this->option['host'],

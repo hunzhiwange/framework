@@ -24,11 +24,9 @@ use Closure;
 use Leevel\Event\IDispatch;
 use Leevel\Router\IView;
 use Swift_Attachment;
-use Swift_Events_EventListener;
 use Swift_Image;
 use Swift_Mailer;
 use Swift_Message;
-use Swift_Mime_SimpleMessage;
 
 /**
  * mail 驱动抽象类.
@@ -41,6 +39,7 @@ use Swift_Mime_SimpleMessage;
  */
 abstract class Mail implements IMail
 {
+    use Proxy;
     use ProxyMessage;
 
     /**
@@ -264,7 +263,7 @@ abstract class Mail implements IMail
      *
      * @return $this
      */
-    public function attach(string $file, Closure $callbacks = null): IMail
+    public function attachMail(string $file, Closure $callbacks = null): IMail
     {
         $this->makeMessage();
 
@@ -385,62 +384,13 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 传输机制是否已经启动.
+     * 返回代理.
      *
-     * @return bool
+     * @return \Swift_Mailer
      */
-    public function isStarted(): bool
+    public function proxy(): Swift_Mailer
     {
-        return $this->swiftMailer->isStarted();
-    }
-
-    /**
-     * 启动传输机制.
-     */
-    public function start(): void
-    {
-        $this->swiftMailer->start();
-    }
-
-    /**
-     * 停止传输机制.
-     */
-    public function stop(): void
-    {
-        $this->swiftMailer->stop();
-    }
-
-    /**
-     * 检查此传输机制是否处于活动状态.
-     *
-     * @return bool
-     */
-    public function ping(): bool
-    {
-        return $this->swiftMailer->ping();
-    }
-
-    /**
-     * 发送消息.
-     *
-     * @param \Swift_Mime_SimpleMessage $message
-     * @param array                     $failedRecipients
-     *
-     * @return int
-     */
-    public function send(Swift_Mime_SimpleMessage $message, ?array &$failedRecipients = null): int
-    {
-        return $this->swiftMailer->send($message, $failedRecipients);
-    }
-
-    /**
-     * 注册一个插件.
-     *
-     * @param \Swift_Events_EventListener $plugin
-     */
-    public function registerPlugin(Swift_Events_EventListener $plugin): void
-    {
-        $this->swiftMailer->registerPlugin($plugin);
+        return $this->swiftMailer;
     }
 
     /**
@@ -448,10 +398,17 @@ abstract class Mail implements IMail
      *
      * @return \Swift_Message
      */
-    protected function proxyMessage(): Swift_Message
+    public function proxyMessage(): Swift_Message
     {
         return $this->message;
     }
+
+    /**
+     * 创建 transport.
+     *
+     * @return object
+     */
+    abstract protected function makeTransport(): object;
 
     /**
      * 事件派发.
