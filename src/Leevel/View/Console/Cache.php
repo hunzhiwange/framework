@@ -185,9 +185,9 @@ class Cache extends Command
             }
 
             if (!is_dir($value)) {
-                throw new RuntimeException(
-                    sprintf('View dir %s is not exist.', $value)
-                );
+                $e = sprintf('View dir %s is not exist.', $value);
+
+                throw new RuntimeException($e);
             }
 
             return $value;
@@ -215,10 +215,9 @@ class Cache extends Command
      */
     protected function createParser(): Parser
     {
-        return (new Parser(new Compiler()))->
-        registerCompilers()->
-
-        registerParsers();
+        return (new Parser(new Compiler()))
+            ->registerCompilers()
+            ->registerParsers();
     }
 
     /**
