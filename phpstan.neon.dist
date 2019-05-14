@@ -4,7 +4,6 @@ parameters:
         - src
         - tests
     autoload_files:
-        - %currentWorkingDirectory%/src/Leevel/Cache/Helper/cache.php
     excludes_analyse:
         - %currentWorkingDirectory%/src/Leevel/Cache/Redis/PhpRedis.php
         - %currentWorkingDirectory%/src/Leevel/Database
