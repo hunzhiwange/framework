@@ -128,7 +128,7 @@ trait Proxy
      *
      * @return \Leevel\Cache\ICache
      */
-    protected function proxy(): ICache
+    public function proxy(): ICache
     {
         return $this->connect();
     }

@@ -42,7 +42,7 @@ class Manager extends Managers implements IMail
      *
      * @return \Leevel\Mail\IMail
      */
-    protected function proxy(): IMail
+    public function proxy(): IMail
     {
         return $this->connect();
     }

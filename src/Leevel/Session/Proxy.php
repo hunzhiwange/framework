@@ -457,7 +457,7 @@ trait Proxy
      *
      * @return \Leevel\Session\ISession
      */
-    protected function proxy(): ISession
+    public function proxy(): ISession
     {
         return $this->connect();
     }

@@ -95,7 +95,7 @@ trait Proxy
      *
      * @return \Leevel\Auth\IAuth
      */
-    protected function proxy(): IAuth
+    public function proxy(): IAuth
     {
         return $this->connect();
     }

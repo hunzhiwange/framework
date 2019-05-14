@@ -40,7 +40,7 @@ class Manager extends Managers implements IFilesystem
      *
      * @return \Leevel\Filesystem\IFilesystem
      */
-    protected function proxy(): IFilesystem
+    public function proxy(): IFilesystem
     {
         return $this->connect();
     }

@@ -234,7 +234,7 @@ trait Proxy
      *
      * @return \Leevel\Log\ILog
      */
-    protected function proxy(): ILog
+    public function proxy(): ILog
     {
         return $this->connect();
     }

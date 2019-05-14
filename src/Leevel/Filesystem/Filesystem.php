@@ -105,7 +105,7 @@ abstract class Filesystem
      *
      * @return \League\Flysystem\Filesystem
      */
-    protected function proxy(): LeagueFilesystem
+    public function proxy(): LeagueFilesystem
     {
         return $this->filesystem;
     }

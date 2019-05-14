@@ -105,7 +105,7 @@ trait Proxy
      *
      * @return \Leevel\View\IView
      */
-    protected function proxy(): IView
+    public function proxy(): IView
     {
         return $this->connect();
     }
