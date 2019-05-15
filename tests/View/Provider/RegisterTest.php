@@ -22,6 +22,7 @@ namespace Tests\View\Provider;
 
 use Leevel\Di\Container;
 use Leevel\Filesystem\Fso;
+use Leevel\Kernel\App;
 use Leevel\Option\Option;
 use Leevel\View\Compiler;
 use Leevel\View\Parser;
@@ -54,12 +55,9 @@ class RegisterTest extends TestCase
 
         $manager->setVar('foo', 'bar');
 
-        ob_start();
-
-        $manager->display('html_test');
-        $result = ob_get_contents();
-
-        ob_end_clean();
+        $result = $this->obGetContents(function () use ($manager) {
+            $manager->display('html_test');
+        });
 
         $this->assertSame('hello html,bar.', $result);
 
@@ -70,10 +68,11 @@ class RegisterTest extends TestCase
 
     protected function createContainer(): Container
     {
-        $container = new ExtendContainer();
+        $app = new ExtendApp($container = new Container(), '');
+        $container->instance('app', $app);
 
-        $this->assertSame(__DIR__.'/assert', $container->themesPath());
-        $this->assertSame(__DIR__.'/cache_theme', $container->runtimePath('theme'));
+        $this->assertSame(__DIR__.'/assert', $app->themesPath());
+        $this->assertSame(__DIR__.'/cache_theme', $app->runtimePath('theme'));
 
         $option = new Option([
             'view' => [
@@ -111,21 +110,21 @@ class RegisterTest extends TestCase
     }
 }
 
-class ExtendContainer extends Container
+class ExtendApp extends App
 {
-    public function development()
+    public function development(): bool
     {
         return true;
     }
 
-    public function themesPath()
+    public function themesPath(string $path = ''): string
     {
         return __DIR__.'/assert';
     }
 
-    public function runtimePath($type)
+    public function runtimePath(string $path = ''): string
     {
-        return __DIR__.'/cache_'.$type;
+        return __DIR__.'/cache_'.$path;
     }
 }
 
