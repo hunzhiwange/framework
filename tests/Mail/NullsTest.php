@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace Tests\Mail;
 
 use Leevel\Mail\Nulls;
+use Leevel\Router\View;
+use Leevel\View\Phpui;
 use Swift_Message;
 use Tests\TestCase;
 
@@ -37,23 +39,29 @@ class NullsTest extends TestCase
 {
     public function testBaseUse()
     {
-        $nulls = new Nulls();
+        $nulls = new Nulls($this->makeView());
 
-        $message = (new Swift_Message('Wonderful Subject'))->
-
-        setFrom(['foo@qq.com' => 'John Doe'])->
-
-        setTo(['bar@qq.com' => 'A name'])->
-
-        setBody('Here is the message itself');
+        $message = (new Swift_Message('Wonderful Subject'))
+            ->setFrom(['foo@qq.com' => 'John Doe'])
+            ->setTo(['bar@qq.com' => 'A name'])
+            ->setBody('Here is the message itself');
 
         $result = $nulls->send($message);
 
         $this->assertSame(1, $result);
 
         $this->assertTrue($nulls->isStarted());
-        $this->assertTrue($nulls->start());
-        $this->assertTrue($nulls->stop());
+        $this->assertNull($nulls->start());
+        $this->assertNull($nulls->stop());
         $this->assertTrue($nulls->ping());
+    }
+
+    protected function makeView(): View
+    {
+        return new View(
+            new Phpui([
+                'theme_path' => __DIR__,
+            ])
+        );
     }
 }

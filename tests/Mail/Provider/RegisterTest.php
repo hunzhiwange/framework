@@ -49,12 +49,11 @@ class RegisterTest extends TestCase
 
         $manager->plain('Here is the message itself');
 
-        $result = $manager->send(function (Swift_Message $message) {
-            $message->setFrom(['foo@qq.com' => 'John Doe'])->
-
-            setTo(['bar@qq.com' => 'A name'])->
-
-            setBody('Here is the message itself');
+        $result = $manager->sendMail(function (Swift_Message $message) {
+            $message
+                ->setFrom(['foo@qq.com' => 'John Doe'])
+                ->setTo(['bar@qq.com' => 'A name'])
+                ->setBody('Here is the message itself');
         });
 
         $this->assertSame(1, $result);
@@ -82,15 +81,12 @@ class RegisterTest extends TestCase
                 ],
             ],
         ]);
-
         $container->singleton('option', $option);
 
         $view = $this->createMock(IView::class);
-
         $container->singleton('view', $view);
 
         $event = $this->createMock(IDispatch::class);
-
         $container->singleton('event', $event);
 
         return $container;

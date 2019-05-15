@@ -27,6 +27,7 @@ use Swift_Attachment;
 use Swift_Image;
 use Swift_Mailer;
 use Swift_Message;
+use Swift_Transport;
 
 /**
  * mail 驱动抽象类.
@@ -386,11 +387,11 @@ abstract class Mail implements IMail
     /**
      * 返回代理.
      *
-     * @return \Swift_Mailer
+     * @return \Swift_Transport
      */
-    public function proxy(): Swift_Mailer
+    public function proxy(): Swift_Transport
     {
-        return $this->swiftMailer;
+        return $this->swiftMailer->getTransport();
     }
 
     /**

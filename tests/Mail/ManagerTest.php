@@ -46,16 +46,14 @@ class ManagerTest extends TestCase
 
         $manager->plain('Here is the message itself');
 
-        $result = $manager->send(function (Swift_Message $message) {
-            $message->setFrom(['foo@qq.com' => 'John Doe'])->
-
-            setTo(['bar@qq.com' => 'A name'])->
-
-            setBody('Here is the message itself');
+        $result = $manager->sendMail(function (Swift_Message $message) {
+            $message
+                ->setFrom(['foo@qq.com' => 'John Doe'])
+                ->setTo(['bar@qq.com' => 'A name'])
+                ->setBody('Here is the message itself');
         });
 
         $this->assertSame(1, $result);
-
         $this->assertSame([], $manager->failedRecipients());
     }
 

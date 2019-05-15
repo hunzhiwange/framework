@@ -24,7 +24,6 @@ use Leevel\Mail\Mail;
 use Leevel\Mail\Smtp;
 use Leevel\Router\View;
 use Leevel\View\Phpui;
-use Leevel\View\View as Views;
 use Swift_Attachment;
 use Swift_Message;
 use Swift_Mime_SimpleMessage;
@@ -47,7 +46,7 @@ class MailTest extends TestCase
 
         $mail->plain('hello');
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
 
@@ -60,7 +59,7 @@ class MailTest extends TestCase
 
         $mail->html('<b style="color:red;">hello</b>');
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -72,7 +71,7 @@ class MailTest extends TestCase
         $mail->html('<b style="color:red;">hello</b>');
         $mail->html('<b style="color:blue;">world</b>');
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -83,7 +82,7 @@ class MailTest extends TestCase
 
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -95,7 +94,7 @@ class MailTest extends TestCase
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'hello']);
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -106,7 +105,7 @@ class MailTest extends TestCase
 
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -118,7 +117,7 @@ class MailTest extends TestCase
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'hello']);
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -129,9 +128,9 @@ class MailTest extends TestCase
 
         $mail->html('hello attach');
 
-        $mail->attach(__DIR__.'/assert/logo.png');
+        $mail->attachMail(__DIR__.'/assert/logo.png');
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -142,11 +141,11 @@ class MailTest extends TestCase
 
         $mail->html('hello attach');
 
-        $mail->attach(__DIR__.'/assert/logo.png', function (Swift_Attachment $attachment) {
+        $mail->attachMail(__DIR__.'/assert/logo.png', function (Swift_Attachment $attachment) {
             $attachment->setFilename('logo2.jpg');
         });
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -159,7 +158,7 @@ class MailTest extends TestCase
 
         $mail->attachData(file_get_contents(__DIR__.'/assert/logo.png'), 'hello.png');
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -170,7 +169,7 @@ class MailTest extends TestCase
 
         $mail->view(__DIR__.'/assert/mail2.php', ['path' => __DIR__.'/assert/logo.png']);
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -181,7 +180,7 @@ class MailTest extends TestCase
 
         $mail->view(__DIR__.'/assert/mail3.php', ['data' => file_get_contents(__DIR__.'/assert/logo.png')]);
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -197,7 +196,7 @@ class MailTest extends TestCase
             $mail->attachChinese('魂之挽歌.png')
         );
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -210,7 +209,7 @@ class MailTest extends TestCase
 
         $mail->html('<b style="color:red;">hello</b>');
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -223,7 +222,7 @@ class MailTest extends TestCase
 
         $mail->html('<b style="color:red;">hello</b>');
 
-        $result = $mail->send(null, false);
+        $result = $mail->sendMail(null, false);
 
         $this->assertSame(1, $result);
     }
@@ -238,7 +237,7 @@ class MailTest extends TestCase
             $message->setSubject('the subject');
         });
 
-        $result = $mail->send();
+        $result = $mail->sendMail();
 
         $this->assertSame(1, $result);
     }
@@ -249,7 +248,7 @@ class MailTest extends TestCase
 
         $mail->plain('hello');
 
-        $result = $mail->send(function (Swift_Message $message) {
+        $result = $mail->sendMail(function (Swift_Message $message) {
             $message->setSubject('the subject');
         });
 
@@ -258,7 +257,7 @@ class MailTest extends TestCase
 
     protected function makeMail(): Mail
     {
-        $mail = new Mail($this->makeConnect(), $this->makeView(), null);
+        $mail = $this->makeConnect();
 
         $mail->globalFrom('635750556@qq.com', 'xiaoniu');
         $mail->globalTo('log1990@126.com', 'niuzai');
@@ -266,18 +265,18 @@ class MailTest extends TestCase
         return $mail;
     }
 
-    protected function makeView()
+    protected function makeView(): View
     {
         return new View(
-            new Views(new Phpui([
+            new Phpui([
                 'theme_path' => __DIR__,
-            ]))
+            ])
         );
     }
 
-    protected function makeConnect()
+    protected function makeConnect(): MailSmtp
     {
-        return new MailSmtp([
+        return new MailSmtp($this->makeView(), null, [
             'host'       => 'smtp.qq.com',
             'port'       => 465,
             'username'   => '635750556@qq.com',
