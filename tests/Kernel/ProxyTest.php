@@ -18,13 +18,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Facade;
+namespace Tests\Kernel;
 
 use Leevel\Kernel\App;
 use Tests\TestCase;
 
 /**
- * facade test.
+ * proxy test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +32,7 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class FacadeTest extends TestCase
+class ProxyTest extends TestCase
 {
     /**
      * @dataProvider getBaseUseData

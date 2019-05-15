@@ -21,14 +21,12 @@ declare(strict_types=1);
 namespace Tests\Auth;
 
 use Leevel\Auth\Manager;
-use Leevel\Cache\Cache;
 use Leevel\Cache\File as CacheFile;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
-use Leevel\Session\Session;
 use Tests\TestCase;
 
 /**
@@ -104,16 +102,16 @@ class ManagerTest extends TestCase
 
     protected function createCache()
     {
-        return new Cache(new CacheFile([
+        return new CacheFile([
             'path' => __DIR__.'/cacheFile',
-        ]));
+        ]);
     }
 
     protected function createSession()
     {
-        $session = new Session(new SessionFile([
+        $session = new SessionFile([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $session->start();
 

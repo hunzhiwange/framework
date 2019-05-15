@@ -73,7 +73,7 @@ class SmtpTest extends TestCase
 
 class MySmtp extends Smtp
 {
-    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
+    public function send(Swift_Mime_SimpleMessage $message, ?array &$failedRecipients = null): int
     {
         return 1;
     }

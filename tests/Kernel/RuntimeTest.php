@@ -539,6 +539,15 @@ class AppRuntime extends Apps
 
 class Runtime11 extends Runtime
 {
+    public function getHttpExceptionView(Exception $e): string
+    {
+        return '';
+    }
+
+    public function getDefaultHttpExceptionView(): string
+    {
+        return '';
+    }
 }
 
 class Runtime22 extends Runtime
@@ -546,6 +555,11 @@ class Runtime22 extends Runtime
     public function getHttpExceptionView(Exception $e): string
     {
         return __DIR__.'/assert/'.$e->getStatusCode().'.php';
+    }
+
+    public function getDefaultHttpExceptionView(): string
+    {
+        return '';
     }
 }
 

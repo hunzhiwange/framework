@@ -281,4 +281,13 @@ class AppKernel extends Apps
 
 class Runtime1 extends Runtime
 {
+    public function getHttpExceptionView(Exception $e): string
+    {
+        return '';
+    }
+
+    public function getDefaultHttpExceptionView(): string
+    {
+        return '';
+    }
 }

@@ -22,7 +22,6 @@ namespace Tests\Auth;
 
 use Leevel\Auth\Session;
 use Leevel\Session\File;
-use Leevel\Session\Session as Sessions;
 use Tests\TestCase;
 
 /**
@@ -68,9 +67,9 @@ class SessionTest extends TestCase
 
     protected function createSession()
     {
-        $session = new Sessions(new File([
+        $session = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $session->start();
 

@@ -27,7 +27,6 @@ use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Option\Option;
 use Leevel\Session\File;
-use Leevel\Session\Session as Sessions;
 use Tests\TestCase;
 
 /**
@@ -158,9 +157,9 @@ class AuthTest extends TestCase
 
     protected function createSession()
     {
-        $session = new Sessions(new File([
+        $session = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $session->start();
 

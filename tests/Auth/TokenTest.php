@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Auth;
 
 use Leevel\Auth\Token;
-use Leevel\Cache\Cache;
 use Leevel\Cache\File;
 use Leevel\Filesystem\Fso;
 use Leevel\Http\IRequest;
@@ -87,7 +86,7 @@ class TokenTest extends TestCase
         $this->assertSame([], $token->getLogin());
     }
 
-    public function testTokenNameWasNotSet()
+    public function testTokenNameWasNotSet(): void
     {
         $this->expectException(\Leevel\Auth\AuthException::class);
         $this->expectExceptionMessage(
@@ -99,14 +98,14 @@ class TokenTest extends TestCase
         $token->isLogin();
     }
 
-    protected function createCache()
+    protected function createCache(): File
     {
-        return new Cache(new File([
+        return new File([
             'path' => __DIR__.'/cacheFile',
-        ]));
+        ]);
     }
 
-    protected function createRequest()
+    protected function createRequest(): IRequest
     {
         $request = $this->createMock(IRequest::class);
 
@@ -116,7 +115,7 @@ class TokenTest extends TestCase
         return $request;
     }
 
-    protected function createRequestWithInput()
+    protected function createRequestWithInput(): IRequest
     {
         $request = $this->createMock(IRequest::class);
 
@@ -129,7 +128,7 @@ class TokenTest extends TestCase
         return $request;
     }
 
-    protected function createRequestWithEmptyValue()
+    protected function createRequestWithEmptyValue(): IRequest
     {
         $request = $this->createMock(IRequest::class);
 
