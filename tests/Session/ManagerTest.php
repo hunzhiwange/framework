@@ -24,7 +24,6 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Option\Option;
 use Leevel\Session\Manager;
-use SessionHandlerInterface;
 use Tests\TestCase;
 
 /**
@@ -61,8 +60,6 @@ class ManagerTest extends TestCase
 
         $manager->start();
         $this->assertTrue($manager->isStart());
-
-        $this->assertInstanceof(SessionHandlerInterface::class, $manager->getConnect());
     }
 
     protected function createManager()

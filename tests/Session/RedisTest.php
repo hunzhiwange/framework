@@ -23,9 +23,7 @@ namespace Tests\Session;
 use Leevel\Cache\Cache;
 use Leevel\Session\ISession;
 use Leevel\Session\Redis;
-use Leevel\Session\Session;
 use RedisException;
-use SessionHandlerInterface;
 use Tests\TestCase;
 
 /**
@@ -54,7 +52,7 @@ class RedisTest extends TestCase
 
     public function testBaseUse()
     {
-        $session = new Session($this->createRedisSessionHandler());
+        $session = $this->createRedisSessionHandler();
 
         $this->assertInstanceof(ISession::class, $session);
 
@@ -77,28 +75,22 @@ class RedisTest extends TestCase
 
         $session->start();
         $this->assertTrue($session->isStart());
-
-        $this->assertInstanceof(SessionHandlerInterface::class, $session->getConnect());
     }
 
-    public function testGetConnect()
+    public function testGetCache()
     {
-        $session = new Session($this->createRedisSessionHandler());
+        $session = $this->createRedisSessionHandler();
 
-        $this->assertInstanceof(SessionHandlerInterface::class, $connect = $session->getConnect());
+        $this->assertInstanceof(Cache::class, $session->getCache());
 
-        $this->assertInstanceof(Cache::class, $connect->getCache());
-
-        $this->assertTrue($connect->open('', 'foo'));
-        $this->assertTrue($connect->close());
-        $this->assertSame(0, $connect->gc(0));
+        $this->assertTrue($session->open('', 'foo'));
+        $this->assertTrue($session->close());
+        $this->assertSame(0, $session->gc(0));
     }
 
     public function testSave()
     {
-        $redis = $this->createRedisSessionHandler();
-
-        $session = new Session($this->createRedisSessionHandler());
+        $session = $this->createRedisSessionHandler();
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
@@ -113,7 +105,7 @@ class RedisTest extends TestCase
 
     public function testSaveAndStart()
     {
-        $session = new Session($this->createRedisSessionHandler());
+        $session = $this->createRedisSessionHandler();
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
@@ -149,13 +141,11 @@ class RedisTest extends TestCase
 
         $sessionId = $session->getId();
 
-        $connect = $session->getConnect();
+        $this->assertSame('a:4:{s:5:"other";s:5:"value";s:3:"foo";s:3:"bar";s:5:"hello";s:5:"world";s:13:"flash.old.key";a:0:{}}', $session->read($sessionId));
 
-        $this->assertSame('a:4:{s:5:"other";s:5:"value";s:3:"foo";s:3:"bar";s:5:"hello";s:5:"world";s:13:"flash.old.key";a:0:{}}', $connect->read($sessionId));
+        $session->destroySession();
 
-        $session->destroy();
-
-        $this->assertSame('a:0:{}', $connect->read($sessionId));
+        $this->assertSame('a:0:{}', $session->read($sessionId));
     }
 
     protected function createRedisSessionHandler()

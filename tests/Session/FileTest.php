@@ -23,8 +23,6 @@ namespace Tests\Session;
 use Leevel\Cache\Cache;
 use Leevel\Session\File;
 use Leevel\Session\ISession;
-use Leevel\Session\Session;
-use SessionHandlerInterface;
 use Tests\TestCase;
 
 /**
@@ -49,7 +47,7 @@ class FileTest extends TestCase
 
     public function testBaseUse()
     {
-        $session = new Session($this->createFileSessionHandler());
+        $session = $this->createFileSessionHandler();
 
         $this->assertInstanceof(ISession::class, $session);
 
@@ -72,21 +70,17 @@ class FileTest extends TestCase
 
         $session->start();
         $this->assertTrue($session->isStart());
-
-        $this->assertInstanceof(SessionHandlerInterface::class, $session->getConnect());
     }
 
-    public function testGetConnect()
+    public function testGetCache()
     {
-        $session = new Session($this->createFileSessionHandler());
+        $session = $this->createFileSessionHandler();
 
-        $this->assertInstanceof(SessionHandlerInterface::class, $connect = $session->getConnect());
+        $this->assertInstanceof(Cache::class, $session->getCache());
 
-        $this->assertInstanceof(Cache::class, $connect->getCache());
-
-        $this->assertTrue($connect->open('', 'foo'));
-        $this->assertTrue($connect->close());
-        $this->assertSame(0, $connect->gc(0));
+        $this->assertTrue($session->open('', 'foo'));
+        $this->assertTrue($session->close());
+        $this->assertSame(0, $session->gc(0));
     }
 
     protected function createFileSessionHandler()

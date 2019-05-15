@@ -22,8 +22,6 @@ namespace Tests\Session;
 
 use Leevel\Session\ISession;
 use Leevel\Session\Nulls;
-use Leevel\Session\Session;
-use SessionHandlerInterface;
 use Tests\TestCase;
 
 /**
@@ -39,7 +37,7 @@ class NullsTest extends TestCase
 {
     public function testBaseUse()
     {
-        $session = new Session($this->createNullsSessionHandler());
+        $session = $this->createNullsSessionHandler();
 
         $this->assertInstanceof(ISession::class, $session);
 
@@ -62,26 +60,22 @@ class NullsTest extends TestCase
 
         $session->start();
         $this->assertTrue($session->isStart());
-
-        $this->assertInstanceof(SessionHandlerInterface::class, $session->getConnect());
     }
 
-    public function testGetConnect()
+    public function testGetCache()
     {
-        $session = new Session($this->createNullsSessionHandler());
+        $session = $this->createNullsSessionHandler();
 
-        $this->assertInstanceof(SessionHandlerInterface::class, $connect = $session->getConnect());
+        $this->assertNull($session->getCache());
 
-        $this->assertNull($connect->getCache());
-
-        $this->assertTrue($connect->open('', 'foo'));
-        $this->assertTrue($connect->close());
-        $this->assertTrue($connect->write('foo', 'bar'));
-        $this->assertTrue($connect->destroy('foo'));
-        $this->assertSame(0, $connect->gc(0));
+        $this->assertTrue($session->open('', 'foo'));
+        $this->assertTrue($session->close());
+        $this->assertTrue($session->write('foo', 'bar'));
+        $this->assertTrue($session->destroy('foo'));
+        $this->assertSame(0, $session->gc(0));
     }
 
-    protected function createNullsSessionHandler()
+    protected function createNullsSessionHandler(): Nulls
     {
         return new Nulls();
     }

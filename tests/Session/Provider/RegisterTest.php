@@ -23,7 +23,6 @@ namespace Tests\Session\Provider;
 use Leevel\Di\Container;
 use Leevel\Option\Option;
 use Leevel\Session\Provider\Register;
-use SessionHandlerInterface;
 use Tests\TestCase;
 
 /**
@@ -64,8 +63,6 @@ class RegisterTest extends TestCase
 
         $manager->start();
         $this->assertTrue($manager->isStart());
-
-        $this->assertInstanceof(SessionHandlerInterface::class, $manager->getConnect());
     }
 
     protected function createContainer(): Container
