@@ -81,11 +81,13 @@ class Tree implements IJson, IArray
         $this->data[$id] = $value;
 
         if ($priority) {
-            $this->map = [$id => $parent];
+            $map = [$id => $parent];
 
             foreach ($this->map as $key => $value) {
-                $this->map[$key] = $value;
+                $map[$key] = $value;
             }
+
+            $this->map = $map;
         } else {
             $this->map[$id] = $parent;
         }
