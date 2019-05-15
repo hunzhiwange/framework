@@ -22,9 +22,7 @@ namespace Tests\Log;
 
 use Leevel\Filesystem\Fso;
 use Leevel\Log\File;
-use Leevel\Log\IConnect;
 use Leevel\Log\ILog;
-use Leevel\Log\Log;
 use Tests\TestCase;
 
 /**
@@ -45,7 +43,7 @@ class LogTest extends TestCase
      */
     public function testBaseUse(string $level)
     {
-        $log = new Log($this->createFileConnect());
+        $log = $this->createFileConnect();
 
         $this->assertInstanceof(ILog::class, $log);
 
@@ -67,8 +65,6 @@ class LogTest extends TestCase
         $this->assertFalse($log->isMonolog());
         $this->assertNull($log->getMonolog());
 
-        $this->assertInstanceof(IConnect::class, $log->getConnect());
-
         Fso::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
@@ -88,7 +84,7 @@ class LogTest extends TestCase
 
     public function testSetOption()
     {
-        $log = new Log($this->createFileConnect());
+        $log = $this->createFileConnect();
 
         $log->setOption('levels', [ILog::INFO]);
 
@@ -100,7 +96,7 @@ class LogTest extends TestCase
 
     public function testLogFilterLevel()
     {
-        $log = new Log($this->createFileConnect());
+        $log = $this->createFileConnect();
 
         $log->setOption('levels', [ILog::INFO]);
 
@@ -112,7 +108,7 @@ class LogTest extends TestCase
 
     public function testWithOutBuffer()
     {
-        $log = new Log($this->createFileConnect(), ['buffer' => false]);
+        $log = $this->createFileConnect(['buffer' => false]);
 
         $this->assertInstanceof(ILog::class, $log);
 
@@ -127,10 +123,10 @@ class LogTest extends TestCase
         Fso::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
-    protected function createFileConnect(): File
+    protected function createFileConnect(array $option = []): File
     {
-        return new File([
+        return new File(array_merge([
             'path' => __DIR__.'/cacheLog',
-        ]);
+        ], $option));
     }
 }

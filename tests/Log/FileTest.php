@@ -67,7 +67,7 @@ class FileTest extends TestCase
         ]);
 
         $data = $this->getLogData();
-        $file->flush($data);
+        $file->store($data);
 
         $filePath = __DIR__.'/development.info/'.date('Y-m-d H').'.log';
         $this->assertTrue(is_file($filePath));
@@ -82,7 +82,7 @@ class FileTest extends TestCase
         $file->setOption('path', __DIR__);
 
         $data = $this->getLogData();
-        $file->flush($data);
+        $file->store($data);
 
         $filePath = __DIR__.'/development.info/'.date('Y-m-d H').'.log';
         $this->assertTrue(is_file($filePath));
@@ -113,7 +113,7 @@ class FileTest extends TestCase
         }
 
         $data = $this->getLogData();
-        $file->flush($data);
+        $file->store($data);
     }
 
     public function testParentWriteException()
@@ -138,7 +138,7 @@ class FileTest extends TestCase
         }
 
         $data = $this->getLogData();
-        $file->flush($data);
+        $file->store($data);
     }
 
     public function testRenameLog()
@@ -154,7 +154,7 @@ class FileTest extends TestCase
         $data = $this->getLogData();
 
         // save
-        $file->flush($data);
+        $file->store($data);
         $filePath = $path.'/development.info/'.date('Y-m-d').'.log';
         $this->assertFileExists($filePath);
 
@@ -168,12 +168,12 @@ class FileTest extends TestCase
 
         clearstatcache();
         $this->assertSame(52, filesize($filePath));
-        $file->flush($data); // next > 50
+        $file->store($data); // next > 50
         clearstatcache();
         $this->assertSame(104, filesize($filePath));
 
         sleep(2);
-        $file->flush($data);
+        $file->store($data);
         $renameFilePath = $path.'/development.info/'.date('Y-m-d').'_2.log';
         $this->assertFileExists($renameFilePath);
         clearstatcache();
@@ -188,7 +188,7 @@ class FileTest extends TestCase
         $file = new File();
 
         $data = $this->getLogData();
-        $file->flush($data);
+        $file->store($data);
     }
 
     protected function getLogData(): array

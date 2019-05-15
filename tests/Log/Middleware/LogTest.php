@@ -125,7 +125,7 @@ class LogTest extends TestCase
         $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
-        $container->singleton(IDispatch::class, $eventDispatch);
+        $container->singleton('event', $eventDispatch);
 
         return $manager;
     }
