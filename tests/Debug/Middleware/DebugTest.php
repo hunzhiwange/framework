@@ -22,6 +22,7 @@ namespace Tests\Debug\Middleware;
 
 use Leevel\Debug\Debug;
 use Leevel\Debug\Middleware\Debug as MiddlewareDebug;
+use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
@@ -29,12 +30,10 @@ use Leevel\Http\JsonResponse;
 use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
-use Leevel\Log\Log;
 use Leevel\Option\IOption;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
-use Leevel\Session\Session;
 use Tests\TestCase;
 
 /**
@@ -51,7 +50,7 @@ class DebugTest extends TestCase
     public function testBaseUse()
     {
         $debug = $this->createDebug();
-        $app = $debug->getApp();
+        $app = $debug->getContainer()->make('app');
 
         $middleware = new MiddlewareDebug($app, $debug);
 
@@ -70,7 +69,7 @@ class DebugTest extends TestCase
     public function testTerminate()
     {
         $debug = $this->createDebug();
-        $app = $debug->getApp();
+        $app = $debug->getContainer()->make('app');
 
         $middleware = new MiddlewareDebug($app, $debug);
 
@@ -104,7 +103,7 @@ class DebugTest extends TestCase
     public function testHandleWithDebugIsFalse()
     {
         $debug = $this->createDebug(false);
-        $app = $debug->getApp();
+        $app = $debug->getContainer()->make('app');
 
         $middleware = new MiddlewareDebug($app, $debug);
 
@@ -123,7 +122,7 @@ class DebugTest extends TestCase
     public function testTerminateWithDebugIsFalse()
     {
         $debug = $this->createDebug(false);
-        $app = $debug->getApp();
+        $app = $debug->getContainer()->make('app');
 
         $middleware = new MiddlewareDebug($app, $debug);
 
@@ -169,36 +168,36 @@ class DebugTest extends TestCase
 
     protected function createDebug(bool $debug = true): Debug
     {
-        return new Debug($this->createApp($debug));
+        return new Debug($this->createApp($debug)->container());
     }
 
     protected function createApp(bool $debug = true): App
     {
-        $app = new App();
+        $app = new App($container = new Container(), '');
 
-        $app->instance('session', $this->createSession());
+        $container->instance('app', $app);
 
-        $app->instance('log', $this->createLog());
+        $container->instance('session', $this->createSession());
 
-        $app->instance('option', $this->createOption($debug));
+        $container->instance('log', $this->createLog());
+
+        $container->instance('option', $this->createOption($debug));
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
         $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
-        $app->singleton(IDispatch::class, $eventDispatch);
+        $container->singleton(IDispatch::class, $eventDispatch);
 
         return $app;
     }
 
     protected function createSession(): ISession
     {
-        $file = new SessionFile([
+        $session = new SessionFile([
             'path' => __DIR__.'/cacheFile',
         ]);
-
-        $session = new Session($file);
 
         $this->assertInstanceof(ISession::class, $session);
 
@@ -207,11 +206,9 @@ class DebugTest extends TestCase
 
     protected function createLog(): ILog
     {
-        $file = new LogFile([
+        $log = new LogFile([
             'path' => __DIR__.'/cacheLog',
         ]);
-
-        $log = new Log($file);
 
         $this->assertInstanceof(ILog::class, $log);
 

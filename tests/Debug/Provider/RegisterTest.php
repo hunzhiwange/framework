@@ -22,18 +22,17 @@ namespace Tests\Debug\Provider;
 
 use Leevel\Debug\Debug;
 use Leevel\Debug\Provider\Register;
+use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
-use Leevel\Log\Log;
 use Leevel\Option\IOption;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
-use Leevel\Session\Session;
 use Tests\TestCase;
 
 /**
@@ -49,13 +48,13 @@ class RegisterTest extends TestCase
 {
     public function testBaseUse()
     {
-        $test = new Register($app = $this->createApp());
+        $test = new Register($container = $this->createApp()->container());
 
         $test->register();
 
-        $app->alias($test->providers());
+        $container->alias($test->providers());
 
-        $debug = $app->make('debug');
+        $debug = $container->make('debug');
 
         $this->assertInstanceof(Debug::class, $debug);
 
@@ -77,31 +76,31 @@ class RegisterTest extends TestCase
 
     protected function createApp(): App
     {
-        $app = new App();
+        $app = new App($container = new Container(), '');
 
-        $app->instance('session', $this->createSession());
+        $container->instance('app', $app);
 
-        $app->instance('log', $this->createLog());
+        $container->instance('session', $this->createSession());
 
-        $app->instance('option', $this->createOption());
+        $container->instance('log', $this->createLog());
+
+        $container->instance('option', $this->createOption());
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
         $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
-        $app->singleton(IDispatch::class, $eventDispatch);
+        $container->singleton(IDispatch::class, $eventDispatch);
 
         return $app;
     }
 
     protected function createSession(): ISession
     {
-        $file = new SessionFile([
+        $session = new SessionFile([
             'path' => __DIR__.'/cacheFile',
         ]);
-
-        $session = new Session($file);
 
         $this->assertInstanceof(ISession::class, $session);
 
@@ -110,11 +109,9 @@ class RegisterTest extends TestCase
 
     protected function createLog(): ILog
     {
-        $file = new LogFile([
+        $log = new LogFile([
             'path' => __DIR__.'/cacheLog',
         ]);
-
-        $log = new Log($file);
 
         $this->assertInstanceof(ILog::class, $log);
 

@@ -23,6 +23,7 @@ namespace Tests\Debug;
 use Error;
 use Exception;
 use Leevel\Debug\Debug;
+use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
 use Leevel\Event\IDispatch;
 use Leevel\Http\JsonResponse;
@@ -31,12 +32,10 @@ use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
-use Leevel\Log\Log;
 use Leevel\Option\IOption;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
-use Leevel\Session\Session;
 use Tests\TestCase;
 
 /**
@@ -433,7 +432,7 @@ class DebugTest extends TestCase
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
-        $session = $debug->getApp()->make('session');
+        $session = $debug->getContainer()->make('session');
 
         $session->set('test_session', 'test_value');
 
@@ -455,7 +454,7 @@ class DebugTest extends TestCase
     {
         $debug = $this->createDebugWithLog();
 
-        $app = $debug->getApp();
+        $container = $debug->getContainer();
 
         $this->assertFalse($debug->isBootstrap());
 
@@ -466,7 +465,7 @@ class DebugTest extends TestCase
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
-        $log = $app->make('log');
+        $log = $container->make('log');
 
         $log->info('test_log', ['exends' => 'bar']);
         $log->debug('test_log_debug');
@@ -787,57 +786,59 @@ class DebugTest extends TestCase
 
     protected function createDebugWithLog()
     {
-        return new Debug($this->createAppWithLog());
+        return new Debug($this->createAppWithLog()->container());
     }
 
     protected function createAppWithLog(): App
     {
-        $app = new App();
+        $app = new App($container = new Container(), '');
 
-        $app->instance('session', $this->createSession());
+        $container->instance('app', $app);
 
-        $app->instance('option', $this->createOption());
+        $container->instance('session', $this->createSession());
 
-        $eventDispatch = new Dispatch($app);
-        $app->singleton(IDispatch::class, $eventDispatch);
+        $container->instance('option', $this->createOption());
 
-        $app->instance('log', $this->createLog($eventDispatch));
+        $eventDispatch = new Dispatch($container);
+        $container->singleton(IDispatch::class, $eventDispatch);
+
+        $container->instance('log', $this->createLog($eventDispatch));
 
         return $app;
     }
 
     protected function createDebug(): Debug
     {
-        return new Debug($this->createApp());
+        return new Debug($this->createApp()->container());
     }
 
     protected function createApp(): App
     {
-        $app = new App();
+        $app = new App($container = new Container(), '');
 
-        $app->instance('session', $this->createSession());
+        $container->instance('app', $app);
 
-        $app->instance('log', $this->createLog());
+        $container->instance('session', $this->createSession());
 
-        $app->instance('option', $this->createOption());
+        $container->instance('log', $this->createLog());
+
+        $container->instance('option', $this->createOption());
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
         $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
-        $app->singleton(IDispatch::class, $eventDispatch);
+        $container->singleton(IDispatch::class, $eventDispatch);
 
         return $app;
     }
 
     protected function createSession(): ISession
     {
-        $file = new SessionFile([
+        $session = new SessionFile([
             'path' => __DIR__.'/cacheFile',
         ]);
-
-        $session = new Session($file);
 
         $this->assertInstanceof(ISession::class, $session);
 
@@ -846,11 +847,9 @@ class DebugTest extends TestCase
 
     protected function createLog(IDispatch $dispatch = null): ILog
     {
-        $file = new LogFile([
+        $log = new LogFile([
             'path' => __DIR__.'/cacheLog',
-        ]);
-
-        $log = new Log($file, [], $dispatch);
+        ], $dispatch);
 
         $this->assertInstanceof(ILog::class, $log);
 
