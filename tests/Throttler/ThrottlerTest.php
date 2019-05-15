@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Throttler;
 
-use Leevel\Cache\Cache;
 use Leevel\Cache\File;
+use Leevel\Cache\ICache;
 use Leevel\Http\IRequest;
 use Leevel\Throttler\Throttler;
 use Tests\TestCase;
@@ -54,7 +54,7 @@ class ThrottlerTest extends TestCase
 
         $this->assertFalse($rateLimiter->attempt());
         $this->assertFalse($rateLimiter->tooManyAttempt());
-        $this->assertInstanceof(Cache::class, $rateLimiter->getCache());
+        $this->assertInstanceof(ICache::class, $rateLimiter->getCache());
 
         // with_cache
         $this->assertCount(1, $this->getTestProperty($throttler, 'rateLimiter'));
@@ -126,9 +126,9 @@ class ThrottlerTest extends TestCase
 
     protected function createRateLimiter(): Throttler
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache2',
-        ]));
+        ]);
 
         return new Throttler($cache);
     }

@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Throttler\Middleware;
 
-use Leevel\Cache\Cache;
 use Leevel\Cache\File;
 use Leevel\Http\IRequest;
 use Leevel\Throttler\Middleware\Throttler as MiddlewareThrottler;
@@ -121,9 +120,9 @@ class ThrottlerTest extends TestCase
 
     protected function createThrottler(): Throttler
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         return new Throttler($cache);
     }

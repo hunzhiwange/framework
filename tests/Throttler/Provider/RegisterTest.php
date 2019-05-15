@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Throttler\Provider;
 
-use Leevel\Cache\Cache;
 use Leevel\Cache\File;
+use Leevel\Cache\ICache;
 use Leevel\Di\Container;
 use Leevel\Http\IRequest;
 use Leevel\Option\Option;
@@ -114,10 +114,10 @@ class RegisterTest extends TestCase
 
 class CacheTest
 {
-    public function connect($connect): Cache
+    public function connect($connect): ICache
     {
-        return new Cache(new File([
+        return new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
     }
 }

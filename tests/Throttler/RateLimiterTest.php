@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Throttler;
 
-use Leevel\Cache\Cache;
 use Leevel\Cache\File;
+use Leevel\Cache\ICache;
 use Leevel\Filesystem\Fso;
 use Leevel\Throttler\IRateLimiter;
 use Leevel\Throttler\RateLimiter;
@@ -58,7 +58,7 @@ class RateLimiterTest extends TestCase
 
         $this->assertFalse($rateLimiter->attempt());
         $this->assertFalse($rateLimiter->tooManyAttempt());
-        $this->assertInstanceof(Cache::class, $rateLimiter->getCache());
+        $this->assertInstanceof(ICache::class, $rateLimiter->getCache());
 
         $time = time() + 60;
         $time2 = $time + 1;
@@ -568,9 +568,9 @@ class RateLimiterTest extends TestCase
 
     protected function createRateLimiter(string $key): RateLimiter
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         return new RateLimiter($cache, $key);
     }
