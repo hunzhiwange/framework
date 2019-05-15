@@ -191,7 +191,7 @@ class ClearTest extends TestCase
     protected function initContainerService(IContainer $container, string $cacheFile)
     {
         // 注册 app
-        $app = new App2();
+        $app = new App2($container, '');
         $this->assertInstanceof(IApp::class, $app);
 
         $app->setCacheFile($cacheFile);
@@ -217,7 +217,7 @@ class ClearTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 

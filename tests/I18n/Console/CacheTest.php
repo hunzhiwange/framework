@@ -311,7 +311,7 @@ class CacheTest extends TestCase
     protected function initContainerService(IContainer $container, string $cacheFile)
     {
         // 注册 app
-        $app = new App();
+        $app = new App($container, '');
         $this->assertInstanceof(IApp::class, $app);
 
         $app->setCacheFile($cacheFile);
@@ -337,7 +337,7 @@ class CacheTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
