@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\attachMail\Proxy;
+namespace Leevel\Mail\Proxy;
 
 use Closure;
 use DateTimeInterface;

@@ -400,7 +400,7 @@ abstract class Mail implements IMail
      */
     public function proxyMessage(): Swift_Message
     {
-        return $this->message;
+        return $this->makeMessage();
     }
 
     /**

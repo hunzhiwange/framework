@@ -43,7 +43,7 @@ use Swift_Signer;
  *
  * @version 1.0
  */
-class Mail implements IBaseMail
+class Mail implements IMail
 {
     /**
      * call.
