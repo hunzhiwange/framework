@@ -23,7 +23,7 @@ namespace Tests\Console;
 use Closure;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -40,7 +40,7 @@ trait BaseCommand
 {
     protected function runCommand(Command $command, array $inputs, Closure $call)
     {
-        $container = App::singletons();
+        $container = Container::singletons();
         $container->clear();
 
         $application = new Application($container, '1.0');
