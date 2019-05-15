@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\RedirectResponse;
-use Leevel\Session\Session;
+use Leevel\Session\ISession;
 use Tests\TestCase;
 
 /**
@@ -96,7 +96,7 @@ class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWith());
-        $this->assertInstanceOf(Session::class, $response->getSession());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
 
         $response->with('foo', 'bar');
         $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
@@ -111,7 +111,7 @@ class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWithError());
-        $this->assertInstanceOf(Session::class, $response->getSession());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
 
         $errorsDefault = [
             'name' => 'less than 6',
@@ -137,17 +137,12 @@ class RedirectResponseTest extends TestCase
 
         $response = new RedirectResponse('foo.bar');
 
-        $response->
-
-        ifs($condition)->
-
-        setTargetUrl('foo')->
-
-        elses()->
-
-        setTargetUrl('bar')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setTargetUrl('foo')
+            ->elses()
+            ->setTargetUrl('bar')
+            ->endIfs();
 
         $this->assertSame('bar', $response->getTargetUrl());
     }
@@ -158,82 +153,65 @@ class RedirectResponseTest extends TestCase
 
         $response = new RedirectResponse('foo.bar');
 
-        $response->
-
-        ifs($condition)->
-
-        setTargetUrl('foo')->
-
-        elses()->
-
-        setTargetUrl('bar')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setTargetUrl('foo')
+            ->elses()
+            ->setTargetUrl('bar')
+            ->endIfs();
 
         $this->assertSame('foo', $response->getTargetUrl());
     }
 
     protected function mokeSessionForWith()
     {
-        $session = $this->createMock(Session::class);
+        $session = $this->createMock(ISession::class);
 
-        $session->
+        $session
+            ->method('flash')
+            ->willReturn(null);
 
-        method('flash')->
-
-        willReturn(null);
-
-        $session->
-
-        method('getFlash')->
-
-        willReturn('bar');
+        $session
+            ->method('getFlash')
+            ->willReturn('bar');
 
         return $session;
     }
 
     protected function mokeSessionArrayForWith()
     {
-        $session = $this->createMock(Session::class);
+        $session = $this->createMock(ISession::class);
 
-        $session->
+        $session
+            ->method('flash')
+            ->willReturn(null);
 
-        method('flash')->
-
-        willReturn(null);
-
-        $session->
-
-        method('getFlash')->
-
-        willReturn(['myinput', 'world']);
+        $session
+            ->method('getFlash')
+            ->willReturn(['myinput', 'world']);
 
         return $session;
     }
 
     protected function mokeSessionForWithError()
     {
-        $session = $this->createMock(Session::class);
+        $session = $this->createMock(ISession::class);
 
-        $session->
+        $session
+            ->method('flash')
+            ->willReturn(null);
 
-        method('flash')->
-
-        willReturn(null);
-
-        $session->
-
-        method('getFlash')->
-
-        willReturn([
-            'default' => [
-                'name' => 'less than 6',
-                'age'  => 'must be 18',
-            ],
-            'custom' => [
-                'foo' => 'bar is error',
-            ],
-        ]);
+        $session
+            ->method('getFlash')
+            ->willReturn([
+                'default' => [
+                    'name' => 'less than 6',
+                    'age'  => 'must be 18',
+                ],
+                'custom' => [
+                    'foo' => 'bar is error',
+                ],
+            ]);
 
         return $session;
     }
