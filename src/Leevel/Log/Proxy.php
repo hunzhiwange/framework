@@ -30,6 +30,7 @@ use Monolog\Logger;
  * @since 2019.05.11
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 trait Proxy
 {

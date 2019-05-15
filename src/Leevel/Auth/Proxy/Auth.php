@@ -31,6 +31,7 @@ use Leevel\Di\Container;
  * @since 2017.09.08
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Auth implements IAuth
 {

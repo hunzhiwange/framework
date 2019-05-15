@@ -40,6 +40,7 @@ class Manager extends Managers implements IMail
      * 返回代理.
      *
      * @return \Leevel\Mail\IMail
+     * @codeCoverageIgnore
      */
     public function proxy(): IMail
     {
@@ -50,6 +51,7 @@ class Manager extends Managers implements IMail
      * 返回代理.
      *
      * @return \Leevel\Mail\IMail
+     * @codeCoverageIgnore
      */
     protected function proxyMessage(): IMail
     {

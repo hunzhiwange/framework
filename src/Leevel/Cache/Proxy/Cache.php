@@ -32,6 +32,7 @@ use Leevel\Di\Container;
  * @since 2017.06.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Cache implements ICache
 {

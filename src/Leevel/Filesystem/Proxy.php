@@ -31,6 +31,7 @@ use League\Flysystem\PluginInterface;
  * @since 2019.05.09
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 trait Proxy
 {

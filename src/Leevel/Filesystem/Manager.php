@@ -39,6 +39,7 @@ class Manager extends Managers implements IFilesystem
      * 返回代理.
      *
      * @return \Leevel\Filesystem\IFilesystem
+     * @codeCoverageIgnore
      */
     public function proxy(): IFilesystem
     {

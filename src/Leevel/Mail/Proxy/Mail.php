@@ -42,6 +42,7 @@ use Swift_Signer;
  * @since 2017.08.26
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Mail implements IMail
 {

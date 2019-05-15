@@ -32,6 +32,7 @@ use Swift_Mime_SimpleMessage;
  * @since 2019.05.14
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 trait Proxy
 {

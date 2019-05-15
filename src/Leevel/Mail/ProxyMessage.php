@@ -38,6 +38,7 @@ use Swift_Signer;
  * @version 1.0
  *
  * @see \Swift_Message
+ * @codeCoverageIgnore
  */
 trait ProxyMessage
 {

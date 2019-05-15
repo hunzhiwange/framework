@@ -34,6 +34,7 @@ use Leevel\Filesystem\Manager;
  * @since 2017.08.29
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Filesystem implements IFilesystem
 {
