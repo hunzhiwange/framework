@@ -21,9 +21,7 @@ declare(strict_types=1);
 namespace Tests\Router\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Kernel\IApp;
 use Leevel\Router\Console\Action;
-use Leevel\Router\IRouter;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
@@ -92,19 +90,7 @@ class ActionTest extends TestCase
         rmdir(dirname($file));
     }
 
-    protected function initContainerService(IContainer $container)
+    protected function initContainerService(IContainer $container): void
     {
-        // 注册 app
-        $app = $this->createMock(IApp::class);
-        $this->assertInstanceof(IApp::class, $app);
-
-        // 注册 router
-        $router = $this->createMock(IRouter::class);
-        $this->assertInstanceof(IRouter::class, $router);
-
-        $router->method('getControllerDir')->willReturn('');
-        $this->assertEquals('', $router->getControllerDir());
-
-        $container->singleton(IRouter::class, $router);
     }
 }

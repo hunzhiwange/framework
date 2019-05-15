@@ -25,6 +25,8 @@ use Composer\Autoload\ClassLoader;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
 use Leevel\Di\Container;
+use Leevel\Kernel\App;
+use Leevel\Router\IRouter;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -44,6 +46,7 @@ trait BaseMake
         $container = Container::singletons();
         $container->clear();
         $container->instance('composer', new ComposerMock());
+        $container->instance('app', new App($container, ''));
 
         $application = new Application($container, '1.0');
 
@@ -55,9 +58,15 @@ trait BaseMake
 
         $application->add($command);
 
-        $container->singleton('router', function () {
-            return new RouterService();
-        });
+        // 注册 router
+        $router = $this->createMock(IRouter::class);
+        $this->assertInstanceof(IRouter::class, $router);
+
+        $router->method('getControllerDir')->willReturn('');
+        $this->assertEquals('', $router->getControllerDir());
+
+        $container->singleton('router', $router);
+        $container->alias('router', IRouter::class);
 
         $input = new ArrayInput($inputs);
         $output = new BufferedOutput();
@@ -72,17 +81,9 @@ trait BaseMake
     }
 }
 
-class RouterService
-{
-    public function getControllerDir()
-    {
-        return '';
-    }
-}
-
 class ComposerMock extends ClassLoader
 {
-    public function findFile($class)
+    public function findFile(string $class): string
     {
         // mock for `\\Common\\index`
         return __DIR__.'/index.php';

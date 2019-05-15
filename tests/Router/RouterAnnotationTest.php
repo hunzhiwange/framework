@@ -998,18 +998,21 @@ class RouterAnnotationTest extends TestCase
         return $request;
     }
 
-    protected function createContainer(): App
+    protected function createContainer(): Container
     {
-        $container = App::singletons();
-        $container->setAppPath(__DIR__.'/Apps/AppForAnnotation');
-        $container->setRouterCachedPath(__DIR__.'/router_cached.php');
+        $container = Container::singletons();
+        $app = new App($container, '');
+        $app->setAppPath(__DIR__.'/Apps/AppForAnnotation');
+        $app->setRouterCachedPath(__DIR__.'/router_cached.php');
+
+        $container->instance('app', $app);
 
         return $container;
     }
 
-    protected function containerClear()
+    protected function containerClear(): void
     {
-        App::singletons()->clear();
+        Container::singletons()->clear();
     }
 }
 

@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
+use Leevel\Di\Container;
 use Leevel\Kernel\App;
 use Leevel\Router\MiddlewareParser;
 use Leevel\Router\Router;
@@ -52,7 +53,7 @@ class ScanRouterTest extends TestCase
             )
         );
 
-        App::singletons()->clear();
+        Container::singletons()->clear();
     }
 
     protected function createMiddlewareParser(): MiddlewareParser
@@ -62,8 +63,9 @@ class ScanRouterTest extends TestCase
 
     protected function createRouter(): Router
     {
-        $container = App::singletons();
-        $container->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $container = Container::singletons();
+        $app = new App($container, '');
+        $app->setAppPath(__DIR__.'/Apps/AppScanRouter');
         $router = new Router($container);
 
         $router->setMiddlewareGroups([
@@ -90,7 +92,7 @@ class ScanRouterTest extends TestCase
             'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
         ]);
 
-        $container->singleton('app', $container);
+        $container->singleton('app', $app);
         $container->singleton('url', new Url1());
         $container->singleton('router', $router);
 

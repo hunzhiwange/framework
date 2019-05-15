@@ -24,7 +24,6 @@ use Leevel\Router\IView;
 use Leevel\Router\View;
 use Leevel\View\Html;
 use Leevel\View\Phpui;
-use Leevel\View\View as Views;
 use Tests\TestCase;
 
 /**
@@ -41,7 +40,7 @@ class ViewTest extends TestCase
     public function testBaseUse()
     {
         $view = new View(
-            $html = new Views(new Html())
+            $html = new Html()
         );
 
         $this->assertInstanceof(IView::class, $view);
@@ -56,7 +55,7 @@ class ViewTest extends TestCase
     public function testDelete()
     {
         $view = new View(
-            $html = new Views(new Html())
+            $html = new Html()
         );
 
         $view->assign('hello', 'world');
@@ -76,7 +75,7 @@ class ViewTest extends TestCase
     public function testClear()
     {
         $view = new View(
-            $html = new Views(new Html())
+            $html = new Html()
         );
 
         $view->assign('foo', 'bar');
@@ -95,9 +94,9 @@ class ViewTest extends TestCase
     public function testDisplay()
     {
         $view = new View(
-            $phpui = new Views(new Phpui([
+            $phpui = new Phpui([
                 'theme_path' => __DIR__,
-            ]))
+            ])
         );
 
         $view->assign('foo', 'bar');
@@ -111,7 +110,7 @@ class ViewTest extends TestCase
     public function testSwitchView()
     {
         $view = new View(
-            $phpui = new Views(new Phpui())
+            $phpui = new Phpui()
         );
 
         $view->assign('foo', 'bar');
@@ -120,7 +119,7 @@ class ViewTest extends TestCase
 
         $this->assertSame('bar', $phpui->getVar('foo'));
 
-        $view->switchView($html = new Views(new Html()));
+        $view->switchView($html = new Html());
 
         $this->assertSame('bar', $view->getAssign('foo'));
 

@@ -32,7 +32,6 @@ use Leevel\Router\ResponseFactory;
 use Leevel\Router\Url;
 use Leevel\Router\View;
 use Leevel\View\Phpui;
-use Leevel\View\View as Views;
 use SplFileInfo;
 use SplFileObject;
 use Tests\TestCase;
@@ -1062,9 +1061,9 @@ class ResponseFactoryTest extends TestCase
     protected function makeView(): View
     {
         return new View(
-            new Views(new Phpui([
+            new Phpui([
                 'theme_path' => __DIR__.'/assert',
-            ]))
+            ])
         );
     }
 

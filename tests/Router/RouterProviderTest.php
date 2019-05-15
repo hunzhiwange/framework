@@ -48,11 +48,13 @@ class RouterProviderTest extends TestCase
 
     public function testBaseUse()
     {
-        $container = App::singletons();
-        $container->setAppPath(__DIR__.'/Apps/AppScanRouter');
-        $container->setRouterCachedPath(__DIR__.'/router_cached.php');
+        $container = Container::singletons();
+        $app = new App($container, '');
+        $app->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $app->setRouterCachedPath(__DIR__.'/router_cached.php');
 
-        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance('app', $app);
+        $container->instance('router', $router = $this->createRouter($container));
 
         $provider = new RouterProvider1($container);
 
@@ -73,15 +75,17 @@ class RouterProviderTest extends TestCase
             )
         );
 
-        App::singletons()->clear();
+        Container::singletons()->clear();
     }
 
     public function testRouterIsCache()
     {
-        $container = App::singletons();
-        $container->setAppPath(__DIR__.'/Apps/AppScanRouter');
-        $container->setRouterCachedPath(__DIR__.'/router_cached.php');
+        $container = Container::singletons();
+        $app = new App($container, '');
+        $app->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $app->setRouterCachedPath(__DIR__.'/router_cached.php');
 
+        $container->instance('app', $app);
         $container->singleton('router', $router = $this->createRouter($container));
 
         file_put_contents(
@@ -115,7 +119,7 @@ class RouterProviderTest extends TestCase
             )
         );
 
-        App::singletons()->clear();
+        Container::singletons()->clear();
 
         unlink($routerCached);
     }
