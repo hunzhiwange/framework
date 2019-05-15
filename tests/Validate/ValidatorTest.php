@@ -22,7 +22,6 @@ namespace Tests\Validate;
 
 use I18nMock;
 use Leevel\Di\Container;
-use Leevel\Kernel\App;
 use Leevel\Validate\IValidator;
 use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
@@ -41,10 +40,10 @@ class ValidatorTest extends TestCase
 {
     protected function setUp(): void
     {
-        $app = App::singletons();
-        $app->clear();
+        $container = Container::singletons();
+        $container->clear();
 
-        $app->singleton('i18n', function (): I18nMock {
+        $container->singleton('i18n', function (): I18nMock {
             return new I18nMock();
         });
 
@@ -53,7 +52,7 @@ class ValidatorTest extends TestCase
 
     protected function tearDown(): void
     {
-        App::singletons()->clear();
+        Container::singletons()->clear();
     }
 
     public function testBaseUse()

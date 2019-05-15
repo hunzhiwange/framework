@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Validate;
 
 use I18nMock;
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
@@ -39,10 +39,10 @@ class ValidatorFlowTest extends TestCase
 {
     protected function setUp(): void
     {
-        $app = App::singletons();
-        $app->clear();
+        $container = Container::singletons();
+        $container->clear();
 
-        $app->singleton('i18n', function (): I18nMock {
+        $container->singleton('i18n', function (): I18nMock {
             return new I18nMock();
         });
 
@@ -51,7 +51,7 @@ class ValidatorFlowTest extends TestCase
 
     protected function tearDown(): void
     {
-        App::singletons()->clear();
+        Container::singletons()->clear();
     }
 
     public function testData()

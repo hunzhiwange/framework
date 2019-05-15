@@ -22,7 +22,6 @@ namespace Tests\Validate\Provider;
 
 use I18nMock;
 use Leevel\Di\Container;
-use Leevel\Kernel\App;
 use Leevel\Validate\IValidate;
 use Leevel\Validate\Provider\Register;
 use Tests\TestCase;
@@ -40,17 +39,17 @@ class RegisterTest extends TestCase
 {
     protected function setUp(): void
     {
-        $app = App::singletons();
-        $app->clear();
+        $container = Container::singletons();
+        $container->clear();
 
-        $app->singleton('i18n', function (): I18nMock {
+        $container->singleton('i18n', function (): I18nMock {
             return new I18nMock();
         });
     }
 
     protected function tearDown(): void
     {
-        App::singletons()->clear();
+        Container::singletons()->clear();
     }
 
     public function testBaseUse()
