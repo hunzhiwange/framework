@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
-use Leevel\Database\Database;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
@@ -38,7 +37,7 @@ class DatabaseTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $database = new Database($connect);
+        $database = $connect;
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 

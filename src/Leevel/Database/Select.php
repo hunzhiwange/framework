@@ -54,7 +54,7 @@ class Select
     /**
      * 数据库连接.
      *
-     * @var \Leevel\Database\Connect
+     * @var \Leevel\Database\IDatabase
      */
     protected $connect;
 
@@ -118,7 +118,7 @@ class Select
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Connect $connect
+     * @param \Leevel\Database\IDatabase $connect
      */
     public function __construct($connect)
     {
@@ -222,9 +222,9 @@ class Select
     /**
      * 返回数据库连接对象
      *
-     * @return \Leevel\Database\Connect
+     * @return \Leevel\Database\IDatabase
      */
-    public function databaseConnect(): Connect
+    public function databaseConnect(): IDatabase
     {
         return $this->connect;
     }

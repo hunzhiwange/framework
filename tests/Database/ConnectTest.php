@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Exception;
-use Leevel\Database\IConnect;
+use Leevel\Database\IDatabase;
 use Leevel\Database\Mysql;
 use PDO;
 use PDOException;
@@ -440,9 +440,9 @@ class ConnectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertNull($connect->pdo(IConnect::MASTER));
+        $this->assertNull($connect->pdo(IDatabase::MASTER));
         $this->assertInstanceof(PDO::class, $connect->pdo(true));
-        $this->assertInstanceof(PDO::class, $connect->pdo(IConnect::MASTER));
+        $this->assertInstanceof(PDO::class, $connect->pdo(IDatabase::MASTER));
         $this->assertNull($connect->pdo(5));
 
         $connect->close();

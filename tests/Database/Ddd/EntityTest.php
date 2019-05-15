@@ -22,7 +22,6 @@ namespace Tests\Database\Ddd;
 
 use I18nMock;
 use Leevel\Di\Container;
-use Leevel\Kernel\App;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
@@ -42,7 +41,7 @@ class EntityTest extends TestCase
 {
     protected function tearDown(): void
     {
-        App::singletons()->clear();
+        Container::singletons()->clear();
     }
 
     public function testPropNotDefined()
@@ -239,10 +238,10 @@ class EntityTest extends TestCase
 
     protected function initI18n()
     {
-        $app = App::singletons();
-        $app->clear();
+        $container = Container::singletons();
+        $container->clear();
 
-        $app->singleton('i18n', function (): I18nMock {
+        $container->singleton('i18n', function (): I18nMock {
             return new I18nMock();
         });
     }

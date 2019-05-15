@@ -22,7 +22,7 @@ namespace Tests\Database;
 
 use I18nMock;
 use Leevel\Collection\Collection;
-use Leevel\Kernel\App;
+use Leevel\Di\Container;
 use Leevel\Page\IPage;
 use Leevel\Page\Page;
 use PDO;
@@ -1237,17 +1237,17 @@ class SelectTest extends TestCase
 
     protected function initI18n()
     {
-        $app = App::singletons();
-        $app->clear();
+        $container = Container::singletons();
+        $container->clear();
 
-        $app->singleton('i18n', function (): I18nMock {
+        $container->singleton('i18n', function (): I18nMock {
             return new I18nMock();
         });
     }
 
     protected function clearI18n()
     {
-        App::singletons()->clear();
+        Container::singletons()->clear();
     }
 }
 

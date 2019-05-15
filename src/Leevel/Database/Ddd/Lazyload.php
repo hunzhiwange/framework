@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Leevel\Kernel\Proxy\App;
+use Leevel\Di\Container;
 
 /**
  * 数据库组件 lazyload.
@@ -41,7 +41,7 @@ class Lazyload
      */
     public static function placeholder(): bool
     {
-        App::make('database.lazyload');
+        Container::singletons()->make('database.lazyload');
 
         return true;
     }
