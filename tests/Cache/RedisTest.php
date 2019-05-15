@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\Redis;
-use Leevel\Cache\Redis\IConnect;
+use Leevel\Cache\Redis\IRedis;
 use Tests\TestCase;
 
 /**
@@ -37,9 +37,9 @@ class RedisTest extends TestCase
 {
     public function testBaseUse()
     {
-        $phpRedis = $this->createMock(IConnect::class);
+        $phpRedis = $this->createMock(IRedis::class);
 
-        $this->assertInstanceof(IConnect::class, $phpRedis);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('get')->willReturn(false);
         $this->assertFalse($phpRedis->get('foo'));
@@ -51,9 +51,9 @@ class RedisTest extends TestCase
 
     public function testGet()
     {
-        $phpRedis = $this->createMock(IConnect::class);
+        $phpRedis = $this->createMock(IRedis::class);
 
-        $this->assertInstanceof(IConnect::class, $phpRedis);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('get')->willReturn(serialize('bar'));
         $this->assertEquals(serialize('bar'), $phpRedis->get('foo'));
@@ -65,9 +65,9 @@ class RedisTest extends TestCase
 
     public function testGet2()
     {
-        $phpRedis = $this->createMock(IConnect::class);
+        $phpRedis = $this->createMock(IRedis::class);
 
-        $this->assertInstanceof(IConnect::class, $phpRedis);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('get')->willReturn(1);
         $this->assertEquals(1, $phpRedis->get('num'));
@@ -79,9 +79,9 @@ class RedisTest extends TestCase
 
     public function testSet()
     {
-        $phpRedis = $this->createMock(IConnect::class);
+        $phpRedis = $this->createMock(IRedis::class);
 
-        $this->assertInstanceof(IConnect::class, $phpRedis);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('set')->willReturn(null);
         $this->assertNull($phpRedis->set('foo', 'bar', 60));
@@ -93,9 +93,9 @@ class RedisTest extends TestCase
 
     public function testDelete()
     {
-        $phpRedis = $this->createMock(IConnect::class);
+        $phpRedis = $this->createMock(IRedis::class);
 
-        $this->assertInstanceof(IConnect::class, $phpRedis);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('delete')->willReturn(null);
         $this->assertNull($phpRedis->delete('foo'));
@@ -107,9 +107,9 @@ class RedisTest extends TestCase
 
     public function testClose()
     {
-        $phpRedis = $this->createMock(IConnect::class);
+        $phpRedis = $this->createMock(IRedis::class);
 
-        $this->assertInstanceof(IConnect::class, $phpRedis);
+        $this->assertInstanceof(IRedis::class, $phpRedis);
 
         $phpRedis->method('close')->willReturn(null);
         $this->assertNull($phpRedis->close());
@@ -119,7 +119,7 @@ class RedisTest extends TestCase
         $this->assertNull($redis->close());
     }
 
-    protected function makeRedis(IConnect $phpRedis, array $option = []): Redis
+    protected function makeRedis(IRedis $phpRedis, array $option = []): Redis
     {
         $default = [
             'time_preset' => [],

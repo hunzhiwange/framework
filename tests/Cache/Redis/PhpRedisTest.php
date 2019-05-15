@@ -49,7 +49,7 @@ class PhpRedisTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $phpRedis = $this->makePhpRedis();
 
@@ -74,7 +74,7 @@ class PhpRedisTest extends TestCase
         $this->assertNull($phpRedis->handle());
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         $phpRedis = $this->makePhpRedis();
 
@@ -101,7 +101,7 @@ class PhpRedisTest extends TestCase
         $this->assertFalse($phpRedis->get('testfoo'));
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $phpRedis = $this->makePhpRedis([
             'select' => 1,

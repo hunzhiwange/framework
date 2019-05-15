@@ -212,9 +212,9 @@ class LoadTest extends TestCase
 
     protected function createLoad(Container $container): Load
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cacheLoad',
-        ]));
+        ]);
 
         return new Load($container, $cache);
     }

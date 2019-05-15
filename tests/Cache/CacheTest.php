@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Cache;
 
-use Leevel\Cache\Cache;
 use Leevel\Cache\File;
 use Leevel\Filesystem\Fso;
 use Tests\TestCase;
@@ -49,9 +48,9 @@ class CacheTest extends TestCase
     {
         $filePath = __DIR__.'/cache/hello.php';
 
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $cache->set('hello', 'world');
 
@@ -68,9 +67,9 @@ class CacheTest extends TestCase
 
     public function testPut()
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $cache->put('hello', 'world');
 
@@ -91,9 +90,9 @@ class CacheTest extends TestCase
 
     public function testPutWithOption()
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $filePath = __DIR__.'/cache/hello.php';
 
@@ -123,9 +122,9 @@ class CacheTest extends TestCase
 
     public function testRemember()
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $filePath = __DIR__.'/cache/hello.php';
 
@@ -147,9 +146,9 @@ class CacheTest extends TestCase
 
     public function testRememberWithOption()
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $filePath = __DIR__.'/cache/hello.php';
 
@@ -179,9 +178,9 @@ class CacheTest extends TestCase
 
     public function testRememberWithClosure()
     {
-        $cache = new Cache(new File([
+        $cache = new File([
             'path' => __DIR__.'/cache',
-        ]));
+        ]);
 
         $filePath = __DIR__.'/cache/hello.php';
 
