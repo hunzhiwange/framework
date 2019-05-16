@@ -41,6 +41,8 @@ if (!function_exists('hl')) {
             'app'       => 'Kernel',
             'url'       => 'Router',
             'flash'     => 'Session',
+            'cache_set' => 'Cache',
+            'cache_get' => 'Cache',
         ];
 
         $component = $map[$method] ?? ucfirst($method);
@@ -147,12 +149,11 @@ class Leevel
     {
         /** @var \Leevel\Kernel\App $app */
         $app = Container::singletons()->make('app');
-        $container = $app->container();
 
         if (method_exists($app, $method)) {
             return $app->{$method}(...$args);
         }
-        if (method_exists($container, $method)) {
+        if (($container = $app->container()) && method_exists($container, $method)) {
             return $container->{$method}(...$args);
         }
 

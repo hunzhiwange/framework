@@ -29,6 +29,7 @@ use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\RegisterRuntime;
+use Leevel\Kernel\IApp;
 use Leevel\Kernel\IRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
@@ -44,6 +45,16 @@ use Tests\TestCase;
  */
 class RegisterRuntimeTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     public function testSetErrorHandle()
     {
         $this->expectException(\ErrorException::class);
@@ -53,10 +64,13 @@ class RegisterRuntimeTest extends TestCase
 
         $bootstrap = new RegisterRuntime();
 
-        $app = new App4($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App4($container, $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $this->invokeTestMethod($bootstrap, 'setErrorHandle', [400, 'foo.']);
     }
@@ -65,7 +79,8 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $app = new App4($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App4($container, $appPath = __DIR__.'/app');
 
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
     }
@@ -74,14 +89,15 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $app = new App4($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App4($container, $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isCli')->willReturn(true);
         $this->assertTrue($request->isCli());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -90,14 +106,16 @@ class RegisterRuntimeTest extends TestCase
         $runtime->method('renderForConsole')->willReturn(null);
         $this->assertNull($runtime->renderForConsole(new ConsoleOutput(), new Exception()));
 
-        $app->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
         });
 
         $bootstrap->handle($app, true);
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $e = new Exception('foo.');
 
@@ -112,34 +130,36 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $app = new App4($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App4($container, $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isCli')->willReturn(false);
         $this->assertFalse($request->isCli());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
         $e = new Exception('foo.');
 
         $response = $this->createMock(IResponse::class);
-
         $runtime = $this->createMock(IRuntime::class);
 
         $runtime->method('render')->willReturn($response);
         $this->assertSame($response, $runtime->render($request, $e));
 
-        $app->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IRuntime::class, function () use ($runtime) {
             return $runtime;
         });
 
         $bootstrap->handle($app, true);
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$e]);
 
@@ -152,7 +172,8 @@ class RegisterRuntimeTest extends TestCase
     {
         $bootstrap = new RegisterRuntime();
 
-        $app = new App4($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App4($container, $appPath = __DIR__.'/app');
 
         $error = ['message' => 'foo.', 'type' => 5, 'file' => 'a.txt', 'line' => 5];
 

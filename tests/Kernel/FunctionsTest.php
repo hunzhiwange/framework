@@ -21,9 +21,7 @@ declare(strict_types=1);
 namespace Tests\Kernel;
 
 use Leevel;
-use Leevel\Cache\Cache;
 use Leevel\Cache\ICache;
-use Leevel\Cache\IConnect as IConnectCache;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Encryption\IEncryption;
@@ -46,31 +44,38 @@ use Tests\TestCase;
  */
 class FunctionsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     public function testBaseUse()
     {
+        $container = $this->createContainer();
+
         $app = Leevel::app();
-        $app->clear();
-        $app->instance('app', $app);
-        $app->alias([
+        $container->alias([
             'app' => [
                 'Leevel\\Leevel\\App',
-                'Leevel\\Di\\Container',
-                'Leevel\\Di\\IContainer',
                 'Leevel\\Kernel\\IApp',
             ],
         ]);
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
         $this->assertInstanceof(App::class, $app);
 
         // 等效
-        $this->assertInstanceof(App::class, $app->make('app'));
-        $this->assertSame('fooNotFound', $app->make('fooNotFound'));
-        $this->assertInstanceof(App::class, Leevel::app('app'));
-        $this->assertSame('fooNotFound', Leevel::app('fooNotFound'));
+        $this->assertInstanceof(App::class, $container->make('app'));
+        $this->assertSame('fooNotFound', $container->make('fooNotFound'));
+        $this->assertInstanceof(App::class, Leevel::app());
 
-        $app->clear();
+        $container->clear();
     }
 
     public function testCallStaticException()
@@ -79,6 +84,8 @@ class FunctionsTest extends TestCase
         $this->expectExceptionMessage(
             'Call to undefined function Leevel\\Not_found_callback\\Helper\\not_found_callback()'
         );
+
+        $container = $this->createContainer();
 
         Leevel::notFoundCallback();
     }
@@ -126,17 +133,16 @@ class FunctionsTest extends TestCase
         $log->method('log')->willReturn(null);
         $this->assertNull($log->log(ILog::INFO, 'bar', []));
 
-        $app = App::singletons();
-        $app->clear();
+        $container = $this->createContainer();
 
-        $app->singleton('logs', function () use ($log) {
+        $container->singleton('logs', function () use ($log) {
             return $log;
         });
 
         $this->assertInstanceof(ILog::class, Leevel::log());
         $this->assertNull(Leevel::log('bar', [], ILog::INFO));
 
-        $app->clear();
+        $container->clear();
     }
 
     public function testOption()
@@ -149,10 +155,9 @@ class FunctionsTest extends TestCase
         $option->method('get')->willReturn('bar');
         $this->assertSame('bar', $option->get('foo'));
 
-        $app = App::singletons();
-        $app->clear();
+        $container = $this->createContainer();
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -160,12 +165,12 @@ class FunctionsTest extends TestCase
         $this->assertNull(Leevel::option(['foo' => 'bar']));
         $this->assertSame('bar', Leevel::option('foo'));
 
-        $app->clear();
+        $container->clear();
     }
 
     public function testCache()
     {
-        $cache = $this->createMock(IConnectCache::class);
+        $cache = $this->createMock(ICache::class);
 
         $cache->method('set')->willReturn(null);
         $this->assertNull($cache->set('foo', 'bar'));
@@ -173,19 +178,17 @@ class FunctionsTest extends TestCase
         $cache->method('get')->willReturn('bar');
         $this->assertSame('bar', $cache->get('foo'));
 
-        $cache = new Cache($cache);
-        $app = App::singletons();
-        $app->clear();
+        $container = $this->createContainer();
 
-        $app->singleton('caches', function () use ($cache) {
+        $container->singleton('caches', function () use ($cache) {
             return $cache;
         });
 
         $this->assertInstanceof(ICache::class, Leevel::cache());
-        $this->assertNull(Leevel::cache(['foo' => 'bar']));
-        $this->assertSame('bar', Leevel::cache('foo'));
+        $this->assertNull(Leevel::cacheSet(['foo' => 'bar']));
+        $this->assertSame('bar', Leevel::cacheGet('foo'));
 
-        $app->clear();
+        $container->clear();
     }
 
     public function testEncryptAndEecrypt()
@@ -198,17 +201,16 @@ class FunctionsTest extends TestCase
         $encryption->method('decrypt')->willReturn('foo');
         $this->assertSame('foo', $encryption->decrypt('foobar-helloworld'));
 
-        $app = App::singletons();
-        $app->clear();
+        $container = $this->createContainer();
 
-        $app->singleton('encryption', function () use ($encryption) {
+        $container->singleton('encryption', function () use ($encryption) {
             return $encryption;
         });
 
         $this->assertSame('foobar-helloworld', Leevel::encrypt('foo', 3600));
         $this->assertSame('foo', Leevel::decrypt('foobar-helloworld'));
 
-        $app->clear();
+        $container->clear();
     }
 
     public function testSession()
@@ -221,10 +223,9 @@ class FunctionsTest extends TestCase
         $session->method('get')->willReturn('bar');
         $this->assertSame('bar', $session->get('foo'));
 
-        $app = App::singletons();
-        $app->clear();
+        $container = $this->createContainer();
 
-        $app->singleton('sessions', function () use ($session) {
+        $container->singleton('sessions', function () use ($session) {
             return $session;
         });
 
@@ -232,7 +233,7 @@ class FunctionsTest extends TestCase
         $this->assertNull(Leevel::session(['foo' => 'bar']));
         $this->assertSame('bar', Leevel::session('foo'));
 
-        $app->clear();
+        $container->clear();
     }
 
     public function testFlash()
@@ -245,17 +246,16 @@ class FunctionsTest extends TestCase
         $session->method('getFlash')->willReturn('bar');
         $this->assertSame('bar', $session->getFlash('foo'));
 
-        $app = App::singletons();
-        $app->clear();
+        $container = $this->createContainer();
 
-        $app->singleton('sessions', function () use ($session) {
+        $container->singleton('sessions', function () use ($session) {
             return $session;
         });
 
         $this->assertNull(Leevel::flash(['foo' => 'bar']));
         $this->assertSame('bar', Leevel::flash('foo'));
 
-        $app->clear();
+        $container->clear();
     }
 
     public function testUrl()
@@ -265,16 +265,15 @@ class FunctionsTest extends TestCase
         $url->method('make')->willReturn('/goods?foo=bar');
         $this->assertSame('/goods?foo=bar', $url->make('/goods', ['foo' => 'bar']));
 
-        $app = App::singletons();
-        $app->clear();
+        $container = $this->createContainer();
 
-        $app->singleton('url', function () use ($url) {
+        $container->singleton('url', function () use ($url) {
             return $url;
         });
 
         $this->assertSame('/goods?foo=bar', Leevel::url('/goods', ['foo' => 'bar']));
 
-        $app->clear();
+        $container->clear();
     }
 
     public function testGettextWithI18n()
@@ -292,10 +291,9 @@ class FunctionsTest extends TestCase
         $this->assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
         $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
-        $app = App::singletons();
-        $app->clear();
+        $container = $this->createContainer();
 
-        $app->singleton('i18n', function () use ($i18n) {
+        $container->singleton('i18n', function () use ($i18n) {
             return $i18n;
         });
 
@@ -303,6 +301,15 @@ class FunctionsTest extends TestCase
         $this->assertSame('hello foo', Leevel::gettext('hello %s', 'foo'));
         $this->assertSame('hello 5', Leevel::gettext('hello %d', 5));
 
-        $app->clear();
+        $container->clear();
+    }
+
+    protected function createContainer(): Container
+    {
+        $container = Container::singletons();
+        $container->clear();
+        $container->instance('app', new App($container, ''));
+
+        return $container;
     }
 }

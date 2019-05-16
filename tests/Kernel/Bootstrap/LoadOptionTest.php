@@ -25,6 +25,7 @@ use Leevel\Di\IContainer;
 use Leevel\Filesystem\Fso;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadOption;
+use Leevel\Kernel\IApp;
 use Tests\TestCase;
 
 /**
@@ -38,8 +39,15 @@ use Tests\TestCase;
  */
 class LoadOptionTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
     protected function tearDown(): void
     {
+        Container::singletons()->clear();
+
         $appPath = __DIR__.'/app';
         $runtimePath = $appPath.'/bootstrap';
 
@@ -56,10 +64,13 @@ class LoadOptionTest extends TestCase
     {
         $bootstrap = new LoadOption();
 
-        $app = new App3($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App3($container, $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $this->assertSame($appPath.'/bootstrap/option.php', $app->optionCachedPath());
         $this->assertFalse($app->isCachedOption());
@@ -67,7 +78,7 @@ class LoadOptionTest extends TestCase
 
         $this->assertNull($bootstrap->handle($app, true));
 
-        $option = $app->make('option');
+        $option = $container->make('option');
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));
@@ -79,10 +90,13 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $app = new App3($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App3($container, $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $this->assertSame($appPath.'/bootstrap/fooenv.php', $app->optionCachedPath());
         $this->assertFalse($app->isCachedOption());
@@ -90,7 +104,7 @@ class LoadOptionTest extends TestCase
 
         $this->assertNull($bootstrap->handle($app, true));
 
-        $option = $app->make('option');
+        $option = $container->make('option');
 
         $this->assertSame('testing', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));
@@ -111,10 +125,13 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $app = new App3($appPath);
+        $container = Container::singletons();
+        $app = new App3($container, $appPath);
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $this->assertSame($appPath.'/bootstrap/notfoundenv.php', $app->optionCachedPath());
         $this->assertFalse($app->isCachedOption());
@@ -130,10 +147,13 @@ class LoadOptionTest extends TestCase
 
         $bootstrap = new LoadOption();
 
-        $app = new App3($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App3($container, $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $this->assertSame($appPath.'/bootstrap/option.php', $app->optionCachedPath());
         $this->assertFalse($app->isCachedOption());
@@ -146,17 +166,12 @@ class LoadOptionTest extends TestCase
 
         $this->assertNull($bootstrap->handle($app, true));
 
-        $option = $app->make('option');
+        $option = $container->make('option');
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertSame('bar', $option->get('demo\\foo'));
         $this->assertNull($option->get('_env.foo'));
         $this->assertTrue($option->get('_env.debug'));
-    }
-
-    protected function tearUp()
-    {
-        $this->tearDown();
     }
 }
 

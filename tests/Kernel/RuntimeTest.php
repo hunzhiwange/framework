@@ -49,10 +49,10 @@ class RuntimeTest extends TestCase
 {
     public function testBaseUse()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
 
         $option = new Option([
             'app' => [
@@ -67,7 +67,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -76,7 +76,7 @@ class RuntimeTest extends TestCase
         $log->method('error')->willReturn(null);
         $this->assertNull($log->error('hello world', []));
 
-        $app->singleton(ILog::class, function () use ($log) {
+        $container->singleton(ILog::class, function () use ($log) {
             return $log;
         });
 
@@ -89,7 +89,7 @@ class RuntimeTest extends TestCase
 
     public function testExceptionItSelfWithReport()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime(new Container(), __DIR__.'/app');
 
         $runtime = new Runtime11($app);
 
@@ -106,14 +106,14 @@ class RuntimeTest extends TestCase
 
     public function testRender()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -124,7 +124,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -139,14 +139,14 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithCustomRenderMethod()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -157,7 +157,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -173,14 +173,14 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithCustomRenderMethod2()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -191,7 +191,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -207,14 +207,14 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithCustomRenderMethodToJson()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isAcceptJson')->willReturn(true);
         $this->assertTrue($request->isAcceptJson());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -225,7 +225,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -241,14 +241,14 @@ class RuntimeTest extends TestCase
 
     public function testRenderToJson()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isAcceptJson')->willReturn(true);
         $this->assertTrue($request->isAcceptJson());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -259,7 +259,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -278,7 +278,7 @@ class RuntimeTest extends TestCase
 
     public function testRendorWithHttpExceptionView()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -287,7 +287,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -307,7 +307,7 @@ class RuntimeTest extends TestCase
 
     public function testRendorWithHttpExceptionViewFor404()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -316,7 +316,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -336,7 +336,7 @@ class RuntimeTest extends TestCase
 
     public function testRendorWithHttpExceptionViewButNotFoundView()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -345,7 +345,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -363,14 +363,14 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithDebugIsOff()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -381,7 +381,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -401,14 +401,14 @@ class RuntimeTest extends TestCase
 
     public function testRenderWithDebugIsOn()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -419,7 +419,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -437,7 +437,7 @@ class RuntimeTest extends TestCase
 
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -446,7 +446,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -471,7 +471,7 @@ class RuntimeTest extends TestCase
             sprintf('Exception file %s is not extis.', __DIR__.'/assert/notFoundDefault.php')
         );
 
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -480,7 +480,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -493,14 +493,14 @@ class RuntimeTest extends TestCase
 
     public function testRenderForEntityNotFoundException()
     {
-        $app = new AppRuntime($appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isAcceptJson')->willReturn(false);
         $this->assertFalse($request->isAcceptJson());
 
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -511,7 +511,7 @@ class RuntimeTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 

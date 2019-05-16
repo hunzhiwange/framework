@@ -25,6 +25,7 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
+use Leevel\Kernel\IApp;
 use Tests\TestCase;
 
 /**
@@ -38,18 +39,31 @@ use Tests\TestCase;
  */
 class TraverseProviderTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     public function testBaseUse()
     {
         $bootstrap = new TraverseProvider();
 
-        $app = new App2($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App2($container, $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $option = new OptionTest();
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -57,14 +71,15 @@ class TraverseProviderTest extends TestCase
 
         // for deferredAlias
         $this->assertArrayNotHasKey('providerDeferTest1', $_SERVER);
-        $this->assertSame('bar', $app->make('foo'));
-        $this->assertSame('bar', $app->make(ProviderDeferTest1::class));
+        $container->alias(ProviderDeferTest1::providers());
+        $this->assertSame('bar', $container->make('foo'));
+        $this->assertSame('bar', $container->make(ProviderDeferTest1::class));
         $this->assertSame(1, $_SERVER['providerDeferTest1']);
 
         // for providers
         $this->assertSame(1, $_SERVER['testRegisterProvidersRegister']);
         $this->assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
-        $this->assertTrue($app->isBootstrap());
+        $this->assertTrue($container->isBootstrap());
 
         unset(
             $_SERVER['providerDeferTest1'],
@@ -134,11 +149,11 @@ class ProviderDeferTest1 extends Provider
 
 class ProviderTest3 extends Provider
 {
-    public function __construct(App2 $app)
+    public function __construct(IContainer $container)
     {
     }
 
-    public function bootstrap()
+    public function bootstrap(): void
     {
         $_SERVER['testRegisterProvidersBootstrap'] = 1;
     }

@@ -83,7 +83,7 @@ trait BaseMake
 
 class ComposerMock extends ClassLoader
 {
-    public function findFile(string $class): string
+    public function findFile($class)
     {
         // mock for `\\Common\\index`
         return __DIR__.'/index.php';

@@ -26,6 +26,7 @@ use Leevel\Di\Provider;
 use Leevel\Filesystem\Fso;
 use Leevel\Http\IRequest;
 use Leevel\Kernel\App as Apps;
+use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 use Tests\TestCase;
 
@@ -40,39 +41,53 @@ use Tests\TestCase;
  */
 class AppTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     public function testBaseUse()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
+        $container = $app->container();
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $this->assertSame($appPath, $app->path());
         $this->assertSame($appPath.'/foobar', $app->path('foobar'));
     }
 
-    public function testClone()
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(
-            'App disallowed clone.'
-        );
+    // public function testClone()
+    // {
+    //     $this->expectException(\RuntimeException::class);
+    //     $this->expectExceptionMessage(
+    //         'App disallowed clone.'
+    //     );
 
-        $app = new App($appPath = __DIR__.'/app');
+    //     $app = new App($appPath = __DIR__.'/app');
 
-        $app2 = clone $app;
-    }
+    //     $app2 = clone $app;
+    // }
 
     public function testVersion()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
 
         $this->assertSame(App::VERSION, $app->version());
     }
 
     public function testRunWithExtension()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
 
         if (extension_loaded('leevel')) {
             $this->assertTrue($app->runWithExtension());
@@ -83,21 +98,21 @@ class AppTest extends TestCase
 
     public function testConsole()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
 
         $this->assertTrue($app->console());
     }
 
     public function testConsole2()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
 
         $request = $this->createMock(IRequest::class);
 
         $request->method('isCli')->willReturn(true);
         $this->assertTrue($request->isCli());
 
-        $app->singleton('request', function () use ($request) {
+        $app->container()->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -106,14 +121,13 @@ class AppTest extends TestCase
 
     public function testConsole3()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $container = $app->container();
 
         $request = $this->createMock(IRequest::class);
-
         $request->method('isCli')->willReturn(false);
         $this->assertFalse($request->isCli());
-
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
@@ -122,7 +136,7 @@ class AppTest extends TestCase
 
     public function testSetPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
 
         $app->setPath(__DIR__.'/foo');
 
@@ -131,16 +145,17 @@ class AppTest extends TestCase
 
     public function testAppPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
+        $container = $app->container();
 
         $request = $this->createMock(IRequest::class);
-
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
-        $app->instance('app_name', 'Blog');
-        $this->assertEquals('Blog', $app->make('app_name'));
+        $container->instance('app_name', 'Blog');
+        $this->assertEquals('Blog', $container->make('app_name'));
 
         $this->assertSame($appPath.'/application', $app->appPath());
         $this->assertSame($appPath.'/application', $app->appPath(false));
@@ -158,43 +173,43 @@ class AppTest extends TestCase
 
     public function testAppPath2()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
+        $container = $app->container();
 
         $request = $this->createMock(IRequest::class);
-
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
-        $app->instance('app_name', '');
-        $this->assertEquals('', $app->make('app_name'));
-
+        $container->instance('app_name', '');
+        $this->assertEquals('', $container->make('app_name'));
         $this->assertSame($appPath.'/application/app', $app->appPath(true));
     }
 
     public function testSetAppPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
+        $container = $app->container();
 
         $request = $this->createMock(IRequest::class);
-
-        $app->singleton('request', function () use ($request) {
+        $container->singleton('request', function () use ($request) {
             return $request;
         });
 
-        $app->instance('app_name', 'Blog');
-        $this->assertEquals('Blog', $app->make('app_name'));
-
+        $container->instance('app_name', 'Blog');
+        $this->assertEquals('Blog', $container->make('app_name'));
         $this->assertSame($appPath.'/application/blog', $app->appPath(true));
 
         $app->setAppPath(__DIR__.'/app/foo');
-
         $this->assertSame($appPath.'/foo/blog', $app->appPath(true));
     }
 
     public function testPathTheme()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/application/ui/theme', $app->themePath());
         $this->assertSame($appPath.'/application/blog/ui/theme', $app->themePath('blog'));
@@ -202,7 +217,8 @@ class AppTest extends TestCase
 
     public function testCommonPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/common', $app->commonPath());
         $this->assertSame($appPath.'/common/foobar', $app->commonPath('foobar'));
@@ -210,7 +226,8 @@ class AppTest extends TestCase
 
     public function testSetCommonPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/common', $app->commonPath());
         $this->assertSame($appPath.'/common/foobar', $app->commonPath('foobar'));
@@ -223,7 +240,8 @@ class AppTest extends TestCase
 
     public function testRuntimePath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/runtime', $app->runtimePath());
         $this->assertSame($appPath.'/runtime/foobar', $app->runtimePath('foobar'));
@@ -231,7 +249,8 @@ class AppTest extends TestCase
 
     public function testSetRuntimePath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/runtime', $app->runtimePath());
         $this->assertSame($appPath.'/runtime/foobar', $app->runtimePath('foobar'));
@@ -244,7 +263,8 @@ class AppTest extends TestCase
 
     public function testStoragePath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/storage', $app->storagePath());
         $this->assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
@@ -252,7 +272,8 @@ class AppTest extends TestCase
 
     public function testSetStoragePath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/storage', $app->storagePath());
         $this->assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
@@ -265,7 +286,8 @@ class AppTest extends TestCase
 
     public function testOptionPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/option', $app->optionPath());
         $this->assertSame($appPath.'/option/foobar', $app->optionPath('foobar'));
@@ -273,7 +295,8 @@ class AppTest extends TestCase
 
     public function testSetOptionPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/option', $app->optionPath());
         $this->assertSame($appPath.'/option/foobar', $app->optionPath('foobar'));
@@ -286,7 +309,8 @@ class AppTest extends TestCase
 
     public function testI18nPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/i18n', $app->i18nPath());
         $this->assertSame($appPath.'/i18n/foobar', $app->i18nPath('foobar'));
@@ -294,7 +318,8 @@ class AppTest extends TestCase
 
     public function testSetI18nPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/i18n', $app->i18nPath());
         $this->assertSame($appPath.'/i18n/foobar', $app->i18nPath('foobar'));
@@ -307,14 +332,16 @@ class AppTest extends TestCase
 
     public function testEnvPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath, $app->envPath());
     }
 
     public function testSetEnvPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath, $app->envPath());
 
@@ -325,14 +352,14 @@ class AppTest extends TestCase
 
     public function testEnvFile()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
 
         $this->assertSame('.env', $app->envFile());
     }
 
     public function testSetEnvFile()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
 
         $this->assertSame('.env', $app->envFile());
 
@@ -343,7 +370,8 @@ class AppTest extends TestCase
 
     public function testFullEnvPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/.env', $app->fullEnvPath());
 
@@ -358,7 +386,8 @@ class AppTest extends TestCase
 
     public function testI18nCachedPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
         $this->assertSame($appPath.'/bootstrap/i18n/zh-TW.php', $app->i18nCachedPath('zh-TW'));
@@ -367,7 +396,8 @@ class AppTest extends TestCase
 
     public function testIsCachedI18n()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertFalse($app->isCachedI18n('zh-CN'));
 
@@ -382,14 +412,16 @@ class AppTest extends TestCase
 
     public function testOptionCachedPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $appPath = __DIR__.'/app';
 
         $this->assertSame($appPath.'/bootstrap/option.php', $app->optionCachedPath());
     }
 
     public function testIsCachedOption()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
 
         $this->assertFalse($app->isCachedOption());
 
@@ -404,14 +436,16 @@ class AppTest extends TestCase
 
     public function testRouterCachedPath()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
 
         $this->assertSame($appPath.'/bootstrap/router.php', $app->routerCachedPath());
     }
 
     public function testIsCachedRouter()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
 
         $this->assertFalse($app->isCachedRouter());
 
@@ -426,7 +460,9 @@ class AppTest extends TestCase
 
     public function testDebug()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
+        $container = $app->container();
 
         $option = $this->createMock(IOption::class);
 
@@ -444,7 +480,7 @@ class AppTest extends TestCase
         $this->assertSame('development', $option->get('environment'));
         $this->assertTrue($option->get('debug'));
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -453,7 +489,9 @@ class AppTest extends TestCase
 
     public function testDebug2()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
+        $container = $app->container();
 
         $option = $this->createMock(IOption::class);
 
@@ -471,7 +509,7 @@ class AppTest extends TestCase
         $this->assertSame('development', $option->get('environment'));
         $this->assertFalse($option->get('debug'));
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -480,14 +518,16 @@ class AppTest extends TestCase
 
     public function testDevelopment()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
+        $container = $app->container();
 
         $option = $this->createMock(IRequest::class);
 
         $option->method('get')->willReturn('development');
         $this->assertEquals('development', $option->get('development'));
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -496,14 +536,16 @@ class AppTest extends TestCase
 
     public function testDevelopment2()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
+        $container = $app->container();
 
         $option = $this->createMock(IRequest::class);
 
         $option->method('get')->willReturn('foo');
         $this->assertEquals('foo', $option->get('development'));
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -512,51 +554,54 @@ class AppTest extends TestCase
 
     public function testEnvironment()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $appPath = __DIR__.'/app';
+        $app = $this->createApp();
+        $container = $app->container();
 
         $option = $this->createMock(IRequest::class);
 
         $option->method('get')->willReturn('foo');
         $this->assertEquals('foo', $option->get('development'));
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
         $this->assertSame('foo', $app->environment());
     }
 
-    public function testMakeProvider()
-    {
-        $app = new App($appPath = __DIR__.'/app');
+    // public function testMakeProvider()
+    // {
+    //     $appPath = __DIR__.'/app';
+    //     $app = $this->createApp();
 
-        $app->makeProvider(ProviderTest1::class);
+    //     $app->makeProvider(ProviderTest1::class);
 
-        $this->assertSame(1, $_SERVER['testMakeProvider']);
+    //     $this->assertSame(1, $_SERVER['testMakeProvider']);
 
-        unset($_SERVER['testMakeProvider']);
-    }
+    //     unset($_SERVER['testMakeProvider']);
+    // }
 
-    public function testCallProviderBootstrap()
-    {
-        $app = new App($appPath = __DIR__.'/app');
+    // public function testCallProviderBootstrap()
+    // {
+    //     $app = $this->createApp();
 
-        $app->callProviderBootstrap(new ProviderTest1($app));
+    //     $app->callProviderBootstrap(new ProviderTest1($app));
 
-        $this->assertSame(1, $_SERVER['testMakeProvider']);
+    //     $this->assertSame(1, $_SERVER['testMakeProvider']);
 
-        unset($_SERVER['testMakeProvider']);
+    //     unset($_SERVER['testMakeProvider']);
 
-        $app->callProviderBootstrap(new ProviderTest2($app));
+    //     $app->callProviderBootstrap(new ProviderTest2($app));
 
-        $this->assertSame(1, $_SERVER['testCallProviderBootstrap']);
+    //     $this->assertSame(1, $_SERVER['testCallProviderBootstrap']);
 
-        unset($_SERVER['testCallProviderBootstrap']);
-    }
+    //     unset($_SERVER['testCallProviderBootstrap']);
+    // }
 
     public function testBootstrap()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
 
         $app->bootstrap([BootstrapTest1::class, BootstrapTest2::class]);
 
@@ -568,20 +613,21 @@ class AppTest extends TestCase
 
     public function testBootstrap2()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $container = $app->container();
 
         $app->bootstrap([BootstrapTest1::class, BootstrapTest2::class]);
 
-        $this->assertFalse($app->isBootstrap());
+        $this->assertFalse($container->isBootstrap());
 
         $this->assertSame(1, $_SERVER['bootstrapTest1']);
         $this->assertSame(1, $_SERVER['bootstrapTest2']);
 
         unset($_SERVER['bootstrapTest1'], $_SERVER['bootstrapTest2']);
 
-        $app->bootstrapProviders();
+        $container->registerProviders([], [], []);
 
-        $this->assertTrue($app->isBootstrap());
+        $this->assertTrue($container->isBootstrap());
 
         $app->bootstrap([BootstrapTest1::class, BootstrapTest2::class]);
 
@@ -591,11 +637,11 @@ class AppTest extends TestCase
 
     public function testRegisterProviders()
     {
-        $app = new App($appPath = __DIR__.'/app');
+        $app = $this->createApp();
+        $container = $app->container();
 
         $option = new OptionTest();
-
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
@@ -603,13 +649,13 @@ class AppTest extends TestCase
 
         // for deferredAlias
         $this->assertArrayNotHasKey('providerDeferTest1', $_SERVER);
-        $this->assertSame('bar', $app->make('foo'));
-        $this->assertSame('bar', $app->make(ProviderDeferTest1::class));
+        $this->assertSame('bar', $container->make('foo'));
+        $this->assertSame('bar', $container->make(ProviderDeferTest1::class));
         $this->assertSame(1, $_SERVER['providerDeferTest1']);
 
         // for providers
         $this->assertSame(1, $_SERVER['testRegisterProvidersRegister']);
-        $this->assertArrayNotHasKey('testRegisterProvidersBootstrap', $_SERVER);
+        $this->assertArrayHasKey('testRegisterProvidersBootstrap', $_SERVER);
 
         unset(
             $_SERVER['providerDeferTest1'],
@@ -617,19 +663,28 @@ class AppTest extends TestCase
         );
 
         // bootstrap
-        $this->assertFalse($app->isBootstrap());
-        $app->bootstrapProviders();
+        $this->assertTrue($container->isBootstrap());
         $this->assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
         unset($_SERVER['testRegisterProvidersBootstrap']);
-        $this->assertTrue($app->isBootstrap());
-
-        // bootstrap again but already bootstrap
-        $app->bootstrapProviders();
-        $this->assertArrayNotHasKey('testRegisterProvidersBootstrap', $_SERVER);
+        $this->assertTrue($container->isBootstrap());
 
         // again but already bootstrap
         $app->registerProviders();
+        $this->assertArrayNotHasKey('testRegisterProvidersBootstrap', $_SERVER);
         $this->assertArrayNotHasKey('testRegisterProvidersRegister', $_SERVER);
+    }
+
+    protected function createApp(): App
+    {
+        $container = Container::singletons();
+        $app = new App($container, $appPath = __DIR__.'/app');
+
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
+
+        return $app;
     }
 }
 
@@ -642,7 +697,7 @@ class App extends Apps
 
 class ProviderTest1 extends Provider
 {
-    public function __construct(App $app)
+    public function __construct(IContainer $container)
     {
         $_SERVER['testMakeProvider'] = 1;
     }
@@ -654,7 +709,7 @@ class ProviderTest1 extends Provider
 
 class ProviderTest2 extends Provider
 {
-    public function __construct(App $app)
+    public function __construct(IContainer $container)
     {
     }
 
@@ -737,7 +792,7 @@ class ProviderDeferTest1 extends Provider
 
 class ProviderTest3 extends Provider
 {
-    public function __construct(App $app)
+    public function __construct(IContainer $container)
     {
     }
 

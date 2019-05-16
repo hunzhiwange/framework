@@ -25,6 +25,7 @@ use Leevel\Di\IContainer;
 use Leevel\Filesystem\Fso;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadI18n;
+use Leevel\Kernel\IApp;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
@@ -39,14 +40,27 @@ use Tests\TestCase;
  */
 class LoadI18nTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     public function testBaseUse()
     {
         $bootstrap = new LoadI18n();
 
-        $app = new App($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App($container, $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $option = new Option([
             'app' => [
@@ -61,18 +75,18 @@ class LoadI18nTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
-        $this->assertSame('en-US', $app['option']['i18n\\default']);
+        $this->assertSame('en-US', $container['option']['i18n\\default']);
         $this->assertSame($appPath.'/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         $this->assertFalse($app->isCachedI18n('en-US'));
         $this->assertSame($appPath.'/i18n', $app->i18nPath());
 
         $this->assertNull($bootstrap->handle($app));
 
-        $i18n = $app->make('i18n');
+        $i18n = $container->make('i18n');
 
         $this->assertSame('Bad Request', $i18n->gettext('错误请求'));
         $this->assertSame('Unprocessable Entity', $i18n->gettext('无法处理的实体'));
@@ -84,10 +98,13 @@ class LoadI18nTest extends TestCase
     {
         $bootstrap = new LoadI18n();
 
-        $app = new App($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App($container, $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $option = new Option([
             'app' => [
@@ -102,11 +119,11 @@ class LoadI18nTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
-        $this->assertSame('en-US', $app['option']['i18n\\default']);
+        $this->assertSame('en-US', $container['option']['i18n\\default']);
         $this->assertSame($appPath.'/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         $this->assertFalse($app->isCachedI18n('en-US'));
         $this->assertSame($appPath.'/i18n', $app->i18nPath());
@@ -118,7 +135,7 @@ class LoadI18nTest extends TestCase
 
         $this->assertNull($bootstrap->handle($app));
 
-        $i18n = $app->make('i18n');
+        $i18n = $container->make('i18n');
 
         $this->assertSame('Bad Request', $i18n->gettext('错误请求'));
         $this->assertSame('Unprocessable Entity', $i18n->gettext('无法处理的实体'));
@@ -137,10 +154,13 @@ class LoadI18nTest extends TestCase
 
         $bootstrap = new LoadI18n();
 
-        $app = new App($appPath = __DIR__.'/app');
+        $container = Container::singletons();
+        $app = new App($container, $appPath = __DIR__.'/app');
 
-        $this->assertInstanceof(IContainer::class, $app);
-        $this->assertInstanceof(Container::class, $app);
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(IApp::class, $app);
+        $this->assertInstanceof(Apps::class, $app);
 
         $option = new Option([
             'app' => [
@@ -155,7 +175,7 @@ class LoadI18nTest extends TestCase
             ],
         ]);
 
-        $app->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option) {
             return $option;
         });
 
