@@ -393,6 +393,12 @@ class Container implements IContainer, ArrayAccess
         if ($this->existsCoroutine($name)) {
             unset($this->coroutineInstances[$this->coroutineUid()][$name]);
         }
+
+        foreach ($this->alias as $alias => $service) {
+            if ($name === $service) {
+                unset($this->alias[$alias]);
+            }
+        }
     }
 
     /**
@@ -447,13 +453,14 @@ class Container implements IContainer, ArrayAccess
             'instances',
             'singletons',
             'coroutineInstances',
+            'alias',
         ];
 
         foreach ($prop as $item) {
             $this->{$item} = [];
         }
 
-        $this->alias = [];
+        $this->isBootstrap = false;
     }
 
     /**
