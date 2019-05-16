@@ -24,7 +24,7 @@ namespace Tests\Support\Fixtures\Fn;
  * 使用方法.
  *
  * ``` php
- * echo fn('Tests\\Support\\Fixtures\\Fn\\single_fn');
+ * echo f('Tests\\Support\\Fixtures\\Fn\\single_fn');
  * ```
  *
  * @return string

@@ -53,11 +53,11 @@ class FnTest extends TestCase
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1'));
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\testgroup_fn2'));
 
-        $result = fn('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1');
+        $result = f('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1');
 
         $this->assertSame('hello world', $result);
 
-        $result = fn('Tests\\Support\\Fixtures\\Fn\\testgroup_fn2');
+        $result = f('Tests\\Support\\Fixtures\\Fn\\testgroup_fn2');
 
         $this->assertSame('hello world2', $result);
 
@@ -76,7 +76,7 @@ class FnTest extends TestCase
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\single_fn'));
 
-        $result = fn('Tests\\Support\\Fixtures\\Fn\\single_fn');
+        $result = f('Tests\\Support\\Fixtures\\Fn\\single_fn');
 
         $this->assertSame('hello single fn', $result);
 
@@ -94,11 +94,11 @@ class FnTest extends TestCase
     {
         $this->assertFalse(function_exists('Tests\\Support\\Fixtures\\Fn\\foo_bar'));
 
-        $result = fn('Tests\\Support\\Fixtures\\Fn\\foo_bar');
+        $result = f('Tests\\Support\\Fixtures\\Fn\\foo_bar');
 
         $this->assertSame('foo bar', $result);
 
-        $result = fn('Tests\\Support\\Fixtures\\Fn\\foo_bar', ' haha');
+        $result = f('Tests\\Support\\Fixtures\\Fn\\foo_bar', ' haha');
 
         $this->assertSame('foo bar haha', $result);
 
@@ -114,7 +114,7 @@ class FnTest extends TestCase
             'Call to undefined function Tests\\Support\\Fixtures\\Fn\\func_was_not_found()'
         );
 
-        fn('Tests\\Support\\Fixtures\\Fn\\func_was_not_found');
+        f('Tests\\Support\\Fixtures\\Fn\\func_was_not_found');
     }
 
     public function testGroupFuncNotFound(): void
@@ -126,7 +126,7 @@ class FnTest extends TestCase
             'Call to undefined function Tests\\Support\\Fixtures\\Fn\\testgroup_not_found()'
         );
 
-        fn('Tests\\Support\\Fixtures\\Fn\\testgroup_not_found');
+        f('Tests\\Support\\Fixtures\\Fn\\testgroup_not_found');
     }
 
     public function testNotFuncNotDefinedError(): void
@@ -138,7 +138,7 @@ class FnTest extends TestCase
             'not'
         );
 
-        fn('Tests\\Support\\Fixtures\\Fn\\helper_fn_throw');
+        f('Tests\\Support\\Fixtures\\Fn\\helper_fn_throw');
 
         $this->assertTrue(function_exists('Tests\\Support\\Fixtures\\Fn\\helper_fn_throw'));
     }
@@ -152,7 +152,7 @@ class FnTest extends TestCase
             'Call to undefined function Tests\\Support\\Fixtures\\Fn\\fnwithoutunderline()'
         );
 
-        fn('Tests\\Support\\Fixtures\\Fn\\fnwithoutunderline');
+        f('Tests\\Support\\Fixtures\\Fn\\fnwithoutunderline');
     }
 
     public function testNotFuncWithoutBackslash(): void
@@ -164,6 +164,6 @@ class FnTest extends TestCase
             'Call to undefined function fnwithoutbackslash()'
         );
 
-        fn('fnwithoutbackslash');
+        f('fnwithoutbackslash');
     }
 }

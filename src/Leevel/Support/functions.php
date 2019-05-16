@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 use Leevel\Support\FunctionNotFoundException;
 
-if (!function_exists('fn')) {
+if (!function_exists('f')) {
     /**
      * 执行惰性加载函数.
      *
@@ -29,17 +29,17 @@ if (!function_exists('fn')) {
      *
      * @return mixed
      */
-    function fn(string $fn, ...$args)
+    function f(string $fn, ...$args)
     {
         if (!function_exists($fn)) {
-            fn_exists($fn);
+            f_exists($fn);
         }
 
         return $fn(...$args);
     }
 }
 
-if (!function_exists('fn_exists')) {
+if (!function_exists('f_exists')) {
     /**
      * 判断惰性加载函数是否存在.
      *
@@ -50,7 +50,7 @@ if (!function_exists('fn_exists')) {
      *
      * @return bool
      */
-    function fn_exists(string $fn, bool $throwException = true): bool
+    function f_exists(string $fn, bool $throwException = true): bool
     {
         if (function_exists($fn)) {
             return true;

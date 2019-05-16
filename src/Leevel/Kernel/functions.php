@@ -48,7 +48,7 @@ if (!function_exists('hl')) {
         $component = $map[$method] ?? ucfirst($method);
         $fn = 'Leevel\\'.$component.'\\Helper\\'.$method;
 
-        return fn($fn, ...$args);
+        return f($fn, ...$args);
     }
 }
 
@@ -153,6 +153,7 @@ class Leevel
         if (method_exists($app, $method)) {
             return $app->{$method}(...$args);
         }
+
         if (($container = $app->container()) && method_exists($container, $method)) {
             return $container->{$method}(...$args);
         }

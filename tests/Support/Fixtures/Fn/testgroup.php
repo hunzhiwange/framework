@@ -24,7 +24,7 @@ namespace Tests\Support\Fixtures\Fn;
  * 使用方法.
  *
  * ``` php
- * echo fn('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1');
+ * echo f('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1');
  * ```
  *
  * @return string
@@ -38,7 +38,7 @@ function testgroup_fn1(): string
  * 使用方法.
  *
  * ``` php
- * echo fn('Tests\\Support\\Fixtures\\Fn\\testgroup_fn2');
+ * echo f('Tests\\Support\\Fixtures\\Fn\\testgroup_fn2');
  * ```
  *
  * @return string

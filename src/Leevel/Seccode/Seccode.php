@@ -633,7 +633,11 @@ class Seccode implements ISeccode
 
         $randMethod = 'Leevel\\Support\\Str\\rand_'.$autoType;
 
-        $this->code(fn($randMethod, $size));
+        if (!function_exists($randMethod)) {
+            class_exists($randMethod);
+        }
+
+        $this->code($randMethod($size));
     }
 
     /**
