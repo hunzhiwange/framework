@@ -18,39 +18,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Support\Fixtures\Fn;
+namespace Tests\Support\Fixtures\Func;
 
 /**
  * 使用方法.
  *
  * ``` php
- * echo f('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1');
+ * echo f('Tests\\Support\\Fixtures\\Func\\foo_bar');
  * ```
+ *
+ * @param string $extend
  *
  * @return string
  */
-function testgroup_fn1(): string
+function foo_bar(string $extend = ''): string
 {
-    return 'hello world';
+    return 'foo bar'.$extend;
 }
 
-/**
- * 使用方法.
- *
- * ``` php
- * echo f('Tests\\Support\\Fixtures\\Fn\\testgroup_fn2');
- * ```
- *
- * @return string
- */
-function testgroup_fn2(): string
-{
-    return 'hello world2';
-}
-
-/**
- * Prevent duplicate loading.
- */
-class testgroup
+class index
 {
 }

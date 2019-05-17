@@ -18,15 +18,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Support\Fixtures\Fn;
+namespace Tests\Support\Fixtures\Func;
 
-use Error;
-
-function helper_fn_throw()
+/**
+ * 使用方法.
+ *
+ * ``` php
+ * echo f('Tests\\Support\\Fixtures\\Func\\testgroup_fn1');
+ * ```
+ *
+ * @return string
+ */
+function testgroup_fn1(): string
 {
-    throw new Error('not');
+    return 'hello world';
 }
 
-class helper_fn_throw
+/**
+ * 使用方法.
+ *
+ * ``` php
+ * echo f('Tests\\Support\\Fixtures\\Func\\testgroup_fn2');
+ * ```
+ *
+ * @return string
+ */
+function testgroup_fn2(): string
+{
+    return 'hello world2';
+}
+
+class testgroup
 {
 }

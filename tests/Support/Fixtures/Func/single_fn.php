@@ -18,39 +18,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Support\Fixtures\Fn;
+namespace Tests\Support\Fixtures\Func;
 
 /**
  * 使用方法.
  *
  * ``` php
- * echo f('Tests\\Support\\Fixtures\\Fn\\testgroup_fn1');
+ * echo f('Tests\\Support\\Fixtures\\Func\\single_fn');
  * ```
  *
  * @return string
  */
-function testgroup2_fn1(): string
+function single_fn(): string
 {
-    return 'g2:hello world';
+    return 'hello single fn';
 }
 
-/**
- * 使用方法.
- *
- * ``` php
- * echo f('Tests\\Support\\Fixtures\\Fn\\testgroup_fn2');
- * ```
- *
- * @return string
- */
-function testgroup2_fn2(): string
-{
-    return 'g2:hello world2';
-}
-
-/**
- * Prevent duplicate loading.
- */
-class testgroup2
+class single_fn
 {
 }
