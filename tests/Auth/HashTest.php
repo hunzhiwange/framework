@@ -39,8 +39,6 @@ class HashTest extends TestCase
         $hash = new Hash();
 
         $hashPassword = $hash->password('123456');
-
-        $this->assertSame(60, strlen($hashPassword));
         $this->assertTrue($hash->verify('123456', $hashPassword));
     }
 
@@ -49,8 +47,6 @@ class HashTest extends TestCase
         $hash = new Hash();
 
         $hashPassword = $hash->password('123456', ['cost' => 12]);
-
-        $this->assertSame(60, strlen($hashPassword));
         $this->assertTrue($hash->verify('123456', $hashPassword));
     }
 }
