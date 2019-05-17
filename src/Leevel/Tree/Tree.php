@@ -41,14 +41,14 @@ class Tree implements IJson, IArray
      *
      * @var array
      */
-    protected $map = [];
+    protected array $map = [];
 
     /**
      * 节点数据.
      *
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * 构造函数.
