@@ -92,9 +92,9 @@ class PhpRedis implements IRedis
     /**
      * 返回缓存句柄.
      *
-     * @return object
+     * @return null|object
      */
-    public function handle(): object
+    public function handle(): ?object
     {
         return $this->handle;
     }

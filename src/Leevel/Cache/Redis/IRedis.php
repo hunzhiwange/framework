@@ -34,9 +34,9 @@ interface IRedis
     /**
      * 返回缓存句柄.
      *
-     * @return object
+     * @return nulll|object
      */
-    public function handle(): object;
+    public function handle(): ?object;
 
     /**
      * 获取缓存.
