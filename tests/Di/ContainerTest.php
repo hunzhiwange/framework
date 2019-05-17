@@ -26,6 +26,8 @@ use stdClass;
 use Tests\Di\Fixtures\ITest2;
 use Tests\Di\Fixtures\ITest3;
 use Tests\Di\Fixtures\ITest8;
+use Tests\Di\Fixtures\ProviderTest1;
+use Tests\Di\Fixtures\ProviderTest2;
 use Tests\Di\Fixtures\Test1;
 use Tests\Di\Fixtures\Test10;
 use Tests\Di\Fixtures\Test2;
@@ -698,5 +700,44 @@ class ContainerTest extends TestCase
 
         $container->clear();
         $this->assertSame('foo', $container->make('foo'));
+    }
+
+    public function testClone()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Ioc container disallowed clone.'
+        );
+
+        $container = new Container();
+        $container2 = clone $container;
+    }
+
+    public function testMakeProvider()
+    {
+        $container = new Container();
+
+        $container->makeProvider(ProviderTest1::class);
+
+        $this->assertSame(1, $_SERVER['testMakeProvider']);
+
+        unset($_SERVER['testMakeProvider']);
+    }
+
+    public function testCallProviderBootstrap()
+    {
+        $container = new Container();
+
+        $container->callProviderBootstrap(new ProviderTest1($container));
+
+        $this->assertSame(1, $_SERVER['testMakeProvider']);
+
+        unset($_SERVER['testMakeProvider']);
+
+        $container->callProviderBootstrap(new ProviderTest2($container));
+
+        $this->assertSame(1, $_SERVER['testCallProviderBootstrap']);
+
+        unset($_SERVER['testCallProviderBootstrap']);
     }
 }

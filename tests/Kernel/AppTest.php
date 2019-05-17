@@ -66,18 +66,6 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/foobar', $app->path('foobar'));
     }
 
-    // public function testClone()
-    // {
-    //     $this->expectException(\RuntimeException::class);
-    //     $this->expectExceptionMessage(
-    //         'App disallowed clone.'
-    //     );
-
-    //     $app = new App($appPath = __DIR__.'/app');
-
-    //     $app2 = clone $app;
-    // }
-
     public function testVersion()
     {
         $app = $this->createApp();
@@ -569,35 +557,6 @@ class AppTest extends TestCase
 
         $this->assertSame('foo', $app->environment());
     }
-
-    // public function testMakeProvider()
-    // {
-    //     $appPath = __DIR__.'/app';
-    //     $app = $this->createApp();
-
-    //     $app->makeProvider(ProviderTest1::class);
-
-    //     $this->assertSame(1, $_SERVER['testMakeProvider']);
-
-    //     unset($_SERVER['testMakeProvider']);
-    // }
-
-    // public function testCallProviderBootstrap()
-    // {
-    //     $app = $this->createApp();
-
-    //     $app->callProviderBootstrap(new ProviderTest1($app));
-
-    //     $this->assertSame(1, $_SERVER['testMakeProvider']);
-
-    //     unset($_SERVER['testMakeProvider']);
-
-    //     $app->callProviderBootstrap(new ProviderTest2($app));
-
-    //     $this->assertSame(1, $_SERVER['testCallProviderBootstrap']);
-
-    //     unset($_SERVER['testCallProviderBootstrap']);
-    // }
 
     public function testBootstrap()
     {
