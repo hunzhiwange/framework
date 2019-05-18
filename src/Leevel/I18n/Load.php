@@ -38,21 +38,28 @@ class Load
      *
      * @var string
      */
-    protected $i18n = 'zh-CN';
+    protected string $i18n = 'zh-CN';
 
     /**
      * 载入路径.
      *
      * @var array
      */
-    protected $dirs = [];
+    protected array $dirs = [];
 
     /**
      * 已经载入数据.
      *
      * @var array
      */
-    protected $loaded;
+    protected array $loaded = [];
+
+    /**
+     * 是否已经载入数据.
+     *
+     * @var bool
+     */
+    protected bool $isLoaded = false;
 
     /**
      * 构造函数.
@@ -103,12 +110,13 @@ class Load
      */
     public function loadData(): array
     {
-        if (null !== $this->loaded) {
+        if (true === $this->isLoaded) {
             return $this->loaded;
         }
 
         $files = $this->findMoFile($this->parseDir($this->dirs));
         $texts = $this->parseMoData($files);
+        $this->isLoaded = true;
 
         return $this->loaded = $texts;
     }

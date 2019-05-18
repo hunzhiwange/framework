@@ -36,14 +36,14 @@ class I18n implements II18n
      *
      * @var string
      */
-    protected $i18n;
+    protected string $i18n;
 
     /**
      * 语言数据.
      *
      * @var array
      */
-    protected $text = [];
+    protected array $text = [];
 
     /**
      * 构造函数.
