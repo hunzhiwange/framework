@@ -42,14 +42,14 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $name = 'session:clear';
+    protected string $name = 'session:clear';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Clear cache of session.';
+    protected string $description = 'Clear cache of session.';
 
     /**
      * 响应命令.

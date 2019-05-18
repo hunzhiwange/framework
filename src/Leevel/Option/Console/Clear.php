@@ -39,14 +39,14 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $name = 'option:clear';
+    protected string $name = 'option:clear';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Clear cache of option.';
+    protected string $description = 'Clear cache of option.';
 
     /**
      * 响应命令.

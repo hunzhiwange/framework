@@ -40,14 +40,14 @@ class Rollback extends Command
      *
      * @var string
      */
-    protected $name = 'migrate:rollback';
+    protected string $name = 'migrate:rollback';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Just a virtual migrate:rollback.';
+    protected string $description = 'Just a virtual migrate:rollback.';
 
     /**
      * 响应命令.

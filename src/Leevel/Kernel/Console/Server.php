@@ -42,14 +42,14 @@ class Server extends Command
      *
      * @var string
      */
-    protected $name = 'server';
+    protected string $name = 'server';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Start php build-in server.';
+    protected string $description = 'Start php build-in server.';
 
     /**
      * IOC 容器.

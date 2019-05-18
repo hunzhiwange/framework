@@ -40,14 +40,14 @@ class Development extends Command
      *
      * @var string
      */
-    protected $name = 'development';
+    protected string $name = 'development';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Clear all caches for development mode.';
+    protected string $description = 'Clear all caches for development mode.';
 
     /**
      * 响应命令.

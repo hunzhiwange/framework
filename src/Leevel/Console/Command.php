@@ -57,21 +57,21 @@ abstract class Command extends SymfonyCommand
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 命令名字.
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description;
+    protected string $description;
 
     /**
      * 命令帮助.

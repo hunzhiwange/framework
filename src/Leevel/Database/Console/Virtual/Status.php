@@ -40,14 +40,14 @@ class Status extends Command
      *
      * @var string
      */
-    protected $name = 'migrate:status';
+    protected string $name = 'migrate:status';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Just a virtual migrate:status.';
+    protected string $description = 'Just a virtual migrate:status.';
 
     /**
      * 响应命令.

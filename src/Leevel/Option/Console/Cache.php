@@ -42,14 +42,14 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $name = 'option:cache';
+    protected string $name = 'option:cache';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Merge all option file to a file.';
+    protected string $description = 'Merge all option file to a file.';
 
     /**
      * 基础路径.

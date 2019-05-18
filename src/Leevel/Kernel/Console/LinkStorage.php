@@ -42,14 +42,14 @@ class LinkStorage extends Command
      *
      * @var string
      */
-    protected $name = 'link:storage';
+    protected string $name = 'link:storage';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Create a symbolic link from `storage` to `www/storage`.';
+    protected string $description = 'Create a symbolic link from `storage` to `www/storage`.';
 
     /**
      * 响应命令.

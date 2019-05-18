@@ -33,9 +33,9 @@ use Leevel\Console\Command;
  */
 class CallOtherCommand extends Command
 {
-    protected $name = 'call:other';
+    protected string $name = 'call:other';
 
-    protected $description = 'call other command for test.';
+    protected string $description = 'call other command for test.';
 
     public function handle()
     {

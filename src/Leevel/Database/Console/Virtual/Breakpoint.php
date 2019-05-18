@@ -40,14 +40,14 @@ class Breakpoint extends Command
      *
      * @var string
      */
-    protected $name = 'migrate:breakpoint';
+    protected string $name = 'migrate:breakpoint';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Just a virtual migrate:breakpoint.';
+    protected string $description = 'Just a virtual migrate:breakpoint.';
 
     /**
      * 响应命令.

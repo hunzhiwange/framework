@@ -40,14 +40,14 @@ class SeedRun extends Command
      *
      * @var string
      */
-    protected $name = 'migrate:seedrun';
+    protected string $name = 'migrate:seedrun';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Just a virtual migrate:seedrun.';
+    protected string $description = 'Just a virtual migrate:seedrun.';
 
     /**
      * 响应命令.

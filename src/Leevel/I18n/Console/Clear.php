@@ -41,14 +41,14 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $name = 'i18n:clear';
+    protected string $name = 'i18n:clear';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Clear cache of i18n.';
+    protected string $description = 'Clear cache of i18n.';
 
     /**
      * 响应命令.

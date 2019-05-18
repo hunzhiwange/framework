@@ -70,9 +70,9 @@ class ApplicationTest extends TestCase
 
 class Test1 extends Command
 {
-    protected $name = 'test1';
+    protected string $name = 'test1';
 
-    protected $description = 'test1 for command';
+    protected string $description = 'test1 for command';
 
     public function handle()
     {
@@ -81,9 +81,9 @@ class Test1 extends Command
 
 class Test2 extends Command
 {
-    protected $name = 'test2';
+    protected string $name = 'test2';
 
-    protected $description = 'test2 for command';
+    protected string $description = 'test2 for command';
 
     public function __construct()
     {

@@ -48,14 +48,14 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $name = 'view:cache';
+    protected string $name = 'view:cache';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Compile all view files.';
+    protected string $description = 'Compile all view files.';
 
     /**
      * IOC 容器.

@@ -42,14 +42,14 @@ class DocFramework extends Command
      *
      * @var string
      */
-    protected $name = 'make:docwithin';
+    protected string $name = 'make:docwithin';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Markdown generation based on within test cases.';
+    protected string $description = 'Markdown generation based on within test cases.';
 
     /**
      * 响应命令.

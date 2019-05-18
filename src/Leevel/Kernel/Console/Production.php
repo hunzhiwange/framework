@@ -40,14 +40,14 @@ class Production extends Command
      *
      * @var string
      */
-    protected $name = 'production';
+    protected string $name = 'production';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Let your app run faster in production.';
+    protected string $description = 'Let your app run faster in production.';
 
     /**
      * 响应命令.

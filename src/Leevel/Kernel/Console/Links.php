@@ -39,14 +39,14 @@ class Links extends Command
      *
      * @var string
      */
-    protected $name = 'links';
+    protected string $name = 'links';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Create all symbolic links.';
+    protected string $description = 'Create all symbolic links.';
 
     /**
      * 响应命令.

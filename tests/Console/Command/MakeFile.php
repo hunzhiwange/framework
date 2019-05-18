@@ -34,9 +34,9 @@ use Leevel\Console\Make;
  */
 class MakeFile extends Make
 {
-    protected $name = 'make:test';
+    protected string $name = 'make:test';
 
-    protected $description = 'Create a test file.';
+    protected string $description = 'Create a test file.';
 
     public function handle()
     {

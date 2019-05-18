@@ -40,14 +40,14 @@ class SeedCreate extends Command
      *
      * @var string
      */
-    protected $name = 'migrate:seedcreate';
+    protected string $name = 'migrate:seedcreate';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Just a virtual migrate:seedcreate.';
+    protected string $description = 'Just a virtual migrate:seedcreate.';
 
     /**
      * 响应命令.

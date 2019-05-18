@@ -46,14 +46,14 @@ class Doc extends Command
      *
      * @var string
      */
-    protected $name = 'make:doc';
+    protected string $name = 'make:doc';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Markdown generation based on test cases.';
+    protected string $description = 'Markdown generation based on test cases.';
 
     /**
      * 文档解析器.

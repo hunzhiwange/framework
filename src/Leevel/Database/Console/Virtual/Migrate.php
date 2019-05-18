@@ -40,14 +40,14 @@ class Migrate extends Command
      *
      * @var string
      */
-    protected $name = 'migrate:migrate';
+    protected string $name = 'migrate:migrate';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Just a virtual migrate:migrate.';
+    protected string $description = 'Just a virtual migrate:migrate.';
 
     /**
      * 响应命令.

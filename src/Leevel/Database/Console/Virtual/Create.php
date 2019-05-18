@@ -40,14 +40,14 @@ class Create extends Command
      *
      * @var string
      */
-    protected $name = 'migrate:create';
+    protected string $name = 'migrate:create';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Just a virtual migrate:create.';
+    protected string $description = 'Just a virtual migrate:create.';
 
     /**
      * 响应命令.

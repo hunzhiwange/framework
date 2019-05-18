@@ -33,9 +33,9 @@ use Leevel\Console\Command;
  */
 class Bar extends Command
 {
-    protected $name = 'console:bar';
+    protected string $name = 'console:bar';
 
-    protected $description = 'This is a foo command';
+    protected string $description = 'This is a foo command';
 
     protected $help = <<<'EOF'
         The <info>%command.name%</info> command to show how to make a command:

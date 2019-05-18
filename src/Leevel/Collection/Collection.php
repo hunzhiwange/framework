@@ -49,14 +49,14 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @var array
      */
-    protected $elements = [];
+    protected array $elements = [];
 
     /**
      * 验证
      *
      * @var bool
      */
-    protected $valid = true;
+    protected bool $valid = true;
 
     /**
      * 类型.

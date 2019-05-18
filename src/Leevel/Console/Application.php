@@ -40,7 +40,7 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 创建一个命令行应用程序.

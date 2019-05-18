@@ -33,9 +33,9 @@ use Leevel\Console\Command;
  */
 class Test1 extends Command
 {
-    protected $name = 'load1:test1';
+    protected string $name = 'load1:test1';
 
-    protected $description = 'load1 test1 for command';
+    protected string $description = 'load1 test1 for command';
 
     public function handle()
     {

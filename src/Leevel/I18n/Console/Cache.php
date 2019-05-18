@@ -45,14 +45,14 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $name = 'i18n:cache';
+    protected string $name = 'i18n:cache';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Cache i18n to a file.';
+    protected string $description = 'Cache i18n to a file.';
 
     /**
      * IOC 容器.

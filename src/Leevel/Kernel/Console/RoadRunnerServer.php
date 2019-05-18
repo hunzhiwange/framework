@@ -49,14 +49,14 @@ class RoadRunnerServer extends Command
      *
      * @var string
      */
-    protected $name = 'rrserver';
+    protected string $name = 'rrserver';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Start road runner server.';
+    protected string $description = 'Start road runner server.';
 
     /**
      * 响应命令.

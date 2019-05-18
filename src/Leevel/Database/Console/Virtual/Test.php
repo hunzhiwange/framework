@@ -40,14 +40,14 @@ class Test extends Command
      *
      * @var string
      */
-    protected $name = 'migrate:test';
+    protected string $name = 'migrate:test';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Just a virtual migrate:test.';
+    protected string $description = 'Just a virtual migrate:test.';
 
     /**
      * 响应命令.
