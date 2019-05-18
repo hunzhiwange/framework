@@ -54,14 +54,14 @@ class Container implements IContainer, ArrayAccess
      *
      * @var array
      */
-    protected $services = [];
+    protected array $services = [];
 
     /**
      * 注册的实例.
      *
      * @var array
      */
-    protected $instances = [];
+    protected array $instances = [];
 
     /**
      * 单一实例.
@@ -75,7 +75,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @var array
      */
-    protected $alias = [];
+    protected array $alias = [];
 
     /**
      * 协程.
@@ -89,28 +89,28 @@ class Container implements IContainer, ArrayAccess
      *
      * @var array
      */
-    protected $coroutineInstances = [];
+    protected array $coroutineInstances = [];
 
     /**
      * 是否已经初始化引导
      *
      * @var bool
      */
-    protected $isBootstrap = false;
+    protected bool $isBootstrap = false;
 
     /**
      * 延迟载入服务提供者.
      *
      * @var array
      */
-    protected $deferredProviders = [];
+    protected array $deferredProviders = [];
 
     /**
      * 服务提供者引导
      *
      * @var array
      */
-    protected $providerBootstraps = [];
+    protected array $providerBootstraps = [];
 
     /**
      * 禁止克隆.

@@ -38,7 +38,7 @@ abstract class Provider
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 创建一个服务容器提供者实例.
