@@ -36,14 +36,14 @@ trait FlowControl
      *
      * @var bool
      */
-    protected $inFlowControl = false;
+    protected bool $inFlowControl = false;
 
     /**
      * 条件表达式是否为真
      *
      * @var bool
      */
-    protected $isFlowControlTrue = false;
+    protected bool $isFlowControlTrue = false;
 
     /**
      * 条件语句 ifs.
