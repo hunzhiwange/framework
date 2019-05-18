@@ -38,7 +38,7 @@ abstract class EventProvider extends Provider
      *
      * @var array
      */
-    protected $listeners = [];
+    protected array $listeners = [];
 
     /**
      * 注册事件监听器.

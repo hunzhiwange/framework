@@ -61,7 +61,7 @@ class EventProviderTest extends TestCase
 
 class TestEventProvider extends EventProvider
 {
-    protected $listeners = [
+    protected array $listeners = [
         TestEvent::class => [
             // 优先级支持写法，数字越小越早执行，默认为 500
             TestListener1::class,

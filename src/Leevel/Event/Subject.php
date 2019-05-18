@@ -44,21 +44,21 @@ class Subject implements ISubject, SplSubject
      *
      * @var \Leevel\Di\IContainer
      */
-    public $container;
+    public IContainer $container;
 
     /**
      * 通知附加参数.
      *
      * @var array
      */
-    public $notifyArgs = [];
+    public array $notifyArgs = [];
 
     /**
      * 观察者角色 observer.
      *
-     * @var \SplObjectStorage(\SplObserver)
+     * @var \SplObjectStorage
      */
-    protected $observers;
+    protected SplObjectStorage $observers;
 
     /**
      * 构造函数.

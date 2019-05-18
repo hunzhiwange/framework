@@ -38,21 +38,21 @@ class Dispatch implements IDispatch
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 注册的监听器.
      *
      * @var array
      */
-    protected $listeners = [];
+    protected array $listeners = [];
 
     /**
      * 通配符的监听器.
      *
      * @var array
      */
-    protected $wildcards = [];
+    protected array $wildcards = [];
 
     /**
      * 创建一个事件解析器.

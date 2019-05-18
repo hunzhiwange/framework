@@ -42,14 +42,14 @@ class Observer implements SplObserver
      *
      * @var \SplSubject
      */
-    protected $subject;
+    protected SplSubject $subject;
 
     /**
      * 观察者实现.
      *
      * @var \Closure
      */
-    protected $handle;
+    protected ?Closure $handle;
 
     /**
      * 构造函数.
