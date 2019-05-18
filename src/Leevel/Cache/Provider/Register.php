@@ -75,9 +75,11 @@ class Register extends Provider
      */
     protected function caches(): void
     {
-        $this->container->singleton('caches', function (IContainer $container): Manager {
-            return new Manager($container);
-        });
+        $this->container
+            ->singleton(
+                'caches',
+                fn (IContainer $container): Manager => new Manager($container),
+            );
     }
 
     /**
@@ -85,9 +87,11 @@ class Register extends Provider
      */
     protected function cache(): void
     {
-        $this->container->singleton('cache', function (IContainer $container): Cache {
-            return $container['caches']->connect();
-        });
+        $this->container
+            ->singleton(
+                'cache',
+                fn (IContainer $container): Cache => $container['caches']->connect(),
+            );
     }
 
     /**
@@ -95,8 +99,10 @@ class Register extends Provider
      */
     protected function cacheLoad(): void
     {
-        $this->container->singleton('cache.load', function (IContainer $container): Load {
-            return new Load($container, $container['cache']);
-        });
+        $this->container
+            ->singleton(
+                'cache.load',
+                fn (IContainer $container): Load => new Load($container, $container['cache']),
+            );
     }
 }

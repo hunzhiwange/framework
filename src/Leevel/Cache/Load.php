@@ -39,21 +39,21 @@ class Load
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * cache 仓储.
      *
      * @var \Leevel\Cache\ICache
      */
-    protected $cache;
+    protected ICache $cache;
 
     /**
      * 已经载入的缓存数据.
      *
      * @var array
      */
-    protected $cacheLoaded = [];
+    protected array $cacheLoaded = [];
 
     /**
      * 构造函数.
@@ -282,13 +282,8 @@ class Load
             $args = explode(',', $args);
         }
 
-        $args = array_map(function (string $item) {
-            return ctype_digit($item) ? (int) $item : $item;
-        }, $args);
+        $args = array_map(fn(string $item) => ctype_digit($item) ? (int) $item : $item, $args);
 
-        return [
-            $name,
-            $args,
-        ];
+        return [$name, $args];
     }
 }

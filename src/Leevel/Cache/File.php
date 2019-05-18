@@ -54,7 +54,7 @@ class File extends Cache implements ICache
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'time_preset' => [],
         'expire'      => 86400,
         'path'        => '',
