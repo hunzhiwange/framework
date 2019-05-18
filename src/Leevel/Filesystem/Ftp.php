@@ -41,7 +41,7 @@ class Ftp extends Filesystem implements IFilesystem
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         // 主机
         'host' => 'ftp.example.com',
 

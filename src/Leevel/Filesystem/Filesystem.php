@@ -42,14 +42,14 @@ abstract class Filesystem
      *
      * @var \League\Flysystem\Filesystem
      */
-    protected $filesystem;
+    protected LeagueFilesystem $filesystem;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [];
+    protected array $option = [];
 
     /**
      * 构造函数.

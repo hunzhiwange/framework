@@ -42,7 +42,7 @@ class Zip extends Filesystem implements IFilesystem
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'path' => '',
     ];
 

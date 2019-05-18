@@ -42,7 +42,7 @@ class Sftp extends Filesystem implements IFilesystem
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         // 主机
         'host' => 'sftp.example.com',
 

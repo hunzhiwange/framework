@@ -41,7 +41,7 @@ class Local extends Filesystem implements IFilesystem
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'path'          => '',
         'write_flags'   => LOCK_EX,
         'link_handling' => AdapterLocal::DISALLOW_LINKS,
