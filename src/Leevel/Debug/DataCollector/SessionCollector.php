@@ -41,7 +41,7 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
      *
      * @var \Leevel\Session\ISession
      */
-    protected $session;
+    protected ISession $session;
 
     /**
      * 构造函数.

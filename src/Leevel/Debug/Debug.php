@@ -74,28 +74,28 @@ class Debug extends DebugBar
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 是否启用调试.
      *
      * @var bool
      */
-    protected $enabled = true;
+    protected bool $enabled = true;
 
     /**
      * 是否已经初始化引导
      *
      * @var bool
      */
-    protected $isBootstrap = false;
+    protected bool $isBootstrap = false;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'json'       => true,
         'console'    => true,
         'javascript' => true,

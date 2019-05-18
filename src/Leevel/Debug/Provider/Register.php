@@ -71,9 +71,11 @@ class Register extends Provider
      */
     protected function debug(): void
     {
-        $this->container->singleton('debug', function (IContainer $container): Debug {
-            return new Debug($container, $container->make('option')->get('debug\\'));
-        });
+        $this->container
+            ->singleton(
+                'debug',
+                fn (IContainer $container): Debug => new Debug($container, $container->make('option')->get('debug\\')),
+            );
     }
 
     /**

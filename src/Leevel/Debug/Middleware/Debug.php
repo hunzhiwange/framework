@@ -42,14 +42,14 @@ class Debug
      *
      * @var \Leevel\Kernel\IApp
      */
-    protected $app;
+    protected IApp $app;
 
     /**
      * debug 管理.
      *
      * @var \Leevel\Debug\Debug
      */
-    protected $debug;
+    protected Debugs $debug;
 
     /**
      * 构造函数.

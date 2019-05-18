@@ -36,7 +36,7 @@ class JsonRenderer
      *
      * @var \Leevel\Debug\Debug
      */
-    protected $debugBar;
+    protected Debug $debugBar;
 
     /**
      * 构造函数.
