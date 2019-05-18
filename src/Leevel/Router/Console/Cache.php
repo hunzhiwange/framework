@@ -49,7 +49,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $description = 'OpenApi as the router.';
+    protected string $description = 'OpenApi as the router.';
 
     /**
      * 响应命令.
