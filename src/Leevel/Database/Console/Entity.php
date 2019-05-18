@@ -46,14 +46,14 @@ class Entity extends Make
      *
      * @var string
      */
-    protected $name = 'make:entity';
+    protected string $name = 'make:entity';
 
     /**
      * 命令描述.
      *
      * @var string
      */
-    protected $description = 'Create a new entity.';
+    protected string $description = 'Create a new entity.';
 
     /**
      * 命令帮助.

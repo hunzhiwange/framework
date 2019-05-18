@@ -43,14 +43,14 @@ class Controller extends Make
      *
      * @var string
      */
-    protected $name = 'make:controller';
+    protected string $name = 'make:controller';
 
     /**
      * 命令描述.
      *
      * @var string
      */
-    protected $description = 'Create a new controller.';
+    protected string $description = 'Create a new controller.';
 
     /**
      * 命令帮助.

@@ -42,7 +42,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $name = 'router:cache';
+    protected string $name = 'router:cache';
 
     /**
      * 命令行描述.

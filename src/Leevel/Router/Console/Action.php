@@ -43,14 +43,14 @@ class Action extends Make
      *
      * @var string
      */
-    protected $name = 'make:action';
+    protected string $name = 'make:action';
 
     /**
      * 命令描述.
      *
      * @var string
      */
-    protected $description = 'Create a new action.';
+    protected string $description = 'Create a new action.';
 
     /**
      * 命令帮助.
