@@ -88,15 +88,9 @@ class Register extends Provider
     {
         $this->container->singleton('url', function (IContainer $container): Url {
             $option = $container['option'];
-            $router = $container['router'];
-
             $options = [];
 
-            foreach ([
-                'with_suffix',
-                'suffix',
-                'domain',
-            ] as $item) {
+            foreach (['with_suffix', 'suffix', 'domain'] as $item) {
                 $options[$item] = $option->get($item);
             }
 
