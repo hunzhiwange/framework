@@ -82,9 +82,11 @@ class Register extends Provider
      */
     protected function viewViews(): void
     {
-        $this->container->singleton('view.views', function (IContainer $container): Manager {
-            return new Manager($container);
-        });
+        $this->container
+            ->singleton(
+                'view.views',
+                fn (IContainer $container): Manager => new Manager($container),
+            );
     }
 
     /**
@@ -92,9 +94,11 @@ class Register extends Provider
      */
     protected function viewView(): void
     {
-        $this->container->singleton('view.view', function (IContainer $container): IView {
-            return $container['view.views']->connect();
-        });
+        $this->container
+            ->singleton(
+                'view.view',
+                fn (IContainer $container): IView => $container['view.views']->connect(),
+            );
     }
 
     /**
@@ -102,9 +106,11 @@ class Register extends Provider
      */
     protected function viewCompiler(): void
     {
-        $this->container->singleton('view.compiler', function (): Compiler {
-            return new Compiler();
-        });
+        $this->container
+            ->singleton(
+                'view.compiler',
+                fn (): Compiler => new Compiler(),
+            );
     }
 
     /**
@@ -112,10 +118,14 @@ class Register extends Provider
      */
     protected function viewParser(): void
     {
-        $this->container->singleton('view.parser', function (IContainer $container): Parser {
-            return (new Parser($container['view.compiler']))
-                ->registerCompilers()
-                ->registerParsers();
-        });
+        $this->container
+            ->singleton(
+                'view.parser',
+                function (IContainer $container): Parser {
+                    return (new Parser($container['view.compiler']))
+                        ->registerCompilers()
+                        ->registerParsers();
+                },
+            );
     }
 }

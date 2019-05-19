@@ -38,7 +38,7 @@ class Compiler implements ICompiler
      *
      * @var array
      */
-    protected $codeMap = [
+    protected array $codeMap = [
         'php'      => '~',
         'note'     => '#',
         'variable' => '$',
@@ -59,21 +59,21 @@ class Compiler implements ICompiler
      *
      * @var array
      */
-    protected $nodeMap = [];
+    protected array $nodeMap = [];
 
     /**
      * js 风格支持的特殊别名映射.
      *
      * @var array
      */
-    protected $jsMap = [];
+    protected array $jsMap = [];
 
     /**
      * js 风格标签.
      *
      * @var array
      */
-    protected $jsTag = [
+    protected array $jsTag = [
         // required 属性不能为空，single 单标签
         'if' => [
             'attr' => [
@@ -127,7 +127,7 @@ class Compiler implements ICompiler
      *
      * @var array
      */
-    protected $nodeTag = [
+    protected array $nodeTag = [
         // required 属性不能为空，single 单标签
         'assign' => [
             'attr' => [

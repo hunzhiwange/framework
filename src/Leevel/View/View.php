@@ -38,14 +38,14 @@ abstract class View
      *
      * @var array
      */
-    protected $vars = [];
+    protected array $vars = [];
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [];
+    protected array $option = [];
 
     /**
      * 构造函数.

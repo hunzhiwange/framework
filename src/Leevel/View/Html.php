@@ -39,21 +39,21 @@ class Html extends View implements IView
      *
      * @var \Leevel\View\IParser
      */
-    protected $parser;
+    protected ?IParser $parser = null;
 
     /**
      * 解析 parse.
      *
-     * @var \Closure
+     * @var \Closure|null
      */
-    protected $parseResolver;
+    protected ?Closure $parseResolver = null;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'theme_path'            => '',
         'suffix'                => '.html',
         'cache_path'            => '',

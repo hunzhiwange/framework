@@ -47,42 +47,42 @@ class Parser implements IParser
      *
      * @var \Leevel\View\ICompiler
      */
-    protected $compiler;
+    protected ICompiler $compiler;
 
     /**
      * 成对节点栈.
      *
      * @var \Leevel\Stack\Stack
      */
-    protected $nodeStack;
+    protected Stack $nodeStack;
 
     /**
      * js 风格 和 node 共用分析器.
      *
      * @var bool
      */
-    protected $jsNode = false;
+    protected bool $jsNode = false;
 
     /**
      * 编译器.
      *
      * @var array
      */
-    protected $compilers = [];
+    protected array $compilers = [];
 
     /**
      * 分析器.
      *
      * @var array
      */
-    protected $parses = [];
+    protected array $parses = [];
 
     /**
      * 分析器定界符.
      *
      * @var array
      */
-    protected $tags = [
+    protected array $tags = [
         // 全局
         'global' => [
             'left'  => '[<\{]',
@@ -125,14 +125,14 @@ class Parser implements IParser
      *
      * @var array
      */
-    protected $themeTree = [];
+    protected array $themeTree = [];
 
     /**
      * 模板项结构.
      *
      * @var array
      */
-    protected static $themeStruct = [
+    protected static array $themeStruct = [
         // 原模板
         'source'  => '',
         'content' => '',
@@ -148,14 +148,14 @@ class Parser implements IParser
      *
      * @var string
      */
-    protected $sourceFile;
+    protected ?string $sourceFile = null;
 
     /**
      * 当前编译缓存文件.
      *
      * @var string
      */
-    protected $cachePath;
+    protected ?string $cachePath = null;
 
     /**
      * 构造函数.

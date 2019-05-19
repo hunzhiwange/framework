@@ -36,7 +36,7 @@ class Phpui extends View implements IView
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'theme_path'            => '',
         'suffix'                => '.php',
     ];
