@@ -41,28 +41,28 @@ class Pipeline implements IPipeline
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 管道传递的对象
      *
      * @var array
      */
-    protected $passed = [];
+    protected array $passed = [];
 
     /**
      * 管道中所有执行工序.
      *
      * @var array
      */
-    protected $stage = [];
+    protected array $stage = [];
 
     /**
      * 迭代器.
      *
      * @var \Generator
      */
-    protected $generator;
+    protected Generator $generator;
 
     /**
      * 创建一个管道.
