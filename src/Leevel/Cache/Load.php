@@ -99,9 +99,7 @@ class Load
      */
     public function data($names, array $option = [], bool $force = false): array
     {
-        $names = is_array($names) ? $names : [
-            $names,
-        ];
+        $names = is_array($names) ? $names : [$names];
 
         foreach ($names as $name) {
             if (!isset($this->cacheLoaded[$name]) || $force) {
@@ -125,9 +123,7 @@ class Load
      */
     public function refresh($names): void
     {
-        $tmp = is_array($names) ? $names : [
-            $names,
-        ];
+        $tmp = is_array($names) ? $names : [$names];
 
         foreach ($tmp as $name) {
             $this->delete($name);
@@ -146,15 +142,11 @@ class Load
     public function dataLoaded($names, array $option = [], bool $force = false)
     {
         $result = [];
-
-        $names = is_array($names) ? $names : [
-            $names,
-        ];
+        $names = is_array($names) ? $names : [$names];
 
         foreach ($names as $name) {
             $result[$name] = array_key_exists($name, $this->cacheLoaded) ?
-                $this->cacheLoaded[$name] :
-                false;
+                $this->cacheLoaded[$name] : false;
         }
 
         return count($result) > 1 ? $result : reset($result);
@@ -215,13 +207,15 @@ class Load
         }
 
         if (!is_object($cache = $this->container->make($name))) {
-            throw new InvalidArgumentException(sprintf('Cache %s is not valid.', $name));
+            $e = sprintf('Cache %s is not valid.', $name);
+
+            throw new InvalidArgumentException($e);
         }
 
         if (!is_callable([$cache, $method])) {
-            throw new InvalidArgumentException(
-                sprintf('Cache %s is not a callable.', $name.'@'.$method)
-            );
+            $e = sprintf('Cache %s is not a callable.', $name.'@'.$method);
+
+            throw new InvalidArgumentException($e);
         }
 
         $sourceData = $cache->{$method}(...$params);
@@ -286,9 +280,6 @@ class Load
             return ctype_digit($item) ? (int) $item : $item;
         }, $args);
 
-        return [
-            $name,
-            $args,
-        ];
+        return [$name, $args];
     }
 }
