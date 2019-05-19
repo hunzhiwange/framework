@@ -51,6 +51,7 @@ class RouterProviderTest extends TestCase
         $container = Container::singletons();
         $app = new App($container, '');
         $app->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $app->setPath(__DIR__.'/Apps/AppScanRouter');
         $app->setRouterCachedPath(__DIR__.'/router_cached.php');
 
         $container->instance('app', $app);
@@ -83,6 +84,7 @@ class RouterProviderTest extends TestCase
         $container = Container::singletons();
         $app = new App($container, '');
         $app->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $app->setPath(__DIR__.'/Apps/AppScanRouter');
         $app->setRouterCachedPath(__DIR__.'/router_cached.php');
 
         $container->instance('app', $app);
@@ -177,7 +179,7 @@ class RouterProvider1 extends RouterProvider
 
 class Url2
 {
-    public function getDomain()
+    public function getDomain(): string
     {
         return 'queryphp.com';
     }

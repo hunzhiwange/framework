@@ -18,32 +18,43 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Petstore;
+
 /**
- * @OA\Get(
- *     path="/api/v1/petLeevel/{petId:[A-Za-z]+}/",
- *     tags={"pet"},
- *     summary="Just test the router",
- *     operationId="petLeevel",
- *     @OA\Parameter(
- *         name="petId",
- *         in="path",
- *         description="ID of pet to return",
- *         required=true,
- *         @OA\Schema(
- *             type="integer",
- *             format="int64"
- *         )
- *     ),
- *     @OA\Response(
- *         response=405,
- *         description="Invalid input"
- *     ),
- *     security={
- *         {"petstore_auth": {"write:pets", "read:pets"}}
- *     },
- *     requestBody={"$ref": "#/components/requestBodies/Pet"}
+ * Class Tag.
+ *
+ *
+ * @author  Donii Sergii <doniysa@gmail.com>
+ *
+ * @OA\Schema(
+ *     type="object",
+ *     description="Tag",
+ *     title="Tag",
+ *     @OA\Xml(
+ *         name="Tag"
+ *     )
  * )
  */
-class _
+class Tag
 {
+    /**
+     * @OA\Property(
+     *     format="int64",
+     *     description="ID",
+     *     title="ID"
+     * )
+     *
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @OA\Property(
+     *     description="Name",
+     *     title="Name"
+     * )
+     *
+     * @var string
+     */
+    private $name;
 }

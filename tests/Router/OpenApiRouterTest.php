@@ -40,7 +40,7 @@ class OpenApiRouterTest extends TestCase
     {
         $openApiRouter = new OpenApiRouter($this->createMiddlewareParser(), 'queryphp.cn');
 
-        $scandir = __DIR__.'/Apps/Petstore30';
+        $scandir = __DIR__.'/Apps/Petstore';
 
         $openApiRouter->addScandir($scandir);
         $result = $openApiRouter->handle();

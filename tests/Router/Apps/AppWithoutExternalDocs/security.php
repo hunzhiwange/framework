@@ -39,6 +39,6 @@ declare(strict_types=1);
  *     name="api_key"
  * )
  */
-class Foobar
+class _
 {
 }

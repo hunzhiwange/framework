@@ -1003,6 +1003,7 @@ class RouterAnnotationTest extends TestCase
         $container = Container::singletons();
         $app = new App($container, '');
         $app->setAppPath(__DIR__.'/Apps/AppForAnnotation');
+        $app->setPath(__DIR__.'/Apps/AppForAnnotation');
         $app->setRouterCachedPath(__DIR__.'/router_cached.php');
 
         $container->instance('app', $app);
@@ -1059,7 +1060,7 @@ class RouterProviderAnnotation extends RouterProvider
 
 class UrlAnnotation
 {
-    public function getDomain()
+    public function getDomain(): string
     {
         return 'queryphp.com';
     }
