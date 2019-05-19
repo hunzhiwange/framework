@@ -44,12 +44,6 @@ class ManagerTest extends TestCase
         $foo = $manager->connect('foo');
         $bar = $manager->connect('bar');
 
-        $this->assertInstanceof(IBag::class, $foo);
-        $this->assertInstanceof(Bag::class, $foo);
-
-        $this->assertInstanceof(IBag::class, $bar);
-        $this->assertInstanceof(Bag::class, $bar);
-
         $this->assertSame(['driver' => 'foo', 'option1' => 'world'], $foo->option());
         $this->assertSame('hello foo', $foo->foo());
         $this->assertSame('hello foo bar', $foo->bar('bar'));
@@ -69,21 +63,8 @@ class ManagerTest extends TestCase
 
         $foo = $manager->connect('foo');
         $bar = $manager->connect('bar');
-
-        $this->assertInstanceof(IBag::class, $foo);
-        $this->assertInstanceof(Bag::class, $foo);
-
-        $this->assertInstanceof(IBag::class, $bar);
-        $this->assertInstanceof(Bag::class, $bar);
-
         $foo2 = $manager->connect('foo');
         $bar2 = $manager->connect('bar');
-
-        $this->assertInstanceof(IBag::class, $foo2);
-        $this->assertInstanceof(Bag::class, $foo2);
-
-        $this->assertInstanceof(IBag::class, $bar2);
-        $this->assertInstanceof(Bag::class, $bar2);
 
         $this->assertSame($foo, $foo2);
         $this->assertSame($bar, $bar2);
@@ -95,21 +76,8 @@ class ManagerTest extends TestCase
 
         $foo = $manager->connect('foo');
         $bar = $manager->connect('bar');
-
-        $this->assertInstanceof(IBag::class, $foo);
-        $this->assertInstanceof(Bag::class, $foo);
-
-        $this->assertInstanceof(IBag::class, $bar);
-        $this->assertInstanceof(Bag::class, $bar);
-
         $foo2 = $manager->reconnect('foo');
         $bar2 = $manager->reconnect('bar');
-
-        $this->assertInstanceof(IBag::class, $foo2);
-        $this->assertInstanceof(Bag::class, $foo2);
-
-        $this->assertInstanceof(IBag::class, $bar2);
-        $this->assertInstanceof(Bag::class, $bar2);
 
         $this->assertFalse($foo === $foo2);
         $this->assertFalse($bar === $bar2);
@@ -122,23 +90,11 @@ class ManagerTest extends TestCase
         $foo = $manager->connect('foo');
         $bar = $manager->connect('bar');
 
-        $this->assertInstanceof(IBag::class, $foo);
-        $this->assertInstanceof(Bag::class, $foo);
-
-        $this->assertInstanceof(IBag::class, $bar);
-        $this->assertInstanceof(Bag::class, $bar);
-
         $manager->disconnect('foo');
         $manager->disconnect('bar');
 
         $foo2 = $manager->connect('foo');
         $bar2 = $manager->connect('bar');
-
-        $this->assertInstanceof(IBag::class, $foo2);
-        $this->assertInstanceof(Bag::class, $foo2);
-
-        $this->assertInstanceof(IBag::class, $bar2);
-        $this->assertInstanceof(Bag::class, $bar2);
 
         $this->assertFalse($foo === $foo2);
         $this->assertFalse($bar === $bar2);
@@ -214,16 +170,13 @@ class ManagerTest extends TestCase
         );
 
         $manager = $this->createManager();
-
         $manager->setDefaultDriver('notFound');
-
         $manager->foo();
     }
 
     protected function createManager()
     {
         $container = new Container();
-
         $manager = new Test1($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
@@ -262,11 +215,6 @@ class Test1 extends Manager
         return 'test1';
     }
 
-    protected function createConnect(object $connect): object
-    {
-        return new Bag($connect);
-    }
-
     protected function makeConnectFoo($options = []): Foo
     {
         return new Foo(
@@ -286,25 +234,6 @@ class Test1 extends Manager
         return $this->filterNullOfOption(
             parent::getConnectOption($connect)
         );
-    }
-}
-
-interface IBag
-{
-}
-
-class Bag implements IBag
-{
-    protected $connect;
-
-    public function __construct(IConnect $connect)
-    {
-        $this->connect = $connect;
-    }
-
-    public function __call(string $method, array $args)
-    {
-        return $this->connect->{$method}(...$args);
     }
 }
 

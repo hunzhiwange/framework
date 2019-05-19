@@ -46,18 +46,6 @@ class Manager extends Managers
     }
 
     /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    protected function createConnect(object $connect): object
-    {
-        return $connect;
-    }
-
-    /**
      * 创建 mysql 连接.
      *
      * @param array $option

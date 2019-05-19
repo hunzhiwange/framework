@@ -46,18 +46,6 @@ class Manager extends Managers implements ILog
     }
 
     /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    protected function createConnect(object $connect): object
-    {
-        return $connect;
-    }
-
-    /**
      * 创建 file 日志驱动.
      *
      * @param array $options

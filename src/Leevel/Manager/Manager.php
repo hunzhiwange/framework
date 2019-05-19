@@ -196,15 +196,6 @@ abstract class Manager
     abstract protected function normalizeOptionNamespace(): string;
 
     /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    abstract protected function createConnect(object $connect): object;
-
-    /**
      * 取得连接名字.
      *
      * @param string $name
@@ -232,21 +223,6 @@ abstract class Manager
             throw new Exception($e);
         }
 
-        return $this->createConnect(
-            $this->createConnectCommon($connect, $options)
-        );
-    }
-
-    /**
-     * 创建连接对象公共入口.
-     *
-     * @param string $connect
-     * @param array  $options
-     *
-     * @return object
-     */
-    protected function createConnectCommon(string $connect, array $options = []): object
-    {
         return $this->{'makeConnect'.ucwords($connect)}($options);
     }
 
