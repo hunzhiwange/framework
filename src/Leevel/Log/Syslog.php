@@ -42,7 +42,7 @@ class Syslog extends Log implements ILog
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'levels'   => [
             ILog::DEBUG,
             ILog::INFO,

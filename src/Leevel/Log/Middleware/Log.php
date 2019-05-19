@@ -41,7 +41,7 @@ class Log
      *
      * @var \Leevel\Log\Manager
      */
-    protected $manager;
+    protected Manager $manager;
 
     /**
      * 构造函数.

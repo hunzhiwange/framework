@@ -41,35 +41,35 @@ abstract class Log
      *
      * @var \Monolog\Logger
      */
-    protected $monolog;
+    protected ?Logger $monolog = null;
 
     /**
      * 事件处理器.
      *
      * @var \Leevel\Event\IDispatch
      */
-    protected $dispatch;
+    protected ?IDispatch $dispatch = null;
 
     /**
      * 当前记录的日志信息.
      *
      * @var array
      */
-    protected $logs = [];
+    protected array $logs = [];
 
     /**
      * 日志数量.
      *
      * @var int
      */
-    protected $count = 0;
+    protected int $count = 0;
 
     /**
      * Monolog 支持日志级别.
      *
      * @var array
      */
-    protected $supportLevel = [
+    protected array $supportLevel = [
         ILog::DEBUG     => Logger::DEBUG,
         ILog::INFO      => Logger::INFO,
         ILog::NOTICE    => Logger::NOTICE,
@@ -85,7 +85,7 @@ abstract class Log
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'levels'   => [
             ILog::DEBUG,
             ILog::INFO,
