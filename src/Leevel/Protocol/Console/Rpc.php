@@ -41,14 +41,14 @@ class Rpc extends BaseServer
      *
      * @var string
      */
-    protected $name = 'rpc:server';
+    protected string $name = 'rpc:server';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Start rpc server';
+    protected string $description = 'Start rpc server';
 
     /**
      * 命令帮助.

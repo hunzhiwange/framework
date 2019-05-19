@@ -41,14 +41,14 @@ class HttpStop extends BaseStop
      *
      * @var string
      */
-    protected $name = 'http:stop';
+    protected string $name = 'http:stop';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Stop http service';
+    protected string $description = 'Stop http service';
 
     /**
      * 创建 server.

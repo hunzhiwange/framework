@@ -41,14 +41,14 @@ class Websocket extends BaseServer
      *
      * @var string
      */
-    protected $name = 'websocket:server';
+    protected string $name = 'websocket:server';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Start websocket server';
+    protected string $description = 'Start websocket server';
 
     /**
      * 命令帮助.

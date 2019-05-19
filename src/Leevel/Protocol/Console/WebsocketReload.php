@@ -41,14 +41,14 @@ class WebsocketReload extends BaseReload
      *
      * @var string
      */
-    protected $name = 'websocket:reload';
+    protected string $name = 'websocket:reload';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Reload websocket service';
+    protected string $description = 'Reload websocket service';
 
     /**
      * 创建 server.

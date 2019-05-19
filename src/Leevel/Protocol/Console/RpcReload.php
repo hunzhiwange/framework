@@ -41,14 +41,14 @@ class RpcReload extends BaseReload
      *
      * @var string
      */
-    protected $name = 'rpc:reload';
+    protected string $name = 'rpc:reload';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Reload rpc service';
+    protected string $description = 'Reload rpc service';
 
     /**
      * 创建 server.

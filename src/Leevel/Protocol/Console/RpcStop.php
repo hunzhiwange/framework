@@ -41,14 +41,14 @@ class RpcStop extends BaseStop
      *
      * @var string
      */
-    protected $name = 'rpc:stop';
+    protected string $name = 'rpc:stop';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Stop rpc service';
+    protected string $description = 'Stop rpc service';
 
     /**
      * 创建 server.

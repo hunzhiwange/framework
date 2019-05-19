@@ -41,14 +41,14 @@ class RpcStatus extends BaseStatus
      *
      * @var string
      */
-    protected $name = 'rpc:status';
+    protected string $name = 'rpc:status';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Status of rpc service';
+    protected string $description = 'Status of rpc service';
 
     /**
      * 创建 server.

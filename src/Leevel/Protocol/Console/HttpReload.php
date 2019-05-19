@@ -41,14 +41,14 @@ class HttpReload extends BaseReload
      *
      * @var string
      */
-    protected $name = 'http:reload';
+    protected string $name = 'http:reload';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Reload http service';
+    protected string $description = 'Reload http service';
 
     /**
      * 创建 server.

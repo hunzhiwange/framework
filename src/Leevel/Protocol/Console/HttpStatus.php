@@ -41,14 +41,14 @@ class HttpStatus extends BaseStatus
      *
      * @var string
      */
-    protected $name = 'http:status';
+    protected string $name = 'http:status';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Status of http service';
+    protected string $description = 'Status of http service';
 
     /**
      * 创建 server.

@@ -41,14 +41,14 @@ class Http extends BaseServer
      *
      * @var string
      */
-    protected $name = 'http:server';
+    protected string $name = 'http:server';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'Start http server';
+    protected string $description = 'Start http server';
 
     /**
      * 命令帮助.
