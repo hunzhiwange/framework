@@ -39,7 +39,7 @@ class BootstrapSimple extends Bootstrap
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         // center,justify
         'align'         => 'center',
         'template'      => '{header} {ul} {prev} {next} {endul} {footer}',

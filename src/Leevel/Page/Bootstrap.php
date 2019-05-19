@@ -36,14 +36,14 @@ class Bootstrap implements IRender
      *
      * @var \Leevel\Page\IPage
      */
-    protected $page;
+    protected IPage $page;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         // lg sm
         'size'          => '',
         'template'      => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',

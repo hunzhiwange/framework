@@ -40,58 +40,58 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 总记录数量.
      *
-     * @var int
+     * @var int|null
      */
-    protected $totalRecord;
+    protected ?int $totalRecord = null;
 
     /**
      * 每页分页数量.
      *
-     * @var int
+     * @var int|null
      */
-    protected $perPage;
+    protected ?int $perPage = null;
 
     /**
      * 当前分页页码
      *
      * @var int
      */
-    protected $currentPage;
+    protected int $currentPage;
 
     /**
      * 总页数.
      *
-     * @var int
+     * @var int|null
      */
-    protected $totalPage;
+    protected ?int $totalPage = null;
 
     /**
      * 分页开始位置.
      *
-     * @var int
+     * @var int|null
      */
-    protected $pageStart;
+    protected ?int $pageStart = null;
 
     /**
      * 分页结束位置.
      *
-     * @var int
+     * @var int|null
      */
-    protected $pageEnd;
+    protected ?int $pageEnd = null;
 
     /**
      * 缓存 url 地址
      *
      * @var string
      */
-    protected $cachedUrl;
+    protected ?string $cachedUrl = null;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'page'          => 'page',
         'range'         => 2,
         'render'        => 'defaults',
