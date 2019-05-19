@@ -56,7 +56,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $basePath;
+    protected string $basePath;
 
     /**
      * 响应命令.
