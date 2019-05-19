@@ -41,7 +41,7 @@ class Throttler
      *
      * @var \Leevel\Throttler\IThrottler
      */
-    protected $throttler;
+    protected IThrottler $throttler;
 
     /**
      * 构造函数.

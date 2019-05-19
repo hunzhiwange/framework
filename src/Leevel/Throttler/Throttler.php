@@ -38,23 +38,23 @@ class Throttler implements IThrottler
     /**
      * 节流器实例.
      *
-     * @var \Leevel\Throttler\RateLimiter[]
+     * @var array
      */
-    protected $rateLimiter = [];
+    protected array $rateLimiter = [];
 
     /**
      * cache.
      *
      * @var \Leevel\Cache\ICache
      */
-    protected $cache;
+    protected ICache $cache;
 
     /**
      * http request.
      *
      * @var \Leevel\Http\IRequest
      */
-    protected $request;
+    protected ?IRequest $request = null;
 
     /**
      * 构造函数.

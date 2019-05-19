@@ -41,28 +41,28 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @var \Leevel\Cache\ICache
      */
-    protected $cache;
+    protected ICache $cache;
 
     /**
      * 缓存键值
      *
      * @var string
      */
-    protected $key;
+    protected string $key;
 
     /**
      * 指定时间内允许的最大请求次数.
      *
      * @var int
      */
-    protected $limit = 60;
+    protected int $limit = 60;
 
     /**
      * 指定时间长度.
      *
      * @var int
      */
-    protected $time = 60;
+    protected int $time = 60;
 
     /**
      * 构造函数.
