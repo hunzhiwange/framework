@@ -122,7 +122,7 @@ abstract class Session
 
         $this->unregisterFlash();
 
-        $this->write($this->getId(), serialize($this->datas));
+        $this->write($this->getId(), serialize($this->data));
 
         $this->started = false;
     }
@@ -134,7 +134,7 @@ abstract class Session
      */
     public function all(): array
     {
-        return $this->datas;
+        return $this->data;
     }
 
     /**
@@ -147,7 +147,7 @@ abstract class Session
     {
         $name = $this->getNormalizeName($name);
 
-        $this->datas[$name] = $value;
+        $this->data[$name] = $value;
     }
 
     /**
@@ -262,7 +262,7 @@ abstract class Session
     {
         $name = $this->getNormalizeName($name);
 
-        return $this->datas[$name] ?? $value;
+        return $this->data[$name] ?? $value;
     }
 
     /**
@@ -287,8 +287,8 @@ abstract class Session
     {
         $name = $this->getNormalizeName($name);
 
-        if (isset($this->datas[$name])) {
-            unset($this->datas[$name]);
+        if (isset($this->data[$name])) {
+            unset($this->data[$name]);
         }
     }
 
@@ -303,7 +303,7 @@ abstract class Session
     {
         $name = $this->getNormalizeName($name);
 
-        return isset($this->datas[$name]);
+        return isset($this->data[$name]);
     }
 
     /**
@@ -311,7 +311,7 @@ abstract class Session
      */
     public function clear(): void
     {
-        $this->datas = [];
+        $this->data = [];
     }
 
     /**
@@ -695,7 +695,7 @@ abstract class Session
      */
     protected function loadData(): void
     {
-        $this->datas = array_merge($this->datas, $this->loadDataFromConnect());
+        $this->data = array_merge($this->data, $this->loadDataFromConnect());
     }
 
     /**

@@ -288,7 +288,7 @@ class Validator implements IValidator
      */
     public function getData(): array
     {
-        return $this->datas;
+        return $this->data;
     }
 
     /**
@@ -304,7 +304,7 @@ class Validator implements IValidator
             return $this;
         }
 
-        $this->datas = $data;
+        $this->data = $data;
 
         return $this;
     }
@@ -322,7 +322,7 @@ class Validator implements IValidator
             return $this;
         }
 
-        $this->datas = array_merge($this->datas, $data);
+        $this->data = array_merge($this->data, $data);
 
         return $this;
     }
@@ -599,12 +599,12 @@ class Validator implements IValidator
     public function getFieldValue(string $rule)
     {
         if (false === strpos($rule, '.')) {
-            if (isset($this->datas[$rule])) {
-                return $this->datas[$rule];
+            if (isset($this->data[$rule])) {
+                return $this->data[$rule];
             }
         } else {
             $parts = explode('.', $rule);
-            $data = $this->datas;
+            $data = $this->data;
 
             foreach ($parts as $part) {
                 if (!isset($data[$part])) {
@@ -1109,7 +1109,7 @@ class Validator implements IValidator
      */
     protected function hasFieldValue(string $rule): bool
     {
-        return array_key_exists($rule, $this->datas);
+        return array_key_exists($rule, $this->data);
     }
 
     /**
