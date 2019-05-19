@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Cache\ICache;
-
 /**
  * 代理.
  *
@@ -368,16 +366,6 @@ trait Proxy
     public function regenerateId(): string
     {
         return $this->proxy()->regenerateId();
-    }
-
-    /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function getCache(): ?ICache
-    {
-        return $this->proxy()->getCache();
     }
 
     /**

@@ -62,19 +62,6 @@ class NullsTest extends TestCase
         $this->assertTrue($session->isStart());
     }
 
-    public function testGetCache()
-    {
-        $session = $this->createNullsSessionHandler();
-
-        $this->assertNull($session->getCache());
-
-        $this->assertTrue($session->open('', 'foo'));
-        $this->assertTrue($session->close());
-        $this->assertTrue($session->write('foo', 'bar'));
-        $this->assertTrue($session->destroy('foo'));
-        $this->assertSame(0, $session->gc(0));
-    }
-
     protected function createNullsSessionHandler(): Nulls
     {
         return new Nulls();

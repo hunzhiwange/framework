@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session\Proxy;
 
-use Leevel\Cache\ICache;
-
 /**
  * 代理 session 接口.
  *
@@ -272,13 +270,6 @@ interface ISession
      * 重新生成 SESSION ID.
      */
     public static function regenerateId(): string;
-
-    /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public static function getCache(): ?ICache;
 
     /**
      * open.

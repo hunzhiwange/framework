@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
-use Leevel\Cache\Cache;
 use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;
@@ -154,17 +153,6 @@ class SessionTest extends TestCase
         $this->assertSame('UID', $session->getName());
 
         $session->save();
-    }
-
-    public function testGetCache()
-    {
-        $session = $this->createFileSessionHandler();
-
-        $this->assertInstanceof(Cache::class, $session->getCache());
-
-        $this->assertTrue($session->open('', 'foo'));
-        $this->assertTrue($session->close());
-        $this->assertSame(0, $session->gc(0));
     }
 
     public function testPut()

@@ -552,16 +552,6 @@ abstract class Session
     }
 
     /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function getCache(): ?ICache
-    {
-        return $this->cache;
-    }
-
-    /**
      * open.
      *
      * @param string $savePath

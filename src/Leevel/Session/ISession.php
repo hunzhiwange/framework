@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Cache\ICache;
-
 /**
  * ISession 接口.
  *
@@ -280,13 +278,6 @@ interface ISession
      * 重新生成 SESSION ID.
      */
     public function regenerateId(): string;
-
-    /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function getCache(): ?ICache;
 
     /**
      * open.

@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
-use Leevel\Cache\Cache;
 use Leevel\Session\ISession;
 use Leevel\Session\Redis;
 use RedisException;
@@ -75,17 +74,6 @@ class RedisTest extends TestCase
 
         $session->start();
         $this->assertTrue($session->isStart());
-    }
-
-    public function testGetCache()
-    {
-        $session = $this->createRedisSessionHandler();
-
-        $this->assertInstanceof(Cache::class, $session->getCache());
-
-        $this->assertTrue($session->open('', 'foo'));
-        $this->assertTrue($session->close());
-        $this->assertSame(0, $session->gc(0));
     }
 
     public function testSave()

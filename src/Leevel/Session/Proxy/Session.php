@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session\Proxy;
 
-use Leevel\Cache\ICache;
 use Leevel\Di\Container;
 use Leevel\Session\Manager;
 
@@ -383,16 +382,6 @@ class Session
     public static function regenerateId(): string
     {
         return self::proxy()->regenerateId();
-    }
-
-    /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public static function getCache(): ?ICache
-    {
-        return self::proxy()->getCache();
     }
 
     /**
