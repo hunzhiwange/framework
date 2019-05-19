@@ -39,14 +39,14 @@ abstract class Manager
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 连接对象
      *
-     * @var object[]
+     * @var array
      */
-    protected $connects = [];
+    protected array $connects = [];
 
     /**
      * 构造函数.
