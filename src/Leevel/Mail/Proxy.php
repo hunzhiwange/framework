@@ -211,9 +211,9 @@ trait Proxy
      *
      * @return int
      */
-    public function sendMail(Closure $callbacks = null, bool $htmlPriority = true): int
+    public function flush(Closure $callbacks = null, bool $htmlPriority = true): int
     {
-        return $this->proxy()->sendMail($callbacks, $htmlPriority);
+        return $this->proxy()->flush($callbacks, $htmlPriority);
     }
 
     /**

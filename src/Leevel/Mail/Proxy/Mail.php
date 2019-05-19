@@ -234,9 +234,9 @@ class Mail implements IMail
      *
      * @return int
      */
-    public static function sendMail(Closure $callbacks = null, bool $htmlPriority = true): int
+    public static function flush(Closure $callbacks = null, bool $htmlPriority = true): int
     {
-        return self::proxy()->sendMail($callbacks, $htmlPriority);
+        return self::proxy()->flush($callbacks, $htmlPriority);
     }
 
     /**

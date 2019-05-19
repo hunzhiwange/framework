@@ -46,7 +46,7 @@ class ManagerTest extends TestCase
 
         $manager->plain('Here is the message itself');
 
-        $result = $manager->sendMail(function (Swift_Message $message) {
+        $result = $manager->flush(function (Swift_Message $message) {
             $message
                 ->setFrom(['foo@qq.com' => 'John Doe'])
                 ->setTo(['bar@qq.com' => 'A name'])

@@ -181,7 +181,7 @@ interface IMail
      *
      * @return int
      */
-    public static function sendMail(Closure $callbacks = null, bool $htmlPriority = true): int;
+    public static function flush(Closure $callbacks = null, bool $htmlPriority = true): int;
 
     /**
      * 错误消息.

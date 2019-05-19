@@ -352,7 +352,7 @@ abstract class Mail implements IMail
      *
      * @return int
      */
-    public function sendMail(Closure $callbacks = null, bool $htmlPriority = true): int
+    public function flush(Closure $callbacks = null, bool $htmlPriority = true): int
     {
         $this->makeMessage();
 
