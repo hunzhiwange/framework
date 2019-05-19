@@ -38,7 +38,7 @@ abstract class RouterProvider extends Provider
      *
      * @var string
      */
-    protected $controllerDir;
+    protected string $controllerDir = '';
 
     /**
      * 中间件分组
@@ -46,7 +46,7 @@ abstract class RouterProvider extends Provider
      *
      * @var array
      */
-    protected $middlewareGroups;
+    protected array $middlewareGroups = [];
 
     /**
      * 中间件别名
@@ -55,7 +55,7 @@ abstract class RouterProvider extends Provider
      *
      * @var array
      */
-    protected $middlewareAlias;
+    protected array $middlewareAlias = [];
 
     /**
      * bootstrap.
@@ -169,7 +169,7 @@ abstract class RouterProvider extends Provider
      */
     protected function setControllerDir(): void
     {
-        if (null !== $this->controllerDir) {
+        if ($this->controllerDir) {
             $this->container['router']->setControllerDir($this->controllerDir);
         }
     }
@@ -179,11 +179,11 @@ abstract class RouterProvider extends Provider
      */
     protected function setMiddleware(): void
     {
-        if (null !== $this->middlewareGroups) {
+        if ($this->middlewareGroups) {
             $this->container['router']->setMiddlewareGroups($this->middlewareGroups);
         }
 
-        if (null !== $this->middlewareAlias) {
+        if ($this->middlewareAlias) {
             $this->container['router']->setMiddlewareAlias($this->middlewareAlias);
         }
     }

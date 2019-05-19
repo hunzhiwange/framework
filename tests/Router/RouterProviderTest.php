@@ -138,19 +138,17 @@ class RouterProviderTest extends TestCase
 
 class RouterProvider1 extends RouterProvider
 {
-    protected $controllerDir = 'Tests\\Router\\Apps';
+    protected string $controllerDir = 'Tests\\Router\\Apps';
 
-    protected $middlewareGroups = [
+    protected array $middlewareGroups = [
         'group1' => [
             'demo1',
             'demo2',
         ],
-
         'group2' => [
             'demo1',
             'demo3:10,world',
         ],
-
         'group3' => [
             'demo1',
             'demo2',
@@ -158,7 +156,7 @@ class RouterProvider1 extends RouterProvider
         ],
     ];
 
-    protected $middlewareAlias = [
+    protected array $middlewareAlias = [
         'demo1' => 'Tests\\Router\\Middlewares\\Demo1',
         'demo2' => 'Tests\\Router\\Middlewares\\Demo2',
         'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
@@ -177,7 +175,7 @@ class RouterProvider1 extends RouterProvider
 
 class Url2
 {
-    public function getDomain()
+    public function getDomain(): string
     {
         return 'queryphp.com';
     }

@@ -36,11 +36,11 @@ interface IView
     /**
      * 切换视图.
      *
-     * @param \Leevel\View\IView $theme
+     * @param \Leevel\View\IView $view
      *
      * @return $this
      */
-    public function switchView(IViews $theme): self;
+    public function switchView(IViews $view): self;
 
     /**
      * 变量赋值.

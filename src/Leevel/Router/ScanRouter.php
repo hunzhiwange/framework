@@ -39,7 +39,7 @@ class ScanRouter
      *
      * @var \Leevel\Router\OpenApiRouter
      */
-    protected $openApiRouter;
+    protected OpenApiRouter $openApiRouter;
 
     /**
      * 构造函数.

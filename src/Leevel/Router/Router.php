@@ -43,77 +43,77 @@ class Router implements IRouter
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * http 请求
      *
      * @var \Leevel\Http\IRequest
      */
-    protected $request;
+    protected IRequest $request;
 
     /**
      * 路由匹配数据.
      *
-     * @var array
+     * @var array|null
      */
-    protected $matchedData;
+    protected ?array $matchedData = null;
 
     /**
      * 基础路径.
      *
      * @var array
      */
-    protected $basePaths = [];
+    protected array $basePaths = [];
 
     /**
      * 分组路径.
      *
      * @var array
      */
-    protected $groupPaths = [];
+    protected array $groupPaths = [];
 
     /**
      * 分组.
      *
      * @var array
      */
-    protected $groups = [];
+    protected array $groups = [];
 
     /**
      * 路由.
      *
      * @var array
      */
-    protected $routers = [];
+    protected array $routers = [];
 
     /**
      * 中间件分组.
      *
      * @var array
      */
-    protected $middlewareGroups = [];
+    protected array $middlewareGroups = [];
 
     /**
      * 中间件别名.
      *
      * @var array
      */
-    protected $middlewareAlias = [];
+    protected array $middlewareAlias = [];
 
     /**
      * 控制器相对目录.
      *
      * @var string
      */
-    protected $controllerDir = 'App\\Controller';
+    protected string $controllerDir = 'App\\Controller';
 
     /**
      * 设置路由请求预解析结果.
      *
      * @var array
      */
-    protected $preRequestMatched = [];
+    protected array $preRequestMatched = [];
 
     /**
      * 构造函数.

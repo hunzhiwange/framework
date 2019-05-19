@@ -1018,9 +1018,9 @@ class RouterAnnotationTest extends TestCase
 
 class RouterProviderAnnotation extends RouterProvider
 {
-    protected $controllerDir = 'Router\\Controllers';
+    protected string $controllerDir = 'Router\\Controllers';
 
-    protected $middlewareGroups = [
+    protected array $middlewareGroups = [
         'group1' => [
             'demo1',
             'demo2',
@@ -1038,7 +1038,7 @@ class RouterProviderAnnotation extends RouterProvider
         ],
     ];
 
-    protected $middlewareAlias = [
+    protected array $middlewareAlias = [
         'demo1'              => 'Tests\\Router\\Middlewares\\Demo1',
         'demo2'              => 'Tests\\Router\\Middlewares\\Demo2',
         'demo3'              => 'Tests\\Router\\Middlewares\\Demo3',
@@ -1059,7 +1059,7 @@ class RouterProviderAnnotation extends RouterProvider
 
 class UrlAnnotation
 {
-    public function getDomain()
+    public function getDomain(): string
     {
         return 'queryphp.com';
     }

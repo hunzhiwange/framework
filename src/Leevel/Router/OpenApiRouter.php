@@ -47,28 +47,28 @@ class OpenApiRouter
      *
      * @var \Leevel\Router\MiddlewareParser
      */
-    protected $middlewareParser;
+    protected MiddlewareParser $middlewareParser;
 
     /**
      * 顶级域名.
      *
      * @var string
      */
-    protected $domain;
+    protected string $domain;
 
     /**
      * 扫描目录.
      *
      * @var array
      */
-    protected $scandirs = [];
+    protected array $scandirs = [];
 
     /**
      * 支持的方法.
      *
      * @var array
      */
-    protected $methods = [
+    protected array $methods = [
         'get',
         'delete',
         'post',
@@ -83,7 +83,7 @@ class OpenApiRouter
      *
      * @var array
      */
-    protected $routerField = [
+    protected array $routerField = [
         'scheme',
         'domain',
         'params',
@@ -96,21 +96,21 @@ class OpenApiRouter
      *
      * @var array
      */
-    protected $basePaths = [];
+    protected array $basePaths = [];
 
     /**
      * 匹配分组路径.
      *
      * @var array
      */
-    protected $groupPaths = [];
+    protected array $groupPaths = [];
 
     /**
      * 匹配分组.
      *
      * @var array
      */
-    protected $groups = [];
+    protected array $groups = [];
 
     /**
      * 构造函数.

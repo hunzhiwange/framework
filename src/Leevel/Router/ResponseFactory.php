@@ -43,39 +43,39 @@ class ResponseFactory implements IResponseFactory
      *
      * @var \Leevel\Router\IView
      */
-    protected $view;
+    protected IView $view;
 
     /**
      * 跳转实例.
      *
      * @var \Leevel\Router\Redirect
      */
-    protected $redirector;
+    protected Redirect $redirect;
 
     /**
      * 视图正确模板
      *
      * @var string
      */
-    protected $viewSuccessTemplate = 'success';
+    protected string $viewSuccessTemplate = 'success';
 
     /**
      * 视图错误模板
      *
      * @var string
      */
-    protected $viewFailTemplate = 'fail';
+    protected string $viewFailTemplate = 'fail';
 
     /**
      * 构造函数.
      *
      * @param \Leevel\Router\IView    $view
-     * @param \Leevel\Router\Redirect $redirector
+     * @param \Leevel\Router\Redirect $redirect
      */
-    public function __construct(IView $view, Redirect $redirector)
+    public function __construct(IView $view, Redirect $redirect)
     {
         $this->view = $view;
-        $this->redirector = $redirector;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -237,7 +237,7 @@ class ResponseFactory implements IResponseFactory
      */
     public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
-        return $this->redirector->url($url, $params, $subdomain, $suffix, $status, $headers);
+        return $this->redirect->url($url, $params, $subdomain, $suffix, $status, $headers);
     }
 
     /**
@@ -251,7 +251,7 @@ class ResponseFactory implements IResponseFactory
      */
     public function redirectRaw(string $url, int $status = 302, array $headers = []): RedirectResponse
     {
-        return $this->redirector->raw($url, $status, $headers);
+        return $this->redirect->raw($url, $status, $headers);
     }
 
     /**

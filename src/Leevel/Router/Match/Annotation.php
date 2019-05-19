@@ -39,7 +39,7 @@ class Annotation extends Match implements IMatch
      *
      * @var array
      */
-    protected $matchedVars = [];
+    protected array $matchedVars = [];
 
     /**
      * 匹配数据项.

@@ -37,21 +37,21 @@ class Redirect
     /**
      * URL 生成实例.
      *
-     * @var \Leevel\Router\Url
+     * @var \Leevel\Router\IUrl
      */
-    protected $url;
+    protected IUrl $url;
 
     /**
      * SESSION 仓储.
      *
      * @var \Leevel\Session\ISession
      */
-    protected $session;
+    protected ISession $session;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Router\Url $url
+     * @param \Leevel\Router\IUrl $url
      */
     public function __construct(IUrl $url)
     {

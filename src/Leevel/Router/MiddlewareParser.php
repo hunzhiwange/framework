@@ -36,9 +36,9 @@ class MiddlewareParser
     /**
      * 路由.
      *
-     * @var \Leevel\Router\Router
+     * @var \Leevel\Router\IRouter
      */
-    protected $router;
+    protected IRouter $router;
 
     /**
      * 构造函数.

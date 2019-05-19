@@ -39,21 +39,21 @@ abstract class Match
      *
      * @var \Leevel\Router\IRouter
      */
-    protected $router;
+    protected IRouter $router;
 
     /**
      * HTTP Request.
      *
      * @var \Leevel\Http\IRequest
      */
-    protected $request;
+    protected IRequest $request;
 
     /**
      * 匹配中间件.
      *
      * @var array
      */
-    protected $middlewares = [];
+    protected array $middlewares = [];
 
     /**
      * 设置路由和请求.

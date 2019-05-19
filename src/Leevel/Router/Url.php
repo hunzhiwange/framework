@@ -38,21 +38,21 @@ class Url implements IUrl
      *
      * @var \Leevel\Http\IRequest
      */
-    protected $request;
+    protected IRequest $request;
 
     /**
      * URL 参数.
      *
      * @var array
      */
-    protected $params = [];
+    protected array $params = [];
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'with_suffix'  => false,
         'suffix'       => '.html',
         'domain'       => '',

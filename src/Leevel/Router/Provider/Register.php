@@ -76,9 +76,11 @@ class Register extends Provider
      */
     protected function router(): void
     {
-        $this->container->singleton('router', function (IContainer $container): Router {
-            return new Router($container);
-        });
+        $this->container
+            ->singleton(
+                'router',
+                fn (IContainer $container): Router => new Router($container),
+            );
     }
 
     /**
@@ -86,22 +88,24 @@ class Register extends Provider
      */
     protected function url(): void
     {
-        $this->container->singleton('url', function (IContainer $container): Url {
-            $option = $container['option'];
-            $router = $container['router'];
+        $this->container
+            ->singleton(
+                'url',
+                function (IContainer $container): Url {
+                    $option = $container['option'];
+                    $options = [];
 
-            $options = [];
+                    foreach ([
+                        'with_suffix',
+                        'suffix',
+                        'domain',
+                    ] as $item) {
+                        $options[$item] = $option->get($item);
+                    }
 
-            foreach ([
-                'with_suffix',
-                'suffix',
-                'domain',
-            ] as $item) {
-                $options[$item] = $option->get($item);
-            }
-
-            return new Url($container['request'], $options);
-        });
+                    return new Url($container['request'], $options);
+                },
+            );
     }
 
     /**
@@ -109,15 +113,19 @@ class Register extends Provider
      */
     protected function redirect(): void
     {
-        $this->container->singleton('redirect', function (IContainer $container): Redirect {
-            $redirect = new Redirect($container['url']);
+        $this->container
+            ->singleton(
+                'redirect',
+                function (IContainer $container): Redirect {
+                    $redirect = new Redirect($container['url']);
 
-            if (isset($container['session'])) {
-                $redirect->setSession($container['session']);
-            }
+                    if (isset($container['session'])) {
+                        $redirect->setSession($container['session']);
+                    }
 
-            return $redirect;
-        });
+                    return $redirect;
+                },
+            );
     }
 
     /**
@@ -125,13 +133,17 @@ class Register extends Provider
      */
     protected function response(): void
     {
-        $this->container->singleton('response', function (IContainer $container): ResponseFactory {
-            $option = $container['option'];
+        $this->container
+            ->singleton(
+                'response',
+                function (IContainer $container): ResponseFactory {
+                    $option = $container['option'];
 
-            return (new ResponseFactory($container['view'], $container['redirect']))
-                ->setViewSuccessTemplate($option->get('view\\success'))
-                ->setViewFailTemplate($option->get('view\\fail'));
-        });
+                    return (new ResponseFactory($container['view'], $container['redirect']))
+                        ->setViewSuccessTemplate($option->get('view\\success'))
+                        ->setViewFailTemplate($option->get('view\\fail'));
+                },
+            );
     }
 
     /**
@@ -139,8 +151,10 @@ class Register extends Provider
      */
     protected function view(): void
     {
-        $this->container->singleton('view', function (IContainer $container): View {
-            return new View($container['view.view']);
-        });
+        $this->container
+            ->singleton(
+                'view',
+                fn (IContainer $container): View => new View($container['view.view']),
+            );
     }
 }
