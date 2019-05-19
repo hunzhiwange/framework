@@ -1084,8 +1084,8 @@ class Validator implements IValidator
      */
     protected function getFieldRuleMessage(string $field, string $rule): string
     {
-        return $this->messages[$field.'.'.$rule] ?? $this->messages[$rule] ??
-            static::$defaultMessages[$rule] ?? '';
+        return $this->messages[$field.'.'.$rule] ??
+            ($this->messages[$rule] ?? (static::$defaultMessages[$rule] ?? ''));
     }
 
     /**

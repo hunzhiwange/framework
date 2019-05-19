@@ -422,7 +422,7 @@ class Router implements IRouter
             } elseif (in_array($key, [self::PARAMS, self::VARS], true)) {
                 $result[$key] = array_merge($before[$key] ?? [], $after[$key] ?? []);
             } else {
-                $result[$key] = $after[$key] ?? $before[$key] ?? null;
+                $result[$key] = $after[$key] ?? ($before[$key] ?? null);
             }
         }
 
