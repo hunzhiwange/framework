@@ -95,9 +95,13 @@ class Register extends Provider
      */
     protected function databases(): void
     {
-        $this->container->singleton('databases', function (IContainer $container): Manager {
-            return new Manager($container);
-        });
+        $this->container
+            ->singleton(
+                'databases',
+                function (IContainer $container): Manager {
+                    return new Manager($container);
+                },
+            );
     }
 
     /**
@@ -105,9 +109,13 @@ class Register extends Provider
      */
     protected function database(): void
     {
-        $this->container->singleton('database', function (IContainer $container): Database {
-            return $container['databases']->connect();
-        });
+        $this->container
+            ->singleton(
+                'database',
+                function (IContainer $container): Database {
+                    return $container['databases']->connect();
+                },
+            );
     }
 
     /**
@@ -115,9 +123,13 @@ class Register extends Provider
      */
     protected function unitofwork(): void
     {
-        $this->container->singleton('unitofwork', function (IContainer $container): UnitOfWork {
-            return new UnitOfWork();
-        });
+        $this->container
+            ->singleton(
+                'unitofwork',
+                function (IContainer $container): UnitOfWork {
+                    return new UnitOfWork();
+                },
+            );
     }
 
     /**

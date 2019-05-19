@@ -72,9 +72,13 @@ class Register extends Provider
      */
     protected function filesystems(): void
     {
-        $this->container->singleton('filesystems', function (IContainer $container): Manager {
-            return new Manager($container);
-        });
+        $this->container
+            ->singleton(
+                'filesystems',
+                function (IContainer $container): Manager {
+                    return new Manager($container);
+                },
+            );
     }
 
     /**
@@ -82,8 +86,12 @@ class Register extends Provider
      */
     protected function filesystem(): void
     {
-        $this->container->singleton('filesystem', function (IContainer $container): Filesystem {
-            return $container['filesystems']->connect();
-        });
+        $this->container
+            ->singleton(
+                'filesystem',
+                function (IContainer $container): Filesystem {
+                    return $container['filesystems']->connect();
+                },
+            );
     }
 }

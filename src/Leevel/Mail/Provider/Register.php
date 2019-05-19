@@ -72,9 +72,13 @@ class Register extends Provider
      */
     protected function mails(): void
     {
-        $this->container->singleton('mails', function (IContainer $container): Manager {
-            return new Manager($container);
-        });
+        $this->container
+            ->singleton(
+                'mails',
+                function (IContainer $container): Manager {
+                    return new Manager($container);
+                },
+            );
     }
 
     /**
@@ -82,8 +86,12 @@ class Register extends Provider
      */
     protected function mail(): void
     {
-        $this->container->singleton('mail', function (IContainer $container): IMail {
-            return $container['mails']->connect();
-        });
+        $this->container
+            ->singleton(
+                'mail',
+                function (IContainer $container): IMail {
+                    return $container['mails']->connect();
+                },
+            );
     }
 }

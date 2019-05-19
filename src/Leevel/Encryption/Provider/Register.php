@@ -41,14 +41,18 @@ class Register extends Provider
      */
     public function register(): void
     {
-        $this->container->singleton('encryption', function (IContainer $container): Encryption {
-            $option = $container['option'];
+        $this->container
+            ->singleton(
+                'encryption',
+                function (IContainer $container): Encryption {
+                    $option = $container['option'];
 
-            return new Encryption(
-                $option['auth_key'], $option['auth_cipher'],
-                $option['auth_rsa_private'], $option['auth_rsa_public']
+                    return new Encryption(
+                        $option['auth_key'], $option['auth_cipher'],
+                        $option['auth_rsa_private'], $option['auth_rsa_public']
+                    );
+                },
             );
-        });
     }
 
     /**
