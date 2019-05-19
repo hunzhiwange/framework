@@ -113,35 +113,35 @@ class App implements IApp
      *
      * @var string
      */
-    protected string $envPath = '';
+    protected ?string $envPath = null;
 
     /**
      * 环境变量文件.
      *
      * @var string
      */
-    protected string $envFile = '';
+    protected ?string $envFile = null;
 
     /**
      * 语言包缓存路径.
      *
      * @var string
      */
-    protected string $i18nCachedPath = '';
+    protected ?string $i18nCachedPath = null;
 
     /**
      * 配置缓存路径.
      *
      * @var string
      */
-    protected string $optionCachedPath = '';
+    protected ?string $optionCachedPath = null;
 
     /**
      * 路由缓存路径.
      *
      * @var string
      */
-    protected string $routerCachedPath = '';
+    protected ?string $routerCachedPath = null;
 
     /**
      * 构造函数
