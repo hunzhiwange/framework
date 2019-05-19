@@ -38,7 +38,7 @@ class Nulls extends Mail implements IMail
      *
      * @var array
      */
-    protected $option = [];
+    protected array $option = [];
 
     /**
      * 创建 transport.

@@ -48,21 +48,21 @@ abstract class Mail implements IMail
      *
      * @var \Swift_Mailer
      */
-    protected $swiftMailer;
+    protected Swift_Mailer $swiftMailer;
 
     /**
      * 视图.
      *
      * @var \leevel\Router\IView
      */
-    protected $view;
+    protected IView $view;
 
     /**
      * 事件处理器.
      *
      * @var null|\Leevel\Event\IDispatch
      */
-    protected $dispatch;
+    protected ?IDispatch $dispatch = null;
 
     /**
      * 邮件错误消息.
@@ -76,14 +76,14 @@ abstract class Mail implements IMail
      *
      * @var \Swift_Message
      */
-    protected $message;
+    protected ?Swift_Message $message = null;
 
     /**
      * 消息配置.
      *
      * @var array
      */
-    protected $messageData = [
+    protected array $messageData = [
         'html'  => [],
         'plain' => [],
     ];
@@ -93,7 +93,7 @@ abstract class Mail implements IMail
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'global_from' => [
             'address' => null,
             'name'    => null,

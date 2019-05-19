@@ -38,7 +38,7 @@ class Smtp extends Mail implements IMail
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'global_from' => [
             'address' => null,
             'name'    => null,
