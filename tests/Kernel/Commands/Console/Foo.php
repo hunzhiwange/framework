@@ -37,7 +37,7 @@ class Foo extends Command
 
     protected string $description = 'This is a foo command';
 
-    protected $help = <<<'EOF'
+    protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to show how to make a command:
         
           <info>php %command.full_name%</info>
