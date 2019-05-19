@@ -52,6 +52,13 @@ class Load
     protected $loaded = [];
 
     /**
+     * 是否已经载入数据.
+     *
+     * @var bool
+     */
+    protected $isLoaded = false;
+
+    /**
      * 构造函数.
      *
      * @param string $dir
@@ -76,7 +83,7 @@ class Load
      */
     public function loadData(IApp $app): array
     {
-        if ($this->loaded) {
+        if (true === $this->isLoaded) {
             return $this->loaded;
         }
 
@@ -101,6 +108,8 @@ class Load
 
         // composer 配置
         $data['app']['_composer'] = $composer;
+
+        $this->isLoaded = true;
 
         return $this->loaded = $data;
     }

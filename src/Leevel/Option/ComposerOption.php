@@ -44,7 +44,14 @@ class ComposerOption
      *
      * @var array
      */
-    protected $loaded;
+    protected $loaded = [];
+
+    /**
+     * 是否已经载入数据.
+     *
+     * @var bool
+     */
+    protected $isLoaded = false;
 
     /**
      * 支持的配置项
@@ -78,7 +85,7 @@ class ComposerOption
      */
     public function loadData(): array
     {
-        if (null !== $this->loaded) {
+        if (true === $this->isLoaded) {
             return $this->loaded;
         }
 
@@ -91,6 +98,7 @@ class ComposerOption
         }
 
         $appOption = $this->getAppComposerOption();
+        $this->isLoaded = true;
 
         return $this->loaded = $this->mergeOption($data, $appOption);
     }

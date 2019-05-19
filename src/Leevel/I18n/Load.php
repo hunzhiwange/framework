@@ -52,7 +52,14 @@ class Load
      *
      * @var array
      */
-    protected $loaded;
+    protected $loaded = [];
+
+    /**
+     * 是否已经载入数据.
+     *
+     * @var bool
+     */
+    protected $isLoaded = false;
 
     /**
      * 构造函数.
@@ -103,12 +110,13 @@ class Load
      */
     public function loadData(): array
     {
-        if (null !== $this->loaded) {
+        if (true === $this->isLoaded) {
             return $this->loaded;
         }
 
         $files = $this->findMoFile($this->parseDir($this->dirs));
         $texts = $this->parseMoData($files);
+        $this->isLoaded = true;
 
         return $this->loaded = $texts;
     }
