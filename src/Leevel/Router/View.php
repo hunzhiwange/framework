@@ -38,30 +38,30 @@ class View implements IView
      *
      * @var \Leevel\View\IView
      */
-    protected $theme;
+    protected $view;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\View\IView $theme
+     * @param \Leevel\View\IView $view
      */
-    public function __construct(IViews $theme)
+    public function __construct(IViews $view)
     {
-        $this->theme = $theme;
+        $this->view = $view;
     }
 
     /**
      * 切换视图.
      *
-     * @param \Leevel\View\IView $theme
+     * @param \Leevel\View\IView $view
      *
      * @return $this
      */
-    public function switchView(IViews $theme): IView
+    public function switchView(IViews $view): IView
     {
         $assign = $this->getAssign();
 
-        $this->theme = $theme;
+        $this->view = $view;
         $this->assign($assign);
 
         return $this;
@@ -77,7 +77,7 @@ class View implements IView
      */
     public function assign($name, $value = null): IView
     {
-        $this->theme->setVar($name, $value);
+        $this->view->setVar($name, $value);
 
         return $this;
     }
@@ -91,7 +91,7 @@ class View implements IView
      */
     public function getAssign(?string $name = null)
     {
-        return $this->theme->getVar($name);
+        return $this->view->getVar($name);
     }
 
     /**
@@ -103,7 +103,7 @@ class View implements IView
      */
     public function deleteAssign(array $name): IView
     {
-        $this->theme->deleteVar($name);
+        $this->view->deleteVar($name);
 
         return $this;
     }
@@ -117,7 +117,7 @@ class View implements IView
      */
     public function clearAssign(): IView
     {
-        $this->theme->clearVar();
+        $this->view->clearVar();
 
         return $this;
     }
@@ -133,6 +133,6 @@ class View implements IView
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
-        return $this->theme->display($file, $vars, $ext, false);
+        return $this->view->display($file, $vars, $ext, false);
     }
 }
