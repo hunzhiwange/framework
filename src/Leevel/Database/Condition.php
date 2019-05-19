@@ -2272,16 +2272,13 @@ class Condition
                 }
 
                 // 处理默认 “=” 的类型
-                if (2 === count($tmp) && !in_array($tmp[1], [
-                    'null',
-                    'not null',
-                ], true)) {
+                if (2 === count($tmp) && !in_array($tmp[1], ['null', 'not null'], true)) {
                     $tmp[2] = $tmp[1];
                     $tmp[1] = '=';
                 }
 
                 // 字段
-                $tmp[1] = trim($tmp[1]);
+                $tmp[1] = trim($tmp[1] ?? 'null');
 
                 // 特殊类型
                 if (in_array($tmp[1], [

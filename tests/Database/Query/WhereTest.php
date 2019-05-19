@@ -530,6 +530,31 @@ class WhereTest extends TestCase
         );
     }
 
+    public function testOrWhereDefaultNull()
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT WHERE `id` IS NULL",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->where('id')
+                    ->findAll(true)
+            )
+        );
+    }
+
     public function testWhereLike()
     {
         $connect = $this->createDatabaseConnectMock();
