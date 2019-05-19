@@ -42,7 +42,7 @@ abstract class Session
      *
      * @var \Leevel\Cache\ICache
      */
-    protected $cache;
+    protected ?ICache $cache = null;
 
     /**
      * session ID.
@@ -50,7 +50,7 @@ abstract class Session
      *
      * @var string
      */
-    protected $id;
+    protected ?string $id = null;
 
     /**
      * session 名字.
@@ -58,28 +58,28 @@ abstract class Session
      *
      * @var string
      */
-    protected $name;
+    protected ?string $name = null;
 
     /**
      * session 是否开启.
      *
      * @var bool
      */
-    protected $started = false;
+    protected bool $started = false;
 
     /**
      * session 数据.
      *
      * @var array
      */
-    protected $datas = [];
+    protected array $datas = [];
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [];
+    protected array $option = [];
 
     /**
      * 构造函数.

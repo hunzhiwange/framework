@@ -77,9 +77,11 @@ class Register extends Provider
      */
     protected function sessions(): void
     {
-        $this->container->singleton('sessions', function (IContainer $container): Manager {
-            return new Manager($container);
-        });
+        $this->container
+            ->singleton(
+                'sessions',
+                fn (IContainer $container): Manager => new Manager($container),
+            );
     }
 
     /**
@@ -87,9 +89,11 @@ class Register extends Provider
      */
     protected function session(): void
     {
-        $this->container->singleton('session', function (IContainer $container): ISession {
-            return $container['sessions']->connect();
-        });
+        $this->container
+            ->singleton(
+                'session',
+                fn (IContainer $container): ISession => $container['sessions']->connect(),
+            );
     }
 
     /**

@@ -38,7 +38,7 @@ class File extends Session implements ISession
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'id'          => null,
         'name'        => null,
         'time_preset' => [],

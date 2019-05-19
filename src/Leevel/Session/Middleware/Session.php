@@ -41,7 +41,7 @@ class Session
      *
      * @var \Leevel\Session\Manager
      */
-    protected $manager;
+    protected Manager $manager;
 
     /**
      * 构造函数.
