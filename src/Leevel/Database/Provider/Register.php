@@ -124,9 +124,9 @@ class Register extends Provider
     protected function unitofwork(): void
     {
         $this->container
-            ->singleton(
+            ->bind(
                 'unitofwork',
-                function (IContainer $container): UnitOfWork {
+                function (): UnitOfWork {
                     return new UnitOfWork();
                 },
             );
