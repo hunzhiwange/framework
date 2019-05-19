@@ -43,7 +43,7 @@ class RegisterRuntime
      *
      * @var \Leevel\Kernel\IApp
      */
-    protected $app;
+    protected IApp $app;
 
     /**
      * 响应.

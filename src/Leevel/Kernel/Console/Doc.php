@@ -60,14 +60,14 @@ class Doc extends Command
      *
      * @var \Leevel\Kernel\Utils\Doc
      */
-    protected $utilsDoc;
+    protected UtilsDoc $utilsDoc;
 
     /**
      * 类名字分析器.
      *
      * @var \Leevel\Kernel\Utils\ClassParser
      */
-    protected $classParser;
+    protected ClassParser $classParser;
 
     /**
      * 响应命令.

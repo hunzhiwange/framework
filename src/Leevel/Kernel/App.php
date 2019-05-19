@@ -43,105 +43,105 @@ class App implements IApp
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 应用基础路径.
      *
      * @var string
      */
-    protected $path;
+    protected string $path;
 
     /**
      * 应用路径.
      *
      * @var string
      */
-    protected $appPath;
+    protected string $appPath;
 
     /**
      * 公共路径.
      *
      * @var string
      */
-    protected $commonPath;
+    protected string $commonPath;
 
     /**
      * 运行时路径.
      *
      * @var string
      */
-    protected $runtimePath;
+    protected string $runtimePath;
 
     /**
      * 存储路径.
      *
      * @var string
      */
-    protected $storagePath;
+    protected string $storagePath;
 
     /**
      * 资源路径.
      *
      * @var string
      */
-    protected $publicPath;
+    protected string $publicPath;
 
     /**
      * 主题路径.
      *
      * @var string
      */
-    protected $themesPath;
+    protected string $themesPath;
 
     /**
      * 配置路径.
      *
      * @var string
      */
-    protected $optionPath;
+    protected string $optionPath;
 
     /**
      * 语言包路径.
      *
      * @var string
      */
-    protected $i18nPath;
+    protected string $i18nPath;
 
     /**
      * 环境变量路径.
      *
      * @var string
      */
-    protected $envPath;
+    protected string $envPath = '';
 
     /**
      * 环境变量文件.
      *
      * @var string
      */
-    protected $envFile;
+    protected string $envFile = '';
 
     /**
      * 语言包缓存路径.
      *
      * @var string
      */
-    protected $i18nCachedPath;
+    protected string $i18nCachedPath = '';
 
     /**
      * 配置缓存路径.
      *
      * @var string
      */
-    protected $optionCachedPath;
+    protected string $optionCachedPath = '';
 
     /**
      * 路由缓存路径.
      *
      * @var string
      */
-    protected $routerCachedPath;
+    protected string $routerCachedPath = '';
 
     /**
      * 构造函数

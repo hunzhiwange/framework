@@ -42,7 +42,7 @@ abstract class TestCase extends TestCases
      *
      * @var \Leevel\Kernel\App
      */
-    protected $app;
+    protected App $app;
 
     /**
      * Setup.

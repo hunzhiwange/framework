@@ -48,14 +48,14 @@ abstract class Kernel implements IKernel
      *
      * @var \Leevel\Kernel\IApp
      */
-    protected $app;
+    protected IApp $app;
 
     /**
      * 路由.
      *
      * @var \Leevel\Router\IRouter
      */
-    protected $router;
+    protected IRouter $router;
 
     /**
      * 应用初始化执行.

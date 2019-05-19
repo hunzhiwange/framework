@@ -51,7 +51,7 @@ abstract class Runtime implements IRuntime
      *
      * @var \Leevel\Kernel\IApp
      */
-    protected $app;
+    protected IApp $app;
 
     /**
      * 构造函数.

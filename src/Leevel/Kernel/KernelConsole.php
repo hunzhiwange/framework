@@ -48,21 +48,21 @@ abstract class KernelConsole implements IKernelConsole
      *
      * @var \Leevel\Kernel\IApp
      */
-    protected $app;
+    protected IApp $app;
 
     /**
      * 命令行应用.
      *
      * @var \Leevel\Console\Application
      */
-    protected $consoleApplication;
+    protected ?Application $consoleApplication = null;
 
     /**
      * 应用初始化执行.
      *
      * @var array
      */
-    protected $bootstraps = [
+    protected array $bootstraps = [
         LoadOption::class,
         LoadI18n::class,
         RegisterRuntime::class,
