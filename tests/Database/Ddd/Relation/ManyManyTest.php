@@ -227,6 +227,23 @@ class ManyManyTest extends TestCase
         $this->assertSame('3', $middle->roleId);
     }
 
+    public function testEagerWithNoData()
+    {
+        $user = User::where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $user = User::eager(['role'])->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $role = $user->role;
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertCount(0, $role);
+    }
+
     public function testRelationAsMethod()
     {
         $connect = $this->createDatabaseConnect();
