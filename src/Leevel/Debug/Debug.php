@@ -51,16 +51,6 @@ use Throwable;
  *
  * I actually copied a lot of ideas from laravel-debugbar app.
  *
- * @method void emergency($message)
- * @method void alert($message)
- * @method void critical($message)
- * @method void error($message)
- * @method void warning($message)
- * @method void notice($message)
- * @method void info($message)
- * @method void debug($message)
- * @method void log($message)
- *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2018.09.20
@@ -112,29 +102,6 @@ class Debug extends DebugBar
         $this->container = $container;
 
         $this->option = array_merge($this->option, $option);
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        $messageLevels = [
-            'emergency', 'alert', 'critical',
-            'error', 'warning', 'notice',
-            'info', 'debug', 'log',
-        ];
-
-        if (in_array($method, $messageLevels, true)) {
-            foreach ($args as $arg) {
-                $this->message($arg, $method);
-            }
-        }
     }
 
     /**
@@ -235,6 +202,96 @@ class Debug extends DebugBar
     public function message($message, string $label = 'info'): void
     {
         $this->getCollector('messages')->addMessage($message, $label);
+    }
+
+    /**
+     * 添加一条 emergency 消息.
+     *
+     * @param mixed $message
+     */
+    public function emergency($message): void
+    {
+        $this->message($message, 'emergency');
+    }
+
+    /**
+     * 添加一条 alert 消息.
+     *
+     * @param mixed $message
+     */
+    public function alert($message): void
+    {
+        $this->message($message, 'alert');
+    }
+
+    /**
+     * 添加一条 critical 消息.
+     *
+     * @param mixed $message
+     */
+    public function critical($message): void
+    {
+        $this->message($message, 'critical');
+    }
+
+    /**
+     * 添加一条 error 消息.
+     *
+     * @param mixed $message
+     */
+    public function error($message): void
+    {
+        $this->message($message, 'error');
+    }
+
+    /**
+     * 添加一条 warning 消息.
+     *
+     * @param mixed $message
+     */
+    public function warning($message): void
+    {
+        $this->message($message, 'warning');
+    }
+
+    /**
+     * 添加一条 notice 消息.
+     *
+     * @param mixed $message
+     */
+    public function notice($message): void
+    {
+        $this->message($message, 'notice');
+    }
+
+    /**
+     * 添加一条 info 消息.
+     *
+     * @param mixed $message
+     */
+    public function info($message): void
+    {
+        $this->message($message, 'info');
+    }
+
+    /**
+     * 添加一条 debug 消息.
+     *
+     * @param mixed $message
+     */
+    public function debug($message): void
+    {
+        $this->message($message, 'debug');
+    }
+
+    /**
+     * 添加一条 log 消息.
+     *
+     * @param mixed $message
+     */
+    public function log($message): void
+    {
+        $this->message($message, 'log');
     }
 
     /**

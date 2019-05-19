@@ -387,18 +387,17 @@ class DebugTest extends TestCase
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
-        $debug->{$level}('hello', 'world');
+        foreach (['hello', 'world'] as $v) {
+            $debug->{$level}($v);
+        }
 
         $debug->handle($request, $response);
 
         $content = $response->getContent();
 
         $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
-
         $this->assertStringContainsString('"php":{"version":', $content);
-
         $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
-
         $this->assertStringContainsString('{"message":"hello","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
         $this->assertStringContainsString('{"message":"world","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
     }
