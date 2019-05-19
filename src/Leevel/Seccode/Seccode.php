@@ -40,7 +40,7 @@ class Seccode implements ISeccode
      *
      * @var string
      */
-    protected string $code;
+    protected ?string $code = null;
 
     /**
      * 字体颜色.
