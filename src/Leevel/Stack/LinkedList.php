@@ -44,7 +44,7 @@ class LinkedList extends SplDoublyLinkedList
      *
      * @var array
      */
-    protected $type = [];
+    protected array $type = [];
 
     /**
      * 构造函数.
