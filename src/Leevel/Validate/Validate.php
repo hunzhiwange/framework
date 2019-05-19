@@ -40,7 +40,7 @@ class Validate implements IValidate
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * 构造函数.

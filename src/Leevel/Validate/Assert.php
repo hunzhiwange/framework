@@ -56,35 +56,35 @@ class Assert
      *
      * @var string
      */
-    protected $message;
+    protected string $message;
 
     /**
      * 是否延后提示错误.
      *
      * @var bool
      */
-    protected $lazy;
+    protected bool $lazy = false;
 
     /**
      * 是否验证所有.
      *
      * @var bool
      */
-    protected $all;
+    protected bool $all = true;
 
     /**
      * 验证错误消息.
      *
      * @var array
      */
-    protected $error = [];
+    protected array $error = [];
 
     /**
      * PHPUnit.
      *
      * @var \PHPUnit\Framework\TestCase
      */
-    protected static $phpUnit;
+    protected static ?TestCase $phpUnit = null;
 
     /**
      * 构造函数.

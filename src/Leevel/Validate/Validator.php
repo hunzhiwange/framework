@@ -48,58 +48,58 @@ class Validator implements IValidator
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Di\IContainer
+     * @var \Leevel\Di\IContainer|null
      */
-    protected $container;
+    protected ?IContainer $container = null;
 
     /**
      * 待验证数据.
      *
      * @var array
      */
-    protected $datas = [];
+    protected array $datas = [];
 
     /**
      * 验证规则.
      *
      * @var array
      */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * 默认验证提示信息.
      *
      * @var array
      */
-    protected static $defaultMessages = [];
+    protected static array $defaultMessages = [];
 
     /**
      * 验证提示信息.
      *
      * @var array
      */
-    protected $messages = [];
+    protected array $messages = [];
 
     /**
      * 字段名字.
      *
      * @var array
      */
-    protected $names = [];
+    protected array $names = [];
 
     /**
      * 错误规则.
      *
      * @var array
      */
-    protected $failedRules;
+    protected array $failedRules;
 
     /**
      * 错误消息.
      *
      * @var array
      */
-    protected $errorMessages = [];
+    protected array $errorMessages = [];
 
     /**
      * 需要跳过的验证规则
@@ -107,28 +107,28 @@ class Validator implements IValidator
      *
      * @var array
      */
-    protected $skipRule = [];
+    protected array $skipRule = [];
 
     /**
      * 扩展验证器.
      *
      * @var array
      */
-    protected $extends = [];
+    protected array $extends = [];
 
     /**
      * 验证后续事件.
      *
      * @var array
      */
-    protected $afters = [];
+    protected array $afters = [];
 
     /**
      * 验证别名.
      *
      * @var array
      */
-    protected $alias = [
+    protected array $alias = [
         'confirm' => 'equal_to',
         'gt'      => 'greater_than',
         '>'       => 'greater_than',

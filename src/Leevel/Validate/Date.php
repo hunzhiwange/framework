@@ -40,7 +40,7 @@ trait Date
      *
      * @var \Leevel\Validate\IValidator
      */
-    protected $validator;
+    protected IValidator $validator;
 
     /**
      * 校验日期.
