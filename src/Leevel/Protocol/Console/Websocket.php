@@ -55,7 +55,7 @@ class Websocket extends BaseServer
      *
      * @var string
      */
-    protected $help = <<<'EOF'
+    protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to start websocket server:
         
           <info>php %command.full_name%</info>

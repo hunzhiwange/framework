@@ -55,7 +55,7 @@ class Http extends BaseServer
      *
      * @var string
      */
-    protected $help = <<<'EOF'
+    protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to start http server:
         
           <info>php %command.full_name%</info>

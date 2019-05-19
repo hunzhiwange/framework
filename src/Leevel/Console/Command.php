@@ -78,7 +78,7 @@ abstract class Command extends SymfonyCommand
      *
      * @var string
      */
-    protected $help;
+    protected string $help = '';
 
     /**
      * 输出映射.
