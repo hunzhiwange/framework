@@ -40,21 +40,21 @@ class Seccode implements ISeccode
      *
      * @var string
      */
-    protected $code;
+    protected string $code;
 
     /**
      * 字体颜色.
      *
      * @var array
      */
-    protected $fontColor = [];
+    protected array $fontColor = [];
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         // 验证码宽度
         'width' => 160,
 
