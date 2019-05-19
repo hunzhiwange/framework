@@ -72,7 +72,7 @@ abstract class Session
      *
      * @var array
      */
-    protected $datas = [];
+    protected $data = [];
 
     /**
      * 配置.

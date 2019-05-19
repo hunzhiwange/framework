@@ -977,8 +977,8 @@ class ValidatorTest extends TestCase
             ]
         );
 
-        $validate->extend('custom_rule', function ($datas, array $parameter, IValidator $validator, string $field): bool {
-            if (1 === $datas) {
+        $validate->extend('custom_rule', function ($value, array $parameter, IValidator $validator, string $field): bool {
+            if (1 === $value) {
                 return true;
             }
 
@@ -1028,8 +1028,8 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator();
 
-        $validate->extend('custom_foo_bar', function (string $field, $datas, array $parameter): bool {
-            if ('成都' === $datas) {
+        $validate->extend('custom_foo_bar', function (string $field, $value, array $parameter): bool {
+            if ('成都' === $value) {
                 return true;
             }
 
@@ -1739,18 +1739,18 @@ class ValidatorTest extends TestCase
 
 class ExtendClassTest1
 {
-    public function handle($datas, array $parameter, IValidator $validator, string $field): bool
+    public function handle($value, array $parameter, IValidator $validator, string $field): bool
     {
-        if (1 === $datas) {
+        if (1 === $value) {
             return true;
         }
 
         return false;
     }
 
-    public function handle2($datas, array $parameter, IValidator $validator, string $field): bool
+    public function handle2($value, array $parameter, IValidator $validator, string $field): bool
     {
-        if (2 === $datas) {
+        if (2 === $value) {
             return true;
         }
 
@@ -1760,9 +1760,9 @@ class ExtendClassTest1
 
 class ExtendClassTest2
 {
-    public function handle($datas, array $parameter, IValidator $validator, string $field): bool
+    public function handle($value, array $parameter, IValidator $validator, string $field): bool
     {
-        if (3 === $datas) {
+        if (3 === $value) {
             return true;
         }
 

@@ -34,14 +34,14 @@ interface IValidate
     /**
      * 创建一个验证器.
      *
-     * @param array $datas
+     * @param array $data
      * @param array $rules
      * @param array $names
      * @param array $messages
      *
      * @return \Leevel\Validate\IValidator
      */
-    public function make(array $datas = [], array $rules = [], array $names = [], array $messages = []): IValidator;
+    public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator;
 
     /**
      * 初始化默认验证消息.

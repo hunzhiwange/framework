@@ -57,7 +57,7 @@ class Validator implements IValidator
      *
      * @var array
      */
-    protected $datas = [];
+    protected $data = [];
 
     /**
      * 验证规则.
@@ -147,14 +147,14 @@ class Validator implements IValidator
     /**
      * 构造函数.
      *
-     * @param array $datas
+     * @param array $data
      * @param array $rules
      * @param array $names
      * @param array $messages
      */
-    public function __construct(array $datas = [], array $rules = [], array $names = [], array $messages = [])
+    public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = [])
     {
-        $this->data($datas);
+        $this->data($data);
         $this->rule($rules);
         $this->name($names);
         $this->message($messages);
@@ -211,16 +211,16 @@ class Validator implements IValidator
     /**
      * 初始化验证器.
      *
-     * @param array $datas
+     * @param array $data
      * @param array $rules
      * @param array $names
      * @param array $messages
      *
      * @return \Leevel\Validate\IValidator
      */
-    public static function make(array $datas = [], array $rules = [], array $names = [], array $messages = []): IValidator
+    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
-        return new static($datas, $rules, $names, $messages);
+        return new static($data, $rules, $names, $messages);
     }
 
     /**
@@ -294,17 +294,17 @@ class Validator implements IValidator
     /**
      * 设置验证数据.
      *
-     * @param array $datas
+     * @param array $data
      *
      * @return $this
      */
-    public function data(array $datas): IValidator
+    public function data(array $data): IValidator
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        $this->datas = $datas;
+        $this->datas = $data;
 
         return $this;
     }
@@ -312,17 +312,17 @@ class Validator implements IValidator
     /**
      * 添加验证数据.
      *
-     * @param array $datas
+     * @param array $data
      *
      * @return $this
      */
-    public function addData(array $datas): IValidator
+    public function addData(array $data): IValidator
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        $this->datas = array_merge($this->datas, $datas);
+        $this->datas = array_merge($this->datas, $data);
 
         return $this;
     }
@@ -604,17 +604,17 @@ class Validator implements IValidator
             }
         } else {
             $parts = explode('.', $rule);
-            $datas = $this->datas;
+            $data = $this->datas;
 
             foreach ($parts as $part) {
-                if (!isset($datas[$part])) {
+                if (!isset($data[$part])) {
                     return;
                 }
 
-                $datas = $datas[$part];
+                $data = $data[$part];
             }
 
-            return $datas;
+            return $data;
         }
     }
 
@@ -861,20 +861,20 @@ class Validator implements IValidator
     /**
      * 递归分析.
      *
-     * @param array  $datas
+     * @param array  $data
      * @param string $parentKey
      *
      * @return array
      */
-    protected function parseDataKeyRecursion(array $datas, string $parentKey = ''): array
+    protected function parseDataKeyRecursion(array $data, string $parentKey = ''): array
     {
         $dataKeys = [];
 
-        foreach ($datas as $key => $datas) {
+        foreach ($data as $key => $d) {
             $first = ($parentKey ? $parentKey.'.' : '').$key;
 
-            if (is_array($datas)) {
-                $dataKeys = array_merge($dataKeys, $this->parseDataKeyRecursion($datas, $first));
+            if (is_array($d)) {
+                $dataKeys = array_merge($dataKeys, $this->parseDataKeyRecursion($d, $first));
             } else {
                 $dataKeys[] = $first;
             }

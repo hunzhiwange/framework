@@ -79,14 +79,14 @@ interface IValidator
     /**
      * 初始化验证器.
      *
-     * @param array $datas
+     * @param array $data
      * @param array $rules
      * @param array $names
      * @param array $message
      *
      * @return \Leevel\Validate\IValidator
      */
-    public static function make(array $datas = [], array $rules = [], array $names = [], array $message = []): self;
+    public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): self;
 
     /**
      * 验证是否成功
@@ -119,20 +119,20 @@ interface IValidator
     /**
      * 设置验证数据.
      *
-     * @param array $datas
+     * @param array $data
      *
      * @return $this
      */
-    public function data(array $datas): self;
+    public function data(array $data): self;
 
     /**
      * 添加验证数据.
      *
-     * @param array $datas
+     * @param array $data
      *
      * @return $this
      */
-    public function addData(array $datas): self;
+    public function addData(array $data): self;
 
     /**
      * 返回验证规则.

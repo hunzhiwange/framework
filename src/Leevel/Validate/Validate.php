@@ -57,16 +57,16 @@ class Validate implements IValidate
     /**
      * 创建一个验证器.
      *
-     * @param array $datas
+     * @param array $data
      * @param array $rules
      * @param array $names
      * @param array $messages
      *
      * @return \Leevel\Validate\IValidator
      */
-    public function make(array $datas = [], array $rules = [], array $names = [], array $messages = []): IValidator
+    public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
-        $validator = new Validator($datas, $rules, $names, $messages);
+        $validator = new Validator($data, $rules, $names, $messages);
 
         $validator->setContainer($this->container);
 
