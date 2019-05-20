@@ -15,7 +15,7 @@
     <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
 </p>
 
-# The QueryPHP Framework
+# The QueryPHP Framework . v1.0.0-beta.2
 
 > This is the core framework code of QueryPHP application, starts from this moment with [QueryPHP](https://github.com/hunzhiwange/queryphp).
 

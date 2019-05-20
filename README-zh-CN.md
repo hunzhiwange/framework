@@ -15,7 +15,7 @@
     <a href="./README.md">English</a> | <a href="./README-zh-CN.md">中文</a>
 </p>
 
-# QueryPHP 渐进式 PHP 常驻框架引擎 (核心包)
+# QueryPHP 渐进式 PHP 常驻框架引擎 (核心包) . v1.0.0-beta.2
 
 > 这里是 QueryPHP 框架的核心包, 此刻携手 [QueryPHP](https://github.com/hunzhiwange/queryphp) 共创美好.
 
