@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
+use Leevel\Di\Container;
 use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Server as BaseServer;
 use Leevel\Protocol\IServer;
@@ -74,7 +75,7 @@ class Http extends BaseServer
      */
     protected function createServer(): IServer
     {
-        return App::make('http.server');
+        return Container::singletons()->make('http.server');
     }
 
     /**

@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
+use Leevel\Di\Container;
 use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Status as BaseStatus;
 use Leevel\Protocol\IServer;
@@ -57,7 +58,7 @@ class RpcStatus extends BaseStatus
      */
     protected function createServer(): IServer
     {
-        return App::make('rpc.server');
+        return Container::singletons()->make('rpc.server');
     }
 
     /**

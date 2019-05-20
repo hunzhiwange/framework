@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Thrift\Service;
 
 use InvalidArgumentException;
+use Leevel\Di\Container;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request as HttpRequest;
 use Leevel\Kernel\IKernel;
-use Leevel\Kernel\Proxy\App;
 use Leevel\Router\IRouter;
 
 /**
@@ -58,7 +58,7 @@ class ThriftHandler implements ThriftIf
     {
         $httpRequest = $this->normalizeRequest($request);
 
-        $response = App::make(IKernel::class)->handle($httpRequest);
+        $response = Container::singletons()->make(IKernel::class)->handle($httpRequest);
 
         return $this->normalizeResponse($response);
     }
@@ -125,7 +125,8 @@ class ThriftHandler implements ThriftIf
      */
     protected function setPreRequestMatched(IRequest $request, array $data): void
     {
-        App::make(IRouter::class)
+        Container::singletons()
+            ->make(IRouter::class)
             ->setPreRequestMatched($request, [IRouter::VARS => $data]);
     }
 }

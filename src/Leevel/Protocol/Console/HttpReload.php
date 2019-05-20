@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
+use Leevel\Di\Container;
 use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Reload as BaseReload;
 use Leevel\Protocol\IServer;
@@ -57,7 +58,7 @@ class HttpReload extends BaseReload
      */
     protected function createServer(): IServer
     {
-        return App::make('http.server');
+        return Container::singletons()->make('http.server');
     }
 
     /**

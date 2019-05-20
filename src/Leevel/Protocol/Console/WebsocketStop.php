@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
+use Leevel\Di\Container;
 use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Stop as BaseStop;
 use Leevel\Protocol\IServer;
@@ -57,7 +58,7 @@ class WebsocketStop extends BaseStop
      */
     protected function createServer(): IServer
     {
-        return App::make('websocket.server');
+        return Container::singletons()->make('websocket.server');
     }
 
     /**
