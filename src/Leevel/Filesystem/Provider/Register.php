@@ -89,7 +89,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'filesystem',
-                function (IContainer $container): Filesystem {
+                function (IContainer $container): IFilesystem {
                     return $container['filesystems']->connect();
                 },
             );

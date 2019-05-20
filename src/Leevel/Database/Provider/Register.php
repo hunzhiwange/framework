@@ -112,7 +112,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'database',
-                function (IContainer $container): Database {
+                function (IContainer $container): IDatabase {
                     return $container['databases']->connect();
                 },
             );

@@ -56,15 +56,38 @@ if (!function_exists('app')) {
     /**
      * 返回 IOC 容器或者容器中的服务.
      *
-     * app:\Leevel\Kernel\App
      * auths:\Leevel\Auth\Manager
      * caches:\Leevel\Cache\Manager
+     * databases:\Leevel\Database\Manager
+     * debug:\Leevel\Debug\Debug
+     * di:\Leevel\Di\Container
+     * encryption:\Leevel\Encryption\Encryption
+     * event:\Leevel\Event\Dispatch
      * filesystems:\Leevel\Filesystem\Manager
+     * request:\Leevel\Http\Request
+     * i18n:\Leevel\I18n\I18n
+     * app:\Leevel\Kernel\App
+     * logs:\Leevel\Log\Manager
+     * mails:\Leevel\Mail\Manager
+     * option:\Leevel\Option\Option
+     * router:\Leevel\Router\Router
+     * url:\Leevel\Router\Url
+     * redirect:\Leevel\Router\Redirect
+     * response:\Leevel\Router\ResponseFactory
+     * redirect:\Leevel\Router\Redirect
+     * redirect:\Leevel\Router\Redirect
+     * view:\Leevel\Router\View
+     * sessions:\Leevel\Session\Manager
+     * throttler:\Leevel\Throttler\Throttler
+     * validate:\Leevel\Validate\Validate
+     * redirect:\Leevel\Router\Redirect
+     * redirect:\Leevel\Router\Redirect
+     * view.views:\Leevel\View\Manager
      *
      * @param string $service
      * @param array  $args
      *
-     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|Leevel\Di\Container|\Leevel\Filesystem\Manager|\Leevel\Kernel\App|mixed
+     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|\Leevel\Database\Manager|\Leevel\Debug\Debug|\Leevel\Di\Container|\Leevel\Encryption\Encryption|\Leevel\Event\Dispatch|\Leevel\Filesystem\Manager|\Leevel\Http\Request|\Leevel\I18n\I18n|\Leevel\Kernel\App|\Leevel\Log\Manager|\Leevel\Mail\Manager|\Leevel\Option\Option|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect\|\Leevel\Router\ResponseFactory|\Leevel\Router\Router|\Leevel\Router\Url|\Leevel\Router\View|\Leevel\Session\Manager|\Leevel\Throttler\Throttler|\Leevel\Validate\Validate|\Leevel\View\Manager|mixed
      * @codeCoverageIgnore
      */
     function app(?string $service = 'app', array $args = [])

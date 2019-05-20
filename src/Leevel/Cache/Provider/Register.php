@@ -92,7 +92,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'cache',
-                function (IContainer $container): Cache {
+                function (IContainer $container): ICache {
                     return $container['caches']->connect();
                 },
             );

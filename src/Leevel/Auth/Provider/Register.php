@@ -93,7 +93,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'auth',
-                function (IContainer $container): Auth {
+                function (IContainer $container): IAuth {
                     return $container['auths']->connect();
                 },
             );
