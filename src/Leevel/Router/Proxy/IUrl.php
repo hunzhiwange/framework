@@ -18,20 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router;
+namespace Leevel\Router\Proxy;
 
 use Leevel\Http\IRequest;
+use Leevel\Router\IUrl as IBaseUrl;
 
 /**
- * IUrl 生成.
+ * 代理 url 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.01.10
+ * @since 2019.05.24
  *
  * @version 1.0
  *
- * @see \Leevel\Router\Proxy\IUrl 请保持接口设计的一致性
+ * @see \Leevel\Router\IUrl 请保持接口设计的一致性
  */
 interface IUrl
 {
@@ -45,14 +46,14 @@ interface IUrl
      *
      * @return string
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
+    public static function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
 
     /**
      * 返回 HTTP 请求
      *
      * @return \Leevel\Http\IRequest
      */
-    public function getRequest(): IRequest;
+    public static function getRequest(): IRequest;
 
     /**
      * 设置配置.
@@ -60,14 +61,14 @@ interface IUrl
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Router\IUrl
      */
-    public function setOption(string $name, $value): self;
+    public static function setOption(string $name, $value): IBaseUrl;
 
     /**
      * 获取域名.
      *
      * @return string
      */
-    public function getDomain(): string;
+    public static function getDomain(): string;
 }

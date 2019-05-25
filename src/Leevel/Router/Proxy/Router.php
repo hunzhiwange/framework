@@ -33,6 +33,7 @@ use Leevel\Router\Router as BaseRouter;
  * @since 2017.06.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Router implements IRouter
 {
