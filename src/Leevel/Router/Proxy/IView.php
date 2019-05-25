@@ -20,36 +20,22 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Proxy;
 
-use Leevel\Di\Container;
 use Leevel\Router\IView as IBaseView;
-use Leevel\Router\View as BaseView;
 use Leevel\View\IView as IViews;
 
 /**
- * 代理 view.
+ * 代理 view 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.10
+ * @since 2019.05.25
  *
  * @version 1.0
- * @codeCoverageIgnore
+ *
+ * @see \Leevel\Router\IView 请保持接口设计的一致性
  */
-class View implements IView
+interface IView
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
-
     /**
      * 切换视图.
      *
@@ -57,23 +43,17 @@ class View implements IView
      *
      * @return \Leevel\Router\IView
      */
-    public static function switchView(IViews $view): IBaseView
-    {
-        return self::proxy()->switchView($view);
-    }
+    public static function switchView(IViews $view): IBaseView;
 
     /**
-     * 变量赋值
+     * 变量赋值.
      *
      * @param mixed $name
      * @param mixed $value
      *
      * @return \Leevel\Router\IView
      */
-    public static function setVar($name, $value = null): IBaseView
-    {
-        return self::proxy()->setVar($name, $value);
-    }
+    public static function setVar($name, $value = null): IBaseView;
 
     /**
      * 获取变量赋值.
@@ -82,10 +62,7 @@ class View implements IView
      *
      * @return mixed
      */
-    public static function getVar(?string $name = null)
-    {
-        return self::proxy()->getVar($name);
-    }
+    public static function getVar(?string $name = null);
 
     /**
      * 删除变量值.
@@ -94,22 +71,14 @@ class View implements IView
      *
      * @return \Leevel\Router\IView
      */
-    public static function deleteVar(array $name): IBaseView
-    {
-        return self::proxy()->deleteVar($name);
-    }
+    public static function deleteVar(array $name): IBaseView;
 
     /**
      * 清空变量值.
      *
-     * @param null|string $name
-     *
      * @return \Leevel\Router\IView
      */
-    public static function clearVar(): IBaseView
-    {
-        return self::proxy()->clearVar();
-    }
+    public static function clearVar(): IBaseView;
 
     /**
      * 加载视图文件.
@@ -120,18 +89,5 @@ class View implements IView
      *
      * @return string
      */
-    public static function display(string $file, array $vars = [], ?string $ext = null): string
-    {
-        return self::proxy()->display($file, $vars, $ext);
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Router\View
-     */
-    public static function proxy(): BaseView
-    {
-        return Container::singletons()->make('view');
-    }
+    public static function display(string $file, array $vars = [], ?string $ext = null): string;
 }
