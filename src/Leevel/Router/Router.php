@@ -35,6 +35,8 @@ use Leevel\Pipeline\Pipeline;
  * @since 2017.01.10
  *
  * @version 1.0
+ *
+ * @see \Leevel\Router\Proxy\IRouter 请保持接口设计的一致性
  */
 class Router implements IRouter
 {
