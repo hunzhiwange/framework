@@ -28,7 +28,7 @@ use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response;
 use Leevel\Router\Redirect;
-use Leevel\Router\ResponseFactory;
+use Leevel\Router\Response as RouterResponse;
 use Leevel\Router\Url;
 use Leevel\Router\View;
 use Leevel\View\Phpui;
@@ -45,14 +45,14 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class ResponseFactoryTest extends TestCase
+class ResponseTest extends TestCase
 {
     public function testBaseUse()
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->make('hello');
 
@@ -69,7 +69,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->make(['foo', 'bar'], 404, ['foo' => 'bar']);
 
@@ -86,7 +86,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->view('view1', ['foo' => 'bar']);
 
@@ -103,7 +103,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->view('view1', ['foo' => 'bar new'], '.foo');
 
@@ -120,7 +120,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->view('view1', ['foo' => 'bar new'], null, 404, ['hello' => 'world']);
 
@@ -137,7 +137,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->viewSuccess('it is success.');
 
@@ -154,7 +154,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->viewSuccess('it is success2.', 'http://queryphp.com', 3);
 
@@ -171,7 +171,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $factory->setViewSuccessTemplate('success_custom');
 
@@ -190,7 +190,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->viewFail('it is fail.');
 
@@ -207,7 +207,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->viewFail('it is fail2.', 'http://queryphp.com', 3);
 
@@ -224,7 +224,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $factory->setViewFailTemplate('fail_custom');
 
@@ -243,7 +243,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->json();
 
@@ -261,7 +261,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->json('hello world', 404, ['foo' => 'bar']);
 
@@ -279,7 +279,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->json(['foo' => 'bar', 'hello' => 'world'], 404, ['foo' => 'bar']);
 
@@ -297,7 +297,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->json('{"foo":"bar","hello":"world"}', 404, ['foo' => 'bar'], true);
 
@@ -315,7 +315,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->jsonp('foo');
 
@@ -333,7 +333,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->jsonp('foo', ['foo' => 'bar']);
 
@@ -351,7 +351,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->jsonp('bar', ['foo' => 'bar'], 404, ['hello' => 'world']);
 
@@ -369,7 +369,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->download(__DIR__.'/assert/download.txt');
 
@@ -386,7 +386,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->download(new SplFileInfo(__DIR__.'/assert/download.txt'));
 
@@ -403,7 +403,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->download(new SplFileObject(__DIR__.'/assert/download.txt'));
 
@@ -420,7 +420,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->download(__DIR__.'/assert/download.txt', 'foo.txt', 200, ['foo' => 'bar']);
 
@@ -438,7 +438,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->file(__DIR__.'/assert/download.txt');
 
@@ -455,7 +455,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->file(new SplFileInfo(__DIR__.'/assert/download.txt'));
 
@@ -472,7 +472,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->file(new SplFileObject(__DIR__.'/assert/download.txt'));
 
@@ -489,7 +489,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->file(__DIR__.'/assert/download.txt', 200, ['foo' => 'bar']);
 
@@ -507,7 +507,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->redirect('hello/world');
 
@@ -538,7 +538,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->redirect('hello/world', ['foo' => 'bar']);
 
@@ -569,7 +569,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->redirectRaw('http://queryphp.com/raw');
 
@@ -600,7 +600,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->redirectRaw('http://queryphp.com/raw?foo=bar');
 
@@ -631,7 +631,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiOk();
 
@@ -649,7 +649,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiOk(['foo' => 'bar'], 'hello world');
 
@@ -667,7 +667,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiCreated();
 
@@ -685,7 +685,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiCreated('http://queryphp.com', 'hello world');
 
@@ -703,7 +703,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiAccepted();
 
@@ -721,7 +721,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiAccepted('http://queryphp.com', 'hello world');
 
@@ -739,7 +739,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiNoContent();
 
@@ -757,7 +757,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiError('foo', 404);
 
@@ -775,7 +775,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiBadRequest();
 
@@ -793,7 +793,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiBadRequest('foo', 'bar');
 
@@ -811,7 +811,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiUnauthorized();
 
@@ -829,7 +829,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiUnauthorized('foo', 'bar');
 
@@ -847,7 +847,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiForbidden();
 
@@ -865,7 +865,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiForbidden('foo', 'bar');
 
@@ -883,7 +883,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiNotFound();
 
@@ -901,7 +901,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiNotFound('foo', 'bar');
 
@@ -919,7 +919,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiMethodNotAllowed();
 
@@ -937,7 +937,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiMethodNotAllowed('foo', 'bar');
 
@@ -955,7 +955,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiUnprocessableEntity();
 
@@ -973,7 +973,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiUnprocessableEntity(['hello' => 'world'], 'foo', 'bar');
 
@@ -991,7 +991,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiTooManyRequests();
 
@@ -1009,7 +1009,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiTooManyRequests('foo', 'bar');
 
@@ -1027,7 +1027,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiInternalServerError();
 
@@ -1045,7 +1045,7 @@ class ResponseFactoryTest extends TestCase
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
 
-        $factory = new ResponseFactory($view, $redirect);
+        $factory = new RouterResponse($view, $redirect);
 
         $response = $factory->apiInternalServerError('foo', 'bar');
 

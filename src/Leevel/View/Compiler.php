@@ -407,6 +407,7 @@ class Compiler implements ICompiler
     {
         $theme['content'] = call_user_func(
             function ($content) {
+                $matches = null;
                 preg_match_all('/\\$([\S]+)/', $content, $matches);
 
                 $matches = $matches[1];

@@ -25,7 +25,7 @@ use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response as BaseResponse;
-use Leevel\Router\IResponseFactory;
+use Leevel\Router\IResponse as IBaseResponse;
 
 /**
  * 响应工厂接口.
@@ -36,7 +36,7 @@ use Leevel\Router\IResponseFactory;
  *
  * @version 1.0
  *
- * @see \Leevel\Router\IResponseFactory 请保持接口设计的一致性
+ * @see \Leevel\Router\IResponse 请保持接口设计的一致性
  */
 interface IResponse
 {
@@ -314,16 +314,16 @@ interface IResponse
      *
      * @param string $template
      *
-     * @return \Leevel\Router\IResponseFactory
+     * @return \Leevel\Router\IResponse
      */
-    public static function setViewSuccessTemplate(string $template): IResponseFactory;
+    public static function setViewSuccessTemplate(string $template): self;
 
     /**
      * 设置视图错误模板
      *
      * @param string $template
      *
-     * @return \Leevel\Router\IResponseFactory
+     * @return \Leevel\Router\IResponse
      */
-    public static function setViewFailTemplate(string $template): IResponseFactory;
+    public static function setViewFailTemplate(string $template): IBaseResponse;
 }

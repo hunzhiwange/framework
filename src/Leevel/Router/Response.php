@@ -24,11 +24,11 @@ use Leevel\Http\ApiResponse;
 use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
-use Leevel\Http\Response;
+use Leevel\Http\Response as BaseResponse;
 use Leevel\Http\ResponseHeaderBag;
 
 /**
- * 响应工厂
+ * 响应.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -36,7 +36,7 @@ use Leevel\Http\ResponseHeaderBag;
  *
  * @version 1.0
  */
-class ResponseFactory implements IResponseFactory
+class Response implements IResponse
 {
     /**
      * 视图.
@@ -87,9 +87,9 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function make($content = '', $status = 200, array $headers = []): Response
+    public function make($content = '', $status = 200, array $headers = []): BaseResponse
     {
-        return new Response($content, $status, $headers);
+        return new BaseResponse($content, $status, $headers);
     }
 
     /**
@@ -103,7 +103,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): Response
+    public function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): BaseResponse
     {
         return $this->make($this->view->display($file, $vars, $ext), $status, $headers);
     }
@@ -119,7 +119,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): Response
+    public function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): BaseResponse
     {
         $vars = [
             'message' => $message,
@@ -141,7 +141,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): Response
+    public function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): BaseResponse
     {
         $vars = [
             'message' => $message,
@@ -441,7 +441,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return $this
      */
-    public function setViewSuccessTemplate(string $template): IResponseFactory
+    public function setViewSuccessTemplate(string $template): IResponse
     {
         $this->viewSuccessTemplate = $template;
 
@@ -455,7 +455,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return $this
      */
-    public function setViewFailTemplate(string $template): IResponseFactory
+    public function setViewFailTemplate(string $template): IResponse
     {
         $this->viewFailTemplate = $template;
 

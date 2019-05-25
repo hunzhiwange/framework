@@ -24,10 +24,10 @@ use Leevel\Http\ApiResponse;
 use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
-use Leevel\Http\Response;
+use Leevel\Http\Response as BaseResponse;
 
 /**
- * 响应工厂接口.
+ * 响应接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -35,7 +35,7 @@ use Leevel\Http\Response;
  *
  * @version 1.0
  */
-interface IResponseFactory
+interface IResponse
 {
     /**
      * 返回一个响应.
@@ -46,7 +46,7 @@ interface IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function make($content = '', $status = 200, array $headers = []): Response;
+    public function make($content = '', $status = 200, array $headers = []): BaseResponse;
 
     /**
      * 返回视图响应.
@@ -59,7 +59,7 @@ interface IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): Response;
+    public function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): BaseResponse;
 
     /**
      * 返回视图成功消息.
@@ -72,7 +72,7 @@ interface IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): Response;
+    public function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): BaseResponse;
 
     /**
      * 返回视图失败消息.
@@ -85,7 +85,7 @@ interface IResponseFactory
      *
      * @return \Leevel\Http\Response
      */
-    public function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): Response;
+    public function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): BaseResponse;
 
     /**
      * 返回 JSON 响应.

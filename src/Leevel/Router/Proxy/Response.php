@@ -26,8 +26,8 @@ use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response as BaseResponse;
-use Leevel\Router\IResponseFactory;
-use Leevel\Router\ResponseFactory;
+use Leevel\Router\IResponse;
+use Leevel\Router\Response as RouterResponse;
 
 /**
  * 代理 response.
@@ -396,9 +396,9 @@ class Response
      *
      * @param string $template
      *
-     * @return \Leevel\Router\IResponseFactory
+     * @return \Leevel\Router\IResponse
      */
-    public static function setViewSuccessTemplate(string $template): IResponseFactory
+    public static function setViewSuccessTemplate(string $template): IResponse
     {
         return self::proxy()->setViewSuccessTemplate($template);
     }
@@ -408,9 +408,9 @@ class Response
      *
      * @param string $template
      *
-     * @return \Leevel\Router\IResponseFactory
+     * @return \Leevel\Router\IResponse
      */
-    public static function setViewFailTemplate(string $template): IResponseFactory
+    public static function setViewFailTemplate(string $template): IResponse
     {
         return self::proxy()->setViewFailTemplate($template);
     }
@@ -418,9 +418,9 @@ class Response
     /**
      * 代理服务
      *
-     * @return \Leevel\Router\ResponseFactory
+     * @return \Leevel\Router\Response
      */
-    public static function proxy(): ResponseFactory
+    public static function proxy(): RouterResponse
     {
         return Container::singletons()->make('response');
     }
