@@ -28,6 +28,7 @@ use Leevel\Http\Request;
 use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
+use Leevel\Router\Url;
 use Tests\TestCase;
 
 /**
@@ -1058,8 +1059,12 @@ class RouterProviderAnnotation extends RouterProvider
     }
 }
 
-class UrlAnnotation
+class UrlAnnotation extends Url
 {
+    public function __construct()
+    {
+    }
+
     public function getDomain(): string
     {
         return 'queryphp.com';

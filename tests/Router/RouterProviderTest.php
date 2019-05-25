@@ -24,6 +24,7 @@ use Leevel\Di\Container;
 use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
+use Leevel\Router\Url;
 use Tests\TestCase;
 
 /**
@@ -177,8 +178,12 @@ class RouterProvider1 extends RouterProvider
     }
 }
 
-class Url2
+class Url2 extends Url
 {
+    public function __construct()
+    {
+    }
+
     public function getDomain(): string
     {
         return 'queryphp.com';

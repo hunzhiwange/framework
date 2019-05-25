@@ -25,6 +25,7 @@ use Leevel\Kernel\App;
 use Leevel\Router\MiddlewareParser;
 use Leevel\Router\Router;
 use Leevel\Router\ScanRouter;
+use Leevel\Router\Url;
 use Tests\TestCase;
 
 /**
@@ -101,8 +102,12 @@ class ScanRouterTest extends TestCase
     }
 }
 
-class Url1
+class Url1 extends Url
 {
+    public function __construct()
+    {
+    }
+
     public function getDomain(): string
     {
         return 'queryphp.com';

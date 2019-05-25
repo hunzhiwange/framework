@@ -434,9 +434,9 @@ abstract class Mail implements IMail
     protected function getViewData(string $file, array $data): string
     {
         return $this->view
-            ->clearAssign()
-            ->assign('mail', $this)
-            ->assign($data)
+            ->clearVar()
+            ->setVar('mail', $this)
+            ->setVar($data)
             ->display($file, [], null);
     }
 
