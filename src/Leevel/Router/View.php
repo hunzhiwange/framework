@@ -59,7 +59,7 @@ class View implements IView
      */
     public function switchView(IViews $view): IView
     {
-        $assign = $this->getAssign();
+        $assign = $this->getVar();
 
         $this->view = $view;
         $this->assign($assign);
@@ -75,7 +75,7 @@ class View implements IView
      *
      * @return $this
      */
-    public function assign($name, $value = null): IView
+    public function setVar($name, $value = null): IView
     {
         $this->view->setVar($name, $value);
 
@@ -89,7 +89,7 @@ class View implements IView
      *
      * @return mixed
      */
-    public function getAssign(?string $name = null)
+    public function getVar(?string $name = null)
     {
         return $this->view->getVar($name);
     }
@@ -101,7 +101,7 @@ class View implements IView
      *
      * @return $this
      */
-    public function deleteAssign(array $name): IView
+    public function deleteVar(array $name): IView
     {
         $this->view->deleteVar($name);
 
@@ -115,7 +115,7 @@ class View implements IView
      *
      * @return $this
      */
-    public function clearAssign(): IView
+    public function clearVar(): IView
     {
         $this->view->clearVar();
 
