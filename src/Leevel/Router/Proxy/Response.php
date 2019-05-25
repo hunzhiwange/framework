@@ -37,6 +37,7 @@ use Leevel\Router\Response as RouterResponse;
  * @since 2017.06.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Response implements IResponse
 {

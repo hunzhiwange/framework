@@ -32,6 +32,7 @@ use Leevel\Http\IRequest as IBaseRequest;
  * @since 2017.06.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Request implements IRequest
 {
