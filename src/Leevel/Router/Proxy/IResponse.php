@@ -28,7 +28,7 @@ use Leevel\Http\Response as BaseResponse;
 use Leevel\Router\IResponse as IBaseResponse;
 
 /**
- * 响应工厂接口.
+ * 响应接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
