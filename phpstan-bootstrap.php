@@ -27,9 +27,13 @@ declare(strict_types=1);
  *
  * @version 1.0
  */
-include __DIR__.'/tests/bootstrap.php';
+include __DIR__.'/tests/bootstrap.php'; /** @codeCoverageIgnore */
 
-// 导入助手函数
+/**
+ * 导入助手函数.
+ *
+ * @codeCoverageIgnoreStart
+ */
 $fnDirs = [
     __DIR__.'/src/Leevel/Support/Type',
     __DIR__.'/src/Leevel/Support/Arr',
@@ -55,3 +59,4 @@ foreach ($fnDirs as $dir) {
         include_once $file;
     }
 }
+// @codeCoverageIgnoreEnd
