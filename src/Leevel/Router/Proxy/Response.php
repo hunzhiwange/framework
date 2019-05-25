@@ -26,7 +26,7 @@ use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response as BaseResponse;
-use Leevel\Router\IResponse;
+use Leevel\Router\IResponse as IBaseResponse;
 use Leevel\Router\Response as RouterResponse;
 
 /**
@@ -38,7 +38,7 @@ use Leevel\Router\Response as RouterResponse;
  *
  * @version 1.0
  */
-class Response
+class Response implements IResponse
 {
     /**
      * call.
@@ -396,9 +396,9 @@ class Response
      *
      * @param string $template
      *
-     * @return \Leevel\Router\IResponse
+     * @return \Leevel\Router\Response
      */
-    public static function setViewSuccessTemplate(string $template): IResponse
+    public static function setViewSuccessTemplate(string $template): IBaseResponse
     {
         return self::proxy()->setViewSuccessTemplate($template);
     }
@@ -408,9 +408,9 @@ class Response
      *
      * @param string $template
      *
-     * @return \Leevel\Router\IResponse
+     * @return \Leevel\Router\Response
      */
-    public static function setViewFailTemplate(string $template): IResponse
+    public static function setViewFailTemplate(string $template): IBaseResponse
     {
         return self::proxy()->setViewFailTemplate($template);
     }

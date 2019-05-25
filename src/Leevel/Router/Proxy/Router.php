@@ -67,7 +67,7 @@ class Router implements IRouter
      */
     public static function initRequest(): void
     {
-        self::proxy() - initRequest();
+        self::proxy()->initRequest();
     }
 
     /**
