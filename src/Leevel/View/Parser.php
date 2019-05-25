@@ -915,11 +915,11 @@ class Parser implements IParser
      * @param int    $start   起始查找的位置
      *
      * @return array start 标签开始的位置（字节数）
-     * @note int end 标签结束的位置（字节数）
-     * @notenote int start_line 标签开始的行（行数）
-     * @note int end_line 标签结束的行（行数）
-     * @note int start_in 标签开始的所在的行的起始字节数
-     * @note int end_in 标签结束的所在的行的起始字节数
+     *               - int end 标签结束的位置（字节数）
+     *               - int start_line 标签开始的行（行数）
+     *               - int end_line 标签结束的行（行数）
+     *               - int start_in 标签开始的所在的行的起始字节数
+     *               - int end_in 标签结束的所在的行的起始字节数
      */
     protected function getPosition(string $content, string $find, int $start): array
     {
@@ -998,10 +998,10 @@ class Parser implements IParser
      * @param array $beyond
      *
      * @return string
-     * @note string front 第一个在第二个前面
-     * @note string behind 第一个在第二个后面
-     * @note string in 第一个在第二里面，成为它的子模板
-     * @note string out 第一个在第一个里面，成为它的子模板
+     *                - string front 第一个在第二个前面
+     *                - string behind 第一个在第二个后面
+     *                - string in 第一个在第二里面，成为它的子模板
+     *                - string out 第一个在第一个里面，成为它的子模板
      */
     protected function positionRelative(array $value, array $beyond): string
     {

@@ -58,8 +58,8 @@ interface IDatabase
      * 返回 Pdo 查询连接.
      *
      * @param bool|int $master
-     * @note bool false (读服务器) true (写服务器)
-     * @note 其它去对应服务器连接ID 0 表示主服务器
+     *                         - bool false (读服务器) true (写服务器)
+     *                         - int 其它去对应服务器连接ID 0 表示主服务器
      *
      * @return mixed
      */
