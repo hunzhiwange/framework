@@ -540,7 +540,7 @@ class App implements IApp
      *
      * @param string $routerCachedPath
      */
-    public function setRouterCachedPath(string $routerCachedPath)
+    public function setRouterCachedPath(string $routerCachedPath): void
     {
         $this->routerCachedPath = $routerCachedPath;
     }
