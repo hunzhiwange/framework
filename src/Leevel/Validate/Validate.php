@@ -67,7 +67,6 @@ class Validate implements IValidate
     public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
         $validator = new Validator($data, $rules, $names, $messages);
-
         $validator->setContainer($this->container);
 
         return $validator;

@@ -20,35 +20,21 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Proxy;
 
-use Leevel\Di\Container;
 use Leevel\Validate\IValidator;
-use Leevel\Validate\Validate as BaseValidate;
 
 /**
- * 代理 validate.
+ * 代理 validate 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.07.26
+ * @since 2019.05.26
  *
  * @version 1.0
- * @codeCoverageIgnore
+ *
+ * @see \Leevel\Validate\IValidate 请保持接口设计的一致
  */
-class Validate implements IValidate
+interface IValidate
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
-
     /**
      * 创建一个验证器.
      *
@@ -59,26 +45,10 @@ class Validate implements IValidate
      *
      * @return \Leevel\Validate\IValidator
      */
-    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
-    {
-        return self::proxy()->make($data, $rules, $names, $messages);
-    }
+    public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator;
 
     /**
      * 初始化默认验证消息.
      */
-    public static function initMessages(): void
-    {
-        self::proxy()->initMessages();
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Validate\Validate
-     */
-    public static function proxy(): BaseValidate
-    {
-        return Container::singletons()->make('validate');
-    }
+    public static function initMessages(): void;
 }
