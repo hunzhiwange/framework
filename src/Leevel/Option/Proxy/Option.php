@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Option\Proxy;
 
 use Leevel\Di\Container;
+use Leevel\Option\Option as BaseOption;
 
 /**
  * 代理 option.
@@ -30,8 +31,9 @@ use Leevel\Di\Container;
  * @since 2017.06.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-class Option
+class Option implements IOption
 {
     /**
      * call.
@@ -43,8 +45,82 @@ class Option
      */
     public static function __callStatic(string $method, array $args)
     {
-        return Container::singletons()
-            ->make('option')
-            ->{$method}(...$args);
+        return self::proxy()->{$method}(...$args);
+    }
+
+    /**
+     * 是否存在配置.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public static function has(string $name = 'app\\'): bool
+    {
+        return self::proxy()->has($name);
+    }
+
+    /**
+     * 获取配置.
+     *
+     * @param string $name
+     * @param mixed  $defaults
+     *
+     * @return mixed
+     */
+    public static function get(string $name = 'app\\', $defaults = null)
+    {
+        return self::proxy()->get($name, $defaults);
+    }
+
+    /**
+     * 返回所有配置.
+     *
+     * @return array
+     */
+    public static function all(): array
+    {
+        return self::proxy()->all();
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param mixed $name
+     * @param mixed $value
+     */
+    public static function set($name, $value = null): void
+    {
+        self::proxy()->set($name, $value);
+    }
+
+    /**
+     * 删除配置.
+     *
+     * @param string $name
+     */
+    public static function delete(string $name): void
+    {
+        self::proxy()->delete($name);
+    }
+
+    /**
+     * 初始化配置参数.
+     *
+     * @param mixed $namespaces
+     */
+    public static function reset($namespaces = null): void
+    {
+        self::proxy()->reset($namespaces);
+    }
+
+    /**
+     * 代理服务
+     *
+     * @return \Leevel\Option\Option
+     */
+    public static function proxy(): BaseOption
+    {
+        return Container::singletons()->make('option');
     }
 }

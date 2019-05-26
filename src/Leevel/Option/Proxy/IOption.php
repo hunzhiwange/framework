@@ -18,28 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Option;
+namespace Leevel\Option\Proxy;
 
 /**
- * IOption 接口.
+ * 代理 option 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.23
+ * @since 2019.05.26
  *
  * @version 1.0
  *
- * @see \Leevel\Option\Proxy\IOption 请保持接口设计的一致
+ * @see \Leevel\Option\IOption 请保持接口设计的一致
  */
 interface IOption
 {
-    /**
-     * 默认命名空间.
-     *
-     * @var string
-     */
-    const DEFAUTL_NAMESPACE = 'app';
-
     /**
      * 是否存在配置.
      *
@@ -47,7 +40,7 @@ interface IOption
      *
      * @return bool
      */
-    public function has(string $name = 'app\\'): bool;
+    public static function has(string $name = 'app\\'): bool;
 
     /**
      * 获取配置.
@@ -57,14 +50,14 @@ interface IOption
      *
      * @return mixed
      */
-    public function get(string $name = 'app\\', $defaults = null);
+    public static function get(string $name = 'app\\', $defaults = null);
 
     /**
      * 返回所有配置.
      *
      * @return array
      */
-    public function all(): array;
+    public static function all(): array;
 
     /**
      * 设置配置.
@@ -72,19 +65,19 @@ interface IOption
      * @param mixed $name
      * @param mixed $value
      */
-    public function set($name, $value = null): void;
+    public static function set($name, $value = null): void;
 
     /**
      * 删除配置.
      *
      * @param string $name
      */
-    public function delete(string $name): void;
+    public static function delete(string $name): void;
 
     /**
      * 初始化配置参数.
      *
      * @param mixed $namespaces
      */
-    public function reset($namespaces = null): void;
+    public static function reset($namespaces = null): void;
 }
