@@ -20,34 +20,19 @@ declare(strict_types=1);
 
 namespace Leevel\Encryption\Proxy;
 
-use Leevel\Di\Container;
-use Leevel\Encryption\Encryption as BaseEncryption;
-
 /**
- * 代理 encryption.
+ * 代理 encryption 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.10
+ * @since 2019.05.26
  *
  * @version 1.0
- * @codeCoverageIgnore
+ *
+ * @see \Leevel\Encryption\IEncryption 请保持接口设计的一致
  */
-class Encryption implements IEncryption
+interface IEncryption
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
-
     /**
      * 加密.
      *
@@ -56,10 +41,7 @@ class Encryption implements IEncryption
      *
      * @return string
      */
-    public static function encrypt(string $value, int $expiry = 0): string
-    {
-        return self::proxy()->encrypt($value, $expiry);
-    }
+    public static function encrypt(string $value, int $expiry = 0): string;
 
     /**
      * 解密.
@@ -68,18 +50,5 @@ class Encryption implements IEncryption
      *
      * @return string
      */
-    public static function decrypt(string $value): string
-    {
-        return self::proxy()->decrypt($value);
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Encryption\Encryption
-     */
-    public static function proxy(): BaseEncryption
-    {
-        return Container::singletons()->make('encryption');
-    }
+    public static function decrypt(string $value): string;
 }
