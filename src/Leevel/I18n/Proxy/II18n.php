@@ -20,33 +20,28 @@ declare(strict_types=1);
 
 namespace Leevel\I18n\Proxy;
 
-use Leevel\Di\Container;
-use Leevel\I18n\I18n as BaseI18n;
-
 /**
- * 代理 i18n.
+ * 代理 i18n 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.10
+ * @since 2019.05.26
  *
  * @version 1.0
- * @codeCoverageIgnore
+ *
+ * @see \Leevel\I18n\II18n 请保持接口设计的一致性
  */
-class I18n implements II18n
+interface II18n
 {
     /**
-     * call.
+     * 获取语言 text.
      *
-     * @param string $method
-     * @param array  $args
+     * @param string $text
+     * @param array  ...$arr
      *
-     * @return mixed
+     * @return string
      */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
+    public static function __(string $text, ...$arr): string;
 
     /**
      * 获取语言 text.
@@ -56,23 +51,7 @@ class I18n implements II18n
      *
      * @return string
      */
-    public static function __(string $text, ...$arr): string
-    {
-        return self::proxy()->__($text, ...$arr);
-    }
-
-    /**
-     * 获取语言 text.
-     *
-     * @param string $text
-     * @param array  ...$arr
-     *
-     * @return string
-     */
-    public static function gettext(string $text, ...$arr): string
-    {
-        return self::proxy()->gettext($text, ...$arr);
-    }
+    public static function gettext(string $text, ...$arr): string;
 
     /**
      * 添加语言包.
@@ -80,48 +59,26 @@ class I18n implements II18n
      * @param string $i18n 语言名字
      * @param array  $data 语言包数据
      */
-    public static function addtext(string $i18n, array $data = []): void
-    {
-        self::proxy()->addtext($i18n, $data);
-    }
+    public static function addtext(string $i18n, array $data = []): void;
 
     /**
      * 设置当前语言包上下文环境.
      *
      * @param string $i18n
      */
-    public static function setI18n(string $i18n): void
-    {
-        self::proxy()->setI18n($i18n);
-    }
+    public static function setI18n(string $i18n): void;
 
     /**
      * 获取当前语言包.
      *
      * @return string
      */
-    public static function getI18n(): string
-    {
-        return self::proxy()->getI18n();
-    }
+    public static function getI18n(): string;
 
     /**
      * 返回所有语言包.
      *
      * @return array
      */
-    public static function all(): array
-    {
-        return self::proxy()->all();
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\I18n\I18n
-     */
-    public static function proxy(): BaseI18n
-    {
-        return Container::singletons()->make('i18n');
-    }
+    public static function all(): array;
 }
