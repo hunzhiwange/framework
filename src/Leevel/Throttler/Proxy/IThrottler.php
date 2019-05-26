@@ -20,36 +20,23 @@ declare(strict_types=1);
 
 namespace Leevel\Throttler\Proxy;
 
-use Leevel\Di\Container;
 use Leevel\Http\IRequest;
 use Leevel\Throttler\IRateLimiter;
 use Leevel\Throttler\IThrottler as IBaseThrottler;
-use Leevel\Throttler\Throttler as BaseThrottler;
 
 /**
- * 代理 throttler.
+ * 代理 throttler 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.08.10
+ * @since 2019.05.26
  *
  * @version 1.0
+ *
+ * @see \Leevel\Throttler\IThrottler 请保持接口设计的一致
  */
-class Throttler implements IThrottler
+interface IThrottler
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
-
     /**
      * 创建一个节流器.
      *
@@ -59,10 +46,7 @@ class Throttler implements IThrottler
      *
      * @return \Leevel\Throttler\IRateLimiter
      */
-    public static function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20): IRateLimiter
-    {
-        return self::proxy()->create($key, $xRateLimitLimit, $xRateLimitTime);
-    }
+    public static function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20): IRateLimiter;
 
     /**
      * 设置 http request.
@@ -71,10 +55,7 @@ class Throttler implements IThrottler
      *
      * @return \Leevel\Throttler\IThrottler
      */
-    public static function setRequest(IRequest $request): IBaseThrottler
-    {
-        return self::proxy()->setRequest($request);
-    }
+    public static function setRequest(IRequest $request): IBaseThrottler;
 
     /**
      * 获取请求 key.
@@ -83,18 +64,5 @@ class Throttler implements IThrottler
      *
      * @return string
      */
-    public static function getRequestKey(?string $key = null): string
-    {
-        return self::proxy()->getRequestKey($key);
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Throttler\Throttler
-     */
-    public static function proxy(): BaseThrottler
-    {
-        return Container::singletons()->make('throttler');
-    }
+    public static function getRequestKey(?string $key = null): string;
 }
