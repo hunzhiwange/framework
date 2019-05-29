@@ -53,7 +53,7 @@ abstract class Mail implements IMail
     /**
      * 视图.
      *
-     * @var \leevel\Router\IView
+     * @var \Leevel\Router\IView
      */
     protected $view;
 
