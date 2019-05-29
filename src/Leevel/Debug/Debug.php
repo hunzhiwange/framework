@@ -29,6 +29,7 @@ use DebugBar\DataCollector\PhpInfoCollector;
 use DebugBar\DataCollector\RequestDataCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use DebugBar\DebugBar;
+use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
 use Exception;
 use Leevel\Database\IDatabase;
 use Leevel\Debug\DataCollector\FilesCollector;
@@ -57,14 +58,23 @@ use Throwable;
  *
  * @version 1.0
  */
-class Debug extends DebugBar
+class Debug implements IDebug
 {
+    use Proxy;
+
     /**
      * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected $container;
+
+    /**
+     * DebugBar.
+     *
+     * @var \DebugBar\DebugBar
+     */
+    protected $debugBar;
 
     /**
      * 是否启用调试.
@@ -100,8 +110,31 @@ class Debug extends DebugBar
     public function __construct(IContainer $container, array $option = [])
     {
         $this->container = $container;
-
         $this->option = array_merge($this->option, $option);
+        $this->debugBar = new DebugBar();
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        $this->debugBar->{$method}(...$args);
+    }
+
+    /**
+     * 返回代理.
+     *
+     * @return \DebugBar\DebugBar
+     */
+    public function proxy(): DebugBar
+    {
+        return $this->debugBar;
     }
 
     /**
@@ -122,7 +155,7 @@ class Debug extends DebugBar
      *
      * @return $this
      */
-    public function setOption(string $name, $value): self
+    public function setOption(string $name, $value): IDebug
     {
         $this->option[$name] = $value;
 
@@ -368,11 +401,16 @@ class Debug extends DebugBar
     }
 
     /**
-     * {@inheritdoc}
+     * 返回此实例的 \DebugBar\JavascriptRenderer.
+     *
+     * @param string $baseUrl
+     * @param string $basePath
+     *
+     * @return \DebugBar\JavascriptRenderer
      */
-    public function getJavascriptRenderer($baseUrl = null, $basePath = null): JavascriptRenderer
+    public function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer
     {
-        return new JavascriptRenderer($this, $baseUrl, $basePath);
+        return new JavascriptRenderer($this->debugBar, $baseUrl, $basePath);
     }
 
     /**

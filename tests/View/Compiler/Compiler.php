@@ -36,9 +36,8 @@ trait Compiler
 {
     protected function createParser()
     {
-        return (new Parser(new Compilers()))->
-        registerCompilers()->
-
-        registerParsers();
+        return (new Parser(new Compilers()))
+            ->registerCompilers()
+            ->registerParsers();
     }
 }
