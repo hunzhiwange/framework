@@ -22,6 +22,7 @@ namespace Leevel\Cache;
 
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
+use ReflectionClass;
 
 /**
  * cache 快捷载入.
@@ -42,13 +43,6 @@ class Load
     protected $container;
 
     /**
-     * cache 仓储.
-     *
-     * @var \Leevel\Cache\ICache
-     */
-    protected $cache;
-
-    /**
      * 已经载入的缓存数据.
      *
      * @var array
@@ -59,48 +53,24 @@ class Load
      * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
-     * @param \Leevel\Cache\ICache  $cache
      */
-    public function __construct(IContainer $container, ICache $cache)
+    public function __construct(IContainer $container)
     {
         $this->container = $container;
-        $this->cache = $cache;
-    }
-
-    /**
-     * 切换缓存仓储.
-     *
-     * @param \Leevel\Cache\ICache $cache
-     */
-    public function switchCache(ICache $cache): void
-    {
-        $this->cache = $cache;
-    }
-
-    /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function getCache(): ICache
-    {
-        return $this->cache;
     }
 
     /**
      * 载入缓存数据
      * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      *
-     * @param array|string $names
-     * @param array        $option
-     * @param bool         $force
+     * @param array $names
+     * @param array $option
+     * @param bool  $force
      *
      * @return array
      */
-    public function data($names, array $option = [], bool $force = false): array
+    public function data(array $names, array $option = [], bool $force = false): array
     {
-        $names = is_array($names) ? $names : [$names];
-
         foreach ($names as $name) {
             if (!isset($this->cacheLoaded[$name]) || $force) {
                 $this->cacheLoaded[$name] = $this->cache($name, $option, $force);
@@ -119,47 +89,14 @@ class Load
     /**
      * 刷新缓存数据.
      *
-     * @param array|string $names
+     * @param array $names
      */
-    public function refresh($names): void
+    public function refresh(array $names): void
     {
-        $tmp = is_array($names) ? $names : [$names];
-
-        foreach ($tmp as $name) {
-            $this->delete($name);
-        }
-    }
-
-    /**
-     * 从载入缓存数据中获取
-     * 不存在不用更新缓存，返回 false.
-     *
-     * @param array|string $names
-     * @param mixed        $force
-     *
-     * @return mixed
-     */
-    public function dataLoaded($names, array $option = [], bool $force = false)
-    {
-        $result = [];
-        $names = is_array($names) ? $names : [$names];
-
         foreach ($names as $name) {
-            $result[$name] = array_key_exists($name, $this->cacheLoaded) ?
-                $this->cacheLoaded[$name] : false;
+            list($cache, $key) = $this->normalize($name);
+            $this->deletePersistence($cache->cache(), $key);
         }
-
-        return count($result) > 1 ? $result : reset($result);
-    }
-
-    /**
-     * 删除缓存数据.
-     *
-     * @param string $name
-     */
-    protected function delete(string $name): void
-    {
-        $this->deletePersistence($name);
     }
 
     /**
@@ -174,7 +111,8 @@ class Load
     protected function cache(string $name, array $option = [], bool $force = false)
     {
         if (false === $force) {
-            $data = $this->getPersistence($name, false, $option);
+            list($cache, $key) = $this->normalize($name);
+            $data = $this->getPersistence($cache->cache(), $key, false, $option);
         } else {
             $data = false;
         }
@@ -192,73 +130,78 @@ class Load
      * @param string $name
      * @param array  $option
      *
-     * @return mixed
+     * @return array
      */
-    protected function update(string $name, array $option = [])
+    protected function update(string $name, array $option = []): array
     {
-        $sourceName = $name;
+        list($cache, $key, $params) = $this->normalize($name);
+        $data = $cache->handle($params);
+        $this->setPersistence($cache->cache(), $key, $data, $option);
 
+        return $data;
+    }
+
+    /**
+     * 缓存属性整理.
+     *
+     * @param string $name
+     *
+     * @return array
+     */
+    protected function normalize(string $name): array
+    {
         list($name, $params) = $this->parse($name);
 
-        if (false !== strpos($name, '@')) {
-            list($name, $method) = explode('@', $name);
-        } else {
-            $method = 'handle';
-        }
+        $rc = new ReflectionClass($name);
 
-        if (!is_object($cache = $this->container->make($name))) {
-            $e = sprintf('Cache %s is not valid.', $name);
+        if (!in_array(IBlock::class, $rc->getInterfaceNames(), true)) {
+            $e = sprintf('Cache `%s` must implements `%s`.', $name, IBlock::class);
 
             throw new InvalidArgumentException($e);
         }
 
-        if (!is_callable([$cache, $method])) {
-            $e = sprintf('Cache %s is not a callable.', $name.'@'.$method);
+        $cache = $this->container->make($name);
 
-            throw new InvalidArgumentException($e);
-        }
-
-        $sourceData = $cache->{$method}(...$params);
-
-        $this->setPersistence($sourceName, $sourceData, $option);
-
-        return $sourceData;
+        return [$cache, $name::key($params), $params];
     }
 
     /**
      * 获取缓存.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
+     * @param \Leevel\Cache\ICache $cache
+     * @param string               $name
+     * @param mixed                $defaults
+     * @param array                $option
      *
      * @return mixed
      */
-    protected function getPersistence(string $name, $defaults = false, array $option = [])
+    protected function getPersistence(ICache $cache, string $name, $defaults = false, array $option = [])
     {
-        return $this->cache->get($name, $defaults, $option);
+        return $cache->get($name, $defaults, $option);
     }
 
     /**
      * 设置缓存.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
+     * @param \Leevel\Cache\ICache $cache
+     * @param string               $name
+     * @param array                $data
+     * @param array                $option
      */
-    protected function setPersistence(string $name, $data, array $option = []): void
+    protected function setPersistence(ICache $cache, string $name, array $data, array $option = []): void
     {
-        $this->cache->set($name, $data, $option);
+        $cache->set($name, $data, $option);
     }
 
     /**
      * 清除缓存.
      *
-     * @param string $name
+     * @param \Leevel\Cache\ICache $cache
+     * @param string               $name
      */
-    protected function deletePersistence(string $name): void
+    protected function deletePersistence(ICache $cache, string $name): void
     {
-        $this->cache->delete($name);
+        $cache->delete($name);
     }
 
     /**

@@ -107,7 +107,7 @@ class Register extends Provider
             ->singleton(
                 'cache.load',
                 function (IContainer $container): Load {
-                    return new Load($container, $container['cache']);
+                    return new Load($container);
                 },
             );
     }

@@ -18,17 +18,41 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Cache\Pieces;
+namespace Leevel\Cache;
 
 /**
- * test3.
+ * 缓冲块接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.07.29
+ * @since 2019.05.26
  *
  * @version 1.0
  */
-class Test3
+interface IBlock
 {
+    /**
+     * 响应.
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    public function handle(array $params = []): array;
+
+    /**
+     * 缓存驱动.
+     *
+     * @return \Leevel\Cache\ICache
+     */
+    public function cache(): ICache;
+
+    /**
+     * 缓存 key.
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    public static function key(array $params = []): string;
 }
