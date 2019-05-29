@@ -68,16 +68,13 @@ class ConsoleRenderer
     protected function console(array $data): string
     {
         $content = [];
-
         $content[] = '<script type="text/javascript">
 console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)\', \'font-weight: bold;color: #06359a;\', \'color: #02d629;\' );';
 
         foreach ($data as $key => $item) {
             if (is_string($key)) {
                 $content[] = 'console.log(\'\');';
-
                 $content[] = 'console.log(\'%c '.$key.'\', \'color: blue; background: #045efc; color: #fff; padding: 8px 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; border-radius: 15px;\');';
-
                 $content[] = 'console.log(\'\');';
             }
 
