@@ -66,7 +66,7 @@ class ManyMany extends Relation
      * @param string                       $middleTargetKey
      * @param string                       $middleSourceKey
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, $targetKey, $sourceKey, $middleTargetKey, $middleSourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey)
     {
         $this->middleEntity = $middleEntity;
         $this->middleTargetKey = $middleTargetKey;
