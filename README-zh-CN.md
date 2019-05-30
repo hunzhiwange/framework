@@ -142,6 +142,12 @@ chmod 777 ./.git/hooks/pre-commit
 # git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
 ```
 
+## PHPStan 静态检查
+
+```
+php ./build/phpstan analyse
+```
+
 ## Travis CI 持续集成支持
 
 让代码提交更值得信赖.

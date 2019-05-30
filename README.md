@@ -143,6 +143,12 @@ Pass hook
 # git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
 ```
 
+## PHPStan 
+
+```
+php ./build/phpstan analyse
+```
+
 ## Travis CI Supported
 
 Let code poem.
