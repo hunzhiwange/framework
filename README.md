@@ -117,11 +117,14 @@ $php leevel make:docwithin tests
 
 <https://github.com/friendsofphp/php-cs-fixer>
 
+不需要安装即可使用，我们已经下载了版本。
+
 ### Base use
 
-```
+```diff
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
-$php-cs-fixer fix --config=.php_cs.dist
+- $php-cs-fixer fix --config=.php_cs.dist
++ $./build/php-cs-fixer fix --config=.php_cs.dist
 ```
 
 ### With Git hooks
