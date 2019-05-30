@@ -88,7 +88,7 @@ composer require leevel/cache
 
 ## 运行测试文件
 
-```
+```diff
 _____________                           _______________
  ______/     \__  _____  ____  ______  / /_  _________
   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
@@ -100,7 +100,8 @@ $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 $composer install
 $cp ./tests/config.php ./tests/config.local.php // Modify the config
 $php vendor/bin/phinx migrate
-$php vendor/bin/phpunit tests
+- $php vendor/bin/phpunit tests
++ $php ./build/phpunit tests
 ```
 
 ## 框架文档生成
@@ -116,11 +117,14 @@ $php leevel make:docwithin test
 
 <https://github.com/friendsofphp/php-cs-fixer>
 
+不需要安装即可使用，我们已经下载了版本。
+
 ### 基本使用
 
-```
+```diff
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
-$php-cs-fixer fix --config=.php_cs.dist
+- $php-cs-fixer fix --config=.php_cs.dist
++ $./build/php-cs-fixer fix --config=.php_cs.dist
 ```
 
 ### 使用 Git 钩子
@@ -137,6 +141,12 @@ chmod 777 ./.git/hooks/pre-commit
 ```
 # git commit -h
 # git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
+```
+
+## PHPStan 静态检查
+
+```
+php ./build/phpstan analyse
 ```
 
 ## Travis CI 持续集成支持

@@ -33,6 +33,8 @@ do
     FILES="$FILES $PROJECT/$FILE" 
 done 
 
+phpcsfixer_path=$(cd `dirname $0`; pwd)"/../../build/php-cs-fixer"
+
 # format code style
 if [ "$FILES" != "" ] 
 then 
@@ -42,7 +44,9 @@ then
 
     for FILE in $SFILES 
     do 
-        result=`~/.composer/vendor/bin/php-cs-fixer fix $FILE --config=.php_cs.dist`
+        #result=`~/.composer/vendor/bin/php-cs-fixer fix $FILE --config=.php_cs.dist`
+        #result=`php-cs-fixer fix $FILE --config=.php_cs.dist`
+        result=`php $phpcsfixer_path fix $FILE --config=.php_cs.dist`
 
         if [ "$result" != "" ]
         then
