@@ -88,7 +88,7 @@ composer require leevel/cache
 
 ## 运行测试文件
 
-```
+```diff
 _____________                           _______________
  ______/     \__  _____  ____  ______  / /_  _________
   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
@@ -100,7 +100,8 @@ $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 $composer install
 $cp ./tests/config.php ./tests/config.local.php // Modify the config
 $php vendor/bin/phinx migrate
-$php vendor/bin/phpunit tests
+- $php vendor/bin/phpunit tests
++ $php ./build/phpunit tests
 ```
 
 ## 框架文档生成
