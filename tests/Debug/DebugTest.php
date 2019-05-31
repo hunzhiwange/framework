@@ -95,7 +95,7 @@ class DebugTest extends TestCase
      *     title="JSON 关联数组调试",
      *     description="关联数组结构会在尾部追加一个选项 `:trace` 用于调试。
      *
-     * _**返回结构**_
+     * **返回结构**
      *
      * ``` php
      * $response = [\"foo\" => \"bar\", \":trace\" => []];
@@ -135,7 +135,7 @@ class DebugTest extends TestCase
      *     title="JSON 非关联数组调试",
      *     description="非关联数组结构会在尾部追加一个 `:trace` 用于调试。
      *
-     * _**返回结构**_
+     * **返回结构**
      *
      * ``` php
      * $response = [\"foo\", \"bar\", [\":trace\" => []]];
@@ -363,7 +363,7 @@ class DebugTest extends TestCase
      * @api(
      *     title="调试消息等级",
      *     description="
-     * _**支持的消息类型**_
+     * **支持的消息类型**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')."

@@ -91,10 +91,9 @@ class SummaryDoc
      */
     public function doc3()
     {
-        /*
-        #_
-        {{ i + 1 }}
-        */
+        <<<'eot'
+            {{ i + 1 }}
+            eot;
     }
 
     /**

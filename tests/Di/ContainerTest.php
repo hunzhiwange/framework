@@ -163,19 +163,19 @@ class ContainerTest extends TestCase
      *     title="接口绑定接口作为构造器参数",
      *     description="接口可以作为控制器参数来做依赖注入。
      *
-     * _**ITest2 定义**_
+     * **ITest2 定义**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)."
      * ```
      *
-     * _**Test2 定义**_
+     * **Test2 定义**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)."
      * ```
      *
-     * _**Test3 定义**_
+     * **Test3 定义**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)."

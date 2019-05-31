@@ -460,11 +460,6 @@ class Doc
                 continue;
             }
 
-            // 占位符行
-            if ('#_' === trim($v)) {
-                continue;
-            }
-
             if (true === $findEot) {
                 // eot 需要特别处理
                 if ($k === $startLine ||
