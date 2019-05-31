@@ -118,7 +118,7 @@ $php leevel make:docwithin tests
 
 <https://github.com/friendsofphp/php-cs-fixer>
 
-不需要安装即可使用，我们已经下载了版本。
+It can be used without installation,we download a version for you.
 
 ### Base use
 
