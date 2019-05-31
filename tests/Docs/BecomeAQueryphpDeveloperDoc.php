@@ -97,12 +97,14 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc1()
     {
-        // php leevel server <Visite http://127.0.0.1:9527/>
+        <<<'eot'
+            php leevel server <Visite http://127.0.0.1:9527/>
+            eot;
     }
 
     /**
      * @api(
-     *     title="标准后台 API 端",
+     *     title="搭建后台 API 端",
      *     description="首先我们需要创建一个数据库来运行我们的后台，让我们对 QueryPHP 有一个直观的感受，同时方便后期开发调试等。
      *
      * **首先创建一个数据库**
@@ -218,7 +220,7 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="标准后台前端端",
+     *     title="搭建前端",
      *     description="后台 API 搭建好了，我们开始搭建前端了，前端基于 `Vue-cli 3` 和 `IView`，首先需要安装 `node` 才能够跑起来。
      *
      * 对于开发 QueryPHP 来说，你不需要会 `Vue` 或者 `JavaScript`，所以请放心不要有心里负担。
@@ -608,6 +610,7 @@ class BecomeAQueryphpDeveloperDoc
      * @api(
      *     title="运行框架核心测试用例",
      *     description="QueryPHP 底层框架拥有 3000 多例测试用例，这些测试用例需要被维护，所以这里需要本地开发跑通测试用例。
+     *
      * **首先创建一个数据库**
      *
      * 可以用 Navicat For Mysql 创建一个数据库 `test`.
