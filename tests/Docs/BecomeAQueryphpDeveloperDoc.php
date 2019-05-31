@@ -52,7 +52,7 @@ class BecomeAQueryphpDeveloperDoc
 {
     /**
      * @api(
-     *     title="克隆 hunzhiwange/queryphp 仓库",
+     *     title="克隆 `queryphp` 仓库",
      *     description="QueryPHP 框架的开发来自于从克隆主仓库开始，由于国内访问 Github 网速的问题，只需要等待一小段时间。
      *
      * **下载代码**
@@ -266,6 +266,7 @@ class BecomeAQueryphpDeveloperDoc
      * @api(
      *     title="运行测试用例",
      *     description="QueryPHP 推崇通过编写测试用例来让代码变得可维护，所以这里需要本地开发跑通测试用例。
+     *
      * **首先创建一个数据库**
      *
      * 可以用 Navicat For Mysql 创建一个数据库 `queryphp_development_test`.
@@ -391,7 +392,7 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="统一团队代码风格",
-     *     description="风格统一对保证我们系统一致性非常重要，我们做到开箱即用，支持 PHP 和 JavaScript。
+     *     description="风格统一对保证我们系统一致性非常重要，我们做到开箱即用，支持 `PHP` 和 `JavaScript`。
      *
      * **使用 Git 钩子**
      *
@@ -477,31 +478,31 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc5_1()
     {
-        /*
-        <?php
-
-        declare(strict_types=1);
-
-        /*
-         * This file is part of the your app package.
-         *
-         * The PHP Application For Code Poem For You.
-         * (c) 2018-2099 http://yourdomian.com All rights reserved.
-         *
-         * For the full copyright and license information, please view the LICENSE
-         * file that was distributed with this source code.
-         *\/
-
-        namespace Common;
-
-        class Test
-        {
-            public function demo($a = 1, $b = 4)
-            {
-                echo 1;
-            }
-        }
-        */
+        <<<'eot'
+                    <?php
+            
+                    declare(strict_types=1);
+            
+                    /*
+                     * This file is part of the your app package.
+                     *
+                     * The PHP Application For Code Poem For You.
+                     * (c) 2018-2099 http://yourdomian.com All rights reserved.
+                     *
+                     * For the full copyright and license information, please view the LICENSE
+                     * file that was distributed with this source code.
+                     */
+            
+                    namespace Common;
+            
+                    class Test
+                    {
+                        public function demo($a = 1, $b = 4)
+                        {
+                            echo 1;
+                        }
+                    }
+            eot;
     }
 
     /**
@@ -546,7 +547,7 @@ class BecomeAQueryphpDeveloperDoc
 
     /**
      * @api(
-     *     title="克隆 hunzhiwange/framework 仓库将框架替换为开发版本",
+     *     title="克隆 `framework` 仓库将框架替换为开发版本",
      *     description="应用层框架全部搭建完毕，接下来我们将框架层代码替换为开发阶段的代码来进行日常框架迭代。
      *
      * **删除框架层**
@@ -598,7 +599,9 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc6()
     {
-        // php leevel server <Visite http://127.0.0.1:9527/>
+        <<<'eot'
+                    php leevel server <Visite http://127.0.0.1:9527/>
+            eot;
     }
 
     /**
@@ -809,42 +812,42 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc8_1()
     {
-        /*
-        <?php
-
-        declare(strict_types=1);
-
-        /*
-        * This file is part of the ************************ package.
-        * _____________                           _______________
-        *  ______/     \__  _____  ____  ______  / /_  _________
-        *   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
-        *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
-        *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
-        *         \_\                /_/_/         /_/
-        *
-        * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-        * (c) 2010-2019 http://queryphp.com All rights reserved.
-        *
-        * For the full copyright and license information, please view the LICENSE
-        * file that was distributed with this source code.
-        *\/
-
-        namespace Test;
-
-        class Name
-        {
-            public function demo($a = 1, $b = 4)
-            {
-                echo 1;
-            }
-        }
-        */
+        <<<'eot'
+                    <?php
+            
+                    declare(strict_types=1);
+            
+                   /*
+                    * This file is part of the ************************ package.
+                    * _____________                           _______________
+                    *  ______/     \__  _____  ____  ______  / /_  _________
+                    *   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+                    *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+                    *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+                    *         \_\                /_/_/         /_/
+                    *
+                    * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+                    * (c) 2010-2019 http://queryphp.com All rights reserved.
+                    *
+                    * For the full copyright and license information, please view the LICENSE
+                    * file that was distributed with this source code.
+                    */
+            
+                    namespace Test;
+            
+                    class Name
+                    {
+                        public function demo($a = 1, $b = 4)
+                        {
+                            echo 1;
+                        }
+                    }
+            eot;
     }
 
     /**
      * @api(
-     *     title="克隆 hunzhiwange/queryphp.com 仓库实现自动化文档搭建",
+     *     title="克隆 `queryphp.com` 仓库实现自动化文档搭建",
      *     description="QueryPHP 底层的文档基于单元测试加备注的方式来实现的，通过命名工具全部采用自动化生成 Markdown，这大幅度简化了文档的编写工作，同时保证了文档实时性。
      *
      * **官方文档采用 VuePress 读取 Markdown 来实现的**

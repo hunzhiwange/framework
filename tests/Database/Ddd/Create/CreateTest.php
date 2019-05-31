@@ -49,7 +49,7 @@ class CreateTest extends TestCase
      * @api(
      *     title="创建一个实体",
      *     description="
-     * _**完整例子**_
+     * **完整例子**
      *
      * ``` php
      * $entity = new TestEntity();
@@ -97,7 +97,7 @@ class CreateTest extends TestCase
      * @api(
      *     title="创建一个实体支持构造器白名单",
      *     description="
-     * _**完整模型**_
+     * **完整模型**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity::class)."
@@ -123,7 +123,7 @@ class CreateTest extends TestCase
      * @api(
      *     title="创建一个实体支持构造器黑名单",
      *     description="
-     * _**完整模型**_
+     * **完整模型**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropBlackEntity::class)."

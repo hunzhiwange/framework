@@ -56,7 +56,7 @@ class AssertTest extends TestCase
      *     description="
      * 断言和验证器共享规则，所以可以直接参考验证器有哪些规则，排查掉依赖验证器自身的校验规则。
      *
-     * _**支持格式**_
+     * **支持格式**
      *
      * ``` php
      * Assert::foo($value, string $message);
@@ -184,7 +184,7 @@ class AssertTest extends TestCase
      *     title="断言支持链式表达式",
      *     description="我们可以使用链式表达式来校验规则。
      *
-     * _**make 原型**_
+     * **make 原型**
      *
      * ``` php
      * Assert::make($value, ?string $message)
@@ -207,7 +207,7 @@ class AssertTest extends TestCase
      *     title="断言支持延迟释放",
      *     description="可以将所有错误几种抛出。
      *
-     * _**lazy 原型**_
+     * **lazy 原型**
      *
      * ``` php
      * Assert::lazy($value, ?string $message, bool $all = true)
