@@ -230,7 +230,7 @@ class Doc
         }
 
         $data = [];
-        $data[] = $this->formatTitle($info['title'] ?? '', true);
+        $data[] = $this->formatTitle($info['title'] ?? '', '#');
         $data[] = $this->formatDescription($info['description'] ?? '');
         $data[] = $this->formatUsers($reflection);
 
@@ -279,7 +279,7 @@ class Doc
         }
 
         $data = [];
-        $data[] = $this->formatTitle($info['title'] ?? '');
+        $data[] = $this->formatTitle($info['title'] ?? '', $info['level'] ?? '##');
         $data[] = $this->formatDescription($info['description'] ?? '');
         $data[] = $this->formatBody($method, $info['lang'] ?? 'php');
         $data[] = $this->formatNote($info['note'] ?? '');
@@ -291,14 +291,14 @@ class Doc
      * 格式化标题.
      *
      * @param string $title
-     * @param bool   $isHeader
+     * @param string $level
      *
      * @return string
      */
-    protected function formatTitle(string $title, bool $isHeader = false): string
+    protected function formatTitle(string $title, string $leevel = '##'): string
     {
         if ($title) {
-            $title = ($isHeader ? '#' : '##')." {$title}".PHP_EOL;
+            $title = $leevel." {$title}".PHP_EOL;
         }
 
         return $title;
@@ -498,6 +498,7 @@ class Doc
         $code = ['$result = ['];
 
         foreach ($comments as $v) {
+            $backupV = $v;
             $v = trim($v, '* ');
             $v = trim($v, '_'); // 删除占位符
 
@@ -520,7 +521,15 @@ class Doc
                     if ('' === $v) {
                         $code[] = PHP_EOL.PHP_EOL;
                     } else {
-                        $code[] = str_replace('$', '\$', $v).PHP_EOL; // 转义变量
+                        if (0 === strpos($backupV, '     * ')) {
+                            $backupV = substr($backupV, 7);
+                        }
+
+                        if (0 === strpos($backupV, ' * ')) {
+                            $backupV = substr($backupV, 3);
+                        }
+
+                        $code[] = str_replace('$', '\$', $backupV).PHP_EOL; // 转义变量
                     }
                 }
             }
