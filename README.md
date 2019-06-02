@@ -47,6 +47,10 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
  * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
  * Packages From Leevel: <https://packagist.org/packages/leevel/>
 
+## PHP Engineering Practice Of QueryPHP
+
+<img src="./engineering.jpg" />
+
 ## Optional Extension
 
 <p>

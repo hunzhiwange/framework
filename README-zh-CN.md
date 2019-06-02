@@ -46,6 +46,10 @@ QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://raw
  * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
  * Packages From Leevel: <https://packagist.org/packages/leevel/>
 
+## QueryPHP 框架 PHP 工程化实践
+
+<img src="./engineering-zh-CN.jpg" />
+
 ## 可选 C 扩展
 
 <p>
