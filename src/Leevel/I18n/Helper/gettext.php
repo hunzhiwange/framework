@@ -26,16 +26,16 @@ use Leevel\Di\Container;
  * 获取语言.
  *
  * @param string $text
- * @param array  ...$arr
+ * @param array  ...$data
  *
  * @return string
  */
-function gettext(string $text, ...$arr): string
+function gettext(string $text, ...$data): string
 {
     /** @var \Leevel\I18n\I18n $service */
     $service = Container::singletons()->make('i18n');
 
-    return $service->gettext($text, ...$arr);
+    return $service->gettext($text, ...$data);
 }
 
 class gettext

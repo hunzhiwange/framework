@@ -146,9 +146,9 @@ class Cookie
      */
     public function push(string $key, $value, array $option = []): void
     {
-        $arr = $this->get($key, [], $option);
-        $arr[] = $value;
-        $this->set($key, $arr, $option);
+        $data = $this->get($key, [], $option);
+        $data[] = $value;
+        $this->set($key, $data, $option);
     }
 
     /**
@@ -185,15 +185,15 @@ class Cookie
      */
     public function arr(string $key, $keys, $value = null, array $option = []): void
     {
-        $arr = $this->get($key, [], $option);
+        $data = $this->get($key, [], $option);
 
         if (is_string($keys)) {
-            $arr[$keys] = $value;
+            $data[$keys] = $value;
         } elseif (is_array($keys)) {
-            $arr = array_merge($arr, $keys);
+            $data = array_merge($data, $keys);
         }
 
-        $this->set($key, $arr, $option);
+        $this->set($key, $data, $option);
     }
 
     /**
@@ -204,21 +204,19 @@ class Cookie
      */
     public function arrDelete(string $key, $keys, array $option = []): void
     {
-        $arr = $this->get($key, [], $option);
+        $data = $this->get($key, [], $option);
 
         if (!is_array($keys)) {
-            $keys = [
-                $keys,
-            ];
+            $keys = [$keys];
         }
 
         foreach ($keys as $tmp) {
-            if (isset($arr[$tmp])) {
-                unset($arr[$tmp]);
+            if (isset($data[$tmp])) {
+                unset($data[$tmp]);
             }
         }
 
-        $this->set($key, $arr, $option);
+        $this->set($key, $data, $option);
     }
 
     /**

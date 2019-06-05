@@ -144,18 +144,18 @@ class BelongsTo extends Relation
      */
     protected function getPreLoadEntityValue(array $entitys): array
     {
-        $arr = [];
+        $data = [];
 
         foreach ($entitys as $value) {
             if (null !== ($tmp = $value->__get($this->sourceKey))) {
-                $arr[] = $tmp;
+                $data[] = $tmp;
             }
         }
 
-        if (0 === count($arr)) {
+        if (0 === count($data)) {
             return [0];
         }
 
-        return array_values(array_unique($arr));
+        return array_values(array_unique($data));
     }
 }

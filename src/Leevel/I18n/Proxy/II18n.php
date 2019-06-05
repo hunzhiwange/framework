@@ -37,21 +37,21 @@ interface II18n
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  ...$arr
+     * @param array  ...$data
      *
      * @return string
      */
-    public static function __(string $text, ...$arr): string;
+    public static function __(string $text, ...$data): string;
 
     /**
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  ...$arr
+     * @param array  ...$data
      *
      * @return string
      */
-    public static function gettext(string $text, ...$arr): string;
+    public static function gettext(string $text, ...$data): string;
 
     /**
      * 添加语言包.

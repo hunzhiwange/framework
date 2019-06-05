@@ -445,7 +445,7 @@ class Select
      */
     protected function parseWithRelation(array $relation): array
     {
-        $arr = [];
+        $data = [];
 
         foreach ($relation as $name => $condition) {
             if (is_numeric($name)) {
@@ -456,12 +456,11 @@ class Select
                 ];
             }
 
-            $arr = $this->parseNestedWith($name, $arr);
-
-            $arr[$name] = $condition;
+            $data = $this->parseNestedWith($name, $data);
+            $data[$name] = $condition;
         }
 
-        return $arr;
+        return $data;
     }
 
     /**
@@ -500,13 +499,13 @@ class Select
         $type = '';
 
         if ($result instanceof Collection) {
-            $arr = [];
+            $data = [];
 
             foreach ($result as $entity) {
-                $arr[] = $entity;
+                $data[] = $entity;
             }
 
-            $result = $arr;
+            $result = $data;
             $type = 'collection';
         } elseif (is_object($result) && $result instanceof IEntity) {
             $result = [$result];
