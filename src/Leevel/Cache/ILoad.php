@@ -18,36 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cache\Proxy;
-
-use Leevel\Cache\Load as BaseLoad;
-use Leevel\Di\Container;
+namespace Leevel\Cache;
 
 /**
- * 代理 cache.load.
+ * cache 快捷载入接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.11.20
+ * @since 2019.06.05
  *
  * @version 1.0
- * @codeCoverageIgnore
+ *
+ * @see \Leevel\Cache\Proxy\ILoad 请保持接口设计的一致性
  */
-class Load implements ILoad
+interface ILoad
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
-
     /**
      * 载入缓存数据
      * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
@@ -58,28 +43,12 @@ class Load implements ILoad
      *
      * @return array
      */
-    public static function data(array $names, array $option = [], bool $force = false): array
-    {
-        return self::proxy()->data($names, $option, $force);
-    }
+    public function data(array $names, array $option = [], bool $force = false): array;
 
     /**
      * 刷新缓存数据.
      *
      * @param array $names
      */
-    public static function refresh(array $names): void
-    {
-        self::proxy()->refresh($names);
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Cache\Load
-     */
-    public static function proxy(): BaseLoad
-    {
-        return Container::singletons()->make('cache.load');
-    }
+    public function refresh(array $names): void;
 }

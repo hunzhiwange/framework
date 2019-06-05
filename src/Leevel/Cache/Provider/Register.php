@@ -22,6 +22,7 @@ namespace Leevel\Cache\Provider;
 
 use Leevel\Cache\Cache;
 use Leevel\Cache\ICache;
+use Leevel\Cache\ILoad;
 use Leevel\Cache\Load;
 use Leevel\Cache\Manager;
 use Leevel\Di\IContainer;
@@ -58,7 +59,7 @@ class Register extends Provider
         return [
             'caches'     => Manager::class,
             'cache'      => [ICache::class, Cache::class],
-            'cache.load' => Load::class,
+            'cache.load' => [ILoad::class, Load::class],
         ];
     }
 
