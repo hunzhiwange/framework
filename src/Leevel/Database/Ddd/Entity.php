@@ -1205,7 +1205,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 throw new InvalidArgumentException($e);
             }
 
-            $result[] = isset($enums[$v]) ?? $enums[(int) $v];
+            $result[] = $enums[$v] ?? $enums[(int) $v];
         }
 
         return implode($separate, $result);
