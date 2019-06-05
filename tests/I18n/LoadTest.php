@@ -273,9 +273,8 @@ class LoadTest extends TestCase
 
     protected function createLoad(string $lang)
     {
-        return (new Load([__DIR__.'/i18n']))->
-        setI18n($lang)->
-
-        addDir([__DIR__.'/i18n/extend']);
+        return (new Load([__DIR__.'/i18n']))
+            ->setI18n($lang)
+            ->addDir([__DIR__.'/i18n/extend']);
     }
 }
