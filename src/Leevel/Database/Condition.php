@@ -220,24 +220,9 @@ class Condition
             return $this;
         }
 
-        if (0 === strpos($method, 'where') &&
-            false !== ($result = $this->callWhereSugar($method, $args))) {
-            return $result;
-        }
+        $e = sprintf('Condition method %s not found.', $method);
 
-        if (0 === strpos($method, 'having') &&
-            false !== ($result = $this->callHavingSugar($method, $args))) {
-            return $result;
-        }
-
-        if (false === strpos($method, 'join') &&
-            false !== ($result = $this->callJoinSugar($method, $args))) {
-            return $result;
-        }
-
-        throw new ConditionNotFoundException(
-            sprintf('Condition method %s not found.', $method)
-        );
+        throw new ConditionNotFoundException($e);
     }
 
     /**
@@ -280,11 +265,7 @@ class Condition
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return [
-            $replace ? 'replace' : 'insert',
-            $data,
-            $bind,
-        ];
+        return [$replace ? 'replace' : 'insert', $data, $bind];
     }
 
     /**
@@ -343,11 +324,7 @@ class Condition
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return [
-            $replace ? 'replace' : 'insert',
-            $data,
-            $bind,
-        ];
+        return [$replace ? 'replace' : 'insert', $data, $bind];
     }
 
     /**
@@ -396,11 +373,7 @@ class Condition
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return [
-            'update',
-            $data,
-            $bind,
-        ];
+        return ['update', $data, $bind];
     }
 
     /**
@@ -439,11 +412,7 @@ class Condition
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return [
-            'delete',
-            $data,
-            $bind,
-        ];
+        return ['delete', $data, $bind];
     }
 
     /**
@@ -459,10 +428,7 @@ class Condition
         $sql[] = $this->parseTable();
         $sql = implode(' ', $sql);
 
-        return [
-            'statement',
-            $sql,
-        ];
+        return ['statement', $sql];
     }
 
     /**
@@ -639,39 +605,39 @@ class Condition
     /**
      * where 查询条件.
      *
-     * @param array $arr
+     * @param array ...$cond
      *
      * @return $this
      */
-    public function where(...$arr): self
+    public function where(...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        array_unshift($arr, static::LOGIC_AND);
-        array_unshift($arr, 'where');
+        array_unshift($cond, static::LOGIC_AND);
+        array_unshift($cond, 'where');
 
-        return $this->aliatypeAndLogic(...$arr);
+        return $this->aliatypeAndLogic(...$cond);
     }
 
     /**
      * orWhere 查询条件.
      *
-     * @param array $arr
+     * @param array ...$cond
      *
      * @return $this
      */
-    public function orWhere(...$arr): self
+    public function orWhere(...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        array_unshift($arr, static::LOGIC_OR);
-        array_unshift($arr, 'where');
+        array_unshift($cond, static::LOGIC_OR);
+        array_unshift($cond, 'where');
 
-        return $this->aliatypeAndLogic(...$arr);
+        return $this->aliatypeAndLogic(...$cond);
     }
 
     /**
@@ -687,12 +653,12 @@ class Condition
             return $this;
         }
 
-        $condition = [];
-        array_unshift($condition, static::LOGIC_AND);
-        array_unshift($condition, 'where');
-        $condition[] = [':stringSimple' => '{'.$raw.'}'];
+        $cond = [];
+        array_unshift($cond, static::LOGIC_AND);
+        array_unshift($cond, 'where');
+        $cond[] = [':stringSimple' => '{'.$raw.'}'];
 
-        return $this->aliatypeAndLogic(...$condition);
+        return $this->aliatypeAndLogic(...$cond);
     }
 
     /**
@@ -708,12 +674,12 @@ class Condition
             return $this;
         }
 
-        $condition = [];
-        array_unshift($condition, static::LOGIC_OR);
-        array_unshift($condition, 'where');
-        $condition[] = [':stringSimple' => '{'.$raw.'}'];
+        $cond = [];
+        array_unshift($cond, static::LOGIC_OR);
+        array_unshift($cond, 'where');
+        $cond[] = [':stringSimple' => '{'.$raw.'}'];
 
-        return $this->aliatypeAndLogic(...$condition);
+        return $this->aliatypeAndLogic(...$cond);
     }
 
     /**
@@ -729,9 +695,7 @@ class Condition
             return $this;
         }
 
-        return $this->addConditions([
-            ':exists' => $exists,
-        ]);
+        return $this->addConditions([':exists' => $exists]);
     }
 
     /**
@@ -747,9 +711,151 @@ class Condition
             return $this;
         }
 
-        return $this->addConditions([
-            ':notexists' => $exists,
-        ]);
+        return $this->addConditions([':notexists' => $exists]);
+    }
+
+    /**
+     * whereBetween 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereBetween(...$cond): self
+    {
+        return $this->callWhereSugar('whereBetween', $cond);
+    }
+
+    /**
+     * whereNotBetween 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereNotBetween(...$cond): self
+    {
+        return $this->callWhereSugar('whereNotBetween', $cond);
+    }
+
+    /**
+     * whereNull 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereNull(...$cond): self
+    {
+        return $this->callWhereSugar('whereNull', $cond);
+    }
+
+    /**
+     * whereNotNull 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereNotNull(...$cond): self
+    {
+        return $this->callWhereSugar('whereNotNull', $cond);
+    }
+
+    /**
+     * whereIn 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereIn(...$cond): self
+    {
+        return $this->callWhereSugar('whereIn', $cond);
+    }
+
+    /**
+     * whereNotIn 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereNotIn(...$cond): self
+    {
+        return $this->callWhereSugar('whereNotIn', $cond);
+    }
+
+    /**
+     * whereLike 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereLike(...$cond): self
+    {
+        return $this->callWhereSugar('whereLike', $cond);
+    }
+
+    /**
+     * whereNotLike 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereNotLike(...$cond): self
+    {
+        return $this->callWhereSugar('whereNotLike', $cond);
+    }
+
+    /**
+     * whereDate 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereDate(...$cond): self
+    {
+        return $this->callWhereTimeSugar('whereDate', $cond);
+    }
+
+    /**
+     * whereDay 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereDay(...$cond): self
+    {
+        return $this->callWhereTimeSugar('whereDay', $cond);
+    }
+
+    /**
+     * whereMonth 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereMonth(...$cond): self
+    {
+        return $this->callWhereTimeSugar('whereMonth', $cond);
+    }
+
+    /**
+     * whereYear 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function whereYear(...$cond): self
+    {
+        return $this->callWhereTimeSugar('whereYear', $cond);
     }
 
     /**
@@ -770,20 +876,14 @@ class Condition
         if (is_array($names)) {
             foreach ($names as $key => $item) {
                 if (!is_array($item)) {
-                    $item = [
-                        $item,
-                        $type,
-                    ];
+                    $item = [$item, $type];
                 }
 
                 $this->bindParams[$key] = $item;
             }
         } else {
             if (!is_array($value)) {
-                $value = [
-                    $value,
-                    $type,
-                ];
+                $value = [$value, $type];
             }
 
             $this->bindParams[$names] = $value;
@@ -807,9 +907,9 @@ class Condition
         }
 
         if (!isset(static::$indexTypes[$type])) {
-            throw new InvalidArgumentException(
-                sprintf('Invalid Index type `%s`.', $type)
-            );
+            $e = sprintf('Invalid Index type `%s`.', $type);
+
+            throw new InvalidArgumentException($e);
         }
 
         $type = strtoupper($type);
@@ -841,22 +941,127 @@ class Condition
     /**
      * join 查询.
      *
-     * @param mixed        $table 同 table $table
-     * @param array|string $cols  同 table $cols
-     * @param mixed        $cond  同 where $cond
+     * @param mixed        $table   同 table $table
+     * @param array|string $cols    同 table $cols
+     * @param array        ...$cond 同 where $cond
      *
      * @return $this
      */
-    public function join($table, $cols, $cond): self
+    public function join($table, $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        $args = func_get_args();
-        array_unshift($args, 'inner join');
+        return $this->addJoin('inner join', $table, $cols, ...$cond);
+    }
 
-        return $this->addJoin(...$args);
+    /**
+     * innerJoin 查询.
+     *
+     * @param mixed        $table   同 table $table
+     * @param array|string $cols    同 table $cols
+     * @param array        ...$cond 同 where $cond
+     *
+     * @return $this
+     */
+    public function innerJoin($table, $cols, ...$cond): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        return $this->addJoin('inner join', $table, $cols, ...$cond);
+    }
+
+    /**
+     * leftJoin 查询.
+     *
+     * @param mixed        $table   同 table $table
+     * @param array|string $cols    同 table $cols
+     * @param array        ...$cond 同 where $cond
+     *
+     * @return $this
+     */
+    public function leftJoin($table, $cols, ...$cond): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        return $this->addJoin('left join', $table, $cols, ...$cond);
+    }
+
+    /**
+     * rightJoin 查询.
+     *
+     * @param mixed        $table   同 table $table
+     * @param array|string $cols    同 table $cols
+     * @param array        ...$cond 同 where $cond
+     *
+     * @return $this
+     */
+    public function rightJoin($table, $cols, ...$cond): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        return $this->addJoin('right join', $table, $cols, ...$cond);
+    }
+
+    /**
+     * fullJoin 查询.
+     *
+     * @param mixed        $table   同 table $table
+     * @param array|string $cols    同 table $cols
+     * @param array        ...$cond 同 where $cond
+     *
+     * @return $this
+     */
+    public function fullJoin($table, $cols, ...$cond): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        return $this->addJoin('full join', $table, $cols, ...$cond);
+    }
+
+    /**
+     * crossJoin 查询.
+     *
+     * @param mixed        $table   同 table $table
+     * @param array|string $cols    同 table $cols
+     * @param array        ...$cond 同 where $cond
+     *
+     * @return $this
+     */
+    public function crossJoin($table, $cols, ...$cond): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        return $this->addJoin('cross join', $table, $cols, ...$cond);
+    }
+
+    /**
+     * naturalJoin 查询.
+     *
+     * @param mixed        $table   同 table $table
+     * @param array|string $cols    同 table $cols
+     * @param array        ...$cond 同 where $cond
+     *
+     * @return $this
+     */
+    public function naturalJoin($table, $cols, ...$cond): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        return $this->addJoin('natural join', $table, $cols, ...$cond);
     }
 
     /**
@@ -874,22 +1079,17 @@ class Condition
         }
 
         if (!isset(static::$unionTypes[$type])) {
-            throw new InvalidArgumentException(
-                sprintf('Invalid UNION type `%s`.', $type)
-            );
+            $e = sprintf('Invalid UNION type `%s`.', $type);
+
+            throw new InvalidArgumentException($e);
         }
 
         if (!is_array($selects)) {
-            $selects = [
-                $selects,
-            ];
+            $selects = [$selects];
         }
 
         foreach ($selects as $tmp) {
-            $this->options['union'][] = [
-                $tmp,
-                $type,
-            ];
+            $this->options['union'][] = [$tmp, $type];
         }
 
         return $this;
@@ -992,39 +1192,39 @@ class Condition
      * 添加一个 HAVING 条件
      * < 参数规范参考 where()方法 >.
      *
-     * @param array $arr
+     * @param array $data
      *
      * @return $this
      */
-    public function having(...$arr): self
+    public function having(...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        array_unshift($arr, static::LOGIC_AND);
-        array_unshift($arr, 'having');
+        array_unshift($cond, static::LOGIC_AND);
+        array_unshift($cond, 'having');
 
-        return $this->aliatypeAndLogic(...$arr);
+        return $this->aliatypeAndLogic(...$cond);
     }
 
     /**
      * orHaving 查询条件.
      *
-     * @param array $arr
+     * @param array $data
      *
      * @return $this
      */
-    public function orHaving(...$arr): self
+    public function orHaving(...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        array_unshift($arr, static::LOGIC_OR);
-        array_unshift($arr, 'having');
+        array_unshift($cond, static::LOGIC_OR);
+        array_unshift($cond, 'having');
 
-        return $this->aliatypeAndLogic(...$arr);
+        return $this->aliatypeAndLogic(...$cond);
     }
 
     /**
@@ -1040,12 +1240,12 @@ class Condition
             return $this;
         }
 
-        $condition = [];
-        array_unshift($condition, static::LOGIC_AND);
-        array_unshift($condition, 'having');
-        $condition[] = [':stringSimple' => '{'.$raw.'}'];
+        $cond = [];
+        array_unshift($cond, static::LOGIC_AND);
+        array_unshift($cond, 'having');
+        $cond[] = [':stringSimple' => '{'.$raw.'}'];
 
-        return $this->aliatypeAndLogic(...$condition);
+        return $this->aliatypeAndLogic(...$cond);
     }
 
     /**
@@ -1061,12 +1261,156 @@ class Condition
             return $this;
         }
 
-        $condition = [];
-        array_unshift($condition, static::LOGIC_OR);
-        array_unshift($condition, 'having');
-        $condition[] = [':stringSimple' => '{'.$raw.'}'];
+        $cond = [];
+        array_unshift($cond, static::LOGIC_OR);
+        array_unshift($cond, 'having');
+        $cond[] = [':stringSimple' => '{'.$raw.'}'];
 
-        return $this->aliatypeAndLogic(...$condition);
+        return $this->aliatypeAndLogic(...$cond);
+    }
+
+    /**
+     * havingBetween 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingBetween(...$cond): self
+    {
+        return $this->callHavingSugar('havingBetween', $cond);
+    }
+
+    /**
+     * havingNotBetween 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingNotBetween(...$cond): self
+    {
+        return $this->callHavingSugar('havingNotBetween', $cond);
+    }
+
+    /**
+     * havingNull 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingNull(...$cond): self
+    {
+        return $this->callHavingSugar('havingNull', $cond);
+    }
+
+    /**
+     * havingNotNull 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingNotNull(...$cond): self
+    {
+        return $this->callHavingSugar('havingNotNull', $cond);
+    }
+
+    /**
+     * havingIn 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingIn(...$cond): self
+    {
+        return $this->callHavingSugar('havingIn', $cond);
+    }
+
+    /**
+     * havingNotIn 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingNotIn(...$cond): self
+    {
+        return $this->callHavingSugar('havingNotIn', $cond);
+    }
+
+    /**
+     * havingLike 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingLike(...$cond): self
+    {
+        return $this->callHavingSugar('havingLike', $cond);
+    }
+
+    /**
+     * havingNotLike 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingNotLike(...$cond): self
+    {
+        return $this->callHavingSugar('havingNotLike', $cond);
+    }
+
+    /**
+     * havingDate 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingDate(...$cond): self
+    {
+        return $this->callHavingTimeSugar('havingDate', $cond);
+    }
+
+    /**
+     * havingDay 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingDay(...$cond): self
+    {
+        return $this->callHavingTimeSugar('havingDay', $cond);
+    }
+
+    /**
+     * havingMonth 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingMonth(...$cond): self
+    {
+        return $this->callHavingTimeSugar('havingMonth', $cond);
+    }
+
+    /**
+     * havingYear 查询条件.
+     *
+     * @param array ...$cond
+     *
+     * @return $this
+     */
+    public function havingYear(...$cond): self
+    {
+        return $this->callHavingTimeSugar('havingYear', $cond);
     }
 
     /**
@@ -1493,30 +1837,11 @@ class Condition
      * @param string $method
      * @param array  $args
      *
-     * @return $this|false
+     * @return $this
      */
-    protected function callWhereSugar(string $method, array $args)
+    protected function callWhereSugar(string $method, array $args): self
     {
-        if (!in_array($method, [
-            'whereNotBetween', 'whereBetween',
-            'whereNotNull', 'whereNull',
-            'whereNotIn', 'whereIn',
-            'whereNotLike', 'whereLike',
-            'whereDate', 'whereDay',
-            'whereMonth', 'whereYear',
-        ], true)) {
-            return false;
-        }
-
         if ($this->checkFlowControl()) {
-            return $this;
-        }
-
-        if (in_array($method, ['whereDate', 'whereDay', 'whereMonth', 'whereYear'], true)) {
-            $this->setInTimeCondition(strtolower(substr($method, 5)));
-            $this->where(...$args);
-            $this->setInTimeCondition(null);
-
             return $this;
         }
 
@@ -1534,35 +1859,37 @@ class Condition
     }
 
     /**
+     * 调用 where 时间语法糖.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return $this
+     */
+    protected function callWhereTimeSugar(string $method, array $args): self
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        $this->setInTimeCondition(strtolower(substr($method, 5)));
+        $this->where(...$args);
+        $this->setInTimeCondition(null);
+
+        return $this;
+    }
+
+    /**
      * 调用 having 语法糖.
      *
      * @param string $method
      * @param array  $args
      *
-     * @return $this|false
+     * @return $this
      */
-    protected function callHavingSugar(string $method, array $args)
+    protected function callHavingSugar(string $method, array $args): self
     {
-        if (!in_array($method, [
-            'havingNotBetween', 'havingBetween',
-            'havingNotNull', 'havingNull',
-            'havingNotIn', 'havingIn',
-            'havingNotLike', 'havingLike',
-            'havingDate', 'havingDay',
-            'havingMonth', 'havingYear',
-        ], true)) {
-            return false;
-        }
-
         if ($this->checkFlowControl()) {
-            return $this;
-        }
-
-        if (in_array($method, ['havingDate', 'havingDay', 'havingMonth', 'havingYear'], true)) {
-            $this->setInTimeCondition(strtolower(substr($method, 6)));
-            $this->having(...$args);
-            $this->setInTimeCondition(null);
-
             return $this;
         }
 
@@ -1580,32 +1907,24 @@ class Condition
     }
 
     /**
-     * 调用 join 语法糖.
+     * 调用 having 时间语法糖.
      *
      * @param string $method
      * @param array  $args
      *
-     * @return $this|false
+     * @return $this
      */
-    protected function callJoinSugar(string $method, array $args)
+    protected function callHavingTimeSugar(string $method, array $args): self
     {
-        if (!in_array($method, [
-            'innerJoin', 'leftJoin',
-            'rightJoin', 'fullJoin',
-            'crossJoin', 'naturalJoin',
-        ], true)) {
-            return false;
-        }
-
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        $type = substr($method, 0, -4).' join';
+        $this->setInTimeCondition(strtolower(substr($method, 6)));
+        $this->having(...$args);
+        $this->setInTimeCondition(null);
 
-        array_unshift($args, $type);
-
-        return $this->addJoin(...$args);
+        return $this;
     }
 
     /**
@@ -2055,8 +2374,7 @@ class Condition
                         );
                 } elseif (in_array($cond[1], ['between', 'not between'], true)) {
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
-                        $e =
-                            'The [not] between parameter value must be '.
+                        $e = 'The [not] between parameter value must be '.
                             'an array which not less than two elements.';
 
                         throw new InvalidArgumentException($e);
@@ -2820,9 +3138,9 @@ class Condition
                 $value = (int) $value;
 
                 if ($value > 31) {
-                    throw new InvalidArgumentException(
-                        sprintf('Days can only be less than 31,but %s given.', $value)
-                    );
+                    $e = sprintf('Days can only be less than 31,but %s given.', $value);
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 $date = getdate();
@@ -2833,9 +3151,9 @@ class Condition
                 $value = (int) $value;
 
                 if ($value > 12) {
-                    throw new InvalidArgumentException(
-                        sprintf('Months can only be less than 12,but %s given.', $value)
-                    );
+                    $e = sprintf('Months can only be less than 12,but %s given.', $value);
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 $date = getdate();
@@ -2851,9 +3169,9 @@ class Condition
                 $value = strtotime($value);
 
                 if (false === $value) {
-                    throw new InvalidArgumentException(
-                        'Please enter a right time of strtotime.'
-                    );
+                    $e = 'Please enter a right time of strtotime.';
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 break;
