@@ -386,6 +386,8 @@ class Debug implements IDebug
 
     /**
      * 获取 JSON 渲染.
+     *
+     * @return \Leevel\Debug\JsonRenderer
      */
     public function getJsonRenderer(): JsonRenderer
     {
@@ -394,6 +396,8 @@ class Debug implements IDebug
 
     /**
      * 获取 Console 渲染.
+     *
+     * @return \Leevel\Debug\ConsoleRenderer
      */
     public function getConsoleRenderer(): ConsoleRenderer
     {
