@@ -97,9 +97,9 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc1()
     {
-        <<<'eot'
+        <<<'EOT'
             php leevel server <Visite http://127.0.0.1:9527/>
-            eot;
+            EOT;
     }
 
     /**
@@ -208,14 +208,14 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc2()
     {
-        /*
-        {
-            count: 4,
-            :trace: {
-                ...
+        <<<'EOT'
+            {
+                count: 4,
+                :trace: {
+                    ...
+                }
             }
-        }
-        */
+            EOT;
     }
 
     /**
@@ -258,10 +258,10 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc3()
     {
-        /*
-        user: admin
-        password: 123456
-        */
+        <<<'EOT'
+            user: admin
+            password: 123456
+            EOT;
     }
 
     /**
@@ -372,23 +372,23 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc4()
     {
-        /*
-        PHPUnit Pretty Result Printer 0.26.2 by Codedungeon and contributors.
-        PHPUnit 8.1.3 by Sebastian Bergmann and contributors.
+        <<<'EOT'
+            PHPUnit Pretty Result Printer 0.26.2 by Codedungeon and contributors.
+            PHPUnit 8.1.3 by Sebastian Bergmann and contributors.
 
 
-        ==> Tests\Admin\Service\Resource\IndexTest       ✓  ✓
-        ==> Tests\Example\ExampleTest                    ✓
-        ==> Tests\Example\PHPUnitTest                    ✓
-        ==> Common\Domain\Service\Search\IndexTest       ✓  ✓  ✓  ✓  ✓  ✓
-        ==> Common\Infra\Helper\ArrayToFormTest          ✓  ✓  ✓  ✓  ✓  ✓
-        ==> Common\Infra\Support\WorkflowServiceTest     ✓  ✓  ✓  ✓  ✓
-        ==> Common\Infra\Support\WorkflowTest            ✓  ✓  ✓  ✓  ✓
+            ==> Tests\Admin\Service\Resource\IndexTest       ✓  ✓
+            ==> Tests\Example\ExampleTest                    ✓
+            ==> Tests\Example\PHPUnitTest                    ✓
+            ==> Common\Domain\Service\Search\IndexTest       ✓  ✓  ✓  ✓  ✓  ✓
+            ==> Common\Infra\Helper\ArrayToFormTest          ✓  ✓  ✓  ✓  ✓  ✓
+            ==> Common\Infra\Support\WorkflowServiceTest     ✓  ✓  ✓  ✓  ✓
+            ==> Common\Infra\Support\WorkflowTest            ✓  ✓  ✓  ✓  ✓
 
-        Time: 391 ms, Memory: 18.00 MB
+            Time: 391 ms, Memory: 18.00 MB
 
-        OK (26 tests, 43 assertions)
-        */
+            OK (26 tests, 43 assertions)
+            EOT;
     }
 
     /**
@@ -450,25 +450,25 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc5()
     {
-        /*
-        Checking PHP Lint...
-        No syntax errors detected in common/Test.php
-        Running Code Sniffer...
-        Loaded config default from ".php_cs.dist".
-        Paths from configuration file have been overridden by paths provided as command arguments.
-        1) common/Test.php Fixed all files in 0.009 seconds, 12.000 MB memory used
-        The file has been automatically formatted.
-        [13:04:00] Working directory changed to /data/codes/test/queryphp/frontend
-        [13:04:00] Using gulpfile /data/codes/test/queryphp/frontend/gulpfile.js
-        [13:04:00] Starting 'iview'...
-        [13:04:00] Finished 'iview' after 413 μs
-        frontend/src/hello.js 53ms
-        [master 681d7e29] 测试格式化
-        3 files changed, 32 insertions(+)
-        mode change 100644 => 100755 build/composer
-        create mode 100644 common/Test.php
-        create mode 100644 frontend/src/hello.js
-        */
+        <<<'EOT'
+            Checking PHP Lint...
+            No syntax errors detected in common/Test.php
+            Running Code Sniffer...
+            Loaded config default from ".php_cs.dist".
+            Paths from configuration file have been overridden by paths provided as command arguments.
+            1) common/Test.php Fixed all files in 0.009 seconds, 12.000 MB memory used
+            The file has been automatically formatted.
+            [13:04:00] Working directory changed to /data/codes/test/queryphp/frontend
+            [13:04:00] Using gulpfile /data/codes/test/queryphp/frontend/gulpfile.js
+            [13:04:00] Starting 'iview'...
+            [13:04:00] Finished 'iview' after 413 μs
+            frontend/src/hello.js 53ms
+            [master 681d7e29] 测试格式化
+            3 files changed, 32 insertions(+)
+            mode change 100644 => 100755 build/composer
+            create mode 100644 common/Test.php
+            create mode 100644 frontend/src/hello.js
+            EOT;
     }
 
     /**
@@ -480,7 +480,7 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc5_1()
     {
-        <<<'eot'
+        <<<'EOT'
             <?php
     
             declare(strict_types=1);
@@ -504,7 +504,7 @@ class BecomeAQueryphpDeveloperDoc
                     echo 1;
                 }
             }
-            eot;
+            EOT;
     }
 
     /**
@@ -517,17 +517,17 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc5_2()
     {
-        /*
-        function hello(a, b) {
-            var c
-            if (a > b) {
-                c = a
-            } else {
-                c = b
+        <<<'EOT'
+            function hello(a, b) {
+                var c
+                if (a > b) {
+                    c = a
+                } else {
+                    c = b
+                }
+                console.log(c)
             }
-            console.log(c)
-        }
-        */
+            EOT;
     }
 
     /**
@@ -540,11 +540,11 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc5_3()
     {
-        /*
-        git log
-        git reset --hard 931f283b0b8847e4a3f2ad86efb3c07cd7974c3b // 或者 git revert xxx
-        HEAD is now at 931f283b Merge branch 'dev'
-        */
+        <<<'EOT'
+            git log
+            git reset --hard 931f283b0b8847e4a3f2ad86efb3c07cd7974c3b // 或者 git revert xxx
+            HEAD is now at 931f283b Merge branch 'dev'
+            EOT;
     }
 
     /**
@@ -601,9 +601,9 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc6()
     {
-        <<<'eot'
+        <<<'EOT'
             php leevel server <Visite http://127.0.0.1:9527/>
-            eot;
+            EOT;
     }
 
     /**
@@ -719,28 +719,28 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc7()
     {
-        /*
-        PHPUnit 8.1.3 by Sebastian Bergmann and contributors.
+        <<<'EOT'
+            PHPUnit 8.1.3 by Sebastian Bergmann and contributors.
 
 
-        ==> Tests\Auth\HashTest                          ✓  ✓
-        ==> Tests\Auth\ManagerTest                       ✓  ✓  ✓
-        ==> Tests\Auth\Middleware\AuthTest               ✓  ✓
-        ==> Tests\Auth\Provider\RegisterTest             ✓
-        ==> Tests\Auth\SessionTest                       ✓  ✓
+            ==> Tests\Auth\HashTest                          ✓  ✓
+            ==> Tests\Auth\ManagerTest                       ✓  ✓  ✓
+            ==> Tests\Auth\Middleware\AuthTest               ✓  ✓
+            ==> Tests\Auth\Provider\RegisterTest             ✓
+            ==> Tests\Auth\SessionTest                       ✓  ✓
 
-        ...
+            ...
 
-        ==> Tests\View\Compiler\CompilerWhileTest        ✓  ✓
-        ==> Tests\View\HtmlTest                          ✓  ✓  ✓  ✓  ✓  ✓  ✓  ✓  ✓
-        ==> Tests\View\ManagerTest                       ✓
-        ==> Tests\View\PhpuiTest                         ✓  ✓  ✓  ✓  ✓  ✓  ✓  ✓
-        ==> Tests\View\Provider\RegisterTest             ✓
+            ==> Tests\View\Compiler\CompilerWhileTest        ✓  ✓
+            ==> Tests\View\HtmlTest                          ✓  ✓  ✓  ✓  ✓  ✓  ✓  ✓  ✓
+            ==> Tests\View\ManagerTest                       ✓
+            ==> Tests\View\PhpuiTest                         ✓  ✓  ✓  ✓  ✓  ✓  ✓  ✓
+            ==> Tests\View\Provider\RegisterTest             ✓
 
-        Time: 19.51 seconds, Memory: 93.19 MB
+            Time: 19.51 seconds, Memory: 93.19 MB
 
-        Tests: 2978, Assertions: 10031, Failures: 0, Skipped: 6.
-        */
+            Tests: 2978, Assertions: 10031, Failures: 0, Skipped: 6.
+            EOT;
     }
 
     /**
@@ -788,19 +788,19 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc8()
     {
-        /*
-        Checking PHP Lint...
-        No syntax errors detected in tests/Name.php
-        Running Code Sniffer...
-        Loaded config default from ".php_cs.dist".
-        Paths from configuration file have been overridden by paths provided as command arguments.
-        1) tests/Name.php Fixed all files in 0.009 seconds, 12.000 MB memory used
-        The file has been automatically formatted.
-        [master 20f2f845] 测试格式化
-        2 files changed, 29 insertions(+)
-        mode change 100644 => 100755 build/composer
-        create mode 100644 tests/Name.php
-        */
+        <<<'EOT'
+            Checking PHP Lint...
+            No syntax errors detected in tests/Name.php
+            Running Code Sniffer...
+            Loaded config default from ".php_cs.dist".
+            Paths from configuration file have been overridden by paths provided as command arguments.
+            1) tests/Name.php Fixed all files in 0.009 seconds, 12.000 MB memory used
+            The file has been automatically formatted.
+            [master 20f2f845] 测试格式化
+            2 files changed, 29 insertions(+)
+            mode change 100644 => 100755 build/composer
+            create mode 100644 tests/Name.php
+            EOT;
     }
 
     /**
@@ -815,7 +815,7 @@ class BecomeAQueryphpDeveloperDoc
      */
     public function doc8_1()
     {
-        <<<'eot'
+        <<<'EOT'
             <?php
 
             declare(strict_types=1);
@@ -845,7 +845,7 @@ class BecomeAQueryphpDeveloperDoc
                     echo 1;
                 }
             }
-            eot;
+            EOT;
     }
 
     /**
