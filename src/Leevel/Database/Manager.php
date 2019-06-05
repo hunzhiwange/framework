@@ -33,8 +33,21 @@ use Leevel\Manager\Manager as Managers;
  *
  * @version 1.0
  */
-class Manager extends Managers
+class Manager extends Managers implements IDatabase
 {
+    use Proxy;
+
+    /**
+     * 返回代理.
+     *
+     * @return \Leevel\Database\IDatabase
+     * @codeCoverageIgnore
+     */
+    public function proxy(): IDatabase
+    {
+        return $this->connect();
+    }
+
     /**
      * 取得配置命名空间.
      *
