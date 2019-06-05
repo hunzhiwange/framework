@@ -905,8 +905,7 @@ class Select
      */
     public function makeSql(bool $withLogicGroup = false): string
     {
-        return $this->condition->
-        makeSql($withLogicGroup);
+        return $this->condition->makeSql($withLogicGroup);
     }
 
     /**
