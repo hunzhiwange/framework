@@ -51,13 +51,11 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                orderBy('id DESC')->
-
-                orderBy('name')->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->orderBy('id DESC')
+                    ->orderBy('name')
+                    ->findAll(true)
             )
         );
 
@@ -75,11 +73,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                orderBy('test.id DESC')->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->orderBy('test.id DESC')
+                    ->findAll(true),
                 1
             )
         );
@@ -98,11 +95,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                orderBy('{SUM([num]) ASC}')->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->orderBy('{SUM([num]) ASC}')
+                    ->findAll(true),
                 2
             )
         );
@@ -121,11 +117,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                orderBy('{SUM([num]) ASC}')->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->orderBy('{SUM([num]) ASC}')
+                    ->findAll(true),
                 3
             )
         );
@@ -144,11 +139,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                orderBy("title,id,{concat('1234',[id],'ttt') desc}")->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->orderBy("title,id,{concat('1234',[id],'ttt') desc}")
+                    ->findAll(true),
                 4
             )
         );
@@ -167,11 +161,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                orderBy(['title,id,ttt', 'value desc'])->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->orderBy(['title,id,ttt', 'value desc'])
+                    ->findAll(true),
                 5
             )
         );
@@ -190,11 +183,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                orderBy(['title,id,ttt asc', 'value'], 'desc')->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->orderBy(['title,id,ttt asc', 'value'], 'desc')
+                    ->findAll(true),
                 6
             )
         );
@@ -218,11 +210,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                latest()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->latest()
+                    ->findAll(true)
             )
         );
 
@@ -240,11 +231,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                latest('foo')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->latest('foo')
+                    ->findAll(true),
                 1
             )
         );
@@ -263,11 +253,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                oldest()->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->oldest()
+                    ->findAll(true),
                 2
             )
         );
@@ -286,11 +275,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                oldest('bar')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->oldest('bar')
+                    ->findAll(true),
                 3
             )
         );
@@ -314,11 +302,10 @@ class OrderByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                orderBy('{foo}')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->orderBy('{foo}')
+                    ->findAll(true)
             )
         );
     }

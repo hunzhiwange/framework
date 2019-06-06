@@ -64,7 +64,7 @@ class Load
      *
      * @param array $namespaces
      *
-     * @return $this
+     * @return \Leevel\Console\Load
      */
     public function addNamespace(array $namespaces): self
     {

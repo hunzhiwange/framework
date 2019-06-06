@@ -51,11 +51,10 @@ class ForUpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                forUpdate()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->forUpdate()
+                    ->findAll(true)
             )
         );
 
@@ -73,13 +72,11 @@ class ForUpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                forUpdate()->
-
-                forUpdate(false)->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->forUpdate()
+                    ->forUpdate(false)
+                    ->findAll(true),
                 1
             )
         );
@@ -88,7 +85,6 @@ class ForUpdateTest extends TestCase
     public function testForUpdateFlow()
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -105,19 +101,14 @@ class ForUpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                forUpdate()->
-
-                elses()->
-
-                forUpdate(false)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->forUpdate()
+                    ->elses()
+                    ->forUpdate(false)
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -125,7 +116,6 @@ class ForUpdateTest extends TestCase
     public function testForUpdateFlow2()
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -142,19 +132,14 @@ class ForUpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                forUpdate()->
-
-                elses()->
-
-                forUpdate(false)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->forUpdate()
+                    ->elses()
+                    ->forUpdate(false)
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }

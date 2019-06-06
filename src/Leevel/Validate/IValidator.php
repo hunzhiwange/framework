@@ -121,7 +121,7 @@ interface IValidator
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function data(array $data): self;
 
@@ -130,7 +130,7 @@ interface IValidator
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addData(array $data): self;
 
@@ -147,7 +147,7 @@ interface IValidator
      * @param array         $rules
      * @param null|\Closure $calCallback
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function rule(array $rules, Closure $callbacks = null): self;
 
@@ -157,7 +157,7 @@ interface IValidator
      * @param array         $rules
      * @param null|\Closure $calCallback
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addRule(array $rules, Closure $callbacks = null): self;
 
@@ -173,7 +173,7 @@ interface IValidator
      *
      * @param array $message
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function message(array $message): self;
 
@@ -182,7 +182,7 @@ interface IValidator
      *
      * @param array $message
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addMessage(array $message): self;
 
@@ -198,7 +198,7 @@ interface IValidator
      *
      * @param array $names
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function name(array $names): self;
 
@@ -207,7 +207,7 @@ interface IValidator
      *
      * @param array $names
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addName(array $names): self;
 
@@ -217,7 +217,7 @@ interface IValidator
      * @param string $name
      * @param string $alias
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function alias(string $name, string $alias): self;
 
@@ -226,7 +226,7 @@ interface IValidator
      *
      * @param array $alias
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function aliasMany(array $alias): self;
 
@@ -235,7 +235,7 @@ interface IValidator
      *
      * @param \Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function after(Closure $callbacks): self;
 
@@ -245,7 +245,7 @@ interface IValidator
      * @param string          $rule
      * @param \Closure|string $extends
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function extend(string $rule, $extends): self;
 
@@ -254,7 +254,7 @@ interface IValidator
      *
      * @param \Leevel\Di\IContainer $container
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function setContainer(IContainer $container): self;
 

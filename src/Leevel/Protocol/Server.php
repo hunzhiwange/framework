@@ -114,7 +114,7 @@ abstract class Server
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Protocol\IServer
      */
     public function setOption(string $name, $value): IServer
     {

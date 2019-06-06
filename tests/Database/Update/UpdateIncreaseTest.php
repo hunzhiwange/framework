@@ -47,13 +47,11 @@ class UpdateIncreaseTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                updateIncrease('num', 3)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->updateIncrease('num', 3)
             )
         );
     }
@@ -74,13 +72,11 @@ class UpdateIncreaseTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', '[?]')->
-
-                updateIncrease('num', 3, [503])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', '[?]')
+                    ->updateIncrease('num', 3, [503])
             )
         );
     }

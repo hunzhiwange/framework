@@ -55,7 +55,7 @@ class View implements IView
      *
      * @param \Leevel\View\IView $view
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function switchView(IViews $view): IView
     {
@@ -73,7 +73,7 @@ class View implements IView
      * @param mixed $name
      * @param mixed $value
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function setVar($name, $value = null): IView
     {
@@ -99,7 +99,7 @@ class View implements IView
      *
      * @param array $name
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function deleteVar(array $name): IView
     {
@@ -113,7 +113,7 @@ class View implements IView
      *
      * @param null|string $name
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function clearVar(): IView
     {

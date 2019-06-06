@@ -51,19 +51,14 @@ class ResetTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 5)->
-
-                where('name', 'like', 'me')->
-
-                reset()->
-
-                table('newtable')->
-
-                where('new', '=', 'world')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 5)
+                    ->where('name', 'like', 'me')
+                    ->reset()
+                    ->table('newtable')
+                    ->where('new', '=', 'world')
+                    ->findAll(true)
             )
         );
 
@@ -81,19 +76,14 @@ class ResetTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 5)->
-
-                where('name', 'like', 'me')->
-
-                setColumns('name,id')->
-
-                reset('where')->
-
-                where('new', 'like', 'new')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 5)
+                    ->where('name', 'like', 'me')
+                    ->setColumns('name,id')
+                    ->reset('where')
+                    ->where('new', 'like', 'new')
+                    ->findAll(true),
                 1
             )
         );
@@ -119,27 +109,18 @@ class ResetTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 5)->
-
-                where('name', 'like', 'me')->
-
-                setColumns('name,id')->
-
-                ifs($condition)->
-
-                reset()->
-
-                table('foo')->
-
-                elses()->
-
-                where('foo', 'like', 'bar')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 5)
+                    ->where('name', 'like', 'me')
+                    ->setColumns('name,id')
+                    ->ifs($condition)
+                    ->reset()
+                    ->table('foo')
+                    ->elses()
+                    ->where('foo', 'like', 'bar')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -164,27 +145,18 @@ class ResetTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 5)->
-
-                where('name', 'like', 'me')->
-
-                setColumns('name,id')->
-
-                ifs($condition)->
-
-                reset()->
-
-                table('foo')->
-
-                elses()->
-
-                where('foo', 'like', 'bar')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 5)
+                    ->where('name', 'like', 'me')
+                    ->setColumns('name,id')
+                    ->ifs($condition)
+                    ->reset()
+                    ->table('foo')
+                    ->elses()
+                    ->where('foo', 'like', 'bar')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }

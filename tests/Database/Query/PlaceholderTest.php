@@ -51,15 +51,12 @@ class PlaceholderTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->placeholder()->
-
-                table('test')->
-
-                sql(true)->
-
-                latest()->
-
-                findOne()
+                $connect
+                    ->placeholder()
+                    ->table('test')
+                    ->sql(true)
+                    ->latest()
+                    ->findOne()
             )
         );
     }
@@ -82,15 +79,12 @@ class PlaceholderTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->foobar()->
-
-                table('test')->
-
-                sql(true)->
-
-                latest()->
-
-                findOne()
+                $connect
+                    ->foobar()
+                    ->table('test')
+                    ->sql(true)
+                    ->latest()
+                    ->findOne()
             )
         );
     }

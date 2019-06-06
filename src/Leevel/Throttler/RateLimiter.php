@@ -107,7 +107,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 执行请求
      *
-     * @return $this
+     * @return \Leevel\Throttler\IRateLimiter
      */
     public function hit(): IRateLimiter
     {
@@ -157,7 +157,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @param int $limit
      *
-     * @return $this
+     * @return \Leevel\Throttler\IRateLimiter
      */
     public function limit(int $limit = 60): IRateLimiter
     {
@@ -171,7 +171,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      *
      * @param int $time
      *
-     * @return $this
+     * @return \Leevel\Throttler\IRateLimiter
      */
     public function time(int $time = 60): IRateLimiter
     {

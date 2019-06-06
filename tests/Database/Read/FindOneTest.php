@@ -51,24 +51,21 @@ class FindOneTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findOne()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findOne()
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                one()->
-
-                find()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->one()
+                    ->find()
             )
         );
     }
@@ -93,21 +90,15 @@ class FindOneTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                sql()->
-
-                ifs($condition)->
-
-                one()->
-
-                elses()->
-
-                all()->
-
-                endIfs()->
-
-                find()
+                $connect
+                    ->table('test')
+                    ->sql()
+                    ->ifs($condition)
+                    ->one()
+                    ->elses()
+                    ->all()
+                    ->endIfs()
+                    ->find()
             )
         );
     }
@@ -132,21 +123,15 @@ class FindOneTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                sql()->
-
-                ifs($condition)->
-
-                one()->
-
-                elses()->
-
-                all()->
-
-                endIfs()->
-
-                find()
+                $connect
+                    ->table('test')
+                    ->sql()
+                    ->ifs($condition)
+                    ->one()
+                    ->elses()
+                    ->all()
+                    ->endIfs()
+                    ->find()
             )
         );
     }

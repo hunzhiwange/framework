@@ -436,7 +436,6 @@ class ResponseTest extends TestCase
     public function testContent()
     {
         $response = new Response();
-
         $response->setContent('hello');
 
         $this->assertSame('hello', $response->content());
@@ -446,7 +445,6 @@ class ResponseTest extends TestCase
     public function testGetOriginal()
     {
         $response = new Response();
-
         $response->setContent('hello');
 
         $this->assertSame('hello', $response->content());
@@ -464,7 +462,6 @@ class ResponseTest extends TestCase
     public function testStatus()
     {
         $response = new Response();
-
         $response->setContent('hello');
 
         $this->assertSame(200, $response->status());
@@ -473,7 +470,6 @@ class ResponseTest extends TestCase
     public function testSetContentLength()
     {
         $response = new Response();
-
         $response->setContentLength(100);
 
         $this->assertSame('100', $response->headers->get('Content-Length'));
@@ -482,7 +478,6 @@ class ResponseTest extends TestCase
     public function testIsJson()
     {
         $response = new Response();
-
         $response->setContent('foo');
 
         $this->assertFalse($response->isJson());
@@ -495,20 +490,14 @@ class ResponseTest extends TestCase
     public function testSetContentFlow()
     {
         $condition = false;
-
         $response = new Response();
 
-        $response->
-
-        ifs($condition)->
-
-        setContent('foo')->
-
-        elses()->
-
-        setContent('bar')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setContent('foo')
+            ->elses()
+            ->setContent('bar')
+            ->endIfs();
 
         $this->assertSame('bar', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -517,20 +506,14 @@ class ResponseTest extends TestCase
     public function testSetContentFlow2()
     {
         $condition = true;
-
         $response = new Response();
 
-        $response->
-
-        ifs($condition)->
-
-        setContent('foo')->
-
-        elses()->
-
-        setContent('bar')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setContent('foo')
+            ->elses()
+            ->setContent('bar')
+            ->endIfs();
 
         $this->assertSame('foo', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -539,20 +522,14 @@ class ResponseTest extends TestCase
     public function testAppendContentFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        appendContent('foo')->
-
-        elses()->
-
-        appendContent('bar')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->appendContent('foo')
+            ->elses()
+            ->appendContent('bar')
+            ->endIfs();
 
         $this->assertSame('hellobar', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -561,20 +538,14 @@ class ResponseTest extends TestCase
     public function testAppendContentFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        appendContent('foo')->
-
-        elses()->
-
-        appendContent('bar')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->appendContent('foo')
+            ->elses()
+            ->appendContent('bar')
+            ->endIfs();
 
         $this->assertSame('hellofoo', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -583,20 +554,14 @@ class ResponseTest extends TestCase
     public function testSetHeaderFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setHeader('foo', 'bar')->
-
-        elses()->
-
-        setHeader('foo', 'bar2')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setHeader('foo', 'bar')
+            ->elses()
+            ->setHeader('foo', 'bar2')
+            ->endIfs();
 
         $this->assertSame('bar2', $response->headers->get('foo'));
         $this->assertTrue($response->isOk());
@@ -605,20 +570,14 @@ class ResponseTest extends TestCase
     public function testSetHeaderFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setHeader('foo', 'bar')->
-
-        elses()->
-
-        setHeader('foo', 'bar2')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setHeader('foo', 'bar')
+            ->elses()
+            ->setHeader('foo', 'bar2')
+            ->endIfs();
 
         $this->assertSame('bar', $response->headers->get('foo'));
         $this->assertTrue($response->isOk());
@@ -627,20 +586,14 @@ class ResponseTest extends TestCase
     public function testWithHeadersFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        withHeaders(['foo' => 'bar'])->
-
-        elses()->
-
-        withHeaders(['foo' => 'bar2'])->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->withHeaders(['foo' => 'bar'])
+            ->elses()
+            ->withHeaders(['foo' => 'bar2'])
+            ->endIfs();
 
         $this->assertSame('bar2', $response->headers->get('foo'));
         $this->assertTrue($response->isOk());
@@ -649,20 +602,14 @@ class ResponseTest extends TestCase
     public function testWithHeadersFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        withHeaders(['foo' => 'bar'])->
-
-        elses()->
-
-        withHeaders(['foo' => 'bar2'])->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->withHeaders(['foo' => 'bar'])
+            ->elses()
+            ->withHeaders(['foo' => 'bar2'])
+            ->endIfs();
 
         $this->assertSame('bar', $response->headers->get('foo'));
         $this->assertTrue($response->isOk());
@@ -671,18 +618,13 @@ class ResponseTest extends TestCase
     public function testSetCookieFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setCookie('foo', 'bar')->
-
-        elses()->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setCookie('foo', 'bar')
+            ->elses()
+            ->endIfs();
 
         $allCookies = [];
 
@@ -692,18 +634,13 @@ class ResponseTest extends TestCase
     public function testSetCookieFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setCookie('foo', 'bar')->
-
-        elses()->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setCookie('foo', 'bar')
+            ->elses()
+            ->endIfs();
 
         $allCookies = [
             'foo' => [
@@ -723,18 +660,13 @@ class ResponseTest extends TestCase
     public function testWithCookiesFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        withCookies(['foo' => 'bar'])->
-
-        elses()->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->withCookies(['foo' => 'bar'])
+            ->elses()
+            ->endIfs();
 
         $allCookies = [];
 
@@ -744,18 +676,13 @@ class ResponseTest extends TestCase
     public function testWithCookiesFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        withCookies(['foo' => 'bar'])->
-
-        elses()->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->withCookies(['foo' => 'bar'])
+            ->elses()
+            ->endIfs();
 
         $allCookies = [
             'foo' => [
@@ -775,22 +702,16 @@ class ResponseTest extends TestCase
     public function testSetDataFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
         $this->assertSame('hello', $response->getContent());
 
-        $response->
-
-        ifs($condition)->
-
-        setData('foo')->
-
-        elses()->
-
-        setData('bar')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setData('foo')
+            ->elses()
+            ->setData('bar')
+            ->endIfs();
 
         $this->assertSame('"bar"', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -799,22 +720,16 @@ class ResponseTest extends TestCase
     public function testSetDataFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
         $this->assertSame('hello', $response->getContent());
 
-        $response->
-
-        ifs($condition)->
-
-        setData('foo')->
-
-        elses()->
-
-        setData('bar')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setData('foo')
+            ->elses()
+            ->setData('bar')
+            ->endIfs();
 
         $this->assertSame('"foo"', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -823,20 +738,14 @@ class ResponseTest extends TestCase
     public function testSetProtocolVersionFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setProtocolVersion('1.0')->
-
-        elses()->
-
-        setProtocolVersion('1.1')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setProtocolVersion('1.0')
+            ->elses()
+            ->setProtocolVersion('1.1')
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('1.1', $response->getProtocolVersion());
@@ -846,20 +755,14 @@ class ResponseTest extends TestCase
     public function testSetProtocolVersionFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setProtocolVersion('1.0')->
-
-        elses()->
-
-        setProtocolVersion('1.1')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setProtocolVersion('1.0')
+            ->elses()
+            ->setProtocolVersion('1.1')
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('1.0', $response->getProtocolVersion());
@@ -869,20 +772,14 @@ class ResponseTest extends TestCase
     public function testSetStatusCodeFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setStatusCode(500)->
-
-        elses()->
-
-        setStatusCode(200)->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setStatusCode(500)
+            ->elses()
+            ->setStatusCode(200)
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
@@ -892,20 +789,14 @@ class ResponseTest extends TestCase
     public function testSetStatusCodeFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setStatusCode(500)->
-
-        elses()->
-
-        setStatusCode(200)->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setStatusCode(500)
+            ->elses()
+            ->setStatusCode(200)
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(500, $response->getStatusCode());
@@ -915,20 +806,14 @@ class ResponseTest extends TestCase
     public function testCharsetFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        charset('UTF-8')->
-
-        elses()->
-
-        charset('GBK')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->charset('UTF-8')
+            ->elses()
+            ->charset('GBK')
+            ->endIfs();
 
         $this->assertSame('GBK', $response->getCharset());
         $this->assertSame(200, $response->getStatusCode());
@@ -938,20 +823,14 @@ class ResponseTest extends TestCase
     public function testCharsetFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        charset('UTF-8')->
-
-        elses()->
-
-        charset('GBK')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->charset('UTF-8')
+            ->elses()
+            ->charset('GBK')
+            ->endIfs();
 
         $this->assertSame('UTF-8', $response->getCharset());
         $this->assertSame(200, $response->getStatusCode());
@@ -961,20 +840,14 @@ class ResponseTest extends TestCase
     public function testSetExpiresFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setExpires()->
-
-        elses()->
-
-        setExpires(new DateTime('2018-08-07'))->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setExpires()
+            ->elses()
+            ->setExpires(new DateTime('2018-08-07'))
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('2018-08-07 00:00:00', date('Y-m-d H:i:s', strtotime($response->headers->get('Expires'))));
@@ -985,20 +858,14 @@ class ResponseTest extends TestCase
     public function testSetExpiresFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setExpires()->
-
-        elses()->
-
-        setExpires(new DateTime('2018-08-07'))->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setExpires()
+            ->elses()
+            ->setExpires(new DateTime('2018-08-07'))
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertFalse($response->headers->has('Expires'));
@@ -1009,20 +876,14 @@ class ResponseTest extends TestCase
     public function testSetLastModifiedFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setLastModified()->
-
-        elses()->
-
-        setLastModified(new DateTime('2018-08-07'))->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setLastModified()
+            ->elses()
+            ->setLastModified(new DateTime('2018-08-07'))
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('2018-08-07 00:00:00', date('Y-m-d H:i:s', strtotime($response->headers->get('Last-Modified'))));
@@ -1033,20 +894,14 @@ class ResponseTest extends TestCase
     public function testSetLastModifiedFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        SetLastModified()->
-
-        elses()->
-
-        SetLastModified(new DateTime('2018-08-07'))->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setLastModified()
+            ->elses()
+            ->setLastModified(new DateTime('2018-08-07'))
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertFalse($response->headers->has('Last-Modified'));
@@ -1057,20 +912,14 @@ class ResponseTest extends TestCase
     public function testSetCacheFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setCache(1)->
-
-        elses()->
-
-        setCache(5)->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setCache(1)
+            ->elses()
+            ->setCache(5)
+            ->endIfs();
 
         $date = new DateTime();
         $date->modify('+5minutes');
@@ -1096,17 +945,12 @@ class ResponseTest extends TestCase
 
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setCache(1)->
-
-        elses()->
-
-        setCache(5)->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setCache(1)
+            ->elses()
+            ->setCache(5)
+            ->endIfs();
 
         $date = new DateTime();
         $date->modify('+1minutes');
@@ -1129,18 +973,13 @@ class ResponseTest extends TestCase
     public function testSetNotModifiedFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setNotModified()->
-
-        elses()->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setNotModified()
+            ->elses()
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
@@ -1150,18 +989,13 @@ class ResponseTest extends TestCase
     public function testSetNotModifiedFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setNotModified()->
-
-        elses()->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->setNotModified()
+            ->elses()
+            ->endIfs();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(304, $response->getStatusCode());
@@ -1171,18 +1005,13 @@ class ResponseTest extends TestCase
     public function testSetContentTypeFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setContentType('text/html')->
-
-        elses()->
-
-        setContentType('text/plain');
+        $response
+            ->ifs($condition)
+            ->setContentType('text/html')
+            ->elses()
+            ->setContentType('text/plain');
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('text/plain', $response->headers->get('Content-Type'));
@@ -1193,18 +1022,13 @@ class ResponseTest extends TestCase
     public function testSetContentTypeFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setContentType('text/html')->
-
-        elses()->
-
-        setContentType('text/plain');
+        $response
+            ->ifs($condition)
+            ->setContentType('text/html')
+            ->elses()
+            ->setContentType('text/plain');
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('text/html', $response->headers->get('Content-Type'));
@@ -1215,18 +1039,13 @@ class ResponseTest extends TestCase
     public function testSetContentLengthFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setContentLength(10)->
-
-        elses()->
-
-        setContentLength(50);
+        $response
+            ->ifs($condition)
+            ->setContentLength(10)
+            ->elses()
+            ->setContentLength(50);
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('50', $response->headers->get('Content-Length'));
@@ -1237,18 +1056,13 @@ class ResponseTest extends TestCase
     public function testSetContentLengthFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setContentLength(10)->
-
-        elses()->
-
-        setContentLength(50);
+        $response
+            ->ifs($condition)
+            ->setContentLength(10)
+            ->elses()
+            ->setContentLength(50);
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('10', $response->headers->get('Content-Length'));
@@ -1259,18 +1073,13 @@ class ResponseTest extends TestCase
     public function testSetEtagFlow()
     {
         $condition = false;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setEtag('foo')->
-
-        elses()->
-
-        setEtag('bar');
+        $response
+            ->ifs($condition)
+            ->setEtag('foo')
+            ->elses()
+            ->setEtag('bar');
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('bar', $response->headers->get('Etag'));
@@ -1281,18 +1090,13 @@ class ResponseTest extends TestCase
     public function testSetEtagFlow2()
     {
         $condition = true;
-
         $response = new Response('hello');
 
-        $response->
-
-        ifs($condition)->
-
-        setEtag('foo')->
-
-        elses()->
-
-        setEtag('bar');
+        $response
+            ->ifs($condition)
+            ->setEtag('foo')
+            ->elses()
+            ->setEtag('bar');
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('foo', $response->headers->get('Etag'));

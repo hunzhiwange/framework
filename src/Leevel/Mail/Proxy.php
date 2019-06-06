@@ -42,7 +42,7 @@ trait Proxy
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function setOption(string $name, $value): IMail
     {
@@ -55,7 +55,7 @@ trait Proxy
      * @param string      $address
      * @param null|string $name
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function globalFrom(string $address, ?string $name = null): IMail
     {
@@ -68,7 +68,7 @@ trait Proxy
      * @param string      $address
      * @param null|string $name
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function globalTo(string $address, ?string $name = null): IMail
     {
@@ -81,7 +81,7 @@ trait Proxy
      * @param string $file
      * @param array  $data
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function view(string $file, array $data = []): IMail
     {
@@ -93,7 +93,7 @@ trait Proxy
      *
      * @param string $content
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function html(string $content): IMail
     {
@@ -105,7 +105,7 @@ trait Proxy
      *
      * @param string $content
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function plain(string $content): IMail
     {
@@ -118,7 +118,7 @@ trait Proxy
      * @param string $file
      * @param array  $data
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function viewPlain(string $file, array $data = []): IMail
     {
@@ -130,7 +130,7 @@ trait Proxy
      *
      * @param \Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function message(Closure $callbacks): IMail
     {
@@ -143,7 +143,7 @@ trait Proxy
      * @param string        $file
      * @param null|\Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function attachMail(string $file, Closure $callbacks = null): IMail
     {
@@ -158,7 +158,7 @@ trait Proxy
      * @param string        $name
      * @param null|\Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function attachData(string $data, string $name, Closure $callbacks = null): IMail
     {

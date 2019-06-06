@@ -44,7 +44,7 @@ class {{file_name}} extends Entity
      * @param string $prop
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function setter(string $prop, $value): IEntity
     {

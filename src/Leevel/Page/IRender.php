@@ -37,7 +37,7 @@ interface IRender
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IRender
      */
     public function setOption(string $name, $value): self;
 

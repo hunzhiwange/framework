@@ -82,7 +82,7 @@ abstract class Filesystem
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Filesystem\IFilesystem
      */
     public function setOption(string $name, $value): IFilesystem
     {

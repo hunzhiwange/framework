@@ -105,7 +105,7 @@ abstract class Cache implements ICache
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Cache\ICache
      */
     public function setOption(string $name, $value): ICache
     {

@@ -108,7 +108,7 @@ class Url implements IUrl
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Router\IUrl
      */
     public function setOption(string $name, $value): IUrl
     {

@@ -52,7 +52,7 @@ class ApiResponse extends JsonResponse
      * @param mixed  $content
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function ok($content = '', ?string $text = null): IResponse
     {
@@ -72,7 +72,7 @@ class ApiResponse extends JsonResponse
      * @param null|string $location
      * @param mixed       $content
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function created(?string $location = null, $content = ''): IResponse
     {
@@ -97,7 +97,7 @@ class ApiResponse extends JsonResponse
      * @param null|string $location
      * @param mixed       $content
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function accepted(?string $location = null, $content = ''): IResponse
     {
@@ -119,7 +119,7 @@ class ApiResponse extends JsonResponse
      * 无内容
      * 服务器成功处理，但未返回内容: 204.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function noContent(): IResponse
     {
@@ -138,7 +138,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function unprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): IResponse
     {
@@ -164,7 +164,7 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @param mixed  $statusCode
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function error(?string $message, int $statusCode, ?string $text = null): IResponse
     {
@@ -184,7 +184,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function badRequest(?string $message = null, ?string $text = null): IResponse
     {
@@ -198,7 +198,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function unauthorized(?string $message = null, ?string $text = null): IResponse
     {
@@ -212,7 +212,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function forbidden(?string $message = null, ?string $text = null): IResponse
     {
@@ -226,7 +226,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function notFound(?string $message = null, ?string $text = null): IResponse
     {
@@ -240,7 +240,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function methodNotAllowed(?string $message = null, ?string $text = null): IResponse
     {
@@ -254,7 +254,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function tooManyRequests(?string $message = null, ?string $text = null): IResponse
     {
@@ -268,7 +268,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function internalServerError(?string $message = null, ?string $text = null): IResponse
     {
@@ -281,7 +281,7 @@ class ApiResponse extends JsonResponse
      * @param string      $message
      * @param null|string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     protected function normalizeErrorMessage(?string $message = null, ?string $text = null): IResponse
     {

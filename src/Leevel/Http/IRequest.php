@@ -526,7 +526,7 @@ interface IRequest
      *
      * @param string $method
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setMethod(string $method): self;
 
@@ -565,7 +565,7 @@ interface IRequest
      *
      * @param string $language
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setLanguage(string $language): self;
 
@@ -658,7 +658,7 @@ interface IRequest
      *
      * @param string $pathInfo
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setPathInfo(string $pathInfo): self;
 

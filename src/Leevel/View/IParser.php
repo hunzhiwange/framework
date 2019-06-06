@@ -34,14 +34,14 @@ interface IParser
     /**
      * 注册视图编译器.
      *
-     * @return $this
+     * @return \Leevel\View\IParser
      */
     public function registerCompilers(): self;
 
     /**
      * 注册视图分析器.
      *
-     * @return $this
+     * @return \Leevel\View\IParser
      */
     public function registerParsers(): self;
 

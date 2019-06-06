@@ -51,22 +51,20 @@ class ValuePullTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                value('id')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->value('id')
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                pull('id'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->pull('id'),
                 1
             )
         );

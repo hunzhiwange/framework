@@ -206,7 +206,7 @@ class Response implements IResponse
     /**
      * 发送 HTTP 响应.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function send(): IResponse
     {
@@ -220,7 +220,7 @@ class Response implements IResponse
     /**
      * 发送响应头.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function sendHeaders(): IResponse
     {
@@ -248,7 +248,7 @@ class Response implements IResponse
     /**
      * 发送响应内容.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function sendContent(): IResponse
     {
@@ -262,7 +262,7 @@ class Response implements IResponse
      *
      * @param mixed $content
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContent($content): IResponse
     {
@@ -298,7 +298,7 @@ class Response implements IResponse
      *
      * @param string $content
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function appendContent(string $content = null): IResponse
     {
@@ -318,7 +318,7 @@ class Response implements IResponse
      * @param string $value
      * @param bool   $replace
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setHeader(string $key, string $value, bool $replace = true): IResponse
     {
@@ -338,7 +338,7 @@ class Response implements IResponse
      *
      * @param array $headers
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withHeaders(array $headers): IResponse
     {
@@ -360,7 +360,7 @@ class Response implements IResponse
      * @param string $value
      * @param array  $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function cookie(string $name, string $value = '', array $option = []): IResponse
     {
@@ -374,7 +374,7 @@ class Response implements IResponse
      * @param string $value
      * @param array  $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCookie(string $name, string $value = '', array $option = []): IResponse
     {
@@ -393,7 +393,7 @@ class Response implements IResponse
      * @param array $cookies
      * @param array $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withCookies(array $cookies, array $option = []): IResponse
     {
@@ -441,7 +441,7 @@ class Response implements IResponse
      * @param mixed $data
      * @param int   $encodingOptions
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setData($data = [], ?int $encodingOptions = null): IResponse
     {
@@ -509,7 +509,7 @@ class Response implements IResponse
      *
      * @param string $protocolVersion
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setProtocolVersion(string $protocolVersion): IResponse
     {
@@ -536,7 +536,7 @@ class Response implements IResponse
      * @param int         $code
      * @param null|string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setStatusCode(int $code, ?string $text = null): IResponse
     {
@@ -588,7 +588,7 @@ class Response implements IResponse
      *
      * @param string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCharset(string $charset): IResponse
     {
@@ -600,7 +600,7 @@ class Response implements IResponse
      *
      * @param string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function charset(string $charset): IResponse
     {
@@ -628,7 +628,7 @@ class Response implements IResponse
      *
      * @param \DateTime $datetime
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setExpires(DateTime $datetime = null): IResponse
     {
@@ -652,7 +652,7 @@ class Response implements IResponse
      *
      * @param \DateTime $datetime
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setLastModified(DateTime $datetime = null): IResponse
     {
@@ -676,7 +676,7 @@ class Response implements IResponse
      *
      * @param int $minutes
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCache(int $minutes): IResponse
     {
@@ -696,7 +696,7 @@ class Response implements IResponse
     /**
      * 设置响应未修改.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setNotModified(): IResponse
     {
@@ -715,7 +715,7 @@ class Response implements IResponse
      * @param string $contentType
      * @param string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContentType(string $contentType, ?string $charset = null): IResponse
     {
@@ -741,7 +741,7 @@ class Response implements IResponse
      *
      * @param int $contentLength
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContentLength(int $contentLength): IResponse
     {
@@ -759,7 +759,7 @@ class Response implements IResponse
      *
      * @param string $etag
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setEtag(string $etag): IResponse
     {

@@ -79,7 +79,7 @@ class Pipeline implements IPipeline
      *
      * @param array $passed
      *
-     * @return $this
+     * @return \Leevel\Pipeline\IPipeline
      */
     public function send(array $passed): IPipeline
     {
@@ -95,7 +95,7 @@ class Pipeline implements IPipeline
      *
      * @param array $stage
      *
-     * @return $this
+     * @return \Leevel\Pipeline\IPipeline
      */
     public function through(array $stage): IPipeline
     {

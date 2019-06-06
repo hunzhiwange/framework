@@ -58,7 +58,7 @@ interface IMail
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function setOption(string $name, $value): self;
 
@@ -68,7 +68,7 @@ interface IMail
      * @param string      $address
      * @param null|string $name
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function globalFrom(string $address, ?string $name = null): self;
 
@@ -78,7 +78,7 @@ interface IMail
      * @param string      $address
      * @param null|string $name
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function globalTo(string $address, ?string $name = null): self;
 
@@ -88,7 +88,7 @@ interface IMail
      * @param string $file
      * @param array  $data
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function view(string $file, array $data = []): self;
 
@@ -97,7 +97,7 @@ interface IMail
      *
      * @param string $content
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function html(string $content): self;
 
@@ -106,7 +106,7 @@ interface IMail
      *
      * @param string $content
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function plain(string $content): self;
 
@@ -116,7 +116,7 @@ interface IMail
      * @param string $file
      * @param array  $data
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function viewPlain(string $file, array $data = []): self;
 
@@ -125,7 +125,7 @@ interface IMail
      *
      * @param \Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function message(Closure $callbacks): self;
 
@@ -135,7 +135,7 @@ interface IMail
      * @param string        $file
      * @param null|\Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function attachMail(string $file, Closure $callbacks = null): self;
 
@@ -147,7 +147,7 @@ interface IMail
      * @param string        $name
      * @param null|\Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function attachData(string $data, string $name, Closure $callbacks = null): self;
 

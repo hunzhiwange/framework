@@ -48,13 +48,15 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -72,13 +74,15 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -95,13 +99,15 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -131,13 +137,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -172,13 +178,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -205,13 +211,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -246,13 +252,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -286,13 +292,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -317,13 +323,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -356,13 +362,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -394,13 +400,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -424,13 +430,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -462,13 +468,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -497,13 +503,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'not_bar', 'hello' => 'world'];
@@ -532,13 +538,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -573,13 +579,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -614,13 +620,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -655,13 +661,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -687,13 +693,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -716,13 +722,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -754,13 +760,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -792,13 +798,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -830,13 +836,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -868,13 +874,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -906,13 +912,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -944,13 +950,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -982,13 +988,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -1020,13 +1026,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'no-world'];
@@ -1058,13 +1064,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1096,13 +1102,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -1130,13 +1136,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -1163,17 +1169,21 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
-        $newPost = $repository->where('id', 5)->find(1);
+        $newPost = $repository
+            ->where('id', 5)
+            ->find(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertNull($newPost->id);
@@ -1201,13 +1211,15 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -1226,13 +1238,15 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -1252,13 +1266,15 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -1285,12 +1301,14 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect
-            ->table('test_unique')
-            ->insert([
-                'name'     => 'hello world',
-                'identity' => 'hello',
-            ])
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('test_unique')
+                ->insert([
+                    'name'     => 'hello world',
+                    'identity' => 'hello',
+                ])
         );
 
         $testUniqueData = TestUnique::find(1);
@@ -1318,13 +1336,15 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -1346,13 +1366,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1388,13 +1408,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1427,13 +1447,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1472,13 +1492,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1496,13 +1516,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1526,13 +1546,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1550,13 +1570,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1580,13 +1600,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1604,13 +1624,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1634,13 +1654,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1675,13 +1695,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1716,13 +1736,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1761,13 +1781,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1806,13 +1826,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world'.$i,
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1849,13 +1869,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world'.$i,
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1892,13 +1912,13 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world'.$i,
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());

@@ -58,11 +58,10 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data)
             )
         );
     }
@@ -92,11 +91,10 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data, ['吃肉'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, ['吃肉'])
             )
         );
 
@@ -118,11 +116,10 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data, ['value' => '呱呱呱']),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, ['value' => '呱呱呱']),
                 1
             )
         );
@@ -153,13 +150,11 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                bind(['吃鱼'])->
-
-                insert($data)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->bind(['吃鱼'])
+                    ->insert($data)
             )
         );
     }
@@ -186,11 +181,10 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data, ['value' => '呱呱呱'], true)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, ['value' => '呱呱呱'], true)
             )
         );
     }
@@ -217,11 +211,10 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data, ['value' => '呱呱呱'], true)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, ['value' => '呱呱呱'], true)
             )
         );
     }

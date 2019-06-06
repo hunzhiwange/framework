@@ -51,11 +51,10 @@ class FindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                find()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->find()
             )
         );
 
@@ -73,11 +72,10 @@ class FindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                find(5),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->find(5),
                 1
             )
         );

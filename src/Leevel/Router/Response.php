@@ -439,7 +439,7 @@ class Response implements IResponse
      *
      * @param string $template
      *
-     * @return $this
+     * @return \Leevel\Router\IResponse
      */
     public function setViewSuccessTemplate(string $template): IResponse
     {
@@ -453,7 +453,7 @@ class Response implements IResponse
      *
      * @param string $template
      *
-     * @return $this
+     * @return \Leevel\Router\IResponse
      */
     public function setViewFailTemplate(string $template): IResponse
     {

@@ -74,7 +74,7 @@ class Defaults implements IRender
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IRender
      */
     public function setOption(string $name, $value): IRender
     {
@@ -86,7 +86,7 @@ class Defaults implements IRender
     /**
      * 简单渲染.
      *
-     * @return $this
+     * @return \Leevel\Page\IRender
      */
     public function setSimpleTemplate(): IRender
     {

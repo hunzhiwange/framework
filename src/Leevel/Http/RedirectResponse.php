@@ -104,7 +104,7 @@ class RedirectResponse extends Response
      * @param array|string $key
      * @param mixed        $value
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function with($key, $value = null): IResponse
     {
@@ -128,7 +128,7 @@ class RedirectResponse extends Response
      *
      * @param null|array $input
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withInput(?array $input = null): IResponse
     {
@@ -148,7 +148,7 @@ class RedirectResponse extends Response
     /**
      * 闪存输入信息.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function onlyInput(...$args): IResponse
     {
@@ -162,7 +162,7 @@ class RedirectResponse extends Response
     /**
      * 闪存输入信息.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function exceptInput(...$args): IResponse
     {
@@ -179,7 +179,7 @@ class RedirectResponse extends Response
      * @param mixed  $value
      * @param string $key
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withErrors($value, string $key = 'default'): IResponse
     {
@@ -210,7 +210,7 @@ class RedirectResponse extends Response
      *
      * @param string $url
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setTargetUrl(string $url): IResponse
     {

@@ -437,7 +437,7 @@ class Condition
      * @param int $page
      * @param int $perPage
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function forPage(int $page, int $perPage = 15): self
     {
@@ -449,7 +449,7 @@ class Condition
      *
      * @param string $type
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function time(string $type = 'date'): self
     {
@@ -471,7 +471,7 @@ class Condition
     /**
      * 时间控制语句结束.
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function endTime(): self
     {
@@ -489,7 +489,7 @@ class Condition
      *
      * @param null|string $option
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function reset(?string $option = null): self
     {
@@ -511,7 +511,7 @@ class Condition
      *
      * @param string $prefix
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function prefix(string $prefix): self
     {
@@ -530,7 +530,7 @@ class Condition
      * @param mixed        $table
      * @param array|string $cols
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function table($table, $cols = '*'): self
     {
@@ -561,7 +561,7 @@ class Condition
      * @param mixed  $cols
      * @param string $table
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function columns($cols = '*', ?string $table = null): self
     {
@@ -584,7 +584,7 @@ class Condition
      * @param mixed  $cols
      * @param string $table
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function setColumns($cols = '*', ?string $table = null): self
     {
@@ -607,7 +607,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function where(...$cond): self
     {
@@ -626,7 +626,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function orWhere(...$cond): self
     {
@@ -645,7 +645,7 @@ class Condition
      *
      * @param string $raw
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereRaw(string $raw): self
     {
@@ -666,7 +666,7 @@ class Condition
      *
      * @param string $raw
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function orWhereRaw(string $raw): self
     {
@@ -687,7 +687,7 @@ class Condition
      *
      * @param mixed $exists
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereExists($exists): self
     {
@@ -703,7 +703,7 @@ class Condition
      *
      * @param mixed $exists
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereNotExists($exists): self
     {
@@ -719,7 +719,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereBetween(...$cond): self
     {
@@ -731,7 +731,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereNotBetween(...$cond): self
     {
@@ -743,7 +743,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereNull(...$cond): self
     {
@@ -755,7 +755,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereNotNull(...$cond): self
     {
@@ -767,7 +767,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereIn(...$cond): self
     {
@@ -779,7 +779,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereNotIn(...$cond): self
     {
@@ -791,7 +791,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereLike(...$cond): self
     {
@@ -803,7 +803,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereNotLike(...$cond): self
     {
@@ -815,7 +815,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereDate(...$cond): self
     {
@@ -827,7 +827,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereDay(...$cond): self
     {
@@ -839,7 +839,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereMonth(...$cond): self
     {
@@ -851,7 +851,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function whereYear(...$cond): self
     {
@@ -865,7 +865,7 @@ class Condition
      * @param mixed $value
      * @param int   $type
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function bind($names, $value = null, int $type = PDO::PARAM_STR): self
     {
@@ -898,7 +898,7 @@ class Condition
      * @param array|string $indexs
      * @param string       $type
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function forceIndex($indexs, $type = 'FORCE'): self
     {
@@ -931,7 +931,7 @@ class Condition
      *
      * @param array|string $indexs
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function ignoreIndex($indexs): self
     {
@@ -945,7 +945,7 @@ class Condition
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function join($table, $cols, ...$cond): self
     {
@@ -963,7 +963,7 @@ class Condition
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function innerJoin($table, $cols, ...$cond): self
     {
@@ -981,7 +981,7 @@ class Condition
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function leftJoin($table, $cols, ...$cond): self
     {
@@ -999,7 +999,7 @@ class Condition
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function rightJoin($table, $cols, ...$cond): self
     {
@@ -1017,7 +1017,7 @@ class Condition
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function fullJoin($table, $cols, ...$cond): self
     {
@@ -1035,7 +1035,7 @@ class Condition
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function crossJoin($table, $cols, ...$cond): self
     {
@@ -1053,7 +1053,7 @@ class Condition
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function naturalJoin($table, $cols, ...$cond): self
     {
@@ -1070,7 +1070,7 @@ class Condition
      * @param array|callable|string $selects
      * @param string                $type
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function union($selects, string $type = 'UNION'): self
     {
@@ -1100,7 +1100,7 @@ class Condition
      *
      * @param array|callable|string $selects
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function unionAll($selects): self
     {
@@ -1116,7 +1116,7 @@ class Condition
      *
      * @param array|string $expression
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function groupBy($expression): self
     {
@@ -1194,7 +1194,7 @@ class Condition
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function having(...$cond): self
     {
@@ -1213,7 +1213,7 @@ class Condition
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function orHaving(...$cond): self
     {
@@ -1232,7 +1232,7 @@ class Condition
      *
      * @param string $raw
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingRaw(string $raw): self
     {
@@ -1253,7 +1253,7 @@ class Condition
      *
      * @param string $raw
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function orHavingRaw(string $raw): self
     {
@@ -1274,7 +1274,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingBetween(...$cond): self
     {
@@ -1286,7 +1286,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingNotBetween(...$cond): self
     {
@@ -1298,7 +1298,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingNull(...$cond): self
     {
@@ -1310,7 +1310,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingNotNull(...$cond): self
     {
@@ -1322,7 +1322,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingIn(...$cond): self
     {
@@ -1334,7 +1334,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingNotIn(...$cond): self
     {
@@ -1346,7 +1346,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingLike(...$cond): self
     {
@@ -1358,7 +1358,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingNotLike(...$cond): self
     {
@@ -1370,7 +1370,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingDate(...$cond): self
     {
@@ -1382,7 +1382,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingDay(...$cond): self
     {
@@ -1394,7 +1394,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingMonth(...$cond): self
     {
@@ -1406,7 +1406,7 @@ class Condition
      *
      * @param array ...$cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function havingYear(...$cond): self
     {
@@ -1419,7 +1419,7 @@ class Condition
      * @param array|string $expression
      * @param string       $orderDefault
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function orderBy($expression, string $orderDefault = 'ASC'): self
     {
@@ -1528,7 +1528,7 @@ class Condition
      *
      * @param string $field
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function latest(string $field = 'create_at'): self
     {
@@ -1540,7 +1540,7 @@ class Condition
      *
      * @param string $field
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function oldest(string $field = 'create_at'): self
     {
@@ -1552,7 +1552,7 @@ class Condition
      *
      * @param bool $flag 指示是否是一个 SELECT DISTINCT 查询（默认 true）
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function distinct(bool $flag = true): self
     {
@@ -1571,7 +1571,7 @@ class Condition
      * @param string $field
      * @param string $alias
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function count(string $field = '*', string $alias = 'row_count'): self
     {
@@ -1588,7 +1588,7 @@ class Condition
      * @param string $field
      * @param string $alias
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function avg(string $field, string $alias = 'avg_value'): self
     {
@@ -1605,7 +1605,7 @@ class Condition
      * @param string $field
      * @param string $alias
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function max(string $field, string $alias = 'max_value'): self
     {
@@ -1622,7 +1622,7 @@ class Condition
      * @param string $field
      * @param string $alias
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function min(string $field, string $alias = 'min_value'): self
     {
@@ -1639,7 +1639,7 @@ class Condition
      * @param string $field
      * @param string $alias
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function sum(string $field, string $alias = 'sum_value'): self
     {
@@ -1653,7 +1653,7 @@ class Condition
     /**
      * 指示仅查询第一个符合条件的记录.
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function one(): self
     {
@@ -1671,7 +1671,7 @@ class Condition
     /**
      * 指示查询所有符合条件的记录.
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function all(): self
     {
@@ -1695,7 +1695,7 @@ class Condition
      *
      * @param int $count
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function top(int $count = 30): self
     {
@@ -1712,7 +1712,7 @@ class Condition
      * @param int $offset
      * @param int $count
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function limit(int $offset = 0, int $count = 0): self
     {
@@ -1736,7 +1736,7 @@ class Condition
      *
      * @param bool $flag
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function forUpdate(bool $flag = true): self
     {
@@ -1802,7 +1802,7 @@ class Condition
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     public function setOption(string $name, $value): self
     {
@@ -1837,7 +1837,7 @@ class Condition
      * @param string $method
      * @param array  $args
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     protected function callWhereSugar(string $method, array $args): self
     {
@@ -1864,7 +1864,7 @@ class Condition
      * @param string $method
      * @param array  $args
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     protected function callWhereTimeSugar(string $method, array $args): self
     {
@@ -1885,7 +1885,7 @@ class Condition
      * @param string $method
      * @param array  $args
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     protected function callHavingSugar(string $method, array $args): self
     {
@@ -1912,7 +1912,7 @@ class Condition
      * @param string $method
      * @param array  $args
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     protected function callHavingTimeSugar(string $method, array $args): self
     {
@@ -2400,7 +2400,7 @@ class Condition
      * @param string $conditionType
      * @param mixed  $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     protected function aliasCondition(string $conditionType, $cond): self
     {
@@ -2424,7 +2424,7 @@ class Condition
      * @param string $logic
      * @param mixed  $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      *
      * @todo 代码复杂度过高，需要重构
      */
@@ -2455,7 +2455,7 @@ class Condition
     /**
      * 组装条件.
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     protected function addConditions(): self
     {
@@ -2728,7 +2728,7 @@ class Condition
      * @param mixed                                                                    $cols
      * @param mixed                                                                    $cond
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     protected function addJoin(string $joinType, $names, $cols, $cond = null): self
     {
@@ -2955,7 +2955,7 @@ class Condition
      * @param string $field 字段
      * @param string $alias 别名
      *
-     * @return $this
+     * @return \Leevel\Database\Condition
      */
     protected function addAggregate(string $type, string $field, string $alias): self
     {

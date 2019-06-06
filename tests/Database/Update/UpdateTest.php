@@ -52,13 +52,11 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->update(['name' => '小猪'])
             )
         );
     }
@@ -82,15 +80,12 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                forUpdate()->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->forUpdate()
+                    ->update(['name' => '小猪'])
             )
         );
     }
@@ -114,15 +109,12 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                top(2)->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->top(2)
+                    ->update(['name' => '小猪'])
             )
         );
     }
@@ -146,15 +138,12 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                orderBy('id desc')->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->orderBy('id desc')
+                    ->update(['name' => '小猪'])
             )
         );
     }
@@ -178,15 +167,12 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test as t')->
-
-                join('hello as h', '', 't.id', '=', '{[size]}')->
-
-                where('id', 503)->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test as t')
+                    ->join('hello as h', '', 't.id', '=', '{[size]}')
+                    ->where('id', 503)
+                    ->update(['name' => '小猪'])
             )
         );
     }
@@ -211,23 +197,20 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                bind(['小牛逼'])->
-
-                update(
-                    [
-                        'name'  => '[:hello]',
-                        'value' => '[?]',
-                    ],
-                    [
-                        'hello' => 'hello world!',
-                    ]
-                )
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->bind(['小牛逼'])
+                    ->update(
+                        [
+                            'name'  => '[:hello]',
+                            'value' => '[?]',
+                        ],
+                        [
+                            'hello' => 'hello world!',
+                        ]
+                    )
             )
         );
     }
@@ -246,15 +229,13 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                update([
-                    'name' => '{concat([value],[name])}',
-                ])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->update([
+                        'name' => '{concat([value],[name])}',
+                    ])
             )
         );
     }

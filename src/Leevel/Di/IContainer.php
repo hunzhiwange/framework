@@ -38,7 +38,7 @@ interface IContainer
      * @param mixed $service
      * @param bool  $share
      *
-     * @return $this
+     * @return \Leevel\Di\IContainer
      */
     public function bind($name, $service = null, bool $share = false): self;
 
@@ -48,7 +48,7 @@ interface IContainer
      * @param mixed $name
      * @param mixed $service
      *
-     * @return $this
+     * @return \Leevel\Di\IContainer
      */
     public function instance($name, $service): self;
 
@@ -58,7 +58,7 @@ interface IContainer
      * @param array|scalar $name
      * @param mixed        $service
      *
-     * @return $this
+     * @return \Leevel\Di\IContainer
      */
     public function singleton($name, $service = null): self;
 
@@ -68,7 +68,7 @@ interface IContainer
      * @param array|string      $alias
      * @param null|array|string $value
      *
-     * @return $this
+     * @return \Leevel\Di\IContainer
      */
     public function alias($alias, $value = null): self;
 

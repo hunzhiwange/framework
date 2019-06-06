@@ -134,7 +134,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function setOption(string $name, $value): IPage
     {
@@ -159,7 +159,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * @param string $key
      * @param string $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function append(string $key, string $value): IPage
     {
@@ -171,7 +171,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param array $values
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function appends(array $values): IPage
     {
@@ -187,7 +187,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param array $parameter
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function parameter(array $parameter): IPage
     {
@@ -200,7 +200,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * @param string $key
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function addParameter(string $key, $value): IPage
     {
@@ -218,7 +218,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * @param string $key
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function renderOption(string $key, $value): IPage
     {
@@ -236,7 +236,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * @param string $key
      * @param string $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function renderOptions(array $option): IPage
     {
@@ -252,7 +252,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param null|string $url
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function url(?string $url = null): IPage
     {
@@ -264,7 +264,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param null|string $render
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function setRender(?string $render = null): IPage
     {
@@ -286,7 +286,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param null|int $range
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function range(?int $range = null): IPage
     {
@@ -310,7 +310,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param null|string $fragment
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function fragment(?string $fragment = null): IPage
     {
@@ -332,7 +332,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param int perPage
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function perPage(int $perPage): IPage
     {
@@ -360,7 +360,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @param string $pageName
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function pageName(string $pageName): IPage
     {

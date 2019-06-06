@@ -52,13 +52,11 @@ class UpdateColumnTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                updateColumn('name', '小小小鸟，怎么也飞不高。')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->updateColumn('name', '小小小鸟，怎么也飞不高。')
             )
         );
     }
@@ -77,13 +75,11 @@ class UpdateColumnTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                updateColumn('name', '{concat([value],[name])}')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->updateColumn('name', '{concat([value],[name])}')
             )
         );
     }

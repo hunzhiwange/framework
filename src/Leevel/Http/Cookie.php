@@ -69,7 +69,7 @@ class Cookie
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Http\Cookie
      */
     public function setOption(string $name, $value): self
     {

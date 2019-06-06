@@ -47,19 +47,25 @@ class BelongsToTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'Say hello to the world.',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]),
+        );
 
-        $this->assertSame('1', $connect->
-        table('user')->
-        insert([
-            'name' => 'niu',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
 
         $post = Post::where('id', 1)->findOne();
 
@@ -98,22 +104,30 @@ class BelongsToTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i <= 5; $i++) {
-            $this->assertSame((string) ($i + 1), $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'Say hello to the world.',
-            ]));
+            $this->assertSame(
+                (string) ($i + 1),
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title'   => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                    ]),
+            );
         }
 
-        $this->assertSame('1', $connect->
-        table('user')->
-        insert([
-            'name' => 'niu',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
 
-        $posts = Post::eager(['user'])->limit(5)->findAll();
+        $posts = Post::eager(['user'])
+            ->limit(5)
+            ->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(5, $posts);
@@ -131,19 +145,25 @@ class BelongsToTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'Say hello to the world.',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]),
+        );
 
-        $this->assertSame('1', $connect->
-        table('user')->
-        insert([
-            'name' => 'niu',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
 
         $userRelation = Post::user();
 

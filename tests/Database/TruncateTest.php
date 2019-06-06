@@ -47,11 +47,10 @@ class TruncateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                truncate()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->truncate()
             )
         );
     }

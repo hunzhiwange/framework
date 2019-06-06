@@ -51,11 +51,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                join('hello', 'name,value', 'name', '=', '小牛')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->join('hello', 'name,value', 'name', '=', '小牛')
+                    ->findAll(true)
             )
         );
 
@@ -73,11 +72,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                join(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->join(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true),
                 1
             )
         );
@@ -96,11 +94,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                join('hello', 'name,value', ['hello' => 'world', ['test', '>', '{[name]}']])->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->join('hello', 'name,value', ['hello' => 'world', ['test', '>', '{[name]}']])
+                    ->findAll(true),
                 2
             )
         );
@@ -119,13 +116,14 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                join('hello', 'name,value', function ($select) {
-                    $select->where('id', '<', 5)->where('name', 'like', 'hello');
-                })->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->join('hello', 'name,value', function ($select) {
+                        $select
+                            ->where('id', '<', 5)
+                            ->where('name', 'like', 'hello');
+                    })
+                    ->findAll(true),
                 3
             )
         );
@@ -149,11 +147,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true)
             )
         );
     }
@@ -176,11 +173,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true)
             )
         );
     }
@@ -203,11 +199,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true)
             )
         );
     }
@@ -230,11 +225,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])
+                    ->findAll(true)
             )
         );
     }
@@ -257,11 +251,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])
+                    ->findAll(true)
             )
         );
     }
@@ -269,7 +262,6 @@ class JoinTest extends TestCase
     public function testJsonFlow()
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -286,19 +278,14 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                join('hello', 'name,value', 'name', '=', '小牛')->
-
-                elses()->
-
-                join('hello', 'name,value', 'name', '=', '哥')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->join('hello', 'name,value', 'name', '=', '小牛')
+                    ->elses()
+                    ->join('hello', 'name,value', 'name', '=', '哥')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -306,7 +293,6 @@ class JoinTest extends TestCase
     public function testJsonFlow2()
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -323,19 +309,14 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                join('hello', 'name,value', 'name', '=', '小牛')->
-
-                elses()->
-
-                join('hello', 'name,value', 'name', '=', '哥')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->join('hello', 'name,value', 'name', '=', '小牛')
+                    ->elses()
+                    ->join('hello', 'name,value', 'name', '=', '哥')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -343,7 +324,6 @@ class JoinTest extends TestCase
     public function testInnerJsonFlow()
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -360,19 +340,14 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                elses()->
-
-                innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->elses()
+                    ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -385,16 +360,13 @@ class JoinTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnectMock();
-
         $union = 'SELECT id,value FROM test2';
 
-        $connect->table('test', 'tid as id,tname as value')->
-
-        union($union)->
-
-        innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-        findAll(true);
+        $connect
+            ->table('test', 'tid as id,tname as value')
+            ->union($union)
+            ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+            ->findAll(true);
     }
 
     public function testInnerJoinWithTableIsSelect()
@@ -417,11 +389,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                innerJoin($joinTable, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->innerJoin($joinTable, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true)
             )
         );
     }
@@ -441,16 +412,17 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $joinTable = $connect->table('foo as b')->databaseCondition();
+        $joinTable = $connect
+            ->table('foo as b')
+            ->databaseCondition();
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                innerJoin($joinTable, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->innerJoin($joinTable, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true)
             )
         );
     }
@@ -470,18 +442,19 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $joinTable = $connect->table('foo as b')->databaseCondition();
+        $joinTable = $connect
+            ->table('foo as b')
+            ->databaseCondition();
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                innerJoin(function ($select) {
-                    $select->table('foo as b');
-                }, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->innerJoin(function ($select) {
+                        $select->table('foo as b');
+                    }, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true)
             )
         );
     }
@@ -501,16 +474,17 @@ class JoinTest extends TestCase
             ]
             eot;
 
-        $joinTable = $connect->table('foo as b')->databaseCondition();
+        $joinTable = $connect
+            ->table('foo as b')
+            ->databaseCondition();
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                innerJoin(['foo' => $joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->innerJoin(['foo' => $joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true)
             )
         );
     }
@@ -524,13 +498,14 @@ class JoinTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $joinTable = $connect->table('foo as b')->databaseCondition();
+        $joinTable = $connect
+            ->table('foo as b')
+            ->databaseCondition();
 
-        $connect->table('test')->
-
-        innerJoin([$joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
-
-        findAll(true);
+        $connect
+            ->table('test')
+            ->innerJoin([$joinTable], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+            ->findAll(true);
     }
 
     public function testInnerJsonWithTableNameIsExpression()
@@ -551,11 +526,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                innerJoin('(SELECT * FROM foo)', ['name as nikename', 'tt' => 'value'], 'name', '=', '{[test.name]}')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->innerJoin('(SELECT * FROM foo)', ['name as nikename', 'tt' => 'value'], 'name', '=', '{[test.name]}')
+                    ->findAll(true)
             )
         );
     }
@@ -578,11 +552,10 @@ class JoinTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                innerJoin('(SELECT * FROM foo) as foo', ['name as nikename', 'tt' => 'value'], 'name', '=', '{[test.name]}')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->innerJoin('(SELECT * FROM foo) as foo', ['name as nikename', 'tt' => 'value'], 'name', '=', '{[test.name]}')
+                    ->findAll(true)
             )
         );
     }

@@ -260,9 +260,8 @@ class HtmlTest extends TestCase
 
     protected function makeHtml()
     {
-        return (new Parser(new Compiler()))->
-            registerCompilers()->
-
-            registerParsers();
+        return (new Parser(new Compiler()))
+            ->registerCompilers()
+            ->registerParsers();
     }
 }

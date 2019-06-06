@@ -122,7 +122,7 @@ class Select
      *
      * @param array $relation
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\Select
      */
     public function eager(array $relation): self
     {

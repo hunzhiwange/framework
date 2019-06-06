@@ -105,7 +105,7 @@ class Seccode implements ISeccode
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function setOption(string $name, $value): ISeccode
     {
@@ -156,7 +156,7 @@ class Seccode implements ISeccode
      *
      * @param string $code
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function code(string $code): ISeccode
     {

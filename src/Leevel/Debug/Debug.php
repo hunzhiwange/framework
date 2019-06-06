@@ -153,7 +153,7 @@ class Debug implements IDebug
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Debug\IDebug
      */
     public function setOption(string $name, $value): IDebug
     {

@@ -104,7 +104,7 @@ interface ILog
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Log\ILog
      */
     public function setOption(string $name, $value): self;
 
