@@ -89,7 +89,7 @@ class FileResponse extends Response
      * @param bool                               $autoEtag
      * @param bool                               $autoLastModified
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setFile($file, ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): IResponse
     {
@@ -143,7 +143,7 @@ class FileResponse extends Response
     /**
      * 自动设置最后修改时间.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setAutoLastModified(): IResponse
     {
@@ -159,7 +159,7 @@ class FileResponse extends Response
     /**
      * 自动设置标记.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setAutoEtag(): IResponse
     {
@@ -204,7 +204,7 @@ class FileResponse extends Response
      * @param string $disposition
      * @param string $filename
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContentDisposition(string $disposition, string $filename = ''): IResponse
     {

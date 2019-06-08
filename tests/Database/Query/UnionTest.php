@@ -48,32 +48,30 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $union1 = $connect->table('yyyyy', 'yid as id,name as value')->where('first_name', '=', '222');
+        $union1 = $connect
+            ->table('yyyyy', 'yid as id,name as value')
+            ->where('first_name', '=', '222');
         $union2 = 'SELECT id,value FROM test2';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                union($union1)->
-
-                union($union2)->
-
-                union($union1)->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->union($union1)
+                    ->union($union2)
+                    ->union($union1)
+                    ->findAll(true)
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                union([$union1, $union2, $union1])->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->union([$union1, $union2, $union1])
+                    ->findAll(true)
             )
         );
     }
@@ -98,11 +96,10 @@ class UnionTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                unionAll($union1)->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->unionAll($union1)
+                    ->findAll(true)
             )
         );
     }
@@ -125,25 +122,19 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = 'SELECT id,value FROM test2';
-
         $union2 = 'SELECT id,value FROM test3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                ifs($condition)->
-
-                union($union1)->
-
-                elses()->
-
-                union($union2)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->ifs($condition)
+                    ->union($union1)
+                    ->elses()
+                    ->union($union2)
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -166,25 +157,19 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = 'SELECT id,value FROM test2';
-
         $union2 = 'SELECT id,value FROM test3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                ifs($condition)->
-
-                union($union1)->
-
-                elses()->
-
-                union($union2)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->ifs($condition)
+                    ->union($union1)
+                    ->elses()
+                    ->union($union2)
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -207,25 +192,19 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = 'SELECT id,value FROM test2';
-
         $union2 = 'SELECT id,value FROM test3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                ifs($condition)->
-
-                unionAll($union1)->
-
-                elses()->
-
-                unionAll($union2)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->ifs($condition)
+                    ->unionAll($union1)
+                    ->elses()
+                    ->unionAll($union2)
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -248,25 +227,19 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = 'SELECT id,value FROM test2';
-
         $union2 = 'SELECT id,value FROM test3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                ifs($condition)->
-
-                unionAll($union1)->
-
-                elses()->
-
-                unionAll($union2)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->ifs($condition)
+                    ->unionAll($union1)
+                    ->elses()
+                    ->unionAll($union2)
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -279,13 +252,11 @@ class UnionTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnectMock();
-
         $union1 = 'SELECT id,value FROM test2';
 
-        $connect->table('test', 'tid as id,tname as value')->
-
-        union($union1, 'NOT FOUND')->
-
-        findAll(true);
+        $connect
+            ->table('test', 'tid as id,tname as value')
+            ->union($union1, 'NOT FOUND')
+            ->findAll(true);
     }
 }

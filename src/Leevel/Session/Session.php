@@ -177,10 +177,9 @@ abstract class Session
      */
     public function push(string $key, $value): void
     {
-        $arr = $this->get($key, []);
-        $arr[] = $value;
-
-        $this->set($key, $arr);
+        $data = $this->get($key, []);
+        $data[] = $value;
+        $this->set($key, $data);
     }
 
     /**
@@ -214,15 +213,15 @@ abstract class Session
      */
     public function arr(string $key, $keys, $value = null): void
     {
-        $arr = $this->get($key, []);
+        $data = $this->get($key, []);
 
         if (is_string($keys)) {
-            $arr[$keys] = $value;
+            $data[$keys] = $value;
         } elseif (is_array($keys)) {
-            $arr = array_merge($arr, $keys);
+            $data = array_merge($data, $keys);
         }
 
-        $this->set($key, $arr);
+        $this->set($key, $data);
     }
 
     /**
@@ -233,7 +232,7 @@ abstract class Session
      */
     public function arrDelete(string $key, $keys): void
     {
-        $arr = $this->get($key, []);
+        $data = $this->get($key, []);
 
         if (!is_array($keys)) {
             $keys = [
@@ -242,12 +241,12 @@ abstract class Session
         }
 
         foreach ($keys as $item) {
-            if (isset($arr[$item])) {
-                unset($arr[$item]);
+            if (isset($data[$item])) {
+                unset($data[$item]);
             }
         }
 
-        $this->set($key, $arr);
+        $this->set($key, $data);
     }
 
     /**
@@ -446,7 +445,7 @@ abstract class Session
      */
     public function unregisterFlash(): void
     {
-        $arr = $this->get($this->flashNewKey(), []);
+        $data = $this->get($this->flashNewKey(), []);
         $old = $this->get($this->flashOldKey(), []);
 
         foreach ($old as $item) {
@@ -454,9 +453,7 @@ abstract class Session
         }
 
         $this->delete($this->flashNewKey());
-        $this->set($this->flashOldKey(), $arr);
-
-        unset($arr, $old);
+        $this->set($this->flashOldKey(), $data);
     }
 
     /**

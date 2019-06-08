@@ -37,7 +37,7 @@ interface IView
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\View\IView
      */
     public function setOption(string $name, $value): self;
 

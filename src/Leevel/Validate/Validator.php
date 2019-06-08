@@ -296,7 +296,7 @@ class Validator implements IValidator
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function data(array $data): IValidator
     {
@@ -314,7 +314,7 @@ class Validator implements IValidator
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addData(array $data): IValidator
     {
@@ -343,7 +343,7 @@ class Validator implements IValidator
      * @param array         $rules
      * @param null|\Closure $calCallback
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function rule(array $rules, Closure $callbacks = null): IValidator
     {
@@ -364,7 +364,7 @@ class Validator implements IValidator
      * @param array         $rules
      * @param null|\Closure $calCallback
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addRule(array $rules, Closure $callbacks = null): IValidator
     {
@@ -394,7 +394,7 @@ class Validator implements IValidator
      *
      * @param array $messages
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function message(array $messages): IValidator
     {
@@ -412,7 +412,7 @@ class Validator implements IValidator
      *
      * @param array $messages
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addMessage(array $messages): IValidator
     {
@@ -443,7 +443,7 @@ class Validator implements IValidator
      *
      * @param array $names
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function name(array $names): IValidator
     {
@@ -461,7 +461,7 @@ class Validator implements IValidator
      *
      * @param array $names
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addName(array $names): IValidator
     {
@@ -480,7 +480,7 @@ class Validator implements IValidator
      * @param string $name
      * @param string $alias
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function alias(string $name, string $alias): IValidator
     {
@@ -500,7 +500,7 @@ class Validator implements IValidator
      *
      * @param array $alias
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function aliasMany(array $alias): IValidator
     {
@@ -516,7 +516,7 @@ class Validator implements IValidator
      *
      * @param \Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function after(Closure $callbacks): IValidator
     {
@@ -533,7 +533,7 @@ class Validator implements IValidator
      * @param string          $rule
      * @param \Closure|string $extends
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function extend(string $rule, $extends): IValidator
     {
@@ -547,7 +547,7 @@ class Validator implements IValidator
      *
      * @param \Leevel\Di\IContainer $container
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function setContainer(IContainer $container): IValidator
     {

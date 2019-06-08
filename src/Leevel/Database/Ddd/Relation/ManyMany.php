@@ -255,15 +255,15 @@ class ManyMany extends Relation
      */
     protected function getPreLoadSourceValue(array $entitys): array
     {
-        $arr = [];
+        $data = [];
 
         foreach ($entitys as $sourceEntity) {
             if (null !== $value = $sourceEntity->__get($this->sourceKey)) {
-                $arr[] = $value;
+                $data[] = $value;
             }
         }
 
-        return $arr;
+        return $data;
     }
 
     /**

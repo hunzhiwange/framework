@@ -80,7 +80,7 @@ class Doc extends Command
             throw new InvalidArgumentException('Files was not found.');
         }
 
-        $this->utilsDoc = new UtilsDoc($this->outputDir());
+        $this->utilsDoc = new UtilsDoc($this->outputDir(), $this->git());
         $this->classParser = new ClassParser();
 
         $succeedCount = 0;
@@ -185,6 +185,16 @@ class Doc extends Command
     }
 
     /**
+     * 取得生成的 markdown Git 原始仓库地址.
+     *
+     * @return string
+     */
+    protected function git(): string
+    {
+        return $this->argument('git');
+    }
+
+    /**
      * 命令参数.
      *
      * @return array
@@ -206,6 +216,11 @@ class Doc extends Command
                 'outputdir',
                 Argument::REQUIRED,
                 'This is the output dir path.',
+            ],
+            [
+                'git',
+                Argument::REQUIRED,
+                'This is the git repository.',
             ],
         ];
     }

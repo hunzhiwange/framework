@@ -373,7 +373,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function withProps(array $data): IEntity
     {
@@ -390,7 +390,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function save(array $data = [], array $fill = null): IEntity
     {
@@ -405,7 +405,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function create(array $data = [], array $fill = null): IEntity
     {
@@ -420,7 +420,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function update(array $data = [], array $fill = null): IEntity
     {
@@ -435,7 +435,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function replace(array $data = [], array $fill = null): IEntity
     {
@@ -469,7 +469,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 销毁模型实体.
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function destroy(): IEntity
     {
@@ -1001,7 +1001,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param array $props
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function addChanged(array $props): IEntity
     {
@@ -1021,7 +1021,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param array $props
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function deleteChanged(array $props): IEntity
     {
@@ -1033,7 +1033,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 清空改变属性.
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function clearChanged(): IEntity
     {
@@ -1143,7 +1143,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param mixed $connect
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function withConnect($connect): IEntity
     {
@@ -1205,7 +1205,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 throw new InvalidArgumentException($e);
             }
 
-            $result[] = isset($enums[$v]) ? $enums[$v] : $enums[(int) $v];
+            $result[] = $enums[$v] ?? $enums[(int) $v];
         }
 
         return implode($separate, $result);
@@ -1391,7 +1391,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     protected function saveEntry(string $method, array $data, ?array $fill = null): IEntity
     {
@@ -1440,7 +1440,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     protected function createReal(?array $fill = null): IEntity
     {
@@ -1502,7 +1502,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     protected function updateReal(?array $fill = null): IEntity
     {

@@ -483,21 +483,21 @@ interface IResponse
     /**
      * 发送 HTTP 响应.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function send(): self;
 
     /**
      * 发送响应头.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function sendHeaders(): self;
 
     /**
      * 发送响应内容.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function sendContent(): self;
 
@@ -506,7 +506,7 @@ interface IResponse
      *
      * @param mixed $content
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContent($content): self;
 
@@ -515,7 +515,7 @@ interface IResponse
      *
      * @param string $content
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function appendContent(?string $content = null): self;
 
@@ -526,7 +526,7 @@ interface IResponse
      * @param string $value
      * @param bool   $replace
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setHeader(string $key, string $value, bool $replace = true): self;
 
@@ -535,7 +535,7 @@ interface IResponse
      *
      * @param array $headers
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withHeaders(array $headers): self;
 
@@ -546,7 +546,7 @@ interface IResponse
      * @param string $value
      * @param array  $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function cookie(string $name, string $value = '', array $option = []): self;
 
@@ -557,7 +557,7 @@ interface IResponse
      * @param string $value
      * @param array  $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCookie(string $name, string $value = '', array $option = []): self;
 
@@ -567,7 +567,7 @@ interface IResponse
      * @param array $cookies
      * @param array $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withCookies(array $cookies, array $option = []): self;
 
@@ -594,7 +594,7 @@ interface IResponse
      * @param mixed $data
      * @param int   $encodingOptions
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setData($data = [], ?int $encodingOptions = null): self;
 
@@ -624,7 +624,7 @@ interface IResponse
      *
      * @param string $protocolVersion
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setProtocolVersion(string $protocolVersion): self;
 
@@ -641,7 +641,7 @@ interface IResponse
      * @param int    $code
      * @param string $text
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setStatusCode(int $code, ?string $text = null): self;
 
@@ -664,7 +664,7 @@ interface IResponse
      *
      * @param string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCharset(string $charset): self;
 
@@ -673,7 +673,7 @@ interface IResponse
      *
      * @param string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function charset(string $charset): self;
 
@@ -689,7 +689,7 @@ interface IResponse
      *
      * @param \DateTime $datetime
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setExpires(DateTime $datetime = null): self;
 
@@ -698,7 +698,7 @@ interface IResponse
      *
      * @param \DateTime $datetime
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setLastModified(DateTime $datetime = null): self;
 
@@ -707,14 +707,14 @@ interface IResponse
      *
      * @param int $minutes
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCache(int $minutes): self;
 
     /**
      * 设置响应未修改.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setNotModified(): self;
 
@@ -724,7 +724,7 @@ interface IResponse
      * @param string $contentType
      * @param string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContentType(string $contentType, ?string $charset = null): self;
 
@@ -733,7 +733,7 @@ interface IResponse
      *
      * @param int $contentLength
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContentLength(int $contentLength): self;
 
@@ -742,7 +742,7 @@ interface IResponse
      *
      * @param string $etag
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setEtag(string $etag): self;
 

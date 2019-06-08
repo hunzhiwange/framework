@@ -64,22 +64,27 @@ class ConnectTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('guest_book')->
-
-                insert($data)
+                $connect
+                    ->sql()
+                    ->table('guest_book')
+                    ->insert($data)
             )
         );
 
         // 写入数据
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
         $this->assertSame(1, $connect->table('guest_book')->findCount());
 
-        $insertData = $connect->table('guest_book')->where('id', 1)->findOne();
+        $insertData = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame('1', $insertData->id);
         $this->assertSame('小鸭子', $insertData->name);
@@ -93,9 +98,12 @@ class ConnectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
@@ -150,9 +158,12 @@ class ConnectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
         $insertData = $connect->select('select * from guest_book where id = ?', [1]);
         $insertData = (array) $insertData[0];
@@ -169,9 +180,12 @@ class ConnectTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
@@ -248,21 +262,25 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
 
         $connect->transaction(function ($connect) {
-            $connect->table('guest_book')->where('id', 1)->delete();
+            $connect
+                ->table('guest_book')
+                ->where('id', 1)
+                ->delete();
 
             $this->assertSame(1, $connect->table('guest_book')->findCount());
 
-            $connect->table('guest_book')->where('id', 2)->delete();
+            $connect
+                ->table('guest_book')
+                ->where('id', 2)
+                ->delete();
 
             $this->assertSame(0, $connect->table('guest_book')->findCount());
         });
@@ -277,11 +295,9 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
@@ -315,11 +331,9 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
@@ -346,11 +360,9 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
@@ -360,7 +372,10 @@ class ConnectTest extends TestCase
         try {
             $connect->beginTransaction();
 
-            $connect->table('guest_book')->where('id', 1)->delete();
+            $connect
+                ->table('guest_book')
+                ->where('id', 1)
+                ->delete();
 
             $this->assertSame(1, $connect->table('guest_book')->findCount());
 
@@ -399,11 +414,9 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $result = $connect->query('CALL test_procedure(0)');
@@ -468,26 +481,25 @@ class ConnectTest extends TestCase
 
         $connect->beginTransaction();
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'tom']); // `tom` will not rollBack
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'tom']); // `tom` will not rollBack
 
         $connect->beginTransaction();
         $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'jerry']);
 
         $connect->rollBack();
         $this->assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->lastSql()[0]);
         $connect->commit();
 
-        $book = $connect->table('guest_book')->where('id', 1)->findOne();
+        $book = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame(1, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
@@ -528,27 +540,29 @@ class ConnectTest extends TestCase
 
         $connect->beginTransaction();
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'tom']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'tom']);
 
         $connect->beginTransaction();
         $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'jerry']);
 
         $connect->commit();
         $this->assertSame('RELEASE SAVEPOINT trans2', $connect->lastSql()[0]);
         $connect->commit();
 
-        $book = $connect->table('guest_book')->where('id', 1)->findOne();
-        $book2 = $connect->table('guest_book')->where('id', 2)->findOne();
+        $book = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->findOne();
+        $book2 = $connect
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
@@ -573,31 +587,23 @@ class ConnectTest extends TestCase
 
         $this->assertSame(0, $connect->numRows());
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'jerry']);
 
         $this->assertSame(1, $connect->numRows());
 
-        $connect->
-
-        table('guest_book')->
-
-        where('id', 1)->
-
-        update(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->update(['name' => 'jerry']);
 
         $this->assertSame(0, $connect->numRows());
 
-        $connect->
-
-        table('guest_book')->
-
-        where('id', 1)->
-
-        update(['name' => 'tom']);
+        $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->update(['name' => 'tom']);
 
         $this->assertSame(1, $connect->numRows());
     }

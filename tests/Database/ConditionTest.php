@@ -51,11 +51,10 @@ class ConditionTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                forPage(20, 6)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->forPage(20, 6)
+                    ->findAll(true)
             )
         );
     }
@@ -78,11 +77,9 @@ class ConditionTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->
-
-                setColumns('{2}')->
-
-                findAll(true)
+                $connect
+                    ->setColumns('{2}')
+                    ->findAll(true)
             )
         );
     }
@@ -101,9 +98,9 @@ class ConditionTest extends TestCase
             $sql,
             $this->varJson(
                 [
-                    $connect->table('test')->
-
-                    makeSql(),
+                    $connect
+                        ->table('test')
+                        ->makeSql(),
                 ]
             )
         );
@@ -123,9 +120,9 @@ class ConditionTest extends TestCase
             $sql,
             $this->varJson(
                 [
-                    $connect->table('test')->
-
-                    makeSql(true),
+                    $connect
+                        ->table('test')
+                        ->makeSql(true),
                 ]
             )
         );

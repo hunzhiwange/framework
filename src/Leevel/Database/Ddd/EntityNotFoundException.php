@@ -45,7 +45,7 @@ class EntityNotFoundException extends RuntimeException
      *
      * @param string $entity
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\EntityNotFoundException
      */
     public function setEntity(string $entity): self
     {

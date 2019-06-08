@@ -65,7 +65,7 @@ interface IPage
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function setOption(string $name, $value): self;
 
@@ -75,7 +75,7 @@ interface IPage
      * @param string $key
      * @param string $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function append(string $key, string $value): self;
 
@@ -84,7 +84,7 @@ interface IPage
      *
      * @param array $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function appends(array $value): self;
 
@@ -93,7 +93,7 @@ interface IPage
      *
      * @param array $parameter
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function parameter(array $parameter): self;
 
@@ -103,7 +103,7 @@ interface IPage
      * @param string $key
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function addParameter(string $key, $value): self;
 
@@ -113,7 +113,7 @@ interface IPage
      * @param string $key
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function renderOption(string $key, $value): self;
 
@@ -123,7 +123,7 @@ interface IPage
      * @param string $key
      * @param string $value
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function renderOptions(array $option): self;
 
@@ -132,7 +132,7 @@ interface IPage
      *
      * @param null|string $url
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function url(?string $url = null): self;
 
@@ -141,7 +141,7 @@ interface IPage
      *
      * @param null|string $render
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function setRender(?string $render = null): self;
 
@@ -157,7 +157,7 @@ interface IPage
      *
      * @param null|int $range
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function range(?int $range = null): self;
 
@@ -173,7 +173,7 @@ interface IPage
      *
      * @param null|string $fragment
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function fragment(?string $fragment = null): self;
 
@@ -189,7 +189,7 @@ interface IPage
      *
      * @param int $perPage
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function perPage(int $perPage): self;
 
@@ -205,7 +205,7 @@ interface IPage
      *
      * @param string $pageName
      *
-     * @return $this
+     * @return \Leevel\Page\IPage
      */
     public function pageName(string $pageName): self;
 

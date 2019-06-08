@@ -23,35 +23,22 @@ namespace Leevel\Database\Proxy;
 use Closure;
 use Leevel\Database\Condition;
 use Leevel\Database\IDatabase;
-use Leevel\Database\Manager;
 use Leevel\Database\Select;
-use Leevel\Di\Container;
 use PDO;
 
 /**
- * 代理 database.
+ * 代理 database 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.10
+ * @since 2019.06.06
  *
  * @version 1.0
+ *
+ * @see \Leevel\Database\IDatabase 请保持接口设计的一致性
  */
-class Db implements IDb
+interface IDb
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
-
     /**
      * 返回 Pdo 查询连接.
      *
@@ -61,10 +48,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function pdo($master = false)
-    {
-        return self::proxy()->pdo($master);
-    }
+    public static function pdo($master = false);
 
     /**
      * 查询数据记录.
@@ -78,10 +62,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = [])
-    {
-        return self::proxy()->query($sql, $bindParams, $master, $fetchType, $fetchArgument, $ctorArgs);
-    }
+    public static function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = []);
 
     /**
      * 执行 sql 语句.
@@ -91,10 +72,7 @@ class Db implements IDb
      *
      * @return int|string
      */
-    public static function execute(string $sql, array $bindParams = [])
-    {
-        return self::proxy()->execute($sql, $bindParams);
-    }
+    public static function execute(string $sql, array $bindParams = []);
 
     /**
      * 执行数据库事务
@@ -103,44 +81,29 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function transaction(Closure $action)
-    {
-        return self::proxy()->transaction($action);
-    }
+    public static function transaction(Closure $action);
 
     /**
      * 启动事务.
      */
-    public static function beginTransaction(): void
-    {
-        self::proxy()->beginTransaction();
-    }
+    public static function beginTransaction(): void;
 
     /**
      * 检查是否处于事务中.
      *
      * @return bool
      */
-    public static function inTransaction(): bool
-    {
-        return self::proxy()->inTransaction();
-    }
+    public static function inTransaction(): bool;
 
     /**
      * 用于非自动提交状态下面的查询提交.
      */
-    public static function commit(): void
-    {
-        self::proxy()->commit();
-    }
+    public static function commit(): void;
 
     /**
      * 事务回滚.
      */
-    public static function rollBack(): void
-    {
-        self::proxy()->rollBack();
-    }
+    public static function rollBack(): void;
 
     /**
      * 获取最后插入 ID 或者列.
@@ -149,54 +112,36 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function lastInsertId(?string $name = null): string
-    {
-        return self::proxy()->lastInsertId($name);
-    }
+    public static function lastInsertId(?string $name = null): string;
 
     /**
      * 获取最近一次查询的 sql 语句.
      *
      * @return array
      */
-    public static function lastSql(): array
-    {
-        return self::proxy()->lastSql();
-    }
+    public static function lastSql(): array;
 
     /**
      * 返回影响记录.
      *
      * @return int
      */
-    public static function numRows(): int
-    {
-        return self::proxy()->numRows();
-    }
+    public static function numRows(): int;
 
     /**
      * 关闭数据库.
      */
-    public static function close(): void
-    {
-        self::proxy()->close();
-    }
+    public static function close(): void;
 
     /**
      * 释放 PDO 预处理查询.
      */
-    public static function freePDOStatement(): void
-    {
-        self::proxy()->freePDOStatement();
-    }
+    public static function freePDOStatement(): void;
 
     /**
      * 关闭数据库连接.
      */
-    public static function closeConnects(): void
-    {
-        self::proxy()->closeConnects();
-    }
+    public static function closeConnects(): void;
 
     /**
      * sql 表达式格式化.
@@ -206,10 +151,7 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function normalizeExpression(string $sql, string $tableName): string
-    {
-        return self::proxy()->normalizeExpression($sql, $tableName);
-    }
+    public static function normalizeExpression(string $sql, string $tableName): string;
 
     /**
      * 表或者字段格式化（支持别名）.
@@ -220,10 +162,7 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
-    {
-        return self::proxy()->normalizeTableOrColumn($name, $alias, $as);
-    }
+    public static function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string;
 
     /**
      * 字段格式化.
@@ -233,10 +172,7 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function normalizeColumn(string $key, string $tableName): string
-    {
-        return self::proxy()->normalizeColumn($key, $tableName);
-    }
+    public static function normalizeColumn(string $key, string $tableName): string;
 
     /**
      * 字段值格式化.
@@ -246,10 +182,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function normalizeColumnValue($value, bool $quotationMark = true)
-    {
-        return self::proxy()->normalizeColumnValue($value, $quotationMark);
-    }
+    public static function normalizeColumnValue($value, bool $quotationMark = true);
 
     /**
      * 分析 sql 类型数据.
@@ -258,10 +191,7 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function normalizeSqlType(string $sql): string
-    {
-        return self::proxy()->normalizeSqlType($sql);
-    }
+    public static function normalizeSqlType(string $sql): string;
 
     /**
      * 分析绑定参数类型数据.
@@ -270,10 +200,7 @@ class Db implements IDb
      *
      * @return int
      */
-    public static function normalizeBindParamType($value): int
-    {
-        return self::proxy()->normalizeBindParamType($value);
-    }
+    public static function normalizeBindParamType($value): int;
 
     /**
      * dsn 解析.
@@ -282,10 +209,7 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function parseDsn(array $option): string
-    {
-        return self::proxy()->parseDsn($option);
-    }
+    public static function parseDsn(array $option): string;
 
     /**
      * 取得数据库表名列表.
@@ -295,10 +219,7 @@ class Db implements IDb
      *
      * @return array
      */
-    public static function tableNames(string $dbName, $master = false): array
-    {
-        return self::proxy()->tableNames($dbName, $master);
-    }
+    public static function tableNames(string $dbName, $master = false): array;
 
     /**
      * 取得数据库表字段信息.
@@ -308,10 +229,7 @@ class Db implements IDb
      *
      * @return array
      */
-    public static function tableColumns(string $tableName, $master = false): array
-    {
-        return self::proxy()->tableColumns($tableName, $master);
-    }
+    public static function tableColumns(string $tableName, $master = false): array;
 
     /**
      * sql 字段格式化.
@@ -320,10 +238,7 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function identifierColumn($name): string
-    {
-        return self::proxy()->identifierColumn($name);
-    }
+    public static function identifierColumn($name): string;
 
     /**
      * 分析 limit.
@@ -333,40 +248,28 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
-    {
-        return self::proxy()->limitCount($limitCount, $limitOffset);
-    }
+    public static function limitCount(?int $limitCount = null, ?int $limitOffset = null): string;
 
     /**
      * 查询对象
      *
      * @return \Leevel\Database\Condition
      */
-    public static function databaseCondition(): Condition
-    {
-        return self::proxy()->databaseCondition();
-    }
+    public static function databaseCondition(): Condition;
 
     /**
      * 返回数据库连接对象
      *
      * @return \Leevel\Database\IDatabase
      */
-    public static function databaseConnect(): IDatabase
-    {
-        return self::proxy()->databaseConnect();
-    }
+    public static function databaseConnect(): IDatabase;
 
     /**
      * 占位符返回本对象
      *
      * @return \Leevel\Database\Select
      */
-    public static function selfDatabaseSelect(): Select
-    {
-        return self::proxy()->selfDatabaseSelect();
-    }
+    public static function selfDatabaseSelect(): Select;
 
     /**
      * 指定返回 SQL 不做任何操作.
@@ -375,10 +278,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function sql(bool $flag = true): Select
-    {
-        return self::proxy()->sql($flag);
-    }
+    public static function sql(bool $flag = true): Select;
 
     /**
      * 设置是否查询主服务器.
@@ -387,10 +287,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function master(bool $master = false): Select
-    {
-        return self::proxy()->master($master);
-    }
+    public static function master(bool $master = false): Select;
 
     /**
      * 设置查询参数.
@@ -401,10 +298,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = []): Select
-    {
-        return self::proxy()->fetchArgs($fetchStyle, $fetchArgument, $ctorArgs);
-    }
+    public static function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = []): Select;
 
     /**
      * 设置以类返会结果.
@@ -414,20 +308,14 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function asClass(string $className, array $args = []): Select
-    {
-        return self::proxy()->asClass($className, $args);
-    }
+    public static function asClass(string $className, array $args = []): Select;
 
     /**
      * 设置默认形式返回.
      *
      * @return \Leevel\Database\Select
      */
-    public static function asDefault(): Select
-    {
-        return self::proxy()->asDefault();
-    }
+    public static function asDefault(): Select;
 
     /**
      * 设置是否以集合返回.
@@ -436,10 +324,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function asCollection(bool $acollection = true): Select
-    {
-        return self::proxy()->asCollection($acollection);
-    }
+    public static function asCollection(bool $acollection = true): Select;
 
     /**
      * 原生 sql 查询数据 select.
@@ -450,10 +335,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function select($data = null, array $bind = [], bool $flag = false)
-    {
-        return self::proxy()->select($data, $bind, $flag);
-    }
+    public static function select($data = null, array $bind = [], bool $flag = false);
 
     /**
      * 插入数据 insert (支持原生 sql).
@@ -465,10 +347,7 @@ class Db implements IDb
      *
      * @return null|array|int
      */
-    public static function insert($data, array $bind = [], bool $replace = false, bool $flag = false)
-    {
-        return self::proxy()->insert($data, $bind, $replace, $flag);
-    }
+    public static function insert($data, array $bind = [], bool $replace = false, bool $flag = false);
 
     /**
      * 批量插入数据 insertAll.
@@ -480,10 +359,7 @@ class Db implements IDb
      *
      * @return null|array|int
      */
-    public static function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)
-    {
-        return self::proxy()->insertAll($data, $bind, $replace, $flag);
-    }
+    public static function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false);
 
     /**
      * 更新数据 update (支持原生 sql).
@@ -494,10 +370,7 @@ class Db implements IDb
      *
      * @return array|int
      */
-    public static function update($data, array $bind = [], bool $flag = false)
-    {
-        return self::proxy()->update($data, $bind, $flag);
-    }
+    public static function update($data, array $bind = [], bool $flag = false);
 
     /**
      * 更新某个字段的值
@@ -509,10 +382,7 @@ class Db implements IDb
      *
      * @return array|int
      */
-    public static function updateColumn(string $column, $value, array $bind = [], bool $flag = false)
-    {
-        return self::proxy()->updateColumn($column, $value, $bind, $flag);
-    }
+    public static function updateColumn(string $column, $value, array $bind = [], bool $flag = false);
 
     /**
      * 字段递增.
@@ -524,10 +394,7 @@ class Db implements IDb
      *
      * @return array|int
      */
-    public static function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
-    {
-        return self::proxy()->updateIncrease($column, $step, $bind, $flag);
-    }
+    public static function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false);
 
     /**
      * 字段减少.
@@ -539,10 +406,7 @@ class Db implements IDb
      *
      * @return array|int
      */
-    public static function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
-    {
-        return self::proxy()->updateDecrease($column, $step, $bind, $flag);
-    }
+    public static function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false);
 
     /**
      * 删除数据 delete (支持原生 sql).
@@ -553,10 +417,7 @@ class Db implements IDb
      *
      * @return array|int
      */
-    public static function delete(?string $data = null, array $bind = [], bool $flag = false)
-    {
-        return self::proxy()->delete($data, $bind, $flag);
-    }
+    public static function delete(?string $data = null, array $bind = [], bool $flag = false);
 
     /**
      * 清空表重置自增 ID.
@@ -565,10 +426,7 @@ class Db implements IDb
      *
      * @return array|int
      */
-    public static function truncate(bool $flag = false)
-    {
-        return self::proxy()->truncate($flag);
-    }
+    public static function truncate(bool $flag = false);
 
     /**
      * 返回一条记录.
@@ -577,10 +435,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function findOne(bool $flag = false)
-    {
-        return self::proxy()->findOne($flag);
-    }
+    public static function findOne(bool $flag = false);
 
     /**
      * 返回所有记录.
@@ -589,10 +444,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function findAll(bool $flag = false)
-    {
-        return self::proxy()->findAll($flag);
-    }
+    public static function findAll(bool $flag = false);
 
     /**
      * 返回最后几条记录.
@@ -602,10 +454,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function find(?int $num = null, bool $flag = false)
-    {
-        return self::proxy()->find($num, $flag);
-    }
+    public static function find(?int $num = null, bool $flag = false);
 
     /**
      * 返回一个字段的值
@@ -615,10 +464,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function value(string $field, bool $flag = false)
-    {
-        return self::proxy()->value($field, $flag);
-    }
+    public static function value(string $field, bool $flag = false);
 
     /**
      * 返回一个字段的值(别名).
@@ -628,10 +474,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function pull(string $field, bool $flag = false)
-    {
-        return self::proxy()->pull($field, $flag);
-    }
+    public static function pull(string $field, bool $flag = false);
 
     /**
      * 返回一列数据.
@@ -642,10 +485,7 @@ class Db implements IDb
      *
      * @return array
      */
-    public static function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
-    {
-        return self::proxy()->list($fieldValue, $fieldKey, $flag);
-    }
+    public static function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array;
 
     /**
      * 数据分块处理.
@@ -653,10 +493,7 @@ class Db implements IDb
      * @param int      $count
      * @param \Closure $chunk
      */
-    public static function chunk(int $count, Closure $chunk): void
-    {
-        self::proxy()->chunk($count, $chunk);
-    }
+    public static function chunk(int $count, Closure $chunk): void;
 
     /**
      * 数据分块处理依次回调.
@@ -664,10 +501,7 @@ class Db implements IDb
      * @param int     $count
      * @param Closure $each
      */
-    public static function each(int $count, Closure $each): void
-    {
-        self::proxy()->each($count, $each);
-    }
+    public static function each(int $count, Closure $each): void;
 
     /**
      * 总记录数.
@@ -678,10 +512,7 @@ class Db implements IDb
      *
      * @return array|int
      */
-    public static function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
-    {
-        return self::proxy()->findCount($field, $alias, $flag);
-    }
+    public static function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false);
 
     /**
      * 平均数.
@@ -692,10 +523,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function findAvg(string $field, string $alias = 'avg_value', bool $flag = false)
-    {
-        return self::proxy()->findAvg($field, $alias, $flag);
-    }
+    public static function findAvg(string $field, string $alias = 'avg_value', bool $flag = false);
 
     /**
      * 最大值
@@ -706,10 +534,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function findMax(string $field, string $alias = 'max_value', bool $flag = false)
-    {
-        return self::proxy()->findMax($field, $alias, $flag);
-    }
+    public static function findMax(string $field, string $alias = 'max_value', bool $flag = false);
 
     /**
      * 最小值
@@ -720,10 +545,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function findMin(string $field, string $alias = 'min_value', bool $flag = false)
-    {
-        return self::proxy()->findMin($field, $alias, $flag);
-    }
+    public static function findMin(string $field, string $alias = 'min_value', bool $flag = false);
 
     /**
      * 合计
@@ -734,10 +556,7 @@ class Db implements IDb
      *
      * @return mixed
      */
-    public static function findSum(string $field, string $alias = 'sum_value', bool $flag = false)
-    {
-        return self::proxy()->findSum($field, $alias, $flag);
-    }
+    public static function findSum(string $field, string $alias = 'sum_value', bool $flag = false);
 
     /**
      * 分页查询.
@@ -750,10 +569,7 @@ class Db implements IDb
      *
      * @return array
      */
-    public static function page(int $currentPage, int $perPage = 10, bool $flag = false, bool $withTotal = true, string $column = '*'): array
-    {
-        return self::proxy()->page($currentPage, $perPage, $flag, $withTotal, $column);
-    }
+    public static function page(int $currentPage, int $perPage = 10, bool $flag = false, bool $withTotal = true, string $column = '*'): array;
 
     /**
      * 分页查询.
@@ -767,10 +583,7 @@ class Db implements IDb
      *
      * @return array
      */
-    public static function pageHtml(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array
-    {
-        return self::proxy()->pageHtml($currentPage, $perPage, $flag, $column, $option);
-    }
+    public static function pageHtml(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array;
 
     /**
      * 创建一个无限数据的分页查询.
@@ -782,10 +595,7 @@ class Db implements IDb
      *
      * @return array
      */
-    public static function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
-    {
-        return self::proxy()->pageMacro($currentPage, $perPage, $flag, $option);
-    }
+    public static function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array;
 
     /**
      * 创建一个只有上下页的分页查询.
@@ -797,10 +607,7 @@ class Db implements IDb
      *
      * @return array
      */
-    public static function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
-    {
-        return self::proxy()->pagePrevNext($currentPage, $perPage, $flag, $option);
-    }
+    public static function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array;
 
     /**
      * 取得分页查询记录数量.
@@ -809,10 +616,7 @@ class Db implements IDb
      *
      * @return int
      */
-    public static function pageCount(string $cols = '*'): int
-    {
-        return self::proxy()->pageCount($cols);
-    }
+    public static function pageCount(string $cols = '*'): int;
 
     /**
      * 获得查询字符串.
@@ -821,10 +625,7 @@ class Db implements IDb
      *
      * @return string
      */
-    public static function makeSql(bool $withLogicGroup = false): string
-    {
-        return self::proxy()->makeSql($withLogicGroup);
-    }
+    public static function makeSql(bool $withLogicGroup = false): string;
 
     /**
      * 根据分页设置条件.
@@ -834,10 +635,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function forPage(int $page, int $perPage = 15): Condition
-    {
-        return self::proxy()->forPage($page, $perPage);
-    }
+    public static function forPage(int $page, int $perPage = 15): Condition;
 
     /**
      * 时间控制语句开始.
@@ -846,20 +644,14 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function time(string $type = 'date'): Condition
-    {
-        return self::proxy()->time($type);
-    }
+    public static function time(string $type = 'date'): Condition;
 
     /**
      * 时间控制语句结束.
      *
      * @return \Leevel\Database\Condition
      */
-    public static function endTime(): Condition
-    {
-        return self::proxy()->endTime();
-    }
+    public static function endTime(): Condition;
 
     /**
      * 重置查询条件.
@@ -868,10 +660,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function reset(?string $option = null): Condition
-    {
-        return self::proxy()->reset($option);
-    }
+    public static function reset(?string $option = null): Condition;
 
     /**
      * prefix 查询.
@@ -880,10 +669,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function prefix(string $prefix): Condition
-    {
-        return self::proxy()->prefix($prefix);
-    }
+    public static function prefix(string $prefix): Condition;
 
     /**
      * 添加一个要查询的表及其要查询的字段.
@@ -893,20 +679,14 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function table($table, $cols = '*'): Select
-    {
-        return self::proxy()->table($table, $cols);
-    }
+    public static function table($table, $cols = '*'): Select;
 
     /**
      * 获取表别名.
      *
      * @return string
      */
-    public static function getAlias(): string
-    {
-        return self::proxy()->getAlias();
-    }
+    public static function getAlias(): string;
 
     /**
      * 添加字段.
@@ -916,10 +696,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function columns($cols = '*', ?string $table = null): Select
-    {
-        return self::proxy()->columns($cols, $table);
-    }
+    public static function columns($cols = '*', ?string $table = null): Select;
 
     /**
      * 设置字段.
@@ -929,10 +706,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function setColumns($cols = '*', ?string $table = null): Select
-    {
-        return self::proxy()->setColumns($cols, $table);
-    }
+    public static function setColumns($cols = '*', ?string $table = null): Select;
 
     /**
      * where 查询条件.
@@ -941,10 +715,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Select
      */
-    public static function where(...$cond): Select
-    {
-        return self::proxy()->where(...$cond);
-    }
+    public static function where(...$cond): Select;
 
     /**
      * orWhere 查询条件.
@@ -953,10 +724,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function orWhere(...$cond): Condition
-    {
-        return self::proxy()->orWhere(...$cond);
-    }
+    public static function orWhere(...$cond): Condition;
 
     /**
      * Where 原生查询.
@@ -965,10 +733,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereRaw(string $raw): Condition
-    {
-        return self::proxy()->whereRaw($raw);
-    }
+    public static function whereRaw(string $raw): Condition;
 
     /**
      * Where 原生 OR 查询.
@@ -977,10 +742,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function orWhereRaw(string $raw): Condition
-    {
-        return self::proxy()->orWhereRaw($raw);
-    }
+    public static function orWhereRaw(string $raw): Condition;
 
     /**
      * exists 方法支持
@@ -989,10 +751,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereExists($exists): Condition
-    {
-        return self::proxy()->whereExists($exists);
-    }
+    public static function whereExists($exists): Condition;
 
     /**
      * not exists 方法支持
@@ -1001,10 +760,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereNotExists($exists): Condition
-    {
-        return self::proxy()->whereNotExists($exists);
-    }
+    public static function whereNotExists($exists): Condition;
 
     /**
      * whereBetween 查询条件.
@@ -1013,10 +769,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereBetween(...$cond): Condition
-    {
-        return self::proxy()->whereBetween(...$cond);
-    }
+    public static function whereBetween(...$cond): Condition;
 
     /**
      * whereNotBetween 查询条件.
@@ -1025,10 +778,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereNotBetween(...$cond): Condition
-    {
-        return self::proxy()->whereNotBetween(...$cond);
-    }
+    public static function whereNotBetween(...$cond): Condition;
 
     /**
      * whereNull 查询条件.
@@ -1037,10 +787,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereNull(...$cond): Condition
-    {
-        return self::proxy()->whereNull(...$cond);
-    }
+    public static function whereNull(...$cond): Condition;
 
     /**
      * whereNotNull 查询条件.
@@ -1049,10 +796,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereNotNull(...$cond): Condition
-    {
-        return self::proxy()->whereNotNull(...$cond);
-    }
+    public static function whereNotNull(...$cond): Condition;
 
     /**
      * whereIn 查询条件.
@@ -1061,10 +805,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereIn(...$cond): Condition
-    {
-        return self::proxy()->whereIn(...$cond);
-    }
+    public static function whereIn(...$cond): Condition;
 
     /**
      * whereNotIn 查询条件.
@@ -1073,10 +814,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereNotIn(...$cond): Condition
-    {
-        return self::proxy()->whereNotIn(...$cond);
-    }
+    public static function whereNotIn(...$cond): Condition;
 
     /**
      * whereLike 查询条件.
@@ -1085,10 +823,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereLike(...$cond): Condition
-    {
-        return self::proxy()->whereLike(...$cond);
-    }
+    public static function whereLike(...$cond): Condition;
 
     /**
      * whereNotLike 查询条件.
@@ -1097,10 +832,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereNotLike(...$cond): Condition
-    {
-        return self::proxy()->whereNotLike(...$cond);
-    }
+    public static function whereNotLike(...$cond): Condition;
 
     /**
      * whereDate 查询条件.
@@ -1109,10 +841,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereDate(...$cond): Condition
-    {
-        return self::proxy()->whereDate(...$cond);
-    }
+    public static function whereDate(...$cond): Condition;
 
     /**
      * whereDay 查询条件.
@@ -1121,10 +850,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereDay(...$cond): Condition
-    {
-        return self::proxy()->whereDay(...$cond);
-    }
+    public static function whereDay(...$cond): Condition;
 
     /**
      * whereMonth 查询条件.
@@ -1133,10 +859,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereMonth(...$cond): Condition
-    {
-        return self::proxy()->whereMonth(...$cond);
-    }
+    public static function whereMonth(...$cond): Condition;
 
     /**
      * whereYear 查询条件.
@@ -1145,10 +868,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function whereYear(...$cond): Condition
-    {
-        return self::proxy()->whereYear(...$cond);
-    }
+    public static function whereYear(...$cond): Condition;
 
     /**
      * 参数绑定支持
@@ -1159,10 +879,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function bind($names, $value = null, int $type = PDO::PARAM_STR): Condition
-    {
-        return self::proxy()->bind($names, $value, $type);
-    }
+    public static function bind($names, $value = null, int $type = PDO::PARAM_STR): Condition;
 
     /**
      * index 强制索引（或者忽略索引）.
@@ -1172,10 +889,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function forceIndex($indexs, $type = 'FORCE'): Condition
-    {
-        return self::proxy()->forceIndex($indexs, $type);
-    }
+    public static function forceIndex($indexs, $type = 'FORCE'): Condition;
 
     /**
      * index 忽略索引.
@@ -1184,10 +898,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function ignoreIndex($indexs): Condition
-    {
-        return self::proxy()->ignoreIndex($indexs);
-    }
+    public static function ignoreIndex($indexs): Condition;
 
     /**
      * join 查询.
@@ -1198,10 +909,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function join($table, $cols, ...$cond): Condition
-    {
-        return self::proxy()->join($table, $cols, ...$cond);
-    }
+    public static function join($table, $cols, ...$cond): Condition;
 
     /**
      * innerJoin 查询.
@@ -1212,10 +920,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function innerJoin($table, $cols, ...$cond): Condition
-    {
-        return self::proxy()->innerJoin($table, $cols, ...$cond);
-    }
+    public static function innerJoin($table, $cols, ...$cond): Condition;
 
     /**
      * leftJoin 查询.
@@ -1226,10 +931,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function leftJoin($table, $cols, ...$cond): Condition
-    {
-        return self::proxy()->leftJoin($table, $cols, ...$cond);
-    }
+    public static function leftJoin($table, $cols, ...$cond): Condition;
 
     /**
      * rightJoin 查询.
@@ -1240,10 +942,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function rightJoin($table, $cols, ...$cond): Condition
-    {
-        return self::proxy()->rightJoin($table, $cols, ...$cond);
-    }
+    public static function rightJoin($table, $cols, ...$cond): Condition;
 
     /**
      * fullJoin 查询.
@@ -1254,10 +953,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function fullJoin($table, $cols, ...$cond): Condition
-    {
-        return self::proxy()->fullJoin($table, $cols, ...$cond);
-    }
+    public static function fullJoin($table, $cols, ...$cond): Condition;
 
     /**
      * crossJoin 查询.
@@ -1268,10 +964,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function crossJoin($table, $cols, ...$cond): Condition
-    {
-        return self::proxy()->crossJoin($table, $cols, ...$cond);
-    }
+    public static function crossJoin($table, $cols, ...$cond): Condition;
 
     /**
      * naturalJoin 查询.
@@ -1282,10 +975,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function naturalJoin($table, $cols, ...$cond): Condition
-    {
-        return self::proxy()->naturalJoin($table, $cols, ...$cond);
-    }
+    public static function naturalJoin($table, $cols, ...$cond): Condition;
 
     /**
      * 添加一个 UNION 查询.
@@ -1295,10 +985,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function union($selects, string $type = 'UNION'): Condition
-    {
-        return self::proxy()->union($selects, $type);
-    }
+    public static function union($selects, string $type = 'UNION'): Condition;
 
     /**
      * 添加一个 UNION ALL 查询.
@@ -1307,10 +994,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function unionAll($selects): Condition
-    {
-        return self::proxy()->unionAll($selects);
-    }
+    public static function unionAll($selects): Condition;
 
     /**
      * 指定 GROUP BY 子句.
@@ -1319,10 +1003,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function groupBy($expression): Condition
-    {
-        return self::proxy()->groupBy($expression);
-    }
+    public static function groupBy($expression): Condition;
 
     /**
      * 添加一个 HAVING 条件
@@ -1332,10 +1013,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function having(...$cond): Condition
-    {
-        return self::proxy()->having(...$cond);
-    }
+    public static function having(...$cond): Condition;
 
     /**
      * orHaving 查询条件.
@@ -1344,10 +1022,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function orHaving(...$cond): Condition
-    {
-        return self::proxy()->orHaving(...$cond);
-    }
+    public static function orHaving(...$cond): Condition;
 
     /**
      * Having 原生查询.
@@ -1356,10 +1031,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingRaw(string $raw): Condition
-    {
-        return self::proxy()->havingRaw($raw);
-    }
+    public static function havingRaw(string $raw): Condition;
 
     /**
      * Having 原生 OR 查询.
@@ -1368,10 +1040,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function orHavingRaw(string $raw): Condition
-    {
-        return self::proxy()->orHavingRaw($raw);
-    }
+    public static function orHavingRaw(string $raw): Condition;
 
     /**
      * havingBetween 查询条件.
@@ -1380,10 +1049,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingBetween(...$cond): Condition
-    {
-        return self::proxy()->havingBetween(...$cond);
-    }
+    public static function havingBetween(...$cond): Condition;
 
     /**
      * havingNotBetween 查询条件.
@@ -1392,10 +1058,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingNotBetween(...$cond): Condition
-    {
-        return self::proxy()->havingNotBetween(...$cond);
-    }
+    public static function havingNotBetween(...$cond): Condition;
 
     /**
      * havingNull 查询条件.
@@ -1404,10 +1067,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingNull(...$cond): Condition
-    {
-        return self::proxy()->havingNull(...$cond);
-    }
+    public static function havingNull(...$cond): Condition;
 
     /**
      * havingNotNull 查询条件.
@@ -1416,10 +1076,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingNotNull(...$cond): Condition
-    {
-        return self::proxy()->havingNotNull(...$cond);
-    }
+    public static function havingNotNull(...$cond): Condition;
 
     /**
      * havingIn 查询条件.
@@ -1428,10 +1085,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingIn(...$cond): Condition
-    {
-        return self::proxy()->havingIn(...$cond);
-    }
+    public static function havingIn(...$cond): Condition;
 
     /**
      * havingNotIn 查询条件.
@@ -1440,10 +1094,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingNotIn(...$cond): Condition
-    {
-        return self::proxy()->havingNotIn(...$cond);
-    }
+    public static function havingNotIn(...$cond): Condition;
 
     /**
      * havingLike 查询条件.
@@ -1452,10 +1103,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingLike(...$cond): Condition
-    {
-        return self::proxy()->havingLike(...$cond);
-    }
+    public static function havingLike(...$cond): Condition;
 
     /**
      * havingNotLike 查询条件.
@@ -1464,10 +1112,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingNotLike(...$cond): Condition
-    {
-        return self::proxy()->havingNotLike(...$cond);
-    }
+    public static function havingNotLike(...$cond): Condition;
 
     /**
      * havingDate 查询条件.
@@ -1476,10 +1121,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingDate(...$cond): Condition
-    {
-        return self::proxy()->havingDate(...$cond);
-    }
+    public static function havingDate(...$cond): Condition;
 
     /**
      * havingDay 查询条件.
@@ -1488,10 +1130,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingDay(...$cond): Condition
-    {
-        return self::proxy()->havingDay(...$cond);
-    }
+    public static function havingDay(...$cond): Condition;
 
     /**
      * havingMonth 查询条件.
@@ -1500,10 +1139,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingMonth(...$cond): Condition
-    {
-        return self::proxy()->havingMonth(...$cond);
-    }
+    public static function havingMonth(...$cond): Condition;
 
     /**
      * havingYear 查询条件.
@@ -1512,10 +1148,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function havingYear(...$cond): Condition
-    {
-        return self::proxy()->havingYear(...$cond);
-    }
+    public static function havingYear(...$cond): Condition;
 
     /**
      * 添加排序.
@@ -1525,10 +1158,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function orderBy($expression, string $orderDefault = 'ASC'): Condition
-    {
-        return self::proxy()->orderBy($expression, $orderDefault);
-    }
+    public static function orderBy($expression, string $orderDefault = 'ASC'): Condition;
 
     /**
      * 最近排序数据.
@@ -1537,10 +1167,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function latest(string $field = 'create_at'): Condition
-    {
-        return self::proxy()->latest($field);
-    }
+    public static function latest(string $field = 'create_at'): Condition;
 
     /**
      * 最早排序数据.
@@ -1549,10 +1176,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function oldest(string $field = 'create_at'): Condition
-    {
-        return self::proxy()->oldest($field);
-    }
+    public static function oldest(string $field = 'create_at'): Condition;
 
     /**
      * 创建一个 SELECT DISTINCT 查询.
@@ -1561,10 +1185,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function distinct(bool $flag = true): Condition
-    {
-        return self::proxy()->distinct($flag);
-    }
+    public static function distinct(bool $flag = true): Condition;
 
     /**
      * 总记录数.
@@ -1574,10 +1195,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function count(string $field = '*', string $alias = 'row_count'): Condition
-    {
-        return self::proxy()->count($field, $alias);
-    }
+    public static function count(string $field = '*', string $alias = 'row_count'): Condition;
 
     /**
      * 平均数.
@@ -1587,10 +1205,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function avg(string $field, string $alias = 'avg_value'): Condition
-    {
-        return self::proxy()->avg($field, $alias);
-    }
+    public static function avg(string $field, string $alias = 'avg_value'): Condition;
 
     /**
      * 最大值
@@ -1600,10 +1215,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function max(string $field, string $alias = 'max_value'): Condition
-    {
-        return self::proxy()->max($field, $alias);
-    }
+    public static function max(string $field, string $alias = 'max_value'): Condition;
 
     /**
      * 最小值
@@ -1613,10 +1225,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function min(string $field, string $alias = 'min_value'): Condition
-    {
-        return self::proxy()->min($field, $alias);
-    }
+    public static function min(string $field, string $alias = 'min_value'): Condition;
 
     /**
      * 合计
@@ -1626,30 +1235,21 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function sum(string $field, string $alias = 'sum_value'): Condition
-    {
-        return self::proxy()->sum($field, $alias);
-    }
+    public static function sum(string $field, string $alias = 'sum_value'): Condition;
 
     /**
      * 指示仅查询第一个符合条件的记录.
      *
      * @return \Leevel\Database\Condition
      */
-    public static function one(): Condition
-    {
-        return self::proxy()->one();
-    }
+    public static function one(): Condition;
 
     /**
      * 指示查询所有符合条件的记录.
      *
      * @return \Leevel\Database\Condition
      */
-    public static function all(): Condition
-    {
-        return self::proxy()->all();
-    }
+    public static function all(): Condition;
 
     /**
      * 查询几条记录.
@@ -1658,10 +1258,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function top(int $count = 30): Condition
-    {
-        return self::proxy()->top($count);
-    }
+    public static function top(int $count = 30): Condition;
 
     /**
      * limit 限制条数.
@@ -1671,10 +1268,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function limit(int $offset = 0, int $count = 0): Condition
-    {
-        return self::proxy()->limit($offset, $count);
-    }
+    public static function limit(int $offset = 0, int $count = 0): Condition;
 
     /**
      * 是否构造一个 FOR UPDATE 查询.
@@ -1683,10 +1277,7 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function forUpdate(bool $flag = true): Condition
-    {
-        return self::proxy()->forUpdate($flag);
-    }
+    public static function forUpdate(bool $flag = true): Condition;
 
     /**
      * 设置查询参数.
@@ -1696,38 +1287,19 @@ class Db implements IDb
      *
      * @return \Leevel\Database\Condition
      */
-    public static function setOption(string $name, $value): Condition
-    {
-        return self::proxy()->setOption($name, $value);
-    }
+    public static function setOption(string $name, $value): Condition;
 
     /**
      * 返回查询参数.
      *
      * @return array
      */
-    public static function getOption(): array
-    {
-        return self::proxy()->getOption();
-    }
+    public static function getOption(): array;
 
     /**
      * 返回参数绑定.
      *
      * @return array
      */
-    public static function getBindParams(): array
-    {
-        return self::proxy()->getBindParams();
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Database\Manager
-     */
-    public static function proxy(): Manager
-    {
-        return Container::singletons()->make('databases');
-    }
+    public static function getBindParams(): array;
 }

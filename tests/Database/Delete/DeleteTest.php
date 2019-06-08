@@ -47,17 +47,13 @@ class DeleteTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 1)->
-
-                limit(1)->
-
-                orderBy('id desc')->
-
-                delete()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 1)
+                    ->limit(1)
+                    ->orderBy('id desc')
+                    ->delete()
             )
         );
     }
@@ -76,19 +72,14 @@ class DeleteTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test as t')->
-
-                innerJoin(['h' => 'hello'], [], 'name', '=', '{[t.content]}')->
-
-                where('id', 1)->
-
-                limit(1)->
-
-                orderBy('id desc')->
-
-                delete()
+                $connect
+                    ->sql()
+                    ->table('test as t')
+                    ->innerJoin(['h' => 'hello'], [], 'name', '=', '{[t.content]}')
+                    ->where('id', 1)
+                    ->limit(1)
+                    ->orderBy('id desc')
+                    ->delete()
             )
         );
     }

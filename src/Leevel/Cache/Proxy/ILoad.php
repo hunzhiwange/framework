@@ -18,33 +18,37 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Database\Proxy;
-
-use Leevel\Di\Container;
+namespace Leevel\Cache\Proxy;
 
 /**
- * 代理 unitofwork.
+ * 代理 cache.load 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.11.11
+ * @since 2019.06.05
  *
  * @version 1.0
+ *
+ * @see \Leevel\Cache\ILoad 请保持接口设计的一致性
  */
-class UnitOfWork
+interface ILoad
 {
     /**
-     * call.
+     * 载入缓存数据
+     * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      *
-     * @param string $method
-     * @param array  $args
+     * @param array $names
+     * @param array $option
+     * @param bool  $force
      *
-     * @return mixed
+     * @return array
      */
-    public static function __callStatic(string $method, array $args)
-    {
-        return Container::singletons()
-            ->make('unitofwork')
-            ->{$method}(...$args);
-    }
+    public static function data(array $names, array $option = [], bool $force = false): array;
+
+    /**
+     * 刷新缓存数据.
+     *
+     * @param array $names
+     */
+    public static function refresh(array $names): void;
 }

@@ -61,20 +61,14 @@ class ApiResponseTest extends TestCase
     public function testOk2()
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        ok(['hello' => 'world'])->
-
-        elses()->
-
-        ok(['hello2' => 'world2'])->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->ok(['hello' => 'world'])
+            ->elses()
+            ->ok(['hello2' => 'world2'])
+            ->endIfs();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -101,20 +95,14 @@ class ApiResponseTest extends TestCase
     public function testCreated2()
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        created('http://queryphp.com', ['hello' => 'world'])->
-
-        elses()->
-
-        created('http://queryphp2.com', ['hello2' => 'world2'])->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->created('http://queryphp.com', ['hello' => 'world'])
+            ->elses()
+            ->created('http://queryphp2.com', ['hello2' => 'world2'])
+            ->endIfs();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -143,20 +131,14 @@ class ApiResponseTest extends TestCase
     public function testAccepted2()
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        accepted('http://queryphp.com', ['hello' => 'world'])->
-
-        elses()->
-
-        accepted('http://queryphp2.com', ['hello2' => 'world2'])->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->accepted('http://queryphp.com', ['hello' => 'world'])
+            ->elses()
+            ->accepted('http://queryphp2.com', ['hello2' => 'world2'])
+            ->endIfs();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -183,20 +165,14 @@ class ApiResponseTest extends TestCase
     public function testNoContent2()
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        noContent()->
-
-        elses()->
-
-        noContent()->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->noContent()
+            ->elses()
+            ->noContent()
+            ->endIfs();
 
         $this->assertSame('{}', $response->getContent());
 
@@ -221,20 +197,14 @@ class ApiResponseTest extends TestCase
     public function testUnprocessableEntity2()
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        unprocessableEntity(['foo' => 'bar', 'hello' => 'world'], 'error message', 'status text')->
-
-        elses()->
-
-        unprocessableEntity(['foo2' => 'bar2', 'hello2' => 'world2'], 'error message2', 'status text2')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->unprocessableEntity(['foo' => 'bar', 'hello' => 'world'], 'error message', 'status text')
+            ->elses()
+            ->unprocessableEntity(['foo2' => 'bar2', 'hello2' => 'world2'], 'error message2', 'status text2')
+            ->endIfs();
 
         $this->assertSame('{"message":"error message2","errors":{"foo2":"bar2","hello2":"world2"}}', $response->getContent());
 
@@ -259,20 +229,14 @@ class ApiResponseTest extends TestCase
     public function testError2()
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        error('test message', 500, 'status text')->
-
-        elses()->
-
-        error('test message2', 500, 'status text2')->
-
-        endIfs();
+        $response
+            ->ifs($condition)
+            ->error('test message', 500, 'status text')
+            ->elses()
+            ->error('test message2', 500, 'status text2')
+            ->endIfs();
 
         $this->assertSame('{"message":"test message2"}', $response->getContent());
 

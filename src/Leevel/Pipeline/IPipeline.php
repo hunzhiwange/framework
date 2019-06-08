@@ -38,7 +38,7 @@ interface IPipeline
      *
      * @param array $passed
      *
-     * @return $this
+     * @return \Leevel\Pipeline\IPipeline
      */
     public function send(array $passed): self;
 
@@ -47,7 +47,7 @@ interface IPipeline
      *
      * @param array $stage
      *
-     * @return $this
+     * @return \Leevel\Pipeline\IPipeline
      */
     public function through(array $stage): self;
 

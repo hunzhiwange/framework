@@ -51,13 +51,11 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy('id')->
-
-                groupBy('name')->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy('id')
+                    ->groupBy('name')
+                    ->findAll(true)
             )
         );
 
@@ -75,11 +73,10 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy('post.id')->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy('post.id')
+                    ->findAll(true),
                 1
             )
         );
@@ -98,11 +95,10 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy('{SUM([num])}')->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy('{SUM([num])}')
+                    ->findAll(true),
                 2
             )
         );
@@ -121,11 +117,10 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy("title,id,{concat('1234',[id],'ttt')}")->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy("title,id,{concat('1234',[id],'ttt')}")
+                    ->findAll(true),
                 3
             )
         );
@@ -144,11 +139,10 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy(['title,id,ttt', 'value'])->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy(['title,id,ttt', 'value'])
+                    ->findAll(true),
                 4
             )
         );
@@ -157,7 +151,6 @@ class GroupByTest extends TestCase
     public function testGroupByFlow()
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -174,19 +167,14 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                groupBy('id')->
-
-                elses()->
-
-                groupBy('name')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->groupBy('id')
+                    ->elses()
+                    ->groupBy('name')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -211,19 +199,14 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                groupBy('id')->
-
-                elses()->
-
-                groupBy('name')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->groupBy('id')
+                    ->elses()
+                    ->groupBy('name')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }

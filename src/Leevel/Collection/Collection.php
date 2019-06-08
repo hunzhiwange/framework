@@ -128,6 +128,8 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @param mixed $elements
      * @param mixed $type
+     *
+     * @return \Leevel\Collection\Collection
      */
     public static function make($elements = [], $type = null): self
     {

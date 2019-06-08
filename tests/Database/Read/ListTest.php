@@ -51,11 +51,10 @@ class ListTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                list('name')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->list('name')
             )
         );
 
@@ -73,11 +72,10 @@ class ListTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                list('name,id'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->list('name,id'),
                 1
             )
         );
@@ -85,11 +83,10 @@ class ListTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                list('name', 'id'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->list('name', 'id'),
                 2
             )
         );
@@ -97,11 +94,10 @@ class ListTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                list(['name', 'id']),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->list(['name', 'id']),
                 3
             )
         );
@@ -109,11 +105,10 @@ class ListTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                list(['name'], 'id'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->list(['name'], 'id'),
                 4
             )
         );

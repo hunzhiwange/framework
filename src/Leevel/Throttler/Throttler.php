@@ -109,7 +109,7 @@ class Throttler implements IThrottler
      *
      * @param \Leevel\Http\IRequest $request
      *
-     * @return $this
+     * @return \Leevel\Throttler\IThrottler
      */
     public function setRequest(IRequest $request): IThrottler
     {

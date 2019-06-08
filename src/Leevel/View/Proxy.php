@@ -38,7 +38,7 @@ trait Proxy
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\View\IParser
      */
     public function setOption(string $name, $value): IView
     {

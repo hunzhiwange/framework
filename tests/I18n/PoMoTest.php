@@ -45,11 +45,11 @@ class PoMoTest extends TestCase
             '页'      => 'Page',
         ];
 
-        $lang = (new Po())->read([__DIR__.'/page.po']);
+        $lang = (new Po())->read([__DIR__.'/assert/page.po']);
 
         $this->assertSame($lang, $data);
 
-        $lang = (new Mo())->read([__DIR__.'/page.mo']);
+        $lang = (new Mo())->read([__DIR__.'/assert/page.mo']);
 
         $this->assertSame($lang, $data);
     }
@@ -126,7 +126,7 @@ class PoMoTest extends TestCase
             }
             eot;
 
-        $lang = (new Po())->read([__DIR__.'/validate.po']);
+        $lang = (new Po())->read([__DIR__.'/assert/validate.po']);
 
         $this->assertSame(
             $data,
@@ -135,7 +135,7 @@ class PoMoTest extends TestCase
             )
         );
 
-        $lang = (new Mo())->read([__DIR__.'/validate.mo']);
+        $lang = (new Mo())->read([__DIR__.'/assert/validate.mo']);
 
         $data = <<<'eot'
             {

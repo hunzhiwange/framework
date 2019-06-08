@@ -28,10 +28,10 @@ use Leevel\Page\Page;
 
 /**
  * 数据库查询器
- * This class borrows heavily from the QeePHP Framework and is part of the QeePHP package.
- * 查询器主体方法来自于早年 QeePHP 数据库查询 Api,这个 10 年前的作品设计理念非常先进.
- * 在这个思想下大量进行了重构，在查询 API 用法上我们将一些与 Laravel 的用法习惯靠拢，实现了大量语法糖.
- * 也支持 ThinkPHP 这种的数组方式传入查询，查询构造器非常复杂，为保证结果符合预期这里编写了大量的单元测试.
+ * - This class borrows heavily from the QeePHP Framework and is part of the QeePHP package.
+ * - 查询器主体方法来自于早年 QeePHP 数据库查询 Api,这个 10 年前的作品设计理念非常先进.
+ * - 在这个思想下大量进行了重构，在查询 API 用法上我们将一些与 Laravel 的用法习惯靠拢，实现了大量语法糖.
+ * - 也支持 ThinkPHP 这种的数组方式传入查询，查询构造器非常复杂，为保证结果符合预期这里编写了大量的单元测试.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -232,7 +232,7 @@ class Select
     /**
      * 占位符返回本对象
      *
-     * @return $this
+     * @return \Leevel\Database\Select
      */
     public function selfDatabaseSelect(): self
     {
@@ -244,7 +244,7 @@ class Select
      *
      * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
-     * @return $this
+     * @return \Leevel\Database\Select
      */
     public function sql(bool $flag = true): self
     {
@@ -258,7 +258,7 @@ class Select
      *
      * @param bool $master
      *
-     * @return $this
+     * @return \Leevel\Database\Select
      */
     public function master(bool $master = false): self
     {
@@ -274,7 +274,7 @@ class Select
      * @param mixed $fetchArgument
      * @param array $ctorArgs
      *
-     * @return $this
+     * @return \Leevel\Database\Select
      */
     public function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = []): self
     {
@@ -295,7 +295,7 @@ class Select
      * @param string $className
      * @param array  $args
      *
-     * @return $this
+     * @return \Leevel\Database\Select
      */
     public function asClass(string $className, array $args = []): self
     {
@@ -309,7 +309,7 @@ class Select
     /**
      * 设置默认形式返回.
      *
-     * @return $this
+     * @return \Leevel\Database\Select
      */
     public function asDefault(): self
     {
@@ -324,7 +324,7 @@ class Select
      *
      * @param bool $acollection
      *
-     * @return $this
+     * @return \Leevel\Database\Select
      */
     public function asCollection(bool $acollection = true): self
     {
@@ -905,8 +905,7 @@ class Select
      */
     public function makeSql(bool $withLogicGroup = false): string
     {
-        return $this->condition->
-        makeSql($withLogicGroup);
+        return $this->condition->makeSql($withLogicGroup);
     }
 
     /**
@@ -914,7 +913,7 @@ class Select
      *
      * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
-     * @return $this
+     * @return \Leevel\Database\Select
      */
     protected function safeSql(bool $flag = true): self
     {

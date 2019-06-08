@@ -87,11 +87,10 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insertAll($data)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insertAll($data)
             )
         );
     }
@@ -150,11 +149,10 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insertAll($data, ['吃肉1', '吃肉2'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insertAll($data, ['吃肉1', '吃肉2'])
             )
         );
 
@@ -202,11 +200,10 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤']),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤']),
                 1
             )
         );
@@ -266,13 +263,11 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                bind(['吃鱼', '吃肉'])->
-
-                insertAll($data)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->bind(['吃鱼', '吃肉'])
+                    ->insertAll($data)
             )
         );
     }
@@ -331,13 +326,11 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                bind(['吃鱼', '吃肉'])->
-
-                insertAll($data, [], true)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->bind(['吃鱼', '吃肉'])
+                    ->insertAll($data, [], true)
             )
         );
     }
@@ -356,11 +349,10 @@ class InsertAllTest extends TestCase
             5,
         ];
 
-        $connect->sql()->
-
-        table('test')->
-
-        insertAll($data);
+        $connect
+            ->sql()
+            ->table('test')
+            ->insertAll($data);
     }
 
     public function testDataIsNotInvalid2()
@@ -377,10 +369,9 @@ class InsertAllTest extends TestCase
             ['foo' => ['hello', 'world']],
         ];
 
-        $connect->sql()->
-
-        table('test')->
-
-        insertAll($data);
+        $connect
+            ->sql()
+            ->table('test')
+            ->insertAll($data);
     }
 }

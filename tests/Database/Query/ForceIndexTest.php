@@ -51,15 +51,12 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                forceIndex('nameindex,statusindex')->
-
-                ignoreIndex('testindex')->
-
-                where('id', '=', 5)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->forceIndex('nameindex,statusindex')
+                    ->ignoreIndex('testindex')
+                    ->where('id', '=', 5)
+                    ->findAll(true)
             )
         );
     }
@@ -82,13 +79,11 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                forceIndex(['nameindex', 'statusindex'])->
-
-                where('id', '=', 2)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->forceIndex(['nameindex', 'statusindex'])
+                    ->where('id', '=', 2)
+                    ->findAll(true)
             )
         );
     }
@@ -111,13 +106,11 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ignoreIndex(['nameindex', 'statusindex'])->
-
-                where('id', '=', 6)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ignoreIndex(['nameindex', 'statusindex'])
+                    ->where('id', '=', 6)
+                    ->findAll(true)
             )
         );
     }
@@ -131,17 +124,15 @@ class ForceIndexTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        forceIndex('foo', 'NOT_SUPPORT')->
-
-        findAll(true);
+        $connect
+            ->table('test')
+            ->forceIndex('foo', 'NOT_SUPPORT')
+            ->findAll(true);
     }
 
     public function testForceIndexFlow()
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -158,21 +149,15 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                forceIndex('nameindex,statusindex')->
-
-                elses()->
-
-                ignoreIndex('testindex')->
-
-                endIfs()->
-
-                where('id', '=', 5)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->forceIndex('nameindex,statusindex')
+                    ->elses()
+                    ->ignoreIndex('testindex')
+                    ->endIfs()
+                    ->where('id', '=', 5)
+                    ->findAll(true)
             )
         );
     }
@@ -180,7 +165,6 @@ class ForceIndexTest extends TestCase
     public function testForceIndexFlow2()
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -197,21 +181,15 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                forceIndex('nameindex,statusindex')->
-
-                elses()->
-
-                ignoreIndex('testindex')->
-
-                endIfs()->
-
-                where('id', '=', 5)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->forceIndex('nameindex,statusindex')
+                    ->elses()
+                    ->ignoreIndex('testindex')
+                    ->endIfs()
+                    ->where('id', '=', 5)
+                    ->findAll(true)
             )
         );
     }

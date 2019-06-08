@@ -223,7 +223,7 @@ interface IEntity
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function withProps(array $data): self;
 
@@ -233,7 +233,7 @@ interface IEntity
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function save(array $data = [], array $fill = null): self;
 
@@ -243,7 +243,7 @@ interface IEntity
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function create(array $data = [], array $fill = null): self;
 
@@ -253,7 +253,7 @@ interface IEntity
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function update(array $data = [], array $fill = null): self;
 
@@ -263,7 +263,7 @@ interface IEntity
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function replace(array $data = [], array $fill = null): self;
 
@@ -279,7 +279,7 @@ interface IEntity
     /**
      * 销毁模型实体.
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function destroy(): self;
 
@@ -503,7 +503,7 @@ interface IEntity
      *
      * @param array $props
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function addChanged(array $props): self;
 
@@ -512,14 +512,14 @@ interface IEntity
      *
      * @param array $props
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function deleteChanged(array $props): self;
 
     /**
      * 清空改变属性.
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function clearChanged(): self;
 
@@ -588,7 +588,7 @@ interface IEntity
      *
      * @param mixed $connect
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function withConnect($connect): self;
 
@@ -656,7 +656,7 @@ interface IEntity
      * @param string $prop
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function setter(string $prop, $value): self;
 

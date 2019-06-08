@@ -52,26 +52,26 @@ class I18n implements II18n
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  ...$arr
+     * @param array  ...$data
      *
      * @return string
      */
-    public static function __(string $text, ...$arr): string
+    public static function __(string $text, ...$data): string
     {
-        return self::proxy()->__($text, ...$arr);
+        return self::proxy()->__($text, ...$data);
     }
 
     /**
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  ...$arr
+     * @param array  ...$data
      *
      * @return string
      */
-    public static function gettext(string $text, ...$arr): string
+    public static function gettext(string $text, ...$data): string
     {
-        return self::proxy()->gettext($text, ...$arr);
+        return self::proxy()->gettext($text, ...$data);
     }
 
     /**

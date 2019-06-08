@@ -259,21 +259,25 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 2,
-            'summary' => 'foo bar',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 2,
+                    'summary' => 'foo bar',
+                ]));
 
         $post = Post::find(1);
 
@@ -355,21 +359,25 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 2,
-            'summary' => 'foo bar',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 2,
+                    'summary' => 'foo bar',
+                ]));
 
         $post = Post::find(1);
 
@@ -449,13 +457,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = new Post([
             'id'      => 1,
@@ -505,13 +515,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $work->beginTransaction();
 
@@ -582,13 +594,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $work->transaction(function ($w) {
             $post = Post::find(1);
@@ -660,13 +674,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -703,13 +719,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -777,13 +795,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -811,13 +831,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -1030,13 +1052,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -1060,13 +1084,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -1223,13 +1249,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = new Post([
             'id'      => 1,
@@ -1337,19 +1365,23 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'content'   => 'hello world',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'content'   => 'hello world',
+                ]));
 
         $post = new Post(['id' => 1, 'title' => 'new'], true);
         $guestBook = new Guestbook(['id' => 1], true);
@@ -1376,13 +1408,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
         $work->persist($post)->remove($post);
@@ -1445,13 +1479,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = new Post(['id' => 1, 'title' => 'new', 'summary' => 'new']);
 

@@ -40,7 +40,7 @@ interface IView
      *
      * @param \Leevel\View\IView $view
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function switchView(IViews $view): self;
 
@@ -50,7 +50,7 @@ interface IView
      * @param mixed $name
      * @param mixed $value
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function setVar($name, $value = null): self;
 
@@ -68,14 +68,14 @@ interface IView
      *
      * @param array $name
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function deleteVar(array $name): self;
 
     /**
      * 清空变量值.
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function clearVar(): self;
 

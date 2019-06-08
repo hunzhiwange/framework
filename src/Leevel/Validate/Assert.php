@@ -159,7 +159,7 @@ class Assert
      * @param mixed       $value
      * @param null|string $message
      *
-     * @return static
+     * @return \Leevel\Validate\Assert
      */
     public static function make($value, ?string $message = null): self
     {
@@ -179,7 +179,7 @@ class Assert
      * @param null|string $message
      * @param bool        $all
      *
-     * @return static
+     * @return \Leevel\Validate\Assert
      */
     public static function lazy($value, ?string $message = null, bool $all = true): self
     {

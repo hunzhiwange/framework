@@ -18,33 +18,37 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Database\Proxy;
-
-use Leevel\Di\Container;
+namespace Leevel\Cache;
 
 /**
- * 代理 database.
+ * cache 快捷载入接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.10
+ * @since 2019.06.05
  *
  * @version 1.0
+ *
+ * @see \Leevel\Cache\Proxy\ILoad 请保持接口设计的一致性
  */
-class Database
+interface ILoad
 {
     /**
-     * call.
+     * 载入缓存数据
+     * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      *
-     * @param string $method
-     * @param array  $args
+     * @param array $names
+     * @param array $option
+     * @param bool  $force
      *
-     * @return mixed
+     * @return array
      */
-    public static function __callStatic(string $method, array $args)
-    {
-        return Container::singletons()
-            ->make('databases')
-            ->{$method}(...$args);
-    }
+    public function data(array $names, array $option = [], bool $force = false): array;
+
+    /**
+     * 刷新缓存数据.
+     *
+     * @param array $names
+     */
+    public function refresh(array $names): void;
 }

@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Debug;
+namespace Leevel\Debug\Proxy;
 
 use Closure;
 use DebugBar\DataCollector\DataCollectorInterface;
@@ -27,21 +27,24 @@ use DebugBar\HttpDriverInterface;
 use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
 use DebugBar\RequestIdGeneratorInterface;
 use DebugBar\Storage\StorageInterface;
+use Leevel\Debug\ConsoleRenderer;
+use Leevel\Debug\IDebug as IBaseDebug;
+use Leevel\Debug\JsonRenderer;
 use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Throwable;
 
 /**
- * IDebug 接口.
+ * 代理 debug 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2019.05.28
+ * @since 2019.06.05
  *
  * @version 1.0
  *
- * @see \Leevel\Debug\Proxy\IDebug 请保持接口设计的一致性
+ * @see \Leevel\Debug\IDebug 请保持接口设计的一致性
  */
 interface IDebug
 {
@@ -54,7 +57,7 @@ interface IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public function addCollector(DataCollectorInterface $collector): DebugBar;
+    public static function addCollector(DataCollectorInterface $collector): DebugBar;
 
     /**
      * 检查是否已添加数据收集器.
@@ -63,7 +66,7 @@ interface IDebug
      *
      * @return bool
      */
-    public function hasCollector(string $name): bool;
+    public static function hasCollector(string $name): bool;
 
     /**
      * 返回数据收集器.
@@ -74,14 +77,14 @@ interface IDebug
      *
      * @return \DebugBar\DataCollector\DataCollectorInterface
      */
-    public function getCollector(string $name): DataCollectorInterface;
+    public static function getCollector(string $name): DataCollectorInterface;
 
     /**
      * 返回所有数据收集器的数组.
      *
      * @return \DebugBar\DataCollector\DataCollectorInterface[]
      */
-    public function getCollectors(): array;
+    public static function getCollectors(): array;
 
     /**
      * 设置请求 ID 生成器.
@@ -90,21 +93,21 @@ interface IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public function setRequestIdGenerator(RequestIdGeneratorInterface $generator): DebugBar;
+    public static function setRequestIdGenerator(RequestIdGeneratorInterface $generator): DebugBar;
 
     /**
      * 返回请求 ID 生成器.
      *
      * @return \DebugBar\RequestIdGeneratorInterface
      */
-    public function getRequestIdGenerator(): RequestIdGeneratorInterface;
+    public static function getRequestIdGenerator(): RequestIdGeneratorInterface;
 
     /**
      * 返回当前请求的 ID.
      *
      * @return string
      */
-    public function getCurrentRequestId(): string;
+    public static function getCurrentRequestId(): string;
 
     /**
      * 设置用于存储收集数据的存储后端.
@@ -113,21 +116,21 @@ interface IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public function setStorage(StorageInterface $storage = null): DebugBar;
+    public static function setStorage(StorageInterface $storage = null): DebugBar;
 
     /**
      * 返回用于存储收集数据的存储后端.
      *
      * @return \DebugBar\Storage\StorageInterface
      */
-    public function getStorage(): StorageInterface;
+    public static function getStorage(): StorageInterface;
 
     /**
      * 检查是否保持数据.
      *
      * @return bool
      */
-    public function isDataPersisted(): bool;
+    public static function isDataPersisted(): bool;
 
     /**
      * 设置 HTTP 驱动.
@@ -136,7 +139,7 @@ interface IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public function setHttpDriver(HttpDriverInterface $driver): DebugBar;
+    public static function setHttpDriver(HttpDriverInterface $driver): DebugBar;
 
     /**
      * 返回 HTTP 驱动.
@@ -145,14 +148,14 @@ interface IDebug
      *
      * @return \DebugBar\HttpDriverInterface
      */
-    public function getHttpDriver(): HttpDriverInterface;
+    public static function getHttpDriver(): HttpDriverInterface;
 
     /**
      * 从收集器收集数据.
      *
      * @return array
      */
-    public function collect(): array;
+    public static function collect(): array;
 
     /**
      * 返回收集的数据.
@@ -161,7 +164,7 @@ interface IDebug
      *
      * @return array
      */
-    public function getData(): array;
+    public static function getData(): array;
 
     /**
      * 返回包含数据的 HTTP 头数组.
@@ -172,7 +175,7 @@ interface IDebug
      *
      * @return array
      */
-    public function getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000): array;
+    public static function getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000): array;
 
     /**
      * 通过 HTTP 头数组发送数据.
@@ -183,21 +186,21 @@ interface IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public function sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096): DebugBar;
+    public static function sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096): DebugBar;
 
     /**
      * 将数据存在 session 中.
      *
      * @return \DebugBar\DebugBar
      */
-    public function stackData(): DebugBar;
+    public static function stackData(): DebugBar;
 
     /**
      * 检查 session 中是否存在数据.
      *
      * @return bool
      */
-    public function hasStackedData(): bool;
+    public static function hasStackedData(): bool;
 
     /**
      * 返回 session 中保存的数据.
@@ -206,7 +209,7 @@ interface IDebug
      *
      * @return array
      */
-    public function getStackedData(bool $delete = true): array;
+    public static function getStackedData(bool $delete = true): array;
 
     /**
      * 设置 session 中保存数据的 key.
@@ -215,14 +218,14 @@ interface IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public function setStackDataSessionNamespace(string $ns): DebugBar;
+    public static function setStackDataSessionNamespace(string $ns): DebugBar;
 
     /**
      * 获取 session 中保存数据的 key.
      *
      * @return string
      */
-    public function getStackDataSessionNamespace(): string;
+    public static function getStackDataSessionNamespace(): string;
 
     /**
      * 设置是否仅使用 session 来保存数据，即使已启用存储.
@@ -231,14 +234,14 @@ interface IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public function setStackAlwaysUseSessionStorage(bool $enabled = true): DebugBar;
+    public static function setStackAlwaysUseSessionStorage(bool $enabled = true): DebugBar;
 
     /**
      * 检查 session 是否始终用于保存数据，即使已启用存储.
      *
      * @return bool
      */
-    public function isStackAlwaysUseSessionStorage(): bool;
+    public static function isStackAlwaysUseSessionStorage(): bool;
 
     /**
      * 返回此实例的 \DebugBar\JavascriptRenderer.
@@ -248,14 +251,14 @@ interface IDebug
      *
      * @return \DebugBar\JavascriptRenderer
      */
-    public function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer;
+    public static function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer;
 
     /**
      * 返回应用管理.
      *
      * @return \Leevel\Di\IContainer
      */
-    public function getContainer(): IContainer;
+    public static function getContainer(): IContainer;
 
     /**
      * 设置配置.
@@ -265,7 +268,7 @@ interface IDebug
      *
      * @return \Leevel\Debug\IDebug
      */
-    public function setOption(string $name, $value): self;
+    public static function setOption(string $name, $value): IBaseDebug;
 
     /**
      * 响应.
@@ -273,17 +276,17 @@ interface IDebug
      * @param \Leevel\Http\IRequest  $request
      * @param \Leevel\Http\IResponse $response
      */
-    public function handle(IRequest $request, IResponse $response): void;
+    public static function handle(IRequest $request, IResponse $response): void;
 
     /**
      * 关闭调试.
      */
-    public function disable(): void;
+    public static function disable(): void;
 
     /**
      * 启用调试.
      */
-    public function enable(): void;
+    public static function enable(): void;
 
     /**
      * 添加一条消息.
@@ -291,70 +294,70 @@ interface IDebug
      * @param mixed  $message
      * @param string $label
      */
-    public function message($message, string $label = 'info'): void;
+    public static function message($message, string $label = 'info'): void;
 
     /**
      * 添加一条 emergency 消息.
      *
      * @param mixed $message
      */
-    public function emergency($message): void;
+    public static function emergency($message): void;
 
     /**
      * 添加一条 alert 消息.
      *
      * @param mixed $message
      */
-    public function alert($message): void;
+    public static function alert($message): void;
 
     /**
      * 添加一条 critical 消息.
      *
      * @param mixed $message
      */
-    public function critical($message): void;
+    public static function critical($message): void;
 
     /**
      * 添加一条 error 消息.
      *
      * @param mixed $message
      */
-    public function error($message): void;
+    public static function error($message): void;
 
     /**
      * 添加一条 warning 消息.
      *
      * @param mixed $message
      */
-    public function warning($message): void;
+    public static function warning($message): void;
 
     /**
      * 添加一条 notice 消息.
      *
      * @param mixed $message
      */
-    public function notice($message): void;
+    public static function notice($message): void;
 
     /**
      * 添加一条 info 消息.
      *
      * @param mixed $message
      */
-    public function info($message): void;
+    public static function info($message): void;
 
     /**
      * 添加一条 debug 消息.
      *
      * @param mixed $message
      */
-    public function debug($message): void;
+    public static function debug($message): void;
 
     /**
      * 添加一条 log 消息.
      *
      * @param mixed $message
      */
-    public function log($message): void;
+    public static function log($message): void;
 
     /**
      * 开始调试时间.
@@ -362,14 +365,14 @@ interface IDebug
      * @param string $name
      * @param string $label
      */
-    public function time(string $name, ?string $label = null): void;
+    public static function time(string $name, ?string $label = null): void;
 
     /**
      * 停止调试时间.
      *
      * @param string $name
      */
-    public function end(string $name): void;
+    public static function end(string $name): void;
 
     /**
      * 添加一个时间调试.
@@ -378,7 +381,7 @@ interface IDebug
      * @param float  $start
      * @param float  $end
      */
-    public function addTime(string $label, float $start, float $end): void;
+    public static function addTime(string $label, float $start, float $end): void;
 
     /**
      * 调试闭包执行时间.
@@ -386,38 +389,38 @@ interface IDebug
      * @param string   $label
      * @param \Closure $closure
      */
-    public function closureTime(string $label, Closure $closure): void;
+    public static function closureTime(string $label, Closure $closure): void;
 
     /**
      * 添加异常.
      *
      * @param \Throwable $e
      */
-    public function exception(Throwable $e): void;
+    public static function exception(Throwable $e): void;
 
     /**
      * 获取 JSON 渲染.
      *
      * @return \Leevel\Debug\JsonRenderer
      */
-    public function getJsonRenderer(): JsonRenderer;
+    public static function getJsonRenderer(): JsonRenderer;
 
     /**
      * 获取 Console 渲染.
      *
      * @return \Leevel\Debug\ConsoleRenderer
      */
-    public function getConsoleRenderer(): ConsoleRenderer;
+    public static function getConsoleRenderer(): ConsoleRenderer;
 
     /**
      * 初始化.
      */
-    public function bootstrap(): void;
+    public static function bootstrap(): void;
 
     /**
      * 是否初始化.
      *
      * @return bool
      */
-    public function isBootstrap(): bool;
+    public static function isBootstrap(): bool;
 }

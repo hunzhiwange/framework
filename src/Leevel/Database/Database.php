@@ -38,6 +38,8 @@ use Throwable;
  */
 abstract class Database
 {
+    use Proxy;
+
     /**
      * 所有数据库连接.
      *
@@ -163,6 +165,18 @@ abstract class Database
         $this->initSelect();
 
         return $this->select->{$method}(...$args);
+    }
+
+    /**
+     * 返回代理.
+     *
+     * @return \Leevel\Database\Select
+     */
+    public function proxy(): Select
+    {
+        $this->initSelect();
+
+        return $this->select;
     }
 
     /**

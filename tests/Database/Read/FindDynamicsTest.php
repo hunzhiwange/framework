@@ -51,11 +51,10 @@ class FindDynamicsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                find10()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->find10()
             )
         );
 
@@ -73,11 +72,10 @@ class FindDynamicsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                find10start3(),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->find10start3(),
                 1
             )
         );
@@ -96,11 +94,10 @@ class FindDynamicsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findByUserName('1111'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findByUserName('1111'),
                 2
             )
         );
@@ -119,11 +116,10 @@ class FindDynamicsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findByUserName_('1111'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findByUserName_('1111'),
                 3
             )
         );
@@ -142,11 +138,10 @@ class FindDynamicsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findAllByUserNameAndSex('1111', '222'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findAllByUserNameAndSex('1111', '222'),
                 4
             )
         );
@@ -165,11 +160,10 @@ class FindDynamicsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findAllByUserNameAndSex_('1111', '222'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findAllByUserNameAndSex_('1111', '222'),
                 5
             )
         );

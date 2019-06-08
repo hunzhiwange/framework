@@ -87,7 +87,7 @@ class Meta implements IMeta
      *
      * @param string $table
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IMeta
      */
     public static function instance(string $table): IMeta
     {
@@ -136,7 +136,7 @@ class Meta implements IMeta
      *
      * @param mixed $connect
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IMeta
      */
     public function setConnect($connect = null): IMeta
     {

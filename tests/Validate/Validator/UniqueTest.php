@@ -68,11 +68,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'foo',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
@@ -92,11 +95,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'foo',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
@@ -116,12 +122,12 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $connect->
-        table('composite_id')->
-        insert([
-            'id1'   => 'foo',
-            'id2'   => 'bar',
-        ]);
+        $connect
+            ->table('composite_id')
+            ->insert([
+                'id1'   => 'foo',
+                'id2'   => 'bar',
+            ]);
 
         $this->assertTrue($validate->success());
     }
@@ -141,11 +147,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'foo',
+                ]),
+        );
 
         $this->assertFalse($validate->success());
     }
@@ -220,11 +229,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'value',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'value',
+                ]),
+        );
 
         $this->assertFalse($rule->validate('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
     }
@@ -268,11 +280,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'foo',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
@@ -292,11 +307,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'foo',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
@@ -316,11 +334,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'foo',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
@@ -340,11 +361,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'foo',
+                ]),
+        );
 
         $this->assertFalse($validate->success());
     }
@@ -364,12 +388,15 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'    => 'foo',
-            'content' => 'hello',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => 'hello',
+                ]),
+        );
 
         $this->assertFalse($validate->success());
     }
@@ -389,12 +416,15 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'    => 'foo',
-            'content' => 'world',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => 'world',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
@@ -414,11 +444,14 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'   => 'foo',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
@@ -473,12 +506,15 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'    => 'foo',
-            'content' => 'hello',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => 'hello',
+                ]),
+        );
 
         $this->assertFalse($validate->success());
     }

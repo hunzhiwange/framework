@@ -170,7 +170,7 @@ class Parser implements IParser
     /**
      * 注册视图编译器.
      *
-     * @return $this
+     * @return \Leevel\View\IParser
      */
     public function registerCompilers(): IParser
     {
@@ -186,7 +186,7 @@ class Parser implements IParser
     /**
      * 注册视图分析器.
      *
-     * @return $this
+     * @return \Leevel\View\IParser
      */
     public function registerParsers(): IParser
     {

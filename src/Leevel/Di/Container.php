@@ -181,7 +181,7 @@ class Container implements IContainer, ArrayAccess
      * @param mixed $service
      * @param bool  $share
      *
-     * @return $this
+     * @return \Leevel\Di\IContainer
      */
     public function bind($name, $service = null, bool $share = false): IContainer
     {
@@ -209,7 +209,7 @@ class Container implements IContainer, ArrayAccess
      * @param mixed $name
      * @param mixed $service
      *
-     * @return $this
+     * @return \Leevel\Di\IContainer
      */
     public function instance($name, $service = null): IContainer
     {
@@ -237,7 +237,7 @@ class Container implements IContainer, ArrayAccess
      * @param array|scalar $name
      * @param mixed        $service
      *
-     * @return $this
+     * @return \Leevel\Di\IContainer
      */
     public function singleton($name, $service = null): IContainer
     {
@@ -250,7 +250,7 @@ class Container implements IContainer, ArrayAccess
      * @param array|string      $alias
      * @param null|array|string $value
      *
-     * @return $this
+     * @return \Leevel\Di\IContainer
      */
     public function alias($alias, $value = null): IContainer
     {

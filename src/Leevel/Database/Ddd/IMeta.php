@@ -40,7 +40,7 @@ interface IMeta
      *
      * @param string $table
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IMeta
      */
     public static function instance(string $table): self;
 
@@ -63,7 +63,7 @@ interface IMeta
      *
      * @param mixed $connect
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IMeta
      */
     public function setConnect($connect = null): self;
 

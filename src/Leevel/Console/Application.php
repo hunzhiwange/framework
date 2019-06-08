@@ -48,7 +48,7 @@ class Application extends SymfonyApplication implements IApplication
      * @param \Leevel\Di\IContainer $container
      * @param string                $version
      *
-     * @return $this
+     * @return \Leevel\Console\Application
      */
     public function __construct(IContainer $container, string $version)
     {

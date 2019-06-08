@@ -48,6 +48,13 @@ class Doc
     protected $basePath;
 
     /**
+     * 解析文档的 Git 仓库.
+     *
+     * @var string
+     */
+    protected $git;
+
+    /**
      * 解析文档保存路径.
      *
      * @var string
@@ -62,13 +69,22 @@ class Doc
     protected $lines = [];
 
     /**
+     * 解析文档的对应的地址.
+     *
+     * @var string
+     */
+    protected $filePath;
+
+    /**
      * 构造函数.
      *
      * @param string $path
+     * @param string $git
      */
-    public function __construct(string $path)
+    public function __construct(string $path, string $git)
     {
         $this->basePath = $path;
+        $this->git = $git;
     }
 
     /**
@@ -81,6 +97,7 @@ class Doc
     public function handle(string $className): string
     {
         $this->lines = $this->parseFileContnet($reflection = new ReflectionClass($className));
+        $this->filePath = str_replace(['\\', 'Tests'], ['/', 'tests'], $className).'.php';
 
         if (!($markdown = $this->parseClassContent($reflection))) {
             return '';
@@ -125,7 +142,7 @@ class Doc
      */
     public static function getMethodBody(string $className, string $method, bool $isDoc = false): string
     {
-        $doc = new static('');
+        $doc = new static('', '');
 
         $lines = $doc->parseFileContnet(new ReflectionClass($className));
 
@@ -143,7 +160,7 @@ class Doc
      */
     public static function getClassBody(string $className): string
     {
-        $doc = new static('');
+        $doc = new static('', '');
 
         $lines = $doc->parseFileContnet($reflectionClass = new ReflectionClass($className));
 
@@ -231,6 +248,7 @@ class Doc
 
         $data = [];
         $data[] = $this->formatTitle($info['title'] ?? '', '#');
+        $data[] = $this->formatFrom($this->git, $this->filePath);
         $data[] = $this->formatDescription($info['description'] ?? '');
         $data[] = $this->formatUsers($reflection);
 
@@ -305,6 +323,24 @@ class Doc
     }
 
     /**
+     * 格式化来源.
+     *
+     * @param string $git
+     * @param string $filePath
+     *
+     * @return string
+     */
+    protected function formatFrom(string $git, string $filePath): string
+    {
+        return <<<EOT
+            ::: tip 单元测试即文档
+            [基于原始文档 {$filePath} 自动构建]({$git}/{$filePath})
+            :::
+                
+            EOT;
+    }
+
+    /**
      * 格式化 uses.
      *
      * @param \ReflectionClass $reflection
@@ -316,12 +352,12 @@ class Doc
         $uses = $this->parseUseDefined($this->lines, $reflection);
 
         if ($uses) {
-            $uses = <<<eot
+            $uses = <<<EOT
                 **引入相关类**
                 
                 {$uses}
 
-                eot;
+                EOT;
         }
 
         return $uses;
@@ -353,12 +389,12 @@ class Doc
     protected function formatNote(string $note): string
     {
         if ($note) {
-            $note = <<<eot
+            $note = <<<EOT
                 ::: tip
                 {$note}
                 :::
                     
-                eot;
+                EOT;
         }
 
         return $note;
@@ -377,12 +413,12 @@ class Doc
         $body = $this->parseMethodBody($this->lines, $method, 0 === strpos($method->getName(), 'doc'));
 
         if ($body) {
-            $body = <<<eot
+            $body = <<<EOT
                 ``` {$lang}
                 {$body}
                 ```
                     
-                eot;
+                EOT;
         }
 
         return $body;
@@ -432,15 +468,20 @@ class Doc
         $startLine = $method->getStartLine() - 1;
         $endLine = $method->getEndLine();
         $offsetLength = 4;
-        $findEot = false;
         $result = [];
 
-        // 文档类删除周围的函数定制
-        // 并且删除掉注释 `/**/` 标记
+        // 文档类删除周围的函数定义
+        // 删除内容上下的 NowDoc 标记
         if ($isDoc) {
             $startLine += 3;
             $endLine -= 2;
-            $offsetLength = 8;
+            $offsetLength = 12;
+        }
+
+        foreach ($lines as $k => $v) {
+            if ($k < $startLine || $k >= $endLine) {
+                continue;
+            }
         }
 
         foreach ($lines as $k => $v) {
@@ -448,31 +489,7 @@ class Doc
                 continue;
             }
 
-            if (false !== strpos($v, 'eot')) {
-                $findEot = true;
-
-                break;
-            }
-        }
-
-        foreach ($lines as $k => $v) {
-            if ($k < $startLine || $k >= $endLine) {
-                continue;
-            }
-
-            if (true === $findEot) {
-                // eot 需要特别处理
-                if ($k === $startLine ||
-                    $k === $startLine + 1 ||
-                    $k === $endLine - 1 ||
-                    (strlen($v) - strlen(ltrim($v)) >= $offsetLength + 4)) {
-                    $result[] = substr($v, $offsetLength);
-                } else {
-                    $result[] = $v;
-                }
-            } else {
-                $result[] = substr($v, $offsetLength);
-            }
+            $result[] = substr($v, $offsetLength);
         }
 
         return implode(PHP_EOL, $result);

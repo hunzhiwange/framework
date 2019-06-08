@@ -887,7 +887,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param string $method
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setMethod(string $method): IRequest
     {
@@ -944,7 +944,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param string $language
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setLanguage(string $language): IRequest
     {
@@ -1138,7 +1138,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param string $pathInfo
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setPathInfo(string $pathInfo): IRequest
     {

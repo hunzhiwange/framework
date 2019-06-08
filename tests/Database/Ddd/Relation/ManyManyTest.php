@@ -48,43 +48,55 @@ class ManyManyTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('user')->
-        insert([
-            'name' => 'niu',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('role')->
-        insert([
-            'name' => '管理员',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('role')->
-        insert([
-            'name' => '版主',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
 
-        $this->assertSame('3', $connect->
-        table('role')->
-        insert([
-            'name' => '会员',
-        ]));
+        $this->assertSame(
+            '3',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '会员',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('user_role')->
-        insert([
-            'user_id' => 1,
-            'role_id' => 1,
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 1,
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('user_role')->
-        insert([
-            'user_id' => 1,
-            'role_id' => 3,
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 3,
+                ]));
 
         $user = User::where('id', 1)->findOne();
 
@@ -143,45 +155,59 @@ class ManyManyTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('user')->
-        insert([
-            'name' => 'niu',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('role')->
-        insert([
-            'name' => '管理员',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('role')->
-        insert([
-            'name' => '版主',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
 
-        $this->assertSame('3', $connect->
-        table('role')->
-        insert([
-            'name' => '会员',
-        ]));
+        $this->assertSame(
+            '3',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '会员',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('user_role')->
-        insert([
-            'user_id' => 1,
-            'role_id' => 1,
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 1,
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('user_role')->
-        insert([
-            'user_id' => 1,
-            'role_id' => 3,
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 3,
+                ]));
 
-        $user = User::eager(['role'])->where('id', 1)->findOne();
+        $user = User::eager(['role'])
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
@@ -234,7 +260,9 @@ class ManyManyTest extends TestCase
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
 
-        $user = User::eager(['role'])->where('id', 1)->findOne();
+        $user = User::eager(['role'])
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -248,43 +276,55 @@ class ManyManyTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('user')->
-        insert([
-            'name' => 'niu',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('role')->
-        insert([
-            'name' => '管理员',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('role')->
-        insert([
-            'name' => '版主',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
 
-        $this->assertSame('3', $connect->
-        table('role')->
-        insert([
-            'name' => '会员',
-        ]));
+        $this->assertSame(
+            '3',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '会员',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('user_role')->
-        insert([
-            'user_id' => 1,
-            'role_id' => 1,
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 1,
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('user_role')->
-        insert([
-            'user_id' => 1,
-            'role_id' => 3,
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 3,
+                ]));
 
         $roleRelation = User::role();
 
@@ -308,11 +348,13 @@ class ManyManyTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('user')->
-        insert([
-            'name' => 'niu',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
 
         $user = User::where('id', 1)->findOne();
 

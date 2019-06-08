@@ -33,7 +33,7 @@ use ReflectionClass;
  *
  * @version 1.0
  */
-class Load
+class Load implements ILoad
 {
     /**
      * IOC Container.

@@ -42,15 +42,13 @@ class FlowControlTest extends TestCase
 
         $condition1 = 1;
 
-        $value = $test->
-
-        ifs($condition1)->condition1()->
-
-        elses()->condition2()->
-
-        endIfs()->
-
-        value();
+        $value = $test
+            ->ifs($condition1)
+            ->condition1()
+            ->elses()
+            ->condition2()
+            ->endIfs()
+            ->value();
 
         $this->assertSame('condition1', $value);
     }
@@ -61,15 +59,13 @@ class FlowControlTest extends TestCase
 
         $condition1 = 0;
 
-        $value = $test->
-
-        ifs($condition1)->condition1()->
-
-        elses()->condition2()->
-
-        endIfs()->
-
-        value();
+        $value = $test
+            ->ifs($condition1)
+            ->condition1()
+            ->elses()
+            ->condition2()
+            ->endIfs()
+            ->value();
 
         $this->assertSame('condition2', $value);
     }
@@ -84,22 +80,19 @@ class FlowControlTest extends TestCase
     {
         $test = new Test1();
 
-        $value = $test->
-
-        ifs(0 === $condition)->condition1()->
-
-        elseIfs(1 === $condition)->condition2()->
-
-        elseIfs(2 === $condition)->condition3()->
-
-        elseIfs(3 === $condition)->condition4()->
-
-        // elses 仅能根据上一次的 elseIfs 或 ifs 来做判断，这里为 elseIfs(3 === $condition)
-        elses()->condition5()->
-
-        endIfs()->
-
-        value();
+        $value = $test
+            ->ifs(0 === $condition)
+            ->condition1()
+            ->elseIfs(1 === $condition)
+            ->condition2()
+            ->elseIfs(2 === $condition)
+            ->condition3()
+            ->elseIfs(3 === $condition)
+            ->condition4()
+            ->elses() // elses 仅能根据上一次的 elseIfs 或 ifs 来做判断，这里为 elseIfs(3 === $condition)
+            ->condition5()
+            ->endIfs()
+            ->value();
 
         $this->assertSame($result, $value);
     }
@@ -123,15 +116,13 @@ class FlowControlTest extends TestCase
 
         $condition1 = 1;
 
-        $value = $test->
-
-        ifs(0 === $condition1)->condition1()->
-
-        elseIfs(1 === $condition1)->condition2()->
-
-        endIfs()->
-
-        value();
+        $value = $test
+            ->ifs(0 === $condition1)
+            ->condition1()
+            ->elseIfs(1 === $condition1)
+            ->condition2()
+            ->endIfs()
+            ->value();
 
         $this->assertSame('condition2', $value);
     }

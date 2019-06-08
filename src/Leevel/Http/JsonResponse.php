@@ -121,7 +121,7 @@ class JsonResponse extends Response
      *
      * @param null|string $callback
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCallback(?string $callback = null): IResponse
     {
@@ -139,7 +139,7 @@ class JsonResponse extends Response
      *
      * @param mixed $json
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setJson($json): IResponse
     {
@@ -162,7 +162,7 @@ class JsonResponse extends Response
      * @param mixed $data
      * @param int   $encodingOptions
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setData($data = [], ?int $encodingOptions = null): IResponse
     {
@@ -219,7 +219,7 @@ class JsonResponse extends Response
      *
      * @param int $encodingOptions
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setEncodingOptions(int $encodingOptions): IResponse
     {
@@ -253,7 +253,7 @@ class JsonResponse extends Response
     /**
      * 更新响应内容.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     protected function updateContent(): IResponse
     {

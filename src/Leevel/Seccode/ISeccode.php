@@ -121,7 +121,7 @@ interface ISeccode
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function setOption(string $name, $value): self;
 
@@ -140,14 +140,14 @@ interface ISeccode
      *
      * @param string $code
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function code(string $code): self;
 
     /**
      * 返回验证码
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function getCode(): ?string;
 }

@@ -100,17 +100,16 @@ trait Database
             $this->assertSame(
                 sprintf($sql, $table),
                 $this->varJson(
-                    $connect->sql()->
-                    table($table)->
-                    truncate()
+                    $connect
+                        ->sql()
+                        ->table($table)
+                        ->truncate()
                 )
             );
 
-            $connect->
-
-            table($table)->
-
-            truncate();
+            $connect
+                ->table($table)
+                ->truncate();
         }
     }
 

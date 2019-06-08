@@ -23,20 +23,20 @@ namespace Leevel\Support\Type;
 /**
  * 验证数组中的每一项格式化是否正确.
  *
- * @param mixed $arr
+ * @param mixed $data
  * @param array $types
  *
  * @return bool
  */
-function type_array($arr, array $types): bool
+function type_array($data, array $types): bool
 {
     // 不是数组直接返回
-    if (!is_array($arr)) {
+    if (!is_array($data)) {
         return false;
     }
 
     // 判断数组内部每一个值是否为给定的类型
-    foreach ($arr as $value) {
+    foreach ($data as $value) {
         $ret = false;
 
         foreach ($types as $item) {

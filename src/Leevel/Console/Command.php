@@ -32,8 +32,9 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * 命令抽象类
- * This class borrows heavily from the Lavavel Framework and is part of the lavavel package.
+ * 命令抽象类.
+ *
+ * - This class borrows heavily from the Lavavel Framework and is part of the lavavel package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

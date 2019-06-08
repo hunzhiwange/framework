@@ -51,13 +51,11 @@ class SqlTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                sql(true)->
-
-                latest()->
-
-                findOne()
+                $connect
+                    ->table('test')
+                    ->sql(true)
+                    ->latest()
+                    ->findOne()
             )
         );
 
@@ -73,9 +71,9 @@ class SqlTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql(true)->
-
-                delete('delete from test where id = ?', [22]),
+                $connect
+                    ->sql(true)
+                    ->delete('delete from test where id = ?', [22]),
                 1
             )
         );
@@ -94,11 +92,10 @@ class SqlTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                latest()->
-
-                findOne(true),
+                $connect
+                    ->table('test')
+                    ->latest()
+                    ->findOne(true),
                 2
             )
         );
