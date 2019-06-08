@@ -136,7 +136,7 @@ class RedisTest extends TestCase
         $this->assertSame('a:0:{}', $session->read($sessionId));
     }
 
-    protected function createRedisSessionHandler()
+    protected function createRedisSessionHandler(): Redis
     {
         $option = [
             'host'        => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['HOST'],

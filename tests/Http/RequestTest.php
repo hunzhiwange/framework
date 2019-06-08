@@ -1060,7 +1060,7 @@ class RequestTest extends TestCase
         $this->assertNull($request['foo']);
     }
 
-    protected function createTempFile()
+    protected function createTempFile(): string
     {
         $tempFile = sys_get_temp_dir().'/form_test/'.md5(time().rand()).'.tmp';
         file_put_contents($tempFile, '1');

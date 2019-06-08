@@ -236,7 +236,7 @@ class EntityTest extends TestCase
         $entity->toArray();
     }
 
-    protected function initI18n()
+    protected function initI18n(): void
     {
         $container = Container::singletons();
         $container->clear();

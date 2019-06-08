@@ -66,7 +66,7 @@ class ManagerTest extends TestCase
         $this->assertSame('hello html,bar.', $result);
     }
 
-    protected function createManager()
+    protected function createManager(): Manager
     {
         $app = new ExtendApp($container = new Container(), '');
         $container->instance('app', $app);
@@ -106,7 +106,7 @@ class ManagerTest extends TestCase
         return $manager;
     }
 
-    protected function makeHtml()
+    protected function makeHtml(): Parser
     {
         return (new Parser(new Compiler()))
             ->registerCompilers()

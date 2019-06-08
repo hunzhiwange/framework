@@ -52,7 +52,7 @@ abstract class DatabaseTestCase extends TestCase
         $this->freeDatabaseConnects();
     }
 
-    protected function clearDatabaseTable()
+    protected function clearDatabaseTable(): void
     {
         if (!method_exists($this, 'getDatabaseTable')) {
             return;

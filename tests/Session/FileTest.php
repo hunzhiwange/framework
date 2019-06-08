@@ -71,7 +71,7 @@ class FileTest extends TestCase
         $this->assertTrue($session->isStart());
     }
 
-    protected function createFileSessionHandler()
+    protected function createFileSessionHandler(): File
     {
         return new File([
             'path' => __DIR__.'/cacheFile',

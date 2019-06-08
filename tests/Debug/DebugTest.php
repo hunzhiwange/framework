@@ -783,7 +783,7 @@ class DebugTest extends TestCase
         $this->assertSame('', $content);
     }
 
-    protected function createDebugWithLog()
+    protected function createDebugWithLog(): Debug
     {
         return new Debug($this->createAppWithLog()->container());
     }

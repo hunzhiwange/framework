@@ -61,7 +61,7 @@ class RegisterTest extends TestCase
         $this->assertSame([], $manager->getLogin());
     }
 
-    protected function createSession()
+    protected function createSession(): SessionFile
     {
         $session = new SessionFile([
             'path' => __DIR__.'/cache',

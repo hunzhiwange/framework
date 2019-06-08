@@ -188,7 +188,7 @@ class ClearTest extends TestCase
         );
     }
 
-    protected function initContainerService(IContainer $container, string $cacheFile)
+    protected function initContainerService(IContainer $container, string $cacheFile): void
     {
         // 注册 app
         $app = new App2($container, '');

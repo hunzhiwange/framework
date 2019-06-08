@@ -308,7 +308,7 @@ class CacheTest extends TestCase
         rmdir(dirname($dirname));
     }
 
-    protected function initContainerService(IContainer $container, string $cacheFile)
+    protected function initContainerService(IContainer $container, string $cacheFile): void
     {
         // 注册 app
         $app = new App($container, '');

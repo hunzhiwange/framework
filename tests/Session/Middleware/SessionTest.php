@@ -102,7 +102,6 @@ class SessionTest extends TestCase
     protected function createSession(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());

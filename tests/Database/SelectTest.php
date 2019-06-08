@@ -1243,7 +1243,7 @@ class SelectTest extends TestCase
         return ['guest_book'];
     }
 
-    protected function initI18n()
+    protected function initI18n(): void
     {
         $container = Container::singletons();
         $container->clear();
@@ -1253,7 +1253,7 @@ class SelectTest extends TestCase
         });
     }
 
-    protected function clearI18n()
+    protected function clearI18n(): void
     {
         Container::singletons()->clear();
     }

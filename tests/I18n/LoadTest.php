@@ -271,7 +271,7 @@ class LoadTest extends TestCase
         (new Load([__DIR__.'/i18nNotExists']))->loadData();
     }
 
-    protected function createLoad(string $lang)
+    protected function createLoad(string $lang): Load
     {
         return (new Load([__DIR__.'/i18n']))
             ->setI18n($lang)

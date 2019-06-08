@@ -65,7 +65,7 @@ class SessionTest extends TestCase
         $session->isLogin();
     }
 
-    protected function createSession()
+    protected function createSession(): File
     {
         $session = new File([
             'path' => __DIR__.'/cache',

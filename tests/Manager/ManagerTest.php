@@ -174,7 +174,7 @@ class ManagerTest extends TestCase
         $manager->foo();
     }
 
-    protected function createManager()
+    protected function createManager(): Test1
     {
         $container = new Container();
         $manager = new Test1($container);

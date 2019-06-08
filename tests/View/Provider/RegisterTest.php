@@ -101,7 +101,7 @@ class RegisterTest extends TestCase
         return $container;
     }
 
-    protected function makeHtml()
+    protected function makeHtml(): Parser
     {
         return (new Parser(new Compiler()))
             ->registerCompilers()

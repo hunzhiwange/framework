@@ -233,7 +233,7 @@ class CacheTest extends TestCase
         rmdir(dirname($dirname));
     }
 
-    protected function initContainerService(IContainer $container, string $cacheFile, array $routerData)
+    protected function initContainerService(IContainer $container, string $cacheFile, array $routerData): void
     {
         // 注册 app
         $app = $this->createMock(IApp::class);

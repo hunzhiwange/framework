@@ -258,7 +258,7 @@ class HtmlTest extends TestCase
         unlink($file);
     }
 
-    protected function makeHtml()
+    protected function makeHtml(): Parser
     {
         return (new Parser(new Compiler()))
             ->registerCompilers()

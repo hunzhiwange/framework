@@ -100,14 +100,14 @@ class ManagerTest extends TestCase
         $this->assertSame([], $manager->getLogin());
     }
 
-    protected function createCache()
+    protected function createCache(): CacheFile
     {
         return new CacheFile([
             'path' => __DIR__.'/cacheFile',
         ]);
     }
 
-    protected function createSession()
+    protected function createSession(): SessionFile
     {
         $session = new SessionFile([
             'path' => __DIR__.'/cache',
@@ -118,7 +118,7 @@ class ManagerTest extends TestCase
         return $session;
     }
 
-    protected function createRequest()
+    protected function createRequest(): IRequest
     {
         $request = $this->createMock(IRequest::class);
 
@@ -128,10 +128,9 @@ class ManagerTest extends TestCase
         return $request;
     }
 
-    protected function createManager()
+    protected function createManager(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
@@ -163,10 +162,9 @@ class ManagerTest extends TestCase
         return $manager;
     }
 
-    protected function createManagerWithToken()
+    protected function createManagerWithToken(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
@@ -200,10 +198,9 @@ class ManagerTest extends TestCase
         return $manager;
     }
 
-    protected function createManagerWithTokenAndSession()
+    protected function createManagerWithTokenAndSession(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());

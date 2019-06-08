@@ -163,7 +163,7 @@ class RedirectResponseTest extends TestCase
         $this->assertSame('foo', $response->getTargetUrl());
     }
 
-    protected function mokeSessionForWith()
+    protected function mokeSessionForWith(): ISession
     {
         $session = $this->createMock(ISession::class);
 

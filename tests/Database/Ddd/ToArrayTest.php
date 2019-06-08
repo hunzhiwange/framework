@@ -279,7 +279,7 @@ class ToArrayTest extends TestCase
         );
     }
 
-    protected function makeWhiteEntity()
+    protected function makeWhiteEntity(): TestToArrayWhiteEntity
     {
         $entity = new TestToArrayWhiteEntity();
 
@@ -298,7 +298,7 @@ class ToArrayTest extends TestCase
         return $entity;
     }
 
-    protected function makeBlackEntity()
+    protected function makeBlackEntity(): TestToArrayBlackEntity
     {
         $entity = new TestToArrayBlackEntity();
 
@@ -317,7 +317,7 @@ class ToArrayTest extends TestCase
         return $entity;
     }
 
-    protected function makeEntity()
+    protected function makeEntity(): TestToArrayEntity
     {
         $entity = new TestToArrayEntity();
 

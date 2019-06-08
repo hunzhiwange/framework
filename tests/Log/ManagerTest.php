@@ -79,10 +79,9 @@ class ManagerTest extends TestCase
         $this->assertInstanceof(Logger::class, $manager->getMonolog());
     }
 
-    protected function createManager()
+    protected function createManager(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
