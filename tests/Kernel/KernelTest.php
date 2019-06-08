@@ -84,7 +84,7 @@ class KernelTest extends TestCase
         ];
     }
 
-    public function testWithResponseIsJson()
+    public function testWithResponseIsJson(): void
     {
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
@@ -105,7 +105,7 @@ class KernelTest extends TestCase
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
-    public function testWithResponseIsJson2()
+    public function testWithResponseIsJson2(): void
     {
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
@@ -126,7 +126,7 @@ class KernelTest extends TestCase
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
-    public function testWithResponseIsJson3()
+    public function testWithResponseIsJson3(): void
     {
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
@@ -147,7 +147,7 @@ class KernelTest extends TestCase
         $this->assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
-    public function testRouterWillThrowException()
+    public function testRouterWillThrowException(): void
     {
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
@@ -170,7 +170,7 @@ class KernelTest extends TestCase
         $this->assertStringContainsString('<span class="exc-title-primary">Exception</span>', $resultResponse->getContent());
     }
 
-    public function testRouterWillThrowError()
+    public function testRouterWillThrowError(): void
     {
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
@@ -209,14 +209,14 @@ class KernelTest extends TestCase
 
         $option
             ->method('get')
-            ->will($this->returnCallback(function (string $k) use ($debug) {
+            ->willReturnCallback(function (string $k) use ($debug) {
                 $map = [
                     'debug'       => $debug,
                     'environment' => 'development',
                 ];
 
                 return $map[$k];
-            }));
+            });
 
         $this->assertSame($debug, $option->get('debug'));
         $this->assertSame('development', $option->get('environment'));

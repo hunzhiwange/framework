@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class PrefixTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -83,7 +83,7 @@ class PrefixTest extends TestCase
         );
     }
 
-    public function testFlow()
+    public function testFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -114,7 +114,7 @@ class PrefixTest extends TestCase
         );
     }
 
-    public function testFlow2()
+    public function testFlow2(): void
     {
         $condition = true;
         $connect = $this->createDatabaseConnectMock();

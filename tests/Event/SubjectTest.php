@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class SubjectTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $container = new Container();
 

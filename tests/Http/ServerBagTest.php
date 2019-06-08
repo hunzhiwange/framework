@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ServerBagTest extends TestCase
 {
-    public function testShouldExtractHeadersFromServerArray()
+    public function testShouldExtractHeadersFromServerArray(): void
     {
         $server = [
             'SOME_SERVER_VARIABLE'  => 'value',

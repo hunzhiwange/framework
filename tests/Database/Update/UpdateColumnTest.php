@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class UpdateColumnTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -61,7 +61,7 @@ class UpdateColumnTest extends TestCase
         );
     }
 
-    public function testExpression()
+    public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

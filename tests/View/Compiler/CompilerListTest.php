@@ -48,7 +48,7 @@ class CompilerListTest extends TestCase
      *     note="",
      * )
      */
-    public function testCode()
+    public function testCode(): void
     {
         $parser = $this->createParser();
 
@@ -74,7 +74,7 @@ class CompilerListTest extends TestCase
      *     note="",
      * )
      */
-    public function testCodeFull()
+    public function testCodeFull(): void
     {
         $parser = $this->createParser();
         $source = <<<'eot'
@@ -99,7 +99,7 @@ class CompilerListTest extends TestCase
      *     note="",
      * )
      */
-    public function testNode()
+    public function testNode(): void
     {
         $parser = $this->createParser();
         $source = <<<'eot'
@@ -126,7 +126,7 @@ class CompilerListTest extends TestCase
      *     note="",
      * )
      */
-    public function testNodeFull()
+    public function testNodeFull(): void
     {
         $parser = $this->createParser();
         $source = <<<'eot'

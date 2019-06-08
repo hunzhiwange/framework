@@ -37,26 +37,26 @@ use Tests\TestCase;
  */
 class BagTest extends TestCase
 {
-    public function testAll()
+    public function testAll(): void
     {
         $bag = new Bag(['foo' => 'bar']);
         $this->assertSame(['foo' => 'bar'], $bag->all(), '->all() gets all the input');
     }
 
-    public function testKeys()
+    public function testKeys(): void
     {
         $bag = new Bag(['foo' => 'bar']);
         $this->assertSame(['foo'], $bag->keys());
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $bag = new Bag(['foo' => 'bar']);
         $bag->add(['bar' => 'bas']);
         $this->assertSame(['foo' => 'bar', 'bar' => 'bas'], $bag->all());
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $bag = new Bag(['foo' => 'bar']);
         $bag->add(['bar' => 'bas']);
@@ -65,7 +65,7 @@ class BagTest extends TestCase
         $this->assertSame(['foo' => 'bar'], $bag->all());
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $bag = new Bag(['foo' => 'bar']);
         $bag->replace(['FOO' => 'BAR']);
@@ -73,7 +73,7 @@ class BagTest extends TestCase
         $this->assertFalse($bag->has('foo'), '->replace() overrides previously set the input');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $bag = new Bag(['foo' => 'bar', 'null' => null]);
         $this->assertSame('bar', $bag->get('foo'), '->get() gets the value of a parameter');
@@ -81,7 +81,7 @@ class BagTest extends TestCase
         $this->assertNull($bag->get('null', 'default'), '->get() returns null if null is set');
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         $bag = new Bag([]);
         $bag->set('foo', 'bar');
@@ -90,14 +90,14 @@ class BagTest extends TestCase
         $this->assertSame('baz', $bag->get('foo'), '->set() overrides previously set parameter');
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $bag = new Bag(['foo' => 'bar']);
         $this->assertTrue($bag->has('foo'), '->has() returns true if a parameter is defined');
         $this->assertFalse($bag->has('unknown'), '->has() return false if a parameter is not defined');
     }
 
-    public function testGetIterator()
+    public function testGetIterator(): void
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
         $bag = new Bag($parameters);
@@ -111,21 +111,21 @@ class BagTest extends TestCase
         $this->assertSame(count($parameters), $i);
     }
 
-    public function testCount()
+    public function testCount(): void
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
         $bag = new Bag($parameters);
         $this->assertCount(count($parameters), $bag);
     }
 
-    public function testToJson()
+    public function testToJson(): void
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
         $bag = new Bag($parameters);
         $this->assertSame($bag->toJson(), '{"foo":"bar","hello":"world"}');
     }
 
-    public function testFilter()
+    public function testFilter(): void
     {
         $parameters = ['foo' => '- 1234', 'hello' => 'world', 'number' => ' 12.11'];
         $bag = new Bag($parameters);
@@ -147,7 +147,7 @@ class BagTest extends TestCase
         $this->assertSame($bag->get('no|default=MY_CONST'), 'hello const');
     }
 
-    public function testGetPartData()
+    public function testGetPartData(): void
     {
         $parameters = [
             'foo' => [
@@ -162,7 +162,7 @@ class BagTest extends TestCase
         $this->assertSame($bag->get('foo\\namepace.sub|substr=2'), 'am here');
     }
 
-    public function testGetPartDataButNotArray()
+    public function testGetPartDataButNotArray(): void
     {
         $parameters = [
             'bar' => 'helloworld',
@@ -172,7 +172,7 @@ class BagTest extends TestCase
         $this->assertSame($bag->get('bar\\hello'), 'helloworld');
     }
 
-    public function testGetPartDataButSubNotFoundInArray()
+    public function testGetPartDataButSubNotFoundInArray(): void
     {
         $parameters = [
             'bar' => ['hello'    => 'world'],
@@ -182,7 +182,7 @@ class BagTest extends TestCase
         $this->assertSame($bag->get('bar\\hello.world.sub', 'defaults'), 'defaults');
     }
 
-    public function testToString()
+    public function testToString(): void
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
         $bag = new Bag($parameters);
@@ -191,7 +191,7 @@ class BagTest extends TestCase
         $this->assertSame((string) ($bag), '{"foo":"bar","hello":"world"}');
     }
 
-    public function testFilterValueWithFilterId()
+    public function testFilterValueWithFilterId(): void
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
         $bag = new Bag($parameters);
@@ -199,7 +199,7 @@ class BagTest extends TestCase
         $this->assertSame($bag->get('foo|email'), 'bar');
     }
 
-    public function testFilterValueWithFilterIdReturnFalse()
+    public function testFilterValueWithFilterIdReturnFalse(): void
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
         $bag = new Bag($parameters);
@@ -207,7 +207,7 @@ class BagTest extends TestCase
         $this->assertSame($bag->get('foo|validate_email', 'hello'), 'hello');
     }
 
-    public function testFilterValueWithFilterIdReturnTrue()
+    public function testFilterValueWithFilterIdReturnTrue(): void
     {
         $parameters = ['foo' => 'hello@foo.com', 'hello' => 'world'];
         $bag = new Bag($parameters);
@@ -215,7 +215,7 @@ class BagTest extends TestCase
         $this->assertSame($bag->get('foo|validate_email', 'hello'), 'hello@foo.com');
     }
 
-    public function testFilterValueWithRealInt()
+    public function testFilterValueWithRealInt(): void
     {
         $parameters = ['foo' => 'hello@foo.com', 'hello' => 'world'];
         $bag = new Bag($parameters);
@@ -223,7 +223,7 @@ class BagTest extends TestCase
         $this->assertSame($bag->filter('foo', 'hello', [FILTER_VALIDATE_EMAIL]), 'hello@foo.com');
     }
 
-    public function testFilterValueWithOption()
+    public function testFilterValueWithOption(): void
     {
         $parameters = ['foo' => '0755'];
         $bag = new Bag($parameters);

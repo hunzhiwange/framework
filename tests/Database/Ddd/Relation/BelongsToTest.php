@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\Relation\User;
  */
 class BelongsToTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -94,7 +94,7 @@ class BelongsToTest extends TestCase
         $this->assertSame('niu', $user->getterName());
     }
 
-    public function testEager()
+    public function testEager(): void
     {
         $posts = Post::limit(5)->findAll();
 
@@ -141,7 +141,7 @@ class BelongsToTest extends TestCase
         }
     }
 
-    public function testRelationAsMethod()
+    public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -175,7 +175,7 @@ class BelongsToTest extends TestCase
         $this->assertInstanceof(Select::class, $userRelation->getSelect());
     }
 
-    public function testEagerButNotFoundSourceData()
+    public function testEagerButNotFoundSourceData(): void
     {
         $posts = Post::limit(5)->findAll();
 

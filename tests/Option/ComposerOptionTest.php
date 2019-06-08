@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class ComposerOptionTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $options = ($composerOption = new ComposerOption(__DIR__.'/app1'))->loadData();
 
@@ -83,7 +83,7 @@ class ComposerOptionTest extends TestCase
         );
     }
 
-    public function testComposerNotFound()
+    public function testComposerNotFound(): void
     {
         $options = ($composerOption = new ComposerOption(__DIR__.'/app4'))->loadData();
 

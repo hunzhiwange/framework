@@ -38,7 +38,7 @@ class ControllerTest extends TestCase
 {
     use BaseMake;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $file = __DIR__.'/../../Console/BarValue.php';
 
@@ -62,7 +62,7 @@ class ControllerTest extends TestCase
         unlink($file);
     }
 
-    public function testActionSpecial()
+    public function testActionSpecial(): void
     {
         $file = __DIR__.'/../../Console/Hello.php';
 
@@ -88,7 +88,7 @@ class ControllerTest extends TestCase
         unlink($file);
     }
 
-    public function testExtend()
+    public function testExtend(): void
     {
         $file = __DIR__.'/../../Console/Hello.php';
 

@@ -49,7 +49,7 @@ class TraverseProviderTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $bootstrap = new TraverseProvider();
 

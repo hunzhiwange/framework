@@ -60,7 +60,7 @@ class RequestTest extends TestCase
     /**
      * 测试 reset 方法.
      */
-    public function testReset()
+    public function testReset(): void
     {
         $request = new Request();
         $request->reset(['foo' => 'bar']);
@@ -79,7 +79,7 @@ class RequestTest extends TestCase
     /**
      * 测试 language 方法.
      */
-    public function testLanguage()
+    public function testLanguage(): void
     {
         $request = new Request();
 
@@ -88,7 +88,7 @@ class RequestTest extends TestCase
         $this->assertSame($request->getLanguage(), 'zh-cn');
     }
 
-    public function testLanguageAlia()
+    public function testLanguageAlia(): void
     {
         $request = new Request();
 
@@ -100,7 +100,7 @@ class RequestTest extends TestCase
     /**
      * 测试 getUri 方法.
      */
-    public function testGetUri()
+    public function testGetUri(): void
     {
         $server = [];
 
@@ -207,7 +207,7 @@ class RequestTest extends TestCase
     /**
      * 测试 getSchemeAndHttpHost 方法.
      */
-    public function testGetSchemeAndHttpHost()
+    public function testGetSchemeAndHttpHost(): void
     {
         $request = new Request();
 
@@ -253,7 +253,7 @@ class RequestTest extends TestCase
         ];
     }
 
-    public function testGetQueryStringReturnsNull()
+    public function testGetQueryStringReturnsNull(): void
     {
         $request = new Request();
         $this->assertNull($request->getQueryString(), '->getQueryString() returns null for non-existent query string');
@@ -262,7 +262,7 @@ class RequestTest extends TestCase
         $this->assertNull($request->getQueryString(), '->getQueryString() returns null for empty query string');
     }
 
-    public function testGetHost()
+    public function testGetHost(): void
     {
         $request = new Request();
 
@@ -284,7 +284,7 @@ class RequestTest extends TestCase
         $this->assertSame('www.host.com', $request->getHost(), '->getHost() value from Host header has priority over SERVER_NAME ');
     }
 
-    public function testGetPort()
+    public function testGetPort(): void
     {
         $request = new Request([], [], [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => 'https',
@@ -294,7 +294,7 @@ class RequestTest extends TestCase
         $this->assertSame(80, $port, 'Without trusted proxies FORWARDED_PROTO and FORWARDED_PORT are ignored.');
     }
 
-    public function testGetSetMethod()
+    public function testGetSetMethod(): void
     {
         $request = new Request();
         $this->assertSame('GET', $request->getMethod(), '->getMethod() returns GET if no method is defined');
@@ -394,7 +394,7 @@ class RequestTest extends TestCase
         unset($_SERVER['REQUEST_METHOD'], $_SERVER['CONTENT_TYPE']);
     }
 
-    public function testGetScriptName()
+    public function testGetScriptName(): void
     {
         $request = new Request();
         $this->assertSame('', $request->getScriptName());
@@ -416,7 +416,7 @@ class RequestTest extends TestCase
         $this->assertSame('/index.php', $request->getScriptName());
     }
 
-    public function testGetBasePath()
+    public function testGetBasePath(): void
     {
         $request = new Request();
         $this->assertSame('', $request->getBasePath());
@@ -446,7 +446,7 @@ class RequestTest extends TestCase
         $this->assertSame('', $request->getBasePath()); // 缓存
     }
 
-    public function testGetPathInfo()
+    public function testGetPathInfo(): void
     {
         $request = new Request();
         $this->assertSame('/', $request->getPathInfo());
@@ -467,7 +467,7 @@ class RequestTest extends TestCase
         $this->assertSame('/', $request->getPathInfo());
     }
 
-    public function testGetPathInfoWithExt()
+    public function testGetPathInfoWithExt(): void
     {
         $server = [];
         $server['REQUEST_URI'] = '/path/info.html';
@@ -475,7 +475,7 @@ class RequestTest extends TestCase
         $this->assertSame('/path/info', $request->getPathInfo());
     }
 
-    public function testIsJson()
+    public function testIsJson(): void
     {
         $request = new Request();
 
@@ -487,7 +487,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isRealJson());
     }
 
-    public function testIsAcceptAny()
+    public function testIsAcceptAny(): void
     {
         $request = new Request();
 
@@ -500,7 +500,7 @@ class RequestTest extends TestCase
         $this->assertTrue($request->isAcceptAny());
     }
 
-    public function testIsAcceptJson()
+    public function testIsAcceptJson(): void
     {
         $request = new Request();
 
@@ -527,7 +527,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isRealAcceptJson());
     }
 
-    public function testGetParameterPrecedence()
+    public function testGetParameterPrecedence(): void
     {
         $request = new Request();
         $request->params->set('foo', 'attr');
@@ -542,7 +542,7 @@ class RequestTest extends TestCase
         $this->assertNull($request->get('foo'));
     }
 
-    public function testIsXmlHttpRequest()
+    public function testIsXmlHttpRequest(): void
     {
         $request = new Request();
         $this->assertFalse($request->isXmlHttpRequest());
@@ -554,7 +554,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isXmlHttpRequest());
     }
 
-    public function testIsMethod()
+    public function testIsMethod(): void
     {
         $request = new Request();
         $request->setMethod('POST');
@@ -570,31 +570,31 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isMethod('post'));
     }
 
-    public function testMagicIsset()
+    public function testMagicIsset(): void
     {
         $request = new Request(['foo' => 'bar']);
         $this->assertTrue(isset($request->foo));
         $this->assertFalse(isset($request->helloNot));
     }
 
-    public function testMagicGet()
+    public function testMagicGet(): void
     {
         $request = new Request(['foo' => 'bar']);
         $this->assertSame('bar', $request->foo);
     }
 
-    public function testMagicGetNotFound()
+    public function testMagicGetNotFound(): void
     {
         $request = new Request(['foo' => 'bar']);
         $this->assertNull($request->helloNot);
     }
 
-    public function testCoroutineContext()
+    public function testCoroutineContext(): void
     {
         $this->assertTrue(Request::coroutineContext());
     }
 
-    public function testExists()
+    public function testExists(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertTrue($request->exists(['foo']));
@@ -602,7 +602,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->exists(['notFound']));
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world', 'e' => '']);
         $this->assertTrue($request->has(['foo']));
@@ -611,7 +611,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->has(['e']));
     }
 
-    public function testOnly()
+    public function testOnly(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar'], $request->only(['foo']));
@@ -619,7 +619,7 @@ class RequestTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'not' => null], $request->only(['foo', 'not']));
     }
 
-    public function testExcept()
+    public function testExcept(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['hello' => 'world'], $request->except(['foo']));
@@ -627,7 +627,7 @@ class RequestTest extends TestCase
         $this->assertSame(['hello' => 'world'], $request->except(['foo', 'not']));
     }
 
-    public function testInput()
+    public function testInput(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('bar', $request->input('foo'));
@@ -635,19 +635,19 @@ class RequestTest extends TestCase
         $this->assertSame('world', $request->input('hello'));
     }
 
-    public function testInputAll()
+    public function testInputAll(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->input());
     }
 
-    public function testInputNullWithDefault()
+    public function testInputNullWithDefault(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('default', $request->input('not', 'default'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('bar', $request->query('foo'));
@@ -655,19 +655,19 @@ class RequestTest extends TestCase
         $this->assertSame('world', $request->query('hello'));
     }
 
-    public function testQueryAll()
+    public function testQueryAll(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query());
     }
 
-    public function testQueryNullWithDefault()
+    public function testQueryNullWithDefault(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('default', $request->query('not', 'default'));
     }
 
-    public function testCookie()
+    public function testCookie(): void
     {
         $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('bar', $request->cookie('foo'));
@@ -675,26 +675,26 @@ class RequestTest extends TestCase
         $this->assertSame('world', $request->cookie('hello'));
     }
 
-    public function testCookieAll()
+    public function testCookieAll(): void
     {
         $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->cookie());
     }
 
-    public function testCookieNullWithDefault()
+    public function testCookieNullWithDefault(): void
     {
         $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('default', $request->cookie('not', 'default'));
     }
 
-    public function testHasCookie()
+    public function testHasCookie(): void
     {
         $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
         $this->assertTrue($request->hasCookie('foo'));
         $this->assertFalse($request->hasCookie('not'));
     }
 
-    public function testFile()
+    public function testFile(): void
     {
         $tmpFile = $this->createTempFile();
 
@@ -716,7 +716,7 @@ class RequestTest extends TestCase
         $this->assertNull($request->file('not'));
     }
 
-    public function testFileAll()
+    public function testFileAll(): void
     {
         $tmpFile = $this->createTempFile();
 
@@ -740,7 +740,7 @@ class RequestTest extends TestCase
         $this->assertCount(1, $files);
     }
 
-    public function testHasFile()
+    public function testHasFile(): void
     {
         $tmpFile = $this->createTempFile();
 
@@ -762,7 +762,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->hasFile('not'));
     }
 
-    public function testMultiFile()
+    public function testMultiFile(): void
     {
         $tmpFile = $this->createTempFile();
         $tmpFile2 = $this->createTempFile();
@@ -789,7 +789,7 @@ class RequestTest extends TestCase
         $this->assertCount(2, $files);
     }
 
-    public function testMultiFileGetArr()
+    public function testMultiFileGetArr(): void
     {
         $tmpFile = $this->createTempFile();
         $tmpFile2 = $this->createTempFile();
@@ -818,7 +818,7 @@ class RequestTest extends TestCase
         $this->assertCount(2, $files);
     }
 
-    public function testHeader()
+    public function testHeader(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertSame('127.0.0.1', $request->header('host'));
@@ -827,40 +827,40 @@ class RequestTest extends TestCase
         $this->assertSame('https://www.queryphp.com', $request->header('REFERER'));
     }
 
-    public function testHeaderAll()
+    public function testHeaderAll(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertSame(['host' => '127.0.0.1', 'referer' => 'https://www.queryphp.com'], $request->header());
     }
 
-    public function testHeaderNullWithDefault()
+    public function testHeaderNullWithDefault(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertNull($request->header('notFound'));
         $this->assertSame('default', $request->header('notFound', 'default'));
     }
 
-    public function testServer()
+    public function testServer(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertSame('127.0.0.1', $request->server('HTTP_HOST'));
         $this->assertSame('https://www.queryphp.com', $request->server('HTTP_REFERER'));
     }
 
-    public function testServerAll()
+    public function testServerAll(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertSame(['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com'], $request->server());
     }
 
-    public function testServiceNullWithDefault()
+    public function testServiceNullWithDefault(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertNull($request->server('notFound'));
         $this->assertSame('default', $request->server('notFound', 'default'));
     }
 
-    public function testMerge()
+    public function testMerge(): void
     {
         $request = new Request(['foo' => 'bar']);
         $this->assertSame(['foo' => 'bar'], $request->input());
@@ -868,7 +868,7 @@ class RequestTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->input());
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $request = new Request(['foo' => 'bar']);
         $this->assertSame(['foo' => 'bar'], $request->input());
@@ -876,43 +876,43 @@ class RequestTest extends TestCase
         $this->assertSame(['hello' => 'world'], $request->input());
     }
 
-    public function testIsCli()
+    public function testIsCli(): void
     {
         $request = new Request();
         $this->assertTrue($request->isCli());
     }
 
-    public function testIsCliForSwoole()
+    public function testIsCliForSwoole(): void
     {
         $request = new Request([], [], [], [], [], ['SERVER_SOFTWARE' => 'swoole-http-server']);
         $this->assertFalse($request->isCli());
     }
 
-    public function testIsCgi()
+    public function testIsCgi(): void
     {
         $request = new Request();
         $this->assertFalse($request->isCgi());
     }
 
-    public function testIsJsonForContentType()
+    public function testIsJsonForContentType(): void
     {
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json']);
         $this->assertTrue($request->isJson());
     }
 
-    public function testIsJsonForContentTypeButIsHtml()
+    public function testIsJsonForContentTypeButIsHtml(): void
     {
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'text/html']);
         $this->assertFalse($request->isJson());
     }
 
-    public function testIsGet()
+    public function testIsGet(): void
     {
         $request = new Request();
         $this->assertTrue($request->isGet());
     }
 
-    public function testIsGetWillReturnTrue()
+    public function testIsGetWillReturnTrue(): void
     {
         $request = new Request();
         $request->setMethod(IRequest::METHOD_GET);
@@ -959,43 +959,43 @@ class RequestTest extends TestCase
         ];
     }
 
-    public function testGetClientIp()
+    public function testGetClientIp(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_CLIENT_IP' => '127.0.0.1']);
         $this->assertSame('127.0.0.1', $request->getClientIp());
     }
 
-    public function testGetClientIpWithRemoteAddr()
+    public function testGetClientIpWithRemoteAddr(): void
     {
         $request = new Request([], [], [], [], [], ['REMOTE_ADDR' => '127.0.0.1']);
         $this->assertSame('127.0.0.1', $request->getClientIp());
     }
 
-    public function testGetClientIpWithDefault()
+    public function testGetClientIpWithDefault(): void
     {
         $request = new Request();
         $this->assertSame('0.0.0.0', $request->getClientIp());
     }
 
-    public function testGetRealMethod()
+    public function testGetRealMethod(): void
     {
         $request = new Request();
         $this->assertSame('GET', $request->getRealMethod());
     }
 
-    public function testGetContent()
+    public function testGetContent(): void
     {
         $request = new Request([], [], [], [], [], [], 'helloworld');
         $this->assertSame('helloworld', $request->getContent());
     }
 
-    public function testGetContentFromPhpInput()
+    public function testGetContentFromPhpInput(): void
     {
         $request = new Request();
         $this->assertSame('', $request->getContent());
     }
 
-    public function testGetContentFromResource()
+    public function testGetContentFromResource(): void
     {
         $file = __DIR__.'/testGetContentFromResource.txt';
         file_put_contents($file, 'hello');
@@ -1006,45 +1006,45 @@ class RequestTest extends TestCase
         unlink($file);
     }
 
-    public function testGetRoot()
+    public function testGetRoot(): void
     {
         $request = new Request([], [], [], [], [], ['SERVER_NAME' => 'servername', 'SERVER_PORT' => '90']);
         $this->assertSame('http://servername:90', $request->getRoot());
     }
 
-    public function testGetEnter()
+    public function testGetEnter(): void
     {
         $request = new Request();
         $this->assertSame('', $request->getEnter());
     }
 
-    public function testGetEnterWasNotEmpty()
+    public function testGetEnterWasNotEmpty(): void
     {
         $request = new Request([], [], [], [], [], ['SERVER_SOFTWARE' => 'swoole-http-server', 'SCRIPT_NAME' => '/base/web/index_dev.php']);
         $this->assertSame('/base/web', $request->getEnter());
     }
 
-    public function testToArray()
+    public function testToArray(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->toArray());
     }
 
-    public function testOffsetExists()
+    public function testOffsetExists(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertTrue(isset($request['foo']));
         $this->assertFalse(isset($request['notfound']));
     }
 
-    public function testOffsetGet()
+    public function testOffsetGet(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('bar', $request['foo']);
         $this->assertNull($request['notfound']);
     }
 
-    public function testOffsetSet()
+    public function testOffsetSet(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('bar', $request['foo']);
@@ -1052,7 +1052,7 @@ class RequestTest extends TestCase
         $this->assertSame('newbar', $request['foo']);
     }
 
-    public function testOffsetUnset()
+    public function testOffsetUnset(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('bar', $request['foo']);
@@ -1060,7 +1060,7 @@ class RequestTest extends TestCase
         $this->assertNull($request['foo']);
     }
 
-    protected function createTempFile()
+    protected function createTempFile(): string
     {
         $tempFile = sys_get_temp_dir().'/form_test/'.md5(time().rand()).'.tmp';
         file_put_contents($tempFile, '1');

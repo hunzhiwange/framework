@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class OptionTest extends TestCase
 {
-    public function testAll()
+    public function testAll(): void
     {
         $data = [
             'hello'       => 'world',
@@ -46,7 +46,7 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), $data);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $data = [
             'app' => [
@@ -91,7 +91,7 @@ class OptionTest extends TestCase
         $this->assertNull($option->get('cache\\time_preset.foo2'));
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $data = [
             'app' => [
@@ -127,7 +127,7 @@ class OptionTest extends TestCase
         $this->assertFalse($option->has('cache\\time_preset.foo2'));
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         $data = [];
 
@@ -164,7 +164,7 @@ class OptionTest extends TestCase
         $this->assertNull($option->get('cache\\time_preset.foo2'));
     }
 
-    public function testSet2()
+    public function testSet2(): void
     {
         $data = [
             'hello' => 'world',
@@ -177,7 +177,7 @@ class OptionTest extends TestCase
         $this->assertSame($data, $option->get());
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $data = [
             'app' => [
@@ -255,7 +255,7 @@ class OptionTest extends TestCase
         ]);
     }
 
-    public function testDelete2()
+    public function testDelete2(): void
     {
         $data = [
             'app' => [
@@ -278,7 +278,7 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), $data);
     }
 
-    public function testReset()
+    public function testReset(): void
     {
         $data = [
             'hello' => 'world',
@@ -313,7 +313,7 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), []);
     }
 
-    public function testArrayAccess()
+    public function testArrayAccess(): void
     {
         $data = [
             'app' => [

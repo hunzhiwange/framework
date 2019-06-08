@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class LocalTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $local = new Local([
             'path' => $path = __DIR__,
@@ -54,7 +54,7 @@ class LocalTest extends TestCase
         unlink($file);
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $local = new Local([
             'path' => $path = __DIR__,
@@ -74,7 +74,7 @@ class LocalTest extends TestCase
         Fso::deleteDirectory(dirname($path), true);
     }
 
-    public function testPathNotFound()
+    public function testPathNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The local requires path option.');

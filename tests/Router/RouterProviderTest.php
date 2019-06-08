@@ -47,7 +47,7 @@ class RouterProviderTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $container = Container::singletons();
         $app = new App($container, '');
@@ -80,7 +80,7 @@ class RouterProviderTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testRouterIsCache()
+    public function testRouterIsCache(): void
     {
         $container = Container::singletons();
         $app = new App($container, '');

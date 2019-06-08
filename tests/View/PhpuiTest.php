@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class PhpuiTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $phpui = new Phpui([
             'theme_path' => __DIR__.'/assert',
@@ -52,7 +52,7 @@ class PhpuiTest extends TestCase
         $this->assertSame('hello phpui,bar.', $result);
     }
 
-    public function testDisplayReturn()
+    public function testDisplayReturn(): void
     {
         $phpui = new Phpui([
             'theme_path' => __DIR__.'/assert',
@@ -65,7 +65,7 @@ class PhpuiTest extends TestCase
         $this->assertSame('hello phpui,bar.', $result);
     }
 
-    public function testDisplayWithVar()
+    public function testDisplayWithVar(): void
     {
         $phpui = new Phpui([
             'theme_path' => __DIR__.'/assert',
@@ -76,7 +76,7 @@ class PhpuiTest extends TestCase
         $this->assertSame('hello phpui,bar.', $result);
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $phpui = new Phpui([
             'theme_path' => __DIR__.'/assert',
@@ -89,7 +89,7 @@ class PhpuiTest extends TestCase
         $this->assertSame('hello phpui for foo suffix,bar.', $result);
     }
 
-    public function testParseFileForFullPath()
+    public function testParseFileForFullPath(): void
     {
         $phpui = new Phpui([
             'theme_path' => __DIR__.'/assert',
@@ -100,7 +100,7 @@ class PhpuiTest extends TestCase
         $this->assertSame('hello phpui for fullpath,bar.', $result);
     }
 
-    public function testParseFileThemeNotSet()
+    public function testParseFileThemeNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -112,7 +112,7 @@ class PhpuiTest extends TestCase
         $phpui->display('phpui_test_not_found', ['foo' => 'bar'], null, false);
     }
 
-    public function testParseFileFullPathNotFound()
+    public function testParseFileFullPathNotFound(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -126,7 +126,7 @@ class PhpuiTest extends TestCase
         $phpui->display('phpui_test_not_found.php', ['foo' => 'bar'], null, false);
     }
 
-    public function testParseFileForTheme()
+    public function testParseFileForTheme(): void
     {
         $phpui = new Phpui([
             'theme_path' => __DIR__.'/assert',

@@ -47,7 +47,7 @@ class SafeTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $strings = "O'Reilly?";
         $out = "O\\'Reilly?";
@@ -71,7 +71,7 @@ class SafeTest extends TestCase
      *     note="",
      * )
      */
-    public function testDeepReplace()
+    public function testDeepReplace(): void
     {
         $strings = 'You should eat fruits, vegetables, and fiber every day.';
         $out = 'You should eat fruits, vegetables, and fiber every .';
@@ -86,7 +86,7 @@ class SafeTest extends TestCase
      *     note="",
      * )
      */
-    public function testEscUrl()
+    public function testEscUrl(): void
     {
         $strings = 'You should eat fruits, vegetables, and fiber every day.';
         $out = 'You should eat fruits, vegetables, and fiber every .';
@@ -116,7 +116,7 @@ class SafeTest extends TestCase
      *     note="",
      * )
      */
-    public function testFilterScript()
+    public function testFilterScript(): void
     {
         $strings = '<script>hello world.';
         $out = '&lt;script>hello world.';
@@ -131,7 +131,7 @@ class SafeTest extends TestCase
      *     note="",
      * )
      */
-    public function testCleanHex()
+    public function testCleanHex(): void
     {
         $strings = '0x63hello 0x6f world.';
         $out = '0hello 0 world.';
@@ -139,7 +139,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::cleanHex($strings));
     }
 
-    public function testSqlFilter()
+    public function testSqlFilter(): void
     {
         $strings = "'myuser' or % # 'foo' = 'foo'";
         $out = 'myuserorfoo=foo';
@@ -147,7 +147,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::sqlFilter($strings));
     }
 
-    public function testFieldsFilter()
+    public function testFieldsFilter(): void
     {
         $strings = "'myuser' or % # 'foo' = 'foo'";
         $out = 'myuserorfoo=foo';
@@ -160,7 +160,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::fieldsFilter($strings));
     }
 
-    public function testStrFilter()
+    public function testStrFilter(): void
     {
         $strings = 'This is some <b>bold</b> text.';
         $out = 'This is some &lt;b&gt;bold&lt;/b&gt; text.';
@@ -175,7 +175,7 @@ class SafeTest extends TestCase
         $this->assertSame([''], Safe::strFilter($strings, 5));
     }
 
-    public function testHtmlFilter()
+    public function testHtmlFilter(): void
     {
         $strings = "foo bar<script>.<span onclick='alert(5);'>yes</span>.";
         $out = 'foo bar&lt;script&gt;.<span >yes</span>.';
@@ -190,7 +190,7 @@ class SafeTest extends TestCase
         $this->assertSame([''], Safe::htmlFilter($strings, 5));
     }
 
-    public function testIntArrFilter()
+    public function testIntArrFilter(): void
     {
         $strings = '5wb,577,sss66zz';
         $out = '5,577,0';
@@ -204,7 +204,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::intArrFilter($strings));
     }
 
-    public function testStrArrFilter()
+    public function testStrArrFilter(): void
     {
         $strings = '5wb,577,sss66zz';
         $out = "'5wb','577','sss66zz'";
@@ -218,7 +218,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::strArrFilter($strings));
     }
 
-    public function testLimitTime()
+    public function testLimitTime(): void
     {
         $this->assertNull(Safe::limitTime([], 0));
 
@@ -234,7 +234,7 @@ class SafeTest extends TestCase
         Safe::limitTime(['08:10', '08:30'], strtotime('08:15'));
     }
 
-    public function testLimitTime2()
+    public function testLimitTime2(): void
     {
         $time = date('Y-m-d');
         $time2 = date('Y-m-d', time() + 86400);
@@ -247,13 +247,13 @@ class SafeTest extends TestCase
         Safe::limitTime(['08:30', '08:10'], strtotime('10:50'));
     }
 
-    public function testLimitTime3()
+    public function testLimitTime3(): void
     {
         $this->assertNull(Safe::limitTime(['08:10', '08:30'], strtotime('08:05')));
         $this->assertNull(Safe::limitTime(['08:10', '08:30'], strtotime('08:35')));
     }
 
-    public function testLimitIp()
+    public function testLimitIp(): void
     {
         $this->assertNull(Safe::limitIp('', []));
 
@@ -262,7 +262,7 @@ class SafeTest extends TestCase
         $this->assertNull(Safe::limitIp('127.0.0.5', ['127.0.0.1']));
     }
 
-    public function testLimitIp2()
+    public function testLimitIp2(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -272,12 +272,12 @@ class SafeTest extends TestCase
         Safe::limitIp('127.0.0.1', ['127.0.0.1']);
     }
 
-    public function testLimitAgent()
+    public function testLimitAgent(): void
     {
         $this->assertNull(Safe::limitAgent());
     }
 
-    public function testLimitAgent2()
+    public function testLimitAgent2(): void
     {
         $_SERVER['HTTP_X_FORWARDED_FOR'] = 1;
 
@@ -292,7 +292,7 @@ class SafeTest extends TestCase
         unset($_SERVER['HTTP_X_FORWARDED_FOR']);
     }
 
-    public function testLimitAgent3()
+    public function testLimitAgent3(): void
     {
         $_SERVER['HTTP_VIA'] = 1;
 
@@ -307,7 +307,7 @@ class SafeTest extends TestCase
         unset($_SERVER['HTTP_VIA']);
     }
 
-    public function testLimitAgent4()
+    public function testLimitAgent4(): void
     {
         $_SERVER['HTTP_PROXY_CONNECTION'] = 1;
 
@@ -322,7 +322,7 @@ class SafeTest extends TestCase
         unset($_SERVER['HTTP_PROXY_CONNECTION']);
     }
 
-    public function testLimitAgent5()
+    public function testLimitAgent5(): void
     {
         $_SERVER['HTTP_USER_AGENT_VIA'] = 1;
 
@@ -337,7 +337,7 @@ class SafeTest extends TestCase
         unset($_SERVER['HTTP_USER_AGENT_VIA']);
     }
 
-    public function testCleanJs()
+    public function testCleanJs(): void
     {
         $strings = "i a <script></script> <body> <span onmouse='alert(5);'></span>".
             '<span window. xxx>'.
@@ -352,7 +352,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::cleanJs($strings));
     }
 
-    public function testText()
+    public function testText(): void
     {
         $strings = "i a <script></script> \n\r<body> <span onmouse='alert(5);'> here";
         $out = 'iahere';
@@ -360,7 +360,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::text($strings));
     }
 
-    public function testText2()
+    public function testText2(): void
     {
         $strings = "i a <script></script> \n\r<body> <span onmouse='alert(5);'> here";
         $out = 'i a  here';
@@ -368,7 +368,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::text($strings, false));
     }
 
-    public function testStrip()
+    public function testStrip(): void
     {
         $strings = "i a <script></script> <body> <span onmouse='alert(5);'> here";
         $out = 'i a    here';
@@ -376,7 +376,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::strip($strings));
     }
 
-    public function testHtmlView()
+    public function testHtmlView(): void
     {
         $strings = "i a \n here";
         $out = 'i a <br />
@@ -385,7 +385,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::htmlView($strings));
     }
 
-    public function testCustomHtmlspecialchars()
+    public function testCustomHtmlspecialchars(): void
     {
         $strings = 'i a < here';
         $out = 'i a &lt; here';
@@ -398,7 +398,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::customHtmlspecialchars($strings));
     }
 
-    public function testUnHtmlSpecialchars()
+    public function testUnHtmlSpecialchars(): void
     {
         $strings = 'i a &lt; here';
         $out = 'i a < here';
@@ -411,7 +411,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::unHtmlspecialchars($strings));
     }
 
-    public function testShortLimit()
+    public function testShortLimit(): void
     {
         $strings = 'i a # > here';
         $out = 'i a  &gt; here';
@@ -424,7 +424,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::shortLimit($strings, 5));
     }
 
-    public function testLongLimit()
+    public function testLongLimit(): void
     {
         $strings = 'i a # > here';
         $out = 'i a # &gt; here';
@@ -437,7 +437,7 @@ class SafeTest extends TestCase
         $this->assertSame($out, Safe::longLimit($strings, 5));
     }
 
-    public function testBigLimit()
+    public function testBigLimit(): void
     {
         $strings = 'i a <script  # > here';
         $out = 'i a  # > here';
@@ -457,7 +457,7 @@ class SafeTest extends TestCase
      *     note="",
      * )
      */
-    public function testSignature()
+    public function testSignature(): void
     {
         $query = [
             'foo'   => 'bar',
@@ -476,7 +476,7 @@ class SafeTest extends TestCase
      *     note="",
      * )
      */
-    public function testSignatureWithIgnore()
+    public function testSignatureWithIgnore(): void
     {
         $query = [
             'foo'       => 'bar',
@@ -497,7 +497,7 @@ class SafeTest extends TestCase
      *     note="",
      * )
      */
-    public function testSignatureWithSubArray()
+    public function testSignatureWithSubArray(): void
     {
         $query = [
             'foo'   => 'bar',

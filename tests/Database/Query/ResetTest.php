@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class ResetTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -89,7 +89,7 @@ class ResetTest extends TestCase
         );
     }
 
-    public function testResetFlow()
+    public function testResetFlow(): void
     {
         $condition = false;
 
@@ -125,7 +125,7 @@ class ResetTest extends TestCase
         );
     }
 
-    public function testResetFlow2()
+    public function testResetFlow2(): void
     {
         $condition = true;
 

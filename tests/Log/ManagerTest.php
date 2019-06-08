@@ -41,7 +41,7 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $manager = $this->createManager();
         $manager->info('foo', ['bar']);
@@ -55,7 +55,7 @@ class ManagerTest extends TestCase
         Fso::deleteDirectory(__DIR__.'/cache', true);
     }
 
-    public function testSyslog()
+    public function testSyslog(): void
     {
         $manager = $this->createManager();
 
@@ -66,7 +66,7 @@ class ManagerTest extends TestCase
         $this->assertNull($syslog->flush());
     }
 
-    public function testMonolog()
+    public function testMonolog(): void
     {
         $manager = $this->createManager();
 
@@ -79,10 +79,9 @@ class ManagerTest extends TestCase
         $this->assertInstanceof(Logger::class, $manager->getMonolog());
     }
 
-    protected function createManager()
+    protected function createManager(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());

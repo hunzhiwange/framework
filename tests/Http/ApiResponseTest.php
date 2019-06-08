@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class ApiResponseTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $response = ApiResponse::create(['hello' => 'world']);
 
@@ -45,7 +45,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testOk()
+    public function testOk(): void
     {
         $response = new ApiResponse();
 
@@ -58,7 +58,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testOk2()
+    public function testOk2(): void
     {
         $condition = false;
         $response = new ApiResponse();
@@ -77,7 +77,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testCreated()
+    public function testCreated(): void
     {
         $response = new ApiResponse();
 
@@ -92,7 +92,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testCreated2()
+    public function testCreated2(): void
     {
         $condition = false;
         $response = new ApiResponse();
@@ -113,7 +113,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testAccepted()
+    public function testAccepted(): void
     {
         $response = new ApiResponse();
 
@@ -128,7 +128,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testAccepted2()
+    public function testAccepted2(): void
     {
         $condition = false;
         $response = new ApiResponse();
@@ -149,7 +149,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testNoContent()
+    public function testNoContent(): void
     {
         $response = new ApiResponse();
 
@@ -162,7 +162,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('No Content', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testNoContent2()
+    public function testNoContent2(): void
     {
         $condition = false;
         $response = new ApiResponse();
@@ -181,7 +181,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('No Content', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testUnprocessableEntity()
+    public function testUnprocessableEntity(): void
     {
         $response = new ApiResponse();
 
@@ -194,7 +194,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testUnprocessableEntity2()
+    public function testUnprocessableEntity2(): void
     {
         $condition = false;
         $response = new ApiResponse();
@@ -213,7 +213,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text2', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testError()
+    public function testError(): void
     {
         $response = new ApiResponse();
 
@@ -226,7 +226,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testError2()
+    public function testError2(): void
     {
         $condition = false;
         $response = new ApiResponse();
@@ -245,7 +245,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text2', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testBadRequest()
+    public function testBadRequest(): void
     {
         $response = new ApiResponse();
 
@@ -258,7 +258,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testUnauthorized()
+    public function testUnauthorized(): void
     {
         $response = new ApiResponse();
 
@@ -271,7 +271,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testForbidden()
+    public function testForbidden(): void
     {
         $response = new ApiResponse();
 
@@ -284,7 +284,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $response = new ApiResponse();
 
@@ -297,7 +297,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testMethodNotAllowed()
+    public function testMethodNotAllowed(): void
     {
         $response = new ApiResponse();
 
@@ -310,7 +310,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testTooManyRequests()
+    public function testTooManyRequests(): void
     {
         $response = new ApiResponse();
 
@@ -323,7 +323,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testInternalServerError()
+    public function testInternalServerError(): void
     {
         $response = new ApiResponse();
 

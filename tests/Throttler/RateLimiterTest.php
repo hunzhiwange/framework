@@ -52,7 +52,7 @@ class RateLimiterTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $rateLimiter = $this->createRateLimiter('baseuse');
 
@@ -118,7 +118,7 @@ class RateLimiterTest extends TestCase
         unlink($path.'/baseuse.php');
     }
 
-    public function testHit()
+    public function testHit(): void
     {
         $rateLimiter = $this->createRateLimiter('hit');
 
@@ -205,7 +205,7 @@ class RateLimiterTest extends TestCase
         unlink($path.'/hit.php');
     }
 
-    public function testLimit()
+    public function testLimit(): void
     {
         $rateLimiter = $this->createRateLimiter('limit');
 
@@ -382,7 +382,7 @@ class RateLimiterTest extends TestCase
         unlink($path.'/limit.php');
     }
 
-    public function testTime()
+    public function testTime(): void
     {
         $rateLimiter = $this->createRateLimiter('time');
 
@@ -554,7 +554,7 @@ class RateLimiterTest extends TestCase
         unlink($path.'/time.php');
     }
 
-    public function testKeyIsNotSet()
+    public function testKeyIsNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(

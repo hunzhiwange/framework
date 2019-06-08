@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class FlowTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -173,7 +173,7 @@ class FlowTest extends TestCase
         );
     }
 
-    public function testElses()
+    public function testElses(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

@@ -50,7 +50,7 @@ class FileTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
         $filePath = __DIR__.'/assert/test.txt';
@@ -78,7 +78,7 @@ class FileTest extends TestCase
         unlink($targetPath);
     }
 
-    public function testMoveWithNewName()
+    public function testMoveWithNewName(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
         $filePath = __DIR__.'/assert/test_newname.txt';
@@ -106,7 +106,7 @@ class FileTest extends TestCase
         unlink($targetPath);
     }
 
-    public function testFileNotFound()
+    public function testFileNotFound(): void
     {
         $filePath = __DIR__.'/assert/fileNotFound.txt';
 
@@ -116,7 +116,7 @@ class FileTest extends TestCase
         new File($filePath);
     }
 
-    public function testTargetDirIsNotWriteable()
+    public function testTargetDirIsNotWriteable(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
         $filePath = __DIR__.'/assert/test_writeable.txt';
@@ -152,7 +152,7 @@ class FileTest extends TestCase
         $file->move(dirname($targetPath));
     }
 
-    public function testTargetParentDirIsNotWriteable()
+    public function testTargetParentDirIsNotWriteable(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
         $filePath = __DIR__.'/assert/test_writeable.txt';
@@ -188,7 +188,7 @@ class FileTest extends TestCase
         $file->move(dirname($targetPath));
     }
 
-    public function testMoveWithSub()
+    public function testMoveWithSub(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
         $filePath = __DIR__.'/assert/test_sub.txt';
@@ -217,7 +217,7 @@ class FileTest extends TestCase
         rmdir(dirname($targetPath));
     }
 
-    public function testMoveRenameException()
+    public function testMoveRenameException(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
         $filePath = __DIR__.'/assert/test_rename.txt';

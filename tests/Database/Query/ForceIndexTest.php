@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class ForceIndexTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -61,7 +61,7 @@ class ForceIndexTest extends TestCase
         );
     }
 
-    public function testForceIndex()
+    public function testForceIndex(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -88,7 +88,7 @@ class ForceIndexTest extends TestCase
         );
     }
 
-    public function testIgnoreIndex()
+    public function testIgnoreIndex(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -115,7 +115,7 @@ class ForceIndexTest extends TestCase
         );
     }
 
-    public function testForceIndexTypeNotSupported()
+    public function testForceIndexTypeNotSupported(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -130,7 +130,7 @@ class ForceIndexTest extends TestCase
             ->findAll(true);
     }
 
-    public function testForceIndexFlow()
+    public function testForceIndexFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -162,7 +162,7 @@ class ForceIndexTest extends TestCase
         );
     }
 
-    public function testForceIndexFlow2()
+    public function testForceIndexFlow2(): void
     {
         $condition = true;
         $connect = $this->createDatabaseConnectMock();

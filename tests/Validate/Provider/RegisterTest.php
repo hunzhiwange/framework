@@ -52,7 +52,7 @@ class RegisterTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
 

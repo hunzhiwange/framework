@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class NullsTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $session = $this->createNullsSessionHandler();
 

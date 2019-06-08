@@ -37,7 +37,7 @@ use Tests\Database\Ddd\Entity\TestToArrayWhiteEntity;
  */
 class ToArrayTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $entity = $this->makeEntity();
 
@@ -60,7 +60,7 @@ class ToArrayTest extends TestCase
         );
     }
 
-    public function testWithWhite()
+    public function testWithWhite(): void
     {
         $entity = $this->makeEntity();
 
@@ -128,7 +128,7 @@ class ToArrayTest extends TestCase
         );
     }
 
-    public function testWithBlack()
+    public function testWithBlack(): void
     {
         $entity = $this->makeEntity();
 
@@ -202,7 +202,7 @@ class ToArrayTest extends TestCase
         );
     }
 
-    public function testWithWhiteAndBlack()
+    public function testWithWhiteAndBlack(): void
     {
         $entity = $this->makeEntity();
 
@@ -239,7 +239,7 @@ class ToArrayTest extends TestCase
         );
     }
 
-    public function testWithWhiteEntity()
+    public function testWithWhiteEntity(): void
     {
         $entity = $this->makeWhiteEntity();
 
@@ -258,7 +258,7 @@ class ToArrayTest extends TestCase
         );
     }
 
-    public function testWithBlackEntity()
+    public function testWithBlackEntity(): void
     {
         $entity = $this->makeBlackEntity();
 
@@ -279,7 +279,7 @@ class ToArrayTest extends TestCase
         );
     }
 
-    protected function makeWhiteEntity()
+    protected function makeWhiteEntity(): TestToArrayWhiteEntity
     {
         $entity = new TestToArrayWhiteEntity();
 
@@ -298,7 +298,7 @@ class ToArrayTest extends TestCase
         return $entity;
     }
 
-    protected function makeBlackEntity()
+    protected function makeBlackEntity(): TestToArrayBlackEntity
     {
         $entity = new TestToArrayBlackEntity();
 
@@ -317,7 +317,7 @@ class ToArrayTest extends TestCase
         return $entity;
     }
 
-    protected function makeEntity()
+    protected function makeEntity(): TestToArrayEntity
     {
         $entity = new TestToArrayEntity();
 

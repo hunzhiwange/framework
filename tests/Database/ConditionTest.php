@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class ConditionTest extends TestCase
 {
-    public function testForPage()
+    public function testForPage(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -59,7 +59,7 @@ class ConditionTest extends TestCase
         );
     }
 
-    public function testParseFormNotSet()
+    public function testParseFormNotSet(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -84,7 +84,7 @@ class ConditionTest extends TestCase
         );
     }
 
-    public function testMakeSql()
+    public function testMakeSql(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -106,7 +106,7 @@ class ConditionTest extends TestCase
         );
     }
 
-    public function testMakeSqlWithLogicGroup()
+    public function testMakeSqlWithLogicGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

@@ -59,7 +59,7 @@ class LoadTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $container = new Container();
         $load = $this->createLoad($container);
@@ -73,7 +73,7 @@ class LoadTest extends TestCase
         $load->refresh([Test1::class]);
     }
 
-    public function testRefresh()
+    public function testRefresh(): void
     {
         $container = new Container();
         $load = $this->createLoad($container);
@@ -91,7 +91,7 @@ class LoadTest extends TestCase
         $this->assertFalse(is_file($file));
     }
 
-    public function testDataForce()
+    public function testDataForce(): void
     {
         $container = new Container();
         $load = $this->createLoad($container);
@@ -103,7 +103,7 @@ class LoadTest extends TestCase
         $this->assertSame(['foo' => 'bar'], $result);
     }
 
-    public function testCacheBlockType()
+    public function testCacheBlockType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -116,7 +116,7 @@ class LoadTest extends TestCase
         $load->data([Test2::class]);
     }
 
-    public function testWithParams()
+    public function testWithParams(): void
     {
         $container = new Container();
         $load = $this->createLoad($container);
@@ -125,7 +125,7 @@ class LoadTest extends TestCase
         $this->assertSame(['hello', 'world', 'foo', 'bar'], $result);
     }
 
-    public function testCacheNotFound()
+    public function testCacheNotFound(): void
     {
         $this->expectException(\ReflectionException::class);
         $this->expectExceptionMessage(

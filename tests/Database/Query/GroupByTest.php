@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class GroupByTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -148,7 +148,7 @@ class GroupByTest extends TestCase
         );
     }
 
-    public function testGroupByFlow()
+    public function testGroupByFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -179,7 +179,7 @@ class GroupByTest extends TestCase
         );
     }
 
-    public function testGroupByFlow2()
+    public function testGroupByFlow2(): void
     {
         $condition = true;
 

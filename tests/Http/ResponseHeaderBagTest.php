@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ResponseHeaderBagTest extends TestCase
 {
-    public function testAll()
+    public function testAll(): void
     {
         $headers = [
             'fOo'              => 'BAR',

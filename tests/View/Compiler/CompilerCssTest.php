@@ -48,7 +48,7 @@ class CompilerCssTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 

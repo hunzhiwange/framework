@@ -40,7 +40,7 @@ use Tests\TestCase;
  */
 class AuthTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $auth = $this->createManager();
 
@@ -54,7 +54,7 @@ class AuthTest extends TestCase
         }, $request));
     }
 
-    public function testAuthFailed()
+    public function testAuthFailed(): void
     {
         $this->expectException(\Leevel\Auth\AuthException::class);
         $this->expectExceptionMessage(
@@ -83,10 +83,9 @@ class AuthTest extends TestCase
         return $request;
     }
 
-    protected function createManager()
+    protected function createManager(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
@@ -120,10 +119,9 @@ class AuthTest extends TestCase
         return $manager;
     }
 
-    protected function createManagerNotLogin()
+    protected function createManagerNotLogin(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
@@ -155,7 +153,7 @@ class AuthTest extends TestCase
         return $manager;
     }
 
-    protected function createSession()
+    protected function createSession(): File
     {
         $session = new File([
             'path' => __DIR__.'/cache',

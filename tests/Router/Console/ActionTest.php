@@ -38,7 +38,7 @@ class ActionTest extends TestCase
 {
     use BaseMake;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $file = __DIR__.'/../../Console/BarValue/Hello.php';
 
@@ -63,7 +63,7 @@ class ActionTest extends TestCase
         rmdir(dirname($file));
     }
 
-    public function testActionSpecial()
+    public function testActionSpecial(): void
     {
         $file = __DIR__.'/../../Console/Hello/HelloWorldYes.php';
 

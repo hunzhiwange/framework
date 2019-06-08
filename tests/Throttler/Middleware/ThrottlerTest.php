@@ -52,7 +52,7 @@ class ThrottlerTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $throttler = $this->createThrottler();
 
@@ -73,7 +73,7 @@ class ThrottlerTest extends TestCase
         unlink($path.'/'.$key.'.php');
     }
 
-    public function testAttempt()
+    public function testAttempt(): void
     {
         $this->expectException(\Leevel\Kernel\Exception\TooManyRequestsHttpException::class);
         $this->expectExceptionMessage(

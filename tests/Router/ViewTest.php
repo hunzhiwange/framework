@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ViewTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $view = new View(
             $html = new Html()
@@ -52,7 +52,7 @@ class ViewTest extends TestCase
         $this->assertSame('world', $html->getVar('hello'));
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $view = new View(
             $html = new Html()
@@ -72,7 +72,7 @@ class ViewTest extends TestCase
         $this->assertNull($html->getVar('hello'));
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         $view = new View(
             $html = new Html()
@@ -91,7 +91,7 @@ class ViewTest extends TestCase
         $this->assertNull($html->getVar('foo'));
     }
 
-    public function testDisplay()
+    public function testDisplay(): void
     {
         $view = new View(
             $phpui = new Phpui([
@@ -107,7 +107,7 @@ class ViewTest extends TestCase
         );
     }
 
-    public function testSwitchView()
+    public function testSwitchView(): void
     {
         $view = new View(
             $phpui = new Phpui()

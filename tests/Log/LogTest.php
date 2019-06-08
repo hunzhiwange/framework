@@ -82,7 +82,7 @@ class LogTest extends TestCase
         ];
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $log = $this->createFileConnect();
 
@@ -94,7 +94,7 @@ class LogTest extends TestCase
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
-    public function testLogFilterLevel()
+    public function testLogFilterLevel(): void
     {
         $log = $this->createFileConnect();
 
@@ -106,7 +106,7 @@ class LogTest extends TestCase
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
-    public function testWithOutBuffer()
+    public function testWithOutBuffer(): void
     {
         $log = $this->createFileConnect(['buffer' => false]);
 

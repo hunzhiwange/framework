@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class ExceptionTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $e = new HttpException(500, 'hello', 4000);
 

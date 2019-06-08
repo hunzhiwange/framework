@@ -48,7 +48,7 @@ class CompilerPhpTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 
@@ -70,7 +70,7 @@ class CompilerPhpTest extends TestCase
      *     note="不过这种方式来使用 PHP 脚本，这是我们大力推荐的写法，用最原始的 PHP 开发应用是我们共同的追求。",
      * )
      */
-    public function testPhpSelf()
+    public function testPhpSelf(): void
     {
         $parser = $this->createParser();
 
@@ -92,7 +92,7 @@ class CompilerPhpTest extends TestCase
      *     note="程序运行结果是抛出致命错误，这种写法是错误的。",
      * )
      */
-    public function testErrorExample()
+    public function testErrorExample(): void
     {
         $parser = $this->createParser();
 

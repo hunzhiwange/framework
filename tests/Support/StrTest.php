@@ -47,7 +47,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $this->assertSame('', Str::randAlphaNum(0));
 
@@ -71,7 +71,7 @@ class StrTest extends TestCase
      *     note="支持位数和指定字符范围",
      * )
      */
-    public function testRandAlphaNumLowercase()
+    public function testRandAlphaNumLowercase(): void
     {
         $this->assertSame('', Str::randAlphaNumLowercase(0));
 
@@ -95,7 +95,7 @@ class StrTest extends TestCase
      *     note="支持位数和指定字符范围",
      * )
      */
-    public function testRandAlphaNumUppercase()
+    public function testRandAlphaNumUppercase(): void
     {
         $this->assertSame('', Str::randAlphaNumUppercase(0));
 
@@ -119,7 +119,7 @@ class StrTest extends TestCase
      *     note="支持位数和指定字符范围",
      * )
      */
-    public function testRandAlpha()
+    public function testRandAlpha(): void
     {
         $this->assertSame('', Str::randAlpha(0));
 
@@ -143,7 +143,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testRandAlphaLowercase()
+    public function testRandAlphaLowercase(): void
     {
         $this->assertSame('', Str::randAlphaLowercase(0));
 
@@ -167,7 +167,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testRandAlphaUppercase()
+    public function testRandAlphaUppercase(): void
     {
         $this->assertSame('', Str::randAlphaUppercase(0));
 
@@ -191,7 +191,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testRandNum()
+    public function testRandNum(): void
     {
         $this->assertSame('', Str::randNum(0));
 
@@ -215,7 +215,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testRandChinese()
+    public function testRandChinese(): void
     {
         $this->assertSame('', Str::randChinese(0));
 
@@ -239,7 +239,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testRandStr()
+    public function testRandStr(): void
     {
         $this->assertSame('', Str::randStr(0, ''));
 
@@ -257,7 +257,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testFormatDate()
+    public function testFormatDate(): void
     {
         $time = time();
 
@@ -283,7 +283,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testFormatBytes()
+    public function testFormatBytes(): void
     {
         $this->assertSame('2.4G', Str::formatBytes(2573741824));
         $this->assertSame('2.4', Str::formatBytes(2573741824, false));
@@ -305,7 +305,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testCamelize()
+    public function testCamelize(): void
     {
         $this->assertSame('helloWorld', Str::camelize('helloWorld'));
 
@@ -323,7 +323,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testUnCamelize()
+    public function testUnCamelize(): void
     {
         $this->assertSame('hello_world', Str::unCamelize('hello_world'));
 
@@ -341,7 +341,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testStartsWith()
+    public function testStartsWith(): void
     {
         $this->assertFalse(Str::startsWith('foo', 'hello'));
 
@@ -355,7 +355,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testEndsWith()
+    public function testEndsWith(): void
     {
         $this->assertFalse(Str::endsWith('foo', 'hello'));
 
@@ -369,7 +369,7 @@ class StrTest extends TestCase
      *     note="",
      * )
      */
-    public function testContains()
+    public function testContains(): void
     {
         $this->assertFalse(Str::contains('foo', ''));
 

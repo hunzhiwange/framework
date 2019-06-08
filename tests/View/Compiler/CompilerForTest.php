@@ -48,7 +48,7 @@ class CompilerForTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 
@@ -74,7 +74,7 @@ class CompilerForTest extends TestCase
      *     note="",
      * )
      */
-    public function testForNode()
+    public function testForNode(): void
     {
         $parser = $this->createParser();
 
@@ -100,7 +100,7 @@ class CompilerForTest extends TestCase
      *     note="",
      * )
      */
-    public function testForNode2()
+    public function testForNode2(): void
     {
         $parser = $this->createParser();
         $source = <<<'eot'
@@ -125,7 +125,7 @@ class CompilerForTest extends TestCase
      *     note="",
      * )
      */
-    public function testForJsStyle()
+    public function testForJsStyle(): void
     {
         $parser = $this->createParser();
 
@@ -151,7 +151,7 @@ class CompilerForTest extends TestCase
      *     note="",
      * )
      */
-    public function testForJsStyle2()
+    public function testForJsStyle2(): void
     {
         $parser = $this->createParser();
 
@@ -177,7 +177,7 @@ class CompilerForTest extends TestCase
      *     note="",
      * )
      */
-    public function testForJsStyle3()
+    public function testForJsStyle3(): void
     {
         $parser = $this->createParser();
 
@@ -196,7 +196,7 @@ class CompilerForTest extends TestCase
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    public function testForJsStyleException()
+    public function testForJsStyleException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -213,7 +213,7 @@ class CompilerForTest extends TestCase
         $parser->doCompile($source, null, true);
     }
 
-    public function testForJsStyleException2()
+    public function testForJsStyleException2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -230,7 +230,7 @@ class CompilerForTest extends TestCase
         $parser->doCompile($source, null, true);
     }
 
-    public function testForType()
+    public function testForType(): void
     {
         $parser = $this->createParser();
 

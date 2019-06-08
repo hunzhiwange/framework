@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class HavingTimeTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -66,7 +66,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingDay()
+    public function testHavingDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -100,7 +100,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingDayWillFormatInt()
+    public function testHavingDayWillFormatInt(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -134,7 +134,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingDayWillFormatInt2()
+    public function testHavingDayWillFormatInt2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -168,7 +168,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingMonth()
+    public function testHavingMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -202,7 +202,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingMonthFormatInt()
+    public function testHavingMonthFormatInt(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -236,7 +236,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingMonthFormatInt2()
+    public function testHavingMonthFormatInt2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -270,7 +270,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingYear()
+    public function testHavingYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -303,7 +303,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingYearFormatYear()
+    public function testHavingYearFormatYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -336,7 +336,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testHavingYearFormatYear2()
+    public function testHavingYearFormatYear2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -369,7 +369,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testTime()
+    public function testTime(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -407,7 +407,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testTimeDateIsDefault()
+    public function testTimeDateIsDefault(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -444,7 +444,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testTimeDay()
+    public function testTimeDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -480,7 +480,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testTimeMonth()
+    public function testTimeMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -516,7 +516,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testTimeYear()
+    public function testTimeYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -551,7 +551,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testTimeMulti()
+    public function testTimeMulti(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -599,7 +599,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testTimeMultiWithoutEndTime()
+    public function testTimeMultiWithoutEndTime(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -647,7 +647,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testDateStrtotimeReturnFalse()
+    public function testDateStrtotimeReturnFalse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -663,7 +663,7 @@ class HavingTimeTest extends TestCase
             ->findOne(true);
     }
 
-    public function testDayLessThan31()
+    public function testDayLessThan31(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -679,7 +679,7 @@ class HavingTimeTest extends TestCase
             ->findOne(true);
     }
 
-    public function testMonthLessThan12()
+    public function testMonthLessThan12(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -695,7 +695,7 @@ class HavingTimeTest extends TestCase
             ->findOne(true);
     }
 
-    public function testTimeTypeInvalid()
+    public function testTimeTypeInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -713,7 +713,7 @@ class HavingTimeTest extends TestCase
             ->findOne(true);
     }
 
-    public function testTimeFlow()
+    public function testTimeFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -756,7 +756,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testTimeFlow2()
+    public function testTimeFlow2(): void
     {
         $condition = true;
         $connect = $this->createDatabaseConnectMock();
@@ -799,7 +799,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testEndTimeFlow()
+    public function testEndTimeFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -841,7 +841,7 @@ class HavingTimeTest extends TestCase
         );
     }
 
-    public function testEndTimeFlow2()
+    public function testEndTimeFlow2(): void
     {
         $condition = true;
         $connect = $this->createDatabaseConnectMock();

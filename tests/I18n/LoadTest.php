@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class LoadTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $load = $this->createLoad('zh-CN');
 
@@ -47,7 +47,7 @@ class LoadTest extends TestCase
         $this->assertSame([], $result);
     }
 
-    public function testEnus()
+    public function testEnus(): void
     {
         $load = $this->createLoad('en-US');
 
@@ -154,7 +154,7 @@ class LoadTest extends TestCase
         );
     }
 
-    public function testZhtw()
+    public function testZhtw(): void
     {
         $load = $this->createLoad('zh-TW');
 
@@ -261,7 +261,7 @@ class LoadTest extends TestCase
         );
     }
 
-    public function testLoadDirNotExists()
+    public function testLoadDirNotExists(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -271,7 +271,7 @@ class LoadTest extends TestCase
         (new Load([__DIR__.'/i18nNotExists']))->loadData();
     }
 
-    protected function createLoad(string $lang)
+    protected function createLoad(string $lang): Load
     {
         return (new Load([__DIR__.'/i18n']))
             ->setI18n($lang)

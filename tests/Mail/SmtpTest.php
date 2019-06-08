@@ -38,7 +38,7 @@ use Tests\TestCase;
  */
 class SmtpTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $smtp = new MySmtp($this->makeView(), null, [
             'host'       => 'smtp.qq.com',

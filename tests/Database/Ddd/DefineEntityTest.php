@@ -36,7 +36,7 @@ use Tests\Database\Ddd\Entity\TestEntity;
  */
 class DefineEntityTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $entity = new TestEntity();
 
@@ -48,7 +48,7 @@ class DefineEntityTest extends TestCase
         $this->assertSame(TestEntity::AUTO, $entity->autoIncrement());
     }
 
-    public function testConstDefined()
+    public function testConstDefined(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The entity const TABLE was not defined.');
@@ -56,7 +56,7 @@ class DefineEntityTest extends TestCase
         $entity = new Test1Entity();
     }
 
-    public function testConstDefined2()
+    public function testConstDefined2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The entity const ID was not defined.');
@@ -64,7 +64,7 @@ class DefineEntityTest extends TestCase
         $entity = new Test2Entity();
     }
 
-    public function testConstDefined3()
+    public function testConstDefined3(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The entity const AUTO was not defined.');
@@ -72,7 +72,7 @@ class DefineEntityTest extends TestCase
         $entity = new Test3Entity();
     }
 
-    public function testConstDefined4()
+    public function testConstDefined4(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The entity const STRUCT was not defined.');

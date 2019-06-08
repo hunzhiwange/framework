@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ApplicationTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $application = new Application(new Container(), '1.0');
 
@@ -52,7 +52,7 @@ class ApplicationTest extends TestCase
         $this->assertInstanceof(Test1::class, $application->get('test1'));
     }
 
-    public function testNormalizeCommand()
+    public function testNormalizeCommand(): void
     {
         $application = new Application(new Container(), '1.0');
 

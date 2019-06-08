@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  */
 class HasManyTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -110,7 +110,7 @@ class HasManyTest extends TestCase
         $this->assertCount(6, $comment);
     }
 
-    public function testEager()
+    public function testEager(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -183,7 +183,7 @@ class HasManyTest extends TestCase
         }
     }
 
-    public function testRelationAsMethod()
+    public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
 

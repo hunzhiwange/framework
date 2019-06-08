@@ -47,7 +47,7 @@ use Tests\TestCase;
  */
 class ResponseTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -64,7 +64,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testMake()
+    public function testMake(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -81,7 +81,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'content-type' => 'application/json'], $response->headers->all());
     }
 
-    public function testView()
+    public function testView(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -98,7 +98,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testViewWithCustomExt()
+    public function testViewWithCustomExt(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -115,7 +115,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testViewWithHeaderAndStatus()
+    public function testViewWithHeaderAndStatus(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -132,7 +132,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['hello' => 'world'], $response->headers->all());
     }
 
-    public function testViewSuccess()
+    public function testViewSuccess(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -149,7 +149,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testViewSuccess2()
+    public function testViewSuccess2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -166,7 +166,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testViewSuccess3()
+    public function testViewSuccess3(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -185,7 +185,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testViewFail()
+    public function testViewFail(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -202,7 +202,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testViewFail2()
+    public function testViewFail2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -219,7 +219,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testViewFail3()
+    public function testViewFail3(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -238,7 +238,7 @@ class ResponseTest extends TestCase
         $this->assertSame([], $response->headers->all());
     }
 
-    public function testJson()
+    public function testJson(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -256,7 +256,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['content-type' => 'application/json'], $response->headers->all());
     }
 
-    public function testJson2()
+    public function testJson2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -274,7 +274,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'content-type' => 'application/json'], $response->headers->all());
     }
 
-    public function testJson3()
+    public function testJson3(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -292,7 +292,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'content-type' => 'application/json'], $response->headers->all());
     }
 
-    public function testJson4()
+    public function testJson4(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -310,7 +310,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'content-type' => 'application/json'], $response->headers->all());
     }
 
-    public function testJsonp()
+    public function testJsonp(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -328,7 +328,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['content-type' => 'text/javascript'], $response->headers->all());
     }
 
-    public function testJsonp2()
+    public function testJsonp2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -346,7 +346,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['content-type' => 'text/javascript'], $response->headers->all());
     }
 
-    public function testJsonp3()
+    public function testJsonp3(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -364,7 +364,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['hello' => 'world', 'content-type' => 'text/javascript'], $response->headers->all());
     }
 
-    public function testDownload()
+    public function testDownload(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -381,7 +381,7 @@ class ResponseTest extends TestCase
         $this->assertSame('attachment; filename="download.txt"', $response->headers->all()['content-disposition']);
     }
 
-    public function testDownload2()
+    public function testDownload2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -398,7 +398,7 @@ class ResponseTest extends TestCase
         $this->assertSame('attachment; filename="download.txt"', $response->headers->all()['content-disposition']);
     }
 
-    public function testDownload3()
+    public function testDownload3(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -415,7 +415,7 @@ class ResponseTest extends TestCase
         $this->assertSame('attachment; filename="download.txt"', $response->headers->all()['content-disposition']);
     }
 
-    public function testDownload4()
+    public function testDownload4(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -433,7 +433,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $response->headers->all()['foo']);
     }
 
-    public function testFile()
+    public function testFile(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -450,7 +450,7 @@ class ResponseTest extends TestCase
         $this->assertSame('inline; filename="download.txt"', $response->headers->all()['content-disposition']);
     }
 
-    public function testFile2()
+    public function testFile2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -467,7 +467,7 @@ class ResponseTest extends TestCase
         $this->assertSame('inline; filename="download.txt"', $response->headers->all()['content-disposition']);
     }
 
-    public function testFile3()
+    public function testFile3(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -484,7 +484,7 @@ class ResponseTest extends TestCase
         $this->assertSame('inline; filename="download.txt"', $response->headers->all()['content-disposition']);
     }
 
-    public function testFile4()
+    public function testFile4(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -502,7 +502,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $response->headers->all()['foo']);
     }
 
-    public function testRedirect()
+    public function testRedirect(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -533,7 +533,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['location' => 'http://www.queryphp.com/hello/world'], $response->headers->all());
     }
 
-    public function testRedirect2()
+    public function testRedirect2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -564,7 +564,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['location' => 'http://www.queryphp.com/hello/world?foo=bar'], $response->headers->all());
     }
 
-    public function testRedirectRaw()
+    public function testRedirectRaw(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -595,7 +595,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['location' => 'http://queryphp.com/raw'], $response->headers->all());
     }
 
-    public function testRedirectRaw2()
+    public function testRedirectRaw2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -626,7 +626,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['location' => 'http://queryphp.com/raw?foo=bar'], $response->headers->all());
     }
 
-    public function testApiOk()
+    public function testApiOk(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -644,7 +644,7 @@ class ResponseTest extends TestCase
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiOk2()
+    public function testApiOk2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -662,7 +662,7 @@ class ResponseTest extends TestCase
         $this->assertSame('hello world', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiCreated()
+    public function testApiCreated(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -680,7 +680,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiCreated2()
+    public function testApiCreated2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -698,7 +698,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiAccepted()
+    public function testApiAccepted(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -716,7 +716,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiAccepted2()
+    public function testApiAccepted2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -734,7 +734,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiNoContent()
+    public function testApiNoContent(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -752,7 +752,7 @@ class ResponseTest extends TestCase
         $this->assertSame('No Content', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiError()
+    public function testApiError(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -770,7 +770,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Not Found', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiBadRequest()
+    public function testApiBadRequest(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -788,7 +788,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Bad Request', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiBadRequest2()
+    public function testApiBadRequest2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -806,7 +806,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiUnauthorized()
+    public function testApiUnauthorized(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -824,7 +824,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Unauthorized', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiUnauthorized2()
+    public function testApiUnauthorized2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -842,7 +842,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiForbidden()
+    public function testApiForbidden(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -860,7 +860,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Forbidden', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiForbidden2()
+    public function testApiForbidden2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -878,7 +878,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiNotFound()
+    public function testApiNotFound(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -896,7 +896,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Not Found', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiNotFound2()
+    public function testApiNotFound2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -914,7 +914,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiMethodNotAllowed()
+    public function testApiMethodNotAllowed(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -932,7 +932,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Method Not Allowed', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiMethodNotAllowed2()
+    public function testApiMethodNotAllowed2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -950,7 +950,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiUnprocessableEntity()
+    public function testApiUnprocessableEntity(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -968,7 +968,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Unprocessable Entity', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiUnprocessableEntity2()
+    public function testApiUnprocessableEntity2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -986,7 +986,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiTooManyRequests()
+    public function testApiTooManyRequests(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -1004,7 +1004,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Too Many Requests', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiTooManyRequests2()
+    public function testApiTooManyRequests2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -1022,7 +1022,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiInternalServerError()
+    public function testApiInternalServerError(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();
@@ -1040,7 +1040,7 @@ class ResponseTest extends TestCase
         $this->assertSame('Internal Server Error', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testApiInternalServerError2()
+    public function testApiInternalServerError2(): void
     {
         $view = $this->makeView();
         $redirect = $this->makeRedirect();

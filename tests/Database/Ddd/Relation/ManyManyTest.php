@@ -39,7 +39,7 @@ use Tests\Database\Ddd\Entity\Relation\UserRole;
  */
 class ManyManyTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $user = User::where('id', 1)->findOne();
 
@@ -146,7 +146,7 @@ class ManyManyTest extends TestCase
         $this->assertSame('3', $middle->roleId);
     }
 
-    public function testEager()
+    public function testEager(): void
     {
         $user = User::where('id', 1)->findOne();
 
@@ -253,7 +253,7 @@ class ManyManyTest extends TestCase
         $this->assertSame('3', $middle->roleId);
     }
 
-    public function testEagerWithNoData()
+    public function testEagerWithNoData(): void
     {
         $user = User::where('id', 1)->findOne();
 
@@ -272,7 +272,7 @@ class ManyManyTest extends TestCase
         $this->assertCount(0, $role);
     }
 
-    public function testRelationAsMethod()
+    public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -339,7 +339,7 @@ class ManyManyTest extends TestCase
         $this->assertInstanceof(Select::class, $roleRelation->getSelect());
     }
 
-    public function testNotFoundData()
+    public function testNotFoundData(): void
     {
         $user = User::where('id', 1)->findOne();
 

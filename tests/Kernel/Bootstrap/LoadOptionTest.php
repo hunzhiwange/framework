@@ -60,7 +60,7 @@ class LoadOptionTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $bootstrap = new LoadOption();
 
@@ -84,7 +84,7 @@ class LoadOptionTest extends TestCase
         $this->assertSame('bar', $option->get('demo\\foo'));
     }
 
-    public function testWithRuntimeEnv()
+    public function testWithRuntimeEnv(): void
     {
         putenv('RUNTIME_ENVIRONMENT=fooenv');
 
@@ -112,7 +112,7 @@ class LoadOptionTest extends TestCase
         putenv('RUNTIME_ENVIRONMENT=');
     }
 
-    public function testWithRuntimeEnvNotFound()
+    public function testWithRuntimeEnvNotFound(): void
     {
         $appPath = __DIR__.'/app';
 
@@ -140,7 +140,7 @@ class LoadOptionTest extends TestCase
         $bootstrap->handle($app, true);
     }
 
-    public function testLoadCached()
+    public function testLoadCached(): void
     {
         // 重置环境
         putenv('RUNTIME_ENVIRONMENT=');

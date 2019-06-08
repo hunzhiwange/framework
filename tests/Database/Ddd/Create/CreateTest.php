@@ -62,7 +62,7 @@ class CreateTest extends TestCase
      *     note="通过 save 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $entity = new TestEntity();
 
@@ -108,7 +108,7 @@ class CreateTest extends TestCase
      *     note="",
      * )
      */
-    public function testConsturctPropWhite()
+    public function testConsturctPropWhite(): void
     {
         $entity = new TestConstructPropWhiteEntity([
             'id'   => 5,
@@ -134,7 +134,7 @@ class CreateTest extends TestCase
      *     note="",
      * )
      */
-    public function testConsturctPropBlack()
+    public function testConsturctPropBlack(): void
     {
         $entity = new TestConstructPropBlackEntity([
             'id'   => 5,
@@ -145,7 +145,7 @@ class CreateTest extends TestCase
         $this->assertSame('foo', $entity->getterName());
     }
 
-    public function testCreatePropBlackAndWhite()
+    public function testCreatePropBlackAndWhite(): void
     {
         $entity = new TestCreatePropWhiteEntity([
             'name'        => 'foo',
@@ -170,7 +170,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testPropNotExist()
+    public function testPropNotExist(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestEntity` prop or field of struct `not_exists` was not defined.');
@@ -180,7 +180,7 @@ class CreateTest extends TestCase
         $entity->notExists = 'hello';
     }
 
-    public function testAutoFile()
+    public function testAutoFile(): void
     {
         $entity = new TestCreateAutoFillEntity();
 
@@ -202,7 +202,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testAutoFileWithAll()
+    public function testAutoFileWithAll(): void
     {
         $entity = new TestCreateAutoFillEntity();
 
@@ -228,7 +228,7 @@ class CreateTest extends TestCase
         );
     }
 
-    public function testAutoFileWithCustomField()
+    public function testAutoFileWithCustomField(): void
     {
         $entity = new TestCreateAutoFillEntity();
 

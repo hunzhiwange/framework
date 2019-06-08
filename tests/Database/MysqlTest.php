@@ -34,7 +34,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class MysqlTest extends TestCase
 {
-    public function testGetTableNames()
+    public function testGetTableNames(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -43,7 +43,7 @@ class MysqlTest extends TestCase
         $this->assertTrue(in_array('guest_book', $result, true));
     }
 
-    public function testGetTableColumns()
+    public function testGetTableColumns(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -104,7 +104,7 @@ class MysqlTest extends TestCase
         );
     }
 
-    public function testLimitCount()
+    public function testLimitCount(): void
     {
         $mysql = new Mysql([]);
 
@@ -114,7 +114,7 @@ class MysqlTest extends TestCase
         $this->assertSame('LIMIT 5,5', $mysql->limitCount(5, 5));
     }
 
-    public function testParsePort()
+    public function testParsePort(): void
     {
         $mysql = new Mysql([]);
 
@@ -123,7 +123,7 @@ class MysqlTest extends TestCase
         $this->assertSame('', $result);
     }
 
-    public function testParseSocket()
+    public function testParseSocket(): void
     {
         $mysql = new Mysql([]);
 
@@ -132,7 +132,7 @@ class MysqlTest extends TestCase
         $this->assertSame('', $result);
     }
 
-    public function testParseSocket2()
+    public function testParseSocket2(): void
     {
         $mysql = new Mysql([]);
 
@@ -141,7 +141,7 @@ class MysqlTest extends TestCase
         $this->assertSame(';unix_socket=/var/lib/mysql/mysql.sock', $result);
     }
 
-    public function testParseCharset()
+    public function testParseCharset(): void
     {
         $mysql = new Mysql([]);
 

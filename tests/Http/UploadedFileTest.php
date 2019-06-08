@@ -44,7 +44,7 @@ class UploadedFileTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $filePath = __DIR__.'/assert/source.txt';
 
@@ -66,7 +66,7 @@ class UploadedFileTest extends TestCase
         }
     }
 
-    public function testConstructWhenFileNotExists()
+    public function testConstructWhenFileNotExists(): void
     {
         $filePath = __DIR__.'/assert/not_here';
 
@@ -76,7 +76,7 @@ class UploadedFileTest extends TestCase
         new UploadedFile($filePath, 'original.gif', null);
     }
 
-    public function testGetMimeType()
+    public function testGetMimeType(): void
     {
         $file = new UploadedFile(
             __DIR__.'/assert/source.txt',
@@ -88,7 +88,7 @@ class UploadedFileTest extends TestCase
         $this->assertEquals('image/jpeg', $file->getMimeType());
     }
 
-    public function testErrorIsOkByDefault()
+    public function testErrorIsOkByDefault(): void
     {
         $file = new UploadedFile(
             __DIR__.'/assert/source.txt',
@@ -100,7 +100,7 @@ class UploadedFileTest extends TestCase
         $this->assertEquals(UPLOAD_ERR_OK, $file->getError());
     }
 
-    public function testGetOriginalName()
+    public function testGetOriginalName(): void
     {
         $file = new UploadedFile(
             __DIR__.'/assert/source.txt',
@@ -112,7 +112,7 @@ class UploadedFileTest extends TestCase
         $this->assertEquals('foo.txt', $file->getOriginalName());
     }
 
-    public function testGetOriginalExtension()
+    public function testGetOriginalExtension(): void
     {
         $file = new UploadedFile(
             __DIR__.'/assert/source.txt',
@@ -124,7 +124,7 @@ class UploadedFileTest extends TestCase
         $this->assertEquals('txt', $file->getOriginalExtension());
     }
 
-    public function testMoveLocalFileIsNotAllowed()
+    public function testMoveLocalFileIsNotAllowed(): void
     {
         $this->expectException(\Leevel\Http\FileException::class);
         $this->expectExceptionMessage(
@@ -209,7 +209,7 @@ class UploadedFileTest extends TestCase
         }
     }
 
-    public function testMoveLocalFileIsAllowedInTestMode()
+    public function testMoveLocalFileIsAllowedInTestMode(): void
     {
         $sourcePath = __DIR__.'/assert/source.txt';
         $filePath = __DIR__.'/assert/test_uploadedtest.txt';
@@ -242,7 +242,7 @@ class UploadedFileTest extends TestCase
         unlink($targetPath);
     }
 
-    public function testGetSize()
+    public function testGetSize(): void
     {
         $filePath = __DIR__.'/assert/source.txt';
 
@@ -255,7 +255,7 @@ class UploadedFileTest extends TestCase
         $this->assertEquals(filesize($filePath), $file->getSize());
     }
 
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $file = new UploadedFile(
             __DIR__.'/assert/source.txt',
@@ -296,7 +296,7 @@ class UploadedFileTest extends TestCase
         ];
     }
 
-    public function testIsInvalidIfNotHttpUpload()
+    public function testIsInvalidIfNotHttpUpload(): void
     {
         $file = new UploadedFile(
             __DIR__.'/assert/source.txt',

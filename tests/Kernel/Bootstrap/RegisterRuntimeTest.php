@@ -55,7 +55,7 @@ class RegisterRuntimeTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testSetErrorHandle()
+    public function testSetErrorHandle(): void
     {
         $this->expectException(\ErrorException::class);
         $this->expectExceptionMessage(
@@ -75,7 +75,7 @@ class RegisterRuntimeTest extends TestCase
         $this->invokeTestMethod($bootstrap, 'setErrorHandle', [400, 'foo.']);
     }
 
-    public function testSetErrorHandle2()
+    public function testSetErrorHandle2(): void
     {
         $bootstrap = new RegisterRuntime();
 
@@ -85,7 +85,7 @@ class RegisterRuntimeTest extends TestCase
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
     }
 
-    public function testSetExceptionHandler()
+    public function testSetExceptionHandler(): void
     {
         $bootstrap = new RegisterRuntime();
 
@@ -126,7 +126,7 @@ class RegisterRuntimeTest extends TestCase
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
     }
 
-    public function testSetExceptionHandler2()
+    public function testSetExceptionHandler2(): void
     {
         $bootstrap = new RegisterRuntime();
 
@@ -168,7 +168,7 @@ class RegisterRuntimeTest extends TestCase
         $this->assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
     }
 
-    public function testFormatErrorException()
+    public function testFormatErrorException(): void
     {
         $bootstrap = new RegisterRuntime();
 

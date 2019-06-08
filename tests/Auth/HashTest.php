@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class HashTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $hash = new Hash();
 
@@ -42,7 +42,7 @@ class HashTest extends TestCase
         $this->assertTrue($hash->verify('123456', $hashPassword));
     }
 
-    public function testWithCost()
+    public function testWithCost(): void
     {
         $hash = new Hash();
 

@@ -51,7 +51,7 @@ class MakeTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $result = $this->runCommand(new MakeFile(), [
             'command'     => 'make:test',
@@ -73,7 +73,7 @@ class MakeTest extends TestCase
         rmdir(dirname($file));
     }
 
-    public function testFileAleadyExists()
+    public function testFileAleadyExists(): void
     {
         $file = __DIR__.'/Command/cache/test2';
         $dirname = dirname($file);
@@ -91,7 +91,7 @@ class MakeTest extends TestCase
         rmdir($dirname);
     }
 
-    public function testFileIsNotWritable()
+    public function testFileIsNotWritable(): void
     {
         $file = __DIR__.'/Command/cache/test3';
         $dirname = dirname($file);
@@ -111,7 +111,7 @@ class MakeTest extends TestCase
         rmdir($dirname);
     }
 
-    public function testTemplateNotFound()
+    public function testTemplateNotFound(): void
     {
         $file = __DIR__.'/Command/cache/test4';
         $dirname = dirname($file);
@@ -125,7 +125,7 @@ class MakeTest extends TestCase
         $this->assertStringContainsString('Stub not found.', $result);
     }
 
-    public function testFileParentDirIsNotWritable()
+    public function testFileParentDirIsNotWritable(): void
     {
         $cacheDir = __DIR__.'/Command/cacheParentDir/sub';
         $dirname = dirname($cacheDir);

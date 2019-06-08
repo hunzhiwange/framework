@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class FlowControlTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Test1();
 
@@ -53,7 +53,7 @@ class FlowControlTest extends TestCase
         $this->assertSame('condition1', $value);
     }
 
-    public function testElses()
+    public function testElses(): void
     {
         $test = new Test1();
 
@@ -110,7 +110,7 @@ class FlowControlTest extends TestCase
         ];
     }
 
-    public function testElseIfs()
+    public function testElseIfs(): void
     {
         $test = new Test1();
 
@@ -127,7 +127,7 @@ class FlowControlTest extends TestCase
         $this->assertSame('condition2', $value);
     }
 
-    public function testPlaceholderFlowControl()
+    public function testPlaceholderFlowControl(): void
     {
         $test = new Test1();
 

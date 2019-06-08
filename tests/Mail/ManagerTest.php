@@ -40,7 +40,7 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $manager = $this->createManager();
 
@@ -57,10 +57,9 @@ class ManagerTest extends TestCase
         $this->assertSame([], $manager->failedRecipients());
     }
 
-    protected function createManager()
+    protected function createManager(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());

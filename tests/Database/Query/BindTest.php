@@ -34,7 +34,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class BindTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -188,7 +188,7 @@ class BindTest extends TestCase
         );
     }
 
-    public function testBindFlow()
+    public function testBindFlow(): void
     {
         $condition = false;
 
@@ -227,7 +227,7 @@ class BindTest extends TestCase
         );
     }
 
-    public function testBindFlow2()
+    public function testBindFlow2(): void
     {
         $condition = true;
 

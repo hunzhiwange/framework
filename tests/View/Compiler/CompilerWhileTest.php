@@ -48,7 +48,7 @@ class CompilerWhileTest extends TestCase
      *     note="",
      * )
      */
-    public function testCode()
+    public function testCode(): void
     {
         $parser = $this->createParser();
 
@@ -78,7 +78,7 @@ class CompilerWhileTest extends TestCase
      *     note="",
      * )
      */
-    public function testNode()
+    public function testNode(): void
     {
         $parser = $this->createParser();
 

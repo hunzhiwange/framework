@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class LimitTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -125,7 +125,7 @@ class LimitTest extends TestCase
         );
     }
 
-    public function testTopFlow()
+    public function testTopFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -156,7 +156,7 @@ class LimitTest extends TestCase
         );
     }
 
-    public function testTopFlow2()
+    public function testTopFlow2(): void
     {
         $condition = true;
         $connect = $this->createDatabaseConnectMock();
@@ -187,7 +187,7 @@ class LimitTest extends TestCase
         );
     }
 
-    public function testLimitFlow()
+    public function testLimitFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -218,7 +218,7 @@ class LimitTest extends TestCase
         );
     }
 
-    public function testLimitFlow2()
+    public function testLimitFlow2(): void
     {
         $condition = true;
         $connect = $this->createDatabaseConnectMock();

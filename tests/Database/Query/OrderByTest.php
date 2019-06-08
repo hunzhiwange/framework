@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class OrderByTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -192,7 +192,7 @@ class OrderByTest extends TestCase
         );
     }
 
-    public function testLatestOrOldest()
+    public function testLatestOrOldest(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -284,7 +284,7 @@ class OrderByTest extends TestCase
         );
     }
 
-    public function testOrderByExpressionNotSetWithDefaultAsc()
+    public function testOrderByExpressionNotSetWithDefaultAsc(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

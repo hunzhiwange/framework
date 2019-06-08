@@ -49,7 +49,7 @@ class RedisTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $session = $this->createRedisSessionHandler();
 
@@ -76,7 +76,7 @@ class RedisTest extends TestCase
         $this->assertTrue($session->isStart());
     }
 
-    public function testSave()
+    public function testSave(): void
     {
         $session = $this->createRedisSessionHandler();
 
@@ -91,7 +91,7 @@ class RedisTest extends TestCase
         $this->assertFalse($session->isStart());
     }
 
-    public function testSaveAndStart()
+    public function testSaveAndStart(): void
     {
         $session = $this->createRedisSessionHandler();
 
@@ -136,7 +136,7 @@ class RedisTest extends TestCase
         $this->assertSame('a:0:{}', $session->read($sessionId));
     }
 
-    protected function createRedisSessionHandler()
+    protected function createRedisSessionHandler(): Redis
     {
         $option = [
             'host'        => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['HOST'],

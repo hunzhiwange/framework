@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class ColumnsTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -60,7 +60,7 @@ class ColumnsTest extends TestCase
         );
     }
 
-    public function testSetColumns()
+    public function testSetColumns(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -88,7 +88,7 @@ class ColumnsTest extends TestCase
         );
     }
 
-    public function testColumnsExpressionForSelectString()
+    public function testColumnsExpressionForSelectString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -117,7 +117,7 @@ class ColumnsTest extends TestCase
         );
     }
 
-    public function testColumnsFlow()
+    public function testColumnsFlow(): void
     {
         $condition = false;
 
@@ -149,7 +149,7 @@ class ColumnsTest extends TestCase
         );
     }
 
-    public function testColumnsFlow2()
+    public function testColumnsFlow2(): void
     {
         $condition = true;
 
@@ -181,7 +181,7 @@ class ColumnsTest extends TestCase
         );
     }
 
-    public function testSetColumnsFlow()
+    public function testSetColumnsFlow(): void
     {
         $condition = false;
 
@@ -214,7 +214,7 @@ class ColumnsTest extends TestCase
         );
     }
 
-    public function testSetColumnsFlow2()
+    public function testSetColumnsFlow2(): void
     {
         $condition = true;
 
@@ -247,7 +247,7 @@ class ColumnsTest extends TestCase
         );
     }
 
-    public function testSetColumnsWithTableName()
+    public function testSetColumnsWithTableName(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

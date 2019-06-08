@@ -38,7 +38,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class RegisterTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
 
@@ -69,7 +69,7 @@ class RegisterTest extends TestCase
         $manager->close();
     }
 
-    public function testUseAlias()
+    public function testUseAlias(): void
     {
         $test = new Register($container = $this->createContainer());
 

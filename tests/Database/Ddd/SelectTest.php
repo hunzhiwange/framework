@@ -39,7 +39,7 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
  */
 class SelectTest extends TestCase
 {
-    public function testBase()
+    public function testBase(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -65,7 +65,7 @@ class SelectTest extends TestCase
         $this->assertInstanceof(IEntity::class, $entity);
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -89,7 +89,7 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
     }
 
-    public function testFindOrFail()
+    public function testFindOrFail(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -113,7 +113,7 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
     }
 
-    public function testFindOrFailThrowsException()
+    public function testFindOrFailThrowsException(): void
     {
         $this->expectException(\Leevel\Database\Ddd\EntityNotFoundException::class);
         $this->expectExceptionMessage(
@@ -124,7 +124,7 @@ class SelectTest extends TestCase
         $post = $select->findOrFail(1);
     }
 
-    public function testFindMany()
+    public function testFindMany(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -167,7 +167,7 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post2->summary);
     }
 
-    public function testFindManyWithEmptyIds()
+    public function testFindManyWithEmptyIds(): void
     {
         $select = new Select(new Post());
         $posts = $select->findMany([]);
@@ -176,7 +176,7 @@ class SelectTest extends TestCase
         $this->assertCount(0, $posts);
     }
 
-    public function testFindManyWithoutResults()
+    public function testFindManyWithoutResults(): void
     {
         $select = new Select(new Post());
         $posts = $select->findMany([1, 2]);
@@ -185,7 +185,7 @@ class SelectTest extends TestCase
         $this->assertCount(0, $posts);
     }
 
-    public function testSoftDelete()
+    public function testSoftDelete(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -236,7 +236,7 @@ class SelectTest extends TestCase
         $this->assertNull($post2->delete_at);
     }
 
-    public function testSoftDestroy()
+    public function testSoftDestroy(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -287,7 +287,7 @@ class SelectTest extends TestCase
         $this->assertNull($post2->delete_at);
     }
 
-    public function testSoftRestore()
+    public function testSoftRestore(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -346,7 +346,7 @@ class SelectTest extends TestCase
         $this->assertNull($restorePost1->delete_at);
     }
 
-    public function testWithoutSoftDeleted()
+    public function testWithoutSoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -392,7 +392,7 @@ class SelectTest extends TestCase
         $this->assertCount(1, $posts);
     }
 
-    public function testOnlySoftDeleted()
+    public function testOnlySoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -438,7 +438,7 @@ class SelectTest extends TestCase
         $this->assertCount(1, $posts);
     }
 
-    public function testDeleteAtColumnNotFound()
+    public function testDeleteAtColumnNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -449,7 +449,7 @@ class SelectTest extends TestCase
         $select->softDeleted();
     }
 
-    public function testScopeBase()
+    public function testScopeBase(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -491,7 +491,7 @@ class SelectTest extends TestCase
         $this->assertCount(5, $result4);
     }
 
-    public function testScopeClosure()
+    public function testScopeClosure(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -527,7 +527,7 @@ class SelectTest extends TestCase
         $this->assertCount(3, $result2);
     }
 
-    public function testFindPage()
+    public function testFindPage(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -617,7 +617,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testLastSql()
+    public function testLastSql(): void
     {
         $connect = $this->createDatabaseConnect();
 

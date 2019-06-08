@@ -54,7 +54,7 @@ class FunctionsTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $container = $this->createContainer();
 
@@ -78,7 +78,7 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
-    public function testCallStaticException()
+    public function testCallStaticException(): void
     {
         $this->expectException(\Leevel\Support\FunctionNotFoundException::class);
         $this->expectExceptionMessage(
@@ -126,7 +126,7 @@ class FunctionsTest extends TestCase
         ];
     }
 
-    public function testLog()
+    public function testLog(): void
     {
         $log = $this->createMock(ILog::class);
 
@@ -145,7 +145,7 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
-    public function testOption()
+    public function testOption(): void
     {
         $option = $this->createMock(IOption::class);
 
@@ -168,7 +168,7 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
-    public function testCache()
+    public function testCache(): void
     {
         $cache = $this->createMock(ICache::class);
 
@@ -191,7 +191,7 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
-    public function testEncryptAndEecrypt()
+    public function testEncryptAndEecrypt(): void
     {
         $encryption = $this->createMock(IEncryption::class);
 
@@ -213,7 +213,7 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
-    public function testSession()
+    public function testSession(): void
     {
         $session = $this->createMock(ISession::class);
 
@@ -236,7 +236,7 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
-    public function testFlash()
+    public function testFlash(): void
     {
         $session = $this->createMock(ISession::class);
 
@@ -258,7 +258,7 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
-    public function testUrl()
+    public function testUrl(): void
     {
         $url = $this->createMock(IUrl::class);
 
@@ -276,7 +276,7 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
-    public function testGettextWithI18n()
+    public function testGettextWithI18n(): void
     {
         $i18n = $this->createMock(II18n::class);
 
@@ -286,7 +286,7 @@ class FunctionsTest extends TestCase
             ['hello %d', 5, 'hello 5'],
         ];
 
-        $i18n->method('gettext')->will($this->returnValueMap($map));
+        $i18n->method('gettext')->willReturnMap($map);
         $this->assertSame('hello', $i18n->gettext('hello'));
         $this->assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
         $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));

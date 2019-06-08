@@ -66,7 +66,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         Assert::notEmpty(1);
         Assert::notEmpty(55);
@@ -82,7 +82,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertFailedWithDefaultMessage()
+    public function testAssertFailedWithDefaultMessage(): void
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(
@@ -99,7 +99,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertFailedWithCustomMessage()
+    public function testAssertFailedWithCustomMessage(): void
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(
@@ -116,7 +116,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertOptional()
+    public function testAssertOptional(): void
     {
         Assert::optionalNotEmpty(null);
     }
@@ -128,7 +128,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertOptionalFailed()
+    public function testAssertOptionalFailed(): void
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(
@@ -145,7 +145,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertMulti()
+    public function testAssertMulti(): void
     {
         Assert::multiNotEmpty([3, ['hello'], 'bar', 'yes']);
     }
@@ -157,7 +157,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertMultiFailed()
+    public function testAssertMultiFailed(): void
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(
@@ -174,7 +174,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertMultiWithOptional()
+    public function testAssertMultiWithOptional(): void
     {
         Assert::optionalMultiNotEmpty([null, ['hello'], 'bar', 'yes', null]);
     }
@@ -195,7 +195,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertChain()
+    public function testAssertChain(): void
     {
         Assert::make(5, 'Assert success.')
             ->notEmpty()
@@ -218,7 +218,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertLazyChain()
+    public function testAssertLazyChain(): void
     {
         $result = Assert::lazy(5, 'Assert success.')
             ->notEmpty()
@@ -237,7 +237,7 @@ class AssertTest extends TestCase
      *     note="",
      * )
      */
-    public function testAssertLazyChainFailed()
+    public function testAssertLazyChainFailed(): void
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(

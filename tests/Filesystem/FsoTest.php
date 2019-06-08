@@ -55,7 +55,7 @@ class FsoTest extends TestCase
         }
     }
 
-    public function testCreateDirectory()
+    public function testCreateDirectory(): void
     {
         $dir = __DIR__.'/createDirectory';
 
@@ -70,7 +70,7 @@ class FsoTest extends TestCase
         rmdir($dir);
     }
 
-    public function testDeleteDirectory()
+    public function testDeleteDirectory(): void
     {
         $dir = __DIR__.'/deleteDirectory/dir';
 
@@ -93,7 +93,7 @@ class FsoTest extends TestCase
         $this->assertDirectoryNotExists($topDir);
     }
 
-    public function testDeleteDirectory2()
+    public function testDeleteDirectory2(): void
     {
         $dir = __DIR__.'/deleteDirectory2/dir';
 
@@ -110,7 +110,7 @@ class FsoTest extends TestCase
         $this->assertDirectoryNotExists($topDir);
     }
 
-    public function testCopyDirectory()
+    public function testCopyDirectory(): void
     {
         $sourcePath = __DIR__.'/copyDirectory';
         $sourceSubPath = __DIR__.'/copyDirectory/dir';
@@ -137,7 +137,7 @@ class FsoTest extends TestCase
         Fso::deleteDirectory($targetPath, true);
     }
 
-    public function testCopyDirectory2()
+    public function testCopyDirectory2(): void
     {
         $sourcePath = __DIR__.'/copyDirectory2';
         $sourceSubPath = __DIR__.'/copyDirectory2/dir';
@@ -164,7 +164,7 @@ class FsoTest extends TestCase
         Fso::deleteDirectory($targetPath, true);
     }
 
-    public function testCopyDirectory3()
+    public function testCopyDirectory3(): void
     {
         $sourcePath = __DIR__.'/copyDirectory3';
         $sourceSubPath = __DIR__.'/CopyDirectory3/dir';
@@ -175,7 +175,7 @@ class FsoTest extends TestCase
         Fso::copyDirectory($sourcePath, $targetPath);
     }
 
-    public function testListDirectory()
+    public function testListDirectory(): void
     {
         $sourcePath = __DIR__.'/listDirectory';
         $sourceSubPath = __DIR__.'/listDirectory/dir';
@@ -207,7 +207,7 @@ class FsoTest extends TestCase
         Fso::deleteDirectory($sourcePath, true);
     }
 
-    public function testListDirectory2()
+    public function testListDirectory2(): void
     {
         $sourcePath = __DIR__.'/listDirectory2';
 
@@ -217,7 +217,7 @@ class FsoTest extends TestCase
         });
     }
 
-    public function testTidyPath()
+    public function testTidyPath(): void
     {
         $sourcePath = '/home\goods/name/';
 
@@ -225,7 +225,7 @@ class FsoTest extends TestCase
         $this->assertSame('\home\goods\name', Fso::tidyPath($sourcePath, false));
     }
 
-    public function testIsAbsolute()
+    public function testIsAbsolute(): void
     {
         $this->assertTrue(Fso::isAbsolute('c://'));
 
@@ -234,14 +234,14 @@ class FsoTest extends TestCase
         $this->assertFalse(Fso::isAbsolute('hello'));
     }
 
-    public function testDistributed()
+    public function testDistributed(): void
     {
         $this->assertSame(['000/00/00/', '01'], Fso::distributed(1));
 
         $this->assertSame(['090/00/00/', '00'], Fso::distributed(90000000));
     }
 
-    public function testCreateFile()
+    public function testCreateFile(): void
     {
         $sourcePath = __DIR__.'/createFile';
         $file = $sourcePath.'/hello.txt';
@@ -259,7 +259,7 @@ class FsoTest extends TestCase
         Fso::deleteDirectory($sourcePath, true);
     }
 
-    public function testCreateFile2()
+    public function testCreateFile2(): void
     {
         $file = __DIR__.'/FsoTest.php';
 
@@ -271,7 +271,7 @@ class FsoTest extends TestCase
         Fso::createFile($file.'/demo.txt');
     }
 
-    public function testCreateFile3()
+    public function testCreateFile3(): void
     {
         $sourcePath = __DIR__.'/createFile2';
         $file = $sourcePath.'/hello2.txt';
@@ -300,7 +300,7 @@ class FsoTest extends TestCase
         Fso::createFile($file);
     }
 
-    public function testCreateFile4()
+    public function testCreateFile4(): void
     {
         $sourcePath = __DIR__.'/foo/bar/createFile4';
         $file = $sourcePath.'/hello4.txt';
@@ -316,7 +316,7 @@ class FsoTest extends TestCase
         Fso::deleteDirectory($sourcePath, true);
     }
 
-    public function testCreateFile5()
+    public function testCreateFile5(): void
     {
         $sourcePath = __DIR__.'/createFile5/sub';
         $file = $sourcePath.'/hello5.txt';
@@ -349,7 +349,7 @@ class FsoTest extends TestCase
         Fso::createFile($file);
     }
 
-    public function testGetExtension()
+    public function testGetExtension(): void
     {
         $file = __DIR__.'/FsoTest.pHp';
 
@@ -358,7 +358,7 @@ class FsoTest extends TestCase
         $this->assertSame('php', Fso::getExtension($file, 2));
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         $file = __DIR__.'/FsoTest.pHp';
 
