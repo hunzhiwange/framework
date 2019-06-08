@@ -43,13 +43,15 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select(new Post());
         $post = $select->find(1);
@@ -67,13 +69,15 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select(new Post());
         $post = $select->find(1);
@@ -89,13 +93,15 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select(new Post());
         $post = $select->findOrFail(1);
@@ -122,21 +128,25 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select(new Post());
         $posts = $select->findMany([1, 2]);
@@ -179,21 +189,25 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select($post = Post::find(1));
 
@@ -226,21 +240,25 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select($post = Post::find(1));
 
@@ -273,21 +291,25 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select($post = Post::find(1));
 
@@ -328,21 +350,25 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select($post = Post::find(1));
 
@@ -370,21 +396,25 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select($post = Post::find(1));
 
@@ -424,13 +454,13 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $select = new Select($post = Post::find(1));
@@ -466,13 +496,13 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $select = new Select($post = Post::find(1));
@@ -501,35 +531,43 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('0', $connect->
-        table('post_content')->
-        insert([
-            'post_id' => 1,
-            'content' => 'I am content with big data.',
-        ]));
+        $this->assertSame(
+            '0',
+           $connect
+               ->table('post_content')
+               ->insert([
+                   'post_id' => 1,
+                   'content' => 'I am content with big data.',
+               ]));
 
-        $this->assertSame('0', $connect->
-        table('post_content')->
-        insert([
-            'post_id' => 2,
-            'content' => 'I am content with big data2.',
-        ]));
+        $this->assertSame(
+            '0',
+            $connect
+                ->table('post_content')
+                ->insert([
+                    'post_id' => 2,
+                    'content' => 'I am content with big data2.',
+                ]));
 
         $select = new Select(new Post());
         $select->eager(['post_content']);
@@ -583,13 +621,15 @@ class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $select = new Select(new Post());
         $post = $select->find(1);

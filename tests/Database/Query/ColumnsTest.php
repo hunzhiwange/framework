@@ -51,13 +51,11 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                columns('id')->
-
-                columns('name,value')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->columns('id')
+                    ->columns('name,value')
+                    ->findAll(true)
             )
         );
     }
@@ -80,15 +78,12 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                columns('id')->
-
-                columns('name,value')->
-
-                setColumns('remark')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->columns('id')
+                    ->columns('name,value')
+                    ->setColumns('remark')
+                    ->findAll(true)
             )
         );
     }
@@ -114,11 +109,9 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 [
-                    $connect->
-
-                    columns("{'foo'}")->
-
-                    findAll(true),
+                    $connect
+                        ->columns("{'foo'}")
+                        ->findAll(true),
                 ]
             )
         );
@@ -144,19 +137,14 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                columns('id')->
-
-                elses()->
-
-                columns('name,value')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->columns('id')
+                    ->elses()
+                    ->columns('name,value')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -181,19 +169,14 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                columns('id')->
-
-                elses()->
-
-                columns('name,value')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->columns('id')
+                    ->elses()
+                    ->columns('name,value')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -218,21 +201,15 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                setColumns('foo')->
-
-                ifs($condition)->
-
-                setColumns('id')->
-
-                elses()->
-
-                setColumns('name,value')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->setColumns('foo')
+                    ->ifs($condition)
+                    ->setColumns('id')
+                    ->elses()
+                    ->setColumns('name,value')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -257,21 +234,15 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                setColumns('foo')->
-
-                ifs($condition)->
-
-                setColumns('id')->
-
-                elses()->
-
-                setColumns('name,value')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->setColumns('foo')
+                    ->ifs($condition)
+                    ->setColumns('id')
+                    ->elses()
+                    ->setColumns('name,value')
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -294,13 +265,11 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                setColumns('test.name,test.value')->
-
-                join('hello', 'name,value', 'name', '=', '{[test.name]}')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->setColumns('test.name,test.value')
+                    ->join('hello', 'name,value', 'name', '=', '{[test.name]}')
+                    ->findAll(true)
             )
         );
     }

@@ -51,11 +51,10 @@ class DistinctTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                distinct()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->distinct()
+                    ->findAll(true)
             )
         );
 
@@ -73,13 +72,11 @@ class DistinctTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                distinct()->
-
-                distinct(false)->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->distinct()
+                    ->distinct(false)
+                    ->findAll(true),
                 1
             )
         );
@@ -88,7 +85,6 @@ class DistinctTest extends TestCase
     public function testFlow()
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -105,19 +101,14 @@ class DistinctTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                distinct()->
-
-                elses()->
-
-                distinct(false)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->distinct()
+                    ->elses()
+                    ->distinct(false)
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }
@@ -142,19 +133,14 @@ class DistinctTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                distinct()->
-
-                elses()->
-
-                distinct(false)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ifs($condition)
+                    ->distinct()
+                    ->elses()
+                    ->distinct(false)
+                    ->endIfs()
+                    ->findAll(true)
             )
         );
     }

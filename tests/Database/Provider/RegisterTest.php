@@ -52,15 +52,16 @@ class RegisterTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $manager->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $manager
+                ->table('guest_book')
+                ->insert($data));
 
-        $result = $manager->table('guest_book', 'name,content')->
-
-        where('id', 1)->
-
-        findOne();
+        $result = $manager
+            ->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
@@ -82,15 +83,16 @@ class RegisterTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $manager->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $manager
+                ->table('guest_book')
+                ->insert($data));
 
-        $result = $manager->table('guest_book', 'name,content')->
-
-        where('id', 1)->
-
-        findOne();
+        $result = $manager
+            ->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);

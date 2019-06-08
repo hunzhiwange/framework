@@ -54,13 +54,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingDate('create_date', '+5 month')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingDate('create_date', '+5 month')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -90,13 +88,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingDay('create_date', 5)->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingDay('create_date', 5)
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -126,13 +122,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingDay('create_date', '5')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingDay('create_date', '5')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -162,13 +156,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingDay('create_date', '5 foo')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingDay('create_date', '5 foo')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -198,13 +190,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingMonth('create_date', 5)->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingMonth('create_date', 5)
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -234,13 +224,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingMonth('create_date', '5')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingMonth('create_date', '5')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -270,13 +258,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingMonth('create_date', '5 foo')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingMonth('create_date', '5 foo')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -305,13 +291,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingYear('create_date', 2018)->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingYear('create_date', 2018)
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -340,13 +324,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingYear('create_date', '2018')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingYear('create_date', '2018')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -375,13 +357,11 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                havingYear('create_date', '2018 foo')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->havingYear('create_date', '2018 foo')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -411,17 +391,13 @@ class HavingTimeTest extends TestCase
         $this->assertTrue(
             in_array(
                 $this->varJson(
-                    $connect->table('test')->
-
-                    groupBy('create_date')->
-
-                    time()->
-
-                    having('create_date', '+5 month')->
-
-                    endTime()->
-
-                    findOne(true)
+                    $connect
+                        ->table('test')
+                        ->groupBy('create_date')
+                        ->time()
+                        ->having('create_date', '+5 month')
+                        ->endTime()
+                        ->findOne(true)
                 ), [
                     sprintf($sql, $value),
                     sprintf($sql, $value2),
@@ -453,17 +429,13 @@ class HavingTimeTest extends TestCase
         $this->assertTrue(
             in_array(
                 $this->varJson(
-                    $connect->table('test')->
-
-                    groupBy('create_date')->
-
-                    time('date')->
-
-                    having('create_date', '+5 month')->
-
-                    endTime()->
-
-                    findOne(true)
+                    $connect
+                        ->table('test')
+                        ->groupBy('create_date')
+                        ->time('date')
+                        ->having('create_date', '+5 month')
+                        ->endTime()
+                        ->findOne(true)
                 ), [
                     sprintf($sql, $value),
                     sprintf($sql, $value2),
@@ -494,17 +466,13 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                time('day')->
-
-                having('create_date', 5)->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->time('day')
+                    ->having('create_date', 5)
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -534,17 +502,13 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                time('month')->
-
-                having('create_date', 5)->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->time('month')
+                    ->having('create_date', 5)
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -573,17 +537,13 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                time('year')->
-
-                having('create_date', 2018)->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->time('year')
+                    ->having('create_date', 2018)
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -616,35 +576,22 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                time('year')->
-
-                having('create_year', 2018)->
-
-                endTime()->
-
-                time('month')->
-
-                havingMonth('create_month', 5)->
-
-                endTime()->
-
-                time('day')->
-
-                having('create_day', 5)->
-
-                endTime()->
-
-                time('date')->
-
-                having('create_date', '+5 month')->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->time('year')
+                    ->having('create_year', 2018)
+                    ->endTime()
+                    ->time('month')
+                    ->havingMonth('create_month', 5)
+                    ->endTime()
+                    ->time('day')
+                    ->having('create_day', 5)
+                    ->endTime()
+                    ->time('date')
+                    ->having('create_date', '+5 month')
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $year, $month, $day, $date),
             sprintf($sql, $year, $month, $day, $date2),
@@ -678,29 +625,19 @@ class HavingTimeTest extends TestCase
         $this->assertTrue(
             in_array(
                 $this->varJson(
-                    $connect->table('test')->
-
-                    groupBy('create_date')->
-
-                    time('year')->
-
-                    having('create_year', 2018)->
-
-                    time('month')->
-
-                    havingMonth('create_month', 5)->
-
-                    time('day')->
-
-                    having('create_day', 5)->
-
-                    time('date')->
-
-                    having('create_date', '+5 month')->
-
-                    endTime()->
-
-                    findOne(true)
+                    $connect
+                        ->table('test')
+                        ->groupBy('create_date')
+                        ->time('year')
+                        ->having('create_year', 2018)
+                        ->time('month')
+                        ->havingMonth('create_month', 5)
+                        ->time('day')
+                        ->having('create_day', 5)
+                        ->time('date')
+                        ->having('create_date', '+5 month')
+                        ->endTime()
+                        ->findOne(true)
                 ), [
                     sprintf($sql, $year, $month, $day, $date),
                     sprintf($sql, $year, $month, $day, $date2),
@@ -719,13 +656,11 @@ class HavingTimeTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        groupBy('create_date')->
-
-        havingDate('create_date', 'hello')->
-
-        findOne(true);
+        $connect
+            ->table('test')
+            ->groupBy('create_date')
+            ->havingDate('create_date', 'hello')
+            ->findOne(true);
     }
 
     public function testDayLessThan31()
@@ -737,13 +672,11 @@ class HavingTimeTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        groupBy('create_date')->
-
-        havingDay('create_date', 40)->
-
-        findOne(true);
+        $connect
+            ->table('test')
+            ->groupBy('create_date')
+            ->havingDay('create_date', 40)
+            ->findOne(true);
     }
 
     public function testMonthLessThan12()
@@ -755,13 +688,11 @@ class HavingTimeTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        groupBy('create_date')->
-
-        havingMonth('create_date', 13)->
-
-        findOne(true);
+        $connect
+            ->table('test')
+            ->groupBy('create_date')
+            ->havingMonth('create_date', 13)
+            ->findOne(true);
     }
 
     public function testTimeTypeInvalid()
@@ -773,23 +704,18 @@ class HavingTimeTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        groupBy('create_date')->
-
-        time('foo')->
-
-        having('create_date', 5)->
-
-        endTime()->
-
-        findOne(true);
+        $connect
+            ->table('test')
+            ->groupBy('create_date')
+            ->time('foo')
+            ->having('create_date', 5)
+            ->endTime()
+            ->findOne(true);
     }
 
     public function testTimeFlow()
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -810,29 +736,19 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                ifs($condition)->
-
-                time('month')->
-
-                having('create_at', 5)->
-
-                endTime()->
-
-                elses()->
-
-                time('day')->
-
-                having('create_at', 5)->
-
-                endTime()->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->ifs($condition)
+                    ->time('month')
+                    ->having('create_at', 5)
+                    ->endTime()
+                    ->elses()
+                    ->time('day')
+                    ->having('create_at', 5)
+                    ->endTime()
+                    ->endIfs()
+                    ->findAll(true)
             ),
             sprintf($sql, $time),
             sprintf($sql, $time2),
@@ -843,7 +759,6 @@ class HavingTimeTest extends TestCase
     public function testTimeFlow2()
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -864,29 +779,19 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                ifs($condition)->
-
-                time('month')->
-
-                having('create_at', 5)->
-
-                endTime()->
-
-                elses()->
-
-                time('day')->
-
-                having('create_at', 5)->
-
-                endTime()->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->ifs($condition)
+                    ->time('month')
+                    ->having('create_at', 5)
+                    ->endTime()
+                    ->elses()
+                    ->time('day')
+                    ->having('create_at', 5)
+                    ->endTime()
+                    ->endIfs()
+                    ->findAll(true)
             ),
             sprintf($sql, $time),
             sprintf($sql, $time2),
@@ -897,7 +802,6 @@ class HavingTimeTest extends TestCase
     public function testEndTimeFlow()
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -918,27 +822,18 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                time('day')->
-
-                having('create_at', 5)->
-
-                ifs($condition)->
-
-                elses()->
-
-                endTime()->
-
-                endIfs()->
-
-                having('create_at', 6)->
-
-                endTime()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->time('day')
+                    ->having('create_at', 5)
+                    ->ifs($condition)
+                    ->elses()
+                    ->endTime()
+                    ->endIfs()
+                    ->having('create_at', 6)
+                    ->endTime()
+                    ->findAll(true)
             ),
             sprintf($sql, $time),
             sprintf($sql, $time2),
@@ -949,7 +844,6 @@ class HavingTimeTest extends TestCase
     public function testEndTimeFlow2()
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -973,27 +867,18 @@ class HavingTimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                groupBy('create_date')->
-
-                time('day')->
-
-                having('create_at', 5)->
-
-                ifs($condition)->
-
-                elses()->
-
-                endTime()->
-
-                endIfs()->
-
-                having('create_at', 6)->
-
-                endTime()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->time('day')
+                    ->having('create_at', 5)
+                    ->ifs($condition)
+                    ->elses()
+                    ->endTime()
+                    ->endIfs()
+                    ->having('create_at', 6)
+                    ->endTime()
+                    ->findAll(true)
             ),
             sprintf($sql, $time1, $time2),
             sprintf($sql, $time1, $time22),
