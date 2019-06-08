@@ -39,7 +39,7 @@ use Tests\TestCase;
  */
 class ScanRouterTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $middlewareParser = $this->createMiddlewareParser();
 

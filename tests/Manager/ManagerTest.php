@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $manager = $this->createManager();
 
@@ -57,7 +57,7 @@ class ManagerTest extends TestCase
         $this->assertSame('hello bar 2', $bar->bar('2'));
     }
 
-    public function testConnectCache()
+    public function testConnectCache(): void
     {
         $manager = $this->createManager();
 
@@ -70,7 +70,7 @@ class ManagerTest extends TestCase
         $this->assertSame($bar, $bar2);
     }
 
-    public function testReconnect()
+    public function testReconnect(): void
     {
         $manager = $this->createManager();
 
@@ -83,7 +83,7 @@ class ManagerTest extends TestCase
         $this->assertFalse($bar === $bar2);
     }
 
-    public function testDisconnect()
+    public function testDisconnect(): void
     {
         $manager = $this->createManager();
 
@@ -100,7 +100,7 @@ class ManagerTest extends TestCase
         $this->assertFalse($bar === $bar2);
     }
 
-    public function testStaticWithDefaultDriver()
+    public function testStaticWithDefaultDriver(): void
     {
         $manager = $this->createManager();
 
@@ -110,7 +110,7 @@ class ManagerTest extends TestCase
         $this->assertSame('hello foo 2', $manager->bar('2'));
     }
 
-    public function testGetConnects()
+    public function testGetConnects(): void
     {
         $manager = $this->createManager();
 
@@ -130,7 +130,7 @@ class ManagerTest extends TestCase
         $this->assertCount(0, $manager->getConnects());
     }
 
-    public function testSetDefaultDriver()
+    public function testSetDefaultDriver(): void
     {
         $manager = $this->createManager();
 
@@ -149,7 +149,7 @@ class ManagerTest extends TestCase
         $this->assertSame('hello bar 2', $manager->bar('2'));
     }
 
-    public function testParseOptionParameterConnectIsNotArray()
+    public function testParseOptionParameterConnectIsNotArray(): void
     {
         $manager = $this->createManager();
 
@@ -162,7 +162,7 @@ class ManagerTest extends TestCase
         $this->assertSame('hello foo 2', $manager->bar('2'));
     }
 
-    public function testDriverNotFoundException()
+    public function testDriverNotFoundException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(

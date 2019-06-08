@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class HavingTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -61,7 +61,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testArray()
+    public function testArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -88,7 +88,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testOrHaving()
+    public function testOrHaving(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -116,7 +116,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingBetween()
+    public function testHavingBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -170,7 +170,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingNotBetween()
+    public function testHavingNotBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -198,7 +198,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingIn()
+    public function testHavingIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -226,7 +226,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingNotIn()
+    public function testHavingNotIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -254,7 +254,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingNull()
+    public function testHavingNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -282,7 +282,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingNotNull()
+    public function testHavingNotNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -310,7 +310,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testOrHavingDefaultNull()
+    public function testOrHavingDefaultNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -337,7 +337,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingLike()
+    public function testHavingLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -365,7 +365,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingNotLike()
+    public function testHavingNotLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -393,7 +393,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingGroup()
+    public function testHavingGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -425,7 +425,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testConditionalExpression()
+    public function testConditionalExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -452,7 +452,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testArrayKeyAsField()
+    public function testArrayKeyAsField(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -487,7 +487,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testSupportString()
+    public function testSupportString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -514,7 +514,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testSupportSubandSubor()
+    public function testSupportSubandSubor(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -585,7 +585,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingNotSupportMethod()
+    public function testHavingNotSupportMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -600,7 +600,7 @@ class HavingTest extends TestCase
             ->findAll(true);
     }
 
-    public function testCallHavingSugarFlow()
+    public function testCallHavingSugarFlow(): void
     {
         $condition = false;
 
@@ -633,7 +633,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testCallHavingSugarFlow2()
+    public function testCallHavingSugarFlow2(): void
     {
         $condition = true;
 
@@ -666,7 +666,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testOrHavingFlow()
+    public function testOrHavingFlow(): void
     {
         $condition = false;
 
@@ -700,7 +700,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testOrHavingFlow2()
+    public function testOrHavingFlow2(): void
     {
         $condition = true;
 
@@ -734,7 +734,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingNotSupportExists()
+    public function testHavingNotSupportExists(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -749,7 +749,7 @@ class HavingTest extends TestCase
             ->findAll(true);
     }
 
-    public function testHavingNotSupportExists2()
+    public function testHavingNotSupportExists2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -764,7 +764,7 @@ class HavingTest extends TestCase
             ->findAll(true);
     }
 
-    public function testHavingFieldWithTable()
+    public function testHavingFieldWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -791,7 +791,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingBetweenValueNotAnArrayException()
+    public function testHavingBetweenValueNotAnArrayException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -807,7 +807,7 @@ class HavingTest extends TestCase
             ->findAll(true);
     }
 
-    public function testHavingBetweenValueNotAnArrayException2()
+    public function testHavingBetweenValueNotAnArrayException2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -823,7 +823,7 @@ class HavingTest extends TestCase
             ->findAll(true);
     }
 
-    public function testHavingBetweenArrayItemIsClosure()
+    public function testHavingBetweenArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -854,7 +854,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingInArrayItemIsClosure()
+    public function testHavingInArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -885,7 +885,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingBetweenArrayItemIsExpression()
+    public function testHavingBetweenArrayItemIsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -912,7 +912,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingInArrayItemIsExpression()
+    public function testHavingInArrayItemIsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -939,7 +939,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingBetweenArrayItemIsSelect()
+    public function testHavingBetweenArrayItemIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -968,7 +968,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingInArrayItemIsSelect()
+    public function testHavingInArrayItemIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -997,7 +997,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingBetweenArrayItemIsCondition()
+    public function testHavingBetweenArrayItemIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1029,7 +1029,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingInArrayItemIsCondition()
+    public function testHavingInArrayItemIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1061,7 +1061,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingInIsClosure()
+    public function testHavingInIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1090,7 +1090,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingInIsSubString()
+    public function testHavingInIsSubString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1121,7 +1121,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingInIsSubIsSelect()
+    public function testHavingInIsSubIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1150,7 +1150,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingEqualIsSub()
+    public function testHavingEqualIsSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1181,7 +1181,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingRaw()
+    public function testHavingRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1208,7 +1208,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testOrHavingRaw()
+    public function testOrHavingRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1236,7 +1236,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingRawFlow()
+    public function testHavingRawFlow(): void
     {
         $condition = false;
 
@@ -1269,7 +1269,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingRawFlow2()
+    public function testHavingRawFlow2(): void
     {
         $condition = true;
 
@@ -1302,7 +1302,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testOrHavingRawFlow()
+    public function testOrHavingRawFlow(): void
     {
         $condition = false;
 
@@ -1337,7 +1337,7 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testOrHavingRawFlow2()
+    public function testOrHavingRawFlow2(): void
     {
         $condition = true;
 

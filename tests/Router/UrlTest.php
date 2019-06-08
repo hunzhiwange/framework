@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class UrlTest extends TestCase
 {
-    public function testMakeUrl()
+    public function testMakeUrl(): void
     {
         $request = $this->makeRequest();
         $url = new Url($request);
@@ -60,7 +60,7 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('/new-{id}-{name}?hello={foo}', ['id' => 5, 'name' => 'tom', 'foo' => 'bar', 'arg1' => '5']), '/new-5-tom?hello=bar&arg1=5');
     }
 
-    public function testWithDomainTop()
+    public function testWithDomainTop(): void
     {
         $request = $this->makeRequest();
         $url = new Url($request, [
@@ -73,7 +73,7 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('hello/world', [], '*'), 'http://queryphp.com/hello/world');
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $request = $this->makeRequest();
         $url = new Url($request);
@@ -84,7 +84,7 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('hello/world'), 'http://www.queryphp.cn/hello/world');
     }
 
-    public function testSecure()
+    public function testSecure(): void
     {
         $request = $this->makeRequest(true);
         $url = new Url($request);
@@ -94,7 +94,7 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('hello/world'), '/hello/world');
     }
 
-    public function testWithVarButNotMatche()
+    public function testWithVarButNotMatche(): void
     {
         $request = $this->makeRequest();
         $url = new Url($request);
@@ -104,7 +104,7 @@ class UrlTest extends TestCase
         $this->assertSame('/hello/{foo}', $url->make('hello/{foo}', []));
     }
 
-    public function testSecureWithDomainTop()
+    public function testSecureWithDomainTop(): void
     {
         $request = $this->makeRequest(true);
         $url = new Url($request, [
@@ -116,7 +116,7 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('hello/world'), 'https://www.queryphp.cn/hello/world');
     }
 
-    public function testGetDomain()
+    public function testGetDomain(): void
     {
         $request = $this->makeRequest(true);
         $url = new Url($request);
@@ -124,7 +124,7 @@ class UrlTest extends TestCase
         $this->assertSame($url->getDomain(), '');
     }
 
-    public function testGetDomain2()
+    public function testGetDomain2(): void
     {
         $request = $this->makeRequest(true);
         $url = new Url($request, [

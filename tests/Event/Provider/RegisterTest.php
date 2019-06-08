@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class RegisterTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         if (isset($_SERVER['test'])) {
             unset($_SERVER['test']);

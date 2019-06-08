@@ -44,7 +44,7 @@ use Tests\TestCase;
  */
 class ResponseTest extends TestCase
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $response = Response::create('foo', 301, ['Foo' => 'bar']);
         $this->assertInstanceOf('Leevel\Http\IResponse', $response);
@@ -53,7 +53,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $response->headers->get('foo'));
     }
 
-    public function testSendHeaders()
+    public function testSendHeaders(): void
     {
         $response = new Response();
         $headers = $response->sendHeaders();
@@ -65,7 +65,7 @@ class ResponseTest extends TestCase
         $this->assertObjectHasAttribute('charset', $headers);
     }
 
-    public function testSend()
+    public function testSend(): void
     {
         $response = new Response();
         $responseSend = $response->send();
@@ -77,7 +77,7 @@ class ResponseTest extends TestCase
         $this->assertObjectHasAttribute('charset', $responseSend);
     }
 
-    public function testGetCharset()
+    public function testGetCharset(): void
     {
         $response = new Response();
         $charsetOrigin = 'UTF-8';
@@ -86,7 +86,7 @@ class ResponseTest extends TestCase
         $this->assertSame($charsetOrigin, $charset);
     }
 
-    public function testSetNotModified()
+    public function testSetNotModified(): void
     {
         $response = new Response();
         $modified = $response->setNotModified();
@@ -99,13 +99,13 @@ class ResponseTest extends TestCase
         $this->assertSame(304, $modified->getStatusCode());
     }
 
-    public function testIsSuccessful()
+    public function testIsSuccessful(): void
     {
         $response = new Response();
         $this->assertTrue($response->isSuccessful());
     }
 
-    public function testGetSetProtocolVersion()
+    public function testGetSetProtocolVersion(): void
     {
         $response = new Response();
         $this->assertSame('1.0', $response->getProtocolVersion());
@@ -113,7 +113,7 @@ class ResponseTest extends TestCase
         $this->assertSame('1.1', $response->getProtocolVersion());
     }
 
-    public function testContentTypeCharset()
+    public function testContentTypeCharset(): void
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'text/css');
@@ -138,7 +138,7 @@ class ResponseTest extends TestCase
         $this->assertNull($response->headers->get('Content-Type'));
     }
 
-    public function testSetCache()
+    public function testSetCache(): void
     {
         $response = new Response();
 
@@ -162,7 +162,7 @@ class ResponseTest extends TestCase
         $this->assertNull($response->headers->get('Last-Modified'), '->setLastModified() remove the header when passed null');
     }
 
-    public function testSendContent()
+    public function testSendContent(): void
     {
         $response = new Response('test response rendering', 200);
         ob_start();
@@ -171,7 +171,7 @@ class ResponseTest extends TestCase
         $this->assertStringContainsString('test response rendering', $string);
     }
 
-    public function testSetJsonData()
+    public function testSetJsonData(): void
     {
         $response = new Response();
         $response->setData(['foo' => 'bar']);
@@ -187,7 +187,7 @@ class ResponseTest extends TestCase
         $this->assertSame('{"hello":"JsonSerializable"}', $response->getContent());
     }
 
-    public function testIsInvalid()
+    public function testIsInvalid(): void
     {
         $response = new Response();
 
@@ -237,7 +237,7 @@ class ResponseTest extends TestCase
         ];
     }
 
-    public function testIsInformational()
+    public function testIsInformational(): void
     {
         $response = new Response('', 100);
         $this->assertTrue($response->isInformational());
@@ -245,7 +245,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isInformational());
     }
 
-    public function testIsRedirectRedirection()
+    public function testIsRedirectRedirection(): void
     {
         foreach ([301, 302, 303, 307] as $code) {
             $response = new Response('', $code);
@@ -270,7 +270,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isRedirect('/good-uri'));
     }
 
-    public function testIsNotFound()
+    public function testIsNotFound(): void
     {
         $response = new Response('', 404);
         $this->assertTrue($response->isNotFound());
@@ -278,7 +278,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isNotFound());
     }
 
-    public function testIsEmpty()
+    public function testIsEmpty(): void
     {
         foreach ([204, 304] as $code) {
             $response = new Response('', $code);
@@ -288,7 +288,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isEmpty());
     }
 
-    public function testIsForbidden()
+    public function testIsForbidden(): void
     {
         $response = new Response('', 403);
         $this->assertTrue($response->isForbidden());
@@ -296,7 +296,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isForbidden());
     }
 
-    public function testIsOk()
+    public function testIsOk(): void
     {
         $response = new Response('', 200);
         $this->assertTrue($response->isOk());
@@ -304,7 +304,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isOk());
     }
 
-    public function testIsServerOrClientError()
+    public function testIsServerOrClientError(): void
     {
         $response = new Response('', 404);
         $this->assertTrue($response->isClientError());
@@ -355,7 +355,7 @@ class ResponseTest extends TestCase
         ];
     }
 
-    public function testSetContentAsJon()
+    public function testSetContentAsJon(): void
     {
         $response = new Response();
 
@@ -366,7 +366,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['hello' => 'IArray'], $response->getData());
     }
 
-    public function testSetContentAsJonWithIJson()
+    public function testSetContentAsJonWithIJson(): void
     {
         $response = new Response();
 
@@ -377,7 +377,7 @@ class ResponseTest extends TestCase
         $this->assertSame(['hello' => 'IJson'], $response->getData());
     }
 
-    public function testAppendContent()
+    public function testAppendContent(): void
     {
         $response = new Response();
 
@@ -393,7 +393,7 @@ class ResponseTest extends TestCase
         $this->assertSame('helloworld', $response->getData());
     }
 
-    public function testWithHeaders()
+    public function testWithHeaders(): void
     {
         $response = new Response();
 
@@ -402,7 +402,7 @@ class ResponseTest extends TestCase
         $this->assertSame('bar', $response->headers->get('foo'));
     }
 
-    public function testCookie()
+    public function testCookie(): void
     {
         $response = new Response();
 
@@ -433,7 +433,7 @@ class ResponseTest extends TestCase
         $this->assertSame($allCookies, $response->getCookies());
     }
 
-    public function testContent()
+    public function testContent(): void
     {
         $response = new Response();
         $response->setContent('hello');
@@ -442,7 +442,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testGetOriginal()
+    public function testGetOriginal(): void
     {
         $response = new Response();
         $response->setContent('hello');
@@ -459,7 +459,7 @@ class ResponseTest extends TestCase
         $this->assertEquals($myArr, $response->getOriginal());
     }
 
-    public function testStatus()
+    public function testStatus(): void
     {
         $response = new Response();
         $response->setContent('hello');
@@ -467,7 +467,7 @@ class ResponseTest extends TestCase
         $this->assertSame(200, $response->status());
     }
 
-    public function testSetContentLength()
+    public function testSetContentLength(): void
     {
         $response = new Response();
         $response->setContentLength(100);
@@ -475,7 +475,7 @@ class ResponseTest extends TestCase
         $this->assertSame('100', $response->headers->get('Content-Length'));
     }
 
-    public function testIsJson()
+    public function testIsJson(): void
     {
         $response = new Response();
         $response->setContent('foo');
@@ -487,7 +487,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isJson());
     }
 
-    public function testSetContentFlow()
+    public function testSetContentFlow(): void
     {
         $condition = false;
         $response = new Response();
@@ -503,7 +503,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetContentFlow2()
+    public function testSetContentFlow2(): void
     {
         $condition = true;
         $response = new Response();
@@ -519,7 +519,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testAppendContentFlow()
+    public function testAppendContentFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -535,7 +535,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testAppendContentFlow2()
+    public function testAppendContentFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -551,7 +551,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetHeaderFlow()
+    public function testSetHeaderFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -567,7 +567,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetHeaderFlow2()
+    public function testSetHeaderFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -583,7 +583,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testWithHeadersFlow()
+    public function testWithHeadersFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -599,7 +599,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testWithHeadersFlow2()
+    public function testWithHeadersFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -615,7 +615,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetCookieFlow()
+    public function testSetCookieFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -631,7 +631,7 @@ class ResponseTest extends TestCase
         $this->assertSame($allCookies, $response->getCookies());
     }
 
-    public function testSetCookieFlow2()
+    public function testSetCookieFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -657,7 +657,7 @@ class ResponseTest extends TestCase
         $this->assertSame($allCookies, $response->getCookies());
     }
 
-    public function testWithCookiesFlow()
+    public function testWithCookiesFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -673,7 +673,7 @@ class ResponseTest extends TestCase
         $this->assertSame($allCookies, $response->getCookies());
     }
 
-    public function testWithCookiesFlow2()
+    public function testWithCookiesFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -699,7 +699,7 @@ class ResponseTest extends TestCase
         $this->assertSame($allCookies, $response->getCookies());
     }
 
-    public function testSetDataFlow()
+    public function testSetDataFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -717,7 +717,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetDataFlow2()
+    public function testSetDataFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -735,7 +735,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetProtocolVersionFlow()
+    public function testSetProtocolVersionFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -752,7 +752,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetProtocolVersionFlow2()
+    public function testSetProtocolVersionFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -769,7 +769,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetStatusCodeFlow()
+    public function testSetStatusCodeFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -786,7 +786,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetStatusCodeFlow2()
+    public function testSetStatusCodeFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -803,7 +803,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isOk());
     }
 
-    public function testCharsetFlow()
+    public function testCharsetFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -820,7 +820,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testCharsetFlow2()
+    public function testCharsetFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -837,7 +837,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetExpiresFlow()
+    public function testSetExpiresFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -855,7 +855,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetExpiresFlow2()
+    public function testSetExpiresFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -873,7 +873,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetLastModifiedFlow()
+    public function testSetLastModifiedFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -891,7 +891,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetLastModifiedFlow2()
+    public function testSetLastModifiedFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -909,7 +909,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetCacheFlow()
+    public function testSetCacheFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -939,7 +939,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetCacheFlow2()
+    public function testSetCacheFlow2(): void
     {
         $condition = true;
 
@@ -970,7 +970,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetNotModifiedFlow()
+    public function testSetNotModifiedFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -986,7 +986,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetNotModifiedFlow2()
+    public function testSetNotModifiedFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -1002,7 +1002,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isOk());
     }
 
-    public function testSetContentTypeFlow()
+    public function testSetContentTypeFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -1019,7 +1019,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetContentTypeFlow2()
+    public function testSetContentTypeFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -1036,7 +1036,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetContentLengthFlow()
+    public function testSetContentLengthFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -1053,7 +1053,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetContentLengthFlow2()
+    public function testSetContentLengthFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -1070,7 +1070,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetEtagFlow()
+    public function testSetEtagFlow(): void
     {
         $condition = false;
         $response = new Response('hello');
@@ -1087,7 +1087,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetEtagFlow2()
+    public function testSetEtagFlow2(): void
     {
         $condition = true;
         $response = new Response('hello');
@@ -1104,7 +1104,7 @@ class ResponseTest extends TestCase
         $this->assertTrue($response->isOk());
     }
 
-    public function testSetDataException()
+    public function testSetDataException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Malformed UTF-8 characters, possibly incorrectly encoded');

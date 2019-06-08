@@ -38,7 +38,7 @@ use Tests\TestCase;
  */
 class RedirectResponseTest extends TestCase
 {
-    public function testGenerateMetaRedirect()
+    public function testGenerateMetaRedirect(): void
     {
         $response = new RedirectResponse('foo.bar');
 
@@ -48,7 +48,7 @@ class RedirectResponseTest extends TestCase
         ));
     }
 
-    public function testRedirectResponseConstructorWrongStatusCode()
+    public function testRedirectResponseConstructorWrongStatusCode(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The HTTP status code is not a redirect (404 given).');
@@ -56,27 +56,27 @@ class RedirectResponseTest extends TestCase
         $response = new RedirectResponse('foo.bar', 404);
     }
 
-    public function testGenerateLocationHeader()
+    public function testGenerateLocationHeader(): void
     {
         $response = new RedirectResponse('foo.bar');
         $this->assertTrue($response->headers->has('Location'));
         $this->assertSame('foo.bar', $response->headers->get('Location'));
     }
 
-    public function testGetTargetUrl()
+    public function testGetTargetUrl(): void
     {
         $response = new RedirectResponse('foo.bar');
         $this->assertSame('foo.bar', $response->getTargetUrl());
     }
 
-    public function testSetTargetUrl()
+    public function testSetTargetUrl(): void
     {
         $response = new RedirectResponse('foo.bar');
         $response->setTargetUrl('baz.beep');
         $this->assertSame('baz.beep', $response->getTargetUrl());
     }
 
-    public function testSetTargetUrlEmpty()
+    public function testSetTargetUrlEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot redirect to an empty URL.');
@@ -85,14 +85,14 @@ class RedirectResponseTest extends TestCase
         $response->setTargetUrl('');
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $response = RedirectResponse::create('foo', 301);
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(301, $response->getStatusCode());
     }
 
-    public function testWith()
+    public function testWith(): void
     {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWith());
@@ -107,7 +107,7 @@ class RedirectResponseTest extends TestCase
         $this->assertSame($response->getSession()->getFlash('inputs'), $data);
     }
 
-    public function testWithError()
+    public function testWithError(): void
     {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWithError());
@@ -131,7 +131,7 @@ class RedirectResponseTest extends TestCase
         ]);
     }
 
-    public function testSetTargetUrlFlow()
+    public function testSetTargetUrlFlow(): void
     {
         $condition = false;
 
@@ -147,7 +147,7 @@ class RedirectResponseTest extends TestCase
         $this->assertSame('bar', $response->getTargetUrl());
     }
 
-    public function testSetTargetUrlFlow2()
+    public function testSetTargetUrlFlow2(): void
     {
         $condition = true;
 

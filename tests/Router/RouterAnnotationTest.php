@@ -52,7 +52,7 @@ class RouterAnnotationTest extends TestCase
         $this->setUp();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $pathInfo = '/:tests/Annotation/base-use';
         $params = [];
@@ -73,7 +73,7 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('hello plus base use', $result->getContent());
     }
 
-    public function testBaseRouterData()
+    public function testBaseRouterData(): void
     {
         $container = $this->createContainer();
 
@@ -99,7 +99,7 @@ class RouterAnnotationTest extends TestCase
         );
     }
 
-    public function testMatchedPetLeevel()
+    public function testMatchedPetLeevel(): void
     {
         $pathInfo = '/api/v1/petLeevel/hello';
         $params = [];
@@ -169,7 +169,7 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    public function testMatchedBasePathNormalize()
+    public function testMatchedBasePathNormalize(): void
     {
         $pathInfo = '/basePath/normalize';
         $params = [];
@@ -235,7 +235,7 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    public function testMatchedButMethodNotFound()
+    public function testMatchedButMethodNotFound(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -264,7 +264,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testFirstLetterNotMatched()
+    public function testFirstLetterNotMatched(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -293,7 +293,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testGroupNotMatched()
+    public function testGroupNotMatched(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -322,7 +322,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testRegexNotMatched()
+    public function testRegexNotMatched(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -351,7 +351,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testMatchedButSchemeNotMatched()
+    public function testMatchedButSchemeNotMatched(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -380,7 +380,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testMatchedAndSchemeMatched()
+    public function testMatchedAndSchemeMatched(): void
     {
         $pathInfo = '/scheme/test2';
         $params = [];
@@ -406,7 +406,7 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('barMatchedScheme', $result->getContent());
     }
 
-    public function testMatchedButDomainNotMatched()
+    public function testMatchedButDomainNotMatched(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -435,7 +435,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testMatchedAndDomainMatched()
+    public function testMatchedAndDomainMatched(): void
     {
         $pathInfo = '/domain/test2';
         $params = [];
@@ -464,7 +464,7 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('barMatchedDomain', $result->getContent());
     }
 
-    public function testMatchedAndDomainWithVarMatched()
+    public function testMatchedAndDomainWithVarMatched(): void
     {
         $pathInfo = '/domain/test3';
         $params = [];
@@ -495,7 +495,7 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
-    public function testMatchedAndDomainWithVarNotMatched()
+    public function testMatchedAndDomainWithVarNotMatched(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -531,7 +531,7 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('barMatchedDomainWithVar and params are {"subdomain":"foo","domain":"bar"}', $result->getContent());
     }
 
-    public function testMatchedWithExtendVar()
+    public function testMatchedWithExtendVar(): void
     {
         $pathInfo = '/extendVar/test';
         $params = [];
@@ -560,7 +560,7 @@ class RouterAnnotationTest extends TestCase
         $this->assertSame('withExtendVar and params are {"args1":"hello","args2":"world"}', $result->getContent());
     }
 
-    public function testBindNotSet()
+    public function testBindNotSet(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -592,7 +592,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testBindNotSet2()
+    public function testBindNotSet2(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -624,7 +624,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testMiddleware()
+    public function testMiddleware(): void
     {
         $pathInfo = '/middleware/test';
         $params = [];
@@ -695,7 +695,7 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    public function testMiddleware2()
+    public function testMiddleware2(): void
     {
         $pathInfo = '/middleware/test2';
         $params = [];
@@ -768,7 +768,7 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    public function testMiddleware3()
+    public function testMiddleware3(): void
     {
         $pathInfo = '/middleware/test3';
         $params = [];
@@ -843,7 +843,7 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    public function testMiddleware4()
+    public function testMiddleware4(): void
     {
         $pathInfo = '/middleware/test4';
         $params = [];
@@ -911,7 +911,7 @@ class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    public function testBindNotFound()
+    public function testBindNotFound(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -943,7 +943,7 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testBindNotFound2()
+    public function testBindNotFound2(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(

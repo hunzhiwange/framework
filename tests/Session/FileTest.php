@@ -44,7 +44,7 @@ class FileTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $session = $this->createFileSessionHandler();
 

@@ -43,7 +43,7 @@ use Tests\TestCase;
  */
 class KernelConsoleTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $app = new AppKernelConsole($container = new Container(), '');
         $container->instance('app', $app);
@@ -68,7 +68,7 @@ class KernelConsoleTest extends TestCase
         ];
 
         $option = $this->createMock(IOption::class);
-        $option->method('get')->will($this->returnValueMap($map));
+        $option->method('get')->willReturnMap($map);
         $this->assertSame([], $option->get('console\\template'));
         $this->assertSame([
             'Tests\\Kernel\\Commands\\Test',

@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class InsertAllTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -95,7 +95,7 @@ class InsertAllTest extends TestCase
         );
     }
 
-    public function testBind()
+    public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -209,7 +209,7 @@ class InsertAllTest extends TestCase
         );
     }
 
-    public function testWithBindFunction()
+    public function testWithBindFunction(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -272,7 +272,7 @@ class InsertAllTest extends TestCase
         );
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -335,7 +335,7 @@ class InsertAllTest extends TestCase
         );
     }
 
-    public function testDataIsNotInvalid()
+    public function testDataIsNotInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -355,7 +355,7 @@ class InsertAllTest extends TestCase
             ->insertAll($data);
     }
 
-    public function testDataIsNotInvalid2()
+    public function testDataIsNotInvalid2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(

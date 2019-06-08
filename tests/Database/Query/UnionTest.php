@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class UnionTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -76,7 +76,7 @@ class UnionTest extends TestCase
         );
     }
 
-    public function testUnionAll()
+    public function testUnionAll(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -104,7 +104,7 @@ class UnionTest extends TestCase
         );
     }
 
-    public function testUnionFlow()
+    public function testUnionFlow(): void
     {
         $condition = false;
 
@@ -139,7 +139,7 @@ class UnionTest extends TestCase
         );
     }
 
-    public function testUnionFlow2()
+    public function testUnionFlow2(): void
     {
         $condition = true;
 
@@ -174,7 +174,7 @@ class UnionTest extends TestCase
         );
     }
 
-    public function testUnionAllFlow()
+    public function testUnionAllFlow(): void
     {
         $condition = false;
 
@@ -209,7 +209,7 @@ class UnionTest extends TestCase
         );
     }
 
-    public function testUnionAllFlow2()
+    public function testUnionAllFlow2(): void
     {
         $condition = true;
 
@@ -244,7 +244,7 @@ class UnionTest extends TestCase
         );
     }
 
-    public function testUnionNotSupportType()
+    public function testUnionNotSupportType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(

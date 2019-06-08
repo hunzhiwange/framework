@@ -54,7 +54,7 @@ class ValidatorFlowTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testData()
+    public function testData(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -72,7 +72,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => 'bar'], $validate->getData());
     }
 
-    public function testData2()
+    public function testData2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -90,7 +90,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => 'foo'], $validate->getData());
     }
 
-    public function testAddData()
+    public function testAddData(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -108,7 +108,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => 'bar'], $validate->getData());
     }
 
-    public function testAddData2()
+    public function testAddData2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -126,7 +126,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => 'foo'], $validate->getData());
     }
 
-    public function testRule()
+    public function testRule(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -144,7 +144,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
     }
 
-    public function testRule2()
+    public function testRule2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -162,7 +162,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
     }
 
-    public function testRuleIf()
+    public function testRuleIf(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -188,7 +188,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
     }
 
-    public function testRuleIf2()
+    public function testRuleIf2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -214,7 +214,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
     }
 
-    public function testAddRule()
+    public function testAddRule(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -232,7 +232,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
     }
 
-    public function testAddRule2()
+    public function testAddRule2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -250,7 +250,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
     }
 
-    public function testAddRuleIf()
+    public function testAddRuleIf(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -276,7 +276,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
     }
 
-    public function testAddRuleIf2()
+    public function testAddRuleIf2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -302,7 +302,7 @@ class ValidatorFlowTest extends TestCase
         $this->assertSame(['name' => '小牛神'], $validate->getData());
     }
 
-    public function testMessage()
+    public function testMessage(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -337,7 +337,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testMessage2()
+    public function testMessage2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -372,7 +372,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testAddMessage()
+    public function testAddMessage(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -409,7 +409,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testAddMessage2()
+    public function testAddMessage2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -444,7 +444,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testMessageWithField()
+    public function testMessageWithField(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -479,7 +479,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testMessageWithField2()
+    public function testMessageWithField2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -514,7 +514,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testName()
+    public function testName(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -549,7 +549,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testName2()
+    public function testName2(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -584,7 +584,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testAddName()
+    public function testAddName(): void
     {
         $validate = $this->makeBaseValidate();
 
@@ -619,7 +619,7 @@ class ValidatorFlowTest extends TestCase
         );
     }
 
-    public function testAddName2()
+    public function testAddName2(): void
     {
         $validate = $this->makeBaseValidate();
 

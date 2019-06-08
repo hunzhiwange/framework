@@ -35,7 +35,7 @@ class CompilerFileNotFoundTest extends TestCase
 {
     use Compiler;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(

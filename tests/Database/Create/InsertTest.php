@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class InsertTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -66,7 +66,7 @@ class InsertTest extends TestCase
         );
     }
 
-    public function testBind()
+    public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -125,7 +125,7 @@ class InsertTest extends TestCase
         );
     }
 
-    public function testWithBindFunction()
+    public function testWithBindFunction(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -159,7 +159,7 @@ class InsertTest extends TestCase
         );
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -189,7 +189,7 @@ class InsertTest extends TestCase
         );
     }
 
-    public function testInsertSupportTable()
+    public function testInsertSupportTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

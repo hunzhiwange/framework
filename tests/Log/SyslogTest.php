@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class SyslogTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $syslog = new Syslog();
 
@@ -47,7 +47,7 @@ class SyslogTest extends TestCase
         $this->assertInstanceof(Logger::class, $syslog->getMonolog());
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $syslog = new Syslog();
 
@@ -57,7 +57,7 @@ class SyslogTest extends TestCase
         $this->assertNull($syslog->flush($data));
     }
 
-    public function testNormalizeLevelWithDefaultDebug()
+    public function testNormalizeLevelWithDefaultDebug(): void
     {
         $syslog = new Syslog();
 
@@ -67,7 +67,7 @@ class SyslogTest extends TestCase
         $this->assertNull($syslog->flush($data));
     }
 
-    public function testNormalizeMonologLevelWithDefaultDebug()
+    public function testNormalizeMonologLevelWithDefaultDebug(): void
     {
         $syslog = new Syslog([
             'level' => 'notFound',

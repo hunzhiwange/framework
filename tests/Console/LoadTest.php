@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class LoadTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $load = new Load();
 
@@ -60,7 +60,7 @@ class LoadTest extends TestCase
         ], $data);
     }
 
-    public function testConsoleDirNotFound()
+    public function testConsoleDirNotFound(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Console load dir %s is not exits.', __DIR__.'/LoadNotFound'));

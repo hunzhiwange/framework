@@ -56,7 +56,7 @@ class EncryptionTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $encryption = new Encryption('encode-key');
 
@@ -91,7 +91,7 @@ class EncryptionTest extends TestCase
      *     note="",
      * )
      */
-    public function testUse128()
+    public function testUse128(): void
     {
         $encryption = new Encryption('encode-key', 'AES-128-CBC');
 
@@ -119,7 +119,7 @@ class EncryptionTest extends TestCase
         );
     }
 
-    public function testEncryptCipherNotFound()
+    public function testEncryptCipherNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -129,7 +129,7 @@ class EncryptionTest extends TestCase
         $encryption = new Encryption('encode-key', 'foo');
     }
 
-    public function testDecryptWasEmpty()
+    public function testDecryptWasEmpty(): void
     {
         $encryption = new Encryption('encode-key');
 
@@ -140,7 +140,7 @@ class EncryptionTest extends TestCase
         $this->assertSame('', $encryption->decrypt($data));
     }
 
-    public function testDecryptException()
+    public function testDecryptException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -165,7 +165,7 @@ class EncryptionTest extends TestCase
      *     note="",
      * )
      */
-    public function testDecryptButExpired()
+    public function testDecryptButExpired(): void
     {
         $encryption = new Encryption('encode-key');
 
@@ -187,7 +187,7 @@ class EncryptionTest extends TestCase
      *     note="",
      * )
      */
-    public function testWithPublicAndPrimaryKey()
+    public function testWithPublicAndPrimaryKey(): void
     {
         $encryption = new Encryption(
             'encode-key', 'AES-256-CBC',
@@ -209,7 +209,7 @@ class EncryptionTest extends TestCase
         );
     }
 
-    public function testWithPrimaryKeyButPrimanyIsInvalid()
+    public function testWithPrimaryKeyButPrimanyIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -229,7 +229,7 @@ class EncryptionTest extends TestCase
         $encryption->encrypt($sourceMessage);
     }
 
-    public function testWithPublicKeyButPrimanyIsInvalid()
+    public function testWithPublicKeyButPrimanyIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -256,7 +256,7 @@ class EncryptionTest extends TestCase
         );
     }
 
-    public function testUnpackDataFailed()
+    public function testUnpackDataFailed(): void
     {
         $encryption = new Encryption('encode-key');
 
@@ -265,7 +265,7 @@ class EncryptionTest extends TestCase
         $this->assertFalse($result);
     }
 
-    public function testValidateDataForUnpackDataFailed()
+    public function testValidateDataForUnpackDataFailed(): void
     {
         $encryption = new Encryption('encode-key');
 
@@ -274,7 +274,7 @@ class EncryptionTest extends TestCase
         $this->assertSame($result, '');
     }
 
-    public function testValidateDataForBase64DecodeFailed()
+    public function testValidateDataForBase64DecodeFailed(): void
     {
         $encryption = new Encryption('encode-key');
         $expiry = '0000000000';
@@ -292,7 +292,7 @@ class EncryptionTest extends TestCase
         $this->assertSame($result, '');
     }
 
-    public function testNormalizeSignFailed()
+    public function testNormalizeSignFailed(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -318,7 +318,7 @@ class EncryptionTest extends TestCase
         $this->invokeTestMethod($encryption, 'normalizeSign', [$data]);
     }
 
-    public function testValidateSignFailed()
+    public function testValidateSignFailed(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(

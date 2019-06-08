@@ -38,7 +38,7 @@ use Tests\TestCase;
  */
 class RouterTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $pathInfo = '/:tests';
         $params = [];
@@ -57,7 +57,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello my home', $result->getContent());
     }
 
-    public function testActionAsClass()
+    public function testActionAsClass(): void
     {
         $pathInfo = '/:tests/hello/actionClass';
         $params = [];
@@ -76,7 +76,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello action class', $result->getContent());
     }
 
-    public function testActionConvert()
+    public function testActionConvert(): void
     {
         $pathInfo = '/:tests/hello/action_convert-foo_bar';
         $params = [];
@@ -95,7 +95,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello action convert foo bar', $result->getContent());
     }
 
-    public function testControllerConvert()
+    public function testControllerConvert(): void
     {
         $pathInfo = '/:tests/controller_convert-foo_bar/bar';
         $params = [];
@@ -114,7 +114,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello controller convert', $result->getContent());
     }
 
-    public function testSubControllerDir()
+    public function testSubControllerDir(): void
     {
         $pathInfo = '/:tests/sub/world/foo';
         $params = [];
@@ -133,7 +133,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello sub world foo', $result->getContent());
     }
 
-    public function testSubControllerDir2()
+    public function testSubControllerDir2(): void
     {
         $pathInfo = '/:tests/sub/world/foo/bar';
         $params = [];
@@ -152,7 +152,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello sub world foo bar', $result->getContent());
     }
 
-    public function testConvertAll()
+    public function testConvertAll(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -279,7 +279,7 @@ class RouterTest extends TestCase
         ];
     }
 
-    public function testSetPreRequestMatched()
+    public function testSetPreRequestMatched(): void
     {
         $pathInfo = '';
         $params = [];
@@ -308,7 +308,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello preRequestMatched', $result->getContent());
     }
 
-    public function testThroughMiddleware()
+    public function testThroughMiddleware(): void
     {
         $pathInfo = '/ap1/v1/:tests/hello/throughMiddleware';
         $params = [];
@@ -416,7 +416,7 @@ class RouterTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    public function testParseDefaultBindControllerFoundButMethodNotFound()
+    public function testParseDefaultBindControllerFoundButMethodNotFound(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -436,7 +436,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testParseDefaultBindMethodClassFoundButEnterMethodNotFound()
+    public function testParseDefaultBindMethodClassFoundButEnterMethodNotFound(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -456,7 +456,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testOptionsForCorsWillBackToHomeIndex()
+    public function testOptionsForCorsWillBackToHomeIndex(): void
     {
         $pathInfo = '/:tests';
         $params = [];
@@ -475,7 +475,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello my home', $result->getContent());
     }
 
-    public function testColonInController()
+    public function testColonInController(): void
     {
         $pathInfo = '/:tests/colon:hello';
         $params = [];
@@ -494,7 +494,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with controller', $result->getContent());
     }
 
-    public function testColonInControllerWithActionIsSingleClass()
+    public function testColonInControllerWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonActionSingle:hello';
         $params = [];
@@ -513,7 +513,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with controller and action is single', $result->getContent());
     }
 
-    public function testColonInControllerWithMoreThanOne()
+    public function testColonInControllerWithMoreThanOne(): void
     {
         $pathInfo = '/:tests/colon:hello:world:foo';
         $params = [];
@@ -532,7 +532,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with more than one in controller', $result->getContent());
     }
 
-    public function testColonInControllerWithMoreThanOneWithActionIsSingleClass()
+    public function testColonInControllerWithMoreThanOneWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonActionSingle:hello:world:foo';
         $params = [];
@@ -551,7 +551,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with more than one in controller and action is single', $result->getContent());
     }
 
-    public function testColonInControllerMustBeforeAlpha()
+    public function testColonInControllerMustBeforeAlpha(): void
     {
         $pathInfo = '/:tests/:colon/foundAction';
         $params = [];
@@ -570,7 +570,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with controller with foundAction', $result->getContent());
     }
 
-    public function testColonInControllerMustBeforeAlphaWithActionIsSingleClass()
+    public function testColonInControllerMustBeforeAlphaWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/:colonActionSingle/foundAction';
         $params = [];
@@ -589,7 +589,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with controller with foundAction and action is single', $result->getContent());
     }
 
-    public function testColonInControllerMustBeforeAlphaButNotFound()
+    public function testColonInControllerMustBeforeAlphaButNotFound(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -609,7 +609,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testColonInActionAndActionIsNotSingleClass()
+    public function testColonInActionAndActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colon:action/foo:bar';
         $params = [];
@@ -628,7 +628,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with action and action is not single class', $result->getContent());
     }
 
-    public function testColonInActionAndActionIsSingleClass()
+    public function testColonInActionAndActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonActionSingle:action/foo:bar';
         $params = [];
@@ -647,7 +647,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with action and action is not single class and action is single', $result->getContent());
     }
 
-    public function testColonInActionAndActionIsNotSingleClassWithMoreThanOne()
+    public function testColonInActionAndActionIsNotSingleClassWithMoreThanOne(): void
     {
         $pathInfo = '/:tests/colon:action/more:foo:bar';
         $params = [];
@@ -666,7 +666,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with action and action is not single class with more than one', $result->getContent());
     }
 
-    public function testColonInActionAndActionIsSingleClassWithMoreThanOne()
+    public function testColonInActionAndActionIsSingleClassWithMoreThanOne(): void
     {
         $pathInfo = '/:tests/colonActionSingle:action/more:foo:bar';
         $params = [];
@@ -685,7 +685,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with action and action is not single class with more than one and action is single', $result->getContent());
     }
 
-    public function testColonInActionIsNotSingleClassMustBeforeAlpha()
+    public function testColonInActionIsNotSingleClassMustBeforeAlpha(): void
     {
         $pathInfo = '/:tests/colon:action/:beforeButFirst';
         $params = [];
@@ -704,7 +704,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with action and action is not single class before but first', $result->getContent());
     }
 
-    public function testColonInActionIsSingleClassMustBeforeAlpha()
+    public function testColonInActionIsSingleClassMustBeforeAlpha(): void
     {
         $pathInfo = '/:tests/colonActionSingle:action/:beforeButFirst';
         $params = [];
@@ -723,7 +723,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon with action and action is not single class before but first and action is single', $result->getContent());
     }
 
-    public function testColonInActionIsNotSingleClassMustBeforeAlphaButActionNotFound()
+    public function testColonInActionIsNotSingleClassMustBeforeAlphaButActionNotFound(): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -743,7 +743,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testColonRestfulInControllerWithActionIsNotSingleClass()
+    public function testColonRestfulInControllerWithActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestful:hello/5';
         $params = [];
@@ -762,7 +762,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon restful with controller', $result->getContent());
     }
 
-    public function testColonRestfulInControllerWithActionIsSingleClass()
+    public function testColonRestfulInControllerWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestfulActionSingle:hello/5';
         $params = [];
@@ -781,7 +781,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon restful with controller and action is single', $result->getContent());
     }
 
-    public function testColonRestfulInActionWithActionIsNotSingleClass()
+    public function testColonRestfulInActionWithActionIsNotSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestful:hello/5/foo:bar';
         $params = [];
@@ -800,7 +800,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon restful with action', $result->getContent());
     }
 
-    public function testColonRestfulInActionWithActionIsSingleClass()
+    public function testColonRestfulInActionWithActionIsSingleClass(): void
     {
         $pathInfo = '/:tests/colonRestfulActionSingle:hello/5/foo:bar';
         $params = [];
@@ -819,7 +819,7 @@ class RouterTest extends TestCase
         $this->assertSame('hello colon restful with action and action is single', $result->getContent());
     }
 
-    public function testColonInApp()
+    public function testColonInApp(): void
     {
         $pathInfo = '/:tests:router:subAppController/test';
         $params = [];

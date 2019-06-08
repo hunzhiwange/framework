@@ -40,7 +40,7 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $manager = $this->createManager();
 

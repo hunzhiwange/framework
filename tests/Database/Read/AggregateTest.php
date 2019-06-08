@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class AggregateTest extends TestCase
 {
-    public function testCount()
+    public function testCount(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -93,7 +93,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testAvg()
+    public function testAvg(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -153,7 +153,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testMax()
+    public function testMax(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -213,7 +213,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testMin()
+    public function testMin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -273,7 +273,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testSum()
+    public function testSum(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -333,7 +333,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testAvgWithTable()
+    public function testAvgWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

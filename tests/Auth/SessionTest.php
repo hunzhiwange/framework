@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class SessionTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $session = new Session($this->createSession(), ['token' => 'token']);
 
@@ -53,7 +53,7 @@ class SessionTest extends TestCase
         $this->assertSame([], $session->getLogin());
     }
 
-    public function testTokenNameWasNotSet()
+    public function testTokenNameWasNotSet(): void
     {
         $this->expectException(\Leevel\Auth\AuthException::class);
         $this->expectExceptionMessage(

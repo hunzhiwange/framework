@@ -54,7 +54,7 @@ class PageTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $page = new Page(1, 10, 52);
 
@@ -120,7 +120,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testWithCurrentPage()
+    public function testWithCurrentPage(): void
     {
         $page = new Page(2, 10, 52);
 
@@ -186,7 +186,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testFragment()
+    public function testFragment(): void
     {
         $page = new Page(1, 10, 52);
 
@@ -222,7 +222,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testPerPage()
+    public function testPerPage(): void
     {
         $page = new Page(1, 10, 52);
 
@@ -260,7 +260,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testSetSmallTemplate()
+    public function testSetSmallTemplate(): void
     {
         $page = new Page(1, 10, 52, [
             'render_option' => ['small_template' => true],
@@ -294,7 +294,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testAppend()
+    public function testAppend(): void
     {
         $page = new Page(1, 5, 3);
 
@@ -343,7 +343,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testRenderOption()
+    public function testRenderOption(): void
     {
         $page = new Page(1, 5, 3);
 
@@ -399,7 +399,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testUrl()
+    public function testUrl(): void
     {
         $page = new Page(1, 3, 5);
 
@@ -415,7 +415,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testSetRender()
+    public function testSetRender(): void
     {
         $page = new Page(1, 3, 5);
 
@@ -431,7 +431,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testDefaultPerPage()
+    public function testDefaultPerPage(): void
     {
         $page = new Page(1, null, 25);
 
@@ -445,7 +445,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testPageName()
+    public function testPageName(): void
     {
         $page = new Page(1, 10, 25);
 
@@ -465,7 +465,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testParseLastRenderNext()
+    public function testParseLastRenderNext(): void
     {
         $page = new Page(1, 3, 30);
 
@@ -519,7 +519,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testRange()
+    public function testRange(): void
     {
         $page = new Page(1, 3, 40);
 
@@ -555,7 +555,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testMacro()
+    public function testMacro(): void
     {
         $page = new Page(1, 3, Page::MACRO);
 
@@ -589,7 +589,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testUseParameterWithPageWillBeRemoved()
+    public function testUseParameterWithPageWillBeRemoved(): void
     {
         $page = new Page(1, 3, null);
 
@@ -624,7 +624,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testPageBootstrapSize()
+    public function testPageBootstrapSize(): void
     {
         $page = new Page(1, 3, 40);
 
@@ -649,7 +649,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testRenderObject()
+    public function testRenderObject(): void
     {
         $page = new Page(1, 10, 25);
 
@@ -680,7 +680,7 @@ class PageTest extends TestCase
         );
     }
 
-    public function testUnsupportedRenderType()
+    public function testUnsupportedRenderType(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(

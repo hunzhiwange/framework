@@ -46,7 +46,7 @@ class TokenTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $token = new Token($this->createCache(), $this->createRequest());
 
@@ -66,7 +66,7 @@ class TokenTest extends TestCase
         $this->assertSame([], $token->getLogin());
     }
 
-    public function testWithInputNotQuery()
+    public function testWithInputNotQuery(): void
     {
         $token = new Token($this->createCache(), $this->createRequestWithInput());
 

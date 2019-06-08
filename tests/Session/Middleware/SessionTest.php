@@ -40,7 +40,7 @@ use Tests\TestCase;
  */
 class SessionTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $session = $this->createSession();
 
@@ -54,7 +54,7 @@ class SessionTest extends TestCase
         }, $request));
     }
 
-    public function testTerminate()
+    public function testTerminate(): void
     {
         $session = $this->createSession();
 

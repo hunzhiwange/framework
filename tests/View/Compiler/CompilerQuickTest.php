@@ -35,7 +35,7 @@ class CompilerQuickTest extends TestCase
 {
     use Compiler;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 

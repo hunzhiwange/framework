@@ -57,7 +57,7 @@ class AggregateTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -156,7 +156,7 @@ class AggregateTest extends TestCase
      *     note="",
      * )
      */
-    public function testAvg()
+    public function testAvg(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -189,7 +189,7 @@ class AggregateTest extends TestCase
      *     note="",
      * )
      */
-    public function testMax()
+    public function testMax(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -222,7 +222,7 @@ class AggregateTest extends TestCase
      *     note="",
      * )
      */
-    public function testMin()
+    public function testMin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -255,7 +255,7 @@ class AggregateTest extends TestCase
      *     note="",
      * )
      */
-    public function testSum()
+    public function testSum(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -281,7 +281,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testCountFlow()
+    public function testCountFlow(): void
     {
         $condition = false;
 
@@ -313,7 +313,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testCountFlow2()
+    public function testCountFlow2(): void
     {
         $condition = true;
 
@@ -345,7 +345,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testAvgFlow()
+    public function testAvgFlow(): void
     {
         $condition = false;
 
@@ -377,7 +377,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testAvgFlow2()
+    public function testAvgFlow2(): void
     {
         $condition = true;
 
@@ -409,7 +409,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testMaxFlow()
+    public function testMaxFlow(): void
     {
         $condition = false;
 
@@ -441,7 +441,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testMaxFlow2()
+    public function testMaxFlow2(): void
     {
         $condition = true;
 
@@ -473,7 +473,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testMinFlow()
+    public function testMinFlow(): void
     {
         $condition = false;
 
@@ -505,7 +505,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testMinFlow2()
+    public function testMinFlow2(): void
     {
         $condition = true;
 
@@ -537,7 +537,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testSumFlow()
+    public function testSumFlow(): void
     {
         $condition = false;
 
@@ -569,7 +569,7 @@ class AggregateTest extends TestCase
         );
     }
 
-    public function testSumFlow2()
+    public function testSumFlow2(): void
     {
         $condition = true;
 

@@ -39,7 +39,7 @@ class ClearTest extends TestCase
 {
     use BaseCommand;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $cacheFile = __DIR__.'/router_clear.php';
 
@@ -66,7 +66,7 @@ class ClearTest extends TestCase
         );
     }
 
-    public function testHaveCleanedUp()
+    public function testHaveCleanedUp(): void
     {
         $cacheFile = __DIR__.'/router_clear2.php';
 

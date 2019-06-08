@@ -38,7 +38,7 @@ use Tests\TestCase;
  */
 class CollectionTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $data = [
             'hello', 'world', 'foo', 'bar',
@@ -78,7 +78,7 @@ class CollectionTest extends TestCase
         $this->assertFalse(isset($collection[4]));
     }
 
-    public function testMake()
+    public function testMake(): void
     {
         $data = [
             'hello', 'world', 'foo', 'bar',
@@ -118,7 +118,7 @@ class CollectionTest extends TestCase
         $this->assertFalse(isset($collection[4]));
     }
 
-    public function testIterator()
+    public function testIterator(): void
     {
         $data = [
             'hello', 'world', 'foo', 'bar',
@@ -150,7 +150,7 @@ class CollectionTest extends TestCase
         $this->assertSame('hello', $collection->current());
     }
 
-    public function testCountable()
+    public function testCountable(): void
     {
         $data = [
             'hello', 'world', 'foo', 'bar',
@@ -161,7 +161,7 @@ class CollectionTest extends TestCase
         $this->assertCount(4, $collection);
     }
 
-    public function testArrayAccess()
+    public function testArrayAccess(): void
     {
         $data = [
             'hello',
@@ -187,7 +187,7 @@ class CollectionTest extends TestCase
         ]);
     }
 
-    public function testGetArrayElements()
+    public function testGetArrayElements(): void
     {
         $data = [
             'hello',
@@ -199,7 +199,7 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
-    public function testGetArrayElements2()
+    public function testGetArrayElements2(): void
     {
         $data = [
             'hello',
@@ -211,7 +211,7 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
-    public function testGetArrayElements3()
+    public function testGetArrayElements3(): void
     {
         $data = [
             'hello',
@@ -223,7 +223,7 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
-    public function testGetArrayElements4()
+    public function testGetArrayElements4(): void
     {
         $data = [
             'hello',
@@ -235,7 +235,7 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
-    public function testGetArrayElements5()
+    public function testGetArrayElements5(): void
     {
         $data = [
             'hello',
@@ -246,7 +246,7 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
-    public function testGetArrayElementsWithStdClass()
+    public function testGetArrayElementsWithStdClass(): void
     {
         $data = [
             'hello' => 'world',
@@ -262,7 +262,7 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
-    public function testTypeValidate()
+    public function testTypeValidate(): void
     {
         $data = [
             'hello',
@@ -274,7 +274,7 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
-    public function testTypeValidateException()
+    public function testTypeValidateException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -289,7 +289,7 @@ class CollectionTest extends TestCase
         $collection = new Collection($data, ['int']);
     }
 
-    public function testEach()
+    public function testEach(): void
     {
         $data = [
             'hello',
@@ -313,7 +313,7 @@ class CollectionTest extends TestCase
         });
     }
 
-    public function testEachAndBreak()
+    public function testEachAndBreak(): void
     {
         $data = [
             'hello',
@@ -339,7 +339,7 @@ class CollectionTest extends TestCase
         $this->assertSame($i, 0);
     }
 
-    public function testToJson()
+    public function testToJson(): void
     {
         $data = [
             'hello',
@@ -353,7 +353,7 @@ class CollectionTest extends TestCase
         $this->assertSame($data, $collection->toJson());
     }
 
-    public function testToJsonWithCn()
+    public function testToJsonWithCn(): void
     {
         $data = [
             '我',
@@ -367,7 +367,7 @@ class CollectionTest extends TestCase
         $this->assertSame($data, $collection->toJson());
     }
 
-    public function testToJsonWithCnEncode()
+    public function testToJsonWithCnEncode(): void
     {
         $data = [
             '我',
@@ -381,7 +381,7 @@ class CollectionTest extends TestCase
         $this->assertSame($data, $collection->toJson(JSON_HEX_TAG));
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize(): void
     {
         $data = [
             new TestJsonSerializable(),
@@ -420,7 +420,7 @@ class CollectionTest extends TestCase
         );
     }
 
-    public function testGetSetString()
+    public function testGetSetString(): void
     {
         $data = [
             'hello' => 'world',
@@ -438,7 +438,7 @@ class CollectionTest extends TestCase
         $this->assertSame((string) $collection, '{"hello":"new world","foo":"new bar"}');
     }
 
-    public function testGetSetString2()
+    public function testGetSetString2(): void
     {
         $data = [
             '我' => '成都',
@@ -449,7 +449,7 @@ class CollectionTest extends TestCase
         $this->assertSame((string) $collection, '{"我":"成都","们":"中国"}');
     }
 
-    public function testValid()
+    public function testValid(): void
     {
         $data = [
             'hello', 'world',

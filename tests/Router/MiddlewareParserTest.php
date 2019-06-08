@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class MiddlewareParserTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $middlewareParser = $this->createMiddlewareParser();
 
@@ -62,7 +62,7 @@ class MiddlewareParserTest extends TestCase
         );
     }
 
-    public function testGounpWithNormal()
+    public function testGounpWithNormal(): void
     {
         $middlewareParser = $this->createMiddlewareParser();
 
@@ -89,7 +89,7 @@ class MiddlewareParserTest extends TestCase
         );
     }
 
-    public function testNormals()
+    public function testNormals(): void
     {
         $middlewareParser = $this->createMiddlewareParser();
 
@@ -114,7 +114,7 @@ class MiddlewareParserTest extends TestCase
         );
     }
 
-    public function testInvalidMiddlewareException()
+    public function testInvalidMiddlewareException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -128,7 +128,7 @@ class MiddlewareParserTest extends TestCase
         $middlewareParser->handle([[]]);
     }
 
-    public function testMiddlewareNotFound()
+    public function testMiddlewareNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(

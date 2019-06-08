@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class PoMoTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $data = [
             '上一页'    => 'Previous',
@@ -54,7 +54,7 @@ class PoMoTest extends TestCase
         $this->assertSame($lang, $data);
     }
 
-    public function testMore()
+    public function testMore(): void
     {
         $data = <<<'eot'
             {

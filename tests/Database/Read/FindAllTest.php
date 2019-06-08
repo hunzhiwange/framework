@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class FindAllTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -70,7 +70,7 @@ class FindAllTest extends TestCase
         );
     }
 
-    public function testFromOneToAll()
+    public function testFromOneToAll(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

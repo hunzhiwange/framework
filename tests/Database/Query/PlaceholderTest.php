@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class PlaceholderTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -61,7 +61,7 @@ class PlaceholderTest extends TestCase
         );
     }
 
-    public function testFoobar()
+    public function testFoobar(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

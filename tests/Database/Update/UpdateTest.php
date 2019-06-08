@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class UpdateTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -61,7 +61,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testForUpdate()
+    public function testForUpdate(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -90,7 +90,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testWithLimit()
+    public function testWithLimit(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -119,7 +119,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testWithOrderBy()
+    public function testWithOrderBy(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -148,7 +148,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testWithJoin()
+    public function testWithJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -177,7 +177,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testBind()
+    public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -215,7 +215,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testExpression()
+    public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

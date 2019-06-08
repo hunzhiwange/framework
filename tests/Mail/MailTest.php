@@ -40,7 +40,7 @@ use Tests\TestCase;
  */
 class MailTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $mail = $this->makeMail();
 
@@ -53,7 +53,7 @@ class MailTest extends TestCase
         $this->assertSame([], $mail->failedRecipients());
     }
 
-    public function testHtml()
+    public function testHtml(): void
     {
         $mail = $this->makeMail();
 
@@ -64,7 +64,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testHtml2()
+    public function testHtml2(): void
     {
         $mail = $this->makeMail();
 
@@ -76,7 +76,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testView()
+    public function testView(): void
     {
         $mail = $this->makeMail();
 
@@ -87,7 +87,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testView2()
+    public function testView2(): void
     {
         $mail = $this->makeMail();
 
@@ -99,7 +99,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testViewPlain()
+    public function testViewPlain(): void
     {
         $mail = $this->makeMail();
 
@@ -110,7 +110,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testViewPlain2()
+    public function testViewPlain2(): void
     {
         $mail = $this->makeMail();
 
@@ -122,7 +122,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testAttach()
+    public function testAttach(): void
     {
         $mail = $this->makeMail();
 
@@ -135,7 +135,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testAttach2()
+    public function testAttach2(): void
     {
         $mail = $this->makeMail();
 
@@ -150,7 +150,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testAttachData()
+    public function testAttachData(): void
     {
         $mail = $this->makeMail();
 
@@ -163,7 +163,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testAttachView()
+    public function testAttachView(): void
     {
         $mail = $this->makeMail();
 
@@ -174,7 +174,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testAttachDataView()
+    public function testAttachDataView(): void
     {
         $mail = $this->makeMail();
 
@@ -185,7 +185,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testAttachChinese()
+    public function testAttachChinese(): void
     {
         $mail = $this->makeMail();
 
@@ -201,7 +201,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testSendHtmlAndPlain()
+    public function testSendHtmlAndPlain(): void
     {
         $mail = $this->makeMail();
 
@@ -214,7 +214,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testSendHtmlAndPlain2()
+    public function testSendHtmlAndPlain2(): void
     {
         $mail = $this->makeMail();
 
@@ -227,7 +227,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testMessage()
+    public function testMessage(): void
     {
         $mail = $this->makeMail();
 
@@ -242,7 +242,7 @@ class MailTest extends TestCase
         $this->assertSame(1, $result);
     }
 
-    public function testMessage2()
+    public function testMessage2(): void
     {
         $mail = $this->makeMail();
 

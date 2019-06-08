@@ -40,7 +40,7 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $manager = $this->createManager();
 
@@ -58,7 +58,7 @@ class ManagerTest extends TestCase
         $this->assertSame([], $manager->getLogin());
     }
 
-    public function testWithToken()
+    public function testWithToken(): void
     {
         $manager = $this->createManagerWithToken();
 
@@ -78,7 +78,7 @@ class ManagerTest extends TestCase
         $this->assertSame([], $manager->getLogin());
     }
 
-    public function testSetDefaultDriver()
+    public function testSetDefaultDriver(): void
     {
         $manager = $this->createManagerWithTokenAndSession();
 

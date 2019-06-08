@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class FindOneTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -70,7 +70,7 @@ class FindOneTest extends TestCase
         );
     }
 
-    public function testOneFlow()
+    public function testOneFlow(): void
     {
         $condition = false;
 
@@ -103,7 +103,7 @@ class FindOneTest extends TestCase
         );
     }
 
-    public function testOneFlow2()
+    public function testOneFlow2(): void
     {
         $condition = true;
 

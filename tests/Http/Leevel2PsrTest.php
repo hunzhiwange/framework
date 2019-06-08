@@ -57,7 +57,7 @@ class Leevel2PsrTest extends TestCase
         rmdir(sys_get_temp_dir().'/form_test');
     }
 
-    public function testCreateRequest()
+    public function testCreateRequest(): void
     {
         $tmpFile = $this->createTempFile();
         $tmpFile2 = $this->createTempFile();
@@ -88,7 +88,7 @@ class Leevel2PsrTest extends TestCase
         $this->assertInstanceOf(UploadedFile::class, $uploadFiles['file\\1']);
     }
 
-    public function testCreateResponse()
+    public function testCreateResponse(): void
     {
         $response = new Response('hello world', 200);
         $response->setCookie('foo', 'bar');

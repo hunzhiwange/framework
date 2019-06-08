@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
  */
 class HasOneTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -95,7 +95,7 @@ class HasOneTest extends TestCase
         $this->assertSame('I am content with big data.', $postContent->getterContent());
     }
 
-    public function testEager()
+    public function testEager(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -139,7 +139,7 @@ class HasOneTest extends TestCase
         }
     }
 
-    public function testRelationAsMethod()
+    public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
 

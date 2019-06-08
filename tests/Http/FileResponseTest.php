@@ -58,7 +58,7 @@ class FileResponseTest extends TestCase
         }
     }
 
-    public function testConstruction()
+    public function testConstruction(): void
     {
         $filePath = __DIR__.'/assert/fileresponse_test.txt';
 
@@ -79,7 +79,7 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
-    public function testSetFileWithSplFileObject()
+    public function testSetFileWithSplFileObject(): void
     {
         $filePath = __DIR__.'/assert/setFileWithSplFileObject_test.txt';
 
@@ -103,7 +103,7 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
-    public function testSetFileWithSplFileInfo()
+    public function testSetFileWithSplFileInfo(): void
     {
         $filePath = __DIR__.'/assert/setFileWithSplFileInfo_test.txt';
 
@@ -127,7 +127,7 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
-    public function testSetFileWithNotReadable()
+    public function testSetFileWithNotReadable(): void
     {
         $filePath = __DIR__.'/assert/setFileWithNotReadable_test.txt';
 
@@ -147,7 +147,7 @@ class FileResponseTest extends TestCase
         new FileResponse($filePath);
     }
 
-    public function testSetFileWithNotReadable2()
+    public function testSetFileWithNotReadable2(): void
     {
         $filePath = __DIR__.'/assert/setFileWithNotReadable_test2.txt';
 
@@ -169,7 +169,7 @@ class FileResponseTest extends TestCase
         new FileResponse($file);
     }
 
-    public function testSetContentNotNullException()
+    public function testSetContentNotNullException(): void
     {
         $filePath = __DIR__.'/assert/setContentNotNullException_test.txt';
 
@@ -187,7 +187,7 @@ class FileResponseTest extends TestCase
         $response->setContent('not null');
     }
 
-    public function testSetContentDispositionException()
+    public function testSetContentDispositionException(): void
     {
         $filePath = __DIR__.'/assert/setContentDispositionException_test.txt';
 
@@ -205,7 +205,7 @@ class FileResponseTest extends TestCase
         $response->setContentDisposition('not_supported');
     }
 
-    public function testSetFileFlow()
+    public function testSetFileFlow(): void
     {
         $condition = false;
 
@@ -235,7 +235,7 @@ class FileResponseTest extends TestCase
         unlink($filePath2);
     }
 
-    public function testSetAutoLastModifiedFlow()
+    public function testSetAutoLastModifiedFlow(): void
     {
         $condition = false;
 
@@ -260,7 +260,7 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
-    public function testSetAutoEtagFlow()
+    public function testSetAutoEtagFlow(): void
     {
         $condition = false;
 
@@ -296,7 +296,7 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
-    public function testSetContentFlow()
+    public function testSetContentFlow(): void
     {
         $condition = false;
 
@@ -322,7 +322,7 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
-    public function testSetContentFlow2()
+    public function testSetContentFlow2(): void
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(
@@ -351,7 +351,7 @@ class FileResponseTest extends TestCase
         $this->assertFalse($response->headers->has('Content-Disposition'));
     }
 
-    public function testSetContentDispositionFlow()
+    public function testSetContentDispositionFlow(): void
     {
         $condition = false;
 
@@ -378,7 +378,7 @@ class FileResponseTest extends TestCase
         unlink($filePath);
     }
 
-    public function testSetContentDispositionFlow2()
+    public function testSetContentDispositionFlow2(): void
     {
         $condition = true;
 

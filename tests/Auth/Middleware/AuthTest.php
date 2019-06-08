@@ -40,7 +40,7 @@ use Tests\TestCase;
  */
 class AuthTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $auth = $this->createManager();
 
@@ -54,7 +54,7 @@ class AuthTest extends TestCase
         }, $request));
     }
 
-    public function testAuthFailed()
+    public function testAuthFailed(): void
     {
         $this->expectException(\Leevel\Auth\AuthException::class);
         $this->expectExceptionMessage(

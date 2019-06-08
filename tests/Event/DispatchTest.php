@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class DispatchTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         if (isset($_SERVER['test'])) {
             unset($_SERVER['test']);
@@ -58,7 +58,7 @@ class DispatchTest extends TestCase
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
 
-    public function testListenerInstance()
+    public function testListenerInstance(): void
     {
         if (isset($_SERVER['test'])) {
             unset($_SERVER['test']);
@@ -75,7 +75,7 @@ class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
-    public function testEventInstance()
+    public function testEventInstance(): void
     {
         if (isset($_SERVER['test'])) {
             unset($_SERVER['test']);
@@ -92,7 +92,7 @@ class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
-    public function testEventAsArray()
+    public function testEventAsArray(): void
     {
         $dispatch = new Dispatch(new Container());
 
@@ -107,7 +107,7 @@ class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
-    public function testPriority()
+    public function testPriority(): void
     {
         $dispatch = new Dispatch(new Container());
 
@@ -130,14 +130,14 @@ class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
-    public function testListenNotFound()
+    public function testListenNotFound(): void
     {
         $dispatch = new Dispatch(new Container());
 
         $this->assertNull($dispatch->handle('notFound'));
     }
 
-    public function testWildcards()
+    public function testWildcards(): void
     {
         $dispatch = new Dispatch(new Container());
 
@@ -159,7 +159,7 @@ class DispatchTest extends TestCase
         unset($_SERVER['wildcard']);
     }
 
-    public function testDeleteListeners()
+    public function testDeleteListeners(): void
     {
         $dispatch = new Dispatch(new Container());
 
@@ -177,7 +177,7 @@ class DispatchTest extends TestCase
         $this->assertFalse(isset($_SERVER['remove']));
     }
 
-    public function testDeleteListeners2()
+    public function testDeleteListeners2(): void
     {
         $dispatch = new Dispatch(new Container());
 
@@ -195,7 +195,7 @@ class DispatchTest extends TestCase
         $this->assertFalse(isset($_SERVER['wildcard']));
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         $dispatch = new Dispatch(new Container());
 
@@ -208,7 +208,7 @@ class DispatchTest extends TestCase
         $this->assertTrue($dispatch->has('testevent'));
     }
 
-    public function testListenerWithoutRunOrHandleMethod()
+    public function testListenerWithoutRunOrHandleMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -222,7 +222,7 @@ class DispatchTest extends TestCase
         $dispatch->handle('testevent');
     }
 
-    public function testListenerIsInvalid()
+    public function testListenerIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -236,7 +236,7 @@ class DispatchTest extends TestCase
         $dispatch->handle('testevent');
     }
 
-    public function testListenerNotInstanceofSplObserverWillAuthChange()
+    public function testListenerNotInstanceofSplObserverWillAuthChange(): void
     {
         $dispatch = new Dispatch(new Container());
 
@@ -248,7 +248,7 @@ class DispatchTest extends TestCase
         unset($_SERVER['autochange']);
     }
 
-    public function testListenerNotInstanceofSplObserverWithoutHandle()
+    public function testListenerNotInstanceofSplObserverWithoutHandle(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -262,7 +262,7 @@ class DispatchTest extends TestCase
         $dispatch->handle('testevent');
     }
 
-    public function testListenerWithoutSetHandleMustSetHandleClosure()
+    public function testListenerWithoutSetHandleMustSetHandleClosure(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -276,7 +276,7 @@ class DispatchTest extends TestCase
         $dispatch->handle('testevent');
     }
 
-    public function testListenerIsClosure()
+    public function testListenerIsClosure(): void
     {
         $dispatch = new Dispatch(new Container());
 

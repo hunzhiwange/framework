@@ -43,7 +43,7 @@ class ClearTest extends TestCase
 {
     use BaseCommand;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $cacheFile = __DIR__.'/i18n_cache_[i18n].php';
 
@@ -142,7 +142,7 @@ class ClearTest extends TestCase
         );
     }
 
-    public function testHaveCleanedUp()
+    public function testHaveCleanedUp(): void
     {
         $cacheFile = __DIR__.'/i18n_cache_[i18n].php';
 

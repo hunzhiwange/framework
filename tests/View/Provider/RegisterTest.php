@@ -45,7 +45,7 @@ class RegisterTest extends TestCase
         Fso::deleteDirectory(__DIR__.'/cache_theme', true);
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
 

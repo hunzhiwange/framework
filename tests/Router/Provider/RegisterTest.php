@@ -48,7 +48,7 @@ use Tests\TestCase;
  */
 class RegisterTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
 

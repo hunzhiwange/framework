@@ -35,7 +35,7 @@ class CompilerListsTest extends TestCase
 {
     use Compiler;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 
@@ -268,7 +268,7 @@ class CompilerListsTest extends TestCase
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    public function testSpecialMod()
+    public function testSpecialMod(): void
     {
         $parser = $this->createParser();
 
@@ -303,7 +303,7 @@ class CompilerListsTest extends TestCase
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    public function testOffset()
+    public function testOffset(): void
     {
         $parser = $this->createParser();
 

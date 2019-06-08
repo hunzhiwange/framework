@@ -42,7 +42,7 @@ use Tests\TestCase;
  */
 class LogTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $log = $this->createLog();
 

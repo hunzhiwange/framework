@@ -48,7 +48,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 
@@ -72,7 +72,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testNode()
+    public function testNode(): void
     {
         $parser = $this->createParser();
 
@@ -94,7 +94,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testNode2()
+    public function testNode2(): void
     {
         $parser = $this->createParser();
 
@@ -116,7 +116,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testNode3()
+    public function testNode3(): void
     {
         $parser = $this->createParser();
 
@@ -138,7 +138,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testNode4()
+    public function testNode4(): void
     {
         $parser = $this->createParser();
 
@@ -160,7 +160,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testLet()
+    public function testLet(): void
     {
         $parser = $this->createParser();
 
@@ -184,7 +184,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testLet2()
+    public function testLet2(): void
     {
         $parser = $this->createParser();
 
@@ -206,7 +206,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testLet3()
+    public function testLet3(): void
     {
         $parser = $this->createParser();
 
@@ -228,7 +228,7 @@ class CompilerAssignTest extends TestCase
      *     note="",
      * )
      */
-    public function testLet4()
+    public function testLet4(): void
     {
         $parser = $this->createParser();
 

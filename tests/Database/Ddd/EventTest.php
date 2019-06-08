@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\TestEventEntity;
  */
 class EventTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $dispatch = new Dispatch(new Container());
 

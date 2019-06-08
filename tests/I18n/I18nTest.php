@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class I18nTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $i18n = new I18n('zh-CN');
 
@@ -46,7 +46,7 @@ class I18nTest extends TestCase
         $this->assertSame('中国人语言', $i18n->__('中国%s语言', '人'));
     }
 
-    public function testGetText()
+    public function testGetText(): void
     {
         $i18n = new I18n('en-US');
 
@@ -62,7 +62,7 @@ class I18nTest extends TestCase
         $this->assertSame('foo ye', $i18n->__('胡巴 %s', 'ye'));
     }
 
-    public function testAll()
+    public function testAll(): void
     {
         $i18n = new I18n('zh-CN');
 
@@ -80,7 +80,7 @@ class I18nTest extends TestCase
         ], $i18n->all());
     }
 
-    public function testSetI18n()
+    public function testSetI18n(): void
     {
         $i18n = new I18n('zh-CN');
 

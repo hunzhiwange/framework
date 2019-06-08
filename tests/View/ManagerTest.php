@@ -46,7 +46,7 @@ class ManagerTest extends TestCase
         Fso::deleteDirectory(__DIR__.'/cache_theme', true);
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $manager = $this->createManager();
 

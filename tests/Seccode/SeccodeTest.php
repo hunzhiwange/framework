@@ -58,7 +58,7 @@ class SeccodeTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
@@ -94,7 +94,7 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function testChinese()
+    public function testChinese(): void
     {
         $seccode = new Seccode([
             'background_path'         => __DIR__.'/background',
@@ -131,7 +131,7 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
@@ -226,7 +226,7 @@ class SeccodeTest extends TestCase
         ];
     }
 
-    public function testAutoCodeSizeException()
+    public function testAutoCodeSizeException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -241,7 +241,7 @@ class SeccodeTest extends TestCase
         $seccode->display(0);
     }
 
-    public function testAutoCodeTypeException()
+    public function testAutoCodeTypeException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -256,7 +256,7 @@ class SeccodeTest extends TestCase
         $seccode->display(4, '', true, 'notExistsType');
     }
 
-    public function testAutoMakeOutDirIfNotExist()
+    public function testAutoMakeOutDirIfNotExist(): void
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
@@ -293,7 +293,7 @@ class SeccodeTest extends TestCase
         rmdir(dirname($file));
     }
 
-    public function testMinWidthAndMinHeight()
+    public function testMinWidthAndMinHeight(): void
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
@@ -332,7 +332,7 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function testMaxWidthAndMaxHeight()
+    public function testMaxWidthAndMaxHeight(): void
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
@@ -371,7 +371,7 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function testWithBackgroundDefault()
+    public function testWithBackgroundDefault(): void
     {
         $seccode = new Seccode([
             'background'      => false,
@@ -407,7 +407,7 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function testWithoutRandColor()
+    public function testWithoutRandColor(): void
     {
         $seccode = new Seccode([
             'background'      => false,
@@ -444,7 +444,7 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function testBackgroundPathException()
+    public function testBackgroundPathException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -456,7 +456,7 @@ class SeccodeTest extends TestCase
         $seccode->display();
     }
 
-    public function testBackgroundPathException2()
+    public function testBackgroundPathException2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -470,7 +470,7 @@ class SeccodeTest extends TestCase
         $seccode->display();
     }
 
-    public function testFontPathException()
+    public function testFontPathException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -490,7 +490,7 @@ class SeccodeTest extends TestCase
         rmdir($dirname);
     }
 
-    public function testFontPathException2()
+    public function testFontPathException2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -514,7 +514,7 @@ class SeccodeTest extends TestCase
         rmdir($dirname2);
     }
 
-    public function testParentDirWriteableException()
+    public function testParentDirWriteableException(): void
     {
         $file = __DIR__.'/parentDirWriteable/sub/hello.png';
         $sourcePath = dirname($file);

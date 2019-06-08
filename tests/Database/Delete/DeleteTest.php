@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class DeleteTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -58,7 +58,7 @@ class DeleteTest extends TestCase
         );
     }
 
-    public function testJoin()
+    public function testJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\Relation\UserRole;
  */
 class NestedTest extends TestCase
 {
-    public function testBase()
+    public function testBase(): void
     {
         $posts = Post::limit(5)->findAll();
 

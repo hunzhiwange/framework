@@ -99,7 +99,7 @@ class AfterTest extends TestCase
         ];
     }
 
-    public function testMakeDateTimeFormatWithNewDateTimeExceptionError()
+    public function testMakeDateTimeFormatWithNewDateTimeExceptionError(): void
     {
         $validate = new Validator(
             [

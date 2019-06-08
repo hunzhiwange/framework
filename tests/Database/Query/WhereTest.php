@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class WhereTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -60,7 +60,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testBaseUse2()
+    public function testBaseUse2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -87,7 +87,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testBaseUse3()
+    public function testBaseUse3(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -116,7 +116,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testArray()
+    public function testArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -167,7 +167,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhere()
+    public function testOrWhere(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -194,7 +194,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereBetween()
+    public function testWhereBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -267,7 +267,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNotBetween()
+    public function testWhereNotBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -315,7 +315,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereIn()
+    public function testWhereIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -385,7 +385,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNotIn()
+    public function testWhereNotIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -433,7 +433,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNull()
+    public function testWhereNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -470,7 +470,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNotNull()
+    public function testWhereNotNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -507,7 +507,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhereDefaultNull()
+    public function testOrWhereDefaultNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -532,7 +532,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereLike()
+    public function testWhereLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -569,7 +569,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNotLike()
+    public function testWhereNotLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -606,7 +606,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereExists()
+    public function testWhereExists(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -716,7 +716,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNotExists()
+    public function testWhereNotExists(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -748,7 +748,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereGroup()
+    public function testWhereGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -807,7 +807,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testConditionalExpression()
+    public function testConditionalExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -833,7 +833,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testArrayKeyAsField()
+    public function testArrayKeyAsField(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -867,7 +867,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testSupportString()
+    public function testSupportString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -893,7 +893,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testSupportStringMustBeString()
+    public function testSupportStringMustBeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -908,7 +908,7 @@ class WhereTest extends TestCase
             ->findAll(true);
     }
 
-    public function testSupportStringMustBeString2()
+    public function testSupportStringMustBeString2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -923,7 +923,7 @@ class WhereTest extends TestCase
             ->findAll(true);
     }
 
-    public function testSupportSubandSubor()
+    public function testSupportSubandSubor(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -951,7 +951,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testSupportSubandSuborMore()
+    public function testSupportSubandSuborMore(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -993,7 +993,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNotSupportMethod()
+    public function testWhereNotSupportMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1008,7 +1008,7 @@ class WhereTest extends TestCase
             ->findAll(true);
     }
 
-    public function testCallWhereSugarFlow()
+    public function testCallWhereSugarFlow(): void
     {
         $condition = false;
 
@@ -1040,7 +1040,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testCallWhereSugarFlow2()
+    public function testCallWhereSugarFlow2(): void
     {
         $condition = true;
 
@@ -1072,7 +1072,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhereFlow()
+    public function testOrWhereFlow(): void
     {
         $condition = false;
 
@@ -1104,7 +1104,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhereFlow2()
+    public function testOrWhereFlow2(): void
     {
         $condition = true;
 
@@ -1136,7 +1136,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereExistsFlow()
+    public function testWhereExistsFlow(): void
     {
         $condition = false;
 
@@ -1176,7 +1176,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereExistsFlow2()
+    public function testWhereExistsFlow2(): void
     {
         $condition = true;
 
@@ -1216,7 +1216,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNotExistsFlow()
+    public function testWhereNotExistsFlow(): void
     {
         $condition = false;
 
@@ -1256,7 +1256,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereNotExistsFlow2()
+    public function testWhereNotExistsFlow2(): void
     {
         $condition = true;
 
@@ -1296,7 +1296,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereFieldWithTable()
+    public function testWhereFieldWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1322,7 +1322,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereBetweenValueNotAnArrayException()
+    public function testWhereBetweenValueNotAnArrayException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1337,7 +1337,7 @@ class WhereTest extends TestCase
             ->findAll(true);
     }
 
-    public function testWhereBetweenValueNotAnArrayException2()
+    public function testWhereBetweenValueNotAnArrayException2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1352,7 +1352,7 @@ class WhereTest extends TestCase
             ->findAll(true);
     }
 
-    public function testWhereBetweenArrayItemIsClosure()
+    public function testWhereBetweenArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1380,7 +1380,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereInArrayItemIsClosure()
+    public function testWhereInArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1408,7 +1408,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereBetweenArrayItemIsExpression()
+    public function testWhereBetweenArrayItemIsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1434,7 +1434,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereInArrayItemIsExpression()
+    public function testWhereInArrayItemIsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1460,7 +1460,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereBetweenArrayItemIsSelect()
+    public function testWhereBetweenArrayItemIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1490,7 +1490,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereInArrayItemIsSelect()
+    public function testWhereInArrayItemIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1520,7 +1520,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereBetweenArrayItemIsCondition()
+    public function testWhereBetweenArrayItemIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1551,7 +1551,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereInArrayItemIsCondition()
+    public function testWhereInArrayItemIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1582,7 +1582,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereInIsClosure()
+    public function testWhereInIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1610,7 +1610,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereInIsSubString()
+    public function testWhereInIsSubString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1640,7 +1640,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereInIsSubIsSelect()
+    public function testWhereInIsSubIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1668,7 +1668,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereEqualIsSub()
+    public function testWhereEqualIsSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1696,7 +1696,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereRaw()
+    public function testWhereRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1722,7 +1722,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhereRaw()
+    public function testOrWhereRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1749,7 +1749,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereRawFlow()
+    public function testWhereRawFlow(): void
     {
         $condition = false;
 
@@ -1781,7 +1781,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereRawFlow2()
+    public function testWhereRawFlow2(): void
     {
         $condition = true;
 
@@ -1813,7 +1813,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhereRawFlow()
+    public function testOrWhereRawFlow(): void
     {
         $condition = false;
 
@@ -1847,7 +1847,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhereRawFlow2()
+    public function testOrWhereRawFlow2(): void
     {
         $condition = true;
 

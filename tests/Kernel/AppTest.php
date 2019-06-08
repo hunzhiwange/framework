@@ -51,7 +51,7 @@ class AppTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -66,14 +66,14 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/foobar', $app->path('foobar'));
     }
 
-    public function testVersion()
+    public function testVersion(): void
     {
         $app = $this->createApp();
 
         $this->assertSame(App::VERSION, $app->version());
     }
 
-    public function testRunWithExtension()
+    public function testRunWithExtension(): void
     {
         $app = $this->createApp();
 
@@ -84,14 +84,14 @@ class AppTest extends TestCase
         }
     }
 
-    public function testConsole()
+    public function testConsole(): void
     {
         $app = $this->createApp();
 
         $this->assertTrue($app->console());
     }
 
-    public function testConsole2()
+    public function testConsole2(): void
     {
         $app = $this->createApp();
 
@@ -107,7 +107,7 @@ class AppTest extends TestCase
         $this->assertTrue($app->console());
     }
 
-    public function testConsole3()
+    public function testConsole3(): void
     {
         $app = $this->createApp();
         $container = $app->container();
@@ -122,7 +122,7 @@ class AppTest extends TestCase
         $this->assertFalse($app->console());
     }
 
-    public function testSetPath()
+    public function testSetPath(): void
     {
         $app = $this->createApp();
 
@@ -131,7 +131,7 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/foo', $app->path());
     }
 
-    public function testAppPath()
+    public function testAppPath(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -159,7 +159,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/application/bar/foo/bar', $app->appPath('bar', 'foo/bar'));
     }
 
-    public function testAppPath2()
+    public function testAppPath2(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -175,7 +175,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/application/app', $app->appPath(true));
     }
 
-    public function testSetAppPath()
+    public function testSetAppPath(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -194,7 +194,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/foo/blog', $app->appPath(true));
     }
 
-    public function testPathTheme()
+    public function testPathTheme(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -203,7 +203,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/application/blog/ui/theme', $app->themePath('blog'));
     }
 
-    public function testCommonPath()
+    public function testCommonPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -212,7 +212,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/common/foobar', $app->commonPath('foobar'));
     }
 
-    public function testSetCommonPath()
+    public function testSetCommonPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -226,7 +226,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/commonFoo/foobar', $app->commonPath('foobar'));
     }
 
-    public function testRuntimePath()
+    public function testRuntimePath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -235,7 +235,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/runtime/foobar', $app->runtimePath('foobar'));
     }
 
-    public function testSetRuntimePath()
+    public function testSetRuntimePath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -249,7 +249,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/runtimeFoo/foobar', $app->runtimePath('foobar'));
     }
 
-    public function testStoragePath()
+    public function testStoragePath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -258,7 +258,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
     }
 
-    public function testSetStoragePath()
+    public function testSetStoragePath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -272,7 +272,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/storageFoo/foobar', $app->storagePath('foobar'));
     }
 
-    public function testOptionPath()
+    public function testOptionPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -281,7 +281,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/option/foobar', $app->optionPath('foobar'));
     }
 
-    public function testSetOptionPath()
+    public function testSetOptionPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -295,7 +295,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/optionFoo/foobar', $app->optionPath('foobar'));
     }
 
-    public function testI18nPath()
+    public function testI18nPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -304,7 +304,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/i18n/foobar', $app->i18nPath('foobar'));
     }
 
-    public function testSetI18nPath()
+    public function testSetI18nPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -318,7 +318,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/i18nFoo/foobar', $app->i18nPath('foobar'));
     }
 
-    public function testEnvPath()
+    public function testEnvPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -326,7 +326,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath, $app->envPath());
     }
 
-    public function testSetEnvPath()
+    public function testSetEnvPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -338,14 +338,14 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/appFoo', $app->envPath());
     }
 
-    public function testEnvFile()
+    public function testEnvFile(): void
     {
         $app = $this->createApp();
 
         $this->assertSame('.env', $app->envFile());
     }
 
-    public function testSetEnvFile()
+    public function testSetEnvFile(): void
     {
         $app = $this->createApp();
 
@@ -356,7 +356,7 @@ class AppTest extends TestCase
         $this->assertSame('.envfoo', $app->envFile());
     }
 
-    public function testFullEnvPath()
+    public function testFullEnvPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -372,7 +372,7 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/appFoo/.envfoo', $app->fullEnvPath());
     }
 
-    public function testI18nCachedPath()
+    public function testI18nCachedPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -382,7 +382,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
     }
 
-    public function testIsCachedI18n()
+    public function testIsCachedI18n(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -398,7 +398,7 @@ class AppTest extends TestCase
         Fso::deleteDirectory($appPath, true);
     }
 
-    public function testOptionCachedPath()
+    public function testOptionCachedPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
@@ -406,7 +406,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/bootstrap/option.php', $app->optionCachedPath());
     }
 
-    public function testIsCachedOption()
+    public function testIsCachedOption(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -422,7 +422,7 @@ class AppTest extends TestCase
         Fso::deleteDirectory($appPath, true);
     }
 
-    public function testRouterCachedPath()
+    public function testRouterCachedPath(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -430,7 +430,7 @@ class AppTest extends TestCase
         $this->assertSame($appPath.'/bootstrap/router.php', $app->routerCachedPath());
     }
 
-    public function testIsCachedRouter()
+    public function testIsCachedRouter(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -446,7 +446,7 @@ class AppTest extends TestCase
         Fso::deleteDirectory($appPath, true);
     }
 
-    public function testDebug()
+    public function testDebug(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -456,14 +456,14 @@ class AppTest extends TestCase
 
         $option
             ->method('get')
-            ->will($this->returnCallback(function (string $k) {
+            ->willReturnCallback(function (string $k) {
                 $map = [
                     'debug'       => true,
                     'environment' => 'development',
                 ];
 
                 return $map[$k];
-            }));
+            });
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertTrue($option->get('debug'));
@@ -475,7 +475,7 @@ class AppTest extends TestCase
         $this->assertTrue($app->debug());
     }
 
-    public function testDebug2()
+    public function testDebug2(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -485,14 +485,14 @@ class AppTest extends TestCase
 
         $option
             ->method('get')
-            ->will($this->returnCallback(function (string $k) {
+            ->willReturnCallback(function (string $k) {
                 $map = [
                     'debug'       => false,
                     'environment' => 'development',
                 ];
 
                 return $map[$k];
-            }));
+            });
 
         $this->assertSame('development', $option->get('environment'));
         $this->assertFalse($option->get('debug'));
@@ -504,7 +504,7 @@ class AppTest extends TestCase
         $this->assertFalse($app->debug());
     }
 
-    public function testDevelopment()
+    public function testDevelopment(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -522,7 +522,7 @@ class AppTest extends TestCase
         $this->assertTrue($app->development());
     }
 
-    public function testDevelopment2()
+    public function testDevelopment2(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -540,7 +540,7 @@ class AppTest extends TestCase
         $this->assertFalse($app->development());
     }
 
-    public function testEnvironment()
+    public function testEnvironment(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
@@ -558,7 +558,7 @@ class AppTest extends TestCase
         $this->assertSame('foo', $app->environment());
     }
 
-    public function testBootstrap()
+    public function testBootstrap(): void
     {
         $app = $this->createApp();
 
@@ -570,7 +570,7 @@ class AppTest extends TestCase
         unset($_SERVER['bootstrapTest1'], $_SERVER['bootstrapTest2']);
     }
 
-    public function testBootstrap2()
+    public function testBootstrap2(): void
     {
         $app = $this->createApp();
         $container = $app->container();
@@ -594,7 +594,7 @@ class AppTest extends TestCase
         $this->assertArrayNotHasKey('bootstrapTest2', $_SERVER);
     }
 
-    public function testRegisterProviders()
+    public function testRegisterProviders(): void
     {
         $app = $this->createApp();
         $container = $app->container();

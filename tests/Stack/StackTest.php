@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class StackTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $stack = new Stack();
 
@@ -61,7 +61,7 @@ class StackTest extends TestCase
         $this->assertSame(0, $stack->count());
     }
 
-    public function testValidateType()
+    public function testValidateType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

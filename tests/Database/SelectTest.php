@@ -40,7 +40,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class SelectTest extends TestCase
 {
-    public function testMaster()
+    public function testMaster(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -66,7 +66,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testMasterIsFalse()
+    public function testMasterIsFalse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -92,7 +92,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testFetchArgs()
+    public function testFetchArgs(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -123,7 +123,7 @@ class SelectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $result[3]);
     }
 
-    public function testFetchArgsColumn()
+    public function testFetchArgsColumn(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -160,7 +160,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testFetchArgsClass()
+    public function testFetchArgsClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -200,7 +200,7 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $result->content);
     }
 
-    public function testFetchArgsClassWithArgs()
+    public function testFetchArgsClassWithArgs(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -244,7 +244,7 @@ class SelectTest extends TestCase
         $this->assertSame('bar', $result->arg2);
     }
 
-    public function testFetchArgsColumnGroup()
+    public function testFetchArgsColumnGroup(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -298,7 +298,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testAsClass()
+    public function testAsClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -338,7 +338,7 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $result->content);
     }
 
-    public function testAsClassButClassNotFound()
+    public function testAsClassButClassNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -355,7 +355,7 @@ class SelectTest extends TestCase
             ->findOne();
     }
 
-    public function testAsCollectionAsDefault()
+    public function testAsCollectionAsDefault(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -395,7 +395,7 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $result->content);
     }
 
-    public function testAsCollectionAsDefaultAndNotFound()
+    public function testAsCollectionAsDefaultAndNotFound(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -429,7 +429,7 @@ class SelectTest extends TestCase
         $this->assertIsArray($result);
     }
 
-    public function testAsCollectionAsDefaultFindAll()
+    public function testAsCollectionAsDefaultFindAll(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -498,7 +498,7 @@ class SelectTest extends TestCase
         }
     }
 
-    public function testAsCollectionAsClassFindAll()
+    public function testAsCollectionAsClassFindAll(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -568,7 +568,7 @@ class SelectTest extends TestCase
         }
     }
 
-    public function testValue()
+    public function testValue(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -595,7 +595,7 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $content);
     }
 
-    public function testList()
+    public function testList(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -627,7 +627,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testList2()
+    public function testList2(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -659,7 +659,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testList3()
+    public function testList3(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -691,7 +691,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testList4()
+    public function testList4(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -723,7 +723,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testChunk()
+    public function testChunk(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -759,7 +759,7 @@ class SelectTest extends TestCase
             });
     }
 
-    public function testChunkWhenReturnFalseAndBreak()
+    public function testChunkWhenReturnFalseAndBreak(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -800,7 +800,7 @@ class SelectTest extends TestCase
             });
     }
 
-    public function testEach()
+    public function testEach(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -833,7 +833,7 @@ class SelectTest extends TestCase
             });
     }
 
-    public function testPageCount()
+    public function testPageCount(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -867,7 +867,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testPage()
+    public function testPage(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -914,7 +914,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testPageHtml()
+    public function testPageHtml(): void
     {
         $this->initI18n();
 
@@ -1009,7 +1009,7 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    public function testPageMacro()
+    public function testPageMacro(): void
     {
         $this->initI18n();
 
@@ -1104,7 +1104,7 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    public function testPagePrevNext()
+    public function testPagePrevNext(): void
     {
         $this->initI18n();
 
@@ -1199,7 +1199,7 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    public function testRunNativeSqlWithProcedureAsSelect()
+    public function testRunNativeSqlWithProcedureAsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1218,7 +1218,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testRunNativeSqlTypeInvalid()
+    public function testRunNativeSqlTypeInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The SQL type `delete` must be consistent with the provided `select`.');
@@ -1228,7 +1228,7 @@ class SelectTest extends TestCase
         $connect->select('DELETE FROM test WHERE id = 1');
     }
 
-    public function testFindByFooAndBarArgsWasNotMatched()
+    public function testFindByFooAndBarArgsWasNotMatched(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Parameters of findBy or findAllBy was not matched.');

@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class JoinTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -129,7 +129,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testInnerJoin()
+    public function testInnerJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -155,7 +155,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testRightJoin()
+    public function testRightJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -181,7 +181,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testFullJoin()
+    public function testFullJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -207,7 +207,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testCrossJoin()
+    public function testCrossJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -233,7 +233,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testNaturalJoin()
+    public function testNaturalJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -259,7 +259,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testJsonFlow()
+    public function testJsonFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -290,7 +290,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testJsonFlow2()
+    public function testJsonFlow2(): void
     {
         $condition = true;
         $connect = $this->createDatabaseConnectMock();
@@ -321,7 +321,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testInnerJsonFlow()
+    public function testInnerJsonFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -352,7 +352,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testInnerJsonAndUnionWillThrowException()
+    public function testInnerJsonAndUnionWillThrowException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -369,7 +369,7 @@ class JoinTest extends TestCase
             ->findAll(true);
     }
 
-    public function testInnerJoinWithTableIsSelect()
+    public function testInnerJoinWithTableIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -397,7 +397,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testInnerJoinWithTableIsCondition()
+    public function testInnerJoinWithTableIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -427,7 +427,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testInnerJoinWithTableIsClosure()
+    public function testInnerJoinWithTableIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -459,7 +459,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testInnerJoinWithTableIsArrayCondition()
+    public function testInnerJoinWithTableIsArrayCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -489,7 +489,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testInnerJoinWithTableIsArrayAndTheAliasKeyMustBeString()
+    public function testInnerJoinWithTableIsArrayAndTheAliasKeyMustBeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -508,7 +508,7 @@ class JoinTest extends TestCase
             ->findAll(true);
     }
 
-    public function testInnerJsonWithTableNameIsExpression()
+    public function testInnerJsonWithTableNameIsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -534,7 +534,7 @@ class JoinTest extends TestCase
         );
     }
 
-    public function testInnerJsonWithTableNameIsExpressionWithAsCustomAlias()
+    public function testInnerJsonWithTableNameIsExpressionWithAsCustomAlias(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

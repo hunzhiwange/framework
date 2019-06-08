@@ -34,7 +34,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class TableTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -101,7 +101,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testField()
+    public function testField(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -149,7 +149,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testTableFlow()
+    public function testTableFlow(): void
     {
         $condition = false;
         $connect = $this->createDatabaseConnectMock();
@@ -179,7 +179,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testTableFlow2()
+    public function testTableFlow2(): void
     {
         $condition = true;
         $connect = $this->createDatabaseConnectMock();
@@ -209,7 +209,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testTableIsInvalid()
+    public function testTableIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -223,7 +223,7 @@ class TableTest extends TestCase
             ->findAll(true);
     }
 
-    public function testSub()
+    public function testSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
         $subSql = $connect->table('test')->makeSql(true);
@@ -249,7 +249,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testSubIsSelect()
+    public function testSubIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
         $subSql = $connect->table('test');
@@ -275,7 +275,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testSubIsCondition()
+    public function testSubIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
         $subSql = $connect->table('test')->databaseCondition();
@@ -301,7 +301,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testSubIsClosure()
+    public function testSubIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -328,7 +328,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testSubIsClosureWithItSeltAsAlias()
+    public function testSubIsClosureWithItSeltAsAlias(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -355,7 +355,7 @@ class TableTest extends TestCase
         );
     }
 
-    public function testSubIsClosureWithJoin()
+    public function testSubIsClosureWithJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

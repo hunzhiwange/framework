@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class QueueTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $queue = new Queue();
 
@@ -61,7 +61,7 @@ class QueueTest extends TestCase
         $this->assertSame(0, $queue->count());
     }
 
-    public function testValidateType()
+    public function testValidateType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

@@ -47,7 +47,7 @@ class ArrTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $this->assertTrue(Arr::normalize(true));
 
