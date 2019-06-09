@@ -52,7 +52,7 @@ class PlaceholderTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->placeholder()
+                    ->_()
                     ->table('test')
                     ->sql(true)
                     ->latest()

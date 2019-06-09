@@ -131,8 +131,7 @@ class FlowControlTest extends TestCase
     {
         $test = new Test1();
 
-        $this->assertInstanceof(Test1::class, $test->placeholder());
-        $this->assertInstanceof(Test1::class, $test->foobar());
+        $this->assertInstanceof(Test1::class, $test->_());
     }
 }
 

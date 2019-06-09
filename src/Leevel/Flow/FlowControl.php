@@ -124,6 +124,6 @@ trait FlowControl
      */
     public function placeholderFlowControl(string $method): bool
     {
-        return in_array($method, ['placeholder', 'foobar', '_'], true);
+        return '_' === $method;
     }
 }
