@@ -36,6 +36,7 @@ use PDO;
  * @since 2017.06.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Db implements IDb
 {
