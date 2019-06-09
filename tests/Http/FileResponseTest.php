@@ -218,11 +218,11 @@ class FileResponseTest extends TestCase
         $response = new FileResponse($filePath, 404, ['X-Header' => 'Foo'], null, true, true);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setFile($filePath)
-            ->elses()
+            ->else()
             ->setFile($filePath2, 'inline', true)
-            ->endIfs();
+            ->fi();
 
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Foo', $response->headers->get('X-Header'));
@@ -246,10 +246,10 @@ class FileResponseTest extends TestCase
         $response = new FileResponse($filePath, 404, ['X-Header' => 'Foo'], null, true, true);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setAutoLastModified()
-            ->elses()
-            ->endIfs();
+            ->else()
+            ->fi();
 
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Foo', $response->headers->get('X-Header'));
@@ -271,10 +271,10 @@ class FileResponseTest extends TestCase
         $response = new FileResponse($filePath, 404, ['X-Header' => 'Foo'], null, false, false);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setAutoEtag()
-            ->elses()
-            ->endIfs();
+            ->else()
+            ->fi();
 
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Foo', $response->headers->get('X-Header'));
@@ -283,10 +283,10 @@ class FileResponseTest extends TestCase
         $this->assertFalse($response->headers->has('Content-Disposition'));
 
         $response
-            ->ifs($condition)
-            ->elses()
+            ->if($condition)
+            ->else()
             ->setAutoEtag()
-            ->endIfs();
+            ->fi();
 
         $this->assertSame(
             base64_encode(hash_file('sha256', $filePath, true)),
@@ -307,11 +307,11 @@ class FileResponseTest extends TestCase
         $response = new FileResponse($filePath, 404, ['X-Header' => 'Foo'], null, true, true);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContent('hello')
-            ->elses()
+            ->else()
             ->setContent(null)
-            ->endIfs();
+            ->fi();
 
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Foo', $response->headers->get('X-Header'));
@@ -338,11 +338,11 @@ class FileResponseTest extends TestCase
         $response = new FileResponse($filePath, 404, ['X-Header' => 'Foo'], null, true, true);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContent('hello')
-            ->elses()
+            ->else()
             ->setContent(null)
-            ->endIfs();
+            ->fi();
 
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Foo', $response->headers->get('X-Header'));
@@ -362,11 +362,11 @@ class FileResponseTest extends TestCase
         $response = new FileResponse($filePath, 404, ['X-Header' => 'Foo'], null, true, true);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContentDisposition('inline', 'foo.txt')
-            ->elses()
+            ->else()
             ->setContentDisposition('attachment', 'bar.txt')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Foo', $response->headers->get('X-Header'));
@@ -389,11 +389,11 @@ class FileResponseTest extends TestCase
         $response = new FileResponse($filePath, 404, ['X-Header' => 'Foo'], null, true, true);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContentDisposition('inline', 'foo.txt')
-            ->elses()
+            ->else()
             ->setContentDisposition('attachment', 'bar.txt')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Foo', $response->headers->get('X-Header'));

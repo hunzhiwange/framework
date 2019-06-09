@@ -43,11 +43,11 @@ class FlowControlTest extends TestCase
         $condition1 = 1;
 
         $value = $test
-            ->ifs($condition1)
+            ->if($condition1)
             ->condition1()
-            ->elses()
+            ->else()
             ->condition2()
-            ->endIfs()
+            ->fi()
             ->value();
 
         $this->assertSame('condition1', $value);
@@ -60,11 +60,11 @@ class FlowControlTest extends TestCase
         $condition1 = 0;
 
         $value = $test
-            ->ifs($condition1)
+            ->if($condition1)
             ->condition1()
-            ->elses()
+            ->else()
             ->condition2()
-            ->endIfs()
+            ->fi()
             ->value();
 
         $this->assertSame('condition2', $value);
@@ -81,17 +81,17 @@ class FlowControlTest extends TestCase
         $test = new Test1();
 
         $value = $test
-            ->ifs(0 === $condition)
+            ->if(0 === $condition)
             ->condition1()
-            ->elseIfs(1 === $condition)
+            ->elif(1 === $condition)
             ->condition2()
-            ->elseIfs(2 === $condition)
+            ->elif(2 === $condition)
             ->condition3()
-            ->elseIfs(3 === $condition)
+            ->elif(3 === $condition)
             ->condition4()
-            ->elses() // elses 仅能根据上一次的 elseIfs 或 ifs 来做判断，这里为 elseIfs(3 === $condition)
+            ->else() // else 仅能根据上一次的 elif 或 if 来做判断，这里为 elif(3 === $condition)
             ->condition5()
-            ->endIfs()
+            ->fi()
             ->value();
 
         $this->assertSame($result, $value);
@@ -103,7 +103,7 @@ class FlowControlTest extends TestCase
             [0, 'condition1 condition5'],
             [1, 'condition2 condition5'],
             [2, 'condition3 condition5'],
-            [3, 'condition4'], // elses 仅能根据上一次的 elseIfs 或 ifs 来做判断，这里为 elseIfs(3 === $condition)
+            [3, 'condition4'], // else 仅能根据上一次的 elif 或 if 来做判断，这里为 elif(3 === $condition)
             [4, 'condition5'],
             [5, 'condition5'],
             [6, 'condition5'],
@@ -117,11 +117,11 @@ class FlowControlTest extends TestCase
         $condition1 = 1;
 
         $value = $test
-            ->ifs(0 === $condition1)
+            ->if(0 === $condition1)
             ->condition1()
-            ->elseIfs(1 === $condition1)
+            ->elif(1 === $condition1)
             ->condition2()
-            ->endIfs()
+            ->fi()
             ->value();
 
         $this->assertSame('condition2', $value);
@@ -131,8 +131,7 @@ class FlowControlTest extends TestCase
     {
         $test = new Test1();
 
-        $this->assertInstanceof(Test1::class, $test->placeholder());
-        $this->assertInstanceof(Test1::class, $test->foobar());
+        $this->assertInstanceof(Test1::class, $test->_());
     }
 }
 

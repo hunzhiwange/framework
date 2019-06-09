@@ -169,11 +169,11 @@ class GroupByTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->groupBy('id')
-                    ->elses()
+                    ->else()
                     ->groupBy('name')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -201,11 +201,11 @@ class GroupByTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->groupBy('id')
-                    ->elses()
+                    ->else()
                     ->groupBy('name')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

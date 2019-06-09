@@ -215,13 +215,13 @@ class BindTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->bind('id', 1)
                     ->where('id', '=', '[:id]')
-                    ->elses()
+                    ->else()
                     ->bind('name', 1)
                     ->where('name', '=', '[:name]')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -254,13 +254,13 @@ class BindTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->bind('id', 1)
                     ->where('id', '=', '[:id]')
-                    ->elses()
+                    ->else()
                     ->bind('name', 1)
                     ->where('name', '=', '[:name]')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

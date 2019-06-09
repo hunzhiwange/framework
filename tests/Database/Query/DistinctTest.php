@@ -103,11 +103,11 @@ class DistinctTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->distinct()
-                    ->elses()
+                    ->else()
                     ->distinct(false)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -135,11 +135,11 @@ class DistinctTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->distinct()
-                    ->elses()
+                    ->else()
                     ->distinct(false)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

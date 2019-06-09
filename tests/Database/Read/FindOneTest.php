@@ -93,11 +93,11 @@ class FindOneTest extends TestCase
                 $connect
                     ->table('test')
                     ->sql()
-                    ->ifs($condition)
+                    ->if($condition)
                     ->one()
-                    ->elses()
+                    ->else()
                     ->all()
-                    ->endIfs()
+                    ->fi()
                     ->find()
             )
         );
@@ -126,11 +126,11 @@ class FindOneTest extends TestCase
                 $connect
                     ->table('test')
                     ->sql()
-                    ->ifs($condition)
+                    ->if($condition)
                     ->one()
-                    ->elses()
+                    ->else()
                     ->all()
-                    ->endIfs()
+                    ->fi()
                     ->find()
             )
         );

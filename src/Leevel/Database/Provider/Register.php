@@ -49,6 +49,7 @@ class Register extends Provider
     {
         $this->databases();
         $this->database();
+        $this->unitOfWork();
         $this->databaseLazyload();
     }
 
@@ -74,7 +75,6 @@ class Register extends Provider
         return [
             'databases'        => Manager::class,
             'database'         => [IDatabase::class, Database::class],
-            IUnitOfWork::class => UnitOfWork::class,
             'database.lazyload',
         ];
     }
@@ -114,6 +114,18 @@ class Register extends Provider
                 function (IContainer $container): IDatabase {
                     return $container['databases']->connect();
                 },
+            );
+    }
+
+    /**
+     * 注册 IUnitOfWork 服务.
+     */
+    protected function unitOfWork(): void
+    {
+        $this->container
+            ->bind(
+                IUnitOfWork::class,
+                UnitOfWork::class,
             );
     }
 

@@ -1030,11 +1030,11 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereLike('id', '5')
-                    ->elses()
+                    ->else()
                     ->whereLike('id', '6')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1062,11 +1062,11 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereLike('id', '5')
-                    ->elses()
+                    ->else()
                     ->whereLike('id', '6')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1094,11 +1094,11 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->orWhere('value', '<>', 'foo')
-                    ->elses()
+                    ->else()
                     ->orWhere('value', '<>', 'bar')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1126,11 +1126,11 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->orWhere('value', '<>', 'foo')
-                    ->elses()
+                    ->else()
                     ->orWhere('value', '<>', 'bar')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1158,19 +1158,19 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereExists(
                         function ($select) {
                             $select->table('foo')->where('id', 2);
                         }
                     )
-                    ->elses()
+                    ->else()
                     ->whereExists(
                         function ($select) {
                             $select->table('bar')->where('id', 2);
                         }
                     )
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1198,19 +1198,19 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereExists(
                         function ($select) {
                             $select->table('foo')->where('id', 2);
                         }
                     )
-                    ->elses()
+                    ->else()
                     ->whereExists(
                         function ($select) {
                             $select->table('bar')->where('id', 2);
                         }
                     )
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1238,19 +1238,19 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereNotExists(
                         function ($select) {
                             $select->table('foo')->where('id', 2);
                         }
                     )
-                    ->elses()
+                    ->else()
                     ->whereNotExists(
                         function ($select) {
                             $select->table('bar')->where('id', 2);
                         }
                     )
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1278,19 +1278,19 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereExists(
                         function ($select) {
                             $select->table('foo')->where('id', 2);
                         }
                     )
-                    ->elses()
+                    ->else()
                     ->whereExists(
                         function ($select) {
                             $select->table('bar')->where('id', 2);
                         }
                     )
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1771,11 +1771,11 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
-                    ->elses()
+                    ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1803,11 +1803,11 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
-                    ->elses()
+                    ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1835,13 +1835,13 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->orWhereRaw('FIND_IN_SET(1, options_id)')
-                    ->elses()
+                    ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -1869,13 +1869,13 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->orWhereRaw('FIND_IN_SET(1, options_id)')
-                    ->elses()
+                    ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

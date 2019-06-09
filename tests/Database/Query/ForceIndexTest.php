@@ -151,11 +151,11 @@ class ForceIndexTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->forceIndex('nameindex,statusindex')
-                    ->elses()
+                    ->else()
                     ->ignoreIndex('testindex')
-                    ->endIfs()
+                    ->fi()
                     ->where('id', '=', 5)
                     ->findAll(true)
             )
@@ -183,11 +183,11 @@ class ForceIndexTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->forceIndex('nameindex,statusindex')
-                    ->elses()
+                    ->else()
                     ->ignoreIndex('testindex')
-                    ->endIfs()
+                    ->fi()
                     ->where('id', '=', 5)
                     ->findAll(true)
             )

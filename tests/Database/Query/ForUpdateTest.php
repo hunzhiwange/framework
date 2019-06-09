@@ -103,11 +103,11 @@ class ForUpdateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->forUpdate()
-                    ->elses()
+                    ->else()
                     ->forUpdate(false)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -134,11 +134,11 @@ class ForUpdateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->forUpdate()
-                    ->elses()
+                    ->else()
                     ->forUpdate(false)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

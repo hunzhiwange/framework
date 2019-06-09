@@ -1008,8 +1008,7 @@ class ValidatorTest extends TestCase
             ]
         );
 
-        $this->assertInstanceof(Validator::class, $validate->foobar());
-        $this->assertInstanceof(Validator::class, $validate->placeholder());
+        $this->assertInstanceof(Validator::class, $validate->_());
     }
 
     public function testCall(): void

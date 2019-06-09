@@ -52,35 +52,7 @@ class PlaceholderTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->placeholder()
-                    ->table('test')
-                    ->sql(true)
-                    ->latest()
-                    ->findOne()
-            )
-        );
-    }
-
-    public function testFoobar(): void
-    {
-        $connect = $this->createDatabaseConnectMock();
-
-        $sql = <<<'eot'
-            [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
-                [],
-                false,
-                null,
-                null,
-                []
-            ]
-            eot;
-
-        $this->assertSame(
-            $sql,
-            $this->varJson(
-                $connect
-                    ->foobar()
+                    ->_()
                     ->table('test')
                     ->sql(true)
                     ->latest()
