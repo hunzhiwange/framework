@@ -61,11 +61,11 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->data(['name' => 'foo'])
-            ->elses()
+            ->else()
             ->data(['name' => 'bar'])
-            ->endIfs();
+            ->fi();
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -79,11 +79,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->data(['name' => 'foo'])
-            ->elses()
+            ->else()
             ->data(['name' => 'bar'])
-            ->endIfs();
+            ->fi();
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -97,11 +97,11 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addData(['name' => 'foo'])
-            ->elses()
+            ->else()
             ->addData(['name' => 'bar'])
-            ->endIfs();
+            ->fi();
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -115,11 +115,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addData(['name' => 'foo'])
-            ->elses()
+            ->else()
             ->addData(['name' => 'bar'])
-            ->endIfs();
+            ->fi();
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -133,11 +133,11 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->rule(['name' => 'required|max_length:9'])
-            ->elses()
+            ->else()
             ->rule(['name' => 'required|max_length:2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -151,11 +151,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->rule(['name' => 'required|max_length:9'])
-            ->elses()
+            ->else()
             ->rule(['name' => 'required|max_length:2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -169,19 +169,19 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->rule(['name' => 'required|max_length:9'], function (array $data) {
                 $this->assertSame(['name' => '小牛神'], $data);
 
                 return true;
             })
-            ->elses()
+            ->else()
             ->rule(['name' => 'required|max_length:2'], function (array $data) {
                 $this->assertSame(['name' => '小牛神'], $data);
 
                 return true;
             })
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -195,19 +195,19 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->rule(['name' => 'required|max_length:9'], function (array $data) {
                 $this->assertSame(['name' => '小牛神'], $data);
 
                 return true;
             })
-            ->elses()
+            ->else()
             ->rule(['name' => 'required|max_length:2'], function (array $data) {
                 $this->assertSame(['name' => '小牛神'], $data);
 
                 return true;
             })
-            ->endIfs();
+            ->fi();
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -221,11 +221,11 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addRule(['name' => 'required|max_length:9'])
-            ->elses()
+            ->else()
             ->addRule(['name' => 'required|max_length:2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -239,11 +239,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addRule(['name' => 'required|max_length:9'])
-            ->elses()
+            ->else()
             ->addRule(['name' => 'required|max_length:2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -257,19 +257,19 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addRule(['name' => 'required|max_length:9'], function (array $data) {
                 $this->assertSame(['name' => '小牛神'], $data);
 
                 return true;
             })
-            ->elses()
+            ->else()
             ->addRule(['name' => 'required|max_length:2'], function (array $data) {
                 $this->assertSame(['name' => '小牛神'], $data);
 
                 return true;
             })
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -283,19 +283,19 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addRule(['name' => 'required|max_length:9'], function (array $data) {
                 $this->assertSame(['name' => '小牛神'], $data);
 
                 return true;
             })
-            ->elses()
+            ->else()
             ->addRule(['name' => 'required|max_length:2'], function (array $data) {
                 $this->assertSame(['name' => '小牛神'], $data);
 
                 return true;
             })
-            ->endIfs();
+            ->fi();
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
@@ -311,11 +311,11 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->message(['min_length' => '{field} foo min {rule}'])
-            ->elses()
+            ->else()
             ->message(['min_length' => '{field} bar min {rule}'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -346,11 +346,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->message(['min_length' => '{field} foo min {rule}'])
-            ->elses()
+            ->else()
             ->message(['min_length' => '{field} bar min {rule}'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -383,11 +383,11 @@ class ValidatorFlowTest extends TestCase
         $validate
             ->
 
-        ifs($condition)
+        if($condition)
             ->addMessage(['min_length' => '{field} foo min {rule}'])
-            ->elses()
+            ->else()
             ->addMessage(['min_length' => '{field} bar min {rule}'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -418,11 +418,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addMessage(['min_length' => '{field} foo min {rule}'])
-            ->elses()
+            ->else()
             ->addMessage(['min_length' => '{field} bar min {rule}'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -453,11 +453,11 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addMessage(['name' => ['min_length' => '{field} hello foo {rule}']])
-            ->elses()
+            ->else()
             ->addMessage(['name' => ['min_length' => '{field} hello bar {rule}']])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -488,11 +488,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addMessage(['name' => ['min_length' => '{field} hello foo {rule}']])
-            ->elses()
+            ->else()
             ->addMessage(['name' => ['min_length' => '{field} hello bar {rule}']])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -523,11 +523,11 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->name(['name' => 'foo'])
-            ->elses()
+            ->else()
             ->name(['name' => 'bar'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -558,11 +558,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->name(['name' => 'foo'])
-            ->elses()
+            ->else()
             ->name(['name' => 'bar'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -593,11 +593,11 @@ class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addName(['name' => 'foo'])
-            ->elses()
+            ->else()
             ->addName(['name' => 'bar'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -628,11 +628,11 @@ class ValidatorFlowTest extends TestCase
         $condition = true;
 
         $validate
-            ->ifs($condition)
+            ->if($condition)
             ->addName(['name' => 'foo'])
-            ->elses()
+            ->else()
             ->addName(['name' => 'bar'])
-            ->endIfs();
+            ->fi();
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());

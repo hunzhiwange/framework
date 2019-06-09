@@ -493,11 +493,11 @@ class ResponseTest extends TestCase
         $response = new Response();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContent('foo')
-            ->elses()
+            ->else()
             ->setContent('bar')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('bar', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -509,11 +509,11 @@ class ResponseTest extends TestCase
         $response = new Response();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContent('foo')
-            ->elses()
+            ->else()
             ->setContent('bar')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('foo', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -525,11 +525,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->appendContent('foo')
-            ->elses()
+            ->else()
             ->appendContent('bar')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hellobar', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -541,11 +541,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->appendContent('foo')
-            ->elses()
+            ->else()
             ->appendContent('bar')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hellofoo', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -557,11 +557,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setHeader('foo', 'bar')
-            ->elses()
+            ->else()
             ->setHeader('foo', 'bar2')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('bar2', $response->headers->get('foo'));
         $this->assertTrue($response->isOk());
@@ -573,11 +573,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setHeader('foo', 'bar')
-            ->elses()
+            ->else()
             ->setHeader('foo', 'bar2')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('bar', $response->headers->get('foo'));
         $this->assertTrue($response->isOk());
@@ -589,11 +589,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->withHeaders(['foo' => 'bar'])
-            ->elses()
+            ->else()
             ->withHeaders(['foo' => 'bar2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('bar2', $response->headers->get('foo'));
         $this->assertTrue($response->isOk());
@@ -605,11 +605,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->withHeaders(['foo' => 'bar'])
-            ->elses()
+            ->else()
             ->withHeaders(['foo' => 'bar2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('bar', $response->headers->get('foo'));
         $this->assertTrue($response->isOk());
@@ -621,10 +621,10 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setCookie('foo', 'bar')
-            ->elses()
-            ->endIfs();
+            ->else()
+            ->fi();
 
         $allCookies = [];
 
@@ -637,10 +637,10 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setCookie('foo', 'bar')
-            ->elses()
-            ->endIfs();
+            ->else()
+            ->fi();
 
         $allCookies = [
             'foo' => [
@@ -663,10 +663,10 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->withCookies(['foo' => 'bar'])
-            ->elses()
-            ->endIfs();
+            ->else()
+            ->fi();
 
         $allCookies = [];
 
@@ -679,10 +679,10 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->withCookies(['foo' => 'bar'])
-            ->elses()
-            ->endIfs();
+            ->else()
+            ->fi();
 
         $allCookies = [
             'foo' => [
@@ -707,11 +707,11 @@ class ResponseTest extends TestCase
         $this->assertSame('hello', $response->getContent());
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setData('foo')
-            ->elses()
+            ->else()
             ->setData('bar')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('"bar"', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -725,11 +725,11 @@ class ResponseTest extends TestCase
         $this->assertSame('hello', $response->getContent());
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setData('foo')
-            ->elses()
+            ->else()
             ->setData('bar')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('"foo"', $response->getContent());
         $this->assertTrue($response->isOk());
@@ -741,11 +741,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setProtocolVersion('1.0')
-            ->elses()
+            ->else()
             ->setProtocolVersion('1.1')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('1.1', $response->getProtocolVersion());
@@ -758,11 +758,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setProtocolVersion('1.0')
-            ->elses()
+            ->else()
             ->setProtocolVersion('1.1')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('1.0', $response->getProtocolVersion());
@@ -775,11 +775,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setStatusCode(500)
-            ->elses()
+            ->else()
             ->setStatusCode(200)
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
@@ -792,11 +792,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setStatusCode(500)
-            ->elses()
+            ->else()
             ->setStatusCode(200)
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(500, $response->getStatusCode());
@@ -809,11 +809,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->charset('UTF-8')
-            ->elses()
+            ->else()
             ->charset('GBK')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('GBK', $response->getCharset());
         $this->assertSame(200, $response->getStatusCode());
@@ -826,11 +826,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->charset('UTF-8')
-            ->elses()
+            ->else()
             ->charset('GBK')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('UTF-8', $response->getCharset());
         $this->assertSame(200, $response->getStatusCode());
@@ -843,11 +843,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setExpires()
-            ->elses()
+            ->else()
             ->setExpires(new DateTime('2018-08-07'))
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('2018-08-07 00:00:00', date('Y-m-d H:i:s', strtotime($response->headers->get('Expires'))));
@@ -861,11 +861,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setExpires()
-            ->elses()
+            ->else()
             ->setExpires(new DateTime('2018-08-07'))
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertFalse($response->headers->has('Expires'));
@@ -879,11 +879,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setLastModified()
-            ->elses()
+            ->else()
             ->setLastModified(new DateTime('2018-08-07'))
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame('2018-08-07 00:00:00', date('Y-m-d H:i:s', strtotime($response->headers->get('Last-Modified'))));
@@ -897,11 +897,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setLastModified()
-            ->elses()
+            ->else()
             ->setLastModified(new DateTime('2018-08-07'))
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertFalse($response->headers->has('Last-Modified'));
@@ -915,11 +915,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setCache(1)
-            ->elses()
+            ->else()
             ->setCache(5)
-            ->endIfs();
+            ->fi();
 
         $date = new DateTime();
         $date->modify('+5minutes');
@@ -946,11 +946,11 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setCache(1)
-            ->elses()
+            ->else()
             ->setCache(5)
-            ->endIfs();
+            ->fi();
 
         $date = new DateTime();
         $date->modify('+1minutes');
@@ -976,10 +976,10 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setNotModified()
-            ->elses()
-            ->endIfs();
+            ->else()
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(200, $response->getStatusCode());
@@ -992,10 +992,10 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setNotModified()
-            ->elses()
-            ->endIfs();
+            ->else()
+            ->fi();
 
         $this->assertSame('hello', $response->getContent());
         $this->assertSame(304, $response->getStatusCode());
@@ -1008,9 +1008,9 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContentType('text/html')
-            ->elses()
+            ->else()
             ->setContentType('text/plain');
 
         $this->assertSame('hello', $response->getContent());
@@ -1025,9 +1025,9 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContentType('text/html')
-            ->elses()
+            ->else()
             ->setContentType('text/plain');
 
         $this->assertSame('hello', $response->getContent());
@@ -1042,9 +1042,9 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContentLength(10)
-            ->elses()
+            ->else()
             ->setContentLength(50);
 
         $this->assertSame('hello', $response->getContent());
@@ -1059,9 +1059,9 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setContentLength(10)
-            ->elses()
+            ->else()
             ->setContentLength(50);
 
         $this->assertSame('hello', $response->getContent());
@@ -1076,9 +1076,9 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setEtag('foo')
-            ->elses()
+            ->else()
             ->setEtag('bar');
 
         $this->assertSame('hello', $response->getContent());
@@ -1093,9 +1093,9 @@ class ResponseTest extends TestCase
         $response = new Response('hello');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setEtag('foo')
-            ->elses()
+            ->else()
             ->setEtag('bar');
 
         $this->assertSame('hello', $response->getContent());

@@ -46,45 +46,45 @@ trait FlowControl
     protected $isFlowControlTrue = false;
 
     /**
-     * 条件语句 ifs.
+     * 条件语句 if.
      *
      * @param mixed $value
      *
      * @return $this
      */
-    public function ifs($value = false): self
+    public function if($value = false): self
     {
         return $this->setFlowControl(true, $value ? true : false);
     }
 
     /**
-     * 条件语句 elseIfs.
+     * 条件语句 elif.
      *
      * @param mixed $value
      *
      * @return $this
      */
-    public function elseIfs($value = false): self
+    public function elif($value = false): self
     {
         return $this->setFlowControl(true, $value ? true : false);
     }
 
     /**
-     * 条件语句 elses.
+     * 条件语句 else.
      *
      * @return $this
      */
-    public function elses(): self
+    public function else(): self
     {
         return $this->setFlowControl(true, !$this->isFlowControlTrue);
     }
 
     /**
-     * 条件语句 endIfs.
+     * 条件语句 fi.
      *
      * @return $this
      */
-    public function endIfs(): self
+    public function fi(): self
     {
         return $this->setFlowControl(false, false);
     }

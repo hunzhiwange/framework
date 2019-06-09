@@ -303,11 +303,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->count('bar')
-                    ->elses()
+                    ->else()
                     ->count('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -335,11 +335,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->count('bar')
-                    ->elses()
+                    ->else()
                     ->count('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -367,11 +367,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->avg('bar')
-                    ->elses()
+                    ->else()
                     ->avg('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -399,11 +399,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->avg('bar')
-                    ->elses()
+                    ->else()
                     ->avg('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -431,11 +431,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->max('bar')
-                    ->elses()
+                    ->else()
                     ->max('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -463,11 +463,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->max('bar')
-                    ->elses()
+                    ->else()
                     ->max('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -495,11 +495,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->min('bar')
-                    ->elses()
+                    ->else()
                     ->min('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -527,11 +527,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->min('bar')
-                    ->elses()
+                    ->else()
                     ->min('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -559,11 +559,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->sum('bar')
-                    ->elses()
+                    ->else()
                     ->sum('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -591,11 +591,11 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->sum('bar')
-                    ->elses()
+                    ->else()
                     ->sum('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );

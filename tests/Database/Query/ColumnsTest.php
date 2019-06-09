@@ -139,11 +139,11 @@ class ColumnsTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->columns('id')
-                    ->elses()
+                    ->else()
                     ->columns('name,value')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -171,11 +171,11 @@ class ColumnsTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->columns('id')
-                    ->elses()
+                    ->else()
                     ->columns('name,value')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -204,11 +204,11 @@ class ColumnsTest extends TestCase
                 $connect
                     ->table('test')
                     ->setColumns('foo')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->setColumns('id')
-                    ->elses()
+                    ->else()
                     ->setColumns('name,value')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -237,11 +237,11 @@ class ColumnsTest extends TestCase
                 $connect
                     ->table('test')
                     ->setColumns('foo')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->setColumns('id')
-                    ->elses()
+                    ->else()
                     ->setColumns('name,value')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

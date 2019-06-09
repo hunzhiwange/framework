@@ -64,11 +64,11 @@ class ApiResponseTest extends TestCase
         $response = new ApiResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->ok(['hello' => 'world'])
-            ->elses()
+            ->else()
             ->ok(['hello2' => 'world2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -98,11 +98,11 @@ class ApiResponseTest extends TestCase
         $response = new ApiResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->created('http://queryphp.com', ['hello' => 'world'])
-            ->elses()
+            ->else()
             ->created('http://queryphp2.com', ['hello2' => 'world2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -134,11 +134,11 @@ class ApiResponseTest extends TestCase
         $response = new ApiResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->accepted('http://queryphp.com', ['hello' => 'world'])
-            ->elses()
+            ->else()
             ->accepted('http://queryphp2.com', ['hello2' => 'world2'])
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -168,11 +168,11 @@ class ApiResponseTest extends TestCase
         $response = new ApiResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->noContent()
-            ->elses()
+            ->else()
             ->noContent()
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{}', $response->getContent());
 
@@ -200,11 +200,11 @@ class ApiResponseTest extends TestCase
         $response = new ApiResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->unprocessableEntity(['foo' => 'bar', 'hello' => 'world'], 'error message', 'status text')
-            ->elses()
+            ->else()
             ->unprocessableEntity(['foo2' => 'bar2', 'hello2' => 'world2'], 'error message2', 'status text2')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"message":"error message2","errors":{"foo2":"bar2","hello2":"world2"}}', $response->getContent());
 
@@ -232,11 +232,11 @@ class ApiResponseTest extends TestCase
         $response = new ApiResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->error('test message', 500, 'status text')
-            ->elses()
+            ->else()
             ->error('test message2', 500, 'status text2')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"message":"test message2"}', $response->getContent());
 

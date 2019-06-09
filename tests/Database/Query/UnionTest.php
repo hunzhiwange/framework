@@ -129,11 +129,11 @@ class UnionTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test', 'tid as id,tname as value')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->union($union1)
-                    ->elses()
+                    ->else()
                     ->union($union2)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -164,11 +164,11 @@ class UnionTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test', 'tid as id,tname as value')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->union($union1)
-                    ->elses()
+                    ->else()
                     ->union($union2)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -199,11 +199,11 @@ class UnionTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test', 'tid as id,tname as value')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->unionAll($union1)
-                    ->elses()
+                    ->else()
                     ->unionAll($union2)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -234,11 +234,11 @@ class UnionTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test', 'tid as id,tname as value')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->unionAll($union1)
-                    ->elses()
+                    ->else()
                     ->unionAll($union2)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

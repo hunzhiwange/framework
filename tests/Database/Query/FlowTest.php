@@ -55,17 +55,17 @@ class FlowTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs(1 === $id)
+                    ->if(1 === $id)
                     ->where('id', 1)
-                    ->elseIfs(2 === $id)
+                    ->elif(2 === $id)
                     ->where('id', 2)
                     ->orderBy('name DESC')
-                    ->elseIfs(3 === $id)
+                    ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->elseIfs(4 === $id)
+                    ->elif(4 === $id)
                     ->where('id', 4)
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -88,17 +88,17 @@ class FlowTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs(1 === $id)
+                    ->if(1 === $id)
                     ->where('id', 1)
-                    ->elseIfs(2 === $id)
+                    ->elif(2 === $id)
                     ->where('id', 2)
                     ->orderBy('name DESC')
-                    ->elseIfs(3 === $id)
+                    ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->elseIfs(4 === $id)
+                    ->elif(4 === $id)
                     ->where('id', 4)
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true),
                 1
             )
@@ -122,17 +122,17 @@ class FlowTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs(1 === $id)
+                    ->if(1 === $id)
                     ->where('id', 1)
-                    ->elseIfs(2 === $id)
+                    ->elif(2 === $id)
                     ->where('id', 2)
                     ->orderBy('name DESC')
-                    ->elseIfs(3 === $id)
+                    ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->elseIfs(4 === $id)
+                    ->elif(4 === $id)
                     ->where('id', 4)
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true),
                 2
             )
@@ -156,17 +156,17 @@ class FlowTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs(1 === $id)
+                    ->if(1 === $id)
                     ->where('id', 1)
-                    ->elseIfs(2 === $id)
+                    ->elif(2 === $id)
                     ->where('id', 2)
                     ->orderBy('name DESC')
-                    ->elseIfs(3 === $id)
+                    ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->elseIfs(4 === $id)
+                    ->elif(4 === $id)
                     ->where('id', 4)
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true),
                 3
             )
@@ -195,17 +195,17 @@ class FlowTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs(1 === $id)
+                    ->if(1 === $id)
                     ->where('id', 1)
-                    ->elseIfs(2 === $id)
+                    ->elif(2 === $id)
                     ->where('id', 2)
                     ->orderBy('name DESC')
-                    ->elseIfs(3 === $id)
+                    ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->elses() // elses 仅仅能记忆上一次 ifs,elseIfs 的结果，上一次的反向结果就是 elses 的条件值,其等价于 elseIfs($id != 3)
+                    ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
                     ->where('id', 4)
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true)
             )
         );
@@ -228,17 +228,17 @@ class FlowTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs(1 === $id)
+                    ->if(1 === $id)
                     ->where('id', 1)
-                    ->elseIfs(2 === $id)
+                    ->elif(2 === $id)
                     ->where('id', 2)
                     ->orderBy('name DESC')
-                    ->elseIfs(3 === $id)
+                    ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->elses() // elses 仅仅能记忆上一次 ifs,elseIfs 的结果，上一次的反向结果就是 elses 的条件值,其等价于 elseIfs($id != 3)
+                    ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
                     ->where('id', 4)
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true),
                 1
             )
@@ -262,17 +262,17 @@ class FlowTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs(1 === $id)
+                    ->if(1 === $id)
                     ->where('id', 1)
-                    ->elseIfs(2 === $id)
+                    ->elif(2 === $id)
                     ->where('id', 2)
                     ->orderBy('name DESC')
-                    ->elseIfs(3 === $id)
+                    ->elif(3 === $id)
                     ->where('id', 3)
                     ->where('id', 1111)
-                    ->elses() // elses 仅仅能记忆上一次 ifs,elseIfs 的结果，上一次的反向结果就是 elses 的条件值,其等价于 elseIfs($id != 3)
+                    ->else() // else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值,其等价于 elif($id != 3)
                     ->where('id', 4)
-                    ->endIfs()
+                    ->fi()
                     ->findOne(true),
                 2
             )

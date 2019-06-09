@@ -138,11 +138,11 @@ class RedirectResponseTest extends TestCase
         $response = new RedirectResponse('foo.bar');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setTargetUrl('foo')
-            ->elses()
+            ->else()
             ->setTargetUrl('bar')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('bar', $response->getTargetUrl());
     }
@@ -154,11 +154,11 @@ class RedirectResponseTest extends TestCase
         $response = new RedirectResponse('foo.bar');
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setTargetUrl('foo')
-            ->elses()
+            ->else()
             ->setTargetUrl('bar')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('foo', $response->getTargetUrl());
     }

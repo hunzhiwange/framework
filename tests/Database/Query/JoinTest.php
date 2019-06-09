@@ -280,11 +280,11 @@ class JoinTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->join('hello', 'name,value', 'name', '=', '小牛')
-                    ->elses()
+                    ->else()
                     ->join('hello', 'name,value', 'name', '=', '哥')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -311,11 +311,11 @@ class JoinTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->join('hello', 'name,value', 'name', '=', '小牛')
-                    ->elses()
+                    ->else()
                     ->join('hello', 'name,value', 'name', '=', '哥')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -342,11 +342,11 @@ class JoinTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-                    ->elses()
+                    ->else()
                     ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

@@ -146,11 +146,11 @@ class LimitTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->top(5)
-                    ->elses()
+                    ->else()
                     ->top(6)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -177,11 +177,11 @@ class LimitTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->top(5)
-                    ->elses()
+                    ->else()
                     ->top(6)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -208,11 +208,11 @@ class LimitTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->limit(0, 5)
-                    ->elses()
+                    ->else()
                     ->limit(2, 3)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -239,11 +239,11 @@ class LimitTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->limit(0, 5)
-                    ->elses()
+                    ->else()
                     ->limit(2, 3)
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

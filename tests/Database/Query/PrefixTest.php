@@ -104,11 +104,11 @@ class PrefixTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->prefix('SQL_NO_CACHE')
-                    ->elses()
+                    ->else()
                     ->prefix('SQL_CALC_FOUND_ROWS')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -135,11 +135,11 @@ class PrefixTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->prefix('SQL_NO_CACHE')
-                    ->elses()
+                    ->else()
                     ->prefix('SQL_CALC_FOUND_ROWS')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

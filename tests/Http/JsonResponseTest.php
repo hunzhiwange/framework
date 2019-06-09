@@ -292,11 +292,11 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse(['foo' => 'bar']);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setCallback('callback')
-            ->elses()
+            ->else()
             ->setCallback('callback2')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame(';callback2({"foo":"bar"});', $response->getContent());
         $this->assertSame('text/javascript', $response->headers->get('Content-Type'));
@@ -308,11 +308,11 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse(['foo' => 'bar']);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setCallback('callback')
-            ->elses()
+            ->else()
             ->setCallback('callback2')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame(';callback({"foo":"bar"});', $response->getContent());
         $this->assertSame('text/javascript', $response->headers->get('Content-Type'));
@@ -324,11 +324,11 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setJson('{"foo":"bar"}')
-            ->elses()
+            ->else()
             ->setJson('{"hello":"world"}')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"hello":"world"}', $response->getContent());
     }
@@ -339,11 +339,11 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setJson('{"foo":"bar"}')
-            ->elses()
+            ->else()
             ->setJson('{"hello":"world"}')
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
@@ -354,11 +354,11 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setData(['foo' => 'bar'])
-            ->elses()
+            ->else()
             ->setData(['hello' => 'world'])
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"hello":"world"}', $response->getContent());
     }
@@ -369,11 +369,11 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse();
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setData(['foo' => 'bar'])
-            ->elses()
+            ->else()
             ->setData(['hello' => 'world'])
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
@@ -384,11 +384,11 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse(['foo' => 'bar', '中' => '国']);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setEncodingOptions(256)
-            ->elses()
+            ->else()
             ->setEncodingOptions(0)
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"foo":"bar","\u4e2d":"\u56fd"}', $response->getContent());
     }
@@ -399,11 +399,11 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse(['foo' => 'bar', '中' => '国']);
 
         $response
-            ->ifs($condition)
+            ->if($condition)
             ->setEncodingOptions(256)
-            ->elses()
+            ->else()
             ->setEncodingOptions(0)
-            ->endIfs();
+            ->fi();
 
         $this->assertSame('{"foo":"bar","中":"国"}', $response->getContent());
     }

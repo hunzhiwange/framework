@@ -169,11 +169,11 @@ class TableTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->ifs($condition)
+                    ->if($condition)
                     ->table('test')
-                    ->elses()
+                    ->else()
                     ->table('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
@@ -199,11 +199,11 @@ class TableTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->ifs($condition)
+                    ->if($condition)
                     ->table('test')
-                    ->elses()
+                    ->else()
                     ->table('foo')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
