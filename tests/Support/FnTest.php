@@ -36,7 +36,7 @@ use Tests\TestCase;
  *     path="architecture/fn",
  *     description="使用函数惰性加载可以更好地管理辅助方法，避免载入过多无用的辅助函数，并且可以提高性能。
  *
- * `f` 是一个超级的全局函数随着 `Support` 包自动加载，可以在业务中随时使用，组件开发中只是标注依赖 `leeevel/support` 包也可以使用。",
+ * `f` 是一个超级的全局函数随着 `Support` 包自动加载，可以在业务中随时使用，组件开发中只是标注依赖 `leevel/support` 包也可以使用。",
  * )
  */
 class FnTest extends TestCase
