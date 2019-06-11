@@ -35,9 +35,22 @@ use Tests\TestCase;
  * @since 2018.06.03
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="集合 collection",
+ *     path="component/collection",
+ *     description="集合 `collection` 提供了一些实用方法，数据库查询的数据列表也会转换为集合数据类型。",
+ * )
  */
 class CollectionTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基本使用",
+     *     description="集合实现了 `\IteratorAggregate` 可以像普通数组一样遍历，也实现了 `\ArrayAccess` 接口，可以当做普通数组一样使用。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $data = [
@@ -78,6 +91,13 @@ class CollectionTest extends TestCase
         $this->assertFalse(isset($collection[4]));
     }
 
+    /**
+     * @api(
+     *     title="静态方法 make 创建集合",
+     *     description="可以使用 `make` 方法创建一个集合对象。",
+     *     note="",
+     * )
+     */
     public function testMake(): void
     {
         $data = [
@@ -118,6 +138,13 @@ class CollectionTest extends TestCase
         $this->assertFalse(isset($collection[4]));
     }
 
+    /**
+     * @api(
+     *     title="集合支持迭代器",
+     *     description="集合 `collection` 是一个标准的迭代器，支持迭代器的用法。",
+     *     note="",
+     * )
+     */
     public function testIterator(): void
     {
         $data = [
@@ -150,6 +177,13 @@ class CollectionTest extends TestCase
         $this->assertSame('hello', $collection->current());
     }
 
+    /**
+     * @api(
+     *     title="集合可统计",
+     *     description="集合实现了 `\Countable` 可以像普通数组一样统计元素的个数。",
+     *     note="",
+     * )
+     */
     public function testCountable(): void
     {
         $data = [
@@ -199,6 +233,22 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
+    /**
+     * @api(
+     *     title="集合数据支持实现 \Leevel\Support\IArray 的对象",
+     *     description="对象实现了 `\Leevel\Support\IArray` 可以转化为集合数据。
+     *
+     * **例子**
+     *
+     * ``` php
+     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestIArray::class)."
+     * ```
+     *
+     * > 实现了 `\Leevel\Support\IArray` 的对象的方法 `toArray` 返回集合的数据。
+     * ",
+     *     note="",
+     * )
+     */
     public function testGetArrayElements2(): void
     {
         $data = [
@@ -211,6 +261,22 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
+    /**
+     * @api(
+     *     title="集合数据支持实现 \Leevel\Support\IJson 的对象",
+     *     description="对象实现了 `\Leevel\Support\IJson` 可以转化为集合数据。
+     *
+     * **例子**
+     *
+     * ``` php
+     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestIJson::class)."
+     * ```
+     *
+     * > 实现了 `\Leevel\Support\IJson` 的对象的方法 `toJson` 返回集合的数据。
+     * ",
+     *     note="",
+     * )
+     */
     public function testGetArrayElements3(): void
     {
         $data = [
@@ -223,6 +289,22 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
+    /**
+     * @api(
+     *     title="集合数据支持实现 \JsonSerializable 的对象",
+     *     description="对象实现了 `\JsonSerializable` 可以转化为集合数据。
+     *
+     * **例子**
+     *
+     * ``` php
+     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestJsonSerializable::class)."
+     * ```
+     *
+     * > 实现了 `\JsonSerializable` 的对象的方法 `jsonSerialize` 返回集合的数据。
+     * ",
+     *     note="",
+     * )
+     */
     public function testGetArrayElements4(): void
     {
         $data = [
