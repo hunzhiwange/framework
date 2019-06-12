@@ -43,7 +43,7 @@ function flash(): ISession
  */
 function flash_get(string $key, $defaults = null)
 {
-    return session()->getFlash($key, $defaults);
+    return flash()->getFlash($key, $defaults);
 }
 
 /**
@@ -56,7 +56,7 @@ function flash_get(string $key, $defaults = null)
  */
 function flash_set(string $key, $value): void
 {
-    session()->flash($key, $value);
+    flash()->flash($key, $value);
 }
 
 class flash
