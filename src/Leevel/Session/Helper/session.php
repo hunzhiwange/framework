@@ -21,28 +21,40 @@ declare(strict_types=1);
 namespace Leevel\Session\Helper;
 
 use Leevel\Di\Container;
+use Leevel\Session\ISession;
 
 /**
- * 设置或者获取 session 值
+ * Session 服务
  *
- * @param null|array|string $key
- * @param mixed             $defaults
+ * @return \Leevel\Session\ISession
+ */
+function session(): ISession
+{
+    return Container::singletons()->make('sessions');
+}
+
+/**
+ * 取回 session.
+ *
+ * @param string $name
+ * @param mixed  $defaults
  *
  * @return mixed
  */
-function session($key = null, $defaults = null)
+function session_get(string $name, $defaults = null)
 {
-    $service = Container::singletons()->make('sessions');
+    return session()->get($name, $defaults);
+}
 
-    if (null === $key) {
-        return $service;
-    }
-
-    if (is_array($key)) {
-        return $service->put($key);
-    }
-
-    return $service->get($key, $defaults);
+/**
+ * 设置 session.
+ *
+ * @param string $name
+ * @param mixed  $value
+ */
+function session_set(string $name, $value): void
+{
+    session()->set($name, $value);
 }
 
 class session
