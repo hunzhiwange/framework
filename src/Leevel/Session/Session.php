@@ -159,9 +159,7 @@ abstract class Session
     public function put($keys, $value = null): void
     {
         if (!is_array($keys)) {
-            $keys = [
-                $keys => $value,
-            ];
+            $keys = [$keys => $value];
         }
 
         foreach ($keys as $item => $value) {
@@ -253,15 +251,15 @@ abstract class Session
      * 取回 session.
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    public function get(string $name, $value = null)
+    public function get(string $name, $defaults = null)
     {
         $name = $this->getNormalizeName($name);
 
-        return $this->data[$name] ?? $value;
+        return $this->data[$name] ?? $defaults;
     }
 
     /**
