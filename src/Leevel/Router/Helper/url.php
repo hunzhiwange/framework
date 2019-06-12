@@ -34,9 +34,10 @@ use Leevel\Di\Container;
  */
 function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
 {
-    return Container::singletons()
-        ->make('url')
-        ->make($url, $params, $subdomain, $suffix);
+    /** @var \Leevel\Router\Url $service */
+    $service = Container::singletons()->make('url');
+
+    return $service->make($url, $params, $subdomain, $suffix);
 }
 
 class url
