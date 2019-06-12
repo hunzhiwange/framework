@@ -233,9 +233,7 @@ abstract class Session
         $data = $this->get($key, []);
 
         if (!is_array($keys)) {
-            $keys = [
-                $keys,
-            ];
+            $keys = [$keys];
         }
 
         foreach ($keys as $item) {
@@ -266,13 +264,13 @@ abstract class Session
      * 返回数组部分数据.
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    public function getPart(string $name, $value = null)
+    public function getPart(string $name, $defaults = null)
     {
-        return $this->getPartData($name, $value);
+        return $this->getPartData($name, $defaults);
     }
 
     /**
@@ -321,13 +319,9 @@ abstract class Session
     {
         $this->set($this->flashDataKey($key), $value);
 
-        $this->mergeNewFlash([
-            $key,
-        ]);
+        $this->mergeNewFlash([$key]);
 
-        $this->popOldFlash([
-            $key,
-        ]);
+        $this->popOldFlash([$key]);
     }
 
     /**
@@ -352,9 +346,7 @@ abstract class Session
     {
         $this->set($this->flashDataKey($key), $value);
 
-        $this->mergeOldFlash([
-            $key,
-        ]);
+        $this->mergeOldFlash([$key]);
     }
 
     /**
