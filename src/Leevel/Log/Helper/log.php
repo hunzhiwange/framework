@@ -24,23 +24,25 @@ use Leevel\Di\Container;
 use Leevel\Log\ILog;
 
 /**
- * 日志.
+ * 日志服务
  *
- * @param null|string $message = null
- * @param array       $context
- * @param string      $level
- *
- * @return mixed
+ * @return \Leevel\Log\ILog
  */
-function log(?string $message = null, array $context = [], string $level = ILog::INFO)
+function log(): ILog
 {
-    $service = Container::singletons()->make('logs');
+    return Container::singletons()->make('logs');
+}
 
-    if (null === $message) {
-        return $service;
-    }
-
-    $service->log($level, $message, $context);
+/**
+ * 记录日志.
+ *
+ * @param string $message
+ * @param array  $context
+ * @param string $level
+ */
+function log_record(string $message, array $context = [], string $level = ILog::INFO): void
+{
+    log()->log($level, $message, $context);
 }
 
 class log
