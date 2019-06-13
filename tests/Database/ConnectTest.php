@@ -481,11 +481,9 @@ class ConnectTest extends TestCase
 
         $connect->beginTransaction();
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'tom']); // `tom` will not rollBack
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'tom']); // `tom` will not rollBack
 
         $connect->beginTransaction();
         $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
