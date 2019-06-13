@@ -339,7 +339,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -366,7 +367,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -449,7 +451,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
