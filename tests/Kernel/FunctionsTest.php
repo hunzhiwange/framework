@@ -130,7 +130,6 @@ class FunctionsTest extends TestCase
     {
         $log = $this->createMock(ILog::class);
 
-        $log->method('log')->willReturn(null);
         $this->assertNull($log->log(ILog::INFO, 'bar', []));
 
         $container = $this->createContainer();
@@ -149,7 +148,6 @@ class FunctionsTest extends TestCase
     {
         $option = $this->createMock(IOption::class);
 
-        $option->method('set')->willReturn(null);
         $this->assertNull($option->set(['foo' => 'bar']));
 
         $option->method('get')->willReturn('bar');
@@ -172,7 +170,6 @@ class FunctionsTest extends TestCase
     {
         $cache = $this->createMock(ICache::class);
 
-        $cache->method('set')->willReturn(null);
         $this->assertNull($cache->set('foo', 'bar'));
 
         $cache->method('get')->willReturn('bar');
@@ -217,7 +214,6 @@ class FunctionsTest extends TestCase
     {
         $session = $this->createMock(ISession::class);
 
-        $session->method('set')->willReturn(null);
         $this->assertNull($session->set('foo', 'bar'));
 
         $session->method('get')->willReturn('bar');
@@ -240,7 +236,6 @@ class FunctionsTest extends TestCase
     {
         $session = $this->createMock(ISession::class);
 
-        $session->method('flash')->willReturn(null);
         $this->assertNull($session->flashs(['foo' => 'bar']));
 
         $session->method('getFlash')->willReturn('bar');

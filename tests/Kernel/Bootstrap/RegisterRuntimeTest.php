@@ -103,7 +103,6 @@ class RegisterRuntimeTest extends TestCase
 
         $runtime = $this->createMock(IRuntime::class);
 
-        $runtime->method('renderForConsole')->willReturn(null);
         $this->assertNull($runtime->renderForConsole(new ConsoleOutput(), new Exception()));
 
         $container->singleton(IRuntime::class, function () use ($runtime) {

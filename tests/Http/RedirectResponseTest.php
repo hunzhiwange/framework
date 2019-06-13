@@ -168,10 +168,6 @@ class RedirectResponseTest extends TestCase
         $session = $this->createMock(ISession::class);
 
         $session
-            ->method('flash')
-            ->willReturn(null);
-
-        $session
             ->method('getFlash')
             ->willReturn('bar');
 
@@ -183,10 +179,6 @@ class RedirectResponseTest extends TestCase
         $session = $this->createMock(ISession::class);
 
         $session
-            ->method('flash')
-            ->willReturn(null);
-
-        $session
             ->method('getFlash')
             ->willReturn(['myinput', 'world']);
 
@@ -196,10 +188,6 @@ class RedirectResponseTest extends TestCase
     protected function mokeSessionForWithError()
     {
         $session = $this->createMock(ISession::class);
-
-        $session
-            ->method('flash')
-            ->willReturn(null);
 
         $session
             ->method('getFlash')
