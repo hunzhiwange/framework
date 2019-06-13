@@ -33,16 +33,23 @@ if (!function_exists('hl')) {
     function hl(string $method, ...$args)
     {
         $map = [
-            'benchmark' => 'Debug',
-            'drr'       => 'Debug',
-            'decrypt'   => 'Encryption',
-            'encrypt'   => 'Encryption',
-            'gettext'   => 'I18n',
-            'app'       => 'Kernel',
-            'url'       => 'Router',
-            'flash'     => 'Session',
-            'cache_set' => 'Cache',
-            'cache_get' => 'Cache',
+            'benchmark'   => 'Debug',
+            'drr'         => 'Debug',
+            'decrypt'     => 'Encryption',
+            'encrypt'     => 'Encryption',
+            'gettext'     => 'I18n',
+            'app'         => 'Kernel',
+            'url'         => 'Router',
+            'cache_set'   => 'Cache',
+            'cache_get'   => 'Cache',
+            'log_record'  => 'Log',
+            'option_set'  => 'Option',
+            'option_get'  => 'Option',
+            'session_set' => 'Session',
+            'session_get' => 'Session',
+            'flash'       => 'Session',
+            'flash_set'   => 'Session',
+            'flash_get'   => 'Session',
         ];
 
         $component = $map[$method] ?? ucfirst($method);
