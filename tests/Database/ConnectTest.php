@@ -488,17 +488,18 @@ class ConnectTest extends TestCase
         $connect->beginTransaction();
         $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'jerry']);
 
         $connect->rollBack();
         $this->assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->lastSql()[0]);
         $connect->commit();
 
-        $book = $connect->table('guest_book')->where('id', 1)->findOne();
+        $book = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame(1, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
@@ -531,7 +532,7 @@ class ConnectTest extends TestCase
         $connect->commit();
     }
 
-    public function testCommitWithReleaseSavepoint(): void
+    public function t2estCommitWithReleaseSavepoint(): void
     {
         $connect = $this->createDatabaseConnect();
 
