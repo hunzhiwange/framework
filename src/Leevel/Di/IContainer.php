@@ -88,6 +88,8 @@ interface IContainer
      * @param array|callable|string $callback
      * @param array                 $args
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     public function call($callback, array $args = []);

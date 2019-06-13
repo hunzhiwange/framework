@@ -314,6 +314,8 @@ interface IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function refresh(IEntity $entity): self;

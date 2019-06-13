@@ -279,6 +279,8 @@ interface IEntity
     /**
      * 销毁模型实体.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function destroy(): self;
@@ -321,6 +323,8 @@ interface IEntity
 
     /**
      * 从数据库重新读取当前对象的属性.
+     *
+     * @throws \InvalidArgumentException
      */
     public function refresh(): void;
 
@@ -472,6 +476,8 @@ interface IEntity
      * 验证事件是否受支持
      *
      * @param string $event
+     *
+     * @throws \InvalidArgumentException
      */
     public static function isSupportEvent(string $event): void;
 
@@ -564,6 +570,8 @@ interface IEntity
      * 返回供查询的主键字段
      * 复合主键或者没有主键直接抛出异常.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public static function singlePrimaryKey(): string;
@@ -600,6 +608,8 @@ interface IEntity
      * @param mixed  $enum
      * @param string $separate
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     public static function enum(string $prop, $enum = null, string $separate = ',');
@@ -615,6 +625,8 @@ interface IEntity
 
     /**
      * 获取查询键值
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */

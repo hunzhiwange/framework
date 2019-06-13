@@ -47,6 +47,8 @@ interface IMeta
     /**
      * 返回数据库管理对象.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Manager
      */
     public static function resolveDatabase(): DatabaseManager;

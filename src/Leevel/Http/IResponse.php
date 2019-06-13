@@ -506,6 +506,8 @@ interface IResponse
      *
      * @param mixed $content
      *
+     * @throws \UnexpectedValueException
+     *
      * @return \Leevel\Http\IResponse
      */
     public function setContent($content): self;
@@ -594,6 +596,8 @@ interface IResponse
      * @param mixed $data
      * @param int   $encodingOptions
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Http\IResponse
      */
     public function setData($data = [], ?int $encodingOptions = null): self;
@@ -640,6 +644,8 @@ interface IResponse
      *
      * @param int    $code
      * @param string $text
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Http\IResponse
      */
