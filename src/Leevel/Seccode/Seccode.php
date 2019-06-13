@@ -295,6 +295,8 @@ class Seccode implements ISeccode
      * 创建字体信息.
      *
      * @param resource $resImage
+     *
+     * @throws \InvalidArgumentException
      */
     protected function makeTtfFont(&$resImage): void
     {
@@ -471,6 +473,8 @@ class Seccode implements ISeccode
      *
      * @param resource $resImage
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     protected function makeBackgroundWithImage(&$resImage): bool
@@ -585,6 +589,8 @@ class Seccode implements ISeccode
     /**
      * 返回验证字体.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function getTtf(): array
@@ -613,6 +619,8 @@ class Seccode implements ISeccode
      *
      * @param int    $size
      * @param string $autoType
+     *
+     * @throws \InvalidArgumentException
      */
     protected function autoCode(int $size, string $autoType = self::ALPHA_UPPERCASE): void
     {

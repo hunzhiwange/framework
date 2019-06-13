@@ -28,12 +28,16 @@ use InvalidArgumentException;
  * @param mixed $value
  * @param array $parameter
  *
+ * @throws \InvalidArgumentException
+ *
  * @return bool
  */
 function validate_not_in($value, array $parameter): bool
 {
     if (!array_key_exists(0, $parameter)) {
-        throw new InvalidArgumentException('Missing the first element of parameter.');
+        $e = 'Missing the first element of parameter.';
+
+        throw new InvalidArgumentException($e);
     }
 
     return !in_array($value, $parameter, true);

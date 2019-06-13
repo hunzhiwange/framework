@@ -54,6 +54,8 @@ class Tree implements IJson, IArray
      * 构造函数.
      *
      * @param array $nodes
+     *
+     * @throws \RuntimeException
      */
     public function __construct(array $nodes = [])
     {

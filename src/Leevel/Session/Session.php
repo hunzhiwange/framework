@@ -113,6 +113,8 @@ abstract class Session
 
     /**
      * 程序执行保存 session.
+     *
+     * @throws \RuntimeException
      */
     public function save(): void
     {

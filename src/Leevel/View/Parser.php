@@ -204,6 +204,8 @@ class Parser implements IParser
      * @param null|string $cachePath
      * @param bool        $isContent
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string|void
      */
     public function doCompile(string $file, ?string $cachePath = null, bool $isContent = false)
@@ -211,9 +213,9 @@ class Parser implements IParser
         // 源码
         if (false === $isContent) {
             if (!is_file($file)) {
-                throw new InvalidArgumentException(
-                    sprintf('File %s is not exits.', $file)
-                );
+                $e = sprintf('File %s is not exits.', $file);
+
+                throw new InvalidArgumentException($e);
             }
 
             $cache = file_get_contents($file);
@@ -590,6 +592,8 @@ class Parser implements IParser
      * 装配节点.
      *
      * @param string $compiled
+     *
+     * @throws \InvalidArgumentException
      */
     protected function packNode(string &$compiled): void
     {
@@ -619,14 +623,15 @@ class Parser implements IParser
             // 单标签节点
             if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
                 if (true !== $nodeTag[$tag['name']]['single']) {
-                    throw new InvalidArgumentException(
+                    $e =
                         sprintf(
                             '%s type nodes must be used in pairs, and no corresponding tail tags are found.',
                             $tag['name']
                         ).
                         '<br />'.
-                        $this->getLocation($tag['position'])
-                    );
+                        $this->getLocation($tag['position']);
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 // 退回栈中
@@ -997,6 +1002,8 @@ class Parser implements IParser
      * @param array $value
      * @param array $beyond
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      *                - string front 第一个在第二个前面
      *                - string behind 第一个在第二个后面
@@ -1098,9 +1105,9 @@ class Parser implements IParser
         }
 
         // 交叉（两个时间段相互关系）
-        throw new InvalidArgumentException(
-            'Template engine tag library does not support cross.'
-        );
+        $e = 'Template engine tag library does not support cross.';
+
+        throw new InvalidArgumentException($e);
     }
 
     /**

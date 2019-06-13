@@ -43,11 +43,12 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * 模型实体 Object Relational Mapping.
- * 为最大化避免 getter setter 属性与系统冲突，getFoo 修改为 getterFoo，setBar 修改为 setterBar
- * 系统自身的属性均加前缀 leevel，设置以 with 开头.
- * ORM 主要基于妖怪大神的 QeePHP V2 设计灵感，查询器基于这个版本构建.
- * 例外参照了 Laravel 关联模型实现设计.
- * Doctrine 和 Java Hibernate 中关于 getter setter 的设计
+ *
+ * - 为最大化避免 getter setter 属性与系统冲突，getFoo 修改为 getterFoo，setBar 修改为 setterBar
+ * - 系统自身的属性均加前缀 leevel，设置以 with 开头.
+ * - ORM 主要基于妖怪大神的 QeePHP V2 设计灵感，查询器基于这个版本构建.
+ * - 例外参照了 Laravel 关联模型实现设计.
+ * - Doctrine 和 Java Hibernate 中关于 getter setter 的设计
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

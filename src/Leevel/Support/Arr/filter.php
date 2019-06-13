@@ -28,6 +28,8 @@ use InvalidArgumentException;
  * @param array $input
  * @param array $rules
  *
+ * @throws \InvalidArgumentException
+ *
  * @return array
  */
 function filter(array $input, array $rules): array

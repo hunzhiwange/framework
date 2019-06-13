@@ -166,6 +166,8 @@ class Validator implements IValidator
      * @param string $method
      * @param array  $args
      *
+     * @throws \BadMethodCallException
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)
@@ -479,6 +481,8 @@ class Validator implements IValidator
      *
      * @param string $name
      * @param string $alias
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -1135,12 +1139,16 @@ class Validator implements IValidator
      * @param string $extend
      * @param array  $parameter
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     protected function callClassExtend(string $extend, array $parameter): bool
     {
         if (!$this->container) {
-            throw new InvalidArgumentException('Container was not set.');
+            $e = 'Container was not set.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (false === strpos($extend, '@')) {
@@ -1166,6 +1174,8 @@ class Validator implements IValidator
      *
      * @param string $rule
      * @param array  $parameter
+     *
+     * @throws \InvalidArgumentException
      *
      * @return bool
      */

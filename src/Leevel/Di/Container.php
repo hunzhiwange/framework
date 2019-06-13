@@ -1006,8 +1006,9 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 动态创建实例对象.
-     * zephir 版本会执行到 newInstanceWithoutConstructor.
-     * 例子：Class Tests\\Event\\ListenerNotExtends does not
+     *
+     * - zephir 版本会执行到 newInstanceWithoutConstructor.
+     * - 例子：Class Tests\\Event\\ListenerNotExtends does not
      * have a constructor, so you cannot pass any constructor arguments.
      *
      * @param string $classname

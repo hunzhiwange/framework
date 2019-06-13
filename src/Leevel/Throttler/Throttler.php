@@ -123,6 +123,8 @@ class Throttler implements IThrottler
      *
      * @param null|string $key
      *
+     * @throws \RuntimeException
+     *
      * @return string
      */
     public function getRequestKey(?string $key = null): string

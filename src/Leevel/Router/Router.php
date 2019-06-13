@@ -506,6 +506,8 @@ class Router implements IRouter
 
     /**
      * 路由未找到异常.
+     *
+     * @throws \Leevel\Router\RouterNotFoundException
      */
     protected function routerNotFound(): void
     {

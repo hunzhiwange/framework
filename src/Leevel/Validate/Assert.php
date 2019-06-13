@@ -108,6 +108,8 @@ class Assert
      * @param string $method
      * @param array  $args
      *
+     * @throws \Leevel\Validate\AssertException
+     *
      * @return bool|mixed
      */
     public function __call(string $method, array $args)
@@ -136,6 +138,8 @@ class Assert
      *
      * @param string $method
      * @param array  $args
+     *
+     * @throws \Leevel\Validate\AssertException
      *
      * @return bool|mixed
      */
@@ -191,6 +195,8 @@ class Assert
      *
      * @param null|\Closure $format
      *
+     * @throws \Leevel\Validate\AssertException
+     *
      * @return bool
      */
     public function flush(Closure $format = null): bool
@@ -224,12 +230,16 @@ class Assert
      * @param string $method
      * @param array  $args
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     protected static function validateAssert(string $method, array $args): bool
     {
         if (!array_key_exists(0, $args)) {
-            throw new InvalidArgumentException('Missing the first argument.');
+            $e = 'Missing the first argument.';
+
+            throw new InvalidArgumentException($e);
         }
 
         // 匹配可选
@@ -305,6 +315,8 @@ class Assert
      * @param array  $args
      * @param bool   $optional
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array|bool
      */
     protected static function matchMulti(string $method, array $args, bool $optional)
@@ -347,6 +359,8 @@ class Assert
      *
      * @param string $method
      * @param array  $multi
+     *
+     * @throws \BadMethodCallException
      *
      * @return bool
      */
