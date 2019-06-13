@@ -83,7 +83,7 @@ class RedisTest extends TestCase
 
         $this->assertInstanceof(IRedis::class, $phpRedis);
 
-        $phpRedis->method('set')->willReturn(null);
+        //$phpRedis->method('set')->willReturn(null);
         $this->assertNull($phpRedis->set('foo', 'bar', 60));
 
         $redis = $this->makeRedis($phpRedis);
