@@ -42,7 +42,7 @@ function option(): IOption
  *
  * @return mixed
  */
-function option_get($key, $default = null)
+function option_get(string $key, $default = null)
 {
     return option()->get($key, $default);
 }

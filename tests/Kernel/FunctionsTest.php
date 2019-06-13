@@ -140,7 +140,7 @@ class FunctionsTest extends TestCase
         });
 
         $this->assertInstanceof(ILog::class, Leevel::log());
-        $this->assertNull(Leevel::log('bar', [], ILog::INFO));
+        $this->assertNull(Leevel::logRecord('bar', [], ILog::INFO));
 
         $container->clear();
     }
@@ -162,8 +162,8 @@ class FunctionsTest extends TestCase
         });
 
         $this->assertInstanceof(IOption::class, Leevel::option());
-        $this->assertNull(Leevel::option(['foo' => 'bar']));
-        $this->assertSame('bar', Leevel::option('foo'));
+        $this->assertNull(Leevel::optionSet(['foo' => 'bar']));
+        $this->assertSame('bar', Leevel::optionGet('foo'));
 
         $container->clear();
     }
@@ -230,8 +230,8 @@ class FunctionsTest extends TestCase
         });
 
         $this->assertInstanceof(ISession::class, Leevel::session());
-        $this->assertNull(Leevel::session(['foo' => 'bar']));
-        $this->assertSame('bar', Leevel::session('foo'));
+        $this->assertNull(Leevel::sessionSet('foo', 'bar'));
+        $this->assertSame('bar', Leevel::sessionGet('foo'));
 
         $container->clear();
     }
@@ -252,8 +252,8 @@ class FunctionsTest extends TestCase
             return $session;
         });
 
-        $this->assertNull(Leevel::flash(['foo' => 'bar']));
-        $this->assertSame('bar', Leevel::flash('foo'));
+        $this->assertNull(Leevel::flashSet('foo', 'bar'));
+        $this->assertSame('bar', Leevel::flashGet('foo'));
 
         $container->clear();
     }
