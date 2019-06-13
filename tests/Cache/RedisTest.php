@@ -83,7 +83,6 @@ class RedisTest extends TestCase
 
         $this->assertInstanceof(IRedis::class, $phpRedis);
 
-        //$phpRedis->method('set')->willReturn(null);
         $this->assertNull($phpRedis->set('foo', 'bar', 60));
 
         $redis = $this->makeRedis($phpRedis);
@@ -96,8 +95,6 @@ class RedisTest extends TestCase
         $phpRedis = $this->createMock(IRedis::class);
 
         $this->assertInstanceof(IRedis::class, $phpRedis);
-
-        $phpRedis->method('delete')->willReturn(null);
         $this->assertNull($phpRedis->delete('foo'));
 
         $redis = $this->makeRedis($phpRedis);
@@ -110,8 +107,6 @@ class RedisTest extends TestCase
         $phpRedis = $this->createMock(IRedis::class);
 
         $this->assertInstanceof(IRedis::class, $phpRedis);
-
-        $phpRedis->method('close')->willReturn(null);
         $this->assertNull($phpRedis->close());
 
         $redis = $this->makeRedis($phpRedis);
