@@ -589,7 +589,7 @@ class ConnectTest extends TestCase
 
         $connect
             ->table('guest_book')
-            ->insert(['name' => 'jerry']);
+            ->insert(['name' => 'jerry', 'content' => '']);
 
         $this->assertSame(1, $connect->numRows());
 

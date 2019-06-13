@@ -1196,7 +1196,11 @@ class RepositoryTest extends TestCase
     {
         $repository = new Repository(new Post());
 
-        $repository->create($post = new Post(['id' => 5, 'title' => 'foo']));
+        $repository->create($post = new Post([
+            'id'      => 5,
+            'title'   => 'foo',
+            'user_id' => 0,
+        ]));
 
         $repository->create($post); // do nothing.
 
@@ -1250,7 +1254,11 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $affectedRow = $repository->replace($post = new Post(['id' => 1, 'title' => 'new title']));
+        $affectedRow = $repository->replace($post = new Post([
+            'id'      => 1,
+            'title'   => 'new title',
+            'user_id' => 0,
+        ]));
 
         $this->assertSame(1, $affectedRow);
 
@@ -1278,7 +1286,11 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $repository->replace($post = new Post(['id' => 2, 'title' => 'new title']));
+        $repository->replace($post = new Post([
+            'id'      => 2,
+            'title'   => 'new title',
+            'user_id' => 0,
+        ]));
 
         $repository->replace($post); // do nothing.
 

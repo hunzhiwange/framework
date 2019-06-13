@@ -779,6 +779,7 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $work->persist($post, 'create');
@@ -1317,7 +1318,7 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['title' => 'new']);
+        $post = new Post(['title' => 'new', 'user_id' => 0]);
         $guestBook = new Guestbook([]);
 
         $work->persist($post);
@@ -1340,7 +1341,7 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['title' => 'new']);
+        $post = new Post(['title' => 'new', 'user_id' => 0]);
         $guestBook = new Guestbook([]);
 
         $work->replace($post);
@@ -1370,6 +1371,7 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
+                    'name'    => '',
                     'title'   => 'hello world',
                     'user_id' => 1,
                     'summary' => 'post summary',
@@ -1454,7 +1456,11 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['id' => 1, 'title' => 'new']);
+        $post = new Post([
+            'id'      => 1,
+            'title'   => 'new',
+            'user_id' => 0,
+        ]);
 
         $this->assertFalse($work->replaced($post));
 
@@ -1487,6 +1493,7 @@ class UnitOfWorkTest extends TestCase
                     'title'   => 'hello world',
                     'user_id' => 1,
                     'summary' => 'post summary',
+                    'user_id' => 0,
                 ]));
 
         $post = new Post(['id' => 1, 'title' => 'new', 'summary' => 'new']);
