@@ -89,6 +89,8 @@ class ThriftHandler implements ThriftIf
      *
      * @param \Leevel\Protocol\Thrift\Service\Request $request
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Http\Request
      */
     protected function normalizeRequest(Request $request): HttpRequest

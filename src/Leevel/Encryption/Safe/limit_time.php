@@ -27,6 +27,8 @@ use RuntimeException;
  *
  * @param array $limitTime
  * @param int   $time
+ *
+ * @throws \RuntimeException
  */
 function limit_time(array $limitTime, int $time): void
 {

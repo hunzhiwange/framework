@@ -59,6 +59,8 @@ class PhpRedis implements IRedis
      * 构造函数.
      *
      * @param array $option
+     *
+     * @throws \RuntimeException
      */
     public function __construct(array $option = [])
     {

@@ -139,6 +139,8 @@ class JsonResponse extends Response
      *
      * @param mixed $json
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Http\IResponse
      */
     public function setJson($json): IResponse
@@ -148,7 +150,9 @@ class JsonResponse extends Response
         }
 
         if (!$this->isJsonData($json)) {
-            throw new InvalidArgumentException('The method setJson need a json data.');
+            $e = 'The method setJson need a json data.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->data = $json;
@@ -161,6 +165,8 @@ class JsonResponse extends Response
      *
      * @param mixed $data
      * @param int   $encodingOptions
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Http\IResponse
      */

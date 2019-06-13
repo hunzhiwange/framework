@@ -81,6 +81,8 @@ class RegisterRuntime
      * @param string $file
      * @param int    $line
      * @param mixed  $context
+     *
+     * @throws \ErrorException
      */
     public function setErrorHandle(int $code, string $description, ?string $file = null, ?int $line = null, $context = null): void
     {

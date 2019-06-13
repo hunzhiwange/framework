@@ -620,6 +620,8 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function refresh(IEntity $entity): IUnitOfWork
@@ -829,6 +831,8 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $method
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function persistEntity(string $position, IEntity $entity, string $method = 'save'): IUnitOfWork
@@ -877,6 +881,8 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function removeEntity(string $position, IEntity $entity, int $priority = 500): IUnitOfWork
@@ -908,6 +914,8 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -951,6 +959,8 @@ class UnitOfWork implements IUnitOfWork
      * 注册更新实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -1001,6 +1011,8 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function replaceEntity(IEntity $entity): IUnitOfWork
@@ -1043,6 +1055,8 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -1182,11 +1196,15 @@ class UnitOfWork implements IUnitOfWork
 
     /**
      * 校验工作单元是否关闭.
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateClosed(): void
     {
         if ($this->closed) {
-            throw new InvalidArgumentException('Unit of work has closed.');
+            $e = 'Unit of work has closed.';
+
+            throw new InvalidArgumentException($e);
         }
     }
 }

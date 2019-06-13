@@ -148,6 +148,8 @@ abstract class Make extends Command
 
     /**
      * 保存模板.
+     *
+     * @throws \RuntimeException
      */
     protected function saveTemplateResult(): void
     {
@@ -175,16 +177,18 @@ abstract class Make extends Command
 
     /**
      * 分析模板源码.
+     *
+     * @throws \RuntimeException
      */
     protected function parseTemplateSource(): void
     {
         $templateSource = $this->getTemplatePath();
 
         if (!is_file($templateSource)) {
-            throw new RuntimeException(
-                'Stub not found.'.PHP_EOL.
-                $this->formatFile($templateSource)
-            );
+            $e = 'Stub not found.'.PHP_EOL.
+                $this->formatFile($templateSource);
+
+            throw new RuntimeException($e);
         }
 
         $this->templateSource = file_get_contents($templateSource);

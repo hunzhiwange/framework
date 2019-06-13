@@ -211,6 +211,8 @@ abstract class Database
      * @param mixed    $fetchArgument
      * @param array    $ctorArgs
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
@@ -223,9 +225,9 @@ abstract class Database
             'select',
             'procedure',
         ], true)) {
-            throw new InvalidArgumentException(
-                'The query method only allows select and procedure SQL statements.'
-            );
+            $e = 'The query method only allows select and procedure SQL statements.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->pdoStatement = $this->pdo($master)->prepare($sql);
@@ -257,6 +259,8 @@ abstract class Database
      * @param string $sql        sql 语句
      * @param array  $bindParams sql 参数绑定
      *
+     * @throws \InvalidArgumentException
+     *
      * @return int|string
      */
     public function execute(string $sql, array $bindParams = [])
@@ -269,9 +273,9 @@ abstract class Database
             'select',
             'procedure',
         ], true)) {
-            throw new InvalidArgumentException(
-                'The query method not allows select and procedure SQL statements.'
-            );
+            $e = 'The query method not allows select and procedure SQL statements.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->pdoStatement = $this->pdo(true)->prepare($sql);
@@ -362,15 +366,21 @@ abstract class Database
 
     /**
      * 用于非自动提交状态下面的查询提交.
+     *
+     * @throws \InvalidArgumentException
      */
     public function commit(): void
     {
         if (0 === $this->transactionLevel) {
-            throw new InvalidArgumentException('There was no active transaction.');
+            $e = 'There was no active transaction.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if ($this->isRollbackOnly) {
-            throw new InvalidArgumentException('Commit failed for rollback only.');
+            $e = 'Commit failed for rollback only.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (1 === $this->transactionLevel) {
@@ -384,11 +394,15 @@ abstract class Database
 
     /**
      * 事务回滚.
+     *
+     * @throws \InvalidArgumentException
      */
     public function rollBack(): void
     {
         if (0 === $this->transactionLevel) {
-            throw new InvalidArgumentException('There was no active transaction.');
+            $e = 'There was no active transaction.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (1 === $this->transactionLevel) {
@@ -918,6 +932,8 @@ abstract class Database
      * PDO 异常处理.
      *
      * @param \PDOException $e
+     *
+     * @throws \Leevel\Database\ReplaceException
      */
     protected function pdoException(PDOException $e): void
     {

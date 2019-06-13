@@ -114,10 +114,14 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 禁止克隆.
+     *
+     * @throws \RuntimeException
      */
     public function __clone()
     {
-        throw new RuntimeException('Ioc container disallowed clone.');
+        $e = 'Ioc container disallowed clone.';
+
+        throw new RuntimeException($e);
     }
 
     /**
@@ -150,6 +154,8 @@ class Container implements IContainer, ArrayAccess
      *
      * @param string $method
      * @param array  $args
+     *
+     * @throws \BadMethodCallException
      *
      * @return mixed
      */
@@ -335,6 +341,8 @@ class Container implements IContainer, ArrayAccess
      * @param array|callable|string $callback
      * @param array                 $args
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     public function call($callback, array $args = [])
@@ -353,7 +361,9 @@ class Container implements IContainer, ArrayAccess
         if (false === $isStatic && is_array($callback)) {
             if (!is_object($callback[0])) {
                 if (!is_string($callback[0])) {
-                    throw new InvalidArgumentException('The classname must be string.');
+                    $e = 'The classname must be string.';
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 $callback[0] = $this->getInjectionObject($callback[0]);
@@ -725,6 +735,8 @@ class Container implements IContainer, ArrayAccess
      * @param string $classname
      * @param array  $args
      *
+     * @throws \Leevel\Di\ContainerInvalidArgumentException
+     *
      * @return object|string
      */
     protected function getInjectionObject(string $classname, array $args = [])
@@ -750,6 +762,8 @@ class Container implements IContainer, ArrayAccess
      * @param mixed $value
      * @param array $args
      *
+     * @throws \Leevel\Di\ContainerInvalidArgumentException
+     *
      * @return array
      */
     protected function normalizeInjectionArgs($value, array $args): array
@@ -770,6 +784,8 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed $injection
      * @param array $args
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */
@@ -874,6 +890,8 @@ class Container implements IContainer, ArrayAccess
      *
      * @param string $argsclass
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool|object
      */
     protected function parseClassFromContainer(string $argsclass)
@@ -902,6 +920,8 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed $injection
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function parseReflection($injection): array
@@ -914,7 +934,9 @@ class Container implements IContainer, ArrayAccess
             case is_string($injection):
                 return $this->parseClassReflection($injection);
             default:
-                throw new InvalidArgumentException('Unsupported callback types.');
+                $e = 'Unsupported callback types.';
+
+                throw new InvalidArgumentException($e);
         }
     }
 
@@ -958,6 +980,8 @@ class Container implements IContainer, ArrayAccess
      * 解析类反射参数.
      *
      * @param string $injection
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */

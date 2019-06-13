@@ -75,6 +75,8 @@ class LoadI18n
      *
      * @param \Leevel\Kernel\IApp $app
      *
+     * @throws \Exception
+     *
      * @return array
      */
     public function getExtend(IApp $app): array

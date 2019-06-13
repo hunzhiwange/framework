@@ -130,6 +130,8 @@ class Load
      *
      * @since 2016.11.27
      *
+     * @throws \RuntimeException
+     *
      * @return array
      */
     protected function findMoFile(array $dirs): array

@@ -135,6 +135,8 @@ class Select
      * @param string $method
      * @param array  $args
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)
@@ -989,6 +991,8 @@ class Select
      *
      * @param array $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     protected function queryClass(array $data)
@@ -1046,6 +1050,8 @@ class Select
      * @param string $nativeType
      * @param string $data
      * @param array  $bindParams
+     *
+     * @throws \InvalidArgumentException
      *
      * @return mixed
      */

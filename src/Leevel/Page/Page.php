@@ -642,6 +642,8 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * @param null|\Leevel\Page\IRender|string $render
      * @param array                            $option
      *
+     * @throws \RuntimeException
+     *
      * @return string
      */
     public function render($render = null, array $option = []): string

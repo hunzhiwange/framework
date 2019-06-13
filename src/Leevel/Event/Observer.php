@@ -73,6 +73,8 @@ class Observer implements SplObserver
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
     public function update(SplSubject $subject): void
     {
@@ -85,9 +87,9 @@ class Observer implements SplObserver
         }
 
         if (!is_callable($handle)) {
-            throw new InvalidArgumentException(
-                sprintf('Observer %s must has handle method.', get_class($this))
-            );
+            $e = sprintf('Observer %s must has handle method.', get_class($this));
+
+            throw new InvalidArgumentException($e);
         }
 
         $subject->container->call($handle, $subject->notifyArgs);

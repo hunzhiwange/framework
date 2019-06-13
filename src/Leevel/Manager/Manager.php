@@ -213,6 +213,8 @@ abstract class Manager
      * @param string $connect
      * @param array  $options
      *
+     * @throws \Exception
+     *
      * @return object
      */
     protected function makeConnect(string $connect, array $options = []): object

@@ -181,6 +181,8 @@ class Pipeline implements IPipeline
      *
      * @param mixed $stages
      *
+     * @throws \InvalidArgumentException
+     *
      * @return null|callable
      */
     protected function stageCallback($stages)

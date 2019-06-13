@@ -24,6 +24,8 @@ use RuntimeException;
 
 /**
  * 检测代理.
+ *
+ * @throws \RuntimeException
  */
 function limit_agent(): void
 {

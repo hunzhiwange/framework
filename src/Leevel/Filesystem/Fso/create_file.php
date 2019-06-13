@@ -28,6 +28,8 @@ use RuntimeException;
  * @param string $path
  * @param string $content
  * @param int    $mode
+ *
+ * @throws \RuntimeException
  */
 function create_file(string $path, ?string $content = null, int $mode = 0666): void
 {

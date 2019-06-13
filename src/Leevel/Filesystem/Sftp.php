@@ -68,6 +68,8 @@ class Sftp extends Filesystem implements IFilesystem
     /**
      * 创建连接.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \League\Flysystem\AdapterInterface
      */
     protected function makeAdapter(): AdapterInterface

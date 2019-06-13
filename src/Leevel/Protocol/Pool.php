@@ -140,11 +140,15 @@ class Pool implements IPool
      * 校验类是否存在.
      *
      * @param string $className
+     *
+     * @throws \InvalidArgumentException
      */
     protected function valid(string $className): void
     {
         if (!class_exists($className)) {
-            throw new InvalidArgumentException(sprintf('Class `%s` was not found.', $className));
+            $e = sprintf('Class `%s` was not found.', $className);
+
+            throw new InvalidArgumentException($e);
         }
     }
 

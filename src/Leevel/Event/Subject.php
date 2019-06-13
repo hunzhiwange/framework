@@ -103,6 +103,8 @@ class Subject implements ISubject, SplSubject
      * 添加一个观察者角色.
      *
      * @param \Closure|\SplObserver|string $observer
+     *
+     * @throws \InvalidArgumentException
      */
     public function register($observer): void
     {
@@ -111,16 +113,16 @@ class Subject implements ISubject, SplSubject
         } else {
             if (is_string($observer) &&
                 is_string($observer = $this->container->make($observer))) {
-                throw new InvalidArgumentException(
-                    sprintf('Observer `%s` is invalid.', $observer)
-                );
+                $e = sprintf('Observer `%s` is invalid.', $observer);
+
+                throw new InvalidArgumentException($e);
             }
 
             if (!($observer instanceof SplObserver)) {
                 if (!is_callable([$observer, 'handle'])) {
-                    throw new InvalidArgumentException(
-                        sprintf('Observer `%s` is invalid.', get_class($observer))
-                    );
+                    $e = sprintf('Observer `%s` is invalid.', get_class($observer));
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 $observer = new Observer(Closure::fromCallable([$observer, 'handle']));

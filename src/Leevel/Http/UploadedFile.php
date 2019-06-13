@@ -151,6 +151,7 @@ class UploadedFile extends File
     /**
      * {@inheritdoc}
      *
+     * @throws \Leevel\Http\FileException
      * @codeCoverageIgnore
      */
     public function move(string $directory, ?string $name = null): File

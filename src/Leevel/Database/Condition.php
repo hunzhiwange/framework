@@ -212,6 +212,8 @@ class Condition
      * @param string $method
      * @param array  $args
      *
+     * @throws \Leevel\Database\ConditionNotFoundException
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)
@@ -275,6 +277,8 @@ class Condition
      * @param array $bind
      * @param bool  $replace
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     public function insertAll(array $data, array $bind = [], bool $replace = false): array
@@ -290,7 +294,9 @@ class Condition
 
             foreach ($data as $key => $tmp) {
                 if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
-                    throw new InvalidArgumentException('Data for insertAll is not invalid.');
+                    $e = 'Data for insertAll is not invalid.';
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 list($tmpFields, $values, $bind, $questionMark) = $this->normalizeBindData($tmp, $bind, $questionMark, $key);
@@ -449,6 +455,8 @@ class Condition
      *
      * @param string $type
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Condition
      */
     public function time(string $type = 'date'): self
@@ -458,9 +466,9 @@ class Condition
         }
 
         if (!in_array($type, ['date', 'month', 'day', 'year'], true)) {
-            throw new InvalidArgumentException(
-                sprintf('Time type `%s` is invalid.', $type)
-            );
+            $e = sprintf('Time type `%s` is invalid.', $type);
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->setInTimeCondition($type);
@@ -898,6 +906,8 @@ class Condition
      * @param array|string $indexs
      * @param string       $type
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Condition
      */
     public function forceIndex($indexs, $type = 'FORCE'): self
@@ -1069,6 +1079,8 @@ class Condition
      *
      * @param array|callable|string $selects
      * @param string                $type
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Condition
      */
@@ -2237,6 +2249,8 @@ class Condition
      * @param string $condType
      * @param bool   $child
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     protected function analyseCondition(string $condType, bool $child = false): string
@@ -2454,6 +2468,8 @@ class Condition
 
     /**
      * 组装条件.
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Condition
      */
@@ -2726,7 +2742,10 @@ class Condition
      * @param string                                                                   $joinType
      * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
      * @param mixed                                                                    $cols
-     * @param mixed                                                                    $cond
+     * @param mixed
+     * @param null|mixed $cond
+     *
+     * @throws \InvalidArgumentException $cond
      *
      * @return \Leevel\Database\Condition
      */
@@ -3117,6 +3136,8 @@ class Condition
      * @param string $field
      * @param mixed  $value
      * @param string $type
+     *
+     * @throws \InvalidArgumentException
      *
      * @return mixed
      */

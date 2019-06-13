@@ -262,6 +262,8 @@ class Response implements IResponse
      *
      * @param mixed $content
      *
+     * @throws \UnexpectedValueException
+     *
      * @return \Leevel\Http\IResponse
      */
     public function setContent($content): IResponse
@@ -441,6 +443,8 @@ class Response implements IResponse
      * @param mixed $data
      * @param int   $encodingOptions
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Http\IResponse
      */
     public function setData($data = [], ?int $encodingOptions = null): IResponse
@@ -535,6 +539,8 @@ class Response implements IResponse
      *
      * @param int         $code
      * @param null|string $text
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Http\IResponse
      */

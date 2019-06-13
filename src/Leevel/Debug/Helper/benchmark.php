@@ -29,6 +29,8 @@ use RuntimeException;
  *
  * @param array|int $time
  * @param array     ...$call
+ *
+ * @throws \RuntimeException
  * @codeCoverageIgnore
  */
 function benchmark($time = 1, ...$call): void

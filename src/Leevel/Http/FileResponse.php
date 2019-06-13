@@ -89,6 +89,8 @@ class FileResponse extends Response
      * @param bool                               $autoEtag
      * @param bool                               $autoLastModified
      *
+     * @throws \Leevel\Http\FileException
+     *
      * @return \Leevel\Http\IResponse
      */
     public function setFile($file, ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): IResponse
@@ -176,6 +178,8 @@ class FileResponse extends Response
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function setContent($content): IResponse
     {
@@ -184,7 +188,9 @@ class FileResponse extends Response
         }
 
         if (null !== $content) {
-            throw new LogicException('The content cannot be set on a FileResponse instance.');
+            $e = 'The content cannot be set on a FileResponse instance.';
+
+            throw new LogicException($e);
         }
 
         return $this;
@@ -204,6 +210,8 @@ class FileResponse extends Response
      * @param string $disposition
      * @param string $filename
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Http\IResponse
      */
     public function setContentDisposition(string $disposition, string $filename = ''): IResponse
@@ -220,7 +228,9 @@ class FileResponse extends Response
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             ResponseHeaderBag::DISPOSITION_INLINE,
         ], true)) {
-            throw new InvalidArgumentException('The disposition type is invalid.');
+            $e = 'The disposition type is invalid.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->headers->set(

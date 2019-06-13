@@ -101,6 +101,8 @@ class Meta implements IMeta
     /**
      * 返回数据库管理对象.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Manager
      */
     public static function resolveDatabase(): DatabaseManager
@@ -111,7 +113,9 @@ class Meta implements IMeta
 
         if (!static::$databaseResolver &&
             static::lazyloadPlaceholder() && !static::$databaseResolver) {
-            throw new InvalidArgumentException('Database resolver was not set.');
+            $e = 'Database resolver was not set.';
+
+            throw new InvalidArgumentException($e);
         }
 
         return static::$resolveDatabase = call_user_func(static::$databaseResolver);

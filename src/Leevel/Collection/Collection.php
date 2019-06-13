@@ -334,6 +334,8 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * 验证类型.
      *
      * @param mixed $value
+     *
+     * @throws \InvalidArgumentException
      */
     protected function checkType($value): void
     {
