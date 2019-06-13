@@ -217,8 +217,8 @@ class FunctionsTest extends TestCase
     {
         $session = $this->createMock(ISession::class);
 
-        $session->method('put')->willReturn(null);
-        $this->assertNull($session->put(['foo' => 'bar']));
+        $session->method('set')->willReturn(null);
+        $this->assertNull($session->set('foo', 'bar'));
 
         $session->method('get')->willReturn('bar');
         $this->assertSame('bar', $session->get('foo'));

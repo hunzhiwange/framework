@@ -498,7 +498,14 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, UniqueRule::PLACEHOLDER, UniqueRule::PLACEHOLDER, UniqueRule::PLACEHOLDER, 'content', 'hello'),
+                'name'     => UniqueRule::rule(
+                    Guestbook::class,
+                    UniqueRule::PLACEHOLDER,
+                    UniqueRule::PLACEHOLDER,
+                    UniqueRule::PLACEHOLDER,
+                    'content',
+                    'hello',
+                ),
             ]
         );
 
