@@ -129,6 +129,7 @@ class UniqueTest extends TestCase
             ->insert([
                 'id1'   => 1,
                 'id2'   => 2,
+                'name'  => '',
             ]);
 
         $this->assertTrue($validate->success());

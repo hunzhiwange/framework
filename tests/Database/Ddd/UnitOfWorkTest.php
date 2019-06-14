@@ -1323,7 +1323,7 @@ class UnitOfWorkTest extends TestCase
             'title'   => 'new',
             'user_id' => 0,
         ]);
-        $guestBook = new Guestbook([]);
+        $guestBook = new Guestbook(['name' => '']);
 
         $work->persist($post);
         $work->persist($guestBook);
@@ -1349,7 +1349,7 @@ class UnitOfWorkTest extends TestCase
             'title'   => 'new',
             'user_id' => 0,
         ]);
-        $guestBook = new Guestbook([]);
+        $guestBook = new Guestbook(['name' => '']);
 
         $work->replace($post);
         $work->replace($guestBook);
@@ -1388,6 +1388,7 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
+                    'name'      => '',
                     'content'   => 'hello world',
                 ]));
 
