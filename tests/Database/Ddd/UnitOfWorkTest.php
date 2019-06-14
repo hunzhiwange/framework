@@ -1264,6 +1264,7 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 1,
         ]);
 
         $work->persist($post, 'replace');
@@ -1505,6 +1506,7 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'new',
             'summary' => 'new',
+            'user_id' => 1,
         ]);
 
         $work->replace($post);
@@ -1515,7 +1517,7 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertSame('1', $updatedPost->id);
         $this->assertSame('new', $updatedPost->title);
-        $this->assertSame('0', $updatedPost->userId);
+        $this->assertSame('1', $updatedPost->userId);
         $this->assertSame('new', $updatedPost->summary);
     }
 
