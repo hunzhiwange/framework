@@ -127,8 +127,8 @@ class UniqueTest extends TestCase
         $connect
             ->table('composite_id')
             ->insert([
-                'id1'   => 'foo',
-                'id2'   => 'bar',
+                'id1'   => 1,
+                'id2'   => 2,
             ]);
 
         $this->assertTrue($validate->success());

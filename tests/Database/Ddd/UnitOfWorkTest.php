@@ -1322,8 +1322,6 @@ class UnitOfWorkTest extends TestCase
         $post = new Post([
             'title'   => 'new',
             'user_id' => 0,
-            'name'    => '',
-            'content' => '',
         ]);
         $guestBook = new Guestbook([]);
 
@@ -1350,8 +1348,6 @@ class UnitOfWorkTest extends TestCase
         $post = new Post([
             'title'   => 'new',
             'user_id' => 0,
-            'name'    => '',
-            'content' => '',
         ]);
         $guestBook = new Guestbook([]);
 
@@ -1382,7 +1378,6 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'name'    => '',
                     'title'   => 'hello world',
                     'user_id' => 1,
                     'summary' => 'post summary',
