@@ -564,12 +564,14 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $post2 = new Post([
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $work->create($post);
@@ -643,12 +645,14 @@ class UnitOfWorkTest extends TestCase
                 'id'      => 1,
                 'title'   => 'old',
                 'summary' => 'old',
+                'user_id' => 0,
             ]);
 
             $post2 = new Post([
                 'id'      => 1,
                 'title'   => 'old',
                 'summary' => 'old',
+                'user_id' => 0,
             ]);
 
             $w->create($post);
