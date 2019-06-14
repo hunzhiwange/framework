@@ -1257,7 +1257,6 @@ class RepositoryTest extends TestCase
         $affectedRow = $repository->replace($post = new Post([
             'id'      => 1,
             'title'   => 'new title',
-            'user_id' => 0,
         ]));
 
         $this->assertSame(1, $affectedRow);
