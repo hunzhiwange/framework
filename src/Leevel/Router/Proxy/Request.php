@@ -100,8 +100,8 @@ class Request implements IRequest
     /**
      * 获取参数.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param string     $key
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -171,7 +171,7 @@ class Request implements IRequest
     /**
      * 获取输入数据.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return mixed
@@ -184,7 +184,7 @@ class Request implements IRequest
     /**
      * 取回 query.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -209,7 +209,7 @@ class Request implements IRequest
     /**
      * 取回 cookie.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -233,8 +233,8 @@ class Request implements IRequest
      * 获取文件
      * 数组文件请在末尾加上反斜杆访问.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param null|string $key
+     * @param null|mixed  $defaults
      *
      * @return null|array|\Leevel\Http\UploadedFile
      */
@@ -271,7 +271,7 @@ class Request implements IRequest
     /**
      * 取回 header.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -284,7 +284,7 @@ class Request implements IRequest
     /**
      * 取回 server.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string

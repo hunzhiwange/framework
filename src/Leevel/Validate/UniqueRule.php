@@ -86,11 +86,11 @@ class UniqueRule
     /**
      * 创建语法规则.
      *
-     * @param string $entity
-     * @param string $field
-     * @param mixed  $exceptId
-     * @param string $primaryKey
-     * @param array  ...$additional
+     * @param string      $entity
+     * @param null|string $field
+     * @param null|mixed  $exceptId
+     * @param null|string $primaryKey
+     * @param array       ...$additional
      *
      * @throws \InvalidArgumentException
      *

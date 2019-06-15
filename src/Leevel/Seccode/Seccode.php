@@ -117,10 +117,10 @@ class Seccode implements ISeccode
     /**
      * 设置验证码
      *
-     * @param mixed  $code
-     * @param string $outPath
-     * @param bool   $autoCode
-     * @param string $autoType
+     * @param null|mixed  $code
+     * @param null|string $outPath
+     * @param bool        $autoCode
+     * @param string      $autoType
      */
     public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void
     {
@@ -670,7 +670,7 @@ class Seccode implements ISeccode
     /**
      * 是否为中文.
      *
-     * @param string $code
+     * @param null|string $code
      *
      * @return bool
      */

@@ -274,9 +274,9 @@ class Tree implements IJson, IArray
     /**
      * 树转化为数组.
      *
-     * @param \Closure   $callables
-     * @param array      $key
-     * @param int|string $id
+     * @param null|\Closure $callables
+     * @param array         $key
+     * @param int|string    $id
      *
      * @return array
      */
@@ -311,7 +311,7 @@ class Tree implements IJson, IArray
     /**
      * 对象转 JSON.
      *
-     * @param int $option
+     * @param null|int $option
      *
      * @return string
      */

@@ -65,8 +65,8 @@ class View implements IView
     /**
      * 变量赋值
      *
-     * @param mixed $name
-     * @param mixed $value
+     * @param mixed      $name
+     * @param null|mixed $value
      *
      * @return \Leevel\Router\IView
      */
@@ -114,9 +114,9 @@ class View implements IView
     /**
      * 加载视图文件.
      *
-     * @param string $file
-     * @param array  $vars
-     * @param string $ext
+     * @param string      $file
+     * @param array       $vars
+     * @param null|string $ext
      *
      * @return string
      */

@@ -36,8 +36,8 @@ function session(): ISession
 /**
  * 取回 session.
  *
- * @param string $name
- * @param mixed  $defaults
+ * @param string     $name
+ * @param null|mixed $defaults
  *
  * @return mixed
  */

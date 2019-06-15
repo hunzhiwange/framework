@@ -217,7 +217,7 @@ class Assert
     /**
      * 设置 PHPUnit.
      *
-     * @param \PHPUnit\Framework\TestCase $phpUnit
+     * @param null|\PHPUnit\Framework\TestCase $phpUnit
      */
     public static function setPhpUnit(TestCase $phpUnit = null): void
     {

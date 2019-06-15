@@ -36,8 +36,8 @@ function flash(): ISession
 /**
  * 返回闪存数据.
  *
- * @param string $key
- * @param mixed  $defaults
+ * @param string     $key
+ * @param null|mixed $defaults
  *
  * @return mixed
  */

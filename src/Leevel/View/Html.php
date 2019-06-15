@@ -62,10 +62,10 @@ class Html extends View implements IView
     /**
      * 加载视图文件.
      *
-     * @param string $file    视图文件地址
-     * @param array  $vars
-     * @param string $ext     后缀
-     * @param bool   $display 是否显示
+     * @param string      $file    视图文件地址
+     * @param array       $vars
+     * @param null|string $ext     后缀
+     * @param bool        $display 是否显示
      *
      * @return string|void
      */
