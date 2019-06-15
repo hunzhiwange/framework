@@ -131,13 +131,13 @@ abstract class View
      * 分析展示的视图文件.
      *
      * @param null|string $file
-     * @param string      $ext
+     * @param null|string $ext
      *
      * @throws \RuntimeException
      *
      * @return string
      */
-    protected function parseDisplayFile(?string $file = null, string $ext = ''): string
+    protected function parseDisplayFile(?string $file = null, ?string $ext = null): string
     {
         if (!is_file($file)) {
             $file = $this->parseFile($file, $ext);
@@ -156,13 +156,13 @@ abstract class View
      * 分析模板真实路径.
      *
      * @param null|string $tpl
-     * @param string      $ext
+     * @param null|string $ext
      *
      * @throws \RuntimeException
      *
      * @return string
      */
-    protected function parseFile(?string $tpl = null, string $ext = ''): string
+    protected function parseFile(?string $tpl = null, ?string $ext = null): string
     {
         $tpl = trim(str_replace('->', '.', $tpl));
 
