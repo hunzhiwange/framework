@@ -38,5 +38,5 @@ interface IJson
      *
      * @return string
      */
-    public function toJson($option = null): string;
+    public function toJson(?int $option = null): string;
 }
