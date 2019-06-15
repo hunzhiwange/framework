@@ -199,7 +199,7 @@ class Assert
      *
      * @return bool
      */
-    public function flush(Closure $format = null): bool
+    public function flush(?Closure $format = null): bool
     {
         if ($this->error) {
             if (!$format) {
@@ -217,9 +217,9 @@ class Assert
     /**
      * 设置 PHPUnit.
      *
-     * @param \PHPUnit\Framework\TestCase $phpUnit
+     * @param null|\PHPUnit\Framework\TestCase $phpUnit
      */
-    public static function setPhpUnit(TestCase $phpUnit = null): void
+    public static function setPhpUnit(?TestCase $phpUnit = null): void
     {
         self::$phpUnit = $phpUnit;
     }

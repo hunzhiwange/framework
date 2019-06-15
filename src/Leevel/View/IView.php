@@ -44,10 +44,10 @@ interface IView
     /**
      * 加载视图文件.
      *
-     * @param string $file    视图文件地址
-     * @param array  $vars
-     * @param string $ext     后缀
-     * @param bool   $display 是否显示
+     * @param string      $file    视图文件地址
+     * @param array       $vars
+     * @param null|string $ext     后缀
+     * @param bool        $display 是否显示
      *
      * @return string|void
      */
@@ -56,8 +56,8 @@ interface IView
     /**
      * 设置模板变量.
      *
-     * @param mixed $name
-     * @param mixed $value
+     * @param mixed      $name
+     * @param null|mixed $value
      */
     public function setVar($name, $value = null): void;
 
@@ -68,7 +68,7 @@ interface IView
      *
      * @return mixed
      */
-    public function getVar(string $name = null);
+    public function getVar(?string $name = null);
 
     /**
      * 删除变量值.

@@ -41,7 +41,7 @@ class UnprocessableEntityHttpException extends HttpException
      * @param int             $code
      * @param null|\Exception $previous
      */
-    public function __construct($message = null, $code = 0, Exception $previous = null)
+    public function __construct(?string $message = null, int $code = 0, ?Exception $previous = null)
     {
         parent::__construct(422, $message, $code, $previous);
     }

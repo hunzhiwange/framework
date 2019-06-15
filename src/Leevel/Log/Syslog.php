@@ -66,7 +66,7 @@ class Syslog extends Log implements ILog
      * @param array                        $option
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(array $option = [], IDispatch $dispatch = null)
+    public function __construct(array $option = [], ?IDispatch $dispatch = null)
     {
         parent::__construct($option, $dispatch);
 

@@ -96,7 +96,7 @@ abstract class Session
     /**
      * 启动 session.
      *
-     * @param string $sessionId
+     * @param null|string $sessionId
      */
     public function start(?string $sessionId = null): void
     {
@@ -156,7 +156,7 @@ abstract class Session
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed        $value
+     * @param null|mixed   $value
      */
     public function put($keys, $value = null): void
     {
@@ -207,9 +207,9 @@ abstract class Session
     /**
      * 数组插入键值对数据.
      *
-     * @param string $key
-     * @param mixed  $keys
-     * @param mixed  $value
+     * @param string     $key
+     * @param mixed      $keys
+     * @param null|mixed $value
      */
     public function arr(string $key, $keys, $value = null): void
     {
@@ -250,8 +250,8 @@ abstract class Session
     /**
      * 取回 session.
      *
-     * @param string $name
-     * @param mixed  $defaults
+     * @param string     $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -265,8 +265,8 @@ abstract class Session
     /**
      * 返回数组部分数据.
      *
-     * @param string $name
-     * @param mixed  $defaults
+     * @param string     $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -391,8 +391,8 @@ abstract class Session
     /**
      * 返回闪存数据.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param string     $key
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -493,7 +493,7 @@ abstract class Session
     /**
      * 设置 SESSION 名字.
      *
-     * @param string $name
+     * @param null|string $name
      */
     public function setName(?string $name = null): void
     {
@@ -513,7 +513,7 @@ abstract class Session
     /**
      * 设置 SESSION ID.
      *
-     * @param string $id
+     * @param null|string $id
      */
     public function setId(?string $id = null): void
     {
@@ -730,9 +730,9 @@ abstract class Session
     /**
      * 返回部分闪存数据.
      *
-     * @param string $key
-     * @param mixed  $defaults
-     * @param string $type
+     * @param string      $key
+     * @param null|mixed  $defaults
+     * @param null|string $type
      *
      * @return mixed
      */

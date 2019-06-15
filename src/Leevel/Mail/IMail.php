@@ -137,7 +137,7 @@ interface IMail
      *
      * @return \Leevel\Mail\IMail
      */
-    public function attachMail(string $file, Closure $callbacks = null): self;
+    public function attachMail(string $file, ?Closure $callbacks = null): self;
 
     /**
      * 添加内存内容附件
@@ -149,7 +149,7 @@ interface IMail
      *
      * @return \Leevel\Mail\IMail
      */
-    public function attachData(string $data, string $name, Closure $callbacks = null): self;
+    public function attachData(string $data, string $name, ?Closure $callbacks = null): self;
 
     /**
      * 图片嵌入邮件.
@@ -188,7 +188,7 @@ interface IMail
      *
      * @return int
      */
-    public function flush(Closure $callbacks = null, bool $htmlPriority = true): int;
+    public function flush(?Closure $callbacks = null, bool $htmlPriority = true): int;
 
     /**
      * 错误消息.

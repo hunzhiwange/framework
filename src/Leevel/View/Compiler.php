@@ -1055,8 +1055,8 @@ class Compiler implements ICompiler
     /**
      * 分析if.
      *
-     * @param string $content
-     * @param string $type
+     * @param string      $content
+     * @param null|string $type
      *
      * @return string
      */

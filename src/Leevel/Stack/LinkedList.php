@@ -49,9 +49,9 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * 构造函数.
      *
-     * @param array $type
+     * @param null|array $type
      */
-    public function __construct(array $type = null)
+    public function __construct(?array $type = null)
     {
         if ($type) {
             $this->type = $type;

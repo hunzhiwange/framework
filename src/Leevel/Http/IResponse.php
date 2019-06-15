@@ -697,7 +697,7 @@ interface IResponse
      *
      * @return \Leevel\Http\IResponse
      */
-    public function setExpires(DateTime $datetime = null): self;
+    public function setExpires(?DateTime $datetime = null): self;
 
     /**
      * 设置最后修改时间.
@@ -706,7 +706,7 @@ interface IResponse
      *
      * @return \Leevel\Http\IResponse
      */
-    public function setLastModified(DateTime $datetime = null): self;
+    public function setLastModified(?DateTime $datetime = null): self;
 
     /**
      * 设置缓存.

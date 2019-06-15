@@ -115,7 +115,7 @@ class Pipeline implements IPipeline
      *
      * @return mixed
      */
-    public function then(Closure $end = null)
+    public function then(?Closure $end = null)
     {
         $stage = $this->stage;
 

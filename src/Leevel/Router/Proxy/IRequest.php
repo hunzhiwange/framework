@@ -130,7 +130,7 @@ interface IRequest
      *
      * @return mixed
      */
-    public static function input(string $key = null, $defaults = null);
+    public static function input(?string $key = null, $defaults = null);
 
     /**
      * 取回 query.
@@ -140,7 +140,7 @@ interface IRequest
      *
      * @return array|string
      */
-    public static function query(string $key = null, $defaults = null);
+    public static function query(?string $key = null, $defaults = null);
 
     /**
      * 请求是否存在 COOKIE.
@@ -159,7 +159,7 @@ interface IRequest
      *
      * @return array|string
      */
-    public static function cookie(string $key = null, $defaults = null);
+    public static function cookie(?string $key = null, $defaults = null);
 
     /**
      * 取得所有文件.

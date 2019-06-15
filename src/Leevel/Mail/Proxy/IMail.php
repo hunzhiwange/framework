@@ -130,7 +130,7 @@ interface IMail
      *
      * @return \Leevel\Mail\IMail
      */
-    public static function attachMail(string $file, Closure $callbacks = null): IBaseMail;
+    public static function attachMail(string $file, ?Closure $callbacks = null): IBaseMail;
 
     /**
      * 添加内存内容附件
@@ -142,7 +142,7 @@ interface IMail
      *
      * @return \Leevel\Mail\IMail
      */
-    public static function attachData(string $data, string $name, Closure $callbacks = null): IBaseMail;
+    public static function attachData(string $data, string $name, ?Closure $callbacks = null): IBaseMail;
 
     /**
      * 图片嵌入邮件.
@@ -181,7 +181,7 @@ interface IMail
      *
      * @return int
      */
-    public static function flush(Closure $callbacks = null, bool $htmlPriority = true): int;
+    public static function flush(?Closure $callbacks = null, bool $htmlPriority = true): int;
 
     /**
      * 错误消息.

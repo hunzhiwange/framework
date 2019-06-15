@@ -70,10 +70,10 @@ class JsonResponse extends Response
     /**
      * 构造函数.
      *
-     * @param null|string $data
-     * @param int         $status
-     * @param array       $headers
-     * @param bool        $json
+     * @param null|mixed $data
+     * @param int        $status
+     * @param array      $headers
+     * @param bool       $json
      */
     public function __construct($data = null, int $status = 200, array $headers = [], bool $json = false)
     {

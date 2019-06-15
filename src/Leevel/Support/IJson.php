@@ -34,9 +34,9 @@ interface IJson
     /**
      * 对象转 JSON.
      *
-     * @param int $option
+     * @param null|int $option
      *
      * @return string
      */
-    public function toJson($option = null): string;
+    public function toJson(?int $option = null): string;
 }

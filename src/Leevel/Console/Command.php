@@ -210,7 +210,7 @@ abstract class Command extends SymfonyCommand
      * @return string
      * @codeCoverageIgnore
      */
-    public function ask($question, $defaults = null): string
+    public function ask(string $question, ?string $defaults = null): string
     {
         return $this->output->ask($question, $defaults);
     }
@@ -241,7 +241,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function info($message, $verbosity = null): void
+    public function info(string $message, $verbosity = null): void
     {
         $this->line($message, 'info', $verbosity);
     }
@@ -265,7 +265,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function comment($message, $verbosity = null): void
+    public function comment(string $message, $verbosity = null): void
     {
         $this->line($message, 'comment', $verbosity);
     }
@@ -276,7 +276,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function question($message, $verbosity = null): void
+    public function question(string $message, $verbosity = null): void
     {
         $this->line($message, 'question', $verbosity);
     }
@@ -292,7 +292,7 @@ abstract class Command extends SymfonyCommand
      * @return string
      * @codeCoverageIgnore
      */
-    public function askWithCompletion($question, array $choices, $defaults = null): string
+    public function askWithCompletion(string $question, array $choices, ?string $defaults = null): string
     {
         $question = new Question($question, $defaults);
         $question->setAutocompleterValues($choices);
@@ -331,7 +331,7 @@ abstract class Command extends SymfonyCommand
      * @return string
      * @codeCoverageIgnore
      */
-    public function choice($question, array $choices, $defaults = null, $attempts = null, $multiple = null): string
+    public function choice(string $question, array $choices, ?string $defaults = null, $attempts = null, ?bool $multiple = null): string
     {
         $question = new ChoiceQuestion($question, $choices, $defaults);
         $question->setMaxAttempts($attempts)->setMultiselect($multiple);
@@ -345,7 +345,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function error($message, $verbosity = null): void
+    public function error(string $message, $verbosity = null): void
     {
         $this->line($message, 'error', $verbosity);
     }
@@ -356,7 +356,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function warn($message, $verbosity = null): void
+    public function warn(string $message, $verbosity = null): void
     {
         if (!$this->output->getFormatter()->hasStyle('warning')) {
             $this->output->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
@@ -372,7 +372,7 @@ abstract class Command extends SymfonyCommand
      * @param null|string     $style
      * @param null|int|string $verbosity
      */
-    public function line($message, $style = null, $verbosity = null): void
+    public function line(string $message, ?string $style = null, $verbosity = null): void
     {
         $message = $style ? "<{$style}>{$message}</{$style}>" : $message;
 
