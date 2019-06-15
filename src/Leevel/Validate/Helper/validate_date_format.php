@@ -28,12 +28,16 @@ use InvalidArgumentException;
  * @param mixed $value
  * @param array $parameter
  *
+ * @throws \InvalidArgumentException
+ *
  * @return bool
  */
 function validate_date_format($value, array $parameter): bool
 {
     if (!array_key_exists(0, $parameter)) {
-        throw new InvalidArgumentException('Missing the first element of parameter.');
+        $e = 'Missing the first element of parameter.';
+
+        throw new InvalidArgumentException($e);
     }
 
     $parse = date_parse_from_format($parameter[0], $value);

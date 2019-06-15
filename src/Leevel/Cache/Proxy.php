@@ -36,7 +36,7 @@ trait Proxy
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed        $value
+     * @param null|mixed   $value
      */
     public function put($keys, $value = null): void
     {

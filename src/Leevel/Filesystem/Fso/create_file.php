@@ -25,9 +25,11 @@ use RuntimeException;
 /**
  * 创建文件.
  *
- * @param string $path
- * @param string $content
- * @param int    $mode
+ * @param string      $path
+ * @param null|string $content
+ * @param int         $mode
+ *
+ * @throws \RuntimeException
  */
 function create_file(string $path, ?string $content = null, int $mode = 0666): void
 {

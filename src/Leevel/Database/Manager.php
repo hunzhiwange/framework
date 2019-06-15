@@ -93,6 +93,8 @@ class Manager extends Managers implements IDatabase
      *
      * @param array $option
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function parseDatabaseOption(array $option): array

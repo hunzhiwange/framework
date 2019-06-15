@@ -114,6 +114,8 @@ class LinkedList extends SplDoublyLinkedList
      * 验证类型是否正确遇到错误抛出异常.
      *
      * @param mixed $value
+     *
+     * @throws \InvalidArgumentException
      */
     public function validate($value): void
     {

@@ -73,7 +73,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -100,7 +101,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -125,8 +127,9 @@ class UniqueTest extends TestCase
         $connect
             ->table('composite_id')
             ->insert([
-                'id1'   => 'foo',
-                'id2'   => 'bar',
+                'id1'   => 1,
+                'id2'   => 2,
+                'name'  => '',
             ]);
 
         $this->assertTrue($validate->success());
@@ -152,7 +155,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -234,7 +238,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'value',
+                    'name'    => 'value',
+                    'content' => '',
                 ]),
         );
 
@@ -285,7 +290,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -312,7 +318,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -339,7 +346,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -366,7 +374,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -449,7 +458,8 @@ class UniqueTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
-                    'name'   => 'foo',
+                    'name'    => 'foo',
+                    'content' => '',
                 ]),
         );
 
@@ -498,7 +508,14 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, UniqueRule::PLACEHOLDER, UniqueRule::PLACEHOLDER, UniqueRule::PLACEHOLDER, 'content', 'hello'),
+                'name'     => UniqueRule::rule(
+                    Guestbook::class,
+                    UniqueRule::PLACEHOLDER,
+                    UniqueRule::PLACEHOLDER,
+                    UniqueRule::PLACEHOLDER,
+                    'content',
+                    'hello',
+                ),
             ]
         );
 

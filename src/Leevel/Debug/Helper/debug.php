@@ -28,6 +28,8 @@ use RuntimeException;
  *
  * @param array|string $tag
  * @param array        ...$args
+ *
+ * @throws \RuntimeException
  * @codeCoverageIgnore
  */
 function debug($tag, ...$args): void

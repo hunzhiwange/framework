@@ -28,6 +28,8 @@ use InvalidArgumentException;
  * @param mixed $value
  * @param array $parameter
  *
+ * @throws \InvalidArgumentException
+ *
  * @return bool
  */
 function validate_strlen($value, array $parameter): bool
@@ -39,7 +41,9 @@ function validate_strlen($value, array $parameter): bool
     $value = (string) ($value);
 
     if (!array_key_exists(0, $parameter)) {
-        throw new InvalidArgumentException('Missing the first element of parameter.');
+        $e = 'Missing the first element of parameter.';
+
+        throw new InvalidArgumentException($e);
     }
 
     return strlen($value) === (int) $parameter[0];

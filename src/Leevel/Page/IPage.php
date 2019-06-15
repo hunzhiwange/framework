@@ -364,6 +364,8 @@ interface IPage
      * @param null|\Leevel\Page\IRender|string $render
      * @param array                            $optoin
      *
+     * @throws \RuntimeException
+     *
      * @return string
      */
     public function render($render = null, array $option = []): string;

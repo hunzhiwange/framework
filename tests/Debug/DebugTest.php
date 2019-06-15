@@ -825,7 +825,6 @@ class DebugTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);

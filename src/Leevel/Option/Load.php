@@ -62,6 +62,8 @@ class Load
      * 构造函数.
      *
      * @param string $dir
+     *
+     * @throws \RuntimeException
      */
     public function __construct(string $dir)
     {
@@ -118,6 +120,8 @@ class Load
      * 载入环境变量数据.
      *
      * @param \Leevel\Kernel\IApp $app
+     *
+     * @throws \RuntimeException
      *
      * @return array
      */
@@ -198,6 +202,8 @@ class Load
     /**
      * 载入配置数据.
      *
+     * @throws \RuntimeException
+     *
      * @return array
      */
     protected function loadOptionData(): array
@@ -219,7 +225,9 @@ class Load
         }
 
         if (false === $findApp) {
-            throw new RuntimeException('Unable to load the app option file.');
+            $e = 'Unable to load the app option file.';
+
+            throw new RuntimeException($e);
         }
 
         return $data;
@@ -231,6 +239,8 @@ class Load
      * @param array               $options
      * @param \Leevel\Kernel\IApp $app
      * @param array               $optionFiles
+     *
+     * @throws \RuntimeException
      *
      * @return array
      */

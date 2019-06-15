@@ -34,9 +34,9 @@ interface IContainer
     /**
      * 注册到容器.
      *
-     * @param mixed $name
-     * @param mixed $service
-     * @param bool  $share
+     * @param mixed      $name
+     * @param null|mixed $service
+     * @param bool       $share
      *
      * @return \Leevel\Di\IContainer
      */
@@ -56,7 +56,7 @@ interface IContainer
      * 注册单一实例.
      *
      * @param array|scalar $name
-     * @param mixed        $service
+     * @param null|mixed   $service
      *
      * @return \Leevel\Di\IContainer
      */
@@ -88,6 +88,8 @@ interface IContainer
      * @param array|callable|string $callback
      * @param array                 $args
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     public function call($callback, array $args = []);
@@ -102,7 +104,7 @@ interface IContainer
     /**
      * 删除协程上下文服务和实例.
      *
-     * @param string $name
+     * @param null|string $name
      */
     public function removeCoroutine(?string $name = null): void;
 

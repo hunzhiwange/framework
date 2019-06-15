@@ -158,7 +158,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param string $key
      *
-     * @return array|string
+     * @return null|array|string
      */
     public function argument(?string $key = null)
     {
@@ -174,7 +174,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param string $key
      *
-     * @return array|bool|string
+     * @return null|array|bool|string
      */
     public function option(?string $key = null)
     {
@@ -204,8 +204,8 @@ abstract class Command extends SymfonyCommand
      * 提示用户输入.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string $question
-     * @param string $defaults
+     * @param string      $question
+     * @param null|string $defaults
      *
      * @return string
      * @codeCoverageIgnore
@@ -285,9 +285,9 @@ abstract class Command extends SymfonyCommand
      * 提示用户输入根据返回结果自动完成一些功能.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string $question
-     * @param array  $choices
-     * @param string $defaults
+     * @param string      $question
+     * @param array       $choices
+     * @param null|string $defaults
      *
      * @return string
      * @codeCoverageIgnore
@@ -322,11 +322,11 @@ abstract class Command extends SymfonyCommand
      * 给用户一个问题组选择.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string $question
-     * @param array  $choices
-     * @param string $defaults
-     * @param mixed  $attempts
-     * @param bool   $multiple
+     * @param string      $question
+     * @param array       $choices
+     * @param null|string $defaults
+     * @param null|mixed  $attempts
+     * @param null|bool   $multiple
      *
      * @return string
      * @codeCoverageIgnore
@@ -369,7 +369,7 @@ abstract class Command extends SymfonyCommand
      * 输出一条独立的信息.
      *
      * @param string          $message
-     * @param string          $style
+     * @param null|string     $style
      * @param null|int|string $verbosity
      */
     public function line($message, $style = null, $verbosity = null): void
@@ -452,7 +452,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 获取输入信息级别.
      *
-     * @param int|string $level
+     * @param null|int|string $level
      *
      * @return int
      */

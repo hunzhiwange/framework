@@ -174,6 +174,8 @@ class Psr2Leevel implements IPsr2Leevel
      *
      * @param string $cookie
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function createCookie(string $cookie): array

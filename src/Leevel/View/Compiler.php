@@ -402,6 +402,8 @@ class Compiler implements ICompiler
      * foreach.
      *
      * @param array $theme
+     *
+     * @throws \InvalidArgumentException
      */
     public function foreachCodeCompiler(array &$theme): void
     {
@@ -419,7 +421,9 @@ class Compiler implements ICompiler
                     } elseif (3 === $num) {
                         $result = "\${$matches[1]} => \${$matches[2]}";
                     } else {
-                        throw new InvalidArgumentException('The parameter of code.foreach tag can be at most three.');
+                        $e = 'The parameter of code.foreach tag can be at most three.';
+
+                        throw new InvalidArgumentException($e);
                     }
 
                     return "if (is_array(\${$matches[0]})): foreach(\${$matches[0]} as {$result})";
@@ -655,6 +659,8 @@ class Compiler implements ICompiler
      * for 循环.
      *
      * @param array $theme
+     *
+     * @throws \InvalidArgumentException
      */
     public function forJsCompiler(array &$theme): void
     {
@@ -663,7 +669,9 @@ class Compiler implements ICompiler
         $attr = array_values($attr);
 
         if (!in_array('in', $attr, true)) {
-            throw new InvalidArgumentException('For tag need “in“ separate.');
+            $e = 'For tag need “in“ separate.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $key = 'key';
@@ -1373,6 +1381,8 @@ class Compiler implements ICompiler
      * @param array $theme
      * @param bool  $jsNode
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     protected function checkNode(array $theme, bool $jsNode = false): bool
@@ -1381,25 +1391,27 @@ class Compiler implements ICompiler
 
         // 验证标签的属性值
         if (true !== $attribute['is_attribute']) {
-            throw new InvalidArgumentException('Tag attribute type validation failed.');
+            $e = 'Tag attribute type validation failed.';
+
+            throw new InvalidArgumentException($e);
         }
 
         // 验证必要属性
         $tag = true === $jsNode ? $this->jsTag : $this->nodeTag;
 
         if (!isset($tag[$theme['name']])) {
-            throw new InvalidArgumentException(
-                sprintf('The tag %s is undefined.', $theme['name'])
-            );
+            $e = sprintf('The tag %s is undefined.', $theme['name']);
+
+            throw new InvalidArgumentException($e);
         }
 
         foreach ($tag[$theme['name']]['required'] as $name) {
             $name = strtolower($name);
 
             if (!isset($attribute['attribute_list'][$name])) {
-                throw new InvalidArgumentException(sprintf(
-                    'The node %s lacks the required property: %s.', $theme['name'], $name)
-                );
+                $e = sprintf('The node %s lacks the required property: %s.', $theme['name'], $name);
+
+                throw new InvalidArgumentException($e);
             }
         }
 

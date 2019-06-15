@@ -133,6 +133,8 @@ abstract class View
      * @param string $file
      * @param string $ext
      *
+     * @throws \RuntimeException
+     *
      * @return string
      */
     protected function parseDisplayFile(?string $file = null, ?string $ext = ''): string
@@ -155,6 +157,8 @@ abstract class View
      *
      * @param string $tpl
      * @param string $ext
+     *
+     * @throws \RuntimeException
      *
      * @return string
      */

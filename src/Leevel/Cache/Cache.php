@@ -61,7 +61,7 @@ abstract class Cache implements ICache
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed        $value
+     * @param null|mixed   $value
      * @param array        $option
      */
     public function put($keys, $value = null, array $option = []): void

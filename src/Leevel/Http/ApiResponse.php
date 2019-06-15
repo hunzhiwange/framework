@@ -49,8 +49,8 @@ class ApiResponse extends JsonResponse
      * 请求成功
      * 一般用于GET与POST请求: 200.
      *
-     * @param mixed  $content
-     * @param string $text
+     * @param mixed       $content
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -134,9 +134,9 @@ class ApiResponse extends JsonResponse
      * 无法处理的实体
      * 请求格式正确，但是由于含有语义错误，无法响应: 422.
      *
-     * @param array  $errors
-     * @param string $message
-     * @param string $text
+     * @param null|array  $errors
+     * @param null|string $message
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -159,10 +159,9 @@ class ApiResponse extends JsonResponse
      * 错误请求
      * 服务器不理解请求的语法: 400.
      *
-     * @param string $message
-     * @param int    $statusCode
-     * @param string $text
-     * @param mixed  $statusCode
+     * @param null|string $message
+     * @param int         $statusCode
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -181,8 +180,8 @@ class ApiResponse extends JsonResponse
      * 错误请求
      * 服务器不理解请求的语法: 400.
      *
-     * @param string $message
-     * @param string $text
+     * @param null|string $message
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -195,8 +194,8 @@ class ApiResponse extends JsonResponse
      * 未授权
      * 对于需要登录的网页，服务器可能返回此响应: 401.
      *
-     * @param string $message
-     * @param string $text
+     * @param null|string $message
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -209,8 +208,8 @@ class ApiResponse extends JsonResponse
      * 禁止
      * 服务器拒绝请求: 403.
      *
-     * @param string $message
-     * @param string $text
+     * @param null|string $message
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -223,8 +222,8 @@ class ApiResponse extends JsonResponse
      * 未找到
      * 用户发出的请求针对的是不存在的记录: 404.
      *
-     * @param string $message
-     * @param string $text
+     * @param null|string $message
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -237,8 +236,8 @@ class ApiResponse extends JsonResponse
      * 方法禁用
      * 禁用请求中指定的方法: 405.
      *
-     * @param string $message
-     * @param string $text
+     * @param null|string $message
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -251,8 +250,8 @@ class ApiResponse extends JsonResponse
      * 太多请求
      * 用户在给定的时间内发送了太多的请求: 429.
      *
-     * @param string $message
-     * @param string $text
+     * @param null|string $message
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -265,8 +264,8 @@ class ApiResponse extends JsonResponse
      * 服务器内部错误
      * 服务器遇到错误，无法完成请求: 500.
      *
-     * @param string $message
-     * @param string $text
+     * @param null|string $message
+     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -278,7 +277,7 @@ class ApiResponse extends JsonResponse
     /**
      * 格式化错误消息.
      *
-     * @param string      $message
+     * @param null|string $message
      * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
@@ -293,7 +292,7 @@ class ApiResponse extends JsonResponse
     /**
      * 分析错误消息.
      *
-     * @param string $message
+     * @param null|string $message
      *
      * @return string
      */

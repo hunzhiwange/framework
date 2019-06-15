@@ -109,7 +109,7 @@ class Pipeline implements IPipeline
     /**
      * 执行管道工序响应结果.
      *
-     * @param \Closure $end
+     * @param null|\Closure $end
      *
      * @since 2018.01.03
      *
@@ -180,6 +180,8 @@ class Pipeline implements IPipeline
      * 工序回调.
      *
      * @param mixed $stages
+     *
+     * @throws \InvalidArgumentException
      *
      * @return null|callable
      */

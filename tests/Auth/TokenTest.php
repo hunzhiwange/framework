@@ -119,7 +119,6 @@ class TokenTest extends TestCase
     {
         $request = $this->createMock(IRequest::class);
 
-        $request->method('query')->willReturn(null);
         $this->assertNull($request->query('input_token'));
 
         $request->method('input')->willReturn('token');

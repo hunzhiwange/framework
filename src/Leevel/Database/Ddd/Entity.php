@@ -43,11 +43,12 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * 模型实体 Object Relational Mapping.
- * 为最大化避免 getter setter 属性与系统冲突，getFoo 修改为 getterFoo，setBar 修改为 setterBar
- * 系统自身的属性均加前缀 leevel，设置以 with 开头.
- * ORM 主要基于妖怪大神的 QeePHP V2 设计灵感，查询器基于这个版本构建.
- * 例外参照了 Laravel 关联模型实现设计.
- * Doctrine 和 Java Hibernate 中关于 getter setter 的设计
+ *
+ * - 为最大化避免 getter setter 属性与系统冲突，getFoo 修改为 getterFoo，setBar 修改为 setterBar
+ * - 系统自身的属性均加前缀 leevel，设置以 with 开头.
+ * - ORM 主要基于妖怪大神的 QeePHP V2 设计灵感，查询器基于这个版本构建.
+ * - 例外参照了 Laravel 关联模型实现设计.
+ * - Doctrine 和 Java Hibernate 中关于 getter setter 的设计
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -193,6 +194,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param array $data
      * @param bool  $fromStorage
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(array $data = [], bool $fromStorage = false)
     {
@@ -272,6 +275,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $method
      * @param array  $args
+     *
+     * @throws \InvalidArgumentException
      *
      * @return mixed
      */
@@ -469,6 +474,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 销毁模型实体.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function destroy(): IEntity
@@ -597,6 +604,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 从数据库重新读取当前对象的属性.
+     *
+     * @throws \InvalidArgumentException
      */
     public function refresh(): void
     {
@@ -937,6 +946,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 验证事件是否受支持
      *
      * @param string $event
+     *
+     * @throws \InvalidArgumentException
      */
     public static function isSupportEvent(string $event): void
     {
@@ -1100,6 +1111,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 返回供查询的主键字段
      * 复合主键或者没有主键直接抛出异常.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public static function singlePrimaryKey(): string
@@ -1156,9 +1169,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 获取 enum.
      * 不存在返回 false.
      *
-     * @param string $prop
-     * @param mixed  $enum
-     * @param string $separate
+     * @param string     $prop
+     * @param null|mixed $enum
+     * @param string     $separate
+     *
+     * @throws \InvalidArgumentException
      *
      * @return mixed
      */
@@ -1224,7 +1239,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 对象转 JSON.
      *
-     * @param int $option
+     * @param null|int $option
      *
      * @return string
      */
@@ -1261,6 +1276,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 获取查询键值.
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */
@@ -1330,7 +1347,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 返回模型实体类的 meta 对象.
      *
-     * @param mixed $connect
+     * @param null|mixed $connect
      *
      * @return \Leevel\Database\Ddd\IMeta
      */
@@ -1387,9 +1404,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 保存统一入口.
      *
-     * @param string     $method
-     * @param array      $data
-     * @param null|array $fill
+     * @param string    $method
+     * @param array     $data
+     * @param null|rray $fill
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -1439,6 +1456,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 添加数据.
      *
      * @param null|array $fill
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -1581,6 +1600,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param mixed  $value
      * @param bool   $force
      * @param bool   $ignoreReadonly
+     *
+     * @throws \InvalidArgumentException
      */
     protected function withPropValue(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): void
     {
@@ -1640,6 +1661,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $prop
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     protected function hasProp(string $prop): bool
@@ -1687,8 +1710,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 自动填充.
      *
-     * @param string $type
-     * @param array  $fill
+     * @param string     $type
+     * @param null|array $fill
      */
     protected function parseAutoFill(string $type, ?array $fill = null): void
     {
@@ -1761,6 +1784,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 验证 getter setter 属性.
      *
      * @param string $prop
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validate(string $prop): void
     {
@@ -1778,6 +1803,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param array $defined
      * @param array $field
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateRelationDefined(array $defined, array $field): void
     {
@@ -1795,6 +1822,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $field
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateRelationField(IEntity $entity, string $field): void
     {

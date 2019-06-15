@@ -72,8 +72,8 @@ interface IUnitOfWork
     /**
      * 创建一个工作单元.
      *
-     * @param \Leevel\Database\Ddd\IEntity $rootEntity
-     * @param mixed                        $connect
+     * @param null|\Leevel\Database\Ddd\IEntity $rootEntity
+     * @param null|mixed                        $connect
      *
      * @return static
      */
@@ -314,6 +314,8 @@ interface IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
+     * @throws \InvalidArgumentException
+     *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function refresh(IEntity $entity): self;
@@ -393,7 +395,7 @@ interface IUnitOfWork
      * 取得实体状态.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $defaults
+     * @param null|int                     $defaults
      *
      * @return int
      */

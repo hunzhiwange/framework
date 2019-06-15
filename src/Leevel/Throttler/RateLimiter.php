@@ -304,6 +304,8 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 获取 key.
      *
+     * @throws \RuntimeException
+     *
      * @return string
      */
     protected function getKey(): string

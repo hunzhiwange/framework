@@ -112,7 +112,7 @@ interface IDebug
     /**
      * 设置用于存储收集数据的存储后端.
      *
-     * @param \DebugBar\Storage\StorageInterface $storage
+     * @param null|\DebugBar\Storage\StorageInterface $storage
      *
      * @return \DebugBar\DebugBar
      */
@@ -180,9 +180,9 @@ interface IDebug
     /**
      * 通过 HTTP 头数组发送数据.
      *
-     * @param bool   $useOpenHandler
-     * @param string $headerName
-     * @param int    $maxHeaderLength
+     * @param null|bool $useOpenHandler
+     * @param string    $headerName
+     * @param int       $maxHeaderLength
      *
      * @return \DebugBar\DebugBar
      */
@@ -246,8 +246,8 @@ interface IDebug
     /**
      * 返回此实例的 \DebugBar\JavascriptRenderer.
      *
-     * @param string $baseUrl
-     * @param string $basePath
+     * @param null|string $baseUrl
+     * @param null|string $basePath
      *
      * @return \DebugBar\JavascriptRenderer
      */
@@ -362,8 +362,8 @@ interface IDebug
     /**
      * 开始调试时间.
      *
-     * @param string $name
-     * @param string $label
+     * @param string      $name
+     * @param null|string $label
      */
     public static function time(string $name, ?string $label = null): void;
 

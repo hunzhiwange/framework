@@ -21,24 +21,42 @@ declare(strict_types=1);
 namespace Leevel\Session\Helper;
 
 use Leevel\Di\Container;
+use Leevel\Session\ISession;
 
 /**
- * 设置或者获取 flash 值.
+ * Session 闪存服务
  *
- * @param array|string $key
- * @param mixed        $defaults
+ * @return \Leevel\Session\ISession
+ */
+function flash(): ISession
+{
+    return Container::singletons()->make('sessions');
+}
+
+/**
+ * 返回闪存数据.
+ *
+ * @param string $key
+ * @param mixed  $defaults
  *
  * @return mixed
  */
-function flash($key, $defaults = null)
+function flash_get(string $key, $defaults = null)
 {
-    $service = Container::singletons()->make('sessions');
+    return flash()->getFlash($key, $defaults);
+}
 
-    if (is_array($key)) {
-        return $service->flashs($key);
-    }
-
-    return $service->getFlash($key, $defaults);
+/**
+ * 闪存一个数据，当前请求和下一个请求可用.
+ *
+ * @param string $key
+ * @param mixed  $value
+ *
+ * @return mixed
+ */
+function flash_set(string $key, $value): void
+{
+    flash()->flash($key, $value);
 }
 
 class flash

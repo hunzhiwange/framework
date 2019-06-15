@@ -397,7 +397,10 @@ class Router implements IRouter
      */
     protected function resolveMatchedData(array $data): void
     {
-        $data = $this->mergeMatchedData($data, $this->preRequestMatched[spl_object_id($this->request)] ?? []);
+        $data = $this->mergeMatchedData(
+            $data,
+            $this->preRequestMatched[spl_object_id($this->request)] ?? [],
+        );
 
         if (!$data[IRouter::APP]) {
             $data[IRouter::APP] = self::DEFAULT_APP;
@@ -506,6 +509,8 @@ class Router implements IRouter
 
     /**
      * 路由未找到异常.
+     *
+     * @throws \Leevel\Router\RouterNotFoundException
      */
     protected function routerNotFound(): void
     {

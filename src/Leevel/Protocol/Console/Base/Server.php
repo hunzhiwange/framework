@@ -106,19 +106,17 @@ abstract class Server extends Command
      */
     protected function checkPort(array $option): void
     {
-        $bind = $this->portBind(
-            (int) ($option['port'])
-        );
+        $bind = $this->portBind((int) ($option['port']));
 
         if ($bind) {
             foreach ($bind as $k => $val) {
                 if ('*' === $val['ip'] || $val['ip'] === $option['host']) {
-                    throw new InvalidArgumentException(
-                        sprintf(
-                            'The port has been used %s:%s,the port process ID is %s',
-                            $val['ip'], $val['port'], $k
-                        )
+                    $e = sprintf(
+                        'The port has been used %s:%s,the port process ID is %s',
+                        $val['ip'], $val['port'], $k
                     );
+
+                    throw new InvalidArgumentException($e);
                 }
             }
         }
@@ -158,6 +156,8 @@ abstract class Server extends Command
      * 验证服务是否被占用.
      *
      * @param array $option
+     *
+     * @throws \InvalidArgumentException
      */
     protected function checkService(array $option): void
     {
@@ -173,22 +173,20 @@ abstract class Server extends Command
         exec($cmd, $out);
 
         if (!empty($out)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Swoole pid file %s is already exists,pid is %d',
-                    $file, $pid[0]
-                )
+            $e = sprintf(
+                'Swoole pid file %s is already exists,pid is %d',
+                $file, $pid[0]
             );
+
+            throw new InvalidArgumentException($e);
         }
 
-        $this->warn(
-            sprintf(
-                'Warning:swoole pid file is already exists.',
-                $file
-            ).
+        $message =
+            sprintf('Warning:swoole pid file is already exists.', $file).
             PHP_EOL.'It is possible that the swoole service was last unusual exited.'.
-            PHP_EOL.'The non daemon mode ctrl+c termination is the most possible.'.PHP_EOL
-        );
+            PHP_EOL.'The non daemon mode ctrl+c termination is the most possible.'.PHP_EOL;
+
+        $this->warn($message);
 
         unlink($file);
     }

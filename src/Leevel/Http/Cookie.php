@@ -84,6 +84,8 @@ class Cookie
      * @param string            $name
      * @param null|array|string $value
      * @param array             $option
+     *
+     * @throws \Exception
      */
     public function set(string $name, $value = null, array $option = []): void
     {
@@ -92,13 +94,17 @@ class Cookie
         if (is_array($value)) {
             $value = json_encode($value);
         } elseif (!is_string($value) && null !== $value) {
-            throw new Exception('Cookie value must be string,array or null.');
+            $e = 'Cookie value must be string,array or null.';
+
+            throw new Exception($e);
         }
 
         $option['expire'] = (int) ($option['expire']);
 
         if ($option['expire'] < 0) {
-            throw new Exception('Cookie expire date must greater than or equal 0.');
+            $e = 'Cookie expire date must greater than or equal 0.';
+
+            throw new Exception($e);
         }
 
         if ($option['expire'] > 0) {
@@ -121,7 +127,7 @@ class Cookie
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed        $value
+     * @param null|mixed   $value
      * @param array        $option
      */
     public function put($keys, $value = null, array $option = []): void
@@ -178,10 +184,10 @@ class Cookie
     /**
      * 数组插入键值对数据.
      *
-     * @param string $key
-     * @param mixed  $keys
-     * @param mixed  $value
-     * @param array  $option
+     * @param string     $key
+     * @param mixed      $keys
+     * @param null|mixed $value
+     * @param array      $option
      */
     public function arr(string $key, $keys, $value = null, array $option = []): void
     {
@@ -222,9 +228,9 @@ class Cookie
     /**
      * 获取 cookie.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
+     * @param string     $name
+     * @param null|mixed $defaults
+     * @param array      $option
      *
      * @return mixed
      */
@@ -282,6 +288,8 @@ class Cookie
      * 格式化 COOKIE 为字符串.
      *
      * @param array $cookie
+     *
+     * @throws \Exception
      *
      * @return string
      *

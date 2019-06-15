@@ -28,6 +28,8 @@ use InvalidArgumentException;
  * @param mixed $value
  * @param mixed $types
  *
+ * @throws \InvalidArgumentException
+ *
  * @return bool
  */
 function type_these($value, $types): bool

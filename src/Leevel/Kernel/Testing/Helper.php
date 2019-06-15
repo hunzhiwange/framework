@@ -153,8 +153,8 @@ trait Helper
     /**
      * 调试 JSON.
      *
-     * @param array $data
-     * @param int   $id
+     * @param array    $data
+     * @param null|int $id
      *
      * @return string
      */

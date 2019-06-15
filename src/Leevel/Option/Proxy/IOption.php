@@ -45,8 +45,8 @@ interface IOption
     /**
      * 获取配置.
      *
-     * @param string $name
-     * @param mixed  $defaults
+     * @param string     $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -62,8 +62,8 @@ interface IOption
     /**
      * 设置配置.
      *
-     * @param mixed $name
-     * @param mixed $value
+     * @param mixed      $name
+     * @param null|mixed $value
      */
     public static function set($name, $value = null): void;
 
@@ -77,7 +77,7 @@ interface IOption
     /**
      * 初始化配置参数.
      *
-     * @param mixed $namespaces
+     * @param null|mixed $namespaces
      */
     public static function reset($namespaces = null): void;
 }

@@ -82,8 +82,8 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 响应命令行请求
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param null|\Symfony\Component\Console\Input\InputInterface   $input
+     * @param null|\Symfony\Component\Console\Output\OutputInterface $output
      *
      * @return int
      */
@@ -103,8 +103,8 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 执行结束
      *
-     * @param int                                             $status
-     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param int                                                  $status
+     * @param null|\Symfony\Component\Console\Input\InputInterface $input
      * @codeCoverageIgnore
      */
     public function terminate(int $status, InputInterface $input = null): void

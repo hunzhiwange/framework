@@ -36,9 +36,9 @@ function cache(): ICache
 /**
  * 获取 cache 值
  *
- * @param string $key
- * @param mixed  $defaults
- * @param array  $option
+ * @param string     $key
+ * @param null|mixed $defaults
+ * @param array      $option
  *
  * @return mixed
  */
@@ -51,7 +51,7 @@ function cache_get(string $key, $defaults = null, array $option = [])
  * 设置 cache 值
  *
  * @param array|string $key
- * @param mixed        $value
+ * @param null|mixed   $value
  * @param array        $option
  */
 function cache_set($key, $value = null, array $option = []): void

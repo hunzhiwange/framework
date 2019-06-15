@@ -121,21 +121,21 @@ interface ISession
      * 取回 session.
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    public function get(string $name, $value = null);
+    public function get(string $name, $defaults = null);
 
     /**
      * 返回数组部分数据.
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    public function getPart(string $name, $value = null);
+    public function getPart(string $name, $defaults = null);
 
     /**
      * 删除 session.

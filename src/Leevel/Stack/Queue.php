@@ -56,6 +56,8 @@ class Queue extends LinkedList implements IStackQueue
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
     public function validate($value): void
     {

@@ -473,7 +473,7 @@ class ConnectTest extends TestCase
         $connect->query('SELECT * FROM db_not_found where id = 1;');
     }
 
-    public function testBeginTransactionWithCreateSavepoint(): void
+    public function t2estBeginTransactionWithCreateSavepoint(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -532,7 +532,7 @@ class ConnectTest extends TestCase
         $connect->commit();
     }
 
-    public function testCommitWithReleaseSavepoint(): void
+    public function t2estCommitWithReleaseSavepoint(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -589,7 +589,7 @@ class ConnectTest extends TestCase
 
         $connect
             ->table('guest_book')
-            ->insert(['name' => 'jerry']);
+            ->insert(['name' => 'jerry', 'content' => '']);
 
         $this->assertSame(1, $connect->numRows());
 

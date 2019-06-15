@@ -309,6 +309,8 @@ class Select
     /**
      * 获取软删除字段.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public function deleteAtColumn(): string
@@ -320,12 +322,12 @@ class Select
         }
 
         if (!$this->entity->hasField($deleteAt)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Entity `%s` soft delete field `%s` was not found.',
-                    get_class($this->entity), $deleteAt
-                )
+            $e = sprintf(
+                'Entity `%s` soft delete field `%s` was not found.',
+                get_class($this->entity), $deleteAt
             );
+
+            throw new InvalidArgumentException($e);
         }
 
         return $deleteAt;

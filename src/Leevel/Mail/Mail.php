@@ -347,8 +347,8 @@ abstract class Mail implements IMail
     /**
      * 发送邮件.
      *
-     * @param \Closure $callbacks
-     * @param bool     $htmlPriority
+     * @param null|\Closure $callbacks
+     * @param bool          $htmlPriority
      *
      * @return int
      */

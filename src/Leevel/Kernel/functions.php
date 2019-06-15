@@ -33,16 +33,23 @@ if (!function_exists('hl')) {
     function hl(string $method, ...$args)
     {
         $map = [
-            'benchmark' => 'Debug',
-            'drr'       => 'Debug',
-            'decrypt'   => 'Encryption',
-            'encrypt'   => 'Encryption',
-            'gettext'   => 'I18n',
-            'app'       => 'Kernel',
-            'url'       => 'Router',
-            'flash'     => 'Session',
-            'cache_set' => 'Cache',
-            'cache_get' => 'Cache',
+            'benchmark'   => 'Debug',
+            'drr'         => 'Debug',
+            'decrypt'     => 'Encryption',
+            'encrypt'     => 'Encryption',
+            'gettext'     => 'I18n',
+            'app'         => 'Kernel',
+            'url'         => 'Router',
+            'cache_set'   => 'Cache',
+            'cache_get'   => 'Cache',
+            'log_record'  => 'Log',
+            'option_set'  => 'Option',
+            'option_get'  => 'Option',
+            'session_set' => 'Session',
+            'session_get' => 'Session',
+            'flash'       => 'Session',
+            'flash_set'   => 'Session',
+            'flash_get'   => 'Session',
         ];
 
         $component = $map[$method] ?? ucfirst($method);
@@ -189,8 +196,8 @@ class Leevel
     /**
      * 取得应用的环境变量.支持 boolean, empty 和 null.
      *
-     * @param mixed $name
-     * @param mixed $defaults
+     * @param mixed      $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */

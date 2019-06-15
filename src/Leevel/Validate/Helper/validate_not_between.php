@@ -28,13 +28,17 @@ use InvalidArgumentException;
  * @param mixed $value
  * @param array $parameter
  *
+ * @throws \InvalidArgumentException
+ *
  * @return bool
  */
 function validate_not_between($value, array $parameter): bool
 {
     if (!array_key_exists(0, $parameter) ||
         !array_key_exists(1, $parameter)) {
-        throw new InvalidArgumentException('Missing the first or second element of parameter.');
+        $e = 'Missing the first or second element of parameter.';
+
+        throw new InvalidArgumentException($e);
     }
 
     return !(($value > $parameter[0] || $value === $parameter[0]) &&

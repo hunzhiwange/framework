@@ -113,6 +113,8 @@ abstract class Session
 
     /**
      * 程序执行保存 session.
+     *
+     * @throws \RuntimeException
      */
     public function save(): void
     {
@@ -159,9 +161,7 @@ abstract class Session
     public function put($keys, $value = null): void
     {
         if (!is_array($keys)) {
-            $keys = [
-                $keys => $value,
-            ];
+            $keys = [$keys => $value];
         }
 
         foreach ($keys as $item => $value) {
@@ -235,9 +235,7 @@ abstract class Session
         $data = $this->get($key, []);
 
         if (!is_array($keys)) {
-            $keys = [
-                $keys,
-            ];
+            $keys = [$keys];
         }
 
         foreach ($keys as $item) {
@@ -253,28 +251,28 @@ abstract class Session
      * 取回 session.
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    public function get(string $name, $value = null)
+    public function get(string $name, $defaults = null)
     {
         $name = $this->getNormalizeName($name);
 
-        return $this->data[$name] ?? $value;
+        return $this->data[$name] ?? $defaults;
     }
 
     /**
      * 返回数组部分数据.
      *
      * @param string $name
-     * @param mixed  $value
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    public function getPart(string $name, $value = null)
+    public function getPart(string $name, $defaults = null)
     {
-        return $this->getPartData($name, $value);
+        return $this->getPartData($name, $defaults);
     }
 
     /**
@@ -323,13 +321,9 @@ abstract class Session
     {
         $this->set($this->flashDataKey($key), $value);
 
-        $this->mergeNewFlash([
-            $key,
-        ]);
+        $this->mergeNewFlash([$key]);
 
-        $this->popOldFlash([
-            $key,
-        ]);
+        $this->popOldFlash([$key]);
     }
 
     /**
@@ -354,9 +348,7 @@ abstract class Session
     {
         $this->set($this->flashDataKey($key), $value);
 
-        $this->mergeOldFlash([
-            $key,
-        ]);
+        $this->mergeOldFlash([$key]);
     }
 
     /**

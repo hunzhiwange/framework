@@ -71,6 +71,8 @@ class Doc extends Command
 
     /**
      * 响应命令.
+     *
+     * @throws \InvalidArgumentException
      */
     public function handle(): void
     {
@@ -91,7 +93,8 @@ class Doc extends Command
             }
         }
 
-        $this->info(sprintf('A total of <comment>%d</comment> files generate succeed.', $succeedCount));
+        $message = sprintf('A total of <comment>%d</comment> files generate succeed.', $succeedCount);
+        $this->info($message);
     }
 
     /**

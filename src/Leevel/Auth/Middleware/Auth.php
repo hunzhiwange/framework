@@ -58,6 +58,8 @@ class Auth
      *
      * @param \Closure              $next
      * @param \Leevel\Http\IRequest $request
+     *
+     * @throws \Leevel\Auth\AuthException
      */
     public function handle(Closure $next, IRequest $request): void
     {

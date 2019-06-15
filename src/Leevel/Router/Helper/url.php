@@ -25,18 +25,19 @@ use Leevel\Di\Container;
 /**
  * 生成路由地址
  *
- * @param string      $url
- * @param array       $params
- * @param string      $subdomain
- * @param bool|string $suffix
+ * @param string           $url
+ * @param array            $params
+ * @param string           $subdomain
+ * @param null|bool|string $suffix
  *
  * @return string
  */
 function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
 {
-    return Container::singletons()
-        ->make('url')
-        ->make($url, $params, $subdomain, $suffix);
+    /** @var \Leevel\Router\Url $service */
+    $service = Container::singletons()->make('url');
+
+    return $service->make($url, $params, $subdomain, $suffix);
 }
 
 class url

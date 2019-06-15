@@ -35,6 +35,8 @@ interface ISubject
      * 添加一个观察者角色.
      *
      * @param \Closure|\SplObserver|string $observer
+     *
+     * @throws \InvalidArgumentException
      */
     public function register($observer): void;
 }

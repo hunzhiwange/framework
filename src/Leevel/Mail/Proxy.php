@@ -206,8 +206,8 @@ trait Proxy
     /**
      * 发送邮件.
      *
-     * @param \Closure $callbacks
-     * @param bool     $htmlPriority
+     * @param null|\Closure $callbacks
+     * @param bool          $htmlPriority
      *
      * @return int
      */
@@ -266,7 +266,7 @@ trait Proxy
      * 发送消息.
      *
      * @param \Swift_Mime_SimpleMessage $message
-     * @param array                     $failedRecipients
+     * @param null|array                $failedRecipients
      *
      * @return int
      */

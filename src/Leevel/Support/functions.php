@@ -48,6 +48,8 @@ if (!function_exists('f_exists')) {
      * @param string $fn
      * @param bool   $throwException
      *
+     * @throws \Leevel\Support\FunctionNotFoundException
+     *
      * @return bool
      */
     function f_exists(string $fn, bool $throwException = true): bool

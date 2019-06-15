@@ -52,12 +52,12 @@ trait Proxy
     /**
      * 查询数据记录.
      *
-     * @param string   $sql           sql 语句
-     * @param array    $bindParams    sql 参数绑定
-     * @param bool|int $master
-     * @param int      $fetchType
-     * @param mixed    $fetchArgument
-     * @param array    $ctorArgs
+     * @param string     $sql           sql 语句
+     * @param array      $bindParams    sql 参数绑定
+     * @param bool|int   $master
+     * @param int        $fetchType
+     * @param null|mixed $fetchArgument
+     * @param array      $ctorArgs
      *
      * @return mixed
      */
@@ -128,7 +128,7 @@ trait Proxy
     /**
      * 获取最后插入 ID 或者列.
      *
-     * @param string $name 自增序列名
+     * @param null|string $name 自增序列名
      *
      * @return string
      */
@@ -197,9 +197,9 @@ trait Proxy
     /**
      * 表或者字段格式化（支持别名）.
      *
-     * @param string $name
-     * @param string $alias
-     * @param string $as
+     * @param string      $name
+     * @param null|string $alias
+     * @param null|string $as
      *
      * @return string
      */
@@ -378,9 +378,9 @@ trait Proxy
     /**
      * 设置查询参数.
      *
-     * @param int   $fetchStyle
-     * @param mixed $fetchArgument
-     * @param array $ctorArgs
+     * @param int        $fetchStyle
+     * @param null|mixed $fetchArgument
+     * @param array      $ctorArgs
      *
      * @return \Leevel\Database\Select
      */
@@ -427,9 +427,9 @@ trait Proxy
     /**
      * 原生 sql 查询数据 select.
      *
-     * @param null|callable|select|string $data
-     * @param array                       $bind
-     * @param bool                        $flag 指示是否不做任何操作只返回 SQL
+     * @param null|callable|\Leevel\Database\Select|string $data
+     * @param array                                        $bind
+     * @param bool                                         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -580,8 +580,8 @@ trait Proxy
     /**
      * 返回最后几条记录.
      *
-     * @param int  $num
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
+     * @param null|int $num
+     * @param bool     $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -619,9 +619,9 @@ trait Proxy
     /**
      * 返回一列数据.
      *
-     * @param mixed  $fieldValue
-     * @param string $fieldKey
-     * @param bool   $flag       指示是否不做任何操作只返回 SQL
+     * @param mixed       $fieldValue
+     * @param null|string $fieldKey
+     * @param bool        $flag       指示是否不做任何操作只返回 SQL
      *
      * @return array
      */
@@ -894,8 +894,8 @@ trait Proxy
     /**
      * 添加字段.
      *
-     * @param mixed  $cols
-     * @param string $table
+     * @param mixed       $cols
+     * @param null|string $table
      *
      * @return \Leevel\Database\Select
      */
@@ -907,8 +907,8 @@ trait Proxy
     /**
      * 设置字段.
      *
-     * @param mixed  $cols
-     * @param string $table
+     * @param mixed       $cols
+     * @param null|string $table
      *
      * @return \Leevel\Database\Select
      */
@@ -1136,9 +1136,9 @@ trait Proxy
     /**
      * 参数绑定支持
      *
-     * @param mixed $names
-     * @param mixed $value
-     * @param int   $type
+     * @param mixed      $names
+     * @param null|mixed $value
+     * @param int        $type
      *
      * @return \Leevel\Database\Condition
      */

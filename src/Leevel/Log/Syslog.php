@@ -63,8 +63,8 @@ class Syslog extends Log implements ILog
     /**
      * 构造函数.
      *
-     * @param array                   $option
-     * @param \Leevel\Event\IDispatch $dispatch
+     * @param array                        $option
+     * @param null|\Leevel\Event\IDispatch $dispatch
      */
     public function __construct(array $option = [], IDispatch $dispatch = null)
     {

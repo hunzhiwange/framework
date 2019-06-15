@@ -29,6 +29,8 @@ use RuntimeException;
  * @param int    $mode
  * @param bool   $writableValid
  *
+ * @throws \RuntimeException
+ *
  * @return true
  */
 function create_directory(string $dir, int $mode = 0777, bool $writableValid = true): bool

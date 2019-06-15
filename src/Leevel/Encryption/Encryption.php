@@ -65,10 +65,10 @@ class Encryption implements IEncryption
     /**
      * 构造函数.
      *
-     * @param string $key
-     * @param string $cipher
-     * @param string $rsaPrivate
-     * @param string $rsaPublic
+     * @param string      $key
+     * @param string      $cipher
+     * @param null|string $rsaPrivate
+     * @param null|string $rsaPublic
      */
     public function __construct(string $key, string $cipher = 'AES-256-CBC', ?string $rsaPrivate = null, ?string $rsaPublic = null)
     {
@@ -162,6 +162,8 @@ class Encryption implements IEncryption
      * @param string $value
      * @param string $iv
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     protected function encryptData(string $value, string $iv): string
@@ -179,6 +181,8 @@ class Encryption implements IEncryption
      * 解密数据.
      *
      * @param string $value
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array|bool
      */
@@ -266,6 +270,8 @@ class Encryption implements IEncryption
      *
      * @param string $value
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     protected function normalizeSign(string $value): string
@@ -292,6 +298,8 @@ class Encryption implements IEncryption
      * 校验加密算法.
      *
      * @param string $cipher
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateCipher(string $cipher): void
     {
@@ -335,6 +343,8 @@ class Encryption implements IEncryption
      *
      * @param string $value
      * @param string $sign
+     *
+     * @throws \InvalidArgumentException
      *
      * @return string
      */

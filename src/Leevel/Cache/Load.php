@@ -146,6 +146,8 @@ class Load implements ILoad
      *
      * @param string $name
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function normalize(string $name): array

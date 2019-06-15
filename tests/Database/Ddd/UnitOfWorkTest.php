@@ -564,12 +564,14 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $post2 = new Post([
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $work->create($post);
@@ -643,12 +645,14 @@ class UnitOfWorkTest extends TestCase
                 'id'      => 1,
                 'title'   => 'old',
                 'summary' => 'old',
+                'user_id' => 0,
             ]);
 
             $post2 = new Post([
                 'id'      => 1,
                 'title'   => 'old',
                 'summary' => 'old',
+                'user_id' => 0,
             ]);
 
             $w->create($post);
@@ -779,6 +783,7 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $work->persist($post, 'create');
@@ -1263,6 +1268,7 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 1,
         ]);
 
         $work->persist($post, 'replace');
@@ -1317,8 +1323,11 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['title' => 'new']);
-        $guestBook = new Guestbook([]);
+        $post = new Post([
+            'title'   => 'new',
+            'user_id' => 0,
+        ]);
+        $guestBook = new Guestbook(['name' => '']);
 
         $work->persist($post);
         $work->persist($guestBook);
@@ -1340,8 +1349,11 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['title' => 'new']);
-        $guestBook = new Guestbook([]);
+        $post = new Post([
+            'title'   => 'new',
+            'user_id' => 0,
+        ]);
+        $guestBook = new Guestbook(['name' => '']);
 
         $work->replace($post);
         $work->replace($guestBook);
@@ -1380,6 +1392,7 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('guest_book')
                 ->insert([
+                    'name'      => '',
                     'content'   => 'hello world',
                 ]));
 
@@ -1454,7 +1467,11 @@ class UnitOfWorkTest extends TestCase
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['id' => 1, 'title' => 'new']);
+        $post = new Post([
+            'id'      => 1,
+            'title'   => 'new',
+            'user_id' => 0,
+        ]);
 
         $this->assertFalse($work->replaced($post));
 
@@ -1489,7 +1506,12 @@ class UnitOfWorkTest extends TestCase
                     'summary' => 'post summary',
                 ]));
 
-        $post = new Post(['id' => 1, 'title' => 'new', 'summary' => 'new']);
+        $post = new Post([
+            'id'      => 1,
+            'title'   => 'new',
+            'summary' => 'new',
+            'user_id' => 1,
+        ]);
 
         $work->replace($post);
 
