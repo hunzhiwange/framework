@@ -58,5 +58,5 @@ interface IPipeline
      *
      * @return mixed
      */
-    public function then(Closure $end = null);
+    public function then(?Closure $end = null);
 }

@@ -280,7 +280,7 @@ class Tree implements IJson, IArray
      *
      * @return array
      */
-    public function normalize(Closure $callables = null, array $key = [], $id = 0): array
+    public function normalize(?Closure $callables = null, array $key = [], $id = 0): array
     {
         $data = [];
 

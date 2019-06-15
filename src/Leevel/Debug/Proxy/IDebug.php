@@ -116,7 +116,7 @@ interface IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public static function setStorage(StorageInterface $storage = null): DebugBar;
+    public static function setStorage(?StorageInterface $storage = null): DebugBar;
 
     /**
      * 返回用于存储收集数据的存储后端.

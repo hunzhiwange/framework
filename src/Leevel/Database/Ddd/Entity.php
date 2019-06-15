@@ -397,7 +397,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function save(array $data = [], array $fill = null): IEntity
+    public function save(array $data = [], ?array $fill = null): IEntity
     {
         $this->saveEntry('save', $data, $fill);
 
@@ -412,7 +412,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function create(array $data = [], array $fill = null): IEntity
+    public function create(array $data = [], ?array $fill = null): IEntity
     {
         $this->saveEntry('create', $data, $fill);
 
@@ -427,7 +427,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function update(array $data = [], array $fill = null): IEntity
+    public function update(array $data = [], ?array $fill = null): IEntity
     {
         $this->saveEntry('update', $data, $fill);
 
@@ -442,7 +442,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function replace(array $data = [], array $fill = null): IEntity
+    public function replace(array $data = [], ?array $fill = null): IEntity
     {
         $this->saveEntry('replace', $data, $fill);
 
@@ -896,7 +896,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public static function withEventDispatch(IDispatch $dispatch = null): void
+    public static function withEventDispatch(?IDispatch $dispatch = null): void
     {
         static::$leevelDispatch = $dispatch;
     }
@@ -1404,9 +1404,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 保存统一入口.
      *
-     * @param string    $method
-     * @param array     $data
-     * @param null|rray $fill
+     * @param string     $method
+     * @param array      $data
+     * @param null|array $fill
      *
      * @return \Leevel\Database\Ddd\IEntity
      */

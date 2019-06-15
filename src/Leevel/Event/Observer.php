@@ -56,7 +56,7 @@ class Observer implements SplObserver
      *
      * @param null|\Closure $handle
      */
-    public function __construct(Closure $handle = null)
+    public function __construct(?Closure $handle = null)
     {
         $this->handle = $handle;
     }

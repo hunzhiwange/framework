@@ -68,7 +68,7 @@ interface IView
      *
      * @return mixed
      */
-    public function getVar(string $name = null);
+    public function getVar(?string $name = null);
 
     /**
      * 删除变量值.

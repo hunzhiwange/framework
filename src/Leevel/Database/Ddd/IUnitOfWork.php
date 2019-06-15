@@ -77,7 +77,7 @@ interface IUnitOfWork
      *
      * @return static
      */
-    public static function make(IEntity $rootEntity = null, $connect = null): self;
+    public static function make(?IEntity $rootEntity = null, $connect = null): self;
 
     /**
      * 执行数据库事务.

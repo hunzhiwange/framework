@@ -151,7 +151,7 @@ class Debug implements IDebug
      *
      * @return \DebugBar\DebugBar
      */
-    public static function setStorage(StorageInterface $storage = null): DebugBar
+    public static function setStorage(?StorageInterface $storage = null): DebugBar
     {
         return self::proxy()->setStorage($storage);
     }

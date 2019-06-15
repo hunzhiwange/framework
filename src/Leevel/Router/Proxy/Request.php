@@ -176,7 +176,7 @@ class Request implements IRequest
      *
      * @return mixed
      */
-    public static function input(string $key = null, $defaults = null)
+    public static function input(?string $key = null, $defaults = null)
     {
         return self::proxy()->input($key, $defaults);
     }
@@ -189,7 +189,7 @@ class Request implements IRequest
      *
      * @return array|string
      */
-    public static function query(string $key = null, $defaults = null)
+    public static function query(?string $key = null, $defaults = null)
     {
         return self::proxy()->query($key, $defaults);
     }
@@ -214,7 +214,7 @@ class Request implements IRequest
      *
      * @return array|string
      */
-    public static function cookie(string $key = null, $defaults = null)
+    public static function cookie(?string $key = null, $defaults = null)
     {
         return self::proxy()->cookie($key, $defaults);
     }

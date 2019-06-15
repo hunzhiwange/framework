@@ -168,7 +168,7 @@ class Mail implements IMail
      *
      * @return \Leevel\Mail\IMail
      */
-    public static function attachMail(string $file, Closure $callbacks = null): IBaseMail
+    public static function attachMail(string $file, ?Closure $callbacks = null): IBaseMail
     {
         return self::proxy()->attachMail($file, $callbacks);
     }
@@ -183,7 +183,7 @@ class Mail implements IMail
      *
      * @return \Leevel\Mail\IMail
      */
-    public static function attachData(string $data, string $name, Closure $callbacks = null): IBaseMail
+    public static function attachData(string $data, string $name, ?Closure $callbacks = null): IBaseMail
     {
         return self::proxy()->attachData($data, $name, $callbacks);
     }
@@ -234,7 +234,7 @@ class Mail implements IMail
      *
      * @return int
      */
-    public static function flush(Closure $callbacks = null, bool $htmlPriority = true): int
+    public static function flush(?Closure $callbacks = null, bool $htmlPriority = true): int
     {
         return self::proxy()->flush($callbacks, $htmlPriority);
     }

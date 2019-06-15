@@ -127,7 +127,7 @@ interface IResponse
      *
      * @return \Leevel\Http\FileResponse
      */
-    public static function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse;
+    public static function download($file, ?string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse;
 
     /**
      * 返回文件响应.

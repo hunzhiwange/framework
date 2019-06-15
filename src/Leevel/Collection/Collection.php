@@ -71,7 +71,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * @param mixed      $elements
      * @param null|array $type
      */
-    public function __construct($elements = [], array $type = null)
+    public function __construct($elements = [], ?array $type = null)
     {
         if ($type) {
             $this->type = $type;

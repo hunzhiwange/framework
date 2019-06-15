@@ -54,7 +54,7 @@ class ValidateException extends Exception
      * @param \Leevel\Validate\IValidator $validator
      * @param null|\Leevel\Http\IResponse $response
      */
-    public function __construct(IValidator $validator, IResponse $response = null)
+    public function __construct(IValidator $validator, ?IResponse $response = null)
     {
         parent::__construct('Validate failed.');
 

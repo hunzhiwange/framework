@@ -636,7 +636,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\IResponse
      */
-    public function setExpires(DateTime $datetime = null): IResponse
+    public function setExpires(?DateTime $datetime = null): IResponse
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -660,7 +660,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\IResponse
      */
-    public function setLastModified(DateTime $datetime = null): IResponse
+    public function setLastModified(?DateTime $datetime = null): IResponse
     {
         if ($this->checkFlowControl()) {
             return $this;

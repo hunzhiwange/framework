@@ -78,7 +78,7 @@ trait Proxy
      *
      * @return mixed
      */
-    public function getVar(string $name = null)
+    public function getVar(?string $name = null)
     {
         return $this->proxy()->getVar($name);
     }

@@ -107,7 +107,7 @@ abstract class Log
      * @param array                        $option
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(array $option = [], IDispatch $dispatch = null)
+    public function __construct(array $option = [], ?IDispatch $dispatch = null)
     {
         $this->option = array_merge($this->option, $option);
         $this->dispatch = $dispatch;

@@ -138,7 +138,7 @@ abstract class Database
      * @param array                        $option
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(array $option, IDispatch $dispatch = null)
+    public function __construct(array $option, ?IDispatch $dispatch = null)
     {
         $this->option = $option;
         $this->dispatch = $dispatch;

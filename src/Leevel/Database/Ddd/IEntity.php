@@ -454,7 +454,7 @@ interface IEntity
      *
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public static function withEventDispatch(IDispatch $dispatch = null): void;
+    public static function withEventDispatch(?IDispatch $dispatch = null): void;
 
     /**
      * 注册模型实体事件.

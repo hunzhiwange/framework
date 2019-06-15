@@ -224,7 +224,7 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return static
      */
-    public static function make(IEntity $rootEntity = null, $connect = null): IUnitOfWork
+    public static function make(?IEntity $rootEntity = null, $connect = null): IUnitOfWork
     {
         return new static($rootEntity, $connect);
     }

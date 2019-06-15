@@ -42,7 +42,7 @@ interface IKernelConsole
      *
      * @return int
      */
-    public function handle(InputInterface $input = null, OutputInterface $output = null): int;
+    public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int;
 
     /**
      * 执行结束
@@ -50,7 +50,7 @@ interface IKernelConsole
      * @param int                                                  $status
      * @param null|\Symfony\Component\Console\Input\InputInterface $input
      */
-    public function terminate(int $status, InputInterface $input = null): void;
+    public function terminate(int $status, ?InputInterface $input = null): void;
 
     /**
      * 初始化.

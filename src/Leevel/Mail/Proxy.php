@@ -145,7 +145,7 @@ trait Proxy
      *
      * @return \Leevel\Mail\IMail
      */
-    public function attachMail(string $file, Closure $callbacks = null): IMail
+    public function attachMail(string $file, ?Closure $callbacks = null): IMail
     {
         return $this->proxy()->attachMail($file, $callbacks);
     }
@@ -160,7 +160,7 @@ trait Proxy
      *
      * @return \Leevel\Mail\IMail
      */
-    public function attachData(string $data, string $name, Closure $callbacks = null): IMail
+    public function attachData(string $data, string $name, ?Closure $callbacks = null): IMail
     {
         return $this->proxy()->attachData($data, $name, $callbacks);
     }
@@ -211,7 +211,7 @@ trait Proxy
      *
      * @return int
      */
-    public function flush(Closure $callbacks = null, bool $htmlPriority = true): int
+    public function flush(?Closure $callbacks = null, bool $htmlPriority = true): int
     {
         return $this->proxy()->flush($callbacks, $htmlPriority);
     }

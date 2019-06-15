@@ -87,7 +87,7 @@ abstract class KernelConsole implements IKernelConsole
      *
      * @return int
      */
-    public function handle(InputInterface $input = null, OutputInterface $output = null): int
+    public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
         $this->registerBaseService();
 
@@ -107,7 +107,7 @@ abstract class KernelConsole implements IKernelConsole
      * @param null|\Symfony\Component\Console\Input\InputInterface $input
      * @codeCoverageIgnore
      */
-    public function terminate(int $status, InputInterface $input = null): void
+    public function terminate(int $status, ?InputInterface $input = null): void
     {
     }
 

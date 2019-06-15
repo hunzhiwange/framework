@@ -149,7 +149,7 @@ interface IValidator
      *
      * @return \Leevel\Validate\IValidator
      */
-    public function rule(array $rules, Closure $callbacks = null): self;
+    public function rule(array $rules, ?Closure $callbacks = null): self;
 
     /**
      * 添加验证规则.
@@ -159,7 +159,7 @@ interface IValidator
      *
      * @return \Leevel\Validate\IValidator
      */
-    public function addRule(array $rules, Closure $callbacks = null): self;
+    public function addRule(array $rules, ?Closure $callbacks = null): self;
 
     /**
      * 返回验证消息.

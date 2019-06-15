@@ -128,7 +128,7 @@ trait Proxy
      *
      * @return \DebugBar\DebugBar
      */
-    public function setStorage(StorageInterface $storage = null): DebugBar
+    public function setStorage(?StorageInterface $storage = null): DebugBar
     {
         return $this->proxy()->setStorage($storage);
     }

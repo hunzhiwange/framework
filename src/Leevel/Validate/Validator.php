@@ -347,7 +347,7 @@ class Validator implements IValidator
      *
      * @return \Leevel\Validate\IValidator
      */
-    public function rule(array $rules, Closure $callbacks = null): IValidator
+    public function rule(array $rules, ?Closure $callbacks = null): IValidator
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -368,7 +368,7 @@ class Validator implements IValidator
      *
      * @return \Leevel\Validate\IValidator
      */
-    public function addRule(array $rules, Closure $callbacks = null): IValidator
+    public function addRule(array $rules, ?Closure $callbacks = null): IValidator
     {
         if ($this->checkFlowControl()) {
             return $this;
