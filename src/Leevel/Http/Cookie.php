@@ -127,7 +127,7 @@ class Cookie
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed        $value
+     * @param null|mixed   $value
      * @param array        $option
      */
     public function put($keys, $value = null, array $option = []): void
@@ -184,10 +184,10 @@ class Cookie
     /**
      * 数组插入键值对数据.
      *
-     * @param string $key
-     * @param mixed  $keys
-     * @param mixed  $value
-     * @param array  $option
+     * @param string     $key
+     * @param mixed      $keys
+     * @param null|mixed $value
+     * @param array      $option
      */
     public function arr(string $key, $keys, $value = null, array $option = []): void
     {
@@ -228,9 +228,9 @@ class Cookie
     /**
      * 获取 cookie.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
+     * @param string     $name
+     * @param null|mixed $defaults
+     * @param array      $option
      *
      * @return mixed
      */

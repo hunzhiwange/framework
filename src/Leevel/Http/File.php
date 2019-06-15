@@ -57,8 +57,8 @@ class File extends SplFileObject
     /**
      * 移动文件.
      *
-     * @param string $directory
-     * @param string $name
+     * @param string      $directory
+     * @param null|string $name
      *
      * @return \Leevel\Http\File
      */
@@ -74,8 +74,8 @@ class File extends SplFileObject
     /**
      * 获取目标文件.
      *
-     * @param string $directory
-     * @param string $name
+     * @param string      $directory
+     * @param null|string $name
      *
      * @return string
      */

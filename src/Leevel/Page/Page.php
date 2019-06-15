@@ -104,10 +104,10 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 构造函数.
      *
-     * @param int   $currentPage
-     * @param int   $perPage
-     * @param int   $totalRecord
-     * @param array $option
+     * @param int      $currentPage
+     * @param null|int $perPage
+     * @param null|int $totalRecord
+     * @param array    $option
      */
     public function __construct(int $currentPage, ?int $perPage = null, ?int $totalRecord = null, array $option = [])
     {
@@ -696,7 +696,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 对象转 JSON.
      *
-     * @param int $option
+     * @param null|int $option
      *
      * @return string
      */

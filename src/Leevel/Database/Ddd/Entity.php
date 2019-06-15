@@ -1169,9 +1169,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 获取 enum.
      * 不存在返回 false.
      *
-     * @param string $prop
-     * @param mixed  $enum
-     * @param string $separate
+     * @param string     $prop
+     * @param null|mixed $enum
+     * @param string     $separate
      *
      * @throws \InvalidArgumentException
      *
@@ -1239,7 +1239,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 对象转 JSON.
      *
-     * @param int $option
+     * @param null|int $option
      *
      * @return string
      */
@@ -1347,7 +1347,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 返回模型实体类的 meta 对象.
      *
-     * @param mixed $connect
+     * @param null|mixed $connect
      *
      * @return \Leevel\Database\Ddd\IMeta
      */
@@ -1404,9 +1404,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 保存统一入口.
      *
-     * @param string     $method
-     * @param array      $data
-     * @param null|array $fill
+     * @param string    $method
+     * @param array     $data
+     * @param null|rray $fill
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -1710,8 +1710,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 自动填充.
      *
-     * @param string $type
-     * @param array  $fill
+     * @param string     $type
+     * @param null|array $fill
      */
     protected function parseAutoFill(string $type, ?array $fill = null): void
     {

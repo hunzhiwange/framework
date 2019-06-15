@@ -61,9 +61,9 @@ class RedirectResponse extends Response
     /**
      * 构造函数.
      *
-     * @param string $url
-     * @param int    $status
-     * @param array  $headers
+     * @param null|string $url
+     * @param int         $status
+     * @param array       $headers
      *
      * @throws \InvalidArgumentException
      */
@@ -104,7 +104,7 @@ class RedirectResponse extends Response
      * 闪存一个数据片段到 SESSION.
      *
      * @param array|string $key
-     * @param mixed        $value
+     * @param null|mixed   $value
      *
      * @return \Leevel\Http\IResponse
      */

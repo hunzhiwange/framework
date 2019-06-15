@@ -515,7 +515,7 @@ interface IResponse
     /**
      * 附加内容.
      *
-     * @param string $content
+     * @param null|string $content
      *
      * @return \Leevel\Http\IResponse
      */
@@ -593,8 +593,8 @@ interface IResponse
     /**
      * 设置 JSON 数据.
      *
-     * @param mixed $data
-     * @param int   $encodingOptions
+     * @param mixed    $data
+     * @param null|int $encodingOptions
      *
      * @throws \InvalidArgumentException
      *
@@ -642,8 +642,8 @@ interface IResponse
     /**
      * 设置相应状态码.
      *
-     * @param int    $code
-     * @param string $text
+     * @param int         $code
+     * @param null|string $text
      *
      * @throws \InvalidArgumentException
      *
@@ -693,7 +693,7 @@ interface IResponse
     /**
      * 设置过期时间.
      *
-     * @param \DateTime $datetime
+     * @param null|\DateTime $datetime
      *
      * @return \Leevel\Http\IResponse
      */
@@ -702,7 +702,7 @@ interface IResponse
     /**
      * 设置最后修改时间.
      *
-     * @param \DateTime $datetime
+     * @param null|\DateTime $datetime
      *
      * @return \Leevel\Http\IResponse
      */
@@ -727,8 +727,8 @@ interface IResponse
     /**
      * 设置响应内容类型.
      *
-     * @param string $contentType
-     * @param string $charset
+     * @param string      $contentType
+     * @param null|string $charset
      *
      * @return \Leevel\Http\IResponse
      */
@@ -824,6 +824,8 @@ interface IResponse
 
     /**
      * 是否为表单重定向响应.
+     *
+     * @param null|string $location
      *
      * @return bool
      */

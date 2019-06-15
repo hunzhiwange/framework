@@ -65,10 +65,10 @@ class Encryption implements IEncryption
     /**
      * 构造函数.
      *
-     * @param string $key
-     * @param string $cipher
-     * @param string $rsaPrivate
-     * @param string $rsaPublic
+     * @param string      $key
+     * @param string      $cipher
+     * @param null|string $rsaPrivate
+     * @param null|string $rsaPublic
      */
     public function __construct(string $key, string $cipher = 'AES-256-CBC', ?string $rsaPrivate = null, ?string $rsaPublic = null)
     {

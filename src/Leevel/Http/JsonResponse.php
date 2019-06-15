@@ -70,10 +70,10 @@ class JsonResponse extends Response
     /**
      * 构造函数.
      *
-     * @param string $data
-     * @param int    $status
-     * @param array  $headers
-     * @param bool   $json
+     * @param null|string $data
+     * @param int         $status
+     * @param array       $headers
+     * @param bool        $json
      */
     public function __construct($data = null, int $status = 200, array $headers = [], bool $json = false)
     {
@@ -91,9 +91,9 @@ class JsonResponse extends Response
     /**
      * 创建一个 JSON 响应.
      *
-     * @param mixed $data
-     * @param int   $status
-     * @param array $headers
+     * @param null|mixed $data
+     * @param int        $status
+     * @param array      $headers
      *
      * @return static
      */
@@ -105,9 +105,9 @@ class JsonResponse extends Response
     /**
      * 从 JSON 字符串创建响应对象
      *
-     * @param string $data
-     * @param int    $status
-     * @param array  $headers
+     * @param null|string $data
+     * @param int         $status
+     * @param array       $headers
      *
      * @return static
      */
@@ -163,8 +163,8 @@ class JsonResponse extends Response
     /**
      * 设置数据作为 JSON.
      *
-     * @param mixed $data
-     * @param int   $encodingOptions
+     * @param mixed    $data
+     * @param null|int $encodingOptions
      *
      * @throws \InvalidArgumentException
      *

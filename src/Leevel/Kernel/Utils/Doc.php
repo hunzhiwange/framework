@@ -111,8 +111,8 @@ class Doc
     /**
      * 解析文档并保存.
      *
-     * @param string $className
-     * @param string $path
+     * @param string      $className
+     * @param null|string $path
      *
      * @return bool
      */
@@ -195,7 +195,7 @@ class Doc
     /**
      * 设置保存路径.
      *
-     * @param string $path
+     * @param null|string $path
      */
     protected function setSavePath(?string $path = null): void
     {

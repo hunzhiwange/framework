@@ -183,9 +183,9 @@ class Container implements IContainer, ArrayAccess
     /**
      * 注册到容器.
      *
-     * @param mixed $name
-     * @param mixed $service
-     * @param bool  $share
+     * @param mixed      $name
+     * @param null|mixed $service
+     * @param bool       $share
      *
      * @return \Leevel\Di\IContainer
      */
@@ -212,8 +212,8 @@ class Container implements IContainer, ArrayAccess
     /**
      * 注册为实例.
      *
-     * @param mixed $name
-     * @param mixed $service
+     * @param mixed      $name
+     * @param null|mixed $service
      *
      * @return \Leevel\Di\IContainer
      */
@@ -241,7 +241,7 @@ class Container implements IContainer, ArrayAccess
      * 注册单一实例.
      *
      * @param array|scalar $name
-     * @param mixed        $service
+     * @param null|mixed   $service
      *
      * @return \Leevel\Di\IContainer
      */
@@ -414,7 +414,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 删除协程上下文服务和实例.
      *
-     * @param string $name
+     * @param null|string $name
      */
     public function removeCoroutine(?string $name = null): void
     {

@@ -63,7 +63,7 @@ interface IMeta
     /**
      * 返回数据库元对象连接.
      *
-     * @param mixed $connect
+     * @param null|mixed $connect
      *
      * @return \Leevel\Database\Ddd\IMeta
      */

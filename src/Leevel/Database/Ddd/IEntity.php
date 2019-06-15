@@ -604,9 +604,9 @@ interface IEntity
      * 获取 enum.
      * 不存在返回 false.
      *
-     * @param string $prop
-     * @param mixed  $enum
-     * @param string $separate
+     * @param string     $prop
+     * @param null|mixed $enum
+     * @param string     $separate
      *
      * @throws \InvalidArgumentException
      *
@@ -656,7 +656,7 @@ interface IEntity
     /**
      * 返回模型实体类的 meta 对象
      *
-     * @param mixed $connect
+     * @param null|mixed $connect
      *
      * @return \Leevel\Database\Ddd\IMeta
      */

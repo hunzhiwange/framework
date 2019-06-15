@@ -37,9 +37,9 @@ class BadRequestHttpException extends HttpException
     /**
      * 构造函数.
      *
-     * @param null|string $message
-     * @param int         $code
-     * @param \Exception  $previous
+     * @param null|string     $message
+     * @param int             $code
+     * @param null|\Exception $previous
      */
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {

@@ -111,8 +111,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 取回元素值.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param string     $key
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -167,10 +167,10 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 获取过滤变量.
      *
-     * @param string           $key
-     * @param mixed            $defaults
-     * @param array|int|string $filter
-     * @param array            $options
+     * @param string                $key
+     * @param null|mixed            $defaults
+     * @param null|array|int|string $filter
+     * @param array                 $options
      *
      * @return mixed
      */
@@ -234,7 +234,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 对象转 JSON.
      *
-     * @param int $option
+     * @param null|int $option
      *
      * @return string
      */
@@ -279,7 +279,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 分析过滤器.
      *
-     * @param array|string $filter
+     * @param null|array|string $filter
      *
      * @return array
      */
@@ -440,9 +440,9 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 返回部分数组数据.
      *
-     * @param string $key
-     * @param mixed  $value
-     * @param mixed  $defaults
+     * @param string     $key
+     * @param mixed      $value
+     * @param null|mixed $defaults
      *
      * @return mixed
      */

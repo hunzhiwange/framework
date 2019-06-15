@@ -169,7 +169,7 @@ trait Proxy
     /**
      * 清理日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      */
     public function clear(?string $level = null): void
     {
@@ -179,7 +179,7 @@ trait Proxy
     /**
      * 获取日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return array
      */
@@ -191,7 +191,7 @@ trait Proxy
     /**
      * 获取日志记录数量.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return int
      */

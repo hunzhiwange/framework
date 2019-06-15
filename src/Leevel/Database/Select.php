@@ -272,9 +272,9 @@ class Select
     /**
      * 设置查询参数.
      *
-     * @param int   $fetchStyle
-     * @param mixed $fetchArgument
-     * @param array $ctorArgs
+     * @param int        $fetchStyle
+     * @param null|mixed $fetchArgument
+     * @param array      $ctorArgs
      *
      * @return \Leevel\Database\Select
      */
@@ -338,9 +338,9 @@ class Select
     /**
      * 原生 sql 查询数据 select.
      *
-     * @param null|callable|select|string $data
-     * @param array                       $bind
-     * @param bool                        $flag 指示是否不做任何操作只返回 SQL
+     * @param null|callable|\Leevel\Database\Select|string $data
+     * @param array                                        $bind
+     * @param bool                                         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -553,8 +553,8 @@ class Select
     /**
      * 返回最后几条记录.
      *
-     * @param int  $num
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
+     * @param null|int $num
+     * @param bool     $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -612,9 +612,9 @@ class Select
     /**
      * 返回一列数据.
      *
-     * @param mixed  $fieldValue
-     * @param string $fieldKey
-     * @param bool   $flag       指示是否不做任何操作只返回 SQL
+     * @param mixed       $fieldValue
+     * @param null|string $fieldKey
+     * @param bool        $flag       指示是否不做任何操作只返回 SQL
      *
      * @return array
      */

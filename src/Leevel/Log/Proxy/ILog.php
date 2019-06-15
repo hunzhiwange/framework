@@ -138,14 +138,14 @@ interface ILog
     /**
      * 清理日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      */
     public static function clear(?string $level = null): void;
 
     /**
      * 获取日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return array
      */
@@ -154,7 +154,7 @@ interface ILog
     /**
      * 获取日志记录数量.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return int
      */

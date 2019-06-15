@@ -128,7 +128,7 @@ class Rpc
      * 添加享元数据.
      *
      * @param array|string $key
-     * @param mixed        $value
+     * @param null|mixed   $value
      */
     public function addMetas($key, $value = null)
     {

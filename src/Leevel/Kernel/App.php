@@ -403,7 +403,7 @@ class App implements IApp
     /**
      * 语言包路径.
      *
-     * @param string $path
+     * @param null|string $path
      *
      * @return string
      */

@@ -566,8 +566,8 @@ class Condition
     /**
      * 添加字段.
      *
-     * @param mixed  $cols
-     * @param string $table
+     * @param mixed       $cols
+     * @param null|string $table
      *
      * @return \Leevel\Database\Condition
      */
@@ -589,8 +589,8 @@ class Condition
     /**
      * 设置字段.
      *
-     * @param mixed  $cols
-     * @param string $table
+     * @param mixed       $cols
+     * @param null|string $table
      *
      * @return \Leevel\Database\Condition
      */
@@ -869,9 +869,9 @@ class Condition
     /**
      * 参数绑定支持
      *
-     * @param mixed $names
-     * @param mixed $value
-     * @param int   $type
+     * @param mixed      $names
+     * @param null|mixed $value
+     * @param int        $type
      *
      * @return \Leevel\Database\Condition
      */
@@ -2677,8 +2677,8 @@ class Condition
     /**
      * 设置条件的逻辑和类型.
      *
-     * @param string $type
-     * @param string $logic
+     * @param null|string $type
+     * @param null|string $logic
      */
     protected function setTypeAndLogic(?string $type = null, ?string $logic = null): void
     {
@@ -3204,7 +3204,7 @@ class Condition
     /**
      * 设置当前是否处于时间条件状态.
      *
-     * @param string $inTimeCondition
+     * @param null|string $inTimeCondition
      */
     protected function setInTimeCondition(?string $inTimeCondition = null): void
     {

@@ -23,9 +23,9 @@ namespace Leevel\Encryption\Safe;
 /**
  * url 安全过滤.
  *
- * @param string $url
- * @param array  $protocols
- * @param bool   $show
+ * @param string     $url
+ * @param null|array $protocols
+ * @param bool       $show
  *
  * @return string
  */

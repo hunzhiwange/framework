@@ -50,8 +50,8 @@ function option_get(string $key, $default = null)
 /**
  * 设置 opiton 值
  *
- * @param mixed $name
- * @param mixed $value
+ * @param mixed      $name
+ * @param null|mixed $value
  */
 function option_set($name, $value = null): void
 {

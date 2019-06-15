@@ -233,7 +233,7 @@ abstract class Relation
      * 返回模型实体的主键.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param string                         $key
+     * @param null|string                    $key
      *
      * @return array
      */

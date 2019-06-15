@@ -298,11 +298,11 @@ class Response implements IResponse
     /**
      * 附加内容.
      *
-     * @param string $content
+     * @param null|string $content
      *
      * @return \Leevel\Http\IResponse
      */
-    public function appendContent(string $content = null): IResponse
+    public function appendContent(?string $content = null): IResponse
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -440,8 +440,8 @@ class Response implements IResponse
     /**
      * 设置 JSON 数据.
      *
-     * @param mixed $data
-     * @param int   $encodingOptions
+     * @param mixed    $data
+     * @param null|int $encodingOptions
      *
      * @throws \InvalidArgumentException
      *
@@ -632,7 +632,7 @@ class Response implements IResponse
     /**
      * 设置过期时间.
      *
-     * @param \DateTime $datetime
+     * @param null|\DateTime $datetime
      *
      * @return \Leevel\Http\IResponse
      */
@@ -656,7 +656,7 @@ class Response implements IResponse
     /**
      * 设置最后修改时间.
      *
-     * @param \DateTime $datetime
+     * @param null|\DateTime $datetime
      *
      * @return \Leevel\Http\IResponse
      */
@@ -718,8 +718,8 @@ class Response implements IResponse
     /**
      * 设置响应内容类型.
      *
-     * @param string $contentType
-     * @param string $charset
+     * @param string      $contentType
+     * @param null|string $charset
      *
      * @return \Leevel\Http\IResponse
      */
@@ -881,7 +881,7 @@ class Response implements IResponse
     /**
      * 是否为表单重定向响应.
      *
-     * @param string $location
+     * @param null|string $location
      *
      * @return bool
      */

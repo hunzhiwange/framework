@@ -25,10 +25,10 @@ use Leevel\Di\Container;
 /**
  * 生成路由地址
  *
- * @param string      $url
- * @param array       $params
- * @param string      $subdomain
- * @param bool|string $suffix
+ * @param string           $url
+ * @param array            $params
+ * @param string           $subdomain
+ * @param null|bool|string $suffix
  *
  * @return string
  */

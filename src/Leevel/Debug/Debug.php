@@ -330,8 +330,8 @@ class Debug implements IDebug
     /**
      * 开始调试时间.
      *
-     * @param string $name
-     * @param string $label
+     * @param string      $name
+     * @param null|string $label
      */
     public function time(string $name, ?string $label = null): void
     {
@@ -407,8 +407,8 @@ class Debug implements IDebug
     /**
      * 返回此实例的 \DebugBar\JavascriptRenderer.
      *
-     * @param string $baseUrl
-     * @param string $basePath
+     * @param null|string $baseUrl
+     * @param null|string $basePath
      *
      * @return \DebugBar\JavascriptRenderer
      */

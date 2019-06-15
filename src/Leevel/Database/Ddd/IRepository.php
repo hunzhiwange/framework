@@ -67,7 +67,7 @@ interface IRepository
      *
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      * @param mixed                                                          $fieldValue
-     * @param string                                                         $fieldKey
+     * @param null|string                                                    $fieldKey
      *
      * @return array
      */

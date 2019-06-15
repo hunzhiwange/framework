@@ -164,7 +164,7 @@ abstract class Manager
     /**
      * 获取容器配置值.
      *
-     * @param string $name
+     * @param null|string $name
      *
      * @return mixed
      */
@@ -198,7 +198,7 @@ abstract class Manager
     /**
      * 取得连接名字.
      *
-     * @param string $name
+     * @param null|string $name
      *
      * @return string
      */

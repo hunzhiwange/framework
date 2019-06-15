@@ -124,7 +124,7 @@ trait Proxy
     /**
      * 设置用于存储收集数据的存储后端.
      *
-     * @param \DebugBar\Storage\StorageInterface $storage
+     * @param null|\DebugBar\Storage\StorageInterface $storage
      *
      * @return \DebugBar\DebugBar
      */
@@ -216,9 +216,9 @@ trait Proxy
     /**
      * 通过 HTTP 头数组发送数据.
      *
-     * @param bool   $useOpenHandler
-     * @param string $headerName
-     * @param int    $maxHeaderLength
+     * @param null|bool $useOpenHandler
+     * @param string    $headerName
+     * @param int       $maxHeaderLength
      *
      * @return \DebugBar\DebugBar
      */
@@ -306,8 +306,8 @@ trait Proxy
     /**
      * 返回此实例的 \DebugBar\JavascriptRenderer.
      *
-     * @param string $baseUrl
-     * @param string $basePath
+     * @param null|string $baseUrl
+     * @param null|string $basePath
      *
      * @return \DebugBar\JavascriptRenderer
      */

@@ -116,7 +116,7 @@ class OpenApiRouter
      * 构造函数.
      *
      * @param \Leevel\Router\MiddlewareParser $middlewareParser
-     * @param string                          $domain
+     * @param null|string                     $domain
      */
     public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null)
     {

@@ -183,8 +183,8 @@ interface IMail
     /**
      * 发送邮件.
      *
-     * @param \Closure $callbacks
-     * @param bool     $htmlPriority
+     * @param null|\Closure $callbacks
+     * @param bool          $htmlPriority
      *
      * @return int
      */
@@ -225,7 +225,7 @@ interface IMail
      * 发送消息.
      *
      * @param \Swift_Mime_SimpleMessage $message
-     * @param array                     $failedRecipients
+     * @param null|array                $failedRecipients
      *
      * @return int
      */
@@ -335,7 +335,7 @@ interface IMail
      * 设置此实体的所有子级.
      *
      * @param \Swift_Mime_SimpleMimeEntity[] $children
-     * @param int                            $compoundLevel
+     * @param null|int                       $compoundLevel
      *
      * @return \Swift_Messages
      */
@@ -393,8 +393,8 @@ interface IMail
      * 设置此实体的主体为字符串或者 {@link \Swift_OutputByteStream}.
      *
      * @param string|\Swift_OutputByteStream $body
-     * @param string                         $contentType
-     * @param string                         $charset
+     * @param null|string                    $contentType
+     * @param null|string                    $charset
      *
      * @return \Swift_Messages
      */
@@ -515,8 +515,8 @@ interface IMail
      *
      * 这不会覆盖 From 字段，但具有更高的重要性.
      *
-     * @param string $address
-     * @param string $name
+     * @param string      $address
+     * @param null|string $name
      *
      * @return \Swift_Message
      */
@@ -534,8 +534,8 @@ interface IMail
      *
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
-     * @param string $address
-     * @param string $name
+     * @param string      $address
+     * @param null|string $name
      *
      * @return \Swift_Message
      */
@@ -548,7 +548,7 @@ interface IMail
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
-     * @param string       $name
+     * @param null|string  $name
      *
      * @example
      * $addresses = ['receiver@domain.org', 'other@domain.org' => 'A name']
@@ -569,8 +569,8 @@ interface IMail
      *
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
-     * @param string $address
-     * @param string $name
+     * @param string      $address
+     * @param null|string $name
      *
      * @return \Swift_Message
      */
@@ -583,7 +583,7 @@ interface IMail
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
-     * @param string       $name
+     * @param null|string  $name
      *
      * @example
      * $addresses = ['receiver@domain.org', 'other@domain.org' => 'A name']
@@ -604,8 +604,8 @@ interface IMail
      *
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
-     * @param string $address
-     * @param string $name
+     * @param string      $address
+     * @param null|string $name
      *
      * @return \Swift_Message
      */
@@ -618,7 +618,7 @@ interface IMail
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
-     * @param string       $name
+     * @param null|string  $name
      *
      * @example
      * $addresses = ['receiver@domain.org', 'other@domain.org' => 'A name']
@@ -639,8 +639,8 @@ interface IMail
      *
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
-     * @param string $address
-     * @param string $name
+     * @param string      $address
+     * @param null|string $name
      *
      * @return \Swift_Message
      */
@@ -653,7 +653,7 @@ interface IMail
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
-     * @param string       $name
+     * @param null|string  $name
      *
      * @return \Swift_Message
      */
@@ -671,8 +671,8 @@ interface IMail
      *
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
-     * @param string $address
-     * @param string $name
+     * @param string      $address
+     * @param null|string $name
      *
      * @return \Swift_Message
      */
@@ -685,7 +685,7 @@ interface IMail
      * 如果传递第二个参数名称，则此名称将与地址关联.
      *
      * @param array|string $addresses
-     * @param string       $name
+     * @param null|string  $name
      *
      * @return \Swift_Message
      */
@@ -766,8 +766,8 @@ interface IMail
      * 在此邮件中添加一个 MIME 部件.
      *
      * @param string|\Swift_OutputByteStream $body
-     * @param string                         $contentType
-     * @param string                         $charset
+     * @param null|string                    $contentType
+     * @param null|string                    $charset
      *
      * @return \Swift_Message
      */
