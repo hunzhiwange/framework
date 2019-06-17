@@ -121,6 +121,7 @@ class Application extends SymfonyApplication implements IApplication
                __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
                  \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
                     \_\                /_/_/         /_/
+                      by Xiangmin Liu and contributors.
             queryphp;
     }
 }
