@@ -56,13 +56,6 @@ interface IValidator
     const CONDITION_MUST = 'must';
 
     /**
-     * 字段值不为空就验证
-     *
-     * @var string
-     */
-    const CONDITION_VALUE = 'value';
-
-    /**
      * 失败后跳过.
      *
      * @var string

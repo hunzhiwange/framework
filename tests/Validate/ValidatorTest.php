@@ -935,7 +935,6 @@ class ValidatorTest extends TestCase
         return [
             [Validator::CONDITION_EXISTS],
             [Validator::CONDITION_MUST],
-            [Validator::CONDITION_VALUE],
             [Validator::SKIP_SELF],
             [Validator::SKIP_OTHER],
         ];
@@ -1261,7 +1260,6 @@ class ValidatorTest extends TestCase
         return [
             [Validator::CONDITION_EXISTS],
             [Validator::CONDITION_MUST],
-            [Validator::CONDITION_VALUE],
             [Validator::SKIP_SELF],
             [Validator::SKIP_OTHER],
         ];
@@ -1340,13 +1338,7 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->fail());
         $this->assertSame(['name' => '地名'], $validate->getName());
 
-        $validate->rule(['name' => 'required|'.Validator::CONDITION_VALUE]);
-
-        $this->assertTrue($validate->success());
-        $this->assertFalse($validate->fail());
-
         $validate->rule(['name' => 'required|'.Validator::CONDITION_MUST]);
-
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -1366,7 +1358,6 @@ class ValidatorTest extends TestCase
         );
 
         $validate->data(['name' => null]);
-
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 

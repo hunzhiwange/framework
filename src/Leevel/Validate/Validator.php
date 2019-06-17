@@ -748,7 +748,6 @@ class Validator implements IValidator
         return array_merge([
             static::CONDITION_EXISTS,
             static::CONDITION_MUST,
-            static::CONDITION_VALUE,
             static::SKIP_SELF,
             static::SKIP_OTHER,
         ], $this->skipRule);
@@ -903,7 +902,6 @@ class Validator implements IValidator
         if (!$result && $rule === static::DEFAULT_CONDITION) {
             return !$this->hasFieldRuleWithoutParameterReal($field, [
                 static::CONDITION_MUST,
-                static::CONDITION_VALUE,
             ]);
         }
 
@@ -974,12 +972,6 @@ class Validator implements IValidator
         // 默认情况下存在即验证，没有设置字段则跳过
         if (!$this->hasFieldValue($field) &&
             $this->hasFieldRuleWithoutParameter($field, static::CONDITION_EXISTS)) {
-            return;
-        }
-
-        // 值不为空就验证，那么为的空的值将会跳过
-        if (empty($fieldValue) &&
-            $this->hasFieldRuleWithoutParameter($field, static::CONDITION_VALUE)) {
             return;
         }
 
