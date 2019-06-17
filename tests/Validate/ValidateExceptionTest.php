@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ValidateExceptionTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $exception = new ValidateException(new Validator(), $this->createMock(IResponse::class));
 

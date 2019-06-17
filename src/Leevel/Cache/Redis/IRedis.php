@@ -50,9 +50,9 @@ interface IRedis
     /**
      * 设置缓存.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param int    $expire
+     * @param string   $name
+     * @param mixed    $data
+     * @param null|int $expire
      */
     public function set(string $name, $data, ?int $expire = null): void;
 

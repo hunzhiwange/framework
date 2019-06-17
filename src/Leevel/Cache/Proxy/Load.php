@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Proxy;
 
+use Leevel\Cache\Load as BaseLoad;
 use Leevel\Di\Container;
 
 /**
@@ -30,8 +31,9 @@ use Leevel\Di\Container;
  * @since 2017.11.20
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-class Load
+class Load implements ILoad
 {
     /**
      * call.
@@ -43,8 +45,41 @@ class Load
      */
     public static function __callStatic(string $method, array $args)
     {
-        return Container::singletons()
-            ->make('cache.load')
-            ->{$method}(...$args);
+        return self::proxy()->{$method}(...$args);
+    }
+
+    /**
+     * 载入缓存数据
+     * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
+     *
+     * @param array $names
+     * @param array $option
+     * @param bool  $force
+     *
+     * @return array
+     */
+    public static function data(array $names, array $option = [], bool $force = false): array
+    {
+        return self::proxy()->data($names, $option, $force);
+    }
+
+    /**
+     * 刷新缓存数据.
+     *
+     * @param array $names
+     */
+    public static function refresh(array $names): void
+    {
+        self::proxy()->refresh($names);
+    }
+
+    /**
+     * 代理服务
+     *
+     * @return \Leevel\Cache\Load
+     */
+    public static function proxy(): BaseLoad
+    {
+        return Container::singletons()->make('cache.load');
     }
 }

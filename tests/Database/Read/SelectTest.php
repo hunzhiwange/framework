@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class SelectTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -49,11 +49,10 @@ class SelectTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                select('select *from test where id = ?', [1])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->select('select *from test where id = ?', [1])
             )
         );
 
@@ -71,11 +70,10 @@ class SelectTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                select(),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->select(),
                 1
             )
         );
@@ -94,13 +92,12 @@ class SelectTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                select(function ($select) {
-                    $select->where('id', 1);
-                }),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->select(function ($select) {
+                        $select->where('id', 1);
+                    }),
                 2
             )
         );
@@ -116,16 +113,16 @@ class SelectTest extends TestCase
             ]
             eot;
 
-        $select = $connect->table('test')->
-
-        where('id', 5);
+        $select = $connect
+            ->table('test')
+            ->where('id', 5);
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                select($select),
+                $connect
+                    ->sql()
+                    ->select($select),
                 3
             )
         );

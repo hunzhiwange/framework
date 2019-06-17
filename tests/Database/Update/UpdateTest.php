@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class UpdateTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -52,18 +52,16 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->update(['name' => '小猪'])
             )
         );
     }
 
-    public function testForUpdate()
+    public function testForUpdate(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -82,20 +80,17 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                forUpdate()->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->forUpdate()
+                    ->update(['name' => '小猪'])
             )
         );
     }
 
-    public function testWithLimit()
+    public function testWithLimit(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -114,20 +109,17 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                top(2)->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->top(2)
+                    ->update(['name' => '小猪'])
             )
         );
     }
 
-    public function testWithOrderBy()
+    public function testWithOrderBy(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -146,20 +138,17 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                orderBy('id desc')->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->orderBy('id desc')
+                    ->update(['name' => '小猪'])
             )
         );
     }
 
-    public function testWithJoin()
+    public function testWithJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -178,20 +167,17 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test as t')->
-
-                join('hello as h', '', 't.id', '=', '{[size]}')->
-
-                where('id', 503)->
-
-                update(['name' => '小猪'])
+                $connect
+                    ->sql()
+                    ->table('test as t')
+                    ->join('hello as h', '', 't.id', '=', '{[size]}')
+                    ->where('id', 503)
+                    ->update(['name' => '小猪'])
             )
         );
     }
 
-    public function testBind()
+    public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -211,28 +197,25 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                bind(['小牛逼'])->
-
-                update(
-                    [
-                        'name'  => '[:hello]',
-                        'value' => '[?]',
-                    ],
-                    [
-                        'hello' => 'hello world!',
-                    ]
-                )
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->bind(['小牛逼'])
+                    ->update(
+                        [
+                            'name'  => '[:hello]',
+                            'value' => '[?]',
+                        ],
+                        [
+                            'hello' => 'hello world!',
+                        ]
+                    )
             )
         );
     }
 
-    public function testExpression()
+    public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -246,15 +229,13 @@ class UpdateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                update([
-                    'name' => '{concat([value],[name])}',
-                ])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->update([
+                        'name' => '{concat([value],[name])}',
+                    ])
             )
         );
     }

@@ -63,7 +63,7 @@ abstract class View
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\View\IView
      */
     public function setOption(string $name, $value): IView
     {
@@ -76,7 +76,7 @@ abstract class View
      * 设置模板变量.
      *
      * @param array|string $name
-     * @param mixed        $value
+     * @param null|mixed   $value
      */
     public function setVar($name, $value = null): void
     {
@@ -130,12 +130,14 @@ abstract class View
     /**
      * 分析展示的视图文件.
      *
-     * @param string $file
-     * @param string $ext
+     * @param null|string $file
+     * @param null|string $ext
+     *
+     * @throws \RuntimeException
      *
      * @return string
      */
-    protected function parseDisplayFile(?string $file = null, ?string $ext = ''): string
+    protected function parseDisplayFile(?string $file = null, ?string $ext = null): string
     {
         if (!is_file($file)) {
             $file = $this->parseFile($file, $ext);
@@ -153,12 +155,14 @@ abstract class View
     /**
      * 分析模板真实路径.
      *
-     * @param string $tpl
-     * @param string $ext
+     * @param null|string $tpl
+     * @param null|string $ext
+     *
+     * @throws \RuntimeException
      *
      * @return string
      */
-    protected function parseFile(?string $tpl = null, ?string $ext = ''): string
+    protected function parseFile(?string $tpl = null, ?string $ext = null): string
     {
         $tpl = trim(str_replace('->', '.', $tpl));
 

@@ -21,6 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
+use Leevel\Router\IView as IBaseView;
+use Leevel\Router\View as BaseView;
+use Leevel\View\IView as IViews;
 
 /**
  * 代理 view.
@@ -30,8 +33,9 @@ use Leevel\Di\Container;
  * @since 2017.06.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-class View
+class View implements IView
 {
     /**
      * call.
@@ -43,8 +47,91 @@ class View
      */
     public static function __callStatic(string $method, array $args)
     {
-        return Container::singletons()
-            ->make('view')
-            ->{$method}(...$args);
+        return self::proxy()->{$method}(...$args);
+    }
+
+    /**
+     * 切换视图.
+     *
+     * @param \Leevel\View\IView $view
+     *
+     * @return \Leevel\Router\IView
+     */
+    public static function switchView(IViews $view): IBaseView
+    {
+        return self::proxy()->switchView($view);
+    }
+
+    /**
+     * 变量赋值
+     *
+     * @param mixed      $name
+     * @param null|mixed $value
+     *
+     * @return \Leevel\Router\IView
+     */
+    public static function setVar($name, $value = null): IBaseView
+    {
+        return self::proxy()->setVar($name, $value);
+    }
+
+    /**
+     * 获取变量赋值.
+     *
+     * @param null|string $name
+     *
+     * @return mixed
+     */
+    public static function getVar(?string $name = null)
+    {
+        return self::proxy()->getVar($name);
+    }
+
+    /**
+     * 删除变量值.
+     *
+     * @param array $name
+     *
+     * @return \Leevel\Router\IView
+     */
+    public static function deleteVar(array $name): IBaseView
+    {
+        return self::proxy()->deleteVar($name);
+    }
+
+    /**
+     * 清空变量值.
+     *
+     * @param null|string $name
+     *
+     * @return \Leevel\Router\IView
+     */
+    public static function clearVar(): IBaseView
+    {
+        return self::proxy()->clearVar();
+    }
+
+    /**
+     * 加载视图文件.
+     *
+     * @param string      $file
+     * @param array       $vars
+     * @param null|string $ext
+     *
+     * @return string
+     */
+    public static function display(string $file, array $vars = [], ?string $ext = null): string
+    {
+        return self::proxy()->display($file, $vars, $ext);
+    }
+
+    /**
+     * 代理服务
+     *
+     * @return \Leevel\Router\View
+     */
+    public static function proxy(): BaseView
+    {
+        return Container::singletons()->make('view');
     }
 }

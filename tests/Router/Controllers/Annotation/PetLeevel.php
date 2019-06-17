@@ -36,6 +36,9 @@ class PetLeevel
     public function handle(IContainer $container)
     {
         return 'hello plus for petLeevel, params petId is '.
-            $container->make('request')->params->get('petId');
+            $container
+                ->make('request')
+                ->params
+                ->get('petId');
     }
 }

@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class FlowControlTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Test1();
 
@@ -42,34 +42,30 @@ class FlowControlTest extends TestCase
 
         $condition1 = 1;
 
-        $value = $test->
-
-        ifs($condition1)->condition1()->
-
-        elses()->condition2()->
-
-        endIfs()->
-
-        value();
+        $value = $test
+            ->if($condition1)
+            ->condition1()
+            ->else()
+            ->condition2()
+            ->fi()
+            ->value();
 
         $this->assertSame('condition1', $value);
     }
 
-    public function testElses()
+    public function testElses(): void
     {
         $test = new Test1();
 
         $condition1 = 0;
 
-        $value = $test->
-
-        ifs($condition1)->condition1()->
-
-        elses()->condition2()->
-
-        endIfs()->
-
-        value();
+        $value = $test
+            ->if($condition1)
+            ->condition1()
+            ->else()
+            ->condition2()
+            ->fi()
+            ->value();
 
         $this->assertSame('condition2', $value);
     }
@@ -84,22 +80,19 @@ class FlowControlTest extends TestCase
     {
         $test = new Test1();
 
-        $value = $test->
-
-        ifs(0 === $condition)->condition1()->
-
-        elseIfs(1 === $condition)->condition2()->
-
-        elseIfs(2 === $condition)->condition3()->
-
-        elseIfs(3 === $condition)->condition4()->
-
-        // elses 仅能根据上一次的 elseIfs 或 ifs 来做判断，这里为 elseIfs(3 === $condition)
-        elses()->condition5()->
-
-        endIfs()->
-
-        value();
+        $value = $test
+            ->if(0 === $condition)
+            ->condition1()
+            ->elif(1 === $condition)
+            ->condition2()
+            ->elif(2 === $condition)
+            ->condition3()
+            ->elif(3 === $condition)
+            ->condition4()
+            ->else() // else 仅能根据上一次的 elif 或 if 来做判断，这里为 elif(3 === $condition)
+            ->condition5()
+            ->fi()
+            ->value();
 
         $this->assertSame($result, $value);
     }
@@ -110,38 +103,35 @@ class FlowControlTest extends TestCase
             [0, 'condition1 condition5'],
             [1, 'condition2 condition5'],
             [2, 'condition3 condition5'],
-            [3, 'condition4'], // elses 仅能根据上一次的 elseIfs 或 ifs 来做判断，这里为 elseIfs(3 === $condition)
+            [3, 'condition4'], // else 仅能根据上一次的 elif 或 if 来做判断，这里为 elif(3 === $condition)
             [4, 'condition5'],
             [5, 'condition5'],
             [6, 'condition5'],
         ];
     }
 
-    public function testElseIfs()
+    public function testElseIfs(): void
     {
         $test = new Test1();
 
         $condition1 = 1;
 
-        $value = $test->
-
-        ifs(0 === $condition1)->condition1()->
-
-        elseIfs(1 === $condition1)->condition2()->
-
-        endIfs()->
-
-        value();
+        $value = $test
+            ->if(0 === $condition1)
+            ->condition1()
+            ->elif(1 === $condition1)
+            ->condition2()
+            ->fi()
+            ->value();
 
         $this->assertSame('condition2', $value);
     }
 
-    public function testPlaceholderFlowControl()
+    public function testPlaceholderFlowControl(): void
     {
         $test = new Test1();
 
-        $this->assertInstanceof(Test1::class, $test->placeholder());
-        $this->assertInstanceof(Test1::class, $test->foobar());
+        $this->assertInstanceof(Test1::class, $test->_());
     }
 }
 

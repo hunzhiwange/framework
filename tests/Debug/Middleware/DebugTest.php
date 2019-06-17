@@ -47,7 +47,7 @@ use Tests\TestCase;
  */
 class DebugTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $debug = $this->createDebug();
         $app = $debug->getContainer()->make('app');
@@ -66,7 +66,7 @@ class DebugTest extends TestCase
         $this->assertTrue($debug->isBootstrap());
     }
 
-    public function testTerminate()
+    public function testTerminate(): void
     {
         $debug = $this->createDebug();
         $app = $debug->getContainer()->make('app');
@@ -100,7 +100,7 @@ class DebugTest extends TestCase
         }, $request, $response));
     }
 
-    public function testHandleWithDebugIsFalse()
+    public function testHandleWithDebugIsFalse(): void
     {
         $debug = $this->createDebug(false);
         $app = $debug->getContainer()->make('app');
@@ -119,7 +119,7 @@ class DebugTest extends TestCase
         $this->assertFalse($debug->isBootstrap());
     }
 
-    public function testTerminateWithDebugIsFalse()
+    public function testTerminateWithDebugIsFalse(): void
     {
         $debug = $this->createDebug(false);
         $app = $debug->getContainer()->make('app');
@@ -185,7 +185,6 @@ class DebugTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);

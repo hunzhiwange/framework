@@ -185,7 +185,7 @@ class Log implements ILog
     /**
      * 清理日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      */
     public static function clear(?string $level = null): void
     {
@@ -195,7 +195,7 @@ class Log implements ILog
     /**
      * 获取日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return array
      */
@@ -207,7 +207,7 @@ class Log implements ILog
     /**
      * 获取日志记录数量.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return int
      */

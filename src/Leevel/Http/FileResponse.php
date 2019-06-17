@@ -67,12 +67,12 @@ class FileResponse extends Response
     /**
      * 创建一个文件响应.
      *
-     * @param \SplFileInfo|\SplFileObject|string $file
-     * @param int                                $status
-     * @param array                              $headers
-     * @param null|string                        $contentDisposition
-     * @param bool                               $autoEtag
-     * @param bool                               $autoLastModified
+     * @param null|\SplFileInfo|\SplFileObject|string $file
+     * @param int                                     $status
+     * @param array                                   $headers
+     * @param null|string                             $contentDisposition
+     * @param bool                                    $autoEtag
+     * @param bool                                    $autoLastModified
      *
      * @return static
      */
@@ -85,11 +85,13 @@ class FileResponse extends Response
      * 设置文件.
      *
      * @param \SplFileInfo|\SplFileObject|string $file
-     * @param string                             $contentDisposition
+     * @param null|string                        $contentDisposition
      * @param bool                               $autoEtag
      * @param bool                               $autoLastModified
      *
-     * @return $this
+     * @throws \Leevel\Http\FileException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function setFile($file, ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true): IResponse
     {
@@ -143,7 +145,7 @@ class FileResponse extends Response
     /**
      * 自动设置最后修改时间.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setAutoLastModified(): IResponse
     {
@@ -159,7 +161,7 @@ class FileResponse extends Response
     /**
      * 自动设置标记.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setAutoEtag(): IResponse
     {
@@ -176,6 +178,8 @@ class FileResponse extends Response
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function setContent($content): IResponse
     {
@@ -184,7 +188,9 @@ class FileResponse extends Response
         }
 
         if (null !== $content) {
-            throw new LogicException('The content cannot be set on a FileResponse instance.');
+            $e = 'The content cannot be set on a FileResponse instance.';
+
+            throw new LogicException($e);
         }
 
         return $this;
@@ -204,7 +210,9 @@ class FileResponse extends Response
      * @param string $disposition
      * @param string $filename
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function setContentDisposition(string $disposition, string $filename = ''): IResponse
     {
@@ -220,7 +228,9 @@ class FileResponse extends Response
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             ResponseHeaderBag::DISPOSITION_INLINE,
         ], true)) {
-            throw new InvalidArgumentException('The disposition type is invalid.');
+            $e = 'The disposition type is invalid.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->headers->set(

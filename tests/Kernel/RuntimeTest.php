@@ -47,7 +47,7 @@ use Tests\TestCase;
  */
 class RuntimeTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -73,7 +73,6 @@ class RuntimeTest extends TestCase
 
         $log = $this->createMock(ILog::class);
 
-        $log->method('error')->willReturn(null);
         $this->assertNull($log->error('hello world', []));
 
         $container->singleton(ILog::class, function () use ($log) {
@@ -87,7 +86,7 @@ class RuntimeTest extends TestCase
         $this->assertNull($runtime->report($e));
     }
 
-    public function testExceptionItSelfWithReport()
+    public function testExceptionItSelfWithReport(): void
     {
         $app = new AppRuntime(new Container(), __DIR__.'/app');
 
@@ -104,7 +103,7 @@ class RuntimeTest extends TestCase
         unset($_SERVER['testExceptionItSelfWithReport']);
     }
 
-    public function testRender()
+    public function testRender(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -137,7 +136,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRenderWithCustomRenderMethod()
+    public function testRenderWithCustomRenderMethod(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -171,7 +170,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRenderWithCustomRenderMethod2()
+    public function testRenderWithCustomRenderMethod2(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -205,7 +204,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRenderWithCustomRenderMethodToJson()
+    public function testRenderWithCustomRenderMethodToJson(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -239,7 +238,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRenderToJson()
+    public function testRenderToJson(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -276,7 +275,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRendorWithHttpExceptionView()
+    public function testRendorWithHttpExceptionView(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -305,7 +304,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRendorWithHttpExceptionViewFor404()
+    public function testRendorWithHttpExceptionViewFor404(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -334,7 +333,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(404, $resultResponse->getStatusCode());
     }
 
-    public function testRendorWithHttpExceptionViewButNotFoundView()
+    public function testRendorWithHttpExceptionViewButNotFoundView(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -361,7 +360,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(405, $resultResponse->getStatusCode());
     }
 
-    public function testRenderWithDebugIsOff()
+    public function testRenderWithDebugIsOff(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -399,7 +398,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRenderWithDebugIsOn()
+    public function testRenderWithDebugIsOn(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -435,7 +434,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
-    public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView()
+    public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 
@@ -464,7 +463,7 @@ class RuntimeTest extends TestCase
         $this->assertSame(405, $resultResponse->getStatusCode());
     }
 
-    public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultViewButNotStill()
+    public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultViewButNotStill(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
@@ -491,7 +490,7 @@ class RuntimeTest extends TestCase
         $runtime->rendorWithHttpExceptionView($e);
     }
 
-    public function testRenderForEntityNotFoundException()
+    public function testRenderForEntityNotFoundException(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
 

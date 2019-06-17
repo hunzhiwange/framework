@@ -57,7 +57,7 @@ class ManagerTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $manager = $this->createDatabaseManager();
 
@@ -87,7 +87,7 @@ class ManagerTest extends TestCase
      *     note="",
      * )
      */
-    public function testParseDatabaseOptionDistributedIsTrue()
+    public function testParseDatabaseOptionDistributedIsTrue(): void
     {
         $manager = $this->createDatabaseManager();
 
@@ -155,7 +155,7 @@ class ManagerTest extends TestCase
      *     note="",
      * )
      */
-    public function testParseDatabaseOptionDistributedIsTrueWithTwoDimensionalArray()
+    public function testParseDatabaseOptionDistributedIsTrueWithTwoDimensionalArray(): void
     {
         $manager = $this->createDatabaseManager();
 
@@ -237,7 +237,7 @@ class ManagerTest extends TestCase
      *     note="",
      * )
      */
-    public function testParseDatabaseOptionMasterAndSlaveMustBeAnArray()
+    public function testParseDatabaseOptionMasterAndSlaveMustBeAnArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(

@@ -48,7 +48,7 @@ class CompilerBreakTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 
@@ -82,7 +82,7 @@ class CompilerBreakTest extends TestCase
      *     note="",
      * )
      */
-    public function testContinue()
+    public function testContinue(): void
     {
         $parser = $this->createParser();
 

@@ -23,8 +23,8 @@ namespace Leevel\Support\Str;
 /**
  * 随机字中文.
  *
- * @param int    $length
- * @param string $charBox
+ * @param int         $length
+ * @param null|string $charBox
  *
  * @return string
  */

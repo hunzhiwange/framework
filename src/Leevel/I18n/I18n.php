@@ -61,29 +61,29 @@ class I18n implements II18n
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  ...$arr
+     * @param array  ...$data
      *
      * @return string
      */
-    public function __(string $text, ...$arr): string
+    public function __(string $text, ...$data): string
     {
-        return $this->gettext($text, ...$arr);
+        return $this->gettext($text, ...$data);
     }
 
     /**
      * 获取语言 text.
      *
      * @param string $text
-     * @param array  ...$arr
+     * @param array  ...$data
      *
      * @return string
      */
-    public function gettext(string $text, ...$arr): string
+    public function gettext(string $text, ...$data): string
     {
         $value = $this->text[$this->i18n][$text] ?? $text;
 
-        if ($arr) {
-            return sprintf($value, ...$arr);
+        if ($data) {
+            return sprintf($value, ...$data);
         }
 
         return $value;

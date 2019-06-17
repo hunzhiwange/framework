@@ -116,7 +116,7 @@ class OpenApiRouter
      * 构造函数.
      *
      * @param \Leevel\Router\MiddlewareParser $middlewareParser
-     * @param string                          $domain
+     * @param null|string                     $domain
      */
     public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null)
     {
@@ -135,13 +135,15 @@ class OpenApiRouter
      * 添加一个扫描目录.
      *
      * @param string $dir
+     *
+     * @throws \InvalidArgumentException
      */
     public function addScandir(string $dir): void
     {
         if (!is_dir($dir)) {
-            throw new InvalidArgumentException(
-                sprintf('OpenApi scandir %s is exits.', $dir)
-            );
+            $e = sprintf('OpenApi scandir %s is exits.', $dir);
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->scandirs[] = $dir;

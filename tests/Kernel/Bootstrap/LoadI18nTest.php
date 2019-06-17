@@ -50,7 +50,7 @@ class LoadI18nTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $bootstrap = new LoadI18n();
 
@@ -94,7 +94,7 @@ class LoadI18nTest extends TestCase
         $this->assertSame('Go to', $i18n->gettext('前往'));
     }
 
-    public function testLoadCached()
+    public function testLoadCached(): void
     {
         $bootstrap = new LoadI18n();
 
@@ -145,7 +145,7 @@ class LoadI18nTest extends TestCase
         Fso::deleteDirectory($appPath.'/bootstrap', true);
     }
 
-    public function testExtendI18nDirNotFound()
+    public function testExtendI18nDirNotFound(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(

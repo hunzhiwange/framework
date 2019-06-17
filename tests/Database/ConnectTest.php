@@ -39,7 +39,7 @@ use Throwable;
  */
 class ConnectTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -64,22 +64,27 @@ class ConnectTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('guest_book')->
-
-                insert($data)
+                $connect
+                    ->sql()
+                    ->table('guest_book')
+                    ->insert($data)
             )
         );
 
         // 写入数据
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
         $this->assertSame(1, $connect->table('guest_book')->findCount());
 
-        $insertData = $connect->table('guest_book')->where('id', 1)->findOne();
+        $insertData = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame('1', $insertData->id);
         $this->assertSame('小鸭子', $insertData->name);
@@ -87,15 +92,18 @@ class ConnectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $insertData->create_at);
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
@@ -106,7 +114,7 @@ class ConnectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -120,7 +128,7 @@ class ConnectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
-    public function testQueryOnlyAllowedSelect()
+    public function testQueryOnlyAllowedSelect(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -132,7 +140,7 @@ class ConnectTest extends TestCase
         $connect->query('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']);
     }
 
-    public function testExecuteNotAllowedSelect()
+    public function testExecuteNotAllowedSelect(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -144,15 +152,18 @@ class ConnectTest extends TestCase
         $connect->execute('select * from guest_book where id=?', [1]);
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
         $insertData = $connect->select('select * from guest_book where id = ?', [1]);
         $insertData = (array) $insertData[0];
@@ -163,15 +174,18 @@ class ConnectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
-    public function testSelectWithBind()
+    public function testSelectWithBind(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
@@ -182,7 +196,7 @@ class ConnectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
-    public function testInsert()
+    public function testInsert(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -197,7 +211,7 @@ class ConnectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -222,7 +236,7 @@ class ConnectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -241,28 +255,32 @@ class ConnectTest extends TestCase
         $this->assertSame(0, $connect->table('guest_book')->findCount());
     }
 
-    public function testTransaction()
+    public function testTransaction(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
 
         $connect->transaction(function ($connect) {
-            $connect->table('guest_book')->where('id', 1)->delete();
+            $connect
+                ->table('guest_book')
+                ->where('id', 1)
+                ->delete();
 
             $this->assertSame(1, $connect->table('guest_book')->findCount());
 
-            $connect->table('guest_book')->where('id', 2)->delete();
+            $connect
+                ->table('guest_book')
+                ->where('id', 2)
+                ->delete();
 
             $this->assertSame(0, $connect->table('guest_book')->findCount());
         });
@@ -270,18 +288,16 @@ class ConnectTest extends TestCase
         $this->assertSame(0, $connect->table('guest_book')->findCount());
     }
 
-    public function testTransactionRollback()
+    public function testTransactionRollback(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
@@ -308,18 +324,16 @@ class ConnectTest extends TestCase
         $this->assertSame(2, $connect->table('guest_book')->findCount());
     }
 
-    public function testTransactionByCustom()
+    public function testTransactionByCustom(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
@@ -339,18 +353,16 @@ class ConnectTest extends TestCase
         $this->assertSame(0, $connect->table('guest_book')->findCount());
     }
 
-    public function testTransactionRollbackByCustom()
+    public function testTransactionRollbackByCustom(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
@@ -360,7 +372,10 @@ class ConnectTest extends TestCase
         try {
             $connect->beginTransaction();
 
-            $connect->table('guest_book')->where('id', 1)->delete();
+            $connect
+                ->table('guest_book')
+                ->where('id', 1)
+                ->delete();
 
             $this->assertSame(1, $connect->table('guest_book')->findCount());
 
@@ -381,7 +396,7 @@ class ConnectTest extends TestCase
         $this->assertSame(2, $connect->table('guest_book')->findCount());
     }
 
-    public function testCallProcedure()
+    public function testCallProcedure(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -399,11 +414,9 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
-            $connect->
-
-            table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $result = $connect->query('CALL test_procedure(0)');
@@ -436,7 +449,7 @@ class ConnectTest extends TestCase
         $connect->execute('DROP PROCEDURE IF EXISTS `test_procedure`');
     }
 
-    public function testPdo()
+    public function testPdo(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -448,7 +461,7 @@ class ConnectTest extends TestCase
         $connect->close();
     }
 
-    public function testQueryException()
+    public function testQueryException(): void
     {
         $this->expectException(\PDOException::class);
         $this->expectExceptionMessage(
@@ -460,7 +473,7 @@ class ConnectTest extends TestCase
         $connect->query('SELECT * FROM db_not_found where id = 1;');
     }
 
-    public function testBeginTransactionWithCreateSavepoint()
+    public function t2estBeginTransactionWithCreateSavepoint(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -468,32 +481,31 @@ class ConnectTest extends TestCase
 
         $connect->beginTransaction();
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'tom']); // `tom` will not rollBack
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'tom']); // `tom` will not rollBack
 
         $connect->beginTransaction();
         $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'jerry']);
 
         $connect->rollBack();
         $this->assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->lastSql()[0]);
         $connect->commit();
 
-        $book = $connect->table('guest_book')->where('id', 1)->findOne();
+        $book = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame(1, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
     }
 
-    public function testCommitWithoutActiveTransaction()
+    public function testCommitWithoutActiveTransaction(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -505,7 +517,7 @@ class ConnectTest extends TestCase
         $connect->commit();
     }
 
-    public function testCommitButIsRollbackOnly()
+    public function testCommitButIsRollbackOnly(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -520,7 +532,7 @@ class ConnectTest extends TestCase
         $connect->commit();
     }
 
-    public function testCommitWithReleaseSavepoint()
+    public function t2estCommitWithReleaseSavepoint(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -528,34 +540,36 @@ class ConnectTest extends TestCase
 
         $connect->beginTransaction();
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'tom']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'tom']);
 
         $connect->beginTransaction();
         $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'jerry']);
 
         $connect->commit();
         $this->assertSame('RELEASE SAVEPOINT trans2', $connect->lastSql()[0]);
         $connect->commit();
 
-        $book = $connect->table('guest_book')->where('id', 1)->findOne();
-        $book2 = $connect->table('guest_book')->where('id', 2)->findOne();
+        $book = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->findOne();
+        $book2 = $connect
+            ->table('guest_book')
+            ->where('id', 2)
+            ->findOne();
 
         $this->assertSame(2, $connect->table('guest_book')->findCount());
         $this->assertSame('tom', $book->name);
         $this->assertSame('jerry', $book2->name);
     }
 
-    public function testRollBackWithoutActiveTransaction()
+    public function testRollBackWithoutActiveTransaction(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -567,42 +581,34 @@ class ConnectTest extends TestCase
         $connect->rollBack();
     }
 
-    public function testNumRows()
+    public function testNumRows(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(0, $connect->numRows());
 
-        $connect->
-
-        table('guest_book')->
-
-        insert(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->insert(['name' => 'jerry', 'content' => '']);
 
         $this->assertSame(1, $connect->numRows());
 
-        $connect->
-
-        table('guest_book')->
-
-        where('id', 1)->
-
-        update(['name' => 'jerry']);
+        $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->update(['name' => 'jerry']);
 
         $this->assertSame(0, $connect->numRows());
 
-        $connect->
-
-        table('guest_book')->
-
-        where('id', 1)->
-
-        update(['name' => 'tom']);
+        $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->update(['name' => 'tom']);
 
         $this->assertSame(1, $connect->numRows());
     }
 
-    public function testNormalizeColumnValueWithBool()
+    public function testNormalizeColumnValueWithBool(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -610,7 +616,7 @@ class ConnectTest extends TestCase
         $this->assertFalse($connect->normalizeColumnValue(false));
     }
 
-    public function testNormalizeBindParamTypeWithBool()
+    public function testNormalizeBindParamTypeWithBool(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -618,7 +624,7 @@ class ConnectTest extends TestCase
         $this->assertSame(PDO::PARAM_BOOL, $connect->normalizeBindParamType(false));
     }
 
-    public function testReadConnectDistributed()
+    public function testReadConnectDistributed(): void
     {
         $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
@@ -666,7 +672,7 @@ class ConnectTest extends TestCase
         $connect->close();
     }
 
-    public function testReadConnectDistributedButAllInvalid()
+    public function testReadConnectDistributedButAllInvalid(): void
     {
         $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
@@ -715,7 +721,7 @@ class ConnectTest extends TestCase
         $connect->close();
     }
 
-    public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate()
+    public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate(): void
     {
         $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
@@ -764,7 +770,7 @@ class ConnectTest extends TestCase
         $connect->close();
     }
 
-    public function testConnectException()
+    public function testConnectException(): void
     {
         $this->expectException(\PDOException::class);
 
@@ -789,7 +795,7 @@ class ConnectTest extends TestCase
         $connect->pdo(true);
     }
 
-    public function testReconnectRetryForQuery()
+    public function testReconnectRetryForQuery(): void
     {
         $this->expectException(\PDOException::class);
         $this->expectExceptionMessage(
@@ -819,7 +825,7 @@ class ConnectTest extends TestCase
         $connect->query('SELECT * FROM not_found_table');
     }
 
-    public function testReconnectRetryForExecute()
+    public function testReconnectRetryForExecute(): void
     {
         $this->expectException(\PDOException::class);
         $this->expectExceptionMessage(

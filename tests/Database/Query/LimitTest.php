@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class LimitTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,11 +51,10 @@ class LimitTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                limit(5, 10)->
-
-                find(null, true)
+                $connect
+                    ->table('test')
+                    ->limit(5, 10)
+                    ->find(null, true)
             )
         );
 
@@ -73,11 +72,10 @@ class LimitTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                one()->
-
-                find(null, true),
+                $connect
+                    ->table('test')
+                    ->one()
+                    ->find(null, true),
                 1
             )
         );
@@ -96,11 +94,10 @@ class LimitTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                all()->
-
-                find(null, true),
+                $connect
+                    ->table('test')
+                    ->all()
+                    ->find(null, true),
                 2
             )
         );
@@ -119,20 +116,18 @@ class LimitTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                top(15)->
-
-                find(null, true),
+                $connect
+                    ->table('test')
+                    ->top(15)
+                    ->find(null, true),
                 3
             )
         );
     }
 
-    public function testTopFlow()
+    public function testTopFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -149,27 +144,21 @@ class LimitTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                top(5)->
-
-                elses()->
-
-                top(6)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->top(5)
+                    ->else()
+                    ->top(6)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testTopFlow2()
+    public function testTopFlow2(): void
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -186,27 +175,21 @@ class LimitTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                top(5)->
-
-                elses()->
-
-                top(6)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->top(5)
+                    ->else()
+                    ->top(6)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testLimitFlow()
+    public function testLimitFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -223,27 +206,21 @@ class LimitTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                limit(0, 5)->
-
-                elses()->
-
-                limit(2, 3)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->limit(0, 5)
+                    ->else()
+                    ->limit(2, 3)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testLimitFlow2()
+    public function testLimitFlow2(): void
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -260,19 +237,14 @@ class LimitTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                limit(0, 5)->
-
-                elses()->
-
-                limit(2, 3)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->limit(0, 5)
+                    ->else()
+                    ->limit(2, 3)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }

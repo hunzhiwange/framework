@@ -53,7 +53,7 @@ abstract class Mail implements IMail
     /**
      * 视图.
      *
-     * @var \leevel\Router\IView
+     * @var \Leevel\Router\IView
      */
     protected IView $view;
 
@@ -111,7 +111,7 @@ abstract class Mail implements IMail
      * @param null|\Leevel\Event\IDispatch $dispatch
      * @param array                        $option
      */
-    public function __construct(IView $view, IDispatch $dispatch = null, array $option = [])
+    public function __construct(IView $view, ?IDispatch $dispatch = null, array $option = [])
     {
         $this->view = $view;
         $this->dispatch = $dispatch;
@@ -139,7 +139,7 @@ abstract class Mail implements IMail
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function setOption(string $name, $value): IMail
     {
@@ -154,7 +154,7 @@ abstract class Mail implements IMail
      * @param string      $address
      * @param null|string $name
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function globalFrom(string $address, ?string $name = null): IMail
     {
@@ -169,7 +169,7 @@ abstract class Mail implements IMail
      * @param string      $address
      * @param null|string $name
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function globalTo(string $address, ?string $name = null): IMail
     {
@@ -184,7 +184,7 @@ abstract class Mail implements IMail
      * @param string $file
      * @param array  $data
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function view(string $file, array $data = []): IMail
     {
@@ -201,7 +201,7 @@ abstract class Mail implements IMail
      *
      * @param string $content
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function html(string $content): IMail
     {
@@ -215,7 +215,7 @@ abstract class Mail implements IMail
      *
      * @param string $content
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function plain(string $content): IMail
     {
@@ -230,7 +230,7 @@ abstract class Mail implements IMail
      * @param string $file
      * @param array  $data
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function viewPlain(string $file, array $data = []): IMail
     {
@@ -247,7 +247,7 @@ abstract class Mail implements IMail
      *
      * @param \Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
     public function message(Closure $callbacks): IMail
     {
@@ -262,9 +262,9 @@ abstract class Mail implements IMail
      * @param string        $file
      * @param null|\Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
-    public function attachMail(string $file, Closure $callbacks = null): IMail
+    public function attachMail(string $file, ?Closure $callbacks = null): IMail
     {
         $this->makeMessage();
 
@@ -282,9 +282,9 @@ abstract class Mail implements IMail
      * @param string        $name
      * @param null|\Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
-    public function attachData(string $data, string $name, Closure $callbacks = null): IMail
+    public function attachData(string $data, string $name, ?Closure $callbacks = null): IMail
     {
         $this->makeMessage();
 
@@ -347,12 +347,12 @@ abstract class Mail implements IMail
     /**
      * 发送邮件.
      *
-     * @param \Closure $callbacks
-     * @param bool     $htmlPriority
+     * @param null|\Closure $callbacks
+     * @param bool          $htmlPriority
      *
      * @return int
      */
-    public function sendMail(Closure $callbacks = null, bool $htmlPriority = true): int
+    public function flush(?Closure $callbacks = null, bool $htmlPriority = true): int
     {
         $this->makeMessage();
 
@@ -434,9 +434,9 @@ abstract class Mail implements IMail
     protected function getViewData(string $file, array $data): string
     {
         return $this->view
-            ->clearAssign()
-            ->assign('mail', $this)
-            ->assign($data)
+            ->clearVar()
+            ->setVar('mail', $this)
+            ->setVar($data)
             ->display($file, [], null);
     }
 
@@ -571,9 +571,9 @@ abstract class Mail implements IMail
      * @param \Swift_Attachment $attachment
      * @param null|\Closure     $callbacks
      *
-     * @return $this
+     * @return \Leevel\Mail\IMail
      */
-    protected function callbackAttachment(Swift_Attachment $attachment, Closure $callbacks = null): IMail
+    protected function callbackAttachment(Swift_Attachment $attachment, ?Closure $callbacks = null): IMail
     {
         if ($callbacks) {
             $callbacks($attachment, $this);

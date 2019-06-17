@@ -100,17 +100,16 @@ trait Database
             $this->assertSame(
                 sprintf($sql, $table),
                 $this->varJson(
-                    $connect->sql()->
-                    table($table)->
-                    truncate()
+                    $connect
+                        ->sql()
+                        ->table($table)
+                        ->truncate()
                 )
             );
 
-            $connect->
-
-            table($table)->
-
-            truncate();
+            $connect
+                ->table($table)
+                ->truncate();
         }
     }
 
@@ -163,7 +162,6 @@ trait Database
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);

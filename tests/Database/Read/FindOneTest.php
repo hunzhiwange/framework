@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class FindOneTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,29 +51,26 @@ class FindOneTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findOne()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findOne()
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                one()->
-
-                find()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->one()
+                    ->find()
             )
         );
     }
 
-    public function testOneFlow()
+    public function testOneFlow(): void
     {
         $condition = false;
 
@@ -93,26 +90,20 @@ class FindOneTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                sql()->
-
-                ifs($condition)->
-
-                one()->
-
-                elses()->
-
-                all()->
-
-                endIfs()->
-
-                find()
+                $connect
+                    ->table('test')
+                    ->sql()
+                    ->if($condition)
+                    ->one()
+                    ->else()
+                    ->all()
+                    ->fi()
+                    ->find()
             )
         );
     }
 
-    public function testOneFlow2()
+    public function testOneFlow2(): void
     {
         $condition = true;
 
@@ -132,21 +123,15 @@ class FindOneTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                sql()->
-
-                ifs($condition)->
-
-                one()->
-
-                elses()->
-
-                all()->
-
-                endIfs()->
-
-                find()
+                $connect
+                    ->table('test')
+                    ->sql()
+                    ->if($condition)
+                    ->one()
+                    ->else()
+                    ->all()
+                    ->fi()
+                    ->find()
             )
         );
     }

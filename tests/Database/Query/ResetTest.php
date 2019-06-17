@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class ResetTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,19 +51,14 @@ class ResetTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 5)->
-
-                where('name', 'like', 'me')->
-
-                reset()->
-
-                table('newtable')->
-
-                where('new', '=', 'world')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 5)
+                    ->where('name', 'like', 'me')
+                    ->reset()
+                    ->table('newtable')
+                    ->where('new', '=', 'world')
+                    ->findAll(true)
             )
         );
 
@@ -81,25 +76,20 @@ class ResetTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 5)->
-
-                where('name', 'like', 'me')->
-
-                setColumns('name,id')->
-
-                reset('where')->
-
-                where('new', 'like', 'new')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 5)
+                    ->where('name', 'like', 'me')
+                    ->setColumns('name,id')
+                    ->reset('where')
+                    ->where('new', 'like', 'new')
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testResetFlow()
+    public function testResetFlow(): void
     {
         $condition = false;
 
@@ -119,32 +109,23 @@ class ResetTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 5)->
-
-                where('name', 'like', 'me')->
-
-                setColumns('name,id')->
-
-                ifs($condition)->
-
-                reset()->
-
-                table('foo')->
-
-                elses()->
-
-                where('foo', 'like', 'bar')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 5)
+                    ->where('name', 'like', 'me')
+                    ->setColumns('name,id')
+                    ->if($condition)
+                    ->reset()
+                    ->table('foo')
+                    ->else()
+                    ->where('foo', 'like', 'bar')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testResetFlow2()
+    public function testResetFlow2(): void
     {
         $condition = true;
 
@@ -164,27 +145,18 @@ class ResetTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 5)->
-
-                where('name', 'like', 'me')->
-
-                setColumns('name,id')->
-
-                ifs($condition)->
-
-                reset()->
-
-                table('foo')->
-
-                elses()->
-
-                where('foo', 'like', 'bar')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 5)
+                    ->where('name', 'like', 'me')
+                    ->setColumns('name,id')
+                    ->if($condition)
+                    ->reset()
+                    ->table('foo')
+                    ->else()
+                    ->where('foo', 'like', 'bar')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }

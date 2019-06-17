@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\TestUpdatePropWhiteEntity;
  */
 class UpdateTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $entity = new TestEntity(['id' => 1], true);
 
@@ -73,7 +73,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testUpdatePropBlackAndWhite()
+    public function testUpdatePropBlackAndWhite(): void
     {
         $entity = new TestUpdatePropWhiteEntity(['id' => 5], true);
 
@@ -101,7 +101,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testUpdateReadonly()
+    public function testUpdateReadonly(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot set a read-only prop `name` on entity `Tests\\Database\\Ddd\\Entity\\TestReadonlyUpdateEntity`.');
@@ -111,7 +111,7 @@ class UpdateTest extends TestCase
         $entity->name = 'foo';
     }
 
-    public function testAutoFile()
+    public function testAutoFile(): void
     {
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
 
@@ -120,7 +120,7 @@ class UpdateTest extends TestCase
         $this->assertNull($entity->flushData());
     }
 
-    public function testAutoFileWithAll()
+    public function testAutoFileWithAll(): void
     {
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
 
@@ -149,7 +149,7 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testAutoFileWithCustomField()
+    public function testAutoFileWithCustomField(): void
     {
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
 

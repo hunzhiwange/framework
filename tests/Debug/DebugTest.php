@@ -55,7 +55,7 @@ use Tests\TestCase;
  */
 class DebugTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $debug = $this->createDebug();
 
@@ -95,7 +95,7 @@ class DebugTest extends TestCase
      *     title="JSON 关联数组调试",
      *     description="关联数组结构会在尾部追加一个选项 `:trace` 用于调试。
      *
-     * _**返回结构**_
+     * **返回结构**
      *
      * ``` php
      * $response = [\"foo\" => \"bar\", \":trace\" => []];
@@ -106,7 +106,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testJson()
+    public function testJson(): void
     {
         $debug = $this->createDebug();
 
@@ -135,7 +135,7 @@ class DebugTest extends TestCase
      *     title="JSON 非关联数组调试",
      *     description="非关联数组结构会在尾部追加一个 `:trace` 用于调试。
      *
-     * _**返回结构**_
+     * **返回结构**
      *
      * ``` php
      * $response = [\"foo\", \"bar\", [\":trace\" => []]];
@@ -146,7 +146,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testJsonForNotAssociativeArray()
+    public function testJsonForNotAssociativeArray(): void
     {
         $debug = $this->createDebug();
 
@@ -177,7 +177,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testDisable()
+    public function testDisable(): void
     {
         $debug = $this->createDebug();
 
@@ -222,7 +222,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testEnable()
+    public function testEnable(): void
     {
         $debug = $this->createDebug();
 
@@ -273,7 +273,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testEnableWithoutBootstrap()
+    public function testEnableWithoutBootstrap(): void
     {
         $debug = $this->createDebug();
 
@@ -311,7 +311,7 @@ class DebugTest extends TestCase
         $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    public function testEnableTwiceSameWithOne()
+    public function testEnableTwiceSameWithOne(): void
     {
         $debug = $this->createDebug();
 
@@ -363,7 +363,7 @@ class DebugTest extends TestCase
      * @api(
      *     title="调试消息等级",
      *     description="
-     * _**支持的消息类型**_
+     * **支持的消息类型**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')."
@@ -387,18 +387,17 @@ class DebugTest extends TestCase
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
 
-        $debug->{$level}('hello', 'world');
+        foreach (['hello', 'world'] as $v) {
+            $debug->{$level}($v);
+        }
 
         $debug->handle($request, $response);
 
         $content = $response->getContent();
 
         $this->assertStringContainsString('{"foo":"bar",":trace":', $content);
-
         $this->assertStringContainsString('"php":{"version":', $content);
-
         $this->assertStringContainsString('Starts from this moment with QueryPHP.', $content);
-
         $this->assertStringContainsString('{"message":"hello","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
         $this->assertStringContainsString('{"message":"world","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
     }
@@ -419,7 +418,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testWithSession()
+    public function testWithSession(): void
     {
         $debug = $this->createDebug();
 
@@ -450,7 +449,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testWithLog()
+    public function testWithLog(): void
     {
         $debug = $this->createDebugWithLog();
 
@@ -488,7 +487,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testTime()
+    public function testTime(): void
     {
         $debug = $this->createDebug();
 
@@ -521,7 +520,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testTimeWithLabel()
+    public function testTimeWithLabel(): void
     {
         $debug = $this->createDebug();
 
@@ -547,7 +546,7 @@ class DebugTest extends TestCase
         $this->assertStringContainsString('"measures":[{"label":"time_label","start":', $content);
     }
 
-    public function testEndWithNoStartDoNothing()
+    public function testEndWithNoStartDoNothing(): void
     {
         $debug = $this->createDebug();
 
@@ -571,7 +570,7 @@ class DebugTest extends TestCase
         $this->assertStringContainsString('"measures":[]', $content);
     }
 
-    public function testAddTime()
+    public function testAddTime(): void
     {
         $debug = $this->createDebug();
 
@@ -603,7 +602,7 @@ class DebugTest extends TestCase
         $this->assertStringContainsString('"duration_str":"4s",', $content);
     }
 
-    public function testClosureTime()
+    public function testClosureTime(): void
     {
         $debug = $this->createDebug();
 
@@ -628,7 +627,7 @@ class DebugTest extends TestCase
         $this->assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
     }
 
-    public function testException()
+    public function testException(): void
     {
         $debug = $this->createDebug();
 
@@ -660,7 +659,7 @@ class DebugTest extends TestCase
         $this->assertStringContainsString('$debug->exception(new Exception(\'test_exception\'));', $content);
     }
 
-    public function testExceptionWithError()
+    public function testExceptionWithError(): void
     {
         $debug = $this->createDebug();
 
@@ -692,7 +691,7 @@ class DebugTest extends TestCase
         $this->assertStringContainsString('$debug->exception(new Error(\'test_error\'));', $content);
     }
 
-    public function testSetOptionWithoutJson()
+    public function testSetOptionWithoutJson(): void
     {
         $debug = $this->createDebug();
 
@@ -730,7 +729,7 @@ class DebugTest extends TestCase
         $this->assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    public function testSetOptionWithoutJavascriptAndConsole()
+    public function testSetOptionWithoutJavascriptAndConsole(): void
     {
         $debug = $this->createDebug();
 
@@ -784,7 +783,7 @@ class DebugTest extends TestCase
         $this->assertSame('', $content);
     }
 
-    protected function createDebugWithLog()
+    protected function createDebugWithLog(): Debug
     {
         return new Debug($this->createAppWithLog()->container());
     }
@@ -826,7 +825,6 @@ class DebugTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);

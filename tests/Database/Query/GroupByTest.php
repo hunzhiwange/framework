@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class GroupByTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,13 +51,11 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy('id')->
-
-                groupBy('name')->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy('id')
+                    ->groupBy('name')
+                    ->findAll(true)
             )
         );
 
@@ -75,11 +73,10 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy('post.id')->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy('post.id')
+                    ->findAll(true),
                 1
             )
         );
@@ -98,11 +95,10 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy('{SUM([num])}')->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy('{SUM([num])}')
+                    ->findAll(true),
                 2
             )
         );
@@ -121,11 +117,10 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy("title,id,{concat('1234',[id],'ttt')}")->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy("title,id,{concat('1234',[id],'ttt')}")
+                    ->findAll(true),
                 3
             )
         );
@@ -144,20 +139,18 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                groupBy(['title,id,ttt', 'value'])->
-
-                findAll(true),
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->groupBy(['title,id,ttt', 'value'])
+                    ->findAll(true),
                 4
             )
         );
     }
 
-    public function testGroupByFlow()
+    public function testGroupByFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -174,24 +167,19 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                groupBy('id')->
-
-                elses()->
-
-                groupBy('name')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->groupBy('id')
+                    ->else()
+                    ->groupBy('name')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testGroupByFlow2()
+    public function testGroupByFlow2(): void
     {
         $condition = true;
 
@@ -211,19 +199,14 @@ class GroupByTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                groupBy('id')->
-
-                elses()->
-
-                groupBy('name')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->groupBy('id')
+                    ->else()
+                    ->groupBy('name')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }

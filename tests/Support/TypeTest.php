@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class TypeTest extends TestCase
 {
-    public function testType()
+    public function testType(): void
     {
         // string
         $this->assertTrue(Type::type('foo', 'str'));
@@ -118,7 +118,7 @@ class TypeTest extends TestCase
         $this->assertFalse(Type::type(1, 'callback'));
     }
 
-    public function testTypeNumeric()
+    public function testTypeNumeric(): void
     {
         $this->assertTrue(Type::typeNumeric(2.2));
         $this->assertTrue(Type::typeNumeric(4));
@@ -128,27 +128,27 @@ class TypeTest extends TestCase
         $this->assertTrue(Type::typeNumeric('2,111,500-200'));
     }
 
-    public function testTypeInt()
+    public function testTypeInt(): void
     {
         $this->assertTrue(Type::typeInt(1));
         $this->assertTrue(Type::typeInt('4'));
     }
 
-    public function testTypeThese()
+    public function testTypeThese(): void
     {
         $this->assertTrue(Type::typeThese('foo', ['string']));
         $this->assertTrue(Type::typeThese(1, ['string', 'int']));
         $this->assertTrue(Type::typeThese('foo', 'string'));
     }
 
-    public function testTypeTheseException()
+    public function testTypeTheseException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         $this->assertTrue(Type::typeThese('foo', [[]]));
     }
 
-    public function testTypeArray()
+    public function testTypeArray(): void
     {
         $this->assertFalse(Type::typeArray('foo', ['string']));
         $this->assertTrue(Type::typeArray(['foo'], ['string']));
@@ -160,7 +160,7 @@ class TypeTest extends TestCase
 
 class Callback1
 {
-    public function test()
+    public function test(): void
     {
     }
 

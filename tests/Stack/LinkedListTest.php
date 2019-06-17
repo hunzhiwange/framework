@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class LinkedListTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $linkedList = new LinkedList();
 
@@ -79,7 +79,7 @@ class LinkedListTest extends TestCase
         $this->assertSame('bar', $linkedList->offsetGet(3));
     }
 
-    public function testValidateType()
+    public function testValidateType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

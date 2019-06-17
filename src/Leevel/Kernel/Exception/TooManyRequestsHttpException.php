@@ -37,11 +37,11 @@ class TooManyRequestsHttpException extends HttpException
     /**
      * 构造函数.
      *
-     * @param null|string $message
-     * @param int         $code
-     * @param \Exception  $previous
+     * @param null|string     $message
+     * @param int             $code
+     * @param null|\Exception $previous
      */
-    public function __construct($message = null, $code = 0, Exception $previous = null)
+    public function __construct(?string $message = null, int $code = 0, ?Exception $previous = null)
     {
         parent::__construct(429, $message, $code, $previous);
     }

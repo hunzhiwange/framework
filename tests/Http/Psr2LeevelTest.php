@@ -37,7 +37,7 @@ use Zend\Diactoros\UploadedFile;
  */
 class Psr2LeevelTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         // see https://github.com/symfony/psr-http-message-bridge/blob/master/Tests/Factory/HttpFoundationFactoryTest.php#L57
         $uploadedFiles = [

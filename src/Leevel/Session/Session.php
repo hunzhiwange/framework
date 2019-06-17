@@ -72,7 +72,7 @@ abstract class Session
      *
      * @var array
      */
-    protected array $datas = [];
+    protected array $data = [];
 
     /**
      * 配置.
@@ -96,7 +96,7 @@ abstract class Session
     /**
      * 启动 session.
      *
-     * @param string $sessionId
+     * @param null|string $sessionId
      */
     public function start(?string $sessionId = null): void
     {
@@ -113,6 +113,8 @@ abstract class Session
 
     /**
      * 程序执行保存 session.
+     *
+     * @throws \RuntimeException
      */
     public function save(): void
     {
@@ -122,7 +124,7 @@ abstract class Session
 
         $this->unregisterFlash();
 
-        $this->write($this->getId(), serialize($this->datas));
+        $this->write($this->getId(), serialize($this->data));
 
         $this->started = false;
     }
@@ -134,7 +136,7 @@ abstract class Session
      */
     public function all(): array
     {
-        return $this->datas;
+        return $this->data;
     }
 
     /**
@@ -147,21 +149,19 @@ abstract class Session
     {
         $name = $this->getNormalizeName($name);
 
-        $this->datas[$name] = $value;
+        $this->data[$name] = $value;
     }
 
     /**
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed        $value
+     * @param null|mixed   $value
      */
     public function put($keys, $value = null): void
     {
         if (!is_array($keys)) {
-            $keys = [
-                $keys => $value,
-            ];
+            $keys = [$keys => $value];
         }
 
         foreach ($keys as $item => $value) {
@@ -177,10 +177,9 @@ abstract class Session
      */
     public function push(string $key, $value): void
     {
-        $arr = $this->get($key, []);
-        $arr[] = $value;
-
-        $this->set($key, $arr);
+        $data = $this->get($key, []);
+        $data[] = $value;
+        $this->set($key, $data);
     }
 
     /**
@@ -208,21 +207,21 @@ abstract class Session
     /**
      * 数组插入键值对数据.
      *
-     * @param string $key
-     * @param mixed  $keys
-     * @param mixed  $value
+     * @param string     $key
+     * @param mixed      $keys
+     * @param null|mixed $value
      */
     public function arr(string $key, $keys, $value = null): void
     {
-        $arr = $this->get($key, []);
+        $data = $this->get($key, []);
 
         if (is_string($keys)) {
-            $arr[$keys] = $value;
+            $data[$keys] = $value;
         } elseif (is_array($keys)) {
-            $arr = array_merge($arr, $keys);
+            $data = array_merge($data, $keys);
         }
 
-        $this->set($key, $arr);
+        $this->set($key, $data);
     }
 
     /**
@@ -233,49 +232,47 @@ abstract class Session
      */
     public function arrDelete(string $key, $keys): void
     {
-        $arr = $this->get($key, []);
+        $data = $this->get($key, []);
 
         if (!is_array($keys)) {
-            $keys = [
-                $keys,
-            ];
+            $keys = [$keys];
         }
 
         foreach ($keys as $item) {
-            if (isset($arr[$item])) {
-                unset($arr[$item]);
+            if (isset($data[$item])) {
+                unset($data[$item]);
             }
         }
 
-        $this->set($key, $arr);
+        $this->set($key, $data);
     }
 
     /**
      * 取回 session.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string     $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
-    public function get(string $name, $value = null)
+    public function get(string $name, $defaults = null)
     {
         $name = $this->getNormalizeName($name);
 
-        return $this->datas[$name] ?? $value;
+        return $this->data[$name] ?? $defaults;
     }
 
     /**
      * 返回数组部分数据.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string     $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
-    public function getPart(string $name, $value = null)
+    public function getPart(string $name, $defaults = null)
     {
-        return $this->getPartData($name, $value);
+        return $this->getPartData($name, $defaults);
     }
 
     /**
@@ -287,8 +284,8 @@ abstract class Session
     {
         $name = $this->getNormalizeName($name);
 
-        if (isset($this->datas[$name])) {
-            unset($this->datas[$name]);
+        if (isset($this->data[$name])) {
+            unset($this->data[$name]);
         }
     }
 
@@ -303,7 +300,7 @@ abstract class Session
     {
         $name = $this->getNormalizeName($name);
 
-        return isset($this->datas[$name]);
+        return isset($this->data[$name]);
     }
 
     /**
@@ -311,7 +308,7 @@ abstract class Session
      */
     public function clear(): void
     {
-        $this->datas = [];
+        $this->data = [];
     }
 
     /**
@@ -324,13 +321,9 @@ abstract class Session
     {
         $this->set($this->flashDataKey($key), $value);
 
-        $this->mergeNewFlash([
-            $key,
-        ]);
+        $this->mergeNewFlash([$key]);
 
-        $this->popOldFlash([
-            $key,
-        ]);
+        $this->popOldFlash([$key]);
     }
 
     /**
@@ -355,9 +348,7 @@ abstract class Session
     {
         $this->set($this->flashDataKey($key), $value);
 
-        $this->mergeOldFlash([
-            $key,
-        ]);
+        $this->mergeOldFlash([$key]);
     }
 
     /**
@@ -400,8 +391,8 @@ abstract class Session
     /**
      * 返回闪存数据.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param string     $key
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -446,7 +437,7 @@ abstract class Session
      */
     public function unregisterFlash(): void
     {
-        $arr = $this->get($this->flashNewKey(), []);
+        $data = $this->get($this->flashNewKey(), []);
         $old = $this->get($this->flashOldKey(), []);
 
         foreach ($old as $item) {
@@ -454,9 +445,7 @@ abstract class Session
         }
 
         $this->delete($this->flashNewKey());
-        $this->set($this->flashOldKey(), $arr);
-
-        unset($arr, $old);
+        $this->set($this->flashOldKey(), $data);
     }
 
     /**
@@ -504,7 +493,7 @@ abstract class Session
     /**
      * 设置 SESSION 名字.
      *
-     * @param string $name
+     * @param null|string $name
      */
     public function setName(?string $name = null): void
     {
@@ -524,7 +513,7 @@ abstract class Session
     /**
      * 设置 SESSION ID.
      *
-     * @param string $id
+     * @param null|string $id
      */
     public function setId(?string $id = null): void
     {
@@ -549,16 +538,6 @@ abstract class Session
     public function regenerateId(): string
     {
         return $this->id = $this->generateSessionId();
-    }
-
-    /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function getCache(): ?ICache
-    {
-        return $this->cache;
     }
 
     /**
@@ -695,7 +674,7 @@ abstract class Session
      */
     protected function loadData(): void
     {
-        $this->datas = array_merge($this->datas, $this->loadDataFromConnect());
+        $this->data = array_merge($this->data, $this->loadDataFromConnect());
     }
 
     /**
@@ -751,9 +730,9 @@ abstract class Session
     /**
      * 返回部分闪存数据.
      *
-     * @param string $key
-     * @param mixed  $defaults
-     * @param string $type
+     * @param string      $key
+     * @param null|mixed  $defaults
+     * @param null|string $type
      *
      * @return mixed
      */

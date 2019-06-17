@@ -39,7 +39,7 @@ use Tests\Database\Ddd\Entity\Guestbook;
  */
 class UniqueTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $validate = new Validator(
             [
@@ -53,7 +53,7 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithExceptId()
+    public function testValidateWithExceptId(): void
     {
         $validate = new Validator(
             [
@@ -68,16 +68,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithExceptIdAndPrimaryKey()
+    public function testValidateWithExceptIdAndPrimaryKey(): void
     {
         $validate = new Validator(
             [
@@ -92,16 +96,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithExceptIdAndCompositeIdAndIgnore()
+    public function testValidateWithExceptIdAndCompositeIdAndIgnore(): void
     {
         $validate = new Validator(
             [
@@ -116,17 +124,18 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $connect->
-        table('composite_id')->
-        insert([
-            'id1'   => 'foo',
-            'id2'   => 'bar',
-        ]);
+        $connect
+            ->table('composite_id')
+            ->insert([
+                'id1'   => 1,
+                'id2'   => 2,
+                'name'  => '',
+            ]);
 
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithoutExceptId()
+    public function testValidateWithoutExceptId(): void
     {
         $validate = new Validator(
             [
@@ -141,16 +150,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertFalse($validate->success());
     }
 
-    public function testCheckParameterLengthException()
+    public function testCheckParameterLengthException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -169,7 +182,7 @@ class UniqueTest extends TestCase
         $validate->success();
     }
 
-    public function testAdditionalConditionsMustBeStringException()
+    public function testAdditionalConditionsMustBeStringException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -186,7 +199,7 @@ class UniqueTest extends TestCase
         );
     }
 
-    public function testEntityNotFoundException()
+    public function testEntityNotFoundException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -205,14 +218,14 @@ class UniqueTest extends TestCase
         $validate->success();
     }
 
-    public function testValidateArgsNotObjectAndNotStringWillReturnFalse()
+    public function testValidateArgsNotObjectAndNotStringWillReturnFalse(): void
     {
         $rule = new UniqueRule();
 
         $this->assertFalse($rule->validate('value', [['arr']], $this->createMock(IValidator::class), 'field'));
     }
 
-    public function testValidateArgsIsEntity()
+    public function testValidateArgsIsEntity(): void
     {
         $rule = new UniqueRule();
 
@@ -220,16 +233,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'value',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'value',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertFalse($rule->validate('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
     }
 
-    public function testValidateArgsIsObjectButNotIsEntity()
+    public function testValidateArgsIsObjectButNotIsEntity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -241,7 +258,7 @@ class UniqueTest extends TestCase
         $rule->validate('value', [new DemoUnique1()], $this->createMock(IValidator::class), 'name');
     }
 
-    public function testValidateArgsIsStringButNotIsEntity()
+    public function testValidateArgsIsStringButNotIsEntity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -253,7 +270,7 @@ class UniqueTest extends TestCase
         $rule->validate('value', ['Tests\\Validate\\Validator\\DemoUnique1'], $this->createMock(IValidator::class), 'name');
     }
 
-    public function testValidateWithValidateField()
+    public function testValidateWithValidateField(): void
     {
         $validate = new Validator(
             [
@@ -268,16 +285,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithValidateMultiField()
+    public function testValidateWithValidateMultiField(): void
     {
         $validate = new Validator(
             [
@@ -292,16 +313,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithConnect()
+    public function testValidateWithConnect(): void
     {
         $validate = new Validator(
             [
@@ -316,16 +341,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithParseAdditional()
+    public function testValidateWithParseAdditional(): void
     {
         $validate = new Validator(
             [
@@ -340,16 +369,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertFalse($validate->success());
     }
 
-    public function testValidateWithParseAdditional2()
+    public function testValidateWithParseAdditional2(): void
     {
         $validate = new Validator(
             [
@@ -364,17 +397,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'    => 'foo',
-            'content' => 'hello',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => 'hello',
+                ]),
+        );
 
         $this->assertFalse($validate->success());
     }
 
-    public function testValidateWithParseAdditional3()
+    public function testValidateWithParseAdditional3(): void
     {
         $validate = new Validator(
             [
@@ -389,17 +425,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'    => 'foo',
-            'content' => 'world',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => 'world',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithParseAdditionalCustomOperate()
+    public function testValidateWithParseAdditionalCustomOperate(): void
     {
         $validate = new Validator(
             [
@@ -414,16 +453,20 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'   => 'foo',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => '',
+                ]),
+        );
 
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithParseAdditionalMustBePairedException()
+    public function testValidateWithParseAdditionalMustBePairedException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -442,7 +485,7 @@ class UniqueTest extends TestCase
         $validate->success();
     }
 
-    public function testWithContainer()
+    public function testWithContainer(): void
     {
         $validate = new Validator(
             [
@@ -458,14 +501,21 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function testWithPlaceHolder()
+    public function testWithPlaceHolder(): void
     {
         $validate = new Validator(
             [
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, UniqueRule::PLACEHOLDER, UniqueRule::PLACEHOLDER, UniqueRule::PLACEHOLDER, 'content', 'hello'),
+                'name'     => UniqueRule::rule(
+                    Guestbook::class,
+                    UniqueRule::PLACEHOLDER,
+                    UniqueRule::PLACEHOLDER,
+                    UniqueRule::PLACEHOLDER,
+                    'content',
+                    'hello',
+                ),
             ]
         );
 
@@ -473,12 +523,15 @@ class UniqueTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'name'    => 'foo',
-            'content' => 'hello',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'    => 'foo',
+                    'content' => 'hello',
+                ]),
+        );
 
         $this->assertFalse($validate->success());
     }

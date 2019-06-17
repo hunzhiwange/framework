@@ -73,7 +73,7 @@ class Bootstrap implements IRender
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Page\IRender
      */
     public function setOption(string $name, $value): IRender
     {
@@ -85,7 +85,7 @@ class Bootstrap implements IRender
     /**
      * 大尺寸样式.
      *
-     * @return $this
+     * @return \Leevel\Page\IRender
      */
     public function setLargeSize(): IRender
     {
@@ -95,7 +95,7 @@ class Bootstrap implements IRender
     /**
      * 小尺寸样式.
      *
-     * @return $this
+     * @return \Leevel\Page\IRender
      */
     public function setSmallSize(): IRender
     {

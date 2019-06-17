@@ -76,11 +76,13 @@ class RegisterRuntime
     /**
      * 设置错误句柄.
      *
-     * @param int    $code
-     * @param string $description
-     * @param string $file
-     * @param int    $line
-     * @param mixed  $context
+     * @param int         $code
+     * @param string      $description
+     * @param null|string $file
+     * @param null|int    $line
+     * @param null|mixed  $context
+     *
+     * @throws \ErrorException
      */
     public function setErrorHandle(int $code, string $description, ?string $file = null, ?int $line = null, $context = null): void
     {

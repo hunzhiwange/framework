@@ -121,17 +121,17 @@ interface ISeccode
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function setOption(string $name, $value): self;
 
     /**
      * 设置验证码
      *
-     * @param mixed  $code
-     * @param string $outPath
-     * @param bool   $autoCode
-     * @param string $autoType
+     * @param null|mixed  $code
+     * @param null|string $outPath
+     * @param bool        $autoCode
+     * @param string      $autoType
      */
     public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void;
 
@@ -140,14 +140,14 @@ interface ISeccode
      *
      * @param string $code
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function code(string $code): self;
 
     /**
      * 返回验证码
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function getCode(): ?string;
 }

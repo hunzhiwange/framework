@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class UnionTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -48,37 +48,35 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $union1 = $connect->table('yyyyy', 'yid as id,name as value')->where('first_name', '=', '222');
+        $union1 = $connect
+            ->table('yyyyy', 'yid as id,name as value')
+            ->where('first_name', '=', '222');
         $union2 = 'SELECT id,value FROM test2';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                union($union1)->
-
-                union($union2)->
-
-                union($union1)->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->union($union1)
+                    ->union($union2)
+                    ->union($union1)
+                    ->findAll(true)
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                union([$union1, $union2, $union1])->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->union([$union1, $union2, $union1])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testUnionAll()
+    public function testUnionAll(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -98,16 +96,15 @@ class UnionTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                unionAll($union1)->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->unionAll($union1)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testUnionFlow()
+    public function testUnionFlow(): void
     {
         $condition = false;
 
@@ -125,30 +122,24 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = 'SELECT id,value FROM test2';
-
         $union2 = 'SELECT id,value FROM test3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                ifs($condition)->
-
-                union($union1)->
-
-                elses()->
-
-                union($union2)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->if($condition)
+                    ->union($union1)
+                    ->else()
+                    ->union($union2)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testUnionFlow2()
+    public function testUnionFlow2(): void
     {
         $condition = true;
 
@@ -166,30 +157,24 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = 'SELECT id,value FROM test2';
-
         $union2 = 'SELECT id,value FROM test3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                ifs($condition)->
-
-                union($union1)->
-
-                elses()->
-
-                union($union2)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->if($condition)
+                    ->union($union1)
+                    ->else()
+                    ->union($union2)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testUnionAllFlow()
+    public function testUnionAllFlow(): void
     {
         $condition = false;
 
@@ -207,30 +192,24 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = 'SELECT id,value FROM test2';
-
         $union2 = 'SELECT id,value FROM test3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                ifs($condition)->
-
-                unionAll($union1)->
-
-                elses()->
-
-                unionAll($union2)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->if($condition)
+                    ->unionAll($union1)
+                    ->else()
+                    ->unionAll($union2)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testUnionAllFlow2()
+    public function testUnionAllFlow2(): void
     {
         $condition = true;
 
@@ -248,30 +227,24 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = 'SELECT id,value FROM test2';
-
         $union2 = 'SELECT id,value FROM test3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'tid as id,tname as value')->
-
-                ifs($condition)->
-
-                unionAll($union1)->
-
-                elses()->
-
-                unionAll($union2)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'tid as id,tname as value')
+                    ->if($condition)
+                    ->unionAll($union1)
+                    ->else()
+                    ->unionAll($union2)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testUnionNotSupportType()
+    public function testUnionNotSupportType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -279,13 +252,11 @@ class UnionTest extends TestCase
         );
 
         $connect = $this->createDatabaseConnectMock();
-
         $union1 = 'SELECT id,value FROM test2';
 
-        $connect->table('test', 'tid as id,tname as value')->
-
-        union($union1, 'NOT FOUND')->
-
-        findAll(true);
+        $connect
+            ->table('test', 'tid as id,tname as value')
+            ->union($union1, 'NOT FOUND')
+            ->findAll(true);
     }
 }

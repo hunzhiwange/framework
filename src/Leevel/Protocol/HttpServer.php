@@ -204,7 +204,7 @@ class HttpServer extends Server implements IServer
     {
         $request = new Request();
 
-        $datas = [
+        $data = [
             'header' => 'headers',
             'server' => 'server',
             'cookie' => 'cookies',
@@ -242,7 +242,7 @@ class HttpServer extends Server implements IServer
             $swooleRequest->server = $servers ?: null;
         }
 
-        foreach ($datas as $key => $item) {
+        foreach ($data as $key => $item) {
             if ($swooleRequest->{$key}) {
                 $request->{$item}->replace($swooleRequest->{$key});
             }

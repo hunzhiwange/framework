@@ -35,6 +35,8 @@ use Leevel\Pipeline\Pipeline;
  * @since 2017.01.10
  *
  * @version 1.0
+ *
+ * @see \Leevel\Router\Proxy\IRouter 请保持接口设计的一致性
  */
 class Router implements IRouter
 {
@@ -395,7 +397,10 @@ class Router implements IRouter
      */
     protected function resolveMatchedData(array $data): void
     {
-        $data = $this->mergeMatchedData($data, $this->preRequestMatched[spl_object_id($this->request)] ?? []);
+        $data = $this->mergeMatchedData(
+            $data,
+            $this->preRequestMatched[spl_object_id($this->request)] ?? [],
+        );
 
         if (!$data[IRouter::APP]) {
             $data[IRouter::APP] = self::DEFAULT_APP;
@@ -422,7 +427,7 @@ class Router implements IRouter
             } elseif (in_array($key, [self::PARAMS, self::VARS], true)) {
                 $result[$key] = array_merge($before[$key] ?? [], $after[$key] ?? []);
             } else {
-                $result[$key] = $after[$key] ?? $before[$key] ?? null;
+                $result[$key] = $after[$key] ?? ($before[$key] ?? null);
             }
         }
 
@@ -504,6 +509,8 @@ class Router implements IRouter
 
     /**
      * 路由未找到异常.
+     *
+     * @throws \Leevel\Router\RouterNotFoundException
      */
     protected function routerNotFound(): void
     {

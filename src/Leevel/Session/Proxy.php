@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Cache\ICache;
-
 /**
  * 代理.
  *
@@ -36,7 +34,7 @@ trait Proxy
     /**
      * 启动 session.
      *
-     * @param string $sessionId
+     * @param null|string $sessionId
      */
     public function start(?string $sessionId = null): void
     {
@@ -76,7 +74,7 @@ trait Proxy
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed        $value
+     * @param null|mixed   $value
      */
     public function put($keys, $value = null): void
     {
@@ -119,9 +117,9 @@ trait Proxy
     /**
      * 数组插入键值对数据.
      *
-     * @param string $key
-     * @param mixed  $keys
-     * @param mixed  $value
+     * @param string     $key
+     * @param mixed      $keys
+     * @param null|mixed $value
      */
     public function arr(string $key, $keys, $value = null): void
     {
@@ -142,8 +140,8 @@ trait Proxy
     /**
      * 取回 session.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string     $name
+     * @param null|mixed $value
      *
      * @return mixed
      */
@@ -155,8 +153,8 @@ trait Proxy
     /**
      * 返回数组部分数据.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string     $name
+     * @param null|mixed $value
      *
      * @return mixed
      */
@@ -248,8 +246,8 @@ trait Proxy
     /**
      * 返回闪存数据.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param string     $key
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -345,7 +343,7 @@ trait Proxy
     /**
      * 设置 SESSION ID.
      *
-     * @param string $id
+     * @param null|string $id
      */
     public function setId(?string $id = null): void
     {
@@ -368,16 +366,6 @@ trait Proxy
     public function regenerateId(): string
     {
         return $this->proxy()->regenerateId();
-    }
-
-    /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function getCache(): ?ICache
-    {
-        return $this->proxy()->getCache();
     }
 
     /**

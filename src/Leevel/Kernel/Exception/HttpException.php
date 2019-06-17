@@ -51,12 +51,12 @@ class HttpException extends RuntimeException
     /**
      * 构造函数.
      *
-     * @param int         $statusCode
-     * @param null|string $message
-     * @param int         $code
-     * @param \Exception  $previous
+     * @param int             $statusCode
+     * @param null|string     $message
+     * @param int             $code
+     * @param null|\Exception $previous
      */
-    public function __construct($statusCode, $message = null, $code = 0, Exception $previous = null)
+    public function __construct(int $statusCode, ?string $message = null, int $code = 0, ?Exception $previous = null)
     {
         $this->statusCode = $statusCode;
 

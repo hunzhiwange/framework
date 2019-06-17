@@ -49,9 +49,9 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * 构造函数.
      *
-     * @param array $type
+     * @param null|array $type
      */
-    public function __construct(array $type = null)
+    public function __construct(?array $type = null)
     {
         if ($type) {
             $this->type = $type;
@@ -114,6 +114,8 @@ class LinkedList extends SplDoublyLinkedList
      * 验证类型是否正确遇到错误抛出异常.
      *
      * @param mixed $value
+     *
+     * @throws \InvalidArgumentException
      */
     public function validate($value): void
     {

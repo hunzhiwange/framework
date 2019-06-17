@@ -44,7 +44,7 @@ class EntityTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testPropNotDefined()
+    public function testPropNotDefined(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -55,7 +55,7 @@ class EntityTest extends TestCase
         $entity->name = 5;
     }
 
-    public function testSetPropManyTimesDoNothing()
+    public function testSetPropManyTimesDoNothing(): void
     {
         $entity = new Post();
         $entity->title = 5;
@@ -66,7 +66,7 @@ class EntityTest extends TestCase
         $this->assertSame(5, $entity->title);
     }
 
-    public function testSetPropButIsRelation()
+    public function testSetPropButIsRelation(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -77,7 +77,7 @@ class EntityTest extends TestCase
         $entity->postContent = 5;
     }
 
-    public function testDatabaseResolverWasNotSet()
+    public function testDatabaseResolverWasNotSet(): void
     {
         $this->metaWithoutDatabase();
 
@@ -93,7 +93,7 @@ class EntityTest extends TestCase
         $entity->create()->flush();
     }
 
-    public function testWithProps()
+    public function testWithProps(): void
     {
         $entity = new Post();
 
@@ -107,7 +107,7 @@ class EntityTest extends TestCase
         $this->assertSame(['title', 'summary'], $entity->changed());
     }
 
-    public function testEntityWithEnum()
+    public function testEntityWithEnum(): void
     {
         $this->initI18n();
 
@@ -176,7 +176,7 @@ class EntityTest extends TestCase
         );
     }
 
-    public function testEntityWithEnum2()
+    public function testEntityWithEnum2(): void
     {
         $this->initI18n();
 
@@ -206,7 +206,7 @@ class EntityTest extends TestCase
         );
     }
 
-    public function testEntityWithEnumItemNotFound()
+    public function testEntityWithEnumItemNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -221,7 +221,7 @@ class EntityTest extends TestCase
         $entity->enum('status', '5');
     }
 
-    public function testEntityWithEnumItemNotFound2()
+    public function testEntityWithEnumItemNotFound2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -236,7 +236,7 @@ class EntityTest extends TestCase
         $entity->toArray();
     }
 
-    protected function initI18n()
+    protected function initI18n(): void
     {
         $container = Container::singletons();
         $container->clear();

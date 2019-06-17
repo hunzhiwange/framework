@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class FindAllTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,29 +51,26 @@ class FindAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findAll()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findAll()
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                all()->
-
-                find()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->all()
+                    ->find()
             )
         );
     }
 
-    public function testFromOneToAll()
+    public function testFromOneToAll(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -91,11 +88,10 @@ class FindAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                one()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->one()
+                    ->findAll(true)
             )
         );
     }

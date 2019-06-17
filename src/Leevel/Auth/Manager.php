@@ -70,18 +70,6 @@ class Manager extends Managers implements IAuth
     }
 
     /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    protected function createConnect(object $connect): object
-    {
-        return $connect;
-    }
-
-    /**
      * 创建 session 连接.
      *
      * @param array $options

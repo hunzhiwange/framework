@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class RedisTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
 
@@ -49,7 +49,7 @@ class RedisTest extends TestCase
         $this->assertFalse($redis->get('foo'));
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
 
@@ -63,7 +63,7 @@ class RedisTest extends TestCase
         $this->assertSame('bar', $redis->get('foo'));
     }
 
-    public function testGet2()
+    public function testGet2(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
 
@@ -77,13 +77,12 @@ class RedisTest extends TestCase
         $this->assertSame(1, $redis->get('num'));
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
 
         $this->assertInstanceof(IRedis::class, $phpRedis);
 
-        $phpRedis->method('set')->willReturn(null);
         $this->assertNull($phpRedis->set('foo', 'bar', 60));
 
         $redis = $this->makeRedis($phpRedis);
@@ -91,13 +90,11 @@ class RedisTest extends TestCase
         $this->assertNull($redis->set('foo', 'bar', ['expire' => 60]));
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
 
         $this->assertInstanceof(IRedis::class, $phpRedis);
-
-        $phpRedis->method('delete')->willReturn(null);
         $this->assertNull($phpRedis->delete('foo'));
 
         $redis = $this->makeRedis($phpRedis);
@@ -105,13 +102,11 @@ class RedisTest extends TestCase
         $this->assertNull($redis->delete('foo'));
     }
 
-    public function testClose()
+    public function testClose(): void
     {
         $phpRedis = $this->createMock(IRedis::class);
 
         $this->assertInstanceof(IRedis::class, $phpRedis);
-
-        $phpRedis->method('close')->willReturn(null);
         $this->assertNull($phpRedis->close());
 
         $redis = $this->makeRedis($phpRedis);

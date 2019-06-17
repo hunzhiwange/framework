@@ -27,6 +27,8 @@ use RuntimeException;
  *
  * @param string $visitorIp
  * @param array  $limitIp
+ *
+ * @throws \RuntimeException
  */
 function limit_ip(string $visitorIp, array $limitIp): void
 {

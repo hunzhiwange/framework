@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class EventProviderTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $container = new Container();
 

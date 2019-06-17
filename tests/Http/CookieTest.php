@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class CookieTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $cookie = new Cookie();
 
@@ -54,7 +54,7 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $cookie = new Cookie();
 
@@ -75,7 +75,7 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
-    public function testSetArray()
+    public function testSetArray(): void
     {
         $cookie = new Cookie();
 
@@ -96,7 +96,7 @@ class CookieTest extends TestCase
         $this->assertSame(['bar'], $cookie->get('foo'));
     }
 
-    public function testSetWithOptionExpire()
+    public function testSetWithOptionExpire(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Cookie expire date must greater than or equal 0.');
@@ -105,7 +105,7 @@ class CookieTest extends TestCase
         $cookie->set('foo', 'bar', ['expire' => -10]);
     }
 
-    public function testSetWithOptionExpire3()
+    public function testSetWithOptionExpire3(): void
     {
         $cookie = new Cookie();
 
@@ -124,7 +124,7 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
-    public function testSetException()
+    public function testSetException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Cookie value must be string,array or null.');
@@ -134,7 +134,7 @@ class CookieTest extends TestCase
         $cookie->set('foo', new stdClass());
     }
 
-    public function testSetHttps()
+    public function testSetHttps(): void
     {
         $cookie = new Cookie();
 
@@ -153,7 +153,7 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
-    public function testGetDefaults()
+    public function testGetDefaults(): void
     {
         $cookie = new Cookie();
 
@@ -161,7 +161,7 @@ class CookieTest extends TestCase
         $this->assertSame('hello', $cookie->get('notExists', 'hello'));
     }
 
-    public function testSetGetDelete()
+    public function testSetGetDelete(): void
     {
         $cookie = new Cookie();
 
@@ -174,7 +174,7 @@ class CookieTest extends TestCase
         $this->assertNull($cookie->get('foo'));
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         $cookie = new Cookie();
 
@@ -226,7 +226,7 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
-    public function testPut()
+    public function testPut(): void
     {
         $cookie = new Cookie();
 
@@ -277,7 +277,7 @@ class CookieTest extends TestCase
         ], $cookie->all());
     }
 
-    public function testPush()
+    public function testPush(): void
     {
         $cookie = new Cookie();
 
@@ -317,7 +317,7 @@ class CookieTest extends TestCase
         $this->assertSame(['bar', 'bar2', 'bar3'], $cookie->get('foo'));
     }
 
-    public function testMerge()
+    public function testMerge(): void
     {
         $cookie = new Cookie();
 
@@ -372,7 +372,7 @@ class CookieTest extends TestCase
         $this->assertSame(['bar', 'bar2', 'bar3', 'bar2', 'bar3', 'bar4'], $cookie->get('foo'));
     }
 
-    public function testPop()
+    public function testPop(): void
     {
         $cookie = new Cookie();
 
@@ -411,7 +411,7 @@ class CookieTest extends TestCase
         $this->assertSame([0 => 'bar', 3 => 'bar4', 4 => 'bar5', 5 => 'bar6'], $cookie->get('foo'));
     }
 
-    public function testArr()
+    public function testArr(): void
     {
         $cookie = new Cookie();
 
@@ -454,7 +454,7 @@ class CookieTest extends TestCase
         ], $cookie->get('foo'));
     }
 
-    public function testArrDelete()
+    public function testArrDelete(): void
     {
         $cookie = new Cookie();
 
@@ -518,7 +518,7 @@ class CookieTest extends TestCase
         ], $cookie->get('foo'));
     }
 
-    public function testFormat()
+    public function testFormat(): void
     {
         $cookie = new Cookie();
         $cookie->set('foo', 'datakey_1');
@@ -527,7 +527,7 @@ class CookieTest extends TestCase
         $this->assertSame($str, $cookie->format($test));
     }
 
-    public function testFormatWithExpire()
+    public function testFormatWithExpire(): void
     {
         $cookie = new Cookie();
         $cookie->set('foo', 'datakey_1', ['expire' => 60]);
@@ -536,7 +536,7 @@ class CookieTest extends TestCase
         $this->assertSame($str, $cookie->format($test));
     }
 
-    public function testFormatWithDomain()
+    public function testFormatWithDomain(): void
     {
         $cookie = new Cookie();
         $cookie->set('foo', 'datakey_1', ['domain' => 'queryphp.com']);
@@ -545,7 +545,7 @@ class CookieTest extends TestCase
         $this->assertSame($str, $cookie->format($test));
     }
 
-    public function testFormatWithHttponly()
+    public function testFormatWithHttponly(): void
     {
         $cookie = new Cookie();
         $cookie->set('foo', 'datakey_1', ['httponly' => true]);
@@ -554,7 +554,7 @@ class CookieTest extends TestCase
         $this->assertSame($str, $cookie->format($test));
     }
 
-    public function testFormatWithSecure()
+    public function testFormatWithSecure(): void
     {
         $cookie = new Cookie();
         $cookie->set('foo', 'datakey_1', ['secure' => true]);
@@ -563,7 +563,7 @@ class CookieTest extends TestCase
         $this->assertSame($str, $cookie->format($test));
     }
 
-    public function testFormatWithDelete()
+    public function testFormatWithDelete(): void
     {
         $cookie = new Cookie();
         $cookie->set('foo', 'datakey_1');
@@ -573,7 +573,7 @@ class CookieTest extends TestCase
         $this->assertSame($str, $cookie->format($test));
     }
 
-    public function testFormatWithDeleteWhenSetEmptyString()
+    public function testFormatWithDeleteWhenSetEmptyString(): void
     {
         $cookie = new Cookie();
         $cookie->set('foo', '');
@@ -582,7 +582,7 @@ class CookieTest extends TestCase
         $this->assertSame($str, $cookie->format($test));
     }
 
-    public function testFormatWithDeleteWhenSetNull()
+    public function testFormatWithDeleteWhenSetNull(): void
     {
         $cookie = new Cookie();
         $cookie->set('foo', null);
@@ -591,7 +591,7 @@ class CookieTest extends TestCase
         $this->assertSame($str, $cookie->format($test));
     }
 
-    public function testFormatInvalidCookieData()
+    public function testFormatInvalidCookieData(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid cookie data.');

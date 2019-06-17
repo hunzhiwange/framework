@@ -45,7 +45,7 @@ class RegisterTest extends TestCase
         Fso::deleteDirectory(__DIR__.'/cache_theme', true);
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
 
@@ -101,12 +101,11 @@ class RegisterTest extends TestCase
         return $container;
     }
 
-    protected function makeHtml()
+    protected function makeHtml(): Parser
     {
-        return (new Parser(new Compiler()))->
-            registerCompilers()->
-
-            registerParsers();
+        return (new Parser(new Compiler()))
+            ->registerCompilers()
+            ->registerParsers();
     }
 }
 

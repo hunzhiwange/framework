@@ -61,9 +61,11 @@ class RedirectResponse extends Response
     /**
      * 构造函数.
      *
-     * @param string $url
-     * @param int    $status
-     * @param array  $headers
+     * @param null|string $url
+     * @param int         $status
+     * @param array       $headers
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(?string $url = null, int $status = 302, array $headers = [])
     {
@@ -74,9 +76,9 @@ class RedirectResponse extends Response
         }
 
         if (!$this->isRedirect()) {
-            throw new InvalidArgumentException(
-                sprintf('The HTTP status code is not a redirect (%s given).', $status)
-            );
+            $e = sprintf('The HTTP status code is not a redirect (%s given).', $status);
+
+            throw new InvalidArgumentException($e);
         }
 
         if (301 === $status && !array_key_exists('cache-control', $headers)) {
@@ -102,9 +104,9 @@ class RedirectResponse extends Response
      * 闪存一个数据片段到 SESSION.
      *
      * @param array|string $key
-     * @param mixed        $value
+     * @param null|mixed   $value
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function with($key, $value = null): IResponse
     {
@@ -128,7 +130,7 @@ class RedirectResponse extends Response
      *
      * @param null|array $input
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withInput(?array $input = null): IResponse
     {
@@ -148,12 +150,16 @@ class RedirectResponse extends Response
     /**
      * 闪存输入信息.
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function onlyInput(...$args): IResponse
     {
         if (!$args) {
-            throw new InvalidArgumentException('Method onlyInput need an args.');
+            $e = 'Method onlyInput need an args.';
+
+            throw new InvalidArgumentException($e);
         }
 
         return $this->withInput($this->request->only($args));
@@ -162,12 +168,16 @@ class RedirectResponse extends Response
     /**
      * 闪存输入信息.
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function exceptInput(...$args): IResponse
     {
         if (!$args) {
-            throw new InvalidArgumentException('Method exceptInput need an args.');
+            $e = 'Method exceptInput need an args.';
+
+            throw new InvalidArgumentException($e);
         }
 
         return $this->withInput($this->request->except($args));
@@ -179,7 +189,7 @@ class RedirectResponse extends Response
      * @param mixed  $value
      * @param string $key
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withErrors($value, string $key = 'default'): IResponse
     {
@@ -210,7 +220,9 @@ class RedirectResponse extends Response
      *
      * @param string $url
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function setTargetUrl(string $url): IResponse
     {
@@ -219,7 +231,9 @@ class RedirectResponse extends Response
         }
 
         if (empty($url)) {
-            throw new InvalidArgumentException('Cannot redirect to an empty URL.');
+            $e = 'Cannot redirect to an empty URL.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->targetUrl = $url;

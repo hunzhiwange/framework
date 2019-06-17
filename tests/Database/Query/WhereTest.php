@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class WhereTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -52,16 +52,15 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', '=', 1)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('id', '=', 1)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testBaseUse2()
+    public function testBaseUse2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -79,17 +78,16 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 2)->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 2)
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testBaseUse3()
+    public function testBaseUse3(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -107,21 +105,18 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 2)->
-
-                where('name', '>', '狗蛋')->
-
-                where('value', 'like', '小鸭子')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 2)
+                    ->where('name', '>', '狗蛋')
+                    ->where('value', 'like', '小鸭子')
+                    ->findAll(true),
                 2
             )
         );
     }
 
-    public function testArray()
+    public function testArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -139,11 +134,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where(['name', 'like', '技术'])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where(['name', 'like', '技术'])
+                    ->findAll(true)
             )
         );
 
@@ -161,20 +155,19 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where([
-                    ['name', 'like', '技术'],
-                    ['value', '<>', '结局'],
-                ])->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where([
+                        ['name', 'like', '技术'],
+                        ['value', '<>', '结局'],
+                    ])
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testOrWhere()
+    public function testOrWhere(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -192,18 +185,16 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('name', 'like', '技术')->
-
-                orWhere('value', '<>', '结局')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('name', 'like', '技术')
+                    ->orWhere('value', '<>', '结局')
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereBetween()
+    public function testWhereBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -221,11 +212,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereBetween('id', [1, 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereBetween('id', [1, 100])
+                    ->findAll(true)
             )
         );
 
@@ -243,11 +233,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'between', [1, 10])->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'between', [1, 10])
+                    ->findAll(true),
                 1
             )
         );
@@ -266,20 +255,19 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereBetween([
-                    ['id', [1, 100]],
-                    ['name', [5, 22]],
-                ])->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->whereBetween([
+                        ['id', [1, 100]],
+                        ['name', [5, 22]],
+                    ])
+                    ->findAll(true),
                 2
             )
         );
     }
 
-    public function testWhereNotBetween()
+    public function testWhereNotBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -297,11 +285,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereNotBetween('id', [1, 10])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereNotBetween('id', [1, 10])
+                    ->findAll(true)
             )
         );
 
@@ -319,17 +306,16 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'not between', [1, 10])->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'not between', [1, 10])
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testWhereIn()
+    public function testWhereIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -347,11 +333,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereIn('id', [2, 50])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereIn('id', [2, 50])
+                    ->findAll(true)
             )
         );
 
@@ -369,11 +354,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'in', '1,10')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'in', '1,10')
+                    ->findAll(true),
                 1
             )
         );
@@ -392,17 +376,16 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'in', [2, 50])->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'in', [2, 50])
+                    ->findAll(true),
                 2
             )
         );
     }
 
-    public function testWhereNotIn()
+    public function testWhereNotIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -420,11 +403,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereNotIn('id', [2, 50])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereNotIn('id', [2, 50])
+                    ->findAll(true)
             )
         );
 
@@ -442,17 +424,16 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'not in', '1,10')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'not in', '1,10')
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testWhereNull()
+    public function testWhereNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -470,28 +451,26 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereNull('id')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereNull('id')
+                    ->findAll(true)
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'null')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'null')
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testWhereNotNull()
+    public function testWhereNotNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -509,28 +488,51 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereNotNull('id')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereNotNull('id')
+                    ->findAll(true)
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'not null')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'not null')
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testWhereLike()
+    public function testOrWhereDefaultNull(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT WHERE `id` IS NULL",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->where('id')
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testWhereLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -548,28 +550,26 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereLike('id', '5')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereLike('id', '5')
+                    ->findAll(true)
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'like', '5')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'like', '5')
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testWhereNotLike()
+    public function testWhereNotLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -587,28 +587,26 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereNotLike('id', '5')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereNotLike('id', '5')
+                    ->findAll(true)
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 'not like', '5')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 'not like', '5')
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testWhereExists()
+    public function testWhereExists(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -626,15 +624,14 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereExists(
-                    function ($select) {
-                        $select->table('subsql')->where('id', 1);
-                    }
-                )->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereExists(
+                        function ($select) {
+                            $select->table('subsql')->where('id', 1);
+                        }
+                    )
+                    ->findAll(true)
             )
         );
 
@@ -654,15 +651,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where(
-                   [
-                       ':exists' => $subSelect,
-                   ]
-                )->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where([':exists' => $subSelect])
+                    ->findAll(true),
                 1
             )
         );
@@ -683,13 +675,10 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where([
-                    ':exists' => 'select *from d_sub',
-                ])->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where([':exists' => 'select *from d_sub'])
+                    ->findAll(true),
                 2
             )
         );
@@ -710,23 +699,24 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where(
-                   [
-                       ':exists' => function ($select) {
-                           $select->table('subsql')->where('id', 1);
-                       },
-                   ]
-                )->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where(
+                        [
+                            ':exists' => function ($select) {
+                                $select
+                                    ->table('subsql')
+                                    ->where('id', 1);
+                            },
+                        ]
+                    )
+                    ->findAll(true),
                 3
             )
         );
     }
 
-    public function testWhereNotExists()
+    public function testWhereNotExists(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -744,20 +734,21 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereNotExists(
-                    function ($select) {
-                        $select->table('subsql')->where('id', 1);
-                    }
-                )->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereNotExists(
+                        function ($select) {
+                            $select
+                                ->table('subsql')
+                                ->where('id', 1);
+                        }
+                    )
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereGroup()
+    public function testWhereGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -775,15 +766,15 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 5)->
-
-                orWhere(function ($select) {
-                    $select->where('votes', '>', 100)->where('title', '<>', 'Admin');
-                })->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('id', 5)
+                    ->orWhere(function ($select) {
+                        $select
+                            ->where('votes', '>', 100)
+                            ->where('title', '<>', 'Admin');
+                    })
+                    ->findAll(true)
             )
         );
 
@@ -801,23 +792,22 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('id', 5)->
-
-                orWhere('name', '小牛')->
-
-                where(function ($select) {
-                    $select->where('votes', '>', 100)->orWhere('title', '<>', 'Admin');
-                })->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->where('id', 5)
+                    ->orWhere('name', '小牛')
+                    ->where(function ($select) {
+                        $select
+                            ->where('votes', '>', 100)
+                            ->orWhere('title', '<>', 'Admin');
+                    })
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testConditionalExpression()
+    public function testConditionalExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -835,16 +825,15 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test', 'post,value,{concat("tt_",[id])}')->
-
-                where('{concat("hello_",[posts])}', '=', '{[id]}')->
-
-                findAll(true)
+                $connect
+                    ->table('test', 'post,value,{concat("tt_",[id])}')
+                    ->where('{concat("hello_",[posts])}', '=', '{[id]}')
+                    ->findAll(true)
             )
         );
     }
 
-    public function testArrayKeyAsField()
+    public function testArrayKeyAsField(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -862,24 +851,23 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where([
-                    'id'     => ['=', '故事'],
-                    'name'   => ['in', [1, 2, 3]],
-                    'weidao' => ['between', '40,100'],
-                    'value'  => 'null',
-                    'remark' => ['not null'],
-                    'goods'  => '东亚商品',
-                    'hello'  => ['world'],
-                ])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where([
+                        'id'     => ['=', '故事'],
+                        'name'   => ['in', [1, 2, 3]],
+                        'weidao' => ['between', '40,100'],
+                        'value'  => 'null',
+                        'remark' => ['not null'],
+                        'goods'  => '东亚商品',
+                        'hello'  => ['world'],
+                    ])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSupportString()
+    public function testSupportString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -897,18 +885,15 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where(
-                   [':string' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
-                )->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where([':string' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}'])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSupportStringMustBeString()
+    public function testSupportStringMustBeString(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -917,16 +902,13 @@ class WhereTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        where(
-           [':string' => []]
-        )->
-
-        findAll(true);
+        $connect
+            ->table('test')
+            ->where([':string' => []])
+            ->findAll(true);
     }
 
-    public function testSupportStringMustBeString2()
+    public function testSupportStringMustBeString2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -935,16 +917,13 @@ class WhereTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        where(
-           [':string' => 1]
-        )->
-
-        findAll(true);
+        $connect
+            ->table('test')
+            ->where([':string' => 1])
+            ->findAll(true);
     }
 
-    public function testSupportSubandSubor()
+    public function testSupportSubandSubor(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -961,21 +940,18 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where(
-                    [
+                $connect
+                    ->table('test')
+                    ->where([
                         'hello'   => 'world',
                         ':subor'  => ['id', 'like', '你好'],
-                    ]
-                )->
-
-                findAll(true)
+                    ])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSupportSubandSuborMore()
+    public function testSupportSubandSuborMore(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -993,10 +969,9 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where(
-                    [
+                $connect
+                    ->table('test')
+                    ->where([
                         'hello'   => '111',
                         ':subor'  => [
                             ['id', 'like', '你好'],
@@ -1011,16 +986,14 @@ class WhereTest extends TestCase
                                 ['child_two', 'like', '123'],
                             ],
                         ],
-                    ]
-                )->
-
-                findAll(true),
+                    ])
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testWhereNotSupportMethod()
+    public function testWhereNotSupportMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1029,14 +1002,13 @@ class WhereTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        whereNotSupportMethod()->
-
-        findAll(true);
+        $connect
+            ->table('test')
+            ->whereNotSupportMethod()
+            ->findAll(true);
     }
 
-    public function testCallWhereSugarFlow()
+    public function testCallWhereSugarFlow(): void
     {
         $condition = false;
 
@@ -1056,24 +1028,19 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                whereLike('id', '5')->
-
-                elses()->
-
-                whereLike('id', '6')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->whereLike('id', '5')
+                    ->else()
+                    ->whereLike('id', '6')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testCallWhereSugarFlow2()
+    public function testCallWhereSugarFlow2(): void
     {
         $condition = true;
 
@@ -1093,24 +1060,19 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                whereLike('id', '5')->
-
-                elses()->
-
-                whereLike('id', '6')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->whereLike('id', '5')
+                    ->else()
+                    ->whereLike('id', '6')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testOrWhereFlow()
+    public function testOrWhereFlow(): void
     {
         $condition = false;
 
@@ -1130,24 +1092,19 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                orWhere('value', '<>', 'foo')->
-
-                elses()->
-
-                orWhere('value', '<>', 'bar')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->orWhere('value', '<>', 'foo')
+                    ->else()
+                    ->orWhere('value', '<>', 'bar')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testOrWhereFlow2()
+    public function testOrWhereFlow2(): void
     {
         $condition = true;
 
@@ -1167,24 +1124,19 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                orWhere('value', '<>', 'foo')->
-
-                elses()->
-
-                orWhere('value', '<>', 'bar')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->orWhere('value', '<>', 'foo')
+                    ->else()
+                    ->orWhere('value', '<>', 'bar')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereExistsFlow()
+    public function testWhereExistsFlow(): void
     {
         $condition = false;
 
@@ -1204,32 +1156,27 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                whereExists(
-                    function ($select) {
-                        $select->table('foo')->where('id', 2);
-                    }
-                )->
-
-                elses()->
-
-                whereExists(
-                    function ($select) {
-                        $select->table('bar')->where('id', 2);
-                    }
-                )->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->whereExists(
+                        function ($select) {
+                            $select->table('foo')->where('id', 2);
+                        }
+                    )
+                    ->else()
+                    ->whereExists(
+                        function ($select) {
+                            $select->table('bar')->where('id', 2);
+                        }
+                    )
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereExistsFlow2()
+    public function testWhereExistsFlow2(): void
     {
         $condition = true;
 
@@ -1249,32 +1196,27 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                whereExists(
-                    function ($select) {
-                        $select->table('foo')->where('id', 2);
-                    }
-                )->
-
-                elses()->
-
-                whereExists(
-                    function ($select) {
-                        $select->table('bar')->where('id', 2);
-                    }
-                )->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->whereExists(
+                        function ($select) {
+                            $select->table('foo')->where('id', 2);
+                        }
+                    )
+                    ->else()
+                    ->whereExists(
+                        function ($select) {
+                            $select->table('bar')->where('id', 2);
+                        }
+                    )
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereNotExistsFlow()
+    public function testWhereNotExistsFlow(): void
     {
         $condition = false;
 
@@ -1294,32 +1236,27 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                whereNotExists(
-                    function ($select) {
-                        $select->table('foo')->where('id', 2);
-                    }
-                )->
-
-                elses()->
-
-                whereNotExists(
-                    function ($select) {
-                        $select->table('bar')->where('id', 2);
-                    }
-                )->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->whereNotExists(
+                        function ($select) {
+                            $select->table('foo')->where('id', 2);
+                        }
+                    )
+                    ->else()
+                    ->whereNotExists(
+                        function ($select) {
+                            $select->table('bar')->where('id', 2);
+                        }
+                    )
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereNotExistsFlow2()
+    public function testWhereNotExistsFlow2(): void
     {
         $condition = true;
 
@@ -1339,32 +1276,27 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                whereExists(
-                    function ($select) {
-                        $select->table('foo')->where('id', 2);
-                    }
-                )->
-
-                elses()->
-
-                whereExists(
-                    function ($select) {
-                        $select->table('bar')->where('id', 2);
-                    }
-                )->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->whereExists(
+                        function ($select) {
+                            $select->table('foo')->where('id', 2);
+                        }
+                    )
+                    ->else()
+                    ->whereExists(
+                        function ($select) {
+                            $select->table('bar')->where('id', 2);
+                        }
+                    )
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereFieldWithTable()
+    public function testWhereFieldWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1382,16 +1314,15 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                where('test.name', '=', 1)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->where('test.name', '=', 1)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereBetweenValueNotAnArrayException()
+    public function testWhereBetweenValueNotAnArrayException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1400,14 +1331,13 @@ class WhereTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        whereBetween('id', 'foo')->
-
-        findAll(true);
+        $connect
+            ->table('test')
+            ->whereBetween('id', 'foo')
+            ->findAll(true);
     }
 
-    public function testWhereBetweenValueNotAnArrayException2()
+    public function testWhereBetweenValueNotAnArrayException2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1416,14 +1346,13 @@ class WhereTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        whereBetween('id', [1])->
-
-        findAll(true);
+        $connect
+            ->table('test')
+            ->whereBetween('id', [1])
+            ->findAll(true);
     }
 
-    public function testWhereBetweenArrayItemIsClosure()
+    public function testWhereBetweenArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1441,18 +1370,17 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereBetween('id', [function ($select) {
-                    $select->table('subsql', 'id')->where('id', 1);
-                }, 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereBetween('id', [function ($select) {
+                        $select->table('subsql', 'id')->where('id', 1);
+                    }, 100])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereInArrayItemIsClosure()
+    public function testWhereInArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1470,18 +1398,17 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereIn('id', [function ($select) {
-                    $select->table('subsql', 'id')->where('id', 1);
-                }, 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereIn('id', [function ($select) {
+                        $select->table('subsql', 'id')->where('id', 1);
+                    }, 100])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereBetweenArrayItemIsExpression()
+    public function testWhereBetweenArrayItemIsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1499,16 +1426,15 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereBetween('id', ['(SELECT 1)', 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereBetween('id', ['(SELECT 1)', 100])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereInArrayItemIsExpression()
+    public function testWhereInArrayItemIsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1526,16 +1452,15 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereIn('id', ['(SELECT 1)', 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereIn('id', ['(SELECT 1)', 100])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereBetweenArrayItemIsSelect()
+    public function testWhereBetweenArrayItemIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1550,21 +1475,22 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $select = $connect->table('foo', 'id')->one();
+        $select = $connect
+            ->table('foo', 'id')
+            ->one();
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereBetween('id', [$select, 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereBetween('id', [$select, 100])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereInArrayItemIsSelect()
+    public function testWhereInArrayItemIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1579,21 +1505,22 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $select = $connect->table('foo', 'id')->one();
+        $select = $connect
+            ->table('foo', 'id')
+            ->one();
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereIn('id', [$select, 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereIn('id', [$select, 100])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereBetweenArrayItemIsCondition()
+    public function testWhereBetweenArrayItemIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1608,21 +1535,23 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $condition = $connect->table('foo', 'id')->one()->databaseCondition();
+        $condition = $connect
+            ->table('foo', 'id')
+            ->one()
+            ->databaseCondition();
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereBetween('id', [$condition, 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereBetween('id', [$condition, 100])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereInArrayItemIsCondition()
+    public function testWhereInArrayItemIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1637,21 +1566,23 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $condition = $connect->table('foo', 'id')->one()->databaseCondition();
+        $condition = $connect
+            ->table('foo', 'id')
+            ->one()
+            ->databaseCondition();
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                whereIn('id', [$condition, 100])->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->whereIn('id', [$condition, 100])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereInIsClosure()
+    public function testWhereInIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1669,18 +1600,17 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('hello')->
-
-                whereIn('id', function ($select) {
-                    $select->table('world');
-                })->
-
-                findAll(true)
+                $connect
+                    ->table('hello')
+                    ->whereIn('id', function ($select) {
+                        $select->table('world');
+                    })
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereInIsSubString()
+    public function testWhereInIsSubString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1695,21 +1625,22 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $subSql = $connect->table('test')->makeSql(true);
+        $subSql = $connect
+            ->table('test')
+            ->makeSql(true);
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('hello')->
-
-                where('id', 'in', $subSql)->
-
-                findAll(true)
+                $connect
+                    ->table('hello')
+                    ->where('id', 'in', $subSql)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereInIsSubIsSelect()
+    public function testWhereInIsSubIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1729,16 +1660,15 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('hello')->
-
-                where('id', 'in', $subSql)->
-
-                findAll(true)
+                $connect
+                    ->table('hello')
+                    ->where('id', 'in', $subSql)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereEqualIsSub()
+    public function testWhereEqualIsSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1756,18 +1686,17 @@ class WhereTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('hello')->
-
-                where('id', '=', function ($select) {
-                    $select->table('test', 'id')->where('id', 1);
-                })->
-
-                findAll(true)
+                $connect
+                    ->table('hello')
+                    ->where('id', '=', function ($select) {
+                        $select->table('test', 'id')->where('id', 1);
+                    })
+                    ->findAll(true)
             )
         );
     }
 
-    public function testWhereRaw()
+    public function testWhereRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1793,7 +1722,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhereRaw()
+    public function testOrWhereRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1820,7 +1749,7 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testWhereRawFlow()
+    public function testWhereRawFlow(): void
     {
         $condition = false;
 
@@ -1842,17 +1771,17 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
-                    ->elses()
+                    ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
     }
 
-    public function testWhereRawFlow2()
+    public function testWhereRawFlow2(): void
     {
         $condition = true;
 
@@ -1874,17 +1803,17 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
-                    ->elses()
+                    ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
     }
 
-    public function testOrWhereRawFlow()
+    public function testOrWhereRawFlow(): void
     {
         $condition = false;
 
@@ -1906,19 +1835,19 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->orWhereRaw('FIND_IN_SET(1, options_id)')
-                    ->elses()
+                    ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );
     }
 
-    public function testOrWhereRawFlow2()
+    public function testOrWhereRawFlow2(): void
     {
         $condition = true;
 
@@ -1940,13 +1869,13 @@ class WhereTest extends TestCase
             $this->varJson(
                 $connect
                     ->table('test')
-                    ->ifs($condition)
+                    ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->orWhereRaw('FIND_IN_SET(1, options_id)')
-                    ->elses()
+                    ->else()
                     ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
-                    ->endIfs()
+                    ->fi()
                     ->findAll(true)
             )
         );

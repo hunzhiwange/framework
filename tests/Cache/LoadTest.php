@@ -20,14 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Cache;
 
-use Leevel\Cache\Cache;
-use Leevel\Cache\File;
-use Leevel\Cache\ICache;
 use Leevel\Cache\Load;
 use Leevel\Di\Container;
 use Tests\Cache\Pieces\Test1;
 use Tests\Cache\Pieces\Test2;
-use Tests\Cache\Pieces\Test3;
 use Tests\Cache\Pieces\Test4;
 use Tests\TestCase;
 
@@ -45,177 +41,105 @@ class LoadTest extends TestCase
     protected function tearDown(): void
     {
         $files = [
-            'Tests.Cache.Pieces.Test1.php',
-            'Tests.Cache.Pieces.Test2@hello.php',
-            'Tests.Cache.Pieces.Test4.hello,world,foo,bar.php',
+            'test1.php',
+            'test4.php',
+            'test2.php',
         ];
 
         foreach ($files as $val) {
-            if (is_file($val = __DIR__.'/cacheLoad/'.$val)) {
+            if (is_file($val = __DIR__.'/Pieces/cacheLoad/'.$val)) {
                 unlink($val);
             }
         }
 
-        $path = __DIR__.'/cacheLoad';
+        $path = __DIR__.'/Pieces/cacheLoad';
 
         if (is_dir($path)) {
             rmdir($path);
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $container = new Container();
-
         $load = $this->createLoad($container);
 
-        $this->assertInstanceof(ICache::class, $load->getCache());
-        $this->assertInstanceof(Cache::class, $load->getCache());
-
-        $result = $load->data(Test1::class);
-
+        $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
-        $result = $load->data(Test1::class);
-
+        $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
-        $load->refresh(Test1::class);
+        $load->refresh([Test1::class]);
     }
 
-    public function testSwitchCache()
+    public function testRefresh(): void
     {
         $container = new Container();
-
         $load = $this->createLoad($container);
 
-        $this->assertInstanceof(ICache::class, $load->getCache());
-        $this->assertInstanceof(Cache::class, $load->getCache());
-
-        $cache = $this->createMock(ICache::class);
-
-        $this->assertNull($load->switchCache($cache));
-
-        $this->assertInstanceof(ICache::class, $load->getCache());
-    }
-
-    public function testRefresh()
-    {
-        $container = new Container();
-
-        $load = $this->createLoad($container);
-
-        $result = $load->data(Test1::class);
-
+        $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
-        $result = $load->data(Test1::class);
-
+        $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
-        $file = __DIR__.'/cacheLoad/Tests.Cache.Pieces.Test1.php';
-
+        $file = __DIR__.'/Pieces/cacheLoad/test1.php';
         $this->assertTrue(is_file($file));
 
-        $load->refresh(Test1::class);
-
+        $load->refresh([Test1::class]);
         $this->assertFalse(is_file($file));
     }
 
-    public function testDataLoaded()
+    public function testDataForce(): void
     {
         $container = new Container();
-
         $load = $this->createLoad($container);
 
-        $result = $load->dataLoaded(Test1::class);
-
-        $this->assertFalse($result);
-
-        $result = $load->data(Test1::class);
-
+        $result = $load->data([Test1::class]);
         $this->assertSame(['foo' => 'bar'], $result);
 
-        $result = $load->dataLoaded(Test1::class);
-
+        $result = $load->data([Test1::class], [], true);
         $this->assertSame(['foo' => 'bar'], $result);
     }
 
-    public function testDataForce()
+    public function testCacheBlockType(): void
     {
-        $container = new Container();
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Cache `Tests\\Cache\\Pieces\\Test2` must implements `Leevel\\Cache\\IBlock`.'
+        );
 
+        $container = new Container();
         $load = $this->createLoad($container);
 
-        $result = $load->data(Test1::class);
-
-        $this->assertSame(['foo' => 'bar'], $result);
-
-        $result = $load->data(Test1::class, [], true);
-
-        $this->assertSame(['foo' => 'bar'], $result);
+        $load->data([Test2::class]);
     }
 
-    public function testWithCustom()
+    public function testWithParams(): void
     {
         $container = new Container();
-
         $load = $this->createLoad($container);
 
-        $result = $load->data(Test2::class.'@hello');
-
-        $this->assertSame(['hello' => 'world'], $result);
-
-        $result = $load->data(Test2::class.'@hello');
-
-        $this->assertSame(['hello' => 'world'], $result);
-    }
-
-    public function testWithParams()
-    {
-        $container = new Container();
-
-        $load = $this->createLoad($container);
-
-        $result = $load->data(Test4::class.':hello,world,foo,bar');
-
+        $result = $load->data([Test4::class.':hello,world,foo,bar']);
         $this->assertSame(['hello', 'world', 'foo', 'bar'], $result);
     }
 
-    public function testCacheNotFound()
+    public function testCacheNotFound(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\ReflectionException::class);
         $this->expectExceptionMessage(
-            'Cache Tests\Cache\Pieces\TestNotFound is not valid.'
+            'Class Tests\\Cache\\Pieces\\TestNotFound does not exist'
         );
 
         $container = new Container();
-
         $load = $this->createLoad($container);
 
-        $result = $load->data('Tests\Cache\Pieces\TestNotFound');
-    }
-
-    public function testCustomMethodNotFound()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Cache Tests\Cache\Pieces\Test3@notFound is not a callable.'
-        );
-
-        $container = new Container();
-
-        $load = $this->createLoad($container);
-
-        $result = $load->data(Test3::class.'@notFound');
+        $load->data(['Tests\Cache\Pieces\TestNotFound']);
     }
 
     protected function createLoad(Container $container): Load
     {
-        $cache = new File([
-            'path' => __DIR__.'/cacheLoad',
-        ]);
-
-        return new Load($container, $cache);
+        return new Load($container);
     }
 }

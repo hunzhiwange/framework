@@ -62,7 +62,7 @@ class CacheTest extends TestCase
         $this->setUp();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $cacheFile = __DIR__.'/i18n_cache_[i18n].php';
 
@@ -124,7 +124,7 @@ class CacheTest extends TestCase
         );
     }
 
-    public function testDirNotExists()
+    public function testDirNotExists(): void
     {
         $cacheFile = __DIR__.'/dirNotExists/i18n_cache_[i18n].php';
 
@@ -188,7 +188,7 @@ class CacheTest extends TestCase
         rmdir(dirname($cacheFile));
     }
 
-    public function testDirWriteable()
+    public function testDirWriteable(): void
     {
         $dirname = __DIR__.'/dirWriteable';
         $cacheFile = $dirname.'/i18n_cache_[i18n].php';
@@ -247,7 +247,7 @@ class CacheTest extends TestCase
         rmdir($dirname);
     }
 
-    public function testParentDirWriteable()
+    public function testParentDirWriteable(): void
     {
         $dirname = __DIR__.'/parentDirWriteable/sub';
         $cacheFile = $dirname.'/i18n_cache_[i18n].php';
@@ -308,7 +308,7 @@ class CacheTest extends TestCase
         rmdir(dirname($dirname));
     }
 
-    protected function initContainerService(IContainer $container, string $cacheFile)
+    protected function initContainerService(IContainer $container, string $cacheFile): void
     {
         // 注册 app
         $app = new App($container, '');

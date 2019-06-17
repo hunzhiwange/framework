@@ -35,7 +35,7 @@ use Tests\Database\Ddd\Entity\Guestbook;
  */
 class EntityNotFoundExceptionTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $e = new EntityNotFoundException();
         $e->setEntity(Guestbook::class);

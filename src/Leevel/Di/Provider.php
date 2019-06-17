@@ -58,6 +58,8 @@ abstract class Provider
      * @param string $method
      * @param array  $args
      *
+     * @throws \BadMethodCallException
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)

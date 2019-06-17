@@ -102,6 +102,8 @@ abstract class Auth implements IAuth
     /**
      * 取得认证名字.
      *
+     * @throws \Leevel\Auth\AuthException
+     *
      * @return string
      */
     public function getTokenName(): string

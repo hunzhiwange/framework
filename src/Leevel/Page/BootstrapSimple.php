@@ -49,7 +49,7 @@ class BootstrapSimple extends Bootstrap
     /**
      * 设置两端对齐.
      *
-     * @return $this
+     * @return \Leevel\Page\IRender
      */
     public function setJustifyAlign(): IRender
     {

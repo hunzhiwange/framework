@@ -19,7 +19,7 @@
 
 > This is the core framework code of QueryPHP application, starts from this moment with [QueryPHP](https://github.com/hunzhiwange/queryphp).
 
-QueryPHP is a modern, high performance PHP 7 resident framework, with engineer user experience as its historical mission, let every PHP application have a good framework.
+QueryPHP is a modern, progressive high performance PHP 7 not only resident framework, with engineer user experience as its historical mission, let every PHP application have a good framework.
 
 A hundred percent coverage of the unit tests to facing the bug,based on Zephir implemented framework resident,with Swoole ecology to achieve business resident,
 now or in the future step by step. Our vision is **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, let your business to support more user services.
@@ -46,6 +46,10 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
  * Packages: <https://github.com/leevels/>
  * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
  * Packages From Leevel: <https://packagist.org/packages/leevel/>
+
+## PHP Engineering Practice Of QueryPHP
+
+<img src="./engineering.jpg" />
 
 ## Optional Extension
 
@@ -89,7 +93,7 @@ composer require leevel/cache
 
 ## Run Tests
 
-```
+```diff
 _____________                           _______________
  ______/     \__  _____  ____  ______  / /_  _________
   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
@@ -101,7 +105,8 @@ $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 $composer install
 $cp ./tests/config.php ./tests/config.local.php // Modify the config
 $php vendor/bin/phinx migrate
-$php vendor/bin/phpunit tests
+- $php vendor/bin/phpunit tests
++ $php ./build/phpunit tests
 ```
 
 ## Make Doc For Framework
@@ -117,11 +122,14 @@ $php leevel make:docwithin tests
 
 <https://github.com/friendsofphp/php-cs-fixer>
 
+It can be used without installation,we download a version for you.
+
 ### Base use
 
-```
+```diff
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
-$php-cs-fixer fix --config=.php_cs.dist
+- $php-cs-fixer fix --config=.php_cs.dist
++ $./build/php-cs-fixer fix --config=.php_cs.dist
 ```
 
 ### With Git hooks
@@ -138,6 +146,12 @@ Pass hook
 ```
 # git commit -h
 # git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
+```
+
+## PHPStan 
+
+```
+php ./build/phpstan analyse
 ```
 
 ## Travis CI Supported

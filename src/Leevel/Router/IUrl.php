@@ -30,16 +30,18 @@ use Leevel\Http\IRequest;
  * @since 2017.01.10
  *
  * @version 1.0
+ *
+ * @see \Leevel\Router\Proxy\IUrl 请保持接口设计的一致性
  */
 interface IUrl
 {
     /**
      * 生成路由地址
      *
-     * @param string      $url
-     * @param array       $params
-     * @param string      $subdomain
-     * @param bool|string $suffix
+     * @param string           $url
+     * @param array            $params
+     * @param string           $subdomain
+     * @param null|bool|string $suffix
      *
      * @return string
      */
@@ -58,7 +60,7 @@ interface IUrl
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Router\IUrl
      */
     public function setOption(string $name, $value): self;
 

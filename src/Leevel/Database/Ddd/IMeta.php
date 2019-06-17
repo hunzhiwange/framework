@@ -40,12 +40,14 @@ interface IMeta
      *
      * @param string $table
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IMeta
      */
     public static function instance(string $table): self;
 
     /**
      * 返回数据库管理对象.
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Manager
      */
@@ -61,9 +63,9 @@ interface IMeta
     /**
      * 返回数据库元对象连接.
      *
-     * @param mixed $connect
+     * @param null|mixed $connect
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IMeta
      */
     public function setConnect($connect = null): self;
 

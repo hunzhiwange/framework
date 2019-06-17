@@ -38,7 +38,7 @@ interface IPipeline
      *
      * @param array $passed
      *
-     * @return $this
+     * @return \Leevel\Pipeline\IPipeline
      */
     public function send(array $passed): self;
 
@@ -47,16 +47,16 @@ interface IPipeline
      *
      * @param array $stage
      *
-     * @return $this
+     * @return \Leevel\Pipeline\IPipeline
      */
     public function through(array $stage): self;
 
     /**
      * 执行管道工序响应结果.
      *
-     * @param \Closure $end
+     * @param null|\Closure $end
      *
      * @return mixed
      */
-    public function then(Closure $end = null);
+    public function then(?Closure $end = null);
 }

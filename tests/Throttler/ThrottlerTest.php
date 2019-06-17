@@ -46,7 +46,7 @@ class ThrottlerTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $throttler = $this->createRateLimiter();
 
@@ -68,7 +68,7 @@ class ThrottlerTest extends TestCase
         unlink($path.'/baseuse.php');
     }
 
-    public function testUseCall()
+    public function testUseCall(): void
     {
         $throttler = $this->createRateLimiter();
 
@@ -94,7 +94,7 @@ class ThrottlerTest extends TestCase
         unlink($path.'/'.$key.'.php');
     }
 
-    public function testAttempt()
+    public function testAttempt(): void
     {
         $throttler = $this->createRateLimiter();
 
@@ -112,7 +112,7 @@ class ThrottlerTest extends TestCase
         unlink($path.'/attempt.php');
     }
 
-    public function testRequestIsNotSet()
+    public function testRequestIsNotSet(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(

@@ -68,6 +68,8 @@ class File extends Cache implements ICache
      * @param mixed  $defaults
      * @param array  $option
      *
+     * @throws \InvalidArgumentException
+     *
      * @return mixed
      */
     public function get(string $name, $defaults = false, array $option = [])
@@ -83,7 +85,9 @@ class File extends Cache implements ICache
         }
 
         if (!is_readable($cachePath)) {
-            throw new InvalidArgumentException('Cache path is not readable.');
+            $e = 'Cache path is not readable.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $fp = fopen($cachePath, 'r');
@@ -193,12 +197,16 @@ class File extends Cache implements ICache
      *
      * @param string $name
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     protected function getCachePath(string $name): string
     {
         if (!$this->option['path']) {
-            throw new InvalidArgumentException('Cache path is not allowed empty.');
+            $e = 'Cache path is not allowed empty.';
+
+            throw new InvalidArgumentException($e);
         }
 
         return $this->option['path'].'/'.$this->getCacheName($name).'.php';

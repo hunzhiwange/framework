@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class UpdateColumnTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -52,18 +52,16 @@ class UpdateColumnTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                updateColumn('name', '小小小鸟，怎么也飞不高。')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->updateColumn('name', '小小小鸟，怎么也飞不高。')
             )
         );
     }
 
-    public function testExpression()
+    public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -77,13 +75,11 @@ class UpdateColumnTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                updateColumn('name', '{concat([value],[name])}')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->updateColumn('name', '{concat([value],[name])}')
             )
         );
     }

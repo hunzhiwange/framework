@@ -48,7 +48,7 @@ class CompilerVarTest extends TestCase
      *     note="模板标签的 “{” 和 “$” 之间不能有任何的空格，否则标签无效。",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 
@@ -71,7 +71,7 @@ class CompilerVarTest extends TestCase
      *     note="注意：“{{“ 与内容之间可以有空格,也可以没有，结果一样。",
      * )
      */
-    public function testJsStyle()
+    public function testJsStyle(): void
     {
         $parser = $this->createParser();
 
@@ -94,7 +94,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testArraySupport()
+    public function testArraySupport(): void
     {
         $parser = $this->createParser();
 
@@ -117,7 +117,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testJsStyleArraySupport()
+    public function testJsStyleArraySupport(): void
     {
         $parser = $this->createParser();
 
@@ -140,7 +140,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testObject()
+    public function testObject(): void
     {
         $parser = $this->createParser();
 
@@ -163,7 +163,7 @@ class CompilerVarTest extends TestCase
      *     note="`.` 周围有空格表示变量",
      * )
      */
-    public function testJsStyleObject()
+    public function testJsStyleObject(): void
     {
         $parser = $this->createParser();
 
@@ -195,7 +195,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testLevel()
+    public function testLevel(): void
     {
         $parser = $this->createParser();
 
@@ -218,7 +218,7 @@ class CompilerVarTest extends TestCase
      *     note="值得注意的是点语法不支持数组，这个需要明确。",
      * )
      */
-    public function testObjectSpot()
+    public function testObjectSpot(): void
     {
         $parser = $this->createParser();
 
@@ -241,7 +241,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testLevelProperty()
+    public function testLevelProperty(): void
     {
         $parser = $this->createParser();
 
@@ -264,7 +264,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testOperator()
+    public function testOperator(): void
     {
         $parser = $this->createParser();
 
@@ -289,7 +289,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testOperator2()
+    public function testOperator2(): void
     {
         $parser = $this->createParser();
 
@@ -320,7 +320,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testOperator3()
+    public function testOperator3(): void
     {
         $parser = $this->createParser();
 
@@ -343,7 +343,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testJsOperator()
+    public function testJsOperator(): void
     {
         $parser = $this->createParser();
 
@@ -368,7 +368,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testJsOperator2()
+    public function testJsOperator2(): void
     {
         $parser = $this->createParser();
 
@@ -399,7 +399,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testJsOperator3()
+    public function testJsOperator3(): void
     {
         $parser = $this->createParser();
 
@@ -437,7 +437,7 @@ class CompilerVarTest extends TestCase
      *     note="函数的定义和使用顺序的对应关系，通常来说函数的第一个参数就是前面的变量或者前一个函数使用的结果，如果你的变量并不是函数的第一个参数，需要使用定位符号 “**”。",
      * )
      */
-    public function testFunction()
+    public function testFunction(): void
     {
         $parser = $this->createParser();
 
@@ -471,7 +471,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testFunction2()
+    public function testFunction2(): void
     {
         $parser = $this->createParser();
 
@@ -494,7 +494,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testFunction3()
+    public function testFunction3(): void
     {
         $parser = $this->createParser();
 
@@ -517,7 +517,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testFunction4()
+    public function testFunction4(): void
     {
         $parser = $this->createParser();
 
@@ -540,7 +540,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testFunction5()
+    public function testFunction5(): void
     {
         $parser = $this->createParser();
 
@@ -565,7 +565,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testFunction6()
+    public function testFunction6(): void
     {
         $parser = $this->createParser();
 
@@ -599,7 +599,7 @@ class CompilerVarTest extends TestCase
      *     note="程序编译后默认是输出值，所以最好在类的方法中最好不要直接输出值，直接返回，这样可以交给模版来做数据处理。",
      * )
      */
-    public function testFunction7()
+    public function testFunction7(): void
     {
         $parser = $this->createParser();
 
@@ -629,7 +629,7 @@ class CompilerVarTest extends TestCase
      *     note="“default=” 之间不能有空格，否则无法识别。",
      * )
      */
-    public function testFunction8()
+    public function testFunction8(): void
     {
         $parser = $this->createParser();
 
@@ -660,7 +660,7 @@ class CompilerVarTest extends TestCase
      *     note="",
      * )
      */
-    public function testJsFunction()
+    public function testJsFunction(): void
     {
         $parser = $this->createParser();
 

@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
  */
 class HasOneTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -47,20 +47,24 @@ class HasOneTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'Say hello to the world.',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]));
 
-        $this->assertSame('0', $connect->
-        table('post_content')->
-        insert([
-            'post_id' => 1,
-            'content' => 'I am content with big data.',
-        ]));
+        $this->assertSame(
+            '0',
+            $connect
+                ->table('post_content')
+                ->insert([
+                    'post_id' => 1,
+                    'content' => 'I am content with big data.',
+                ]));
 
         $post = Post::where('id', 1)->findOne();
 
@@ -91,7 +95,7 @@ class HasOneTest extends TestCase
         $this->assertSame('I am content with big data.', $postContent->getterContent());
     }
 
-    public function testEager()
+    public function testEager(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -101,20 +105,24 @@ class HasOneTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i <= 5; $i++) {
-            $this->assertSame((string) ($i + 1), $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'Say hello to the world.',
-            ]));
+            $this->assertSame(
+                (string) ($i + 1),
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title'   => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                    ]));
 
-            $this->assertSame('0', $connect->
-            table('post_content')->
-            insert([
-                'post_id' => $i + 1,
-                'content' => 'I am content with big data.',
-            ]));
+            $this->assertSame(
+                '0',
+                $connect
+                    ->table('post_content')
+                    ->insert([
+                        'post_id' => $i + 1,
+                        'content' => 'I am content with big data.',
+                    ]));
         }
 
         $posts = Post::eager(['post_content'])->findAll();
@@ -131,24 +139,28 @@ class HasOneTest extends TestCase
         }
     }
 
-    public function testRelationAsMethod()
+    public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'Say hello to the world.',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]));
 
-        $this->assertSame('0', $connect->
-        table('post_content')->
-        insert([
-            'post_id' => 1,
-            'content' => 'I am content with big data.',
-        ]));
+        $this->assertSame(
+            '0',
+            $connect
+                ->table('post_content')
+                ->insert([
+                    'post_id' => 1,
+                    'content' => 'I am content with big data.',
+                ]));
 
         $postContentRelation = Post::postContent();
 

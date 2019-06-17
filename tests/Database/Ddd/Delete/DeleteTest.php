@@ -35,7 +35,7 @@ use Tests\Database\Ddd\Entity\TestEntity;
  */
 class DeleteTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $entity = new TestEntity(['id' => 5, 'name' => 'foo']);
 

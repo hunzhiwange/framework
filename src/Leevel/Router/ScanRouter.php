@@ -52,7 +52,9 @@ class ScanRouter
             $middlewareParser, $this->getDomain()
         );
 
-        $this->openApiRouter->addScandir($this->appPath());
+        foreach ([$this->routePath(), $this->appPath()] as $path) {
+            $this->openApiRouter->addScandir($path);
+        }
     }
 
     /**
@@ -83,5 +85,15 @@ class ScanRouter
     protected function appPath(): string
     {
         return App::appPath();
+    }
+
+    /**
+     * 获取路由目录.
+     *
+     * @return string
+     */
+    protected function routePath(): string
+    {
+        return App::path('router');
     }
 }

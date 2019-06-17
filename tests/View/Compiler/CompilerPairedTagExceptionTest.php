@@ -44,7 +44,7 @@ class CompilerPairedTagExceptionTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -61,7 +61,7 @@ class CompilerPairedTagExceptionTest extends TestCase
         $parser->doCompile($source, null, true);
     }
 
-    public function testCross()
+    public function testCross(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -80,7 +80,7 @@ class CompilerPairedTagExceptionTest extends TestCase
         $parser->doCompile($source, null, true);
     }
 
-    public function testTagFileException()
+    public function testTagFileException(): void
     {
         $file = __DIR__.'/tag_source.html';
 
@@ -105,7 +105,7 @@ class CompilerPairedTagExceptionTest extends TestCase
         $parser->doCompile($file, null);
     }
 
-    public function testSimpleWithoutException()
+    public function testSimpleWithoutException(): void
     {
         $parser = $this->createParser();
 
@@ -126,7 +126,7 @@ class CompilerPairedTagExceptionTest extends TestCase
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    public function testTagCrossException()
+    public function testTagCrossException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(

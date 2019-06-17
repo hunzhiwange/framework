@@ -44,17 +44,19 @@ use Tests\Database\Ddd\Entity\TestUnique;
  */
 class RepositoryTest extends TestCase
 {
-    public function testBase()
+    public function testBase(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -68,17 +70,19 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Post::class, $repository->entity());
     }
 
-    public function testFind()
+    public function testFind(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -91,17 +95,19 @@ class RepositoryTest extends TestCase
         $this->assertSame('post summary', $newPost->summary);
     }
 
-    public function testFindOrFail()
+    public function testFindOrFail(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -114,7 +120,7 @@ class RepositoryTest extends TestCase
         $this->assertSame('post summary', $newPost->summary);
     }
 
-    public function testFindOrFailNotFound()
+    public function testFindOrFailNotFound(): void
     {
         $this->expectException(\Leevel\Database\Ddd\EntityNotFoundException::class);
         $this->expectExceptionMessage(
@@ -126,18 +132,18 @@ class RepositoryTest extends TestCase
         $newPost = $repository->findOrFail(1);
     }
 
-    public function testSpecWithClosure()
+    public function testSpecWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -167,18 +173,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(4, $result);
     }
 
-    public function testSpecWithClass()
+    public function testSpecWithClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -200,18 +206,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(4, $result);
     }
 
-    public function testExpr()
+    public function testExpr(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -241,18 +247,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(4, $result);
     }
 
-    public function testFindAllBySpecWithClosure()
+    public function testFindAllBySpecWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -281,18 +287,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(4, $result);
     }
 
-    public function testFindAllBySpecWithClass()
+    public function testFindAllBySpecWithClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -312,18 +318,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(4, $result);
     }
 
-    public function testFindAllByExpr()
+    public function testFindAllByExpr(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -351,18 +357,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(4, $result);
     }
 
-    public function testFindCountBySpecWithClosure()
+    public function testFindCountBySpecWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -389,18 +395,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(4, $result);
     }
 
-    public function testFindCountBySpecWithClass()
+    public function testFindCountBySpecWithClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -419,18 +425,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(4, $result);
     }
 
-    public function testFindCountByExpr()
+    public function testFindCountByExpr(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -457,18 +463,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(4, $result);
     }
 
-    public function testFindAllBySpecWithClosureForNot()
+    public function testFindAllBySpecWithClosureForNot(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -492,18 +498,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
-    public function testFindAllBySpecWithClosureForNotButValueIsTrue()
+    public function testFindAllBySpecWithClosureForNotButValueIsTrue(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'not_bar', 'hello' => 'world'];
@@ -527,18 +533,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
-    public function testSpecWithOrFirstIsNo()
+    public function testSpecWithOrFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -568,18 +574,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
-    public function testSpecWithOrFirstIsYes()
+    public function testSpecWithOrFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -609,18 +615,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(6, $result);
     }
 
-    public function testSpecWithOrFirstIsNoSecondAlsoIsNo()
+    public function testSpecWithOrFirstIsNoSecondAlsoIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -650,18 +656,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
-    public function testSpecMake()
+    public function testSpecMake(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -682,18 +688,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(6, $result);
     }
 
-    public function testSpecificationExpressionMake()
+    public function testSpecificationExpressionMake(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -711,18 +717,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(7, $result);
     }
 
-    public function testFindCountWithOrClosureFirstIsYes()
+    public function testFindCountWithOrClosureFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -749,18 +755,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(7, $result);
     }
 
-    public function testFindCountWithOrClosureFirstIsNo()
+    public function testFindCountWithOrClosureFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -787,18 +793,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(5, $result);
     }
 
-    public function testFindCountWithOrClosureFirstIsNoAndSecondAlsoIsNo()
+    public function testFindCountWithOrClosureFirstIsNoAndSecondAlsoIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -825,18 +831,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(10, $result);
     }
 
-    public function testFindCountWithOrFirstIsYes()
+    public function testFindCountWithOrFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -863,18 +869,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(7, $result);
     }
 
-    public function testFindCountWithOrFirstIsNo()
+    public function testFindCountWithOrFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -901,18 +907,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(5, $result);
     }
 
-    public function testFindCountWithOrFirstIsNoAndSecodeAlsoIsNo()
+    public function testFindCountWithOrFirstIsNoAndSecodeAlsoIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -939,18 +945,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(10, $result);
     }
 
-    public function testFindCountWithAndFirstIsYes()
+    public function testFindCountWithAndFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -977,18 +983,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(2, $result);
     }
 
-    public function testFindCountWithAndFirstIsNo()
+    public function testFindCountWithAndFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -1015,18 +1021,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(10, $result);
     }
 
-    public function testFindCountWithAndFirstIsYesSecodeIsNo()
+    public function testFindCountWithAndFirstIsYesSecodeIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'no-world'];
@@ -1053,18 +1059,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(10, $result);
     }
 
-    public function testFindCountWithAndFirstIsNoSecodeIsNo()
+    public function testFindCountWithAndFirstIsNoSecodeIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1091,18 +1097,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(10, $result);
     }
 
-    public function testFindCountWithAndIsYes()
+    public function testFindCountWithAndIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'bar', 'hello' => 'world'];
@@ -1125,18 +1131,18 @@ class RepositoryTest extends TestCase
         $this->assertSame(10, $result);
     }
 
-    public function testFindCountWithAndIsNo()
+    public function testFindCountWithAndIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'world'];
@@ -1159,21 +1165,25 @@ class RepositoryTest extends TestCase
         $this->assertSame(7, $result);
     }
 
-    public function testCall()
+    public function testCall(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
-        $newPost = $repository->where('id', 5)->find(1);
+        $newPost = $repository
+            ->where('id', 5)
+            ->find(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertNull($newPost->id);
@@ -1182,11 +1192,15 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->summary);
     }
 
-    public function testCreateFlushed()
+    public function testCreateFlushed(): void
     {
         $repository = new Repository(new Post());
 
-        $repository->create($post = new Post(['id' => 5, 'title' => 'foo']));
+        $repository->create($post = new Post([
+            'id'      => 5,
+            'title'   => 'foo',
+            'user_id' => 0,
+        ]));
 
         $repository->create($post); // do nothing.
 
@@ -1197,17 +1211,19 @@ class RepositoryTest extends TestCase
         $this->assertSame('foo', $newPost->title);
     }
 
-    public function testUpdateFlushed()
+    public function testUpdateFlushed(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -1222,21 +1238,27 @@ class RepositoryTest extends TestCase
         $this->assertSame('new title', $newPost->title);
     }
 
-    public function testReplaceFlushed()
+    public function testReplaceFlushed(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
-        $affectedRow = $repository->replace($post = new Post(['id' => 1, 'title' => 'new title']));
+        $affectedRow = $repository->replace($post = new Post([
+            'id'      => 1,
+            'title'   => 'new title',
+            'user_id' => 1,
+        ]));
 
         $this->assertSame(1, $affectedRow);
 
@@ -1248,21 +1270,27 @@ class RepositoryTest extends TestCase
         $this->assertSame('post summary', $updatedPost->summary);
     }
 
-    public function testReplaceFlushed2()
+    public function testReplaceFlushed2(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
-        $repository->replace($post = new Post(['id' => 2, 'title' => 'new title']));
+        $repository->replace($post = new Post([
+            'id'      => 2,
+            'title'   => 'new title',
+            'user_id' => 0,
+        ]));
 
         $repository->replace($post); // do nothing.
 
@@ -1285,12 +1313,14 @@ class RepositoryTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect
-            ->table('test_unique')
-            ->insert([
-                'name'     => 'hello world',
-                'identity' => 'hello',
-            ])
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('test_unique')
+                ->insert([
+                    'name'     => 'hello world',
+                    'identity' => 'hello',
+                ])
         );
 
         $testUniqueData = TestUnique::find(1);
@@ -1314,17 +1344,19 @@ class RepositoryTest extends TestCase
         $this->assertSame('hello', $testUniqueData->identity);
     }
 
-    public function testDeleteFlushed()
+    public function testDeleteFlushed(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $repository = new Repository(new Post());
 
@@ -1341,18 +1373,18 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->summary);
     }
 
-    public function testConditionIsClosure()
+    public function testConditionIsClosure(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1371,7 +1403,7 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
-    public function testConditionTypeIsInvalid()
+    public function testConditionTypeIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1383,18 +1415,18 @@ class RepositoryTest extends TestCase
         $select = $repository->condition(5);
     }
 
-    public function testFindPage()
+    public function testFindPage(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1422,18 +1454,18 @@ class RepositoryTest extends TestCase
         );
     }
 
-    public function testFindPageWithCondition()
+    public function testFindPageWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1467,18 +1499,18 @@ class RepositoryTest extends TestCase
         );
     }
 
-    public function testFindPageHtml()
+    public function testFindPageHtml(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1491,18 +1523,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
-    public function testFindPageHtmlWithCondition()
+    public function testFindPageHtmlWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1521,18 +1553,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
-    public function testFindPageMacro()
+    public function testFindPageMacro(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1545,18 +1577,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
-    public function testFindPageMacroWithCondition()
+    public function testFindPageMacroWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1575,18 +1607,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
-    public function testFindPagePrevNext()
+    public function testFindPagePrevNext(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1599,18 +1631,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(10, $result);
     }
 
-    public function testFindPagePrevNextWithCondition()
+    public function testFindPagePrevNextWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1629,18 +1661,18 @@ class RepositoryTest extends TestCase
         $this->assertCount(7, $result);
     }
 
-    public function testFindPageWithOnlyScope()
+    public function testFindPageWithOnlyScope(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1670,18 +1702,18 @@ class RepositoryTest extends TestCase
         );
     }
 
-    public function testFindPageWithOnlyScopeSplitToArray()
+    public function testFindPageWithOnlyScopeSplitToArray(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1711,18 +1743,18 @@ class RepositoryTest extends TestCase
         );
     }
 
-    public function testFindPageWithConditionAndScope()
+    public function testFindPageWithConditionAndScope(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1756,18 +1788,18 @@ class RepositoryTest extends TestCase
         );
     }
 
-    public function testFindPageWithConditionAndScopeAndScopeIsArray()
+    public function testFindPageWithConditionAndScopeAndScopeIsArray(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
@@ -1801,18 +1833,18 @@ class RepositoryTest extends TestCase
         );
     }
 
-    public function testFindList()
+    public function testFindList(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world'.$i,
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1844,18 +1876,18 @@ class RepositoryTest extends TestCase
         );
     }
 
-    public function testFindListFieldValueIsArray()
+    public function testFindListFieldValueIsArray(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world'.$i,
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());
@@ -1887,18 +1919,18 @@ class RepositoryTest extends TestCase
         );
     }
 
-    public function testFindListWithCondition()
+    public function testFindListWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world'.$i,
-                'user_id' => 1,
-                'summary' => 'post summary',
-            ]);
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world'.$i,
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]);
         }
 
         $repository = new Repository(new Post());

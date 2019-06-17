@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class ProviderTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new PrividerTest($container = new Container());
 
@@ -52,7 +52,7 @@ class ProviderTest extends TestCase
         $this->assertFalse($test->isDeferred());
     }
 
-    public function testDeferred()
+    public function testDeferred(): void
     {
         $test = new PrividerTest2($container = new Container());
 
@@ -71,7 +71,7 @@ class ProviderTest extends TestCase
         $this->assertTrue($test->isDeferred());
     }
 
-    public function testEmptyProviders()
+    public function testEmptyProviders(): void
     {
         $test = new PrividerTest3($container = new Container());
 
@@ -81,7 +81,7 @@ class ProviderTest extends TestCase
         $test->register();
     }
 
-    public function testNotDefinedBootstrap()
+    public function testNotDefinedBootstrap(): void
     {
         $test = new PrividerTest($container = new Container());
 
@@ -91,7 +91,7 @@ class ProviderTest extends TestCase
         $test->bootstrap();
     }
 
-    public function testMethodNotFound()
+    public function testMethodNotFound(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(

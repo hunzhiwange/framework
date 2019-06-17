@@ -21,6 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
+use Leevel\Http\IRequest;
+use Leevel\Router\IUrl as IBaseUrl;
+use Leevel\Router\Url as BaseUrl;
 
 /**
  * 代理 url.
@@ -30,8 +33,9 @@ use Leevel\Di\Container;
  * @since 2018.02.08
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-class Url
+class Url implements IUrl
 {
     /**
      * call.
@@ -43,8 +47,64 @@ class Url
      */
     public static function __callStatic(string $method, array $args)
     {
-        return Container::singletons()
-            ->make('url')
-            ->{$method}(...$args);
+        return self::proxy()->{$method}(...$args);
+    }
+
+    /**
+     * 生成路由地址
+     *
+     * @param string           $url
+     * @param array            $params
+     * @param string           $subdomain
+     * @param null|bool|string $suffix
+     *
+     * @return string
+     */
+    public static function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
+    {
+        return self::proxy()->make($url, $params, $subdomain, $suffix);
+    }
+
+    /**
+     * 返回 HTTP 请求
+     *
+     * @return \Leevel\Http\IRequest
+     */
+    public static function getRequest(): IRequest
+    {
+        return self::proxy()->getRequest();
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return \Leevel\Router\IUrl
+     */
+    public static function setOption(string $name, $value): IBaseUrl
+    {
+        return self::proxy()->setOption($name, $value);
+    }
+
+    /**
+     * 获取域名.
+     *
+     * @return string
+     */
+    public static function getDomain(): string
+    {
+        return self::proxy()->getDomain();
+    }
+
+    /**
+     * 代理服务
+     *
+     * @return \Leevel\Router\Url
+     */
+    public static function proxy(): BaseUrl
+    {
+        return Container::singletons()->make('url');
     }
 }

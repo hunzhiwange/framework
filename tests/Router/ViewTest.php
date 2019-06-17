@@ -37,7 +37,7 @@ use Tests\TestCase;
  */
 class ViewTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $view = new View(
             $html = new Html()
@@ -45,53 +45,53 @@ class ViewTest extends TestCase
 
         $this->assertInstanceof(IView::class, $view);
 
-        $view->assign('hello', 'world');
+        $view->setVar('hello', 'world');
 
-        $this->assertSame('world', $view->getAssign('hello'));
+        $this->assertSame('world', $view->getVar('hello'));
 
         $this->assertSame('world', $html->getVar('hello'));
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $view = new View(
             $html = new Html()
         );
 
-        $view->assign('hello', 'world');
+        $view->setVar('hello', 'world');
 
-        $this->assertSame('world', $view->getAssign('hello'));
+        $this->assertSame('world', $view->getVar('hello'));
 
         $this->assertSame('world', $html->getVar('hello'));
 
         // delete
-        $view->deleteAssign(['hello']);
+        $view->deleteVar(['hello']);
 
-        $this->assertNull($view->getAssign('hello'));
+        $this->assertNull($view->getVar('hello'));
 
         $this->assertNull($html->getVar('hello'));
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         $view = new View(
             $html = new Html()
         );
 
-        $view->assign('foo', 'bar');
+        $view->setVar('foo', 'bar');
 
-        $this->assertSame('bar', $view->getAssign('foo'));
+        $this->assertSame('bar', $view->getVar('foo'));
 
         $this->assertSame('bar', $html->getVar('foo'));
 
-        $view->clearAssign();
+        $view->clearVar();
 
-        $this->assertNull($view->getAssign('foo'));
+        $this->assertNull($view->getVar('foo'));
 
         $this->assertNull($html->getVar('foo'));
     }
 
-    public function testDisplay()
+    public function testDisplay(): void
     {
         $view = new View(
             $phpui = new Phpui([
@@ -99,7 +99,7 @@ class ViewTest extends TestCase
             ])
         );
 
-        $view->assign('foo', 'bar');
+        $view->setVar('foo', 'bar');
 
         $this->assertSame(
             'Hi here! bar',
@@ -107,21 +107,21 @@ class ViewTest extends TestCase
         );
     }
 
-    public function testSwitchView()
+    public function testSwitchView(): void
     {
         $view = new View(
             $phpui = new Phpui()
         );
 
-        $view->assign('foo', 'bar');
+        $view->setVar('foo', 'bar');
 
-        $this->assertSame('bar', $view->getAssign('foo'));
+        $this->assertSame('bar', $view->getVar('foo'));
 
         $this->assertSame('bar', $phpui->getVar('foo'));
 
         $view->switchView($html = new Html());
 
-        $this->assertSame('bar', $view->getAssign('foo'));
+        $this->assertSame('bar', $view->getVar('foo'));
 
         $this->assertSame('bar', $html->getVar('foo'));
     }

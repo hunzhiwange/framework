@@ -76,10 +76,10 @@ class Url implements IUrl
     /**
      * 生成路由地址
      *
-     * @param string      $url
-     * @param array       $params
-     * @param string      $subdomain
-     * @param bool|string $suffix
+     * @param string           $url
+     * @param array            $params
+     * @param string           $subdomain
+     * @param null|bool|string $suffix
      *
      * @return string
      */
@@ -108,7 +108,7 @@ class Url implements IUrl
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Router\IUrl
      */
     public function setOption(string $name, $value): IUrl
     {

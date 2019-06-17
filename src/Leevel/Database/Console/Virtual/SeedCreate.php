@@ -51,6 +51,8 @@ class SeedCreate extends Command
 
     /**
      * 响应命令.
+     *
+     * @throws \RuntimeException
      */
     public function handle(): void
     {

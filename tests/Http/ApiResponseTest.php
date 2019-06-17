@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class ApiResponseTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $response = ApiResponse::create(['hello' => 'world']);
 
@@ -45,7 +45,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testOk()
+    public function testOk(): void
     {
         $response = new ApiResponse();
 
@@ -58,23 +58,17 @@ class ApiResponseTest extends TestCase
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testOk2()
+    public function testOk2(): void
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        ok(['hello' => 'world'])->
-
-        elses()->
-
-        ok(['hello2' => 'world2'])->
-
-        endIfs();
+        $response
+            ->if($condition)
+            ->ok(['hello' => 'world'])
+            ->else()
+            ->ok(['hello2' => 'world2'])
+            ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -83,7 +77,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('OK', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testCreated()
+    public function testCreated(): void
     {
         $response = new ApiResponse();
 
@@ -98,23 +92,17 @@ class ApiResponseTest extends TestCase
         $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testCreated2()
+    public function testCreated2(): void
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        created('http://queryphp.com', ['hello' => 'world'])->
-
-        elses()->
-
-        created('http://queryphp2.com', ['hello2' => 'world2'])->
-
-        endIfs();
+        $response
+            ->if($condition)
+            ->created('http://queryphp.com', ['hello' => 'world'])
+            ->else()
+            ->created('http://queryphp2.com', ['hello2' => 'world2'])
+            ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -125,7 +113,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('Created', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testAccepted()
+    public function testAccepted(): void
     {
         $response = new ApiResponse();
 
@@ -140,23 +128,17 @@ class ApiResponseTest extends TestCase
         $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testAccepted2()
+    public function testAccepted2(): void
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        accepted('http://queryphp.com', ['hello' => 'world'])->
-
-        elses()->
-
-        accepted('http://queryphp2.com', ['hello2' => 'world2'])->
-
-        endIfs();
+        $response
+            ->if($condition)
+            ->accepted('http://queryphp.com', ['hello' => 'world'])
+            ->else()
+            ->accepted('http://queryphp2.com', ['hello2' => 'world2'])
+            ->fi();
 
         $this->assertSame('{"hello2":"world2"}', $response->getContent());
 
@@ -167,7 +149,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('Accepted', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testNoContent()
+    public function testNoContent(): void
     {
         $response = new ApiResponse();
 
@@ -180,23 +162,17 @@ class ApiResponseTest extends TestCase
         $this->assertSame('No Content', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testNoContent2()
+    public function testNoContent2(): void
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        noContent()->
-
-        elses()->
-
-        noContent()->
-
-        endIfs();
+        $response
+            ->if($condition)
+            ->noContent()
+            ->else()
+            ->noContent()
+            ->fi();
 
         $this->assertSame('{}', $response->getContent());
 
@@ -205,7 +181,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('No Content', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testUnprocessableEntity()
+    public function testUnprocessableEntity(): void
     {
         $response = new ApiResponse();
 
@@ -218,23 +194,17 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testUnprocessableEntity2()
+    public function testUnprocessableEntity2(): void
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        unprocessableEntity(['foo' => 'bar', 'hello' => 'world'], 'error message', 'status text')->
-
-        elses()->
-
-        unprocessableEntity(['foo2' => 'bar2', 'hello2' => 'world2'], 'error message2', 'status text2')->
-
-        endIfs();
+        $response
+            ->if($condition)
+            ->unprocessableEntity(['foo' => 'bar', 'hello' => 'world'], 'error message', 'status text')
+            ->else()
+            ->unprocessableEntity(['foo2' => 'bar2', 'hello2' => 'world2'], 'error message2', 'status text2')
+            ->fi();
 
         $this->assertSame('{"message":"error message2","errors":{"foo2":"bar2","hello2":"world2"}}', $response->getContent());
 
@@ -243,7 +213,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text2', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testError()
+    public function testError(): void
     {
         $response = new ApiResponse();
 
@@ -256,23 +226,17 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testError2()
+    public function testError2(): void
     {
         $condition = false;
-
         $response = new ApiResponse();
 
-        $response->
-
-        ifs($condition)->
-
-        error('test message', 500, 'status text')->
-
-        elses()->
-
-        error('test message2', 500, 'status text2')->
-
-        endIfs();
+        $response
+            ->if($condition)
+            ->error('test message', 500, 'status text')
+            ->else()
+            ->error('test message2', 500, 'status text2')
+            ->fi();
 
         $this->assertSame('{"message":"test message2"}', $response->getContent());
 
@@ -281,7 +245,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text2', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testBadRequest()
+    public function testBadRequest(): void
     {
         $response = new ApiResponse();
 
@@ -294,7 +258,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testUnauthorized()
+    public function testUnauthorized(): void
     {
         $response = new ApiResponse();
 
@@ -307,7 +271,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testForbidden()
+    public function testForbidden(): void
     {
         $response = new ApiResponse();
 
@@ -320,7 +284,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testNotFound()
+    public function testNotFound(): void
     {
         $response = new ApiResponse();
 
@@ -333,7 +297,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testMethodNotAllowed()
+    public function testMethodNotAllowed(): void
     {
         $response = new ApiResponse();
 
@@ -346,7 +310,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testTooManyRequests()
+    public function testTooManyRequests(): void
     {
         $response = new ApiResponse();
 
@@ -359,7 +323,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('status text', $this->getTestProperty($response, 'statusText'));
     }
 
-    public function testInternalServerError()
+    public function testInternalServerError(): void
     {
         $response = new ApiResponse();
 

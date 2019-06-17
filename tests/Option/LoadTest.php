@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class LoadTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $appPath = __DIR__.'/app1';
 
@@ -74,7 +74,7 @@ class LoadTest extends TestCase
         );
     }
 
-    public function testLoadDirNotExists()
+    public function testLoadDirNotExists(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -84,7 +84,7 @@ class LoadTest extends TestCase
         new Load(__DIR__.'/optionNotExists');
     }
 
-    public function testAppNotFound()
+    public function testAppNotFound(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -109,7 +109,7 @@ class LoadTest extends TestCase
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
 
-    public function testMergeComposerOptionException()
+    public function testMergeComposerOptionException(): void
     {
         $appPath = __DIR__.'/app3';
 
@@ -134,7 +134,7 @@ class LoadTest extends TestCase
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
 
-    public function testEnvException()
+    public function testEnvException(): void
     {
         $appPath = __DIR__.'/app1';
 
@@ -159,7 +159,7 @@ class LoadTest extends TestCase
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
 
-    public function testEnvException2()
+    public function testEnvException2(): void
     {
         $appPath = __DIR__.'/app1';
 
@@ -184,7 +184,7 @@ class LoadTest extends TestCase
         $options = ($load = new Load($appPath.'/option'))->loadData($app);
     }
 
-    public function testMergeComposerOptionNewKey()
+    public function testMergeComposerOptionNewKey(): void
     {
         $appPath = __DIR__.'/app5';
 

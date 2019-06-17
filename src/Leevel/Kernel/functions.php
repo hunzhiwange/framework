@@ -33,16 +33,23 @@ if (!function_exists('hl')) {
     function hl(string $method, ...$args)
     {
         $map = [
-            'benchmark' => 'Debug',
-            'drr'       => 'Debug',
-            'decrypt'   => 'Encryption',
-            'encrypt'   => 'Encryption',
-            'gettext'   => 'I18n',
-            'app'       => 'Kernel',
-            'url'       => 'Router',
-            'flash'     => 'Session',
-            'cache_set' => 'Cache',
-            'cache_get' => 'Cache',
+            'benchmark'   => 'Debug',
+            'drr'         => 'Debug',
+            'decrypt'     => 'Encryption',
+            'encrypt'     => 'Encryption',
+            'gettext'     => 'I18n',
+            'app'         => 'Kernel',
+            'url'         => 'Router',
+            'cache_set'   => 'Cache',
+            'cache_get'   => 'Cache',
+            'log_record'  => 'Log',
+            'option_set'  => 'Option',
+            'option_get'  => 'Option',
+            'session_set' => 'Session',
+            'session_get' => 'Session',
+            'flash'       => 'Session',
+            'flash_set'   => 'Session',
+            'flash_get'   => 'Session',
         ];
 
         $component = $map[$method] ?? ucfirst($method);
@@ -56,15 +63,38 @@ if (!function_exists('app')) {
     /**
      * 返回 IOC 容器或者容器中的服务.
      *
-     * app:\Leevel\Kernel\App
      * auths:\Leevel\Auth\Manager
      * caches:\Leevel\Cache\Manager
+     * databases:\Leevel\Database\Manager
+     * debug:\Leevel\Debug\Debug
+     * di:\Leevel\Di\Container
+     * encryption:\Leevel\Encryption\Encryption
+     * event:\Leevel\Event\Dispatch
      * filesystems:\Leevel\Filesystem\Manager
+     * request:\Leevel\Http\Request
+     * i18n:\Leevel\I18n\I18n
+     * app:\Leevel\Kernel\App
+     * logs:\Leevel\Log\Manager
+     * mails:\Leevel\Mail\Manager
+     * option:\Leevel\Option\Option
+     * router:\Leevel\Router\Router
+     * url:\Leevel\Router\Url
+     * redirect:\Leevel\Router\Redirect
+     * response:\Leevel\Router\ResponseFactory
+     * redirect:\Leevel\Router\Redirect
+     * redirect:\Leevel\Router\Redirect
+     * view:\Leevel\Router\View
+     * sessions:\Leevel\Session\Manager
+     * throttler:\Leevel\Throttler\Throttler
+     * validate:\Leevel\Validate\Validate
+     * redirect:\Leevel\Router\Redirect
+     * redirect:\Leevel\Router\Redirect
+     * view.views:\Leevel\View\Manager
      *
      * @param string $service
      * @param array  $args
      *
-     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|Leevel\Di\Container|\Leevel\Filesystem\Manager|\Leevel\Kernel\App|mixed
+     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|\Leevel\Database\Manager|\Leevel\Debug\Debug|\Leevel\Di\Container|\Leevel\Encryption\Encryption|\Leevel\Event\Dispatch|\Leevel\Filesystem\Manager|\Leevel\Http\Request|\Leevel\I18n\I18n|\Leevel\Kernel\App|\Leevel\Log\Manager|\Leevel\Mail\Manager|\Leevel\Option\Option|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect\|\Leevel\Router\ResponseFactory|\Leevel\Router\Router|\Leevel\Router\Url|\Leevel\Router\View|\Leevel\Session\Manager|\Leevel\Throttler\Throttler|\Leevel\Validate\Validate|\Leevel\View\Manager|mixed
      * @codeCoverageIgnore
      */
     function app(?string $service = 'app', array $args = [])
@@ -84,17 +114,17 @@ if (!function_exists('__')) {
      * 获取语言.
      *
      * @param string $text
-     * @param array  ...$arr
+     * @param array  ...$data
      *
      * @return string
      * @codeCoverageIgnore
      */
-    function __(string $text, ...$arr): string
+    function __(string $text, ...$data): string
     {
         /** @var \Leevel\I18n\I18n $service */
         $service = Container::singletons()->make('i18n');
 
-        return $service->gettext($text, ...$arr);
+        return $service->gettext($text, ...$data);
     }
 }
 
@@ -166,8 +196,8 @@ class Leevel
     /**
      * 取得应用的环境变量.支持 boolean, empty 和 null.
      *
-     * @param mixed $name
-     * @param mixed $defaults
+     * @param mixed      $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */

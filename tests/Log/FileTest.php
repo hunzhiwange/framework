@@ -60,7 +60,7 @@ class FileTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $file = new File([
             'path' => __DIR__,
@@ -75,7 +75,7 @@ class FileTest extends TestCase
         Fso::deleteDirectory(dirname($filePath), true);
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $file = new File();
 
@@ -90,7 +90,7 @@ class FileTest extends TestCase
         Fso::deleteDirectory(dirname($filePath), true);
     }
 
-    public function testWriteException()
+    public function testWriteException(): void
     {
         $path = __DIR__.'/write';
 
@@ -116,7 +116,7 @@ class FileTest extends TestCase
         $file->store($data);
     }
 
-    public function testParentWriteException()
+    public function testParentWriteException(): void
     {
         $path = __DIR__.'/parentWrite';
 
@@ -141,7 +141,7 @@ class FileTest extends TestCase
         $file->store($data);
     }
 
-    public function testRenameLog()
+    public function testRenameLog(): void
     {
         $path = __DIR__.'/rename';
 
@@ -180,7 +180,7 @@ class FileTest extends TestCase
         $this->assertSame(104, filesize($renameFilePath));
     }
 
-    public function testFileNotSetException()
+    public function testFileNotSetException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Path for log has not set.');

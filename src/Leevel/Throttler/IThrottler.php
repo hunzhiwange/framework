@@ -30,6 +30,8 @@ use Leevel\Http\IRequest;
  * @since 2017.08.07
  *
  * @version 1.0
+ *
+ * @see \Leevel\Throttler\Proxy\IThrottler 请保持接口设计的一致
  */
 interface IThrottler
 {
@@ -49,7 +51,7 @@ interface IThrottler
      *
      * @param \Leevel\Http\IRequest $request
      *
-     * @return $this
+     * @return \Leevel\Throttler\IThrottler
      */
     public function setRequest(IRequest $request): self;
 

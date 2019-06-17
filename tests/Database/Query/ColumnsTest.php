@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class ColumnsTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,18 +51,16 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                columns('id')->
-
-                columns('name,value')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->columns('id')
+                    ->columns('name,value')
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSetColumns()
+    public function testSetColumns(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -80,20 +78,17 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                columns('id')->
-
-                columns('name,value')->
-
-                setColumns('remark')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->columns('id')
+                    ->columns('name,value')
+                    ->setColumns('remark')
+                    ->findAll(true)
             )
         );
     }
 
-    public function testColumnsExpressionForSelectString()
+    public function testColumnsExpressionForSelectString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -114,17 +109,15 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 [
-                    $connect->
-
-                    columns("{'foo'}")->
-
-                    findAll(true),
+                    $connect
+                        ->columns("{'foo'}")
+                        ->findAll(true),
                 ]
             )
         );
     }
 
-    public function testColumnsFlow()
+    public function testColumnsFlow(): void
     {
         $condition = false;
 
@@ -144,24 +137,19 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                columns('id')->
-
-                elses()->
-
-                columns('name,value')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->columns('id')
+                    ->else()
+                    ->columns('name,value')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testColumnsFlow2()
+    public function testColumnsFlow2(): void
     {
         $condition = true;
 
@@ -181,24 +169,19 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                columns('id')->
-
-                elses()->
-
-                columns('name,value')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->columns('id')
+                    ->else()
+                    ->columns('name,value')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSetColumnsFlow()
+    public function testSetColumnsFlow(): void
     {
         $condition = false;
 
@@ -218,26 +201,20 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                setColumns('foo')->
-
-                ifs($condition)->
-
-                setColumns('id')->
-
-                elses()->
-
-                setColumns('name,value')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->setColumns('foo')
+                    ->if($condition)
+                    ->setColumns('id')
+                    ->else()
+                    ->setColumns('name,value')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSetColumnsFlow2()
+    public function testSetColumnsFlow2(): void
     {
         $condition = true;
 
@@ -257,26 +234,20 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                setColumns('foo')->
-
-                ifs($condition)->
-
-                setColumns('id')->
-
-                elses()->
-
-                setColumns('name,value')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->setColumns('foo')
+                    ->if($condition)
+                    ->setColumns('id')
+                    ->else()
+                    ->setColumns('name,value')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSetColumnsWithTableName()
+    public function testSetColumnsWithTableName(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -294,13 +265,11 @@ class ColumnsTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                setColumns('test.name,test.value')->
-
-                join('hello', 'name,value', 'name', '=', '{[test.name]}')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->setColumns('test.name,test.value')
+                    ->join('hello', 'name,value', 'name', '=', '{[test.name]}')
+                    ->findAll(true)
             )
         );
     }

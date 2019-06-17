@@ -44,6 +44,6 @@ declare(strict_types=1);
  *     requestBody={"$ref": "#/components/requestBodies/Pet"}
  * )
  */
-function Foobar()
+class _
 {
 }

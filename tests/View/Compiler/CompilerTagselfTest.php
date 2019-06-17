@@ -48,7 +48,7 @@ class CompilerTagselfTest extends TestCase
      *     note="上面的 **if 标签** 被 **tagself** 标签包含，因此 **if 标签** 里面的内容并不会被模板引擎解析，而是保持原样输出。",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 

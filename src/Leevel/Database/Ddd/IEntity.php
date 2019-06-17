@@ -223,7 +223,7 @@ interface IEntity
      *
      * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function withProps(array $data): self;
 
@@ -233,7 +233,7 @@ interface IEntity
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function save(array $data = [], array $fill = null): self;
 
@@ -243,7 +243,7 @@ interface IEntity
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function create(array $data = [], array $fill = null): self;
 
@@ -253,7 +253,7 @@ interface IEntity
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function update(array $data = [], array $fill = null): self;
 
@@ -263,7 +263,7 @@ interface IEntity
      * @param array      $data
      * @param null|array $fill
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function replace(array $data = [], array $fill = null): self;
 
@@ -279,7 +279,9 @@ interface IEntity
     /**
      * 销毁模型实体.
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function destroy(): self;
 
@@ -321,6 +323,8 @@ interface IEntity
 
     /**
      * 从数据库重新读取当前对象的属性.
+     *
+     * @throws \InvalidArgumentException
      */
     public function refresh(): void;
 
@@ -450,7 +454,7 @@ interface IEntity
      *
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public static function withEventDispatch(IDispatch $dispatch = null): void;
+    public static function withEventDispatch(?IDispatch $dispatch = null): void;
 
     /**
      * 注册模型实体事件.
@@ -472,6 +476,8 @@ interface IEntity
      * 验证事件是否受支持
      *
      * @param string $event
+     *
+     * @throws \InvalidArgumentException
      */
     public static function isSupportEvent(string $event): void;
 
@@ -503,7 +509,7 @@ interface IEntity
      *
      * @param array $props
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function addChanged(array $props): self;
 
@@ -512,14 +518,14 @@ interface IEntity
      *
      * @param array $props
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function deleteChanged(array $props): self;
 
     /**
      * 清空改变属性.
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function clearChanged(): self;
 
@@ -564,6 +570,8 @@ interface IEntity
      * 返回供查询的主键字段
      * 复合主键或者没有主键直接抛出异常.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public static function singlePrimaryKey(): string;
@@ -588,7 +596,7 @@ interface IEntity
      *
      * @param mixed $connect
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function withConnect($connect): self;
 
@@ -596,9 +604,11 @@ interface IEntity
      * 获取 enum.
      * 不存在返回 false.
      *
-     * @param string $prop
-     * @param mixed  $enum
-     * @param string $separate
+     * @param string     $prop
+     * @param null|mixed $enum
+     * @param string     $separate
+     *
+     * @throws \InvalidArgumentException
      *
      * @return mixed
      */
@@ -615,6 +625,8 @@ interface IEntity
 
     /**
      * 获取查询键值
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */
@@ -644,7 +656,7 @@ interface IEntity
     /**
      * 返回模型实体类的 meta 对象
      *
-     * @param mixed $connect
+     * @param null|mixed $connect
      *
      * @return \Leevel\Database\Ddd\IMeta
      */
@@ -656,7 +668,7 @@ interface IEntity
      * @param string $prop
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function setter(string $prop, $value): self;
 

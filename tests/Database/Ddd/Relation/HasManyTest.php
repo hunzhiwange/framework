@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  */
 class HasManyTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -47,22 +47,25 @@ class HasManyTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'Say hello to the world.',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]),
+        );
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('comment')->
-            insert([
-                'title'   => 'niu'.($i + 1),
-                'post_id' => 1,
-                'content' => 'Comment data.'.($i + 1),
-            ]);
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 1,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
         }
 
         $post = Post::where('id', 1)->findOne();
@@ -107,7 +110,7 @@ class HasManyTest extends TestCase
         $this->assertCount(6, $comment);
     }
 
-    public function testEager()
+    public function testEager(): void
     {
         $post = Post::where('id', 1)->findOne();
 
@@ -116,40 +119,46 @@ class HasManyTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'Say hello to the world.',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]),
+        );
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'foo bar',
-            'user_id' => 1,
-            'summary' => 'Say foo to the bar.',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'foo bar',
+                    'user_id' => 1,
+                    'summary' => 'Say foo to the bar.',
+                ]),
+        );
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('comment')->
-            insert([
-                'title'   => 'niu'.($i + 1),
-                'post_id' => 1,
-                'content' => 'Comment data.'.($i + 1),
-            ]);
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 1,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
         }
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('comment')->
-            insert([
-                'title'   => 'niu'.($i + 1),
-                'post_id' => 2,
-                'content' => 'Comment data.'.($i + 1),
-            ]);
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 2,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
         }
 
         $posts = Post::eager(['comment'])->findAll();
@@ -174,26 +183,29 @@ class HasManyTest extends TestCase
         }
     }
 
-    public function testRelationAsMethod()
+    public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'Say hello to the world.',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]),
+        );
 
         for ($i = 0; $i < 10; $i++) {
-            $connect->
-            table('comment')->
-            insert([
-                'title'   => 'niu'.($i + 1),
-                'post_id' => 1,
-                'content' => 'Comment data.'.($i + 1),
-            ]);
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 1,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
         }
 
         $commentRelation = Post::comment();

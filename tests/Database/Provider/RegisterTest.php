@@ -38,7 +38,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class RegisterTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
 
@@ -52,15 +52,16 @@ class RegisterTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $manager->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $manager
+                ->table('guest_book')
+                ->insert($data));
 
-        $result = $manager->table('guest_book', 'name,content')->
-
-        where('id', 1)->
-
-        findOne();
+        $result = $manager
+            ->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
@@ -68,7 +69,7 @@ class RegisterTest extends TestCase
         $manager->close();
     }
 
-    public function testUseAlias()
+    public function testUseAlias(): void
     {
         $test = new Register($container = $this->createContainer());
 
@@ -82,15 +83,16 @@ class RegisterTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $manager->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $manager
+                ->table('guest_book')
+                ->insert($data));
 
-        $result = $manager->table('guest_book', 'name,content')->
-
-        where('id', 1)->
-
-        findOne();
+        $result = $manager
+            ->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
@@ -135,7 +137,6 @@ class RegisterTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);

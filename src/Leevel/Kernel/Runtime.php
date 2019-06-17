@@ -78,12 +78,6 @@ abstract class Runtime implements IRuntime
 
         // @codeCoverageIgnoreStart
         try {
-            // 系统核心组件遇到异常，直接抛出异常
-            if (!is_object($this->app->container()->make('option'))) {
-                echo $this->renderExceptionWithWhoops($e);
-                exit();
-            }
-
             $log = $this->app->container()->make(ILog::class);
         } catch (Exception $e) {
             throw $e;
@@ -404,12 +398,16 @@ abstract class Runtime implements IRuntime
      * @param string $filepath
      * @param array  $vars
      *
+     * @throws \Exception
+     *
      * @return string
      */
     protected function renderWithFile(string $filepath, array $vars = []): string
     {
         if (!is_file($filepath)) {
-            throw new Exception(sprintf('Exception file %s is not extis.', $filepath));
+            $e = sprintf('Exception file %s is not extis.', $filepath);
+
+            throw new Exception($e);
         }
 
         extract($vars);

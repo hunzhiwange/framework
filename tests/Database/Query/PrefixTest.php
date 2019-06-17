@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class PrefixTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,13 +51,11 @@ class PrefixTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                prefix('SQL_CALC_FOUND_ROWS')->
-
-                where('id', '=', 5)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->prefix('SQL_CALC_FOUND_ROWS')
+                    ->where('id', '=', 5)
+                    ->findAll(true)
             )
         );
 
@@ -75,22 +73,19 @@ class PrefixTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                prefix('SQL_NO_CACHE')->
-
-                where('id', '=', 5)->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->prefix('SQL_NO_CACHE')
+                    ->where('id', '=', 5)
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testFlow()
+    public function testFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -107,27 +102,21 @@ class PrefixTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                prefix('SQL_NO_CACHE')->
-
-                elses()->
-
-                prefix('SQL_CALC_FOUND_ROWS')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->prefix('SQL_NO_CACHE')
+                    ->else()
+                    ->prefix('SQL_CALC_FOUND_ROWS')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testFlow2()
+    public function testFlow2(): void
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -144,19 +133,14 @@ class PrefixTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                prefix('SQL_NO_CACHE')->
-
-                elses()->
-
-                prefix('SQL_CALC_FOUND_ROWS')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->prefix('SQL_NO_CACHE')
+                    ->else()
+                    ->prefix('SQL_CALC_FOUND_ROWS')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }

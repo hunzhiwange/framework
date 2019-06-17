@@ -66,7 +66,7 @@ class ManyMany extends Relation
      * @param string                       $middleTargetKey
      * @param string                       $middleSourceKey
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, $targetKey, $sourceKey, $middleTargetKey, $middleSourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey)
     {
         $this->middleEntity = $middleEntity;
         $this->middleTargetKey = $middleTargetKey;
@@ -80,19 +80,9 @@ class ManyMany extends Relation
      */
     public function addRelationCondition(): void
     {
-        if (static::$relationCondition) {
-            $this->select
-                ->join($this->middleEntity->table(), [
-                    'middle_'.$this->middleTargetKey => $this->middleTargetKey,
-                    'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
-                        $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
-                    ])
-                ->where(
-                    $this->middleEntity->table().'.'.$this->middleSourceKey,
-                    $this->getSourceValue()
-                )
-                ->asDefault()
-                ->asCollection(false);
+        if (static::$relationCondition &&
+            null !== $sourceValue = $this->getSourceValue()) {
+            $this->selectRelationData([$sourceValue]);
         }
     }
 
@@ -103,18 +93,11 @@ class ManyMany extends Relation
      */
     public function preLoadCondition(array $entitys): void
     {
-        $this->select
-            ->join($this->middleEntity->table(), [
-                'middle_'.$this->middleTargetKey => $this->middleTargetKey,
-                'middle_'.$this->middleSourceKey => $this->middleSourceKey, ], [
-                    $this->middleTargetKey       => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
-                ])
-            ->whereIn(
-                $this->middleEntity->table().'.'.$this->middleSourceKey,
-                $this->getPreLoadSourceValue($entitys)
-            )
-            ->asDefault()
-            ->asCollection(false);
+        if (!$sourceValue = $this->getPreLoadSourceValue($entitys)) {
+            return;
+        }
+
+        $this->selectRelationData($sourceValue);
     }
 
     /**
@@ -136,7 +119,7 @@ class ManyMany extends Relation
             if (isset($maps[$key])) {
                 $entity->withRelationProp(
                     $relation,
-                    $this->targetEntity->collection($maps[$key])
+                    $this->targetEntity->collection($maps[$key]),
                 );
             }
         }
@@ -240,19 +223,47 @@ class ManyMany extends Relation
     }
 
     /**
+     * 查询关联数据.
+     *
+     * @param array $sourceValue
+     */
+    protected function selectRelationData(array $sourceValue): void
+    {
+        $this->select
+            ->join(
+                $this->middleEntity->table(),
+                [
+                    'middle_'.$this->middleTargetKey => $this->middleTargetKey,
+                    'middle_'.$this->middleSourceKey => $this->middleSourceKey,
+                ],
+                [
+                    $this->middleTargetKey => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
+                ],
+            )
+            ->whereIn(
+                $this->middleEntity->table().'.'.$this->middleSourceKey,
+                $sourceValue,
+            )
+            ->asDefault()
+            ->asCollection(false);
+    }
+
+    /**
      * 取回源模型实体对应数据.
      *
      * @return array
      */
     protected function getPreLoadSourceValue(array $entitys): array
     {
-        $arr = [];
+        $data = [];
 
         foreach ($entitys as $sourceEntity) {
-            $arr[] = $sourceEntity->__get($this->sourceKey);
+            if (null !== $value = $sourceEntity->__get($this->sourceKey)) {
+                $data[] = $value;
+            }
         }
 
-        return $arr;
+        return $data;
     }
 
     /**

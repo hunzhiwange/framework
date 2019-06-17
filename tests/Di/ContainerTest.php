@@ -79,7 +79,7 @@ class ContainerTest extends TestCase
      *     note="",
      * )
      */
-    public function testBindClosure()
+    public function testBindClosure(): void
     {
         $container = new Container();
 
@@ -97,7 +97,7 @@ class ContainerTest extends TestCase
      *     note="",
      * )
      */
-    public function testSingletonClosure()
+    public function testSingletonClosure(): void
     {
         $container = new Container();
 
@@ -118,7 +118,7 @@ class ContainerTest extends TestCase
      *     note="",
      * )
      */
-    public function testClass()
+    public function testClass(): void
     {
         $container = new Container();
 
@@ -132,7 +132,7 @@ class ContainerTest extends TestCase
      *     note="",
      * )
      */
-    public function testSingletonClass()
+    public function testSingletonClass(): void
     {
         $container = new Container();
 
@@ -148,7 +148,7 @@ class ContainerTest extends TestCase
      *     note="",
      * )
      */
-    public function testInterface()
+    public function testInterface(): void
     {
         $container = new Container();
 
@@ -163,19 +163,19 @@ class ContainerTest extends TestCase
      *     title="接口绑定接口作为构造器参数",
      *     description="接口可以作为控制器参数来做依赖注入。
      *
-     * _**ITest2 定义**_
+     * **ITest2 定义**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)."
      * ```
      *
-     * _**Test2 定义**_
+     * **Test2 定义**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)."
      * ```
      *
-     * _**Test3 定义**_
+     * **Test3 定义**
      *
      * ``` php
      * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)."
@@ -186,7 +186,7 @@ class ContainerTest extends TestCase
      *     note="",
      * )
      */
-    public function testInterface2()
+    public function testInterface2(): void
     {
         $container = new Container();
 
@@ -196,7 +196,7 @@ class ContainerTest extends TestCase
         $this->assertInstanceOf(Test2::class, $test2);
     }
 
-    public function testInterface3()
+    public function testInterface3(): void
     {
         $container = new Container();
 
@@ -208,7 +208,7 @@ class ContainerTest extends TestCase
         $this->assertInstanceOf(ITest2::class, $test4->arg1->arg1);
     }
 
-    public function testContainerAsFirstArgs()
+    public function testContainerAsFirstArgs(): void
     {
         $container = new Container();
 
@@ -219,7 +219,7 @@ class ContainerTest extends TestCase
         $this->assertSame($container, $container->make('test'));
     }
 
-    public function testArrayAccess()
+    public function testArrayAccess(): void
     {
         $container = new Container();
 
@@ -233,7 +233,7 @@ class ContainerTest extends TestCase
         $this->assertFalse(isset($container['foo']));
     }
 
-    public function testAliases()
+    public function testAliases(): void
     {
         $container = new Container();
 
@@ -253,7 +253,7 @@ class ContainerTest extends TestCase
         $this->assertSame('bar', $container->make('foo7'));
     }
 
-    public function testMakeWithArgs()
+    public function testMakeWithArgs(): void
     {
         $container = new Container();
 
@@ -267,7 +267,7 @@ class ContainerTest extends TestCase
         $this->assertSame([1, 2], $container->make('foo', [1, 2, 3]));
     }
 
-    public function testOverridden()
+    public function testOverridden(): void
     {
         $container = new Container();
 
@@ -278,7 +278,7 @@ class ContainerTest extends TestCase
         $this->assertSame('bar2', $container['foo']);
     }
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $container = new Container();
 
@@ -289,7 +289,7 @@ class ContainerTest extends TestCase
         $this->assertSame($instance, $container->make('foo'));
     }
 
-    public function testDefaultArgs()
+    public function testDefaultArgs(): void
     {
         $container = new Container();
 
@@ -302,7 +302,7 @@ class ContainerTest extends TestCase
         $this->assertSame('hello default', $test5->arg2);
     }
 
-    public function testUnsetInstances()
+    public function testUnsetInstances(): void
     {
         $container = new Container();
 
@@ -321,7 +321,7 @@ class ContainerTest extends TestCase
         $this->assertFalse(isset($container['foo3']));
     }
 
-    public function testArgsRequiredContainerInvalidArgumentException()
+    public function testArgsRequiredContainerInvalidArgumentException(): void
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
 
@@ -330,7 +330,7 @@ class ContainerTest extends TestCase
         $container->make(Test6::class, []);
     }
 
-    public function testInterfaceContainerInvalidArgumentException()
+    public function testInterfaceContainerInvalidArgumentException(): void
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
 
@@ -339,7 +339,7 @@ class ContainerTest extends TestCase
         $container->make(ITest2::class, []);
     }
 
-    public function testCall()
+    public function testCall(): void
     {
         $container = new Container();
 
@@ -380,7 +380,7 @@ class ContainerTest extends TestCase
         $this->assertSame($result[4], $test8);
     }
 
-    public function testCallNotFoundClass()
+    public function testCallNotFoundClass(): void
     {
         $this->expectException(\ReflectionException::class);
 
@@ -389,7 +389,7 @@ class ContainerTest extends TestCase
         $result = $container->call('Test8');
     }
 
-    public function testCallWithArrayOrString()
+    public function testCallWithArrayOrString(): void
     {
         $container = new Container();
 
@@ -420,7 +420,7 @@ class ContainerTest extends TestCase
         $this->assertSame('bar', $result[2]);
     }
 
-    public function testCallWithCallableArray()
+    public function testCallWithCallableArray(): void
     {
         $container = new Container();
 
@@ -431,7 +431,7 @@ class ContainerTest extends TestCase
         $this->assertSame(['foo', 'bar'], $result);
     }
 
-    public function testCallStatic()
+    public function testCallStatic(): void
     {
         $container = new Container();
 
@@ -439,7 +439,7 @@ class ContainerTest extends TestCase
         $this->assertSame(['hello', 'world'], $result);
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $container = new Container();
 
@@ -451,7 +451,7 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->exists(Test8::class));
     }
 
-    public function testNotInstantiable()
+    public function testNotInstantiable(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -463,7 +463,7 @@ class ContainerTest extends TestCase
         $this->assertSame('world9', $container->make(Test9::class)->hello());
     }
 
-    public function testUnsupportedCallbackTypes()
+    public function testUnsupportedCallbackTypes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -475,7 +475,7 @@ class ContainerTest extends TestCase
         $container->call(false);
     }
 
-    public function testMakeServiceBool()
+    public function testMakeServiceBool(): void
     {
         $container = new Container();
 
@@ -484,7 +484,7 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->make('foo'));
     }
 
-    public function testBindArrayAsAlias()
+    public function testBindArrayAsAlias(): void
     {
         $container = new Container();
 
@@ -494,7 +494,7 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->make('bar'));
     }
 
-    public function testParseReflectionException()
+    public function testParseReflectionException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -506,7 +506,7 @@ class ContainerTest extends TestCase
         $container->call([new Test10(), 'hello']);
     }
 
-    public function testInstanceWithArray()
+    public function testInstanceWithArray(): void
     {
         $container = new Container();
 
@@ -518,7 +518,7 @@ class ContainerTest extends TestCase
         $this->assertSame($instance, $container->make('bar'));
     }
 
-    public function testInstanceItSelf()
+    public function testInstanceItSelf(): void
     {
         $container = new Container();
 
@@ -529,7 +529,7 @@ class ContainerTest extends TestCase
         $this->assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
     }
 
-    public function testCallWithClassArgsAndItInstance()
+    public function testCallWithClassArgsAndItInstance(): void
     {
         $container = new Container();
 
@@ -542,7 +542,7 @@ class ContainerTest extends TestCase
         $this->assertSame(['test21' => 'hello', 'test22' => 'world'], $result);
     }
 
-    public function testCallWithClassArgsAndItInstanceAndMore()
+    public function testCallWithClassArgsAndItInstanceAndMore(): void
     {
         $container = new Container();
 
@@ -555,7 +555,7 @@ class ContainerTest extends TestCase
         $this->assertSame(['test24' => 'hello', 'test25' => 'world', 'three' => 'more'], $result);
     }
 
-    public function testCoroutine()
+    public function testCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
@@ -575,7 +575,7 @@ class ContainerTest extends TestCase
         $this->assertTrue($container->existsCoroutine('test'));
     }
 
-    public function testRemoveCoroutine()
+    public function testRemoveCoroutine(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
@@ -597,7 +597,7 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->existsCoroutine('test'));
     }
 
-    public function testRemoveCoroutineAll()
+    public function testRemoveCoroutineAll(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
@@ -619,7 +619,7 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->existsCoroutine('test'));
     }
 
-    public function testCoroutineWasSingleton()
+    public function testCoroutineWasSingleton(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
 
@@ -639,7 +639,7 @@ class ContainerTest extends TestCase
         $this->assertTrue($container->existsCoroutine('test'));
     }
 
-    public function testClassArgsClassAsStringContainer()
+    public function testClassArgsClassAsStringContainer(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -652,14 +652,14 @@ class ContainerTest extends TestCase
         $container->make(Test28::class);
     }
 
-    public function testClassArgsASingleClass()
+    public function testClassArgsASingleClass(): void
     {
         $container = new Container();
         $test = $container->make(Test28::class);
         $this->assertSame('world', $test->hello());
     }
 
-    public function testMagicGet()
+    public function testMagicGet(): void
     {
         $container = new Container();
 
@@ -668,7 +668,7 @@ class ContainerTest extends TestCase
         $this->assertSame('bar', $container->foo);
     }
 
-    public function testMagicSet()
+    public function testMagicSet(): void
     {
         $container = new Container();
 
@@ -677,7 +677,7 @@ class ContainerTest extends TestCase
         $this->assertSame('bar', $container->foo);
     }
 
-    public function testMagicCallException()
+    public function testMagicCallException(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
@@ -689,7 +689,7 @@ class ContainerTest extends TestCase
         $container->callNotFound();
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         $container = new Container();
 
@@ -702,7 +702,7 @@ class ContainerTest extends TestCase
         $this->assertSame('foo', $container->make('foo'));
     }
 
-    public function testClone()
+    public function testClone(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
@@ -713,7 +713,7 @@ class ContainerTest extends TestCase
         $container2 = clone $container;
     }
 
-    public function testMakeProvider()
+    public function testMakeProvider(): void
     {
         $container = new Container();
 
@@ -724,7 +724,7 @@ class ContainerTest extends TestCase
         unset($_SERVER['testMakeProvider']);
     }
 
-    public function testCallProviderBootstrap()
+    public function testCallProviderBootstrap(): void
     {
         $container = new Container();
 

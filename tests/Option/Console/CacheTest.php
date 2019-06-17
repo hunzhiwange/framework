@@ -67,7 +67,7 @@ class CacheTest extends TestCase
         $this->setUp();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $cacheFile = __DIR__.'/option_cache.php';
 
@@ -105,7 +105,7 @@ class CacheTest extends TestCase
         unlink($cacheFile);
     }
 
-    public function testDirNotExists()
+    public function testDirNotExists(): void
     {
         $cacheFile = __DIR__.'/dirNotExists/option_cache.php';
 
@@ -144,7 +144,7 @@ class CacheTest extends TestCase
         rmdir(dirname($cacheFile));
     }
 
-    public function testDirRelative()
+    public function testDirRelative(): void
     {
         $cacheFile = __DIR__.'/assertRelative/relative/k/option_cache.php';
 
@@ -181,7 +181,7 @@ class CacheTest extends TestCase
         rmdir(dirname($cacheFile));
     }
 
-    public function testDirWriteable()
+    public function testDirWriteable(): void
     {
         $dirname = __DIR__.'/dirWriteable';
         $cacheFile = $dirname.'/option_cache.php';
@@ -226,7 +226,7 @@ class CacheTest extends TestCase
         rmdir($dirname);
     }
 
-    public function testParentDirWriteable()
+    public function testParentDirWriteable(): void
     {
         $dirname = __DIR__.'/parentDirWriteable/sub';
         $cacheFile = $dirname.'/option_cache.php';
@@ -273,7 +273,7 @@ class CacheTest extends TestCase
         rmdir(dirname($dirname));
     }
 
-    protected function initContainerService(IContainer $container, string $cacheFile, string $assertDir = 'assert')
+    protected function initContainerService(IContainer $container, string $cacheFile, string $assertDir = 'assert'): void
     {
         // 注册 app
         $app = $this->createMock(IApp::class);

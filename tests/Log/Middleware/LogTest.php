@@ -42,7 +42,7 @@ use Tests\TestCase;
  */
 class LogTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $log = $this->createLog();
 
@@ -122,7 +122,6 @@ class LogTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        $eventDispatch->method('handle')->willReturn(null);
         $this->assertNull($eventDispatch->handle('event'));
 
         $container->singleton('event', $eventDispatch);

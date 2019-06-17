@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class NullsTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $session = $this->createNullsSessionHandler();
 
@@ -60,19 +60,6 @@ class NullsTest extends TestCase
 
         $session->start();
         $this->assertTrue($session->isStart());
-    }
-
-    public function testGetCache()
-    {
-        $session = $this->createNullsSessionHandler();
-
-        $this->assertNull($session->getCache());
-
-        $this->assertTrue($session->open('', 'foo'));
-        $this->assertTrue($session->close());
-        $this->assertTrue($session->write('foo', 'bar'));
-        $this->assertTrue($session->destroy('foo'));
-        $this->assertSame(0, $session->gc(0));
     }
 
     protected function createNullsSessionHandler(): Nulls

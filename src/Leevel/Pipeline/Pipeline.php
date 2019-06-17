@@ -79,7 +79,7 @@ class Pipeline implements IPipeline
      *
      * @param array $passed
      *
-     * @return $this
+     * @return \Leevel\Pipeline\IPipeline
      */
     public function send(array $passed): IPipeline
     {
@@ -95,7 +95,7 @@ class Pipeline implements IPipeline
      *
      * @param array $stage
      *
-     * @return $this
+     * @return \Leevel\Pipeline\IPipeline
      */
     public function through(array $stage): IPipeline
     {
@@ -109,13 +109,13 @@ class Pipeline implements IPipeline
     /**
      * 执行管道工序响应结果.
      *
-     * @param \Closure $end
+     * @param null|\Closure $end
      *
      * @since 2018.01.03
      *
      * @return mixed
      */
-    public function then(Closure $end = null)
+    public function then(?Closure $end = null)
     {
         $stage = $this->stage;
 
@@ -180,6 +180,8 @@ class Pipeline implements IPipeline
      * 工序回调.
      *
      * @param mixed $stages
+     *
+     * @throws \InvalidArgumentException
      *
      * @return null|callable
      */

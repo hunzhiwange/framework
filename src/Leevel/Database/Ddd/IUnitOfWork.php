@@ -72,12 +72,12 @@ interface IUnitOfWork
     /**
      * 创建一个工作单元.
      *
-     * @param \Leevel\Database\Ddd\IEntity $rootEntity
-     * @param mixed                        $connect
+     * @param null|\Leevel\Database\Ddd\IEntity $rootEntity
+     * @param null|mixed                        $connect
      *
      * @return static
      */
-    public static function make(IEntity $rootEntity = null, $connect = null): self;
+    public static function make(?IEntity $rootEntity = null, $connect = null): self;
 
     /**
      * 执行数据库事务.
@@ -90,7 +90,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $method
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function persistBefore(IEntity $entity, string $method = 'save'): self;
 
@@ -100,7 +100,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $method
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function persist(IEntity $entity, string $method = 'save'): self;
 
@@ -110,7 +110,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $method
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function persisteAfter(IEntity $entity, string $method = 'save'): self;
 
@@ -120,7 +120,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function removeBefore(IEntity $entity, int $priority = 500): self;
 
@@ -130,7 +130,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function remove(IEntity $entity, int $priority = 500): self;
 
@@ -140,7 +140,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function removeAfter(IEntity $entity, int $priority = 500): self;
 
@@ -150,7 +150,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function createBefore(IEntity $entity, int $priority = 500): self;
 
@@ -160,7 +160,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function create(IEntity $entity, int $priority = 500): self;
 
@@ -170,7 +170,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function createAfter(IEntity $entity, int $priority = 500): self;
 
@@ -189,7 +189,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function updateBefore(IEntity $entity, int $priority = 500): self;
 
@@ -199,7 +199,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function update(IEntity $entity, int $priority = 500): self;
 
@@ -209,7 +209,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function updateAfter(IEntity $entity, int $priority = 500): self;
 
@@ -228,7 +228,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priorit
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function replaceBefore(IEntity $entity, int $priority = 500): self;
 
@@ -238,7 +238,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priorit
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function replace(IEntity $entity, int $priority = 500): self;
 
@@ -248,7 +248,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priorit
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function replaceAfter(IEntity $entity, int $priority = 500): self;
 
@@ -267,7 +267,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function deleteBefore(IEntity $entity, int $priority = 500): self;
 
@@ -277,7 +277,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function delete(IEntity $entity, int $priority = 500): self;
 
@@ -287,7 +287,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function deleteAfter(IEntity $entity, int $priority = 500): self;
 
@@ -314,7 +314,9 @@ interface IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function refresh(IEntity $entity): self;
 
@@ -393,7 +395,7 @@ interface IUnitOfWork
      * 取得实体状态.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $defaults
+     * @param null|int                     $defaults
      *
      * @return int
      */

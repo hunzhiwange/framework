@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class ConditionTest extends TestCase
 {
-    public function testForPage()
+    public function testForPage(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,16 +51,15 @@ class ConditionTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                forPage(20, 6)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->forPage(20, 6)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testParseFormNotSet()
+    public function testParseFormNotSet(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -78,16 +77,14 @@ class ConditionTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->
-
-                setColumns('{2}')->
-
-                findAll(true)
+                $connect
+                    ->setColumns('{2}')
+                    ->findAll(true)
             )
         );
     }
 
-    public function testMakeSql()
+    public function testMakeSql(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -101,15 +98,15 @@ class ConditionTest extends TestCase
             $sql,
             $this->varJson(
                 [
-                    $connect->table('test')->
-
-                    makeSql(),
+                    $connect
+                        ->table('test')
+                        ->makeSql(),
                 ]
             )
         );
     }
 
-    public function testMakeSqlWithLogicGroup()
+    public function testMakeSqlWithLogicGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -123,9 +120,9 @@ class ConditionTest extends TestCase
             $sql,
             $this->varJson(
                 [
-                    $connect->table('test')->
-
-                    makeSql(true),
+                    $connect
+                        ->table('test')
+                        ->makeSql(true),
                 ]
             )
         );

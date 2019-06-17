@@ -37,7 +37,7 @@ class CommandTest extends TestCase
 {
     use BaseCommand;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $result = $this->runCommand(new CallOtherCommand(), [
             'command'     => 'call:other',

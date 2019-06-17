@@ -42,7 +42,7 @@ class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
         Fso::deleteDirectory(__DIR__.'/parentDirCacheWriteable', true);
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $dirname = __DIR__.'/cacheWriteable';
 
@@ -64,7 +64,7 @@ class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
         $parser->doCompile('hello world', $dirname.'/test.php', true);
     }
 
-    public function testParentDir()
+    public function testParentDir(): void
     {
         $dirname = __DIR__.'/parentDirCacheWriteable/sub';
 

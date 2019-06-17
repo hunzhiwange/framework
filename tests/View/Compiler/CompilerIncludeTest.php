@@ -55,7 +55,7 @@ class CompilerIncludeTest extends TestCase
      *     note="",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $parser = $this->createParser();
 
@@ -77,7 +77,7 @@ class CompilerIncludeTest extends TestCase
      *     note="",
      * )
      */
-    public function testVar()
+    public function testVar(): void
     {
         $parser = $this->createParser();
 
@@ -101,7 +101,7 @@ class CompilerIncludeTest extends TestCase
      *     note="",
      * )
      */
-    public function testInViewDir()
+    public function testInViewDir(): void
     {
         $parser = $this->createParser();
 
@@ -123,7 +123,7 @@ class CompilerIncludeTest extends TestCase
      *     note="",
      * )
      */
-    public function testOtherModule()
+    public function testOtherModule(): void
     {
         $parser = $this->createParser();
 
@@ -155,7 +155,7 @@ class CompilerIncludeTest extends TestCase
      *     note="",
      * )
      */
-    public function testExpr()
+    public function testExpr(): void
     {
         $parser = $this->createParser();
 

@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
-use Leevel\Cache\Cache;
 use Leevel\Session\ISession;
 use Leevel\Session\Redis;
 use RedisException;
@@ -50,7 +49,7 @@ class RedisTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $session = $this->createRedisSessionHandler();
 
@@ -77,18 +76,7 @@ class RedisTest extends TestCase
         $this->assertTrue($session->isStart());
     }
 
-    public function testGetCache()
-    {
-        $session = $this->createRedisSessionHandler();
-
-        $this->assertInstanceof(Cache::class, $session->getCache());
-
-        $this->assertTrue($session->open('', 'foo'));
-        $this->assertTrue($session->close());
-        $this->assertSame(0, $session->gc(0));
-    }
-
-    public function testSave()
+    public function testSave(): void
     {
         $session = $this->createRedisSessionHandler();
 
@@ -103,7 +91,7 @@ class RedisTest extends TestCase
         $this->assertFalse($session->isStart());
     }
 
-    public function testSaveAndStart()
+    public function testSaveAndStart(): void
     {
         $session = $this->createRedisSessionHandler();
 
@@ -148,7 +136,7 @@ class RedisTest extends TestCase
         $this->assertSame('a:0:{}', $session->read($sessionId));
     }
 
-    protected function createRedisSessionHandler()
+    protected function createRedisSessionHandler(): Redis
     {
         $option = [
             'host'        => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['HOST'],

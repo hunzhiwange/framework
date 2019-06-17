@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class InsertAllTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -87,16 +87,15 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insertAll($data)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insertAll($data)
             )
         );
     }
 
-    public function testBind()
+    public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -150,11 +149,10 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insertAll($data, ['吃肉1', '吃肉2'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insertAll($data, ['吃肉1', '吃肉2'])
             )
         );
 
@@ -202,17 +200,16 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤']),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤']),
                 1
             )
         );
     }
 
-    public function testWithBindFunction()
+    public function testWithBindFunction(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -266,18 +263,16 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                bind(['吃鱼', '吃肉'])->
-
-                insertAll($data)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->bind(['吃鱼', '吃肉'])
+                    ->insertAll($data)
             )
         );
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -331,18 +326,16 @@ class InsertAllTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                bind(['吃鱼', '吃肉'])->
-
-                insertAll($data, [], true)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->bind(['吃鱼', '吃肉'])
+                    ->insertAll($data, [], true)
             )
         );
     }
 
-    public function testDataIsNotInvalid()
+    public function testDataIsNotInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -356,14 +349,13 @@ class InsertAllTest extends TestCase
             5,
         ];
 
-        $connect->sql()->
-
-        table('test')->
-
-        insertAll($data);
+        $connect
+            ->sql()
+            ->table('test')
+            ->insertAll($data);
     }
 
-    public function testDataIsNotInvalid2()
+    public function testDataIsNotInvalid2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -377,10 +369,9 @@ class InsertAllTest extends TestCase
             ['foo' => ['hello', 'world']],
         ];
 
-        $connect->sql()->
-
-        table('test')->
-
-        insertAll($data);
+        $connect
+            ->sql()
+            ->table('test')
+            ->insertAll($data);
     }
 }

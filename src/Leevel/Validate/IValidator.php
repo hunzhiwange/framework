@@ -79,14 +79,14 @@ interface IValidator
     /**
      * 初始化验证器.
      *
-     * @param array $datas
+     * @param array $data
      * @param array $rules
      * @param array $names
      * @param array $message
      *
      * @return \Leevel\Validate\IValidator
      */
-    public static function make(array $datas = [], array $rules = [], array $names = [], array $message = []): self;
+    public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): self;
 
     /**
      * 验证是否成功
@@ -119,20 +119,20 @@ interface IValidator
     /**
      * 设置验证数据.
      *
-     * @param array $datas
+     * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
-    public function data(array $datas): self;
+    public function data(array $data): self;
 
     /**
      * 添加验证数据.
      *
-     * @param array $datas
+     * @param array $data
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
-    public function addData(array $datas): self;
+    public function addData(array $data): self;
 
     /**
      * 返回验证规则.
@@ -147,9 +147,9 @@ interface IValidator
      * @param array         $rules
      * @param null|\Closure $calCallback
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
-    public function rule(array $rules, Closure $callbacks = null): self;
+    public function rule(array $rules, ?Closure $callbacks = null): self;
 
     /**
      * 添加验证规则.
@@ -157,9 +157,9 @@ interface IValidator
      * @param array         $rules
      * @param null|\Closure $calCallback
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
-    public function addRule(array $rules, Closure $callbacks = null): self;
+    public function addRule(array $rules, ?Closure $callbacks = null): self;
 
     /**
      * 返回验证消息.
@@ -173,7 +173,7 @@ interface IValidator
      *
      * @param array $message
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function message(array $message): self;
 
@@ -182,7 +182,7 @@ interface IValidator
      *
      * @param array $message
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addMessage(array $message): self;
 
@@ -198,7 +198,7 @@ interface IValidator
      *
      * @param array $names
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function name(array $names): self;
 
@@ -207,7 +207,7 @@ interface IValidator
      *
      * @param array $names
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function addName(array $names): self;
 
@@ -217,7 +217,7 @@ interface IValidator
      * @param string $name
      * @param string $alias
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function alias(string $name, string $alias): self;
 
@@ -226,7 +226,7 @@ interface IValidator
      *
      * @param array $alias
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function aliasMany(array $alias): self;
 
@@ -235,7 +235,7 @@ interface IValidator
      *
      * @param \Closure $callbacks
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function after(Closure $callbacks): self;
 
@@ -245,7 +245,7 @@ interface IValidator
      * @param string          $rule
      * @param \Closure|string $extends
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function extend(string $rule, $extends): self;
 
@@ -254,7 +254,7 @@ interface IValidator
      *
      * @param \Leevel\Di\IContainer $container
      *
-     * @return $this
+     * @return \Leevel\Validate\IValidator
      */
     public function setContainer(IContainer $container): self;
 

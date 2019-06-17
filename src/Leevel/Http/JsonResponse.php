@@ -70,10 +70,10 @@ class JsonResponse extends Response
     /**
      * 构造函数.
      *
-     * @param string $data
-     * @param int    $status
-     * @param array  $headers
-     * @param bool   $json
+     * @param null|mixed $data
+     * @param int        $status
+     * @param array      $headers
+     * @param bool       $json
      */
     public function __construct($data = null, int $status = 200, array $headers = [], bool $json = false)
     {
@@ -91,9 +91,9 @@ class JsonResponse extends Response
     /**
      * 创建一个 JSON 响应.
      *
-     * @param mixed $data
-     * @param int   $status
-     * @param array $headers
+     * @param null|mixed $data
+     * @param int        $status
+     * @param array      $headers
      *
      * @return static
      */
@@ -105,9 +105,9 @@ class JsonResponse extends Response
     /**
      * 从 JSON 字符串创建响应对象
      *
-     * @param string $data
-     * @param int    $status
-     * @param array  $headers
+     * @param null|string $data
+     * @param int         $status
+     * @param array       $headers
      *
      * @return static
      */
@@ -121,7 +121,7 @@ class JsonResponse extends Response
      *
      * @param null|string $callback
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCallback(?string $callback = null): IResponse
     {
@@ -139,7 +139,9 @@ class JsonResponse extends Response
      *
      * @param mixed $json
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function setJson($json): IResponse
     {
@@ -148,7 +150,9 @@ class JsonResponse extends Response
         }
 
         if (!$this->isJsonData($json)) {
-            throw new InvalidArgumentException('The method setJson need a json data.');
+            $e = 'The method setJson need a json data.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->data = $json;
@@ -159,10 +163,12 @@ class JsonResponse extends Response
     /**
      * 设置数据作为 JSON.
      *
-     * @param mixed $data
-     * @param int   $encodingOptions
+     * @param mixed    $data
+     * @param null|int $encodingOptions
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function setData($data = [], ?int $encodingOptions = null): IResponse
     {
@@ -219,7 +225,7 @@ class JsonResponse extends Response
      *
      * @param int $encodingOptions
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setEncodingOptions(int $encodingOptions): IResponse
     {
@@ -253,7 +259,7 @@ class JsonResponse extends Response
     /**
      * 更新响应内容.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     protected function updateContent(): IResponse
     {

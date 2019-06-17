@@ -29,6 +29,7 @@ use DebugBar\DataCollector\PhpInfoCollector;
 use DebugBar\DataCollector\RequestDataCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use DebugBar\DebugBar;
+use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
 use Exception;
 use Leevel\Database\IDatabase;
 use Leevel\Debug\DataCollector\FilesCollector;
@@ -51,30 +52,29 @@ use Throwable;
  *
  * I actually copied a lot of ideas from laravel-debugbar app.
  *
- * @method void emergency($message)
- * @method void alert($message)
- * @method void critical($message)
- * @method void error($message)
- * @method void warning($message)
- * @method void notice($message)
- * @method void info($message)
- * @method void debug($message)
- * @method void log($message)
- *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2018.09.20
  *
  * @version 1.0
  */
-class Debug extends DebugBar
+class Debug implements IDebug
 {
+    use Proxy;
+
     /**
      * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected IContainer $container;
+
+    /**
+     * DebugBar.
+     *
+     * @var \DebugBar\DebugBar
+     */
+    protected $debugBar;
 
     /**
      * 是否启用调试.
@@ -110,8 +110,8 @@ class Debug extends DebugBar
     public function __construct(IContainer $container, array $option = [])
     {
         $this->container = $container;
-
         $this->option = array_merge($this->option, $option);
+        $this->debugBar = new DebugBar();
     }
 
     /**
@@ -124,17 +124,17 @@ class Debug extends DebugBar
      */
     public function __call(string $method, array $args)
     {
-        $messageLevels = [
-            'emergency', 'alert', 'critical',
-            'error', 'warning', 'notice',
-            'info', 'debug', 'log',
-        ];
+        $this->debugBar->{$method}(...$args);
+    }
 
-        if (in_array($method, $messageLevels, true)) {
-            foreach ($args as $arg) {
-                $this->message($arg, $method);
-            }
-        }
+    /**
+     * 返回代理.
+     *
+     * @return \DebugBar\DebugBar
+     */
+    public function proxy(): DebugBar
+    {
+        return $this->debugBar;
     }
 
     /**
@@ -153,9 +153,9 @@ class Debug extends DebugBar
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Debug\IDebug
      */
-    public function setOption(string $name, $value): self
+    public function setOption(string $name, $value): IDebug
     {
         $this->option[$name] = $value;
 
@@ -238,10 +238,100 @@ class Debug extends DebugBar
     }
 
     /**
+     * 添加一条 emergency 消息.
+     *
+     * @param mixed $message
+     */
+    public function emergency($message): void
+    {
+        $this->message($message, 'emergency');
+    }
+
+    /**
+     * 添加一条 alert 消息.
+     *
+     * @param mixed $message
+     */
+    public function alert($message): void
+    {
+        $this->message($message, 'alert');
+    }
+
+    /**
+     * 添加一条 critical 消息.
+     *
+     * @param mixed $message
+     */
+    public function critical($message): void
+    {
+        $this->message($message, 'critical');
+    }
+
+    /**
+     * 添加一条 error 消息.
+     *
+     * @param mixed $message
+     */
+    public function error($message): void
+    {
+        $this->message($message, 'error');
+    }
+
+    /**
+     * 添加一条 warning 消息.
+     *
+     * @param mixed $message
+     */
+    public function warning($message): void
+    {
+        $this->message($message, 'warning');
+    }
+
+    /**
+     * 添加一条 notice 消息.
+     *
+     * @param mixed $message
+     */
+    public function notice($message): void
+    {
+        $this->message($message, 'notice');
+    }
+
+    /**
+     * 添加一条 info 消息.
+     *
+     * @param mixed $message
+     */
+    public function info($message): void
+    {
+        $this->message($message, 'info');
+    }
+
+    /**
+     * 添加一条 debug 消息.
+     *
+     * @param mixed $message
+     */
+    public function debug($message): void
+    {
+        $this->message($message, 'debug');
+    }
+
+    /**
+     * 添加一条 log 消息.
+     *
+     * @param mixed $message
+     */
+    public function log($message): void
+    {
+        $this->message($message, 'log');
+    }
+
+    /**
      * 开始调试时间.
      *
-     * @param string $name
-     * @param string $label
+     * @param string      $name
+     * @param null|string $label
      */
     public function time(string $name, ?string $label = null): void
     {
@@ -296,6 +386,8 @@ class Debug extends DebugBar
 
     /**
      * 获取 JSON 渲染.
+     *
+     * @return \Leevel\Debug\JsonRenderer
      */
     public function getJsonRenderer(): JsonRenderer
     {
@@ -304,6 +396,8 @@ class Debug extends DebugBar
 
     /**
      * 获取 Console 渲染.
+     *
+     * @return \Leevel\Debug\ConsoleRenderer
      */
     public function getConsoleRenderer(): ConsoleRenderer
     {
@@ -311,11 +405,16 @@ class Debug extends DebugBar
     }
 
     /**
-     * {@inheritdoc}
+     * 返回此实例的 \DebugBar\JavascriptRenderer.
+     *
+     * @param null|string $baseUrl
+     * @param null|string $basePath
+     *
+     * @return \DebugBar\JavascriptRenderer
      */
-    public function getJavascriptRenderer($baseUrl = null, $basePath = null): JavascriptRenderer
+    public function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer
     {
-        return new JavascriptRenderer($this, $baseUrl, $basePath);
+        return new JavascriptRenderer($this->debugBar, $baseUrl, $basePath);
     }
 
     /**

@@ -25,6 +25,7 @@ use Leevel\Kernel\App;
 use Leevel\Router\MiddlewareParser;
 use Leevel\Router\Router;
 use Leevel\Router\ScanRouter;
+use Leevel\Router\Url;
 use Tests\TestCase;
 
 /**
@@ -38,7 +39,7 @@ use Tests\TestCase;
  */
 class ScanRouterTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $middlewareParser = $this->createMiddlewareParser();
 
@@ -66,6 +67,7 @@ class ScanRouterTest extends TestCase
         $container = Container::singletons();
         $app = new App($container, '');
         $app->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $app->setPath(__DIR__.'/Apps/AppScanRouter');
         $router = new Router($container);
 
         $router->setMiddlewareGroups([
@@ -100,9 +102,13 @@ class ScanRouterTest extends TestCase
     }
 }
 
-class Url1
+class Url1 extends Url
 {
-    public function getDomain()
+    public function __construct()
+    {
+    }
+
+    public function getDomain(): string
     {
         return 'queryphp.com';
     }

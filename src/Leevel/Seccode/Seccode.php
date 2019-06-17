@@ -105,7 +105,7 @@ class Seccode implements ISeccode
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function setOption(string $name, $value): ISeccode
     {
@@ -117,10 +117,10 @@ class Seccode implements ISeccode
     /**
      * 设置验证码
      *
-     * @param mixed  $code
-     * @param string $outPath
-     * @param bool   $autoCode
-     * @param string $autoType
+     * @param null|mixed  $code
+     * @param null|string $outPath
+     * @param bool        $autoCode
+     * @param string      $autoType
      */
     public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void
     {
@@ -156,7 +156,7 @@ class Seccode implements ISeccode
      *
      * @param string $code
      *
-     * @return $this
+     * @return \Leevel\Seccode\ISeccode
      */
     public function code(string $code): ISeccode
     {
@@ -295,6 +295,8 @@ class Seccode implements ISeccode
      * 创建字体信息.
      *
      * @param resource $resImage
+     *
+     * @throws \InvalidArgumentException
      */
     protected function makeTtfFont(&$resImage): void
     {
@@ -471,6 +473,8 @@ class Seccode implements ISeccode
      *
      * @param resource $resImage
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     protected function makeBackgroundWithImage(&$resImage): bool
@@ -585,6 +589,8 @@ class Seccode implements ISeccode
     /**
      * 返回验证字体.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function getTtf(): array
@@ -613,6 +619,8 @@ class Seccode implements ISeccode
      *
      * @param int    $size
      * @param string $autoType
+     *
+     * @throws \InvalidArgumentException
      */
     protected function autoCode(int $size, string $autoType = self::ALPHA_UPPERCASE): void
     {
@@ -662,7 +670,7 @@ class Seccode implements ISeccode
     /**
      * 是否为中文.
      *
-     * @param string $code
+     * @param null|string $code
      *
      * @return bool
      */

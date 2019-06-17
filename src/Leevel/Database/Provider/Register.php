@@ -49,7 +49,7 @@ class Register extends Provider
     {
         $this->databases();
         $this->database();
-        $this->unitofwork();
+        $this->unitOfWork();
         $this->databaseLazyload();
     }
 
@@ -73,9 +73,8 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'databases'  => Manager::class,
-            'database'   => [IDatabase::class, Database::class],
-            'unitofwork' => [IUnitOfWork::class, UnitOfWork::class],
+            'databases'        => Manager::class,
+            'database'         => [IDatabase::class, Database::class],
             'database.lazyload',
         ];
     }
@@ -95,9 +94,13 @@ class Register extends Provider
      */
     protected function databases(): void
     {
-        $this->container->singleton('databases', function (IContainer $container): Manager {
-            return new Manager($container);
-        });
+        $this->container
+            ->singleton(
+                'databases',
+                function (IContainer $container): Manager {
+                    return new Manager($container);
+                },
+            );
     }
 
     /**
@@ -105,19 +108,25 @@ class Register extends Provider
      */
     protected function database(): void
     {
-        $this->container->singleton('database', function (IContainer $container): Database {
-            return $container['databases']->connect();
-        });
+        $this->container
+            ->singleton(
+                'database',
+                function (IContainer $container): IDatabase {
+                    return $container['databases']->connect();
+                },
+            );
     }
 
     /**
-     * 注册 unitofwork 服务.
+     * 注册 IUnitOfWork 服务.
      */
-    protected function unitofwork(): void
+    protected function unitOfWork(): void
     {
-        $this->container->singleton('unitofwork', function (IContainer $container): UnitOfWork {
-            return new UnitOfWork();
-        });
+        $this->container
+            ->bind(
+                IUnitOfWork::class,
+                UnitOfWork::class,
+            );
     }
 
     /**

@@ -104,7 +104,7 @@ interface ILog
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Log\ILog
      */
     public function setOption(string $name, $value): self;
 
@@ -200,14 +200,14 @@ interface ILog
     /**
      * 清理日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      */
     public function clear(?string $level = null): void;
 
     /**
      * 获取日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return array
      */
@@ -216,7 +216,7 @@ interface ILog
     /**
      * 获取日志记录数量.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return int
      */

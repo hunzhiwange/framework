@@ -62,10 +62,10 @@ class Html extends View implements IView
     /**
      * 加载视图文件.
      *
-     * @param string $file    视图文件地址
-     * @param array  $vars
-     * @param string $ext     后缀
-     * @param bool   $display 是否显示
+     * @param string      $file    视图文件地址
+     * @param array       $vars
+     * @param null|string $ext     后缀
+     * @param bool        $display 是否显示
      *
      * @return string|void
      */
@@ -117,12 +117,16 @@ class Html extends View implements IView
      *
      * @param string $file
      *
+     * @throws \RuntimeException
+     *
      * @return string
      */
     public function getCachePath(string $file): string
     {
         if (!$this->option['cache_path']) {
-            throw new RuntimeException('Theme cache path must be set.');
+            $e = 'Theme cache path must be set.';
+
+            throw new RuntimeException($e);
         }
 
         $file = str_replace('//', '/', str_replace('\\', '/', $file));
@@ -135,12 +139,16 @@ class Html extends View implements IView
     /**
      * 解析 parser.
      *
+     * @throws \RuntimeException
+     *
      * @return \Leevel\View\IParser
      */
     protected function resolverParser(): IParser
     {
         if (!$this->parseResolver) {
-            throw new RuntimeException('Html theme not set parse resolver.');
+            $e = 'Html theme not set parse resolver.';
+
+            throw new RuntimeException($e);
         }
 
         return call_user_func($this->parseResolver);

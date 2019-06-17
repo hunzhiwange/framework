@@ -69,7 +69,7 @@ class FileTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $filePath = __DIR__.'/cacheFile/hello.php';
 
@@ -98,7 +98,7 @@ class FileTest extends TestCase
         $this->assertNull($file->handle());
     }
 
-    public function testSetOption()
+    public function testSetOption(): void
     {
         $file = new File([
             'path' => __DIR__.'/cacheFile',
@@ -130,7 +130,7 @@ class FileTest extends TestCase
         $file->delete('setOption2');
     }
 
-    public function testCacheTime()
+    public function testCacheTime(): void
     {
         $file = new File([
             'time_preset' => [
@@ -167,7 +167,7 @@ class FileTest extends TestCase
         $file->delete('haha');
     }
 
-    public function testGetNotExists()
+    public function testGetNotExists(): void
     {
         $file = new File([
             'path' => __DIR__.'/cacheFile',
@@ -176,7 +176,7 @@ class FileTest extends TestCase
         $this->assertFalse($file->get('notExists'));
     }
 
-    public function testGet2()
+    public function testGet2(): void
     {
         $file = new File([
             'path' => __DIR__.'/cacheFile',
@@ -197,7 +197,7 @@ class FileTest extends TestCase
         unlink($filePath);
     }
 
-    public function testGetIsNotReadable()
+    public function testGetIsNotReadable(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cache path is not readable.');
@@ -225,7 +225,7 @@ class FileTest extends TestCase
         $this->assertFalse($file->get('readable'));
     }
 
-    public function testGetIsExpired()
+    public function testGetIsExpired(): void
     {
         $file = new File([
             'path' => __DIR__.'/cacheFile',
@@ -242,7 +242,7 @@ class FileTest extends TestCase
         unlink($filePath);
     }
 
-    public function testWithOption()
+    public function testWithOption(): void
     {
         $file = new File([
             'path' => __DIR__.'/cacheFile',
@@ -273,7 +273,7 @@ class FileTest extends TestCase
         unlink($filePath);
     }
 
-    public function testCachePathEmpty()
+    public function testCachePathEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cache path is not allowed empty.');
@@ -285,7 +285,7 @@ class FileTest extends TestCase
         $file->set('hello', 'world');
     }
 
-    public function testCachePathSub()
+    public function testCachePathSub(): void
     {
         $file = new File([
             'path' => $path = __DIR__.'/sub',
@@ -301,7 +301,7 @@ class FileTest extends TestCase
         rmdir($path);
     }
 
-    public function testWriteException()
+    public function testWriteException(): void
     {
         $path = __DIR__.'/write';
 
@@ -323,7 +323,7 @@ class FileTest extends TestCase
         $file->set('hello', 'world');
     }
 
-    public function testParentWriteException()
+    public function testParentWriteException(): void
     {
         $path = __DIR__.'/parentWrite/sub';
 

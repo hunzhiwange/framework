@@ -30,6 +30,8 @@ use Leevel\View\IView as IViews;
  * @since 2017.04.23
  *
  * @version 1.0
+ *
+ * @see \Leevel\Router\Proxy\IView 请保持接口设计的一致性
  */
 interface IView
 {
@@ -38,19 +40,19 @@ interface IView
      *
      * @param \Leevel\View\IView $view
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function switchView(IViews $view): self;
 
     /**
      * 变量赋值.
      *
-     * @param mixed $name
-     * @param mixed $value
+     * @param mixed      $name
+     * @param null|mixed $value
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
-    public function assign($name, $value = null): self;
+    public function setVar($name, $value = null): self;
 
     /**
      * 获取变量赋值.
@@ -59,30 +61,30 @@ interface IView
      *
      * @return mixed
      */
-    public function getAssign(?string $name = null);
+    public function getVar(?string $name = null);
 
     /**
      * 删除变量值.
      *
      * @param array $name
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
-    public function deleteAssign(array $name): self;
+    public function deleteVar(array $name): self;
 
     /**
      * 清空变量值.
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
-    public function clearAssign(): self;
+    public function clearVar(): self;
 
     /**
      * 加载视图文件.
      *
-     * @param string $file
-     * @param array  $vars
-     * @param string $ext
+     * @param string      $file
+     * @param array       $vars
+     * @param null|string $ext
      *
      * @return string
      */

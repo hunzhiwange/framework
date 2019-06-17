@@ -44,7 +44,7 @@ class CacheTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $filePath = __DIR__.'/cache/hello.php';
 
@@ -65,7 +65,7 @@ class CacheTest extends TestCase
         $this->assertFalse($cache->get('hello'));
     }
 
-    public function testPut()
+    public function testPut(): void
     {
         $cache = new File([
             'path' => __DIR__.'/cache',
@@ -88,7 +88,7 @@ class CacheTest extends TestCase
         $this->assertFalse($cache->get('foo'));
     }
 
-    public function testPutWithOption()
+    public function testPutWithOption(): void
     {
         $cache = new File([
             'path' => __DIR__.'/cache',
@@ -120,7 +120,7 @@ class CacheTest extends TestCase
         $this->assertFalse($cache->get('foo'));
     }
 
-    public function testRemember()
+    public function testRemember(): void
     {
         $cache = new File([
             'path' => __DIR__.'/cache',
@@ -144,7 +144,7 @@ class CacheTest extends TestCase
         $this->assertFalse(is_file($filePath));
     }
 
-    public function testRememberWithOption()
+    public function testRememberWithOption(): void
     {
         $cache = new File([
             'path' => __DIR__.'/cache',
@@ -176,7 +176,7 @@ class CacheTest extends TestCase
         $this->assertFalse(is_file($filePath));
     }
 
-    public function testRememberWithClosure()
+    public function testRememberWithClosure(): void
     {
         $cache = new File([
             'path' => __DIR__.'/cache',

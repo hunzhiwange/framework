@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class DatabaseTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -41,15 +41,17 @@ class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $database->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $database
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $database->table('guest_book', 'name,content')->
-
-        where('id', 1)->
-
-        findOne();
+        $result = $database
+            ->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);

@@ -56,7 +56,7 @@ class FileBagTest extends TestCase
         rmdir(sys_get_temp_dir().'/form_test');
     }
 
-    public function testFileMustBeAnArrayOrUploadedFile()
+    public function testFileMustBeAnArrayOrUploadedFile(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -66,7 +66,7 @@ class FileBagTest extends TestCase
         new FileBag(['file' => 'foo']);
     }
 
-    public function testShouldConvertsUploadedFiles()
+    public function testShouldConvertsUploadedFiles(): void
     {
         $tmpFile = $this->createTempFile();
 
@@ -84,7 +84,7 @@ class FileBagTest extends TestCase
         $this->assertEquals($file, $bag->get('file'));
     }
 
-    public function testShouldSetEmptyUploadedFilesToNull()
+    public function testShouldSetEmptyUploadedFilesToNull(): void
     {
         $bag = new FileBag([
             'file' => [
@@ -98,7 +98,7 @@ class FileBagTest extends TestCase
         $this->assertNull($bag->get('file'));
     }
 
-    public function testShouldRemoveEmptyUploadedFilesForMultiUpload()
+    public function testShouldRemoveEmptyUploadedFilesForMultiUpload(): void
     {
         $bag = new FileBag([
             'files' => [
@@ -114,7 +114,7 @@ class FileBagTest extends TestCase
         $this->assertSame($bag->getArr('files'), []);
     }
 
-    public function testShouldRemoveEmptyUploadedFilesForAssociativeArray()
+    public function testShouldRemoveEmptyUploadedFilesForAssociativeArray(): void
     {
         $bag = new FileBag([
             'files' => [
@@ -129,7 +129,7 @@ class FileBagTest extends TestCase
         $this->assertSame([], $bag->getArr('files'));
     }
 
-    public function testShouldConvertUploadedFilesWithPhpBug()
+    public function testShouldConvertUploadedFilesWithPhpBug(): void
     {
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
@@ -158,7 +158,7 @@ class FileBagTest extends TestCase
         $this->assertEquals($file, $files['child\\file']);
     }
 
-    public function testShouldConvertNestedUploadedFilesWithPhpBug()
+    public function testShouldConvertNestedUploadedFilesWithPhpBug(): void
     {
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
@@ -188,7 +188,7 @@ class FileBagTest extends TestCase
         $this->assertEquals($file, $files['child\sub\file']);
     }
 
-    public function testShouldNotConvertNestedUploadedFiles()
+    public function testShouldNotConvertNestedUploadedFiles(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -200,7 +200,7 @@ class FileBagTest extends TestCase
         $bag = new FileBag(['image' => ['file' => $file]]);
     }
 
-    public function testConvertUploadFileItem()
+    public function testConvertUploadFileItem(): void
     {
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
@@ -210,7 +210,7 @@ class FileBagTest extends TestCase
         $this->assertSame($file, $files['image']);
     }
 
-    public function testFileKeyIndexNotFoundException()
+    public function testFileKeyIndexNotFoundException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -240,7 +240,7 @@ class FileBagTest extends TestCase
         ]);
     }
 
-    public function testFileKeyNotFoundException()
+    public function testFileKeyNotFoundException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -268,7 +268,7 @@ class FileBagTest extends TestCase
         ]);
     }
 
-    protected function createTempFile()
+    protected function createTempFile(): string
     {
         $tempFile = sys_get_temp_dir().'/form_test/'.md5(time().rand()).'.tmp';
         file_put_contents($tempFile, '1');

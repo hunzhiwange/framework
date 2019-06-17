@@ -36,7 +36,7 @@ use Tests\TestCase;
  */
 class PipelineTest extends TestCase
 {
-    public function testPipelineBasic()
+    public function testPipelineBasic(): void
     {
         $result = (new Pipeline(new Container()))->
 
@@ -52,7 +52,7 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.first'], $_SERVER['test.second']);
     }
 
-    public function testPipelineWithThen()
+    public function testPipelineWithThen(): void
     {
         $thenCallback = function (Closure $next, $send) {
             $_SERVER['test.then'] = 'i am end and get the send:'.$send;
@@ -73,7 +73,7 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.first'], $_SERVER['test.second'], $_SERVER['test.then']);
     }
 
-    public function testPipelineWithReturn()
+    public function testPipelineWithReturn(): void
     {
         $pipe1 = function (Closure $next, $send) {
             $result = $next($send);
@@ -109,7 +109,7 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.1'], $_SERVER['test.2']);
     }
 
-    public function testPipelineWithDiConstruct()
+    public function testPipelineWithDiConstruct(): void
     {
         $result = (new Pipeline(new Container()))->
 
@@ -124,7 +124,7 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.DiConstruct']);
     }
 
-    public function testPipelineWithSendNoneParams()
+    public function testPipelineWithSendNoneParams(): void
     {
         $pipe = function (Closure $next) {
             $this->assertCount(1, func_get_args());
@@ -137,7 +137,7 @@ class PipelineTest extends TestCase
         then();
     }
 
-    public function testPipelineWithSendMoreParams()
+    public function testPipelineWithSendMoreParams(): void
     {
         $pipe = function (Closure $next, $send1, $send2, $send3, $send4) {
             $this->assertSame($send1, 'hello world');
@@ -157,7 +157,7 @@ class PipelineTest extends TestCase
         then();
     }
 
-    public function testPipelineWithThroughMore()
+    public function testPipelineWithThroughMore(): void
     {
         $_SERVER['test.Through.count'] = 0;
 
@@ -182,7 +182,7 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.Through.count']);
     }
 
-    public function testPipelineWithPipeArgs()
+    public function testPipelineWithPipeArgs(): void
     {
         $parameters = ['one', 'two'];
 
@@ -197,7 +197,7 @@ class PipelineTest extends TestCase
         unset($_SERVER['test.WithArgs']);
     }
 
-    public function testStageWithInvalidArgumentException()
+    public function testStageWithInvalidArgumentException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -211,7 +211,7 @@ class PipelineTest extends TestCase
         then();
     }
 
-    public function testStageWithAtMethod()
+    public function testStageWithAtMethod(): void
     {
         (new Pipeline(new Container()))->
 

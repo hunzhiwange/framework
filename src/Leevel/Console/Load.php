@@ -64,7 +64,7 @@ class Load
      *
      * @param array $namespaces
      *
-     * @return $this
+     * @return \Leevel\Console\Load
      */
     public function addNamespace(array $namespaces): self
     {
@@ -94,6 +94,8 @@ class Load
      *
      * @param array $namespaces
      *
+     * @throws \RuntimeException
+     *
      * @return array
      */
     public function findConsoleFile(array $namespaces): array
@@ -102,7 +104,9 @@ class Load
 
         foreach ($namespaces as $key => $dir) {
             if (!is_dir($dir)) {
-                throw new RuntimeException(sprintf('Console load dir %s is not exits.', $dir));
+                $e = sprintf('Console load dir %s is not exits.', $dir);
+
+                throw new RuntimeException($e);
             }
 
             $currentFiles = glob($dir.'/*.php');

@@ -47,18 +47,6 @@ class Manager extends Managers implements ICache
     }
 
     /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    protected function createConnect(object $connect): object
-    {
-        return $connect;
-    }
-
-    /**
      * 创建文件缓存.
      *
      * @param array $options

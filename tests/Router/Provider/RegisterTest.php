@@ -23,13 +23,13 @@ namespace Tests\Router\Provider;
 use Leevel\Di\Container;
 use Leevel\Http\IRequest;
 use Leevel\Option\Option;
-use Leevel\Router\IResponseFactory;
+use Leevel\Router\IResponse;
 use Leevel\Router\IRouter;
 use Leevel\Router\IUrl;
 use Leevel\Router\IView;
 use Leevel\Router\Provider\Register;
 use Leevel\Router\Redirect;
-use Leevel\Router\ResponseFactory;
+use Leevel\Router\Response;
 use Leevel\Router\Router;
 use Leevel\Router\Url;
 use Leevel\Router\View;
@@ -48,7 +48,7 @@ use Tests\TestCase;
  */
 class RegisterTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
 
@@ -61,8 +61,8 @@ class RegisterTest extends TestCase
         $this->assertInstanceof(IUrl::class, $container->make('url'));
         $this->assertInstanceof(Url::class, $container->make('url'));
         $this->assertInstanceof(Redirect::class, $container->make('redirect'));
-        $this->assertInstanceof(IResponseFactory::class, $container->make('response'));
-        $this->assertInstanceof(ResponseFactory::class, $container->make('response'));
+        $this->assertInstanceof(IResponse::class, $container->make('response'));
+        $this->assertInstanceof(Response::class, $container->make('response'));
         $this->assertInstanceof(IView::class, $container->make('view'));
         $this->assertInstanceof(View::class, $container->make('view'));
 

@@ -67,6 +67,8 @@ abstract class Stop extends Command
      * 停止 Swoole 服务.
      *
      * @param array $option
+     *
+     * @throws \InvalidArgumentException
      */
     protected function close(array $option): void
     {
@@ -74,18 +76,18 @@ abstract class Stop extends Command
         $processName = $option['process_name'];
 
         if (!file_exists($pidFile)) {
-            throw new InvalidArgumentException(
-                sprintf('Pid path `%s` was not found.', $pidFile)
-            );
+            $e = sprintf('Pid path `%s` was not found.', $pidFile);
+
+            throw new InvalidArgumentException($e);
         }
 
         $pids = explode(PHP_EOL, file_get_contents($pidFile));
         $pid = (int) $pids[0];
 
         if (!Process::kill($pid, 0)) {
-            throw new InvalidArgumentException(
-                sprintf('Pid `%s` was not found.', $pid)
-            );
+            $e = sprintf('Pid `%s` was not found.', $pid);
+
+            throw new InvalidArgumentException($e);
         }
 
         Process::kill($pid, SIGKILL);
@@ -94,7 +96,8 @@ abstract class Stop extends Command
             unlink($pidFile);
         }
 
-        $this->info(sprintf('Process %s:%d has stoped.', $processName, $pid), true);
+        $message = sprintf('Process %s:%d has stoped.', $processName, $pid);
+        $this->info($message);
     }
 
     /**

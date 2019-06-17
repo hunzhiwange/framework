@@ -54,7 +54,7 @@ class UnitOfWorkTest extends TestCase
      *     note="通过 persist 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
      * )
      */
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $work = UnitOfWork::make();
 
@@ -87,7 +87,7 @@ class UnitOfWorkTest extends TestCase
      *     note="底层会开启一个事务，只有全部保存成功才会真正持久化到数据库。",
      * )
      */
-    public function testPersist()
+    public function testPersist(): void
     {
         $work = UnitOfWork::make();
 
@@ -135,7 +135,7 @@ class UnitOfWorkTest extends TestCase
      *     note="底层执行的是 insert 语句，只有全部保存成功才会真正持久化到数据库。",
      * )
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $work = UnitOfWork::make();
 
@@ -189,7 +189,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('foo bar', $post2->summary);
     }
 
-    public function testCreateBefore()
+    public function testCreateBefore(): void
     {
         $work = UnitOfWork::make();
 
@@ -250,7 +250,7 @@ class UnitOfWorkTest extends TestCase
      *     note="底层执行的是 update 语句，只有全部保存成功才会真正持久化到数据库。",
      * )
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $work = UnitOfWork::make();
 
@@ -259,21 +259,25 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 2,
-            'summary' => 'foo bar',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 2,
+                    'summary' => 'foo bar',
+                ]));
 
         $post = Post::find(1);
 
@@ -346,7 +350,7 @@ class UnitOfWorkTest extends TestCase
      *     note="底层执行的是 delete 语句，只有全部保存成功才会真正持久化到数据库。",
      * )
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $work = UnitOfWork::make();
 
@@ -355,21 +359,25 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 2,
-            'summary' => 'foo bar',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 2,
+                    'summary' => 'foo bar',
+                ]));
 
         $post = Post::find(1);
 
@@ -440,7 +448,7 @@ class UnitOfWorkTest extends TestCase
      *     note="底层执行的是 select 语句，这个操作会读取数据库最新信息并刷新实体的属性。",
      * )
      */
-    public function testRefresh()
+    public function testRefresh(): void
     {
         $work = UnitOfWork::make();
 
@@ -449,13 +457,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = new Post([
             'id'      => 1,
@@ -496,7 +506,7 @@ class UnitOfWorkTest extends TestCase
      *     note="通常来说事务工作单元会自动帮你处理事务，可以通过手工 beginTransaction，成功 commit 或者失败 rollBack，系统提供了 API 让你也手工开启事务处理。",
      * )
      */
-    public function testBeginTransaction()
+    public function testBeginTransaction(): void
     {
         $work = UnitOfWork::make();
 
@@ -505,13 +515,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $work->beginTransaction();
 
@@ -539,7 +551,7 @@ class UnitOfWorkTest extends TestCase
      *     note="底层会自动运行一个事务，如果执行失败自动回滚，不会更新数据库。",
      * )
      */
-    public function testFlushButRollBack()
+    public function testFlushButRollBack(): void
     {
         $this->expectException(\Leevel\Database\ReplaceException::class);
         $this->expectExceptionMessage(
@@ -552,12 +564,14 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $post2 = new Post([
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $work->create($post);
@@ -573,7 +587,7 @@ class UnitOfWorkTest extends TestCase
      *     note="可以将事务包裹在一个闭包中，如果执行失败自动回滚，不会更新数据库。",
      * )
      */
-    public function testTransaction()
+    public function testTransaction(): void
     {
         $work = UnitOfWork::make();
 
@@ -582,13 +596,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $work->transaction(function ($w) {
             $post = Post::find(1);
@@ -610,7 +626,7 @@ class UnitOfWorkTest extends TestCase
      *     note="可以将事务包裹在一个闭包中，执行失败自动回滚测试，不会更新数据库。",
      * )
      */
-    public function testTransactionAndRollBack()
+    public function testTransactionAndRollBack(): void
     {
         $this->expectException(\Leevel\Database\ReplaceException::class);
         $this->expectExceptionMessage(
@@ -629,12 +645,14 @@ class UnitOfWorkTest extends TestCase
                 'id'      => 1,
                 'title'   => 'old',
                 'summary' => 'old',
+                'user_id' => 0,
             ]);
 
             $post2 = new Post([
                 'id'      => 1,
                 'title'   => 'old',
                 'summary' => 'old',
+                'user_id' => 0,
             ]);
 
             $w->create($post);
@@ -651,7 +669,7 @@ class UnitOfWorkTest extends TestCase
      *     note="系统默认读取基础的数据库配置来处理数据相关信息，设置跟实体可以更改事务处理的数据库连接。",
      * )
      */
-    public function testSetRootEntity()
+    public function testSetRootEntity(): void
     {
         $work = UnitOfWork::make();
 
@@ -660,13 +678,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -694,7 +714,7 @@ class UnitOfWorkTest extends TestCase
      *     note="如果没有存在的连接，则会使用默认的连接。",
      * )
      */
-    public function testSetConnectNotFoundWillUseDefault()
+    public function testSetConnectNotFoundWillUseDefault(): void
     {
         $work = UnitOfWork::make();
 
@@ -703,13 +723,15 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -737,7 +759,7 @@ class UnitOfWorkTest extends TestCase
      *     note="实际上什么也不会发生。",
      * )
      */
-    public function testFlushButNotFoundAny()
+    public function testFlushButNotFoundAny(): void
     {
         $work = UnitOfWork::make(new Post());
 
@@ -751,7 +773,7 @@ class UnitOfWorkTest extends TestCase
      *     note="保存两个一样的实体，第二个实体并不会被添加。",
      * )
      */
-    public function testPersistStageManagedEntityDoNothing()
+    public function testPersistStageManagedEntityDoNothing(): void
     {
         $work = UnitOfWork::make();
 
@@ -761,6 +783,7 @@ class UnitOfWorkTest extends TestCase
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 0,
         ]);
 
         $work->persist($post, 'create');
@@ -771,19 +794,21 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $connect->table('post')->findCount());
     }
 
-    public function testPersistStageRemovedEntityBefore()
+    public function testPersistStageRemovedEntityBefore(): void
     {
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -805,19 +830,21 @@ class UnitOfWorkTest extends TestCase
      *     note="这样被删除的实体并不会被删除。",
      * )
      */
-    public function testPersistStageRemovedEntity()
+    public function testPersistStageRemovedEntity(): void
     {
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -841,7 +868,7 @@ class UnitOfWorkTest extends TestCase
      *     note="",
      * )
      */
-    public function testCreateButAlreadyInUpdates()
+    public function testCreateButAlreadyInUpdates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -864,7 +891,7 @@ class UnitOfWorkTest extends TestCase
      *     note="",
      * )
      */
-    public function testCreateButAlreadyInDeletes()
+    public function testCreateButAlreadyInDeletes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -887,7 +914,7 @@ class UnitOfWorkTest extends TestCase
      *     note="",
      * )
      */
-    public function testCreateButAlreadyInReplaces()
+    public function testCreateButAlreadyInReplaces(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -910,7 +937,7 @@ class UnitOfWorkTest extends TestCase
      *     note="",
      * )
      */
-    public function testCreateManyTimes()
+    public function testCreateManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -927,7 +954,7 @@ class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
-    public function testUpdateButAlreadyInDeletes()
+    public function testUpdateButAlreadyInDeletes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -943,7 +970,7 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    public function testUpdateButAlreadyInCreates()
+    public function testUpdateButAlreadyInCreates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -959,7 +986,7 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    public function testUpdateButAlreadyInReplaces()
+    public function testUpdateButAlreadyInReplaces(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -975,7 +1002,7 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    public function testUpdateManyTimes()
+    public function testUpdateManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -992,7 +1019,7 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    public function testUpdateButHasNoPrimaryData()
+    public function testUpdateButHasNoPrimaryData(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1008,7 +1035,7 @@ class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    public function testDeleteCreated()
+    public function testDeleteCreated(): void
     {
         $work = UnitOfWork::make();
 
@@ -1024,19 +1051,21 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
     }
 
-    public function testDeleteUpdated()
+    public function testDeleteUpdated(): void
     {
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -1054,19 +1083,21 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($postNew->title);
     }
 
-    public function testDeleteReplaced()
+    public function testDeleteReplaced(): void
     {
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
 
@@ -1084,7 +1115,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($postNew->title);
     }
 
-    public function testRefreshButNotIsStageManaged()
+    public function testRefreshButNotIsStageManaged(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1100,7 +1131,7 @@ class UnitOfWorkTest extends TestCase
         $work->refresh($post);
     }
 
-    public function testPersistButUnitOfWorkWasClosed()
+    public function testPersistButUnitOfWorkWasClosed(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1116,7 +1147,7 @@ class UnitOfWorkTest extends TestCase
         $work->persist($post);
     }
 
-    public function testRepository()
+    public function testRepository(): void
     {
         $work = UnitOfWork::make();
 
@@ -1125,7 +1156,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(GuestbookRepository::class, $repository);
     }
 
-    public function testRepository2()
+    public function testRepository2(): void
     {
         $work = UnitOfWork::make();
 
@@ -1134,7 +1165,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(GuestbookRepository::class, $repository);
     }
 
-    public function testRemoveStageNewDoNothing()
+    public function testRemoveStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
 
@@ -1146,7 +1177,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    public function testRemoveStageRemovedDoNothing()
+    public function testRemoveStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
 
@@ -1159,7 +1190,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(IUnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
-    public function testRemoveStageManagedWillDelete()
+    public function testRemoveStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
 
@@ -1179,7 +1210,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    public function testPersistAsSaveUpdate()
+    public function testPersistAsSaveUpdate(): void
     {
         $work = UnitOfWork::make();
 
@@ -1198,7 +1229,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
     }
 
-    public function testPersistAsUpdate()
+    public function testPersistAsUpdate(): void
     {
         $work = UnitOfWork::make();
 
@@ -1217,24 +1248,27 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(0, $connect->table('post')->findCount());
     }
 
-    public function testPersistAsReplace()
+    public function testPersistAsReplace(): void
     {
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = new Post([
             'id'      => 1,
             'title'   => 'old',
             'summary' => 'old',
+            'user_id' => 1,
         ]);
 
         $work->persist($post, 'replace');
@@ -1249,7 +1283,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('old', $updatedPost->summary);
     }
 
-    public function testPersistStageDetachedEntity()
+    public function testPersistStageDetachedEntity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1267,7 +1301,7 @@ class UnitOfWorkTest extends TestCase
         $work->persist($post);
     }
 
-    public function testRemoveStageDetachedEntity()
+    public function testRemoveStageDetachedEntity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1285,12 +1319,15 @@ class UnitOfWorkTest extends TestCase
         $work->remove($post);
     }
 
-    public function testOnCallbacks()
+    public function testOnCallbacks(): void
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['title' => 'new']);
-        $guestBook = new Guestbook([]);
+        $post = new Post([
+            'title'   => 'new',
+            'user_id' => 0,
+        ]);
+        $guestBook = new Guestbook(['name' => '']);
 
         $work->persist($post);
         $work->persist($guestBook);
@@ -1308,12 +1345,15 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    public function testOnCallbacksForReplace()
+    public function testOnCallbacksForReplace(): void
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['title' => 'new']);
-        $guestBook = new Guestbook([]);
+        $post = new Post([
+            'title'   => 'new',
+            'user_id' => 0,
+        ]);
+        $guestBook = new Guestbook(['name' => '']);
 
         $work->replace($post);
         $work->replace($guestBook);
@@ -1331,25 +1371,30 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    public function testOnCallbacksForUpdate()
+    public function testOnCallbacksForUpdate(): void
     {
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert([
-            'content'   => 'hello world',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert([
+                    'name'      => '',
+                    'content'   => 'hello world',
+                ]));
 
         $post = new Post(['id' => 1, 'title' => 'new'], true);
         $guestBook = new Guestbook(['id' => 1], true);
@@ -1370,19 +1415,21 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    public function testOnCallbacksForDelete()
+    public function testOnCallbacksForDelete(): void
     {
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
         $post = Post::find(1);
         $work->persist($post)->remove($post);
@@ -1400,7 +1447,7 @@ class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    public function testReplaceButAlreadyInDeletes()
+    public function testReplaceButAlreadyInDeletes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1416,11 +1463,15 @@ class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $work = UnitOfWork::make();
 
-        $post = new Post(['id' => 1, 'title' => 'new']);
+        $post = new Post([
+            'id'      => 1,
+            'title'   => 'new',
+            'user_id' => 0,
+        ]);
 
         $this->assertFalse($work->replaced($post));
 
@@ -1439,21 +1490,28 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new', $createPost->title);
     }
 
-    public function testReplaceAsUpdate()
+    public function testReplaceAsUpdate(): void
     {
         $work = UnitOfWork::make();
 
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->
-        table('post')->
-        insert([
-            'title'   => 'hello world',
-            'user_id' => 1,
-            'summary' => 'post summary',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                ]));
 
-        $post = new Post(['id' => 1, 'title' => 'new', 'summary' => 'new']);
+        $post = new Post([
+            'id'      => 1,
+            'title'   => 'new',
+            'summary' => 'new',
+            'user_id' => 1,
+        ]);
 
         $work->replace($post);
 
@@ -1467,7 +1525,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('new', $updatedPost->summary);
     }
 
-    public function testReplaceButAlreadyInCreates()
+    public function testReplaceButAlreadyInCreates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1483,7 +1541,7 @@ class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
-    public function testReplaceButAlreadyInUpdates()
+    public function testReplaceButAlreadyInUpdates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1499,7 +1557,7 @@ class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
-    public function testReplaceManyTimes()
+    public function testReplaceManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1516,7 +1574,7 @@ class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
-    public function testDeleteButHasNoPrimaryData()
+    public function testDeleteButHasNoPrimaryData(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1530,7 +1588,7 @@ class UnitOfWorkTest extends TestCase
         $work->delete($post);
     }
 
-    public function testDeleteManyTimes()
+    public function testDeleteManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1547,7 +1605,7 @@ class UnitOfWorkTest extends TestCase
         $work->delete($post);
     }
 
-    public function testRegisterManaged()
+    public function testRegisterManaged(): void
     {
         $work = UnitOfWork::make();
 
@@ -1562,7 +1620,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
     }
 
-    public function testRegisterManagedFromNew()
+    public function testRegisterManagedFromNew(): void
     {
         $work = UnitOfWork::make();
 
@@ -1577,7 +1635,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
     }
 
-    public function testPersistAsCompositeIdReplace()
+    public function testPersistAsCompositeIdReplace(): void
     {
         $work = UnitOfWork::make();
 
@@ -1596,7 +1654,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $connect->table('composite_id')->findCount());
     }
 
-    public function testPersistAsCompositeIdReplace2()
+    public function testPersistAsCompositeIdReplace2(): void
     {
         $work = UnitOfWork::make();
 
@@ -1615,7 +1673,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $connect->table('composite_id')->findCount());
     }
 
-    public function testCoroutineContext()
+    public function testCoroutineContext(): void
     {
         $this->assertTrue(UnitOfWork::coroutineContext());
     }

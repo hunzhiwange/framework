@@ -175,8 +175,8 @@ interface IRequest
     /**
      * 获取参数.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param string     $key
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -228,7 +228,7 @@ interface IRequest
     /**
      * 获取输入数据.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return mixed
@@ -238,7 +238,7 @@ interface IRequest
     /**
      * 取回 query.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -257,7 +257,7 @@ interface IRequest
     /**
      * 取回 cookie.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -275,8 +275,8 @@ interface IRequest
      * 获取文件
      * 数组文件请在末尾加上反斜杆访问.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param null|string $key
+     * @param null|mixed  $defaults
      *
      * @return null|array|\Leevel\Http\UploadedFile
      */
@@ -304,7 +304,7 @@ interface IRequest
     /**
      * 取回 header.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -314,7 +314,7 @@ interface IRequest
     /**
      * 取回 server.
      *
-     * @param string            $key
+     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -526,7 +526,7 @@ interface IRequest
      *
      * @param string $method
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setMethod(string $method): self;
 
@@ -565,7 +565,7 @@ interface IRequest
      *
      * @param string $language
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setLanguage(string $language): self;
 
@@ -658,7 +658,7 @@ interface IRequest
      *
      * @param string $pathInfo
      *
-     * @return $this
+     * @return \Leevel\Http\IRequest
      */
     public function setPathInfo(string $pathInfo): self;
 

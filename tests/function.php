@@ -33,25 +33,25 @@ class I18nMock
      * lang.
      *
      * @param string $text
-     * @param array  $arr
+     * @param array  $data
      *
      * @return string
      */
-    public function __(string $text, ...$arr)
+    public function __(string $text, ...$data)
     {
-        return sprintf($text, ...$arr);
+        return sprintf($text, ...$data);
     }
 
     /**
      * lang.
      *
      * @param string $text
-     * @param array  $arr
+     * @param array  $data
      *
      * @return string
      */
-    public function gettext(string $text, ...$arr)
+    public function gettext(string $text, ...$data)
     {
-        return sprintf($text, ...$arr);
+        return sprintf($text, ...$data);
     }
 }

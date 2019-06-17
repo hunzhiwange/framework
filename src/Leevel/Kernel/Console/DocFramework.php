@@ -63,6 +63,7 @@ class DocFramework extends Command
             'path'      => $this->path(),
             'testsdir'  => $app->path('vendor/hunzhiwange/framework/tests'),
             'outputdir' => $option->get('console\\framework_doc_outputdir'),
+            'git'       => $option->get('console\\framework_doc_git'),
         ];
 
         $this->call('make:doc', $input);

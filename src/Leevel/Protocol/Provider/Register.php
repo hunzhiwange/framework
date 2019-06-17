@@ -83,15 +83,19 @@ class Register extends Provider
      */
     protected function httpServer(): void
     {
-        $this->container->singleton('http.server', function (IContainer $container): HttpServer {
-            return new HttpServer(
-                $container,
-                array_merge(
-                    $container['option']['protocol\\server'],
-                    $container['option']['protocol\\http']
-                )
+        $this->container
+            ->singleton(
+                'http.server',
+                function (IContainer $container): HttpServer {
+                    return new HttpServer(
+                        $container,
+                        array_merge(
+                            $container['option']['protocol\\server'],
+                            $container['option']['protocol\\http']
+                        )
+                    );
+                },
             );
-        });
     }
 
     /**
@@ -99,15 +103,19 @@ class Register extends Provider
      */
     protected function websocketServer(): void
     {
-        $this->container->singleton('websocket.server', function (IContainer $container): WebsocketServer {
-            return new WebsocketServer(
-                $container,
-                array_merge(
-                    $container['option']['protocol\\server'],
-                    $container['option']['protocol\\websocket']
-                )
+        $this->container
+            ->singleton(
+                'websocket.server',
+                function (IContainer $container): WebsocketServer {
+                    return new WebsocketServer(
+                        $container,
+                        array_merge(
+                            $container['option']['protocol\\server'],
+                            $container['option']['protocol\\websocket']
+                        )
+                    );
+                },
             );
-        });
     }
 
     /**
@@ -115,15 +123,19 @@ class Register extends Provider
      */
     protected function rpcServer(): void
     {
-        $this->container->singleton('rpc.server', function (IContainer $container): RpcServer {
-            return new RpcServer(
-                $container,
-                array_merge(
-                    $container['option']['protocol\\server'],
-                    $container['option']['protocol\\rpc']
-                )
+        $this->container
+            ->singleton(
+                'rpc.server',
+                function (IContainer $container): RpcServer {
+                    return new RpcServer(
+                        $container,
+                        array_merge(
+                            $container['option']['protocol\\server'],
+                            $container['option']['protocol\\rpc']
+                        )
+                    );
+                },
             );
-        });
     }
 
     /**
@@ -131,9 +143,13 @@ class Register extends Provider
      */
     protected function pool(): void
     {
-        $this->container->singleton('pool', function (IContainer $container): Pool {
-            return new Pool($container);
-        });
+        $this->container
+            ->singleton(
+                'pool',
+                function (IContainer $container): Pool {
+                    return new Pool($container);
+                },
+            );
     }
 
     /**
@@ -141,8 +157,12 @@ class Register extends Provider
      */
     protected function rpc(): void
     {
-        $this->container->singleton('rpc', function (): Rpc {
-            return new Rpc();
-        });
+        $this->container
+            ->singleton(
+                'rpc',
+                function (): Rpc {
+                    return new Rpc();
+                },
+            );
     }
 }

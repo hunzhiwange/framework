@@ -483,21 +483,21 @@ interface IResponse
     /**
      * 发送 HTTP 响应.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function send(): self;
 
     /**
      * 发送响应头.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function sendHeaders(): self;
 
     /**
      * 发送响应内容.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function sendContent(): self;
 
@@ -506,16 +506,18 @@ interface IResponse
      *
      * @param mixed $content
      *
-     * @return $this
+     * @throws \UnexpectedValueException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function setContent($content): self;
 
     /**
      * 附加内容.
      *
-     * @param string $content
+     * @param null|string $content
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function appendContent(?string $content = null): self;
 
@@ -526,7 +528,7 @@ interface IResponse
      * @param string $value
      * @param bool   $replace
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setHeader(string $key, string $value, bool $replace = true): self;
 
@@ -535,7 +537,7 @@ interface IResponse
      *
      * @param array $headers
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withHeaders(array $headers): self;
 
@@ -546,7 +548,7 @@ interface IResponse
      * @param string $value
      * @param array  $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function cookie(string $name, string $value = '', array $option = []): self;
 
@@ -557,7 +559,7 @@ interface IResponse
      * @param string $value
      * @param array  $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCookie(string $name, string $value = '', array $option = []): self;
 
@@ -567,7 +569,7 @@ interface IResponse
      * @param array $cookies
      * @param array $option
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function withCookies(array $cookies, array $option = []): self;
 
@@ -591,10 +593,12 @@ interface IResponse
     /**
      * 设置 JSON 数据.
      *
-     * @param mixed $data
-     * @param int   $encodingOptions
+     * @param mixed    $data
+     * @param null|int $encodingOptions
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function setData($data = [], ?int $encodingOptions = null): self;
 
@@ -624,7 +628,7 @@ interface IResponse
      *
      * @param string $protocolVersion
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setProtocolVersion(string $protocolVersion): self;
 
@@ -638,10 +642,12 @@ interface IResponse
     /**
      * 设置相应状态码.
      *
-     * @param int    $code
-     * @param string $text
+     * @param int         $code
+     * @param null|string $text
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Http\IResponse
      */
     public function setStatusCode(int $code, ?string $text = null): self;
 
@@ -664,7 +670,7 @@ interface IResponse
      *
      * @param string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCharset(string $charset): self;
 
@@ -673,7 +679,7 @@ interface IResponse
      *
      * @param string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function charset(string $charset): self;
 
@@ -687,44 +693,44 @@ interface IResponse
     /**
      * 设置过期时间.
      *
-     * @param \DateTime $datetime
+     * @param null|\DateTime $datetime
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
-    public function setExpires(DateTime $datetime = null): self;
+    public function setExpires(?DateTime $datetime = null): self;
 
     /**
      * 设置最后修改时间.
      *
-     * @param \DateTime $datetime
+     * @param null|\DateTime $datetime
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
-    public function setLastModified(DateTime $datetime = null): self;
+    public function setLastModified(?DateTime $datetime = null): self;
 
     /**
      * 设置缓存.
      *
      * @param int $minutes
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setCache(int $minutes): self;
 
     /**
      * 设置响应未修改.
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setNotModified(): self;
 
     /**
      * 设置响应内容类型.
      *
-     * @param string $contentType
-     * @param string $charset
+     * @param string      $contentType
+     * @param null|string $charset
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContentType(string $contentType, ?string $charset = null): self;
 
@@ -733,7 +739,7 @@ interface IResponse
      *
      * @param int $contentLength
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setContentLength(int $contentLength): self;
 
@@ -742,7 +748,7 @@ interface IResponse
      *
      * @param string $etag
      *
-     * @return $this
+     * @return \Leevel\Http\IResponse
      */
     public function setEtag(string $etag): self;
 
@@ -818,6 +824,8 @@ interface IResponse
 
     /**
      * 是否为表单重定向响应.
+     *
+     * @param null|string $location
      *
      * @return bool
      */

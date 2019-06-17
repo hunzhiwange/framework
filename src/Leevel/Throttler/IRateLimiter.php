@@ -57,7 +57,7 @@ interface IRateLimiter
     /**
      * 执行请求
      *
-     * @return $this
+     * @return \Leevel\Throttler\IRateLimiter
      */
     public function hit(): self;
 
@@ -94,7 +94,7 @@ interface IRateLimiter
      *
      * @param int $xRateLimitLimit
      *
-     * @return $this
+     * @return \Leevel\Throttler\IRateLimiter
      */
     public function limit(int $xRateLimitLimit = 60): self;
 
@@ -103,7 +103,7 @@ interface IRateLimiter
      *
      * @param int $xRateLimitTime
      *
-     * @return $this
+     * @return \Leevel\Throttler\IRateLimiter
      */
     public function time(int $xRateLimitTime = 60): self;
 

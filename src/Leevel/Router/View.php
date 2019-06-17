@@ -55,14 +55,14 @@ class View implements IView
      *
      * @param \Leevel\View\IView $view
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
     public function switchView(IViews $view): IView
     {
-        $assign = $this->getAssign();
+        $var = $this->getVar();
 
         $this->view = $view;
-        $this->assign($assign);
+        $this->setVar($var);
 
         return $this;
     }
@@ -70,12 +70,12 @@ class View implements IView
     /**
      * 变量赋值
      *
-     * @param mixed $name
-     * @param mixed $value
+     * @param mixed      $name
+     * @param null|mixed $value
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
-    public function assign($name, $value = null): IView
+    public function setVar($name, $value = null): IView
     {
         $this->view->setVar($name, $value);
 
@@ -89,7 +89,7 @@ class View implements IView
      *
      * @return mixed
      */
-    public function getAssign(?string $name = null)
+    public function getVar(?string $name = null)
     {
         return $this->view->getVar($name);
     }
@@ -99,9 +99,9 @@ class View implements IView
      *
      * @param array $name
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
-    public function deleteAssign(array $name): IView
+    public function deleteVar(array $name): IView
     {
         $this->view->deleteVar($name);
 
@@ -113,9 +113,9 @@ class View implements IView
      *
      * @param null|string $name
      *
-     * @return $this
+     * @return \Leevel\Router\IView
      */
-    public function clearAssign(): IView
+    public function clearVar(): IView
     {
         $this->view->clearVar();
 
@@ -125,9 +125,9 @@ class View implements IView
     /**
      * 加载视图文件.
      *
-     * @param string $file
-     * @param array  $vars
-     * @param string $ext
+     * @param string      $file
+     * @param array       $vars
+     * @param null|string $ext
      *
      * @return string
      */

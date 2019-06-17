@@ -38,7 +38,7 @@ use Tests\Database\Ddd\Entity\Relation\UserRole;
  */
 class NestedTest extends TestCase
 {
-    public function testBase()
+    public function testBase(): void
     {
         $posts = Post::limit(5)->findAll();
 
@@ -48,54 +48,70 @@ class NestedTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i <= 5; $i++) {
-            $this->assertSame((string) ($i + 1), $connect->
-            table('post')->
-            insert([
-                'title'   => 'hello world',
-                'user_id' => 1,
-                'summary' => 'Say hello to the world.',
-            ]));
+            $this->assertSame(
+                (string) ($i + 1),
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title'   => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                    ]));
         }
 
-        $this->assertSame('1', $connect->
-        table('user')->
-        insert([
-            'name' => 'niu',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('role')->
-        insert([
-            'name' => '管理员',
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('role')->
-        insert([
-            'name' => '版主',
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
 
-        $this->assertSame('3', $connect->
-        table('role')->
-        insert([
-            'name' => '会员',
-        ]));
+        $this->assertSame(
+            '3',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '会员',
+                ]));
 
-        $this->assertSame('1', $connect->
-        table('user_role')->
-        insert([
-            'user_id' => 1,
-            'role_id' => 1,
-        ]));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 1,
+                ]));
 
-        $this->assertSame('2', $connect->
-        table('user_role')->
-        insert([
-            'user_id' => 1,
-            'role_id' => 3,
-        ]));
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 3,
+                ]));
 
-        $posts = Post::eager(['user.role'])->limit(5)->findAll();
+        $posts = Post::eager(['user.role'])
+            ->limit(5)
+            ->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(5, $posts);

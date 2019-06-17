@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class TimeTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -54,11 +54,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereDate('create_date', '+5 month')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereDate('create_date', '+5 month')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -66,7 +65,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereDay()
+    public function testWhereDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -88,11 +87,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereDay('create_date', 5)->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereDay('create_date', 5)
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -100,7 +98,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereDayWillFormatInt()
+    public function testWhereDayWillFormatInt(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -122,11 +120,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereDay('create_date', '5')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereDay('create_date', '5')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -134,7 +131,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereDayWillFormatInt2()
+    public function testWhereDayWillFormatInt2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -156,11 +153,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereDay('create_date', '5 foo')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereDay('create_date', '5 foo')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -168,7 +164,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereMonth()
+    public function testWhereMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -190,11 +186,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereMonth('create_date', 5)->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereMonth('create_date', 5)
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -202,7 +197,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereMonthFormatInt()
+    public function testWhereMonthFormatInt(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -224,11 +219,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereMonth('create_date', '5')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereMonth('create_date', '5')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -236,7 +230,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereMonthFormatInt2()
+    public function testWhereMonthFormatInt2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -258,11 +252,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereMonth('create_date', '5 foo')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereMonth('create_date', '5 foo')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -270,7 +263,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereYear()
+    public function testWhereYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -291,11 +284,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereYear('create_date', 2018)->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereYear('create_date', 2018)
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -303,7 +295,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereYearFormatYear()
+    public function testWhereYearFormatYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -324,11 +316,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereYear('create_date', '2018')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereYear('create_date', '2018')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -336,7 +327,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testWhereYearFormatYear2()
+    public function testWhereYearFormatYear2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -357,11 +348,10 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                whereYear('create_date', '2018 foo')->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->whereYear('create_date', '2018 foo')
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -369,7 +359,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testTime()
+    public function testTime(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -390,15 +380,12 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                time()->
-
-                where('create_date', '+5 month')->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->time()
+                    ->where('create_date', '+5 month')
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -406,7 +393,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testTimeDateIsDefault()
+    public function testTimeDateIsDefault(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -427,15 +414,12 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                time('date')->
-
-                where('create_date', '+5 month')->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->time('date')
+                    ->where('create_date', '+5 month')
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -443,7 +427,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testTimeDay()
+    public function testTimeDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -465,15 +449,12 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                time('day')->
-
-                where('create_date', 5)->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->time('day')
+                    ->where('create_date', 5)
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -481,7 +462,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testTimeMonth()
+    public function testTimeMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -503,15 +484,12 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                time('month')->
-
-                where('create_date', 5)->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->time('month')
+                    ->where('create_date', 5)
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -519,7 +497,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testTimeYear()
+    public function testTimeYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -540,15 +518,12 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                time('year')->
-
-                where('create_date', 2018)->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->time('year')
+                    ->where('create_date', 2018)
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $value),
             sprintf($sql, $value2),
@@ -556,7 +531,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testTimeMulti()
+    public function testTimeMulti(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -582,33 +557,21 @@ class TimeTest extends TestCase
         $this->assertTrue(
             in_array(
                 $this->varJson(
-                    $connect->table('test')->
-
-                    time('year')->
-
-                    where('create_year', 2018)->
-
-                    endTime()->
-
-                    time('month')->
-
-                    whereMonth('create_month', 5)->
-
-                    endTime()->
-
-                    time('day')->
-
-                    where('create_day', 5)->
-
-                    endTime()->
-
-                    time('date')->
-
-                    where('create_date', '+5 month')->
-
-                    endTime()->
-
-                    findOne(true)
+                    $connect
+                        ->table('test')
+                        ->time('year')
+                        ->where('create_year', 2018)
+                        ->endTime()
+                        ->time('month')
+                        ->whereMonth('create_month', 5)
+                        ->endTime()
+                        ->time('day')
+                        ->where('create_day', 5)
+                        ->endTime()
+                        ->time('date')
+                        ->where('create_date', '+5 month')
+                        ->endTime()
+                        ->findOne(true)
                 ), [
                     sprintf($sql, $year, $month, $day, $date),
                     sprintf($sql, $year, $month, $day, $date2),
@@ -617,7 +580,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testTimeMultiWithoutEndTime()
+    public function testTimeMultiWithoutEndTime(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -642,27 +605,18 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                time('year')->
-
-                where('create_year', 2018)->
-
-                time('month')->
-
-                whereMonth('create_month', 5)->
-
-                time('day')->
-
-                where('create_day', 5)->
-
-                time('date')->
-
-                where('create_date', '+5 month')->
-
-                endTime()->
-
-                findOne(true)
+                $connect
+                    ->table('test')
+                    ->time('year')
+                    ->where('create_year', 2018)
+                    ->time('month')
+                    ->whereMonth('create_month', 5)
+                    ->time('day')
+                    ->where('create_day', 5)
+                    ->time('date')
+                    ->where('create_date', '+5 month')
+                    ->endTime()
+                    ->findOne(true)
             ),
             sprintf($sql, $year, $month, $day, $date),
             sprintf($sql, $year, $month, $day, $date2),
@@ -670,7 +624,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testDateStrtotimeReturnFalse()
+    public function testDateStrtotimeReturnFalse(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -679,14 +633,13 @@ class TimeTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        whereDate('create_date', 'hello')->
-
-        findOne(true);
+        $connect
+            ->table('test')
+            ->whereDate('create_date', 'hello')
+            ->findOne(true);
     }
 
-    public function testDayLessThan31()
+    public function testDayLessThan31(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -695,14 +648,13 @@ class TimeTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        whereDay('create_date', 40)->
-
-        findOne(true);
+        $connect
+            ->table('test')
+            ->whereDay('create_date', 40)
+            ->findOne(true);
     }
 
-    public function testMonthLessThan12()
+    public function testMonthLessThan12(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -711,14 +663,13 @@ class TimeTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        whereMonth('create_date', 13)->
-
-        findOne(true);
+        $connect
+            ->table('test')
+            ->whereMonth('create_date', 13)
+            ->findOne(true);
     }
 
-    public function testTimeTypeInvalid()
+    public function testTimeTypeInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -727,21 +678,17 @@ class TimeTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        time('foo')->
-
-        where('create_date', 5)->
-
-        endTime()->
-
-        findOne(true);
+        $connect
+            ->table('test')
+            ->time('foo')
+            ->where('create_date', 5)
+            ->endTime()
+            ->findOne(true);
     }
 
-    public function testTimeFlow()
+    public function testTimeFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -762,27 +709,18 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                time('month')->
-
-                where('create_at', 5)->
-
-                endTime()->
-
-                elses()->
-
-                time('day')->
-
-                where('create_at', 5)->
-
-                endTime()->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->time('month')
+                    ->where('create_at', 5)
+                    ->endTime()
+                    ->else()
+                    ->time('day')
+                    ->where('create_at', 5)
+                    ->endTime()
+                    ->fi()
+                    ->findAll(true)
             ),
             sprintf($sql, $time),
             sprintf($sql, $time2),
@@ -790,10 +728,9 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testTimeFlow2()
+    public function testTimeFlow2(): void
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -814,27 +751,18 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                time('month')->
-
-                where('create_at', 5)->
-
-                endTime()->
-
-                elses()->
-
-                time('day')->
-
-                where('create_at', 5)->
-
-                endTime()->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->time('month')
+                    ->where('create_at', 5)
+                    ->endTime()
+                    ->else()
+                    ->time('day')
+                    ->where('create_at', 5)
+                    ->endTime()
+                    ->fi()
+                    ->findAll(true)
             ),
             sprintf($sql, $time),
             sprintf($sql, $time2),
@@ -842,10 +770,9 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testEndTimeFlow()
+    public function testEndTimeFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -866,25 +793,17 @@ class TimeTest extends TestCase
 
         $this->assertTimeRange(
             $this->varJson(
-                $connect->table('test')->
-
-                time('day')->
-
-                where('create_at', 5)->
-
-                ifs($condition)->
-
-                elses()->
-
-                endTime()->
-
-                endIfs()->
-
-                where('create_at', 6)->
-
-                endTime()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->time('day')
+                    ->where('create_at', 5)
+                    ->if($condition)
+                    ->else()
+                    ->endTime()
+                    ->fi()
+                    ->where('create_at', 6)
+                    ->endTime()
+                    ->findAll(true)
             ),
             sprintf($sql, $time),
             sprintf($sql, $time2),
@@ -892,10 +811,9 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testEndTimeFlow2()
+    public function testEndTimeFlow2(): void
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -916,25 +834,17 @@ class TimeTest extends TestCase
         $this->assertSame(
             sprintf($sql, $time, $time2),
             $this->varJson(
-                $connect->table('test')->
-
-                time('day')->
-
-                where('create_at', 5)->
-
-                ifs($condition)->
-
-                elses()->
-
-                endTime()->
-
-                endIfs()->
-
-                where('create_at', 6)->
-
-                endTime()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->time('day')
+                    ->where('create_at', 5)
+                    ->if($condition)
+                    ->else()
+                    ->endTime()
+                    ->fi()
+                    ->where('create_at', 6)
+                    ->endTime()
+                    ->findAll(true)
             )
         );
     }

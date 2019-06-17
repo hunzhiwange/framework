@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class DistinctTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,11 +51,10 @@ class DistinctTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                distinct()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->distinct()
+                    ->findAll(true)
             )
         );
 
@@ -73,22 +72,19 @@ class DistinctTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                distinct()->
-
-                distinct(false)->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->distinct()
+                    ->distinct(false)
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testFlow()
+    public function testFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -105,24 +101,19 @@ class DistinctTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                distinct()->
-
-                elses()->
-
-                distinct(false)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->distinct()
+                    ->else()
+                    ->distinct(false)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testFlow2()
+    public function testFlow2(): void
     {
         $condition = true;
 
@@ -142,19 +133,14 @@ class DistinctTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                distinct()->
-
-                elses()->
-
-                distinct(false)->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->distinct()
+                    ->else()
+                    ->distinct(false)
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }

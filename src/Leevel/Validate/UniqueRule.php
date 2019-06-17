@@ -59,12 +59,16 @@ class UniqueRule
      * @param \Leevel\Validate\IValidator $validator
      * @param string                      $field
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     public function validate($value, array $parameter, IValidator $validator, string $field): bool
     {
         if (!array_key_exists(0, $parameter)) {
-            throw new InvalidArgumentException('Missing the first element of parameter.');
+            $e = 'Missing the first element of parameter.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (!is_string($parameter[0]) && !is_object($parameter[0])) {
@@ -82,11 +86,13 @@ class UniqueRule
     /**
      * 创建语法规则.
      *
-     * @param string $entity
-     * @param string $field
-     * @param mixed  $exceptId
-     * @param string $primaryKey
-     * @param array  ...$additional
+     * @param string      $entity
+     * @param null|string $field
+     * @param null|mixed  $exceptId
+     * @param null|string $primaryKey
+     * @param array       ...$additional
+     *
+     * @throws \InvalidArgumentException
      *
      * @return string
      */
@@ -143,7 +149,9 @@ class UniqueRule
     /**
      * 分析实体.
      *
-     * @param array $parameter*
+     * @param array $parameter
+     *
+     * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -214,6 +222,8 @@ class UniqueRule
      *
      * @param \Leevel\Database\Ddd\Select $select
      * @param array                       $parameter
+     *
+     * @throws \InvalidArgumentException
      */
     protected function parseAdditional(Select $select, array $parameter): void
     {

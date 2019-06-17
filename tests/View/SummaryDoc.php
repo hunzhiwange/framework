@@ -55,13 +55,13 @@ class SummaryDoc
      */
     public function doc1()
     {
-        /*
-        {$name}
+        <<<'EOT'
+            {$name}
 
-        {if $name == 'You'}
-            欢迎进入 QueryPHP 开发者世界！
-        {/if}
-        */
+            {if $name == 'You'}
+                欢迎进入 QueryPHP 开发者世界！
+            {/if}
+            EOT;
     }
 
     /**
@@ -74,11 +74,11 @@ class SummaryDoc
      */
     public function doc2()
     {
-        /*
-        <if condition="$name eq 'You'">
-            欢迎进入 QueryPHP 开发者世界！
-        </if>
-        */
+        <<<'EOT'
+            <if condition="$name eq 'You'">
+                欢迎进入 QueryPHP 开发者世界！
+            </if>
+            EOT;
     }
 
     /**
@@ -91,10 +91,9 @@ class SummaryDoc
      */
     public function doc3()
     {
-        /*
-        #_
-        {{ i + 1 }}
-        */
+        <<<'EOT'
+            {{ i + 1 }}
+            EOT;
     }
 
     /**
@@ -107,13 +106,13 @@ class SummaryDoc
      */
     public function doc4()
     {
-        /*
-        <$name>
+        <<<'EOT'
+            <$name>
 
-        {if condition="$name eq 'You'"}
-            欢迎进入 QueryPHP 开发者世界！
-        {/if}
-        */
+            {if condition="$name eq 'You'"}
+                欢迎进入 QueryPHP 开发者世界！
+            {/if}
+            EOT;
     }
 
     /**
@@ -125,11 +124,11 @@ class SummaryDoc
      */
     public function doc5()
     {
-        /*
-        <?php if ($name == 'You'): ?>
-            欢迎进入 QueryPHP 开发者世界！
-        <?php endif; ?>
-        */
+        <<<'EOT'
+            <?php if ($name == 'You'): ?>
+                欢迎进入 QueryPHP 开发者世界！
+            <?php endif; ?>
+            EOT;
     }
 
     /**

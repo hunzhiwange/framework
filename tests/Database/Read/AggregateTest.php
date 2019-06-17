@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class AggregateTest extends TestCase
 {
-    public function testCount()
+    public function testCount(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,24 +51,21 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findCount()
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findCount()
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                count()->
-
-                find(),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->count()
+                    ->find(),
                 1
             )
         );
@@ -87,17 +84,16 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findCount('*', 'row_count2'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findCount('*', 'row_count2'),
                 2
             )
         );
     }
 
-    public function testAvg()
+    public function testAvg(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -115,24 +111,21 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findAvg('num')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findAvg('num')
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                avg('num')->
-
-                find(),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->avg('num')
+                    ->find(),
                 1
             )
         );
@@ -151,17 +144,16 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findAvg('num', 'avg_value2'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findAvg('num', 'avg_value2'),
                 2
             )
         );
     }
 
-    public function testMax()
+    public function testMax(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -179,24 +171,21 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findMax('num')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findMax('num')
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                max('num')->
-
-                find(),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->max('num')
+                    ->find(),
                 1
             )
         );
@@ -215,17 +204,16 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findMax('num', 'max_value2'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findMax('num', 'max_value2'),
                 2
             )
         );
     }
 
-    public function testMin()
+    public function testMin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -243,24 +231,21 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findMin('num')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findMin('num')
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                min('num')->
-
-                find(),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->min('num')
+                    ->find(),
                 1
             )
         );
@@ -279,17 +264,16 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findMin('num', 'min_value2'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findMin('num', 'min_value2'),
                 2
             )
         );
     }
 
-    public function testSum()
+    public function testSum(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -307,24 +291,21 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findSum('num')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findSum('num')
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                sum('num')->
-
-                find(),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->sum('num')
+                    ->find(),
                 1
             )
         );
@@ -343,17 +324,16 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findSum('num', 'sum_value2'),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findSum('num', 'sum_value2'),
                 2
             )
         );
     }
 
-    public function testAvgWithTable()
+    public function testAvgWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -371,24 +351,21 @@ class AggregateTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                findAvg('test.num')
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->findAvg('test.num')
             )
         );
 
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                avg('test.num')->
-
-                find(),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->avg('test.num')
+                    ->find(),
                 1
             )
         );

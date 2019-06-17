@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class CompilerBaseExceptionTest extends TestCase
 {
-    public function testCheckNode()
+    public function testCheckNode(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -50,7 +50,7 @@ class CompilerBaseExceptionTest extends TestCase
         ]);
     }
 
-    public function testCheckNode2()
+    public function testCheckNode2(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -67,7 +67,7 @@ class CompilerBaseExceptionTest extends TestCase
         ]);
     }
 
-    public function testCheckNode3()
+    public function testCheckNode3(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -84,7 +84,7 @@ class CompilerBaseExceptionTest extends TestCase
         ]);
     }
 
-    public function testGetNodeAttribute()
+    public function testGetNodeAttribute(): void
     {
         $compilers = new Compilers();
 
@@ -97,7 +97,7 @@ class CompilerBaseExceptionTest extends TestCase
         $this->assertSame([], $result);
     }
 
-    public function testEscapeCharacter()
+    public function testEscapeCharacter(): void
     {
         $compilers = new Compilers();
 

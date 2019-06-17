@@ -61,12 +61,12 @@ class Redirect
     /**
      * 返回一个 URL 生成跳转响应.
      *
-     * @param string      $url
-     * @param array       $params
-     * @param string      $subdomain
-     * @param bool|string $suffix
-     * @param int         $status
-     * @param array       $headers
+     * @param string           $url
+     * @param array            $params
+     * @param string           $subdomain
+     * @param null|bool|string $suffix
+     * @param int              $status
+     * @param array            $headers
      *
      * @return \Leevel\Http\RedirectResponse
      */

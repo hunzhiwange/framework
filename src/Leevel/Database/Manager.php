@@ -33,8 +33,21 @@ use Leevel\Manager\Manager as Managers;
  *
  * @version 1.0
  */
-class Manager extends Managers
+class Manager extends Managers implements IDatabase
 {
+    use Proxy;
+
+    /**
+     * 返回代理.
+     *
+     * @return \Leevel\Database\IDatabase
+     * @codeCoverageIgnore
+     */
+    public function proxy(): IDatabase
+    {
+        return $this->connect();
+    }
+
     /**
      * 取得配置命名空间.
      *
@@ -43,18 +56,6 @@ class Manager extends Managers
     protected function normalizeOptionNamespace(): string
     {
         return 'database';
-    }
-
-    /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    protected function createConnect(object $connect): object
-    {
-        return $connect;
     }
 
     /**
@@ -91,6 +92,8 @@ class Manager extends Managers
      * 分析数据库配置参数.
      *
      * @param array $option
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */

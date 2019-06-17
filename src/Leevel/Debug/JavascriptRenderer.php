@@ -35,9 +35,13 @@ use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
 class JavascriptRenderer extends BaseJavascriptRenderer
 {
     /**
-     * {@inheritdoc}
+     * 构造函数.
+     *
+     * @param \DebugBar\DebugBar $debugBar
+     * @param null|string        $baseUrl
+     * @param null|string        $basePath
      */
-    public function __construct(DebugBar $debugBar, $baseUrl = null, $basePath = null)
+    public function __construct(DebugBar $debugBar, ?string $baseUrl = null, ?string $basePath = null)
     {
         parent::__construct($debugBar, $baseUrl, $basePath);
 

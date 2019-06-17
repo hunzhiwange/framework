@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class ForceIndexTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,20 +51,17 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                forceIndex('nameindex,statusindex')->
-
-                ignoreIndex('testindex')->
-
-                where('id', '=', 5)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->forceIndex('nameindex,statusindex')
+                    ->ignoreIndex('testindex')
+                    ->where('id', '=', 5)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testForceIndex()
+    public function testForceIndex(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -82,18 +79,16 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                forceIndex(['nameindex', 'statusindex'])->
-
-                where('id', '=', 2)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->forceIndex(['nameindex', 'statusindex'])
+                    ->where('id', '=', 2)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testIgnoreIndex()
+    public function testIgnoreIndex(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -111,18 +106,16 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ignoreIndex(['nameindex', 'statusindex'])->
-
-                where('id', '=', 6)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->ignoreIndex(['nameindex', 'statusindex'])
+                    ->where('id', '=', 6)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testForceIndexTypeNotSupported()
+    public function testForceIndexTypeNotSupported(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -131,17 +124,15 @@ class ForceIndexTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table('test')->
-
-        forceIndex('foo', 'NOT_SUPPORT')->
-
-        findAll(true);
+        $connect
+            ->table('test')
+            ->forceIndex('foo', 'NOT_SUPPORT')
+            ->findAll(true);
     }
 
-    public function testForceIndexFlow()
+    public function testForceIndexFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -158,29 +149,22 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                forceIndex('nameindex,statusindex')->
-
-                elses()->
-
-                ignoreIndex('testindex')->
-
-                endIfs()->
-
-                where('id', '=', 5)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->forceIndex('nameindex,statusindex')
+                    ->else()
+                    ->ignoreIndex('testindex')
+                    ->fi()
+                    ->where('id', '=', 5)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testForceIndexFlow2()
+    public function testForceIndexFlow2(): void
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -197,21 +181,15 @@ class ForceIndexTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                forceIndex('nameindex,statusindex')->
-
-                elses()->
-
-                ignoreIndex('testindex')->
-
-                endIfs()->
-
-                where('id', '=', 5)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->forceIndex('nameindex,statusindex')
+                    ->else()
+                    ->ignoreIndex('testindex')
+                    ->fi()
+                    ->where('id', '=', 5)
+                    ->findAll(true)
             )
         );
     }

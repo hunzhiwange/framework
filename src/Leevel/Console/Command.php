@@ -32,8 +32,9 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * 命令抽象类
- * This class borrows heavily from the Lavavel Framework and is part of the lavavel package.
+ * 命令抽象类.
+ *
+ * - This class borrows heavily from the Lavavel Framework and is part of the lavavel package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -157,7 +158,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param string $key
      *
-     * @return array|string
+     * @return null|array|string
      */
     public function argument(?string $key = null)
     {
@@ -173,7 +174,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param string $key
      *
-     * @return array|bool|string
+     * @return null|array|bool|string
      */
     public function option(?string $key = null)
     {
@@ -203,13 +204,13 @@ abstract class Command extends SymfonyCommand
      * 提示用户输入.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string $question
-     * @param string $defaults
+     * @param string      $question
+     * @param null|string $defaults
      *
      * @return string
      * @codeCoverageIgnore
      */
-    public function ask($question, $defaults = null): string
+    public function ask(string $question, ?string $defaults = null): string
     {
         return $this->output->ask($question, $defaults);
     }
@@ -240,7 +241,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function info($message, $verbosity = null): void
+    public function info(string $message, $verbosity = null): void
     {
         $this->line($message, 'info', $verbosity);
     }
@@ -264,7 +265,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function comment($message, $verbosity = null): void
+    public function comment(string $message, $verbosity = null): void
     {
         $this->line($message, 'comment', $verbosity);
     }
@@ -275,7 +276,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function question($message, $verbosity = null): void
+    public function question(string $message, $verbosity = null): void
     {
         $this->line($message, 'question', $verbosity);
     }
@@ -284,14 +285,14 @@ abstract class Command extends SymfonyCommand
      * 提示用户输入根据返回结果自动完成一些功能.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string $question
-     * @param array  $choices
-     * @param string $defaults
+     * @param string      $question
+     * @param array       $choices
+     * @param null|string $defaults
      *
      * @return string
      * @codeCoverageIgnore
      */
-    public function askWithCompletion($question, array $choices, $defaults = null): string
+    public function askWithCompletion(string $question, array $choices, ?string $defaults = null): string
     {
         $question = new Question($question, $defaults);
         $question->setAutocompleterValues($choices);
@@ -321,16 +322,16 @@ abstract class Command extends SymfonyCommand
      * 给用户一个问题组选择.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string $question
-     * @param array  $choices
-     * @param string $defaults
-     * @param mixed  $attempts
-     * @param bool   $multiple
+     * @param string      $question
+     * @param array       $choices
+     * @param null|string $defaults
+     * @param null|mixed  $attempts
+     * @param null|bool   $multiple
      *
      * @return string
      * @codeCoverageIgnore
      */
-    public function choice($question, array $choices, $defaults = null, $attempts = null, $multiple = null): string
+    public function choice(string $question, array $choices, ?string $defaults = null, $attempts = null, ?bool $multiple = null): string
     {
         $question = new ChoiceQuestion($question, $choices, $defaults);
         $question->setMaxAttempts($attempts)->setMultiselect($multiple);
@@ -344,7 +345,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function error($message, $verbosity = null): void
+    public function error(string $message, $verbosity = null): void
     {
         $this->line($message, 'error', $verbosity);
     }
@@ -355,7 +356,7 @@ abstract class Command extends SymfonyCommand
      * @param string          $message
      * @param null|int|string $verbosity
      */
-    public function warn($message, $verbosity = null): void
+    public function warn(string $message, $verbosity = null): void
     {
         if (!$this->output->getFormatter()->hasStyle('warning')) {
             $this->output->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
@@ -368,10 +369,10 @@ abstract class Command extends SymfonyCommand
      * 输出一条独立的信息.
      *
      * @param string          $message
-     * @param string          $style
+     * @param null|string     $style
      * @param null|int|string $verbosity
      */
-    public function line($message, $style = null, $verbosity = null): void
+    public function line(string $message, ?string $style = null, $verbosity = null): void
     {
         $message = $style ? "<{$style}>{$message}</{$style}>" : $message;
 
@@ -451,7 +452,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 获取输入信息级别.
      *
-     * @param int|string $level
+     * @param null|int|string $level
      *
      * @return int
      */

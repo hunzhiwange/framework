@@ -76,7 +76,7 @@ class Load
      *
      * @param string $i18n
      *
-     * @return $this
+     * @return \Leevel\I18n\Load
      */
     public function setI18n(string $i18n): self
     {
@@ -90,7 +90,7 @@ class Load
      *
      * @param array $dirs
      *
-     * @return $this
+     * @return \Leevel\I18n\Load
      */
     public function addDir(array $dirs): self
     {
@@ -129,6 +129,8 @@ class Load
      * @author 小牛
      *
      * @since 2016.11.27
+     *
+     * @throws \RuntimeException
      *
      * @return array
      */

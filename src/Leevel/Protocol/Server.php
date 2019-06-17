@@ -114,7 +114,7 @@ abstract class Server
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Protocol\IServer
      */
     public function setOption(string $name, $value): IServer
     {
@@ -137,6 +137,8 @@ abstract class Server
      * 添加自定义进程.
      *
      * @param string $process
+     *
+     * @throws \InvalidArgumentException
      */
     public function process(string $process): void
     {
@@ -145,18 +147,19 @@ abstract class Server
                 $newProgress = $this->container->make($process);
 
                 if (!is_object($newProgress) || ($newProgress instanceof ProtocolProcess)) {
-                    throw new InvalidArgumentException(
-                        sprintf('Process `%s` was invalid.', $process)
-                    );
+                    $e = sprintf('Process `%s` was invalid.', $process);
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 if (!is_callable([$newProgress, 'handle'])) {
-                    throw new InvalidArgumentException(
-                        sprintf('The `handle` of process `%s` was not found.', $process)
-                    );
+                    $e = sprintf('The `handle` of process `%s` was not found.', $process);
+
+                    throw new InvalidArgumentException($e);
                 }
 
-                $worker->name($this->option['process_name'].'.'.$newProgress->getName());
+                $processName = $this->option['process_name'].'.'.$newProgress->getName();
+                $worker->name($processName);
 
                 $newProgress->handle($this, $worker);
             }
@@ -192,18 +195,18 @@ abstract class Server
      *
      * @param \Swoole\Server $server
      *
+     * @throws \InvalidArgumentException
+     *
      * @see https://wiki.swoole.com/wiki/page/p-event/onStart.html
      */
     public function onStart(SwooleServer $server): void
     {
-        $this->log(
-            sprintf(
-                'Server is started at %s:%d',
-                $this->option['host'], $this->option['port']
-            ),
-            true, ''
+        $message = sprintf(
+            'Server is started at %s:%d',
+            $this->option['host'], $this->option['port']
         );
 
+        $this->log($message, true, '');
         $this->log('Server master worker start', true);
 
         $this->setProcessName($this->option['process_name'].'.master');
@@ -214,9 +217,9 @@ abstract class Server
 
         if (!is_writable($dirname) ||
             !file_put_contents($this->option['pid_path'], $pid)) {
-            throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable.', $dirname)
-            );
+            $e = sprintf('Dir %s is not writeable.', $dirname);
+
+            throw new InvalidArgumentException($e);
         }
 
         chmod($this->option['pid_path'], 0666 & ~umask());
@@ -237,12 +240,11 @@ abstract class Server
      */
     public function onConnect(SwooleServer $server, int $fd, int $reactorId): void
     {
-        $this->log(
-            sprintf(
-                'Server connect, fd %d, reactorId %d.',
-                $fd, $reactorId
-            )
+        $message = sprintf(
+            'Server connect, fd %d, reactorId %d.',
+            $fd, $reactorId
         );
+        $this->log($message);
     }
 
     /**
@@ -389,6 +391,8 @@ abstract class Server
 
     /**
      * 验证 pid_path 是否可用.
+     *
+     * @throws \InvalidArgumentException
      */
     protected function checkPidPath(): void
     {
@@ -455,6 +459,8 @@ abstract class Server
      *
      * @param string $name
      *
+     * @throws \InvalidArgumentException
+     *
      * @see http://php.net/manual/zh/function.cli-set-process-title.php
      * @see https://wiki.swoole.com/wiki/page/125.html
      */
@@ -466,9 +472,9 @@ abstract class Server
             if (function_exists('swoole_set_process_name')) {
                 swoole_set_process_name($name);
             } else {
-                throw new InvalidArgumentException(
-                    'Require cli_set_process_title or swoole_set_process_name.'
-                );
+                $e = 'Require cli_set_process_title or swoole_set_process_name.';
+
+                throw new InvalidArgumentException($e);
             }
         }
     }
@@ -514,15 +520,21 @@ abstract class Server
 
     /**
      * 验证 swoole 版本.
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validSwoole(): void
     {
         if (!extension_loaded('swoole')) {
-            throw new InvalidArgumentException('Swoole was not installed.');
+            $e = 'Swoole was not installed.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (version_compare(phpversion('swoole'), '4.2.9', '<')) {
-            throw new InvalidArgumentException('Swoole 4.2.9 OR Higher');
+            $e = 'Swoole 4.2.9 OR Higher';
+
+            throw new InvalidArgumentException($e);
         }
     }
 }

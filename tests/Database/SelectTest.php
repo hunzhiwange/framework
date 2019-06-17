@@ -40,7 +40,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class SelectTest extends TestCase
 {
-    public function testMaster()
+    public function testMaster(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -58,16 +58,15 @@ class SelectTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                master(true)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->master(true)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testMasterIsFalse()
+    public function testMasterIsFalse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -85,32 +84,32 @@ class SelectTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                master(false)->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->master(false)
+                    ->findAll(true)
             )
         );
     }
 
-    public function testFetchArgs()
+    public function testFetchArgs(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        fetchArgs(PDO::FETCH_BOTH)->
-
-        where('id', 1)->
-
-        findOne();
+        $result = $connect
+            ->table('guest_book')
+            ->fetchArgs(PDO::FETCH_BOTH)
+            ->where('id', 1)
+            ->findOne();
 
         $this->assertIsArray($result);
 
@@ -124,25 +123,23 @@ class SelectTest extends TestCase
         $this->assertStringContainsString(date('Y-m-d'), $result[3]);
     }
 
-    public function testFetchArgsColumn()
+    public function testFetchArgsColumn(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        $result = $connect->table('guest_book')->
-
-        fetchArgs(PDO::FETCH_COLUMN, 0)->
-
-        setColumns('name,content')->
-
-        findAll();
+        $result = $connect
+            ->table('guest_book')
+            ->fetchArgs(PDO::FETCH_COLUMN, 0)
+            ->setColumns('name,content')
+            ->findAll();
 
         $json = <<<'eot'
             [
@@ -163,25 +160,25 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testFetchArgsClass()
+    public function testFetchArgsClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        fetchArgs(PDO::FETCH_CLASS, FetchArgsClassDemo::class)->
-
-        where('id', 1)->
-
-        setColumns('name,content')->
-
-        findOne();
+        $result = $connect
+            ->table('guest_book')
+            ->fetchArgs(PDO::FETCH_CLASS, FetchArgsClassDemo::class)
+            ->where('id', 1)
+            ->setColumns('name,content')
+            ->findOne();
 
         $json = <<<'eot'
             {
@@ -203,25 +200,25 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $result->content);
     }
 
-    public function testFetchArgsClassWithArgs()
+    public function testFetchArgsClassWithArgs(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        fetchArgs(PDO::FETCH_CLASS, FetchArgsClassDemo2::class, ['foo', 'bar'])->
-
-        where('id', 1)->
-
-        setColumns('name,content')->
-
-        findOne();
+        $result = $connect
+            ->table('guest_book')
+            ->fetchArgs(PDO::FETCH_CLASS, FetchArgsClassDemo2::class, ['foo', 'bar'])
+            ->where('id', 1)
+            ->setColumns('name,content')
+            ->findOne();
 
         $json = <<<'eot'
             {
@@ -247,33 +244,31 @@ class SelectTest extends TestCase
         $this->assertSame('bar', $result->arg2);
     }
 
-    public function testFetchArgsColumnGroup()
+    public function testFetchArgsColumnGroup(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $data = ['name' => 'hello', 'content' => 'Test.'];
 
         for ($n = 0; $n <= 4; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        $result = $connect->table('guest_book')->
-
-        fetchArgs(PDO::FETCH_COLUMN | PDO::FETCH_GROUP, 0)->
-
-        setColumns('name,content')->
-
-        findAll();
+        $result = $connect
+            ->table('guest_book')
+            ->fetchArgs(PDO::FETCH_COLUMN | PDO::FETCH_GROUP, 0)
+            ->setColumns('name,content')
+            ->findAll();
 
         $json = <<<'eot'
             {
@@ -303,25 +298,25 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testAsClass()
+    public function testAsClass(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        asClass(AsClassDemo::class)->
-
-        where('id', 1)->
-
-        setColumns('name,content')->
-
-        findOne();
+        $result = $connect
+            ->table('guest_book')
+            ->asClass(AsClassDemo::class)
+            ->where('id', 1)
+            ->setColumns('name,content')
+            ->findOne();
 
         $json = <<<'eot'
             {
@@ -343,7 +338,7 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $result->content);
     }
 
-    public function testAsClassButClassNotFound()
+    public function testAsClassButClassNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -352,36 +347,33 @@ class SelectTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $result = $connect->table('guest_book')->
-
-        asClass('\\Tests\\Database\\ClassNotFound')->
-
-        where('id', 1)->
-
-        setColumns('name,content')->
-
-        findOne();
+        $result = $connect
+            ->table('guest_book')
+            ->asClass('\\Tests\\Database\\ClassNotFound')
+            ->where('id', 1)
+            ->setColumns('name,content')
+            ->findOne();
     }
 
-    public function testAsCollectionAsDefault()
+    public function testAsCollectionAsDefault(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        asCollection()->
-
-        where('id', 1)->
-
-        setColumns('name,content')->
-
-        findOne();
+        $result = $connect
+            ->table('guest_book')
+            ->asCollection()
+            ->where('id', 1)
+            ->setColumns('name,content')
+            ->findOne();
 
         $json = <<<'eot'
             {
@@ -403,25 +395,25 @@ class SelectTest extends TestCase
         $this->assertSame('I love movie.', $result->content);
     }
 
-    public function testAsCollectionAsDefaultAndNotFound()
+    public function testAsCollectionAsDefaultAndNotFound(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        asCollection()->
-
-        where('id', 5)->
-
-        setColumns('name,content')->
-
-        findOne();
+        $result = $connect
+            ->table('guest_book')
+            ->asCollection()
+            ->where('id', 5)
+            ->setColumns('name,content')
+            ->findOne();
 
         $json = <<<'eot'
             []
@@ -437,25 +429,23 @@ class SelectTest extends TestCase
         $this->assertIsArray($result);
     }
 
-    public function testAsCollectionAsDefaultFindAll()
+    public function testAsCollectionAsDefaultFindAll(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        $result = $connect->table('guest_book')->
-
-        asCollection()->
-
-        setColumns('name,content')->
-
-        findAll();
+        $result = $connect
+            ->table('guest_book')
+            ->asCollection()
+            ->setColumns('name,content')
+            ->findAll();
 
         $json = <<<'eot'
             [
@@ -508,27 +498,24 @@ class SelectTest extends TestCase
         }
     }
 
-    public function testAsCollectionAsClassFindAll()
+    public function testAsCollectionAsClassFindAll(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        $result = $connect->table('guest_book')->
-
-        asCollection()->
-
-        asClass(AsClassDemo::class)->
-
-        setColumns('name,content')->
-
-        findAll();
+        $result = $connect
+            ->table('guest_book')
+            ->asCollection()
+            ->asClass(AsClassDemo::class)
+            ->setColumns('name,content')
+            ->findAll();
 
         $json = <<<'eot'
             [
@@ -581,47 +568,50 @@ class SelectTest extends TestCase
         }
     }
 
-    public function testValue()
+    public function testValue(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $name = $connect->table('guest_book')->
+        $name = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->value('name');
 
-        where('id', 1)->
-
-        value('name');
-
-        $content = $connect->table('guest_book')->
-
-        where('id', 1)->
-
-        pull('content');
+        $content = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->pull('content');
 
         $this->assertSame('tom', $name);
         $this->assertSame('I love movie.', $content);
     }
 
-    public function testList()
+    public function testList(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        where('id', 1)->
-
-        list('name');
+        $result = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->list('name');
 
         $json = <<<'eot'
             [
@@ -637,21 +627,23 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testList2()
+    public function testList2(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        where('id', 1)->
-
-        list('content', 'name');
+        $result = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->list('content', 'name');
 
         $json = <<<'eot'
             {
@@ -667,21 +659,23 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testList3()
+    public function testList3(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        where('id', 1)->
-
-        list('content,name');
+        $result = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->list('content,name');
 
         $json = <<<'eot'
             {
@@ -697,21 +691,23 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testList4()
+    public function testList4(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1', $connect->
-        table('guest_book')->
-        insert($data));
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('guest_book')
+                ->insert($data),
+        );
 
-        $result = $connect->table('guest_book')->
-
-        where('id', 1)->
-
-        list(['content'], 'name');
+        $result = $connect
+            ->table('guest_book')
+            ->where('id', 1)
+            ->list(['content'], 'name');
 
         $json = <<<'eot'
             {
@@ -727,153 +723,165 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testChunk()
+    public function testChunk(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $n = 1;
 
-        $result = $connect->table('guest_book')->
+        $result = $connect
+            ->table('guest_book')
+            ->chunk(2, function ($result, $page) use (&$n) {
+                $this->assertInstanceof(stdClass::class, $result[0]);
+                $this->assertSame($n * 2 - 1, (int) $result[0]->id);
+                $this->assertSame('tom', $result[0]->name);
+                $this->assertSame('I love movie.', $result[0]->content);
+                $this->assertStringContainsString(date('Y-m-d'), $result[0]->create_at);
 
-        chunk(2, function ($result, $page) use (&$n) {
-            $this->assertInstanceof(stdClass::class, $result[0]);
-            $this->assertSame($n * 2 - 1, (int) $result[0]->id);
-            $this->assertSame('tom', $result[0]->name);
-            $this->assertSame('I love movie.', $result[0]->content);
-            $this->assertStringContainsString(date('Y-m-d'), $result[0]->create_at);
+                $this->assertInstanceof(stdClass::class, $result[1]);
+                $this->assertSame($n * 2, (int) $result[1]->id);
+                $this->assertSame('tom', $result[1]->name);
+                $this->assertSame('I love movie.', $result[1]->content);
+                $this->assertStringContainsString(date('Y-m-d'), $result[1]->create_at);
 
-            $this->assertInstanceof(stdClass::class, $result[1]);
-            $this->assertSame($n * 2, (int) $result[1]->id);
-            $this->assertSame('tom', $result[1]->name);
-            $this->assertSame('I love movie.', $result[1]->content);
-            $this->assertStringContainsString(date('Y-m-d'), $result[1]->create_at);
+                $this->assertCount(2, $result);
+                $this->assertSame($n, $page);
 
-            $this->assertCount(2, $result);
-            $this->assertSame($n, $page);
-
-            $n++;
-        });
+                $n++;
+            });
     }
 
-    public function testChunkWhenReturnFalseAndBreak()
+    public function testChunkWhenReturnFalseAndBreak(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $n = 1;
 
-        $result = $connect->table('guest_book')->
+        $result = $connect
+            ->table('guest_book')
+            ->chunk(2, function ($result, $page) use (&$n) {
+                $this->assertInstanceof(stdClass::class, $result[0]);
+                $this->assertSame($n * 2 - 1, (int) $result[0]->id);
+                $this->assertSame('tom', $result[0]->name);
+                $this->assertSame('I love movie.', $result[0]->content);
+                $this->assertStringContainsString(date('Y-m-d'), $result[0]->create_at);
 
-        chunk(2, function ($result, $page) use (&$n) {
-            $this->assertInstanceof(stdClass::class, $result[0]);
-            $this->assertSame($n * 2 - 1, (int) $result[0]->id);
-            $this->assertSame('tom', $result[0]->name);
-            $this->assertSame('I love movie.', $result[0]->content);
-            $this->assertStringContainsString(date('Y-m-d'), $result[0]->create_at);
+                $this->assertInstanceof(stdClass::class, $result[1]);
+                $this->assertSame($n * 2, (int) $result[1]->id);
+                $this->assertSame('tom', $result[1]->name);
+                $this->assertSame('I love movie.', $result[1]->content);
+                $this->assertStringContainsString(date('Y-m-d'), $result[1]->create_at);
 
-            $this->assertInstanceof(stdClass::class, $result[1]);
-            $this->assertSame($n * 2, (int) $result[1]->id);
-            $this->assertSame('tom', $result[1]->name);
-            $this->assertSame('I love movie.', $result[1]->content);
-            $this->assertStringContainsString(date('Y-m-d'), $result[1]->create_at);
+                $this->assertCount(2, $result);
+                $this->assertSame($n, $page);
 
-            $this->assertCount(2, $result);
-            $this->assertSame($n, $page);
+                // It will break.
+                if (2 === $n) {
+                    return false;
+                }
 
-            // It will break.
-            if (2 === $n) {
-                return false;
-            }
-
-            $n++;
-        });
+                $n++;
+            });
     }
 
-    public function testEach()
+    public function testEach(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
         $n = $p = 1;
 
-        $result = $connect->table('guest_book')->
+        $result = $connect
+            ->table('guest_book')
+            ->each(2, function ($value, $key, $page) use (&$n, &$p) {
+                $this->assertInstanceof(stdClass::class, $value);
+                $this->assertSame($n, (int) $value->id);
+                $this->assertSame('tom', $value->name);
+                $this->assertSame('I love movie.', $value->content);
+                $this->assertStringContainsString(date('Y-m-d'), $value->create_at);
+                $this->assertSame(($n + 1) % 2, $key);
+                $this->assertSame($p, $page);
 
-        each(2, function ($value, $key, $page) use (&$n, &$p) {
-            $this->assertInstanceof(stdClass::class, $value);
-            $this->assertSame($n, (int) $value->id);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
-            $this->assertStringContainsString(date('Y-m-d'), $value->create_at);
-            $this->assertSame(($n + 1) % 2, $key);
-            $this->assertSame($p, $page);
+                if (1 === ($n + 1) % 2) {
+                    $p++;
+                }
 
-            if (1 === ($n + 1) % 2) {
-                $p++;
-            }
-
-            $n++;
-        });
+                $n++;
+            });
     }
 
-    public function testPageCount()
+    public function testPageCount(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 5; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        $this->assertSame(6, $connect->table('guest_book')->
-        pageCount());
+        $this->assertSame(
+            6,
+            $connect
+                ->table('guest_book')
+                ->pageCount(),
+        );
 
-        $this->assertSame(6, $connect->table('guest_book')->
-        pageCount('*'));
+        $this->assertSame(
+            6,
+            $connect
+                ->table('guest_book')
+                ->pageCount('*'),
+        );
 
-        $this->assertSame(6, $connect->table('guest_book')->
-        pageCount('id'));
+        $this->assertSame(
+            6,
+            $connect
+                ->table('guest_book')
+                ->pageCount('id'),
+        );
     }
 
-    public function testPage()
+    public function testPage(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 25; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        list($page, $result) = $connect->table('guest_book')->
-
-        page(1);
+        list($page, $result) = $connect
+            ->table('guest_book')
+            ->page(1);
 
         $this->assertIsArray($page);
         $this->assertCount(10, $result);
@@ -906,7 +914,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testPageHtml()
+    public function testPageHtml(): void
     {
         $this->initI18n();
 
@@ -915,14 +923,14 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 25; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        list($page, $result) = $connect->table('guest_book')->
-
-        pageHtml(1);
+        list($page, $result) = $connect
+            ->table('guest_book')
+            ->pageHtml(1);
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
@@ -1001,7 +1009,7 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    public function testPageMacro()
+    public function testPageMacro(): void
     {
         $this->initI18n();
 
@@ -1010,14 +1018,14 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 25; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        list($page, $result) = $connect->table('guest_book')->
-
-        pageMacro(1);
+        list($page, $result) = $connect
+            ->table('guest_book')
+            ->pageMacro(1);
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
@@ -1096,7 +1104,7 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    public function testPagePrevNext()
+    public function testPagePrevNext(): void
     {
         $this->initI18n();
 
@@ -1105,14 +1113,14 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 25; $n++) {
-            $connect->table('guest_book')->
-
-            insert($data);
+            $connect
+                ->table('guest_book')
+                ->insert($data);
         }
 
-        list($page, $result) = $connect->table('guest_book')->
-
-        pagePrevNext(1, 15);
+        list($page, $result) = $connect
+            ->table('guest_book')
+            ->pagePrevNext(1, 15);
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);
@@ -1191,7 +1199,7 @@ class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    public function testRunNativeSqlWithProcedureAsSelect()
+    public function testRunNativeSqlWithProcedureAsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -1210,7 +1218,7 @@ class SelectTest extends TestCase
         );
     }
 
-    public function testRunNativeSqlTypeInvalid()
+    public function testRunNativeSqlTypeInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The SQL type `delete` must be consistent with the provided `select`.');
@@ -1220,7 +1228,7 @@ class SelectTest extends TestCase
         $connect->select('DELETE FROM test WHERE id = 1');
     }
 
-    public function testFindByFooAndBarArgsWasNotMatched()
+    public function testFindByFooAndBarArgsWasNotMatched(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Parameters of findBy or findAllBy was not matched.');
@@ -1235,7 +1243,7 @@ class SelectTest extends TestCase
         return ['guest_book'];
     }
 
-    protected function initI18n()
+    protected function initI18n(): void
     {
         $container = Container::singletons();
         $container->clear();
@@ -1245,7 +1253,7 @@ class SelectTest extends TestCase
         });
     }
 
-    protected function clearI18n()
+    protected function clearI18n(): void
     {
         Container::singletons()->clear();
     }

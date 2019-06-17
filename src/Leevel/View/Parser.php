@@ -27,10 +27,11 @@ use Leevel\Stack\Stack;
 
 /**
  * 分析模板
- * This class borrows heavily from the JeCat Framework and is part of the JeCat package.
- * 模板引擎分析器和编译器实现技术原理来源于 Jecat 框架.
- * 一款无与伦比的技术大餐，有幸在 2010 接触到这个框架，通过这个框架学到了很多.
- * 它的模板引擎实现了可以将 GLADE3 的 xml 文件编译成 PHP-Gtk 的组件，也支持 Html 编译，非常震撼.
+ *
+ * - This class borrows heavily from the JeCat Framework and is part of the JeCat package.
+ * - 模板引擎分析器和编译器实现技术原理来源于 Jecat 框架.
+ * - 一款无与伦比的技术大餐，有幸在 2010 接触到这个框架，通过这个框架学到了很多.
+ * - 它的模板引擎实现了可以将 GLADE3 的 xml 文件编译成 PHP-Gtk 的组件，也支持 Html 编译，非常震撼.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -170,7 +171,7 @@ class Parser implements IParser
     /**
      * 注册视图编译器.
      *
-     * @return $this
+     * @return \Leevel\View\IParser
      */
     public function registerCompilers(): IParser
     {
@@ -186,7 +187,7 @@ class Parser implements IParser
     /**
      * 注册视图分析器.
      *
-     * @return $this
+     * @return \Leevel\View\IParser
      */
     public function registerParsers(): IParser
     {
@@ -204,6 +205,8 @@ class Parser implements IParser
      * @param null|string $cachePath
      * @param bool        $isContent
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string|void
      */
     public function doCompile(string $file, ?string $cachePath = null, bool $isContent = false)
@@ -211,9 +214,9 @@ class Parser implements IParser
         // 源码
         if (false === $isContent) {
             if (!is_file($file)) {
-                throw new InvalidArgumentException(
-                    sprintf('File %s is not exits.', $file)
-                );
+                $e = sprintf('File %s is not exits.', $file);
+
+                throw new InvalidArgumentException($e);
             }
 
             $cache = file_get_contents($file);
@@ -590,6 +593,8 @@ class Parser implements IParser
      * 装配节点.
      *
      * @param string $compiled
+     *
+     * @throws \InvalidArgumentException
      */
     protected function packNode(string &$compiled): void
     {
@@ -619,14 +624,15 @@ class Parser implements IParser
             // 单标签节点
             if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
                 if (true !== $nodeTag[$tag['name']]['single']) {
-                    throw new InvalidArgumentException(
+                    $e =
                         sprintf(
                             '%s type nodes must be used in pairs, and no corresponding tail tags are found.',
                             $tag['name']
                         ).
                         '<br />'.
-                        $this->getLocation($tag['position'])
-                    );
+                        $this->getLocation($tag['position']);
+
+                    throw new InvalidArgumentException($e);
                 }
 
                 // 退回栈中
@@ -915,11 +921,11 @@ class Parser implements IParser
      * @param int    $start   起始查找的位置
      *
      * @return array start 标签开始的位置（字节数）
-     * @note int end 标签结束的位置（字节数）
-     * @notenote int start_line 标签开始的行（行数）
-     * @note int end_line 标签结束的行（行数）
-     * @note int start_in 标签开始的所在的行的起始字节数
-     * @note int end_in 标签结束的所在的行的起始字节数
+     *               - int end 标签结束的位置（字节数）
+     *               - int start_line 标签开始的行（行数）
+     *               - int end_line 标签结束的行（行数）
+     *               - int start_in 标签开始的所在的行的起始字节数
+     *               - int end_in 标签结束的所在的行的起始字节数
      */
     protected function getPosition(string $content, string $find, int $start): array
     {
@@ -997,11 +1003,13 @@ class Parser implements IParser
      * @param array $value
      * @param array $beyond
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
-     * @note string front 第一个在第二个前面
-     * @note string behind 第一个在第二个后面
-     * @note string in 第一个在第二里面，成为它的子模板
-     * @note string out 第一个在第一个里面，成为它的子模板
+     *                - string front 第一个在第二个前面
+     *                - string behind 第一个在第二个后面
+     *                - string in 第一个在第二里面，成为它的子模板
+     *                - string out 第一个在第一个里面，成为它的子模板
      */
     protected function positionRelative(array $value, array $beyond): string
     {
@@ -1098,9 +1106,9 @@ class Parser implements IParser
         }
 
         // 交叉（两个时间段相互关系）
-        throw new InvalidArgumentException(
-            'Template engine tag library does not support cross.'
-        );
+        $e = 'Template engine tag library does not support cross.';
+
+        throw new InvalidArgumentException($e);
     }
 
     /**

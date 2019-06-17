@@ -34,7 +34,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class TableTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -52,9 +52,9 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('posts')->
-
-                findAll(true)
+                $connect
+                    ->table('posts')
+                    ->findAll(true)
             )
         );
 
@@ -72,9 +72,9 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('mydb.posts')->
-
-                findAll(true),
+                $connect
+                    ->table('mydb.posts')
+                    ->findAll(true),
                 1
             )
         );
@@ -93,15 +93,15 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table(['p' => 'mydb.posts'])->
-
-                findAll(true),
+                $connect
+                    ->table(['p' => 'mydb.posts'])
+                    ->findAll(true),
                 2
             )
         );
     }
 
-    public function testField()
+    public function testField(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -119,9 +119,9 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('posts', 'title,body')->
-
-                findAll(true)
+                $connect
+                    ->table('posts', 'title,body')
+                    ->findAll(true)
             )
         );
 
@@ -139,21 +139,19 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table(
-                    'mydb.posts', [
+                $connect
+                    ->table('mydb.posts', [
                         't' => 'title', 'name', 'remark,value',
-                    ])->
-
-                findAll(true),
+                    ])
+                    ->findAll(true),
                 1
             )
         );
     }
 
-    public function testTableFlow()
+    public function testTableFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -170,27 +168,20 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->
-
-                ifs($condition)->
-
-                table('test')->
-
-                elses()->
-
-                table('foo')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->if($condition)
+                    ->table('test')
+                    ->else()
+                    ->table('foo')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testTableFlow2()
+    public function testTableFlow2(): void
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
@@ -207,24 +198,18 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->
-
-                ifs($condition)->
-
-                table('test')->
-
-                elses()->
-
-                table('foo')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->if($condition)
+                    ->table('test')
+                    ->else()
+                    ->table('foo')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testTableIsInvalid()
+    public function testTableIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -233,15 +218,14 @@ class TableTest extends TestCase
 
         $connect = $this->createDatabaseConnectMock();
 
-        $connect->table(new stdClass())->
-
-        findAll(true);
+        $connect
+            ->table(new stdClass())
+            ->findAll(true);
     }
 
-    public function testSub()
+    public function testSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $subSql = $connect->table('test')->makeSql(true);
 
         $sql = <<<'eot'
@@ -258,17 +242,16 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table($subSql.' as a')->
-
-                findAll(true)
+                $connect
+                    ->table($subSql.' as a')
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSubIsSelect()
+    public function testSubIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $subSql = $connect->table('test');
 
         $sql = <<<'eot'
@@ -285,17 +268,16 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table(['bb' => $subSql])->
-
-                findAll(true)
+                $connect
+                    ->table(['bb' => $subSql])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSubIsCondition()
+    public function testSubIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $subSql = $connect->table('test')->databaseCondition();
 
         $sql = <<<'eot'
@@ -312,14 +294,14 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table(['bb' => $subSql])->
-
-                findAll(true)
+                $connect
+                    ->table(['bb' => $subSql])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSubIsClosure()
+    public function testSubIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -337,16 +319,16 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table(['b'=> function ($select) {
-                    $select->table('world');
-                }])->
-
-                findAll(true)
+                $connect
+                    ->table(['b'=> function ($select) {
+                        $select->table('world');
+                    }])
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSubIsClosureWithItSeltAsAlias()
+    public function testSubIsClosureWithItSeltAsAlias(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -364,16 +346,16 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table(function ($select) {
-                    $select->table('guest_book');
-                })->
-
-                findAll(true)
+                $connect
+                    ->table(function ($select) {
+                        $select->table('guest_book');
+                    })
+                    ->findAll(true)
             )
         );
     }
 
-    public function testSubIsClosureWithJoin()
+    public function testSubIsClosureWithJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -391,13 +373,12 @@ class TableTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table(function ($select) {
-                    $select->table('world');
-                }, 'remark')->
-
-                join('hello', 'name,value', 'name', '=', '{[world.name]}')->
-
-                findAll(true)
+                $connect
+                    ->table(function ($select) {
+                        $select->table('world');
+                    }, 'remark')
+                    ->join('hello', 'name,value', 'name', '=', '{[world.name]}')
+                    ->findAll(true)
             )
         );
     }

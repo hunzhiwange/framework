@@ -122,7 +122,7 @@ class Select
      *
      * @param array $relation
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\Select
      */
     public function eager(array $relation): self
     {
@@ -309,6 +309,8 @@ class Select
     /**
      * 获取软删除字段.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public function deleteAtColumn(): string
@@ -320,12 +322,12 @@ class Select
         }
 
         if (!$this->entity->hasField($deleteAt)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Entity `%s` soft delete field `%s` was not found.',
-                    get_class($this->entity), $deleteAt
-                )
+            $e = sprintf(
+                'Entity `%s` soft delete field `%s` was not found.',
+                get_class($this->entity), $deleteAt
             );
+
+            throw new InvalidArgumentException($e);
         }
 
         return $deleteAt;
@@ -445,7 +447,7 @@ class Select
      */
     protected function parseWithRelation(array $relation): array
     {
-        $arr = [];
+        $data = [];
 
         foreach ($relation as $name => $condition) {
             if (is_numeric($name)) {
@@ -456,12 +458,11 @@ class Select
                 ];
             }
 
-            $arr = $this->parseNestedWith($name, $arr);
-
-            $arr[$name] = $condition;
+            $data = $this->parseNestedWith($name, $data);
+            $data[$name] = $condition;
         }
 
-        return $arr;
+        return $data;
     }
 
     /**
@@ -500,13 +501,13 @@ class Select
         $type = '';
 
         if ($result instanceof Collection) {
-            $arr = [];
+            $data = [];
 
             foreach ($result as $entity) {
-                $arr[] = $entity;
+                $data[] = $entity;
             }
 
-            $result = $arr;
+            $result = $data;
             $type = 'collection';
         } elseif (is_object($result) && $result instanceof IEntity) {
             $result = [$result];

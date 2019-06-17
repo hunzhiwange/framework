@@ -34,11 +34,10 @@ use Leevel\View\Parser;
  */
 trait Compiler
 {
-    protected function createParser()
+    protected function createParser(): Parser
     {
-        return (new Parser(new Compilers()))->
-        registerCompilers()->
-
-        registerParsers();
+        return (new Parser(new Compilers()))
+            ->registerCompilers()
+            ->registerParsers();
     }
 }

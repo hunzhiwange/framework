@@ -46,7 +46,7 @@ class TokenTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $token = new Token($this->createCache(), $this->createRequest());
 
@@ -66,7 +66,7 @@ class TokenTest extends TestCase
         $this->assertSame([], $token->getLogin());
     }
 
-    public function testWithInputNotQuery()
+    public function testWithInputNotQuery(): void
     {
         $token = new Token($this->createCache(), $this->createRequestWithInput());
 
@@ -119,7 +119,6 @@ class TokenTest extends TestCase
     {
         $request = $this->createMock(IRequest::class);
 
-        $request->method('query')->willReturn(null);
         $this->assertNull($request->query('input_token'));
 
         $request->method('input')->willReturn('token');

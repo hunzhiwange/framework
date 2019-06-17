@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Cache\ICache;
-
 /**
  * ISession 接口.
  *
@@ -46,7 +44,7 @@ interface ISession
     /**
      * 启动 session.
      *
-     * @param string $sessionId
+     * @param null|string $sessionId
      */
     public function start(?string $sessionId = null): void;
 
@@ -74,7 +72,7 @@ interface ISession
      * 批量插入.
      *
      * @param array|string $keys
-     * @param mixed        $value
+     * @param null|mixed   $value
      */
     public function put($keys, $value = null): void;
 
@@ -105,9 +103,9 @@ interface ISession
     /**
      * 数组插入键值对数据.
      *
-     * @param string $key
-     * @param mixed  $keys
-     * @param mixed  $value
+     * @param string     $key
+     * @param mixed      $keys
+     * @param null|mixed $value
      */
     public function arr(string $key, $keys, $value = null): void;
 
@@ -122,22 +120,22 @@ interface ISession
     /**
      * 取回 session.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string     $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
-    public function get(string $name, $value = null);
+    public function get(string $name, $defaults = null);
 
     /**
      * 返回数组部分数据.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param string     $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
-    public function getPart(string $name, $value = null);
+    public function getPart(string $name, $defaults = null);
 
     /**
      * 删除 session.
@@ -198,8 +196,8 @@ interface ISession
     /**
      * 返回闪存数据.
      *
-     * @param string $key
-     * @param mixed  $defaults
+     * @param string     $key
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -265,7 +263,7 @@ interface ISession
     /**
      * 设置 SESSION ID.
      *
-     * @param string $id
+     * @param null|string $id
      */
     public function setId(?string $id = null): void;
 
@@ -280,13 +278,6 @@ interface ISession
      * 重新生成 SESSION ID.
      */
     public function regenerateId(): string;
-
-    /**
-     * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
-     */
-    public function getCache(): ?ICache;
 
     /**
      * open.

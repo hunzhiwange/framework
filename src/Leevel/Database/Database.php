@@ -38,6 +38,8 @@ use Throwable;
  */
 abstract class Database
 {
+    use Proxy;
+
     /**
      * 所有数据库连接.
      *
@@ -133,10 +135,10 @@ abstract class Database
     /**
      * 构造函数.
      *
-     * @param array                   $option
-     * @param \Leevel\Event\IDispatch $dispatch
+     * @param array                        $option
+     * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(array $option, IDispatch $dispatch = null)
+    public function __construct(array $option, ?IDispatch $dispatch = null)
     {
         $this->option = $option;
         $this->dispatch = $dispatch;
@@ -166,11 +168,23 @@ abstract class Database
     }
 
     /**
+     * 返回代理.
+     *
+     * @return \Leevel\Database\Select
+     */
+    public function proxy(): Select
+    {
+        $this->initSelect();
+
+        return $this->select;
+    }
+
+    /**
      * 返回 Pdo 查询连接.
      *
      * @param bool|int $master
-     * @note bool false (读服务器) true (写服务器)
-     * @note 其它去对应服务器连接ID 0 表示主服务器
+     *                         - bool false (读服务器) true (写服务器)
+     *                         - int 其它去对应服务器连接ID 0 表示主服务器
      *
      * @return mixed
      */
@@ -190,12 +204,14 @@ abstract class Database
     /**
      * 查询数据记录.
      *
-     * @param string   $sql           sql 语句
-     * @param array    $bindParams    sql 参数绑定
-     * @param bool|int $master
-     * @param int      $fetchStyle
-     * @param mixed    $fetchArgument
-     * @param array    $ctorArgs
+     * @param string     $sql           sql 语句
+     * @param array      $bindParams    sql 参数绑定
+     * @param bool|int   $master
+     * @param null|int   $fetchStyle
+     * @param null|mixed $fetchArgument
+     * @param array      $ctorArgs
+     *
+     * @throws \InvalidArgumentException
      *
      * @return mixed
      */
@@ -209,9 +225,9 @@ abstract class Database
             'select',
             'procedure',
         ], true)) {
-            throw new InvalidArgumentException(
-                'The query method only allows select and procedure SQL statements.'
-            );
+            $e = 'The query method only allows select and procedure SQL statements.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->pdoStatement = $this->pdo($master)->prepare($sql);
@@ -243,6 +259,8 @@ abstract class Database
      * @param string $sql        sql 语句
      * @param array  $bindParams sql 参数绑定
      *
+     * @throws \InvalidArgumentException
+     *
      * @return int|string
      */
     public function execute(string $sql, array $bindParams = [])
@@ -255,9 +273,9 @@ abstract class Database
             'select',
             'procedure',
         ], true)) {
-            throw new InvalidArgumentException(
-                'The query method not allows select and procedure SQL statements.'
-            );
+            $e = 'The query method not allows select and procedure SQL statements.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->pdoStatement = $this->pdo(true)->prepare($sql);
@@ -348,15 +366,21 @@ abstract class Database
 
     /**
      * 用于非自动提交状态下面的查询提交.
+     *
+     * @throws \InvalidArgumentException
      */
     public function commit(): void
     {
         if (0 === $this->transactionLevel) {
-            throw new InvalidArgumentException('There was no active transaction.');
+            $e = 'There was no active transaction.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if ($this->isRollbackOnly) {
-            throw new InvalidArgumentException('Commit failed for rollback only.');
+            $e = 'Commit failed for rollback only.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (1 === $this->transactionLevel) {
@@ -370,11 +394,15 @@ abstract class Database
 
     /**
      * 事务回滚.
+     *
+     * @throws \InvalidArgumentException
      */
     public function rollBack(): void
     {
         if (0 === $this->transactionLevel) {
-            throw new InvalidArgumentException('There was no active transaction.');
+            $e = 'There was no active transaction.';
+
+            throw new InvalidArgumentException($e);
         }
 
         if (1 === $this->transactionLevel) {
@@ -405,7 +433,7 @@ abstract class Database
     /**
      * 获取最后插入 ID 或者列.
      *
-     * @param string $name 自增序列名
+     * @param null|string $name 自增序列名
      *
      * @return string
      */
@@ -508,9 +536,9 @@ abstract class Database
     /**
      * 表或者字段格式化（支持别名）.
      *
-     * @param string $name
-     * @param string $alias
-     * @param string $as
+     * @param string      $name
+     * @param null|string $alias
+     * @param null|string $as
      *
      * @return string
      */
@@ -702,9 +730,9 @@ abstract class Database
     /**
      * 连接数据库.
      *
-     * @param array $option
-     * @param int   $linkid
-     * @param bool  $throwException
+     * @param array    $option
+     * @param null|int $linkid
+     * @param bool     $throwException
      *
      * @return mixed
      */
@@ -762,10 +790,10 @@ abstract class Database
     /**
      * 获得数据集.
      *
-     * @param int   $fetchStyle
-     * @param mixed $fetchArgument
-     * @param array $ctorArgs
-     * @param bool  $procedure
+     * @param null|int   $fetchStyle
+     * @param null|mixed $fetchArgument
+     * @param array      $ctorArgs
+     * @param bool       $procedure
      *
      * @return array
      */
@@ -795,9 +823,9 @@ abstract class Database
     /**
      * 获得数据集.
      *
-     * @param int   $fetchStyle
-     * @param mixed $fetchArgument
-     * @param array $ctorArgs
+     * @param null|int   $fetchStyle
+     * @param null|mixed $fetchArgument
+     * @param array      $ctorArgs
      *
      * @see http://php.net/manual/vote-note.php?id=123030&page=pdostatement.nextrowset&vote=down
      *
@@ -904,6 +932,8 @@ abstract class Database
      * PDO 异常处理.
      *
      * @param \PDOException $e
+     *
+     * @throws \Leevel\Database\ReplaceException
      */
     protected function pdoException(PDOException $e): void
     {

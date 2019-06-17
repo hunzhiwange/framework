@@ -56,18 +56,6 @@ class Manager extends Managers implements ISession
     }
 
     /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    protected function createConnect(object $connect): object
-    {
-        return $connect;
-    }
-
-    /**
      * 创建 nulls 缓存.
      *
      * @param array $options

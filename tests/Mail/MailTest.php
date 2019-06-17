@@ -40,89 +40,89 @@ use Tests\TestCase;
  */
 class MailTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $mail = $this->makeMail();
 
         $mail->plain('hello');
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
 
         $this->assertSame([], $mail->failedRecipients());
     }
 
-    public function testHtml()
+    public function testHtml(): void
     {
         $mail = $this->makeMail();
 
         $mail->html('<b style="color:red;">hello</b>');
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testHtml2()
+    public function testHtml2(): void
     {
         $mail = $this->makeMail();
 
         $mail->html('<b style="color:red;">hello</b>');
         $mail->html('<b style="color:blue;">world</b>');
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testView()
+    public function testView(): void
     {
         $mail = $this->makeMail();
 
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testView2()
+    public function testView2(): void
     {
         $mail = $this->makeMail();
 
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
         $mail->view(__DIR__.'/assert/mail1.php', ['foo' => 'hello']);
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testViewPlain()
+    public function testViewPlain(): void
     {
         $mail = $this->makeMail();
 
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testViewPlain2()
+    public function testViewPlain2(): void
     {
         $mail = $this->makeMail();
 
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'bar']);
         $mail->viewPlain(__DIR__.'/assert/mail1.php', ['foo' => 'hello']);
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testAttach()
+    public function testAttach(): void
     {
         $mail = $this->makeMail();
 
@@ -130,12 +130,12 @@ class MailTest extends TestCase
 
         $mail->attachMail(__DIR__.'/assert/logo.png');
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testAttach2()
+    public function testAttach2(): void
     {
         $mail = $this->makeMail();
 
@@ -145,12 +145,12 @@ class MailTest extends TestCase
             $attachment->setFilename('logo2.jpg');
         });
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testAttachData()
+    public function testAttachData(): void
     {
         $mail = $this->makeMail();
 
@@ -158,34 +158,34 @@ class MailTest extends TestCase
 
         $mail->attachData(file_get_contents(__DIR__.'/assert/logo.png'), 'hello.png');
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testAttachView()
+    public function testAttachView(): void
     {
         $mail = $this->makeMail();
 
         $mail->view(__DIR__.'/assert/mail2.php', ['path' => __DIR__.'/assert/logo.png']);
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testAttachDataView()
+    public function testAttachDataView(): void
     {
         $mail = $this->makeMail();
 
         $mail->view(__DIR__.'/assert/mail3.php', ['data' => file_get_contents(__DIR__.'/assert/logo.png')]);
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testAttachChinese()
+    public function testAttachChinese(): void
     {
         $mail = $this->makeMail();
 
@@ -196,12 +196,12 @@ class MailTest extends TestCase
             $mail->attachChinese('魂之挽歌.png')
         );
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testSendHtmlAndPlain()
+    public function testSendHtmlAndPlain(): void
     {
         $mail = $this->makeMail();
 
@@ -209,12 +209,12 @@ class MailTest extends TestCase
 
         $mail->html('<b style="color:red;">hello</b>');
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testSendHtmlAndPlain2()
+    public function testSendHtmlAndPlain2(): void
     {
         $mail = $this->makeMail();
 
@@ -222,12 +222,12 @@ class MailTest extends TestCase
 
         $mail->html('<b style="color:red;">hello</b>');
 
-        $result = $mail->sendMail(null, false);
+        $result = $mail->flush(null, false);
 
         $this->assertSame(1, $result);
     }
 
-    public function testMessage()
+    public function testMessage(): void
     {
         $mail = $this->makeMail();
 
@@ -237,18 +237,18 @@ class MailTest extends TestCase
             $message->setSubject('the subject');
         });
 
-        $result = $mail->sendMail();
+        $result = $mail->flush();
 
         $this->assertSame(1, $result);
     }
 
-    public function testMessage2()
+    public function testMessage2(): void
     {
         $mail = $this->makeMail();
 
         $mail->plain('hello');
 
-        $result = $mail->sendMail(function (Swift_Message $message) {
+        $result = $mail->flush(function (Swift_Message $message) {
             $message->setSubject('the subject');
         });
 

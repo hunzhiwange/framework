@@ -34,7 +34,7 @@ use Tests\TestCase;
  */
 class TreeTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $tree = new Tree([
             [1, 0, 'hello'],
@@ -174,7 +174,7 @@ class TreeTest extends TestCase
         );
     }
 
-    public function testChildrenUse()
+    public function testChildrenUse(): void
     {
         $tree = $this->providerTree();
 
@@ -301,7 +301,7 @@ class TreeTest extends TestCase
         );
     }
 
-    public function testParentsUse()
+    public function testParentsUse(): void
     {
         $tree = $this->providerTree();
 
@@ -381,7 +381,7 @@ class TreeTest extends TestCase
         );
     }
 
-    public function testGetLevel()
+    public function testGetLevel(): void
     {
         $tree = $this->providerTree();
 
@@ -411,7 +411,7 @@ class TreeTest extends TestCase
         );
     }
 
-    public function testGetSetData()
+    public function testGetSetData(): void
     {
         $tree = new Tree([
             [1, 0, 'hello'],
@@ -475,7 +475,7 @@ class TreeTest extends TestCase
         );
     }
 
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $tree = new Tree([
             [1, 0, 'hello'],
@@ -583,7 +583,7 @@ class TreeTest extends TestCase
         );
     }
 
-    public function testNodeWithException()
+    public function testNodeWithException(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -592,7 +592,7 @@ class TreeTest extends TestCase
         ]);
     }
 
-    public function testButNotIsStringInt()
+    public function testButNotIsStringInt(): void
     {
         $tree = new Tree([
             ['1', '0', 'hello'],

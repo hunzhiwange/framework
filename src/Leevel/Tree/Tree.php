@@ -54,6 +54,8 @@ class Tree implements IJson, IArray
      * 构造函数.
      *
      * @param array $nodes
+     *
+     * @throws \RuntimeException
      */
     public function __construct(array $nodes = [])
     {
@@ -272,13 +274,13 @@ class Tree implements IJson, IArray
     /**
      * 树转化为数组.
      *
-     * @param \Closure   $callables
-     * @param array      $key
-     * @param int|string $id
+     * @param null|\Closure $callables
+     * @param array         $key
+     * @param int|string    $id
      *
      * @return array
      */
-    public function normalize(Closure $callables = null, array $key = [], $id = 0): array
+    public function normalize(?Closure $callables = null, array $key = [], $id = 0): array
     {
         $data = [];
 
@@ -309,11 +311,11 @@ class Tree implements IJson, IArray
     /**
      * 对象转 JSON.
      *
-     * @param int $option
+     * @param null|int $option
      *
      * @return string
      */
-    public function toJson($option = null): string
+    public function toJson(?int $option = null): string
     {
         if (null === $option) {
             $option = JSON_UNESCAPED_UNICODE;

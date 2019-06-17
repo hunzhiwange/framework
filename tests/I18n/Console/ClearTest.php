@@ -43,7 +43,7 @@ class ClearTest extends TestCase
 {
     use BaseCommand;
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $cacheFile = __DIR__.'/i18n_cache_[i18n].php';
 
@@ -142,7 +142,7 @@ class ClearTest extends TestCase
         );
     }
 
-    public function testHaveCleanedUp()
+    public function testHaveCleanedUp(): void
     {
         $cacheFile = __DIR__.'/i18n_cache_[i18n].php';
 
@@ -188,7 +188,7 @@ class ClearTest extends TestCase
         );
     }
 
-    protected function initContainerService(IContainer $container, string $cacheFile)
+    protected function initContainerService(IContainer $container, string $cacheFile): void
     {
         // 注册 app
         $app = new App2($container, '');

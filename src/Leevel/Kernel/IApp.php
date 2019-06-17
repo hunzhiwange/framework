@@ -30,6 +30,8 @@ use Leevel\Di\IContainer;
  * @since 2017.04.23
  *
  * @version 1.0
+ *
+ * @see \Leevel\Kernel\Proxy\IApp 请保持接口设计的一致
  */
 interface IApp
 {
@@ -216,7 +218,7 @@ interface IApp
     /**
      * 语言包路径.
      *
-     * @param string $path
+     * @param null|string $path
      *
      * @return string
      */
@@ -308,7 +310,7 @@ interface IApp
      *
      * @param string $routerCachedPath
      */
-    public function setRouterCachedPath(string $routerCachedPath);
+    public function setRouterCachedPath(string $routerCachedPath): void;
 
     /**
      * 返回路由缓存路径.

@@ -55,7 +55,7 @@ class ValidatorTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $validate = new Validator(
             [
@@ -94,7 +94,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testMake()
+    public function testMake(): void
     {
         $validate = Validator::make(
             [
@@ -131,7 +131,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testError()
+    public function testError(): void
     {
         $validate = new Validator(
             [
@@ -164,7 +164,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testData()
+    public function testData(): void
     {
         $validate = new Validator(
             [
@@ -202,7 +202,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
-    public function testAddData()
+    public function testAddData(): void
     {
         $validate = new Validator(
             [
@@ -239,7 +239,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testRule()
+    public function testRule(): void
     {
         $validate = new Validator(
             [
@@ -281,7 +281,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
-    public function testRuleIf()
+    public function testRuleIf(): void
     {
         $validate = new Validator(
             [
@@ -342,7 +342,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testAddRule()
+    public function testAddRule(): void
     {
         $validate = new Validator(
             [
@@ -395,7 +395,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testAddRuleIf()
+    public function testAddRuleIf(): void
     {
         $validate = new Validator(
             [
@@ -456,7 +456,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testMessage()
+    public function testMessage(): void
     {
         $validate = new Validator(
             [
@@ -549,7 +549,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testMessage2()
+    public function testMessage2(): void
     {
         $validate = new Validator(
             [
@@ -642,7 +642,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testSubDataWithSubMessage()
+    public function testSubDataWithSubMessage(): void
     {
         $validate = new Validator(
             [
@@ -715,7 +715,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testSubDataWithNotSet()
+    public function testSubDataWithNotSet(): void
     {
         $validate = new Validator(
             [
@@ -748,7 +748,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testName()
+    public function testName(): void
     {
         $validate = new Validator(
             [
@@ -822,7 +822,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testAlias()
+    public function testAlias(): void
     {
         $validate = new Validator(
             [
@@ -941,7 +941,7 @@ class ValidatorTest extends TestCase
         ];
     }
 
-    public function testAfter()
+    public function testAfter(): void
     {
         $validate = new Validator(
             [
@@ -963,7 +963,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
-    public function testExtend()
+    public function testExtend(): void
     {
         $validate = new Validator(
             [
@@ -977,8 +977,8 @@ class ValidatorTest extends TestCase
             ]
         );
 
-        $validate->extend('custom_rule', function ($datas, array $parameter, IValidator $validator, string $field): bool {
-            if (1 === $datas) {
+        $validate->extend('custom_rule', function ($value, array $parameter, IValidator $validator, string $field): bool {
+            if (1 === $value) {
                 return true;
             }
 
@@ -994,7 +994,7 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->fail());
     }
 
-    public function testPlaceholder()
+    public function testPlaceholder(): void
     {
         $validate = new Validator(
             [
@@ -1008,11 +1008,10 @@ class ValidatorTest extends TestCase
             ]
         );
 
-        $this->assertInstanceof(Validator::class, $validate->foobar());
-        $this->assertInstanceof(Validator::class, $validate->placeholder());
+        $this->assertInstanceof(Validator::class, $validate->_());
     }
 
-    public function testCall()
+    public function testCall(): void
     {
         $validate = new Validator();
 
@@ -1024,12 +1023,12 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->alpha('cd'));
     }
 
-    public function testCallCustom()
+    public function testCallCustom(): void
     {
         $validate = new Validator();
 
-        $validate->extend('custom_foo_bar', function (string $field, $datas, array $parameter): bool {
-            if ('成都' === $datas) {
+        $validate->extend('custom_foo_bar', function (string $field, $value, array $parameter): bool {
+            if ('成都' === $value) {
                 return true;
             }
 
@@ -1040,7 +1039,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->customFooBar('魂之挽歌'));
     }
 
-    public function testCallException()
+    public function testCallException(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
@@ -1052,7 +1051,7 @@ class ValidatorTest extends TestCase
         $validate->notFoundMethod();
     }
 
-    public function testCheckParameterLengthException()
+    public function testCheckParameterLengthException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1074,7 +1073,7 @@ class ValidatorTest extends TestCase
         $validate->success();
     }
 
-    public function testCallExtendClassWithContainerNotSetException()
+    public function testCallExtendClassWithContainerNotSetException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1098,7 +1097,7 @@ class ValidatorTest extends TestCase
         $validate->success();
     }
 
-    public function testCallExtendClass()
+    public function testCallExtendClass(): void
     {
         $validate = new Validator(
             [
@@ -1125,7 +1124,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function testCallExtendClassWithCustomMethod()
+    public function testCallExtendClassWithCustomMethod(): void
     {
         $validate = new Validator(
             [
@@ -1152,7 +1151,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function testCallExtendClassWithRun()
+    public function testCallExtendClassWithRun(): void
     {
         $validate = new Validator(
             [
@@ -1179,7 +1178,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function testCallExtendClassWithClassNotValidException()
+    public function testCallExtendClassWithClassNotValidException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1207,7 +1206,7 @@ class ValidatorTest extends TestCase
         $validate->success();
     }
 
-    public function testCallExtendNotValidException()
+    public function testCallExtendNotValidException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1268,7 +1267,7 @@ class ValidatorTest extends TestCase
         ];
     }
 
-    public function testShouldSkipOther()
+    public function testShouldSkipOther(): void
     {
         $validate = new Validator(
             [
@@ -1323,7 +1322,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testMustRequired()
+    public function testMustRequired(): void
     {
         $validate = new Validator(
             [
@@ -1387,7 +1386,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testWildcardMessage()
+    public function testWildcardMessage(): void
     {
         $validate = new Validator(
             [
@@ -1489,7 +1488,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testMessageForAllFieldRule()
+    public function testMessageForAllFieldRule(): void
     {
         $validate = new Validator(
             [
@@ -1591,7 +1590,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testWildcardRule()
+    public function testWildcardRule(): void
     {
         $validate = new Validator(
             [
@@ -1677,7 +1676,7 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testGetFieldRuleButNotSet()
+    public function testGetFieldRuleButNotSet(): void
     {
         $validate = new Validator(
             [
@@ -1697,7 +1696,7 @@ class ValidatorTest extends TestCase
         $this->assertSame([], $this->invokeTestMethod($validate, 'getFieldRule', ['foo']));
     }
 
-    public function testRuleIsEmpty()
+    public function testRuleIsEmpty(): void
     {
         $validate = new Validator(
             [
@@ -1715,7 +1714,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
-    public function testHasFieldRuleWithoutParameterRealWithRuleNotSet()
+    public function testHasFieldRuleWithoutParameterRealWithRuleNotSet(): void
     {
         $validate = new Validator(
             [
@@ -1739,18 +1738,18 @@ class ValidatorTest extends TestCase
 
 class ExtendClassTest1
 {
-    public function handle($datas, array $parameter, IValidator $validator, string $field): bool
+    public function handle($value, array $parameter, IValidator $validator, string $field): bool
     {
-        if (1 === $datas) {
+        if (1 === $value) {
             return true;
         }
 
         return false;
     }
 
-    public function handle2($datas, array $parameter, IValidator $validator, string $field): bool
+    public function handle2($value, array $parameter, IValidator $validator, string $field): bool
     {
-        if (2 === $datas) {
+        if (2 === $value) {
             return true;
         }
 
@@ -1760,9 +1759,9 @@ class ExtendClassTest1
 
 class ExtendClassTest2
 {
-    public function handle($datas, array $parameter, IValidator $validator, string $field): bool
+    public function handle($value, array $parameter, IValidator $validator, string $field): bool
     {
-        if (3 === $datas) {
+        if (3 === $value) {
             return true;
         }
 

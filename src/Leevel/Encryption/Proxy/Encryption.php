@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Encryption\Proxy;
 
 use Leevel\Di\Container;
+use Leevel\Encryption\Encryption as BaseEncryption;
 
 /**
  * 代理 encryption.
@@ -30,8 +31,9 @@ use Leevel\Di\Container;
  * @since 2017.06.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-class Encryption
+class Encryption implements IEncryption
 {
     /**
      * call.
@@ -43,8 +45,41 @@ class Encryption
      */
     public static function __callStatic(string $method, array $args)
     {
-        return Container::singletons()
-            ->make('encryption')
-            ->{$method}(...$args);
+        return self::proxy()->{$method}(...$args);
+    }
+
+    /**
+     * 加密.
+     *
+     * @param string $value
+     * @param int    $expiry
+     *
+     * @return string
+     */
+    public static function encrypt(string $value, int $expiry = 0): string
+    {
+        return self::proxy()->encrypt($value, $expiry);
+    }
+
+    /**
+     * 解密.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function decrypt(string $value): string
+    {
+        return self::proxy()->decrypt($value);
+    }
+
+    /**
+     * 代理服务
+     *
+     * @return \Leevel\Encryption\Encryption
+     */
+    public static function proxy(): BaseEncryption
+    {
+        return Container::singletons()->make('encryption');
     }
 }

@@ -39,7 +39,7 @@ use Tests\TestCase;
  */
 class RedirectTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $request = $this->makeRequest();
         $url = new Url($request, [
@@ -71,7 +71,7 @@ class RedirectTest extends TestCase
         $this->assertSame($content, $response->getContent());
     }
 
-    public function testRaw()
+    public function testRaw(): void
     {
         $request = $this->makeRequest();
         $url = new Url($request, [
@@ -103,7 +103,7 @@ class RedirectTest extends TestCase
         $this->assertSame($content, $response->getContent());
     }
 
-    public function testSetSession()
+    public function testSetSession(): void
     {
         $request = $this->makeRequest();
         $url = new Url($request, [

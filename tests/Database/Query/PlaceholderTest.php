@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class PlaceholderTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -51,46 +51,12 @@ class PlaceholderTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->placeholder()->
-
-                table('test')->
-
-                sql(true)->
-
-                latest()->
-
-                findOne()
-            )
-        );
-    }
-
-    public function testFoobar()
-    {
-        $connect = $this->createDatabaseConnectMock();
-
-        $sql = <<<'eot'
-            [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
-                [],
-                false,
-                null,
-                null,
-                []
-            ]
-            eot;
-
-        $this->assertSame(
-            $sql,
-            $this->varJson(
-                $connect->foobar()->
-
-                table('test')->
-
-                sql(true)->
-
-                latest()->
-
-                findOne()
+                $connect
+                    ->_()
+                    ->table('test')
+                    ->sql(true)
+                    ->latest()
+                    ->findOne()
             )
         );
     }

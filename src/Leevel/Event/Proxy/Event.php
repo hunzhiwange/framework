@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Event\Proxy;
 
 use Leevel\Di\Container;
+use Leevel\Event\Dispatch;
 
 /**
  * 代理 event.
@@ -30,8 +31,9 @@ use Leevel\Di\Container;
  * @since 2017.07.12
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-class Event
+class Event implements IEvent
 {
     /**
      * call.
@@ -43,8 +45,73 @@ class Event
      */
     public static function __callStatic(string $method, array $args)
     {
-        return Container::singletons()
-            ->make('event')
-            ->{$method}(...$args);
+        return self::proxy()->{$method}(...$args);
+    }
+
+    /**
+     * 执行一个事件.
+     *
+     * @param object|string $event
+     * @param array         ...$params
+     */
+    public static function handle($event, ...$params): void
+    {
+        self::proxy()->handle($event, ...$params);
+    }
+
+    /**
+     * 注册监听器.
+     *
+     * @param array|object|string $event
+     * @param mixed               $listener
+     * @param int                 $priority
+     */
+    public static function register($event, $listener, int $priority = 500): void
+    {
+        self::proxy()->register($event, $listener, $priority);
+    }
+
+    /**
+     * 获取一个事件监听器.
+     *
+     * @param object|string $event
+     *
+     * @return array
+     */
+    public static function get($event): array
+    {
+        return self::proxy()->get($event);
+    }
+
+    /**
+     * 判断事件监听器是否存在.
+     *
+     * @param object|string $event
+     *
+     * @return bool
+     */
+    public static function has($event): bool
+    {
+        return self::proxy()->has($event);
+    }
+
+    /**
+     * 删除一个事件所有监听器.
+     *
+     * @param object|string $event
+     */
+    public static function delete($event): void
+    {
+        self::proxy()->delete($event);
+    }
+
+    /**
+     * 代理服务
+     *
+     * @return \Leevel\Event\Dispatch
+     */
+    public static function proxy(): Dispatch
+    {
+        return Container::singletons()->make('event');
     }
 }

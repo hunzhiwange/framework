@@ -34,7 +34,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class BindTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -57,13 +57,11 @@ class BindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                bind('id', 1)->
-
-                where('id', '=', '[:id]')->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->bind('id', 1)
+                    ->where('id', '=', '[:id]')
+                    ->findAll(true)
             )
         );
 
@@ -86,13 +84,11 @@ class BindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                bind('id', 1, PDO::PARAM_INT)->
-
-                where('id', '=', '[:id]')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->bind('id', 1, PDO::PARAM_INT)
+                    ->where('id', '=', '[:id]')
+                    ->findAll(true),
                 1
             )
         );
@@ -116,13 +112,11 @@ class BindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                bind('id', [1, PDO::PARAM_INT])->
-
-                where('id', '=', '[:id]')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->bind('id', [1, PDO::PARAM_INT])
+                    ->where('id', '=', '[:id]')
+                    ->findAll(true),
                 2
             )
         );
@@ -150,15 +144,12 @@ class BindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                bind(['id' => [1, PDO::PARAM_INT], 'name'=>'小鸭子'])->
-
-                where('id', '=', '[:id]')->
-
-                where('hello', 'like', '[:name]')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->bind(['id' => [1, PDO::PARAM_INT], 'name'=>'小鸭子'])
+                    ->where('id', '=', '[:id]')
+                    ->where('hello', 'like', '[:name]')
+                    ->findAll(true),
                 3
             )
         );
@@ -186,21 +177,18 @@ class BindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                bind([[5, PDO::PARAM_INT], '小鸭子'])->
-
-                where('id', '=', '[?]')->
-
-                where('hello', 'like', '[?]')->
-
-                findAll(true),
+                $connect
+                    ->table('test')
+                    ->bind([[5, PDO::PARAM_INT], '小鸭子'])
+                    ->where('id', '=', '[?]')
+                    ->where('hello', 'like', '[?]')
+                    ->findAll(true),
                 4
             )
         );
     }
 
-    public function testBindFlow()
+    public function testBindFlow(): void
     {
         $condition = false;
 
@@ -225,28 +213,21 @@ class BindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                bind('id', 1)->
-
-                where('id', '=', '[:id]')->
-
-                elses()->
-
-                bind('name', 1)->
-
-                where('name', '=', '[:name]')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->bind('id', 1)
+                    ->where('id', '=', '[:id]')
+                    ->else()
+                    ->bind('name', 1)
+                    ->where('name', '=', '[:name]')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }
 
-    public function testBindFlow2()
+    public function testBindFlow2(): void
     {
         $condition = true;
 
@@ -271,23 +252,16 @@ class BindTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->table('test')->
-
-                ifs($condition)->
-
-                bind('id', 1)->
-
-                where('id', '=', '[:id]')->
-
-                elses()->
-
-                bind('name', 1)->
-
-                where('name', '=', '[:name]')->
-
-                endIfs()->
-
-                findAll(true)
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->bind('id', 1)
+                    ->where('id', '=', '[:id]')
+                    ->else()
+                    ->bind('name', 1)
+                    ->where('name', '=', '[:name]')
+                    ->fi()
+                    ->findAll(true)
             )
         );
     }

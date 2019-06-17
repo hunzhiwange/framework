@@ -37,32 +37,32 @@ use Tests\TestCase;
  */
 class HeaderBagTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
         $this->assertTrue($bag->has('foo'));
     }
 
-    public function testToStringNull()
+    public function testToStringNull(): void
     {
         $bag = new HeaderBag();
         $this->assertSame('', $bag->__toString());
     }
 
-    public function testToStringNotNull()
+    public function testToStringNotNull(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
         $this->assertSame("Foo: bar\r\n", $bag->__toString());
     }
 
-    public function testKeys()
+    public function testKeys(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
         $keys = $bag->keys();
         $this->assertSame('foo', $keys[0]);
     }
 
-    public function testAll()
+    public function testAll(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
         $this->assertSame(['foo' => 'bar'], $bag->all(), '->all() gets all the input');
@@ -71,7 +71,7 @@ class HeaderBagTest extends TestCase
         $this->assertSame(['foo' => 'BAR'], $bag->all(), '->all() gets all the input key are lower case');
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $bag = new HeaderBag(['foo' => 'bar']);
         $bag->replace(['NOPE' => 'BAR']);
@@ -79,7 +79,7 @@ class HeaderBagTest extends TestCase
         $this->assertFalse($bag->has('foo'), '->replace() overrides previously set the input');
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $bag = new HeaderBag(['foo' => 'bar', 'fuzz' => 'bizz']);
         $this->assertSame('bar', $bag->get('foo'), '->get return current value');
@@ -95,7 +95,7 @@ class HeaderBagTest extends TestCase
         $this->assertSame('bor', $bag->get('foo', 'nope'), '->get return');
     }
 
-    public function testGetIterator()
+    public function testGetIterator(): void
     {
         $headers = ['foo' => 'bar', 'hello' => 'world', 'third' => 'charm'];
 
@@ -110,7 +110,7 @@ class HeaderBagTest extends TestCase
         $this->assertSame(count($headers), $i);
     }
 
-    public function testCount()
+    public function testCount(): void
     {
         $headers = ['foo' => 'bar', 'HELLO' => 'WORLD'];
         $headerBag = new HeaderBag($headers);

@@ -72,6 +72,8 @@ class FileBag extends Bag
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
     public function set(string $key, $value): void
     {
@@ -145,6 +147,8 @@ class FileBag extends Bag
      *
      * @param array $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function normalizeFile(array $data): array
@@ -172,6 +176,8 @@ class FileBag extends Bag
      * 格式化多维数组类文件为一维数组.
      *
      * @param array $elements
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */

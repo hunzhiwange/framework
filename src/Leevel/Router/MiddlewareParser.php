@@ -56,6 +56,8 @@ class MiddlewareParser
      *
      * @param array $middlewares
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     public function handle(array $middlewares): array
@@ -67,7 +69,9 @@ class MiddlewareParser
 
         foreach ($middlewares as $m) {
             if (!is_string($m)) {
-                throw new InvalidArgumentException('Middleware only allowed string.');
+                $e = 'Middleware only allowed string.';
+
+                throw new InvalidArgumentException($e);
             }
 
             list($m, $params) = $this->parseMiddleware($m);
@@ -104,6 +108,8 @@ class MiddlewareParser
      * @param array  $middlewares
      * @param string $method
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     protected function normalizeMiddleware(array $middlewares, string $method): array
@@ -117,9 +123,9 @@ class MiddlewareParser
 
             // ignore group like `web` or `api`
             if (false !== strpos($realClass, '\\') && !class_exists($realClass)) {
-                throw new InvalidArgumentException(
-                    sprintf('Middleware %s was not found.', $realClass)
-                );
+                $e = sprintf('Middleware %s was not found.', $realClass);
+
+                throw new InvalidArgumentException($e);
             }
 
             if (!method_exists($realClass, $method)) {

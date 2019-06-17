@@ -115,7 +115,7 @@ class Repository implements IRepository
      *
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      * @param mixed                                                          $fieldValue
-     * @param string                                                         $fieldKey
+     * @param null|string                                                    $fieldKey
      *
      * @return array
      */
@@ -345,6 +345,8 @@ class Repository implements IRepository
      *
      * @param array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      * @param \Leevel\Database\Ddd\Select                               $select
+     *
+     * @throws \InvalidArgumentException
      */
     protected function normalizeCondition($condition, Select $select): void
     {
@@ -361,7 +363,9 @@ class Repository implements IRepository
             $this->normalizeCondition($tmpCondition, $select);
             $select->scope($scope);
         } else {
-            throw new InvalidArgumentException('Invalid condition type.');
+            $e = 'Invalid condition type.';
+
+            throw new InvalidArgumentException($e);
         }
     }
 

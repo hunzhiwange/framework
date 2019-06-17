@@ -30,12 +30,16 @@ use Leevel\Validate\IValidator;
  * @param array                       $parameter
  * @param \Leevel\Validate\IValidator $validator
  *
+ * @throws \InvalidArgumentException
+ *
  * @return bool
  */
 function validate_equal_to($value, array $parameter, IValidator $validator): bool
 {
     if (!array_key_exists(0, $parameter)) {
-        throw new InvalidArgumentException('Missing the first element of parameter.');
+        $e = 'Missing the first element of parameter.';
+
+        throw new InvalidArgumentException($e);
     }
 
     return $value === $validator->getFieldValue($parameter[0]);

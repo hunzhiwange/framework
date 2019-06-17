@@ -104,10 +104,10 @@ abstract class Log
     /**
      * 构造函数.
      *
-     * @param array                   $option
-     * @param \Leevel\Event\IDispatch $dispatch
+     * @param array                        $option
+     * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(array $option = [], IDispatch $dispatch = null)
+    public function __construct(array $option = [], ?IDispatch $dispatch = null)
     {
         $this->option = array_merge($this->option, $option);
         $this->dispatch = $dispatch;
@@ -119,7 +119,7 @@ abstract class Log
      * @param string $name
      * @param mixed  $value
      *
-     * @return $this
+     * @return \Leevel\Log\ILog
      */
     public function setOption(string $name, $value): ILog
     {
@@ -268,7 +268,7 @@ abstract class Log
     /**
      * 清理日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      */
     public function clear(?string $level = null): void
     {
@@ -286,7 +286,7 @@ abstract class Log
     /**
      * 获取日志记录.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return array
      */
@@ -306,7 +306,7 @@ abstract class Log
     /**
      * 获取日志记录数量.
      *
-     * @param string $level
+     * @param null|string $level
      *
      * @return int
      */

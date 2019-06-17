@@ -51,6 +51,8 @@ trait Date
      * @param string                      $field
      * @param bool                        $before
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     public function validateDate($value, array $parameter, IValidator $validator, string $field, bool $before = false): bool
@@ -60,7 +62,9 @@ trait Date
         }
 
         if (!array_key_exists(0, $parameter)) {
-            throw new InvalidArgumentException('Missing the first element of parameter.');
+            $e = 'Missing the first element of parameter.';
+
+            throw new InvalidArgumentException($e);
         }
 
         $this->validator = $validator;

@@ -162,6 +162,8 @@ class Cache extends Command
     /**
      * 取得应用的 composer 配置.
      *
+     * @throws \RuntimeException
+     *
      * @return array
      */
     protected function composerPaths(): array
@@ -174,8 +176,7 @@ class Cache extends Command
 
         $options = $this->getFileContent($path);
 
-        $paths = !empty($options['extra']['leevel-console']['view-cache']['paths']) ?
-            $options['extra']['leevel-console']['view-cache']['paths'] : [];
+        $paths = $options['extra']['leevel-console']['view-cache']['paths'] ?? [];
 
         $path = $this->app->path();
 

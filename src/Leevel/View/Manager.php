@@ -46,18 +46,6 @@ class Manager extends Managers implements IView
     }
 
     /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    protected function createConnect(object $connect): object
-    {
-        return $connect;
-    }
-
-    /**
      * 创建 html 模板驱动.
      *
      * @param array $options

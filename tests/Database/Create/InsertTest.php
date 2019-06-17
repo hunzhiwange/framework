@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class InsertTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -58,16 +58,15 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data)
             )
         );
     }
 
-    public function testBind()
+    public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -92,11 +91,10 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data, ['吃肉'])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, ['吃肉'])
             )
         );
 
@@ -118,17 +116,16 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data, ['value' => '呱呱呱']),
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, ['value' => '呱呱呱']),
                 1
             )
         );
     }
 
-    public function testWithBindFunction()
+    public function testWithBindFunction(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -153,18 +150,16 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                bind(['吃鱼'])->
-
-                insert($data)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->bind(['吃鱼'])
+                    ->insert($data)
             )
         );
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -186,16 +181,15 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data, ['value' => '呱呱呱'], true)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, ['value' => '呱呱呱'], true)
             )
         );
     }
 
-    public function testInsertSupportTable()
+    public function testInsertSupportTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -217,11 +211,10 @@ class InsertTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                insert($data, ['value' => '呱呱呱'], true)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, ['value' => '呱呱呱'], true)
             )
         );
     }

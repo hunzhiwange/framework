@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
-use Leevel\Cache\Cache;
 use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;
@@ -45,7 +44,7 @@ class SessionTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -72,7 +71,7 @@ class SessionTest extends TestCase
         $this->assertTrue($session->isStart());
     }
 
-    public function testSave()
+    public function testSave(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -96,7 +95,7 @@ class SessionTest extends TestCase
         $this->assertFileNotExists($filePath);
     }
 
-    public function testSaveAndStart()
+    public function testSaveAndStart(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -142,7 +141,7 @@ class SessionTest extends TestCase
         $this->assertFileNotExists($filePath);
     }
 
-    public function testSaveButNotStart()
+    public function testSaveButNotStart(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Session is not start yet.');
@@ -156,18 +155,7 @@ class SessionTest extends TestCase
         $session->save();
     }
 
-    public function testGetCache()
-    {
-        $session = $this->createFileSessionHandler();
-
-        $this->assertInstanceof(Cache::class, $session->getCache());
-
-        $this->assertTrue($session->open('', 'foo'));
-        $this->assertTrue($session->close());
-        $this->assertSame(0, $session->gc(0));
-    }
-
-    public function testPut()
+    public function testPut(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -181,7 +169,7 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => 'world', 'foo' => 'bar'], $session->all());
     }
 
-    public function testPush()
+    public function testPush(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -195,7 +183,7 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => ['world', 'bar', 'bar']], $session->all());
     }
 
-    public function testMerge()
+    public function testMerge(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -212,7 +200,7 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => ['world', 'bar', 'bar', 'he' => 'he']], $session->all());
     }
 
-    public function testPop()
+    public function testPop(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -229,7 +217,7 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => []], $session->all());
     }
 
-    public function testArr()
+    public function testArr(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -243,7 +231,7 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => ['sub' => 'me', 'foo' => 'bar']], $session->all());
     }
 
-    public function testArrDelete()
+    public function testArrDelete(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -260,7 +248,7 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => []], $session->all());
     }
 
-    public function testGetPart()
+    public function testGetPart(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -274,7 +262,7 @@ class SessionTest extends TestCase
         $this->assertSame(123, $session->getPart('hello\\notFound', 123));
     }
 
-    public function testGetPart2()
+    public function testGetPart2(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -283,7 +271,7 @@ class SessionTest extends TestCase
         $this->assertNull($session->getPart('hello\\sub'));
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -294,7 +282,7 @@ class SessionTest extends TestCase
         $this->assertSame([], $session->all());
     }
 
-    public function testFlash()
+    public function testFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -341,7 +329,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testFlashs()
+    public function testFlashs(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -367,7 +355,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testNowFlash()
+    public function testNowFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -390,7 +378,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testNowFlashs()
+    public function testNowFlashs(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -415,7 +403,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testRebuildFlash()
+    public function testRebuildFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -461,7 +449,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testKeepFlash()
+    public function testKeepFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -507,7 +495,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testKeepFlash2()
+    public function testKeepFlash2(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -553,7 +541,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testGetFlash()
+    public function testGetFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -572,7 +560,7 @@ class SessionTest extends TestCase
         $this->assertNull($session->getFlash('test\\notFound'));
     }
 
-    public function testDeleteFlash()
+    public function testDeleteFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -617,7 +605,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testDeleteFlash2()
+    public function testDeleteFlash2(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -664,7 +652,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testClearFlash()
+    public function testClearFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -709,7 +697,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testUnregisterFlash()
+    public function testUnregisterFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -761,7 +749,7 @@ class SessionTest extends TestCase
         );
     }
 
-    public function testPrevUrl()
+    public function testPrevUrl(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -772,7 +760,7 @@ class SessionTest extends TestCase
         $this->assertSame('foo', $session->prevUrl());
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -791,7 +779,7 @@ class SessionTest extends TestCase
         $this->assertSame('UID', $session->getName());
     }
 
-    public function testRegenerateId()
+    public function testRegenerateId(): void
     {
         $session = $this->createFileSessionHandler();
 

@@ -129,7 +129,7 @@ class ConversionTest extends TestCase
         ];
     }
 
-    protected function makeEntity()
+    protected function makeEntity(): TestConversionEntity
     {
         $entity = new TestConversionEntity();
 

@@ -108,7 +108,7 @@ class EqualGreaterThanTest extends TestCase
         ];
     }
 
-    public function testSpecial()
+    public function testSpecial(): void
     {
         $validate = new Validator();
 

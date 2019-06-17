@@ -48,6 +48,8 @@ if (!function_exists('f_exists')) {
      * @param string $fn
      * @param bool   $throwException
      *
+     * @throws \Leevel\Support\FunctionNotFoundException
+     *
      * @return bool
      */
     function f_exists(string $fn, bool $throwException = true): bool
@@ -107,8 +109,8 @@ if (!function_exists('env')) {
     /**
      * 取得应用的环境变量.支持 bool, empty 和 null.
      *
-     * @param mixed $name
-     * @param mixed $defaults
+     * @param mixed      $name
+     * @param null|mixed $defaults
      *
      * @return mixed
      */

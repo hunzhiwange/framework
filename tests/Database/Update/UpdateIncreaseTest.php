@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class UpdateIncreaseTest extends TestCase
 {
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -47,18 +47,16 @@ class UpdateIncreaseTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', 503)->
-
-                updateIncrease('num', 3)
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', 503)
+                    ->updateIncrease('num', 3)
             )
         );
     }
 
-    public function testExpression()
+    public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -74,13 +72,11 @@ class UpdateIncreaseTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $connect->sql()->
-
-                table('test')->
-
-                where('id', '[?]')->
-
-                updateIncrease('num', 3, [503])
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->where('id', '[?]')
+                    ->updateIncrease('num', 3, [503])
             )
         );
     }

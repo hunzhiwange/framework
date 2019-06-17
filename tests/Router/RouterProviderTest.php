@@ -24,6 +24,7 @@ use Leevel\Di\Container;
 use Leevel\Kernel\App;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
+use Leevel\Router\Url;
 use Tests\TestCase;
 
 /**
@@ -46,11 +47,12 @@ class RouterProviderTest extends TestCase
         }
     }
 
-    public function testBaseUse()
+    public function testBaseUse(): void
     {
         $container = Container::singletons();
         $app = new App($container, '');
         $app->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $app->setPath(__DIR__.'/Apps/AppScanRouter');
         $app->setRouterCachedPath(__DIR__.'/router_cached.php');
 
         $container->instance('app', $app);
@@ -78,11 +80,12 @@ class RouterProviderTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testRouterIsCache()
+    public function testRouterIsCache(): void
     {
         $container = Container::singletons();
         $app = new App($container, '');
         $app->setAppPath(__DIR__.'/Apps/AppScanRouter');
+        $app->setPath(__DIR__.'/Apps/AppScanRouter');
         $app->setRouterCachedPath(__DIR__.'/router_cached.php');
 
         $container->instance('app', $app);
@@ -173,8 +176,12 @@ class RouterProvider1 extends RouterProvider
     }
 }
 
-class Url2
+class Url2 extends Url
 {
+    public function __construct()
+    {
+    }
+
     public function getDomain(): string
     {
         return 'queryphp.com';

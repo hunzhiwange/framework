@@ -27,8 +27,9 @@ use Throwable;
 
 /**
  * 工作单元.
- * 工作单元大量参考了 Doctrine2 以及 Java Bean 的实现和设计.
- * 最早基于 .NET 里面关于领域驱动设计代码实现，工作单元、仓储等概念均来源于此.
+ *
+ * - 工作单元大量参考了 Doctrine2 以及 Java Bean 的实现和设计.
+ * - 最早基于 .NET 里面关于领域驱动设计代码实现，工作单元、仓储等概念均来源于此.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -218,12 +219,12 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 创建一个工作单元.
      *
-     * @param \Leevel\Database\Ddd\IEntity $rootEntity
-     * @param mixed                        $connect
+     * @param null|\Leevel\Database\Ddd\IEntity $rootEntity
+     * @param null|mixed                        $connect
      *
      * @return static
      */
-    public static function make(IEntity $rootEntity = null, $connect = null): IUnitOfWork
+    public static function make(?IEntity $rootEntity = null, $connect = null): IUnitOfWork
     {
         return new static($rootEntity, $connect);
     }
@@ -261,7 +262,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $method
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function persistBefore(IEntity $entity, string $method = 'save'): IUnitOfWork
     {
@@ -274,7 +275,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $method
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function persist(IEntity $entity, string $method = 'save'): IUnitOfWork
     {
@@ -287,7 +288,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $method
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function persisteAfter(IEntity $entity, string $method = 'save'): IUnitOfWork
     {
@@ -300,7 +301,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function removeBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -313,7 +314,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function remove(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -326,7 +327,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function removeAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -339,7 +340,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function createBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -357,7 +358,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function create(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -375,7 +376,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function createAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -405,7 +406,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function updateBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -423,7 +424,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function update(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -441,7 +442,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function updateAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -471,7 +472,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priorit
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function replaceBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -489,7 +490,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priorit
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function replace(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -507,7 +508,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priorit
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function replaceAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -537,7 +538,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function deleteBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -555,7 +556,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function delete(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -573,7 +574,7 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function deleteAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -619,7 +620,9 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function refresh(IEntity $entity): IUnitOfWork
     {
@@ -798,7 +801,7 @@ class UnitOfWork implements IUnitOfWork
      * 取得实体状态.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $defaults
+     * @param null|int                     $defaults
      *
      * @return int
      */
@@ -828,7 +831,9 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param string                       $method
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function persistEntity(string $position, IEntity $entity, string $method = 'save'): IUnitOfWork
     {
@@ -876,7 +881,9 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function removeEntity(string $position, IEntity $entity, int $priority = 500): IUnitOfWork
     {
@@ -908,7 +915,9 @@ class UnitOfWork implements IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function createEntity(IEntity $entity): IUnitOfWork
     {
@@ -951,7 +960,9 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function updateEntity(IEntity $entity): IUnitOfWork
     {
@@ -1000,7 +1011,9 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function replaceEntity(IEntity $entity): IUnitOfWork
     {
@@ -1043,7 +1056,9 @@ class UnitOfWork implements IUnitOfWork
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return $this
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     protected function deleteEntity(IEntity $entity): IUnitOfWork
     {
@@ -1181,11 +1196,15 @@ class UnitOfWork implements IUnitOfWork
 
     /**
      * 校验工作单元是否关闭.
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateClosed(): void
     {
         if ($this->closed) {
-            throw new InvalidArgumentException('Unit of work has closed.');
+            $e = 'Unit of work has closed.';
+
+            throw new InvalidArgumentException($e);
         }
     }
 }
