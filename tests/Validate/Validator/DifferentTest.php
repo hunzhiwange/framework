@@ -40,9 +40,9 @@ class DifferentTest extends TestCase
      *
      * @param mixed  $value
      * @param mixed  $valueCompare
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, $valueCompare, string $parameter)
+    public function testBaseUse($value, $valueCompare, string $param)
     {
         $validate = new Validator(
             [
@@ -51,7 +51,7 @@ class DifferentTest extends TestCase
                 'name3' => new stdClass(),
             ],
             [
-                'name'     => 'different:'.$parameter,
+                'name'     => 'different:'.$param,
             ]
         );
 
@@ -74,9 +74,9 @@ class DifferentTest extends TestCase
      *
      * @param mixed  $value
      * @param mixed  $valueCompare
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, $valueCompare, string $parameter)
+    public function testBad($value, $valueCompare, string $param)
     {
         $validate = new Validator(
             [
@@ -85,7 +85,7 @@ class DifferentTest extends TestCase
                 'name3' => 'test',
             ],
             [
-                'name'     => 'different:'.$parameter,
+                'name'     => 'different:'.$param,
             ]
         );
 

@@ -187,21 +187,21 @@ class Validator implements IValidator
         if (count($args) > 0) {
             $extend = 'validate'.ucfirst($method);
 
-            $parameter = [''];
-            $parameter[] = array_shift($args);
-            $parameter[] = $args;
+            $param = [''];
+            $param[] = array_shift($args);
+            $param[] = $args;
             unset($args);
 
             if (class_exists($fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method))) {
-                array_shift($parameter);
+                array_shift($param);
 
-                return $fn(...$parameter);
+                return $fn(...$param);
             }
 
             $extend = un_camelize($method);
 
             if (isset($this->extends[$extend])) {
-                return $this->callExtend($extend, $parameter);
+                return $this->callExtend($extend, $param);
             }
         }
 
@@ -583,10 +583,10 @@ class Validator implements IValidator
         $rules = (array) $rules;
 
         foreach ($this->rules[$field] as $rule) {
-            list($rule, $parameter) = $this->parseRule($rule);
+            list($rule, $param) = $this->parseRule($rule);
 
             if (in_array($rule, $rules, true)) {
-                return [$rule, $parameter];
+                return [$rule, $param];
             }
         }
 
@@ -746,9 +746,8 @@ class Validator implements IValidator
     protected function getSkipRule(): array
     {
         return array_merge([
-            static::CONDITION_EXISTS,
-            static::CONDITION_MUST,
-            static::CONDITION_VALUE,
+            static::OPTIONAL,
+            static::MUST,
             static::SKIP_SELF,
             static::SKIP_OTHER,
         ], $this->skipRule);
@@ -779,19 +778,19 @@ class Validator implements IValidator
      */
     protected function parseRule(string $rule): array
     {
-        $parameter = [];
+        $param = [];
 
         if (false !== strpos($rule, ':')) {
-            list($rule, $parameter) = explode(':', $rule, 2);
+            list($rule, $param) = explode(':', $rule, 2);
 
             if (isset($this->alias[$rule])) {
                 $rule = $this->alias[$rule];
             }
 
-            $parameter = $this->parseParameters($rule, $parameter);
+            $param = $this->parseParams($rule, $param);
         }
 
-        return [trim($rule), $parameter];
+        return [trim($rule), $param];
     }
 
     /**
@@ -888,69 +887,37 @@ class Validator implements IValidator
     }
 
     /**
-     * 是否存在单个字段验证规则
-     * 不带条件的简单规则.
+     * 是否存在单个字段验证规则.
      *
      * @param string $field
-     * @param string $rule
-     *
-     * @return mixed
-     */
-    protected function hasFieldRuleWithoutParameter(string $field, string $rule)
-    {
-        $result = $this->hasFieldRuleWithoutParameterReal($field, $rule);
-
-        if (!$result && $rule === static::DEFAULT_CONDITION) {
-            return !$this->hasFieldRuleWithoutParameterReal($field, [
-                static::CONDITION_MUST,
-                static::CONDITION_VALUE,
-            ]);
-        }
-
-        return $result;
-    }
-
-    /**
-     * 是否存在单个字段验证规则
-     * 不带条件的简单规则.
-     *
-     * @param string $field
-     * @param mixed  $rules
+     * @param array  $rules
      *
      * @return bool
      */
-    protected function hasFieldRuleWithoutParameterReal(string $field, $rules): bool
+    protected function hasFieldRuleWithParam(string $field, string $rule): bool
     {
         if (!isset($this->rules[$field])) {
             return false;
         }
 
-        $rules = (array) $rules;
-
-        foreach ($rules as $rule) {
-            if (in_array($rule, $this->rules[$field], true)) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($rule, $this->rules[$field], true);
     }
 
     /**
      * 解析变量.
      *
      * @param string $rule
-     * @param string $parameter
+     * @param string $param
      *
      * @return array
      */
-    protected function parseParameters(string $rule, string $parameter): array
+    protected function parseParams(string $rule, string $param): array
     {
         if ('regex' === strtolower($rule)) {
-            return [$parameter];
+            return [$param];
         }
 
-        return explode(',', $parameter);
+        return explode(',', $param);
     }
 
     /**
@@ -963,7 +930,7 @@ class Validator implements IValidator
      */
     protected function doValidateItem(string $field, string $rule)
     {
-        list($rule, $parameter) = $this->parseRule($rule);
+        list($rule, $param) = $this->parseRule($rule);
 
         if ('' === $rule) {
             return;
@@ -971,21 +938,15 @@ class Validator implements IValidator
 
         $fieldValue = $this->getFieldValue($field);
 
-        // 默认情况下存在即验证，没有设置字段则跳过
-        if (!$this->hasFieldValue($field) &&
-            $this->hasFieldRuleWithoutParameter($field, static::CONDITION_EXISTS)) {
-            return;
-        }
-
-        // 值不为空就验证，那么为的空的值将会跳过
-        if (empty($fieldValue) &&
-            $this->hasFieldRuleWithoutParameter($field, static::CONDITION_VALUE)) {
+        // 可选字段无需验证
+        if (null === $fieldValue &&
+            $this->hasFieldRuleWithParam($field, static::OPTIONAL)) {
             return;
         }
 
         if (class_exists($fn = __NAMESPACE__.'\\Helper\\validate_'.$rule)) {
-            if (!$fn($fieldValue, $parameter, $this, $field)) {
-                $this->addFailure($field, $rule, $parameter);
+            if (!$fn($fieldValue, $param, $this, $field)) {
+                $this->addFailure($field, $rule, $param);
 
                 return false;
             }
@@ -996,13 +957,13 @@ class Validator implements IValidator
                 $validateRule = new $className();
             }
 
-            if (false === $validateRule->validate($fieldValue, $parameter, $this, $field)) {
-                $this->addFailure($field, $rule, $parameter);
+            if (false === $validateRule->validate($fieldValue, $param, $this, $field)) {
+                $this->addFailure($field, $rule, $param);
 
                 return false;
             }
-        } elseif (!$this->{'validate'.$camelizeRule}($fieldValue, $parameter, $this, $field)) {
-            $this->addFailure($field, $rule, $parameter);
+        } elseif (!$this->{'validate'.$camelizeRule}($fieldValue, $param, $this, $field)) {
+            $this->addFailure($field, $rule, $param);
 
             return false;
         }
@@ -1019,7 +980,7 @@ class Validator implements IValidator
      */
     protected function shouldSkipOther(string $field): bool
     {
-        return $this->hasFieldRuleWithoutParameter($field, static::SKIP_OTHER);
+        return $this->hasFieldRuleWithParam($field, static::SKIP_OTHER);
     }
 
     /**
@@ -1031,7 +992,7 @@ class Validator implements IValidator
      */
     protected function shouldSkipSelf(string $field): bool
     {
-        return $this->hasFieldRuleWithoutParameter($field, static::SKIP_SELF);
+        return $this->hasFieldRuleWithParam($field, static::SKIP_SELF);
     }
 
     /**
@@ -1039,13 +1000,13 @@ class Validator implements IValidator
      *
      * @param string $field
      * @param string $rule
-     * @param array  $parameter
+     * @param array  $param
      */
-    protected function addFailure(string $field, string $rule, array $parameter): void
+    protected function addFailure(string $field, string $rule, array $param): void
     {
-        $this->addError($field, $rule, $parameter);
+        $this->addError($field, $rule, $param);
 
-        $this->failedRules[$field][$rule] = $parameter;
+        $this->failedRules[$field][$rule] = $param;
     }
 
     /**
@@ -1053,9 +1014,9 @@ class Validator implements IValidator
      *
      * @param string $field
      * @param string $rule
-     * @param array  $parameter
+     * @param array  $param
      */
-    protected function addError(string $field, string $rule, array $parameter): void
+    protected function addError(string $field, string $rule, array $param): void
     {
         $message = $this->getFieldRuleMessage($field, $rule);
 
@@ -1063,12 +1024,12 @@ class Validator implements IValidator
             'field' => $this->parseFieldName($field),
         ];
 
-        if (!$this->isImplodeRuleParameter($rule)) {
-            foreach ($parameter as $key => $parameter) {
-                $replace['rule'.($key ?: '')] = $parameter;
+        if (!$this->isImplodeRuleParam($rule)) {
+            foreach ($param as $key => $param) {
+                $replace['rule'.($key ?: '')] = $param;
             }
         } else {
-            $replace['rule'] = implode(',', $parameter);
+            $replace['rule'] = implode(',', $param);
         }
 
         $message = preg_replace_callback('/{(.+?)}/', function ($matche) use ($replace) {
@@ -1105,25 +1066,13 @@ class Validator implements IValidator
     }
 
     /**
-     * 是否存在字段的值
-     *
-     * @param string $rule
-     *
-     * @return bool
-     */
-    protected function hasFieldValue(string $rule): bool
-    {
-        return array_key_exists($rule, $this->data);
-    }
-
-    /**
      * 返回需要合并的规则参数.
      *
      * @param string $rule
      *
      * @return bool
      */
-    protected function isImplodeRuleParameter(string $rule): bool
+    protected function isImplodeRuleParam(string $rule): bool
     {
         return in_array($rule, [
             'in',
@@ -1137,13 +1086,13 @@ class Validator implements IValidator
      * 调用自定义验证器类.
      *
      * @param string $extend
-     * @param array  $parameter
+     * @param array  $param
      *
      * @throws \InvalidArgumentException
      *
      * @return bool
      */
-    protected function callClassExtend(string $extend, array $parameter): bool
+    protected function callClassExtend(string $extend, array $param): bool
     {
         if (!$this->container) {
             $e = 'Container was not set.';
@@ -1164,33 +1113,33 @@ class Validator implements IValidator
             throw new InvalidArgumentException($e);
         }
 
-        $parameter[] = $this;
+        $param[] = $this;
 
-        return $extend->{$method}(...$parameter);
+        return $extend->{$method}(...$param);
     }
 
     /**
      * 调用自定义验证器.
      *
      * @param string $rule
-     * @param array  $parameter
+     * @param array  $param
      *
      * @throws \InvalidArgumentException
      *
      * @return bool
      */
-    protected function callExtend(string $rule, array $parameter): bool
+    protected function callExtend(string $rule, array $param): bool
     {
         $extends = $this->extends[$rule];
 
         if (is_callable($extends)) {
-            $parameter[] = $this;
+            $param[] = $this;
 
-            return $extends(...$parameter);
+            return $extends(...$param);
         }
 
         if (is_string($extends)) {
-            return $this->callClassExtend($extends, $parameter);
+            return $this->callClassExtend($extends, $param);
         }
 
         $e = sprintf('Extend in rule %s is not valid.', $rule);

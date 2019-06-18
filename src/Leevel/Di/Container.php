@@ -119,7 +119,7 @@ class Container implements IContainer, ArrayAccess
      */
     public function __clone()
     {
-        $e = 'Ioc container disallowed clone.';
+        $e = 'IOC container disallowed clone.';
 
         throw new RuntimeException($e);
     }
@@ -800,7 +800,7 @@ class Container implements IContainer, ArrayAccess
         foreach ($param as $key => $item) {
             try {
                 switch (true) {
-                    case $argsclass = $this->parseParameterClass($item):
+                    case $argsclass = $this->parseParamClass($item):
                         $argsclass = (string) $argsclass;
 
                         if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsclass) {
@@ -874,7 +874,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return bool|string
      */
-    protected function parseParameterClass(ReflectionParameter $param)
+    protected function parseParamClass(ReflectionParameter $param)
     {
         $classObject = $param->getClass();
 

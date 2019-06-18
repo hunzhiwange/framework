@@ -40,9 +40,9 @@ class EqualToTest extends TestCase
      *
      * @param mixed  $value
      * @param mixed  $valueCompare
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, $valueCompare, string $parameter)
+    public function testBaseUse($value, $valueCompare, string $param)
     {
         $validate = new Validator(
             [
@@ -51,7 +51,7 @@ class EqualToTest extends TestCase
                 'name3' => 'test',
             ],
             [
-                'name'     => 'equal_to:'.$parameter,
+                'name'     => 'equal_to:'.$param,
             ]
         );
 
@@ -72,9 +72,9 @@ class EqualToTest extends TestCase
      *
      * @param mixed  $value
      * @param mixed  $valueCompare
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, $valueCompare, string $parameter)
+    public function testBad($value, $valueCompare, string $param)
     {
         $validate = new Validator(
             [
@@ -83,7 +83,7 @@ class EqualToTest extends TestCase
                 'name3' => new stdClass(),
             ],
             [
-                'name'     => 'equal_to:'.$parameter,
+                'name'     => 'equal_to:'.$param,
             ]
         );
 

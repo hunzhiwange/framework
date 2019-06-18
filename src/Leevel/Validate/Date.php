@@ -46,7 +46,7 @@ trait Date
      * 校验日期.
      *
      * @param mixed                       $value
-     * @param array                       $parameter
+     * @param array                       $param
      * @param \Leevel\Validate\IValidator $validator
      * @param string                      $field
      * @param bool                        $before
@@ -55,14 +55,14 @@ trait Date
      *
      * @return bool
      */
-    public function validateDate($value, array $parameter, IValidator $validator, string $field, bool $before = false): bool
+    public function validateDate($value, array $param, IValidator $validator, string $field, bool $before = false): bool
     {
         if (!is_string($value)) {
             return false;
         }
 
-        if (!array_key_exists(0, $parameter)) {
-            $e = 'Missing the first element of parameter.';
+        if (!array_key_exists(0, $param)) {
+            $e = 'Missing the first element of param.';
 
             throw new InvalidArgumentException($e);
         }
@@ -70,11 +70,11 @@ trait Date
         $this->validator = $validator;
 
         if ($format = $this->getDateFormat($field)) {
-            return $this->doWithFormat($format, $value, $parameter, $before);
+            return $this->doWithFormat($format, $value, $param, $before);
         }
 
-        if (!($time = strtotime($parameter[0]))) {
-            if (null === ($_ = $validator->getFieldValue($parameter[0]))) {
+        if (!($time = strtotime($param[0]))) {
+            if (null === ($_ = $validator->getFieldValue($param[0]))) {
                 return false;
             }
 
@@ -121,20 +121,20 @@ trait Date
      *
      * @param string $format
      * @param mixed  $value
-     * @param array  $parameter
+     * @param array  $param
      * @param bool   $before
      *
      * @return bool
      */
-    protected function doWithFormat(string $format, $value, array $parameter, bool $before = false): bool
+    protected function doWithFormat(string $format, $value, array $param, bool $before = false): bool
     {
-        $parameter[0] = $this->validator->getFieldValue($parameter[0]) ?: $parameter[0];
+        $param[0] = $this->validator->getFieldValue($param[0]) ?: $param[0];
 
         if (true === $before) {
-            list($parameter[0], $value) = [$value, $parameter[0]];
+            list($param[0], $value) = [$value, $param[0]];
         }
 
-        return $this->doCheckDate($format, $parameter[0], $value);
+        return $this->doCheckDate($format, $param[0], $value);
     }
 
     /**

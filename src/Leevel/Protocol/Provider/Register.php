@@ -37,6 +37,7 @@ use Leevel\Protocol\WebsocketServer;
  * @since 2017.12.21
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Register extends Provider
 {

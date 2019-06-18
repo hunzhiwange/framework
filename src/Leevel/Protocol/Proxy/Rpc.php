@@ -30,6 +30,7 @@ use Leevel\Di\Container;
  * @since 2018.12.18
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Rpc
 {

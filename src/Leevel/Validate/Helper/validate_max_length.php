@@ -26,13 +26,13 @@ use InvalidArgumentException;
  * 验证数据最大长度.
  *
  * @param mixed $value
- * @param array $parameter
+ * @param array $param
  *
  * @throws \InvalidArgumentException
  *
  * @return bool
  */
-function validate_max_length($value, array $parameter): bool
+function validate_max_length($value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;
@@ -40,13 +40,13 @@ function validate_max_length($value, array $parameter): bool
 
     $value = (string) ($value);
 
-    if (!array_key_exists(0, $parameter)) {
-        $e = 'Missing the first element of parameter.';
+    if (!array_key_exists(0, $param)) {
+        $e = 'Missing the first element of param.';
 
         throw new InvalidArgumentException($e);
     }
 
-    return mb_strlen($value, 'utf-8') <= (int) $parameter[0];
+    return mb_strlen($value, 'utf-8') <= (int) $param[0];
 }
 
 class validate_max_length

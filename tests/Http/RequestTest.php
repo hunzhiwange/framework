@@ -64,10 +64,10 @@ class RequestTest extends TestCase
     {
         $request = new Request();
         $request->reset(['foo' => 'bar']);
-        $this->assertSame('bar', $request->query->get('foo'), '->reset() takes an array of query parameters as its first argument');
+        $this->assertSame('bar', $request->query->get('foo'), '->reset() takes an array of query params as its first argument');
 
         $request->reset([], ['foo' => 'bar']);
-        $this->assertSame('bar', $request->request->get('foo'), '->reset() takes an array of request parameters as its second argument');
+        $this->assertSame('bar', $request->request->get('foo'), '->reset() takes an array of request params as its second argument');
 
         $request->reset([], [], ['foo' => 'bar']);
         $this->assertSame('bar', $request->params->get('foo'), '->reset() takes an array of params as its third argument');
@@ -237,13 +237,13 @@ class RequestTest extends TestCase
     public function getQueryStringNormalizationData()
     {
         return [
-            ['foo', 'foo', 'works with valueless parameters'],
+            ['foo', 'foo', 'works with valueless params'],
             ['foo=', 'foo=', 'includes a dangling equal sign'],
-            ['bar=&foo=bar', 'bar=&foo=bar', '->works with empty parameters'],
+            ['bar=&foo=bar', 'bar=&foo=bar', '->works with empty params'],
             ['foo=bar&bar=', 'foo=bar&bar=', ''],
             ['him=John%20Doe&her=Jane+Doe', 'him=John%20Doe&her=Jane+Doe', ''],
             ['foo[]=1&foo[]=2', 'foo[]=1&foo[]=2', 'allows array notation'],
-            ['foo=1&foo=2', 'foo=1&foo=2', 'allows repeated parameters'],
+            ['foo=1&foo=2', 'foo=1&foo=2', 'allows repeated params'],
             ['pa%3Dram=foo%26bar%3Dbaz&test=test', 'pa%3Dram=foo%26bar%3Dbaz&test=test', 'works with encoded delimiters'],
             ['0', '0', 'allows "0"'],
             ['Jane Doe&John%20Doe', 'Jane Doe&John%20Doe', ''],
@@ -527,7 +527,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isRealAcceptJson());
     }
 
-    public function testGetParameterPrecedence(): void
+    public function testGetParamPrecedence(): void
     {
         $request = new Request();
         $request->params->set('foo', 'attr');

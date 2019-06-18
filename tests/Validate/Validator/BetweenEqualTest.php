@@ -38,16 +38,16 @@ class BetweenEqualTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, string $parameter)
+    public function testBaseUse($value, string $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'between_equal:'.$parameter,
+                'name'     => 'between_equal:'.$param,
             ]
         );
 
@@ -75,16 +75,16 @@ class BetweenEqualTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, string $parameter)
+    public function testBad($value, string $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'between_equal:'.$parameter,
+                'name'     => 'between_equal:'.$param,
             ]
         );
 

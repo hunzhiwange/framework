@@ -37,6 +37,7 @@ use Swoole\Http\Server as SwooleHttpServer;
  * @since 2017.12.25
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class HttpServer extends Server implements IServer
 {

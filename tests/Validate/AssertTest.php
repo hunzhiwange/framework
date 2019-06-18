@@ -60,7 +60,7 @@ class AssertTest extends TestCase
      *
      * ``` php
      * Assert::foo($value, string $message);
-     * Assert::foo($value, array $parameter, string $message);
+     * Assert::foo($value, array $param, string $message);
      * ```
      * ",
      *     note="",

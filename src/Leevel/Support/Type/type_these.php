@@ -36,7 +36,7 @@ function type_these($value, $types): bool
 {
     if (!type($types, 'string') &&
         !type_array($types, ['string'])) {
-        $e = 'The parameter must be string or an array of string elements.';
+        $e = 'The param must be string or an array of string elements.';
 
         throw new InvalidArgumentException($e);
     }

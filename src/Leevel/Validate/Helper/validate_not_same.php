@@ -26,21 +26,21 @@ use InvalidArgumentException;
  * 两个值是否不完全相同.
  *
  * @param mixed $value
- * @param array $parameter
+ * @param array $param
  *
  * @throws \InvalidArgumentException
  *
  * @return bool
  */
-function validate_not_same($value, array $parameter): bool
+function validate_not_same($value, array $param): bool
 {
-    if (!array_key_exists(0, $parameter)) {
-        $e = 'Missing the first element of parameter.';
+    if (!array_key_exists(0, $param)) {
+        $e = 'Missing the first element of param.';
 
         throw new InvalidArgumentException($e);
     }
 
-    return $value !== $parameter[0];
+    return $value !== $param[0];
 }
 
 class validate_not_same

@@ -38,16 +38,16 @@ class EqualLessThanTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBaseUse($value, $parameter)
+    public function testBaseUse($value, $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'equal_less_than:'.$parameter,
+                'name'     => 'equal_less_than:'.$param,
             ]
         );
 
@@ -76,16 +76,16 @@ class EqualLessThanTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBad($value, $parameter)
+    public function testBad($value, $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'equal_less_than:'.$parameter,
+                'name'     => 'equal_less_than:'.$param,
             ]
         );
 

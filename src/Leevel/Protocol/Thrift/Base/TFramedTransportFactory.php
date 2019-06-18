@@ -34,6 +34,7 @@ use Thrift\Transport\TTransport;
  * @version 1.0
  *
  * @see https://www.cnblogs.com/brucewoo/archive/2013/07/31/3226856.html
+ * @codeCoverageIgnore
  */
 class TFramedTransportFactory extends TTransportFactory
 {

@@ -26,25 +26,25 @@ use InvalidArgumentException;
  * 验证 IP 许可.
  *
  * @param mixed $value
- * @param array $parameter
+ * @param array $param
  *
  * @throws \InvalidArgumentException
  *
  * @return bool
  */
-function validate_allowed_ip($value, array $parameter): bool
+function validate_allowed_ip($value, array $param): bool
 {
     if (!is_string($value)) {
         return false;
     }
 
-    if (!array_key_exists(0, $parameter)) {
-        $e = 'Missing the first element of parameter.';
+    if (!array_key_exists(0, $param)) {
+        $e = 'Missing the first element of param.';
 
         throw new InvalidArgumentException($e);
     }
 
-    return in_array($value, $parameter, true);
+    return in_array($value, $param, true);
 }
 
 class validate_allowed_ip

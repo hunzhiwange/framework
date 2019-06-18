@@ -39,6 +39,7 @@ use Thrift\Transport\TSocket;
  * @since 2018.04.03
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Rpc
 {

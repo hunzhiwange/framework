@@ -39,16 +39,16 @@ class RegexTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBaseUse($value, string $parameter)
+    public function testBaseUse($value, string $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'regex:'.$parameter,
+                'name'     => 'regex:'.$param,
             ]
         );
 
@@ -71,16 +71,16 @@ class RegexTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBad($value, $parameter)
+    public function testBad($value, $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'regex:'.$parameter,
+                'name'     => 'regex:'.$param,
             ]
         );
 

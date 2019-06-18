@@ -35,6 +35,7 @@ use Thrift\Transport\TFramedTransport;
  * @version 1.0
  *
  * @see swoole/thrift-rpc-server (https://github.com/swoole/thrift-rpc-server)
+ * @codeCoverageIgnore
  */
 class Socket extends TFramedTransport
 {

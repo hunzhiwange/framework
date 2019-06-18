@@ -26,22 +26,22 @@ use InvalidArgumentException;
  * 处于 between 范围，不包含等于.
  *
  * @param mixed $value
- * @param array $parameter
+ * @param array $param
  *
  * @throws \InvalidArgumentException
  *
  * @return bool
  */
-function validate_between($value, array $parameter): bool
+function validate_between($value, array $param): bool
 {
-    if (!array_key_exists(0, $parameter) ||
-        !array_key_exists(1, $parameter)) {
-        $e = 'Missing the first or second element of parameter.';
+    if (!array_key_exists(0, $param) ||
+        !array_key_exists(1, $param)) {
+        $e = 'Missing the first or second element of param.';
 
         throw new InvalidArgumentException($e);
     }
 
-    return $value > $parameter[0] && $value < $parameter[1];
+    return $value > $param[0] && $value < $param[1];
 }
 
 class validate_between

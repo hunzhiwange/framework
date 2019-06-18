@@ -238,7 +238,7 @@ abstract class Manager
     protected function parseOptionAndUnique($options = []): array
     {
         return [
-            $options = $this->parseOptionParameter($options),
+            $options = $this->parseOptionParam($options),
             $this->normalizeUnique($options),
         ];
     }
@@ -250,7 +250,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function parseOptionParameter($options = []): array
+    protected function parseOptionParam($options = []): array
     {
         if (null === $options) {
             return [];

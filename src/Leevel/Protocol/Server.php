@@ -38,6 +38,7 @@ use Swoole\Server as SwooleServer;
  * @see https://www.cnblogs.com/luojianqun/p/5355439.html
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 abstract class Server
 {

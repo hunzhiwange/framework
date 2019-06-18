@@ -33,6 +33,7 @@ use Leevel\Protocol\IServer;
  * @since 2018.12.13
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class HotOverload extends Process
 {

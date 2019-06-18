@@ -38,13 +38,10 @@ class PipelineTest extends TestCase
 {
     public function testPipelineBasic(): void
     {
-        $result = (new Pipeline(new Container()))->
-
-        send(['hello world'])->
-
-        through(['Tests\Pipeline\First', 'Tests\Pipeline\Second'])->
-
-        then();
+        $result = (new Pipeline(new Container()))
+            ->send(['hello world'])
+            ->through(['Tests\\Pipeline\\First', 'Tests\\Pipeline\\Second'])
+            ->then();
 
         $this->assertSame('i am in first handle and get the send:hello world', $_SERVER['test.first']);
         $this->assertSame('i am in second handle and get the send:hello world', $_SERVER['test.second']);
@@ -58,13 +55,10 @@ class PipelineTest extends TestCase
             $_SERVER['test.then'] = 'i am end and get the send:'.$send;
         };
 
-        $result = (new Pipeline(new Container()))->
-
-        send(['foo bar'])->
-
-        through(['Tests\Pipeline\First', 'Tests\Pipeline\Second'])->
-
-        then($thenCallback);
+        $result = (new Pipeline(new Container()))
+            ->send(['foo bar'])
+            ->through(['Tests\\Pipeline\\First', 'Tests\\Pipeline\\Second'])
+            ->then($thenCallback);
 
         $this->assertSame('i am in first handle and get the send:foo bar', $_SERVER['test.first']);
         $this->assertSame('i am in second handle and get the send:foo bar', $_SERVER['test.second']);
@@ -95,13 +89,10 @@ class PipelineTest extends TestCase
             return 'return 2';
         };
 
-        $result = (new Pipeline(new Container()))->
-
-        send(['return test'])->
-
-        through([$pipe1, $pipe2])->
-
-        then();
+        $result = (new Pipeline(new Container()))
+            ->send(['return test'])
+            ->through([$pipe1, $pipe2])
+            ->then();
 
         $this->assertSame('1 and get the send:return test', $_SERVER['test.1']);
         $this->assertSame('2 and get the send:return test', $_SERVER['test.2']);
@@ -111,15 +102,12 @@ class PipelineTest extends TestCase
 
     public function testPipelineWithDiConstruct(): void
     {
-        $result = (new Pipeline(new Container()))->
+        $result = (new Pipeline(new Container()))
+            ->send(['hello world'])
+            ->through(['Tests\\Pipeline\\DiConstruct'])
+            ->then();
 
-        send(['hello world'])->
-
-        through(['Tests\Pipeline\DiConstruct'])->
-
-        then();
-
-        $this->assertSame('get class:Tests\Pipeline\TestClass', $_SERVER['test.DiConstruct']);
+        $this->assertSame('get class:Tests\\Pipeline\\TestClass', $_SERVER['test.DiConstruct']);
 
         unset($_SERVER['test.DiConstruct']);
     }
@@ -130,11 +118,9 @@ class PipelineTest extends TestCase
             $this->assertCount(1, func_get_args());
         };
 
-        $result = (new Pipeline(new Container()))->
-
-        through([$pipe])->
-
-        then();
+        $result = (new Pipeline(new Container()))
+            ->through([$pipe])
+            ->then();
     }
 
     public function testPipelineWithSendMoreParams(): void
@@ -146,15 +132,11 @@ class PipelineTest extends TestCase
             $this->assertSame($send4, 'wow');
         };
 
-        $result = (new Pipeline(new Container()))->
-
-        send(['hello world'])->
-
-        send(['foo', 'bar', 'wow'])->
-
-        through([$pipe])->
-
-        then();
+        $result = (new Pipeline(new Container()))
+            ->send(['hello world'])
+            ->send(['foo', 'bar', 'wow'])
+            ->through([$pipe])
+            ->then();
     }
 
     public function testPipelineWithThroughMore(): void
@@ -167,15 +149,11 @@ class PipelineTest extends TestCase
             $next();
         };
 
-        $result = (new Pipeline(new Container()))->
-
-        through([$pipe])->
-
-        through([$pipe, $pipe, $pipe])->
-
-        through([$pipe, $pipe])->
-
-        then();
+        $result = (new Pipeline(new Container()))
+            ->through([$pipe])
+            ->through([$pipe, $pipe, $pipe])
+            ->through([$pipe, $pipe])
+            ->then();
 
         $this->assertSame(6, $_SERVER['test.Through.count']);
 
@@ -184,15 +162,13 @@ class PipelineTest extends TestCase
 
     public function testPipelineWithPipeArgs(): void
     {
-        $parameters = ['one', 'two'];
+        $params = ['one', 'two'];
 
-        $result = (new Pipeline(new Container()))->
+        $result = (new Pipeline(new Container()))
+            ->through(['Tests\\Pipeline\\WithArgs:'.implode(',', $params)])
+            ->then();
 
-        through(['Tests\Pipeline\WithArgs:'.implode(',', $parameters)])->
-
-        then();
-
-        $this->assertSame($parameters, $_SERVER['test.WithArgs']);
+        $this->assertSame($params, $_SERVER['test.WithArgs']);
 
         unset($_SERVER['test.WithArgs']);
     }
@@ -204,22 +180,17 @@ class PipelineTest extends TestCase
             'Stage is invalid.'
         );
 
-        (new Pipeline(new Container()))->
-
-        through(['Tests\Pipeline\NotFound'])->
-
-        then();
+        (new Pipeline(new Container()))
+            ->through(['Tests\\Pipeline\\NotFound'])
+            ->then();
     }
 
     public function testStageWithAtMethod(): void
     {
-        (new Pipeline(new Container()))->
-
-        send(['hello world'])->
-
-        through(['Tests\Pipeline\WithAtMethod@run'])->
-
-        then();
+        (new Pipeline(new Container()))
+            ->send(['hello world'])
+            ->through(['Tests\\Pipeline\\WithAtMethod@run'])
+            ->then();
 
         $this->assertSame('i am in at.method handle and get the send:hello world', $_SERVER['test.at.method']);
 

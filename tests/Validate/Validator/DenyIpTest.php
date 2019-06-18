@@ -39,16 +39,16 @@ class DenyIpTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, string $parameter)
+    public function testBaseUse($value, string $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'deny_ip:'.$parameter,
+                'name'     => 'deny_ip:'.$param,
             ]
         );
 
@@ -67,16 +67,16 @@ class DenyIpTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, string $parameter)
+    public function testBad($value, string $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'deny_ip:'.$parameter,
+                'name'     => 'deny_ip:'.$param,
             ]
             );
 

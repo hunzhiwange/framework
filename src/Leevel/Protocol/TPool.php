@@ -30,6 +30,7 @@ use Leevel\Protocol\Proxy\Pool;
  * @since 2018.12.17
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 trait TPool
 {
