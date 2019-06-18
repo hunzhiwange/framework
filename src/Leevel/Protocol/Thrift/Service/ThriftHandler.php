@@ -37,6 +37,7 @@ use Leevel\Router\IRouter;
  * @since 2018.04.01
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class ThriftHandler implements ThriftIf
 {

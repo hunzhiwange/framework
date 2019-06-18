@@ -38,6 +38,7 @@ use Thrift\Server\TServerSocket;
  * @see https://wiki.swoole.com/wiki/page/287.html
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class RpcServer extends Server implements IServer
 {

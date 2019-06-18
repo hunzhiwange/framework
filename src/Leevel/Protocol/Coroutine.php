@@ -31,6 +31,7 @@ use Swoole\Coroutine as SwooleCoroutine;
  * @since 2018.12.14
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Coroutine implements ICoroutine
 {

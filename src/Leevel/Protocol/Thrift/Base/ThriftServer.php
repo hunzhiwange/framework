@@ -34,6 +34,7 @@ use Throwable;
  * @version 1.0
  *
  * @see swoole/thrift-rpc-server (https://github.com/swoole/thrift-rpc-server)
+ * @codeCoverageIgnore
  */
 class ThriftServer extends TNonblockingServer
 {

@@ -36,6 +36,7 @@ use Swoole\Websocket\Server as SwooleWebsocketServer;
  * @see https://wiki.swoole.com/wiki/page/397.html
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class WebsocketServer extends HttpServer implements IServer
 {

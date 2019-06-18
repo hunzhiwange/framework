@@ -30,6 +30,7 @@ use Leevel\Protocol\IPool;
  * @since 2018.12.15
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Pool extends Process
 {
