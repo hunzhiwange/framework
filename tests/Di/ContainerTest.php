@@ -706,7 +706,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'Ioc container disallowed clone.'
+            'IOC container disallowed clone.'
         );
 
         $container = new Container();

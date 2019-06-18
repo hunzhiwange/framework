@@ -119,7 +119,7 @@ class Container implements IContainer, ArrayAccess
      */
     public function __clone()
     {
-        $e = 'Ioc container disallowed clone.';
+        $e = 'IOC container disallowed clone.';
 
         throw new RuntimeException($e);
     }
