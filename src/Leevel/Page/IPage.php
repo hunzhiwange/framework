@@ -91,11 +91,11 @@ interface IPage
     /**
      * 设置分页条件.
      *
-     * @param array $parameter
+     * @param array $param
      *
      * @return \Leevel\Page\IPage
      */
-    public function parameter(array $parameter): self;
+    public function param(array $param): self;
 
     /**
      * 添加分页条件.
@@ -105,7 +105,7 @@ interface IPage
      *
      * @return \Leevel\Page\IPage
      */
-    public function addParameter(string $key, $value): self;
+    public function addParam(string $key, $value): self;
 
     /**
      * 设置渲染参数.

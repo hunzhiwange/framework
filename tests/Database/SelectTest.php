@@ -1231,7 +1231,7 @@ class SelectTest extends TestCase
     public function testFindByFooAndBarArgsWasNotMatched(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Parameters of findBy or findAllBy was not matched.');
+        $this->expectExceptionMessage('Params of findBy or findAllBy was not matched.');
 
         $connect = $this->createDatabaseConnectMock();
 

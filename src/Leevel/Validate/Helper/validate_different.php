@@ -27,22 +27,22 @@ use Leevel\Validate\IValidator;
  * 两个字段是否不同.
  *
  * @param mixed                       $value
- * @param array                       $parameter
+ * @param array                       $param
  * @param \Leevel\Validate\IValidator $validator
  *
  * @throws \InvalidArgumentException
  *
  * @return bool
  */
-function validate_different($value, array $parameter, IValidator $validator): bool
+function validate_different($value, array $param, IValidator $validator): bool
 {
-    if (!array_key_exists(0, $parameter)) {
-        $e = 'Missing the first element of parameter.';
+    if (!array_key_exists(0, $param)) {
+        $e = 'Missing the first element of param.';
 
         throw new InvalidArgumentException($e);
     }
 
-    return $value !== $validator->getFieldValue($parameter[0]);
+    return $value !== $validator->getFieldValue($param[0]);
 }
 
 class validate_different

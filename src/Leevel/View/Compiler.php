@@ -421,7 +421,7 @@ class Compiler implements ICompiler
                     } elseif (3 === $num) {
                         $result = "\${$matches[1]} => \${$matches[2]}";
                     } else {
-                        $e = 'The parameter of code.foreach tag can be at most three.';
+                        $e = 'The param of code.foreach tag can be at most three.';
 
                         throw new InvalidArgumentException($e);
                     }

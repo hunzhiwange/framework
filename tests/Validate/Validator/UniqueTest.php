@@ -163,11 +163,11 @@ class UniqueTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function testCheckParameterLengthException(): void
+    public function testCheckParamLengthException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Missing the first element of parameter.'
+            'Missing the first element of param.'
         );
 
         $validate = new Validator(

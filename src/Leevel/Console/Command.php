@@ -117,7 +117,7 @@ abstract class Command extends SymfonyCommand
 
         $this->setDescription($this->description);
         $this->setHelp($this->help);
-        $this->specifyParameters();
+        $this->specifyParams();
     }
 
     /**
@@ -438,7 +438,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 定义参数和配置.
      */
-    protected function specifyParameters(): void
+    protected function specifyParams(): void
     {
         foreach ($this->getArguments() as $argument) {
             $this->addArgument(...$argument);

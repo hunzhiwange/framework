@@ -38,16 +38,16 @@ class GreaterThanTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBaseUse($value, $parameter)
+    public function testBaseUse($value, $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'greater_than:'.$parameter,
+                'name'     => 'greater_than:'.$param,
             ]
         );
 
@@ -73,16 +73,16 @@ class GreaterThanTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBad($value, $parameter)
+    public function testBad($value, $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'greater_than:'.$parameter,
+                'name'     => 'greater_than:'.$param,
             ]
         );
 

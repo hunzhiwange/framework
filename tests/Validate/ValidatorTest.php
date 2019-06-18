@@ -976,7 +976,7 @@ class ValidatorTest extends TestCase
             ]
         );
 
-        $validate->extend('custom_rule', function ($value, array $parameter, IValidator $validator, string $field): bool {
+        $validate->extend('custom_rule', function ($value, array $param, IValidator $validator, string $field): bool {
             if (1 === $value) {
                 return true;
             }
@@ -1026,7 +1026,7 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator();
 
-        $validate->extend('custom_foo_bar', function (string $field, $value, array $parameter): bool {
+        $validate->extend('custom_foo_bar', function (string $field, $value, array $param): bool {
             if ('成都' === $value) {
                 return true;
             }
@@ -1050,11 +1050,11 @@ class ValidatorTest extends TestCase
         $validate->notFoundMethod();
     }
 
-    public function testCheckParameterLengthException(): void
+    public function testCheckParamLengthException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Missing the first element of parameter.'
+            'Missing the first element of param.'
         );
 
         $validate = new Validator(
@@ -1705,7 +1705,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
-    public function testHasFieldRuleWithoutParameterRealWithRuleNotSet(): void
+    public function testHasFieldRuleWithoutParamRealWithRuleNotSet(): void
     {
         $validate = new Validator(
             [
@@ -1721,15 +1721,15 @@ class ValidatorTest extends TestCase
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
-        $this->assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithParameter', ['name', 'required']));
-        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParameter', ['name', 'foo']));
-        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParameter', ['bar', '']));
+        $this->assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'required']));
+        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'foo']));
+        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['bar', '']));
     }
 }
 
 class ExtendClassTest1
 {
-    public function handle($value, array $parameter, IValidator $validator, string $field): bool
+    public function handle($value, array $param, IValidator $validator, string $field): bool
     {
         if (1 === $value) {
             return true;
@@ -1738,7 +1738,7 @@ class ExtendClassTest1
         return false;
     }
 
-    public function handle2($value, array $parameter, IValidator $validator, string $field): bool
+    public function handle2($value, array $param, IValidator $validator, string $field): bool
     {
         if (2 === $value) {
             return true;
@@ -1750,7 +1750,7 @@ class ExtendClassTest1
 
 class ExtendClassTest2
 {
-    public function handle($value, array $parameter, IValidator $validator, string $field): bool
+    public function handle($value, array $param, IValidator $validator, string $field): bool
     {
         if (3 === $value) {
             return true;

@@ -183,7 +183,7 @@ class Select
                 $keys = explode('And', $method);
 
                 if (count($keys) !== count($args)) {
-                    $e = 'Parameters of findBy or findAllBy was not matched.';
+                    $e = 'Params of findBy or findAllBy was not matched.';
 
                     throw new InvalidArgumentException($e);
                 }

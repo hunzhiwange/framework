@@ -795,7 +795,7 @@ class HavingTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The [not] between parameter value must be an array which not less than two elements.'
+            'The [not] between param value must be an array which not less than two elements.'
         );
 
         $connect = $this->createDatabaseConnectMock();
@@ -811,7 +811,7 @@ class HavingTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The [not] between parameter value must be an array which not less than two elements.'
+            'The [not] between param value must be an array which not less than two elements.'
         );
 
         $connect = $this->createDatabaseConnectMock();

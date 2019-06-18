@@ -26,21 +26,21 @@ use InvalidArgumentException;
  * 是否为时间.
  *
  * @param mixed $value
- * @param array $parameter
+ * @param array $param
  *
  * @throws \InvalidArgumentException
  *
  * @return bool
  */
-function validate_date_format($value, array $parameter): bool
+function validate_date_format($value, array $param): bool
 {
-    if (!array_key_exists(0, $parameter)) {
-        $e = 'Missing the first element of parameter.';
+    if (!array_key_exists(0, $param)) {
+        $e = 'Missing the first element of param.';
 
         throw new InvalidArgumentException($e);
     }
 
-    $parse = date_parse_from_format($parameter[0], $value);
+    $parse = date_parse_from_format($param[0], $value);
 
     return 0 === $parse['error_count'] && 0 === $parse['warning_count'];
 }

@@ -26,21 +26,21 @@ use InvalidArgumentException;
  * 数据类型验证
  *
  * @param mixed $value
- * @param array $parameter
+ * @param array $param
  *
  * @throws \InvalidArgumentException
  *
  * @return bool
  */
-function validate_type($value, array $parameter): bool
+function validate_type($value, array $param): bool
 {
-    if (!array_key_exists(0, $parameter)) {
-        $e = 'Missing the first element of parameter.';
+    if (!array_key_exists(0, $param)) {
+        $e = 'Missing the first element of param.';
 
         throw new InvalidArgumentException($e);
     }
 
-    return gettype($value) === $parameter[0];
+    return gettype($value) === $param[0];
 }
 
 class validate_type

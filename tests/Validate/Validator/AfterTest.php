@@ -39,9 +39,9 @@ class AfterTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, string $parameter)
+    public function testBaseUse($value, string $param)
     {
         $validate = new Validator(
             [
@@ -49,7 +49,7 @@ class AfterTest extends TestCase
                 'name2' => '2018-08-10',
             ],
             [
-                'name'     => 'after:'.$parameter,
+                'name'     => 'after:'.$param,
             ]
         );
 
@@ -69,16 +69,16 @@ class AfterTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, string $parameter)
+    public function testBad($value, string $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'after:'.$parameter,
+                'name'     => 'after:'.$param,
             ]
         );
 

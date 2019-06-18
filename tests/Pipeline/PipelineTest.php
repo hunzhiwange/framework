@@ -184,15 +184,15 @@ class PipelineTest extends TestCase
 
     public function testPipelineWithPipeArgs(): void
     {
-        $parameters = ['one', 'two'];
+        $params = ['one', 'two'];
 
         $result = (new Pipeline(new Container()))->
 
-        through(['Tests\Pipeline\WithArgs:'.implode(',', $parameters)])->
+        through(['Tests\Pipeline\WithArgs:'.implode(',', $params)])->
 
         then();
 
-        $this->assertSame($parameters, $_SERVER['test.WithArgs']);
+        $this->assertSame($params, $_SERVER['test.WithArgs']);
 
         unset($_SERVER['test.WithArgs']);
     }

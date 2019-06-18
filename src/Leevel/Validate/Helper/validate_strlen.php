@@ -26,13 +26,13 @@ use InvalidArgumentException;
  * 长度验证
  *
  * @param mixed $value
- * @param array $parameter
+ * @param array $param
  *
  * @throws \InvalidArgumentException
  *
  * @return bool
  */
-function validate_strlen($value, array $parameter): bool
+function validate_strlen($value, array $param): bool
 {
     if (!is_scalar($value)) {
         return false;
@@ -40,13 +40,13 @@ function validate_strlen($value, array $parameter): bool
 
     $value = (string) ($value);
 
-    if (!array_key_exists(0, $parameter)) {
-        $e = 'Missing the first element of parameter.';
+    if (!array_key_exists(0, $param)) {
+        $e = 'Missing the first element of param.';
 
         throw new InvalidArgumentException($e);
     }
 
-    return strlen($value) === (int) $parameter[0];
+    return strlen($value) === (int) $param[0];
 }
 
 class validate_strlen

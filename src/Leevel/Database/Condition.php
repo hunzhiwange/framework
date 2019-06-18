@@ -2388,7 +2388,7 @@ class Condition
                         );
                 } elseif (in_array($cond[1], ['between', 'not between'], true)) {
                     if (!is_array($cond[2]) || count($cond[2]) < 2) {
-                        $e = 'The [not] between parameter value must be '.
+                        $e = 'The [not] between param value must be '.
                             'an array which not less than two elements.';
 
                         throw new InvalidArgumentException($e);

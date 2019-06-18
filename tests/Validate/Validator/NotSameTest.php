@@ -38,16 +38,16 @@ class NotSameTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBaseUse($value, $parameter)
+    public function testBaseUse($value, $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'not_same:'.$parameter,
+                'name'     => 'not_same:'.$param,
             ]
         );
 
@@ -75,16 +75,16 @@ class NotSameTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBad($value, $parameter)
+    public function testBad($value, $param)
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'not_same:'.$parameter,
+                'name'     => 'not_same:'.$param,
             ]
         );
 
