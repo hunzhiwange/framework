@@ -208,7 +208,7 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name'     => 'required|min_length:20|'.IValidator::CONDITION_OPTIONAL,
             ],
             [
                 'name'     => '用户名',
@@ -933,7 +933,7 @@ class ValidatorTest extends TestCase
     public function aliasSkipExceptionProvider()
     {
         return [
-            [Validator::CONDITION_EXISTS],
+            [Validator::CONDITION_OPTIONAL],
             [Validator::CONDITION_MUST],
             [Validator::SKIP_SELF],
             [Validator::SKIP_OTHER],
@@ -1258,7 +1258,7 @@ class ValidatorTest extends TestCase
     public function skipRuleProvider()
     {
         return [
-            [Validator::CONDITION_EXISTS],
+            [Validator::CONDITION_OPTIONAL],
             [Validator::CONDITION_MUST],
             [Validator::SKIP_SELF],
             [Validator::SKIP_OTHER],
@@ -1272,7 +1272,7 @@ class ValidatorTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'required|alpha',
+                'name'     => 'required|alpha|'.IValidator::CONDITION_OPTIONAL,
             ],
             [
                 'name'     => '地名',
@@ -1721,9 +1721,9 @@ class ValidatorTest extends TestCase
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
-        $this->assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['name', ['required']]));
-        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['name', ['foo']]));
-        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['bar', []]));
+        $this->assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithParameter', ['name', 'required']));
+        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParameter', ['name', 'foo']));
+        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParameter', ['bar', '']));
     }
 }
 

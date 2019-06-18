@@ -746,7 +746,7 @@ class Validator implements IValidator
     protected function getSkipRule(): array
     {
         return array_merge([
-            static::CONDITION_EXISTS,
+            static::CONDITION_OPTIONAL,
             static::CONDITION_MUST,
             static::SKIP_SELF,
             static::SKIP_OTHER,
@@ -887,51 +887,20 @@ class Validator implements IValidator
     }
 
     /**
-     * 是否存在单个字段验证规则
-     * 不带条件的简单规则.
+     * 是否存在单个字段验证规则.
      *
      * @param string $field
-     * @param string $rule
-     *
-     * @return mixed
-     */
-    protected function hasFieldRuleWithoutParameter(string $field, string $rule)
-    {
-        $result = $this->hasFieldRuleWithoutParameterReal($field, $rule);
-
-        if (!$result && $rule === static::DEFAULT_CONDITION) {
-            return !$this->hasFieldRuleWithoutParameterReal($field, [
-                static::CONDITION_MUST,
-            ]);
-        }
-
-        return $result;
-    }
-
-    /**
-     * 是否存在单个字段验证规则
-     * 不带条件的简单规则.
-     *
-     * @param string $field
-     * @param mixed  $rules
+     * @param array  $rules
      *
      * @return bool
      */
-    protected function hasFieldRuleWithoutParameterReal(string $field, $rules): bool
+    protected function hasFieldRuleWithParameter(string $field, string $rule): bool
     {
         if (!isset($this->rules[$field])) {
             return false;
         }
 
-        $rules = (array) $rules;
-
-        foreach ($rules as $rule) {
-            if (in_array($rule, $this->rules[$field], true)) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($rule, $this->rules[$field], true);
     }
 
     /**
@@ -969,9 +938,9 @@ class Validator implements IValidator
 
         $fieldValue = $this->getFieldValue($field);
 
-        // 默认情况下存在即验证，没有设置字段则跳过
+        // 可选字段无需验证
         if (!$this->hasFieldValue($field) &&
-            $this->hasFieldRuleWithoutParameter($field, static::CONDITION_EXISTS)) {
+            $this->hasFieldRuleWithParameter($field, static::CONDITION_OPTIONAL)) {
             return;
         }
 
@@ -1011,7 +980,7 @@ class Validator implements IValidator
      */
     protected function shouldSkipOther(string $field): bool
     {
-        return $this->hasFieldRuleWithoutParameter($field, static::SKIP_OTHER);
+        return $this->hasFieldRuleWithParameter($field, static::SKIP_OTHER);
     }
 
     /**
@@ -1023,7 +992,7 @@ class Validator implements IValidator
      */
     protected function shouldSkipSelf(string $field): bool
     {
-        return $this->hasFieldRuleWithoutParameter($field, static::SKIP_SELF);
+        return $this->hasFieldRuleWithParameter($field, static::SKIP_SELF);
     }
 
     /**
