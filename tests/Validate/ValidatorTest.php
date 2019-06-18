@@ -208,7 +208,7 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => 'required|min_length:20|'.IValidator::CONDITION_OPTIONAL,
+                'name'     => 'required|min_length:20|'.IValidator::OPTIONAL,
             ],
             [
                 'name'     => '用户名',
@@ -649,7 +649,7 @@ class ValidatorTest extends TestCase
                 'name' => ['sub' => ['sub' => '']],
             ],
             [
-                'name.sub.sub' => 'required|'.Validator::CONDITION_MUST,
+                'name.sub.sub' => 'required|'.Validator::MUST,
             ],
             [
                 'name'     => '歌曲',
@@ -722,7 +722,7 @@ class ValidatorTest extends TestCase
                 'name' => ['sub' => ['sub' => null]],
             ],
             [
-                'name.sub.sub' => 'required|'.Validator::CONDITION_MUST,
+                'name.sub.sub' => 'required|'.Validator::MUST,
             ],
             [
                 'name'     => '歌曲',
@@ -933,8 +933,8 @@ class ValidatorTest extends TestCase
     public function aliasSkipExceptionProvider()
     {
         return [
-            [Validator::CONDITION_OPTIONAL],
-            [Validator::CONDITION_MUST],
+            [Validator::OPTIONAL],
+            [Validator::MUST],
             [Validator::SKIP_SELF],
             [Validator::SKIP_OTHER],
         ];
@@ -1258,8 +1258,8 @@ class ValidatorTest extends TestCase
     public function skipRuleProvider()
     {
         return [
-            [Validator::CONDITION_OPTIONAL],
-            [Validator::CONDITION_MUST],
+            [Validator::OPTIONAL],
+            [Validator::MUST],
             [Validator::SKIP_SELF],
             [Validator::SKIP_OTHER],
         ];
@@ -1272,7 +1272,7 @@ class ValidatorTest extends TestCase
                 'name' => '',
             ],
             [
-                'name'     => 'required|alpha|'.IValidator::CONDITION_OPTIONAL,
+                'name'     => 'required|alpha|'.IValidator::OPTIONAL,
             ],
             [
                 'name'     => '地名',
@@ -1324,21 +1324,21 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name' => '',
+                'name' => null,
             ],
             [
-                'name'     => 'required',
+                'name'     => 'required|'.Validator::OPTIONAL,
             ],
             [
                 'name'     => '地名',
             ]
         );
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
         $this->assertSame(['name' => '地名'], $validate->getName());
 
-        $validate->rule(['name' => 'required|'.Validator::CONDITION_MUST]);
+        $validate->rule(['name' => 'required']);
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 

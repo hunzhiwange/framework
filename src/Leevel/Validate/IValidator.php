@@ -39,14 +39,14 @@ interface IValidator
      *
      * @var string
      */
-    const CONDITION_OPTIONAL = 'optional';
+    const OPTIONAL = 'optional';
 
     /**
      * 无论是否是可选字段都验证
      *
      * @var string
      */
-    const CONDITION_MUST = 'must';
+    const MUST = 'must';
 
     /**
      * 失败后跳过.

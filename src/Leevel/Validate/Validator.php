@@ -746,8 +746,8 @@ class Validator implements IValidator
     protected function getSkipRule(): array
     {
         return array_merge([
-            static::CONDITION_OPTIONAL,
-            static::CONDITION_MUST,
+            static::OPTIONAL,
+            static::MUST,
             static::SKIP_SELF,
             static::SKIP_OTHER,
         ], $this->skipRule);
@@ -939,8 +939,8 @@ class Validator implements IValidator
         $fieldValue = $this->getFieldValue($field);
 
         // 可选字段无需验证
-        if (!$this->hasFieldValue($field) &&
-            $this->hasFieldRuleWithParam($field, static::CONDITION_OPTIONAL)) {
+        if (null === $fieldValue &&
+            $this->hasFieldRuleWithParam($field, static::OPTIONAL)) {
             return;
         }
 
@@ -1063,18 +1063,6 @@ class Validator implements IValidator
     protected function parseFieldName(string $field): string
     {
         return $this->names[$field] ?? $field;
-    }
-
-    /**
-     * 是否存在字段的值
-     *
-     * @param string $rule
-     *
-     * @return bool
-     */
-    protected function hasFieldValue(string $rule): bool
-    {
-        return array_key_exists($rule, $this->data);
     }
 
     /**
