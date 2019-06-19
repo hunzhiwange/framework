@@ -71,13 +71,13 @@ class RegisterTest extends TestCase
 
         $option = new Option([
             'session' => [
-                'default'       => 'nulls',
+                'default'       => 'test',
                 'id'            => null,
                 'name'          => 'UID',
                 'expire'        => 86400,
                 'connect'       => [
-                    'nulls' => [
-                        'driver' => 'nulls',
+                    'test' => [
+                        'driver' => 'test',
                     ],
                 ],
             ],

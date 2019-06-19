@@ -20,14 +20,14 @@ declare(strict_types=1);
 
 namespace Tests\Mail;
 
-use Leevel\Mail\Nulls;
+use Leevel\Mail\Test;
 use Leevel\Router\View;
 use Leevel\View\Phpui;
 use Swift_Message;
 use Tests\TestCase;
 
 /**
- * nulls test.
+ * test test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -39,21 +39,21 @@ class NullsTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $nulls = new Nulls($this->makeView());
+        $test = new Test($this->makeView());
 
         $message = (new Swift_Message('Wonderful Subject'))
             ->setFrom(['foo@qq.com' => 'John Doe'])
             ->setTo(['bar@qq.com' => 'A name'])
             ->setBody('Here is the message itself');
 
-        $result = $nulls->send($message);
+        $result = $test->send($message);
 
         $this->assertSame(1, $result);
 
-        $this->assertTrue($nulls->isStarted());
-        $this->assertNull($nulls->start());
-        $this->assertNull($nulls->stop());
-        $this->assertTrue($nulls->ping());
+        $this->assertTrue($test->isStarted());
+        $this->assertNull($test->start());
+        $this->assertNull($test->stop());
+        $this->assertTrue($test->ping());
     }
 
     protected function makeView(): View

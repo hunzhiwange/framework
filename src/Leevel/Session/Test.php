@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 /**
- * session.nulls.
+ * session.test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -29,7 +29,7 @@ namespace Leevel\Session;
  *
  * @version 1.0
  */
-class Nulls extends Session implements ISession
+class Test extends Session implements ISession
 {
     /**
      * 配置.
