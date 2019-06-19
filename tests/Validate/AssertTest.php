@@ -40,16 +40,6 @@ use Tests\TestCase;
  */
 class AssertTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        Assert::setPhpUnit($this);
-    }
-
-    protected function tearDown(): void
-    {
-        Assert::setPhpUnit(null);
-    }
-
     /**
      * @api(
      *     title="基本断言测试",
@@ -71,8 +61,9 @@ class AssertTest extends TestCase
         Assert::notEmpty(1);
         Assert::notEmpty(55);
         Assert::notEmpty(66);
-
         Assert::lessThan(4, [5]);
+
+        $this->assertSame(1, 1);
     }
 
     /**
@@ -119,6 +110,8 @@ class AssertTest extends TestCase
     public function testAssertOptional(): void
     {
         Assert::optionalNotEmpty(null);
+
+        $this->assertSame(1, 1);
     }
 
     /**
@@ -148,6 +141,8 @@ class AssertTest extends TestCase
     public function testAssertMulti(): void
     {
         Assert::multiNotEmpty([3, ['hello'], 'bar', 'yes']);
+
+        $this->assertSame(1, 1);
     }
 
     /**
@@ -177,6 +172,8 @@ class AssertTest extends TestCase
     public function testAssertMultiWithOptional(): void
     {
         Assert::optionalMultiNotEmpty([null, ['hello'], 'bar', 'yes', null]);
+
+        $this->assertSame(1, 1);
     }
 
     /**
@@ -200,6 +197,8 @@ class AssertTest extends TestCase
         Assert::make(5, 'Assert success.')
             ->notEmpty()
             ->lessThan([7]);
+
+        $this->assertSame(1, 1);
     }
 
     /**
@@ -241,6 +240,28 @@ class AssertTest extends TestCase
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(
+            '["5 not less than 3","5 not less than 4","5 not less than 2"]'
+        );
+
+        Assert::lazy(5, 'Assert success.')
+            ->notEmpty()
+            ->lessThan([3], '5 not less than 3')
+            ->lessThan([4], '5 not less than 4')
+            ->lessThan([2], '5 not less than 2')
+            ->flush();
+    }
+
+    /**
+     * @api(
+     *     title="断言失败延迟释放自定义格式化",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testAssertLazyChainFailedWithCustomFormat(): void
+    {
+        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectExceptionMessage(
             '5 not less than 3'.PHP_EOL.
             '5 not less than 4'.PHP_EOL.
             '5 not less than 2'
@@ -254,5 +275,25 @@ class AssertTest extends TestCase
             ->flush(function (array $error): string {
                 return implode(PHP_EOL, $error);
             });
+    }
+
+    public function testAssertMissingArgument(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first argument.'
+        );
+
+        Assert::notEmpty();
+    }
+
+    public function testAssertNotFoundRule(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage(
+            'Method `Leevel\\Validate\\Helper\\validate_not_found` is not exits.'
+        );
+
+        Assert::notFound(1);
     }
 }
