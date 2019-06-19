@@ -76,6 +76,7 @@ class Register extends Provider
             'databases'        => Manager::class,
             'database'         => [IDatabase::class, Database::class],
             'database.lazyload',
+            UnitOfWork::class        => IUnitOfWork::class,
         ];
     }
 
