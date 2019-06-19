@@ -1,0 +1,1 @@
+hello html,<?php echo $foo; ?>.
