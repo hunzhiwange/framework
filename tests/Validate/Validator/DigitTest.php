@@ -53,7 +53,7 @@ class DigitTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['01'],
@@ -82,7 +82,7 @@ class DigitTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['1820.20'],

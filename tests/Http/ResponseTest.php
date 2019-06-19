@@ -326,7 +326,7 @@ class ResponseTest extends TestCase
         $this->assertSame((string) $content, $response->getContent());
     }
 
-    public function validContentProvider()
+    public function validContentProvider(): array
     {
         return [
             'obj'    => [new StringableObject()],
@@ -348,7 +348,7 @@ class ResponseTest extends TestCase
         $response->setContent($content);
     }
 
-    public function invalidContentProvider()
+    public function invalidContentProvider(): array
     {
         return [
             'obj' => [new \stdClass()],

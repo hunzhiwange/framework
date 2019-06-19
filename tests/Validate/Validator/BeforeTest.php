@@ -56,7 +56,7 @@ class BeforeTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['2018-08-11', '2018-08-14'],
@@ -85,7 +85,7 @@ class BeforeTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['2018-08-17', '2018-08-17'],
@@ -97,5 +97,24 @@ class BeforeTest extends TestCase
             [true, '2018-08-15'],
             [false, '2018-08-15'],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'before',
+            ]
+        );
+
+        $validate->success();
     }
 }

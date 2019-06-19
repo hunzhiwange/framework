@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Tests\Session;
 
 use Leevel\Session\ISession;
-use Leevel\Session\Nulls;
+use Leevel\Session\Test;
 use Tests\TestCase;
 
 /**
- * nulls test.
+ * test test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -37,7 +37,7 @@ class NullsTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $session = $this->createNullsSessionHandler();
+        $session = $this->createTestSessionHandler();
 
         $this->assertInstanceof(ISession::class, $session);
 
@@ -62,8 +62,8 @@ class NullsTest extends TestCase
         $this->assertTrue($session->isStart());
     }
 
-    protected function createNullsSessionHandler(): Nulls
+    protected function createTestSessionHandler(): Test
     {
-        return new Nulls();
+        return new Test();
     }
 }

@@ -92,7 +92,7 @@ class Validator implements IValidator
      *
      * @var array
      */
-    protected $failedRules;
+    protected $failedRules = [];
 
     /**
      * 错误消息.

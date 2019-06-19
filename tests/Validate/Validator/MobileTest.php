@@ -54,7 +54,7 @@ class MobileTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             [13000003333],
@@ -87,7 +87,7 @@ class MobileTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['130222000333311'],

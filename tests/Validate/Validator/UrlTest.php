@@ -54,7 +54,7 @@ class UrlTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         // http://php.net/manual/en/filter.filters.validate.php#110411
         return [
@@ -94,7 +94,7 @@ class UrlTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['not numeric'],

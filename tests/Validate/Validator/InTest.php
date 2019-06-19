@@ -54,7 +54,7 @@ class InTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['1', '1,5'],
@@ -91,7 +91,7 @@ class InTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['0.1', '1,5'],

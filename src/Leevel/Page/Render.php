@@ -32,7 +32,7 @@ use function Leevel\I18n\Helper\gettext as __;
  *
  * @version 1.0
  */
-class Defaults implements IRender
+class Render implements IRender
 {
     /**
      * 分页.

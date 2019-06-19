@@ -106,7 +106,7 @@ class FunctionsTest extends TestCase
         $this->assertSame($envValue, Leevel::env($name));
     }
 
-    public function envProvider()
+    public function envProvider(): array
     {
         return [
             ['bar', 'true', true],

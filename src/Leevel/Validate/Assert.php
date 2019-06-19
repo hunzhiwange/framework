@@ -23,10 +23,8 @@ namespace Leevel\Validate;
 use BadMethodCallException;
 use Closure;
 use InvalidArgumentException;
-use Leevel\Support\FunctionNotFoundException;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
-use PHPUnit\Framework\TestCase;
 use Traversable;
 
 /**
@@ -78,13 +76,6 @@ class Assert
      * @var array
      */
     protected $error = [];
-
-    /**
-     * PHPUnit.
-     *
-     * @var \PHPUnit\Framework\TestCase
-     */
-    protected static $phpUnit;
 
     /**
      * 构造函数.
@@ -215,16 +206,6 @@ class Assert
     }
 
     /**
-     * 设置 PHPUnit.
-     *
-     * @param null|\PHPUnit\Framework\TestCase $phpUnit
-     */
-    public static function setPhpUnit(?TestCase $phpUnit = null): void
-    {
-        self::$phpUnit = $phpUnit;
-    }
-
-    /**
      * 校验断言
      *
      * @param string $method
@@ -298,8 +279,6 @@ class Assert
         }
 
         if (null === $args[0]) {
-            self::countPhpUnit();
-
             return true;
         }
 
@@ -344,8 +323,6 @@ class Assert
         }
 
         if (!$multi) {
-            self::countPhpUnit();
-
             return true;
         }
 
@@ -366,37 +343,25 @@ class Assert
      */
     protected static function validateRule(string $method, array $multi): bool
     {
-        try {
-            $fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method);
 
-            foreach ($multi as $m) {
-                if (!function_exists($fn)) {
-                    class_exists($fn);
-                }
-
-                if (false === $fn(...$m)) {
-                    return false;
-                }
-
-                self::countPhpUnit();
+        foreach ($multi as $m) {
+            if (!function_exists($fn)) {
+                class_exists($fn);
             }
-        } catch (FunctionNotFoundException $th) {
-            $e = sprintf('Method `%s` is not exits.', $method);
 
-            throw new BadMethodCallException($e);
+            if (!function_exists($fn)) {
+                $e = sprintf('Method `%s` is not exits.', $fn);
+
+                throw new BadMethodCallException($e);
+            }
+
+            if (false === $fn(...$m)) {
+                return false;
+            }
         }
 
         return true;
-    }
-
-    /**
-     * 记录 PHPUnit 断言数量.
-     */
-    protected static function countPhpUnit(): void
-    {
-        if (self::$phpUnit) {
-            self::$phpUnit->assertSame(1, 1);
-        }
     }
 }
 

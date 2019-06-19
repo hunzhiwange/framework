@@ -69,7 +69,7 @@ class TypeTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         $testFile = __DIR__.'/test.txt';
         file_put_contents($testFile, 'foo');
@@ -112,7 +112,7 @@ class TypeTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['not numeric', 'errorType'],

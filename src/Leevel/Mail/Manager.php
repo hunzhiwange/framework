@@ -69,18 +69,18 @@ class Manager extends Managers implements IMail
     }
 
     /**
-     * 创建 nulls 连接.
+     * 创建 test 连接.
      *
      * @param array $options
      *
-     * @return \Leevel\Mail\Nulls
+     * @return \Leevel\Mail\Test
      */
-    protected function makeConnectNulls(array $options = []): Nulls
+    protected function makeConnectTest(array $options = []): Test
     {
-        return new Nulls(
+        return new Test(
             $this->container['view'],
             $this->container['event'],
-            $this->normalizeConnectOption('nulls', $options)
+            $this->normalizeConnectOption('test', $options)
         );
     }
 

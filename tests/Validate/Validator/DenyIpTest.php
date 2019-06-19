@@ -55,7 +55,7 @@ class DenyIpTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['8.8.8.10', '8.8.8.8,127.0.0.1'],
@@ -83,7 +83,7 @@ class DenyIpTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['8.8.8.8', '8.8.8.8,127.0.0.1'],

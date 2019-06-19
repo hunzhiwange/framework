@@ -56,16 +56,16 @@ class Manager extends Managers implements ISession
     }
 
     /**
-     * 创建 nulls 缓存.
+     * 创建 test 缓存.
      *
      * @param array $options
      *
-     * @return \Leevel\Session\Nulls
+     * @return \Leevel\Session\Test
      */
-    protected function makeConnectNulls(array $options = []): Nulls
+    protected function makeConnectTest(array $options = []): Test
     {
-        return new Nulls(
-            $this->normalizeConnectOption('nulls', $options)
+        return new Test(
+            $this->normalizeConnectOption('test', $options)
         );
     }
 

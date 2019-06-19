@@ -930,7 +930,7 @@ class ValidatorTest extends TestCase
         $validate->alias($skipRule, 'custom_bar');
     }
 
-    public function aliasSkipExceptionProvider()
+    public function aliasSkipExceptionProvider(): array
     {
         return [
             [Validator::OPTIONAL],
@@ -1255,7 +1255,7 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function skipRuleProvider()
+    public function skipRuleProvider(): array
     {
         return [
             [Validator::OPTIONAL],
@@ -1269,13 +1269,16 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name' => '',
+                'name'  => '',
+                'value' => '',
             ],
             [
-                'name'     => 'required|alpha|'.IValidator::OPTIONAL,
+                'name'     => 'required|alpha',
+                'value'    => 'required',
             ],
             [
-                'name'     => '地名',
+                'name'      => '地名',
+                'value'     => '值',
             ]
         );
 
@@ -1284,13 +1287,16 @@ class ValidatorTest extends TestCase
                 "name": [
                     "地名 不能为空",
                     "地名 只能是字母"
+                ],
+                "value": [
+                    "值 不能为空"
                 ]
             }
             eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名'], $validate->getName());
+        $this->assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
 
         $this->assertSame(
             $error,
@@ -1299,7 +1305,7 @@ class ValidatorTest extends TestCase
             )
         );
 
-        $validate->rule(['name' => 'required|alpha|'.Validator::SKIP_OTHER]);
+        $validate->addRule(['name' => 'required|alpha|'.Validator::SKIP_OTHER]);
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -1308,6 +1314,70 @@ class ValidatorTest extends TestCase
             {
                 "name": [
                     "地名 不能为空"
+                ]
+            }
+            eot;
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testShouldSkipSelf(): void
+    {
+        $validate = new Validator(
+            [
+                'name'  => '',
+                'value' => '',
+            ],
+            [
+                'name'     => 'required|alpha',
+                'value'    => 'required',
+            ],
+            [
+                'name'      => '地名',
+                'value'     => '值',
+            ]
+        );
+
+        $error = <<<'eot'
+            {
+                "name": [
+                    "地名 不能为空",
+                    "地名 只能是字母"
+                ],
+                "value": [
+                    "值 不能为空"
+                ]
+            }
+            eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+
+        $validate->addRule(['name' => 'required|alpha|'.Validator::SKIP_SELF]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+            {
+                "name": [
+                    "地名 不能为空"
+                ],
+                "value": [
+                    "值 不能为空"
                 ]
             }
             eot;

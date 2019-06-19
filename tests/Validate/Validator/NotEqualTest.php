@@ -54,7 +54,7 @@ class NotEqualTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             [2, 3],
@@ -91,7 +91,7 @@ class NotEqualTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             [(string) (3), 3],

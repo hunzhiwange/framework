@@ -94,7 +94,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     protected $option = [
         'page'          => 'page',
         'range'         => 2,
-        'render'        => 'defaults',
+        'render'        => 'render',
         'render_option' => [],
         'url'           => null,
         'param'         => [],
