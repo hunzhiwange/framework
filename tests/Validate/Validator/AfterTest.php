@@ -112,4 +112,23 @@ class AfterTest extends TestCase
 
         $this->assertFalse($validate->success());
     }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'after',
+            ]
+        );
+
+        $validate->success();
+    }
 }
