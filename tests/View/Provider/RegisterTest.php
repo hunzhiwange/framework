@@ -25,6 +25,7 @@ use Leevel\Filesystem\Fso;
 use Leevel\Kernel\App;
 use Leevel\Option\Option;
 use Leevel\View\Compiler;
+use Leevel\View\Manager;
 use Leevel\View\Parser;
 use Leevel\View\Provider\Register;
 use Tests\TestCase;
@@ -48,8 +49,8 @@ class RegisterTest extends TestCase
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
-
         $test->register();
+        $container->alias($test->providers());
 
         $manager = $container->make('view.views');
 
@@ -64,6 +65,16 @@ class RegisterTest extends TestCase
         $result = $manager->display('html_test', [], null, false);
 
         $this->assertSame('hello html,bar.', $result);
+
+        $manager = $container->make(Manager::class);
+
+        $manager->setVar('foo', 'newbar');
+
+        $result = $this->obGetContents(function () use ($manager) {
+            $manager->display('html_test');
+        });
+
+        $this->assertSame('hello html,newbar.', $result);
     }
 
     protected function createContainer(): Container
