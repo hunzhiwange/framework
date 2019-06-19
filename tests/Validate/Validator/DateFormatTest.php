@@ -54,7 +54,7 @@ class DateFormatTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['6.1.2018 13:00+01:00', 'j.n.Y H:iP'],
@@ -82,7 +82,7 @@ class DateFormatTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['2018.6.1 13:00+01:00', 'j.n.Y H:iP'],

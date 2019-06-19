@@ -930,7 +930,7 @@ class ValidatorTest extends TestCase
         $validate->alias($skipRule, 'custom_bar');
     }
 
-    public function aliasSkipExceptionProvider()
+    public function aliasSkipExceptionProvider(): array
     {
         return [
             [Validator::OPTIONAL],
@@ -1255,7 +1255,7 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function skipRuleProvider()
+    public function skipRuleProvider(): array
     {
         return [
             [Validator::OPTIONAL],

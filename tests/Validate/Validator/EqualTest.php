@@ -54,7 +54,7 @@ class EqualTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             [(string) (3), 3],
@@ -84,7 +84,7 @@ class EqualTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             [2, 3],

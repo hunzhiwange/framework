@@ -54,7 +54,7 @@ class NotNullTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             [' '],
@@ -92,7 +92,7 @@ class NotNullTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         $val = null;
 

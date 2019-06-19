@@ -68,7 +68,7 @@ class LogTest extends TestCase
         Fso::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['emergency'],

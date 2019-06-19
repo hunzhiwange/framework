@@ -55,7 +55,7 @@ class StrlenTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['http://www.google.com', 21],
@@ -87,7 +87,7 @@ class StrlenTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['not numeric', 21],

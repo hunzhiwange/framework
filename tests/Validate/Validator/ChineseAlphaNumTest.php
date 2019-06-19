@@ -54,7 +54,7 @@ class ChineseAlphaNumTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['abc'],
@@ -88,7 +88,7 @@ class ChineseAlphaNumTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             [' '],

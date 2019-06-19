@@ -56,7 +56,7 @@ class AfterTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['2018-08-15', '2018-08-14'],
@@ -85,7 +85,7 @@ class AfterTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['2018-08-14', '2018-08-14'],

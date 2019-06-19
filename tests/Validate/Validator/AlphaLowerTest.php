@@ -54,7 +54,7 @@ class AlphaLowerTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['abc'],
@@ -80,7 +80,7 @@ class AlphaLowerTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             [' '],

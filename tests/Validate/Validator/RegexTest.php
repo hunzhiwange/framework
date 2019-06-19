@@ -55,7 +55,7 @@ class RegexTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             [2, '/^[0-9]+$/'],
@@ -87,7 +87,7 @@ class RegexTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['中国', '/^[0-9]+$/'],

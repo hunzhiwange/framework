@@ -58,7 +58,7 @@ class DifferentTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['foo', 'foo2', 'name2'],
@@ -92,7 +92,7 @@ class DifferentTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['foo', 'foo', 'name2'],

@@ -54,7 +54,7 @@ class IdCardTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['45032444440627183x'],
@@ -82,7 +82,7 @@ class IdCardTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['9995031975011115028819'],

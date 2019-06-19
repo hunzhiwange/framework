@@ -76,7 +76,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             [true],
