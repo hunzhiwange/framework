@@ -73,10 +73,10 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'databases'        => Manager::class,
-            'database'         => [IDatabase::class, Database::class],
+            'databases'          => Manager::class,
+            'database'           => [IDatabase::class, Database::class],
             'database.lazyload',
-            UnitOfWork::class        => IUnitOfWork::class,
+            IUnitOfWork::class   => UnitOfWork::class,
         ];
     }
 
