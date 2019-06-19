@@ -50,7 +50,7 @@ interface IPage
      *
      * @var string
      */
-    const RENDER = 'defaults';
+    const RENDER = 'render';
 
     /**
      * 默认范围.

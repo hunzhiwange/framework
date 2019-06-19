@@ -23,9 +23,9 @@ namespace Tests\Page;
 use I18nMock;
 use Leevel\Di\Container;
 use Leevel\Page\Bootstrap;
-use Leevel\Page\Defaults;
 use Leevel\Page\IPage;
 use Leevel\Page\Page;
+use Leevel\Page\Render;
 use Tests\TestCase;
 
 /**
@@ -653,7 +653,7 @@ class PageTest extends TestCase
     {
         $page = new Page(1, 10, 25);
 
-        $render = new Defaults($page, [
+        $render = new Render($page, [
             'small_template' => true,
         ]);
 
