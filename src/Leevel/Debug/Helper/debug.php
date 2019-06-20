@@ -53,8 +53,6 @@ function debug($tag, ...$args): void
                 break;
             default:
                 throw new RuntimeException('Invalid argument `tag`.');
-
-                break;
         }
     }
 
