@@ -39,9 +39,10 @@ class RegisterTest extends TestCase
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
-
         $test->register();
+        $container->alias($test->providers());
 
+        // sessions
         $manager = $container->make('sessions');
 
         $this->assertFalse($manager->isStart());
@@ -63,6 +64,23 @@ class RegisterTest extends TestCase
 
         $manager->start();
         $this->assertTrue($manager->isStart());
+
+        // session
+        $test = $container->make('session');
+        $this->assertTrue($test->isStart());
+
+        $test->set('hello', 'world');
+        $this->assertSame(['hello' => 'world'], $test->all());
+        $this->assertTrue($test->has('hello'));
+        $this->assertSame('world', $test->get('hello'));
+
+        $test->delete('hello');
+        $this->assertSame([], $test->all());
+        $this->assertFalse($test->has('hello'));
+        $this->assertNull($test->get('hello'));
+
+        $test->start();
+        $this->assertTrue($test->isStart());
     }
 
     protected function createContainer(): Container
