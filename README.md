@@ -1,6 +1,7 @@
 <img src="./queryphp.png" />
 
 <p align="center">
+  <a href="https://php.net"><img src="https://img.shields.io/badge/php-%3E%3D%207.3.2-8892BF.svg" alt="Minimum PHP Version"></a>
   <a href="https://github.styleci.io/repos/91284136"><img src="https://github.styleci.io/repos/91284136/shield?branch=master" alt="StyleCI"></a>
   <a href="https://travis-ci.org/hunzhiwange/framework">
     <img alt="Build Status" src="https://img.shields.io/travis/hunzhiwange/framework.svg" /></a>
