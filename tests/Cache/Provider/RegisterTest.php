@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Cache\Provider;
 
+use Leevel\Cache\File;
+use Leevel\Cache\Load;
 use Leevel\Cache\Provider\Register;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Fso;
@@ -40,28 +42,35 @@ class RegisterTest extends TestCase
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
-
         $test->register();
+        $container->alias($test->providers());
 
+        // caches
         $manager = $container->make('caches');
-
         $filePath = __DIR__.'/cache/hello.php';
-
         $this->assertFileNotExists($filePath);
-
         $manager->set('hello', 'world');
-
         $this->assertFileExists($filePath);
-
         $this->assertSame('world', $manager->get('hello'));
-
         $manager->delete('hello');
-
         $this->assertFileNotExists($filePath);
-
         $this->assertFalse($manager->get('hello'));
-
         Fso::deleteDirectory(__DIR__.'/cache', true);
+
+        // cache
+        $file = $container->make('cache');
+        $this->assertInstanceOf(File::class, $file);
+        $this->assertFileNotExists($filePath);
+        $file->set('hello', 'world');
+        $this->assertFileExists($filePath);
+        $file->delete('hello');
+        $this->assertFileNotExists($filePath);
+        $this->assertFalse($file->get('hello'));
+        Fso::deleteDirectory(__DIR__.'/cache', true);
+
+        // load
+        $load = $container->make('cache.load');
+        $this->assertInstanceOf(Load::class, $load);
     }
 
     protected function createContainer(): Container

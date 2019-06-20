@@ -59,10 +59,9 @@ class RegisterTest extends TestCase
         $test->register();
         $container->alias($test->providers());
 
+        // validate
         $validate = $container->make('validate');
-
         $this->assertInstanceof(IValidate::class, $validate);
-
         $validator = $validate->make(
             [
                 'name' => '小牛哥',
@@ -97,6 +96,7 @@ class RegisterTest extends TestCase
             )
         );
 
+        // alias
         $validate = $container->make(Validate::class);
         $this->assertInstanceof(IValidate::class, $validate);
     }
