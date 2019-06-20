@@ -89,4 +89,23 @@ class DateFormatTest extends TestCase
             ['29/Feb/23:2018:59:31', 'd/M/Y:H:i:s'],
         ];
     }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'date_format',
+            ]
+        );
+
+        $validate->success();
+    }
 }

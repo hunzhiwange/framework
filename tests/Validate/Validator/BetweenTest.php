@@ -101,4 +101,42 @@ class BetweenTest extends TestCase
             ['w', 'h,t'],
         ];
     }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first or second element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'between',
+            ]
+        );
+
+        $validate->success();
+    }
+
+    public function testMissParam2(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first or second element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'between:1',
+            ]
+        );
+
+        $validate->success();
+    }
 }

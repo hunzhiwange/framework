@@ -103,4 +103,23 @@ class NotInTest extends TestCase
             ['z', 'a,z'],
         ];
     }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'not_in',
+            ]
+        );
+
+        $validate->success();
+    }
 }

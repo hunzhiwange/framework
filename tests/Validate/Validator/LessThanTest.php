@@ -104,4 +104,23 @@ class LessThanTest extends TestCase
             ['foo', 'bar'],
         ];
     }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'less_than',
+            ]
+        );
+
+        $validate->success();
+    }
 }

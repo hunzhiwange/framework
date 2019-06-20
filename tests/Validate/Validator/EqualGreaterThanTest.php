@@ -116,4 +116,23 @@ class EqualGreaterThanTest extends TestCase
         $this->assertFalse($validate->equalGreaterThan(0, '0'));
         $this->assertFalse($validate->equalGreaterThan('0', 0));
     }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'equal_greater_than',
+            ]
+        );
+
+        $validate->success();
+    }
 }
