@@ -240,4 +240,4 @@ class Doc extends Command
 }
 
 // import fn.
-class_exists(list_directory::class);
+class_exists(list_directory::class); // @codeCoverageIgnore

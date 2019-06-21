@@ -95,4 +95,4 @@ class LinkStorage extends Command
 }
 
 // import fn.
-class_exists(link::class);
+class_exists(link::class); // @codeCoverageIgnore
