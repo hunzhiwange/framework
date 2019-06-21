@@ -229,6 +229,21 @@ class AssertTest extends TestCase
         $this->assert($result);
     }
 
+    public function testAssertLazyChain2(): void
+    {
+        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectExceptionMessage(
+            '["5 not less than 3"]'
+        );
+
+        Assert::lazy(5, 'Assert success.', false)
+            ->notEmpty()
+            ->lessThan([2], '5 not less than 3')
+            ->lessThan([8], '5 not less than 4')
+            ->lessThan([9], '5 not less than 2')
+            ->flush();
+    }
+
     /**
      * @api(
      *     title="断言失败延迟释放",
@@ -295,5 +310,15 @@ class AssertTest extends TestCase
         );
 
         Assert::notFound(1);
+    }
+
+    public function testAssertMultiWithInvalidFirstArgument(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid first argument for multi assert.'
+        );
+
+        Assert::multiNotEmpty('hello world');
     }
 }

@@ -153,12 +153,14 @@ class Assert
      *
      * @param mixed       $value
      * @param null|string $message
+     * @param bool        $lazy
+     * @param bool        $all
      *
      * @return \Leevel\Validate\Assert
      */
-    public static function make($value, ?string $message = null): self
+    public static function make($value, ?string $message = null, bool $lazy = false, bool $all = true): self
     {
-        return new static($value, $message);
+        return new static($value, $message, $lazy, $all);
     }
 
     /**
