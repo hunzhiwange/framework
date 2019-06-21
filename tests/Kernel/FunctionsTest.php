@@ -126,6 +126,12 @@ class FunctionsTest extends TestCase
         ];
     }
 
+    public function testEnvFalse(): void
+    {
+        $this->assertSame('default message', Leevel::env('not_found_env', 'default message'));
+        $this->assertNull(Leevel::env('not_found_env'));
+    }
+
     public function testLog(): void
     {
         $log = $this->createMock(ILog::class);

@@ -166,4 +166,23 @@ class FnTest extends TestCase
 
         f('fnwithoutbackslash');
     }
+
+    public function testNotFuncWithoutBackslash2(): void
+    {
+        $this->assertTrue(function_exists('Tests\\Support\\fn_already_exists'));
+        $result = f('Tests\\Support\\fn_already_exists');
+        $this->assertTrue($result);
+    }
+
+    public function testNotFuncWithoutBackslash22(): void
+    {
+        $this->assertFalse(function_exists('fnwithoutbackslash'));
+        $result = f_exists('fnwithoutbackslash', false);
+        $this->assertFalse($result);
+    }
+}
+
+function fn_already_exists(): bool
+{
+    return true;
 }
