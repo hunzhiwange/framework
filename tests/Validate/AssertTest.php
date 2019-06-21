@@ -229,7 +229,7 @@ class AssertTest extends TestCase
         $this->assert($result);
     }
 
-    public function testAssertLazyChain2(): void
+    public function testAssertLazyChainWithNotAll(): void
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(
@@ -320,5 +320,26 @@ class AssertTest extends TestCase
         );
 
         Assert::multiNotEmpty('hello world');
+    }
+
+    public function testAssertNotLazyChainWithNotAll(): void
+    {
+        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectExceptionMessage(
+            '5 not less than 3'
+        );
+
+        Assert::make(8, null, false, false)
+            ->notEmpty()
+            ->lessThan([3], '5 not less than 3')
+            ->lessThan([4], '5 not less than 4')
+            ->lessThan([2], '5 not less than 2')
+            ->flush();
+    }
+
+    public function testAssertOptionalMultiAllWasNull(): void
+    {
+        $result = Assert::optionalMultiNotEmpty([null, null, null]);
+        $this->assertTrue($result);
     }
 }

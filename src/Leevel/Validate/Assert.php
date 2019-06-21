@@ -132,15 +132,17 @@ class Assert
      *
      * @throws \Leevel\Validate\AssertException
      *
-     * @return bool|mixed
+     * @return bool
      */
-    public static function __callStatic(string $method, array $args)
+    public static function __callStatic(string $method, array $args): bool
     {
         if (false === self::validateAssert($method, $args)) {
             $message = self::normalizeMessage($args);
 
             throw new AssertException($message);
         }
+
+        return true;
     }
 
     /**
@@ -306,7 +308,7 @@ class Assert
             return [$method, [$args]];
         }
 
-        if (!is_array($args[0]) && !$args instanceof Traversable) {
+        if (!is_array($args[0]) && !$args[0] instanceof Traversable) {
             $e = sprintf('Invalid first argument for multi assert.');
 
             throw new InvalidArgumentException($e);
