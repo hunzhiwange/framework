@@ -136,7 +136,7 @@ class PhpRedis implements IRedis
      */
     public function delete(string $name): void
     {
-        $this->handle->delete($name);
+        $this->handle->del($name);
     }
 
     /**
