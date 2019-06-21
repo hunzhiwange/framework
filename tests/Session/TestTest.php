@@ -33,7 +33,7 @@ use Tests\TestCase;
  *
  * @version 1.0
  */
-class NullsTest extends TestCase
+class TestTest extends TestCase
 {
     public function testBaseUse(): void
     {
