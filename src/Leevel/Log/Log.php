@@ -236,6 +236,8 @@ abstract class Log
      */
     public function log(string $level, string $message, array $context = []): void
     {
+        $level = $this->normalizeLevel($level);
+
         if (!in_array($level, $this->option['levels'], true)) {
             return;
         }
@@ -347,8 +349,7 @@ abstract class Log
     public function store(array $data): void
     {
         foreach ($data as $value) {
-            $method = $this->normalizeLevel(array_shift($value));
-
+            $method = array_shift($value);
             $this->monolog->{$method}(...$value);
         }
     }

@@ -85,25 +85,33 @@ class LogTest extends TestCase
     public function testSetOption(): void
     {
         $log = $this->createFileConnect();
-
         $log->setOption('levels', [ILog::INFO]);
-
         $log->info('foo', ['hello', 'world']);
         $log->debug('foo', ['hello', 'world']);
-
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
     public function testLogFilterLevel(): void
     {
         $log = $this->createFileConnect();
-
         $log->setOption('levels', [ILog::INFO]);
-
         $log->log(ILog::INFO, 'foo', ['hello', 'world']);
         $log->log(ILog::DEBUG, 'foo', ['hello', 'world']);
 
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
+    }
+
+    public function testLogLevelNotFoundWithDefaultLevel(): void
+    {
+        $log = $this->createFileConnect();
+        $log->setOption('levels', [ILog::INFO]);
+        $log->log(ILog::INFO, 'foo', ['hello', 'world']);
+
+        $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
+
+        $log->flush();
+
+        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     public function testWithOutBuffer(): void

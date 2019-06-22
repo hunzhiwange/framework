@@ -135,7 +135,7 @@ class File extends Log implements ILog
         }
 
         return $this->option['path'].'/'.$this->option['channel'].'.'.
-            ($level ? $level.'/' : '').date($this->option['name']).'.log';
+            $level.'/'.date($this->option['name']).'.log';
     }
 }
 
