@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
+use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Option\Option;
 use Leevel\Session\Manager;
-use PhpRedis;
 use RedisException;
 use Tests\TestCase;
 
