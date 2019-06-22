@@ -127,6 +127,7 @@ abstract class Mail implements IMail
      * @param array  $args
      *
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function __call(string $method, array $args)
     {
@@ -398,6 +399,7 @@ abstract class Mail implements IMail
      * 返回代理.
      *
      * @return \Swift_Message
+     * @codeCoverageIgnore
      */
     public function proxyMessage(): Swift_Message
     {

@@ -90,6 +90,7 @@ class Manager extends Managers implements IMail
      * @param array $options
      *
      * @return \Leevel\Mail\Smtp
+     * @codeCoverageIgnore
      */
     protected function makeConnectSmtp(array $options = []): Smtp
     {
@@ -106,6 +107,7 @@ class Manager extends Managers implements IMail
      * @param array $options
      *
      * @return \Leevel\Mail\Sendmail
+     * @codeCoverageIgnore
      */
     protected function makeConnectSendmail(array $options = []): Sendmail
     {
