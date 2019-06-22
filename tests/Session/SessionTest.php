@@ -69,6 +69,10 @@ class SessionTest extends TestCase
 
         $session->start();
         $this->assertTrue($session->isStart());
+        $this->assertTrue($session->open('foo', 'bar'));
+        $this->assertTrue($session->close());
+        $this->assertTrue($session->destroy('foo'));
+        $this->assertSame(0, $session->gc(500));
     }
 
     public function testSave(): void
