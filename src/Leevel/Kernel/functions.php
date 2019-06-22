@@ -136,6 +136,7 @@ if (!function_exists('dump')) {
      * @param array ...$moreVars
      *
      * @return mixed
+     * @codeCoverageIgnore
      */
     function dump($var, ...$moreVars)
     {
@@ -149,6 +150,7 @@ if (!function_exists('dd')) {
      *
      * @param mixed $var
      * @param array ...$moreVars
+     * @codeCoverageIgnore
      */
     function dd($var, ...$moreVars): void
     {
@@ -184,7 +186,8 @@ class Leevel
             return $app->{$method}(...$args);
         }
 
-        if (($container = $app->container()) && method_exists($container, $method)) {
+        if (($container = $app->container()) &&
+            method_exists($container, $method)) {
             return $container->{$method}(...$args);
         }
 

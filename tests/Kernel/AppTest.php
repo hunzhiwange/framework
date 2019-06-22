@@ -633,6 +633,38 @@ class AppTest extends TestCase
         $this->assertArrayNotHasKey('testRegisterProvidersRegister', $_SERVER);
     }
 
+    public function testSetPublicPath(): void
+    {
+        $app = $this->createApp();
+        $this->assertSame(__DIR__.'/app/public', $app->publicPath());
+        $app->setPublicPath(__DIR__.'/hello');
+        $this->assertSame(__DIR__.'/hello', $app->publicPath());
+    }
+
+    public function testSetThemesPath(): void
+    {
+        $app = $this->createApp();
+        $this->assertSame(__DIR__.'/app/themes', $app->themesPath());
+        $app->setThemesPath(__DIR__.'/hello');
+        $this->assertSame(__DIR__.'/hello', $app->themesPath());
+    }
+
+    public function testSetI18nCachePath(): void
+    {
+        $app = $this->createApp();
+        $this->assertSame(__DIR__.'/app/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+        $app->setI18nCachedPath(__DIR__.'/hello');
+        $this->assertSame(__DIR__.'/hello/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+    }
+
+    public function testSetOptionCachePath(): void
+    {
+        $app = $this->createApp();
+        $this->assertSame(__DIR__.'/app/bootstrap/option.php', $app->optionCachedPath());
+        $app->setOptionCachedPath(__DIR__.'/hello');
+        $this->assertSame(__DIR__.'/hello/option.php', $app->optionCachedPath());
+    }
+
     protected function createApp(): App
     {
         $container = Container::singletons();

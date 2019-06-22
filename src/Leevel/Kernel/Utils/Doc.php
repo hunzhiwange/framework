@@ -566,4 +566,4 @@ class Doc
 }
 
 // import fn.
-class_exists(create_file::class);
+class_exists(create_file::class); // @codeCoverageIgnore

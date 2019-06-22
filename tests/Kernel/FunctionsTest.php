@@ -305,6 +305,20 @@ class FunctionsTest extends TestCase
         $container->clear();
     }
 
+    public function testLeevelWithOtherAppMethod(): void
+    {
+        $container = $this->createContainer();
+        $this->assertSame('/runtime', Leevel::runtimePath());
+        $container->clear();
+    }
+
+    public function testLeevelWithOtherContainerMethod(): void
+    {
+        $container = $this->createContainer();
+        $this->assertSame('foo', Leevel::make('foo'));
+        $container->clear();
+    }
+
     protected function createContainer(): Container
     {
         $container = Container::singletons();
