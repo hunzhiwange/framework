@@ -104,10 +104,9 @@ class LogTest extends TestCase
     public function testLogLevelNotFoundWithDefaultLevel(): void
     {
         $log = $this->createFileConnect();
-        $log->setOption('levels', [ILog::INFO]);
-        $log->log(ILog::INFO, 'foo', ['hello', 'world']);
-
-        $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
+        $log->setOption('levels', [ILog::DEBUG]);
+        $log->log('notfound', 'foo', ['hello', 'world']);
+        $this->assertSame([ILog::DEBUG => [[ILog::DEBUG, 'foo', ['hello', 'world']]]], $log->all());
 
         $log->flush();
 
