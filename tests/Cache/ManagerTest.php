@@ -21,9 +21,11 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\Manager;
+use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Option\Option;
+use RedisException;
 use Tests\TestCase;
 
 /**
@@ -59,7 +61,51 @@ class ManagerTest extends TestCase
         $this->assertFalse($manager->get('manager-foo'));
     }
 
-    protected function createManager(): Manager
+    public function testRedis(): void
+    {
+        $this->checkRedis();
+
+        $manager = $this->createManager('redis');
+
+        $manager->set('manager-foo', 'bar');
+
+        $this->assertSame('bar', $manager->get('manager-foo'));
+
+        $manager->delete('manager-foo');
+
+        $this->assertFalse($manager->get('manager-foo'));
+    }
+
+    protected function checkRedis(): void
+    {
+        if (!extension_loaded('redis')) {
+            $this->markTestSkipped('Redis extension must be loaded before use.');
+        }
+
+        try {
+            $this->makePhpRedis();
+        } catch (RedisException $th) {
+            $this->markTestSkipped('Redis read error on connection and ignore.');
+        }
+    }
+
+    protected function makePhpRedis(array $option = []): PhpRedis
+    {
+        $default = [
+            'host'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+            'port'        => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+            'password'    => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+            'select'      => 0,
+            'timeout'     => 0,
+            'persistent'  => false,
+        ];
+
+        $option = array_merge($default, $option);
+
+        return new PhpRedis($option);
+    }
+
+    protected function createManager(string $connect = 'file'): Manager
     {
         $container = new Container();
         $manager = new Manager($container);
@@ -69,7 +115,7 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'cache' => [
-                'default'     => 'file',
+                'default'     => $connect,
                 'expire'      => 86400,
                 'time_preset' => [],
                 'connect'     => [
@@ -78,6 +124,17 @@ class ManagerTest extends TestCase
                         'path'      => __DIR__.'/cacheManager',
                         'serialize' => true,
                         'expire'    => null,
+                    ],
+                    'redis' => [
+                        'driver'     => 'redis',
+                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select'     => 0,
+                        'timeout'    => 0,
+                        'persistent' => false,
+                        'serialize'  => true,
+                        'expire'     => null,
                     ],
                 ],
             ],
