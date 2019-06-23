@@ -361,7 +361,7 @@ class Container implements IContainer, ArrayAccess
         if (false === $isStatic && is_array($callback)) {
             if (!is_object($callback[0])) {
                 if (!is_string($callback[0])) {
-                    $e = 'The classname must be string.';
+                    $e = 'The class name must be string.';
 
                     throw new InvalidArgumentException($e);
                 }
@@ -445,7 +445,6 @@ class Container implements IContainer, ArrayAccess
     public function exists(string $name): bool
     {
         $name = $this->normalize($name);
-
         $name = $this->getAlias($name);
 
         return isset($this->services[$name]) ||
@@ -557,6 +556,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         $this->bootstrapProviders();
+        $this->isBootstrap = true;
     }
 
     /**
@@ -642,15 +642,9 @@ class Container implements IContainer, ArrayAccess
      */
     protected function bootstrapProviders(): void
     {
-        if ($this->isBootstrap) {
-            return;
-        }
-
         foreach ($this->providerBootstraps as $item) {
             $this->callProviderBootstrap($item);
         }
-
-        $this->isBootstrap = true;
     }
 
     /**
@@ -660,10 +654,6 @@ class Container implements IContainer, ArrayAccess
      */
     protected function registerDeferredProvider(string $provider): void
     {
-        if (!isset($this->deferredProviders[$provider])) {
-            return;
-        }
-
         $providerInstance = $this->register($this->deferredProviders[$provider]);
 
         $this->callProviderBootstrap($providerInstance);
@@ -943,17 +933,13 @@ class Container implements IContainer, ArrayAccess
     {
         $reflection = new ReflectionFunction($injection);
 
-        if (!($param = $reflection->getParameters())) {
-            $param = [];
-        }
-
-        return $param;
+        return $reflection->getParameters();
     }
 
     /**
      * 解析数组回调反射参数.
      *
-     * @param array&callback $injection
+     * @param array|callback $injection
      *
      * @return array
      */
@@ -961,11 +947,7 @@ class Container implements IContainer, ArrayAccess
     {
         $reflection = new ReflectionMethod($injection[0], $injection[1]);
 
-        if (!($param = $reflection->getParameters())) {
-            $param = [];
-        }
-
-        return $param;
+        return $reflection->getParameters();
     }
 
     /**
