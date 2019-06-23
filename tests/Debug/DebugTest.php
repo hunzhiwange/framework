@@ -22,6 +22,7 @@ namespace Tests\Debug;
 
 use Error;
 use Exception;
+use Leevel\Database\IDatabase;
 use Leevel\Debug\Debug;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
@@ -36,7 +37,8 @@ use Leevel\Option\IOption;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
-use Tests\TestCase;
+use Tests\Database;
+use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
  * debug test.
@@ -55,6 +57,8 @@ use Tests\TestCase;
  */
 class DebugTest extends TestCase
 {
+    use Database;
+
     public function testBaseUse(): void
     {
         $debug = $this->createDebug();
@@ -482,6 +486,38 @@ class DebugTest extends TestCase
 
     /**
      * @api(
+     *     title="调试数据库",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testWithDatabase(): void
+    {
+        $debug = $this->createDebugWithDatabase();
+        $container = $debug->getContainer();
+        $this->assertFalse($debug->isBootstrap());
+        $debug->bootstrap();
+        $this->assertTrue($debug->isBootstrap());
+
+        $request = new Request();
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $database = $container->make('database');
+
+        $database
+            ->table('guest_book')
+            ->findAll();
+
+        $debug->handle($request, $response);
+
+        $content = $response->getContent();
+
+        $this->assertStringContainsString('"logs":{"count":1,', $content);
+        $this->assertStringContainsString('SELECT `guest_book`.* FROM `guest_book`: []', $content);
+    }
+
+    /**
+     * @api(
      *     title="调试时间",
      *     description="",
      *     note="",
@@ -806,6 +842,29 @@ class DebugTest extends TestCase
         return $app;
     }
 
+    protected function createDebugWithDatabase(): Debug
+    {
+        return new Debug($this->createAppWithDatabase()->container());
+    }
+
+    protected function createAppWithDatabase(): App
+    {
+        $app = new App($container = new Container(), '');
+
+        $container->instance('app', $app);
+
+        $container->instance('session', $this->createSession());
+
+        $container->instance('option', $this->createOption());
+
+        $eventDispatch = new Dispatch($container);
+        $container->singleton(IDispatch::class, $eventDispatch);
+
+        $container->instance('database', $this->createDatabase($eventDispatch));
+
+        return $app;
+    }
+
     protected function createDebug(): Debug
     {
         return new Debug($this->createApp()->container());
@@ -854,6 +913,14 @@ class DebugTest extends TestCase
         return $log;
     }
 
+    protected function createDatabase(IDispatch $dispatch = null): IDatabase
+    {
+        $database = $this->createDatabaseConnect($dispatch);
+        $this->assertInstanceof(IDatabase::class, $database);
+
+        return $database;
+    }
+
     protected function createOption(): IOption
     {
         $data = [
@@ -872,6 +939,11 @@ class DebugTest extends TestCase
         $this->assertInstanceof(IOption::class, $option);
 
         return $option;
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['guest_book'];
     }
 }
 
