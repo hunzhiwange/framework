@@ -166,6 +166,8 @@ class MakeTest extends TestCase
         $this->assertStringContainsString('hello key3', $content);
         $this->assertStringContainsString('hello key4', $content);
 
+        $this->assertSame([], Make::getGlobalReplace());
+
         unlink($file);
         rmdir(dirname($file));
     }
