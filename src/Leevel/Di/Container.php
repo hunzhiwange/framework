@@ -892,27 +892,19 @@ class Container implements IContainer, ArrayAccess
      *
      * @throws \InvalidArgumentException
      *
-     * @return bool|object
+     * @return object
      */
-    protected function parseClassFromContainer(string $argsclass)
+    protected function parseClassFromContainer(string $argsclass): object
     {
         $itemMake = $this->make($argsclass);
 
-        // 实例对象
         if (is_object($itemMake)) {
             return $itemMake;
         }
 
-        // 接口绑定实现
-        $result = $this->make($itemMake);
+        $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
 
-        if (!is_object($result)) {
-            $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        return $result;
+        throw new InvalidArgumentException($e);
     }
 
     /**
