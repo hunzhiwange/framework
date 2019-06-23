@@ -41,7 +41,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  */
 trait BaseMake
 {
-    protected function runCommand(Command $command, array $inputs, Closure $call = null)
+    protected function runCommand(Command $command, array $inputs, ?Closure $call = null)
     {
         $container = Container::singletons();
         $container->clear();

@@ -369,7 +369,7 @@ class ContainerTest extends TestCase
 
         $test8 = new Test8();
 
-        $result = $container->call(function ($arg1, $arg2, $arg3, ITest8 $arg4 = null, Test8 $arg5 = null) {
+        $result = $container->call(function ($arg1, $arg2, $arg3, ?ITest8 $arg4 = null, ?Test8 $arg5 = null) {
             return func_get_args();
         }, ['arg1' => 'foo', 'arg3' => 'world2', Test8::class => $test8]);
 

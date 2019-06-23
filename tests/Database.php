@@ -42,7 +42,7 @@ trait Database
 {
     protected $databaseConnects;
 
-    protected function createDatabaseConnectMock(array $option = [], string $connect = null, ?IDispatch $dispatch = null): Mysql
+    protected function createDatabaseConnectMock(array $option = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
     {
         if (null === $connect) {
             $connect = Mysql::class;

@@ -902,7 +902,7 @@ class DebugTest extends TestCase
         return $session;
     }
 
-    protected function createLog(IDispatch $dispatch = null): ILog
+    protected function createLog(?IDispatch $dispatch = null): ILog
     {
         $log = new LogFile([
             'path' => __DIR__.'/cacheLog',
@@ -913,7 +913,7 @@ class DebugTest extends TestCase
         return $log;
     }
 
-    protected function createDatabase(IDispatch $dispatch = null): IDatabase
+    protected function createDatabase(?IDispatch $dispatch = null): IDatabase
     {
         $database = $this->createDatabaseConnect($dispatch);
         $this->assertInstanceof(IDatabase::class, $database);
