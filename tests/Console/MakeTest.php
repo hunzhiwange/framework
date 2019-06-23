@@ -20,8 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Console;
 
+use Leevel\Console\Make;
 use Leevel\Filesystem\Fso;
 use Tests\Console\Command\MakeFile;
+use Tests\Console\Command\MakeFileWithGlobalReplace;
 use Tests\TestCase;
 
 /**
@@ -144,5 +146,27 @@ class MakeTest extends TestCase
         $this->assertStringContainsString('is not writeable.', $result);
 
         rmdir($dirname);
+    }
+
+    public function testMakeFileWithGlobalReplace(): void
+    {
+        $result = $this->runCommand(new MakeFileWithGlobalReplace(), [
+            'command'     => 'makewithglobal:test',
+            'name'        => 'test',
+        ]);
+
+        $this->assertStringContainsString('test <test> created successfully.', $result);
+
+        $file = __DIR__.'/Command/cache/test';
+
+        $this->assertStringContainsString('hello make file', $content = file_get_contents($file));
+
+        $this->assertStringContainsString('hello key1', $content);
+        $this->assertStringContainsString('hello key2 global', $content);
+        $this->assertStringContainsString('hello key3', $content);
+        $this->assertStringContainsString('hello key4', $content);
+
+        unlink($file);
+        rmdir(dirname($file));
     }
 }
