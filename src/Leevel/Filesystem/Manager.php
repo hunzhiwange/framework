@@ -76,6 +76,7 @@ class Manager extends Managers implements IFilesystem
      * @param array $options
      *
      * @return \Leevel\Filesystem\Ftp
+     * @codeCoverageIgnore
      */
     protected function makeConnectFtp(array $options = []): Ftp
     {
@@ -90,6 +91,7 @@ class Manager extends Managers implements IFilesystem
      * @param array $options
      *
      * @return \Leevel\Filesystem\Sftp
+     * @codeCoverageIgnore
      */
     protected function makeConnectSftp(array $options = []): Sftp
     {
@@ -104,6 +106,7 @@ class Manager extends Managers implements IFilesystem
      * @param array $options
      *
      * @return \Leevel\Filesystem\Zip
+     * @codeCoverageIgnore
      */
     protected function makeConnectZip(array $options = []): Zip
     {

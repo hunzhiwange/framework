@@ -33,24 +33,25 @@ use RuntimeException;
  */
 function create_file(string $path, ?string $content = null, int $mode = 0666): void
 {
-    $dirname = dirname($path);
+    if (!is_file($path)) {
+        $dirname = dirname($path);
 
-    if (is_file($dirname)) {
-        $e = sprintf('Dir `%s` cannot be a file.', $dirname);
+        if (is_file($dirname)) {
+            $e = sprintf('Dir `%s` cannot be a file.', $dirname);
 
-        throw new RuntimeException($e);
-    }
+            throw new RuntimeException($e);
+        }
 
-    create_directory($dirname);
-
-    if (!$file = fopen($path, 'a')) {
-        $e = sprintf('Dir `%s` is not writeable.', $dirname);
+        create_directory($dirname);
+        $file = fopen($path, 'a');
+        fclose($file);
+    } elseif (!is_writable($path)) {
+        $e = sprintf('File `%s` is not writeable.', $path);
 
         throw new RuntimeException($e);
     }
 
     chmod($path, $mode & ~umask());
-    fclose($file);
 
     if ($content) {
         file_put_contents($path, $content);
