@@ -109,10 +109,16 @@ class HttpServer extends Server implements IServer
      */
     public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse): void
     {
-        // 请求过滤 favicon
-        if ('/favicon.ico' === $swooleRequest->server['path_info'] ||
-            '/favicon.ico' === $swooleRequest->server['request_uri']) {
-            $swooleResponse->end(' ');
+        if ($this->isFavicon($swooleRequest)) {
+            $swooleResponse->end();
+
+            return;
+        }
+
+        $this->prepareCors($swooleResponse);
+
+        if ($this->isOptions($swooleRequest)) {
+            $swooleResponse->end();
 
             return;
         }
@@ -136,12 +142,48 @@ class HttpServer extends Server implements IServer
      */
     public function onHttpClose(SwooleHttpServer $server, int $fd, int $reactorId): void
     {
-        $this->log(
-            sprintf(
-                'Server close, fd %d, reactorId %d.',
-                $fd, $reactorId
-            )
-        );
+        $message = sprintf('Server close, fd %d, reactorId %d.', $fd, $reactorId);
+        $this->log($message);
+    }
+
+    /**
+     * 请求过滤 favicon.
+     *
+     * @param \Swoole\Http\Request $swooleRequest
+     *
+     * @return bool
+     */
+    protected function isFavicon(SwooleHttpRequest $swooleRequest): bool
+    {
+        return '/favicon.ico' === $swooleRequest->server['path_info'] ||
+            '/favicon.ico' === $swooleRequest->server['request_uri'];
+    }
+
+    /**
+     * 是否为 options 请求
+     *
+     * @param \Swoole\Http\Request $swooleRequest
+     *
+     * @return bool
+     */
+    protected function isOptions(SwooleHttpRequest $swooleRequest): bool
+    {
+        return 'OPTIONS' === $swooleRequest->server['request_method'];
+    }
+
+    /**
+     * 准备跨域数据.
+     *
+     * @param \Swoole\Http\Response $swooleResponse
+     *
+     * @todo `Access-Control-Allow-Origin` 在允许 Cookie 的情况下面的支持
+     */
+    protected function prepareCors(SwooleHttpResponse $swooleResponse): void
+    {
+        $swooleResponse->header('Access-Control-Allow-Origin', '*');
+        $swooleResponse->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $swooleResponse->header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token');
+        $swooleResponse->header('Access-Control-Allow-Credentials', 'true');
     }
 
     /**
@@ -154,11 +196,8 @@ class HttpServer extends Server implements IServer
     protected function dispatchRouter(IRequest $request): IResponse
     {
         $kernel = $this->container->make(IKernel::class);
-
         $response = $kernel->handle($request);
-
         $kernel->terminate($request, $response);
-
         $this->removeCoroutine();
 
         return $response;
@@ -188,7 +227,6 @@ class HttpServer extends Server implements IServer
         }
 
         $swooleResponse->status($response->getStatusCode());
-
         $swooleResponse->write($response->getContent() ?: ' ');
 
         return $swooleResponse;
@@ -204,7 +242,6 @@ class HttpServer extends Server implements IServer
     protected function normalizeRequest(SwooleHttpRequest $swooleRequest): IRequest
     {
         $request = new Request();
-
         $data = [
             'header' => 'headers',
             'server' => 'server',
@@ -213,7 +250,6 @@ class HttpServer extends Server implements IServer
             'files'  => 'files',
             'post'   => 'request',
         ];
-
         $servers = [];
 
         if ($swooleRequest->header) {
@@ -222,7 +258,6 @@ class HttpServer extends Server implements IServer
             foreach ($swooleRequest->header as $key => $value) {
                 $key = strtoupper(str_replace('-', '_', $key));
                 $tmpHeader[$key] = $value;
-
                 $key = 'HTTP_'.$key;
                 $tmp[$key] = $value;
             }
