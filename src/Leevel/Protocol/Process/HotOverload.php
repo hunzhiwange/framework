@@ -33,6 +33,8 @@ use Leevel\Protocol\IServer;
  * @since 2018.12.13
  *
  * @version 1.0
+ *
+ * @see https://www.swoft.org 参考 Swoft 热更新
  * @codeCoverageIgnore
  */
 class HotOverload extends Process
@@ -88,7 +90,7 @@ class HotOverload extends Process
     {
         $this->option = $option;
 
-        $this->after = (int) $this->option->get('swoole\\hotoverload_after');
+        $this->after = (int) $this->option->get('protocol\\hotoverload_after', 1);
     }
 
     /**
@@ -106,7 +108,6 @@ class HotOverload extends Process
 
             if ($this->md5 && $newMd5 !== $this->md5) {
                 $this->log('The Swoole server will reload.');
-
                 $this->count = 0;
                 $this->reloading = true;
             }
@@ -146,16 +147,20 @@ class HotOverload extends Process
     {
         $files = [];
 
-        foreach ((array) $this->option->get('swoole\\hotoverload_watch') as $dir) {
+        foreach ((array) $this->option->get('protocol\\hotoverload_watch', []) as $dir) {
+            if (is_file($dir)) {
+                $files[] = $dir;
+
+                continue;
+            }
+
             if (!is_dir($dir)) {
                 continue;
             }
 
             list_directory($dir, true, function ($file) use (&$files) {
-                if ($file->isFile()) {
-                    if (in_array($file->getExtension(), ['php'], true)) {
-                        $files[] = $file->getPath().'/'.$file->getFilename();
-                    }
+                if ($file->isFile() && in_array($file->getExtension(), ['php'], true)) {
+                    $files[] = $file->getPath().'/'.$file->getFilename();
                 }
             });
         }
@@ -171,12 +176,8 @@ class HotOverload extends Process
     protected function reload(IServer $server): void
     {
         $this->reloading = false;
-
         $this->log('The Swoole server is start reloading.');
-
         $server->getServer()->reload();
-
-        $this->log('The Swoole server has reloaded.');
     }
 
     /**
