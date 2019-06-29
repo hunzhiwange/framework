@@ -216,7 +216,7 @@ class ResponseTest extends TestCase
      * @param mixed $text
      * @param mixed $expectedText
      */
-    public function testSetStatusCode($code, $text, $expectedText)
+    public function testSetStatusCode($code, $text, $expectedText): void
     {
         $response = new Response();
         $response->setStatusCode((int) $code, $text);
@@ -319,7 +319,7 @@ class ResponseTest extends TestCase
      *
      * @param mixed $content
      */
-    public function testSetContent($content)
+    public function testSetContent($content): void
     {
         $response = new Response();
         $response->setContent($content);
@@ -340,7 +340,7 @@ class ResponseTest extends TestCase
      *
      * @param mixed $content
      */
-    public function testSetContentInvalid($content)
+    public function testSetContentInvalid($content): void
     {
         $this->expectException(\UnexpectedValueException::class);
 

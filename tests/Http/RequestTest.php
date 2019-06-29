@@ -227,7 +227,7 @@ class RequestTest extends TestCase
      * @param mixed $expectedQuery
      * @param mixed $msg
      */
-    public function testGetQueryString($query, $expectedQuery, $msg)
+    public function testGetQueryString($query, $expectedQuery, $msg): void
     {
         $request = new Request();
         $request->server->set('QUERY_STRING', $query);
@@ -336,7 +336,7 @@ class RequestTest extends TestCase
      *
      * @param mixed $method
      */
-    public function testCreateFromGlobals($method)
+    public function testCreateFromGlobals($method): void
     {
         $normalizedMethod = strtoupper($method);
         $_GET['foo1'] = 'bar1';
@@ -381,7 +381,7 @@ class RequestTest extends TestCase
      *
      * @param mixed $method
      */
-    public function testCreateFromGlobalWithApplicationJson($method)
+    public function testCreateFromGlobalWithApplicationJson($method): void
     {
         $normalizedMethod = strtoupper($method);
         $_SERVER['REQUEST_METHOD'] = $method;
@@ -924,7 +924,7 @@ class RequestTest extends TestCase
      *
      * @param mixed $method
      */
-    public function testIsMethodCheck(string $method)
+    public function testIsMethodCheck(string $method): void
     {
         $request = new Request();
         $isMethod = 'is'.ucfirst($method);
@@ -936,7 +936,7 @@ class RequestTest extends TestCase
      *
      * @param mixed $method
      */
-    public function testIsMethodCheckWillReturnTrue(string $method)
+    public function testIsMethodCheckWillReturnTrue(string $method): void
     {
         $request = new Request();
         $isMethod = 'is'.ucfirst($method);

@@ -40,7 +40,7 @@ class NotInTest extends TestCase
      * @param mixed  $value
      * @param string $param
      */
-    public function testBaseUse($value, string $param)
+    public function testBaseUse($value, string $param): void
     {
         $validate = new Validator(
             [
@@ -73,7 +73,7 @@ class NotInTest extends TestCase
      * @param mixed  $value
      * @param string $param
      */
-    public function testBad($value, string $param)
+    public function testBad($value, string $param): void
     {
         $validate = new Validator(
             [

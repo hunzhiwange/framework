@@ -39,7 +39,7 @@ class Ipv6Test extends TestCase
      *
      * @param mixed $value
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value): void
     {
         $validate = new Validator(
             [
@@ -68,7 +68,7 @@ class Ipv6Test extends TestCase
      *
      * @param mixed $value
      */
-    public function testBad($value)
+    public function testBad($value): void
     {
         $validate = new Validator(
             [

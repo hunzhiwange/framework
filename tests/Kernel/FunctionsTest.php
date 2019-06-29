@@ -97,7 +97,7 @@ class FunctionsTest extends TestCase
      * @param mixed  $value
      * @param mixed  $envValue
      */
-    public function testEnv(string $name, $value, $envValue)
+    public function testEnv(string $name, $value, $envValue): void
     {
         $name = 'test_env_'.$name;
 

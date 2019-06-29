@@ -41,7 +41,7 @@ class LogTest extends TestCase
      *
      * @param string $level
      */
-    public function testBaseUse(string $level)
+    public function testBaseUse(string $level): void
     {
         $log = $this->createFileConnect();
 

@@ -40,7 +40,7 @@ class SameTest extends TestCase
      * @param mixed $value
      * @param mixed $param
      */
-    public function testBaseUse($value, $param)
+    public function testBaseUse($value, $param): void
     {
         $validate = new Validator(
             [
@@ -70,7 +70,7 @@ class SameTest extends TestCase
      * @param mixed $value
      * @param mixed $param
      */
-    public function testBad($value, $param)
+    public function testBad($value, $param): void
     {
         $validate = new Validator(
             [

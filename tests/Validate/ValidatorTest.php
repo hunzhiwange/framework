@@ -905,7 +905,7 @@ class ValidatorTest extends TestCase
      *
      * @param string $skipRule
      */
-    public function testAliasSkipException(string $skipRule)
+    public function testAliasSkipException(string $skipRule): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -1238,7 +1238,7 @@ class ValidatorTest extends TestCase
      *
      * @param string $skipRule
      */
-    public function testSkipRule(string $skipRule)
+    public function testSkipRule(string $skipRule): void
     {
         $validate = new Validator(
             [

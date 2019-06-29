@@ -55,7 +55,7 @@ class TypeTest extends TestCase
      * @param mixed  $value
      * @param string $type
      */
-    public function testBaseUse($value, string $type)
+    public function testBaseUse($value, string $type): void
     {
         $validate = new Validator(
             [
@@ -98,7 +98,7 @@ class TypeTest extends TestCase
      * @param mixed  $value
      * @param string $type
      */
-    public function testBad($value, string $type)
+    public function testBad($value, string $type): void
     {
         $validate = new Validator(
             [

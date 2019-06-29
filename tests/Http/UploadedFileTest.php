@@ -144,7 +144,7 @@ class UploadedFileTest extends TestCase
     /**
      * @dataProvider failedUploadedFile
      */
-    public function testMoveFailed(UploadedFile $file)
+    public function testMoveFailed(UploadedFile $file): void
     {
         switch ($file->getError()) {
             case UPLOAD_ERR_INI_SIZE:
@@ -273,7 +273,7 @@ class UploadedFileTest extends TestCase
      *
      * @param int $error
      */
-    public function testIsInvalidOnUploadError(int $error)
+    public function testIsInvalidOnUploadError(int $error): void
     {
         $file = new UploadedFile(
             __DIR__.'/assert/source.txt',

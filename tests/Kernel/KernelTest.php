@@ -56,7 +56,7 @@ class KernelTest extends TestCase
      *
      * @param bool $debug
      */
-    public function testBaseUse(bool $debug)
+    public function testBaseUse(bool $debug): void
     {
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);

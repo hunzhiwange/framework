@@ -40,7 +40,7 @@ class DateFormatTest extends TestCase
      * @param mixed  $value
      * @param string $format
      */
-    public function testBaseUse($value, string $format)
+    public function testBaseUse($value, string $format): void
     {
         $validate = new Validator(
             [
@@ -68,7 +68,7 @@ class DateFormatTest extends TestCase
      * @param mixed  $value
      * @param string $format
      */
-    public function testBad($value, string $format)
+    public function testBad($value, string $format): void
     {
         $validate = new Validator(
             [

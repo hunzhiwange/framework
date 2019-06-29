@@ -42,7 +42,7 @@ class DifferentTest extends TestCase
      * @param mixed  $valueCompare
      * @param string $param
      */
-    public function testBaseUse($value, $valueCompare, string $param)
+    public function testBaseUse($value, $valueCompare, string $param): void
     {
         $validate = new Validator(
             [
@@ -76,7 +76,7 @@ class DifferentTest extends TestCase
      * @param mixed  $valueCompare
      * @param string $param
      */
-    public function testBad($value, $valueCompare, string $param)
+    public function testBad($value, $valueCompare, string $param): void
     {
         $validate = new Validator(
             [

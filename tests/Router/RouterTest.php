@@ -178,7 +178,7 @@ class RouterTest extends TestCase
      * @param string $method
      * @param mixed  $action
      */
-    public function testRestful(string $method, string $action)
+    public function testRestful(string $method, string $action): void
     {
         $pathInfo = '/:tests/restful/5';
         $params = [];
@@ -213,7 +213,7 @@ class RouterTest extends TestCase
      * @param string $method
      * @param string $action
      */
-    public function testNodeNotFound(string $method, string $action)
+    public function testNodeNotFound(string $method, string $action): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
@@ -249,7 +249,7 @@ class RouterTest extends TestCase
      * @param string $method
      * @param string $action
      */
-    public function testNodeNotFoundWithParams(string $method, string $action)
+    public function testNodeNotFoundWithParams(string $method, string $action): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(

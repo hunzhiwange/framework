@@ -41,7 +41,7 @@ class RegexTest extends TestCase
      * @param mixed $value
      * @param mixed $param
      */
-    public function testBaseUse($value, string $param)
+    public function testBaseUse($value, string $param): void
     {
         $validate = new Validator(
             [
@@ -73,7 +73,7 @@ class RegexTest extends TestCase
      * @param mixed $value
      * @param mixed $param
      */
-    public function testBad($value, $param)
+    public function testBad($value, $param): void
     {
         $validate = new Validator(
             [

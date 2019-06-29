@@ -378,7 +378,7 @@ class DebugTest extends TestCase
      *     note="",
      * )
      */
-    public function testMessageLevelsData(string $level)
+    public function testMessageLevelsData(string $level): void
     {
         $debug = $this->createDebug();
 

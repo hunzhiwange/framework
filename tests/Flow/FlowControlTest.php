@@ -76,7 +76,7 @@ class FlowControlTest extends TestCase
      * @param int    $condition
      * @param string $result
      */
-    public function testElse2(int $condition, string $result)
+    public function testElse2(int $condition, string $result): void
     {
         $test = new Test1();
 

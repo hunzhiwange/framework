@@ -65,7 +65,7 @@ class ExceptionTest extends TestCase
      * @param string $code
      * @param string $message
      */
-    public function testHttpException(string $exception, int $code, string $message)
+    public function testHttpException(string $exception, int $code, string $message): void
     {
         $exceptionName = 'Leevel\\Kernel\\Exception\\'.$exception;
 

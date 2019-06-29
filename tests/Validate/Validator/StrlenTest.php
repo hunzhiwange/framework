@@ -41,7 +41,7 @@ class StrlenTest extends TestCase
      * @param mixed $value
      * @param int   $length
      */
-    public function testBaseUse($value, int $length)
+    public function testBaseUse($value, int $length): void
     {
         $validate = new Validator(
             [
@@ -73,7 +73,7 @@ class StrlenTest extends TestCase
      * @param mixed $value
      * @param int   $length
      */
-    public function testBad($value, int $length)
+    public function testBad($value, int $length): void
     {
         $validate = new Validator(
             [

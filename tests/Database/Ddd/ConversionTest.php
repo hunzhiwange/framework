@@ -46,7 +46,7 @@ class ConversionTest extends TestCase
      * @param mixed  $conversion
      * @param mixed  $msg
      */
-    public function testBaseUse($field, $source, $prop, $conversion)
+    public function testBaseUse($field, $source, $prop, $conversion): void
     {
         $entity = $this->makeEntity();
 
