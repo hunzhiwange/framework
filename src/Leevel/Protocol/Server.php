@@ -91,6 +91,7 @@ abstract class Server
     {
         $this->validSwoole();
 
+        $container->setCoroutine(new Coroutine());
         $this->container = $container;
 
         $this->option = array_merge($this->option, $option);
@@ -206,7 +207,6 @@ abstract class Server
             'Server is started at %s:%d',
             $this->option['host'], $this->option['port']
         );
-
         $this->log($message, true, '');
         $this->log('Server master worker start', true);
 
@@ -261,13 +261,9 @@ abstract class Server
     public function onWorkerStart(SwooleServer $server, int $workeId): void
     {
         if ($workeId >= $this->option['worker_num']) {
-            $this->setProcessName(
-                $this->option['process_name'].'.task'
-            );
+            $this->setProcessName($this->option['process_name'].'.task');
         } else {
-            $this->setProcessName(
-                $this->option['process_name'].'.worker'
-            );
+            $this->setProcessName($this->option['process_name'].'.worker');
         }
 
         // 开启 opcache 重连后需要刷新
@@ -291,10 +287,7 @@ abstract class Server
     public function onManagerStart(SwooleServer $server): void
     {
         $this->log('Server manager worker start', true);
-
-        $this->setProcessName(
-            $this->option['process_name'].'.manager'
-        );
+        $this->setProcessName($this->option['process_name'].'.manager');
     }
 
     /**
@@ -305,12 +298,11 @@ abstract class Server
      */
     public function onWorkerStop(SwooleServer $server, int $workerId): void
     {
-        $this->log(
-            sprintf(
-                'Server %s worker %d shutdown',
-                $server->setting['process_name'], $workerId
-            )
+        $message = sprintf(
+            'Server %s worker %d shutdown',
+            $server->setting['process_name'], $workerId
         );
+        $this->log($message);
     }
 
     /**
@@ -338,9 +330,8 @@ abstract class Server
      */
     public function onFinish(SwooleServer $server, int $taskId, string $data): void
     {
-        $this->log(
-            sprintf('Task %d finish, the result is %s', $taskId, $data)
-        );
+        $message = sprintf('Task %d finish, the result is %s', $taskId, $data);
+        $this->log($message);
     }
 
     /**
@@ -355,13 +346,11 @@ abstract class Server
      */
     public function onTask(SwooleServer $server, int $taskId, int $fromId, string $data): void
     {
-        $this->log(
-            sprintf(
-                'Task %d form workder %d, the result is %s',
-                $taskId, $fromId, $data
-            )
+        $message = sprintf(
+            'Task %d form workder %d, the result is %s',
+            $taskId, $fromId, $data
         );
-
+        $this->log($message);
         $server->finish($data);
     }
 
