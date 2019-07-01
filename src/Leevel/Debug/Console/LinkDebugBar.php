@@ -49,7 +49,7 @@ class LinkDebugBar extends Command
      *
      * @var string
      */
-    protected $description = 'Create a symbolic link from `debugbar/src/DebugBar/Resources` to `www/debugbar`.';
+    protected $description = 'Create a symbolic link from `debugbar` to `www/debugbar`.';
 
     /**
      * 响应命令.
