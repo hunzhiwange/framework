@@ -38,12 +38,12 @@ interface ITask
      * 投递异步任务.
      *
      * @param string        $data
-     * @param null|int      $workerId
+     * @param int           $workerId
      * @param null|\Closure $finishCallback
      *
      * @return bool|int
      */
-    public function task(string $data, ?int $workerId = null, ?Closure $finishCallback = null);
+    public function task(string $data, int $workerId = -1, ?Closure $finishCallback = null);
 
     /**
      * 并发执行Task并进行协程调度.

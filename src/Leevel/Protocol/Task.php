@@ -56,12 +56,12 @@ class Task implements ITask
      * 投递异步任务.
      *
      * @param string        $data
-     * @param null|int      $workerId
+     * @param int           $workerId
      * @param null|\Closure $finishCallback
      *
      * @return bool|int
      */
-    public function task(string $data, ?int $workerId = null, ?Closure $finishCallback = null)
+    public function task(string $data, int $workerId = -1, ?Closure $finishCallback = null)
     {
         return $this->server->task($data, $workerId, $finishCallback);
     }
