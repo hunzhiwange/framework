@@ -94,6 +94,9 @@ class HttpServer extends Server implements IServer
         'managerStart',
         'workerStop',
         'request',
+        'receive',
+        'task',
+        'finish',
         'shutdown',
         'close',
     ];
@@ -292,16 +295,11 @@ class HttpServer extends Server implements IServer
      */
     protected function createServer(): void
     {
-        unset($this->option['task_worker_num']);
-
         $this->server = new SwooleHttpServer(
             $this->option['host'],
             (int) ($this->option['port'])
         );
 
         $this->initServer();
-
-        // 删除容器中注册为 -1 的数据
-        $this->removeCoroutine();
     }
 }
