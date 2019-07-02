@@ -25,8 +25,10 @@ use Leevel\Di\Provider;
 use Leevel\Protocol\Client\Rpc;
 use Leevel\Protocol\HttpServer;
 use Leevel\Protocol\IPool;
+use Leevel\Protocol\ITask;
 use Leevel\Protocol\Pool;
 use Leevel\Protocol\RpcServer;
+use Leevel\Protocol\Task;
 use Leevel\Protocol\WebsocketServer;
 
 /**
@@ -51,6 +53,7 @@ class Register extends Provider
         $this->rpcServer();
         $this->pool();
         $this->rpc();
+        $this->task();
     }
 
     /**
@@ -66,6 +69,7 @@ class Register extends Provider
             'rpc.server'       => RpcServer::class,
             'pool'             => [IPool::class, Pool::class],
             'rpc'              => Rpc::class,
+            'task'             => [ITask::class, Task::class],
         ];
     }
 
@@ -163,6 +167,20 @@ class Register extends Provider
                 'rpc',
                 function (): Rpc {
                     return new Rpc();
+                },
+            );
+    }
+
+    /**
+     * 注册 task 服务.
+     */
+    protected function task(): void
+    {
+        $this->container
+            ->singleton(
+                'task',
+                function (IContainer $container): Task {
+                    return new Task($container->make('server'));
                 },
             );
     }
