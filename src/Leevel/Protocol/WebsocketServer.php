@@ -131,9 +131,8 @@ class WebsocketServer extends HttpServer implements IServer
      */
     public function onOpen(SwooleWebsocketServer $server, SwooleHttpRequest $swooleRequest): void
     {
-        $this->log(
-            sprintf('Server: handshake success with fd %s', $swooleRequest->fd)
-        );
+        $message = sprintf('Server: handshake success with fd %s', $swooleRequest->fd);
+        $this->log($message);
 
         $this->setClientPathInfo($swooleRequest->fd, $swooleRequest->server['path_info']);
 
@@ -155,12 +154,11 @@ class WebsocketServer extends HttpServer implements IServer
      */
     public function onMessage(SwooleWebsocketServer $server, SwooleWebsocketFrame $frame): void
     {
-        $this->log(
-            sprintf(
-                'Receive from fd %d:%s,opcode:%d,fin:%d',
-                $frame->fd, $frame->data, $frame->opcode, $frame->finish
-            )
+        $message = sprintf(
+            'Receive from fd %d:%s,opcode:%d,fin:%d',
+            $frame->fd, $frame->data, $frame->opcode, $frame->finish
         );
+        $this->log($message);
 
         if (false === ($pathInfo = $this->getClientPathInfo($frame->fd))) {
             return;
@@ -185,9 +183,8 @@ class WebsocketServer extends HttpServer implements IServer
      */
     public function onWebsocketClose(SwooleWebsocketServer $server, int $fd, int $reactorId): void
     {
-        $this->log(
-            sprintf('Server close, fd %d, reactorId %d.', $fd, $reactorId)
-        );
+        $message = sprintf('Server close, fd %d, reactorId %d.', $fd, $reactorId);
+        $this->log($message);
 
         /**
          * 未连接
@@ -237,9 +234,9 @@ class WebsocketServer extends HttpServer implements IServer
      */
     protected function setPreRequestMatched(IRequest $request, array $data): void
     {
-        $this->container->make(IRouter::class)->
-
-        setPreRequestMatched($request, [IRouter::VARS => $data]);
+        $this->container
+            ->make(IRouter::class)
+            ->setPreRequestMatched($request, [IRouter::VARS => $data]);
     }
 
     /**
