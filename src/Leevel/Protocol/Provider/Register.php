@@ -26,9 +26,11 @@ use Leevel\Protocol\Client\Rpc;
 use Leevel\Protocol\HttpServer;
 use Leevel\Protocol\IPool;
 use Leevel\Protocol\ITask;
+use Leevel\Protocol\ITimer;
 use Leevel\Protocol\Pool;
 use Leevel\Protocol\RpcServer;
 use Leevel\Protocol\Task;
+use Leevel\Protocol\Timer;
 use Leevel\Protocol\WebsocketServer;
 
 /**
@@ -54,6 +56,7 @@ class Register extends Provider
         $this->pool();
         $this->rpc();
         $this->task();
+        $this->timer();
     }
 
     /**
@@ -64,12 +67,13 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'http.server'      => HttpServer::class,
-            'websocket.server' => WebsocketServer::class,
-            'rpc.server'       => RpcServer::class,
-            'pool'             => [IPool::class, Pool::class],
-            'rpc'              => Rpc::class,
-            'task'             => [ITask::class, Task::class],
+            'http.server'       => HttpServer::class,
+            'websocket.server'  => WebsocketServer::class,
+            'rpc.server'        => RpcServer::class,
+            'pool'              => [IPool::class, Pool::class],
+            'rpc'               => Rpc::class,
+            'task'              => [ITask::class, Task::class],
+            'timer'             => [ITimer::class, Timer::class],
         ];
     }
 
@@ -181,6 +185,20 @@ class Register extends Provider
                 'task',
                 function (IContainer $container): Task {
                     return new Task($container->make('server'));
+                },
+            );
+    }
+
+    /**
+     * 注册 timer 服务.
+     */
+    protected function timer(): void
+    {
+        $this->container
+            ->singleton(
+                'timer',
+                function (IContainer $container): Timer {
+                    return new Timer($container->make('logs'));
                 },
             );
     }
