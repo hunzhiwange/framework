@@ -67,13 +67,13 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'http.server'       => HttpServer::class,
-            'websocket.server'  => WebsocketServer::class,
-            'rpc.server'        => RpcServer::class,
-            'pool'              => [IPool::class, Pool::class],
-            'rpc'               => Rpc::class,
-            'task'              => [ITask::class, Task::class],
-            'timer'             => [ITimer::class, Timer::class],
+            'http.server'      => HttpServer::class,
+            'websocket.server' => WebsocketServer::class,
+            'rpc.server'       => RpcServer::class,
+            'pool'             => [IPool::class, Pool::class],
+            'rpc'              => Rpc::class,
+            'task'             => [ITask::class, Task::class],
+            'timer'            => [ITimer::class, Timer::class],
         ];
     }
 
