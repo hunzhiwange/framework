@@ -36,7 +36,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 class Application extends SymfonyApplication implements IApplication
 {
     /**
-     * 应用容器.
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
@@ -64,7 +64,7 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @return \Symfony\Component\Console\Command\Command
      */
-    public function add(SymfonyCommand $command)
+    public function add(SymfonyCommand $command): SymfonyCommand
     {
         if ($command instanceof Command) {
             $command->setContainer($this->container);
