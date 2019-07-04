@@ -148,9 +148,12 @@ abstract class Command extends SymfonyCommand
     {
         $arguments['command'] = $command;
 
-        return $this->getApplication()->find($command)->run(
-            new ArrayInput($arguments), $this->output
-        );
+        return $this
+            ->getApplication()
+            ->find($command)
+            ->run(
+                new ArrayInput($arguments), $this->output
+            );
     }
 
     /**
@@ -224,15 +227,11 @@ abstract class Command extends SymfonyCommand
      */
     public function table(array $headers, array $rows, $style = 'default'): void
     {
-        (new Table($this->output))->
-
-        setHeaders($headers)->
-
-        setRows($rows)->
-
-        setStyle($style)->
-
-        render();
+        (new Table($this->output))
+            ->setHeaders($headers)
+            ->setRows($rows)
+            ->setStyle($style)
+            ->render();
     }
 
     /**
@@ -409,10 +408,7 @@ abstract class Command extends SymfonyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        return $this->container->call([
-            $this,
-            'handle',
-        ]);
+        return $this->container->call([$this, 'handle']);
     }
 
     /**
