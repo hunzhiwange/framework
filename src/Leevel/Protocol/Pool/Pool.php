@@ -165,7 +165,7 @@ abstract class Pool implements IPool
         Coroutine::create(function () {
             for ($i = 0; $i < $this->mixIdleConnections; $i++) {
                 $connection = $this->createConnection();
-                $this->backConnection($connection);
+                $this->returnConnection($connection);
             }
         });
 
