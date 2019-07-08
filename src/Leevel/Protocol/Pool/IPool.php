@@ -57,7 +57,7 @@ interface IPool
      *
      * @see https://wiki.swoole.com/wiki/page/846.html
      */
-    public function getConnection(int $timeout = 3000): IConnection;
+    public function borrowConnection(int $timeout = 3000): IConnection;
 
     /**
      * 归还连接.
@@ -66,7 +66,7 @@ interface IPool
      *
      * @return bool
      */
-    public function backConnection(IConnection $connection): bool;
+    public function returnConnection(IConnection $connection): bool;
 
     /**
      * 关闭通道.

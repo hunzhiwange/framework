@@ -134,7 +134,7 @@ abstract class Pool implements IPool
     public function __construct(array $option = [])
     {
         $key = [
-            'mix_idle_connections', 'max_idle_connections',
+            'max_idle_connections', 'mix_idle_connections',
             'max_push_timeout', 'max_pop_timeout',
             'keep_alive_duration', 'retry_times',
         ];
@@ -165,7 +165,7 @@ abstract class Pool implements IPool
         Coroutine::create(function () {
             for ($i = 0; $i < $this->mixIdleConnections; $i++) {
                 $connection = $this->createConnection();
-                $this->freeConnection($connection);
+                $this->backConnection($connection);
             }
         });
 
@@ -183,18 +183,18 @@ abstract class Pool implements IPool
      *
      * @see https://wiki.swoole.com/wiki/page/846.html
      */
-    public function getConnection(int $timeout = 3000): IConnection
+    public function borrowConnection(int $timeout = 3000): IConnection
     {
         // 未达到最小连接数，直接新建使用后归还
         if ($this->connectionsCount < $this->mixIdleConnections) {
-            $this->connectionsCount++;
-
             return $this->createConnection();
         }
 
         // 从通道中获取连接,支持重试次数
-        while ($this->retryTimes) {
-            $this->retryTimes--;
+        $retryTimes = $this->retryTimes;
+
+        while ($retryTimes) {
+            $retryTimes--;
 
             if ($connection = $this->getConnectionFromChannel($timeout)) {
                 $this->updateConnectionLastActiveTime($connection);
@@ -205,13 +205,11 @@ abstract class Pool implements IPool
 
         // 未达到最大连接数，直接新建使用后归还
         if ($this->connectionsCount < $this->maxIdleConnections) {
-            $this->connectionsCount++;
-
             return $this->createConnection();
         }
 
         // 通道为空，尝试等待其他协程调用 push 方法生产数据
-        $connection = $this->channel->pop($this->maxPopTimeout / 1000);
+        $connection = $this->connections->pop($this->maxPopTimeout / 1000);
 
         if (false === $connection) {
             $e = sprintf('Timeout `%f` ms of reading data from channels.', $this->maxPopTimeout);
@@ -231,7 +229,7 @@ abstract class Pool implements IPool
      *
      * @return bool
      */
-    public function backConnection(IConnection $connection): bool
+    public function returnConnection(IConnection $connection): bool
     {
         $this->connectionsCount++;
 
@@ -391,7 +389,8 @@ abstract class Pool implements IPool
     protected function validateIdleConnections(): void
     {
         if ($this->mixIdleConnections > $this->maxIdleConnections) {
-            $e = 'Max option of connections must greater than or equal to min.';
+            $e = sprintf('Max option `%d` of connections must greater than or equal to min `%d`.',
+                $this->maxIdleConnections, $this->minIdleConnections);
 
             throw new InvalidArgumentException($e);
         }
@@ -429,6 +428,8 @@ abstract class Pool implements IPool
 
                 continue;
             }
+
+            $this->connectionsCount--;
 
             return $connection;
         }
