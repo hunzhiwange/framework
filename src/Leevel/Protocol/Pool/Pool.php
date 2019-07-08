@@ -364,7 +364,7 @@ abstract class Pool implements IPool
         $this->retryTimes = $retryTimes;
 
         if ($this->retryTimes < 1) {
-            $e = 'Retry times must greater than or equal to 1.';
+            $e = sprintf('Retry times `%d` must greater than or equal to 1.', $this->retryTimes);
 
             throw new InvalidArgumentException($e);
         }
