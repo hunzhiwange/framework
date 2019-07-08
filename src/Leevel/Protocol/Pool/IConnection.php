@@ -33,13 +33,6 @@ namespace Leevel\Protocol\Pool;
 interface IConnection
 {
     /**
-     * 连接 connect 并返回连接对象
-     *
-     * @param array $option
-     */
-    public function connect(array $option): void;
-
-    /**
      * 断开连接.
      */
     public function disconnect(): void;

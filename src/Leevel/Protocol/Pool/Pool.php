@@ -438,7 +438,7 @@ abstract class Pool implements IPool
     }
 
     /**
-     * 关闭连接.
+     * 断开连接.
      *
      * @param \Leevel\Protocol\Pool\IConnection $connection
      */
