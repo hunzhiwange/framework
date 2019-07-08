@@ -468,7 +468,6 @@ abstract class Database
     public function close(): void
     {
         $this->freePDOStatement();
-
         $this->closeConnects();
     }
 
