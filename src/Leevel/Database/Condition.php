@@ -82,6 +82,7 @@ class Condition
      * @var string
      */
     public $conditionLogic = 'and';
+
     /**
      * 数据库连接.
      *
