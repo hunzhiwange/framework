@@ -33,6 +33,7 @@ use RuntimeException;
 
 /**
  * IOC 容器.
+ * IOC container.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -44,13 +45,15 @@ class Container implements IContainer, ArrayAccess
 {
     /**
      * 当前应用实例.
+     * Current application instance.
      *
-     * @var static
+     * @var \Leevel\Di\IContainer
      */
     protected static $instance;
 
     /**
-     * 注册服务.
+     * 注册的服务.
+     * Registered services.
      *
      * @var array
      */
@@ -58,13 +61,15 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册的实例.
+     * Registered instances.
      *
      * @var array
      */
     protected $instances = [];
 
     /**
-     * 单一实例.
+     * 注册的单一实例.
+     * Registered singletons.
      *
      * @var array
      */
@@ -79,6 +84,7 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 协程.
+     * Coroutine.
      *
      * @var \Leevel\Di\ICoroutine
      */
@@ -86,13 +92,15 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 协程上下文注册的实例.
+     * Registered instances of coroutine context.
      *
      * @var array
      */
     protected $coroutineInstances = [];
 
     /**
-     * 是否已经初始化引导
+     * 是否已经初始引导.
+     * Has it been initially booted.
      *
      * @var bool
      */
