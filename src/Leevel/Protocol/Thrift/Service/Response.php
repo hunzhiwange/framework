@@ -23,9 +23,10 @@ namespace Leevel\Protocol\Thrift\Service;
 use Thrift\Type\TType;
 
 /**
- * 定义一个响应包结构
- * 通用响应接口，数据以 JSON 进行交互.
- * thrift 自动生成代码分隔而来无需进行单元测试.
+ * 定义一个响应包结构.
+ *
+ * - 通用响应接口，数据以 JSON 进行交互.
+ * - thrift 自动生成代码分隔而来无需进行单元测试.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

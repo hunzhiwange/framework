@@ -24,9 +24,10 @@ use Thrift\Exception\TProtocolException;
 use Thrift\Type\TType;
 
 /**
- * 定义一个请求包结构
- * 约定请求数据包，方便只定义一个结构全自动调用 MVC 服务.
- * thrift 自动生成代码分隔而来无需进行单元测试.
+ * 定义一个请求包结构.
+ *
+ * - 约定请求数据包，方便只定义一个结构全自动调用 MVC 服务.
+ * - thrift 自动生成代码分隔而来无需进行单元测试.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
