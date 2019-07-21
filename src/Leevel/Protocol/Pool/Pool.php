@@ -44,7 +44,7 @@ abstract class Pool implements IPool
      *
      * @var int
      */
-    protected $mixIdleConnections = 1;
+    protected $minIdleConnections = 1;
 
     /**
      * 最大空闲连接池数据量.
@@ -134,7 +134,7 @@ abstract class Pool implements IPool
     public function __construct(array $option = [])
     {
         $key = [
-            'max_idle_connections', 'mix_idle_connections',
+            'max_idle_connections', 'min_idle_connections',
             'max_push_timeout', 'max_pop_timeout',
             'keep_alive_duration', 'retry_times',
         ];
@@ -163,7 +163,7 @@ abstract class Pool implements IPool
         $this->initialized = true;
 
         Coroutine::create(function () {
-            for ($i = 0; $i < $this->mixIdleConnections; $i++) {
+            for ($i = 0; $i < $this->minIdleConnections; $i++) {
                 $connection = $this->createConnection();
                 $this->returnConnection($connection);
             }
@@ -186,7 +186,7 @@ abstract class Pool implements IPool
     public function borrowConnection(int $timeout = 3000): IConnection
     {
         // 未达到最小连接数，直接新建使用后归还
-        if ($this->connectionsCount < $this->mixIdleConnections) {
+        if ($this->connectionsCount < $this->minIdleConnections) {
             return $this->createConnection();
         }
 
@@ -295,13 +295,13 @@ abstract class Pool implements IPool
     /**
      * 设置最小空闲连接池数据量.
      *
-     * @param int $mixIdleConnections
+     * @param int $minIdleConnections
      *
      * @return \Leevel\Protocol\Pool\IPool
      */
-    public function setMixIdleConnections(int $mixIdleConnections): IPool
+    public function setMinIdleConnections(int $minIdleConnections): IPool
     {
-        $this->mixIdleConnections = $mixIdleConnections;
+        $this->minIdleConnections = $minIdleConnections;
         $this->validateIdleConnections();
 
         return $this;
@@ -351,6 +351,20 @@ abstract class Pool implements IPool
     }
 
     /**
+     * 设置连接的存活时间.
+     *
+     * @param int $keepAliveDuration
+     *
+     * @return \Leevel\Protocol\Pool\IPool
+     */
+    public function setKeepAliveDuration(int $keepAliveDuration): IPool
+    {
+        $this->keepAliveDuration = $keepAliveDuration;
+
+        return $this;
+    }
+
+    /**
      * 设置最大尝试次数.
      *
      * @param int $maxPopTimeout
@@ -388,7 +402,7 @@ abstract class Pool implements IPool
      */
     protected function validateIdleConnections(): void
     {
-        if ($this->mixIdleConnections > $this->maxIdleConnections) {
+        if ($this->minIdleConnections > $this->maxIdleConnections) {
             $e = sprintf('Max option `%d` of connections must greater than or equal to min `%d`.',
                 $this->maxIdleConnections, $this->minIdleConnections);
 

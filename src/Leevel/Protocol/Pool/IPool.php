@@ -85,11 +85,11 @@ interface IPool
     /**
      * 设置最小空闲连接池数据量.
      *
-     * @param int $mixIdleConnections
+     * @param int $minIdleConnections
      *
      * @return \Leevel\Protocol\Pool\IPool
      */
-    public function setMixIdleConnections(int $mixIdleConnections): self;
+    public function setMinIdleConnections(int $minIdleConnections): self;
 
     /**
      * 设置最小空闲连接池数据量.
@@ -117,6 +117,15 @@ interface IPool
      * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxPopTimeout(int $maxPopTimeout): self;
+
+    /**
+     * 设置连接的存活时间.
+     *
+     * @param int $keepAliveDuration
+     *
+     * @return \Leevel\Protocol\Pool\IPool
+     */
+    public function setKeepAliveDuration(int $keepAliveDuration): self;
 
     /**
      * 设置最大尝试次数.
