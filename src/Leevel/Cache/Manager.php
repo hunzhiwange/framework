@@ -75,6 +75,20 @@ class Manager extends Managers implements ICache
     }
 
     /**
+     * 创建 redisPool 缓存.
+     *
+     * @param array $options
+     *
+     * @return \Leevel\Cache\RedisPool
+     */
+    protected function makeConnectRedisPool(array $options = []): RedisPool
+    {
+        $redisPool = $this->container->make('redis.pool');
+
+        return new RedisPool($redisPool, $options);
+    }
+
+    /**
      * 分析连接配置.
      *
      * @param string $connect

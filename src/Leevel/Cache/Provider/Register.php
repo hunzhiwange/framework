@@ -25,6 +25,7 @@ use Leevel\Cache\ICache;
 use Leevel\Cache\ILoad;
 use Leevel\Cache\Load;
 use Leevel\Cache\Manager;
+use Leevel\Cache\Redis\RedisPool;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
@@ -47,6 +48,7 @@ class Register extends Provider
         $this->caches();
         $this->cache();
         $this->cacheLoad();
+        $this->redisPool();
     }
 
     /**
@@ -57,6 +59,7 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
+            'redis.pool' => RedisPool::class,
             'caches'     => Manager::class,
             'cache'      => [ICache::class, Cache::class],
             'cache.load' => [ILoad::class, Load::class],
@@ -78,11 +81,11 @@ class Register extends Provider
     {
         $this->container
             ->singleton(
-                'caches',
-                function (IContainer $container): Manager {
-                    return new Manager($container);
-                },
-            );
+            'caches',
+            function (IContainer $container): Manager {
+                return new Manager($container);
+            },
+        );
     }
 
     /**
@@ -92,11 +95,11 @@ class Register extends Provider
     {
         $this->container
             ->singleton(
-                'cache',
-                function (IContainer $container): ICache {
-                    return $container['caches']->connect();
-                },
-            );
+            'cache',
+            function (IContainer $container): ICache {
+                return $container['caches']->connect();
+            },
+        );
     }
 
     /**
@@ -106,9 +109,30 @@ class Register extends Provider
     {
         $this->container
             ->singleton(
-                'cache.load',
-                function (IContainer $container): Load {
-                    return new Load($container);
+            'cache.load',
+            function (IContainer $container): Load {
+                return new Load($container);
+            },
+        );
+    }
+
+    /**
+     * 注册 redis.pool 服务
+     */
+    protected function redisPool(): void
+    {
+        $this->container
+            ->singleton(
+                'redis.pool',
+                function (IContainer $container): RedisPool {
+                    $options = $container
+                        ->make('option')
+                        ->get('cache\\connect.redisPool');
+                    $redis = $container
+                        ->make('caches')
+                        ->connect($options['redis_connect']);
+
+                    return new RedisPool($redis, $options);
                 },
             );
     }

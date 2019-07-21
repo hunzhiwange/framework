@@ -20,19 +20,19 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use Leevel\Cache\Redis\IRedis;
-use Leevel\Protocol\Pool\IConnection;
+use Leevel\Cache\Redis\RedisPool as RedisPools;
 
 /**
- * redis 扩展缓存.
+ * redis pool 缓存.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.05
+ * @since 2019.07.20
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
-class Redis extends Cache implements ICache, IConnection
+class RedisPool extends Cache implements ICache
 {
     /**
      * 配置.
@@ -46,16 +46,23 @@ class Redis extends Cache implements ICache, IConnection
     ];
 
     /**
+     * Redis 连接池.
+     *
+     * @var \Leevel\Cache\Redis\RedisPool
+     */
+    protected $redisPool;
+
+    /**
      * 构造函数.
      *
-     * @param \Leevel\Cache\Redis\IRedis $handle
-     * @param array                      $option
+     * @param \Leevel\Cache\Redis\RedisPool $redisPool
+     * @param array                         $option
      */
-    public function __construct(IRedis $handle, array $option = [])
+    public function __construct(RedisPools $redisPool, array $option = [])
     {
         parent::__construct($option);
 
-        $this->handle = $handle;
+        $this->redisPool = $redisPool;
     }
 
     /**
@@ -70,18 +77,9 @@ class Redis extends Cache implements ICache, IConnection
     public function get(string $name, $defaults = false, array $option = [])
     {
         $option = $this->normalizeOptions($option);
-
-        $data = $this->handle->get(
-            $this->getCacheName($name)
-        );
-
-        if (false === $data) {
-            return $defaults;
-        }
-
-        if ($option['serialize'] && is_string($data)) {
-            $data = unserialize($data);
-        }
+        $redis = $this->redisPool->borrowConnection();
+        $data = $redis->get($name, $defaults, $option);
+        $this->redisPool->returnConnection($redis);
 
         return $data;
     }
@@ -96,17 +94,9 @@ class Redis extends Cache implements ICache, IConnection
     public function set(string $name, $data, array $option = []): void
     {
         $option = $this->normalizeOptions($option);
-
-        if ($option['serialize']) {
-            $data = serialize($data);
-        }
-
-        $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
-
-        $this->handle->set(
-            $this->getCacheName($name), $data,
-            $option['expire'] ? (int) $option['expire'] : null
-        );
+        $redis = $this->redisPool->borrowConnection();
+        $redis->set($name, $data, $option);
+        $this->redisPool->returnConnection($redis);
     }
 
     /**
@@ -116,9 +106,9 @@ class Redis extends Cache implements ICache, IConnection
      */
     public function delete(string $name): void
     {
-        $this->handle->delete(
-            $this->getCacheName($name)
-        );
+        $redis = $this->redisPool->borrowConnection();
+        $redis->delete($name);
+        $this->redisPool->returnConnection($redis);
     }
 
     /**
@@ -126,14 +116,16 @@ class Redis extends Cache implements ICache, IConnection
      */
     public function close(): void
     {
-        $this->handle->close();
+        $this->redisPool->close();
     }
 
     /**
-     * 断开连接.
+     * 返回缓存句柄.
+     *
+     * @return mixed
      */
-    public function disconnect(): void
+    public function handle()
     {
-        $this->close();
+        return $this->redisPool;
     }
 }
