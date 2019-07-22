@@ -128,11 +128,9 @@ class Register extends Provider
                     $options = $container
                         ->make('option')
                         ->get('cache\\connect.redisPool');
-                    $redis = $container
-                        ->make('caches')
-                        ->connect($options['redis_connect']);
+                    $manager = $container->make('caches');
 
-                    return new RedisPool($redis, $options);
+                    return new RedisPool($manager, $options['redis_connect'], $options);
                 },
             );
     }

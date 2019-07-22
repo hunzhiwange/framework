@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Redis;
 
+use Leevel\Cache\Manager;
 use Leevel\Protocol\Pool\IConnection;
 use Leevel\Protocol\Pool\Pool;
 
@@ -36,23 +37,31 @@ use Leevel\Protocol\Pool\Pool;
 class RedisPool extends Pool
 {
     /**
+     * 缓存管理.
+     *
+     * @var \Leevel\Cache\Manager
+     */
+    protected $manager;
+
+    /**
      * Redis 连接.
      *
-     * @var \Leevel\Protocol\Pool\IConnection
+     * @var string
      */
-    protected $connection;
+    protected $redisConnect;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
-     * @param array                             $option
+     * @param \Leevel\Cache\Manager $manager
+     * @param string                $redisConnect
+     * @param array                 $option
      */
-    public function __construct(IConnection $connection, array $option = [])
+    public function __construct(Manager $manager, string $redisConnect, array $option = [])
     {
         parent::__construct($option);
-
-        $this->connection = $connection;
+        $this->manager = $manager;
+        $this->redisConnect = $redisConnect;
     }
 
     /**
@@ -62,6 +71,6 @@ class RedisPool extends Pool
      */
     protected function createConnection(): IConnection
     {
-        return $this->connection;
+        return $this->manager->connect($this->redisConnect, true);
     }
 }
