@@ -305,12 +305,12 @@ class Container implements IContainer, ArrayAccess
         }
 
         // 存在直接返回
-        if (isset($this->instances[$name])) {
-            return $this->instances[$name];
-        }
-
         if ($this->existsCoroutine($name)) {
             return $this->coroutineInstances[$this->coroutineUid()][$name];
+        }
+
+        if (isset($this->instances[$name])) {
+            return $this->instances[$name];
         }
 
         // 生成实例
@@ -337,8 +337,6 @@ class Container implements IContainer, ArrayAccess
 
             return $this->instances[$name] = $instance;
         }
-
-        // 多个实例
 
         return $instance;
     }
