@@ -58,9 +58,7 @@ class Manager extends Managers implements IView
         $options = array_merge(
             $options, $this->viewOptionCommon()
         );
-
         $container = $this->container;
-
         $html = new Html($options);
 
         $html->setParseResolver(function () use ($container) {
