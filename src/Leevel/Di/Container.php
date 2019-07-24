@@ -237,7 +237,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         if ($this->coroutineContext($service)) {
-            $this->coroutineInstances[$this->coroutineUid()][$name] = $service;
+            $this->coroutineInstances[$this->coroutineCid()][$name] = $service;
         } else {
             $this->instances[$name] = $service;
         }
@@ -306,7 +306,7 @@ class Container implements IContainer, ArrayAccess
 
         // 存在直接返回
         if ($this->existsCoroutine($name)) {
-            return $this->coroutineInstances[$this->coroutineUid()][$name];
+            return $this->coroutineInstances[$this->coroutineCid()][$name];
         }
 
         if (isset($this->instances[$name])) {
@@ -332,7 +332,7 @@ class Container implements IContainer, ArrayAccess
         // 单一实例
         if (in_array($name, $this->singletons, true)) {
             if ($this->coroutineContext($instance)) {
-                return $this->coroutineInstances[$this->coroutineUid()][$name] = $instance;
+                return $this->coroutineInstances[$this->coroutineCid()][$name] = $instance;
             }
 
             return $this->instances[$name] = $instance;
@@ -407,7 +407,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         if ($this->existsCoroutine($name)) {
-            unset($this->coroutineInstances[$this->coroutineUid()][$name]);
+            unset($this->coroutineInstances[$this->coroutineCid()][$name]);
         }
 
         foreach ($this->alias as $alias => $service) {
@@ -429,14 +429,14 @@ class Container implements IContainer, ArrayAccess
         }
 
         if (null === $name) {
-            if (isset($this->coroutineInstances[$this->coroutineUid()])) {
-                unset($this->coroutineInstances[$this->coroutineUid()]);
+            if (isset($this->coroutineInstances[$this->coroutineCid()])) {
+                unset($this->coroutineInstances[$this->coroutineCid()]);
             }
         } else {
             $name = $this->normalize($name);
 
             if ($this->existsCoroutine($name)) {
-                unset($this->coroutineInstances[$this->coroutineUid()][$name]);
+                unset($this->coroutineInstances[$this->coroutineCid()][$name]);
             }
         }
     }
@@ -594,8 +594,8 @@ class Container implements IContainer, ArrayAccess
      */
     public function existsCoroutine(string $name): bool
     {
-        return false !== $this->coroutineUid() &&
-            isset($this->coroutineInstances[$this->coroutineUid()], $this->coroutineInstances[$this->coroutineUid()][$name]);
+        return false !== $this->coroutineCid() &&
+            isset($this->coroutineInstances[$this->coroutineCid()], $this->coroutineInstances[$this->coroutineCid()][$name]);
     }
 
     /**
@@ -716,13 +716,13 @@ class Container implements IContainer, ArrayAccess
      *
      * @return false|int
      */
-    protected function coroutineUid()
+    protected function coroutineCid()
     {
         if (!$this->coroutine) {
             return false;
         }
 
-        return $this->coroutine->uid();
+        return $this->coroutine->cid();
     }
 
     /**

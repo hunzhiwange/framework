@@ -44,6 +44,17 @@ interface ICoroutine
      * 当前协程 ID.
      *
      * @return int
+     *
+     * @see https://wiki.swoole.com/wiki/page/871.html
      */
-    public function uid(): int;
+    public function cid(): int;
+
+    /**
+     * 当前协程的父协程 ID.
+     *
+     * @return int
+     *
+     * @see https://wiki.swoole.com/wiki/page/1076.html
+     */
+    public function pcid(): int;
 }
