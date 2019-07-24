@@ -27,7 +27,8 @@ use Leevel\Page\IPage;
 use Leevel\Page\Page;
 
 /**
- * 数据库查询器
+ * 数据库查询器.
+ *
  * - This class borrows heavily from the QeePHP Framework and is part of the QeePHP package.
  * - 查询器主体方法来自于早年 QeePHP 数据库查询 Api,这个 10 年前的作品设计理念非常先进.
  * - 在这个思想下大量进行了重构，在查询 API 用法上我们将一些与 Laravel 的用法习惯靠拢，实现了大量语法糖.

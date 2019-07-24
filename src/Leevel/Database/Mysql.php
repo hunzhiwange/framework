@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
+use Leevel\Protocol\Pool\Connection;
+use Leevel\Protocol\Pool\IConnection;
 use PDO;
 
 /**
@@ -28,11 +30,14 @@ use PDO;
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.03.09
+ * @since 2019.07.24 v1.0-beta.4 加入连接池
  *
  * @version 1.0
  */
-class Mysql extends Database implements IDatabase
+class Mysql extends Database implements IDatabase, IConnection
 {
+    use Connection;
+
     /**
      * dsn 解析.
      *

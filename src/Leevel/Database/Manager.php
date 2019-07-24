@@ -74,6 +74,20 @@ class Manager extends Managers implements IDatabase
     }
 
     /**
+     * 创建 mysqlPool 缓存.
+     *
+     * @param array $options
+     *
+     * @return \Leevel\Database\MysqlPool
+     */
+    protected function makeConnectMysqlPool(array $options = []): MysqlPool
+    {
+        $mysqlPool = $this->container->make('mysql.pool');
+
+        return new MysqlPool($mysqlPool);
+    }
+
+    /**
      * 读取默认配置.
      *
      * @param string $connect
