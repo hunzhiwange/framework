@@ -101,5 +101,5 @@ interface ICache
     /**
      * 关闭.
      */
-    public static function close();
+    public static function close(): void;
 }

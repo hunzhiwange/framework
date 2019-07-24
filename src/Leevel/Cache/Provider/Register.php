@@ -59,10 +59,10 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'redis.pool' => RedisPool::class,
             'caches'     => Manager::class,
             'cache'      => [ICache::class, Cache::class],
             'cache.load' => [ILoad::class, Load::class],
+            'redis.pool' => RedisPool::class,
         ];
     }
 

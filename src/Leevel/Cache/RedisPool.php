@@ -32,18 +32,9 @@ use Leevel\Cache\Redis\RedisPool as RedisPools;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class RedisPool extends Cache implements ICache
+class RedisPool implements ICache
 {
-    /**
-     * 配置.
-     *
-     * @var array
-     */
-    protected $option = [
-        'time_preset' => [],
-        'expire'      => 86400,
-        'serialize'   => true,
-    ];
+    use Proxy;
 
     /**
      * Redis 连接池.
@@ -56,76 +47,22 @@ class RedisPool extends Cache implements ICache
      * 构造函数.
      *
      * @param \Leevel\Cache\Redis\RedisPool $redisPool
-     * @param array                         $option
      */
-    public function __construct(RedisPools $redisPool, array $option = [])
+    public function __construct(RedisPools $redisPool)
     {
-        parent::__construct($option);
-
         $this->redisPool = $redisPool;
     }
 
     /**
-     * 获取缓存.
+     * 返回代理.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
-     *
-     * @return mixed
+     * @return \Leevel\Cache\ICache
      */
-    public function get(string $name, $defaults = false, array $option = [])
+    public function proxy(): ICache
     {
-        $option = $this->normalizeOptions($option);
+        /** @var \Leevel\Cache\ICache $redis */
         $redis = $this->redisPool->borrowConnection();
-        $data = $redis->get($name, $defaults, $option);
-        $this->redisPool->returnConnection($redis);
 
-        return $data;
-    }
-
-    /**
-     * 设置缓存.
-     *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
-     */
-    public function set(string $name, $data, array $option = []): void
-    {
-        $option = $this->normalizeOptions($option);
-        $redis = $this->redisPool->borrowConnection();
-        $redis->set($name, $data, $option);
-        $this->redisPool->returnConnection($redis);
-    }
-
-    /**
-     * 清除缓存.
-     *
-     * @param string $name
-     */
-    public function delete(string $name): void
-    {
-        $redis = $this->redisPool->borrowConnection();
-        $redis->delete($name);
-        $this->redisPool->returnConnection($redis);
-    }
-
-    /**
-     * 关闭 redis.
-     */
-    public function close(): void
-    {
-        $this->redisPool->close();
-    }
-
-    /**
-     * 返回缓存句柄.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        return $this->redisPool;
+        return $redis;
     }
 }

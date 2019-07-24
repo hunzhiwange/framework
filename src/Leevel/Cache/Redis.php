@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 use Leevel\Cache\Redis\IRedis;
+use Leevel\Protocol\Pool\Connection;
 use Leevel\Protocol\Pool\IConnection;
 
 /**
@@ -34,6 +35,8 @@ use Leevel\Protocol\Pool\IConnection;
  */
 class Redis extends Cache implements ICache, IConnection
 {
+    use Connection;
+
     /**
      * 配置.
      *
@@ -83,6 +86,8 @@ class Redis extends Cache implements ICache, IConnection
             $data = unserialize($data);
         }
 
+        $this->release();
+
         return $data;
     }
 
@@ -107,6 +112,8 @@ class Redis extends Cache implements ICache, IConnection
             $this->getCacheName($name), $data,
             $option['expire'] ? (int) $option['expire'] : null
         );
+
+        $this->release();
     }
 
     /**
@@ -119,6 +126,8 @@ class Redis extends Cache implements ICache, IConnection
         $this->handle->delete(
             $this->getCacheName($name)
         );
+
+        $this->release();
     }
 
     /**
@@ -127,13 +136,5 @@ class Redis extends Cache implements ICache, IConnection
     public function close(): void
     {
         $this->handle->close();
-    }
-
-    /**
-     * 断开连接.
-     */
-    public function disconnect(): void
-    {
-        $this->close();
     }
 }

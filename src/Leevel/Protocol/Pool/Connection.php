@@ -21,38 +21,59 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Pool;
 
 /**
- * 连接池连接驱动接口.
+ * 连接池连接驱动.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2019.07.05
+ * @since 2019.07.24
  *
  * @version 1.0
  * @codeCoverageIgnore
  */
-interface IConnection
+trait Connection
 {
+    /**
+     * 连接池.
+     *
+     * @var \Leevel\Protocol\Pool\IPool
+     */
+    protected $pool;
+
+    /**
+     * 是否归还连接池.
+     *
+     * @var bool
+     */
+    protected $release = false;
+
     /**
      * 归还连接池.
      */
-    public function release(): void;
+    public function release(): void
+    {
+        if ($this->release) {
+            $this->release = false;
+            $this->pool->returnConnection($this);
+        }
+    }
 
     /**
      * 设置是否归还连接池.
      *
      * @param bool $release
      */
-    public function setRelease(bool $release): void;
+    public function setRelease(bool $release): void
+    {
+        $this->release = $release;
+    }
 
     /**
      * 设置关联连接池.
      *
      * @param \Leevel\Protocol\Pool\IPool $pool
      */
-    public function setPool(IPool $pool): void;
-
-    /**
-     * 关闭连接.
-     */
-    public function close(): void;
+    public function setPool(IPool $pool): void
+    {
+        $this->pool = $pool;
+    }
 }

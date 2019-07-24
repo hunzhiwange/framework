@@ -85,7 +85,7 @@ class Manager extends Managers implements ICache
     {
         $redisPool = $this->container->make('redis.pool');
 
-        return new RedisPool($redisPool, $options);
+        return new RedisPool($redisPool);
     }
 
     /**

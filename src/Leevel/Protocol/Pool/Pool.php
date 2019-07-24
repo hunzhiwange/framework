@@ -164,7 +164,7 @@ abstract class Pool implements IPool
 
         Coroutine::create(function () {
             for ($i = 0; $i < $this->minIdleConnections; $i++) {
-                $connection = $this->createConnection();
+                $connection = $this->createConnectionForPool();
                 $this->returnConnection($connection);
             }
         });
@@ -187,7 +187,7 @@ abstract class Pool implements IPool
     {
         // 未达到最小连接数，直接新建使用后归还
         if ($this->connectionsCount < $this->minIdleConnections) {
-            return $this->createConnection();
+            return $this->createConnectionForPool();
         }
 
         // 从通道中获取连接,支持重试次数
@@ -205,7 +205,7 @@ abstract class Pool implements IPool
 
         // 未达到最大连接数，直接新建使用后归还
         if ($this->connectionsCount < $this->maxIdleConnections) {
-            return $this->createConnection();
+            return $this->createConnectionForPool();
         }
 
         // 通道为空，尝试等待其他协程调用 push 方法生产数据
@@ -239,6 +239,7 @@ abstract class Pool implements IPool
             return false;
         }
 
+        $connection->setPool($this);
         $this->updateConnectionLastActiveTime($connection);
         $result = $this->connections->push($connection, $this->maxPushTimeout / 1000);
 
@@ -389,11 +390,23 @@ abstract class Pool implements IPool
     /**
      * 创建连接.
      *
-     * @param float $timeout
-     *
      * @return \Leevel\Protocol\Pool\IConnection
      */
     abstract protected function createConnection(): IConnection;
+
+    /**
+     * 创建连接.
+     *
+     * @return \Leevel\Protocol\Pool\IConnection
+     */
+    protected function createConnectionForPool(): IConnection
+    {
+        $connection = $this->createConnection();
+        $connection->setPool($this);
+        $this->updateConnectionLastActiveTime($connection);
+
+        return $connection;
+    }
 
     /**
      *  校验空闲连接池数据量.
@@ -462,7 +475,7 @@ abstract class Pool implements IPool
 
         Coroutine::create(function () use ($connection) {
             try {
-                $connection->disconnect();
+                $connection->close();
             } catch (Throwable $th) {
             }
         });
