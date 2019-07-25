@@ -582,8 +582,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -602,8 +602,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -624,8 +624,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -646,8 +646,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -668,8 +668,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
