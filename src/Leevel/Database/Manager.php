@@ -138,6 +138,12 @@ class Manager extends Managers implements IDatabase
      */
     protected function makeConnectMysqlPool(array $options = []): MysqlPool
     {
+        if (!$this->container->getCoroutine()) {
+            $e = 'Mysql pool can only be used in swoole scenarios.';
+
+            throw new RuntimeException($e);
+        }
+
         $mysqlPool = $this->container->make('mysql.pool');
 
         return new MysqlPool($mysqlPool);

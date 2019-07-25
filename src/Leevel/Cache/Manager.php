@@ -22,6 +22,7 @@ namespace Leevel\Cache;
 
 use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Manager\Manager as Managers;
+use RuntimeException;
 
 /**
  * 缓存入口.
@@ -83,6 +84,12 @@ class Manager extends Managers implements ICache
      */
     protected function makeConnectRedisPool(array $options = []): RedisPool
     {
+        if (!$this->container->getCoroutine()) {
+            $e = 'Redis pool can only be used in swoole scenarios.';
+
+            throw new RuntimeException($e);
+        }
+
         $redisPool = $this->container->make('redis.pool');
 
         return new RedisPool($redisPool);
