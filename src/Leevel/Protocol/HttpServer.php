@@ -102,10 +102,11 @@ class HttpServer extends Server implements IServer
     ];
 
     /**
-     * 处理 http 请求
-     * 浏览器连接服务器后, 页面上的每个请求均会执行一次
-     * nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
-     * 可以通过 nginx deny 屏蔽掉 favicon.ico 的请求，具体请 Google 或者百度.
+     * 处理 http 请求.
+     *
+     * - 浏览器连接服务器后, 页面上的每个请求均会执行一次
+     * - nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
+     * - 可以通过 nginx deny 屏蔽掉 favicon.ico 的请求，具体请 Google 或者百度.
      *
      * @param \Swoole\Http\Request  $swooleRequest
      * @param \Swoole\Http\Response $swooleResponse
@@ -134,8 +135,9 @@ class HttpServer extends Server implements IServer
     }
 
     /**
-     * 监听连接关闭事件
-     * 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
+     * 监听连接关闭事件.
+     *
+     * - 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
      *
      * @param \Swoole\Http\Server $server
      * @param int                 $fd
@@ -163,7 +165,7 @@ class HttpServer extends Server implements IServer
     }
 
     /**
-     * 是否为 options 请求
+     * 是否为 options 请求.
      *
      * @param \Swoole\Http\Request $swooleRequest
      *
@@ -236,7 +238,7 @@ class HttpServer extends Server implements IServer
     }
 
     /**
-     * 格式化 swoole 请求到 QueryPHP 请求
+     * 格式化 swoole 请求到 QueryPHP 请求.
      *
      * @param \Swoole\Http\Request $swooleRequest
      *
