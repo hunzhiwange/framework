@@ -22,6 +22,7 @@ namespace Leevel\Protocol;
 
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
+use Leevel\Di\ICoroutine;
 use Leevel\Filesystem\Fso\create_directory;
 use function Leevel\Filesystem\Fso\create_directory;
 use Leevel\Protocol\Process as ProtocolProcess;
@@ -86,13 +87,14 @@ abstract class Server
      * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
+     * @param \Leevel\Di\ICoroutine $coroutine
      * @param array                 $option
      */
-    public function __construct(IContainer $container, array $option = [])
+    public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
         $this->validSwoole();
 
-        $container->setCoroutine(new Coroutine());
+        $container->setCoroutine($coroutine);
         $this->container = $container;
 
         $this->option = array_merge($this->option, $option);
@@ -578,8 +580,8 @@ abstract class Server
             throw new InvalidArgumentException($e);
         }
 
-        if (version_compare(phpversion('swoole'), '4.3.5', '<')) {
-            $e = 'Swoole 4.3.5 OR Higher';
+        if (version_compare(phpversion('swoole'), '4.4.0', '<')) {
+            $e = 'Swoole 4.4.0 OR Higher';
 
             throw new InvalidArgumentException($e);
         }

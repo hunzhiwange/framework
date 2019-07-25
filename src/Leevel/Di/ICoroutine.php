@@ -34,11 +34,18 @@ interface ICoroutine
     /**
      * 是否处于协程上下文.
      *
-     * @param string $className
+     * @param string $key
      *
      * @return bool
      */
-    public function context(string $className): bool;
+    public function context(string $key): bool;
+
+    /**
+     * 添加协程上下文键值.
+     *
+     * @param array ...$keys
+     */
+    public function addContext(...$keys): void;
 
     /**
      * 当前协程 ID.

@@ -21,8 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Provider;
 
 use Leevel\Di\IContainer;
+use Leevel\Di\ICoroutine;
 use Leevel\Di\Provider;
 use Leevel\Protocol\Client\Rpc;
+use Leevel\Protocol\Coroutine;
 use Leevel\Protocol\HttpServer;
 use Leevel\Protocol\IPool;
 use Leevel\Protocol\ITask;
@@ -50,6 +52,7 @@ class Register extends Provider
      */
     public function register(): void
     {
+        $this->coroutine();
         $this->httpServer();
         $this->websocketServer();
         $this->rpcServer();
@@ -67,6 +70,7 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
+            'coroutine'        => [ICoroutine::class, Coroutine::class],
             'http.server'      => HttpServer::class,
             'websocket.server' => WebsocketServer::class,
             'rpc.server'       => RpcServer::class,
@@ -88,7 +92,21 @@ class Register extends Provider
     }
 
     /**
-     * 注册  http.server 服务.
+     * 注册 coroutine 服务.
+     */
+    protected function coroutine(): void
+    {
+        $this->container
+            ->singleton(
+                'coroutine',
+                function (): Coroutine {
+                    return new Coroutine();
+                },
+            );
+    }
+
+    /**
+     * 注册 http.server 服务.
      */
     protected function httpServer(): void
     {
@@ -98,6 +116,7 @@ class Register extends Provider
                 function (IContainer $container): HttpServer {
                     return new HttpServer(
                         $container,
+                        $container->make('coroutine'),
                         array_merge(
                             $container['option']['protocol\\server'],
                             $container['option']['protocol\\http']
@@ -118,6 +137,7 @@ class Register extends Provider
                 function (IContainer $container): WebsocketServer {
                     return new WebsocketServer(
                         $container,
+                        $container->make('coroutine'),
                         array_merge(
                             $container['option']['protocol\\server'],
                             $container['option']['protocol\\websocket']
@@ -138,6 +158,7 @@ class Register extends Provider
                 function (IContainer $container): RpcServer {
                     return new RpcServer(
                         $container,
+                        $container->make('coroutine'),
                         array_merge(
                             $container['option']['protocol\\server'],
                             $container['option']['protocol\\rpc']

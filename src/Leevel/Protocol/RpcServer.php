@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Protocol;
 
 use Leevel\Di\IContainer;
+use Leevel\Di\ICoroutine;
 use Leevel\Protocol\Thrift\Base\TFramedTransportFactory;
 use Leevel\Protocol\Thrift\Base\ThriftServer;
 use Leevel\Protocol\Thrift\Service\ThriftHandler;
@@ -135,11 +136,12 @@ class RpcServer extends Server implements IServer
      * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
+     * @param \Leevel\Di\ICoroutine $coroutine
      * @param array                 $option
      */
-    public function __construct(IContainer $container, array $option = [])
+    public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
-        parent::__construct($container, $option);
+        parent::__construct($container, $coroutine, $option);
 
         $this->thriftServer = $this->makeThriftServer();
     }
