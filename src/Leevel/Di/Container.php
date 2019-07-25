@@ -194,10 +194,11 @@ class Container implements IContainer, ArrayAccess
      * @param mixed      $name
      * @param null|mixed $service
      * @param bool       $share
+     * @param bool       $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function bind($name, $service = null, bool $share = false): IContainer
+    public function bind($name, $service = null, bool $share = false, bool $coroutine = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -214,6 +215,10 @@ class Container implements IContainer, ArrayAccess
             $this->singletons[] = $name;
         }
 
+        if ($coroutine) {
+            $this->serviceCoroutine($name);
+        }
+
         return $this;
     }
 
@@ -222,10 +227,11 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed      $name
      * @param null|mixed $service
+     * @param bool       $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function instance($name, $service = null): IContainer
+    public function instance($name, $service = null, bool $coroutine = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -234,6 +240,10 @@ class Container implements IContainer, ArrayAccess
 
         if (null === $service) {
             $service = $name;
+        }
+
+        if ($coroutine) {
+            $this->serviceCoroutine($name);
         }
 
         if ($this->coroutineContext($service)) {
@@ -250,12 +260,13 @@ class Container implements IContainer, ArrayAccess
      *
      * @param array|scalar $name
      * @param null|mixed   $service
+     * @param bool         $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function singleton($name, $service = null): IContainer
+    public function singleton($name, $service = null, bool $coroutine = false): IContainer
     {
-        return $this->bind($name, $service, true);
+        return $this->bind($name, $service, true, $coroutine);
     }
 
     /**
@@ -418,30 +429,6 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 删除协程上下文服务和实例.
-     *
-     * @param null|string $name
-     */
-    public function removeCoroutine(?string $name = null): void
-    {
-        if (!$this->coroutine) {
-            return;
-        }
-
-        if (null === $name) {
-            if (isset($this->coroutineInstances[$this->coroutineCid()])) {
-                unset($this->coroutineInstances[$this->coroutineCid()]);
-            }
-        } else {
-            $name = $this->normalize($name);
-
-            if ($this->existsCoroutine($name)) {
-                unset($this->coroutineInstances[$this->coroutineCid()][$name]);
-            }
-        }
-    }
-
-    /**
      * 服务或者实例是否存在.
      *
      * @param string $name
@@ -578,7 +565,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 返回协程.
      *
-     * @return \Leevel\Di\ICoroutine
+     * @return null|\Leevel\Di\ICoroutine
      */
     public function getCoroutine(): ?ICoroutine
     {
@@ -596,6 +583,44 @@ class Container implements IContainer, ArrayAccess
     {
         return false !== $this->coroutineCid() &&
             isset($this->coroutineInstances[$this->coroutineCid()], $this->coroutineInstances[$this->coroutineCid()][$name]);
+    }
+
+    /**
+     * 删除协程上下文服务和实例.
+     *
+     * @param null|string $name
+     */
+    public function removeCoroutine(?string $name = null): void
+    {
+        if (!$this->coroutine) {
+            return;
+        }
+
+        if (null === $name) {
+            if (isset($this->coroutineInstances[$this->coroutineCid()])) {
+                unset($this->coroutineInstances[$this->coroutineCid()]);
+            }
+        } else {
+            $name = $this->normalize($name);
+
+            if ($this->existsCoroutine($name)) {
+                unset($this->coroutineInstances[$this->coroutineCid()][$name]);
+            }
+        }
+    }
+
+    /**
+     * 设置服务到协程上下文.
+     *
+     * @param string $service
+     */
+    public function serviceCoroutine(string $service): void
+    {
+        if (!$this->coroutine) {
+            return;
+        }
+
+        $this->coroutine->addContext($service);
     }
 
     /**

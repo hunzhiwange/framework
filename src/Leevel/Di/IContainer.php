@@ -37,30 +37,33 @@ interface IContainer
      * @param mixed      $name
      * @param null|mixed $service
      * @param bool       $share
+     * @param bool       $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function bind($name, $service = null, bool $share = false): self;
+    public function bind($name, $service = null, bool $share = false, bool $coroutine = false): self;
 
     /**
      * 注册为实例.
      *
      * @param mixed $name
      * @param mixed $service
+     * @param bool  $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function instance($name, $service): self;
+    public function instance($name, $service, bool $coroutine = false): self;
 
     /**
      * 注册单一实例.
      *
      * @param array|scalar $name
      * @param null|mixed   $service
+     * @param bool         $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function singleton($name, $service = null): self;
+    public function singleton($name, $service = null, bool $coroutine = false): self;
 
     /**
      * 设置别名.
@@ -100,13 +103,6 @@ interface IContainer
      * @param string $name
      */
     public function remove(string $name): void;
-
-    /**
-     * 删除协程上下文服务和实例.
-     *
-     * @param null|string $name
-     */
-    public function removeCoroutine(?string $name = null): void;
 
     /**
      * 服务或者实例是否存在.
@@ -181,4 +177,18 @@ interface IContainer
      * @return bool
      */
     public function existsCoroutine(string $name): bool;
+
+    /**
+     * 删除协程上下文服务和实例.
+     *
+     * @param null|string $name
+     */
+    public function removeCoroutine(?string $name = null): void;
+
+    /**
+     * 设置服务到协程上下文.
+     *
+     * @param string $service
+     */
+    public function serviceCoroutine(string $service): void;
 }
