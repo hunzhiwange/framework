@@ -40,7 +40,7 @@ use PDO;
  */
 trait Database
 {
-    protected $databaseConnects;
+    protected $databaseConnects = [];
 
     protected function createDatabaseConnectMock(array $option = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
     {
@@ -49,7 +49,6 @@ trait Database
         }
 
         $connect = new $connect($option, $dispatch);
-
         $this->databaseConnects[] = $connect;
 
         return $connect;
@@ -84,7 +83,7 @@ trait Database
             return;
         }
 
-        if ($this->databaseConnects[0]) {
+        if (isset($this->databaseConnects[0])) {
             $connect = $this->databaseConnects[0];
         } else {
             $connect = $this->createDatabaseConnect();
