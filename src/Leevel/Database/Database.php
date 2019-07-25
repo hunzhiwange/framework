@@ -131,13 +131,6 @@ abstract class Database implements IConnection
     protected $reconnectRetry = 0;
 
     /**
-     * 连接管理.
-     *
-     * @var \Leevel\Database\Manager
-     */
-    protected $manager;
-
-    /**
      * 事件处理器.
      *
      * @var \Leevel\Event\IDispatch
@@ -145,17 +138,24 @@ abstract class Database implements IConnection
     protected $dispatch;
 
     /**
+     * 连接管理.
+     *
+     * @var \Leevel\Database\Manager
+     */
+    protected $manager;
+
+    /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Manager     $manager
-     * @param array                        $option
-     * @param null|\Leevel\Event\IDispatch $dispatch
+     * @param array                         $option
+     * @param null|\Leevel\Event\IDispatch  $dispatch
+     * @param null|\Leevel\Database\Manager $manager
      */
-    public function __construct(Manager $manager, array $option, ?IDispatch $dispatch = null)
+    public function __construct(array $option, ?IDispatch $dispatch = null, ?Manager $manager = null)
     {
-        $this->manager = $manager;
         $this->option = $option;
         $this->dispatch = $dispatch;
+        $this->manager = $manager;
     }
 
     /**
@@ -362,7 +362,10 @@ abstract class Database implements IConnection
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
                 $this->pdo(true)->beginTransaction();
-                $this->manager->setTransactionConnection($this);
+
+                if ($this->manager) {
+                    $this->manager->setTransactionConnection($this);
+                }
             } catch (Exception $e) { // @codeCoverageIgnore
                 $this->transactionLevel--; // @codeCoverageIgnore
 
@@ -378,6 +381,10 @@ abstract class Database implements IConnection
      */
     public function release(): void
     {
+        if (!$this->manager) {
+            return;
+        }
+
         if (!$this->manager->inTransactionConnection()) {
             $this->baseRelease();
         }
@@ -414,8 +421,11 @@ abstract class Database implements IConnection
 
         if (1 === $this->transactionLevel) {
             $this->pdo(true)->commit();
-            $this->manager->removeTransactionConnection();
-            $this->release();
+
+            if ($this->manager) {
+                $this->manager->removeTransactionConnection();
+                $this->release();
+            }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->releaseSavepoint($this->getSavepointName());
         }
@@ -440,8 +450,11 @@ abstract class Database implements IConnection
             $this->transactionLevel = 0;
             $this->pdo(true)->rollBack();
             $this->isRollbackOnly = false;
-            $this->manager->removeTransactionConnection();
-            $this->release();
+
+            if ($this->manager) {
+                $this->manager->removeTransactionConnection();
+                $this->release();
+            }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->rollbackSavepoint($this->getSavepointName());
             $this->transactionLevel--;

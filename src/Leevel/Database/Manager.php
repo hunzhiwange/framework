@@ -123,9 +123,9 @@ class Manager extends Managers implements IDatabase
     protected function makeConnectMysql(array $option = []): Mysql
     {
         return new Mysql(
-            $this,
             $this->normalizeConnectOption('mysql', $option),
-            $this->container->make(IDispatch::class)
+            $this->container->make(IDispatch::class),
+            $this->container->getCoroutine() ? $this : null,
         );
     }
 
