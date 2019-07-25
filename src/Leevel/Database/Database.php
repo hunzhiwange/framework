@@ -23,6 +23,8 @@ namespace Leevel\Database;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Event\IDispatch;
+use Leevel\Protocol\Pool\Connection;
+use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
 use Throwable;
@@ -36,9 +38,12 @@ use Throwable;
  *
  * @version 1.0
  */
-abstract class Database
+abstract class Database implements IConnection
 {
     use Proxy;
+    use Connection {
+        release as baseRelease;
+    }
 
     /**
      * 所有数据库连接.
@@ -126,6 +131,13 @@ abstract class Database
     protected $reconnectRetry = 0;
 
     /**
+     * 连接管理.
+     *
+     * @var \Leevel\Database\Manager
+     */
+    protected $manager;
+
+    /**
      * 事件处理器.
      *
      * @var \Leevel\Event\IDispatch
@@ -135,11 +147,13 @@ abstract class Database
     /**
      * 构造函数.
      *
+     * @param \Leevel\Database\Manager     $manager
      * @param array                        $option
      * @param null|\Leevel\Event\IDispatch $dispatch
      */
-    public function __construct(array $option, ?IDispatch $dispatch = null)
+    public function __construct(Manager $manager, array $option, ?IDispatch $dispatch = null)
     {
+        $this->manager = $manager;
         $this->option = $option;
         $this->dispatch = $dispatch;
     }
@@ -249,8 +263,10 @@ abstract class Database
         }
 
         $this->numRows = $this->pdoStatement->rowCount();
+        $result = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
+        $this->release();
 
-        return $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
+        return $result;
     }
 
     /**
@@ -305,6 +321,8 @@ abstract class Database
             return $this->lastInsertId();
         }
 
+        $this->release();
+
         return $this->numRows;
     }
 
@@ -344,6 +362,7 @@ abstract class Database
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
                 $this->pdo(true)->beginTransaction();
+                $this->manager->setTransactionConnection($this);
             } catch (Exception $e) { // @codeCoverageIgnore
                 $this->transactionLevel--; // @codeCoverageIgnore
 
@@ -351,6 +370,16 @@ abstract class Database
             } // @codeCoverageIgnore
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->createSavepoint($this->getSavepointName());
+        }
+    }
+
+    /**
+     * 归还连接池.
+     */
+    public function release(): void
+    {
+        if (!$this->manager->inTransactionConnection()) {
+            $this->baseRelease();
         }
     }
 
@@ -385,6 +414,8 @@ abstract class Database
 
         if (1 === $this->transactionLevel) {
             $this->pdo(true)->commit();
+            $this->manager->removeTransactionConnection();
+            $this->release();
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->releaseSavepoint($this->getSavepointName());
         }
@@ -407,10 +438,10 @@ abstract class Database
 
         if (1 === $this->transactionLevel) {
             $this->transactionLevel = 0;
-
             $this->pdo(true)->rollBack();
-
             $this->isRollbackOnly = false;
+            $this->manager->removeTransactionConnection();
+            $this->release();
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->rollbackSavepoint($this->getSavepointName());
             $this->transactionLevel--;

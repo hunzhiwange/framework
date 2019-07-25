@@ -60,6 +60,7 @@ class MysqlPool extends Pool
     public function __construct(Manager $manager, string $mysqlConnect, array $option = [])
     {
         parent::__construct($option);
+
         $this->manager = $manager;
         $this->mysqlConnect = $mysqlConnect;
     }
@@ -71,6 +72,10 @@ class MysqlPool extends Pool
      */
     protected function createConnection(): IConnection
     {
+        if ($this->manager->inTransactionConnection()) {
+            return $this->manager->getTransactionConnection();
+        }
+
         /** @var \Leevel\Protocol\Pool\IConnection $mysql */
         $mysql = $this->manager->connect($this->mysqlConnect, true);
         $mysql->setRelease(true);
