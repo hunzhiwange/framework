@@ -91,11 +91,12 @@ if (!function_exists('app')) {
      * - redirect:\Leevel\Router\Redirect
      * - view.views:\Leevel\View\Manager
      * - redis.pool:\Leevel\Cache\Redis\RedisPool
+     * - mysql.pool:\Leevel\Database\Mysql\MysqlPool
      *
      * @param string $service
      * @param array  $args
      *
-     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|\Leevel\Cache\Redis\RedisPool|\Leevel\Database\Manager|\Leevel\Debug\Debug|\Leevel\Di\Container|\Leevel\Encryption\Encryption|\Leevel\Event\Dispatch|\Leevel\Filesystem\Manager|\Leevel\Http\Request|\Leevel\I18n\I18n|\Leevel\Kernel\App|\Leevel\Log\Manager|\Leevel\Mail\Manager|\Leevel\Option\Option|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect\|\Leevel\Router\ResponseFactory|\Leevel\Router\Router|\Leevel\Router\Url|\Leevel\Router\View|\Leevel\Session\Manager|\Leevel\Throttler\Throttler|\Leevel\Validate\Validate|\Leevel\View\Manager|mixed
+     * @return \Leevel\Auth\Manager|\Leevel\Cache\Manager|\Leevel\Cache\Redis\RedisPool|\Leevel\Database\Manager|\Leevel\Database\Mysql\MysqlPool|\Leevel\Debug\Debug|\Leevel\Di\Container|\Leevel\Encryption\Encryption|\Leevel\Event\Dispatch|\Leevel\Filesystem\Manager|\Leevel\Http\Request|\Leevel\I18n\I18n|\Leevel\Kernel\App|\Leevel\Log\Manager|\Leevel\Mail\Manager|\Leevel\Option\Option|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect|\Leevel\Router\Redirect\|\Leevel\Router\ResponseFactory|\Leevel\Router\Router|\Leevel\Router\Url|\Leevel\Router\View|\Leevel\Session\Manager|\Leevel\Throttler\Throttler|\Leevel\Validate\Validate|\Leevel\View\Manager|mixed
      * @codeCoverageIgnore
      */
     function app(?string $service = 'app', array $args = [])
