@@ -27,6 +27,7 @@ use Leevel\Filesystem\Fso\create_directory;
 use function Leevel\Filesystem\Fso\create_directory;
 use Leevel\Protocol\Process as ProtocolProcess;
 use Swoole\Process;
+use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
 use Throwable;
 
@@ -93,10 +94,8 @@ abstract class Server
     public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
         $this->validSwoole();
-
         $container->setCoroutine($coroutine);
         $this->container = $container;
-
         $this->option = array_merge($this->option, $option);
     }
 
@@ -228,9 +227,6 @@ abstract class Server
         }
 
         chmod($this->option['pid_path'], 0666 & ~umask());
-
-        // 开启验证模式
-        //Runtime::enableStrictMode();
     }
 
     /**
@@ -280,6 +276,8 @@ abstract class Server
         if (function_exists('apc_clear_cache')) {
             apc_clear_cache();
         }
+
+        $this->enableCoroutine();
     }
 
     /**
@@ -401,6 +399,14 @@ abstract class Server
         }
 
         $this->log('Server shutdown');
+    }
+
+    /**
+     * 开启协程 Hook.
+     */
+    protected function enableCoroutine(): void
+    {
+        Runtime::enableCoroutine(SWOOLE_HOOK_ALL);
     }
 
     /**
