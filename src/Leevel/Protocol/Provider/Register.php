@@ -26,10 +26,8 @@ use Leevel\Di\Provider;
 use Leevel\Protocol\Client\Rpc;
 use Leevel\Protocol\Coroutine;
 use Leevel\Protocol\HttpServer;
-use Leevel\Protocol\IPool;
 use Leevel\Protocol\ITask;
 use Leevel\Protocol\ITimer;
-use Leevel\Protocol\Pool;
 use Leevel\Protocol\RpcServer;
 use Leevel\Protocol\Task;
 use Leevel\Protocol\Timer;
@@ -56,7 +54,6 @@ class Register extends Provider
         $this->httpServer();
         $this->websocketServer();
         $this->rpcServer();
-        $this->pool();
         $this->rpc();
         $this->task();
         $this->timer();
@@ -164,20 +161,6 @@ class Register extends Provider
                             $container['option']['protocol\\rpc']
                         )
                     );
-                },
-            );
-    }
-
-    /**
-     * 注册 pool 服务.
-     */
-    protected function pool(): void
-    {
-        $this->container
-            ->singleton(
-                'pool',
-                function (IContainer $container): Pool {
-                    return new Pool($container);
                 },
             );
     }
