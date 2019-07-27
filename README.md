@@ -20,10 +20,9 @@
 
 > This is the core framework code of QueryPHP application, starts from this moment with [QueryPHP](https://github.com/hunzhiwange/queryphp).
 
-QueryPHP is a modern, progressive high performance PHP 7 not only resident framework, with engineer user experience as its historical mission, let every PHP application have a good framework.
+QueryPHP is a modern, high performance PHP progressive coroutine framework, we still focus on traditional PHP-FPM scenarios,with engineer user experience as its historical mission, let every PHP application have a good framework.
 
-A hundred percent coverage of the unit tests to facing the bug,based on Zephir implemented framework resident,with Swoole ecology to achieve business resident,
-now or in the future step by step. Our vision is **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, let your business to support more user services.
+A hundred percent coverage of the unit tests to facing the bug,based on Zephir implemented framework core resident,with Swoole coroutine to improving business performance,now or in the future step by step. Our vision is **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, let your business to support more user services.
 
 *The PHP Framework For Code Poem As Free As Wind, Starts From This Moment With QueryPHP.*
 
