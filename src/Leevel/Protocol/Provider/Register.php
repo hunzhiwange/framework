@@ -114,10 +114,7 @@ class Register extends Provider
                     return new HttpServer(
                         $container,
                         $container->make('coroutine'),
-                        array_merge(
-                            $container['option']['protocol\\server'],
-                            $container['option']['protocol\\http']
-                        )
+                        $this->normalizeOptions($container, 'http'),
                     );
                 },
             );
@@ -135,10 +132,7 @@ class Register extends Provider
                     return new WebsocketServer(
                         $container,
                         $container->make('coroutine'),
-                        array_merge(
-                            $container['option']['protocol\\server'],
-                            $container['option']['protocol\\websocket']
-                        )
+                        $this->normalizeOptions($container, 'websocket'),
                     );
                 },
             );
@@ -156,10 +150,7 @@ class Register extends Provider
                     return new RpcServer(
                         $container,
                         $container->make('coroutine'),
-                        array_merge(
-                            $container['option']['protocol\\server'],
-                            $container['option']['protocol\\rpc']
-                        )
+                        $this->normalizeOptions($container, 'rpc'),
                     );
                 },
             );
@@ -205,5 +196,48 @@ class Register extends Provider
                     return new Timer($container->make('logs'));
                 },
             );
+    }
+
+    /**
+     * 整理服务配置.
+     *
+     *  @param \Leevel\Di\IContainer $container
+     * @param string $serverType
+     *
+     * @return array
+     */
+    protected function normalizeOptions(IContainer $container, string $serverType): array
+    {
+        /** @var \Leevel\Option\IOption $option */
+        $option = $container->make('option');
+        $options = array_merge(
+            $option->get('protocol\\server'),
+            $option->get('protocol\\'.$serverType)
+        );
+        $options = $this->mergeOptionsForProcesses($container, $options);
+
+        return $options;
+    }
+
+    /**
+     * 合并自定义进程配置.
+     *
+     * @param \Leevel\Di\IContainer $container
+     * @param array                 $options
+     *
+     * @return array
+     */
+    protected function mergeOptionsForProcesses(IContainer $container, array $options): array
+    {
+        /** @var \Leevel\Kernel\IApp $app */
+        $app = $container->make('app');
+
+        if ($app->development() &&
+            isset($options['processes'], $options['processes_dev'])
+            ) {
+            $options['processes'] = array_merge($options['processes'], $options['processes_dev']);
+        }
+
+        return $options;
     }
 }
