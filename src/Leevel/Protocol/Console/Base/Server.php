@@ -181,13 +181,6 @@ abstract class Server extends Command
             throw new InvalidArgumentException($e);
         }
 
-        $message =
-            sprintf('Warning:swoole pid file is already exists.', $file).
-            PHP_EOL.'It is possible that the swoole service was last unusual exited.'.
-            PHP_EOL.'The non daemon mode ctrl+c termination is the most possible.'.PHP_EOL;
-
-        $this->warn($message);
-
         unlink($file);
     }
 
