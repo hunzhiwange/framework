@@ -18,34 +18,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Protocol\Proxy;
-
-use Leevel\Di\Container;
+namespace Leevel\Protocol\Process;
 
 /**
- * 代理 pool.
+ * Swoole 自动进程抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.12.17
+ * @since 2018.12.15
  *
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Pool
+abstract class Process
 {
     /**
-     * call.
+     * 进程名字.
      *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
+     * @var string
      */
-    public static function __callStatic(string $method, array $args)
+    protected $name;
+
+    /**
+     * 获取进程名称.
+     *
+     * @return string
+     */
+    public function getName(): string
     {
-        return Container::singletons()
-            ->make('pool')
-            ->{$method}(...$args);
+        return $this->name;
     }
 }
