@@ -90,7 +90,7 @@ abstract class Reload extends Command
             throw new InvalidArgumentException($e);
         }
 
-        Process::kill($pid, $this->option('all') ? SIGUSR1 : SIGUSR2);
+        Process::kill($pid, true === $this->option('all') ? SIGUSR1 : SIGUSR2);
 
         // 开启 opcache 重连后需要刷新
         if (function_exists('opcache_reset')) {
@@ -142,8 +142,8 @@ abstract class Reload extends Command
         return [
             [
                 'all',
-                null,
-                Option::VALUE_OPTIONAL,
+                'a',
+                Option::VALUE_NONE,
                 'Reload all progress or only task process.',
             ],
         ];

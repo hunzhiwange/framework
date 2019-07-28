@@ -70,7 +70,7 @@ abstract class Status extends Command
     {
         $processName = $option['process_name'];
 
-        if ($this->option('all')) {
+        if (true === $this->option('all')) {
             $item = '$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11';
 
             $nikename = [
@@ -193,8 +193,8 @@ abstract class Status extends Command
         return [
             [
                 'all',
-                null,
-                Option::VALUE_OPTIONAL,
+                'a',
+                Option::VALUE_NONE,
                 'Show all item of process.',
             ],
         ];
