@@ -25,6 +25,8 @@ use Leevel\Di\IContainer;
 use Leevel\Di\ICoroutine;
 use Leevel\Filesystem\Fso\create_directory;
 use function Leevel\Filesystem\Fso\create_directory;
+use Leevel\Filesystem\Fso\create_file;
+use function Leevel\Filesystem\Fso\create_file;
 use Leevel\Protocol\Process as ProtocolProcess;
 use Swoole\Process;
 use Swoole\Runtime;
@@ -215,18 +217,8 @@ abstract class Server
 
         $this->setProcessName($this->option['process_name'].'.master');
 
-        $pid = $server->master_pid."\n".$server->manager_pid;
-
-        $dirname = dirname($this->option['pid_path']);
-
-        if (!is_writable($dirname) ||
-            !file_put_contents($this->option['pid_path'], $pid)) {
-            $e = sprintf('Dir %s is not writeable.', $dirname);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        chmod($this->option['pid_path'], 0666 & ~umask());
+        $pidContent = $server->master_pid."\n".$server->manager_pid;
+        create_file($this->option['pid_path'], $pidContent);
     }
 
     /**
@@ -596,3 +588,4 @@ abstract class Server
 
 // import fn.
 class_exists(create_directory::class);
+class_exists(create_file::class);
