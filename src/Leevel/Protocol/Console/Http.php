@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console;
 
 use Leevel\Di\Container;
-use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Server as BaseServer;
 use Leevel\Protocol\IServer;
 
@@ -85,6 +84,6 @@ class Http extends BaseServer
      */
     protected function getVersion(): string
     {
-        return 'Http Server Version '.App::version().PHP_EOL;
+        return PHP_EOL.'                     HTTP SERVER'.PHP_EOL;
     }
 }

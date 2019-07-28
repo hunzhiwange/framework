@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console;
 
 use Leevel\Di\Container;
-use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Stop as BaseStop;
 use Leevel\Protocol\IServer;
 
@@ -68,6 +67,6 @@ class WebsocketStop extends BaseStop
      */
     protected function getVersion(): string
     {
-        return 'Websocket Stop Version '.App::version().PHP_EOL;
+        return PHP_EOL.'                   WEBSOCKET STOP'.PHP_EOL;
     }
 }

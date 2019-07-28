@@ -41,10 +41,9 @@ abstract class Status extends Command
      */
     public function handle(): void
     {
+        $this->info($this->getLogo());
         $this->warn($this->getVersion());
-
         $server = $this->createServer();
-
         $this->status($server->getOption());
     }
 
@@ -155,6 +154,23 @@ abstract class Status extends Command
         }
 
         $this->table($nikename, $out);
+    }
+
+    /**
+     * 返回 QueryPHP Logo.
+     *
+     * @return string
+     */
+    protected function getLogo(): string
+    {
+        return <<<'queryphp'
+            _____________                           _______________
+             ______/     \__  _____  ____  ______  / /_  _________
+              ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+               __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+                 \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+                    \_\                /_/_/         /_/
+            queryphp;
     }
 
     /**

@@ -81,7 +81,8 @@ abstract class Server extends Command
     protected function start(array $option): void
     {
         $show = [];
-
+        $show[] = ['QueryPHP', App::version()];
+        $show[] = ['Swoole', phpversion('swoole')];
         $basePath = App::path();
 
         foreach ($option as $key => $val) {

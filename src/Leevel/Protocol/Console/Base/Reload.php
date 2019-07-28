@@ -43,10 +43,9 @@ abstract class Reload extends Command
      */
     public function handle(): void
     {
+        $this->info($this->getLogo());
         $this->warn($this->getVersion());
-
         $server = $this->createServer();
-
         $this->reload($server->getOption());
     }
 
@@ -104,6 +103,23 @@ abstract class Reload extends Command
 
         $message = sprintf('Process %s:%d has reloaded.', $processName, $pid);
         $this->info($message);
+    }
+
+    /**
+     * 返回 QueryPHP Logo.
+     *
+     * @return string
+     */
+    protected function getLogo(): string
+    {
+        return <<<'queryphp'
+            _____________                           _______________
+             ______/     \__  _____  ____  ______  / /_  _________
+              ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+               __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+                 \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+                    \_\                /_/_/         /_/
+            queryphp;
     }
 
     /**

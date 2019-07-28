@@ -213,7 +213,7 @@ abstract class Server
             $this->option['host'], $this->option['port']
         );
         $this->log($message, true, '');
-        $this->log('Server master worker start', true);
+        $this->log('Server master worker start.', true);
 
         $this->setProcessName($this->option['process_name'].'.master');
 
@@ -283,7 +283,9 @@ abstract class Server
      */
     public function onManagerStart(SwooleServer $server): void
     {
-        $this->log('Server manager worker start', true);
+        $this->log('Server manager worker start.', true);
+        $message = sprintf('Master Pid: %d,Manager Pid: %d.', $server->master_pid, $server->manager_pid);
+        $this->log($message, true);
         $this->setProcessName($this->option['process_name'].'.manager');
     }
 

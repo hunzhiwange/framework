@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console;
 
 use Leevel\Di\Container;
-use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Reload as BaseReload;
 use Leevel\Protocol\IServer;
 
@@ -68,6 +67,6 @@ class RpcReload extends BaseReload
      */
     protected function getVersion(): string
     {
-        return 'Rpc Reload Version '.App::version().PHP_EOL;
+        return PHP_EOL.'                      RPC RELOAD'.PHP_EOL;
     }
 }
