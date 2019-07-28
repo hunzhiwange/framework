@@ -201,8 +201,8 @@ class Register extends Provider
     /**
      * 整理服务配置.
      *
-     *  @param \Leevel\Di\IContainer $container
-     * @param string $serverType
+     * @param \Leevel\Di\IContainer $container
+     * @param string                $serverType
      *
      * @return array
      */
@@ -233,8 +233,7 @@ class Register extends Provider
         $app = $container->make('app');
 
         if ($app->development() &&
-            isset($options['processes'], $options['processes_dev'])
-            ) {
+            isset($options['processes'], $options['processes_dev'])) {
             $options['processes'] = array_merge($options['processes'], $options['processes_dev']);
         }
 
