@@ -33,10 +33,23 @@ use Tests\TestCase;
  * @since 2019.07.31
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="毫秒定时器",
+ *     path="protocol/timer",
+ *     description="毫秒定时器是对 Swoole 官方的简单封装。",
+ * )
  */
 class TimerTest extends TestCase
 {
-    public function testTask(): void
+    /**
+     * @api(
+     *     title="执行任务",
+     *     description="执行任务过程中不抛出异常则为一次通过，有异常支持重试。",
+     *     note="",
+     * )
+     */
+    public function testTimer(): void
     {
         /** @var \Leevel\Log\ILog $log */
         $log = $this->createMock(ILog::class);
@@ -59,7 +72,14 @@ class TimerTest extends TestCase
         $this->assertSame(1, 1);
     }
 
-    public function testTaskError(): void
+    /**
+     * @api(
+     *     title="执行任务失败重试",
+     *     description="执行任务过程中抛出异常则为失败，失败会支持重试，到达次数后将丢弃。",
+     *     note="",
+     * )
+     */
+    public function testTimerError(): void
     {
         /** @var \Leevel\Log\ILog $log */
         $log = $this->createMock(ILog::class);
