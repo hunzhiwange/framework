@@ -28,7 +28,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
- * Psr 规范请求转 Leevel
+ * Psr 规范请求转 Leevel.
  * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -40,7 +40,7 @@ use Psr\Http\Message\UriInterface;
  *
  * @see Symfony\Bridge\PsrHttpMessage (https://github.com/symfony/psr-http-message-bridge)
  */
-class Psr2Leevel implements IPsr2Leevel
+class Psr2Leevel
 {
     /**
      * 从 Psr 请求对象创建 Leevel 请求对象

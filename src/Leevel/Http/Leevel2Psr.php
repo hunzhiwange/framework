@@ -31,7 +31,7 @@ use Zend\Diactoros\Stream as DiactorosStream;
 use Zend\Diactoros\UploadedFile as DiactorosUploadedFile;
 
 /**
- * Leevel 规范请求转 Psr
+ * Leevel 规范请求转 Psr.
  * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -43,7 +43,7 @@ use Zend\Diactoros\UploadedFile as DiactorosUploadedFile;
  *
  * @see Symfony\Bridge\PsrHttpMessage (https://github.com/symfony/psr-http-message-bridge)
  */
-class Leevel2Psr implements ILeevel2Psr
+class Leevel2Psr
 {
     /**
      * 从 Leevel 请求对象创建 Psr 请求对象
