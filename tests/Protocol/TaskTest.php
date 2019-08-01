@@ -34,9 +34,22 @@ use Throwable;
  * @since 2019.07.31
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="投递任务",
+ *     path="protocol/task",
+ *     description="任务投递是对 Swoole 官方的简单封装。",
+ * )
  */
 class TaskTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="投递异步任务",
+     *     description="投递单个异步任务。",
+     *     note="",
+     * )
+     */
     public function testTask(): void
     {
         $process = new Process(function (Process $worker) {
@@ -66,6 +79,13 @@ class TaskTest extends TestCase
         $this->assertSame('Exception Thrown: Swoole\\Server::task(): server is not running', $output);
     }
 
+    /**
+     * @api(
+     *     title="并发执行任务并进行协程调度",
+     *     description="支持多个任务并发执行，底层进行协程调度。",
+     *     note="",
+     * )
+     */
     public function testTaskCo(): void
     {
         $process = new Process(function (Process $worker) {
