@@ -25,7 +25,7 @@ use Leevel\Protocol\Console\Base\Server as BaseServer;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole websocket 服务启动.
+ * Swoole WebSocket 服务启动.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

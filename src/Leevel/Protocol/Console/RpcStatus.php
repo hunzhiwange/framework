@@ -25,7 +25,7 @@ use Leevel\Protocol\Console\Base\Status as BaseStatus;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole rpc 服务列表.
+ * Swoole RPC 服务列表.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

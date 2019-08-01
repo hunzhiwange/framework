@@ -25,7 +25,7 @@ use Leevel\Protocol\Console\Base\Reload as BaseReload;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole websocket 服务重启.
+ * Swoole WebSocket 服务重启.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

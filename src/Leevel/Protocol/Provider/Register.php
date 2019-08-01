@@ -34,7 +34,7 @@ use Leevel\Protocol\Timer;
 use Leevel\Protocol\WebsocketServer;
 
 /**
- * swoole 服务提供者.
+ * Swoole 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

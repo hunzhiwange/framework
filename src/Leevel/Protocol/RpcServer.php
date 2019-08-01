@@ -59,10 +59,10 @@ class RpcServer extends Server implements IServer
         // see https://wiki.swoole.com/wiki/page/327.html
         'port' => '1355',
 
-        // swoole 进程名称
+        // Swoole 进程名称
         'process_name' => 'leevel.rpc',
 
-        // swoole 进程保存路径
+        // Swoole 进程保存路径
         'pid_path' => '',
 
         // 设置启动的 worker 进程数

@@ -26,7 +26,7 @@ use Leevel\Protocol\IServer;
 use Swoole\Process;
 
 /**
- * swoole 服务停止.
+ * Swoole 服务停止.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

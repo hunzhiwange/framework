@@ -329,8 +329,8 @@ class Request implements IRequest
     }
 
     /**
-     * PHP 运行模式命令行, 兼容 swoole http service
-     * Swoole http 服务器也以命令行运行.
+     * PHP 运行模式命令行, 兼容 Swoole HTTP Service.
+     * Swoole HTTP 服务器也以命令行运行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      *

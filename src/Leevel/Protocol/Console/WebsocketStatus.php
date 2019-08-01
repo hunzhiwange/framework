@@ -25,7 +25,7 @@ use Leevel\Protocol\Console\Base\Status as BaseStatus;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole websocket 服务列表.
+ * Swoole WebSocket 服务列表.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

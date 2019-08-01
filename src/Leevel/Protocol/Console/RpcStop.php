@@ -25,7 +25,7 @@ use Leevel\Protocol\Console\Base\Stop as BaseStop;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole rpc 服务停止.
+ * Swoole RPC 服务停止.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

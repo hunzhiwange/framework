@@ -25,7 +25,7 @@ use Leevel\Console\Option;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole 服务列表.
+ * Swoole 服务列表.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

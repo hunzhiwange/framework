@@ -27,7 +27,7 @@ use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole http 服务启动.
+ * Swoole HTTP 服务启动.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

@@ -57,10 +57,10 @@ class HttpServer extends Server implements IServer
         // see https://wiki.swoole.com/wiki/page/327.html
         'port' => '9501',
 
-        // swoole 进程名称
+        // Swoole 进程名称
         'process_name' => 'leevel.http',
 
-        // swoole 进程保存路径
+        // Swoole 进程保存路径
         'pid_path' => '',
 
         // 设置启动的 worker 进程数
@@ -72,7 +72,7 @@ class HttpServer extends Server implements IServer
         'daemonize' => 0,
 
         // 开启静态路径
-        // 配合 Nginx 可以设置这里为 false,nginx 设置规则解析静态路径动态路由转发给 swoole
+        // 配合 Nginx 可以设置这里为 false,nginx 设置规则解析静态路径动态路由转发给 Swoole
         'enable_static_handler' => false,
 
         // 开启静态路径目录
