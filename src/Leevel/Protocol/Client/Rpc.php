@@ -99,7 +99,6 @@ class Rpc
         ]);
 
         $transport->close();
-
         $response = $this->normalizeResponse($response);
 
         return $response;
@@ -133,9 +132,7 @@ class Rpc
      */
     public function addMetas($key, $value = null)
     {
-        $key = is_array($key) ? $key : [
-            $key => $value,
-        ];
+        $key = is_array($key) ? $key : [$key => $value];
 
         foreach ($key as $k => $v) {
             $this->metas[$k] = $v;
@@ -187,7 +184,6 @@ class Rpc
     protected function getResponseWithProtocol(TBinaryProtocol $protocol, array $data): Response
     {
         $client = new ThriftClient($protocol);
-
         $message = new Request($data);
 
         return $client->call($message);
