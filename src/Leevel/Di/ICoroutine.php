@@ -59,9 +59,9 @@ interface ICoroutine
     /**
      * 当前协程的父协程 ID.
      *
-     * @return int
+     * @return bool|int
      *
      * @see https://wiki.swoole.com/wiki/page/1076.html
      */
-    public function pcid(): int;
+    public function pcid();
 }

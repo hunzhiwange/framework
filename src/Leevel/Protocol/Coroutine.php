@@ -66,6 +66,8 @@ class Coroutine implements ICoroutine
 
         if (method_exists($key, 'coroutineContext') &&
             true === $key::coroutineContext()) {
+            $this->addContext($key);
+
             return true;
         }
 
@@ -97,11 +99,11 @@ class Coroutine implements ICoroutine
     /**
      * 当前协程的父协程 ID.
      *
-     * @return int
+     * @return bool|int
      *
      * @see https://wiki.swoole.com/wiki/page/1076.html
      */
-    public function pcid(): int
+    public function pcid()
     {
         return SwooleCoroutine::getPcid();
     }
