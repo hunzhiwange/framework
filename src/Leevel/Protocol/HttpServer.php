@@ -209,7 +209,7 @@ class HttpServer extends Server implements IServer
     }
 
     /**
-     * 格式化 QueryPHP 响应到 swoole 响应.
+     * 格式化 QueryPHP 响应到 Swoole 响应.
      *
      * @param \Leevel\Http\IResponse $response
      * @param \Swoole\Http\Response  $swooleResponse
@@ -238,7 +238,7 @@ class HttpServer extends Server implements IServer
     }
 
     /**
-     * 格式化 swoole 请求到 QueryPHP 请求.
+     * 格式化 Swoole 请求到 QueryPHP 请求.
      *
      * @param \Swoole\Http\Request $swooleRequest
      *
@@ -246,54 +246,14 @@ class HttpServer extends Server implements IServer
      */
     protected function normalizeRequest(SwooleHttpRequest $swooleRequest): IRequest
     {
-        $request = new Request();
-        $data = [
-            'header' => 'headers',
-            'server' => 'server',
-            'cookie' => 'cookies',
-            'get'    => 'query',
-            'files'  => 'files',
-            'post'   => 'request',
-        ];
-        $servers = [];
-
-        if ($swooleRequest->header) {
-            $tmp = $tmpHeader = [];
-
-            foreach ($swooleRequest->header as $key => $value) {
-                $key = strtoupper(str_replace('-', '_', $key));
-                $tmpHeader[$key] = $value;
-                $key = 'HTTP_'.$key;
-                $tmp[$key] = $value;
-            }
-
-            $servers = $tmp;
-            $swooleRequest->header = $tmpHeader;
-        }
-
-        if ($swooleRequest->server) {
-            $swooleRequest->server = array_change_key_case(
-                $swooleRequest->server,
-                CASE_UPPER
-            );
-
-            $servers = array_merge($servers, $swooleRequest->server);
-            $swooleRequest->server = $servers;
-        } else {
-            $swooleRequest->server = $servers ?: null;
-        }
-
-        foreach ($data as $key => $item) {
-            if ($swooleRequest->{$key}) {
-                $request->{$item}->replace($swooleRequest->{$key});
-            }
-        }
+        $swoole2Leevel = new Swoole2Leevel();
+        $request = $swoole2Leevel->createRequest($swooleRequest);
 
         return $request;
     }
 
     /**
-     * 创建 http server.
+     * 创建 HTTP Server.
      */
     protected function createServer(): void
     {
