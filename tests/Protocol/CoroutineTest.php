@@ -23,6 +23,7 @@ namespace Tests\Protocol;
 use Leevel\Di\ICoroutine;
 use Leevel\Protocol\Coroutine;
 use Tests\TestCase;
+use Throwable;
 
 /**
  * 协程基础组件测试.
@@ -86,15 +87,18 @@ class CoroutineTest extends TestCase
         $this->assertSame(-1, $coroutine->cid());
         $this->assertFalse($coroutine->pcid());
 
-        go(function () use ($coroutine) {
-            $this->assertSame(1, $coroutine->cid());
-            $this->assertSame(-1, $coroutine->pcid());
-
+        try {
             go(function () use ($coroutine) {
-                $this->assertSame(2, $coroutine->cid());
-                $this->assertSame(1, $coroutine->pcid());
+                $this->assertSame(1, $coroutine->cid());
+                $this->assertSame(-1, $coroutine->pcid());
+
+                go(function () use ($coroutine) {
+                    $this->assertSame(2, $coroutine->cid());
+                    $this->assertSame(1, $coroutine->pcid());
+                });
             });
-        });
+        } catch (Throwable $th) {
+        }
     }
 }
 
