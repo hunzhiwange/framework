@@ -22,15 +22,13 @@ namespace Leevel\Protocol;
 
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
-use Leevel\Http\RedirectResponse;
-use Leevel\Http\Request;
 use Leevel\Kernel\IKernel;
 use Swoole\Http\Request as SwooleHttpRequest;
 use Swoole\Http\Response as SwooleHttpResponse;
 use Swoole\Http\Server as SwooleHttpServer;
 
 /**
- *  Http 服务
+ *  HTTP 服务.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -218,23 +216,10 @@ class HttpServer extends Server implements IServer
      */
     protected function normalizeResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
-        foreach ($response->getCookies() as $item) {
-            call_user_func_array([$swooleResponse, 'cookie'], $item);
-        }
+        $leevel2swoole = new Leevel2Swoole();
+        $response = $leevel2swoole->createResponse($response, $swooleResponse);
 
-        if ($response instanceof RedirectResponse &&
-            method_exists($swooleResponse, 'redirect')) {
-            $swooleResponse->redirect($response->getTargetUrl());
-        }
-
-        foreach ($response->headers->all() as $key => $value) {
-            $swooleResponse->header($key, $value);
-        }
-
-        $swooleResponse->status($response->getStatusCode());
-        $swooleResponse->write($response->getContent() ?: ' ');
-
-        return $swooleResponse;
+        return $response;
     }
 
     /**
