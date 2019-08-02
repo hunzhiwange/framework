@@ -46,7 +46,7 @@ use Zend\Diactoros\UploadedFile as DiactorosUploadedFile;
 class Leevel2Psr
 {
     /**
-     * 从 Leevel 请求对象创建 Psr 请求对象
+     * 从 Leevel 请求对象创建 Psr 请求对象.
      *
      * @param \Leevel\Http\IRequest $leevelRequest
      *
@@ -82,7 +82,7 @@ class Leevel2Psr
     }
 
     /**
-     * 从 Leevel 响应对象创建 Psr 响应对象
+     * 从 Leevel 响应对象创建 Psr 响应对象.
      *
      * @param \Leevel\Http\IResponse $leevelResponse
      *

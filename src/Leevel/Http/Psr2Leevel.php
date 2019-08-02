@@ -43,7 +43,7 @@ use Psr\Http\Message\UriInterface;
 class Psr2Leevel
 {
     /**
-     * 从 Psr 请求对象创建 Leevel 请求对象
+     * 从 Psr 请求对象创建 Leevel 请求对象.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $psrRequest
      *
@@ -82,7 +82,7 @@ class Psr2Leevel
     }
 
     /**
-     * 从 Psr 响应对象创建 Leevel 响应对象
+     * 从 Psr 响应对象创建 Leevel 响应对象.
      *
      * @param \Psr\Http\Message\ResponseInterface $psrResponse
      *
