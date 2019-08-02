@@ -207,16 +207,6 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 是否处于协程上下文.
-     *
-     * @return bool
-     */
-    public static function coroutineContext(): bool
-    {
-        return true;
-    }
-
-    /**
      * 创建一个工作单元.
      *
      * @param null|\Leevel\Database\Ddd\IEntity $rootEntity

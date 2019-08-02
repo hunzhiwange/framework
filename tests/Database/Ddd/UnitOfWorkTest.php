@@ -1673,11 +1673,6 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $connect->table('composite_id')->findCount());
     }
 
-    public function testCoroutineContext(): void
-    {
-        $this->assertTrue(UnitOfWork::coroutineContext());
-    }
-
     protected function getDatabaseTable(): array
     {
         return ['post', 'guest_book', 'composite_id'];
