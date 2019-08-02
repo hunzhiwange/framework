@@ -160,12 +160,7 @@ class RpcServer extends Server implements IServer
     {
         parent::onReceive($server, $fd, $reactorId, $data);
 
-        $this->thriftServer->receive(
-            $server,
-            $fd,
-            $reactorId,
-            $data
-        );
+        $this->thriftServer->receive($server, $fd, $reactorId, $data);
     }
 
     /**
@@ -180,12 +175,8 @@ class RpcServer extends Server implements IServer
      */
     public function onRpcClose(SwooleServer $server, int $fd, int $reactorId): void
     {
-        $this->log(
-            sprintf(
-                'Server close, fd %d, reactorId %d.',
-                $fd, $reactorId
-            )
-        );
+        $message = sprintf('Server close, fd %d, reactorId %d.', $fd, $reactorId);
+        $this->log($message);
     }
 
     /**
