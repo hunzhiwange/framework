@@ -101,8 +101,8 @@ class Swoole2Leevel
     /**
      * 转换请求.
      *
-     * @param \Swoole\Http\Request $swooleRequest
-     * @param Leevel\Http\IRequest $request
+     * @param \Swoole\Http\Request  $swooleRequest
+     * @param \Leevel\Http\IRequest $request
      */
     protected function convertRequest(SwooleHttpRequest $swooleRequest, IRequest $request): void
     {
