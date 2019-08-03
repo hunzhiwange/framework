@@ -40,7 +40,7 @@ class HasOneTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
@@ -66,7 +66,7 @@ class HasOneTest extends TestCase
                     'content' => 'I am content with big data.',
                 ]));
 
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
@@ -97,7 +97,7 @@ class HasOneTest extends TestCase
 
     public function testEager(): void
     {
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
@@ -162,7 +162,7 @@ class HasOneTest extends TestCase
                     'content' => 'I am content with big data.',
                 ]));
 
-        $postContentRelation = Post::postContent();
+        $postContentRelation = Post::make()->postContent();
 
         $this->assertInstanceof(HasOne::class, $postContentRelation);
         $this->assertSame('id', $postContentRelation->getSourceKey());

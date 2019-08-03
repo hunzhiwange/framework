@@ -186,7 +186,7 @@ class ManyMany extends Relation
     public function getPreLoad()
     {
         return $this->targetEntity
-            ->select()
+            ->selectForEntity()
             ->preLoadResult(
                 $this->sourceQuery()
             );

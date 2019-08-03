@@ -41,7 +41,7 @@ class ManyManyTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -98,7 +98,7 @@ class ManyManyTest extends TestCase
                     'role_id' => 3,
                 ]));
 
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
@@ -148,7 +148,7 @@ class ManyManyTest extends TestCase
 
     public function testEager(): void
     {
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -255,7 +255,7 @@ class ManyManyTest extends TestCase
 
     public function testEagerWithNoData(): void
     {
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -326,7 +326,7 @@ class ManyManyTest extends TestCase
                     'role_id' => 3,
                 ]));
 
-        $roleRelation = User::role();
+        $roleRelation = User::make()->role();
 
         $this->assertInstanceof(ManyMany::class, $roleRelation);
         $this->assertSame('id', $roleRelation->getSourceKey());
@@ -341,7 +341,7 @@ class ManyManyTest extends TestCase
 
     public function testNotFoundData(): void
     {
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -356,7 +356,7 @@ class ManyManyTest extends TestCase
                     'name' => 'niu',
                 ]));
 
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);

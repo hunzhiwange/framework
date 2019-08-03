@@ -40,7 +40,7 @@ class NestedTest extends TestCase
 {
     public function testBase(): void
     {
-        $posts = Post::limit(5)->findAll();
+        $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(0, $posts);
@@ -116,7 +116,7 @@ class NestedTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(5, $posts);
 
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);

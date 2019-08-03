@@ -1323,7 +1323,7 @@ class RepositoryTest extends TestCase
                 ])
         );
 
-        $testUniqueData = TestUnique::find(1);
+        $testUniqueData = TestUnique::select()->find(1);
 
         $this->assertInstanceof(TestUnique::class, $testUniqueData);
         $this->assertSame('1', $testUniqueData->id);
@@ -1336,7 +1336,7 @@ class RepositoryTest extends TestCase
 
         $repository->replace($testUnique);
 
-        $testUniqueData = TestUnique::find(1);
+        $testUniqueData = TestUnique::select()->find(1);
 
         $this->assertInstanceof(TestUnique::class, $testUniqueData);
         $this->assertSame('1', $testUniqueData->id);

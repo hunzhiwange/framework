@@ -40,7 +40,7 @@ class BelongsToTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
@@ -67,7 +67,7 @@ class BelongsToTest extends TestCase
                 ]),
         );
 
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
@@ -96,7 +96,7 @@ class BelongsToTest extends TestCase
 
     public function testEager(): void
     {
-        $posts = Post::limit(5)->findAll();
+        $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(0, $posts);
@@ -165,7 +165,7 @@ class BelongsToTest extends TestCase
                 ]),
         );
 
-        $userRelation = Post::user();
+        $userRelation = Post::make()->user();
 
         $this->assertInstanceof(BelongsTo::class, $userRelation);
         $this->assertSame('user_id', $userRelation->getSourceKey());
@@ -177,7 +177,7 @@ class BelongsToTest extends TestCase
 
     public function testEagerButNotFoundSourceData(): void
     {
-        $posts = Post::limit(5)->findAll();
+        $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(0, $posts);

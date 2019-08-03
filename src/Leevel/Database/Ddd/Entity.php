@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use ArrayAccess;
+use BadMethodCallException;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
@@ -326,7 +327,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->handleEvent(static::BEFORE_FIND_EVENT);
         $this->handleEvent(static::BEFORE_SELECT_EVENT);
 
-        $data = $this->select()->{$method}(...$args);
+        $data = $this->selectForEntity()->{$method}(...$args);
 
         if ($data instanceof Collection) {
             $this->handleEvent(static::AFTER_SELECT_EVENT, $data);
@@ -347,7 +348,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function __callStatic(string $method, array $args)
     {
-        return (new static())->{$method}(...$args);
+        $e = sprintf(
+            'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
+            $method, static::class, $method
+        );
+
+        throw new BadMethodCallException($e);
     }
 
     /**
@@ -773,7 +779,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function eager(array $relation): Select
     {
-        return (new static())->select()->eager($relation);
+        return (new static())->selectForEntity()->eager($relation);
     }
 
     /**
@@ -1329,9 +1335,22 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    public function select(): Select
+    public function selectForEntity(): Select
     {
         return new Select($this);
+    }
+
+    /**
+     * 返回数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function select(): Select
+    {
+        return new Select(new static());
     }
 
     /**

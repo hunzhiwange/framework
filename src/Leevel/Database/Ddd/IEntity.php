@@ -644,7 +644,17 @@ interface IEntity
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    public function select(): Select;
+    public function selectForEntity(): Select;
+
+    /**
+     * 返回数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function select(): Select;
 
     /**
      * 返回模型实体类的 meta 对象

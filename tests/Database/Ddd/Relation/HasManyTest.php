@@ -40,7 +40,7 @@ class HasManyTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
@@ -68,7 +68,7 @@ class HasManyTest extends TestCase
                 ]);
         }
 
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
@@ -112,7 +112,7 @@ class HasManyTest extends TestCase
 
     public function testEager(): void
     {
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
@@ -208,7 +208,7 @@ class HasManyTest extends TestCase
                 ]);
         }
 
-        $commentRelation = Post::comment();
+        $commentRelation = Post::make()->comment();
 
         $this->assertInstanceof(HasMany::class, $commentRelation);
         $this->assertSame('id', $commentRelation->getSourceKey());
