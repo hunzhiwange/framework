@@ -324,18 +324,18 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return $this->scope(...$args);
         }
 
-        $this->handleEvent(static::BEFORE_FIND_EVENT);
-        $this->handleEvent(static::BEFORE_SELECT_EVENT);
+        // $this->handleEvent(static::BEFORE_FIND_EVENT);
+        // $this->handleEvent(static::BEFORE_SELECT_EVENT);
 
-        $data = $this->selectForEntity()->{$method}(...$args);
+        // $data = $this->selectForEntity()->{$method}(...$args);
 
-        if ($data instanceof Collection) {
-            $this->handleEvent(static::AFTER_SELECT_EVENT, $data);
-        } else {
-            $this->handleEvent(static::AFTER_FIND_EVENT, $data);
-        }
+        // if ($data instanceof Collection) {
+        //     $this->handleEvent(static::AFTER_SELECT_EVENT, $data);
+        // } else {
+        //     $this->handleEvent(static::AFTER_FIND_EVENT, $data);
+        // }
 
-        return $data;
+        // return $data;
     }
 
     /**

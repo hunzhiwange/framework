@@ -76,7 +76,9 @@ class Repository implements IRepository
      */
     public function find(int $id, array $column = ['*']): IEntity
     {
-        return $this->entity->find($id, $column);
+        return $this->entity
+            ->select()
+            ->find($id, $column);
     }
 
     /**
@@ -89,7 +91,9 @@ class Repository implements IRepository
      */
     public function findOrFail(int $id, array $column = ['*']): IEntity
     {
-        return $this->entity->findOrFail($id, $column);
+        return $this->entity
+            ->select()
+            ->findOrFail($id, $column);
     }
 
     /**
@@ -101,7 +105,9 @@ class Repository implements IRepository
      */
     public function findAll($condition = null): Collection
     {
-        $select = $this->entity->selfDatabaseSelect();
+        $select = $this->entity
+            ->select()
+            ->selfDatabaseSelect();
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);
@@ -121,7 +127,9 @@ class Repository implements IRepository
      */
     public function findList($condition, $fieldValue, ?string $fieldKey = null): array
     {
-        $select = $this->entity->selfDatabaseSelect();
+        $select = $this->entity
+            ->select()
+            ->selfDatabaseSelect();
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);
@@ -140,7 +148,9 @@ class Repository implements IRepository
      */
     public function findCount($condition = null, string $field = '*'): int
     {
-        $select = $this->entity->selfDatabaseSelect();
+        $select = $this->entity
+            ->select()
+            ->selfDatabaseSelect();
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);
@@ -163,7 +173,9 @@ class Repository implements IRepository
      */
     public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, bool $withTotal = true, string $column = '*'): array
     {
-        $select = $this->entity->selfDatabaseSelect();
+        $select = $this->entity
+            ->select()
+            ->selfDatabaseSelect();
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);
@@ -187,7 +199,9 @@ class Repository implements IRepository
      */
     public function findPageHtml(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): array
     {
-        $select = $this->entity->selfDatabaseSelect();
+        $select = $this->entity
+            ->select()
+            ->selfDatabaseSelect();
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);
@@ -209,7 +223,9 @@ class Repository implements IRepository
      */
     public function findPageMacro(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): array
     {
-        $select = $this->entity->selfDatabaseSelect();
+        $select = $this->entity
+            ->select()
+            ->selfDatabaseSelect();
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);
@@ -231,7 +247,9 @@ class Repository implements IRepository
      */
     public function findPagePrevNext(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): array
     {
-        $select = $this->entity->selfDatabaseSelect();
+        $select = $this->entity
+            ->select()
+            ->selfDatabaseSelect();
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);
@@ -249,7 +267,9 @@ class Repository implements IRepository
      */
     public function condition($condition): Select
     {
-        $select = $this->entity->selfDatabaseSelect();
+        $select = $this->entity
+            ->select()
+            ->selfDatabaseSelect();
 
         $this->normalizeCondition($condition, $select);
 

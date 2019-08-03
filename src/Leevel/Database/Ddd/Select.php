@@ -221,12 +221,9 @@ class Select
      */
     public function softDelete(): int
     {
-        $this->entity->__set($this->deleteAtColumn(), $time = date('Y-m-d H:i:s'));
-
+        $this->entity->__set($this->deleteAtColumn(), date('Y-m-d H:i:s'));
         $this->entity->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
-
         $num = $this->entity->update()->flush();
-
         $this->entity->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
 
         return $num;
@@ -246,11 +243,13 @@ class Select
 
         $instance = $this->entity->make();
         $entitys = $instance
+            ->select()
             ->whereIn($instance->singlePrimaryKey(), $ids)
             ->findAll();
 
-        foreach ($entitys as $value) {
-            if ($value->softDelete()) {
+        /** @var \Leevel\Database\Ddd\IEntity $entity */
+        foreach ($entitys as $entity) {
+            if ($entity->selectForEntity()->softDelete()) {
                 $count++;
             }
         }

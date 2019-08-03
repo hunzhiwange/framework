@@ -666,7 +666,9 @@ class UnitOfWork implements IUnitOfWork
      */
     public function connect(): IDatabase
     {
-        return $this->rootEntity->databaseConnect();
+        return $this->rootEntity
+            ->select()
+            ->databaseConnect();
     }
 
     /**
