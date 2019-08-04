@@ -288,7 +288,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return $this;
         }
 
-        // relation
+        // relation tips
         if ($this->isRelation($unCamelize = $this->normalize($method))) {
             $e = sprintf(
                 'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
@@ -298,7 +298,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             throw new BadMethodCallException($e);
         }
 
-        // other method are not allowed
+        // other method tips
         $e = sprintf(
             'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
             $method, static::class, $method
@@ -1573,7 +1573,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function withPropValue(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): void
     {
         $prop = $this->normalize($prop);
-
         $this->validate($prop);
 
         if ($this->isRelation($prop)) {
@@ -1660,7 +1659,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function propGetter(string $prop)
     {
-        return $this->{'getter'.ucfirst($this->asProp($prop))}();
+        $method = 'getter'.ucfirst($prop = $this->asProp($prop));
+
+        if (method_exists($this, $method)) {
+            return $this->{$method}($prop);
+        }
+
+        return $this->getter($prop);
     }
 
     /**
@@ -1671,7 +1676,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function propSetter(string $prop, $value): void
     {
-        $this->{'setter'.ucfirst($this->asProp($prop))}($value);
+        $method = 'setter'.ucfirst($prop = $this->asProp($prop));
+
+        if (method_exists($this, $method)) {
+            $this->{$method}($value);
+        } else {
+            $this->setter($prop, $value);
+        }
     }
 
     /**
