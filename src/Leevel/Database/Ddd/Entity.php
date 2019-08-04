@@ -1508,7 +1508,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         $condition = [];
-
         foreach ($this->primaryKeys() as $field) {
             if (isset($saveData[$field])) {
                 unset($saveData[$field]);
