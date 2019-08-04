@@ -370,18 +370,10 @@ class Repository implements IRepository
      */
     protected function normalizeCondition($condition, Select $select): void
     {
-        if (is_string($condition)) {
-            $select->scope($condition);
-        } elseif (is_object($condition) && $condition instanceof ISpecification) {
+        if (is_object($condition) && $condition instanceof ISpecification) {
             $this->normalizeSpec($select, $condition);
         } elseif (is_object($condition) && $condition instanceof Closure) {
             $condition($select, $this->entity);
-        } elseif (is_array($condition) && count($condition) >= 2) {
-            $tmpCondition = array_shift($condition);
-            $scope = $condition;
-
-            $this->normalizeCondition($tmpCondition, $select);
-            $select->scope($scope);
         } else {
             $e = 'Invalid condition type.';
 

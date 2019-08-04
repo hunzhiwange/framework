@@ -333,38 +333,6 @@ class Select
     }
 
     /**
-     * 查询范围.
-     *
-     * @param mixed $scope
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function scope($scope): IEntity
-    {
-        $scopeSelect = $this->select;
-
-        $args = func_get_args();
-        array_shift($args);
-        array_unshift($args, $scopeSelect);
-
-        if ($scope instanceof Closure) {
-            $scope(...$args);
-            $this->entity->withScopeSelect($scopeSelect);
-        } else {
-            foreach (normalize($scope) as $value) {
-                $value = 'scope'.ucfirst($value);
-
-                if (method_exists($this->entity, $value)) {
-                    $this->entity->{$value}(...$args);
-                    $this->entity->withScopeSelect($scopeSelect);
-                }
-            }
-        }
-
-        return $this->entity;
-    }
-
-    /**
      * 预载入模型实体.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys

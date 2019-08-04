@@ -41,34 +41,6 @@ use Leevel\Event\IDispatch;
 interface IEntity
 {
     /**
-     * 批量查找前事件.
-     *
-     * @var string
-     */
-    const BEFORE_SELECT_EVENT = 'selecting';
-
-    /**
-     * 批量查找后事件.
-     *
-     * @var string
-     */
-    const AFTER_SELECT_EVENT = 'selected';
-
-    /**
-     * 查找前事件.
-     *
-     * @var string
-     */
-    const BEFORE_FIND_EVENT = 'finding';
-
-    /**
-     * 查找后事件.
-     *
-     * @var string
-     */
-    const AFTER_FIND_EVENT = 'finded';
-
-    /**
      * 保存前事件.
      *
      * @var string

@@ -135,13 +135,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected $leevelRelationMiddle;
 
     /**
-     * 作用域查询对象.
-     *
-     * @var \Leevel\Database\Select
-     */
-    protected $leevelScopeSelect;
-
-    /**
      * 持久化基础层
      *
      * @var \Closure
@@ -278,6 +271,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param array  $args
      *
      * @throws \InvalidArgumentException
+     * @throws \BadMethodCallException
      *
      * @return mixed
      */
@@ -317,25 +311,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         } catch (InvalidArgumentException $e) {
         }
 
-        // 作用域
-        if (method_exists($this, 'scope'.ucwords($method))) {
-            array_unshift($args, $method);
+        // other method are not allowed
+        $e = sprintf(
+            'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
+            $method, static::class, $method
+        );
 
-            return $this->scope(...$args);
-        }
-
-        // $this->handleEvent(static::BEFORE_FIND_EVENT);
-        // $this->handleEvent(static::BEFORE_SELECT_EVENT);
-
-        // $data = $this->selectForEntity()->{$method}(...$args);
-
-        // if ($data instanceof Collection) {
-        //     $this->handleEvent(static::AFTER_SELECT_EVENT, $data);
-        // } else {
-        //     $this->handleEvent(static::AFTER_FIND_EVENT, $data);
-        // }
-
-        // return $data;
+        throw new BadMethodCallException($e);
     }
 
     /**
@@ -344,7 +326,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $method
      * @param array  $args
      *
-     * @return mixed
+     * @throws \BadMethodCallException
      */
     public static function __callStatic(string $method, array $args)
     {
@@ -972,10 +954,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function supportEvent(): array
     {
         return [
-            static::BEFORE_SELECT_EVENT,
-            static::AFTER_SELECT_EVENT,
-            static::BEFORE_FIND_EVENT,
-            static::AFTER_FIND_EVENT,
             static::BEFORE_SAVE_EVENT,
             static::AFTER_SAVE_EVENT,
             static::BEFORE_CREATE_EVENT,
@@ -1303,26 +1281,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 设置作用域查询对象.
-     *
-     * @param \Leevel\Database\Select $select
-     */
-    public function withScopeSelect(DatabaseSelect $select): void
-    {
-        $this->leevelScopeSelect = $select;
-    }
-
-    /**
      * 返回数据库查询集合对象.
      *
      * @return \Leevel\Database\Select
      */
     public function databaseSelect(): DatabaseSelect
     {
-        if ($this->leevelScopeSelect) {
-            return $this->leevelScopeSelect;
-        }
-
         return $this
             ->metaConnect()
             ->select()

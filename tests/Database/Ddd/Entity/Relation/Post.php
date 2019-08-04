@@ -103,19 +103,4 @@ class Post extends Entity
     {
         $select->where('id', '>', 4);
     }
-
-    public function scopeTest($select)
-    {
-        $select->where('id', '>', 4);
-    }
-
-    public function scopeTest2($select)
-    {
-        $select->where('id', '<', 10);
-    }
-
-    public function scopeTest3($select)
-    {
-        $select->where('id', 5);
-    }
 }
