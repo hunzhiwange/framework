@@ -1433,13 +1433,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushed = false;
 
         $this->parseAutoFill('create', $fill);
-
         $propKey = $this->normalizeWhiteAndBlack(
             array_flip($this->leevelChangedProp), 'create_prop'
         );
 
         $saveData = [];
-
         foreach ($this->leevelChangedProp as $prop) {
             if (!array_key_exists($prop, $propKey)) {
                 continue;
@@ -1462,7 +1460,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
-
             $lastInsertId = $this->metaConnect()->insert($saveData);
 
             if ($auto = $this->autoIncrement()) {
@@ -1470,9 +1467,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             }
 
             $this->leevelNewed = false;
-
             $this->clearChanged();
-
             $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
 
             return $lastInsertId;
@@ -1495,13 +1490,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushed = false;
 
         $this->parseAutoFill('update', $fill);
-
         $propKey = $this->normalizeWhiteAndBlack(
             array_flip($this->leevelChangedProp), 'update_prop'
         );
 
         $saveData = [];
-
         foreach ($this->leevelChangedProp as $prop) {
             if (!array_key_exists($prop, $propKey)) {
                 continue;
@@ -1532,13 +1525,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = function ($condition, $saveData) {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
-
             $num = $this->metaConnect()->update($condition, $saveData);
-
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, null, null);
-
             $this->clearChanged();
-
             $this->handleEvent(static::AFTER_UPDATE_EVENT);
 
             return $num;
