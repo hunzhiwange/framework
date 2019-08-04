@@ -326,7 +326,7 @@ class ManyManyTest extends TestCase
                     'role_id' => 3,
                 ]));
 
-        $roleRelation = User::make()->role();
+        $roleRelation = User::make()->loadRelation('role');
 
         $this->assertInstanceof(ManyMany::class, $roleRelation);
         $this->assertSame('id', $roleRelation->getSourceKey());

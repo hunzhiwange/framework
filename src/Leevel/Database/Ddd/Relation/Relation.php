@@ -191,9 +191,7 @@ abstract class Relation
     {
         $old = static::$relationCondition;
         static::$relationCondition = false;
-
         $relation = call_user_func($returnRelation);
-
         static::$relationCondition = $old;
 
         return $relation;

@@ -289,13 +289,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         // relation
-        try {
-            $unCamelize = $this->normalize($method);
+        if ($this->isRelation($unCamelize = $this->normalize($method))) {
+            $e = sprintf(
+                'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
+                $method, static::class, $unCamelize
+            );
 
-            if ($this->isRelation($unCamelize)) {
-                return $this->loadRelation($unCamelize, true);
-            }
-        } catch (InvalidArgumentException $e) {
+            throw new BadMethodCallException($e);
         }
 
         // other method are not allowed
@@ -660,9 +660,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function loadRelation(string $prop): Relation
     {
         $prop = $this->normalize($prop);
-
         $this->validate($prop);
-
         $defined = static::STRUCT[$prop];
 
         if (isset($defined[self::BELONGS_TO])) {
@@ -735,7 +733,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function withRelationProp(string $prop, $value): void
     {
         $this->validate($prop);
-
         $this->propSetter($prop, $value);
     }
 

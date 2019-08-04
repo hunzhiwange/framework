@@ -165,7 +165,7 @@ class BelongsToTest extends TestCase
                 ]),
         );
 
-        $userRelation = Post::make()->user();
+        $userRelation = Post::make()->loadRelation('user');
 
         $this->assertInstanceof(BelongsTo::class, $userRelation);
         $this->assertSame('user_id', $userRelation->getSourceKey());

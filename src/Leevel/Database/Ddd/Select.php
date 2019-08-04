@@ -355,12 +355,12 @@ class Select
      *
      * @param string $name
      *
-     * @return \leevel\Database\Ddd\Relation\Relation
+     * @return \Leevel\Database\Ddd\Relation\Relation
      */
     protected function getRelation(string $name): Relation
     {
-        $relation = Relation::withoutRelationCondition(function () use ($name) {
-            return $this->entity->{$name}();
+        $relation = Relation::withoutRelationCondition(function () use ($name): Relation {
+            return $this->entity->loadRelation($name);
         });
 
         $nested = $this->nestedRelation($name);
@@ -496,9 +496,7 @@ class Select
     protected function loadRelation(array $entitys, string $name, Closure $condition): array
     {
         $relation = $this->getRelation($name);
-
         $relation->preLoadCondition($entitys);
-
         call_user_func($condition, $relation);
 
         return $relation->matchPreLoad($entitys, $relation->getPreLoad(), $name);
