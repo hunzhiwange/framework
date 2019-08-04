@@ -270,7 +270,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $method
      * @param array  $args
      *
-     * @throws \InvalidArgumentException
      * @throws \BadMethodCallException
      *
      * @return mixed
@@ -279,23 +278,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         // getter
         if (0 === strpos($method, 'getter')) {
-            if (!method_exists($this, 'getter')) {
-                $e = sprintf('The entity `%s` `%s` method was not defined.', static::class, 'getter');
-
-                throw new InvalidArgumentException($e);
-            }
-
             return $this->getter(lcfirst(substr($method, 6)));
         }
 
         // setter
         if (0 === strpos($method, 'setter')) {
-            if (!method_exists($this, 'setter')) {
-                $e = sprintf('The entity `%s` `%s` method was not defined.', static::class, 'setter');
-
-                throw new InvalidArgumentException($e);
-            }
-
             $this->setter(lcfirst(substr($method, 6)), $args[0] ?? null);
 
             return $this;
