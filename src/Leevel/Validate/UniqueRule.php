@@ -134,13 +134,13 @@ class UniqueRule
         }
 
         if (false !== strpos($field, self::SEPARATE)) {
-            $select = $entity->selfDatabaseSelect();
+            $select = $entity->select()->selfDatabaseSelect();
 
             foreach (explode(self::SEPARATE, $field) as $v) {
                 $select->where($v, $value);
             }
         } else {
-            $select = $entity->where($field, $value);
+            $select = $entity->select()->where($field, $value);
         }
 
         return $select;
