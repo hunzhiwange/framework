@@ -23,7 +23,6 @@ namespace Tests\Database\Ddd;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
-use Leevel\Database\Select as DatabaseSelect;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
@@ -489,50 +488,6 @@ class SelectTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $result4);
         $this->assertCount(5, $result4);
-    }
-
-    public function t222estScopeClosure(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
-                ]);
-        }
-
-        $select = new Select($post = Post::select()->find(1));
-
-        $posts = $select->findAll();
-
-        $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(10, $posts);
-
-        dump(Post::select()
-            ->scope(function (DatabaseSelect $select) {
-            $select->where('id', '>', 5);
-        }));
-        $result1 = Post::select()
-            ->scope(function (DatabaseSelect $select) {
-                $select->where('id', '>', 5);
-            })
-            ->findAll();
-
-        $this->assertInstanceof(Collection::class, $result1);
-        $this->assertCount(5, $result1);
-
-        $result2 = Post::select()
-            ->scope(function (DatabaseSelect $select) {
-                $select->where('id', '>', 7);
-            })
-            ->findAll();
-
-        $this->assertInstanceof(Collection::class, $result2);
-        $this->assertCount(3, $result2);
     }
 
     public function testFindPage(): void
