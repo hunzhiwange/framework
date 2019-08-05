@@ -70,17 +70,17 @@ class HasOneTest extends TestCase
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getterId());
+        $this->assertSame('1', $post->getId());
         $this->assertSame('1', $post->user_id);
         $this->assertSame('1', $post->userId);
         $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getterUserId());
+        $this->assertSame('1', $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getterTitle());
+        $this->assertSame('hello world', $post->getTitle());
         $this->assertSame('Say hello to the world.', $post->summary);
         $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getterSummary());
+        $this->assertSame('Say hello to the world.', $post->getSummary());
 
         $postContent = $post->postContent;
 
@@ -89,10 +89,10 @@ class HasOneTest extends TestCase
         $this->assertSame('1', $postContent->postId);
         $this->assertSame('1', $postContent['post_id']);
         $this->assertSame('1', $postContent['postId']);
-        $this->assertSame('1', $postContent->getterPostId());
+        $this->assertSame('1', $postContent->getPostId());
         $this->assertSame('I am content with big data.', $postContent->content);
         $this->assertSame('I am content with big data.', $postContent['content']);
-        $this->assertSame('I am content with big data.', $postContent->getterContent());
+        $this->assertSame('I am content with big data.', $postContent->getContent());
     }
 
     public function testEager(): void

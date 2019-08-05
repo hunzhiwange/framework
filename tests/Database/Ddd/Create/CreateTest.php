@@ -115,8 +115,8 @@ class CreateTest extends TestCase
             'name' => 'foo',
         ]);
 
-        $this->assertSame(5, $entity->getterId());
-        $this->assertNull($entity->getterName());
+        $this->assertSame(5, $entity->getId());
+        $this->assertNull($entity->getName());
     }
 
     /**
@@ -141,8 +141,8 @@ class CreateTest extends TestCase
             'name' => 'foo',
         ]);
 
-        $this->assertNull($entity->getterId());
-        $this->assertSame('foo', $entity->getterName());
+        $this->assertNull($entity->getId());
+        $this->assertSame('foo', $entity->getName());
     }
 
     public function testCreatePropBlackAndWhite(): void

@@ -112,203 +112,203 @@ class TestConversionEntity extends Entity
 
     private $coll2;
 
-    public function setterInt1($value)
+    public function setInt1($value)
     {
         $this->int1 = (int) $value;
     }
 
-    public function getterInt1(): int
+    public function getInt1(): int
     {
         return $this->int1 + 1;
     }
 
-    public function setterInt2(int $value)
+    public function setInt2(int $value)
     {
         $this->int2 = $value;
     }
 
-    public function getterInt2(): int
+    public function getInt2(): int
     {
         return $this->int2;
     }
 
-    public function setterFloat1($value)
+    public function setFloat1($value)
     {
         $this->float1 = (float) $value;
     }
 
-    public function getterFloat1(): float
+    public function getFloat1(): float
     {
         return $this->float1 + 1;
     }
 
-    public function setterFloat2(float $value)
+    public function setFloat2(float $value)
     {
         $this->float2 = $value;
     }
 
-    public function getterFloat2(): float
+    public function getFloat2(): float
     {
         return $this->float2;
     }
 
-    public function setterFloat3(float $value)
+    public function setFloat3(float $value)
     {
         $this->float3 = $value;
     }
 
-    public function getterFloat3(): float
+    public function getFloat3(): float
     {
         return $this->float3;
     }
 
-    public function setterString1($value)
+    public function setString1($value)
     {
         $this->string1 = (string) $value;
     }
 
-    public function getterString1(): string
+    public function getString1(): string
     {
         return $this->string1;
     }
 
-    public function setterString2(string $value)
+    public function setString2(string $value)
     {
         $this->string2 = $value;
     }
 
-    public function getterString2(): string
+    public function getString2(): string
     {
         return $this->string2;
     }
 
-    public function setterBool1($value)
+    public function setBool1($value)
     {
         $this->bool1 = (bool) $value;
     }
 
-    public function getterBool1(): bool
+    public function getBool1(): bool
     {
         return $this->bool1;
     }
 
-    public function setterBool2($value)
+    public function setBool2($value)
     {
         $this->bool2 = (bool) $value;
     }
 
-    public function getterBool2(): bool
+    public function getBool2(): bool
     {
         return $this->bool2;
     }
 
-    public function setterBool3(bool $value)
+    public function setBool3(bool $value)
     {
         $this->bool3 = $value;
     }
 
-    public function getterBool3(): bool
+    public function getBool3(): bool
     {
         return $this->bool3;
     }
 
-    public function setterBool4(bool $value)
+    public function setBool4(bool $value)
     {
         $this->bool4 = $value;
     }
 
-    public function getterBool4(): bool
+    public function getBool4(): bool
     {
         return $this->bool4;
     }
 
-    public function setterObj1($value)
+    public function setObj1($value)
     {
         $this->obj1 = json_encode($value, JSON_FORCE_OBJECT);
     }
 
-    public function getterObj1(): stdClass
+    public function getObj1(): stdClass
     {
         return json_decode($this->obj1);
     }
 
-    public function setterObj2(string $value)
+    public function setObj2(string $value)
     {
         $value = json_decode($value, true);
         $this->obj2 = json_encode($value, JSON_FORCE_OBJECT);
     }
 
-    public function getterObj2(): stdClass
+    public function getObj2(): stdClass
     {
         return json_decode($this->obj2);
     }
 
-    public function setterObj3(stdClass $value)
+    public function setObj3(stdClass $value)
     {
         $this->obj3 = json_encode($value);
     }
 
-    public function getterObj3(): stdClass
+    public function getObj3(): stdClass
     {
         return json_decode($this->obj3);
     }
 
-    public function setterArr1(array $value)
+    public function setArr1(array $value)
     {
         $this->arr1 = json_encode($value);
     }
 
-    public function getterArr1(): array
+    public function getArr1(): array
     {
         return json_decode($this->arr1, true);
     }
 
-    public function setterArr2(string $value)
+    public function setArr2(string $value)
     {
         $this->arr2 = $value;
     }
 
-    public function getterArr2(): array
+    public function getArr2(): array
     {
         return json_decode($this->arr2, true);
     }
 
-    public function setterJson1(array $value)
+    public function setJson1(array $value)
     {
         $this->json1 = json_encode($value);
     }
 
-    public function getterJson1(): array
+    public function getJson1(): array
     {
         return json_decode($this->json1, true);
     }
 
-    public function setterJson2(string $value)
+    public function setJson2(string $value)
     {
         $this->json2 = $value;
     }
 
-    public function getterJson2(): array
+    public function getJson2(): array
     {
         return json_decode($this->json2, true);
     }
 
-    public function setterColl1(string $value)
+    public function setColl1(string $value)
     {
         $this->coll1 = $value;
     }
 
-    public function getterColl1(): Collection
+    public function getColl1(): Collection
     {
         return new Collection(json_decode($this->coll1, true));
     }
 
-    public function setterColl2(array $value)
+    public function setColl2(array $value)
     {
         $this->coll2 = json_encode($value);
     }
 
-    public function getterColl2(): Collection
+    public function getColl2(): Collection
     {
         return new Collection(json_decode($this->coll2, true));
     }

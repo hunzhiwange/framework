@@ -45,8 +45,7 @@ use Leevel\Support\Str\un_camelize;
 /**
  * 模型实体 Object Relational Mapping.
  *
- * - 为最大化避免 getter setter 属性与系统冲突，getFoo 修改为 getterFoo，setBar 修改为 setterBar
- * - 系统自身的属性均加前缀 leevel，设置以 with 开头.
+ * - 为最大化避免 getter setter 属性与系统冲突，系统自身的属性均加前缀 leevel，设置以 with 开头.
  * - ORM 主要基于妖怪大神的 QeePHP V2 设计灵感，查询器基于这个版本构建.
  * - 例外参照了 Laravel 关联模型实现设计.
  * - Doctrine 和 Java Hibernate 中关于 getter setter 的设计
@@ -56,6 +55,7 @@ use Leevel\Support\Str\un_camelize;
  * @since 2017.04.27
  * @since 2018.10 进行一次大规模重构
  * @since 1.0.0-beta.1 2019.04.24 getFoo 修改为 getterFoo，setBar 修改为 setterBar
+ * @since 1.0.0-beta.5 2019.08.04 删除 __call 中的一些查询用法，getterFoo 修改为 getFoo，setterBar 修改为 setBar
  * @see https://github.com/dualface/qeephp2_x
  * @see https://github.com/laravel/framework
  * @see https://github.com/doctrine/doctrine2
@@ -277,13 +277,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function __call(string $method, array $args)
     {
         // getter
-        if (0 === strpos($method, 'getter')) {
-            return $this->getter(lcfirst(substr($method, 6)));
+        if (0 === strpos($method, 'get')) {
+            return $this->getter(lcfirst(substr($method, 3)));
         }
 
         // setter
-        if (0 === strpos($method, 'setter')) {
-            $this->setter(lcfirst(substr($method, 6)), $args[0] ?? null);
+        if (0 === strpos($method, 'set')) {
+            $this->setter(lcfirst(substr($method, 3)), $args[0] ?? null);
 
             return $this;
         }
@@ -1647,7 +1647,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function propGetter(string $prop)
     {
-        $method = 'getter'.ucfirst($prop = $this->asProp($prop));
+        $method = 'get'.ucfirst($prop = $this->asProp($prop));
 
         if (method_exists($this, $method)) {
             return $this->{$method}($prop);
@@ -1664,7 +1664,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function propSetter(string $prop, $value): void
     {
-        $method = 'setter'.ucfirst($prop = $this->asProp($prop));
+        $method = 'set'.ucfirst($prop = $this->asProp($prop));
 
         if (method_exists($this, $method)) {
             $this->{$method}($value);
