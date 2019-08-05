@@ -153,9 +153,7 @@ class App implements IApp
     public function __construct(IContainer $container, string $path)
     {
         $this->container = $container;
-
         $this->setPath($path);
-
         $this->registerBaseProvider();
     }
 
@@ -194,7 +192,7 @@ class App implements IApp
     }
 
     /**
-     * 设置应用路径.
+     * 设置基础路径.
      *
      * @param string $path
      */
@@ -519,7 +517,6 @@ class App implements IApp
     public function optionCachedPath(): string
     {
         $basePath = $this->optionCachedPath ?: $this->path().'/bootstrap';
-
         $cache = getenv('RUNTIME_ENVIRONMENT') ?: 'option';
 
         return $basePath.'/'.$cache.'.php';
@@ -582,7 +579,7 @@ class App implements IApp
      */
     public function namespacePath(string $specificClass, bool $throwException = true): string
     {
-        $composer = $this->container->make('composer');
+        $composer = require $this->path.'/vendor/autoload.php';
 
         if (!$composer instanceof ClassLoader) {
             $e = 'Composer was not register to container.';
@@ -685,9 +682,7 @@ class App implements IApp
     protected function registerBaseProvider(): void
     {
         $this->container->register(new EventProvider($this->container));
-
         $this->container->register(new LogProvider($this->container));
-
         $this->container->register(new RouterProvider($this->container));
     }
 

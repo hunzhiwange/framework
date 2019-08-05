@@ -71,7 +71,7 @@ interface IApp
     public function console(): bool;
 
     /**
-     * 设置应用路径.
+     * 设置基础路径.
      *
      * @param string $path
      */
