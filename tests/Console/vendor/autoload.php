@@ -25,7 +25,7 @@ if (!class_exists('ComposerMock', false)) {
     {
         public function findFile($class)
         {
-            // mock for `\\Common\\index`
+            // mock for class `\\Common\\index`
             return dirname(__DIR__).'/index.php';
         }
     }
