@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Tests\Console;
 
 use Closure;
-use Composer\Autoload\ClassLoader;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
 use Leevel\Di\Container;
@@ -45,8 +44,7 @@ trait BaseMake
     {
         $container = Container::singletons();
         $container->clear();
-        $container->instance('composer', new ComposerMock());
-        $container->instance('app', new App($container, ''));
+        $container->instance('app', new App($container, __DIR__));
 
         $application = new Application($container, '1.0');
 
@@ -78,14 +76,5 @@ trait BaseMake
         $container->clear();
 
         return $result;
-    }
-}
-
-class ComposerMock extends ClassLoader
-{
-    public function findFile($class)
-    {
-        // mock for `\\Common\\index`
-        return __DIR__.'/index.php';
     }
 }
