@@ -27,12 +27,12 @@ use Leevel\Http\Response;
 use Leevel\Pipeline\Pipeline;
 
 /**
- * 路由解析
- * 2018.04.10 开始进行一次重构系统路由架构.
+ * 路由解析.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.01.10
+ * @since 2018.04.10 开始进行一次重构系统路由架构.
  *
  * @version 1.0
  *
@@ -191,7 +191,6 @@ class Router implements IRouter
     public function setControllerDir(string $controllerDir): void
     {
         $controllerDir = str_replace('/', '\\', $controllerDir);
-
         $this->controllerDir = $controllerDir;
     }
 
@@ -498,6 +497,10 @@ class Router implements IRouter
     {
         $this->throughMiddleware($this->request);
 
+        if ('OPTIONS' === $this->request->getMethod()) {
+            return new Response('cors');
+        }
+
         $response = $this->container->call($bind, $this->matchedVars());
 
         if (!($response instanceof IResponse)) {
@@ -575,13 +578,6 @@ class Router implements IRouter
         }
 
         switch ($this->request->getMethod()) {
-            // 跨域请求转发到首页
-            // 防止由于 API 请求跨域提示路由不正确
-            case 'OPTIONS':
-                $this->matchedData[static::CONTROLLER] = static::DEFAULT_CONTROLLER;
-                $this->matchedData[static::ACTION] = static::RESTFUL_INDEX;
-
-                break;
             case 'POST':
                 $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
 
