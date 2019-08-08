@@ -117,14 +117,6 @@ class HttpServer extends Server implements IServer
             return;
         }
 
-        $this->prepareCors($swooleResponse);
-
-        if ($this->isOptions($swooleRequest)) {
-            $swooleResponse->end();
-
-            return;
-        }
-
         $request = $this->normalizeRequest($swooleRequest);
         $response = $this->dispatchRouter($request);
 
@@ -172,21 +164,6 @@ class HttpServer extends Server implements IServer
     protected function isOptions(SwooleHttpRequest $swooleRequest): bool
     {
         return 'OPTIONS' === $swooleRequest->server['request_method'];
-    }
-
-    /**
-     * 准备跨域数据.
-     *
-     * @param \Swoole\Http\Response $swooleResponse
-     *
-     * @todo `Access-Control-Allow-Origin` 在允许 Cookie 的情况下面的支持
-     */
-    protected function prepareCors(SwooleHttpResponse $swooleResponse): void
-    {
-        $swooleResponse->header('Access-Control-Allow-Origin', '*');
-        $swooleResponse->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        $swooleResponse->header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token');
-        $swooleResponse->header('Access-Control-Allow-Credentials', 'true');
     }
 
     /**
