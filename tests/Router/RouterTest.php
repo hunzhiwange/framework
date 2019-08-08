@@ -456,7 +456,7 @@ class RouterTest extends TestCase
         $result = $router->dispatch($request);
     }
 
-    public function testOptionsForCorsWillBackToHomeIndex(): void
+    public function testOptionsForCorsWillBackCorsResponse(): void
     {
         $pathInfo = '/:tests';
         $params = [];
@@ -472,7 +472,7 @@ class RouterTest extends TestCase
 
         $this->assertInstanceof(IResponse::class, $result);
 
-        $this->assertSame('hello my home', $result->getContent());
+        $this->assertSame('cors', $result->getContent());
     }
 
     public function testColonInController(): void
