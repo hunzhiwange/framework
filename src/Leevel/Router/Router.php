@@ -48,7 +48,7 @@ class Router implements IRouter
     protected $container;
 
     /**
-     * http 请求
+     * HTTP 请求
      *
      * @var \Leevel\Http\IRequest
      */
@@ -151,7 +151,8 @@ class Router implements IRouter
 
     /**
      * 设置路由请求预解析结果.
-     * 可以用于高性能 Rpc 和 Websocket 预匹配数据.
+     *
+     * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
      *
      * @param \Leevel\Http\IRequest $request
      * @param array                 $matchedData

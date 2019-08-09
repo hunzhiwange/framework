@@ -50,7 +50,7 @@ class Throttler implements IThrottler
     protected $cache;
 
     /**
-     * http request.
+     * HTTP Request.
      *
      * @var \Leevel\Http\IRequest
      */

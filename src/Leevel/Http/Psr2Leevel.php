@@ -29,7 +29,8 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Psr 规范请求转 Leevel.
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ *
+ * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @author Kévin Dunglas <dunglas@gmail.com>

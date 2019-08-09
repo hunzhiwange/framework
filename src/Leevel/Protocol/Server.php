@@ -478,7 +478,7 @@ abstract class Server
     }
 
     /**
-     * http server 绑定事件.
+     * HTTP Server 绑定事件.
      */
     protected function eventServer(): void
     {
@@ -496,7 +496,7 @@ abstract class Server
     }
 
     /**
-     * http server 启动.
+     * HTTP Server 启动.
      */
     protected function startSwooleServer(): void
     {

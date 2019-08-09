@@ -25,8 +25,9 @@ use Leevel\Support\IArray;
 use SplFileObject;
 
 /**
- * HTTP 请求
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ * HTTP 请求.
+ *
+ * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

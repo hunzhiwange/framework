@@ -26,7 +26,7 @@ use function Leevel\Filesystem\Fso\create_file;
 use Leevel\Stack\Stack;
 
 /**
- * 分析模板
+ * 分析模板.
  *
  * - This class borrows heavily from the JeCat Framework and is part of the JeCat package.
  * - 模板引擎分析器和编译器实现技术原理来源于 Jecat 框架.
