@@ -7,7 +7,4 @@ node_modules/
 package-lock.json
 *.log
 /tests/config.local.php
-/split.sh
-/tests.sh
-/release.sh
 .phpunit.result.cache
