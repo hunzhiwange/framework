@@ -1,5 +1,13 @@
-## Leevel\Http
+HTTP Component
+=================
 
-We want to make this to C extension, so we has not use composer require symfony/http-foundation
+Todo.
 
-This is base on https://github.com/symfony/http-foundation
+Resources
+---------
+
+  * [Documentation](https://www.queryphp.com/docs/component/http.html)
+  * [Contributing](https://www.queryphp.com/docs/developer/)
+  * [Report issues](https://github.com/hunzhiwange/framework/issues) and
+    [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)
+    in the [main QueryPHP repository](https://github.com/hunzhiwange/framework)

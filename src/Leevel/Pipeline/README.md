@@ -1,4 +1,4 @@
-Database Component
+Pipeline Component
 =================
 
 Todo.
@@ -6,7 +6,7 @@ Todo.
 Resources
 ---------
 
-  * [Documentation](https://www.queryphp.com/docs/component/database.html)
+  * [Documentation](https://www.queryphp.com/docs/component/pipeline.html)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)
