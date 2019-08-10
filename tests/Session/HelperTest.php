@@ -62,6 +62,22 @@ class HelperTest extends TestCase
         $this->assertSame('bar', f('Leevel\\Session\\Helper\\session_get', 'foo'));
     }
 
+    public function testFlash(): void
+    {
+        $session = $this->createMock(ISession::class);
+        $this->assertNull($session->flashs(['foo' => 'bar']));
+        $session->method('getFlash')->willReturn('bar');
+        $this->assertSame('bar', $session->getFlash('foo'));
+
+        $container = $this->createContainer();
+        $container->singleton('sessions', function () use ($session) {
+            return $session;
+        });
+
+        $this->assertNull(f('Leevel\\Session\\Helper\\flash_set', 'foo', 'bar'));
+        $this->assertSame('bar', f('Leevel\\Session\\Helper\\flash_get', 'foo'));
+    }
+
     protected function createContainer(): Container
     {
         $container = Container::singletons();
