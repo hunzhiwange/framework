@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Manager\Manager as Managers;
 use RuntimeException;
 
@@ -71,8 +70,9 @@ class Manager extends Managers implements ICache
     protected function makeConnectRedis(array $options = []): Redis
     {
         $options = $this->normalizeConnectOption('redis', $options);
+        $phpRedis = $this->container->make('redis');
 
-        return new Redis(new PhpRedis($options), $options);
+        return new Redis($phpRedis, $options);
     }
 
     /**
