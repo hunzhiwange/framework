@@ -71,7 +71,6 @@ class PhpRedis implements IRedis
         }
 
         $this->option = array_merge($this->option, $option);
-
         $this->handle = $this->createRedis();
 
         $this->handle->{$this->option['persistent'] ? 'pconnect' : 'connect'}(
