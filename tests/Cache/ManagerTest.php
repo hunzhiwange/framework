@@ -142,6 +142,11 @@ class ManagerTest extends TestCase
 
         $container->singleton('option', $option);
 
+        if ('redis' === $connect) {
+            $redis = new PhpRedis($option->get('cache\\connect.redis'));
+            $container->singleton('redis', $redis);
+        }
+
         return $manager;
     }
 }
