@@ -18,7 +18,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Leevel\Debug\Dump;
 use Leevel\Di\Container;
 
 if (!function_exists('hl')) {
@@ -127,36 +126,6 @@ if (!function_exists('__')) {
         $service = Container::singletons()->make('i18n');
 
         return $service->gettext($text, ...$data);
-    }
-}
-
-if (!function_exists('dump')) {
-    /**
-     * 调试变量.
-     *
-     * @param mixed $var
-     * @param array ...$moreVars
-     *
-     * @return mixed
-     * @codeCoverageIgnore
-     */
-    function dump($var, ...$moreVars)
-    {
-        return Dump::dump($var, ...$moreVars);
-    }
-}
-
-if (!function_exists('dd')) {
-    /**
-     * 调试变量并中断.
-     *
-     * @param mixed $var
-     * @param array ...$moreVars
-     * @codeCoverageIgnore
-     */
-    function dd($var, ...$moreVars): void
-    {
-        Dump::dumpDie($var, ...$moreVars);
     }
 }
 
