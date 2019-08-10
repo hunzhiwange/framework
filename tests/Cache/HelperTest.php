@@ -60,8 +60,6 @@ class HelperTest extends TestCase
         $this->assertInstanceof(ICache::class, f('Leevel\\Cache\\Helper\\cache'));
         $this->assertNull(f('Leevel\\Cache\\Helper\\cache_set', ['foo' => 'bar']));
         $this->assertSame('bar', f('Leevel\\Cache\\Helper\\cache_get', 'foo'));
-
-        $container->clear();
     }
 
     protected function createContainer(): Container
