@@ -993,23 +993,6 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->fail());
     }
 
-    public function testPlaceholder(): void
-    {
-        $validate = new Validator(
-            [
-                'name' => 1,
-            ],
-            [
-                'name'     => 'required|custom_rule:10',
-            ],
-            [
-                'name'     => '地名',
-            ]
-        );
-
-        $this->assertInstanceof(Validator::class, $validate->_());
-    }
-
     public function testCall(): void
     {
         $validate = new Validator();

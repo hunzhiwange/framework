@@ -114,16 +114,4 @@ trait FlowControl
     {
         return $this->inFlowControl && !$this->isFlowControlTrue;
     }
-
-    /**
-     * 占位符.
-     *
-     * @param string $method
-     *
-     * @return bool
-     */
-    public function placeholderFlowControl(string $method): bool
-    {
-        return '_' === $method;
-    }
 }

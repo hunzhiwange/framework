@@ -219,10 +219,6 @@ class Condition
      */
     public function __call(string $method, array $args)
     {
-        if ($this->placeholderFlowControl($method)) {
-            return $this;
-        }
-
         $e = sprintf('Condition method %s not found.', $method);
 
         throw new ConditionNotFoundException($e);

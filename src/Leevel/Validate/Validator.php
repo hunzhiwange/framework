@@ -172,10 +172,6 @@ class Validator implements IValidator
      */
     public function __call(string $method, array $args)
     {
-        if ($this->placeholderFlowControl($method)) {
-            return $this;
-        }
-
         if (0 === strpos($method, 'validate')) {
             $extend = un_camelize(substr($method, 8));
 
