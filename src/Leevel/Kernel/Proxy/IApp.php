@@ -355,9 +355,9 @@ interface IApp
     public static function bootstrap(array $bootstraps): void;
 
     /**
-     * 框架基础提供者 register.
+     * 注册应用服务提供者.
      */
-    public static function registerProviders(): void;
+    public static function registerAppProviders(): void;
 
     /**
      * 返回 IOC 容器.
