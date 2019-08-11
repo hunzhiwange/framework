@@ -526,7 +526,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 框架基础提供者 register.
+     * 注册服务提供者.
      */
     public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
     {
