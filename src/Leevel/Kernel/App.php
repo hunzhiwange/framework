@@ -650,9 +650,9 @@ class App implements IApp
     }
 
     /**
-     * 框架基础提供者 register.
+     * 注册应用服务提供者.
      */
-    public function registerProviders(): void
+    public function registerAppProviders(): void
     {
         list($deferredProviders, $deferredAlias) = $this->container
             ->make('option')
