@@ -68,62 +68,15 @@ if (!function_exists('__')) {
 }
 
 /**
- * 代理 app.
+ * 代理 app 别名.
  */
 class App extends ProxyApp
 {
 }
 
 /**
- * 函数库.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.26
- *
- * @version 1.0
+ * 代理 app 别名.
  */
-class Leevel
+class Leevel extends ProxyApp
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @throws \BadMethodCallException
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        /** @var \Leevel\Kernel\App $app */
-        $app = Container::singletons()->make('app');
-
-        if (method_exists($app, $method)) {
-            return $app->{$method}(...$args);
-        }
-
-        if (($container = $app->container()) &&
-            method_exists($container, $method)) {
-            return $container->{$method}(...$args);
-        }
-
-        $e = sprintf('Method `%s` is not exits.', $method);
-
-        throw new BadMethodCallException($e);
-    }
-
-    /**
-     * 取得应用的环境变量.支持 boolean, empty 和 null.
-     *
-     * @param mixed      $name
-     * @param null|mixed $defaults
-     *
-     * @return mixed
-     */
-    public static function env(string $name, $defaults = null)
-    {
-        return env($name, $defaults);
-    }
 }
