@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 use Leevel\Di\Container;
 use Leevel\Kernel\IApp;
+use Leevel\Kernel\Proxy\App as ProxyApp;
 
 if (!function_exists('app')) {
     /**
@@ -64,6 +65,13 @@ if (!function_exists('__')) {
 
         return $service->gettext($text, ...$data);
     }
+}
+
+/**
+ * 代理 app.
+ */
+class App extends ProxyApp
+{
 }
 
 /**
