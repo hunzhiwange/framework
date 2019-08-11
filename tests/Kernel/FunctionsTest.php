@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
+use App as Apps;
 use Leevel;
 use Leevel\Di\Container;
 use Leevel\Kernel\App;
@@ -46,27 +47,28 @@ class FunctionsTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testCallStaticException(): void
-    {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage(
-            'Method `notFoundCallback` is not exits.'
-        );
-
-        $container = $this->createContainer();
-        Leevel::notFoundCallback();
-    }
-
-    public function testLeevelWithOtherAppMethod(): void
+    public function testLeevel(): void
     {
         $container = $this->createContainer();
         $this->assertSame('/runtime', Leevel::runtimePath());
     }
 
-    public function testLeevelWithOtherContainerMethod(): void
+    public function testApp(): void
+    {
+        $container = $this->createContainer();
+        $this->assertSame('/runtime', Apps::runtimePath());
+    }
+
+    public function testLeevelWithContainerMethod(): void
     {
         $container = $this->createContainer();
         $this->assertSame('foo', Leevel::make('foo'));
+    }
+
+    public function testAppWithContainerMethod(): void
+    {
+        $container = $this->createContainer();
+        $this->assertSame('foo', Apps::make('foo'));
     }
 
     protected function createContainer(): Container
