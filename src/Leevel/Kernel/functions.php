@@ -19,53 +19,29 @@ declare(strict_types=1);
  */
 
 use Leevel\Di\Container;
+use Leevel\Kernel\IApp;
 
-if (!function_exists('hl')) {
+if (!function_exists('app')) {
     /**
-     * 助手函数调用.
+     * 返回 IOC 容器.
      *
-     * @param string $method
-     * @param array  ...$args
-     *
-     * @return mixed
+     * @return \Leevel\Kernel\IApp
+     * @codeCoverageIgnore
      */
-    function hl(string $method, ...$args)
+    function app(): IApp
     {
-        $map = [
-            'benchmark'   => 'Debug',
-            'drr'         => 'Debug',
-            'decrypt'     => 'Encryption',
-            'encrypt'     => 'Encryption',
-            'gettext'     => 'I18n',
-            'app'         => 'Kernel',
-            'url'         => 'Router',
-            'cache_set'   => 'Cache',
-            'cache_get'   => 'Cache',
-            'log_record'  => 'Log',
-            'option_set'  => 'Option',
-            'option_get'  => 'Option',
-            'session_set' => 'Session',
-            'session_get' => 'Session',
-            'flash'       => 'Session',
-            'flash_set'   => 'Session',
-            'flash_get'   => 'Session',
-        ];
-
-        $component = $map[$method] ?? ucfirst($method);
-        $fn = 'Leevel\\'.$component.'\\Helper\\'.$method;
-
-        return f($fn, ...$args);
+        return Container::singletons()->make('app');
     }
 }
 
-if (!function_exists('app')) {
+if (!function_exists('leevel')) {
     /**
      * 返回 IOC 容器.
      *
      * @return \Leevel\Di\Container
      * @codeCoverageIgnore
      */
-    function app(): Container
+    function leevel(): Container
     {
         return Container::singletons();
     }
@@ -107,6 +83,8 @@ class Leevel
      * @param string $method
      * @param array  $args
      *
+     * @throws \BadMethodCallException
+     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -123,9 +101,9 @@ class Leevel
             return $container->{$method}(...$args);
         }
 
-        $method = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $method));
+        $e = sprintf('Method `%s` is not exits.', $method);
 
-        return hl($method, ...$args);
+        throw new BadMethodCallException($e);
     }
 
     /**
