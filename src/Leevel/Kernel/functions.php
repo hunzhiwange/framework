@@ -19,33 +19,20 @@ declare(strict_types=1);
  */
 
 use Leevel\Di\Container;
-use Leevel\Kernel\IApp;
 use Leevel\Kernel\Proxy\App as ProxyApp;
 
-if (!function_exists('app')) {
-    /**
-     * 返回 IOC 容器.
-     *
-     * @return \Leevel\Kernel\IApp
-     * @codeCoverageIgnore
-     */
-    function app(): IApp
-    {
-        return Container::singletons()->make('app');
-    }
+/**
+ * 代理 app 别名.
+ */
+class App extends ProxyApp
+{
 }
 
-if (!function_exists('leevel')) {
-    /**
-     * 返回 IOC 容器.
-     *
-     * @return \Leevel\Di\Container
-     * @codeCoverageIgnore
-     */
-    function leevel(): Container
-    {
-        return Container::singletons();
-    }
+/**
+ * 代理 app 别名.
+ */
+class Leevel extends ProxyApp
+{
 }
 
 if (!function_exists('__')) {
@@ -65,18 +52,4 @@ if (!function_exists('__')) {
 
         return $service->gettext($text, ...$data);
     }
-}
-
-/**
- * 代理 app 别名.
- */
-class App extends ProxyApp
-{
-}
-
-/**
- * 代理 app 别名.
- */
-class Leevel extends ProxyApp
-{
 }
