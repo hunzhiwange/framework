@@ -23,7 +23,7 @@ namespace Leevel\Kernel\Proxy;
 use Leevel\Di\IContainer;
 
 /**
- * 代理 event 接口.
+ * 代理 app 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
