@@ -484,6 +484,19 @@ class App implements IApp, IContainer
     }
 
     /**
+     * 取得应用的环境变量.支持 boolean, empty 和 null.
+     *
+     * @param mixed      $name
+     * @param null|mixed $defaults
+     *
+     * @return mixed
+     */
+    public static function env(string $name, $defaults = null)
+    {
+        return self::proxy()->env($name, $defaults);
+    }
+
+    /**
      * 初始化应用.
      *
      * @param array $bootstraps
