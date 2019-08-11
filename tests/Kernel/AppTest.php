@@ -604,7 +604,7 @@ class AppTest extends TestCase
             return $option;
         });
 
-        $app->registerProviders();
+        $app->registerAppProviders();
 
         // for deferredAlias
         $this->assertArrayNotHasKey('providerDeferTest1', $_SERVER);
@@ -628,7 +628,7 @@ class AppTest extends TestCase
         $this->assertTrue($container->isBootstrap());
 
         // again but already bootstrap
-        $app->registerProviders();
+        $app->registerAppProviders();
         $this->assertArrayNotHasKey('testRegisterProvidersBootstrap', $_SERVER);
         $this->assertArrayNotHasKey('testRegisterProvidersRegister', $_SERVER);
     }
