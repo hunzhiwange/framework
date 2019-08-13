@@ -38,7 +38,7 @@ use Tests\TestCase;
  * @api(
  *     title="Swoole 请求转 Leevel 请求",
  *     path="protocol/swoole2Leevel",
- *     description="Swoole 请求转换 Leevel 的请求后，然后传递给 Kernel 完成请求。",
+ *     description="Swoole 请求转换 Leevel 的请求后，然后传递给 Kernel 完成请求到响应的过程。",
  * )
  */
 class Swoole2LeevelTest extends TestCase
