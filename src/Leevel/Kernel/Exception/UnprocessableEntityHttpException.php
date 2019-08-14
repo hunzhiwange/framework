@@ -23,8 +23,9 @@ namespace Leevel\Kernel\Exception;
 use Exception;
 
 /**
- * 无法处理的实体
- * 请求格式正确，但是由于含有语义错误，无法响应: 422.
+ * 无法处理的实体.
+ *
+ * - 请求格式正确，但是由于含有语义错误，无法响应: 422.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

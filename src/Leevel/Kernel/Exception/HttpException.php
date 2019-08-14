@@ -35,7 +35,7 @@ use RuntimeException;
 class HttpException extends RuntimeException
 {
     /**
-     * HTTP 状态
+     * HTTP 状态.
      *
      * @var int
      */

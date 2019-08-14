@@ -23,8 +23,9 @@ namespace Leevel\Kernel\Exception;
 use Exception;
 
 /**
- * 禁止
- * 服务器拒绝请求: 403.
+ * 禁止.
+ *
+ * - 服务器拒绝请求: 403.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

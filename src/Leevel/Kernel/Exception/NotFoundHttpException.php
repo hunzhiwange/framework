@@ -23,8 +23,9 @@ namespace Leevel\Kernel\Exception;
 use Exception;
 
 /**
- * 未找到
- * 用户发出的请求针对的是不存在的记录: 404.
+ * 未找到.
+ *
+ * - 用户发出的请求针对的是不存在的记录: 404.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

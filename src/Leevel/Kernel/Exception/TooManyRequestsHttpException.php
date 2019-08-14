@@ -23,8 +23,9 @@ namespace Leevel\Kernel\Exception;
 use Exception;
 
 /**
- * 请求过于频繁异常
- * 用户在给定的时间内发送了太多的请求: 429.
+ * 请求过于频繁异常.
+ *
+ * - 用户在给定的时间内发送了太多的请求: 429.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
