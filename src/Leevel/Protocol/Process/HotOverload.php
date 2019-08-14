@@ -105,6 +105,7 @@ class HotOverload extends Process
      * 响应句柄.
      *
      * @param \Leevel\Protocol\IServer $server
+     * @codeCoverageIgnore
      */
     public function handle(IServer $server): void
     {
@@ -130,7 +131,6 @@ class HotOverload extends Process
         $this->count++;
 
         if ($this->md5Hash && $newMd5Hash !== $this->md5Hash) {
-            $this->log('The Swoole server will reload.');
             $this->count = 0;
             $this->reloading = true;
         }
@@ -206,6 +206,7 @@ class HotOverload extends Process
      * 记录日志.
      *
      * @param string $log
+     * @codeCoverageIgnore
      */
     protected function log(string $log): void
     {
