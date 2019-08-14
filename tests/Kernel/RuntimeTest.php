@@ -300,7 +300,7 @@ class RuntimeTest extends TestCase
 
         $this->assertStringContainsString('<div id="status-code">500</div>', $content);
         $this->assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
-        $this->assertStringContainsString('<p id="sub-title">服务器遇到错误，无法完成请求</p>', $content);
+        $this->assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
@@ -329,7 +329,7 @@ class RuntimeTest extends TestCase
 
         $this->assertStringContainsString('<div id="status-code">404</div>', $content);
         $this->assertStringContainsString('<p id="title">页面未找到</p>', $content);
-        $this->assertStringContainsString('<p id="sub-title">用户发出的请求针对的是不存在的页面</p>', $content);
+        $this->assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
         $this->assertSame(404, $resultResponse->getStatusCode());
     }
 
@@ -394,7 +394,7 @@ class RuntimeTest extends TestCase
 
         $this->assertStringContainsString('<div id="status-code">500</div>', $content);
         $this->assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
-        $this->assertStringContainsString('<p id="sub-title">服务器遇到错误，无法完成请求</p>', $content);
+        $this->assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
         $this->assertSame(500, $resultResponse->getStatusCode());
     }
 
@@ -459,7 +459,7 @@ class RuntimeTest extends TestCase
 
         $this->assertStringContainsString('<div id="status-code">405</div>', $content);
         $this->assertStringContainsString('Tests\\Kernel\\Exception8<div class="file">#FILE', $content);
-        $this->assertStringContainsString('<p id="sub-title">hello world</p>', $content);
+        $this->assertStringContainsString('<p id="sub-title">0 hello world</p>', $content);
         $this->assertSame(405, $resultResponse->getStatusCode());
     }
 
@@ -524,7 +524,7 @@ class RuntimeTest extends TestCase
 
         $this->assertStringContainsString('<div id="status-code">404</div>', $content);
         $this->assertStringContainsString('<p id="title">页面未找到</p>', $content);
-        $this->assertStringContainsString('<p id="sub-title">用户发出的请求针对的是不存在的页面</p>', $content);
+        $this->assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
         $this->assertSame(404, $resultResponse->getStatusCode());
     }
 }
