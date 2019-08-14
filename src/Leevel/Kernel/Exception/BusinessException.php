@@ -31,7 +31,7 @@ namespace Leevel\Kernel\Exception;
  *
  * @version 1.0
  */
-class BusinessException extends BadRequestHttpException
+abstract class BusinessException extends BadRequestHttpException
 {
     /**
      * 业务逻辑异常重要程度.
