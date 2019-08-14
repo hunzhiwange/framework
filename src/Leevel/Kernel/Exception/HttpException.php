@@ -64,7 +64,7 @@ class HttpException extends RuntimeException
     }
 
     /**
-     * 设置 HTTP 状态
+     * 设置 HTTP 状态.
      *
      * @param int $statusCode
      */
@@ -74,7 +74,7 @@ class HttpException extends RuntimeException
     }
 
     /**
-     * 返回 HTTP 状态
+     * 返回 HTTP 状态.
      *
      * @return int
      */
