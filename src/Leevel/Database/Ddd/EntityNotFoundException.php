@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use RuntimeException;
+use Leevel\Kernel\Exception\NotFoundHttpException;
 
 /**
  * 模型实体未找到异常.
@@ -31,7 +31,7 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class EntityNotFoundException extends RuntimeException
+class EntityNotFoundException extends NotFoundHttpException
 {
     /**
      * 模型实体名字.
