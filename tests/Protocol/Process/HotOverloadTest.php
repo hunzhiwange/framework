@@ -42,6 +42,13 @@ use Tests\TestCase;
  */
 class HotOverloadTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (extension_loaded('xdebug')) {
+            $this->markTestSkipped('32663 Segmentation fault (core dumped).');
+        }
+    }
+
     /**
      * @api(
      *     title="测试代码热重启",
