@@ -82,13 +82,7 @@ abstract class Runtime implements IRuntime
         }
         // @codeCoverageIgnoreEnd
 
-        $log->error(
-            $e->getMessage(),
-            [
-                'exception' => (string) $e,
-            ]
-        );
-
+        $log->error($e->getMessage(), ['exception' => (string) $e]);
         $log->flush();
     }
 
