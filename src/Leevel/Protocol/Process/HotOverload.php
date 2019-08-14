@@ -80,7 +80,7 @@ class HotOverload extends Process
      *
      * @var string
      */
-    protected $md5;
+    protected $md5Hash;
 
     /**
      * 正在 reload.
@@ -112,30 +112,44 @@ class HotOverload extends Process
             while (true) {
                 Coroutine::sleep($this->timeInterval / 1000);
 
-                $newMd5 = $this->md5();
-                $this->count++;
-
-                if ($this->md5 && $newMd5 !== $this->md5) {
-                    $this->log('The Swoole server will reload.');
-                    $this->count = 0;
-                    $this->reloading = true;
-                }
-
-                if (true === $this->reloading && $this->count > $this->delayCount) {
+                if (true === $this->serverNeedReload()) {
                     $this->reload($server);
                 }
-
-                $this->md5 = $newMd5;
             }
         });
     }
 
     /**
-     * 当前文件 MD5 值
+     * 服务是否需要重启.
+     *
+     * @return bool
+     */
+    protected function serverNeedReload(): bool
+    {
+        $newMd5Hash = $this->md5Hash();
+        $this->count++;
+
+        if ($this->md5Hash && $newMd5Hash !== $this->md5Hash) {
+            $this->log('The Swoole server will reload.');
+            $this->count = 0;
+            $this->reloading = true;
+        }
+
+        if (true === $this->reloading && $this->count > $this->delayCount) {
+            return true;
+        }
+
+        $this->md5Hash = $newMd5Hash;
+
+        return false;
+    }
+
+    /**
+     * 当前文件 MD5 值.
      *
      * @return string
      */
-    protected function md5(): string
+    protected function md5Hash(): string
     {
         $files = [];
         foreach ($this->files() as $file) {
