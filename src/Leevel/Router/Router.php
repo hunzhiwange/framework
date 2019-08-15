@@ -348,18 +348,16 @@ class Router implements IRouter
     }
 
     /**
-     * 路由匹配
-     * 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
+     * 路由匹配.
+     *
+     * - 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
      *
      * @return mixed
      */
     protected function matchRouter()
     {
         $this->initRequest();
-
-        $this->resolveMatchedData(
-            $dataPathInfo = $this->normalizeMatchedData('PathInfo')
-        );
+        $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'));
 
         if (false === ($bind = $this->normalizeRouterBind())) {
             $bind = $this->annotationRouterBind($dataPathInfo);
@@ -373,7 +371,7 @@ class Router implements IRouter
      *
      * @param array $dataPathInfo
      *
-     * @return mixed
+     * @return callable|false
      */
     protected function annotationRouterBind(array $dataPathInfo)
     {
@@ -387,7 +385,7 @@ class Router implements IRouter
 
         $this->resolveMatchedData($data);
 
-        return $this->findRouterBind();
+        return $this->normalizeRouterBind();
     }
 
     /**
@@ -449,20 +447,6 @@ class Router implements IRouter
     }
 
     /**
-     * 尝试获取路由绑定.
-     *
-     * @return callable
-     */
-    protected function findRouterBind()
-    {
-        if (false === ($bind = $this->normalizeRouterBind())) {
-            $this->routerNotFound();
-        }
-
-        return $bind;
-    }
-
-    /**
      * 解析路由绑定.
      *
      * @return mixed
@@ -483,25 +467,29 @@ class Router implements IRouter
      */
     protected function dispatchToRoute(IRequest $request): IResponse
     {
-        return $this->runRoute($request, $this->matchRouter());
+        $bind = $this->matchRouter();
+        $this->throughMiddleware($request);
+
+        if ($this->isOptionsRequest()) {
+            return new Response('cors');
+        }
+
+        if (false === $bind) {
+            $this->routerNotFound();
+        }
+
+        return $this->runRoute($bind);
     }
 
     /**
      * 运行路由.
      *
-     * @param \Leevel\Http\IRequest $request
-     * @param callable              $bind
+     * @param callable $bind
      *
      * @return \Leevel\Http\IResponse
      */
-    protected function runRoute(IRequest $request, callable $bind): IResponse
+    protected function runRoute(callable $bind): IResponse
     {
-        $this->throughMiddleware($this->request);
-
-        if ('OPTIONS' === $this->request->getMethod()) {
-            return new Response('cors');
-        }
-
         $response = $this->container->call($bind, $this->matchedVars());
 
         if (!($response instanceof IResponse)) {
@@ -562,9 +550,7 @@ class Router implements IRouter
     protected function completeRequest(): void
     {
         $this->pathinfoRestful();
-
         $this->container->instance('app_name', $this->matchedApp());
-
         $this->request->params->add($this->matchedParams());
     }
 
@@ -578,7 +564,9 @@ class Router implements IRouter
             return;
         }
 
-        switch ($this->request->getMethod()) {
+        $method = $this->request->getOptionsMethod();
+
+        switch ($method) {
             case 'POST':
                 $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
 
@@ -637,7 +625,6 @@ class Router implements IRouter
             // 尝试直接读取方法控制器类
             $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
                 $matchedController.'\\'.ucfirst($matchedAction);
-
             $controllerClass = $this->normalizeForSubdir($controllerClass);
 
             if (class_exists($controllerClass)) {
@@ -648,7 +635,6 @@ class Router implements IRouter
             // 尝试读取默认控制器
             else {
                 $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
-
                 $controllerClass = $this->normalizeForSubdir($controllerClass);
 
                 if (!class_exists($controllerClass)) {
@@ -664,10 +650,7 @@ class Router implements IRouter
             return false;
         }
 
-        return [
-            $controller,
-            $method,
-        ];
+        return [$controller, $method];
     }
 
     /**
@@ -807,5 +790,15 @@ class Router implements IRouter
     protected function matchedVars(): array
     {
         return $this->matchedData[static::VARS] ?? [];
+    }
+
+    /**
+     * 是否为 OPTIONS 请求.
+     *
+     * @return bool
+     */
+    protected function isOptionsRequest(): bool
+    {
+        return 'OPTIONS' === $this->request->getMethod();
     }
 }
