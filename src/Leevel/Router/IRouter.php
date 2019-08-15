@@ -41,56 +41,56 @@ interface IRouter
      *
      * @var string
      */
-    const APP = '_app';
+    const APP = ':app';
 
     /**
      * 控制器前缀
      *
      * @var string
      */
-    const PREFIX = '_prefix';
+    const PREFIX = ':prefix';
 
     /**
      * 控制器参数名.
      *
      * @var string
      */
-    const CONTROLLER = '_c';
+    const CONTROLLER = ':controller';
 
     /**
      * 方法参数名.
      *
      * @var string
      */
-    const ACTION = '_a';
+    const ACTION = ':action';
 
     /**
      * 绑定资源.
      *
      * @var string
      */
-    const BIND = '_bind';
+    const BIND = ':bind';
 
     /**
      * 解析参数名.
      *
      * @var string
      */
-    const PARAMS = '_params';
+    const PARAMS = ':params';
 
     /**
      * 解析变量名.
      *
      * @var string
      */
-    const VARS = '_vars';
+    const VARS = ':vars';
 
     /**
      * 解析中间件名.
      *
      * @var string
      */
-    const MIDDLEWARES = '_middlewares';
+    const MIDDLEWARES = ':middlewares';
 
     /**
      * restful show.
