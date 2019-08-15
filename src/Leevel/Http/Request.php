@@ -875,7 +875,6 @@ class Request implements IRequest, IArray, ArrayAccess
                 $this->method = strtoupper($method);
             } else {
                 $field = static::VAR_METHOD;
-
                 $this->method = strtoupper($this->request->get($field, $this->query->get($field, 'POST')));
             }
         }
@@ -906,6 +905,24 @@ class Request implements IRequest, IArray, ArrayAccess
     public function getRealMethod(): string
     {
         return strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
+    }
+
+    /**
+     * OPTIONS 实际请求类型.
+     *
+     * @see https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Request-Method
+     *
+     * @return string
+     */
+    public function getOptionsMethod(): string
+    {
+        $method = $this->getMethod();
+
+        if ('OPTIONS' === $method) {
+            return strtoupper($this->server->get('HTTP_ACCESS_CONTROL_REQUEST_METHOD', ''));
+        }
+
+        return $method;
     }
 
     /**

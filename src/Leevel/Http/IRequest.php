@@ -106,35 +106,35 @@ interface IRequest
      *
      * @var string
      */
-    const VAR_METHOD = '_method';
+    const VAR_METHOD = ':method';
 
     /**
      * AJAX 伪装.
      *
      * @var string
      */
-    const VAR_AJAX = '_ajax';
+    const VAR_AJAX = ':ajax';
 
     /**
      * PJAX 伪装.
      *
      * @var string
      */
-    const VAR_PJAX = '_pjax';
+    const VAR_PJAX = ':pjax';
 
     /**
      * JSON 伪装.
      *
      * @var string
      */
-    const VAR_JSON = '_json';
+    const VAR_JSON = ':json';
 
     /**
      * 接受 JSON 伪装.
      *
      * @var string
      */
-    const VAR_ACCEPT_JSON = '_acceptjson';
+    const VAR_ACCEPT_JSON = ':acceptjson';
 
     /**
      * 是否处于协程上下文.
@@ -536,6 +536,15 @@ interface IRequest
      * @return string
      */
     public function getRealMethod(): string;
+
+    /**
+     * OPTIONS 实际请求类型.
+     *
+     * @see https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Request-Method
+     *
+     * @return string
+     */
+    public function getOptionsMethod(): string;
 
     /**
      * 验证是否为指定的方法.
