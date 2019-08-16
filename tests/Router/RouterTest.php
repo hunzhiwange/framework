@@ -430,10 +430,8 @@ class RouterTest extends TestCase
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $router = $this->createRouter();
-
         $router->setControllerDir($controllerDir);
-
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testParseDefaultBindMethodClassFoundButEnterMethodNotFound(): void
@@ -450,15 +448,18 @@ class RouterTest extends TestCase
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $router = $this->createRouter();
-
         $router->setControllerDir($controllerDir);
-
-        $result = $router->dispatch($request);
+        $router->dispatch($request);
     }
 
     public function testOptionsForCorsWillBackCorsResponse(): void
     {
-        $pathInfo = '/:tests';
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\Router\\Controllers\\Options::index() was not found.'
+        );
+
+        $pathInfo = '/options/index';
         $params = [];
         $method = 'OPTIONS';
         $controllerDir = 'Router\\Controllers';
@@ -467,12 +468,7 @@ class RouterTest extends TestCase
         $router = $this->createRouter();
 
         $router->setControllerDir($controllerDir);
-
-        $result = $router->dispatch($request);
-
-        $this->assertInstanceof(IResponse::class, $result);
-
-        $this->assertSame('cors', $result->getContent());
+        $router->dispatch($request);
     }
 
     public function testColonInController(): void
