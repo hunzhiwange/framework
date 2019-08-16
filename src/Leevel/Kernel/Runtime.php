@@ -192,7 +192,8 @@ abstract class Runtime implements IRuntime
         }
 
         if (!$this->isHttpException($e)) {
-            $e = new HttpException(500, $e->getMessage(), $e->getCode());
+            $e = new class(500, $e->getMessage(), $e->getCode()) extends HttpException {
+            };
         }
 
         return $this->rendorWithHttpExceptionView($e);
