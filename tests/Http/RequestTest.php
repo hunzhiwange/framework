@@ -303,20 +303,20 @@ class RequestTest extends TestCase
         $request->setMethod('PURGE');
         $this->assertSame('PURGE', $request->getMethod(), '->getMethod() returns the method even if it is not a standard one');
         $request->setMethod('POST');
-        $this->assertSame('POST', $request->getMethod(), '->getMethod() returns the method POST if no :method is defined');
+        $this->assertSame('POST', $request->getMethod(), '->getMethod() returns the method POST if no '.IRequest::VAR_METHOD.' is defined');
         $request->setMethod('POST');
-        $request->request->set(':method', 'purge');
-        $this->assertSame('PURGE', $request->getMethod(), '->getMethod() does not return the method from :method if defined and POST but support not enabled');
+        $request->request->set(IRequest::VAR_METHOD, 'purge');
+        $this->assertSame('PURGE', $request->getMethod(), '->getMethod() does not return the method from '.IRequest::VAR_METHOD.' if defined and POST but support not enabled');
 
         $request = new Request();
         $request->setMethod('POST');
-        $request->request->set(':method', 'purge');
+        $request->request->set(IRequest::VAR_METHOD, 'purge');
         $this->assertTrue('PURGE' === $request->getMethod(), '');
 
         $request = new Request();
         $request->setMethod('POST');
         $request->headers->set('X-HTTP-METHOD-OVERRIDE', 'delete');
-        $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though :method is set if defined and POST');
+        $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though '.IRequest::VAR_METHOD.' is set if defined and POST');
     }
 
     public function provideOverloadedMethods()
@@ -1087,7 +1087,7 @@ class RequestContentProxy extends Request
 
     public function getContent(): string
     {
-        return http_build_query([':method' => 'PUT', 'content' => 'mycontent'], '', '&');
+        return http_build_query([IRequest::VAR_METHOD => 'PUT', 'content' => 'mycontent'], '', '&');
     }
 }
 
