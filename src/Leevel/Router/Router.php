@@ -794,9 +794,28 @@ class Router implements IRouter
     protected function setOptionsPathInfo(IRequest $request): void
     {
         if ($this->isOptionsRequest()) {
-            $optionsPathInfo = '/'.self::DEFAULT_OPTIONS.'/'.self::RESTFUL_INDEX;
+            $app = $this->findApp($this->request->getPathInfo());
+            $optionsPathInfo = '/'.$app.self::DEFAULT_OPTIONS.'/'.self::RESTFUL_INDEX;
             $request->setPathInfo($optionsPathInfo);
         }
+    }
+
+    /**
+     * 查找 app.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function findApp(string $path): string
+    {
+        $paths = explode('/', trim($path, '/'));
+
+        if ($paths && 0 === strpos($paths[0], ':')) {
+            return $paths[0].'/';
+        }
+
+        return '';
     }
 
     /**
