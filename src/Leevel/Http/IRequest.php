@@ -538,15 +538,6 @@ interface IRequest
     public function getRealMethod(): string;
 
     /**
-     * OPTIONS 实际请求类型.
-     *
-     * @see https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Request-Method
-     *
-     * @return string
-     */
-    public function getOptionsMethod(): string;
-
-    /**
      * 验证是否为指定的方法.
      *
      * @param string $method

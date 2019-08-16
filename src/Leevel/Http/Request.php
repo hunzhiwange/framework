@@ -908,24 +908,6 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * OPTIONS 实际请求类型.
-     *
-     * @see https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Request-Method
-     *
-     * @return string
-     */
-    public function getOptionsMethod(): string
-    {
-        $method = $this->getMethod();
-
-        if ('OPTIONS' === $method) {
-            return strtoupper($this->server->get('HTTP_ACCESS_CONTROL_REQUEST_METHOD', ''));
-        }
-
-        return $method;
-    }
-
-    /**
      * 验证是否为指定的方法.
      *
      * @param string $method
