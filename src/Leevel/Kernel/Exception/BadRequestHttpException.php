@@ -33,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class BadRequestHttpException extends HttpException
+abstract class BadRequestHttpException extends HttpException
 {
     /**
      * 构造函数.

@@ -32,7 +32,7 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class HttpException extends RuntimeException
+abstract class HttpException extends RuntimeException
 {
     /**
      * HTTP 状态.

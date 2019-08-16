@@ -33,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class MethodNotAllowedHttpException extends HttpException
+abstract class MethodNotAllowedHttpException extends HttpException
 {
     /**
      * 构造函数.

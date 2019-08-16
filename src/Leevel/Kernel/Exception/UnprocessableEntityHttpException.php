@@ -33,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class UnprocessableEntityHttpException extends HttpException
+abstract class UnprocessableEntityHttpException extends HttpException
 {
     /**
      * 构造函数.

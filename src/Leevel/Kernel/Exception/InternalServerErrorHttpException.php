@@ -33,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class InternalServerErrorHttpException extends HttpException
+abstract class InternalServerErrorHttpException extends HttpException
 {
     /**
      * 构造函数.

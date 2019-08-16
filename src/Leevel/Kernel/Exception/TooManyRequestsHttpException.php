@@ -33,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class TooManyRequestsHttpException extends HttpException
+abstract class TooManyRequestsHttpException extends HttpException
 {
     /**
      * 构造函数.

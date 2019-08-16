@@ -33,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class UnauthorizedHttpException extends HttpException
+abstract class UnauthorizedHttpException extends HttpException
 {
     /**
      * 构造函数.
