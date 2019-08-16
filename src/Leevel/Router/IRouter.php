@@ -158,6 +158,13 @@ interface IRouter
     const DEFAULT_CONTROLLER = 'home';
 
     /**
+     * 默认 OPTIONS 占位.
+     *
+     * @var string
+     */
+    const DEFAULT_OPTIONS = 'options';
+
+    /**
      * 默认替换参数[字符串].
      *
      * @var string

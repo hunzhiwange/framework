@@ -137,6 +137,7 @@ class Router implements IRouter
     public function dispatch(IRequest $request): IResponse
     {
         $this->request = $request;
+        $this->setOptionsPathInfo($request);
 
         return $this->dispatchToRoute($request);
     }
@@ -352,15 +353,19 @@ class Router implements IRouter
      *
      * - 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
      *
-     * @return mixed
+     * @return callable
      */
-    protected function matchRouter()
+    protected function matchRouter(): callable
     {
         $this->initRequest();
         $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'));
 
         if (false === ($bind = $this->normalizeRouterBind())) {
             $bind = $this->annotationRouterBind($dataPathInfo);
+        }
+
+        if (false === $bind) {
+            $this->routerNotFound();
         }
 
         return $bind;
@@ -467,31 +472,22 @@ class Router implements IRouter
      */
     protected function dispatchToRoute(IRequest $request): IResponse
     {
-        $bind = $this->matchRouter();
-        $this->throughMiddleware($request);
-
-        if ($this->isOptionsRequest()) {
-            return new Response('cors');
-        }
-
-        if (false === $bind) {
-            $this->routerNotFound();
-        }
-
-        return $this->runRoute($bind);
+        return $this->runRoute($request, $this->matchRouter());
     }
 
     /**
      * 运行路由.
      *
-     * @param callable $bind
+     * @param \Leevel\Http\IRequest $request
+     * @param callable              $bind
      *
      * @return \Leevel\Http\IResponse
      */
-    protected function runRoute(callable $bind): IResponse
+    protected function runRoute(IRequest $request, callable $bind): IResponse
     {
-        $response = $this->container->call($bind, $this->matchedVars());
+        $this->throughMiddleware($request);
 
+        $response = $this->container->call($bind, $this->matchedVars());
         if (!($response instanceof IResponse)) {
             $response = new Response($response);
         }
@@ -564,9 +560,7 @@ class Router implements IRouter
             return;
         }
 
-        $method = $this->request->getOptionsMethod();
-
-        switch ($method) {
+        switch ($this->request->getMethod()) {
             case 'POST':
                 $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
 
@@ -790,6 +784,19 @@ class Router implements IRouter
     protected function matchedVars(): array
     {
         return $this->matchedData[static::VARS] ?? [];
+    }
+
+    /**
+     * 设置 OPTIONS PathInfo.
+     *
+     * @param \Leevel\Http\IRequest $request
+     */
+    protected function setOptionsPathInfo(IRequest $request): void
+    {
+        if ($this->isOptionsRequest()) {
+            $optionsPathInfo = '/'.self::DEFAULT_OPTIONS.'/'.self::RESTFUL_INDEX;
+            $request->setPathInfo($optionsPathInfo);
+        }
     }
 
     /**

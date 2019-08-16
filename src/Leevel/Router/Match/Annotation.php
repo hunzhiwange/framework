@@ -105,7 +105,7 @@ class Annotation extends Match implements IMatch
      */
     protected function matcheMethod(array $routers)
     {
-        $method = strtolower($this->request->getOptionsMethod());
+        $method = strtolower($this->request->getMethod());
 
         return $routers[$method] ?? false;
     }
