@@ -303,20 +303,20 @@ class RequestTest extends TestCase
         $request->setMethod('PURGE');
         $this->assertSame('PURGE', $request->getMethod(), '->getMethod() returns the method even if it is not a standard one');
         $request->setMethod('POST');
-        $this->assertSame('POST', $request->getMethod(), '->getMethod() returns the method POST if no _method is defined');
+        $this->assertSame('POST', $request->getMethod(), '->getMethod() returns the method POST if no :method is defined');
         $request->setMethod('POST');
-        $request->request->set('_method', 'purge');
-        $this->assertSame('PURGE', $request->getMethod(), '->getMethod() does not return the method from _method if defined and POST but support not enabled');
+        $request->request->set(':method', 'purge');
+        $this->assertSame('PURGE', $request->getMethod(), '->getMethod() does not return the method from :method if defined and POST but support not enabled');
 
         $request = new Request();
         $request->setMethod('POST');
-        $request->request->set('_method', 'purge');
+        $request->request->set(':method', 'purge');
         $this->assertTrue('PURGE' === $request->getMethod(), '');
 
         $request = new Request();
         $request->setMethod('POST');
         $request->headers->set('X-HTTP-METHOD-OVERRIDE', 'delete');
-        $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though _method is set if defined and POST');
+        $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though :method is set if defined and POST');
     }
 
     public function provideOverloadedMethods()
@@ -1087,7 +1087,7 @@ class RequestContentProxy extends Request
 
     public function getContent(): string
     {
-        return http_build_query(['_method' => 'PUT', 'content' => 'mycontent'], '', '&');
+        return http_build_query([':method' => 'PUT', 'content' => 'mycontent'], '', '&');
     }
 }
 
