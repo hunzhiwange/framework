@@ -454,6 +454,23 @@ class RouterTest extends TestCase
 
     public function testOptionsForCorsWillBackCorsResponse(): void
     {
+        $pathInfo = '/:tests/options/index';
+        $params = [];
+        $method = 'OPTIONS';
+        $controllerDir = 'Router\\Controllers';
+
+        $request = $this->createRequest($pathInfo, $params, $method);
+        $router = $this->createRouter();
+
+        $router->setControllerDir($controllerDir);
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(IResponse::class, $result);
+        $this->assertSame('cors', $result->getContent());
+    }
+
+    public function testOptionsForCorsButNotFound(): void
+    {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router App\\Router\\Controllers\\Options::index() was not found.'
@@ -480,13 +497,10 @@ class RouterTest extends TestCase
 
         $request = $this->createRequest($pathInfo, $params, $method);
         $router = $this->createRouter();
-
         $router->setControllerDir($controllerDir);
-
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(IResponse::class, $result);
-
         $this->assertSame('hello colon with controller', $result->getContent());
     }
 
