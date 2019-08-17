@@ -39,14 +39,14 @@ class PhpRedis implements IRedis
      *
      * @var \Redis
      */
-    protected $handle;
+    protected Redis $handle;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'host'        => '127.0.0.1',
         'port'        => 6379,
         'password'    => '',

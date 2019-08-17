@@ -41,14 +41,14 @@ class RedisPool extends Pool
      *
      * @var \Leevel\Cache\Manager
      */
-    protected $manager;
+    protected Manager $manager;
 
     /**
      * Redis 连接.
      *
      * @var string
      */
-    protected $redisConnect;
+    protected string $redisConnect;
 
     /**
      * 构造函数.

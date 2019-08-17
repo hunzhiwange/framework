@@ -41,7 +41,7 @@ class RedisPool implements ICache
      *
      * @var \Leevel\Cache\Redis\RedisPool
      */
-    protected $redisPool;
+    protected RedisPools $redisPool;
 
     /**
      * 构造函数.
