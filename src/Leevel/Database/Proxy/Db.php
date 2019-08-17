@@ -1723,7 +1723,7 @@ class Db implements IDb
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Database\Manager
      */

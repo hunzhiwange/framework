@@ -142,7 +142,7 @@ class Cache implements ICache
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Cache\Manager
      */

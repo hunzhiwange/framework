@@ -77,7 +77,7 @@ interface IAuth
     public static function getTokenName(): string;
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Auth\Manager
      */

@@ -1062,7 +1062,7 @@ class Mail implements IMail
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Mail\Manager
      */

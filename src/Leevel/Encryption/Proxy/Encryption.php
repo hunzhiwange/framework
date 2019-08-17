@@ -74,7 +74,7 @@ class Encryption implements IEncryption
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Encryption\Encryption
      */

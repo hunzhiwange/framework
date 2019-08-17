@@ -115,7 +115,7 @@ class Option implements IOption
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Option\Option
      */

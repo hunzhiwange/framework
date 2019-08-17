@@ -247,7 +247,7 @@ class Log implements ILog
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Log\Manager
      */

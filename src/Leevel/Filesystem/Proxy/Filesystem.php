@@ -385,7 +385,7 @@ class Filesystem implements IFilesystem
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Filesystem\Manager
      */

@@ -458,7 +458,7 @@ class Session implements ISession
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Session\Manager
      */

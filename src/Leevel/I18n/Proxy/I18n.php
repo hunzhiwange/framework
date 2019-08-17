@@ -116,7 +116,7 @@ class I18n implements II18n
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\I18n\I18n
      */

@@ -126,7 +126,7 @@ class View implements IView
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Router\View
      */

@@ -73,7 +73,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Validate\Validate
      */

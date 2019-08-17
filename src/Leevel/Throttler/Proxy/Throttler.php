@@ -90,7 +90,7 @@ class Throttler implements IThrottler
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Throttler\Throttler
      */

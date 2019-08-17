@@ -108,7 +108,7 @@ class Auth implements IAuth
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Auth\Manager
      */

@@ -106,7 +106,7 @@ class Event implements IEvent
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Event\Dispatch
      */
