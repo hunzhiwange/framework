@@ -41,42 +41,42 @@ abstract class Relation
      *
      * @var \Leevel\Database\Ddd\Select
      */
-    protected $select;
+    protected Select $select;
 
     /**
      * 关联目标模型实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $targetEntity;
+    protected IEntity $targetEntity;
 
     /**
      * 源模型实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $sourceEntity;
+    protected IEntity $sourceEntity;
 
     /**
      * 目标关联字段.
      *
      * @var string
      */
-    protected $targetKey;
+    protected string $targetKey;
 
     /**
      * 源关联字段.
      *
      * @var string
      */
-    protected $sourceKey;
+    protected string $sourceKey;
 
     /**
      * 是否初始化查询.
      *
      * @var bool
      */
-    protected static $relationCondition = true;
+    protected static bool $relationCondition = true;
 
     /**
      * 构造函数.

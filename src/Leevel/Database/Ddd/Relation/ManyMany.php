@@ -39,21 +39,21 @@ class ManyMany extends Relation
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $middleEntity;
+    protected IEntity $middleEntity;
 
     /**
      * 目标中间表关联字段.
      *
      * @var string
      */
-    protected $middleTargetKey;
+    protected string $middleTargetKey;
 
     /**
      * 源中间表关联字段.
      *
      * @var string
      */
-    protected $middleSourceKey;
+    protected string $middleSourceKey;
 
     /**
      * 构造函数.

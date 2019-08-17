@@ -46,140 +46,140 @@ class UnitOfWork implements IUnitOfWork
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $rootEntity;
+    protected IEntity $rootEntity;
 
     /**
      * 注入的新建实体.
      *
      * @var array
      */
-    protected $entityCreates = [];
+    protected array $entityCreates = [];
 
     /**
      * 注入的不存在则新建否则更新实体.
      *
      * @var array
      */
-    protected $entityReplaces = [];
+    protected array $entityReplaces = [];
 
     /**
      * 注入的更新实体.
      *
      * @var array
      */
-    protected $entityUpdates = [];
+    protected array $entityUpdates = [];
 
     /**
      * 注入的删除实体.
      *
      * @var array
      */
-    protected $entityDeletes = [];
+    protected array $entityDeletes = [];
 
     /**
      * 注入的新建实体到前置区域的标识.
      *
      * @var array
      */
-    protected $createsFlagBefore = [];
+    protected array $createsFlagBefore = [];
 
     /**
      * 注入的不存在则新建否则更新实体到前置区域的标识.
      *
      * @var array
      */
-    protected $replacesFlagBefore = [];
+    protected array $replacesFlagBefore = [];
 
     /**
      * 注入的更新实体到前置区域的标识.
      *
      * @var array
      */
-    protected $updatesFlagBefore = [];
+    protected array $updatesFlagBefore = [];
 
     /**
      * 注入的删除实体到前置区域的标识.
      *
      * @var array
      */
-    protected $deletesFlagBefore = [];
+    protected array $deletesFlagBefore = [];
 
     /**
      * 注入的新建实体到主区域的标识.
      *
      * @var array
      */
-    protected $createsFlag = [];
+    protected array $createsFlag = [];
 
     /**
      * 注入的不存在则新建否则更新实体到主区域的标识.
      *
      * @var array
      */
-    protected $replacesFlag = [];
+    protected array $replacesFlag = [];
 
     /**
      * 注入的更新实体到主区域的标识.
      *
      * @var array
      */
-    protected $updatesFlag = [];
+    protected array $updatesFlag = [];
 
     /**
      * 注入的删除实体到主区域的标识.
      *
      * @var array
      */
-    protected $deletesFlag = [];
+    protected array $deletesFlag = [];
 
     /**
      * 注入的新建实体到后置区域的标识.
      *
      * @var array
      */
-    protected $createsFlagAfter = [];
+    protected array $createsFlagAfter = [];
 
     /**
      * 注入的不存在则新建否则更新实体到后置区域的标识.
      *
      * @var array
      */
-    protected $replacesFlagAfter = [];
+    protected array $replacesFlagAfter = [];
 
     /**
      * 注入的更新实体到后置区域的标识.
      *
      * @var array
      */
-    protected $updatesFlagAfter = [];
+    protected array $updatesFlagAfter = [];
 
     /**
      * 注入的删除实体到后置区域的标识.
      *
      * @var array
      */
-    protected $deletesFlagAfter = [];
+    protected array $deletesFlagAfter = [];
 
     /**
      * 实体当前状态
      *
      * @var array
      */
-    protected $entityStates = [];
+    protected array $entityStates = [];
 
     /**
      * 响应回调.
      *
      * @var \Closure[]
      */
-    protected $onCallbacks = [];
+    protected array $onCallbacks = [];
 
     /**
      * 工作单元是否关闭.
      *
      * @var bool
      */
-    protected $closed = false;
+    protected bool $closed = false;
 
     /**
      * 构造函数.

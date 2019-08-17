@@ -24,6 +24,7 @@ use Closure;
 use InvalidArgumentException;
 use Leevel\Database\Manager as DatabaseManager;
 use Leevel\Database\Select as DatabaseSelect;
+use Leevel\Database\IDatabase;
 
 /**
  * 数据库元对象
@@ -41,35 +42,35 @@ class Meta implements IMeta
      *
      * @var \Leevel\Database\Manager
      */
-    protected static $resolveDatabase;
+    protected static ?DatabaseManager $resolveDatabase;
 
     /**
      * Database 管理.
      *
      * @var \Closure
      */
-    protected static $databaseResolver;
+    protected static ?Closure $databaseResolver;
 
     /**
      * meta 对象实例.
      *
      * @var \Leevel\Database\Ddd\IMeta[]
      */
-    protected static $instances = [];
+    protected static array $instances = [];
 
     /**
      * 元对象表.
      *
      * @var string
      */
-    protected $table;
+    protected string $table;
 
     /**
      * 表连接.
      *
      * @var \Leevel\Database\IDatabase
      */
-    protected $connect;
+    protected IDatabase $connect;
 
     /**
      * 构造函数

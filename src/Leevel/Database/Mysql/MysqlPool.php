@@ -41,14 +41,14 @@ class MysqlPool extends Pool
      *
      * @var \Leevel\Database\Manager
      */
-    protected $manager;
+    protected Manager $manager;
 
     /**
      * Mysql 连接.
      *
      * @var string
      */
-    protected $mysqlConnect;
+    protected string $mysqlConnect;
 
     /**
      * 构造函数.

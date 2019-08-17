@@ -63,7 +63,6 @@ class Register extends Provider
     public function bootstrap(IDispatch $event): void
     {
         $this->eventDispatch($event);
-
         $this->meta();
     }
 
@@ -101,9 +100,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'databases',
-                function (IContainer $container): Manager {
-                    return new Manager($container);
-                },
+                function (IContainer $container): Manager => new Manager($container),
             );
     }
 
@@ -115,9 +112,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'database',
-                function (IContainer $container): IDatabase {
-                    return $container['databases']->connect();
-                },
+                fn (IContainer $container): IDatabase => $container['databases']->connect(),
             );
     }
 
@@ -127,10 +122,7 @@ class Register extends Provider
     protected function unitOfWork(): void
     {
         $this->container
-            ->bind(
-                IUnitOfWork::class,
-                UnitOfWork::class,
-            );
+            ->bind(IUnitOfWork::class, UnitOfWork::class);
     }
 
     /**
@@ -157,9 +149,7 @@ class Register extends Provider
      */
     protected function meta(): void
     {
-        Meta::setDatabaseResolver(function (): Manager {
-            return $this->container['databases'];
-        });
+        Meta::setDatabaseResolver(fn (): Manager => $this->container['databases']);
     }
 
     /**

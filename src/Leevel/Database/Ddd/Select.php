@@ -48,21 +48,21 @@ class Select
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $entity;
+    protected IEntity $entity;
 
     /**
      * 查询.
      *
      * @var \Leevel\Database\Select
      */
-    protected $select;
+    protected DatabaseSelect $select;
 
     /**
      * 关联预载入.
      *
      * @var array
      */
-    protected $preLoads = [];
+    protected array $preLoads = [];
 
     /**
      * 构造函数.

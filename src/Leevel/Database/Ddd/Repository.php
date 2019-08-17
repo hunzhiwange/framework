@@ -41,7 +41,7 @@ class Repository implements IRepository
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $entity;
+    protected IEntity $entity;
 
     /**
      * 构造函数.

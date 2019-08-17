@@ -77,14 +77,14 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @var array
      */
-    protected $leevelChangedProp = [];
+    protected array $leevelChangedProp = [];
 
     /**
      * 黑白名单.
      *
      * @var array
      */
-    protected $leevelBlackWhites = [
+    protected array $leevelBlackWhites = [
         'construct_prop' => [
             'white' => [],
             'black' => [],
@@ -116,7 +116,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @var bool
      */
-    protected $leevelNewed = true;
+    protected bool $leevelNewed = true;
 
     /**
      * Replace 模式.
@@ -130,12 +130,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 多对多关联中间实体.
      *
-     * @var \Leevel\Database\Ddd\Entity
+     * @var \Leevel\Database\Ddd\IEntity
      */
     protected $leevelRelationMiddle;
 
     /**
-     * 持久化基础层
+     * 持久化基础层.
      *
      * @var \Closure
      */
@@ -153,35 +153,35 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @var bool
      */
-    protected $leevelFlushed = false;
+    protected bool $leevelFlushed = false;
 
     /**
      * 模型实体事件处理器.
      *
      * @var \Leevel\Event\IDispatch
      */
-    protected static $leevelDispatch;
+    protected static ?IDispatch $leevelDispatch = null;
 
     /**
      * 缓存驼峰法命名属性.
      *
      * @var array
      */
-    protected static $leevelCamelize = [];
+    protected static array $leevelCamelize = [];
 
     /**
      * 缓存下划线命名属性.
      *
      * @var array
      */
-    protected static $leevelUnCamelize = [];
+    protected static array $leevelUnCamelize = [];
 
     /**
      * 缓存 ENUM 格式化数据.
      *
      * @var array
      */
-    protected static $leevelEnums = [];
+    protected static array $leevelEnums = [];
 
     /**
      * 构造函数.

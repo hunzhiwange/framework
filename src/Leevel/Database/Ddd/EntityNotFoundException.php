@@ -38,7 +38,7 @@ class EntityNotFoundException extends NotFoundHttpException
      *
      * @var string
      */
-    protected $entity;
+    protected string $entity;
 
     /**
      * 设置模型实体.

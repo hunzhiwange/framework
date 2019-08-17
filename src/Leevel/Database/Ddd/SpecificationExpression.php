@@ -38,14 +38,14 @@ class SpecificationExpression implements ISpecification
      *
      * @var \Closure
      */
-    public $spec;
+    public Closure $spec;
 
     /**
      * 闭包规约实现.
      *
      * @var \Closure
      */
-    protected $handle;
+    protected Closure $handle;
 
     /**
      * 构造函数.
