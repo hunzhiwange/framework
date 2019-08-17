@@ -34,9 +34,9 @@ use Leevel\Console\Make;
  */
 class MakeFileWithGlobalReplace extends Make
 {
-    protected $name = 'makewithglobal:test';
+    protected string $name = 'makewithglobal:test';
 
-    protected $description = 'Create a test file.';
+    protected string $description = 'Create a test file.';
 
     public function handle()
     {
