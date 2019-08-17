@@ -66,9 +66,7 @@ class LinkDebugBar extends Command
             return;
         }
 
-        link(
-            $path = $app->path('debugbar'), $link
-        );
+        link($path = $app->path('debugbar'), $link);
 
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
     }
