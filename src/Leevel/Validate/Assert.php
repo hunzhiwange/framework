@@ -54,7 +54,7 @@ class Assert
      *
      * @var string
      */
-    protected string $message;
+    protected ?string $message;
 
     /**
      * 是否延后提示错误.
