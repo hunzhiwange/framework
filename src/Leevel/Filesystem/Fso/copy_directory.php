@@ -48,21 +48,11 @@ function copy_directory(string $sourcePath, string $targetPath, array $filter = 
         $newPath = $targetPath.'/'.$file->getFilename();
 
         if ($file->isFile()) {
-            if (!is_dir($newPath) && !create_directory(dirname($newPath))) {
-                return false;
-            }
-
-            if (!copy($file->getRealPath(), $newPath)) {
-                return false;
-            }
+            create_directory(dirname($newPath));
+            copy($file->getRealPath(), $newPath);
         } elseif ($file->isDir()) {
-            if (!is_dir($newPath) && !create_directory($newPath)) {
-                return false;
-            }
-
-            if (!copy_directory($file->getRealPath(), $newPath, $filter)) {
-                return false;
-            }
+            create_directory($newPath);
+            copy_directory($file->getRealPath(), $newPath, $filter);
         }
     }
 

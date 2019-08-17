@@ -20,6 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Database\Provider;
 
+use Leevel\Database\Ddd\Meta;
+use Leevel\Database\Manager;
+use Leevel\Database\Mysql;
 use Leevel\Database\Provider\Register;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
@@ -41,62 +44,63 @@ class RegisterTest extends TestCase
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
-
         $test->register();
-
         $container->alias($test->providers());
-
         $test->bootstrap($this->createMock(IDispatch::class));
 
+        // databases
         $manager = $container->make('databases');
-
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
         $this->assertSame(
             '1',
             $manager
                 ->table('guest_book')
                 ->insert($data));
-
         $result = $manager
             ->table('guest_book', 'name,content')
             ->where('id', 1)
             ->findOne();
-
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
-
         $manager->close();
+
+        // database
+        $mysql = $container->make('database');
+        $this->assertInstanceof(Mysql::class, $mysql);
+        $result = $mysql
+            ->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
+        $this->assertSame('tom', $result->name);
+        $this->assertSame('I love movie.', $result->content);
+        $mysql->close();
+
+        // meta
+        $database = Meta::resolveDatabase();
+        $this->assertInstanceof(Manager::class, $database);
+        Meta::setDatabaseResolver(null);
     }
 
     public function testUseAlias(): void
     {
         $test = new Register($container = $this->createContainer());
-
         $test->register();
-
         $container->alias($test->providers());
 
         $test->bootstrap($this->createMock(IDispatch::class));
-
         $manager = $container->make('Leevel\\Database\\Manager');
-
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
         $this->assertSame(
             '1',
             $manager
                 ->table('guest_book')
                 ->insert($data));
-
         $result = $manager
             ->table('guest_book', 'name,content')
             ->where('id', 1)
             ->findOne();
-
         $this->assertSame('tom', $result->name);
         $this->assertSame('I love movie.', $result->content);
-
         $manager->close();
     }
 

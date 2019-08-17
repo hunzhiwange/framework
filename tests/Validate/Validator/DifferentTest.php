@@ -40,9 +40,9 @@ class DifferentTest extends TestCase
      *
      * @param mixed  $value
      * @param mixed  $valueCompare
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, $valueCompare, string $parameter)
+    public function testBaseUse($value, $valueCompare, string $param): void
     {
         $validate = new Validator(
             [
@@ -51,14 +51,14 @@ class DifferentTest extends TestCase
                 'name3' => new stdClass(),
             ],
             [
-                'name'     => 'different:'.$parameter,
+                'name'     => 'different:'.$param,
             ]
         );
 
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['foo', 'foo2', 'name2'],
@@ -74,9 +74,9 @@ class DifferentTest extends TestCase
      *
      * @param mixed  $value
      * @param mixed  $valueCompare
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, $valueCompare, string $parameter)
+    public function testBad($value, $valueCompare, string $param): void
     {
         $validate = new Validator(
             [
@@ -85,19 +85,38 @@ class DifferentTest extends TestCase
                 'name3' => 'test',
             ],
             [
-                'name'     => 'different:'.$parameter,
+                'name'     => 'different:'.$param,
             ]
         );
 
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['foo', 'foo', 'name2'],
             ['bar', 'bar', 'name2'],
             ['test', '', 'name3'],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'different',
+            ]
+        );
+
+        $validate->success();
     }
 }

@@ -38,23 +38,23 @@ class BetweenTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, string $parameter)
+    public function testBaseUse($value, string $param): void
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'between:'.$parameter,
+                'name'     => 'between:'.$param,
             ]
         );
 
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['1.1', '1,5'],
@@ -71,23 +71,23 @@ class BetweenTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, string $parameter)
+    public function testBad($value, string $param): void
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'between:'.$parameter,
+                'name'     => 'between:'.$param,
             ]
         );
 
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['0.1', '1,5'],
@@ -100,5 +100,43 @@ class BetweenTest extends TestCase
             ['c', 'h,t'],
             ['w', 'h,t'],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first or second element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'between',
+            ]
+        );
+
+        $validate->success();
+    }
+
+    public function testMissParam2(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first or second element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'between:1',
+            ]
+        );
+
+        $validate->success();
     }
 }

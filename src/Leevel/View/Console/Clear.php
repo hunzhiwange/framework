@@ -87,4 +87,4 @@ class Clear extends Command
 }
 
 // import fn.
-class_exists(delete_directory::class);
+class_exists(delete_directory::class); // @codeCoverageIgnore

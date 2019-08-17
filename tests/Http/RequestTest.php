@@ -64,10 +64,10 @@ class RequestTest extends TestCase
     {
         $request = new Request();
         $request->reset(['foo' => 'bar']);
-        $this->assertSame('bar', $request->query->get('foo'), '->reset() takes an array of query parameters as its first argument');
+        $this->assertSame('bar', $request->query->get('foo'), '->reset() takes an array of query params as its first argument');
 
         $request->reset([], ['foo' => 'bar']);
-        $this->assertSame('bar', $request->request->get('foo'), '->reset() takes an array of request parameters as its second argument');
+        $this->assertSame('bar', $request->request->get('foo'), '->reset() takes an array of request params as its second argument');
 
         $request->reset([], [], ['foo' => 'bar']);
         $this->assertSame('bar', $request->params->get('foo'), '->reset() takes an array of params as its third argument');
@@ -227,7 +227,7 @@ class RequestTest extends TestCase
      * @param mixed $expectedQuery
      * @param mixed $msg
      */
-    public function testGetQueryString($query, $expectedQuery, $msg)
+    public function testGetQueryString($query, $expectedQuery, $msg): void
     {
         $request = new Request();
         $request->server->set('QUERY_STRING', $query);
@@ -237,13 +237,13 @@ class RequestTest extends TestCase
     public function getQueryStringNormalizationData()
     {
         return [
-            ['foo', 'foo', 'works with valueless parameters'],
+            ['foo', 'foo', 'works with valueless params'],
             ['foo=', 'foo=', 'includes a dangling equal sign'],
-            ['bar=&foo=bar', 'bar=&foo=bar', '->works with empty parameters'],
+            ['bar=&foo=bar', 'bar=&foo=bar', '->works with empty params'],
             ['foo=bar&bar=', 'foo=bar&bar=', ''],
             ['him=John%20Doe&her=Jane+Doe', 'him=John%20Doe&her=Jane+Doe', ''],
             ['foo[]=1&foo[]=2', 'foo[]=1&foo[]=2', 'allows array notation'],
-            ['foo=1&foo=2', 'foo=1&foo=2', 'allows repeated parameters'],
+            ['foo=1&foo=2', 'foo=1&foo=2', 'allows repeated params'],
             ['pa%3Dram=foo%26bar%3Dbaz&test=test', 'pa%3Dram=foo%26bar%3Dbaz&test=test', 'works with encoded delimiters'],
             ['0', '0', 'allows "0"'],
             ['Jane Doe&John%20Doe', 'Jane Doe&John%20Doe', ''],
@@ -303,20 +303,20 @@ class RequestTest extends TestCase
         $request->setMethod('PURGE');
         $this->assertSame('PURGE', $request->getMethod(), '->getMethod() returns the method even if it is not a standard one');
         $request->setMethod('POST');
-        $this->assertSame('POST', $request->getMethod(), '->getMethod() returns the method POST if no _method is defined');
+        $this->assertSame('POST', $request->getMethod(), '->getMethod() returns the method POST if no '.IRequest::VAR_METHOD.' is defined');
         $request->setMethod('POST');
-        $request->request->set('_method', 'purge');
-        $this->assertSame('PURGE', $request->getMethod(), '->getMethod() does not return the method from _method if defined and POST but support not enabled');
+        $request->request->set(IRequest::VAR_METHOD, 'purge');
+        $this->assertSame('PURGE', $request->getMethod(), '->getMethod() does not return the method from '.IRequest::VAR_METHOD.' if defined and POST but support not enabled');
 
         $request = new Request();
         $request->setMethod('POST');
-        $request->request->set('_method', 'purge');
+        $request->request->set(IRequest::VAR_METHOD, 'purge');
         $this->assertTrue('PURGE' === $request->getMethod(), '');
 
         $request = new Request();
         $request->setMethod('POST');
         $request->headers->set('X-HTTP-METHOD-OVERRIDE', 'delete');
-        $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though _method is set if defined and POST');
+        $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though '.IRequest::VAR_METHOD.' is set if defined and POST');
     }
 
     public function provideOverloadedMethods()
@@ -336,7 +336,7 @@ class RequestTest extends TestCase
      *
      * @param mixed $method
      */
-    public function testCreateFromGlobals($method)
+    public function testCreateFromGlobals($method): void
     {
         $normalizedMethod = strtoupper($method);
         $_GET['foo1'] = 'bar1';
@@ -381,7 +381,7 @@ class RequestTest extends TestCase
      *
      * @param mixed $method
      */
-    public function testCreateFromGlobalWithApplicationJson($method)
+    public function testCreateFromGlobalWithApplicationJson($method): void
     {
         $normalizedMethod = strtoupper($method);
         $_SERVER['REQUEST_METHOD'] = $method;
@@ -527,7 +527,7 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isRealAcceptJson());
     }
 
-    public function testGetParameterPrecedence(): void
+    public function testGetParamPrecedence(): void
     {
         $request = new Request();
         $request->params->set('foo', 'attr');
@@ -924,7 +924,7 @@ class RequestTest extends TestCase
      *
      * @param mixed $method
      */
-    public function testIsMethodCheck(string $method)
+    public function testIsMethodCheck(string $method): void
     {
         $request = new Request();
         $isMethod = 'is'.ucfirst($method);
@@ -936,7 +936,7 @@ class RequestTest extends TestCase
      *
      * @param mixed $method
      */
-    public function testIsMethodCheckWillReturnTrue(string $method)
+    public function testIsMethodCheckWillReturnTrue(string $method): void
     {
         $request = new Request();
         $isMethod = 'is'.ucfirst($method);
@@ -1087,7 +1087,7 @@ class RequestContentProxy extends Request
 
     public function getContent(): string
     {
-        return http_build_query(['_method' => 'PUT', 'content' => 'mycontent'], '', '&');
+        return http_build_query([IRequest::VAR_METHOD => 'PUT', 'content' => 'mycontent'], '', '&');
     }
 }
 

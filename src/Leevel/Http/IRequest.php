@@ -106,35 +106,35 @@ interface IRequest
      *
      * @var string
      */
-    const VAR_METHOD = '_method';
+    const VAR_METHOD = ':method';
 
     /**
      * AJAX 伪装.
      *
      * @var string
      */
-    const VAR_AJAX = '_ajax';
+    const VAR_AJAX = ':ajax';
 
     /**
      * PJAX 伪装.
      *
      * @var string
      */
-    const VAR_PJAX = '_pjax';
+    const VAR_PJAX = ':pjax';
 
     /**
      * JSON 伪装.
      *
      * @var string
      */
-    const VAR_JSON = '_json';
+    const VAR_JSON = ':json';
 
     /**
      * 接受 JSON 伪装.
      *
      * @var string
      */
-    const VAR_ACCEPT_JSON = '_acceptjson';
+    const VAR_ACCEPT_JSON = ':acceptjson';
 
     /**
      * 是否处于协程上下文.
@@ -347,8 +347,8 @@ interface IRequest
     public function replace(array $input): void;
 
     /**
-     * PHP 运行模式命令行, 兼容 swoole http service
-     * Swoole http 服务器也以命令行运行.
+     * PHP 运行模式命令行, 兼容 Swoole HTTP Service.
+     * Swoole HTTP 服务器也以命令行运行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      *

@@ -9,3 +9,6 @@
 phpunit.xml.dist export-ignore
 phpunit.xml.html export-ignore
 /build export-ignore
+/split.sh export-ignore
+/tests.sh export-ignore
+/release.s export-ignore

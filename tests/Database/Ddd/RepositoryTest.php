@@ -1182,6 +1182,7 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $newPost = $repository
+            ->select()
             ->where('id', 5)
             ->find(1);
 
@@ -1323,7 +1324,7 @@ class RepositoryTest extends TestCase
                 ])
         );
 
-        $testUniqueData = TestUnique::find(1);
+        $testUniqueData = TestUnique::select()->find(1);
 
         $this->assertInstanceof(TestUnique::class, $testUniqueData);
         $this->assertSame('1', $testUniqueData->id);
@@ -1336,7 +1337,7 @@ class RepositoryTest extends TestCase
 
         $repository->replace($testUnique);
 
-        $testUniqueData = TestUnique::find(1);
+        $testUniqueData = TestUnique::select()->find(1);
 
         $this->assertInstanceof(TestUnique::class, $testUniqueData);
         $this->assertSame('1', $testUniqueData->id);
@@ -1659,178 +1660,6 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(7, $result);
-    }
-
-    public function testFindPageWithOnlyScope(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
-                ]);
-        }
-
-        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
-
-        $repository = new Repository(new Post());
-
-        list($page, $result) = $repository->findPage(1, 10, 'test');
-
-        $this->assertIsArray($page);
-        $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(6, $result);
-
-        $data = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 6,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-                $this->varJson(
-                    $page
-                )
-        );
-    }
-
-    public function testFindPageWithOnlyScopeSplitToArray(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
-                ]);
-        }
-
-        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
-
-        $repository = new Repository(new Post());
-
-        list($page, $result) = $repository->findPage(1, 10, 'test,test');
-
-        $this->assertIsArray($page);
-        $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(6, $result);
-
-        $data = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 6,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-                $this->varJson(
-                    $page
-                )
-        );
-    }
-
-    public function testFindPageWithConditionAndScope(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
-                ]);
-        }
-
-        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
-
-        $repository = new Repository(new Post());
-
-        $condition = function (Select $select, IEntity $entity) use ($request) {
-            $select->where('id', '<', 8);
-        };
-
-        list($page, $result) = $repository->findPage(1, 10, [$condition, 'test']);
-
-        $this->assertIsArray($page);
-        $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(3, $result);
-
-        $data = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 3,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-                $this->varJson(
-                    $page
-                )
-        );
-    }
-
-    public function testFindPageWithConditionAndScopeAndScopeIsArray(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
-                ]);
-        }
-
-        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
-
-        $repository = new Repository(new Post());
-
-        $condition = function (Select $select, IEntity $entity) use ($request) {
-            $select->where('id', '<', 8);
-        };
-
-        list($page, $result) = $repository->findPage(1, 10, [$condition, 'test', 'test']);
-
-        $this->assertIsArray($page);
-        $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(3, $result);
-
-        $data = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 3,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-                $this->varJson(
-                    $page
-                )
-        );
     }
 
     public function testFindList(): void

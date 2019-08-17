@@ -41,7 +41,7 @@ class StrlenTest extends TestCase
      * @param mixed $value
      * @param int   $length
      */
-    public function testBaseUse($value, int $length)
+    public function testBaseUse($value, int $length): void
     {
         $validate = new Validator(
             [
@@ -55,7 +55,7 @@ class StrlenTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['http://www.google.com', 21],
@@ -73,7 +73,7 @@ class StrlenTest extends TestCase
      * @param mixed $value
      * @param int   $length
      */
-    public function testBad($value, int $length)
+    public function testBad($value, int $length): void
     {
         $validate = new Validator(
             [
@@ -87,7 +87,7 @@ class StrlenTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['not numeric', 21],
@@ -102,5 +102,24 @@ class StrlenTest extends TestCase
             ['world', 21],
             [null, 21],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'strlen',
+            ]
+        );
+
+        $validate->success();
     }
 }

@@ -41,34 +41,6 @@ use Leevel\Event\IDispatch;
 interface IEntity
 {
     /**
-     * 批量查找前事件.
-     *
-     * @var string
-     */
-    const BEFORE_SELECT_EVENT = 'selecting';
-
-    /**
-     * 批量查找后事件.
-     *
-     * @var string
-     */
-    const AFTER_SELECT_EVENT = 'selected';
-
-    /**
-     * 查找前事件.
-     *
-     * @var string
-     */
-    const BEFORE_FIND_EVENT = 'finding';
-
-    /**
-     * 查找后事件.
-     *
-     * @var string
-     */
-    const AFTER_FIND_EVENT = 'finded';
-
-    /**
      * 保存前事件.
      *
      * @var string
@@ -644,7 +616,17 @@ interface IEntity
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    public function select(): Select;
+    public function selectForEntity(): Select;
+
+    /**
+     * 返回数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function select(): Select;
 
     /**
      * 返回模型实体类的 meta 对象

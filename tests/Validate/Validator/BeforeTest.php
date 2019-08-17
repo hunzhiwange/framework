@@ -39,9 +39,9 @@ class BeforeTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, string $parameter)
+    public function testBaseUse($value, string $param): void
     {
         $validate = new Validator(
             [
@@ -49,14 +49,14 @@ class BeforeTest extends TestCase
                 'name2' => '2018-08-10',
             ],
             [
-                'name'     => 'before:'.$parameter,
+                'name'     => 'before:'.$param,
             ]
         );
 
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['2018-08-11', '2018-08-14'],
@@ -69,23 +69,23 @@ class BeforeTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed  $value
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, string $parameter)
+    public function testBad($value, string $param): void
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'before:'.$parameter,
+                'name'     => 'before:'.$param,
             ]
         );
 
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['2018-08-17', '2018-08-17'],
@@ -97,5 +97,24 @@ class BeforeTest extends TestCase
             [true, '2018-08-15'],
             [false, '2018-08-15'],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'before',
+            ]
+        );
+
+        $validate->success();
     }
 }

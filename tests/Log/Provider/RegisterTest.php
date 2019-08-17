@@ -23,6 +23,7 @@ namespace Tests\Log\Provider;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Fso;
+use Leevel\Log\File;
 use Leevel\Log\Provider\Register;
 use Leevel\Option\Option;
 use Tests\TestCase;
@@ -42,16 +43,25 @@ class RegisterTest extends TestCase
     {
         $test = new Register($container = $this->createContainer());
         $test->register();
+        $container->alias($test->providers());
 
+        // logs
         $manager = $container->make('logs');
-
         $manager->info('foo', ['bar']);
         $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
         $this->assertFileNotExists($filePath);
-
         $manager->flush();
         $this->assertFileExists($filePath);
+        Fso::deleteDirectory(__DIR__.'/cache', true);
 
+        // log
+        $file = $container->make('log');
+        $this->assertInstanceOf(File::class, $file);
+        $file->info('foo', ['bar']);
+        $filePath = __DIR__.'/cache/development.info/'.date('Y-m-d').'.log';
+        $this->assertFileNotExists($filePath);
+        $file->flush();
+        $this->assertFileExists($filePath);
         Fso::deleteDirectory(__DIR__.'/cache', true);
     }
 

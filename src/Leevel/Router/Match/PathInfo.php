@@ -69,7 +69,7 @@ class PathInfo extends Match implements IMatch
             return $result;
         }
 
-        // Mvc
+        // MVC
         $result = array_merge($result, $this->matcheMvc($path));
 
         return $result;

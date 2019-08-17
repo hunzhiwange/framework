@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Protocol;
 
 use Leevel\Di\IContainer;
+use Leevel\Di\ICoroutine;
 use Leevel\Protocol\Thrift\Base\TFramedTransportFactory;
 use Leevel\Protocol\Thrift\Base\ThriftServer;
 use Leevel\Protocol\Thrift\Service\ThriftHandler;
@@ -38,6 +39,7 @@ use Thrift\Server\TServerSocket;
  * @see https://wiki.swoole.com/wiki/page/287.html
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class RpcServer extends Server implements IServer
 {
@@ -57,10 +59,10 @@ class RpcServer extends Server implements IServer
         // see https://wiki.swoole.com/wiki/page/327.html
         'port' => '1355',
 
-        // swoole 进程名称
+        // Swoole 进程名称
         'process_name' => 'leevel.rpc',
 
-        // swoole 进程保存路径
+        // Swoole 进程保存路径
         'pid_path' => '',
 
         // 设置启动的 worker 进程数
@@ -134,11 +136,12 @@ class RpcServer extends Server implements IServer
      * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
+     * @param \Leevel\Di\ICoroutine $coroutine
      * @param array                 $option
      */
-    public function __construct(IContainer $container, array $option = [])
+    public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
-        parent::__construct($container, $option);
+        parent::__construct($container, $coroutine, $option);
 
         $this->thriftServer = $this->makeThriftServer();
     }
@@ -157,12 +160,7 @@ class RpcServer extends Server implements IServer
     {
         parent::onReceive($server, $fd, $reactorId, $data);
 
-        $this->thriftServer->receive(
-            $server,
-            $fd,
-            $reactorId,
-            $data
-        );
+        $this->thriftServer->receive($server, $fd, $reactorId, $data);
     }
 
     /**
@@ -177,12 +175,8 @@ class RpcServer extends Server implements IServer
      */
     public function onRpcClose(SwooleServer $server, int $fd, int $reactorId): void
     {
-        $this->log(
-            sprintf(
-                'Server close, fd %d, reactorId %d.',
-                $fd, $reactorId
-            )
-        );
+        $message = sprintf('Server close, fd %d, reactorId %d.', $fd, $reactorId);
+        $this->log($message);
     }
 
     /**

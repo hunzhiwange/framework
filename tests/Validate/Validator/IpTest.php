@@ -39,7 +39,7 @@ class IpTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value): void
     {
         $validate = new Validator(
             [
@@ -53,7 +53,7 @@ class IpTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['2001:3CA1:010F:001A:121B:0000:0000:0010'],
@@ -71,7 +71,7 @@ class IpTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBad($value)
+    public function testBad($value): void
     {
         $validate = new Validator(
             [
@@ -85,7 +85,7 @@ class IpTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['2022222201:3CA1:010F:001A:121B:0000:0000:0010'],

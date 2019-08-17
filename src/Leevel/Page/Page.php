@@ -94,10 +94,10 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     protected array $option = [
         'page'          => 'page',
         'range'         => 2,
-        'render'        => 'defaults',
+        'render'        => 'render',
         'render_option' => [],
         'url'           => null,
-        'parameter'     => [],
+        'param'         => [],
         'fragment'      => null,
     ];
 
@@ -163,7 +163,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      */
     public function append(string $key, string $value): IPage
     {
-        return $this->addParameter($key, $value);
+        return $this->addParam($key, $value);
     }
 
     /**
@@ -176,7 +176,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     public function appends(array $values): IPage
     {
         foreach ($values as $key => $value) {
-            $this->addParameter($key, $value);
+            $this->addParam($key, $value);
         }
 
         return $this;
@@ -185,13 +185,13 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置分页条件.
      *
-     * @param array $parameter
+     * @param array $param
      *
      * @return \Leevel\Page\IPage
      */
-    public function parameter(array $parameter): IPage
+    public function param(array $param): IPage
     {
-        return $this->setOption('parameter', $parameter);
+        return $this->setOption('param', $param);
     }
 
     /**
@@ -202,12 +202,12 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      *
      * @return \Leevel\Page\IPage
      */
-    public function addParameter(string $key, $value): IPage
+    public function addParam(string $key, $value): IPage
     {
-        $tmp = $this->option['parameter'];
+        $tmp = $this->option['param'];
         $tmp[$key] = $value;
 
-        $this->setOption('parameter', $tmp);
+        $this->setOption('param', $tmp);
 
         return $this;
     }
@@ -723,19 +723,19 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
         $url = (string) ($this->option['url']);
 
-        $parameter = $this->option['parameter'];
+        $param = $this->option['param'];
 
-        if (isset($parameter[$this->option['page']])) {
-            unset($parameter[$this->option['page']]);
+        if (isset($param[$this->option['page']])) {
+            unset($param[$this->option['page']]);
         }
 
         if (false === strpos($url, '{page}')) {
-            $parameter[$this->option['page']] = '{page}';
+            $param[$this->option['page']] = '{page}';
         }
 
         $this->cachedUrl = $url.
             (false === strpos($url, '?') ? '?' : '&').
-            http_build_query($parameter, '', '&');
+            http_build_query($param, '', '&');
 
         return $this->cachedUrl .= $this->buildFragment();
     }

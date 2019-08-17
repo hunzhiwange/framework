@@ -216,7 +216,7 @@ class ResponseTest extends TestCase
      * @param mixed $text
      * @param mixed $expectedText
      */
-    public function testSetStatusCode($code, $text, $expectedText)
+    public function testSetStatusCode($code, $text, $expectedText): void
     {
         $response = new Response();
         $response->setStatusCode((int) $code, $text);
@@ -319,14 +319,14 @@ class ResponseTest extends TestCase
      *
      * @param mixed $content
      */
-    public function testSetContent($content)
+    public function testSetContent($content): void
     {
         $response = new Response();
         $response->setContent($content);
         $this->assertSame((string) $content, $response->getContent());
     }
 
-    public function validContentProvider()
+    public function validContentProvider(): array
     {
         return [
             'obj'    => [new StringableObject()],
@@ -340,7 +340,7 @@ class ResponseTest extends TestCase
      *
      * @param mixed $content
      */
-    public function testSetContentInvalid($content)
+    public function testSetContentInvalid($content): void
     {
         $this->expectException(\UnexpectedValueException::class);
 
@@ -348,7 +348,7 @@ class ResponseTest extends TestCase
         $response->setContent($content);
     }
 
-    public function invalidContentProvider()
+    public function invalidContentProvider(): array
     {
         return [
             'obj' => [new \stdClass()],

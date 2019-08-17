@@ -27,13 +27,12 @@ declare(strict_types=1);
  *
  * @version 1.0
  */
-include __DIR__.'/tests/bootstrap.php'; /** @codeCoverageIgnore */
+require_once __DIR__.'/tests/bootstrap.php'; // @codeCoverageIgnore
 
 /**
  * 导入助手函数.
- *
- * @codeCoverageIgnoreStart
  */
+// @codeCoverageIgnoreStart
 $fnDirs = [
     __DIR__.'/src/Leevel/Support/Type',
     __DIR__.'/src/Leevel/Support/Arr',

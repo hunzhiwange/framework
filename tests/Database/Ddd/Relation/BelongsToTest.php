@@ -40,7 +40,7 @@ class BelongsToTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
@@ -67,36 +67,36 @@ class BelongsToTest extends TestCase
                 ]),
         );
 
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getterId());
+        $this->assertSame('1', $post->getId());
         $this->assertSame('1', $post->user_id);
         $this->assertSame('1', $post->userId);
         $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getterUserId());
+        $this->assertSame('1', $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getterTitle());
+        $this->assertSame('hello world', $post->getTitle());
         $this->assertSame('Say hello to the world.', $post->summary);
         $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getterSummary());
+        $this->assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getterId());
+        $this->assertSame('1', $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getterName());
+        $this->assertSame('niu', $user->getName());
     }
 
     public function testEager(): void
     {
-        $posts = Post::limit(5)->findAll();
+        $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(0, $posts);
@@ -165,7 +165,7 @@ class BelongsToTest extends TestCase
                 ]),
         );
 
-        $userRelation = Post::user();
+        $userRelation = Post::make()->loadRelation('user');
 
         $this->assertInstanceof(BelongsTo::class, $userRelation);
         $this->assertSame('user_id', $userRelation->getSourceKey());
@@ -177,7 +177,7 @@ class BelongsToTest extends TestCase
 
     public function testEagerButNotFoundSourceData(): void
     {
-        $posts = Post::limit(5)->findAll();
+        $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(0, $posts);

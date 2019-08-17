@@ -39,23 +39,23 @@ class RegexTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBaseUse($value, string $parameter)
+    public function testBaseUse($value, string $param): void
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'regex:'.$parameter,
+                'name'     => 'regex:'.$param,
             ]
         );
 
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             [2, '/^[0-9]+$/'],
@@ -71,23 +71,23 @@ class RegexTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
-     * @param mixed $parameter
+     * @param mixed $param
      */
-    public function testBad($value, $parameter)
+    public function testBad($value, $param): void
     {
         $validate = new Validator(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'regex:'.$parameter,
+                'name'     => 'regex:'.$param,
             ]
         );
 
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['中国', '/^[0-9]+$/'],
@@ -97,5 +97,24 @@ class RegexTest extends TestCase
             [[1, 2], 0],
             [[[], []], 0],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'regex',
+            ]
+        );
+
+        $validate->success();
     }
 }

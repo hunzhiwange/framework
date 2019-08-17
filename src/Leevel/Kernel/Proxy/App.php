@@ -21,7 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Proxy;
 
 use Leevel\Di\Container;
-use Leevel\Di\IContainer;
+use Leevel\Di\IContainer as IBaseContainer;
+use Leevel\Di\ICoroutine;
+use Leevel\Di\Provider;
 use Leevel\Kernel\App as BaseApp;
 
 /**
@@ -34,7 +36,7 @@ use Leevel\Kernel\App as BaseApp;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class App implements IApp
+class App implements IApp, IContainer
 {
     /**
      * call.
@@ -482,6 +484,19 @@ class App implements IApp
     }
 
     /**
+     * 取得应用的环境变量.支持 boolean, empty 和 null.
+     *
+     * @param mixed      $name
+     * @param null|mixed $defaults
+     *
+     * @return mixed
+     */
+    public static function env(string $name, $defaults = null)
+    {
+        return self::proxy()->env($name, $defaults);
+    }
+
+    /**
      * 初始化应用.
      *
      * @param array $bootstraps
@@ -492,11 +507,11 @@ class App implements IApp
     }
 
     /**
-     * 框架基础提供者 register.
+     * 注册应用服务提供者.
      */
-    public static function registerProviders(): void
+    public static function registerAppProviders(): void
     {
-        self::proxy()->registerProviders();
+        self::proxy()->registerAppProviders();
     }
 
     /**
@@ -504,13 +519,241 @@ class App implements IApp
      *
      * @return \Leevel\Di\IContainer
      */
-    public static function container(): IContainer
+    public static function container(): IBaseContainer
     {
         return self::proxy()->container();
     }
 
     /**
-     * 代理服务
+     * 注册到容器.
+     *
+     * @param mixed      $name
+     * @param null|mixed $service
+     * @param bool       $share
+     * @param bool       $coroutine
+     *
+     * @return \Leevel\Di\IContainer
+     */
+    public static function bind($name, $service = null, bool $share = false, bool $coroutine = false): IBaseContainer
+    {
+        return self::proxyContainer()->bind($name, $service, $share, $coroutine);
+    }
+
+    /**
+     * 注册为实例.
+     *
+     * @param mixed $name
+     * @param mixed $service
+     * @param bool  $coroutine
+     *
+     * @return \Leevel\Di\IContainer
+     */
+    public static function instance($name, $service, bool $coroutine = false): IBaseContainer
+    {
+        return self::proxyContainer()->instance($name, $service, $coroutine);
+    }
+
+    /**
+     * 注册单一实例.
+     *
+     * @param array|scalar $name
+     * @param null|mixed   $service
+     * @param bool         $coroutine
+     *
+     * @return \Leevel\Di\IContainer
+     */
+    public static function singleton($name, $service = null, bool $coroutine = false): IBaseContainer
+    {
+        return self::proxyContainer()->singleton($name, $service, $coroutine);
+    }
+
+    /**
+     * 设置别名.
+     *
+     * @param array|string      $alias
+     * @param null|array|string $value
+     *
+     * @return \Leevel\Di\IContainer
+     */
+    public static function alias($alias, $value = null): IBaseContainer
+    {
+        return self::proxyContainer()->alias($alias, $value);
+    }
+
+    /**
+     * 服务容器返回对象
+     *
+     * @param string $name
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public static function make(string $name, array $args = [])
+    {
+        return self::proxyContainer()->make($name, $args);
+    }
+
+    /**
+     * 实例回调自动注入.
+     *
+     * @param array|callable|string $callback
+     * @param array                 $args
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return mixed
+     */
+    public static function call($callback, array $args = [])
+    {
+        return self::proxyContainer()->call($callback, $args);
+    }
+
+    /**
+     * 删除服务和实例.
+     *
+     * @param string $name
+     */
+    public static function remove(string $name): void
+    {
+        self::proxyContainer()->remove($name);
+    }
+
+    /**
+     * 服务或者实例是否存在.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public static function exists(string $name): bool
+    {
+        return self::proxyContainer()->exists($name);
+    }
+
+    /**
+     * 清理容器.
+     */
+    public static function clear(): void
+    {
+        self::proxyContainer()->clear();
+    }
+
+    /**
+     * 执行 bootstrap.
+     *
+     * @param \Leevel\Di\Provider $provider
+     */
+    public static function callProviderBootstrap(Provider $provider): void
+    {
+        self::proxyContainer()->callProviderBootstrap($provider);
+    }
+
+    /**
+     * 创建服务提供者.
+     *
+     * @param string $provider
+     *
+     * @return \Leevel\Di\Provider
+     */
+    public static function makeProvider(string $provider): Provider
+    {
+        return self::proxyContainer()->makeProvider($provider);
+    }
+
+    /**
+     * 注册服务提供者.
+     *
+     * @param \Leevel\Di\Provider|string $provider
+     *
+     * @return \Leevel\Di\Provider
+     */
+    public static function register($provider): Provider
+    {
+        return self::proxyContainer()->register($provider);
+    }
+
+    /**
+     * 是否已经初始化引导.
+     *
+     * @return bool
+     */
+    public static function isBootstrap(): bool
+    {
+        return self::proxyContainer()->isBootstrap();
+    }
+
+    /**
+     * 注册服务提供者.
+     */
+    public static function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
+    {
+        self::proxyContainer()->registerProviders($providers, $deferredProviders, $deferredAlias);
+    }
+
+    /**
+     * 设置协程.
+     *
+     * @param \Leevel\Di\ICoroutine $coroutine
+     */
+    public static function setCoroutine(ICoroutine $coroutine): void
+    {
+        self::proxyContainer()->setCoroutine($coroutine);
+    }
+
+    /**
+     * 返回协程.
+     *
+     * @return \Leevel\Di\ICoroutine
+     */
+    public static function getCoroutine(): ?ICoroutine
+    {
+        return self::proxyContainer()->getCoroutine();
+    }
+
+    /**
+     * 协程服务或者实例是否存在.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public static function existsCoroutine(string $name): bool
+    {
+        return self::proxyContainer()->existsCoroutine($name);
+    }
+
+    /**
+     * 删除协程上下文服务和实例.
+     *
+     * @param null|string $name
+     */
+    public static function removeCoroutine(?string $name = null): void
+    {
+        self::proxyContainer()->removeCoroutine($name);
+    }
+
+    /**
+     * 设置服务到协程上下文.
+     *
+     * @param string $service
+     */
+    public static function serviceCoroutine(string $service): void
+    {
+        self::proxyContainer()->serviceCoroutine($service);
+    }
+
+    /**
+     * 代理 Container 服务.
+     *
+     * @return \Leevel\Di\Container
+     */
+    public static function proxyContainer(): Container
+    {
+        return Container::singletons();
+    }
+
+    /**
+     * 代理服务.
      *
      * @return \Leevel\Kernel\App
      */

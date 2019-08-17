@@ -23,6 +23,8 @@ namespace Leevel\Database;
 use InvalidArgumentException;
 use Leevel\Event\IDispatch;
 use Leevel\Manager\Manager as Managers;
+use Leevel\Protocol\Pool\IConnection;
+use RuntimeException;
 
 /**
  * database 入口.
@@ -38,6 +40,13 @@ class Manager extends Managers implements IDatabase
     use Proxy;
 
     /**
+     * 当前协程事务服务标识.
+     *
+     * @var string
+     */
+    const TRANSACTION_SERVICE = 'transaction.service';
+
+    /**
      * 返回代理.
      *
      * @return \Leevel\Database\IDatabase
@@ -46,6 +55,52 @@ class Manager extends Managers implements IDatabase
     public function proxy(): IDatabase
     {
         return $this->connect();
+    }
+
+    /**
+     * 设置当前协程事务中的连接.
+     *
+     * @param \Leevel\Protocol\Pool\IConnection $connection
+     */
+    public function setTransactionConnection(IConnection $connection): void
+    {
+        $this->container->instance(self::TRANSACTION_SERVICE, $connection, true);
+    }
+
+    /**
+     * 是否处于当前协程事务中.
+     *
+     * @return bool
+     */
+    public function inTransactionConnection(): bool
+    {
+        return $this->container->exists(self::TRANSACTION_SERVICE);
+    }
+
+    /**
+     * 获取当前协程事务中的连接.
+     *
+     * @return \Leevel\Protocol\Pool\IConnection
+     */
+    public function getTransactionConnection(): IConnection
+    {
+        $connection = $this->container->make(self::TRANSACTION_SERVICE);
+
+        if (!is_object($connection) || !$connection instanceof IConnection) {
+            $e = 'There was no active transaction.';
+
+            throw new RuntimeException($e);
+        }
+
+        return $connection;
+    }
+
+    /**
+     * 删除当前协程事务中的连接.
+     */
+    public function removeTransactionConnection(): void
+    {
+        $this->container->remove(self::TRANSACTION_SERVICE);
     }
 
     /**
@@ -69,8 +124,29 @@ class Manager extends Managers implements IDatabase
     {
         return new Mysql(
             $this->normalizeConnectOption('mysql', $option),
-            $this->container->make(IDispatch::class)
+            $this->container->make(IDispatch::class),
+            $this->container->getCoroutine() ? $this : null,
         );
+    }
+
+    /**
+     * 创建 mysqlPool 缓存.
+     *
+     * @param array $options
+     *
+     * @return \Leevel\Database\MysqlPool
+     */
+    protected function makeConnectMysqlPool(array $options = []): MysqlPool
+    {
+        if (!$this->container->getCoroutine()) {
+            $e = 'Mysql pool can only be used in swoole scenarios.';
+
+            throw new RuntimeException($e);
+        }
+
+        $mysqlPool = $this->container->make('mysql.pool');
+
+        return new MysqlPool($mysqlPool);
     }
 
     /**

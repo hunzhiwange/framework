@@ -127,6 +127,7 @@ abstract class Mail implements IMail
      * @param array  $args
      *
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function __call(string $method, array $args)
     {
@@ -398,6 +399,7 @@ abstract class Mail implements IMail
      * 返回代理.
      *
      * @return \Swift_Message
+     * @codeCoverageIgnore
      */
     public function proxyMessage(): Swift_Message
     {
@@ -493,7 +495,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 发送消息对象
+     * 发送消息对象.
      *
      * @param \Swift_Message $message
      *
@@ -505,7 +507,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 创建消息对象
+     * 创建消息对象.
      *
      * @return \Swift_Message
      */
@@ -585,7 +587,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 生成 swift mailer.
+     * 生成 Swift Mailer.
      *
      * @return \Swift_Mailer
      */

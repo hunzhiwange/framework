@@ -66,7 +66,27 @@ class ManagerTest extends TestCase
         $this->assertSame('hello html,bar.', $result);
     }
 
-    protected function createManager(): Manager
+    public function testPhpui(): void
+    {
+        $manager = $this->createManager('phpui');
+
+        $manager->setVar('foo', 'bar');
+
+        ob_start();
+
+        $manager->display('html_test');
+        $result = ob_get_contents();
+
+        ob_end_clean();
+
+        $this->assertSame('hello html,bar.', $result);
+
+        $result = $manager->display('html_test', [], null, false);
+
+        $this->assertSame('hello html,bar.', $result);
+    }
+
+    protected function createManager(string $connect = 'html'): Manager
     {
         $app = new ExtendApp($container = new Container(), '');
         $container->instance('app', $app);
@@ -81,13 +101,17 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'view' => [
-                'default'               => 'html',
+                'default'               => $connect,
                 'action_fail'           => 'public/fail',
                 'action_success'        => 'public/success',
                 'connect'               => [
                     'html' => [
                         'driver'         => 'html',
                         'suffix'         => '.html',
+                    ],
+                    'phpui' => [
+                        'driver' => 'phpui',
+                        'suffix' => '.php',
                     ],
                 ],
             ],

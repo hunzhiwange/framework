@@ -46,8 +46,6 @@ function benchmark($time = 1, ...$call): void
                 break;
             default:
                 throw new RuntimeException('Invalid argument `time`.');
-
-                break;
         }
     }
 

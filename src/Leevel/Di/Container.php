@@ -33,6 +33,7 @@ use RuntimeException;
 
 /**
  * IOC 容器.
+ * IOC container.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -44,13 +45,15 @@ class Container implements IContainer, ArrayAccess
 {
     /**
      * 当前应用实例.
+     * Current application instance.
      *
-     * @var static
+     * @var \Leevel\Di\IContainer
      */
     protected static $instance;
 
     /**
-     * 注册服务.
+     * 注册的服务.
+     * Registered services.
      *
      * @var array
      */
@@ -58,13 +61,15 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册的实例.
+     * Registered instances.
      *
      * @var array
      */
     protected array $instances = [];
 
     /**
-     * 单一实例.
+     * 注册的单一实例.
+     * Registered singletons.
      *
      * @var array
      */
@@ -79,6 +84,7 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 协程.
+     * Coroutine.
      *
      * @var \Leevel\Di\ICoroutine
      */
@@ -86,13 +92,15 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 协程上下文注册的实例.
+     * Registered instances of coroutine context.
      *
      * @var array
      */
     protected array $coroutineInstances = [];
 
     /**
-     * 是否已经初始化引导
+     * 是否已经初始引导.
+     * Has it been initially booted.
      *
      * @var bool
      */
@@ -119,7 +127,7 @@ class Container implements IContainer, ArrayAccess
      */
     public function __clone()
     {
-        $e = 'Ioc container disallowed clone.';
+        $e = 'IOC container disallowed clone.';
 
         throw new RuntimeException($e);
     }
@@ -186,10 +194,11 @@ class Container implements IContainer, ArrayAccess
      * @param mixed      $name
      * @param null|mixed $service
      * @param bool       $share
+     * @param bool       $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function bind($name, $service = null, bool $share = false): IContainer
+    public function bind($name, $service = null, bool $share = false, bool $coroutine = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -206,6 +215,10 @@ class Container implements IContainer, ArrayAccess
             $this->singletons[] = $name;
         }
 
+        if ($coroutine) {
+            $this->serviceCoroutine($name);
+        }
+
         return $this;
     }
 
@@ -214,10 +227,11 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed      $name
      * @param null|mixed $service
+     * @param bool       $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function instance($name, $service = null): IContainer
+    public function instance($name, $service = null, bool $coroutine = false): IContainer
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -228,8 +242,12 @@ class Container implements IContainer, ArrayAccess
             $service = $name;
         }
 
+        if ($coroutine) {
+            $this->serviceCoroutine($name);
+        }
+
         if ($this->coroutineContext($service)) {
-            $this->coroutineInstances[$this->coroutineUid()][$name] = $service;
+            $this->coroutineInstances[$this->coroutineCid()][$name] = $service;
         } else {
             $this->instances[$name] = $service;
         }
@@ -242,12 +260,13 @@ class Container implements IContainer, ArrayAccess
      *
      * @param array|scalar $name
      * @param null|mixed   $service
+     * @param bool         $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
-    public function singleton($name, $service = null): IContainer
+    public function singleton($name, $service = null, bool $coroutine = false): IContainer
     {
-        return $this->bind($name, $service, true);
+        return $this->bind($name, $service, true, $coroutine);
     }
 
     /**
@@ -297,12 +316,12 @@ class Container implements IContainer, ArrayAccess
         }
 
         // 存在直接返回
-        if (isset($this->instances[$name])) {
-            return $this->instances[$name];
+        if ($this->existsCoroutine($name)) {
+            return $this->coroutineInstances[$this->coroutineCid()][$name];
         }
 
-        if ($this->existsCoroutine($name)) {
-            return $this->coroutineInstances[$this->coroutineUid()][$name];
+        if (isset($this->instances[$name])) {
+            return $this->instances[$name];
         }
 
         // 生成实例
@@ -324,13 +343,11 @@ class Container implements IContainer, ArrayAccess
         // 单一实例
         if (in_array($name, $this->singletons, true)) {
             if ($this->coroutineContext($instance)) {
-                return $this->coroutineInstances[$this->coroutineUid()][$name] = $instance;
+                return $this->coroutineInstances[$this->coroutineCid()][$name] = $instance;
             }
 
             return $this->instances[$name] = $instance;
         }
-
-        // 多个实例
 
         return $instance;
     }
@@ -361,7 +378,7 @@ class Container implements IContainer, ArrayAccess
         if (false === $isStatic && is_array($callback)) {
             if (!is_object($callback[0])) {
                 if (!is_string($callback[0])) {
-                    $e = 'The classname must be string.';
+                    $e = 'The class name must be string.';
 
                     throw new InvalidArgumentException($e);
                 }
@@ -401,36 +418,12 @@ class Container implements IContainer, ArrayAccess
         }
 
         if ($this->existsCoroutine($name)) {
-            unset($this->coroutineInstances[$this->coroutineUid()][$name]);
+            unset($this->coroutineInstances[$this->coroutineCid()][$name]);
         }
 
         foreach ($this->alias as $alias => $service) {
             if ($name === $service) {
                 unset($this->alias[$alias]);
-            }
-        }
-    }
-
-    /**
-     * 删除协程上下文服务和实例.
-     *
-     * @param null|string $name
-     */
-    public function removeCoroutine(?string $name = null): void
-    {
-        if (!$this->coroutine) {
-            return;
-        }
-
-        if (null === $name) {
-            if (isset($this->coroutineInstances[$this->coroutineUid()])) {
-                unset($this->coroutineInstances[$this->coroutineUid()]);
-            }
-        } else {
-            $name = $this->normalize($name);
-
-            if ($this->existsCoroutine($name)) {
-                unset($this->coroutineInstances[$this->coroutineUid()][$name]);
             }
         }
     }
@@ -445,7 +438,6 @@ class Container implements IContainer, ArrayAccess
     public function exists(string $name): bool
     {
         $name = $this->normalize($name);
-
         $name = $this->getAlias($name);
 
         return isset($this->services[$name]) ||
@@ -534,7 +526,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 框架基础提供者 register.
+     * 注册服务提供者.
      */
     public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
     {
@@ -557,6 +549,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         $this->bootstrapProviders();
+        $this->isBootstrap = true;
     }
 
     /**
@@ -572,7 +565,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 返回协程.
      *
-     * @return \Leevel\Di\ICoroutine
+     * @return null|\Leevel\Di\ICoroutine
      */
     public function getCoroutine(): ?ICoroutine
     {
@@ -588,8 +581,46 @@ class Container implements IContainer, ArrayAccess
      */
     public function existsCoroutine(string $name): bool
     {
-        return false !== $this->coroutineUid() &&
-            isset($this->coroutineInstances[$this->coroutineUid()], $this->coroutineInstances[$this->coroutineUid()][$name]);
+        return false !== $this->coroutineCid() &&
+            isset($this->coroutineInstances[$this->coroutineCid()], $this->coroutineInstances[$this->coroutineCid()][$name]);
+    }
+
+    /**
+     * 删除协程上下文服务和实例.
+     *
+     * @param null|string $name
+     */
+    public function removeCoroutine(?string $name = null): void
+    {
+        if (!$this->coroutine) {
+            return;
+        }
+
+        if (null === $name) {
+            if (isset($this->coroutineInstances[$this->coroutineCid()])) {
+                unset($this->coroutineInstances[$this->coroutineCid()]);
+            }
+        } else {
+            $name = $this->normalize($name);
+
+            if ($this->existsCoroutine($name)) {
+                unset($this->coroutineInstances[$this->coroutineCid()][$name]);
+            }
+        }
+    }
+
+    /**
+     * 设置服务到协程上下文.
+     *
+     * @param string $service
+     */
+    public function serviceCoroutine(string $service): void
+    {
+        if (!$this->coroutine) {
+            return;
+        }
+
+        $this->coroutine->addContext($service);
     }
 
     /**
@@ -642,15 +673,9 @@ class Container implements IContainer, ArrayAccess
      */
     protected function bootstrapProviders(): void
     {
-        if ($this->isBootstrap) {
-            return;
-        }
-
         foreach ($this->providerBootstraps as $item) {
             $this->callProviderBootstrap($item);
         }
-
-        $this->isBootstrap = true;
     }
 
     /**
@@ -660,10 +685,6 @@ class Container implements IContainer, ArrayAccess
      */
     protected function registerDeferredProvider(string $provider): void
     {
-        if (!isset($this->deferredProviders[$provider])) {
-            return;
-        }
-
         $providerInstance = $this->register($this->deferredProviders[$provider]);
 
         $this->callProviderBootstrap($providerInstance);
@@ -720,13 +741,13 @@ class Container implements IContainer, ArrayAccess
      *
      * @return false|int
      */
-    protected function coroutineUid()
+    protected function coroutineCid()
     {
         if (!$this->coroutine) {
             return false;
         }
 
-        return $this->coroutine->uid();
+        return $this->coroutine->cid();
     }
 
     /**
@@ -800,7 +821,7 @@ class Container implements IContainer, ArrayAccess
         foreach ($param as $key => $item) {
             try {
                 switch (true) {
-                    case $argsclass = $this->parseParameterClass($item):
+                    case $argsclass = $this->parseParamClass($item):
                         $argsclass = (string) $argsclass;
 
                         if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsclass) {
@@ -874,7 +895,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @return bool|string
      */
-    protected function parseParameterClass(ReflectionParameter $param)
+    protected function parseParamClass(ReflectionParameter $param)
     {
         $classObject = $param->getClass();
 
@@ -892,27 +913,19 @@ class Container implements IContainer, ArrayAccess
      *
      * @throws \InvalidArgumentException
      *
-     * @return bool|object
+     * @return object
      */
-    protected function parseClassFromContainer(string $argsclass)
+    protected function parseClassFromContainer(string $argsclass): object
     {
         $itemMake = $this->make($argsclass);
 
-        // 实例对象
         if (is_object($itemMake)) {
             return $itemMake;
         }
 
-        // 接口绑定实现
-        $result = $this->make($itemMake);
+        $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
 
-        if (!is_object($result)) {
-            $e = sprintf('Class or interface %s is register in container is not object.', $argsclass);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        return $result;
+        throw new InvalidArgumentException($e);
     }
 
     /**
@@ -951,17 +964,13 @@ class Container implements IContainer, ArrayAccess
     {
         $reflection = new ReflectionFunction($injection);
 
-        if (!($param = $reflection->getParameters())) {
-            $param = [];
-        }
-
-        return $param;
+        return $reflection->getParameters();
     }
 
     /**
      * 解析数组回调反射参数.
      *
-     * @param array&callback $injection
+     * @param array|callback $injection
      *
      * @return array
      */
@@ -969,11 +978,7 @@ class Container implements IContainer, ArrayAccess
     {
         $reflection = new ReflectionMethod($injection[0], $injection[1]);
 
-        if (!($param = $reflection->getParameters())) {
-            $param = [];
-        }
-
-        return $param;
+        return $reflection->getParameters();
     }
 
     /**

@@ -24,6 +24,7 @@ use I18nMock;
 use Leevel\Di\Container;
 use Leevel\Validate\IValidate;
 use Leevel\Validate\Provider\Register;
+use Leevel\Validate\Validate;
 use Tests\TestCase;
 
 /**
@@ -55,13 +56,12 @@ class RegisterTest extends TestCase
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
-
         $test->register();
+        $container->alias($test->providers());
 
+        // validate
         $validate = $container->make('validate');
-
         $this->assertInstanceof(IValidate::class, $validate);
-
         $validator = $validate->make(
             [
                 'name' => '小牛哥',
@@ -95,6 +95,10 @@ class RegisterTest extends TestCase
                 $validator->getRule()
             )
         );
+
+        // alias
+        $validate = $container->make(Validate::class);
+        $this->assertInstanceof(IValidate::class, $validate);
     }
 
     protected function createContainer(): Container

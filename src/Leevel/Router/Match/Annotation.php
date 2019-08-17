@@ -301,7 +301,6 @@ class Annotation extends Match implements IMatch
 
                 foreach ($routers['domain_var'] as $var) {
                     $value = array_shift($matches);
-
                     $domainVars[$var] = $value;
                     $this->addVariable($var, $value);
                 }
@@ -324,12 +323,9 @@ class Annotation extends Match implements IMatch
     protected function matcheVariable(array $routers, array $matches): array
     {
         $result = [];
-
         array_shift($matches);
 
         foreach ($routers['var'] as $key => $var) {
-            $value = $matches[$key];
-
             $result[$var] = $matches[$key];
             $this->addVariable($var, $matches[$key]);
         }

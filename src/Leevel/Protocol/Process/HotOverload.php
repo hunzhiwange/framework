@@ -24,6 +24,7 @@ use function Leevel\Filesystem\Fso\list_directory;
 use Leevel\Filesystem\Fso\list_directory;
 use Leevel\Option\IOption;
 use Leevel\Protocol\IServer;
+use Swoole\Coroutine;
 
 /**
  * Swoole 热重载.
@@ -33,6 +34,9 @@ use Leevel\Protocol\IServer;
  * @since 2018.12.13
  *
  * @version 1.0
+ *
+ * @see https://www.swoft.org 参考 Swoft 热更新
+ * @codeCoverageIgnore
  */
 class HotOverload extends Process
 {
@@ -51,25 +55,18 @@ class HotOverload extends Process
     protected $count = 0;
 
     /**
-     * 文件 MD5 值.
-     *
-     * @var string
-     */
-    protected $md5;
-
-    /**
-     * 正在 reload.
-     *
-     * @var bool
-     */
-    protected $reloading = false;
-
-    /**
-     * 重启延迟时间.
+     * 检测延迟重启计数器.
      *
      * @var int
      */
-    protected $after = 2;
+    protected $delayCount = 2;
+
+    /**
+     * 检测间隔时间（毫秒）.
+     *
+     * @var int
+     */
+    protected $timeInterval = 20;
 
     /**
      * 配置.
@@ -79,6 +76,20 @@ class HotOverload extends Process
     protected $option;
 
     /**
+     * 文件 MD5 值.
+     *
+     * @var string
+     */
+    protected $md5Hash;
+
+    /**
+     * 正在 reload.
+     *
+     * @var bool
+     */
+    protected $reloading = false;
+
+    /**
      * 构造函数.
      *
      * @param \Leevel\Option\IOption $option
@@ -86,54 +97,67 @@ class HotOverload extends Process
     public function __construct(IOption $option)
     {
         $this->option = $option;
-
-        $this->after = (int) $this->option->get('swoole\\hotoverload_after');
+        $this->delayCount = (int) $this->option->get('protocol\\hotoverload_delay_count', 2);
+        $this->timeInterval = (int) $this->option->get('protocol\\hotoverload_time_interval', 20);
     }
 
     /**
      * 响应句柄.
      *
      * @param \Leevel\Protocol\IServer $server
+     * @codeCoverageIgnore
      */
     public function handle(IServer $server): void
     {
-        while (true) {
-            sleep(1);
+        Coroutine::create(function () use ($server) {
+            while (true) {
+                Coroutine::sleep($this->timeInterval / 1000);
 
-            $newMd5 = $this->md5();
-            $this->count++;
-
-            if ($this->md5 && $newMd5 !== $this->md5) {
-                $this->log('The Swoole server will reload.');
-
-                $this->count = 0;
-                $this->reloading = true;
+                if (true === $this->serverNeedReload()) {
+                    $this->reload($server);
+                }
             }
-
-            if (true === $this->reloading && $this->count > $this->after) {
-                $this->reload($server);
-            }
-
-            $this->md5 = $newMd5;
-        }
+        });
     }
 
     /**
-     * 当前文件 MD5 值
+     * 服务是否需要重启.
+     *
+     * @return bool
+     */
+    protected function serverNeedReload(): bool
+    {
+        $newMd5Hash = $this->md5Hash();
+        $this->count++;
+
+        if ($this->md5Hash && $newMd5Hash !== $this->md5Hash) {
+            $this->count = 0;
+            $this->reloading = true;
+        }
+
+        if (true === $this->reloading && $this->count > $this->delayCount) {
+            return true;
+        }
+
+        $this->md5Hash = $newMd5Hash;
+
+        return false;
+    }
+
+    /**
+     * 当前文件 MD5 值.
      *
      * @return string
      */
-    protected function md5(): string
+    protected function md5Hash(): string
     {
-        $md5File = [];
-
+        $files = [];
         foreach ($this->files() as $file) {
-            $md5File[$file] = md5_file($file);
+            $files[] = md5_file($file);
         }
+        sort($files);
 
-        ksort($md5File);
-
-        return md5(json_encode($md5File));
+        return md5(json_encode($files));
     }
 
     /**
@@ -145,16 +169,20 @@ class HotOverload extends Process
     {
         $files = [];
 
-        foreach ((array) $this->option->get('swoole\\hotoverload_watch') as $dir) {
+        foreach ((array) $this->option->get('protocol\\hotoverload_watch', []) as $dir) {
+            if (is_file($dir)) {
+                $files[] = $dir;
+
+                continue;
+            }
+
             if (!is_dir($dir)) {
                 continue;
             }
 
             list_directory($dir, true, function ($file) use (&$files) {
-                if ($file->isFile()) {
-                    if (in_array($file->getExtension(), ['php'], true)) {
-                        $files[] = $file->getPath().'/'.$file->getFilename();
-                    }
+                if ($file->isFile() && in_array($file->getExtension(), ['php'], true)) {
+                    $files[] = $file->getPath().'/'.$file->getFilename();
                 }
             });
         }
@@ -170,18 +198,15 @@ class HotOverload extends Process
     protected function reload(IServer $server): void
     {
         $this->reloading = false;
-
         $this->log('The Swoole server is start reloading.');
-
         $server->getServer()->reload();
-
-        $this->log('The Swoole server has reloaded.');
     }
 
     /**
      * 记录日志.
      *
      * @param string $log
+     * @codeCoverageIgnore
      */
     protected function log(string $log): void
     {

@@ -23,7 +23,7 @@ namespace Leevel\Kernel\Proxy;
 use Leevel\Di\IContainer;
 
 /**
- * 代理 event 接口.
+ * 代理 app 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -348,6 +348,16 @@ interface IApp
     public static function environment(): string;
 
     /**
+     * 取得应用的环境变量.支持 boolean, empty 和 null.
+     *
+     * @param mixed      $name
+     * @param null|mixed $defaults
+     *
+     * @return mixed
+     */
+    public static function env(string $name, $defaults = null);
+
+    /**
      * 初始化应用.
      *
      * @param array $bootstraps
@@ -355,9 +365,9 @@ interface IApp
     public static function bootstrap(array $bootstraps): void;
 
     /**
-     * 框架基础提供者 register.
+     * 注册应用服务提供者.
      */
-    public static function registerProviders(): void;
+    public static function registerAppProviders(): void;
 
     /**
      * 返回 IOC 容器.

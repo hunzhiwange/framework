@@ -16,6 +16,7 @@
         "leevel/di": "1.0.*",
         "leevel/support": "1.0.*",
         "leevel/filesystem": "1.0.*",
+        "leevel/log": "1.0.*",
         "leric/php-thrift": "0.10.0"
     },
     "autoload": {

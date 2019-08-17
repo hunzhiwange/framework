@@ -27,6 +27,7 @@ use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\UnitOfWork;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
+use Leevel\Database\Mysql\MysqlPool;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Event\IDispatch;
@@ -51,6 +52,7 @@ class Register extends Provider
         $this->database();
         $this->unitOfWork();
         $this->databaseLazyload();
+        $this->mysqlPool();
     }
 
     /**
@@ -73,9 +75,11 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'databases'        => Manager::class,
-            'database'         => [IDatabase::class, Database::class],
+            'databases'          => Manager::class,
+            'database'           => [IDatabase::class, Database::class],
             'database.lazyload',
+            IUnitOfWork::class   => UnitOfWork::class,
+            'mysql.pool'         => MysqlPool::class,
         ];
     }
 
@@ -156,5 +160,24 @@ class Register extends Provider
         Meta::setDatabaseResolver(function (): Manager {
             return $this->container['databases'];
         });
+    }
+
+    /**
+     * 注册 mysql.pool 服务
+     */
+    protected function mysqlPool(): void
+    {
+        $this->container
+            ->singleton(
+                'mysql.pool',
+                function (IContainer $container): MysqlPool {
+                    $options = $container
+                        ->make('option')
+                        ->get('database\\connect.mysqlPool');
+                    $manager = $container->make('databases');
+
+                    return new MysqlPool($manager, $options['mysql_connect'], $options);
+                },
+            );
     }
 }

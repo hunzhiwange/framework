@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Debug;
 
 use Spiral\Debug;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * 调试一个变量.
@@ -35,42 +34,6 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 class Dump
 {
-    /**
-     * 调试变量.
-     *
-     * @param mixed $var
-     * @param array ...$moreVars
-     *
-     * @return mixed
-     */
-    public static function dump($var, ...$moreVars)
-    {
-        VarDumper::dump($var);
-
-        foreach ($moreVars as $var) {
-            VarDumper::dump($var);
-        }
-
-        if (1 < func_num_args()) {
-            return func_get_args();
-        }
-
-        return $var;
-    }
-
-    /**
-     * 调试变量并中断.
-     *
-     * @param mixed $var
-     * @param array ...$moreVars
-     */
-    public static function dumpDie($var, ...$moreVars): void
-    {
-        static::dump($var, ...$moreVars);
-
-        die;
-    }
-
     /**
      * 调试 RoadRunner 变量.
      *

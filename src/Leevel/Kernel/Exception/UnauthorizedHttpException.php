@@ -23,8 +23,9 @@ namespace Leevel\Kernel\Exception;
 use Exception;
 
 /**
- * 未授权
- * 对于需要登录的网页，服务器可能返回此响应: 401.
+ * 未授权.
+ *
+ * - 对于需要登录的网页，服务器可能返回此响应: 401.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class UnauthorizedHttpException extends HttpException
+abstract class UnauthorizedHttpException extends HttpException
 {
     /**
      * 构造函数.

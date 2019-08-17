@@ -36,7 +36,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 class Application extends SymfonyApplication implements IApplication
 {
     /**
-     * 应用容器.
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
@@ -64,7 +64,7 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @return \Symfony\Component\Console\Command\Command
      */
-    public function add(SymfonyCommand $command)
+    public function add(SymfonyCommand $command): SymfonyCommand
     {
         if ($command instanceof Command) {
             $command->setContainer($this->container);
@@ -121,6 +121,7 @@ class Application extends SymfonyApplication implements IApplication
                __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
                  \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
                     \_\                /_/_/         /_/
+                      by Xiangmin Liu and contributors.
             queryphp;
     }
 }

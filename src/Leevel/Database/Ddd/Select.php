@@ -221,12 +221,9 @@ class Select
      */
     public function softDelete(): int
     {
-        $this->entity->__set($this->deleteAtColumn(), $time = date('Y-m-d H:i:s'));
-
+        $this->entity->__set($this->deleteAtColumn(), date('Y-m-d H:i:s'));
         $this->entity->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
-
         $num = $this->entity->update()->flush();
-
         $this->entity->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
 
         return $num;
@@ -246,11 +243,13 @@ class Select
 
         $instance = $this->entity->make();
         $entitys = $instance
+            ->select()
             ->whereIn($instance->singlePrimaryKey(), $ids)
             ->findAll();
 
-        foreach ($entitys as $value) {
-            if ($value->softDelete()) {
+        /** @var \Leevel\Database\Ddd\IEntity $entity */
+        foreach ($entitys as $entity) {
+            if ($entity->selectForEntity()->softDelete()) {
                 $count++;
             }
         }
@@ -334,38 +333,6 @@ class Select
     }
 
     /**
-     * 查询范围.
-     *
-     * @param mixed $scope
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function scope($scope): IEntity
-    {
-        $scopeSelect = $this->select;
-
-        $args = func_get_args();
-        array_shift($args);
-        array_unshift($args, $scopeSelect);
-
-        if ($scope instanceof Closure) {
-            $scope(...$args);
-            $this->entity->withScopeSelect($scopeSelect);
-        } else {
-            foreach (normalize($scope) as $value) {
-                $value = 'scope'.ucfirst($value);
-
-                if (method_exists($this->entity, $value)) {
-                    $this->entity->{$value}(...$args);
-                    $this->entity->withScopeSelect($scopeSelect);
-                }
-            }
-        }
-
-        return $this->entity;
-    }
-
-    /**
      * 预载入模型实体.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
@@ -388,12 +355,12 @@ class Select
      *
      * @param string $name
      *
-     * @return \leevel\Database\Ddd\Relation\Relation
+     * @return \Leevel\Database\Ddd\Relation\Relation
      */
     protected function getRelation(string $name): Relation
     {
-        $relation = Relation::withoutRelationCondition(function () use ($name) {
-            return $this->entity->{$name}();
+        $relation = Relation::withoutRelationCondition(function () use ($name): Relation {
+            return $this->entity->loadRelation($name);
         });
 
         $nested = $this->nestedRelation($name);
@@ -529,9 +496,7 @@ class Select
     protected function loadRelation(array $entitys, string $name, Closure $condition): array
     {
         $relation = $this->getRelation($name);
-
         $relation->preLoadCondition($entitys);
-
         call_user_func($condition, $relation);
 
         return $relation->matchPreLoad($entitys, $relation->getPreLoad(), $name);

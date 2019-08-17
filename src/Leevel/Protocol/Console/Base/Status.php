@@ -25,7 +25,7 @@ use Leevel\Console\Option;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole 服务列表.
+ * Swoole 服务列表.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -41,10 +41,9 @@ abstract class Status extends Command
      */
     public function handle(): void
     {
+        $this->info($this->getLogo());
         $this->warn($this->getVersion());
-
         $server = $this->createServer();
-
         $this->status($server->getOption());
     }
 
@@ -71,7 +70,7 @@ abstract class Status extends Command
     {
         $processName = $option['process_name'];
 
-        if ($this->option('all')) {
+        if (true === $this->option('all')) {
             $item = '$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11';
 
             $nikename = [
@@ -158,6 +157,23 @@ abstract class Status extends Command
     }
 
     /**
+     * 返回 QueryPHP Logo.
+     *
+     * @return string
+     */
+    protected function getLogo(): string
+    {
+        return <<<'queryphp'
+            _____________                           _______________
+             ______/     \__  _____  ____  ______  / /_  _________
+              ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+               __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+                 \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+                    \_\                /_/_/         /_/
+            queryphp;
+    }
+
+    /**
      * 命令参数.
      *
      * @return array
@@ -177,8 +193,8 @@ abstract class Status extends Command
         return [
             [
                 'all',
-                null,
-                Option::VALUE_OPTIONAL,
+                'a',
+                Option::VALUE_NONE,
                 'Show all item of process.',
             ],
         ];

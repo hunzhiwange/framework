@@ -92,6 +92,24 @@ class CompilerListTest extends TestCase
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
+    public function testCodeTagCanBeAtMostThree(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The param of code.foreach tag can be at most three.'
+        );
+
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+            {list $list $key $value $four}
+                {$key} - {$value}
+            {/list}
+            eot;
+
+        $parser->doCompile($source, null, true);
+    }
+
     /**
      * @api(
      *     title="node",

@@ -31,8 +31,9 @@ use Leevel\Support\IJson;
 use UnexpectedValueException;
 
 /**
- * HTTP 响应
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ * HTTP 响应.
+ *
+ * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

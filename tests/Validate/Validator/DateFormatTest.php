@@ -40,7 +40,7 @@ class DateFormatTest extends TestCase
      * @param mixed  $value
      * @param string $format
      */
-    public function testBaseUse($value, string $format)
+    public function testBaseUse($value, string $format): void
     {
         $validate = new Validator(
             [
@@ -54,7 +54,7 @@ class DateFormatTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['6.1.2018 13:00+01:00', 'j.n.Y H:iP'],
@@ -68,7 +68,7 @@ class DateFormatTest extends TestCase
      * @param mixed  $value
      * @param string $format
      */
-    public function testBad($value, string $format)
+    public function testBad($value, string $format): void
     {
         $validate = new Validator(
             [
@@ -82,11 +82,30 @@ class DateFormatTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['2018.6.1 13:00+01:00', 'j.n.Y H:iP'],
             ['29/Feb/23:2018:59:31', 'd/M/Y:H:i:s'],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'date_format',
+            ]
+        );
+
+        $validate->success();
     }
 }

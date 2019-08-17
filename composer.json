@@ -26,6 +26,7 @@
         "league/flysystem": "^1.0.8",
         "monolog/monolog": "^1.23",
         "swiftmailer/swiftmailer": "6.0.2",
+        "egulias/email-validator": "^2.1.10",
         "gettext/gettext": "^4.6.0",
         "zircote/swagger-php": "^3.0.1",
         "doctrine/annotations": "^1.6.1",

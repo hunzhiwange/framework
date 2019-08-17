@@ -23,8 +23,9 @@ namespace Leevel\Kernel\Exception;
 use Exception;
 
 /**
- * 错误请求
- * 服务器不理解请求的语法: 400.
+ * 错误请求.
+ *
+ * - 服务器不理解请求的语法: 400.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class BadRequestHttpException extends HttpException
+abstract class BadRequestHttpException extends HttpException
 {
     /**
      * 构造函数.

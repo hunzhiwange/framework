@@ -323,7 +323,7 @@ class FsoTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Dir `%s` is not writeable.', dirname($sourcePath))
+            sprintf('File `%s` is not writeable.', $file)
         );
 
         if (is_dir($sourcePath)) {
@@ -336,15 +336,16 @@ class FsoTest extends TestCase
 
         $this->assertDirectoryNotExists($sourcePath);
 
-        // 设置目录只读
-        // 7 = 4+2+1 分别代表可读可写可执行
-        mkdir(dirname($sourcePath), 0444);
+        // 设置文件只读
+        $this->assertFalse(is_file($file));
+        Fso::createDirectory($sourcePath);
+        file_put_contents($file, 'foo');
+        chmod($file, 0444 & ~umask());
+        $this->assertTrue(is_file($file));
 
-        if (is_writable(dirname($sourcePath))) {
+        if (is_writable($file)) {
             $this->markTestSkipped('Mkdir with chmod is invalid.');
         }
-
-        $this->assertFalse(is_file($file));
 
         Fso::createFile($file);
     }

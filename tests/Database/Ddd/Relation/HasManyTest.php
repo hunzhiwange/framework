@@ -40,7 +40,7 @@ class HasManyTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
@@ -68,21 +68,21 @@ class HasManyTest extends TestCase
                 ]);
         }
 
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getterId());
+        $this->assertSame('1', $post->getId());
         $this->assertSame('1', $post->user_id);
         $this->assertSame('1', $post->userId);
         $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getterUserId());
+        $this->assertSame('1', $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getterTitle());
+        $this->assertSame('hello world', $post->getTitle());
         $this->assertSame('Say hello to the world.', $post->summary);
         $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getterSummary());
+        $this->assertSame('Say hello to the world.', $post->getSummary());
 
         $comment = $post->comment;
 
@@ -96,13 +96,13 @@ class HasManyTest extends TestCase
             $this->assertSame($n, $k);
             $this->assertSame($id, (int) $v->id);
             $this->assertSame($id, (int) $v['id']);
-            $this->assertSame($id, (int) $v->getterId());
+            $this->assertSame($id, (int) $v->getId());
             $this->assertSame('niu'.$id, $v['title']);
             $this->assertSame('niu'.$id, $v->title);
-            $this->assertSame('niu'.$id, $v->getterTitle());
+            $this->assertSame('niu'.$id, $v->getTitle());
             $this->assertSame('Comment data.'.$id, $v['content']);
             $this->assertSame('Comment data.'.$id, $v->content);
-            $this->assertSame('Comment data.'.$id, $v->getterContent());
+            $this->assertSame('Comment data.'.$id, $v->getContent());
 
             $n++;
         }
@@ -112,7 +112,7 @@ class HasManyTest extends TestCase
 
     public function testEager(): void
     {
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
@@ -208,7 +208,7 @@ class HasManyTest extends TestCase
                 ]);
         }
 
-        $commentRelation = Post::comment();
+        $commentRelation = Post::make()->loadRelation('comment');
 
         $this->assertInstanceof(HasMany::class, $commentRelation);
         $this->assertSame('id', $commentRelation->getSourceKey());

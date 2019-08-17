@@ -27,7 +27,7 @@ use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole http 服务启动.
+ * Swoole HTTP 服务启动.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -81,7 +81,8 @@ abstract class Server extends Command
     protected function start(array $option): void
     {
         $show = [];
-
+        $show[] = ['QueryPHP', App::version()];
+        $show[] = ['Swoole', phpversion('swoole')];
         $basePath = App::path();
 
         foreach ($option as $key => $val) {
@@ -180,13 +181,6 @@ abstract class Server extends Command
 
             throw new InvalidArgumentException($e);
         }
-
-        $message =
-            sprintf('Warning:swoole pid file is already exists.', $file).
-            PHP_EOL.'It is possible that the swoole service was last unusual exited.'.
-            PHP_EOL.'The non daemon mode ctrl+c termination is the most possible.'.PHP_EOL;
-
-        $this->warn($message);
 
         unlink($file);
     }

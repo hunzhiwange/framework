@@ -67,7 +67,7 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'mail' => [
-                'default'     => 'nulls',
+                'default'     => 'test',
                 'global_from' => [
                     'address' => null,
                     'name'    => null,
@@ -77,8 +77,8 @@ class ManagerTest extends TestCase
                     'name'    => null,
                 ],
                 'connect' => [
-                    'nulls' => [
-                        'driver' => 'nulls',
+                    'test' => [
+                        'driver' => 'test',
                     ],
                 ],
             ],

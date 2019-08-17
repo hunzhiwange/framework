@@ -21,13 +21,11 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Exception;
-use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\Response;
 use Leevel\Kernel\Exception\HttpException;
-use Leevel\Kernel\Exception\NotFoundHttpException;
 use Leevel\Log\ILog;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -84,13 +82,7 @@ abstract class Runtime implements IRuntime
         }
         // @codeCoverageIgnoreEnd
 
-        $log->error(
-            $e->getMessage(),
-            [
-                'exception' => (string) $e,
-            ]
-        );
-
+        $log->error($e->getMessage(), ['exception' => (string) $e]);
         $log->flush();
     }
 
@@ -159,7 +151,6 @@ abstract class Runtime implements IRuntime
 
         if (file_exists($filepath)) {
             $vars = $this->getExceptionVars($e);
-
             $content = $this->renderWithFile($filepath, $vars);
 
             return new Response($content,
@@ -201,7 +192,8 @@ abstract class Runtime implements IRuntime
         }
 
         if (!$this->isHttpException($e)) {
-            $e = new HttpException(500, $e->getMessage());
+            $e = new class(500, $e->getMessage(), $e->getCode()) extends HttpException {
+            };
         }
 
         return $this->rendorWithHttpExceptionView($e);
@@ -222,6 +214,7 @@ abstract class Runtime implements IRuntime
         // JSON 响应结果的物理路径做安全处理
         $json = $whoops->handleException($e);
         $json = json_decode($json, true);
+        $json['code'] = $e->getCode();
         $json['error']['file'] = $this->filterPhysicalPath($json['error']['file']);
         $json = json_encode($json);
 
@@ -287,10 +280,8 @@ abstract class Runtime implements IRuntime
     protected function renderExceptionWithWhoops(Exception $e): string
     {
         $whoops = $this->makeWhoops();
-
         $prettyPage = new PrettyPageHandler();
         $prettyPage->handleUnconditionally(true);
-
         $whoops->pushHandler($prettyPage);
 
         return $whoops->handleException($e);
@@ -306,12 +297,13 @@ abstract class Runtime implements IRuntime
     protected function getExceptionVars(Exception $e): array
     {
         return [
-            'e'       => $e,
-            'code'    => $this->normalizeStatusCode($e),
-            'message' => $e->getMessage(),
-            'type'    => get_class($e),
-            'file'    => $this->filterPhysicalPath($e->getFile()),
-            'line'    => $e->getLine(),
+            'e'              => $e,
+            'status_code'    => $this->normalizeStatusCode($e),
+            'code'           => $e->getCode(),
+            'message'        => $e->getMessage(),
+            'type'           => get_class($e),
+            'file'           => $this->filterPhysicalPath($e->getFile()),
+            'line'           => $e->getLine(),
         ];
     }
 
@@ -347,7 +339,6 @@ abstract class Runtime implements IRuntime
     protected function makeWhoops(): Run
     {
         $whoops = new Run();
-
         $whoops->writeToOutput(false);
         $whoops->allowQuit(false);
 
@@ -373,10 +364,6 @@ abstract class Runtime implements IRuntime
      */
     protected function prepareException(Exception $e): Exception
     {
-        if ($e instanceof EntityNotFoundException) {
-            $e = new NotFoundHttpException($e->getMessage(), $e->getCode());
-        }
-
         return $e;
     }
 

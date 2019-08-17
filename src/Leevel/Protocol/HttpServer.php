@@ -22,21 +22,20 @@ namespace Leevel\Protocol;
 
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
-use Leevel\Http\RedirectResponse;
-use Leevel\Http\Request;
 use Leevel\Kernel\IKernel;
 use Swoole\Http\Request as SwooleHttpRequest;
 use Swoole\Http\Response as SwooleHttpResponse;
 use Swoole\Http\Server as SwooleHttpServer;
 
 /**
- *  Http 服务
+ *  HTTP 服务.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.12.25
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class HttpServer extends Server implements IServer
 {
@@ -56,10 +55,10 @@ class HttpServer extends Server implements IServer
         // see https://wiki.swoole.com/wiki/page/327.html
         'port' => '9501',
 
-        // swoole 进程名称
+        // Swoole 进程名称
         'process_name' => 'leevel.http',
 
-        // swoole 进程保存路径
+        // Swoole 进程保存路径
         'pid_path' => '',
 
         // 设置启动的 worker 进程数
@@ -71,7 +70,7 @@ class HttpServer extends Server implements IServer
         'daemonize' => 0,
 
         // 开启静态路径
-        // 配合 Nginx 可以设置这里为 false,nginx 设置规则解析静态路径动态路由转发给 swoole
+        // 配合 Nginx 可以设置这里为 false,nginx 设置规则解析静态路径动态路由转发给 Swoole
         'enable_static_handler' => false,
 
         // 开启静态路径目录
@@ -93,25 +92,27 @@ class HttpServer extends Server implements IServer
         'managerStart',
         'workerStop',
         'request',
+        'receive',
+        'task',
+        'finish',
         'shutdown',
         'close',
     ];
 
     /**
-     * 处理 http 请求
-     * 浏览器连接服务器后, 页面上的每个请求均会执行一次
-     * nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
-     * 可以通过 nginx deny 屏蔽掉 favicon.ico 的请求，具体请 Google 或者百度.
+     * 处理 http 请求.
+     *
+     * - 浏览器连接服务器后, 页面上的每个请求均会执行一次
+     * - nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
+     * - 可以通过 nginx deny 屏蔽掉 favicon.ico 的请求，具体请 Google 或者百度.
      *
      * @param \Swoole\Http\Request  $swooleRequest
      * @param \Swoole\Http\Response $swooleResponse
      */
     public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse): void
     {
-        // 请求过滤 favicon
-        if ('/favicon.ico' === $swooleRequest->server['path_info'] ||
-            '/favicon.ico' === $swooleRequest->server['request_uri']) {
-            $swooleResponse->end(' ');
+        if ($this->isFavicon($swooleRequest)) {
+            $swooleResponse->end();
 
             return;
         }
@@ -124,8 +125,9 @@ class HttpServer extends Server implements IServer
     }
 
     /**
-     * 监听连接关闭事件
-     * 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
+     * 监听连接关闭事件.
+     *
+     * - 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
      *
      * @param \Swoole\Http\Server $server
      * @param int                 $fd
@@ -135,12 +137,33 @@ class HttpServer extends Server implements IServer
      */
     public function onHttpClose(SwooleHttpServer $server, int $fd, int $reactorId): void
     {
-        $this->log(
-            sprintf(
-                'Server close, fd %d, reactorId %d.',
-                $fd, $reactorId
-            )
-        );
+        $message = sprintf('Server close, fd %d, reactorId %d.', $fd, $reactorId);
+        $this->log($message);
+    }
+
+    /**
+     * 请求过滤 favicon.
+     *
+     * @param \Swoole\Http\Request $swooleRequest
+     *
+     * @return bool
+     */
+    protected function isFavicon(SwooleHttpRequest $swooleRequest): bool
+    {
+        return '/favicon.ico' === $swooleRequest->server['path_info'] ||
+            '/favicon.ico' === $swooleRequest->server['request_uri'];
+    }
+
+    /**
+     * 是否为 options 请求.
+     *
+     * @param \Swoole\Http\Request $swooleRequest
+     *
+     * @return bool
+     */
+    protected function isOptions(SwooleHttpRequest $swooleRequest): bool
+    {
+        return 'OPTIONS' === $swooleRequest->server['request_method'];
     }
 
     /**
@@ -153,18 +176,15 @@ class HttpServer extends Server implements IServer
     protected function dispatchRouter(IRequest $request): IResponse
     {
         $kernel = $this->container->make(IKernel::class);
-
         $response = $kernel->handle($request);
-
         $kernel->terminate($request, $response);
-
         $this->removeCoroutine();
 
         return $response;
     }
 
     /**
-     * 格式化 QueryPHP 响应到 swoole 响应.
+     * 格式化 QueryPHP 响应到 Swoole 响应.
      *
      * @param \Leevel\Http\IResponse $response
      * @param \Swoole\Http\Response  $swooleResponse
@@ -173,28 +193,14 @@ class HttpServer extends Server implements IServer
      */
     protected function normalizeResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
-        foreach ($response->getCookies() as $item) {
-            call_user_func_array([$swooleResponse, 'cookie'], $item);
-        }
+        $leevel2swoole = new Leevel2Swoole();
+        $response = $leevel2swoole->createResponse($response, $swooleResponse);
 
-        if ($response instanceof RedirectResponse &&
-            method_exists($swooleResponse, 'redirect')) {
-            $swooleResponse->redirect($response->getTargetUrl());
-        }
-
-        foreach ($response->headers->all() as $key => $value) {
-            $swooleResponse->header($key, $value);
-        }
-
-        $swooleResponse->status($response->getStatusCode());
-
-        $swooleResponse->write($response->getContent() ?: ' ');
-
-        return $swooleResponse;
+        return $response;
     }
 
     /**
-     * 格式化 swoole 请求到 QueryPHP 请求
+     * 格式化 Swoole 请求到 QueryPHP 请求.
      *
      * @param \Swoole\Http\Request $swooleRequest
      *
@@ -202,70 +208,22 @@ class HttpServer extends Server implements IServer
      */
     protected function normalizeRequest(SwooleHttpRequest $swooleRequest): IRequest
     {
-        $request = new Request();
-
-        $data = [
-            'header' => 'headers',
-            'server' => 'server',
-            'cookie' => 'cookies',
-            'get'    => 'query',
-            'files'  => 'files',
-            'post'   => 'request',
-        ];
-
-        $servers = [];
-
-        if ($swooleRequest->header) {
-            $tmp = $tmpHeader = [];
-
-            foreach ($swooleRequest->header as $key => $value) {
-                $key = strtoupper(str_replace('-', '_', $key));
-                $tmpHeader[$key] = $value;
-
-                $key = 'HTTP_'.$key;
-                $tmp[$key] = $value;
-            }
-
-            $servers = $tmp;
-            $swooleRequest->header = $tmpHeader;
-        }
-
-        if ($swooleRequest->server) {
-            $swooleRequest->server = array_change_key_case(
-                $swooleRequest->server,
-                CASE_UPPER
-            );
-
-            $servers = array_merge($servers, $swooleRequest->server);
-            $swooleRequest->server = $servers;
-        } else {
-            $swooleRequest->server = $servers ?: null;
-        }
-
-        foreach ($data as $key => $item) {
-            if ($swooleRequest->{$key}) {
-                $request->{$item}->replace($swooleRequest->{$key});
-            }
-        }
+        $swoole2Leevel = new Swoole2Leevel();
+        $request = $swoole2Leevel->createRequest($swooleRequest);
 
         return $request;
     }
 
     /**
-     * 创建 http server.
+     * 创建 HTTP Server.
      */
     protected function createServer(): void
     {
-        unset($this->option['task_worker_num']);
-
         $this->server = new SwooleHttpServer(
             $this->option['host'],
             (int) ($this->option['port'])
         );
 
         $this->initServer();
-
-        // 删除容器中注册为 -1 的数据
-        $this->removeCoroutine();
     }
 }

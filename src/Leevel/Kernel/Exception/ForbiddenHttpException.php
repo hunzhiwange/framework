@@ -23,8 +23,9 @@ namespace Leevel\Kernel\Exception;
 use Exception;
 
 /**
- * 禁止
- * 服务器拒绝请求: 403.
+ * 禁止.
+ *
+ * - 服务器拒绝请求: 403.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class ForbiddenHttpException extends HttpException
+abstract class ForbiddenHttpException extends HttpException
 {
     /**
      * 构造函数.

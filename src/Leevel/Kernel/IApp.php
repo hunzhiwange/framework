@@ -71,7 +71,7 @@ interface IApp
     public function console(): bool;
 
     /**
-     * 设置应用路径.
+     * 设置基础路径.
      *
      * @param string $path
      */
@@ -362,6 +362,16 @@ interface IApp
     public function environment(): string;
 
     /**
+     * 取得应用的环境变量.支持 boolean, empty 和 null.
+     *
+     * @param mixed      $name
+     * @param null|mixed $defaults
+     *
+     * @return mixed
+     */
+    public function env(string $name, $defaults = null);
+
+    /**
      * 初始化应用.
      *
      * @param array $bootstraps
@@ -369,9 +379,9 @@ interface IApp
     public function bootstrap(array $bootstraps): void;
 
     /**
-     * 框架基础提供者 register.
+     * 注册应用服务提供者.
      */
-    public function registerProviders(): void;
+    public function registerAppProviders(): void;
 
     /**
      * 返回 IOC 容器.

@@ -41,7 +41,7 @@ class ManyManyTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -98,14 +98,14 @@ class ManyManyTest extends TestCase
                     'role_id' => 3,
                 ]));
 
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getterId());
+        $this->assertSame('1', $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getterName());
+        $this->assertSame('niu', $user->getName());
 
         $role = $user->role;
 
@@ -115,19 +115,19 @@ class ManyManyTest extends TestCase
 
         $this->assertSame('1', $user1->id);
         $this->assertSame('1', $user1['id']);
-        $this->assertSame('1', $user1->getterId());
+        $this->assertSame('1', $user1->getId());
         $this->assertSame('管理员', $user1->name);
         $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getterName());
+        $this->assertSame('管理员', $user1->getName());
 
         $user2 = $role[1];
 
         $this->assertSame('3', $user2->id);
         $this->assertSame('3', $user2['id']);
-        $this->assertSame('3', $user2->getterId());
+        $this->assertSame('3', $user2->getId());
         $this->assertSame('会员', $user2->name);
         $this->assertSame('会员', $user2['name']);
-        $this->assertSame('会员', $user2->getterName());
+        $this->assertSame('会员', $user2->getName());
 
         $this->assertCount(2, $role);
         $this->assertSame('1', $role[0]['id']);
@@ -148,7 +148,7 @@ class ManyManyTest extends TestCase
 
     public function testEager(): void
     {
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -211,10 +211,10 @@ class ManyManyTest extends TestCase
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getterId());
+        $this->assertSame('1', $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getterName());
+        $this->assertSame('niu', $user->getName());
 
         $role = $user->role;
 
@@ -224,19 +224,19 @@ class ManyManyTest extends TestCase
 
         $this->assertSame('1', $user1->id);
         $this->assertSame('1', $user1['id']);
-        $this->assertSame('1', $user1->getterId());
+        $this->assertSame('1', $user1->getId());
         $this->assertSame('管理员', $user1->name);
         $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getterName());
+        $this->assertSame('管理员', $user1->getName());
 
         $user2 = $role[1];
 
         $this->assertSame('3', $user2->id);
         $this->assertSame('3', $user2['id']);
-        $this->assertSame('3', $user2->getterId());
+        $this->assertSame('3', $user2->getId());
         $this->assertSame('会员', $user2->name);
         $this->assertSame('会员', $user2['name']);
-        $this->assertSame('会员', $user2->getterName());
+        $this->assertSame('会员', $user2->getName());
 
         $this->assertCount(2, $role);
         $this->assertSame('1', $role[0]['id']);
@@ -255,7 +255,7 @@ class ManyManyTest extends TestCase
 
     public function testEagerWithNoData(): void
     {
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -326,7 +326,7 @@ class ManyManyTest extends TestCase
                     'role_id' => 3,
                 ]));
 
-        $roleRelation = User::role();
+        $roleRelation = User::make()->loadRelation('role');
 
         $this->assertInstanceof(ManyMany::class, $roleRelation);
         $this->assertSame('id', $roleRelation->getSourceKey());
@@ -341,7 +341,7 @@ class ManyManyTest extends TestCase
 
     public function testNotFoundData(): void
     {
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
@@ -356,14 +356,14 @@ class ManyManyTest extends TestCase
                     'name' => 'niu',
                 ]));
 
-        $user = User::where('id', 1)->findOne();
+        $user = User::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getterId());
+        $this->assertSame('1', $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getterName());
+        $this->assertSame('niu', $user->getName());
 
         $role = $user->role;
 

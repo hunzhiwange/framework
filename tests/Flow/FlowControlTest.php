@@ -76,7 +76,7 @@ class FlowControlTest extends TestCase
      * @param int    $condition
      * @param string $result
      */
-    public function testElse2(int $condition, string $result)
+    public function testElse2(int $condition, string $result): void
     {
         $test = new Test1();
 
@@ -126,13 +126,6 @@ class FlowControlTest extends TestCase
 
         $this->assertSame('condition2', $value);
     }
-
-    public function testPlaceholderFlowControl(): void
-    {
-        $test = new Test1();
-
-        $this->assertInstanceof(Test1::class, $test->_());
-    }
 }
 
 class Test1
@@ -143,9 +136,6 @@ class Test1
 
     public function __call(string $method, array $args)
     {
-        if ($this->placeholderFlowControl($method)) {
-            return $this;
-        }
     }
 
     public function value()

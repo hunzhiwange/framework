@@ -119,7 +119,7 @@ trait Proxy
     /**
      * 关闭.
      */
-    public function close()
+    public function close(): void
     {
         $this->proxy()->close();
     }

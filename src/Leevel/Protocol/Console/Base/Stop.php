@@ -26,7 +26,7 @@ use Leevel\Protocol\IServer;
 use Swoole\Process;
 
 /**
- * swoole 服务停止.
+ * Swoole 服务停止.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -42,10 +42,9 @@ abstract class Stop extends Command
      */
     public function handle(): void
     {
+        $this->info($this->getLogo());
         $this->warn($this->getVersion());
-
         $server = $this->createServer();
-
         $this->close($server->getOption());
     }
 
@@ -98,6 +97,23 @@ abstract class Stop extends Command
 
         $message = sprintf('Process %s:%d has stoped.', $processName, $pid);
         $this->info($message);
+    }
+
+    /**
+     * 返回 QueryPHP Logo.
+     *
+     * @return string
+     */
+    protected function getLogo(): string
+    {
+        return <<<'queryphp'
+            _____________                           _______________
+             ______/     \__  _____  ____  ______  / /_  _________
+              ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+               __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+                 \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+                    \_\                /_/_/         /_/
+            queryphp;
     }
 
     /**

@@ -35,32 +35,18 @@ use Leevel\Di\IContainer;
 interface IValidator
 {
     /**
-     * 默认验证条件.
+     * 可选字段.
      *
      * @var string
      */
-    const DEFAULT_CONDITION = 'exists';
+    const OPTIONAL = 'optional';
 
     /**
-     * 存在字段即验证
+     * 无论是否是可选字段都验证
      *
      * @var string
      */
-    const CONDITION_EXISTS = 'exists';
-
-    /**
-     * 无论是否存在字段都验证
-     *
-     * @var string
-     */
-    const CONDITION_MUST = 'must';
-
-    /**
-     * 字段值不为空就验证
-     *
-     * @var string
-     */
-    const CONDITION_VALUE = 'value';
+    const MUST = 'must';
 
     /**
      * 失败后跳过.

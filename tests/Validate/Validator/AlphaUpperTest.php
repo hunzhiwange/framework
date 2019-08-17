@@ -40,7 +40,7 @@ class AlphaUpperTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value): void
     {
         $validate = new Validator(
             [
@@ -54,7 +54,7 @@ class AlphaUpperTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['ABC'],
@@ -66,7 +66,7 @@ class AlphaUpperTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBad($value)
+    public function testBad($value): void
     {
         $validate = new Validator(
             [
@@ -80,7 +80,7 @@ class AlphaUpperTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             [' '],

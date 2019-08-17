@@ -21,12 +21,11 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console;
 
 use Leevel\Di\Container;
-use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Status as BaseStatus;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole rpc 服务列表.
+ * Swoole RPC 服务列表.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -68,6 +67,6 @@ class RpcStatus extends BaseStatus
      */
     protected function getVersion(): string
     {
-        return 'Rpc Status Version '.App::version().PHP_EOL;
+        return PHP_EOL.'                      RPC STATUS'.PHP_EOL;
     }
 }

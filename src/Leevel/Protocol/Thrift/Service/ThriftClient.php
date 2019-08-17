@@ -26,7 +26,8 @@ use Thrift\Type\TMessageType;
 
 /**
  * thrift 默认服务客户端.
- * thrift 自动生成代码分隔而来无需进行单元测试.
+ *
+ * - thrift 自动生成代码分隔而来无需进行单元测试.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

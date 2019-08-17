@@ -90,11 +90,8 @@ abstract class KernelConsole implements IKernelConsole
     public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
         $this->registerBaseService();
-
         $this->bootstrap();
-
         $this->setGlobalReplace();
-
         $this->loadCommands();
 
         return $this->getConsoleApplication()->run($input, $output);
@@ -166,7 +163,6 @@ abstract class KernelConsole implements IKernelConsole
     protected function loadCommands(): void
     {
         $commands = $this->normalizeCommands($this->getCommands());
-
         $this->getConsoleApplication()->normalizeCommands($commands);
     }
 

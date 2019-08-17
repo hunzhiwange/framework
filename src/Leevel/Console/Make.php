@@ -277,14 +277,8 @@ abstract class Make extends Command
      */
     protected function parseNamespace(): void
     {
-        $namespace = $this->option('namespace');
-
-        if (empty($namespace)) {
-            $namespace = 'app';
-        }
-
+        $namespace = $this->option('namespace') ?: 'app';
         $namespace = ucfirst($namespace);
-
         $this->setNamespace($namespace);
     }
 

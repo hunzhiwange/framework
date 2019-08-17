@@ -116,11 +116,11 @@ class SelectTest extends TestCase
         $this->assertSame('1', $result['id']);
         $this->assertSame('tom', $result['name']);
         $this->assertSame('I love movie.', $result['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $result['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $result['create_at']);
         $this->assertSame('1', $result[0]);
         $this->assertSame('tom', $result[1]);
         $this->assertSame('I love movie.', $result[2]);
-        $this->assertStringContainsString(date('Y-m-d'), $result[3]);
+        $this->assertStringContainsString(date('Y-m'), $result[3]);
     }
 
     public function testFetchArgsColumn(): void
@@ -744,13 +744,13 @@ class SelectTest extends TestCase
                 $this->assertSame($n * 2 - 1, (int) $result[0]->id);
                 $this->assertSame('tom', $result[0]->name);
                 $this->assertSame('I love movie.', $result[0]->content);
-                $this->assertStringContainsString(date('Y-m-d'), $result[0]->create_at);
+                $this->assertStringContainsString(date('Y-m'), $result[0]->create_at);
 
                 $this->assertInstanceof(stdClass::class, $result[1]);
                 $this->assertSame($n * 2, (int) $result[1]->id);
                 $this->assertSame('tom', $result[1]->name);
                 $this->assertSame('I love movie.', $result[1]->content);
-                $this->assertStringContainsString(date('Y-m-d'), $result[1]->create_at);
+                $this->assertStringContainsString(date('Y-m'), $result[1]->create_at);
 
                 $this->assertCount(2, $result);
                 $this->assertSame($n, $page);
@@ -780,13 +780,13 @@ class SelectTest extends TestCase
                 $this->assertSame($n * 2 - 1, (int) $result[0]->id);
                 $this->assertSame('tom', $result[0]->name);
                 $this->assertSame('I love movie.', $result[0]->content);
-                $this->assertStringContainsString(date('Y-m-d'), $result[0]->create_at);
+                $this->assertStringContainsString(date('Y-m'), $result[0]->create_at);
 
                 $this->assertInstanceof(stdClass::class, $result[1]);
                 $this->assertSame($n * 2, (int) $result[1]->id);
                 $this->assertSame('tom', $result[1]->name);
                 $this->assertSame('I love movie.', $result[1]->content);
-                $this->assertStringContainsString(date('Y-m-d'), $result[1]->create_at);
+                $this->assertStringContainsString(date('Y-m'), $result[1]->create_at);
 
                 $this->assertCount(2, $result);
                 $this->assertSame($n, $page);
@@ -821,7 +821,7 @@ class SelectTest extends TestCase
                 $this->assertSame($n, (int) $value->id);
                 $this->assertSame('tom', $value->name);
                 $this->assertSame('I love movie.', $value->content);
-                $this->assertStringContainsString(date('Y-m-d'), $value->create_at);
+                $this->assertStringContainsString(date('Y-m'), $value->create_at);
                 $this->assertSame(($n + 1) % 2, $key);
                 $this->assertSame($p, $page);
 
@@ -1231,7 +1231,7 @@ class SelectTest extends TestCase
     public function testFindByFooAndBarArgsWasNotMatched(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Parameters of findBy or findAllBy was not matched.');
+        $this->expectExceptionMessage('Params of findBy or findAllBy was not matched.');
 
         $connect = $this->createDatabaseConnectMock();
 

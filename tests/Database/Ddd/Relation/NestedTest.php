@@ -40,7 +40,7 @@ class NestedTest extends TestCase
 {
     public function testBase(): void
     {
-        $posts = Post::limit(5)->findAll();
+        $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(0, $posts);
@@ -116,31 +116,31 @@ class NestedTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(5, $posts);
 
-        $post = Post::where('id', 1)->findOne();
+        $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertSame('1', $post->id);
         $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getterId());
+        $this->assertSame('1', $post->getId());
         $this->assertSame('1', $post->user_id);
         $this->assertSame('1', $post->userId);
         $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getterUserId());
+        $this->assertSame('1', $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
-        $this->assertSame('hello world', $post->getterTitle());
+        $this->assertSame('hello world', $post->getTitle());
         $this->assertSame('Say hello to the world.', $post->summary);
         $this->assertSame('Say hello to the world.', $post['summary']);
-        $this->assertSame('Say hello to the world.', $post->getterSummary());
+        $this->assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         $this->assertSame('1', $user->id);
         $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getterId());
+        $this->assertSame('1', $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
-        $this->assertSame('niu', $user->getterName());
+        $this->assertSame('niu', $user->getName());
 
         $role = $user->role;
 
@@ -151,19 +151,19 @@ class NestedTest extends TestCase
         $this->assertInstanceof(Role::class, $user1);
         $this->assertSame('1', $user1->id);
         $this->assertSame('1', $user1['id']);
-        $this->assertSame('1', $user1->getterId());
+        $this->assertSame('1', $user1->getId());
         $this->assertSame('管理员', $user1->name);
         $this->assertSame('管理员', $user1['name']);
-        $this->assertSame('管理员', $user1->getterName());
+        $this->assertSame('管理员', $user1->getName());
 
         $user2 = $role[1];
         $this->assertInstanceof(Role::class, $user2);
         $this->assertSame('3', $user2->id);
         $this->assertSame('3', $user2['id']);
-        $this->assertSame('3', $user2->getterId());
+        $this->assertSame('3', $user2->getId());
         $this->assertSame('会员', $user2->name);
         $this->assertSame('会员', $user2['name']);
-        $this->assertSame('会员', $user2->getterName());
+        $this->assertSame('会员', $user2->getName());
 
         $this->assertCount(2, $role);
         $this->assertSame('1', $role[0]['id']);

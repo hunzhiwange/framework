@@ -40,22 +40,28 @@ class RegisterTest extends TestCase
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
-
         $test->register();
+        $container->alias($test->providers());
 
+        // filesystems
         $manager = $container->make('filesystems');
-
         $path = __DIR__.'/forRegister';
-
         $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
-
         $manager->put('helloregister.txt', 'register');
-
         $file = $path.'/helloregister.txt';
-
         $this->assertTrue(is_file($file));
         $this->assertSame('register', file_get_contents($file));
+        unlink($file);
+        rmdir($path);
 
+        // filesystem
+        $local = $container->make('filesystem');
+        $path = __DIR__.'/forRegister';
+        $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
+        $local->put('helloregister.txt', 'register');
+        $file = $path.'/helloregister.txt';
+        $this->assertTrue(is_file($file));
+        $this->assertSame('register', file_get_contents($file));
         unlink($file);
         rmdir($path);
     }

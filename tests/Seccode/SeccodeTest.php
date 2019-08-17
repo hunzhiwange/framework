@@ -175,7 +175,7 @@ class SeccodeTest extends TestCase
      *
      * @param string $type
      */
-    public function testAutoCode(string $type)
+    public function testAutoCode(string $type): void
     {
         $seccode = new Seccode([
             'background_path'         => __DIR__.'/background',

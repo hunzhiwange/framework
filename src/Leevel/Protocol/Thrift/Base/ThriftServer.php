@@ -24,8 +24,9 @@ use Thrift\Protocol\TBinaryProtocol;
 use Throwable;
 
 /**
- * Thrift 服务
- * This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package.
+ * Thrift 服务.
+ *
+ * - This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -34,6 +35,7 @@ use Throwable;
  * @version 1.0
  *
  * @see swoole/thrift-rpc-server (https://github.com/swoole/thrift-rpc-server)
+ * @codeCoverageIgnore
  */
 class ThriftServer extends TNonblockingServer
 {

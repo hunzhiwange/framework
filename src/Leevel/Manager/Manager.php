@@ -82,25 +82,32 @@ abstract class Manager
     }
 
     /**
-     * 连接 connect 并返回连接对象
+     * 连接 connect 并返回连接对象.
      *
      * @param null|array|string $options
+     * @param bool              $onlyNew
      *
      * @return object
      */
-    public function connect($options = null): object
+    public function connect($options = null, bool $onlyNew = false): object
     {
         list($options, $unique) = $this->parseOptionAndUnique($options);
 
-        if (isset($this->connects[$unique])) {
+        if (false === $onlyNew && isset($this->connects[$unique])) {
             return $this->connects[$unique];
         }
 
         $driver = $options['driver'] ?? $this->getDefaultDriver();
 
-        return $this->connects[$unique] = $this->makeConnect(
+        $connect = $this->makeConnect(
             $driver, $options
         );
+
+        if (true === $onlyNew) {
+            return $connect;
+        }
+
+        return $this->connects[$unique] = $connect;
     }
 
     /**
@@ -238,7 +245,7 @@ abstract class Manager
     protected function parseOptionAndUnique($options = []): array
     {
         return [
-            $options = $this->parseOptionParameter($options),
+            $options = $this->parseOptionParam($options),
             $this->normalizeUnique($options),
         ];
     }
@@ -250,7 +257,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function parseOptionParameter($options = []): array
+    protected function parseOptionParam($options = []): array
     {
         if (null === $options) {
             return [];

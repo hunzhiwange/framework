@@ -25,8 +25,9 @@ use Thrift\Factory\TStringFuncFactory;
 use Thrift\Transport\TFramedTransport;
 
 /**
- * Socket Transport
- * This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package.
+ * Socket Transport.
+ *
+ * - This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -35,6 +36,7 @@ use Thrift\Transport\TFramedTransport;
  * @version 1.0
  *
  * @see swoole/thrift-rpc-server (https://github.com/swoole/thrift-rpc-server)
+ * @codeCoverageIgnore
  */
 class Socket extends TFramedTransport
 {

@@ -40,9 +40,9 @@ class EqualToTest extends TestCase
      *
      * @param mixed  $value
      * @param mixed  $valueCompare
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBaseUse($value, $valueCompare, string $parameter)
+    public function testBaseUse($value, $valueCompare, string $param): void
     {
         $validate = new Validator(
             [
@@ -51,14 +51,14 @@ class EqualToTest extends TestCase
                 'name3' => 'test',
             ],
             [
-                'name'     => 'equal_to:'.$parameter,
+                'name'     => 'equal_to:'.$param,
             ]
         );
 
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['foo', 'foo', 'name2'],
@@ -72,9 +72,9 @@ class EqualToTest extends TestCase
      *
      * @param mixed  $value
      * @param mixed  $valueCompare
-     * @param string $parameter
+     * @param string $param
      */
-    public function testBad($value, $valueCompare, string $parameter)
+    public function testBad($value, $valueCompare, string $param): void
     {
         $validate = new Validator(
             [
@@ -83,14 +83,14 @@ class EqualToTest extends TestCase
                 'name3' => new stdClass(),
             ],
             [
-                'name'     => 'equal_to:'.$parameter,
+                'name'     => 'equal_to:'.$param,
             ]
         );
 
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['foo', 'foo2', 'name2'],
@@ -99,5 +99,24 @@ class EqualToTest extends TestCase
             [new stdClass(), '', 'name3'], // 非全等
             [['foo', 'bar'], '', 'name3'],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'equal_to',
+            ]
+        );
+
+        $validate->success();
     }
 }

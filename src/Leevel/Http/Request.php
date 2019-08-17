@@ -25,8 +25,9 @@ use Leevel\Support\IArray;
 use SplFileObject;
 
 /**
- * HTTP 请求
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ * HTTP 请求.
+ *
+ * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -554,8 +555,8 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * PHP 运行模式命令行, 兼容 swoole http service
-     * Swoole http 服务器也以命令行运行.
+     * PHP 运行模式命令行, 兼容 Swoole HTTP Service.
+     * Swoole HTTP 服务器也以命令行运行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      *
@@ -874,7 +875,6 @@ class Request implements IRequest, IArray, ArrayAccess
                 $this->method = strtoupper($method);
             } else {
                 $field = static::VAR_METHOD;
-
                 $this->method = strtoupper($this->request->get($field, $this->query->get($field, 'POST')));
             }
         }

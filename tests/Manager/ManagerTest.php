@@ -149,7 +149,7 @@ class ManagerTest extends TestCase
         $this->assertSame('hello bar 2', $manager->bar('2'));
     }
 
-    public function testParseOptionParameterConnectIsNotArray(): void
+    public function testParseOptionParamConnectIsNotArray(): void
     {
         $manager = $this->createManager();
 

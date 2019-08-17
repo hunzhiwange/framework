@@ -39,7 +39,7 @@ class EmailTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value): void
     {
         $validate = new Validator(
             [
@@ -53,7 +53,7 @@ class EmailTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['635750556@qq.com'],
@@ -68,7 +68,7 @@ class EmailTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBad($value)
+    public function testBad($value): void
     {
         $validate = new Validator(
             [
@@ -82,7 +82,7 @@ class EmailTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['hello "@email.com'],

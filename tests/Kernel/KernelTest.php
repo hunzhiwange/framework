@@ -56,7 +56,7 @@ class KernelTest extends TestCase
      *
      * @param bool $debug
      */
-    public function testBaseUse(bool $debug)
+    public function testBaseUse(bool $debug): void
     {
         $app = new AppKernel($container = new Container(), '');
         $container->instance('app', $app);
@@ -76,7 +76,7 @@ class KernelTest extends TestCase
         $this->assertInstanceof(IResponse::class, $resultResponse = $kernel->handle($request));
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             [true],

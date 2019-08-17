@@ -136,7 +136,7 @@ class Cache implements ICache
     /**
      * 关闭.
      */
-    public static function close()
+    public static function close(): void
     {
         self::proxy()->close();
     }

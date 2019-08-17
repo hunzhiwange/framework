@@ -23,8 +23,9 @@ namespace Leevel\Kernel\Exception;
 use Exception;
 
 /**
- * 服务器内部错误
- * 服务器遇到错误，无法完成请求: 500.
+ * 服务器内部错误.
+ *
+ * - 服务器遇到错误，无法完成请求: 500.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -32,7 +33,7 @@ use Exception;
  *
  * @version 1.0
  */
-class InternalServerErrorHttpException extends HttpException
+abstract class InternalServerErrorHttpException extends HttpException
 {
     /**
      * 构造函数.

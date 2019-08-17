@@ -27,12 +27,12 @@ use Leevel\Http\Response;
 use Leevel\Pipeline\Pipeline;
 
 /**
- * 路由解析
- * 2018.04.10 开始进行一次重构系统路由架构.
+ * 路由解析.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.01.10
+ * @since 2018.04.10 开始进行一次重构系统路由架构.
  *
  * @version 1.0
  *
@@ -48,7 +48,7 @@ class Router implements IRouter
     protected IContainer $container;
 
     /**
-     * http 请求
+     * HTTP 请求
      *
      * @var \Leevel\Http\IRequest
      */
@@ -137,6 +137,7 @@ class Router implements IRouter
     public function dispatch(IRequest $request): IResponse
     {
         $this->request = $request;
+        $this->setOptionsPathInfo($request);
 
         return $this->dispatchToRoute($request);
     }
@@ -151,7 +152,8 @@ class Router implements IRouter
 
     /**
      * 设置路由请求预解析结果.
-     * 可以用于高性能 Rpc 和 Websocket 预匹配数据.
+     *
+     * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
      *
      * @param \Leevel\Http\IRequest $request
      * @param array                 $matchedData
@@ -191,7 +193,6 @@ class Router implements IRouter
     public function setControllerDir(string $controllerDir): void
     {
         $controllerDir = str_replace('/', '\\', $controllerDir);
-
         $this->controllerDir = $controllerDir;
     }
 
@@ -348,21 +349,23 @@ class Router implements IRouter
     }
 
     /**
-     * 路由匹配
-     * 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
+     * 路由匹配.
      *
-     * @return mixed
+     * - 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
+     *
+     * @return callable
      */
-    protected function matchRouter()
+    protected function matchRouter(): callable
     {
         $this->initRequest();
-
-        $this->resolveMatchedData(
-            $dataPathInfo = $this->normalizeMatchedData('PathInfo')
-        );
+        $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'));
 
         if (false === ($bind = $this->normalizeRouterBind())) {
             $bind = $this->annotationRouterBind($dataPathInfo);
+        }
+
+        if (false === $bind) {
+            $this->routerNotFound();
         }
 
         return $bind;
@@ -373,7 +376,7 @@ class Router implements IRouter
      *
      * @param array $dataPathInfo
      *
-     * @return mixed
+     * @return callable|false
      */
     protected function annotationRouterBind(array $dataPathInfo)
     {
@@ -387,7 +390,7 @@ class Router implements IRouter
 
         $this->resolveMatchedData($data);
 
-        return $this->findRouterBind();
+        return $this->normalizeRouterBind();
     }
 
     /**
@@ -449,20 +452,6 @@ class Router implements IRouter
     }
 
     /**
-     * 尝试获取路由绑定.
-     *
-     * @return callable
-     */
-    protected function findRouterBind()
-    {
-        if (false === ($bind = $this->normalizeRouterBind())) {
-            $this->routerNotFound();
-        }
-
-        return $bind;
-    }
-
-    /**
      * 解析路由绑定.
      *
      * @return mixed
@@ -496,10 +485,9 @@ class Router implements IRouter
      */
     protected function runRoute(IRequest $request, callable $bind): IResponse
     {
-        $this->throughMiddleware($this->request);
+        $this->throughMiddleware($request);
 
         $response = $this->container->call($bind, $this->matchedVars());
-
         if (!($response instanceof IResponse)) {
             $response = new Response($response);
         }
@@ -558,9 +546,7 @@ class Router implements IRouter
     protected function completeRequest(): void
     {
         $this->pathinfoRestful();
-
         $this->container->instance('app_name', $this->matchedApp());
-
         $this->request->params->add($this->matchedParams());
     }
 
@@ -575,13 +561,6 @@ class Router implements IRouter
         }
 
         switch ($this->request->getMethod()) {
-            // 跨域请求转发到首页
-            // 防止由于 API 请求跨域提示路由不正确
-            case 'OPTIONS':
-                $this->matchedData[static::CONTROLLER] = static::DEFAULT_CONTROLLER;
-                $this->matchedData[static::ACTION] = static::RESTFUL_INDEX;
-
-                break;
             case 'POST':
                 $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
 
@@ -609,68 +588,93 @@ class Router implements IRouter
     }
 
     /**
-     * 分析匹配绑定路由.
+     * 分析匹配路由绑定控制器.
      *
      * @return callable|false
      */
     protected function parseMatchedBind()
     {
         if ($matchedBind = $this->matchedBind()) {
-            if (false !== strpos($matchedBind, '@')) {
-                list($bindClass, $method) = explode('@', $matchedBind);
+            return $this->normalizeControllerForBind($matchedBind);
+        }
 
-                if (!class_exists($bindClass)) {
-                    return false;
-                }
+        return $this->normalizeControllerForDefault();
+    }
 
-                $controller = $this->container->make($bindClass);
-            } else {
-                if (!class_exists($matchedBind)) {
-                    return false;
-                }
+    /**
+     * 格式化基于注解路由的绑定控制器.
+     *
+     * @param string $matchedBind
+     *
+     * @return callable|false
+     */
+    protected function normalizeControllerForBind($matchedBind)
+    {
+        if (false !== strpos($matchedBind, '@')) {
+            list($bindClass, $method) = explode('@', $matchedBind);
 
-                $controller = $this->container->make($matchedBind);
-                $method = 'handle';
+            if (!class_exists($bindClass)) {
+                return false;
             }
+
+            $controller = $this->container->make($bindClass);
         } else {
-            $matchedApp = $this->matchedApp();
-            $matchedController = $this->matchedController();
-            $matchedAction = $this->matchedAction();
-
-            // 尝试直接读取方法控制器类
-            $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
-                $matchedController.'\\'.ucfirst($matchedAction);
-
-            $controllerClass = $this->normalizeForSubdir($controllerClass);
-
-            if (class_exists($controllerClass)) {
-                $controller = $this->container->make($controllerClass);
-                $method = 'handle';
+            if (!class_exists($matchedBind)) {
+                return false;
             }
 
-            // 尝试读取默认控制器
-            else {
-                $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
-
-                $controllerClass = $this->normalizeForSubdir($controllerClass);
-
-                if (!class_exists($controllerClass)) {
-                    return false;
-                }
-
-                $controller = $this->container->make($controllerClass);
-                $method = $this->normalizeForSubdir($matchedAction, true);
-            }
+            $controller = $this->container->make($matchedBind);
+            $method = 'handle';
         }
 
         if (!method_exists($controller, $method)) {
             return false;
         }
 
-        return [
-            $controller,
-            $method,
-        ];
+        return [$controller, $method];
+    }
+
+    /**
+     * 格式化基于 pathInfo 的默认控制器.
+     *
+     * @param string $matchedBind
+     *
+     * @return callable|false
+     */
+    protected function normalizeControllerForDefault()
+    {
+        $matchedApp = $this->matchedApp();
+        $matchedController = $this->matchedController();
+        $matchedAction = $this->matchedAction();
+
+        // 尝试直接读取方法控制器类
+        $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
+            $matchedController.'\\'.ucfirst($matchedAction);
+        $controllerClass = $this->normalizeForSubdir($controllerClass);
+
+        if (class_exists($controllerClass)) {
+            $controller = $this->container->make($controllerClass);
+            $method = 'handle';
+        }
+
+        // 尝试读取默认控制器
+        else {
+            $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
+            $controllerClass = $this->normalizeForSubdir($controllerClass);
+
+            if (!class_exists($controllerClass)) {
+                return false;
+            }
+
+            $controller = $this->container->make($controllerClass);
+            $method = $this->normalizeForSubdir($matchedAction, true);
+        }
+
+        if (!method_exists($controller, $method)) {
+            return false;
+        }
+
+        return [$controller, $method];
     }
 
     /**
@@ -810,5 +814,47 @@ class Router implements IRouter
     protected function matchedVars(): array
     {
         return $this->matchedData[static::VARS] ?? [];
+    }
+
+    /**
+     * 设置 OPTIONS PathInfo.
+     *
+     * @param \Leevel\Http\IRequest $request
+     */
+    protected function setOptionsPathInfo(IRequest $request): void
+    {
+        if ($this->isOptionsRequest()) {
+            $app = $this->findApp($this->request->getPathInfo());
+            $optionsPathInfo = '/'.$app.self::DEFAULT_OPTIONS.'/'.self::RESTFUL_INDEX;
+            $request->setPathInfo($optionsPathInfo);
+        }
+    }
+
+    /**
+     * 查找 app.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function findApp(string $path): string
+    {
+        $paths = explode('/', trim($path, '/'));
+
+        if ($paths && 0 === strpos($paths[0], ':')) {
+            return $paths[0].'/';
+        }
+
+        return '';
+    }
+
+    /**
+     * 是否为 OPTIONS 请求.
+     *
+     * @return bool
+     */
+    protected function isOptionsRequest(): bool
+    {
+        return 'OPTIONS' === $this->request->getMethod();
     }
 }

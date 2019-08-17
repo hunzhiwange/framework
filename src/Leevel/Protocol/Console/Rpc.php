@@ -21,12 +21,11 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console;
 
 use Leevel\Di\Container;
-use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Server as BaseServer;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole rpc 服务启动.
+ * Swoole RPC 服务启动.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -85,6 +84,6 @@ class Rpc extends BaseServer
      */
     protected function getVersion(): string
     {
-        return 'Rpc Server Version '.App::version().PHP_EOL;
+        return PHP_EOL.'                      RPC STOP'.PHP_EOL;
     }
 }

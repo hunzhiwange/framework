@@ -31,24 +31,43 @@ use Swoole\Coroutine as SwooleCoroutine;
  * @since 2018.12.14
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Coroutine implements ICoroutine
 {
     /**
+     * 处于协程上下文键值.
+     *
+     * @var array
+     */
+    protected $context = [];
+
+    /**
      * 是否处于协程上下文.
      *
-     * @param string $className
+     * @param string $key
      *
      * @return bool
      */
-    public function context(string $className): bool
+    public function context(string $key): bool
     {
-        if (!class_exists($className)) {
+        if (in_array($key, $this->context, true)) {
+            return true;
+        }
+
+        /*
+         * 将类主持到当前协程下面.
+         *
+         * - 通过类的静态方法 coroutineContext 返回 true 来判断.
+         */
+        if (!class_exists($key)) {
             return false;
         }
 
-        if (method_exists($className, 'coroutineContext') &&
-            true === $className::coroutineContext()) {
+        if (method_exists($key, 'coroutineContext') &&
+            true === $key::coroutineContext()) {
+            $this->addContext($key);
+
             return true;
         }
 
@@ -56,12 +75,36 @@ class Coroutine implements ICoroutine
     }
 
     /**
+     * 添加协程上下文键值.
+     *
+     * @param array ...$keys
+     */
+    public function addContext(...$keys): void
+    {
+        $this->context = array_merge($this->context, $keys);
+    }
+
+    /**
      * 当前协程 ID.
      *
      * @return int
+     *
+     * @see https://wiki.swoole.com/wiki/page/871.html
      */
-    public function uid(): int
+    public function cid(): int
     {
-        return SwooleCoroutine::getuid();
+        return SwooleCoroutine::getCid();
+    }
+
+    /**
+     * 当前协程的父协程 ID.
+     *
+     * @return bool|int
+     *
+     * @see https://wiki.swoole.com/wiki/page/1076.html
+     */
+    public function pcid()
+    {
+        return SwooleCoroutine::getPcid();
     }
 }

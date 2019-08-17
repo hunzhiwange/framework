@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
+use Swoole\Server as SwooleServer;
+
 /**
  * 协议接口.
  *
@@ -31,4 +33,41 @@ namespace Leevel\Protocol;
  */
 interface IServer
 {
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return \Leevel\Protocol\IServer
+     */
+    public function setOption(string $name, $value): self;
+
+    /**
+     * 获取配置.
+     *
+     * @return array
+     */
+    public function getOption(): array;
+
+    /**
+     * 添加自定义进程.
+     *
+     * @param string $process
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function process(string $process): void;
+
+    /**
+     * 运行服务.
+     */
+    public function startServer(): void;
+
+    /**
+     * 返回服务.
+     *
+     * @return \Swoole\Server
+     */
+    public function getServer(): SwooleServer;
 }

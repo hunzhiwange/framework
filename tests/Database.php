@@ -40,22 +40,21 @@ use PDO;
  */
 trait Database
 {
-    protected $databaseConnects;
+    protected $databaseConnects = [];
 
-    protected function createDatabaseConnectMock(array $option = [], string $connect = null): Mysql
+    protected function createDatabaseConnectMock(array $option = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
     {
         if (null === $connect) {
             $connect = Mysql::class;
         }
 
-        $connect = new $connect($option);
-
+        $connect = new $connect($option, $dispatch);
         $this->databaseConnects[] = $connect;
 
         return $connect;
     }
 
-    protected function createDatabaseConnect(): Mysql
+    protected function createDatabaseConnect(?IDispatch $dispatch = null): Mysql
     {
         $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
@@ -73,7 +72,7 @@ trait Database
                 ],
             ],
             'slave' => [],
-        ]);
+        ], null, $dispatch);
 
         return $connect;
     }
@@ -84,7 +83,7 @@ trait Database
             return;
         }
 
-        if ($this->databaseConnects[0]) {
+        if (isset($this->databaseConnects[0])) {
             $connect = $this->databaseConnects[0];
         } else {
             $connect = $this->createDatabaseConnect();

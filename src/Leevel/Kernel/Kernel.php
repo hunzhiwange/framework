@@ -92,15 +92,10 @@ abstract class Kernel implements IKernel
     {
         try {
             $this->registerBaseService($request);
-
             $this->bootstrap();
-
             $response = $this->getResponseWithRequest($request);
-
-            $this->middlewareTerminate($request, $response);
         } catch (Exception $e) {
             $this->reportException($e);
-
             $response = $this->renderException($request, $e);
         } catch (Throwable $e) {
             $e = new ErrorException(
@@ -111,11 +106,11 @@ abstract class Kernel implements IKernel
                 $e->getLine(),
                 $e->getPrevious()
             );
-
             $this->reportException($e);
-
             $response = $this->renderException($request, $e);
         }
+
+        $this->middlewareTerminate($request, $response);
 
         return $response;
     }

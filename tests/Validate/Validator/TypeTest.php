@@ -55,7 +55,7 @@ class TypeTest extends TestCase
      * @param mixed  $value
      * @param string $type
      */
-    public function testBaseUse($value, string $type)
+    public function testBaseUse($value, string $type): void
     {
         $validate = new Validator(
             [
@@ -69,7 +69,7 @@ class TypeTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         $testFile = __DIR__.'/test.txt';
         file_put_contents($testFile, 'foo');
@@ -98,7 +98,7 @@ class TypeTest extends TestCase
      * @param mixed  $value
      * @param string $type
      */
-    public function testBad($value, string $type)
+    public function testBad($value, string $type): void
     {
         $validate = new Validator(
             [
@@ -112,7 +112,7 @@ class TypeTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['not numeric', 'errorType'],
@@ -127,6 +127,25 @@ class TypeTest extends TestCase
             ['world', 'errorType'],
             [null, 'errorType'],
         ];
+    }
+
+    public function testMissParam(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Missing the first element of param.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'type',
+            ]
+        );
+
+        $validate->success();
     }
 }
 

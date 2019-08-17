@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use ArrayAccess;
+use BadMethodCallException;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
@@ -44,8 +45,7 @@ use Leevel\Support\Str\un_camelize;
 /**
  * 模型实体 Object Relational Mapping.
  *
- * - 为最大化避免 getter setter 属性与系统冲突，getFoo 修改为 getterFoo，setBar 修改为 setterBar
- * - 系统自身的属性均加前缀 leevel，设置以 with 开头.
+ * - 为最大化避免 getter setter 属性与系统冲突，系统自身的属性均加前缀 leevel，设置以 with 开头.
  * - ORM 主要基于妖怪大神的 QeePHP V2 设计灵感，查询器基于这个版本构建.
  * - 例外参照了 Laravel 关联模型实现设计.
  * - Doctrine 和 Java Hibernate 中关于 getter setter 的设计
@@ -55,6 +55,7 @@ use Leevel\Support\Str\un_camelize;
  * @since 2017.04.27
  * @since 2018.10 进行一次大规模重构
  * @since 1.0.0-beta.1 2019.04.24 getFoo 修改为 getterFoo，setBar 修改为 setterBar
+ * @since 1.0.0-beta.5 2019.08.04 删除 __call 中的一些查询用法，getterFoo 修改为 getFoo，setterBar 修改为 setBar
  * @see https://github.com/dualface/qeephp2_x
  * @see https://github.com/laravel/framework
  * @see https://github.com/doctrine/doctrine2
@@ -132,13 +133,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @var \Leevel\Database\Ddd\Entity
      */
     protected $leevelRelationMiddle;
-
-    /**
-     * 作用域查询对象.
-     *
-     * @var \Leevel\Database\Select
-     */
-    protected $leevelScopeSelect;
 
     /**
      * 持久化基础层
@@ -276,65 +270,41 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $method
      * @param array  $args
      *
-     * @throws \InvalidArgumentException
+     * @throws \BadMethodCallException
      *
      * @return mixed
      */
     public function __call(string $method, array $args)
     {
         // getter
-        if (0 === strpos($method, 'getter')) {
-            if (!method_exists($this, 'getter')) {
-                $e = sprintf('The entity `%s` `%s` method was not defined.', static::class, 'getter');
-
-                throw new InvalidArgumentException($e);
-            }
-
-            return $this->getter(lcfirst(substr($method, 6)));
+        if (0 === strpos($method, 'get')) {
+            return $this->getter(lcfirst(substr($method, 3)));
         }
 
         // setter
-        if (0 === strpos($method, 'setter')) {
-            if (!method_exists($this, 'setter')) {
-                $e = sprintf('The entity `%s` `%s` method was not defined.', static::class, 'setter');
-
-                throw new InvalidArgumentException($e);
-            }
-
-            $this->setter(lcfirst(substr($method, 6)), $args[0] ?? null);
+        if (0 === strpos($method, 'set')) {
+            $this->setter(lcfirst(substr($method, 3)), $args[0] ?? null);
 
             return $this;
         }
 
-        // relation
-        try {
-            $unCamelize = $this->normalize($method);
+        // relation tips
+        if ($this->isRelation($unCamelize = $this->normalize($method))) {
+            $e = sprintf(
+                'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
+                $method, static::class, $unCamelize
+            );
 
-            if ($this->isRelation($unCamelize)) {
-                return $this->loadRelation($unCamelize, true);
-            }
-        } catch (InvalidArgumentException $e) {
+            throw new BadMethodCallException($e);
         }
 
-        // 作用域
-        if (method_exists($this, 'scope'.ucwords($method))) {
-            array_unshift($args, $method);
+        // other method tips
+        $e = sprintf(
+            'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
+            $method, static::class, $method
+        );
 
-            return $this->scope(...$args);
-        }
-
-        $this->handleEvent(static::BEFORE_FIND_EVENT);
-        $this->handleEvent(static::BEFORE_SELECT_EVENT);
-
-        $data = $this->select()->{$method}(...$args);
-
-        if ($data instanceof Collection) {
-            $this->handleEvent(static::AFTER_SELECT_EVENT, $data);
-        } else {
-            $this->handleEvent(static::AFTER_FIND_EVENT, $data);
-        }
-
-        return $data;
+        throw new BadMethodCallException($e);
     }
 
     /**
@@ -343,11 +313,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param string $method
      * @param array  $args
      *
-     * @return mixed
+     * @throws \BadMethodCallException
      */
     public static function __callStatic(string $method, array $args)
     {
-        return (new static())->{$method}(...$args);
+        $e = sprintf(
+            'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
+            $method, static::class, $method
+        );
+
+        throw new BadMethodCallException($e);
     }
 
     /**
@@ -685,9 +660,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function loadRelation(string $prop): Relation
     {
         $prop = $this->normalize($prop);
-
         $this->validate($prop);
-
         $defined = static::STRUCT[$prop];
 
         if (isset($defined[self::BELONGS_TO])) {
@@ -760,7 +733,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function withRelationProp(string $prop, $value): void
     {
         $this->validate($prop);
-
         $this->propSetter($prop, $value);
     }
 
@@ -773,7 +745,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function eager(array $relation): Select
     {
-        return (new static())->select()->eager($relation);
+        return (new static())->selectForEntity()->eager($relation);
     }
 
     /**
@@ -966,10 +938,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function supportEvent(): array
     {
         return [
-            static::BEFORE_SELECT_EVENT,
-            static::AFTER_SELECT_EVENT,
-            static::BEFORE_FIND_EVENT,
-            static::AFTER_FIND_EVENT,
             static::BEFORE_SAVE_EVENT,
             static::AFTER_SAVE_EVENT,
             static::BEFORE_CREATE_EVENT,
@@ -1297,26 +1265,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 设置作用域查询对象.
-     *
-     * @param \Leevel\Database\Select $select
-     */
-    public function withScopeSelect(DatabaseSelect $select): void
-    {
-        $this->leevelScopeSelect = $select;
-    }
-
-    /**
      * 返回数据库查询集合对象.
      *
      * @return \Leevel\Database\Select
      */
     public function databaseSelect(): DatabaseSelect
     {
-        if ($this->leevelScopeSelect) {
-            return $this->leevelScopeSelect;
-        }
-
         return $this
             ->metaConnect()
             ->select()
@@ -1329,9 +1283,22 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    public function select(): Select
+    public function selectForEntity(): Select
     {
         return new Select($this);
+    }
+
+    /**
+     * 返回数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function select(): Select
+    {
+        return new Select(new static());
     }
 
     /**
@@ -1466,13 +1433,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushed = false;
 
         $this->parseAutoFill('create', $fill);
-
         $propKey = $this->normalizeWhiteAndBlack(
             array_flip($this->leevelChangedProp), 'create_prop'
         );
 
         $saveData = [];
-
         foreach ($this->leevelChangedProp as $prop) {
             if (!array_key_exists($prop, $propKey)) {
                 continue;
@@ -1495,7 +1460,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
-
             $lastInsertId = $this->metaConnect()->insert($saveData);
 
             if ($auto = $this->autoIncrement()) {
@@ -1503,9 +1467,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             }
 
             $this->leevelNewed = false;
-
             $this->clearChanged();
-
             $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
 
             return $lastInsertId;
@@ -1528,13 +1490,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushed = false;
 
         $this->parseAutoFill('update', $fill);
-
         $propKey = $this->normalizeWhiteAndBlack(
             array_flip($this->leevelChangedProp), 'update_prop'
         );
 
         $saveData = [];
-
         foreach ($this->leevelChangedProp as $prop) {
             if (!array_key_exists($prop, $propKey)) {
                 continue;
@@ -1548,7 +1508,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         $condition = [];
-
         foreach ($this->primaryKeys() as $field) {
             if (isset($saveData[$field])) {
                 unset($saveData[$field]);
@@ -1565,13 +1524,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = function ($condition, $saveData) {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
-
             $num = $this->metaConnect()->update($condition, $saveData);
-
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, null, null);
-
             $this->clearChanged();
-
             $this->handleEvent(static::AFTER_UPDATE_EVENT);
 
             return $num;
@@ -1606,7 +1561,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function withPropValue(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): void
     {
         $prop = $this->normalize($prop);
-
         $this->validate($prop);
 
         if ($this->isRelation($prop)) {
@@ -1693,7 +1647,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function propGetter(string $prop)
     {
-        return $this->{'getter'.ucfirst($this->asProp($prop))}();
+        $method = 'get'.ucfirst($prop = $this->asProp($prop));
+
+        if (method_exists($this, $method)) {
+            return $this->{$method}($prop);
+        }
+
+        return $this->getter($prop);
     }
 
     /**
@@ -1704,7 +1664,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function propSetter(string $prop, $value): void
     {
-        $this->{'setter'.ucfirst($this->asProp($prop))}($value);
+        $method = 'set'.ucfirst($prop = $this->asProp($prop));
+
+        if (method_exists($this, $method)) {
+            $this->{$method}($value);
+        } else {
+            $this->setter($prop, $value);
+        }
     }
 
     /**

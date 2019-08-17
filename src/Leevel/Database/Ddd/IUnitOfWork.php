@@ -63,13 +63,6 @@ interface IUnitOfWork
     public const STATE_REMOVED = 4;
 
     /**
-     * 是否处于协程上下文.
-     *
-     * @return bool
-     */
-    public static function coroutineContext(): bool;
-
-    /**
      * 创建一个工作单元.
      *
      * @param null|\Leevel\Database\Ddd\IEntity $rootEntity

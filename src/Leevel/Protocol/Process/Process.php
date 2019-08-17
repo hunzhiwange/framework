@@ -28,6 +28,7 @@ namespace Leevel\Protocol\Process;
  * @since 2018.12.15
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 abstract class Process
 {

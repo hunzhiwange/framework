@@ -28,6 +28,7 @@ use PDO;
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.03.09
+ * @since 2019.07.24 v1.0-beta.4 加入连接池
  *
  * @version 1.0
  */

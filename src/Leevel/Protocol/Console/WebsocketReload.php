@@ -21,12 +21,11 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console;
 
 use Leevel\Di\Container;
-use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Reload as BaseReload;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole websocket 服务重启.
+ * Swoole WebSocket 服务重启.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -68,6 +67,6 @@ class WebsocketReload extends BaseReload
      */
     protected function getVersion(): string
     {
-        return 'Websocket Reload Version '.App::version().PHP_EOL;
+        return PHP_EOL.'                  WEBSOCKET RELOAD'.PHP_EOL;
     }
 }

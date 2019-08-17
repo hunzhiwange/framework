@@ -121,6 +121,7 @@ class Debug implements IDebug
      * @param array  $args
      *
      * @return mixed
+     * @codeCoverageIgnore
      */
     public function __call(string $method, array $args)
     {

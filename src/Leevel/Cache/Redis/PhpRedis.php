@@ -71,7 +71,6 @@ class PhpRedis implements IRedis
         }
 
         $this->option = array_merge($this->option, $option);
-
         $this->handle = $this->createRedis();
 
         $this->handle->{$this->option['persistent'] ? 'pconnect' : 'connect'}(
@@ -136,7 +135,7 @@ class PhpRedis implements IRedis
      */
     public function delete(string $name): void
     {
-        $this->handle->delete($name);
+        $this->handle->del($name);
     }
 
     /**

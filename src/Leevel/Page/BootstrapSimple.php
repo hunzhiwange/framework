@@ -43,27 +43,13 @@ class BootstrapSimple extends Bootstrap
         // center,justify
         'align'         => 'center',
         'template'      => '{header} {ul} {prev} {next} {endul} {footer}',
-        'justify_align' => false,
     ];
-
-    /**
-     * 设置两端对齐.
-     *
-     * @return \Leevel\Page\IRender
-     */
-    public function setJustifyAlign(): IRender
-    {
-        $this->setOption('align', 'justify');
-    }
 
     /**
      * 初始化配置.
      */
     protected function intOption(): void
     {
-        if ($this->option['justify_align']) {
-            $this->setJustifyAlign();
-        }
     }
 
     /**

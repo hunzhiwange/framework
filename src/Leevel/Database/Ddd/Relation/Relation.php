@@ -134,7 +134,7 @@ abstract class Relation
     public function getPreLoad()
     {
         return $this->targetEntity
-            ->select()
+            ->selectForEntity()
             ->preLoadResult(
                 $this->findAll()
             );
@@ -191,9 +191,7 @@ abstract class Relation
     {
         $old = static::$relationCondition;
         static::$relationCondition = false;
-
         $relation = call_user_func($returnRelation);
-
         static::$relationCondition = $old;
 
         return $relation;
@@ -255,6 +253,6 @@ abstract class Relation
      */
     protected function getSelectFromEntity(): void
     {
-        $this->select = $this->targetEntity->select();
+        $this->select = $this->targetEntity->selectForEntity();
     }
 }

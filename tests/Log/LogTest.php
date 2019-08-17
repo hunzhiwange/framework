@@ -41,7 +41,7 @@ class LogTest extends TestCase
      *
      * @param string $level
      */
-    public function testBaseUse(string $level)
+    public function testBaseUse(string $level): void
     {
         $log = $this->createFileConnect();
 
@@ -68,7 +68,7 @@ class LogTest extends TestCase
         Fso::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['emergency'],
@@ -85,25 +85,32 @@ class LogTest extends TestCase
     public function testSetOption(): void
     {
         $log = $this->createFileConnect();
-
         $log->setOption('levels', [ILog::INFO]);
-
         $log->info('foo', ['hello', 'world']);
         $log->debug('foo', ['hello', 'world']);
-
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
     public function testLogFilterLevel(): void
     {
         $log = $this->createFileConnect();
-
         $log->setOption('levels', [ILog::INFO]);
-
         $log->log(ILog::INFO, 'foo', ['hello', 'world']);
         $log->log(ILog::DEBUG, 'foo', ['hello', 'world']);
 
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
+    }
+
+    public function testLogLevelNotFoundWithDefaultLevel(): void
+    {
+        $log = $this->createFileConnect();
+        $log->setOption('levels', [ILog::DEBUG]);
+        $log->log('notfound', 'foo', ['hello', 'world']);
+        $this->assertSame([ILog::DEBUG => [[ILog::DEBUG, 'foo', ['hello', 'world']]]], $log->all());
+
+        $log->flush();
+
+        Fso::deleteDirectory(__DIR__.'/cacheLog', true);
     }
 
     public function testWithOutBuffer(): void

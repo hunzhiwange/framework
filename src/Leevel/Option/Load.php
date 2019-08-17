@@ -89,10 +89,10 @@ class Load
             return $this->loaded;
         }
 
+        $this->isLoaded = true;
+
         $env = $this->loadEnvData($app);
-
         $composer = $this->loadComposerOption($app->path());
-
         $data = $this->loadOptionData();
 
         // 读取额外的配置
@@ -110,8 +110,6 @@ class Load
 
         // composer 配置
         $data['app']['_composer'] = $composer;
-
-        $this->isLoaded = true;
 
         return $this->loaded = $data;
     }
@@ -169,12 +167,10 @@ class Load
                     if (is_int($key)) {
                         $key = $alias;
                     }
-
                     $deferredProviders[$key] = $provider;
                 }
 
                 $deferredAlias[$provider] = $providerAlias;
-
                 unset($providers[$k]);
             }
         }
@@ -209,9 +205,7 @@ class Load
     protected function loadOptionData(): array
     {
         $data = [];
-
         $files = glob($this->dir.'/*.php');
-
         $findApp = false;
 
         foreach ($files as $file) {
@@ -246,8 +240,6 @@ class Load
      */
     protected function mergeComposerOption(array $options, IApp $app, array $optionFiles): array
     {
-        $data = [];
-
         $path = $app->path();
 
         foreach ($optionFiles as $key => $files) {

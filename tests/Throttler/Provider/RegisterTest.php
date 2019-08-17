@@ -26,6 +26,7 @@ use Leevel\Di\Container;
 use Leevel\Http\IRequest;
 use Leevel\Option\Option;
 use Leevel\Throttler\Provider\Register;
+use Leevel\Throttler\Throttler;
 use Tests\TestCase;
 
 /**
@@ -51,8 +52,8 @@ class RegisterTest extends TestCase
     public function testBaseUse(): void
     {
         $test = new Register($container = $this->createContainer());
-
         $test->register();
+        $container->alias($test->providers());
 
         $throttler = $container->make('throttler');
 
@@ -78,6 +79,10 @@ class RegisterTest extends TestCase
         $path = __DIR__.'/cache';
 
         unlink($path.'/'.$key.'.php');
+
+        // alias
+        $throttler = $container->make(Throttler::class);
+        $this->assertInstanceOf(Throttler::class, $throttler);
     }
 
     protected function createContainer(): Container

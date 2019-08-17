@@ -39,7 +39,7 @@ class TimezoneTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value): void
     {
         $validate = new Validator(
             [
@@ -53,7 +53,7 @@ class TimezoneTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function baseUseProvider()
+    public function baseUseProvider(): array
     {
         return [
             ['-0400'],
@@ -77,7 +77,7 @@ class TimezoneTest extends TestCase
      *
      * @param mixed $value
      */
-    public function testBad($value)
+    public function testBad($value): void
     {
         $validate = new Validator(
             [
@@ -91,7 +91,7 @@ class TimezoneTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
-    public function badProvider()
+    public function badProvider(): array
     {
         return [
             ['Asia/foo'],

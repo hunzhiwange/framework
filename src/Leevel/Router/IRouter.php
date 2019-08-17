@@ -41,56 +41,56 @@ interface IRouter
      *
      * @var string
      */
-    const APP = '_app';
+    const APP = ':app';
 
     /**
      * 控制器前缀
      *
      * @var string
      */
-    const PREFIX = '_prefix';
+    const PREFIX = ':prefix';
 
     /**
      * 控制器参数名.
      *
      * @var string
      */
-    const CONTROLLER = '_c';
+    const CONTROLLER = ':controller';
 
     /**
      * 方法参数名.
      *
      * @var string
      */
-    const ACTION = '_a';
+    const ACTION = ':action';
 
     /**
      * 绑定资源.
      *
      * @var string
      */
-    const BIND = '_bind';
+    const BIND = ':bind';
 
     /**
      * 解析参数名.
      *
      * @var string
      */
-    const PARAMS = '_params';
+    const PARAMS = ':params';
 
     /**
      * 解析变量名.
      *
      * @var string
      */
-    const VARS = '_vars';
+    const VARS = ':vars';
 
     /**
      * 解析中间件名.
      *
      * @var string
      */
-    const MIDDLEWARES = '_middlewares';
+    const MIDDLEWARES = ':middlewares';
 
     /**
      * restful show.
@@ -158,6 +158,13 @@ interface IRouter
     const DEFAULT_CONTROLLER = 'home';
 
     /**
+     * 默认 OPTIONS 占位.
+     *
+     * @var string
+     */
+    const DEFAULT_OPTIONS = 'options';
+
+    /**
      * 默认替换参数[字符串].
      *
      * @var string
@@ -196,7 +203,8 @@ interface IRouter
 
     /**
      * 设置路由请求预解析结果.
-     * 可以用于高性能 Rpc 和 Websocket 预匹配数据.
+     *
+     * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
      *
      * @param \Leevel\Http\IRequest $request
      * @param array                 $matchedData

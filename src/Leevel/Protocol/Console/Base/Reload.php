@@ -27,7 +27,7 @@ use Leevel\Protocol\IServer;
 use Swoole\Process;
 
 /**
- * swoole 服务重启.
+ * Swoole 服务重启.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -43,10 +43,9 @@ abstract class Reload extends Command
      */
     public function handle(): void
     {
+        $this->info($this->getLogo());
         $this->warn($this->getVersion());
-
         $server = $this->createServer();
-
         $this->reload($server->getOption());
     }
 
@@ -91,7 +90,7 @@ abstract class Reload extends Command
             throw new InvalidArgumentException($e);
         }
 
-        Process::kill($pid, $this->option('all') ? SIGUSR1 : SIGUSR2);
+        Process::kill($pid, true === $this->option('all') ? SIGUSR1 : SIGUSR2);
 
         // 开启 opcache 重连后需要刷新
         if (function_exists('opcache_reset')) {
@@ -104,6 +103,23 @@ abstract class Reload extends Command
 
         $message = sprintf('Process %s:%d has reloaded.', $processName, $pid);
         $this->info($message);
+    }
+
+    /**
+     * 返回 QueryPHP Logo.
+     *
+     * @return string
+     */
+    protected function getLogo(): string
+    {
+        return <<<'queryphp'
+            _____________                           _______________
+             ______/     \__  _____  ____  ______  / /_  _________
+              ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+               __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+                 \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+                    \_\                /_/_/         /_/
+            queryphp;
     }
 
     /**
@@ -126,8 +142,8 @@ abstract class Reload extends Command
         return [
             [
                 'all',
-                null,
-                Option::VALUE_OPTIONAL,
+                'a',
+                Option::VALUE_NONE,
                 'Reload all progress or only task process.',
             ],
         ];

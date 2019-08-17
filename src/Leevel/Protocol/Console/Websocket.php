@@ -21,12 +21,11 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Console;
 
 use Leevel\Di\Container;
-use Leevel\Kernel\Proxy\App;
 use Leevel\Protocol\Console\Base\Server as BaseServer;
 use Leevel\Protocol\IServer;
 
 /**
- * swoole websocket 服务启动.
+ * Swoole WebSocket 服务启动.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -85,6 +84,6 @@ class Websocket extends BaseServer
      */
     protected function getVersion(): string
     {
-        return 'Websocket Server Version '.App::version().PHP_EOL;
+        return PHP_EOL.'                  WEBSOCKET SERVER'.PHP_EOL;
     }
 }

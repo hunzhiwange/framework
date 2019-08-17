@@ -213,22 +213,22 @@ class Pipeline implements IPipeline
     /**
      * 解析工序.
      *
-     * @param string $stage
+     * @param string $name
      *
      * @return array
      */
-    protected function parse(string $stage): array
+    protected function parse(string $name): array
     {
-        list($name, $args) = array_pad(explode(':', $stage, 2), 2, []);
+        list($name, $params) = array_pad(explode(':', $name, 2), 2, []);
 
-        if (is_string($args)) {
-            $args = explode(',', $args);
+        if (is_string($params)) {
+            $params = explode(',', $params);
         }
 
-        $args = array_map(function (string $item) {
+        $params = array_map(function (string $item) {
             return ctype_digit($item) ? (int) $item : $item;
-        }, $args);
+        }, $params);
 
-        return [$name, $args];
+        return [$name, $params];
     }
 }

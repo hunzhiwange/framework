@@ -208,7 +208,7 @@ class ValidatorTest extends TestCase
             [
             ],
             [
-                'name'     => 'required|min_length:20',
+                'name'     => 'required|min_length:20|'.IValidator::OPTIONAL,
             ],
             [
                 'name'     => '用户名',
@@ -649,7 +649,7 @@ class ValidatorTest extends TestCase
                 'name' => ['sub' => ['sub' => '']],
             ],
             [
-                'name.sub.sub' => 'required|'.Validator::CONDITION_MUST,
+                'name.sub.sub' => 'required|'.Validator::MUST,
             ],
             [
                 'name'     => '歌曲',
@@ -722,7 +722,7 @@ class ValidatorTest extends TestCase
                 'name' => ['sub' => ['sub' => null]],
             ],
             [
-                'name.sub.sub' => 'required|'.Validator::CONDITION_MUST,
+                'name.sub.sub' => 'required|'.Validator::MUST,
             ],
             [
                 'name'     => '歌曲',
@@ -905,7 +905,7 @@ class ValidatorTest extends TestCase
      *
      * @param string $skipRule
      */
-    public function testAliasSkipException(string $skipRule)
+    public function testAliasSkipException(string $skipRule): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -930,12 +930,11 @@ class ValidatorTest extends TestCase
         $validate->alias($skipRule, 'custom_bar');
     }
 
-    public function aliasSkipExceptionProvider()
+    public function aliasSkipExceptionProvider(): array
     {
         return [
-            [Validator::CONDITION_EXISTS],
-            [Validator::CONDITION_MUST],
-            [Validator::CONDITION_VALUE],
+            [Validator::OPTIONAL],
+            [Validator::MUST],
             [Validator::SKIP_SELF],
             [Validator::SKIP_OTHER],
         ];
@@ -977,7 +976,7 @@ class ValidatorTest extends TestCase
             ]
         );
 
-        $validate->extend('custom_rule', function ($value, array $parameter, IValidator $validator, string $field): bool {
+        $validate->extend('custom_rule', function ($value, array $param, IValidator $validator, string $field): bool {
             if (1 === $value) {
                 return true;
             }
@@ -992,23 +991,6 @@ class ValidatorTest extends TestCase
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
-    }
-
-    public function testPlaceholder(): void
-    {
-        $validate = new Validator(
-            [
-                'name' => 1,
-            ],
-            [
-                'name'     => 'required|custom_rule:10',
-            ],
-            [
-                'name'     => '地名',
-            ]
-        );
-
-        $this->assertInstanceof(Validator::class, $validate->_());
     }
 
     public function testCall(): void
@@ -1027,7 +1009,7 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator();
 
-        $validate->extend('custom_foo_bar', function (string $field, $value, array $parameter): bool {
+        $validate->extend('custom_foo_bar', function (string $field, $value, array $param): bool {
             if ('成都' === $value) {
                 return true;
             }
@@ -1051,11 +1033,11 @@ class ValidatorTest extends TestCase
         $validate->notFoundMethod();
     }
 
-    public function testCheckParameterLengthException(): void
+    public function testCheckParamLengthException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Missing the first element of parameter.'
+            'Missing the first element of param.'
         );
 
         $validate = new Validator(
@@ -1239,7 +1221,7 @@ class ValidatorTest extends TestCase
      *
      * @param string $skipRule
      */
-    public function testSkipRule(string $skipRule)
+    public function testSkipRule(string $skipRule): void
     {
         $validate = new Validator(
             [
@@ -1256,12 +1238,11 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function skipRuleProvider()
+    public function skipRuleProvider(): array
     {
         return [
-            [Validator::CONDITION_EXISTS],
-            [Validator::CONDITION_MUST],
-            [Validator::CONDITION_VALUE],
+            [Validator::OPTIONAL],
+            [Validator::MUST],
             [Validator::SKIP_SELF],
             [Validator::SKIP_OTHER],
         ];
@@ -1271,13 +1252,16 @@ class ValidatorTest extends TestCase
     {
         $validate = new Validator(
             [
-                'name' => '',
+                'name'  => '',
+                'value' => '',
             ],
             [
                 'name'     => 'required|alpha',
+                'value'    => 'required',
             ],
             [
-                'name'     => '地名',
+                'name'      => '地名',
+                'value'     => '值',
             ]
         );
 
@@ -1286,13 +1270,16 @@ class ValidatorTest extends TestCase
                 "name": [
                     "地名 不能为空",
                     "地名 只能是字母"
+                ],
+                "value": [
+                    "值 不能为空"
                 ]
             }
             eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名'], $validate->getName());
+        $this->assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
 
         $this->assertSame(
             $error,
@@ -1301,7 +1288,7 @@ class ValidatorTest extends TestCase
             )
         );
 
-        $validate->rule(['name' => 'required|alpha|'.Validator::SKIP_OTHER]);
+        $validate->addRule(['name' => 'required|alpha|'.Validator::SKIP_OTHER]);
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
@@ -1322,31 +1309,89 @@ class ValidatorTest extends TestCase
         );
     }
 
+    public function testShouldSkipSelf(): void
+    {
+        $validate = new Validator(
+            [
+                'name'  => '',
+                'value' => '',
+            ],
+            [
+                'name'     => 'required|alpha',
+                'value'    => 'required',
+            ],
+            [
+                'name'      => '地名',
+                'value'     => '值',
+            ]
+        );
+
+        $error = <<<'eot'
+            {
+                "name": [
+                    "地名 不能为空",
+                    "地名 只能是字母"
+                ],
+                "value": [
+                    "值 不能为空"
+                ]
+            }
+            eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+
+        $validate->addRule(['name' => 'required|alpha|'.Validator::SKIP_SELF]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+            {
+                "name": [
+                    "地名 不能为空"
+                ],
+                "value": [
+                    "值 不能为空"
+                ]
+            }
+            eot;
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
+
     public function testMustRequired(): void
     {
         $validate = new Validator(
             [
-                'name' => '',
+                'name' => null,
             ],
             [
-                'name'     => 'required',
+                'name'     => 'required|'.Validator::OPTIONAL,
             ],
             [
                 'name'     => '地名',
             ]
         );
 
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-        $this->assertSame(['name' => '地名'], $validate->getName());
-
-        $validate->rule(['name' => 'required|'.Validator::CONDITION_VALUE]);
-
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
+        $this->assertSame(['name' => '地名'], $validate->getName());
 
-        $validate->rule(['name' => 'required|'.Validator::CONDITION_MUST]);
-
+        $validate->rule(['name' => 'required']);
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -1366,7 +1411,6 @@ class ValidatorTest extends TestCase
         );
 
         $validate->data(['name' => null]);
-
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -1714,7 +1758,7 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
-    public function testHasFieldRuleWithoutParameterRealWithRuleNotSet(): void
+    public function testHasFieldRuleWithoutParamRealWithRuleNotSet(): void
     {
         $validate = new Validator(
             [
@@ -1730,15 +1774,15 @@ class ValidatorTest extends TestCase
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
-        $this->assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['name', ['required']]));
-        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['name', ['foo']]));
-        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['bar', []]));
+        $this->assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'required']));
+        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'foo']));
+        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['bar', '']));
     }
 }
 
 class ExtendClassTest1
 {
-    public function handle($value, array $parameter, IValidator $validator, string $field): bool
+    public function handle($value, array $param, IValidator $validator, string $field): bool
     {
         if (1 === $value) {
             return true;
@@ -1747,7 +1791,7 @@ class ExtendClassTest1
         return false;
     }
 
-    public function handle2($value, array $parameter, IValidator $validator, string $field): bool
+    public function handle2($value, array $param, IValidator $validator, string $field): bool
     {
         if (2 === $value) {
             return true;
@@ -1759,7 +1803,7 @@ class ExtendClassTest1
 
 class ExtendClassTest2
 {
-    public function handle($value, array $parameter, IValidator $validator, string $field): bool
+    public function handle($value, array $param, IValidator $validator, string $field): bool
     {
         if (3 === $value) {
             return true;

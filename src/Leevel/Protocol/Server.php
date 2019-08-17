@@ -22,14 +22,19 @@ namespace Leevel\Protocol;
 
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
+use Leevel\Di\ICoroutine;
 use Leevel\Filesystem\Fso\create_directory;
 use function Leevel\Filesystem\Fso\create_directory;
+use Leevel\Filesystem\Fso\create_file;
+use function Leevel\Filesystem\Fso\create_file;
 use Leevel\Protocol\Process as ProtocolProcess;
 use Swoole\Process;
+use Swoole\Runtime;
 use Swoole\Server as SwooleServer;
+use Throwable;
 
 /**
- * swoole 服务基类.
+ * Swoole 服务基类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -38,6 +43,7 @@ use Swoole\Server as SwooleServer;
  * @see https://www.cnblogs.com/luojianqun/p/5355439.html
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 abstract class Server
 {
@@ -84,14 +90,14 @@ abstract class Server
      * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
+     * @param \Leevel\Di\ICoroutine $coroutine
      * @param array                 $option
      */
-    public function __construct(IContainer $container, array $option = [])
+    public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
         $this->validSwoole();
-
+        $container->setCoroutine($coroutine);
         $this->container = $container;
-
         $this->option = array_merge($this->option, $option);
     }
 
@@ -190,8 +196,9 @@ abstract class Server
     }
 
     /**
-     * 主进程的主线程
-     * 记录进程 id,脚本实现自动重启.
+     * 主进程的主线程.
+     *
+     * - 记录进程 id,脚本实现自动重启.
      *
      * @param \Swoole\Server $server
      *
@@ -205,32 +212,19 @@ abstract class Server
             'Server is started at %s:%d',
             $this->option['host'], $this->option['port']
         );
-
         $this->log($message, true, '');
-        $this->log('Server master worker start', true);
+        $this->log('Server master worker start.', true);
 
         $this->setProcessName($this->option['process_name'].'.master');
 
-        $pid = $server->master_pid."\n".$server->manager_pid;
-
-        $dirname = dirname($this->option['pid_path']);
-
-        if (!is_writable($dirname) ||
-            !file_put_contents($this->option['pid_path'], $pid)) {
-            $e = sprintf('Dir %s is not writeable.', $dirname);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        chmod($this->option['pid_path'], 0666 & ~umask());
-
-        // 开启验证模式
-        //Runtime::enableStrictMode();
+        $pidContent = $server->master_pid."\n".$server->manager_pid;
+        create_file($this->option['pid_path'], $pidContent);
     }
 
     /**
-     * 新的连接进入时
-     * 每次连接时(相当于每个浏览器第一次打开页面时)执行一次, reload 时连接不会断开, 也就不会再次触发该事件.
+     * 新的连接进入时.
+     *
+     * - 每次连接时(相当于每个浏览器第一次打开页面时)执行一次, reload 时连接不会断开, 也就不会再次触发该事件.
      *
      * @param \Swoole\Server $server
      * @param int            $fd
@@ -248,9 +242,10 @@ abstract class Server
     }
 
     /**
-     * worker start 加载业务脚本常驻内存
-     * 由于服务端命令行也采用 QueryPHP,无需再次引入 QueryPHP
-     * 每个 Worker 进程启动或重启时都会执行.
+     * worker start 加载业务脚本常驻内存.
+     *
+     * - 由于服务端命令行也采用 QueryPHP,无需再次引入 QueryPHP
+     * - 每个 Worker 进程启动或重启时都会执行.
      *
      * @param \Swoole\Server $server
      * @param int            $workeId
@@ -260,13 +255,9 @@ abstract class Server
     public function onWorkerStart(SwooleServer $server, int $workeId): void
     {
         if ($workeId >= $this->option['worker_num']) {
-            $this->setProcessName(
-                $this->option['process_name'].'.task'
-            );
+            $this->setProcessName($this->option['process_name'].'.task');
         } else {
-            $this->setProcessName(
-                $this->option['process_name'].'.worker'
-            );
+            $this->setProcessName($this->option['process_name'].'.worker');
         }
 
         // 开启 opcache 重连后需要刷新
@@ -277,11 +268,14 @@ abstract class Server
         if (function_exists('apc_clear_cache')) {
             apc_clear_cache();
         }
+
+        $this->enableCoroutine();
     }
 
     /**
-     * 当管理进程启动时调用
-     * 服务器启动时执行一次
+     * 当管理进程启动时调用.
+     *
+     * - 服务器启动时执行一次.
      *
      * @param \Swoole\Server $server
      *
@@ -289,11 +283,10 @@ abstract class Server
      */
     public function onManagerStart(SwooleServer $server): void
     {
-        $this->log('Server manager worker start', true);
-
-        $this->setProcessName(
-            $this->option['process_name'].'.manager'
-        );
+        $this->log('Server manager worker start.', true);
+        $message = sprintf('Master Pid: %d,Manager Pid: %d.', $server->master_pid, $server->manager_pid);
+        $this->log($message, true);
+        $this->setProcessName($this->option['process_name'].'.manager');
     }
 
     /**
@@ -304,12 +297,11 @@ abstract class Server
      */
     public function onWorkerStop(SwooleServer $server, int $workerId): void
     {
-        $this->log(
-            sprintf(
-                'Server %s worker %d shutdown',
-                $server->setting['process_name'], $workerId
-            )
+        $message = sprintf(
+            'Server %s worker %d shutdown',
+            $server->setting['process_name'], $workerId
         );
+        $this->log($message);
     }
 
     /**
@@ -324,6 +316,8 @@ abstract class Server
      */
     public function onReceive(SwooleServer $server, int $fd, int $reactorId, string $data): void
     {
+        $server->task($data);
+        $server->send($fd, 'Task is ok');
     }
 
     /**
@@ -337,9 +331,8 @@ abstract class Server
      */
     public function onFinish(SwooleServer $server, int $taskId, string $data): void
     {
-        $this->log(
-            sprintf('Task %d finish, the result is %s', $taskId, $data)
-        );
+        $message = sprintf('Task %d finish, the result is %s', $taskId, $data);
+        $this->log($message);
     }
 
     /**
@@ -354,19 +347,40 @@ abstract class Server
      */
     public function onTask(SwooleServer $server, int $taskId, int $fromId, string $data): void
     {
-        $this->log(
-            sprintf(
-                'Task %d form workder %d, the result is %s',
-                $taskId, $fromId, $data
-            )
+        $message = sprintf(
+            'Task %d form workder %d, the result is %s',
+            $taskId, $fromId, $data
         );
+        $this->log($message);
 
-        $server->finish($data);
+        list($task, $params) = $this->parseTask($data);
+
+        if (false !== strpos($task, '@')) {
+            list($task, $method) = explode('@', $task);
+        } else {
+            $method = 'handle';
+        }
+
+        if (!is_object($task = $this->container->make($task))) {
+            throw new InvalidArgumentException('Task is invalid.');
+        }
+
+        $params[] = $server;
+        $params[] = $taskId;
+        $params[] = $fromId;
+
+        try {
+            $task->{$method}(...$params);
+            $server->finish($data);
+        } catch (Throwable $th) {
+            // @todo 优化
+        }
     }
 
     /**
-     * Server 正常结束时发生
-     * 服务器关闭时执行一次
+     * Server 正常结束时发生.
+     *
+     * - 服务器关闭时执行一次.
      *
      * @param \Swoole\Server $server
      *
@@ -379,6 +393,36 @@ abstract class Server
         }
 
         $this->log('Server shutdown');
+    }
+
+    /**
+     * 开启协程 Hook.
+     */
+    protected function enableCoroutine(): void
+    {
+        Runtime::enableCoroutine(SWOOLE_HOOK_ALL);
+    }
+
+    /**
+     * 解析任务.
+     *
+     * @param string $task
+     *
+     * @return array
+     */
+    protected function parseTask(string $task): array
+    {
+        list($task, $params) = array_pad(explode(':', $task, 2), 2, []);
+
+        if (is_string($params)) {
+            $params = explode(',', $params);
+        }
+
+        $params = array_map(function (string $item) {
+            return ctype_digit($item) ? (int) $item : $item;
+        }, $params);
+
+        return [$task, $params];
     }
 
     /**
@@ -426,10 +470,15 @@ abstract class Server
         foreach ($this->option['processes'] as $process) {
             $this->process($process);
         }
+
+        $this->container->instance('server', $this->server);
+
+        // 删除容器中注册为 -1 的数据
+        $this->removeCoroutine();
     }
 
     /**
-     * http server 绑定事件.
+     * HTTP Server 绑定事件.
      */
     protected function eventServer(): void
     {
@@ -447,7 +496,7 @@ abstract class Server
     }
 
     /**
-     * http server 启动.
+     * HTTP Server 启动.
      */
     protected function startSwooleServer(): void
     {
@@ -531,8 +580,8 @@ abstract class Server
             throw new InvalidArgumentException($e);
         }
 
-        if (version_compare(phpversion('swoole'), '4.2.9', '<')) {
-            $e = 'Swoole 4.2.9 OR Higher';
+        if (version_compare(phpversion('swoole'), '4.4.2', '<')) {
+            $e = 'Swoole 4.4.2 OR Higher';
 
             throw new InvalidArgumentException($e);
         }
@@ -541,3 +590,4 @@ abstract class Server
 
 // import fn.
 class_exists(create_directory::class);
+class_exists(create_file::class);

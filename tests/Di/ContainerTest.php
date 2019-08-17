@@ -324,6 +324,9 @@ class ContainerTest extends TestCase
     public function testArgsRequiredContainerInvalidArgumentException(): void
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'There are 3 required args,but 0 gived.'
+        );
 
         $container = new Container();
 
@@ -333,6 +336,9 @@ class ContainerTest extends TestCase
     public function testInterfaceContainerInvalidArgumentException(): void
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Interface Tests\\Di\\Fixtures\\ITest2 cannot be normalize because not binded.'
+        );
 
         $container = new Container();
 
@@ -369,7 +375,7 @@ class ContainerTest extends TestCase
 
         $test8 = new Test8();
 
-        $result = $container->call(function ($arg1, $arg2, $arg3, ITest8 $arg4 = null, Test8 $arg5 = null) {
+        $result = $container->call(function ($arg1, $arg2, $arg3, ?ITest8 $arg4 = null, ?Test8 $arg5 = null) {
             return func_get_args();
         }, ['arg1' => 'foo', 'arg3' => 'world2', Test8::class => $test8]);
 
@@ -383,6 +389,9 @@ class ContainerTest extends TestCase
     public function testCallNotFoundClass(): void
     {
         $this->expectException(\ReflectionException::class);
+        $this->expectExceptionMessage(
+            'Class Test8 does not exist'
+        );
 
         $container = new Container();
 
@@ -437,6 +446,17 @@ class ContainerTest extends TestCase
 
         $result = $container->call(Test8::class.'::staticFunc3', ['hello', 'world']);
         $this->assertSame(['hello', 'world'], $result);
+    }
+
+    public function testCallInvalidClass(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The class name must be string.'
+        );
+
+        $container = new Container();
+        $container->call([1, 'bar']);
     }
 
     public function testRemove(): void
@@ -562,8 +582,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -582,8 +602,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -597,6 +617,28 @@ class ContainerTest extends TestCase
         $this->assertFalse($container->existsCoroutine('test'));
     }
 
+    public function testRemoveCoroutineByRemove(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('context')->willReturn(true);
+        $this->assertTrue($coroutine->context(Test26::class));
+
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+
+        $container->instance('test', new Test26());
+
+        $this->assertInstanceOf(Test26::class, $container->make('test'));
+        $this->assertTrue($container->existsCoroutine('test'));
+
+        $container->remove('test');
+        $this->assertFalse($container->existsCoroutine('test'));
+    }
+
     public function testRemoveCoroutineAll(): void
     {
         $coroutine = $this->createMock(ICoroutine::class);
@@ -604,8 +646,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -626,8 +668,8 @@ class ContainerTest extends TestCase
         $coroutine->method('context')->willReturn(true);
         $this->assertTrue($coroutine->context(Test26::class));
 
-        $coroutine->method('uid')->willReturn(2);
-        $this->assertSame(2, $coroutine->uid());
+        $coroutine->method('cid')->willReturn(2);
+        $this->assertSame(2, $coroutine->cid());
 
         $container = new Container();
         $container->setCoroutine($coroutine);
@@ -637,6 +679,12 @@ class ContainerTest extends TestCase
 
         $this->assertInstanceOf(Test26::class, $container->make('test'));
         $this->assertTrue($container->existsCoroutine('test'));
+    }
+
+    public function testRemoveCoroutineWithoutSetCoroutineDoNothing(): void
+    {
+        $container = new Container();
+        $this->assertNull($container->removeCoroutine('test'));
     }
 
     public function testClassArgsClassAsStringContainer(): void
@@ -706,7 +754,7 @@ class ContainerTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'Ioc container disallowed clone.'
+            'IOC container disallowed clone.'
         );
 
         $container = new Container();
@@ -739,5 +787,41 @@ class ContainerTest extends TestCase
         $this->assertSame(1, $_SERVER['testCallProviderBootstrap']);
 
         unset($_SERVER['testCallProviderBootstrap']);
+    }
+
+    public function testRegisterProviders(): void
+    {
+        $container = new Container();
+
+        $this->assertFalse($container->isBootstrap());
+        $container->registerProviders([], [], []);
+        $this->assertTrue($container->isBootstrap());
+
+        // do nothing
+        $container->registerProviders([], [], []);
+    }
+
+    public function testDeferredProvider(): void
+    {
+        $deferredProviders = [
+            'test_deferred' => 'Tests\\Di\\Fixtures\\DeferredProvider',
+        ];
+
+        $deferredAlias = [
+            'Tests\\Di\\Fixtures\\DeferredProvider' => [
+                'test_deferred' => 'bar',
+            ],
+        ];
+
+        $container = new Container();
+
+        $this->assertFalse($container->isBootstrap());
+        $container->registerProviders([], $deferredProviders, $deferredAlias);
+        $this->assertTrue($container->isBootstrap());
+        $this->assertSame('test_deferred', $container->make('bar'));
+        $this->assertSame('test_deferred', $container->make('test_deferred'));
+        $this->assertSame(1, $_SERVER['testDeferredProvider']);
+
+        unset($_SERVER['testDeferredProvider']);
     }
 }

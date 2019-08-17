@@ -58,8 +58,6 @@ if (!function_exists('f_exists')) {
             return true;
         }
 
-        $virtualClass = null;
-
         foreach (['fn', 'prefix', 'index'] as $type) {
             switch ($type) {
                 case 'fn':
@@ -74,7 +72,7 @@ if (!function_exists('f_exists')) {
                     $virtualClass = substr($fn, 0, $position);
 
                     break;
-                case 'index':
+                default:
                     if (false === $position = strripos($fn, '\\')) {
                         continue 2;
                     }
@@ -82,10 +80,6 @@ if (!function_exists('f_exists')) {
                     $virtualClass = substr($fn, 0, $position).'\\index';
 
                     break;
-            }
-
-            if (!$virtualClass) {
-                return false;
             }
 
             class_exists($virtualClass);
