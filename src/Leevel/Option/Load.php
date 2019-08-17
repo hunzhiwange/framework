@@ -40,9 +40,9 @@ class Load
     /**
      * 配置路径.
      *
-     * @var array
+     * @var string
      */
-    protected array $dir = [];
+    protected string $dir;
 
     /**
      * 已经载入数据.
