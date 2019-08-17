@@ -221,7 +221,7 @@ class Load implements ILoad
             $params = explode(',', $params);
         }
 
-        $args = array_map(fn(string $item) => ctype_digit($item) ? (int) $item : $item, $args);
+        $params = array_map(fn(string $item) => ctype_digit($item) ? (int) $item : $item, $params);
 
         return [$name, $params];
     }
