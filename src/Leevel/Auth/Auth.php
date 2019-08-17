@@ -36,7 +36,7 @@ abstract class Auth implements IAuth
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'token' => null,
     ];
 

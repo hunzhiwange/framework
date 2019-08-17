@@ -38,7 +38,7 @@ class Session extends Auth implements IAuth
      *
      * @var \Leevel\Session\ISession
      */
-    protected $session;
+    protected ISession $session;
 
     /**
      * 构造函数.

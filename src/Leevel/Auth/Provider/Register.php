@@ -79,9 +79,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'auths',
-                function (IContainer $container): Manager {
-                    return new Manager($container);
-                },
+                fn (IContainer $container): Manager => new Manager($container),
             );
     }
 
@@ -93,9 +91,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'auth',
-                function (IContainer $container): IAuth {
-                    return $container['auths']->connect();
-                },
+                fn (IContainer $container): IAuth => $container['auths']->connect(),
             );
     }
 }
