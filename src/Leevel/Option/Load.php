@@ -40,23 +40,23 @@ class Load
     /**
      * 配置路径.
      *
-     * @var string
+     * @var array
      */
-    protected $dir = [];
+    protected array $dir = [];
 
     /**
      * 已经载入数据.
      *
      * @var array
      */
-    protected $loaded = [];
+    protected array $loaded = [];
 
     /**
      * 是否已经载入数据.
      *
      * @var bool
      */
-    protected $isLoaded = false;
+    protected bool $isLoaded = false;
 
     /**
      * 构造函数.
