@@ -588,56 +588,86 @@ class Router implements IRouter
     }
 
     /**
-     * 分析匹配绑定路由.
+     * 分析匹配路由绑定控制器.
      *
      * @return callable|false
      */
     protected function parseMatchedBind()
     {
         if ($matchedBind = $this->matchedBind()) {
-            if (false !== strpos($matchedBind, '@')) {
-                list($bindClass, $method) = explode('@', $matchedBind);
+            return $this->normalizeControllerForBind($matchedBind);
+        }
 
-                if (!class_exists($bindClass)) {
-                    return false;
-                }
+        return $this->normalizeControllerForDefault();
+    }
 
-                $controller = $this->container->make($bindClass);
-            } else {
-                if (!class_exists($matchedBind)) {
-                    return false;
-                }
+    /**
+     * 格式化基于注解路由的绑定控制器.
+     *
+     * @param string $matchedBind
+     *
+     * @return callable|false
+     */
+    protected function normalizeControllerForBind($matchedBind)
+    {
+        if (false !== strpos($matchedBind, '@')) {
+            list($bindClass, $method) = explode('@', $matchedBind);
 
-                $controller = $this->container->make($matchedBind);
-                $method = 'handle';
+            if (!class_exists($bindClass)) {
+                return false;
             }
-        } else {
-            $matchedApp = $this->matchedApp();
-            $matchedController = $this->matchedController();
-            $matchedAction = $this->matchedAction();
 
-            // 尝试直接读取方法控制器类
-            $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
-                $matchedController.'\\'.ucfirst($matchedAction);
+            $controller = $this->container->make($bindClass);
+        } else {
+            if (!class_exists($matchedBind)) {
+                return false;
+            }
+
+            $controller = $this->container->make($matchedBind);
+            $method = 'handle';
+        }
+
+        if (!method_exists($controller, $method)) {
+            return false;
+        }
+
+        return [$controller, $method];
+    }
+
+    /**
+     * 格式化基于 pathInfo 的默认控制器.
+     *
+     * @param string $matchedBind
+     *
+     * @return callable|false
+     */
+    protected function normalizeControllerForDefault()
+    {
+        $matchedApp = $this->matchedApp();
+        $matchedController = $this->matchedController();
+        $matchedAction = $this->matchedAction();
+
+        // 尝试直接读取方法控制器类
+        $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.
+            $matchedController.'\\'.ucfirst($matchedAction);
+        $controllerClass = $this->normalizeForSubdir($controllerClass);
+
+        if (class_exists($controllerClass)) {
+            $controller = $this->container->make($controllerClass);
+            $method = 'handle';
+        }
+
+        // 尝试读取默认控制器
+        else {
+            $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
             $controllerClass = $this->normalizeForSubdir($controllerClass);
 
-            if (class_exists($controllerClass)) {
-                $controller = $this->container->make($controllerClass);
-                $method = 'handle';
+            if (!class_exists($controllerClass)) {
+                return false;
             }
 
-            // 尝试读取默认控制器
-            else {
-                $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
-                $controllerClass = $this->normalizeForSubdir($controllerClass);
-
-                if (!class_exists($controllerClass)) {
-                    return false;
-                }
-
-                $controller = $this->container->make($controllerClass);
-                $method = $this->normalizeForSubdir($matchedAction, true);
-            }
+            $controller = $this->container->make($controllerClass);
+            $method = $this->normalizeForSubdir($matchedAction, true);
         }
 
         if (!method_exists($controller, $method)) {
