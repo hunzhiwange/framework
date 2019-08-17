@@ -40,56 +40,56 @@ abstract class Make extends Command
      *
      * @var string
      */
-    protected $makeType;
+    protected string $makeType;
 
     /**
      * 文件保存路径.
      *
      * @var string
      */
-    protected $saveFilePath;
+    protected string $saveFilePath;
 
     /**
      * 模板路径.
      *
      * @var string
      */
-    protected $templatePath;
+    protected string $templatePath;
 
     /**
      * 模板源码
      *
      * @var string
      */
-    protected $templateSource;
+    protected string $templateSource;
 
     /**
      * 保存的模板结果.
      *
      * @var string
      */
-    protected $templateResult;
+    protected string $templateResult;
 
     /**
      * 自定义替换.
      *
      * @var array
      */
-    protected $customReplaceKeyValue = [];
+    protected array $customReplaceKeyValue = [];
 
     /**
      * 全局替换.
      *
      * @var array
      */
-    protected static $globalReplace = [];
+    protected static array $globalReplace = [];
 
     /**
      * 命令空间.
      *
      * @var string
      */
-    protected $namespace;
+    protected ?string $namespace = null;
 
     /**
      * 设置全局变量替换.
@@ -297,9 +297,9 @@ abstract class Make extends Command
      *
      * @return string
      */
-    protected function getNamespace(): ?string
+    protected function getNamespace(): string
     {
-        return $this->namespace;
+        return $this->namespace ?: '';
     }
 
     /**

@@ -40,14 +40,21 @@ class Load
      *
      * @var array
      */
-    protected $namespaces = [];
+    protected array $namespaces = [];
 
     /**
      * 已经载入数据.
      *
      * @var array
      */
-    protected $loaded;
+    protected array $loaded = [];
+
+    /**
+     * 是否已经载入数据.
+     *
+     * @var bool
+     */
+    protected bool $isLoaded = false;
 
     /**
      * 构造函数.
@@ -80,9 +87,11 @@ class Load
      */
     public function loadData(): array
     {
-        if (null !== $this->loaded) {
+        if (true === $this->isLoaded) {
             return $this->loaded;
         }
+        
+        $this->isLoaded = true;
 
         $files = $this->findConsoleFile($this->namespaces);
 

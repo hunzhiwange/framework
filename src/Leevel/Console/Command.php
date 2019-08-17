@@ -97,16 +97,16 @@ abstract class Command extends SymfonyCommand
     /**
      * 输入接口.
      *
-     * @var object
+     * @var \Symfony\Component\Console\Input\InputInterface
      */
-    protected $input;
+    protected InputInterface $input;
 
     /**
      * 输入接口.
      *
-     * @var object
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
      * 构造函数.

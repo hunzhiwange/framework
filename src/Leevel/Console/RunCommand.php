@@ -40,7 +40,7 @@ class RunCommand
      *
      * @var \Leevel\Console\IApplication
      */
-    protected $application;
+    protected IApplication $application;
 
     /**
      * 创建一个命令行运行器.
