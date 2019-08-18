@@ -49,7 +49,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @var \Leevel\Di\IContainer
      */
-    protected static IContainer $instance;
+    protected static ?IContainer $instance = null;
 
     /**
      * 注册的服务.
