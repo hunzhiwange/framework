@@ -39,28 +39,28 @@ class Encryption implements IEncryption
      *
      * @var string
      */
-    protected $key;
+    protected string $key;
 
     /**
      * openssl 加密解密算法.
      *
      * @var string
      */
-    protected $cipher;
+    protected string $cipher;
 
     /**
      * 安全 RSA 私钥.
      *
      * @var string
      */
-    protected $rsaPrivate;
+    protected ?string $rsaPrivate;
 
     /**
      * 安全 RSA 公钥.
      *
      * @var string
      */
-    protected $rsaPublic;
+    protected ?string $rsaPublic;
 
     /**
      * 构造函数.
