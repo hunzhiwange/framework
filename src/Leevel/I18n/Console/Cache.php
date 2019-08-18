@@ -59,14 +59,14 @@ class Cache extends Command
      *
      * @var \Leevel\Kernel\IApp
      */
-    protected $app;
+    protected IApp $app;
 
     /**
      * 扩展语言包目录.
      *
      * @var array
      */
-    protected $extends;
+    protected array $extends = [];
 
     /**
      * 响应命令.
