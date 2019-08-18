@@ -22,7 +22,6 @@ namespace Leevel\View\Console;
 
 use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
-use Leevel\Option\IOption;
 use Leevel\View\Compiler;
 use Leevel\View\IView;
 use Leevel\View\Parser;
@@ -62,29 +61,28 @@ class Cache extends Command
      *
      * @var \Leevel\Kernel\IApp
      */
-    protected $app;
+    protected IApp $app;
 
     /**
      * 视图分析器.
      *
      * @var \Leevel\View\Parser
      */
-    protected $parser;
+    protected Parser $parser;
 
     /**
      * 视图 HTML 仓储.
      *
      * @var \Leevel\View\IView
      */
-    protected $html;
+    protected IView $html;
 
     /**
      * 响应命令.
      *
      * @param \Leevel\Kernel\IApp    $app
-     * @param \Leevel\Option\IOption $option
      */
-    public function handle(IApp $app, IOption $option): void
+    public function handle(IApp $app): void
     {
         $this->app = $app;
         $this->parser = $this->createParser();
