@@ -56,7 +56,7 @@ class Server extends Command
      *
      * @var \Leevel\Kernel\IApp
      */
-    protected $app;
+    protected IApp $app;
 
     /**
      * 响应命令.

@@ -45,35 +45,35 @@ class Doc
      *
      * @var string
      */
-    protected $basePath;
+    protected string $basePath;
 
     /**
      * 解析文档的 Git 仓库.
      *
      * @var string
      */
-    protected $git;
+    protected string $git;
 
     /**
      * 解析文档保存路径.
      *
      * @var string
      */
-    protected $savePath;
+    protected string $savePath;
 
     /**
      * 解析文档行内容.
      *
      * @var array
      */
-    protected $lines = [];
+    protected array $lines = [];
 
     /**
      * 解析文档的对应的地址.
      *
      * @var string
      */
-    protected $filePath;
+    protected string $filePath;
 
     /**
      * 构造函数.
@@ -143,9 +143,7 @@ class Doc
     public static function getMethodBody(string $className, string $method, bool $isDoc = false): string
     {
         $doc = new static('', '');
-
         $lines = $doc->parseFileContnet(new ReflectionClass($className));
-
         $method = new ReflectionMethod($className, $method);
 
         return $doc->parseMethodBody($lines, $method, $isDoc);
@@ -161,7 +159,6 @@ class Doc
     public static function getClassBody(string $className): string
     {
         $doc = new static('', '');
-
         $lines = $doc->parseFileContnet($reflectionClass = new ReflectionClass($className));
 
         $startLine = $reflectionClass->getStartLine() - 1;

@@ -62,7 +62,7 @@ abstract class Kernel implements IKernel
      *
      * @var array
      */
-    protected $bootstraps = [
+    protected array $bootstraps = [
         LoadOption::class,
         LoadI18n::class,
         RegisterRuntime::class,

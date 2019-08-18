@@ -55,7 +55,6 @@ class LoadI18n
             $load = (new Load([$app->i18nPath()]))
                 ->setI18n($i18nDefault)
                 ->addDir($this->getExtend($app));
-
             $data = $load->loadData();
         }
 
@@ -85,7 +84,6 @@ class LoadI18n
             ->container()
             ->make('option')
             ->get('_composer.i18ns', []);
-
         $path = $app->path();
 
         $extend = array_map(function (string $item) use ($path) {

@@ -41,7 +41,7 @@ abstract class BusinessException extends BadRequestHttpException
      *
      * @var int
      */
-    protected $importance = 0;
+    protected int $importance = 0;
 
     /**
      * 构造函数.

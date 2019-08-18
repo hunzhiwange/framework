@@ -129,7 +129,6 @@ class Doc extends Command
     protected function parseFiles(): array
     {
         $fileOrDir = dirname($this->testsDir()).'/'.$this->path();
-
         $result = [];
 
         if (is_file($fileOrDir)) {

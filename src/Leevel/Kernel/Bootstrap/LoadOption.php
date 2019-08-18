@@ -48,11 +48,9 @@ class LoadOption
 
         if ($app->isCachedOption()) {
             $data = (array) include $app->optionCachedPath();
-
             $this->setEnvs($data['app']['_env']);
         } else {
             $load = new Load($app->optionPath());
-
             $data = $load->loadData($app);
         }
 
