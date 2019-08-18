@@ -155,18 +155,6 @@ class HttpServer extends Server implements IServer
     }
 
     /**
-     * 是否为 options 请求.
-     *
-     * @param \Swoole\Http\Request $swooleRequest
-     *
-     * @return bool
-     */
-    protected function isOptions(SwooleHttpRequest $swooleRequest): bool
-    {
-        return 'OPTIONS' === $swooleRequest->server['request_method'];
-    }
-
-    /**
      * 路由调度.
      *
      * @param \Leevel\Http\IRequest $request
