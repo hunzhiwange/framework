@@ -48,7 +48,7 @@ class RpcServer extends Server implements IServer
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
@@ -112,7 +112,7 @@ class RpcServer extends Server implements IServer
      *
      * @var array
      */
-    protected $serverEvent = [
+    protected array $serverEvent = [
         'start',
         'connect',
         'workerStart',
@@ -130,7 +130,7 @@ class RpcServer extends Server implements IServer
      *
      * @var \Leevel\Protocol\Thrift\Base\ThriftServer
      */
-    protected $thriftServer;
+    protected ThriftServer $thriftServer;
 
     /**
      * 构造函数.

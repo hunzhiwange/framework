@@ -73,7 +73,7 @@ class WebsocketServer extends HttpServer implements IServer
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
@@ -107,7 +107,7 @@ class WebsocketServer extends HttpServer implements IServer
      *
      * @var array
      */
-    protected $serverEvent = [
+    protected array $serverEvent = [
         'start',
         'connect',
         'workerStart',

@@ -45,49 +45,49 @@ class HotOverload extends Process
      *
      * @var string
      */
-    protected $name = 'hot.overload';
+    protected string $name = 'hot.overload';
 
     /**
      * 时间记录.
      *
      * @var int
      */
-    protected $count = 0;
+    protected int $count = 0;
 
     /**
      * 检测延迟重启计数器.
      *
      * @var int
      */
-    protected $delayCount = 2;
+    protected int $delayCount = 2;
 
     /**
      * 检测间隔时间（毫秒）.
      *
      * @var int
      */
-    protected $timeInterval = 20;
+    protected int $timeInterval = 20;
 
     /**
      * 配置.
      *
      * @var \Leevel\Option\IOption
      */
-    protected $option;
+    protected IOption $option;
 
     /**
      * 文件 MD5 值.
      *
      * @var string
      */
-    protected $md5Hash;
+    protected string $md5Hash;
 
     /**
      * 正在 reload.
      *
      * @var bool
      */
-    protected $reloading = false;
+    protected bool $reloading = false;
 
     /**
      * 构造函数.

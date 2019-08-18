@@ -44,7 +44,7 @@ class HttpServer extends Server implements IServer
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
@@ -85,7 +85,7 @@ class HttpServer extends Server implements IServer
      *
      * @var array
      */
-    protected $serverEvent = [
+    protected array $serverEvent = [
         'start',
         'connect',
         'workerStart',
@@ -152,18 +152,6 @@ class HttpServer extends Server implements IServer
     {
         return '/favicon.ico' === $swooleRequest->server['path_info'] ||
             '/favicon.ico' === $swooleRequest->server['request_uri'];
-    }
-
-    /**
-     * 是否为 options 请求.
-     *
-     * @param \Swoole\Http\Request $swooleRequest
-     *
-     * @return bool
-     */
-    protected function isOptions(SwooleHttpRequest $swooleRequest): bool
-    {
-        return 'OPTIONS' === $swooleRequest->server['request_method'];
     }
 
     /**

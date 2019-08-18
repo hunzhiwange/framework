@@ -41,7 +41,7 @@ class Timer implements ITimer
      *
      * @var \Leevel\Log\ILog
      */
-    protected $log;
+    protected ILog $log;
 
     /**
      * 构造函数.

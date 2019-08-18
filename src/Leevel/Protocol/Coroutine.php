@@ -40,7 +40,7 @@ class Coroutine implements ICoroutine
      *
      * @var array
      */
-    protected $context = [];
+    protected array $context = [];
 
     /**
      * 是否处于协程上下文.

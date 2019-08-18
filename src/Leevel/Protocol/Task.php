@@ -40,7 +40,7 @@ class Task implements ITask
      *
      * @var \Swoole\Server
      */
-    protected $server;
+    protected SwooleServer $server;
 
     /**
      * 构造函数.

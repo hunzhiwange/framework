@@ -37,7 +37,7 @@ abstract class Process
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * 获取进程名称.

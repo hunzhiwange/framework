@@ -44,21 +44,21 @@ abstract class Pool implements IPool
      *
      * @var int
      */
-    protected $minIdleConnections = 1;
+    protected int $minIdleConnections = 1;
 
     /**
      * 最大空闲连接池数据量.
      *
      * @var int
      */
-    protected $maxIdleConnections = 1;
+    protected int $maxIdleConnections = 1;
 
     /**
      * 当前连接数.
      *
      * @var int
      */
-    protected $connectionsCount = 0;
+    protected int $connectionsCount = 0;
 
     /**
      * 通道写入最大超时时间设置.
@@ -72,7 +72,7 @@ abstract class Pool implements IPool
      *
      * @see https://wiki.swoole.com/wiki/page/843.html
      */
-    protected $maxPushTimeout = -1000;
+    protected int $maxPushTimeout = -1000;
 
     /**
      * 通道获取最大等待超时.
@@ -85,7 +85,7 @@ abstract class Pool implements IPool
      *
      * @see https://wiki.swoole.com/wiki/page/844.html
      */
-    protected $maxPopTimeout = 0;
+    protected int $maxPopTimeout = 0;
 
     /**
      * 连接的存活时间.
@@ -94,21 +94,21 @@ abstract class Pool implements IPool
      *
      * @var int
      */
-    protected $keepAliveDuration = 60000;
+    protected int $keepAliveDuration = 60000;
 
     /**
      * 最大尝试次数.
      *
      * @var int
      */
-    protected $retryTimes = 3;
+    protected int $retryTimes = 3;
 
     /**
      * 连接通道.
      *
      * @var \Swoole\Coroutine\Channel
      */
-    protected $connections;
+    protected Channel $connections;
 
     /**
      * 是否初始化.
@@ -117,14 +117,14 @@ abstract class Pool implements IPool
      *
      * @var bool
      */
-    protected $initialized = false;
+    protected bool $initialized = false;
 
     /**
      * 是否关闭.
      *
      * @var bool
      */
-    protected $closed = false;
+    protected bool $closed = false;
 
     /**
      * 构造函数.

@@ -25,7 +25,7 @@ use Thrift\Transport\TFramedTransport;
 use Thrift\Transport\TTransport;
 
 /**
- * 分帧传输工厂
+ * 分帧传输工厂.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

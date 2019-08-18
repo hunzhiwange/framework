@@ -52,28 +52,28 @@ abstract class Server
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $container;
+    protected IContainer $container;
 
     /**
      * swoole 服务实例.
      *
      * @var \Swoole\Server
      */
-    protected $server;
+    protected SwooleServer $server;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [];
+    protected array $option = [];
 
     /**
      * 服务回调事件.
      *
      * @var array
      */
-    protected $serverEvent = [
+    protected array $serverEvent = [
         'start',
         'connect',
         'workerStart',

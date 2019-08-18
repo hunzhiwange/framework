@@ -96,9 +96,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'coroutine',
-                function (): Coroutine {
-                    return new Coroutine();
-                },
+                fn (): Coroutine => new Coroutine(),
             );
     }
 
@@ -164,9 +162,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'rpc',
-                function (): Rpc {
-                    return new Rpc();
-                },
+                fn (): Rpc => new Rpc(),
             );
     }
 
@@ -178,9 +174,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'task',
-                function (IContainer $container): Task {
-                    return new Task($container->make('server'));
-                },
+                fn (IContainer $container): Task => new Task($container->make('server')),
             );
     }
 
@@ -192,9 +186,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'timer',
-                function (IContainer $container): Timer {
-                    return new Timer($container->make('logs'));
-                },
+                fn (IContainer $container): Timer => new Timer($container->make('logs')),
             );
     }
 

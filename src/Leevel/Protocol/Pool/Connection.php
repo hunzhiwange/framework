@@ -37,14 +37,14 @@ trait Connection
      *
      * @var \Leevel\Protocol\Pool\IPool
      */
-    protected $pool;
+    protected IPool $pool;
 
     /**
      * 是否归还连接池.
      *
      * @var bool
      */
-    protected $release = false;
+    protected bool $release = false;
 
     /**
      * 归还连接池.
