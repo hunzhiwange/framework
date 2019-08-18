@@ -23,7 +23,7 @@ namespace Leevel\Database;
 use PDO;
 
 /**
- * mysql 数据库连接.
+ * MySQL 数据库连接.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

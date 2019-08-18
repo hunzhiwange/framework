@@ -25,7 +25,7 @@ use Leevel\Protocol\Pool\IConnection;
 use Leevel\Protocol\Pool\Pool;
 
 /**
- * Mysql 连接池.
+ * MySQL 连接池.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -44,7 +44,7 @@ class MysqlPool extends Pool
     protected $manager;
 
     /**
-     * Mysql 连接.
+     * MySQL 连接.
      *
      * @var string
      */

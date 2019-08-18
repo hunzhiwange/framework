@@ -37,7 +37,7 @@ class MysqlPool implements IDatabase
     use Proxy;
 
     /**
-     * Mysql 连接池.
+     * MySQL 连接池.
      *
      * @var \Leevel\Database\Mysql\MysqlPool
      */

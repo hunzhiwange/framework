@@ -114,7 +114,7 @@ class Manager extends Managers implements IDatabase
     }
 
     /**
-     * 创建 mysql 连接.
+     * 创建 MySQL 连接.
      *
      * @param array $option
      *
