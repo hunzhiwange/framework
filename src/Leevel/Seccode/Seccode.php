@@ -226,12 +226,9 @@ class Seccode implements ISeccode
         }
 
         ob_start();
-
         imagepng($resImage);
-
         imagedestroy($resImage);
         $background = ob_get_contents();
-
         ob_end_clean();
 
         return $background;
