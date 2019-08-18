@@ -22,7 +22,6 @@ namespace Leevel\View\Console;
 
 use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
-use Leevel\Option\IOption;
 use Leevel\View\Compiler;
 use Leevel\View\IView;
 use Leevel\View\Parser;
@@ -81,10 +80,9 @@ class Cache extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IApp    $app
-     * @param \Leevel\Option\IOption $option
+     * @param \Leevel\Kernel\IApp $app
      */
-    public function handle(IApp $app, IOption $option): void
+    public function handle(IApp $app): void
     {
         $this->app = $app;
         $this->parser = $this->createParser();
@@ -175,11 +173,8 @@ class Cache extends Command
         }
 
         $options = $this->getFileContent($path);
-
         $paths = $options['extra']['leevel-console']['view-cache']['paths'] ?? [];
-
         $path = $this->app->path();
-
         $paths = array_map(function (string $value) use ($path) {
             if (!is_file($value)) {
                 $value = $path.'/'.$value;
