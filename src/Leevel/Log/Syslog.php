@@ -71,7 +71,6 @@ class Syslog extends Log implements ILog
         parent::__construct($option, $dispatch);
 
         $this->createMonolog();
-
         $this->makeSyslogHandler();
     }
 
