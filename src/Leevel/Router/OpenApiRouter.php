@@ -29,10 +29,11 @@ use OpenApi\Context;
 use function OpenApi\scan;
 
 /**
- * OpenApi 注解路由
- * 1:忽略已删除的路由 deprecated 和带有 leevelIgnore 的路由
- * 2:如果没有绑定路由参数 leevelBind,系统会尝试自动解析注解所在控制器方法.
- * 3:只支持最新的 zircote/swagger-php 3，支持最新的 OpenApi 3.0 规范.
+ * OpenApi 注解路由.
+ * 
+ * - 1:忽略已删除的路由 deprecated 和带有 leevelIgnore 的路由
+ * - 2:如果没有绑定路由参数 leevelBind,系统会尝试自动解析注解所在控制器方法.
+ * - 3:只支持最新的 zircote/swagger-php 3，支持最新的 OpenApi 3.0 规范.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -157,9 +158,7 @@ class OpenApiRouter
     public function handle(): array
     {
         $openApi = $this->makeOpenApi();
-
         $this->parseMainPath($openApi);
-
         $routers = $this->normalizeFastRoute($this->parseMainRouters($openApi));
 
         return $this->packageRouters($routers);
@@ -190,7 +189,6 @@ class OpenApiRouter
     protected function parseMainPath(OpenApi $openApi): void
     {
         list($this->basePaths, $this->groupPaths) = $this->parsePaths($openApi);
-
         $this->groups = $this->parseGroups($openApi);
     }
 

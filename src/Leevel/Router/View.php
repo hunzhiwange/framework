@@ -60,7 +60,6 @@ class View implements IView
     public function switchView(IViews $view): IView
     {
         $var = $this->getVar();
-
         $this->view = $view;
         $this->setVar($var);
 

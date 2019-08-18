@@ -82,15 +82,11 @@ class Action extends Make
 
         $controllerNamespace = $router->getControllerDir();
         $controllerName = ucfirst(camelize($this->argument('controller')));
-
         $action = ucfirst($this->normalizeAction($this->argument('name')));
 
         $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
-
         $this->setCustomReplaceKeyValue('file_name', $controllerName);
-
         $this->setCustomReplaceKeyValue('controller', $controllerName);
-
         $this->setCustomReplaceKeyValue('action', $action);
 
         // 保存路径

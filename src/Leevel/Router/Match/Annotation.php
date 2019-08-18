@@ -224,10 +224,8 @@ class Annotation extends Match implements IMatch
         }
 
         $result = [];
-
         $result[IRouter::BIND] = $routers['bind'];
         $result[IRouter::APP] = $this->findApp($routers['bind']);
-
         $result['params'] = [];
 
         // 域名匹配参数 {subdomain}.{domain}

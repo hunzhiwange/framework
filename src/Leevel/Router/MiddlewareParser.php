@@ -82,7 +82,6 @@ class MiddlewareParser
 
                 foreach ($temp as $item) {
                     list($item, $params) = $this->parseMiddleware($item);
-
                     $result[] = $this->middlewareName($middlewareAlias[$item] ?? $item, $params);
                 }
             } else {

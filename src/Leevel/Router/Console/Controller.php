@@ -84,9 +84,7 @@ class Controller extends Make
         $controllerName = ucfirst(camelize($this->argument('name')));
 
         $this->setCustomReplaceKeyValue('file_name', $controllerName);
-
         $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
-
         $this->setCustomReplaceKeyValue('action', $this->normalizeAction($this->argument('action')));
 
         // 保存路径
