@@ -100,7 +100,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'databases',
-                function (IContainer $container): Manager => new Manager($container),
+                fn (IContainer $container): Manager => new Manager($container),
             );
     }
 
