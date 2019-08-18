@@ -80,7 +80,7 @@ class HotOverload extends Process
      *
      * @var string
      */
-    protected string $md5Hash;
+    protected ?string $md5Hash = null;
 
     /**
      * 正在 reload.
