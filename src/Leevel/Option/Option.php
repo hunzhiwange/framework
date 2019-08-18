@@ -38,7 +38,7 @@ class Option implements IOption, ArrayAccess
      *
      * @var array
      */
-    protected $option = [];
+    protected array $option = [];
 
     /**
      * 构造函数.

@@ -21,8 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Option;
 
 /**
- * 读取 composer 配置信息
- * 用于实现自动注册服务提供者、语言包、命令等核心配置.
+ * 读取 composer 配置信息.
+ * 
+ * - 用于实现自动注册服务提供者、语言包、命令等核心配置.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -59,7 +60,7 @@ class ComposerOption
      *
      * @return array
      */
-    protected $supportedOptions = [
+    protected array $supportedOptions = [
         'providers',
         'ignores',
         'commands',
