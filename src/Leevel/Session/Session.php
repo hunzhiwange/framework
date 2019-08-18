@@ -89,7 +89,6 @@ abstract class Session
     public function __construct(ICache $cache)
     {
         $this->cache = $cache;
-
         $this->setName($this->option['name']);
     }
 
@@ -105,9 +104,7 @@ abstract class Session
         }
 
         $this->setId($sessionId ?: $this->option['id']);
-
         $this->loadData();
-
         $this->started = true;
     }
 
@@ -123,9 +120,7 @@ abstract class Session
         }
 
         $this->unregisterFlash();
-
         $this->write($this->getId(), serialize($this->data));
-
         $this->started = false;
     }
 
@@ -148,7 +143,6 @@ abstract class Session
     public function set(string $name, $value): void
     {
         $name = $this->getNormalizeName($name);
-
         $this->data[$name] = $value;
     }
 
@@ -320,9 +314,7 @@ abstract class Session
     public function flash(string $key, $value): void
     {
         $this->set($this->flashDataKey($key), $value);
-
         $this->mergeNewFlash([$key]);
-
         $this->popOldFlash([$key]);
     }
 
@@ -347,7 +339,6 @@ abstract class Session
     public function nowFlash(string $key, $value): void
     {
         $this->set($this->flashDataKey($key), $value);
-
         $this->mergeOldFlash([$key]);
     }
 
@@ -384,7 +375,6 @@ abstract class Session
     public function keepFlash(array $keys): void
     {
         $this->mergeNewFlash($keys);
-
         $this->popOldFlash($keys);
     }
 
@@ -420,7 +410,6 @@ abstract class Session
         }
 
         $this->mergeOldFlash($keys);
-
         $this->popNewFlash($keys);
     }
 
@@ -475,7 +464,6 @@ abstract class Session
     {
         $this->clear();
         $this->destroy($this->getId());
-
         $this->id = null;
         $this->started = false;
     }
