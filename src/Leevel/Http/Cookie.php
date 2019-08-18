@@ -38,7 +38,7 @@ class Cookie
      *
      * @var array
      */
-    protected $option = [
+    protected array $option = [
         'expire'   => 86400,
         'domain'   => '',
         'path'     => '/',
@@ -51,7 +51,7 @@ class Cookie
      *
      * @var array
      */
-    protected $cookies = [];
+    protected array $cookies = [];
 
     /**
      * 构造函数.

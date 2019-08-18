@@ -40,28 +40,28 @@ class UploadedFile extends File
      *
      * @var string
      */
-    protected $originalName;
+    protected string $originalName;
 
     /**
      * 文件类型.
      *
      * @var string
      */
-    protected $mimeType;
+    protected string $mimeType;
 
     /**
      * 上传错误.
      *
-     * @var null|int
+     * @var int
      */
-    protected $error;
+    protected int $error;
 
     /**
      * 上传错误消息格式化.
      *
      * @var array
      */
-    protected static $errors = [
+    protected static array $errors = [
         UPLOAD_ERR_INI_SIZE   => 'The file %s exceeds your upload_max_filesize ini directive (limit is %d KiB).',
         UPLOAD_ERR_FORM_SIZE  => 'The file %s exceeds the upload limit defined in your form.',
         UPLOAD_ERR_PARTIAL    => 'The file %s was only partially uploaded.',
@@ -76,7 +76,7 @@ class UploadedFile extends File
      *
      * @var bool
      */
-    protected $test = false;
+    protected bool $test = false;
 
     /**
      * 构造函数
@@ -92,7 +92,6 @@ class UploadedFile extends File
         $this->originalName = $originalName;
         $this->mimeType = $mimeType ?: 'application/octet-stream';
         $this->error = $error ?: UPLOAD_ERR_OK;
-
         $this->test = 5 === func_num_args();
 
         parent::__construct($path);

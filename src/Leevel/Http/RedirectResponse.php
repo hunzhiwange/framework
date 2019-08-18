@@ -43,21 +43,21 @@ class RedirectResponse extends Response
      *
      * @var string
      */
-    protected $targetUrl;
+    protected string $targetUrl;
 
     /**
      * HTTP 请求
      *
      * @var \Leevel\Http\IRequest
      */
-    protected $request;
+    protected IRequest $request;
 
     /**
      * SESSION 仓储.
      *
      * @var \Leevel\Session\ISession
      */
-    protected $session;
+    protected ISession $session;
 
     /**
      * 构造函数.

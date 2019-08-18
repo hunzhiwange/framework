@@ -47,7 +47,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @var array
      */
-    protected $elements = [];
+    protected array $elements = [];
 
     /**
      * 构造函数.

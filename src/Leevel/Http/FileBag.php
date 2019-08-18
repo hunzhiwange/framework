@@ -23,7 +23,7 @@ namespace Leevel\Http;
 use InvalidArgumentException;
 
 /**
- * file bag.
+ * File bag.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -38,7 +38,7 @@ class FileBag extends Bag
      *
      * @var array
      */
-    protected static $fileKeys = [
+    protected static array $fileKeys = [
         'error',
         'name',
         'size',

@@ -47,10 +47,11 @@ class JsonResponse extends Response
      * @var int
      */
     const DEFAULT_ENCODING_OPTIONS = 256;
+
     /**
      * 响应内容.
      *
-     * @var string
+     * @var mixed
      */
     protected $data;
 
@@ -59,14 +60,14 @@ class JsonResponse extends Response
      *
      * @var int
      */
-    protected $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
+    protected int $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
 
     /**
      * JSONP 回调.
      *
      * @var string
      */
-    protected $callback;
+    protected ?string $callback = null;
 
     /**
      * 构造函数.
@@ -85,7 +86,6 @@ class JsonResponse extends Response
         }
 
         $json ? $this->setJson($data) : $this->setData($data);
-
         $this->isJson = true;
     }
 

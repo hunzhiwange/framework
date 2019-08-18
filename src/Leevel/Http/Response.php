@@ -52,7 +52,7 @@ class Response implements IResponse
      *
      * @var \Leevel\Http\ResponseHeaderBag
      */
-    public $headers;
+    public ResponseHeaderBag $headers;
 
     /**
      * 原生响应内容.
@@ -68,7 +68,7 @@ class Response implements IResponse
      *
      * @var array
      */
-    public static $statusTexts = [
+    public static array $statusTexts = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing', // RFC2518
@@ -138,42 +138,42 @@ class Response implements IResponse
      *
      * @var string
      */
-    protected $content;
+    protected string $content;
 
     /**
      * HTTP 协议版本.
      *
      * @var string
      */
-    protected $protocolVersion;
+    protected string $protocolVersion;
 
     /**
      * 状态码
      *
      * @var int
      */
-    protected $statusCode;
+    protected int $statusCode;
 
     /**
      * 状态码内容.
      *
      * @var string
      */
-    protected $statusText;
+    protected string $statusText;
 
     /**
      * 字符编码
      *
      * @var string
      */
-    protected $charset;
+    protected ?string $charset = null;
 
     /**
      * 是否为 JSON.
      *
      * @var bool
      */
-    protected $isJson = false;
+    protected bool $isJson = false;
 
     /**
      * 构造函数.
@@ -212,7 +212,6 @@ class Response implements IResponse
     public function send(): IResponse
     {
         $this->sendHeaders();
-
         $this->sendContent();
 
         return $this;

@@ -44,49 +44,49 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @var \Leevel\Http\Bag
      */
-    public $query;
+    public Bag $query;
 
     /**
      * POST Bag.
      *
      * @var \Leevel\Http\Bag
      */
-    public $request;
+    public Bag $request;
 
     /**
      * 路由解析后的参数.
      *
      * @var \Leevel\Http\Bag
      */
-    public $params;
+    public Bag $params;
 
     /**
      * COOKIE Bag.
      *
      * @var \Leevel\Http\Bag
      */
-    public $cookies;
+    public Bag $cookies;
 
     /**
      * FILE Bag.
      *
      * @var \Leevel\Http\FileBag
      */
-    public $files;
+    public FileBag $files;
 
     /**
      * SERVER Bag.
      *
      * @var \Leevel\Http\ServerBag
      */
-    public $server;
+    public ServerBag $server;
 
     /**
      * HEADER Bag.
      *
      * @var \Leevel\Http\HeaderBag
      */
-    public $headers;
+    public HeaderBag $headers;
 
     /**
      * 内容.
@@ -100,42 +100,42 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @var string
      */
-    protected $baseUrl;
+    protected ?string $baseUrl;
 
     /**
      * 基础路径.
      *
      * @var string
      */
-    protected $basePath;
+    protected ?string $basePath;
 
     /**
      * 请求 url.
      *
      * @var string
      */
-    protected $requestUri;
+    protected ?string $requestUri;
 
     /**
      * 请求类型.
      *
      * @var string
      */
-    protected $method;
+    protected ?string $method;
 
     /**
      * pathInfo.
      *
      * @var string
      */
-    protected $pathInfo;
+    protected ?string $pathInfo;
 
     /**
      * 当前语言.
      *
      * @var string
      */
-    protected $language;
+    protected ?string $language;
 
     /**
      * 构造函数.

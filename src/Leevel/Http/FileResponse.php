@@ -46,7 +46,7 @@ class FileResponse extends Response
      *
      * @var \Leevel\Http\File
      */
-    protected $file;
+    protected File $file;
 
     /**
      * 构造函数.

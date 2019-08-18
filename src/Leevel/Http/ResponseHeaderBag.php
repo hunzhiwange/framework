@@ -49,7 +49,7 @@ class ResponseHeaderBag extends HeaderBag
      *
      * @var \Leevel\Http\Cookie
      */
-    protected $cookie;
+    protected Cookie $cookie;
 
     /**
      * 构造函数.
