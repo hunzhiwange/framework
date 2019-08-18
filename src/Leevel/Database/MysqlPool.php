@@ -23,7 +23,7 @@ namespace Leevel\Database;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
 
 /**
- * mysql pool 缓存.
+ * MySQL pool 缓存.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
