@@ -28,6 +28,7 @@ use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
 use Throwable;
+use PDOStatement;
 
 /**
  * 数据库连接抽象层
@@ -50,63 +51,63 @@ abstract class Database implements IConnection
      *
      * @var array
      */
-    protected $connects = [];
+    protected array $connects = [];
 
     /**
      * 当前数据库连接.
      *
-     * @var array
+     * @var \PDO 
      */
-    protected $connect;
+    protected ?PDO $connect;
 
     /**
      * PDO 预处理语句对象
      *
      * @var PDOStatement
      */
-    protected $pdoStatement;
+    protected ?PDOStatement $pdoStatement;
 
     /**
      * 数据查询组件.
      *
      * @var \Leevel\Database\Select
      */
-    protected $select;
+    protected Select $select;
 
     /**
      * 数据库连接参数.
      *
      * @var array
      */
-    protected $option = [];
+    protected array $option = [];
 
     /**
      * sql 最后查询语句.
      *
      * @var string
      */
-    protected $sql;
+    protected string $sql;
 
     /**
      * sql 绑定参数.
      *
      * @var array
      */
-    protected $bindParams = [];
+    protected array $bindParams = [];
 
     /**
      * sql 影响记录数量.
      *
      * @var int
      */
-    protected $numRows = 0;
+    protected int $numRows = 0;
 
     /**
      * 事务等级.
      *
      * @var int
      */
-    protected $transactionLevel = 0;
+    protected int $transactionLevel = 0;
 
     /**
      * 是否开启部分事务.
@@ -114,35 +115,35 @@ abstract class Database implements IConnection
      *
      * @var bool
      */
-    protected $transactionWithSavepoints = false;
+    protected bool $transactionWithSavepoints = false;
 
     /**
      * 是否仅仅是事务回滚.
      *
      * @var bool
      */
-    protected $isRollbackOnly = false;
+    protected bool $isRollbackOnly = false;
 
     /**
      * 断线重连次数.
      *
      * @var int
      */
-    protected $reconnectRetry = 0;
+    protected int $reconnectRetry = 0;
 
     /**
      * 事件处理器.
      *
      * @var \Leevel\Event\IDispatch
      */
-    protected $dispatch;
+    protected ?IDispatch $dispatch;
 
     /**
      * 连接管理.
      *
      * @var \Leevel\Database\Manager
      */
-    protected $manager;
+    protected ?Manager $manager;
 
     /**
      * 构造函数.

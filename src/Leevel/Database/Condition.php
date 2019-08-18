@@ -81,35 +81,35 @@ class Condition
      *
      * @var string
      */
-    public $conditionLogic = 'and';
+    protected string $conditionLogic = 'and';
 
     /**
      * 数据库连接.
      *
      * @var Leevel\Database\IDatabase
      */
-    protected $connect;
+    protected IDatabase $connect;
 
     /**
      * 绑定参数.
      *
      * @var array
      */
-    protected $bindParams = [];
+    protected array $bindParams = [];
 
     /**
      * 连接参数.
      *
      * @var array
      */
-    protected $options = [];
+    protected array $options = [];
 
     /**
      * 支持的聚合类型.
      *
      * @var array
      */
-    protected static $aggregateTypes = [
+    protected static array $aggregateTypes = [
         'COUNT' => 'COUNT',
         'MAX'   => 'MAX',
         'MIN'   => 'MIN',
@@ -122,7 +122,7 @@ class Condition
      *
      * @var array
      */
-    protected static $unionTypes = [
+    protected static array $unionTypes = [
         'UNION'     => 'UNION',
         'UNION ALL' => 'UNION ALL',
     ];
@@ -132,7 +132,7 @@ class Condition
      *
      * @var array
      */
-    protected static $indexTypes = [
+    protected static array $indexTypes = [
         'FORCE'  => 'FORCE',
         'IGNORE' => 'IGNORE',
     ];
@@ -142,7 +142,7 @@ class Condition
      *
      * @var array
      */
-    protected static $optionsDefault = [
+    protected static array $optionsDefault = [
         'prefix'      => [],
         'distinct'    => false,
         'columns'     => [],
@@ -165,35 +165,35 @@ class Condition
      *
      * @var string
      */
-    protected $conditionType = 'where';
+    protected string $conditionType = 'where';
 
     /**
      * 当前表信息.
      *
      * @var string
      */
-    protected $table = '';
+    protected string $table = '';
 
     /**
      * 是否为表操作.
      *
      * @var bool
      */
-    protected $isTable = false;
+    protected bool $isTable = false;
 
     /**
      * 主表别名.
      *
      * @var string
      */
-    protected $alias = '';
+    protected string $alias = '';
 
     /**
      * 是否处于时间功能状态
      *
      * @var string
      */
-    protected $inTimeCondition;
+    protected ?string $inTimeCondition = null;
 
     /**
      * 构造函数.

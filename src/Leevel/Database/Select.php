@@ -57,35 +57,35 @@ class Select
      *
      * @var \Leevel\Database\IDatabase
      */
-    protected $connect;
+    protected IDatabase $connect;
 
     /**
      * 查询条件.
      *
      * @var \Leevel\Database\Condition
      */
-    protected $condition;
+    protected Condition $condition;
 
     /**
      * 分页查询条件备份.
      *
      * @var array
      */
-    protected $backupPage = [];
+    protected array $backupPage = [];
 
     /**
      * 不查询直接返回 SQL.
      *
      * @var bool
      */
-    protected $onlyMakeSql = false;
+    protected bool $onlyMakeSql = false;
 
     /**
      * 查询类型.
      *
      * @var array
      */
-    protected static $queryParamsDefault = [
+    protected static array $queryParamsDefault = [
         // PDO:fetchAll 参数
         'fetch_args' => [
             'fetch_style'     => null,
@@ -114,7 +114,7 @@ class Select
      *
      * @var array
      */
-    protected $queryParams = [];
+    protected array $queryParams = [];
 
     /**
      * 构造函数.
