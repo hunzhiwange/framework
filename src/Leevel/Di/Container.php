@@ -49,7 +49,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @var \Leevel\Di\IContainer
      */
-    protected static $instance;
+    protected static IContainer $instance;
 
     /**
      * 注册的服务.
@@ -73,7 +73,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @var array
      */
-    protected $singletons = [];
+    protected array $singletons = [];
 
     /**
      * 别名支持.
@@ -88,7 +88,7 @@ class Container implements IContainer, ArrayAccess
      *
      * @var \Leevel\Di\ICoroutine
      */
-    protected $coroutine;
+    protected ?ICoroutine $coroutine = null;
 
     /**
      * 协程上下文注册的实例.
