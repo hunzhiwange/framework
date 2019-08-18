@@ -45,7 +45,7 @@ class Debug
     protected IApp $app;
 
     /**
-     * debug 管理.
+     * Debug 管理.
      *
      * @var \Leevel\Debug\Debug
      */

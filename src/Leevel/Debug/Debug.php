@@ -74,7 +74,7 @@ class Debug implements IDebug
      *
      * @var \DebugBar\DebugBar
      */
-    protected $debugBar;
+    protected DebugBar $debugBar;
 
     /**
      * 是否启用调试.
