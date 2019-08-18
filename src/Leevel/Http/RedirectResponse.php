@@ -57,7 +57,7 @@ class RedirectResponse extends Response
      *
      * @var \Leevel\Session\ISession
      */
-    protected ISession $session;
+    protected ?ISession $session = null;
 
     /**
      * 构造函数.
