@@ -69,7 +69,7 @@ abstract class Mail implements IMail
      *
      * @var array
      */
-    protected $failedRecipients = [];
+    protected array $failedRecipients = [];
 
     /**
      * 消息.
