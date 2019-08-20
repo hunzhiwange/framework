@@ -53,10 +53,12 @@ class BelongsTo extends Relation
     public function addRelationCondition(): void
     {
         if (static::$relationCondition) {
-            $this->select->where(
-                $this->targetKey,
-                $this->getSourceValue()
-            );
+            if (null === $sourceValue = $this->getSourceValue()) {
+                $this->emptySourceData = true;
+            } else {
+                $this->emptySourceData = false;
+                $this->select->where($this->targetKey, $sourceValue);
+            }
         }
     }
 
@@ -75,7 +77,6 @@ class BelongsTo extends Relation
 
         foreach ($entitys as $value) {
             $key = $value->__get($this->sourceKey);
-
             if (isset($maps[$key])) {
                 $value->withRelationProp($relation, $maps[$key]);
             }
@@ -91,10 +92,14 @@ class BelongsTo extends Relation
      */
     public function preLoadCondition(array $entitys): void
     {
-        $this->select->whereIn(
-            $this->targetKey,
-            $this->getPreLoadEntityValue($entitys)
-        );
+        if (!$sourceValue = $this->getPreLoadEntityValue($entitys)) {
+            $this->emptySourceData = true;
+
+            return;
+        }
+
+        $this->emptySourceData = false;
+        $this->select->whereIn($this->targetKey, $sourceValue);
     }
 
     /**
@@ -114,6 +119,10 @@ class BelongsTo extends Relation
      */
     public function sourceQuery()
     {
+        if (true === $this->emptySourceData) {
+            return $this->targetEntity->make();
+        }
+
         return $this->select->findOne();
     }
 
@@ -127,7 +136,6 @@ class BelongsTo extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
-
         foreach ($result as $entity) {
             $maps[$entity->__get($this->targetKey)] = $entity;
         }
@@ -145,15 +153,14 @@ class BelongsTo extends Relation
     protected function getPreLoadEntityValue(array $entitys): array
     {
         $data = [];
-
         foreach ($entitys as $value) {
             if (null !== ($tmp = $value->__get($this->sourceKey))) {
                 $data[] = $tmp;
             }
         }
 
-        if (0 === count($data)) {
-            return [0];
+        if (!$data) {
+            return [];
         }
 
         return array_values(array_unique($data));

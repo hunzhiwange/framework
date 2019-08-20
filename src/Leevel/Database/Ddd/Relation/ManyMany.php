@@ -80,9 +80,12 @@ class ManyMany extends Relation
      */
     public function addRelationCondition(): void
     {
-        if (static::$relationCondition &&
-            null !== $sourceValue = $this->getSourceValue()) {
-            $this->selectRelationData([$sourceValue]);
+        if (static::$relationCondition) {
+            if (null === $sourceValue = $this->getSourceValue()) {
+                $this->emptySourceData = true;
+            } else {
+                $this->selectRelationData([$sourceValue]);
+            }
         }
     }
 
@@ -94,9 +97,12 @@ class ManyMany extends Relation
     public function preLoadCondition(array $entitys): void
     {
         if (!$sourceValue = $this->getPreLoadSourceValue($entitys)) {
+            $this->emptySourceData = true;
+
             return;
         }
 
+        $this->emptySourceData = false;
         $this->selectRelationData($sourceValue);
     }
 
@@ -144,20 +150,21 @@ class ManyMany extends Relation
      */
     public function sourceQuery()
     {
-        $tmps = $this->select->findAll();
+        if (true === $this->emptySourceData) {
+            return new Collection();
+        }
 
+        $tmps = $this->select->findAll();
         if (!$tmps) {
             return new Collection();
         }
 
         $result = [];
-
         $middelClass = get_class($this->middleEntity);
         $targetClass = get_class($this->targetEntity);
 
         foreach ($tmps as $value) {
             $value = (array) $value;
-
             $middleEnity = new $middelClass([
                 $this->middleSourceKey => $value['middle_'.$this->middleSourceKey],
                 $this->middleTargetKey => $value['middle_'.$this->middleTargetKey],
@@ -169,9 +176,7 @@ class ManyMany extends Relation
             );
 
             $targetEntity = new $targetClass($value);
-
             $targetEntity->withMiddle($middleEnity);
-
             $result[] = $targetEntity;
         }
 
@@ -229,6 +234,8 @@ class ManyMany extends Relation
      */
     protected function selectRelationData(array $sourceValue): void
     {
+        $this->emptySourceData = false;
+
         $this->select
             ->join(
                 $this->middleEntity->table(),
@@ -256,7 +263,6 @@ class ManyMany extends Relation
     protected function getPreLoadSourceValue(array $entitys): array
     {
         $data = [];
-
         foreach ($entitys as $sourceEntity) {
             if (null !== $value = $sourceEntity->__get($this->sourceKey)) {
                 $data[] = $value;
@@ -276,7 +282,6 @@ class ManyMany extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
-
         foreach ($result as $entity) {
             $maps[$entity->middle()->__get($this->middleSourceKey)][] = $entity;
         }

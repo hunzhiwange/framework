@@ -40,6 +40,10 @@ class HasOne extends HasMany
      */
     public function sourceQuery()
     {
+        if (true === $this->emptySourceData) {
+            return $this->targetEntity->make();
+        }
+
         return $this->select->findOne();
     }
 

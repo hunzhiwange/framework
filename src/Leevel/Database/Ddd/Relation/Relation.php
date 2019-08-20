@@ -79,6 +79,13 @@ abstract class Relation
     protected static $relationCondition = true;
 
     /**
+     * 源数据为空.
+     *
+     * @var bool
+     */
+    protected $emptySourceData = false;
+
+    /**
      * 构造函数.
      *
      * @param \Leevel\Database\Ddd\IEntity $targetEntity
@@ -253,6 +260,6 @@ abstract class Relation
      */
     protected function getSelectFromEntity(): void
     {
-        $this->select = $this->targetEntity->selectForEntity();
+        $this->select = $this->targetEntity->select();
     }
 }

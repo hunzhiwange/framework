@@ -53,14 +53,12 @@ class HasMany extends Relation
     public function addRelationCondition(): void
     {
         if (static::$relationCondition) {
-            $this->select->where(
-                $this->targetKey,
-                $this->getSourceValue()
-            );
-
-            $this->select->whereNotNull(
-                $this->targetKey
-            );
+            if (null === $sourceValue = $this->getSourceValue()) {
+                $this->emptySourceData = true;
+            } else {
+                $this->emptySourceData = false;
+                $this->select->where($this->targetKey, $sourceValue);
+            }
         }
     }
 
@@ -71,10 +69,14 @@ class HasMany extends Relation
      */
     public function preLoadCondition(array $entitys): void
     {
-        $this->select->whereIn(
-            $this->targetKey,
-            $this->getEntityKey($entitys, $this->sourceKey)
-        );
+        if (!$sourceValue = $this->getEntityKey($entitys, $this->sourceKey)) {
+            $this->emptySourceData = true;
+
+            return;
+        }
+
+        $this->emptySourceData = false;
+        $this->select->whereIn($this->targetKey, $sourceValue);
     }
 
     /**
@@ -113,6 +115,10 @@ class HasMany extends Relation
      */
     public function sourceQuery()
     {
+        if (true === $this->emptySourceData) {
+            return new Collection();
+        }
+
         return $this->select->findAll();
     }
 
@@ -132,7 +138,6 @@ class HasMany extends Relation
 
         foreach ($entitys as &$entity) {
             $key = $entity->__get($this->sourceKey);
-
             if (isset($maps[$key])) {
                 $entity->withRelationProp(
                     $relation,
@@ -170,7 +175,6 @@ class HasMany extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
-
         foreach ($result as $value) {
             $maps[$value->__get($this->targetKey)][] = $value;
         }
