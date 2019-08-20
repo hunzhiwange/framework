@@ -671,9 +671,9 @@ class Select
      */
     public function chunk(int $count, Closure $chunk): void
     {
-        $result = $this->forPage($page = 1, $count)->
-
-        findAll();
+        $result = $this
+            ->forPage($page = 1, $count)
+            ->findAll();
 
         while (count($result) > 0) {
             if (false === $chunk($result, $page)) {
