@@ -341,7 +341,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param array $data
      * @param bool  $fromStorage
      *
-     * @return static
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public static function make(array $data = [], bool $fromStorage = false): IEntity
     {

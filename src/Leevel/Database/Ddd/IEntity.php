@@ -186,9 +186,9 @@ interface IEntity
      * @param array $data
      * @param bool  $fromStorage
      *
-     * @return static
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public static function make(array $data, bool $fromStorage): self;
+    public static function make(array $data = [], bool $fromStorage = false): self;
 
     /**
      * 批量修改属性.
