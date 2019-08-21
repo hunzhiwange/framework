@@ -41,7 +41,7 @@ class HelperTest extends TestCase
         $this->assertFalse(Helper::validateRequired(''));
     }
 
-    public function testBaseUse2(): void
+    public function testHelperNotFound(): void
     {
         $this->expectException(\Error::class);
         $this->expectExceptionMessage(
