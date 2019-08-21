@@ -371,6 +371,120 @@ class ManyManyTest extends TestCase
         $this->assertCount(0, $role);
     }
 
+    public function testSourceDataIsEmtpy(): void
+    {
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
+
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
+
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
+
+        $this->assertSame(
+            '3',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '会员',
+                ]));
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertSame('1', $user->id);
+        $this->assertSame('1', $user['id']);
+        $this->assertSame('1', $user->getId());
+        $this->assertSame('niu', $user->name);
+        $this->assertSame('niu', $user['name']);
+        $this->assertSame('niu', $user->getName());
+
+        $role = $user->role;
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertCount(0, $role);
+    }
+
+    public function testEagerSourceDataIsEmtpy(): void
+    {
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
+
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
+
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
+
+        $this->assertSame(
+            '3',
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '会员',
+                ]));
+
+        $user = User::eager(['role'])
+            ->where('id', 1)
+            ->findOne();
+
+        $this->assertSame('1', $user->id);
+        $this->assertSame('1', $user['id']);
+        $this->assertSame('1', $user->getId());
+        $this->assertSame('niu', $user->name);
+        $this->assertSame('niu', $user['name']);
+        $this->assertSame('niu', $user->getName());
+
+        $role = $user->role;
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertCount(0, $role);
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['user', 'user_role', 'role'];

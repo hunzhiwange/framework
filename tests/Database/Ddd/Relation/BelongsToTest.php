@@ -188,7 +188,7 @@ class BelongsToTest extends TestCase
         $this->assertCount(0, $posts);
     }
 
-    public function testSourceKeyNotFound(): void
+    public function testSourceDataIsEmtpy(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -235,7 +235,7 @@ class BelongsToTest extends TestCase
         $this->assertNull($user->getName());
     }
 
-    public function testEagerSourceKeyNotFound(): void
+    public function testEagerSourceDataIsEmtpy(): void
     {
         $posts = Post::select()->limit(5)->findAll();
 

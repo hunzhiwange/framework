@@ -218,6 +218,122 @@ class HasManyTest extends TestCase
         $this->assertInstanceof(Select::class, $commentRelation->getSelect());
     }
 
+    public function testSourceDataIsEmtpy(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]),
+        );
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 2,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertSame('1', $post->id);
+        $this->assertSame('1', $post['id']);
+        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->user_id);
+        $this->assertSame('1', $post->userId);
+        $this->assertSame('1', $post['user_id']);
+        $this->assertSame('1', $post->getUserId());
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('hello world', $post['title']);
+        $this->assertSame('hello world', $post->getTitle());
+        $this->assertSame('Say hello to the world.', $post->summary);
+        $this->assertSame('Say hello to the world.', $post['summary']);
+        $this->assertSame('Say hello to the world.', $post->getSummary());
+
+        $comment = $post->comment;
+
+        $this->assertInstanceof(Collection::class, $comment);
+        $this->assertCount(0, $comment);
+    }
+
+    public function testEagerSourceDataIsEmtpy(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]),
+        );
+
+        $this->assertSame(
+            '2',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'foo bar',
+                    'user_id' => 1,
+                    'summary' => 'Say foo to the bar.',
+                ]),
+        );
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 5,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 99,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        $posts = Post::eager(['comment'])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(2, $posts);
+
+        foreach ($posts as $k => $value) {
+            $comments = $value->comment;
+
+            $this->assertInstanceof(Collection::class, $comments);
+            $this->assertCount(0, $comments);
+        }
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'comment'];

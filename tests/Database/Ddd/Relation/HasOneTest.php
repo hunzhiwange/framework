@@ -172,6 +172,107 @@ class HasOneTest extends TestCase
         $this->assertInstanceof(Select::class, $postContentRelation->getSelect());
     }
 
+    public function testSourceDataIsEmtpy(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            '1',
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'   => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'Say hello to the world.',
+                ]));
+
+        $this->assertSame(
+            '0',
+            $connect
+                ->table('post_content')
+                ->insert([
+                    'post_id' => 5,
+                    'content' => 'I am content with big data.',
+                ]));
+
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertSame('1', $post->id);
+        $this->assertSame('1', $post['id']);
+        $this->assertSame('1', $post->getId());
+        $this->assertSame('1', $post->user_id);
+        $this->assertSame('1', $post->userId);
+        $this->assertSame('1', $post['user_id']);
+        $this->assertSame('1', $post->getUserId());
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('hello world', $post['title']);
+        $this->assertSame('hello world', $post->getTitle());
+        $this->assertSame('Say hello to the world.', $post->summary);
+        $this->assertSame('Say hello to the world.', $post['summary']);
+        $this->assertSame('Say hello to the world.', $post->getSummary());
+
+        $postContent = $post->postContent;
+
+        $this->assertInstanceof(PostContent::class, $postContent);
+        $this->assertNull($postContent->post_id);
+        $this->assertNull($postContent->postId);
+        $this->assertNull($postContent['post_id']);
+        $this->assertNull($postContent['postId']);
+        $this->assertNull($postContent->getPostId());
+        $this->assertNull($postContent->content);
+        $this->assertNull($postContent['content']);
+        $this->assertNull($postContent->getContent());
+    }
+
+    public function testEagerSourceDataIsEmtpy(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; $i++) {
+            $this->assertSame(
+                (string) ($i + 1),
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title'   => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                    ]));
+
+            $this->assertSame(
+                '0',
+                $connect
+                    ->table('post_content')
+                    ->insert([
+                        'post_id' => 9999 + $i,
+                        'content' => 'I am content with big data.',
+                    ]));
+        }
+
+        $posts = Post::eager(['post_content'])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(6, $posts);
+
+        foreach ($posts as $value) {
+            $postContent = $value->postContent;
+
+            $this->assertInstanceof(PostContent::class, $postContent);
+            $this->assertNull($postContent->postId);
+            $this->assertNull($postContent->content);
+        }
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'post_content'];
