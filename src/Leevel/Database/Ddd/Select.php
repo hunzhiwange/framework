@@ -72,7 +72,6 @@ class Select
     public function __construct(IEntity $entity)
     {
         $this->entity = $entity;
-
         $this->select = $this->entity->databaseSelect();
     }
 
@@ -87,7 +86,6 @@ class Select
     public function __call(string $method, array $args)
     {
         $result = $this->select->{$method}(...$args);
-
         if ($result instanceof DatabaseSelect) {
             return $this;
         }
@@ -205,7 +203,6 @@ class Select
     public function findOrFail(int $id, array $column = ['*']): IEntity
     {
         $result = $this->find($id, $column);
-
         if (null !== $result->__get($this->entity->singlePrimaryKey())) {
             return $result;
         }
@@ -265,11 +262,8 @@ class Select
     public function softRestore(): int
     {
         $this->entity->handleEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
-
         $this->entity->__set($this->deleteAtColumn(), null);
-
         $num = $this->entity->update()->flush();
-
         $this->entity->handleEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
 
         return $num;
@@ -364,7 +358,6 @@ class Select
         });
 
         $nested = $this->nestedRelation($name);
-
         if (count($nested) > 0) {
             $relation->getSelect()->eager($nested);
         }
