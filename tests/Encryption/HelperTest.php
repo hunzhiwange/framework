@@ -80,6 +80,16 @@ class HelperTest extends TestCase
         $this->assertSame('foo', Helper::decrypt('foobar-helloworld'));
     }
 
+    public function testHelperNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage(
+            'Call to undefined function Leevel\\Encryption\\Helper\\not_found()'
+        );
+
+        $this->assertFalse(Helper::notFound());
+    }
+
     protected function createContainer(): Container
     {
         $container = Container::singletons();
