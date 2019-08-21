@@ -29,7 +29,6 @@ use Leevel\Debug\Dump;
  * @param array ...$moreVars
  *
  * @return mixed
- * @codeCoverageIgnore
  */
 function drr($var, ...$moreVars)
 {

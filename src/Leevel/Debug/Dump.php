@@ -53,12 +53,14 @@ class Dump
 
         $dumper->dump($var, Debug\Dumper::ERROR_LOG);
 
-        foreach ($moreVars as $var) {
-            $dumper->dump($var);
+        foreach ($moreVars as $v) {
+            $dumper->dump($v);
         }
 
-        if (1 < func_num_args()) {
-            return func_get_args();
+        if (func_num_args() > 1) {
+            array_unshift($moreVars, $var);
+
+            return $moreVars;
         }
 
         return $var;
