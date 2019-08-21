@@ -83,6 +83,16 @@ class HelperTest extends TestCase
         $this->assertSame('fooNotFound', $container->make('fooNotFound'));
     }
 
+    public function testHelperNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage(
+            'Call to undefined function Leevel\\Kernel\\Helper\\not_found()'
+        );
+
+        $this->assertFalse(Helper::notFound());
+    }
+
     protected function createContainer(): Container
     {
         $container = Container::singletons();
