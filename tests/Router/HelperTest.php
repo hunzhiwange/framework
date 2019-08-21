@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Router;
 
 use Leevel\Di\Container;
+use Leevel\Router\Helper;
 use Leevel\Router\IUrl;
 use Tests\TestCase;
 
@@ -57,6 +58,20 @@ class HelperTest extends TestCase
         });
 
         $this->assertSame('/goods?foo=bar', f('Leevel\\Router\\Helper\\url', '/goods', ['foo' => 'bar']));
+    }
+
+    public function testUrlHelper(): void
+    {
+        $url = $this->createMock(IUrl::class);
+        $url->method('make')->willReturn('/goods?foo=bar');
+        $this->assertSame('/goods?foo=bar', $url->make('/goods', ['foo' => 'bar']));
+
+        $container = $this->createContainer();
+        $container->singleton('url', function () use ($url) {
+            return $url;
+        });
+
+        $this->assertSame('/goods?foo=bar', Helper::url('/goods', ['foo' => 'bar']));
     }
 
     protected function createContainer(): Container
