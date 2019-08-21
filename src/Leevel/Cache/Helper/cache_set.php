@@ -20,19 +20,22 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Helper;
 
-use Leevel\Cache\ICache;
 use Leevel\Di\Container;
 
 /**
- * cache 服务
+ * 设置 cache 值
  *
- * @return \Leevel\Cache\ICache
+ * @param array|string $key
+ * @param null|mixed   $value
+ * @param array        $option
  */
-function cache(): ICache
+function cache_set($key, $value = null, array $option = []): void
 {
-    return Container::singletons()->make('caches');
+    /** @var \Leevel\Cache\ICache $cache */
+    $cache = Container::singletons()->make('caches');
+    $cache->put($key, $value, $option);
 }
 
-class cache
+class cache_set
 {
 }
