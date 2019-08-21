@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Cache;
 
+use Leevel\Cache\Helper;
 use Leevel\Cache\ICache;
 use Leevel\Di\Container;
 use Tests\TestCase;
@@ -60,6 +61,23 @@ class HelperTest extends TestCase
         $this->assertInstanceof(ICache::class, f('Leevel\\Cache\\Helper\\cache'));
         $this->assertNull(f('Leevel\\Cache\\Helper\\cache_set', ['foo' => 'bar']));
         $this->assertSame('bar', f('Leevel\\Cache\\Helper\\cache_get', 'foo'));
+    }
+
+    public function testCacheHelper(): void
+    {
+        $cache = $this->createMock(ICache::class);
+        $this->assertNull($cache->set('foo', 'bar'));
+        $cache->method('get')->willReturn('bar');
+        $this->assertSame('bar', $cache->get('foo'));
+
+        $container = $this->createContainer();
+        $container->singleton('caches', function () use ($cache) {
+            return $cache;
+        });
+
+        $this->assertInstanceof(ICache::class, Helper::cache());
+        $this->assertNull(Helper::cacheSet(['foo' => 'bar']));
+        $this->assertSame('bar', Helper::cacheGet('foo'));
     }
 
     protected function createContainer(): Container
