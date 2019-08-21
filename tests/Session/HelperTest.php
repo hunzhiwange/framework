@@ -112,6 +112,16 @@ class HelperTest extends TestCase
         $this->assertSame('bar', Helper::flashGet('foo'));
     }
 
+    public function testHelperNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage(
+            'Call to undefined function Leevel\\Session\\Helper\\not_found()'
+        );
+
+        $this->assertFalse(Helper::notFound());
+    }
+
     protected function createContainer(): Container
     {
         $container = Container::singletons();
