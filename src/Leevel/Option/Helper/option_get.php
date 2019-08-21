@@ -21,18 +21,24 @@ declare(strict_types=1);
 namespace Leevel\Option\Helper;
 
 use Leevel\Di\Container;
-use Leevel\Option\IOption;
 
 /**
- * 配置服务
+ * 获取 opiton 值
  *
- * @return \Leevel\Option\IOption
+ * @param string     $key
+ * @param mixed      $defaults
+ * @param null|mixed $default
+ *
+ * @return mixed
  */
-function option(): IOption
+function option_get(string $key, $default = null)
 {
-    return Container::singletons()->make('option');
+    /** @var \Leevel\Option\IOption $option */
+    $option = Container::singletons()->make('option');
+
+    return $option->get($key, $default);
 }
 
-class option
+class option_get
 {
 }
