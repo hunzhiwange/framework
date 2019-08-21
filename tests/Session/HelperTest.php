@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Session;
 
 use Leevel\Di\Container;
+use Leevel\Session\Helper;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
@@ -76,6 +77,39 @@ class HelperTest extends TestCase
 
         $this->assertNull(f('Leevel\\Session\\Helper\\flash_set', 'foo', 'bar'));
         $this->assertSame('bar', f('Leevel\\Session\\Helper\\flash_get', 'foo'));
+    }
+
+    public function testSessionHelper(): void
+    {
+        $session = $this->createMock(ISession::class);
+        $this->assertNull($session->set('foo', 'bar'));
+        $session->method('get')->willReturn('bar');
+        $this->assertSame('bar', $session->get('foo'));
+
+        $container = $this->createContainer();
+        $container->singleton('sessions', function () use ($session) {
+            return $session;
+        });
+
+        $this->assertInstanceof(ISession::class, Helper::session());
+        $this->assertNull(Helper::sessionSet('foo', 'bar'));
+        $this->assertSame('bar', Helper::sessionGet('foo'));
+    }
+
+    public function testFlashHelper(): void
+    {
+        $session = $this->createMock(ISession::class);
+        $this->assertNull($session->flashs(['foo' => 'bar']));
+        $session->method('getFlash')->willReturn('bar');
+        $this->assertSame('bar', $session->getFlash('foo'));
+
+        $container = $this->createContainer();
+        $container->singleton('sessions', function () use ($session) {
+            return $session;
+        });
+
+        $this->assertNull(Helper::flashSet('foo', 'bar'));
+        $this->assertSame('bar', Helper::flashGet('foo'));
     }
 
     protected function createContainer(): Container
