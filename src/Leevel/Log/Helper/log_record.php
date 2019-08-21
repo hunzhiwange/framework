@@ -21,18 +21,21 @@ declare(strict_types=1);
 namespace Leevel\Log\Helper;
 
 use Leevel\Di\Container;
-use Leevel\Log\ILog;
 
 /**
- * 日志服务
+ * 记录日志.
  *
- * @return \Leevel\Log\ILog
+ * @param string $message
+ * @param array  $context
+ * @param string $level
  */
-function log(): ILog
+function log_record(string $message, array $context = [], string $level = ILog::INFO): void
 {
-    return Container::singletons()->make('logs');
+    /** @var \Leevel\Log\ILog $log */
+    $log = Container::singletons()->make('logs');
+    $log->log($level, $message, $context);
 }
 
-class log
+class log_record
 {
 }
