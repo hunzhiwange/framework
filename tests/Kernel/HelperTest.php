@@ -23,6 +23,7 @@ namespace Tests\Kernel;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App;
+use Leevel\Kernel\Helper;
 use Tests\TestCase;
 
 /**
@@ -50,6 +51,24 @@ class HelperTest extends TestCase
     {
         $container = $this->createContainer();
         $app = f('Leevel\\Kernel\\Helper\\app');
+        $container->alias([
+            'app' => [
+                'Leevel\\Leevel\\App',
+                'Leevel\\Kernel\\IApp',
+            ],
+        ]);
+
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+        $this->assertInstanceof(App::class, $app);
+        $this->assertInstanceof(App::class, $container->make('app'));
+        $this->assertSame('fooNotFound', $container->make('fooNotFound'));
+    }
+
+    public function testAppHelper(): void
+    {
+        $container = $this->createContainer();
+        $app = Helper::app();
         $container->alias([
             'app' => [
                 'Leevel\\Leevel\\App',
