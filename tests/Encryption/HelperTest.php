@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Encryption;
 
 use Leevel\Di\Container;
+use Leevel\Encryption\Helper;
 use Leevel\Encryption\IEncryption;
 use Tests\TestCase;
 
@@ -60,6 +61,23 @@ class HelperTest extends TestCase
 
         $this->assertSame('foobar-helloworld', f('Leevel\\Encryption\\Helper\\encrypt', 'foo', 3600));
         $this->assertSame('foo', f('Leevel\\Encryption\\Helper\\decrypt', 'foobar-helloworld'));
+    }
+
+    public function testEncryptAndEecryptHelper(): void
+    {
+        $encryption = $this->createMock(IEncryption::class);
+        $encryption->method('encrypt')->willReturn('foobar-helloworld');
+        $this->assertSame('foobar-helloworld', $encryption->encrypt('foo', 3600));
+        $encryption->method('decrypt')->willReturn('foo');
+        $this->assertSame('foo', $encryption->decrypt('foobar-helloworld'));
+
+        $container = $this->createContainer();
+        $container->singleton('encryption', function () use ($encryption) {
+            return $encryption;
+        });
+
+        $this->assertSame('foobar-helloworld', Helper::encrypt('foo', 3600));
+        $this->assertSame('foo', Helper::decrypt('foobar-helloworld'));
     }
 
     protected function createContainer(): Container
