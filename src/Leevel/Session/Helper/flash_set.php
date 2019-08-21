@@ -21,18 +21,22 @@ declare(strict_types=1);
 namespace Leevel\Session\Helper;
 
 use Leevel\Di\Container;
-use Leevel\Session\ISession;
 
 /**
- * Session 服务
+ * 闪存一个数据，当前请求和下一个请求可用.
  *
- * @return \Leevel\Session\ISession
+ * @param string $key
+ * @param mixed  $value
+ *
+ * @return mixed
  */
-function session(): ISession
+function flash_set(string $key, $value): void
 {
-    return Container::singletons()->make('sessions');
+    /** @var \Leevel\Session\ISession $session */
+    $session = Container::singletons()->make('sessions');
+    $session->flash($key, $value);
 }
 
-class session
+class flash_set
 {
 }

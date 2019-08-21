@@ -21,18 +21,23 @@ declare(strict_types=1);
 namespace Leevel\Session\Helper;
 
 use Leevel\Di\Container;
-use Leevel\Session\ISession;
 
 /**
- * Session 服务
+ * 取回 session.
  *
- * @return \Leevel\Session\ISession
+ * @param string     $name
+ * @param null|mixed $defaults
+ *
+ * @return mixed
  */
-function session(): ISession
+function session_get(string $name, $defaults = null)
 {
-    return Container::singletons()->make('sessions');
+    /** @var \Leevel\Session\ISession $session */
+    $session = Container::singletons()->make('sessions');
+
+    return $session->get($name, $defaults);
 }
 
-class session
+class session_get
 {
 }
