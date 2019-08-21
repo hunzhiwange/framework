@@ -74,6 +74,16 @@ class HelperTest extends TestCase
         $this->assertNull(Helper::logRecord('bar', [], ILog::INFO));
     }
 
+    public function testHelperNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage(
+            'Call to undefined function Leevel\\Log\\Helper\\not_found()'
+        );
+
+        $this->assertFalse(Helper::notFound());
+    }
+
     protected function createContainer(): Container
     {
         $container = Container::singletons();
