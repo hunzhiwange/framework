@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\I18n;
 
 use Leevel\Di\Container;
+use Leevel\I18n\Helper;
 use Leevel\I18n\II18n;
 use Tests\TestCase;
 
@@ -66,6 +67,29 @@ class HelperTest extends TestCase
         $this->assertSame('hello', f('Leevel\\I18n\\Helper\\gettext', 'hello'));
         $this->assertSame('hello foo', f('Leevel\\I18n\\Helper\\gettext', 'hello %s', 'foo'));
         $this->assertSame('hello 5', f('Leevel\\I18n\\Helper\\gettext', 'hello %d', 5));
+    }
+
+    public function testGettextWithI18nHelper(): void
+    {
+        $i18n = $this->createMock(II18n::class);
+        $map = [
+            ['hello', 'hello'],
+            ['hello %s', 'foo', 'hello foo'],
+            ['hello %d', 5, 'hello 5'],
+        ];
+        $i18n->method('gettext')->willReturnMap($map);
+        $this->assertSame('hello', $i18n->gettext('hello'));
+        $this->assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
+        $this->assertSame('hello 5', $i18n->gettext('hello %d', 5));
+
+        $container = $this->createContainer();
+        $container->singleton('i18n', function () use ($i18n) {
+            return $i18n;
+        });
+
+        $this->assertSame('hello', Helper::gettext('hello'));
+        $this->assertSame('hello foo', Helper::gettext('hello %s', 'foo'));
+        $this->assertSame('hello 5', Helper::gettext('hello %d', 5));
     }
 
     protected function createContainer(): Container
