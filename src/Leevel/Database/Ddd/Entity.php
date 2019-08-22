@@ -434,7 +434,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function destroys(array $ids): int
     {
         $count = 0;
-
         $instance = new static();
 
         foreach ($instance->whereIn($instance->singlePrimaryKey(), $ids)->findAll() as $entity) {
@@ -462,12 +461,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         $this->leevelFlushed = false;
-
         $this->leevelFlush = function ($condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
-
             $num = $this->metaConnect()->delete($condition);
-
             $this->handleEvent(static::AFTER_DELETE_EVENT);
 
             return $num;
@@ -507,7 +503,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlush = null;
         $this->leevelFlushData = null;
         $this->leevelFlushed = true;
-
         $this->handleEvent(static::AFTER_SAVE_EVENT);
 
         return $result;
@@ -552,12 +547,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function id()
     {
         $result = [];
-
         foreach (($keys = $this->primaryKeys()) as $value) {
             if (!($tmp = $this->__get($value))) {
                 continue;
             }
-
             $result[$value] = $tmp;
         }
 
@@ -635,11 +628,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function isRelation(string $prop): bool
     {
         $prop = $this->normalize($prop);
-
         $this->validate($prop);
 
         $struct = static::STRUCT[$prop];
-
         if (isset($struct[self::BELONGS_TO]) ||
            isset($struct[self::HAS_MANY]) ||
            isset($struct[self::HAS_ONE]) ||
@@ -780,7 +771,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey): HasOne
     {
         $entity = new $relatedEntityClass();
-
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
@@ -799,7 +789,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey): BelongsTo
     {
         $entity = new $relatedEntityClass();
-
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
@@ -818,7 +807,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey): HasMany
     {
         $entity = new $relatedEntityClass();
-
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
@@ -907,7 +895,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         $this->isSupportEvent($event);
-
         array_unshift($args, $this);
         array_unshift($args, "entity.{$event}:".get_class($this));
 
@@ -1600,7 +1587,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function propValue(string $prop)
     {
         $prop = $this->normalize($prop);
-
         $this->validate($prop);
 
         if (!$this->isRelation($prop)) {
@@ -1622,13 +1608,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function hasProp(string $prop): bool
     {
         $prop = $this->normalize($prop);
-
         if (!$this->hasField($prop)) {
             return false;
         }
 
         $prop = $this->asProp($prop);
-
         if (!property_exists($this, $prop)) {
             $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
 
@@ -1706,7 +1690,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         if (null === $value) {
             $camelizeClass = 'fill'.ucfirst($this->asProp($prop));
-
             if (method_exists($this, $camelizeClass)) {
                 $value = $this->{$camelizeClass}($this->propValue($prop));
             }
@@ -1726,7 +1709,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $relation = $this->loadRelation($prop);
         $result = $relation->sourceQuery();
-
         $this->withRelationProp($prop, $result);
 
         return $result;
@@ -1828,17 +1810,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function toArraySource(array $white = [], array $black = [], string $separate = ','): array
     {
         if ($white || $black) {
-            $prop = $this->whiteAndBlack(
-                $this->fields(), $white, $black
-            );
+            $prop = $this->whiteAndBlack($this->fields(), $white, $black);
         } else {
-            $prop = $this->normalizeWhiteAndBlack(
-                $this->fields(), 'show_prop'
-            );
+            $prop = $this->normalizeWhiteAndBlack($this->fields(), 'show_prop');
         }
 
         $result = [];
-
         foreach ($prop as $k => $value) {
             if ($this->isRelation($k)) {
                 continue;
@@ -1846,7 +1823,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
             $value = $this->propValue($k);
             $result[$k] = $value;
-
             $result = static::prepareEnum($k, $result, $separate);
         }
 
