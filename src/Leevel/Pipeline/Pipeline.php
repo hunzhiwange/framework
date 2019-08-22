@@ -44,7 +44,7 @@ class Pipeline implements IPipeline
     protected $container;
 
     /**
-     * 管道传递的对象
+     * 管道传递的对象.
      *
      * @var array
      */
