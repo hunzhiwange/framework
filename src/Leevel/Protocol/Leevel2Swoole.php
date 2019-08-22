@@ -33,6 +33,7 @@ use Swoole\Http\Response as SwooleHttpResponse;
  * @since 2019.08.02
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Leevel2Swoole
 {

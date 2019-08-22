@@ -34,6 +34,7 @@ use Swoole\Http\Request as SwooleHttpRequest;
  * @since 2019.08.01
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Swoole2Leevel
 {
