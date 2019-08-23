@@ -139,6 +139,13 @@ interface IEntity
     const UPDATED_AT = 'updated_at';
 
     /**
+     * ENUM.
+     *
+     * @var string
+     */
+    const ENUM = 'enum';
+
+    /**
      * 一对一关联.
      *
      * @var int
@@ -171,14 +178,42 @@ interface IEntity
      *
      * @var string
      */
-    const SCOPE = 'scope';
+    const RELATION_SCOPE = 'relation_scope';
 
     /**
-     * ENUM.
+     * 关联查询源键字段.
      *
      * @var string
      */
-    const ENUM = 'enum';
+    const SOURCE_KEY = 'source_key';
+
+    /**
+     * 关联目标键字段.
+     *
+     * @var string
+     */
+    const TARGET_KEY = 'target_key';
+
+    /**
+     * 关联查询中间表源键字段.
+     *
+     * @var string
+     */
+    const MIDDLE_SOURCE_KEY = 'middle_source_key';
+
+    /**
+     * 关联查询中间表目标键字段.
+     *
+     * @var string
+     */
+    const MIDDLE_TARGET_KEY = 'middle_target_key';
+
+    /**
+     * 关联查询中间表实体.
+     *
+     * @var string
+     */
+    const MIDDLE_ENTITY = 'middle_entity';
 
     /**
      * 创建新的实例.
