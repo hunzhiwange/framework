@@ -42,22 +42,22 @@ class TestCreateAutoFillEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly' => true,
+            self::READONLY => true,
         ],
         'name' => [
-            'create_fill'       => 'name for create_fill',
+            self::CREATE_FILL       => 'name for '.self::CREATE_FILL,
         ],
         'description' => [
-            'create_fill'    => null,
+            self::CREATE_FILL   => null,
         ],
         'address' => [
-            'create_fill'    => null,
+            self::CREATE_FILL    => null,
         ],
         'foo_bar' => [
-            'create_fill'    => null,
+            self::CREATE_FILL    => null,
         ],
         'hello' => [
-            'create_fill'      => null,
+            self::CREATE_FILL      => null,
         ],
     ];
 

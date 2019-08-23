@@ -42,11 +42,11 @@ class TestUpdatePropWhiteEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'update_prop_white' => true,
-            'readonly'          => true,
+            self::UPDATE_PROP_WHITE => true,
+            self::READONLY          => true,
         ],
         'name' => [
-            'update_prop_white' => true,
+            self::UPDATE_PROP_WHITE => true,
         ],
         'description' => [],
     ];

@@ -44,7 +44,7 @@ class Guestbook extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'             => true,
+            self::READONLY             => true,
         ],
         'name'      => [],
         'content'   => [],

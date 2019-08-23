@@ -42,7 +42,7 @@ class Post extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'           => true,
+            self::READONLY           => true,
         ],
         'title'     => [],
         'user_id'   => [],
@@ -50,20 +50,20 @@ class Post extends Entity
         'create_at' => [],
         'delete_at' => [],
         'user'      => [
-            self::BELONGS_TO => User::class,
-            'source_key'     => 'user_id',
-            'target_key'     => 'id',
+            self::BELONGS_TO     => User::class,
+            self::SOURCE_KEY     => 'user_id',
+            self::TARGET_KEY     => 'id',
         ],
         'comment' => [
-            self::HAS_MANY => Comment::class,
-            'source_key'   => 'id',
-            'target_key'   => 'post_id',
-            self::SCOPE    => 'comment',
+            self::HAS_MANY          => Comment::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'post_id',
+            self::RELATION_SCOPE    => 'comment',
         ],
         'post_content' => [
-            self::HAS_ONE => PostContent::class,
-            'source_key'  => 'id',
-            'target_key'  => 'post_id',
+            self::HAS_ONE     => PostContent::class,
+            self::SOURCE_KEY  => 'id',
+            self::TARGET_KEY  => 'post_id',
         ],
     ];
 

@@ -42,7 +42,7 @@ class PostContent extends Entity
 
     const STRUCT = [
         'post_id' => [
-            'readonly' => true,
+            self::READONLY => true,
         ],
         'content' => [],
     ];

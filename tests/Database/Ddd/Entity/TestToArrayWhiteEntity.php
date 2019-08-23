@@ -44,11 +44,11 @@ class TestToArrayWhiteEntity extends Entity
         'id'          => [],
         'name'        => [],
         'description' => [
-            'show_prop_white' => true,
+            self::SHOW_PROP_WHITE => true,
         ],
         'address'     => [],
         'foo_bar'     => [
-            'show_prop_white' => true,
+            self::SHOW_PROP_WHITE => true,
         ],
         'hello'       => [],
     ];

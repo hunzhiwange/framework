@@ -44,11 +44,11 @@ class TestToArrayBlackEntity extends Entity
         'id'          => [],
         'name'        => [],
         'description' => [
-            'show_prop_black' => true,
+            self::SHOW_PROP_BLACK => true,
         ],
         'address'     => [],
         'foo_bar'     => [
-            'show_prop_black' => true,
+            self::SHOW_PROP_BLACK => true,
         ],
         'hello'       => [],
     ];

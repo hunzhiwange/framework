@@ -45,12 +45,12 @@ class User extends Entity
         'name'      => [],
         'create_at' => [],
         'role'      => [
-            self::MANY_MANY     => Role::class,
-            'middle_entity'     => UserRole::class,
-            'source_key'        => 'id',
-            'target_key'        => 'id',
-            'middle_source_key' => 'user_id',
-            'middle_target_key' => 'role_id',
+            self::MANY_MANY         => Role::class,
+            self::MIDDLE_ENTITY     => UserRole::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
         ],
     ];
 

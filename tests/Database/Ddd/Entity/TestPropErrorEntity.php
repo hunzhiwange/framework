@@ -42,7 +42,7 @@ class TestPropErrorEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'           => true,
+            self::READONLY           => true,
         ],
         'title'     => [],
         'name'      => [],

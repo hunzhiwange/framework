@@ -44,7 +44,7 @@ class TestConversionEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly' => true,
+            self::READONLY => true,
         ],
         'int1'    => [],
         'int2'    => [],

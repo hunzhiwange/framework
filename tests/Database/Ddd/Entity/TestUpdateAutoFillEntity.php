@@ -42,22 +42,22 @@ class TestUpdateAutoFillEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly' => true,
+            self::READONLY => true,
         ],
         'name' => [
-            'update_fill'       => 'name for update_fill',
+            self::UPDATE_FILL       => 'name for '.self::UPDATE_FILL,
         ],
         'description' => [
-            'update_fill'    => null,
+            self::UPDATE_FILL    => null,
         ],
         'address' => [
-            'update_fill'    => null,
+            self::UPDATE_FILL    => null,
         ],
         'foo_bar' => [
-            'update_fill'    => null,
+            self::UPDATE_FILL    => null,
         ],
         'hello' => [
-            'update_fill'      => null,
+            self::UPDATE_FILL      => null,
         ],
     ];
 

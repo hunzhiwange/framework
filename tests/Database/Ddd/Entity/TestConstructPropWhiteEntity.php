@@ -42,8 +42,8 @@ class TestConstructPropWhiteEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'             => true,
-            'construct_prop_white' => true,
+            self::READONLY             => true,
+            self::CONSTRUCT_PROP_WHITE => true,
         ],
         'name' => [],
     ];

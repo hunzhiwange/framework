@@ -43,7 +43,7 @@ class TestReadonlyUpdateEntity extends Entity
     const STRUCT = [
         'id'   => [],
         'name' => [
-            'readonly'       => true,
+            self::READONLY       => true,
         ],
         'description' => [],
     ];

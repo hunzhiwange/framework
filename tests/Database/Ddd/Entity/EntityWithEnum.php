@@ -42,7 +42,7 @@ class EntityWithEnum extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'           => true,
+            self::READONLY           => true,
         ],
         'title'       => [],
         'status'      => [],

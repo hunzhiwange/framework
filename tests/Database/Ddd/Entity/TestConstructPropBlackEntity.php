@@ -42,8 +42,8 @@ class TestConstructPropBlackEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'             => true,
-            'construct_prop_black' => true,
+            self::READONLY             => true,
+            self::CONSTRUCT_PROP_BLACK => true,
         ],
         'name' => [],
     ];

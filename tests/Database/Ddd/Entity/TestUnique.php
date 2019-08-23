@@ -42,7 +42,7 @@ class TestUnique extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'             => true,
+            self::READONLY             => true,
         ],
         'name'       => [],
         'create_at'  => [],
