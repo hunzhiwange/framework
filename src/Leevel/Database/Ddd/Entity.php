@@ -85,30 +85,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @var array
      */
     protected $leevelBlackWhites = [
-        'construct_prop' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'create_prop' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'update_prop' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'show_prop' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'create_fill' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'update_fill' => [
-            'white' => [],
-            'black' => [],
-        ],
+        'construct_prop' => ['white' => [], 'black' => []],
+        'create_prop'    => ['white' => [], 'black' => []],
+        'update_prop'    => ['white' => [], 'black' => []],
+        'show_prop'      => ['white' => [], 'black' => []],
     ];
 
     /**
@@ -204,10 +184,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         foreach (static::STRUCT as $field => $v) {
-            foreach ([
-                'construct_prop', 'show_prop', 'create_prop',
-                'update_prop', 'create_fill', 'update_fill',
-            ] as $type) {
+            foreach (['construct_prop', 'show_prop', 'create_prop', 'update_prop'] as $type) {
                 foreach (['black', 'white'] as $bw) {
                     if (isset($v[$type.'_'.$bw]) && true === $v[$type.'_'.$bw]) {
                         $this->leevelBlackWhites[$type][$bw][] = $field;
@@ -655,47 +632,47 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $defined = static::STRUCT[$prop];
 
         if (isset($defined[self::BELONGS_TO])) {
-            $this->validateRelationDefined($defined, ['source_key', 'target_key']);
+            $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             $relation = $this->belongsTo(
                $defined[self::BELONGS_TO],
-               $defined['target_key'],
-               $defined['source_key']
+               $defined[self::TARGET_KEY],
+               $defined[self::SOURCE_KEY]
            );
         } elseif (isset($defined[self::HAS_MANY])) {
-            $this->validateRelationDefined($defined, ['source_key', 'target_key']);
+            $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             $relation = $this->hasMany(
                $defined[self::HAS_MANY],
-               $defined['target_key'],
-               $defined['source_key']
+               $defined[self::TARGET_KEY],
+               $defined[self::SOURCE_KEY]
            );
         } elseif (isset($defined[self::HAS_ONE])) {
-            $this->validateRelationDefined($defined, ['source_key', 'target_key']);
+            $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             $relation = $this->hasOne(
                $defined[self::HAS_ONE],
-               $defined['target_key'],
-               $defined['source_key']
+               $defined[self::TARGET_KEY],
+               $defined[self::SOURCE_KEY]
            );
         } elseif (isset($defined[self::MANY_MANY])) {
             $this->validateRelationDefined($defined, [
-                'middle_entity', 'source_key', 'target_key',
-                'middle_target_key', 'middle_source_key',
+                self::MIDDLE_ENTITY, self::SOURCE_KEY, self::TARGET_KEY,
+                self::MIDDLE_TARGET_KEY, self::MIDDLE_SOURCE_KEY,
             ]);
 
             $relation = $this->ManyMany(
                $defined[self::MANY_MANY],
-               $defined['middle_entity'],
-               $defined['target_key'],
-               $defined['source_key'],
-               $defined['middle_target_key'],
-               $defined['middle_source_key']
+               $defined[self::MIDDLE_ENTITY],
+               $defined[self::TARGET_KEY],
+               $defined[self::SOURCE_KEY],
+               $defined[self::MIDDLE_TARGET_KEY],
+               $defined[self::MIDDLE_SOURCE_KEY]
            );
         }
 
-        if (isset($defined[self::SCOPE])) {
-            call_user_func([$this, 'scope'.ucfirst($defined[self::SCOPE])], $relation);
+        if (isset($defined[self::RELATION_SCOPE])) {
+            call_user_func([$this, 'scope'.ucfirst($defined[self::RELATION_SCOPE])], $relation);
         }
 
         return $relation;
@@ -1563,8 +1540,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         if (false === $ignoreReadonly &&
-            isset(static::STRUCT[$prop]['readonly']) &&
-            true === static::STRUCT[$prop]['readonly']) {
+            isset(static::STRUCT[$prop][self::READONLY]) &&
+            true === static::STRUCT[$prop][self::READONLY]) {
             $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
 
             throw new InvalidArgumentException($e);

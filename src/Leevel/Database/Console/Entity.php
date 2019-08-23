@@ -200,7 +200,7 @@ class Entity extends Make
         foreach ($columns['list'] as $val) {
             if ($val['primary_key']) {
                 $struct[] = "        '{$val['name']}' => [
-            'readonly' => true,
+            self::READONLY => true,
         ],";
             } else {
                 $struct[] = "        '{$val['name']}' => [],";

@@ -146,6 +146,15 @@ interface IEntity
     const ENUM = 'enum';
 
     /**
+     * 字段只读.
+     *
+     * - 保护核心字段不被修改
+     *
+     * @var string
+     */
+    const READONLY = 'readonly';
+
+    /**
      * 构造器属性黑名单.
      *
      * @var string
@@ -200,6 +209,20 @@ interface IEntity
      * @var string
      */
     const UPDATE_PROP_WHITE = 'update_prop_white';
+
+    /**
+     * 创建填充属性.
+     *
+     * @var string
+     */
+    const CREATE_FILL = 'create_fill';
+
+    /**
+     * 更新填充属性.
+     *
+     * @var string
+     */
+    const UPDATE_FILL = 'update_fill';
 
     /**
      * 一对一关联.
