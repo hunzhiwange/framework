@@ -146,6 +146,62 @@ interface IEntity
     const ENUM = 'enum';
 
     /**
+     * 构造器属性黑名单.
+     *
+     * @var string
+     */
+    const CONSTRUCT_PROP_BLACK = 'construct_prop_black';
+
+    /**
+     * 构造器属性白名单.
+     *
+     * @var string
+     */
+    const CONSTRUCT_PROP_WHITE = 'construct_prop_white';
+
+    /**
+     * 查询显示属性黑名单.
+     *
+     * @var string
+     */
+    const SHOW_PROP_BLACK = 'show_prop_black';
+
+    /**
+     * 查询显示属性白名单.
+     *
+     * @var string
+     */
+    const SHOW_PROP_WHITE = 'show_prop_white';
+
+    /**
+     * 创建属性黑名单.
+     *
+     * @var string
+     */
+    const CREATE_PROP_BLACK = 'create_prop_black';
+
+    /**
+     * 创建属性白名单.
+     *
+     * @var string
+     */
+    const CREATE_PROP_WHITE = 'create_prop_white';
+
+    /**
+     * 更新属性黑名单.
+     *
+     * @var string
+     */
+    const UPDATE_PROP_BLACK = 'update_prop_black';
+
+    /**
+     * 更新属性白名单.
+     *
+     * @var string
+     */
+    const UPDATE_PROP_WHITE = 'update_prop_white';
+
+    /**
      * 一对一关联.
      *
      * @var int
