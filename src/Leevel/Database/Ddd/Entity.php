@@ -672,7 +672,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         if (isset($defined[self::RELATION_SCOPE])) {
-            call_user_func([$this, 'scope'.ucfirst($defined[self::RELATION_SCOPE])], $relation);
+            call_user_func([$this, 'relationScope'.ucfirst($defined[self::RELATION_SCOPE])], $relation);
         }
 
         return $relation;

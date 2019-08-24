@@ -99,7 +99,7 @@ class Post extends Entity
         return $this->{$this->prop($prop)};
     }
 
-    public function scopeComment($select)
+    protected function relationScopeComment($select)
     {
         $select->where('id', '>', 4);
     }
