@@ -218,7 +218,7 @@ class Select
      */
     public function softDelete(): int
     {
-        $this->entity->__set($this->deleteAtColumn(), date('Y-m-d H:i:s'));
+        $this->entity->__set($this->deleteAtColumn(), time());
         $this->entity->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
         $num = $this->entity->update()->flush();
         $this->entity->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
@@ -276,7 +276,7 @@ class Select
      */
     public function withoutSoftDeleted(): DatabaseSelect
     {
-        return $this->select->whereNull($this->deleteAtColumn());
+        return $this->select->where($this->deleteAtColumn(), 0);
     }
 
     /**
@@ -286,7 +286,7 @@ class Select
      */
     public function onlySoftDeleted(): DatabaseSelect
     {
-        return $this->select->whereNotNull($this->deleteAtColumn());
+        return $this->select->where($this->deleteAtColumn(), '>', 0);
     }
 
     /**
@@ -296,7 +296,7 @@ class Select
      */
     public function softDeleted(): bool
     {
-        return null !== $this->entity->__get($this->deleteAtColumn());
+        return (int) $this->entity->__get($this->deleteAtColumn()) > 0;
     }
 
     /**

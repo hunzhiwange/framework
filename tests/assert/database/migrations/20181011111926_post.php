@@ -60,7 +60,7 @@ class Post extends AbstractMigration
                 `user_id` int(11) NOT NULL COMMENT '用户 ID',
                 `summary` varchar(200) NOT NULL DEFAULT '' COMMENT '文章摘要',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                `delete_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
+                `delete_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间 0=未删除;大于0=删除时间;',
                 PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             EOT;
