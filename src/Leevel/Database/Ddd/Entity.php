@@ -1332,6 +1332,25 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
+     * setter.
+     *
+     * @param string $prop
+     * @param mixed  $value
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    abstract public function setter(string $prop, $value): IEntity;
+
+    /**
+     * getter.
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    abstract public function getter(string $prop);
+
+    /**
      * 保存统一入口.
      *
      * @param string     $method
