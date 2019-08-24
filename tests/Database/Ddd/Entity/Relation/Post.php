@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Relation\Relation;
 
 /**
  * post.
@@ -99,8 +100,8 @@ class Post extends Entity
         return $this->{$this->prop($prop)};
     }
 
-    protected function relationScopeComment($select): void
+    protected function relationScopeComment(Relation $relation): void
     {
-        $select->where('id', '>', 4);
+        $relation->where('id', '>', 4);
     }
 }
