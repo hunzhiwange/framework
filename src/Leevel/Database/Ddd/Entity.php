@@ -852,7 +852,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         static::isSupportEvent($event);
-
         static::$leevelDispatch->register(
             "entity.{$event}:".static::class,
             $listener
