@@ -53,9 +53,10 @@ class NestedTest extends TestCase
                 $connect
                     ->table('post')
                     ->insert([
-                        'title'   => 'hello world',
-                        'user_id' => 1,
-                        'summary' => 'Say hello to the world.',
+                        'title'     => 'hello world',
+                        'user_id'   => 1,
+                        'summary'   => 'Say hello to the world.',
+                        'delete_at' => 0,
                     ]));
         }
 

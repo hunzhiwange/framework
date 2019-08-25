@@ -53,9 +53,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $repository = new Repository(new Post());
@@ -79,9 +80,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $repository = new Repository(new Post());
@@ -104,9 +106,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $repository = new Repository(new Post());
@@ -140,9 +143,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -181,9 +185,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -214,9 +219,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -255,9 +261,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -295,9 +302,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -326,9 +334,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -365,9 +374,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -403,9 +413,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -433,9 +444,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -471,9 +483,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -506,9 +519,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -541,9 +555,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -582,9 +597,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -623,9 +639,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -664,9 +681,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -696,9 +714,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -725,9 +744,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -763,9 +783,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -801,9 +822,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -839,9 +861,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -877,9 +900,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -915,9 +939,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -953,9 +978,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -991,9 +1017,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1029,9 +1056,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1067,9 +1095,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1105,9 +1134,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1139,9 +1169,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1174,9 +1205,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $repository = new Repository(new Post());
@@ -1221,9 +1253,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $repository = new Repository(new Post());
@@ -1248,9 +1281,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $repository = new Repository(new Post());
@@ -1280,9 +1314,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $repository = new Repository(new Post());
@@ -1354,9 +1389,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $repository = new Repository(new Post());
@@ -1382,9 +1418,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1424,9 +1461,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1463,9 +1501,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1508,9 +1547,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1532,9 +1572,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1562,9 +1603,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1586,9 +1628,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1616,9 +1659,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1640,9 +1684,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1670,9 +1715,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world'.$i,
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world'.$i,
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1713,9 +1759,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world'.$i,
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world'.$i,
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 
@@ -1756,9 +1803,10 @@ class RepositoryTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world'.$i,
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world'.$i,
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]);
         }
 

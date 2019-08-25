@@ -264,9 +264,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $this->assertSame(
@@ -274,9 +275,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 2,
-                    'summary' => 'foo bar',
+                    'title'     => 'hello world',
+                    'user_id'   => 2,
+                    'summary'   => 'foo bar',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -364,9 +366,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $this->assertSame(
@@ -374,9 +377,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 2,
-                    'summary' => 'foo bar',
+                    'title'     => 'hello world',
+                    'user_id'   => 2,
+                    'summary'   => 'foo bar',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -462,9 +466,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = new Post([
@@ -520,9 +525,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $work->beginTransaction();
@@ -601,9 +607,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $work->transaction(function ($w) {
@@ -683,9 +690,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -728,9 +736,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -805,9 +814,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -841,9 +851,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -1062,9 +1073,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -1094,9 +1106,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -1259,9 +1272,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = new Post([
@@ -1382,9 +1396,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $this->assertSame(
@@ -1426,9 +1441,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = Post::select()->find(1);
@@ -1501,9 +1517,10 @@ class UnitOfWorkTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $post = new Post([

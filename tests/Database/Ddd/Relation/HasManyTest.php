@@ -52,9 +52,10 @@ class HasManyTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'Say hello to the world.',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -124,9 +125,10 @@ class HasManyTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'Say hello to the world.',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -135,9 +137,10 @@ class HasManyTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'foo bar',
-                    'user_id' => 1,
-                    'summary' => 'Say foo to the bar.',
+                    'title'     => 'foo bar',
+                    'user_id'   => 1,
+                    'summary'   => 'Say foo to the bar.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -191,9 +194,10 @@ class HasManyTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'Say hello to the world.',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -231,9 +235,10 @@ class HasManyTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'Say hello to the world.',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -283,9 +288,10 @@ class HasManyTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'Say hello to the world.',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -294,9 +300,10 @@ class HasManyTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'foo bar',
-                    'user_id' => 1,
-                    'summary' => 'Say foo to the bar.',
+                    'title'     => 'foo bar',
+                    'user_id'   => 1,
+                    'summary'   => 'Say foo to the bar.',
+                    'delete_at' => 0,
                 ]),
         );
 
