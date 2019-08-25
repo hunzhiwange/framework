@@ -941,10 +941,8 @@ class Select
      */
     protected function query()
     {
-        $sql = $this->makeSql();
-
         $args = [
-            $sql,
+            $this->makeSql(),
             $this->condition->getBindParams(),
             $this->queryParams['master'],
             $this->queryParams['fetch_args']['fetch_style'],
@@ -958,7 +956,6 @@ class Select
         }
 
         $data = $this->connect->query(...$args);
-
         if ($this->queryParams['as_default']) {
             $data = $this->queryDefault($data);
         } else {
