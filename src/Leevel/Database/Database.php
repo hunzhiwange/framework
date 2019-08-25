@@ -506,7 +506,13 @@ abstract class Database implements IConnection
      */
     public function freePDOStatement(): void
     {
-        $this->pdoStatement = null;
+        // Fix errors
+        // Error while sending STMT_CLOSE packet. PID=32336
+        // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
+        try {
+            $this->pdoStatement = null;
+        } catch (Throwable $e) {
+        }
     }
 
     /**
