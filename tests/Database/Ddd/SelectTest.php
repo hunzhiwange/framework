@@ -193,9 +193,10 @@ class SelectTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $this->assertSame(
@@ -203,9 +204,10 @@ class SelectTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $select = new Select($post = Post::select()->find(1));
@@ -244,9 +246,10 @@ class SelectTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $this->assertSame(
@@ -254,9 +257,10 @@ class SelectTest extends TestCase
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
                 ]));
 
         $select = new Select($post = Post::select()->find(1));
