@@ -1424,7 +1424,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             if (!array_key_exists($prop, $propKey)) {
                 continue;
             }
-
             $saveData[$prop] = $this->__get($prop);
         }
 
@@ -1443,11 +1442,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
             $lastInsertId = $this->metaConnect()->insert($saveData);
-
             if ($auto = $this->autoIncrement()) {
                 $this->withPropValue($auto, $lastInsertId, false, true);
             }
-
             $this->leevelNewed = false;
             $this->clearChanged();
             $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
@@ -1481,7 +1478,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             if (!array_key_exists($prop, $propKey)) {
                 continue;
             }
-
             $saveData[$prop] = $this->__get($prop);
         }
 
