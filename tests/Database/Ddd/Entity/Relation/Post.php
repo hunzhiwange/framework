@@ -49,7 +49,9 @@ class Post extends Entity
         'user_id'   => [],
         'summary'   => [],
         'create_at' => [],
-        'delete_at' => [],
+        'delete_at' => [
+            self::CREATE_FILL => 0,
+        ],
         'user'      => [
             self::BELONGS_TO     => User::class,
             self::SOURCE_KEY     => 'user_id',
