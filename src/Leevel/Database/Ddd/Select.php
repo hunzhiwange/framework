@@ -262,7 +262,7 @@ class Select
     public function softRestore(): int
     {
         $this->entity->handleEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
-        $this->entity->__set($this->deleteAtColumn(), null);
+        $this->entity->__set($this->deleteAtColumn(), 0);
         $num = $this->entity->update()->flush();
         $this->entity->handleEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
 
