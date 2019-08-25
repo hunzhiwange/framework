@@ -76,7 +76,6 @@ class UniqueRule
         }
 
         $select = $this->normalizeSelect($value, $param, $field);
-
         $this->parseExceptId($select, $param);
         $this->parseAdditional($select, $param);
 
@@ -105,12 +104,10 @@ class UniqueRule
         }
 
         $tmp = [];
-
         $tmp[] = $entity;
         $tmp[] = $field ?: self::PLACEHOLDER;
         $tmp[] = $exceptId ?: self::PLACEHOLDER;
         $tmp[] = $primaryKey ?: self::PLACEHOLDER;
-
         $tmp = array_merge($tmp, $additional);
 
         return 'unique:'.implode(',', $tmp);
@@ -135,7 +132,6 @@ class UniqueRule
 
         if (false !== strpos($field, self::SEPARATE)) {
             $select = $entity->select()->selfDatabaseSelect();
-
             foreach (explode(self::SEPARATE, $field) as $v) {
                 $select->where($v, $value);
             }
