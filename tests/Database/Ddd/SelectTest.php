@@ -225,7 +225,7 @@ class SelectTest extends TestCase
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertSame(date('Y-m-d'), date('Y-m-d', $post1->delete_at));
+        $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
         $post2 = Post::select()->find(2);
         $this->assertInstanceof(Post::class, $post2);
@@ -276,7 +276,7 @@ class SelectTest extends TestCase
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertSame(date('Y-m-d'), date('Y-m-d', $post1->delete_at));
+        $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
         $post2 = Post::select()->find(2);
         $this->assertInstanceof(Post::class, $post2);
@@ -327,7 +327,7 @@ class SelectTest extends TestCase
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertSame(date('Y-m-d'), date('Y-m-d', $post1->delete_at));
+        $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
         $post2 = Post::select()->find(2);
         $this->assertInstanceof(Post::class, $post2);
