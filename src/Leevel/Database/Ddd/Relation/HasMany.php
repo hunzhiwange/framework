@@ -152,13 +152,13 @@ class HasMany extends Relation
     /**
      * 取得关联模型实体数据.
      *
-     * @param array  $maps
-     * @param string $key
-     * @param string $type
+     * @param array      $maps
+     * @param int|string $key
+     * @param string     $type
      *
      * @return mixed
      */
-    protected function getRelationValue(array $maps, string $key, string $type)
+    protected function getRelationValue(array $maps, $key, string $type)
     {
         $value = $maps[$key];
 
