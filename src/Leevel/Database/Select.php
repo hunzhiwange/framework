@@ -124,9 +124,7 @@ class Select
     public function __construct($connect)
     {
         $this->connect = $connect;
-
         $this->condition = new Condition($connect);
-
         $this->initOption();
     }
 
@@ -164,8 +162,7 @@ class Select
                 $num = (int) (array_shift($values));
                 $offset = (int) (array_shift($values));
 
-                return $this->limit($offset, $num)->
-                find();
+                return $this->limit($offset, $num)->find();
             }
 
             // support findByName findByNameAndSex etc.
