@@ -337,6 +337,33 @@ class HavingTest extends TestCase
         );
     }
 
+    public function testOrHavingEqualNull(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IS NULL",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->groupBy('name')
+                    ->having('id', '=', null)
+                    ->findAll(true)
+            )
+        );
+    }
+
     public function testHavingLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
