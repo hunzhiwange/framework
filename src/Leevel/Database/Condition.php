@@ -1767,9 +1767,7 @@ class Condition
      */
     public function makeSql(bool $withLogicGroup = false): string
     {
-        $sql = [
-            'SELECT',
-        ];
+        $sql = ['SELECT'];
 
         foreach (array_keys($this->options) as $option) {
             if ('from' === $option) {
@@ -1778,7 +1776,6 @@ class Condition
                 continue;
             } else {
                 $method = 'parse'.ucfirst($option);
-
                 if (method_exists($this, $method)) {
                     $sql[$option] = $this->{$method}();
                 }
@@ -1795,7 +1792,6 @@ class Condition
         }
 
         $sql[] = $this->parseUnion();
-
         $result = trim(implode(' ', $sql));
 
         if (true === $withLogicGroup) {
@@ -2317,7 +2313,7 @@ class Condition
                 }
 
                 // 格式化字段值，支持数组
-                if (isset($cond[2])) {
+                if (array_key_exists(2, $cond)) {
                     $isArray = true;
 
                     if (!is_array($cond[2])) {
@@ -2394,6 +2390,8 @@ class Condition
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2][0].' AND '.$cond[2][1];
                 } elseif (is_scalar($cond[2])) {
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
+                } elseif ('=' === $cond[1] && null === $cond[2]) {
+                    $sqlCond[] = $cond[0].' IS NULL';
                 }
             }
         }
