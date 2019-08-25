@@ -42,7 +42,7 @@ class DatabaseTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $database
                 ->table('guest_book')
                 ->insert($data),

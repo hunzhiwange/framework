@@ -49,7 +49,7 @@ class NestedTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $this->assertSame(
-                (string) ($i + 1),
+                $i + 1,
                 $connect
                     ->table('post')
                     ->insert([
@@ -60,7 +60,7 @@ class NestedTest extends TestCase
         }
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -68,7 +68,7 @@ class NestedTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('role')
                 ->insert([
@@ -76,7 +76,7 @@ class NestedTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('role')
                 ->insert([
@@ -84,7 +84,7 @@ class NestedTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '3',
+            3,
             $connect
                 ->table('role')
                 ->insert([
@@ -92,7 +92,7 @@ class NestedTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user_role')
                 ->insert([
@@ -101,7 +101,7 @@ class NestedTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('user_role')
                 ->insert([
@@ -118,13 +118,13 @@ class NestedTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('1', $post->user_id);
-        $this->assertSame('1', $post->userId);
-        $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getUserId());
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
         $this->assertSame('hello world', $post->getTitle());
@@ -135,9 +135,9 @@ class NestedTest extends TestCase
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertSame('1', $user->id);
-        $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());
@@ -149,37 +149,37 @@ class NestedTest extends TestCase
         $user1 = $role[0];
 
         $this->assertInstanceof(Role::class, $user1);
-        $this->assertSame('1', $user1->id);
-        $this->assertSame('1', $user1['id']);
-        $this->assertSame('1', $user1->getId());
+        $this->assertSame(1, $user1->id);
+        $this->assertSame(1, $user1['id']);
+        $this->assertSame(1, $user1->getId());
         $this->assertSame('管理员', $user1->name);
         $this->assertSame('管理员', $user1['name']);
         $this->assertSame('管理员', $user1->getName());
 
         $user2 = $role[1];
         $this->assertInstanceof(Role::class, $user2);
-        $this->assertSame('3', $user2->id);
-        $this->assertSame('3', $user2['id']);
-        $this->assertSame('3', $user2->getId());
+        $this->assertSame(3, $user2->id);
+        $this->assertSame(3, $user2['id']);
+        $this->assertSame(3, $user2->getId());
         $this->assertSame('会员', $user2->name);
         $this->assertSame('会员', $user2['name']);
         $this->assertSame('会员', $user2->getName());
 
         $this->assertCount(2, $role);
-        $this->assertSame('1', $role[0]['id']);
+        $this->assertSame(1, $role[0]['id']);
         $this->assertSame('管理员', $role[0]['name']);
-        $this->assertSame('3', $role[1]['id']);
+        $this->assertSame(3, $role[1]['id']);
         $this->assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        $this->assertSame('1', $middle->userId);
-        $this->assertSame('1', $middle->roleId);
+        $this->assertSame(1, $middle->userId);
+        $this->assertSame(1, $middle->roleId);
 
         $middle = $role[1]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        $this->assertSame('1', $middle->userId);
-        $this->assertSame('3', $middle->roleId);
+        $this->assertSame(1, $middle->userId);
+        $this->assertSame(3, $middle->roleId);
     }
 
     protected function getDatabaseTable(): array

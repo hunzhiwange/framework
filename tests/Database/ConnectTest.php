@@ -73,7 +73,7 @@ class ConnectTest extends TestCase
 
         // 写入数据
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -86,10 +86,10 @@ class ConnectTest extends TestCase
             ->where('id', 1)
             ->findOne();
 
-        $this->assertSame('1', $insertData->id);
+        $this->assertSame(1, $insertData->id);
         $this->assertSame('小鸭子', $insertData->name);
         $this->assertSame('吃饭饭', $insertData->content);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData->create_at);
+        $this->assertStringContainsString(date('Y-m'), $insertData->create_at);
     }
 
     public function testQuery(): void
@@ -99,7 +99,7 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -108,24 +108,24 @@ class ConnectTest extends TestCase
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame('1', $insertData['id']);
+        $this->assertSame(1, $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testExecute(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->execute('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
+        $this->assertSame(1, $connect->execute('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame('1', $insertData['id']);
+        $this->assertSame(1, $insertData['id']);
         $this->assertSame('小鸭子', $insertData['name']);
         $this->assertSame('喜欢游泳', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testQueryOnlyAllowedSelect(): void
@@ -159,7 +159,7 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -168,10 +168,10 @@ class ConnectTest extends TestCase
         $insertData = $connect->select('select * from guest_book where id = ?', [1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame('1', $insertData['id']);
+        $this->assertSame(1, $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testSelectWithBind(): void
@@ -181,7 +181,7 @@ class ConnectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -190,65 +190,65 @@ class ConnectTest extends TestCase
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame('1', $insertData['id']);
+        $this->assertSame(1, $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testInsert(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        $this->assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame('1', $insertData['id']);
+        $this->assertSame(1, $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testUpdate(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        $this->assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame('1', $insertData['id']);
+        $this->assertSame(1, $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
 
         $this->assertSame(1, $connect->update('update guest_book set name = "小牛" where id = ?', [1]));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame('1', $insertData['id']);
+        $this->assertSame(1, $insertData['id']);
         $this->assertSame('小牛', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testDelete(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        $this->assertSame('1', $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        $this->assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        $this->assertSame('1', $insertData['id']);
+        $this->assertSame(1, $insertData['id']);
         $this->assertSame('tom', $insertData['name']);
         $this->assertSame('I love movie.', $insertData['content']);
-        $this->assertStringContainsString(date('Y-m-d'), $insertData['create_at']);
+        $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
 
         $this->assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
 
@@ -400,17 +400,6 @@ class ConnectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        $sqlProcedure = <<<'eot'
-            DROP PROCEDURE IF EXISTS `test_procedure`;
-            CREATE PROCEDURE `test_procedure`(IN min INT)
-                BEGIN
-                SELECT `name` FROM `guest_book` WHERE id > min;
-                SELECT `content` FROM `guest_book` WHERE id > min+1;
-                END;
-            eot;
-
-        $connect->execute($sqlProcedure);
-
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         for ($n = 0; $n <= 1; $n++) {
@@ -445,8 +434,6 @@ class ConnectTest extends TestCase
                 $result
             )
         );
-
-        $connect->execute('DROP PROCEDURE IF EXISTS `test_procedure`');
     }
 
     public function testPdo(): void
@@ -638,7 +625,12 @@ class ConnectTest extends TestCase
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
-                    PDO::ATTR_PERSISTENT => false,
+                    PDO::ATTR_PERSISTENT        => false,
+                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES  => false,
                 ],
             ],
             'slave' => [
@@ -650,7 +642,12 @@ class ConnectTest extends TestCase
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset'  => 'utf8',
                     'options'  => [
-                        PDO::ATTR_PERSISTENT => false,
+                        PDO::ATTR_PERSISTENT        => false,
+                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                        PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                        PDO::ATTR_STRINGIFY_FETCHES => false,
+                        PDO::ATTR_EMULATE_PREPARES  => false,
                     ],
                 ],
                 [
@@ -661,7 +658,12 @@ class ConnectTest extends TestCase
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset'  => 'utf8',
                     'options'  => [
-                        PDO::ATTR_PERSISTENT => false,
+                        PDO::ATTR_PERSISTENT        => false,
+                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                        PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                        PDO::ATTR_STRINGIFY_FETCHES => false,
+                        PDO::ATTR_EMULATE_PREPARES  => false,
                     ],
                 ],
             ],
@@ -686,7 +688,12 @@ class ConnectTest extends TestCase
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
-                    PDO::ATTR_PERSISTENT => false,
+                    PDO::ATTR_PERSISTENT        => false,
+                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES  => false,
                 ],
             ],
             'slave' => [
@@ -698,7 +705,12 @@ class ConnectTest extends TestCase
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset'  => 'utf8',
                     'options'  => [
-                        PDO::ATTR_PERSISTENT => false,
+                        PDO::ATTR_PERSISTENT        => false,
+                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                        PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                        PDO::ATTR_STRINGIFY_FETCHES => false,
+                        PDO::ATTR_EMULATE_PREPARES  => false,
                     ],
                 ],
                 [
@@ -709,7 +721,12 @@ class ConnectTest extends TestCase
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset'  => 'utf8',
                     'options'  => [
-                        PDO::ATTR_PERSISTENT => false,
+                        PDO::ATTR_PERSISTENT        => false,
+                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                        PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                        PDO::ATTR_STRINGIFY_FETCHES => false,
+                        PDO::ATTR_EMULATE_PREPARES  => false,
                     ],
                 ],
             ],
@@ -735,7 +752,12 @@ class ConnectTest extends TestCase
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
-                    PDO::ATTR_PERSISTENT => false,
+                    PDO::ATTR_PERSISTENT        => false,
+                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES  => false,
                 ],
             ],
             'slave' => [
@@ -747,7 +769,12 @@ class ConnectTest extends TestCase
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset'  => 'utf8',
                     'options'  => [
-                        PDO::ATTR_PERSISTENT => false,
+                        PDO::ATTR_PERSISTENT        => false,
+                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                        PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                        PDO::ATTR_STRINGIFY_FETCHES => false,
+                        PDO::ATTR_EMULATE_PREPARES  => false,
                     ],
                 ],
                 [
@@ -758,7 +785,12 @@ class ConnectTest extends TestCase
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset'  => 'utf8',
                     'options'  => [
-                        PDO::ATTR_PERSISTENT => false,
+                        PDO::ATTR_PERSISTENT        => false,
+                        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                        PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                        PDO::ATTR_STRINGIFY_FETCHES => false,
+                        PDO::ATTR_EMULATE_PREPARES  => false,
                     ],
                 ],
             ],
@@ -786,7 +818,12 @@ class ConnectTest extends TestCase
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
-                    PDO::ATTR_PERSISTENT => false,
+                    PDO::ATTR_PERSISTENT        => false,
+                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES  => false,
                 ],
             ],
             'slave' => [],
@@ -814,7 +851,12 @@ class ConnectTest extends TestCase
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
-                    PDO::ATTR_PERSISTENT => false,
+                    PDO::ATTR_PERSISTENT        => false,
+                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES  => false,
                 ],
             ],
             'slave' => [],
@@ -844,7 +886,12 @@ class ConnectTest extends TestCase
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
-                    PDO::ATTR_PERSISTENT => false,
+                    PDO::ATTR_PERSISTENT        => false,
+                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES  => false,
                 ],
             ],
             'slave' => [],

@@ -68,7 +68,12 @@ trait Database
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset'  => 'utf8',
                 'options'  => [
-                    PDO::ATTR_PERSISTENT => false,
+                    PDO::ATTR_PERSISTENT        => false,
+                    PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                    PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                    PDO::ATTR_STRINGIFY_FETCHES => false,
+                    PDO::ATTR_EMULATE_PREPARES  => false,
                 ],
             ],
             'slave' => [],
@@ -127,7 +132,6 @@ trait Database
     protected function createDatabaseManager(): Manager
     {
         $container = new Container();
-
         $manager = new Manager($container);
 
         $this->assertInstanceof(IContainer::class, $manager->container());
@@ -146,7 +150,12 @@ trait Database
                         'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                         'charset'  => 'utf8',
                         'options'  => [
-                            PDO::ATTR_PERSISTENT => false,
+                            PDO::ATTR_PERSISTENT        => false,
+                            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                            PDO::ATTR_STRINGIFY_FETCHES => false,
+                            PDO::ATTR_EMULATE_PREPARES  => false,
                         ],
                         'separate'           => false,
                         'distributed'        => false,
@@ -158,11 +167,8 @@ trait Database
         ]);
 
         $container->singleton('option', $option);
-
         $eventDispatch = $this->createMock(IDispatch::class);
-
         $this->assertNull($eventDispatch->handle('event'));
-
         $container->singleton(IDispatch::class, $eventDispatch);
 
         return $manager;

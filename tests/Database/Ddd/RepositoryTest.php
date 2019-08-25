@@ -49,7 +49,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -63,8 +63,8 @@ class RepositoryTest extends TestCase
         $newPost = $repository->find(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame('1', $newPost->id);
-        $this->assertSame('1', $newPost->userId);
+        $this->assertSame(1, $newPost->id);
+        $this->assertSame(1, $newPost->userId);
         $this->assertSame('hello world', $newPost->title);
         $this->assertSame('post summary', $newPost->summary);
         $this->assertInstanceof(Post::class, $repository->entity());
@@ -75,7 +75,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -89,8 +89,8 @@ class RepositoryTest extends TestCase
         $newPost = $repository->find(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame('1', $newPost->id);
-        $this->assertSame('1', $newPost->userId);
+        $this->assertSame(1, $newPost->id);
+        $this->assertSame(1, $newPost->userId);
         $this->assertSame('hello world', $newPost->title);
         $this->assertSame('post summary', $newPost->summary);
     }
@@ -100,7 +100,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -114,8 +114,8 @@ class RepositoryTest extends TestCase
         $newPost = $repository->find(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame('1', $newPost->id);
-        $this->assertSame('1', $newPost->userId);
+        $this->assertSame(1, $newPost->id);
+        $this->assertSame(1, $newPost->userId);
         $this->assertSame('hello world', $newPost->title);
         $this->assertSame('post summary', $newPost->summary);
     }
@@ -1170,7 +1170,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -1208,7 +1208,7 @@ class RepositoryTest extends TestCase
         $newPost = $repository->find(5);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame('5', $newPost->id);
+        $this->assertSame(5, $newPost->id);
         $this->assertSame('foo', $newPost->title);
     }
 
@@ -1217,7 +1217,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -1235,7 +1235,7 @@ class RepositoryTest extends TestCase
         $newPost = $repository->find(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame('1', $newPost->id);
+        $this->assertSame(1, $newPost->id);
         $this->assertSame('new title', $newPost->title);
     }
 
@@ -1244,7 +1244,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -1265,9 +1265,9 @@ class RepositoryTest extends TestCase
 
         $updatedPost = $repository->find(1);
 
-        $this->assertSame('1', $updatedPost->id);
+        $this->assertSame(1, $updatedPost->id);
         $this->assertSame('new title', $updatedPost->title);
-        $this->assertSame('1', $updatedPost->userId);
+        $this->assertSame(1, $updatedPost->userId);
         $this->assertSame('post summary', $updatedPost->summary);
     }
 
@@ -1276,7 +1276,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -1298,14 +1298,14 @@ class RepositoryTest extends TestCase
         $newPost = $repository->find(1);
 
         $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame('1', $newPost->id);
+        $this->assertSame(1, $newPost->id);
         $this->assertSame('hello world', $newPost->title);
         $this->assertSame('post summary', $newPost->summary);
 
         $newPost2 = $repository->find(2);
 
         $this->assertInstanceof(Post::class, $newPost2);
-        $this->assertSame('2', $newPost2->id);
+        $this->assertSame(2, $newPost2->id);
         $this->assertSame('new title', $newPost2->title);
         $this->assertSame('', $newPost2->summary);
     }
@@ -1315,7 +1315,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('test_unique')
                 ->insert([
@@ -1327,7 +1327,7 @@ class RepositoryTest extends TestCase
         $testUniqueData = TestUnique::select()->find(1);
 
         $this->assertInstanceof(TestUnique::class, $testUniqueData);
-        $this->assertSame('1', $testUniqueData->id);
+        $this->assertSame(1, $testUniqueData->id);
         $this->assertSame('hello world', $testUniqueData->name);
         $this->assertSame('hello', $testUniqueData->identity);
 
@@ -1340,7 +1340,7 @@ class RepositoryTest extends TestCase
         $testUniqueData = TestUnique::select()->find(1);
 
         $this->assertInstanceof(TestUnique::class, $testUniqueData);
-        $this->assertSame('1', $testUniqueData->id);
+        $this->assertSame(1, $testUniqueData->id);
         $this->assertSame('hello new', $testUniqueData->name);
         $this->assertSame('hello', $testUniqueData->identity);
     }
@@ -1350,7 +1350,7 @@ class RepositoryTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([

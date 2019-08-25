@@ -43,7 +43,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -57,8 +57,8 @@ class SelectTest extends TestCase
         $entity = $select->entity();
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post->userId);
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
         $this->assertInstanceof(IEntity::class, $entity);
@@ -69,7 +69,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -82,8 +82,8 @@ class SelectTest extends TestCase
         $post = $select->find(1);
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post->userId);
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
     }
@@ -93,7 +93,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -106,8 +106,8 @@ class SelectTest extends TestCase
         $post = $select->findOrFail(1);
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post->userId);
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
     }
@@ -128,7 +128,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -138,7 +138,7 @@ class SelectTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
@@ -155,13 +155,13 @@ class SelectTest extends TestCase
 
         $post1 = $posts[0];
         $this->assertInstanceof(Post::class, $post1);
-        $this->assertSame('1', $post1->userId);
+        $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
 
         $post2 = $posts[1];
         $this->assertInstanceof(Post::class, $post2);
-        $this->assertSame('1', $post2->userId);
+        $this->assertSame(1, $post2->userId);
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
     }
@@ -189,7 +189,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -199,7 +199,7 @@ class SelectTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
@@ -211,10 +211,10 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->find(1));
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame('1', $post->userId);
+        $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
-        $this->assertNull($post->delete_at);
+        $this->assertSame(0, $post->delete_at);
 
         $this->assertFalse($post->selectForEntity()->softDeleted());
         $this->assertSame(1, $select->softDelete());
@@ -222,17 +222,17 @@ class SelectTest extends TestCase
 
         $post1 = Post::select()->find(1);
         $this->assertInstanceof(Post::class, $post1);
-        $this->assertSame('1', $post1->userId);
+        $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertStringContainsString(date('Y-m-d'), $post1->delete_at);
+        $this->assertSame(date('Y-m-d'), date('Y-m-d', $post1->delete_at));
 
         $post2 = Post::select()->find(2);
         $this->assertInstanceof(Post::class, $post2);
-        $this->assertSame('1', $post2->userId);
+        $this->assertSame(1, $post2->userId);
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
-        $this->assertNull($post2->delete_at);
+        $this->assertSame(0, $post2->delete_at);
     }
 
     public function testSoftDestroy(): void
@@ -240,7 +240,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -250,7 +250,7 @@ class SelectTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
@@ -262,10 +262,10 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->find(1));
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame('1', $post->userId);
+        $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
-        $this->assertNull($post->delete_at);
+        $this->assertSame(0, $post->delete_at);
 
         $this->assertFalse($post->selectForEntity()->softDeleted());
         $this->assertSame(1, $select->softDestroy([1]));
@@ -273,17 +273,17 @@ class SelectTest extends TestCase
 
         $post1 = Post::select()->find(1);
         $this->assertInstanceof(Post::class, $post1);
-        $this->assertSame('1', $post1->userId);
+        $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertStringContainsString(date('Y-m-d'), $post1->delete_at);
+        $this->assertSame(date('Y-m-d'), date('Y-m-d', $post1->delete_at));
 
         $post2 = Post::select()->find(2);
         $this->assertInstanceof(Post::class, $post2);
-        $this->assertSame('1', $post2->userId);
+        $this->assertSame(1, $post2->userId);
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
-        $this->assertNull($post2->delete_at);
+        $this->assertSame(0, $post2->delete_at);
     }
 
     public function testSoftRestore(): void
@@ -291,7 +291,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -301,7 +301,7 @@ class SelectTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
@@ -313,10 +313,10 @@ class SelectTest extends TestCase
         $select = new Select($post = Post::select()->find(1));
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame('1', $post->userId);
+        $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
-        $this->assertNull($post->delete_at);
+        $this->assertSame(0, $post->delete_at);
 
         $this->assertFalse($post->selectForEntity()->softDeleted());
         $this->assertSame(1, $select->softDelete());
@@ -324,17 +324,17 @@ class SelectTest extends TestCase
 
         $post1 = Post::select()->find(1);
         $this->assertInstanceof(Post::class, $post1);
-        $this->assertSame('1', $post1->userId);
+        $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
-        $this->assertStringContainsString(date('Y-m-d'), $post1->delete_at);
+        $this->assertSame(date('Y-m-d'), date('Y-m-d', $post1->delete_at));
 
         $post2 = Post::select()->find(2);
         $this->assertInstanceof(Post::class, $post2);
-        $this->assertSame('1', $post2->userId);
+        $this->assertSame(1, $post2->userId);
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
-        $this->assertNull($post2->delete_at);
+        $this->assertSame(0, $post2->delete_at);
 
         $newSelect = new Select(Post::select()->find(1));
         $this->assertTrue($newSelect->softDeleted());
@@ -342,7 +342,7 @@ class SelectTest extends TestCase
         $this->assertFalse($newSelect->softDeleted());
 
         $restorePost1 = Post::select()->find(1);
-        $this->assertNull($restorePost1->delete_at);
+        $this->assertSame(0, $restorePost1->delete_at);
     }
 
     public function testWithoutSoftDeleted(): void
@@ -350,7 +350,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -360,7 +360,7 @@ class SelectTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
@@ -396,7 +396,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -406,7 +406,7 @@ class SelectTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
@@ -495,7 +495,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -505,7 +505,7 @@ class SelectTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
@@ -515,7 +515,7 @@ class SelectTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '0',
+            0,
            $connect
                ->table('post_content')
                ->insert([
@@ -524,7 +524,7 @@ class SelectTest extends TestCase
                ]));
 
         $this->assertSame(
-            '0',
+            0,
             $connect
                 ->table('post_content')
                 ->insert([
@@ -541,7 +541,7 @@ class SelectTest extends TestCase
 
         $post1 = $posts[0];
         $this->assertInstanceof(Post::class, $post1);
-        $this->assertSame('1', $post1->userId);
+        $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
 
@@ -553,7 +553,7 @@ class SelectTest extends TestCase
 
         $post2 = $posts[1];
         $this->assertInstanceof(Post::class, $post2);
-        $this->assertSame('1', $post2->userId);
+        $this->assertSame(1, $post2->userId);
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
 
@@ -585,7 +585,7 @@ class SelectTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -598,8 +598,8 @@ class SelectTest extends TestCase
         $post = $select->find(1);
 
         $this->assertInstanceof(Post::class, $post);
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post->userId);
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post->userId);
         $this->assertSame('hello world', $post->title);
         $this->assertSame('post summary', $post->summary);
 

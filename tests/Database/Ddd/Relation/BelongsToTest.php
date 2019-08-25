@@ -48,7 +48,7 @@ class BelongsToTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -59,7 +59,7 @@ class BelongsToTest extends TestCase
         );
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -69,13 +69,13 @@ class BelongsToTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('1', $post->user_id);
-        $this->assertSame('1', $post->userId);
-        $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getUserId());
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
         $this->assertSame('hello world', $post->getTitle());
@@ -86,9 +86,9 @@ class BelongsToTest extends TestCase
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
-        $this->assertSame('1', $user->id);
-        $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());
@@ -105,7 +105,7 @@ class BelongsToTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $this->assertSame(
-                (string) ($i + 1),
+                $i + 1,
                 $connect
                     ->table('post')
                     ->insert([
@@ -117,7 +117,7 @@ class BelongsToTest extends TestCase
         }
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -136,7 +136,7 @@ class BelongsToTest extends TestCase
             $user = $value->user;
 
             $this->assertInstanceof(User::class, $user);
-            $this->assertSame('1', $user->id);
+            $this->assertSame(1, $user->id);
             $this->assertSame('niu', $user->name);
         }
     }
@@ -146,7 +146,7 @@ class BelongsToTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -157,7 +157,7 @@ class BelongsToTest extends TestCase
         );
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -198,7 +198,7 @@ class BelongsToTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -210,13 +210,13 @@ class BelongsToTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('0', $post->user_id);
-        $this->assertSame('0', $post->userId);
-        $this->assertSame('0', $post['user_id']);
-        $this->assertSame('0', $post->getUserId());
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(0, $post->user_id);
+        $this->assertSame(0, $post->userId);
+        $this->assertSame(0, $post['user_id']);
+        $this->assertSame(0, $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
         $this->assertSame('hello world', $post->getTitle());
@@ -246,7 +246,7 @@ class BelongsToTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $this->assertSame(
-                (string) ($i + 1),
+                $i + 1,
                 $connect
                     ->table('post')
                     ->insert([

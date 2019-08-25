@@ -49,7 +49,7 @@ class ManyManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -57,7 +57,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('role')
                 ->insert([
@@ -65,7 +65,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('role')
                 ->insert([
@@ -73,7 +73,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '3',
+            3,
             $connect
                 ->table('role')
                 ->insert([
@@ -81,7 +81,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user_role')
                 ->insert([
@@ -90,7 +90,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('user_role')
                 ->insert([
@@ -100,9 +100,9 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $user->id);
-        $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());
@@ -113,37 +113,37 @@ class ManyManyTest extends TestCase
 
         $user1 = $role[0];
 
-        $this->assertSame('1', $user1->id);
-        $this->assertSame('1', $user1['id']);
-        $this->assertSame('1', $user1->getId());
+        $this->assertSame(1, $user1->id);
+        $this->assertSame(1, $user1['id']);
+        $this->assertSame(1, $user1->getId());
         $this->assertSame('管理员', $user1->name);
         $this->assertSame('管理员', $user1['name']);
         $this->assertSame('管理员', $user1->getName());
 
         $user2 = $role[1];
 
-        $this->assertSame('3', $user2->id);
-        $this->assertSame('3', $user2['id']);
-        $this->assertSame('3', $user2->getId());
+        $this->assertSame(3, $user2->id);
+        $this->assertSame(3, $user2['id']);
+        $this->assertSame(3, $user2->getId());
         $this->assertSame('会员', $user2->name);
         $this->assertSame('会员', $user2['name']);
         $this->assertSame('会员', $user2->getName());
 
         $this->assertCount(2, $role);
-        $this->assertSame('1', $role[0]['id']);
+        $this->assertSame(1, $role[0]['id']);
         $this->assertSame('管理员', $role[0]['name']);
-        $this->assertSame('3', $role[1]['id']);
+        $this->assertSame(3, $role[1]['id']);
         $this->assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        $this->assertSame('1', $middle->userId);
-        $this->assertSame('1', $middle->roleId);
+        $this->assertSame(1, $middle->userId);
+        $this->assertSame(1, $middle->roleId);
 
         $middle = $role[1]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        $this->assertSame('1', $middle->userId);
-        $this->assertSame('3', $middle->roleId);
+        $this->assertSame(1, $middle->userId);
+        $this->assertSame(3, $middle->roleId);
     }
 
     public function testEager(): void
@@ -156,7 +156,7 @@ class ManyManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -164,7 +164,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('role')
                 ->insert([
@@ -172,7 +172,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('role')
                 ->insert([
@@ -180,7 +180,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '3',
+            3,
             $connect
                 ->table('role')
                 ->insert([
@@ -188,7 +188,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user_role')
                 ->insert([
@@ -197,7 +197,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('user_role')
                 ->insert([
@@ -209,9 +209,9 @@ class ManyManyTest extends TestCase
             ->where('id', 1)
             ->findOne();
 
-        $this->assertSame('1', $user->id);
-        $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());
@@ -222,35 +222,35 @@ class ManyManyTest extends TestCase
 
         $user1 = $role[0];
 
-        $this->assertSame('1', $user1->id);
-        $this->assertSame('1', $user1['id']);
-        $this->assertSame('1', $user1->getId());
+        $this->assertSame(1, $user1->id);
+        $this->assertSame(1, $user1['id']);
+        $this->assertSame(1, $user1->getId());
         $this->assertSame('管理员', $user1->name);
         $this->assertSame('管理员', $user1['name']);
         $this->assertSame('管理员', $user1->getName());
 
         $user2 = $role[1];
 
-        $this->assertSame('3', $user2->id);
-        $this->assertSame('3', $user2['id']);
-        $this->assertSame('3', $user2->getId());
+        $this->assertSame(3, $user2->id);
+        $this->assertSame(3, $user2['id']);
+        $this->assertSame(3, $user2->getId());
         $this->assertSame('会员', $user2->name);
         $this->assertSame('会员', $user2['name']);
         $this->assertSame('会员', $user2->getName());
 
         $this->assertCount(2, $role);
-        $this->assertSame('1', $role[0]['id']);
+        $this->assertSame(1, $role[0]['id']);
         $this->assertSame('管理员', $role[0]['name']);
-        $this->assertSame('3', $role[1]['id']);
+        $this->assertSame(3, $role[1]['id']);
         $this->assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
-        $this->assertSame('1', $middle->userId);
-        $this->assertSame('1', $middle->roleId);
+        $this->assertSame(1, $middle->userId);
+        $this->assertSame(1, $middle->roleId);
 
         $middle = $role[1]->middle();
-        $this->assertSame('1', $middle->userId);
-        $this->assertSame('3', $middle->roleId);
+        $this->assertSame(1, $middle->userId);
+        $this->assertSame(3, $middle->roleId);
     }
 
     public function testEagerWithNoData(): void
@@ -277,7 +277,7 @@ class ManyManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -285,7 +285,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('role')
                 ->insert([
@@ -293,7 +293,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('role')
                 ->insert([
@@ -301,7 +301,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '3',
+            3,
             $connect
                 ->table('role')
                 ->insert([
@@ -309,7 +309,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user_role')
                 ->insert([
@@ -318,7 +318,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('user_role')
                 ->insert([
@@ -349,7 +349,7 @@ class ManyManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -358,9 +358,9 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $user->id);
-        $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());
@@ -381,7 +381,7 @@ class ManyManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -389,7 +389,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('role')
                 ->insert([
@@ -397,7 +397,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('role')
                 ->insert([
@@ -405,7 +405,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '3',
+            3,
             $connect
                 ->table('role')
                 ->insert([
@@ -414,9 +414,9 @@ class ManyManyTest extends TestCase
 
         $user = User::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $user->id);
-        $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());
@@ -437,7 +437,7 @@ class ManyManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('user')
                 ->insert([
@@ -445,7 +445,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('role')
                 ->insert([
@@ -453,7 +453,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('role')
                 ->insert([
@@ -461,7 +461,7 @@ class ManyManyTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '3',
+            3,
             $connect
                 ->table('role')
                 ->insert([
@@ -472,9 +472,9 @@ class ManyManyTest extends TestCase
             ->where('id', 1)
             ->findOne();
 
-        $this->assertSame('1', $user->id);
-        $this->assertSame('1', $user['id']);
-        $this->assertSame('1', $user->getId());
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
         $this->assertSame('niu', $user->name);
         $this->assertSame('niu', $user['name']);
         $this->assertSame('niu', $user->getName());

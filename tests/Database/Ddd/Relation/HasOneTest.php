@@ -48,7 +48,7 @@ class HasOneTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -58,7 +58,7 @@ class HasOneTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '0',
+            0,
             $connect
                 ->table('post_content')
                 ->insert([
@@ -68,13 +68,13 @@ class HasOneTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('1', $post->user_id);
-        $this->assertSame('1', $post->userId);
-        $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getUserId());
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
         $this->assertSame('hello world', $post->getTitle());
@@ -85,11 +85,11 @@ class HasOneTest extends TestCase
         $postContent = $post->postContent;
 
         $this->assertInstanceof(PostContent::class, $postContent);
-        $this->assertSame('1', $postContent->post_id);
-        $this->assertSame('1', $postContent->postId);
-        $this->assertSame('1', $postContent['post_id']);
-        $this->assertSame('1', $postContent['postId']);
-        $this->assertSame('1', $postContent->getPostId());
+        $this->assertSame(1, $postContent->post_id);
+        $this->assertSame(1, $postContent->postId);
+        $this->assertSame(1, $postContent['post_id']);
+        $this->assertSame(1, $postContent['postId']);
+        $this->assertSame(1, $postContent->getPostId());
         $this->assertSame('I am content with big data.', $postContent->content);
         $this->assertSame('I am content with big data.', $postContent['content']);
         $this->assertSame('I am content with big data.', $postContent->getContent());
@@ -106,7 +106,7 @@ class HasOneTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $this->assertSame(
-                (string) ($i + 1),
+                $i + 1,
                 $connect
                     ->table('post')
                     ->insert([
@@ -116,7 +116,7 @@ class HasOneTest extends TestCase
                     ]));
 
             $this->assertSame(
-                '0',
+                0,
                 $connect
                     ->table('post_content')
                     ->insert([
@@ -144,7 +144,7 @@ class HasOneTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -154,7 +154,7 @@ class HasOneTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '0',
+            0,
             $connect
                 ->table('post_content')
                 ->insert([
@@ -182,7 +182,7 @@ class HasOneTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -192,7 +192,7 @@ class HasOneTest extends TestCase
                 ]));
 
         $this->assertSame(
-            '0',
+            0,
             $connect
                 ->table('post_content')
                 ->insert([
@@ -202,13 +202,13 @@ class HasOneTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('1', $post->user_id);
-        $this->assertSame('1', $post->userId);
-        $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getUserId());
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
         $this->assertSame('hello world', $post->getTitle());
@@ -240,7 +240,7 @@ class HasOneTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $this->assertSame(
-                (string) ($i + 1),
+                $i + 1,
                 $connect
                     ->table('post')
                     ->insert([
@@ -250,7 +250,7 @@ class HasOneTest extends TestCase
                     ]));
 
             $this->assertSame(
-                '0',
+                0,
                 $connect
                     ->table('post_content')
                     ->insert([

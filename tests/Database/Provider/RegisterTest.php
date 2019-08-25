@@ -52,7 +52,7 @@ class RegisterTest extends TestCase
         $manager = $container->make('databases');
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
         $this->assertSame(
-            '1',
+            1,
             $manager
                 ->table('guest_book')
                 ->insert($data));
@@ -91,7 +91,7 @@ class RegisterTest extends TestCase
         $manager = $container->make('Leevel\\Database\\Manager');
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
         $this->assertSame(
-            '1',
+            1,
             $manager
                 ->table('guest_book')
                 ->insert($data));
@@ -126,7 +126,12 @@ class RegisterTest extends TestCase
                         'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                         'charset'  => 'utf8',
                         'options'  => [
-                            PDO::ATTR_PERSISTENT => false,
+                            PDO::ATTR_PERSISTENT        => false,
+                            PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                            PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                            PDO::ATTR_STRINGIFY_FETCHES => false,
+                            PDO::ATTR_EMULATE_PREPARES  => false,
                         ],
                         'separate'           => false,
                         'distributed'        => false,

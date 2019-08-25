@@ -63,7 +63,7 @@ class ManagerTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        $this->assertSame('1',
+        $this->assertSame(1,
             $manager
                 ->table('guest_book')
                 ->insert($data)
@@ -100,7 +100,12 @@ class ManagerTest extends TestCase
             'password' => '123456',
             'charset'  => 'utf8',
             'options'  => [
-                PDO::ATTR_PERSISTENT => false,
+                PDO::ATTR_PERSISTENT        => false,
+                PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::ATTR_EMULATE_PREPARES  => false,
             ],
             'separate'           => false,
             'distributed'        => true,
@@ -123,7 +128,12 @@ class ManagerTest extends TestCase
                     "password": "123456",
                     "charset": "utf8",
                     "options": {
-                        "12": false
+                        "12": false,
+                        "8": 0,
+                        "3": 2,
+                        "11": 0,
+                        "17": false,
+                        "20": false
                     }
                 },
                 "slave": [
@@ -135,7 +145,12 @@ class ManagerTest extends TestCase
                         "password": "123456",
                         "charset": "utf8",
                         "options": {
-                            "12": false
+                            "12": false,
+                            "8": 0,
+                            "3": 2,
+                            "11": 0,
+                            "17": false,
+                            "20": false
                         }
                     }
                 ]
@@ -168,7 +183,12 @@ class ManagerTest extends TestCase
             'password' => '123456',
             'charset'  => 'utf8',
             'options'  => [
-                PDO::ATTR_PERSISTENT => false,
+                PDO::ATTR_PERSISTENT        => false,
+                PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::ATTR_EMULATE_PREPARES  => false,
             ],
             'separate'           => false,
             'distributed'        => true,
@@ -194,7 +214,12 @@ class ManagerTest extends TestCase
                     "password": "123456",
                     "charset": "utf8",
                     "options": {
-                        "12": false
+                        "12": false,
+                        "8": 0,
+                        "3": 2,
+                        "11": 0,
+                        "17": false,
+                        "20": false
                     }
                 },
                 "slave": [
@@ -206,7 +231,12 @@ class ManagerTest extends TestCase
                         "password": "123456",
                         "charset": "utf8",
                         "options": {
-                            "12": false
+                            "12": false,
+                            "8": 0,
+                            "3": 2,
+                            "11": 0,
+                            "17": false,
+                            "20": false
                         }
                     },
                     {
@@ -217,7 +247,12 @@ class ManagerTest extends TestCase
                         "user": "root",
                         "charset": "utf8",
                         "options": {
-                            "12": false
+                            "12": false,
+                            "8": 0,
+                            "3": 2,
+                            "11": 0,
+                            "17": false,
+                            "20": false
                         }
                     }
                 ]
@@ -255,7 +290,12 @@ class ManagerTest extends TestCase
             'password' => '123456',
             'charset'  => 'utf8',
             'options'  => [
-                PDO::ATTR_PERSISTENT => false,
+                PDO::ATTR_PERSISTENT        => false,
+                PDO::ATTR_CASE              => PDO::CASE_NATURAL,
+                PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::ATTR_EMULATE_PREPARES  => false,
             ],
             'separate'           => false,
             'distributed'        => true,

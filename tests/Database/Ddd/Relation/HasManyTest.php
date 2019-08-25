@@ -48,7 +48,7 @@ class HasManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -70,13 +70,13 @@ class HasManyTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('1', $post->user_id);
-        $this->assertSame('1', $post->userId);
-        $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getUserId());
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
         $this->assertSame('hello world', $post->getTitle());
@@ -120,7 +120,7 @@ class HasManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -131,7 +131,7 @@ class HasManyTest extends TestCase
         );
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
@@ -176,8 +176,7 @@ class HasManyTest extends TestCase
 
             foreach ($comments as $comment) {
                 $this->assertInstanceof(Comment::class, $comment);
-                $this->assertSame((string) $min, $comment->id);
-
+                $this->assertSame($min, $comment->id);
                 $min++;
             }
         }
@@ -188,7 +187,7 @@ class HasManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -228,7 +227,7 @@ class HasManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -250,13 +249,13 @@ class HasManyTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('1', $post->user_id);
-        $this->assertSame('1', $post->userId);
-        $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getUserId());
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
         $this->assertSame('hello world', $post->getTitle());
@@ -280,7 +279,7 @@ class HasManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
@@ -291,7 +290,7 @@ class HasManyTest extends TestCase
         );
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([

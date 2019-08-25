@@ -99,7 +99,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -113,11 +113,11 @@ class SelectTest extends TestCase
 
         $this->assertIsArray($result);
 
-        $this->assertSame('1', $result['id']);
+        $this->assertSame(1, $result['id']);
         $this->assertSame('tom', $result['name']);
         $this->assertSame('I love movie.', $result['content']);
         $this->assertStringContainsString(date('Y-m'), $result['create_at']);
-        $this->assertSame('1', $result[0]);
+        $this->assertSame(1, $result[0]);
         $this->assertSame('tom', $result[1]);
         $this->assertSame('I love movie.', $result[2]);
         $this->assertStringContainsString(date('Y-m'), $result[3]);
@@ -167,7 +167,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -207,7 +207,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -305,7 +305,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -362,7 +362,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -402,7 +402,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -575,7 +575,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -602,7 +602,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -634,7 +634,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -666,7 +666,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -698,7 +698,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
