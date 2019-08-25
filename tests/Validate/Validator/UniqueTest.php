@@ -69,7 +69,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -97,7 +97,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -151,7 +151,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+             1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -234,7 +234,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -286,7 +286,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -314,7 +314,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -342,7 +342,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -370,7 +370,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -398,7 +398,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -426,7 +426,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -454,7 +454,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
@@ -524,7 +524,7 @@ class UniqueTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert([
