@@ -232,20 +232,15 @@ abstract class Database implements IConnection
     public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
     {
         $this->initSelect();
-
         $this->setLastSql($sql, $bindParams);
 
-        if (!in_array(($sqlType = $this->normalizeSqlType($sql)), [
-            'select',
-            'procedure',
-        ], true)) {
+        if (!in_array(($sqlType = $this->normalizeSqlType($sql)), ['select', 'procedure'], true)) {
             $e = 'The query method only allows select and procedure SQL statements.';
 
             throw new InvalidArgumentException($e);
         }
 
         $this->pdoStatement = $this->pdo($master)->prepare($sql);
-
         $this->bindParams($bindParams);
 
         try {
@@ -282,20 +277,15 @@ abstract class Database implements IConnection
     public function execute(string $sql, array $bindParams = [])
     {
         $this->initSelect();
-
         $this->setLastSql($sql, $bindParams);
 
-        if (in_array(($sqlType = $this->normalizeSqlType($sql)), [
-            'select',
-            'procedure',
-        ], true)) {
+        if (in_array(($sqlType = $this->normalizeSqlType($sql)), ['select', 'procedure'], true)) {
             $e = 'The query method not allows select and procedure SQL statements.';
 
             throw new InvalidArgumentException($e);
         }
 
         $this->pdoStatement = $this->pdo(true)->prepare($sql);
-
         $this->bindParams($bindParams);
 
         try {
@@ -313,15 +303,11 @@ abstract class Database implements IConnection
         }
 
         $this->numRows = $this->pdoStatement->rowCount();
-
-        if (in_array($sqlType, [
-            'insert',
-            'replace',
-        ], true)) {
-            return $this->lastInsertId();
-        }
-
         $this->release();
+
+        if (in_array($sqlType, ['insert', 'replace'], true)) {
+            return (int) $this->lastInsertId();
+        }
 
         return $this->numRows;
     }
@@ -851,10 +837,8 @@ abstract class Database implements IConnection
         }
 
         $args = [$fetchStyle];
-
         if ($fetchArgument) {
             $args[] = $fetchArgument;
-
             if ($ctorArgs) {
                 $args[] = $ctorArgs;
             }
