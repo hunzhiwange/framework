@@ -49,13 +49,19 @@ function filter(array $input, array $rules): array
             }
 
             foreach ($rule as $r) {
+                if ('must' === $r) {
+                    continue;
+                }
+
                 if (!is_callable($r)) {
                     $e = sprintf('Rule item of `%s` must be a callback type.', $k);
 
                     throw new InvalidArgumentException($e);
                 }
 
-                $v = $r($v);
+                if (null !== $v || in_array('must', $rule, true)) {
+                    $v = $r($v);
+                }
             }
         }
     }

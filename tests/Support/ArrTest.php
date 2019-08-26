@@ -369,4 +369,46 @@ class ArrTest extends TestCase
 
         Arr::filter($sourceData, $rule);
     }
+
+    public function testFilterWithoutMust(): void
+    {
+        $sourceData = ['foo' => null];
+        $rule = ['foo' => ['intval']];
+
+        $result = Arr::filter($sourceData, $rule);
+
+        $json = <<<'eot'
+            {
+                "foo": null
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
+    public function testFilterWithMust(): void
+    {
+        $sourceData = ['foo' => null];
+        $rule = ['foo' => ['intval', 'must']];
+
+        $result = Arr::filter($sourceData, $rule);
+
+        $json = <<<'eot'
+            {
+                "foo": 0
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $result
+            )
+        );
+    }
 }
