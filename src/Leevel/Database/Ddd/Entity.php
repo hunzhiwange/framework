@@ -1807,12 +1807,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         $result = [];
-        foreach ($prop as $k => $value) {
+        foreach ($prop as $k => $option) {
             if ($this->isRelation($k)) {
                 continue;
             }
-
             $value = $this->propValue($k);
+            if (null === $value &&
+                !(isset($option[self::SHOW_PROP_NULL]) && true === $option[self::SHOW_PROP_NULL])) {
+                continue;
+            }
             $result[$k] = $value;
             $result = static::prepareEnum($k, $result, $separate);
         }

@@ -183,6 +183,15 @@ interface IEntity
     const SHOW_PROP_WHITE = 'show_prop_white';
 
     /**
+     * 查询显示属性是否允许 NULL.
+     *
+     * - 系统自动过滤为 null 的值
+     *
+     * @var string
+     */
+    const SHOW_PROP_NULL = 'show_prop_null';
+
+    /**
      * 创建属性黑名单.
      *
      * @var string
