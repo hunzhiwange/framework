@@ -281,9 +281,9 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
-        $post2 = Post::select()->find(2);
+        $post2 = Post::select()->findEntity(2);
 
         $this->assertInstanceof(Entity::class, $post);
         $this->assertInstanceof(Entity::class, $post2);
@@ -383,9 +383,9 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
-        $post2 = Post::select()->find(2);
+        $post2 = Post::select()->findEntity(2);
 
         $this->assertInstanceof(Entity::class, $post);
         $this->assertInstanceof(Entity::class, $post2);
@@ -426,9 +426,9 @@ class UnitOfWorkTest extends TestCase
         $this->assertFalse($work->registered($post));
         $this->assertFalse($work->registered($post2));
 
-        $postAfter = Post::select()->find(1);
+        $postAfter = Post::select()->findEntity(1);
 
-        $post2After = Post::select()->find(2);
+        $post2After = Post::select()->findEntity(2);
 
         $this->assertNull($postAfter->id);
         $this->assertNull($postAfter['id']);
@@ -491,7 +491,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Entity::class, $post);
         $this->assertInstanceof(Post::class, $post);
@@ -533,7 +533,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->beginTransaction();
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
         $work->update($post);
 
         try {
@@ -614,13 +614,13 @@ class UnitOfWorkTest extends TestCase
                 ]));
 
         $work->transaction(function ($w) {
-            $post = Post::select()->find(1);
+            $post = Post::select()->findEntity(1);
             $w->update($post);
 
             $post->title = 'new title';
         });
 
-        $newPost = Post::select()->find(1);
+        $newPost = Post::select()->findEntity(1);
 
         $this->assertSame(1, $newPost->getId());
         $this->assertSame('new title', $newPost->getTitle());
@@ -696,7 +696,7 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
         $work->setRootEntity($post);
 
@@ -709,7 +709,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $post->getId());
         $this->assertSame('new title', $post->getTitle());
 
-        $newPost = Post::select()->find(1);
+        $newPost = Post::select()->findEntity(1);
 
         $this->assertSame(1, $newPost->getId());
         $this->assertSame('new title', $newPost->getTitle());
@@ -742,7 +742,7 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
         $work->setConnect('hello');
 
@@ -755,7 +755,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $post->getId());
         $this->assertSame('new title', $post->getTitle());
 
-        $newPost = Post::select()->find(1);
+        $newPost = Post::select()->findEntity(1);
 
         $this->assertSame(1, $newPost->getId());
         $this->assertSame('new title', $newPost->getTitle());
@@ -820,7 +820,7 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
         $this->assertSame(1, $post->getId());
         $this->assertSame('hello world', $post->getTitle());
@@ -857,7 +857,7 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
         $this->assertSame(1, $post->getId());
         $this->assertSame('hello world', $post->getTitle());
@@ -1079,7 +1079,7 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
         $work->update($post);
         $work->delete($post);
@@ -1088,7 +1088,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $postNew = Post::select()->find(1);
+        $postNew = Post::select()->findEntity(1);
 
         $this->assertSame(0, $connect->table('post')->findCount());
         $this->assertNull($postNew->id);
@@ -1112,7 +1112,7 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
 
         $work->replace($post);
         $work->delete($post);
@@ -1121,7 +1121,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $postNew = Post::select()->find(1);
+        $postNew = Post::select()->findEntity(1);
 
         $this->assertSame(0, $connect->table('post')->findCount());
         $this->assertNull($postNew->id);
@@ -1289,7 +1289,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $updatedPost = Post::select()->find(1);
+        $updatedPost = Post::select()->findEntity(1);
 
         $this->assertSame(1, $updatedPost->id);
         $this->assertSame('old', $updatedPost->title);
@@ -1352,7 +1352,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush($post);
 
-        $newGuestbook = Guestbook::select()->find(1);
+        $newGuestbook = Guestbook::select()->findEntity(1);
 
         $this->assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
@@ -1378,7 +1378,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush($post);
 
-        $newGuestbook = Guestbook::select()->find(1);
+        $newGuestbook = Guestbook::select()->findEntity(1);
 
         $this->assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
@@ -1423,7 +1423,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush($post);
 
-        $newGuestbook = Guestbook::select()->find(1);
+        $newGuestbook = Guestbook::select()->findEntity(1);
 
         $this->assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
@@ -1447,7 +1447,7 @@ class UnitOfWorkTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::select()->find(1);
+        $post = Post::select()->findEntity(1);
         $work->persist($post)->remove($post);
 
         $work->on($post, function ($p) {
@@ -1456,7 +1456,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush($post);
 
-        $newPost = Post::select()->find(1);
+        $newPost = Post::select()->findEntity(1);
 
         $this->assertNull($newPost->id);
 
@@ -1499,7 +1499,7 @@ class UnitOfWorkTest extends TestCase
 
         $this->assertFalse($work->replaced($post));
 
-        $createPost = Post::select()->find(1);
+        $createPost = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $createPost);
         $this->assertSame(1, $createPost->id);
@@ -1534,7 +1534,7 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
-        $updatedPost = Post::select()->find(1);
+        $updatedPost = Post::select()->findEntity(1);
 
         $this->assertSame(1, $updatedPost->id);
         $this->assertSame('new', $updatedPost->title);

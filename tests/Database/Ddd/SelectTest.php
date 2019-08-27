@@ -54,7 +54,7 @@ class SelectTest extends TestCase
                 ]));
 
         $select = new Select(new Post());
-        $post = $select->find(1);
+        $post = $select->findEntity(1);
         $entity = $select->entity();
 
         $this->assertInstanceof(Post::class, $post);
@@ -81,7 +81,7 @@ class SelectTest extends TestCase
                 ]));
 
         $select = new Select(new Post());
-        $post = $select->find(1);
+        $post = $select->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertSame(1, $post->id);
@@ -215,7 +215,7 @@ class SelectTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $select = new Select($post = Post::select()->find(1));
+        $select = new Select($post = Post::select()->findEntity(1));
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertSame(1, $post->userId);
@@ -227,14 +227,14 @@ class SelectTest extends TestCase
         $this->assertSame(1, $select->softDelete());
         $this->assertTrue($post->selectForEntity()->softDeleted());
 
-        $post1 = Post::select()->find(1);
+        $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
         $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
-        $post2 = Post::select()->find(2);
+        $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
         $this->assertSame(1, $post2->userId);
         $this->assertSame('hello world', $post2->title);
@@ -268,7 +268,7 @@ class SelectTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $select = new Select($post = Post::select()->find(1));
+        $select = new Select($post = Post::select()->findEntity(1));
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertSame(1, $post->userId);
@@ -280,14 +280,14 @@ class SelectTest extends TestCase
         $this->assertSame(1, $select->softDestroy([1]));
         $this->assertFalse($post->selectForEntity()->softDeleted());
 
-        $post1 = Post::select()->find(1);
+        $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
         $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
-        $post2 = Post::select()->find(2);
+        $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
         $this->assertSame(1, $post2->userId);
         $this->assertSame('hello world', $post2->title);
@@ -321,7 +321,7 @@ class SelectTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $select = new Select($post = Post::select()->find(1));
+        $select = new Select($post = Post::select()->findEntity(1));
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertSame(1, $post->userId);
@@ -333,26 +333,26 @@ class SelectTest extends TestCase
         $this->assertSame(1, $select->softDelete());
         $this->assertTrue($post->selectForEntity()->softDeleted());
 
-        $post1 = Post::select()->find(1);
+        $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
         $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
-        $post2 = Post::select()->find(2);
+        $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
         $this->assertSame(1, $post2->userId);
         $this->assertSame('hello world', $post2->title);
         $this->assertSame('post summary', $post2->summary);
         $this->assertSame(0, $post2->delete_at);
 
-        $newSelect = new Select(Post::select()->find(1));
+        $newSelect = new Select(Post::select()->findEntity(1));
         $this->assertTrue($newSelect->softDeleted());
         $this->assertSame(1, $newSelect->softRestore());
         $this->assertFalse($newSelect->softDeleted());
 
-        $restorePost1 = Post::select()->find(1);
+        $restorePost1 = Post::select()->findEntity(1);
         $this->assertSame(0, $restorePost1->delete_at);
     }
 
@@ -382,7 +382,7 @@ class SelectTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $select = new Select($post = Post::select()->find(1));
+        $select = new Select($post = Post::select()->findEntity(1));
 
         $posts = $select->findAll();
 
@@ -430,7 +430,7 @@ class SelectTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $select = new Select($post = Post::select()->find(1));
+        $select = new Select($post = Post::select()->findEntity(1));
 
         $posts = $select->findAll();
 
@@ -478,7 +478,7 @@ class SelectTest extends TestCase
                 ]);
         }
 
-        $select = new Select($post = Post::select()->find(1));
+        $select = new Select($post = Post::select()->findEntity(1));
 
         $posts = $select->findAll();
 
@@ -614,7 +614,7 @@ class SelectTest extends TestCase
                 ]));
 
         $select = new Select(new Post());
-        $post = $select->find(1);
+        $post = $select->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertSame(1, $post->id);

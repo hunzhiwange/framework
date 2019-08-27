@@ -61,7 +61,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $newPost = $repository->find(1);
+        $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame(1, $newPost->id);
@@ -88,7 +88,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $newPost = $repository->find(1);
+        $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame(1, $newPost->id);
@@ -114,7 +114,7 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $newPost = $repository->find(1);
+        $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame(1, $newPost->id);
@@ -1216,7 +1216,7 @@ class RepositoryTest extends TestCase
         $newPost = $repository
             ->select()
             ->where('id', 5)
-            ->find(1);
+            ->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertNull($newPost->id);
@@ -1237,7 +1237,7 @@ class RepositoryTest extends TestCase
 
         $repository->create($post); // do nothing.
 
-        $newPost = $repository->find(5);
+        $newPost = $repository->findEntity(5);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame(5, $newPost->id);
@@ -1265,7 +1265,7 @@ class RepositoryTest extends TestCase
 
         $repository->update($post); // do nothing.
 
-        $newPost = $repository->find(1);
+        $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame(1, $newPost->id);
@@ -1297,7 +1297,7 @@ class RepositoryTest extends TestCase
 
         $this->assertSame(1, $affectedRow);
 
-        $updatedPost = $repository->find(1);
+        $updatedPost = $repository->findEntity(1);
 
         $this->assertSame(1, $updatedPost->id);
         $this->assertSame('new title', $updatedPost->title);
@@ -1330,14 +1330,14 @@ class RepositoryTest extends TestCase
 
         $repository->replace($post); // do nothing.
 
-        $newPost = $repository->find(1);
+        $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame(1, $newPost->id);
         $this->assertSame('hello world', $newPost->title);
         $this->assertSame('post summary', $newPost->summary);
 
-        $newPost2 = $repository->find(2);
+        $newPost2 = $repository->findEntity(2);
 
         $this->assertInstanceof(Post::class, $newPost2);
         $this->assertSame(2, $newPost2->id);
@@ -1359,7 +1359,7 @@ class RepositoryTest extends TestCase
                 ])
         );
 
-        $testUniqueData = TestUnique::select()->find(1);
+        $testUniqueData = TestUnique::select()->findEntity(1);
 
         $this->assertInstanceof(TestUnique::class, $testUniqueData);
         $this->assertSame(1, $testUniqueData->id);
@@ -1372,7 +1372,7 @@ class RepositoryTest extends TestCase
 
         $repository->replace($testUnique);
 
-        $testUniqueData = TestUnique::select()->find(1);
+        $testUniqueData = TestUnique::select()->findEntity(1);
 
         $this->assertInstanceof(TestUnique::class, $testUniqueData);
         $this->assertSame(1, $testUniqueData->id);
@@ -1401,7 +1401,7 @@ class RepositoryTest extends TestCase
 
         $repository->delete($post); // do nothing.
 
-        $newPost = $repository->find(1);
+        $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertNull($newPost->id);
