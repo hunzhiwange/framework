@@ -214,14 +214,20 @@ class Select
     /**
      * 从模型实体中软删除数据.
      *
+     * @param bool $flush
+     *
      * @return int
      */
-    public function softDelete(): int
+    public function softDelete(bool $flush = true): int
     {
         $this->entity->withProp($this->deleteAtColumn(), time());
-        $this->entity->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
-        $num = $this->entity->update()->flush();
-        $this->entity->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
+
+        $num = 1;
+        if (true === $flush) {
+            $this->entity->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
+            $num = $this->entity->update()->flush();
+            $this->entity->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
+        }
 
         return $num;
     }
@@ -230,14 +236,13 @@ class Select
      * 根据主键 ID 删除模型实体.
      *
      * @param array $ids
-     * @param mixed $id
+     * @param bool  $flush
      *
      * @return int
      */
-    public function softDestroy(array $ids): int
+    public function softDestroy(array $ids, bool $flush = true): int
     {
         $count = 0;
-
         $instance = $this->entity->make();
         $entitys = $instance
             ->select()
@@ -246,7 +251,7 @@ class Select
 
         /** @var \Leevel\Database\Ddd\IEntity $entity */
         foreach ($entitys as $entity) {
-            if ($entity->selectForEntity()->softDelete()) {
+            if ($entity->selectForEntity()->softDelete($flush)) {
                 $count++;
             }
         }
@@ -259,12 +264,16 @@ class Select
      *
      * @return int
      */
-    public function softRestore(): int
+    public function softRestore(bool $flush = true): int
     {
-        $this->entity->handleEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
         $this->entity->withProp($this->deleteAtColumn(), 0);
-        $num = $this->entity->update()->flush();
-        $this->entity->handleEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
+
+        $num = 1;
+        if (true === $flush) {
+            $this->entity->handleEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
+            $num = $this->entity->update()->flush();
+            $this->entity->handleEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
+        }
 
         return $num;
     }
