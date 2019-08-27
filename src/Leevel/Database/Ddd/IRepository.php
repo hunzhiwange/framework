@@ -41,7 +41,7 @@ interface IRepository
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function find(int $id, array $column = ['*']): IEntity;
+    public function findEntity(int $id, array $column = ['*']): IEntity;
 
     /**
      * 取得一条数据，未找到记录抛出异常.

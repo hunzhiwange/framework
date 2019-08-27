@@ -164,7 +164,7 @@ class Select
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function find(int $id, array $column = ['*']): IEntity
+    public function findEntity(int $id, array $column = ['*']): IEntity
     {
         return $this->select
             ->where($this->entity->singlePrimaryKey(), '=', $id)
@@ -202,7 +202,7 @@ class Select
      */
     public function findOrFail(int $id, array $column = ['*']): IEntity
     {
-        $result = $this->find($id, $column);
+        $result = $this->findEntity($id, $column);
         if (null !== $result->prop($this->entity->singlePrimaryKey())) {
             return $result;
         }

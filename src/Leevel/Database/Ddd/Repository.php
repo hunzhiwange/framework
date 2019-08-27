@@ -74,11 +74,11 @@ class Repository implements IRepository
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function find(int $id, array $column = ['*']): IEntity
+    public function findEntity(int $id, array $column = ['*']): IEntity
     {
         return $this->entity
             ->select()
-            ->find($id, $column);
+            ->findEntity($id, $column);
     }
 
     /**
