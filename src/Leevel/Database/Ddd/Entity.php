@@ -1706,13 +1706,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 校验并转换 prop.
+     * 校验并转换真实属性.
      *
      * @param string $prop
      *
      * @return string
      */
-    protected function prop(string $prop): string
+    protected function realProp(string $prop): string
     {
         $this->validate($prop);
 
