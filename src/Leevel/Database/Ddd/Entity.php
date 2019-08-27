@@ -200,7 +200,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         if ($data) {
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $value) {
                 if (isset($data[$prop])) {
-                    $this->withPropValue($prop, $data[$prop], !$fromStorage, true);
+                    $this->withProp($prop, $data[$prop], !$fromStorage, true);
                 }
             }
         }
@@ -215,7 +215,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function __get(string $prop)
     {
-        return $this->offsetGet($prop);
+        return $this->prop($prop);
     }
 
     /**
@@ -226,7 +226,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function __set(string $prop, $value): void
     {
-        $this->offsetSet($prop, $value);
+        $this->withProp($prop, $value);
     }
 
     /**
@@ -238,7 +238,17 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function __isset(string $prop): bool
     {
-        return $this->offsetExists($prop);
+        return $this->hasProp($prop);
+    }
+
+    /**
+     * 删除属性.
+     *
+     * @param string $prop
+     */
+    public function __unset(string $prop): void
+    {
+        $this->withProp($prop, null);
     }
 
     /**
@@ -335,10 +345,101 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function withProps(array $data): IEntity
     {
         foreach ($data as $prop => $value) {
-            $this->offsetSet($prop, $value);
+            $this->withProp($prop, $value);
         }
 
         return $this;
+    }
+
+    /**
+     * 改变属性.
+     *
+     * @param string $prop
+     * @param mixed  $value
+     * @param bool   $force
+     * @param bool   $ignoreReadonly
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): IEntity
+    {
+        $prop = $this->normalize($prop);
+        $this->validate($prop);
+
+        if ($this->isRelation($prop)) {
+            $e = sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $this->propSetter($prop, $value);
+
+        if (!$force) {
+            return $this;
+        }
+
+        if (false === $ignoreReadonly &&
+            isset(static::STRUCT[$prop][self::READONLY]) &&
+            true === static::STRUCT[$prop][self::READONLY]) {
+            $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        if (in_array($prop, $this->leevelChangedProp, true)) {
+            return $this;
+        }
+
+        $this->leevelChangedProp[] = $prop;
+
+        return $this;
+    }
+
+    /**
+     * 返回属性.
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    public function prop(string $prop)
+    {
+        $prop = $this->normalize($prop);
+        $this->validate($prop);
+
+        if (!$this->isRelation($prop)) {
+            return $this->propGetter($prop);
+        }
+
+        return $this->loadRelationProp($prop);
+    }
+
+    /**
+     * 是否存在属性.
+     *
+     * @param string $prop
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return bool
+     */
+    public function hasProp(string $prop): bool
+    {
+        $prop = $this->normalize($prop);
+        if (!$this->hasField($prop)) {
+            return false;
+        }
+
+        $prop = $this->asProp($prop);
+        if (!property_exists($this, $prop)) {
+            $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return true;
     }
 
     /**
@@ -525,7 +626,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $result = [];
         foreach (($keys = $this->primaryKeys()) as $value) {
-            if (!($tmp = $this->__get($value))) {
+            if (!($tmp = $this->prop($value))) {
                 continue;
             }
             $result[$value] = $tmp;
@@ -575,7 +676,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             ->findOne();
 
         foreach ($data as $k => $v) {
-            $this->withPropValue($k, $v, false);
+            $this->withProp($k, $v, false);
         }
     }
 
@@ -1306,7 +1407,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function offsetSet($index, $newval): void
     {
-        $this->withPropValue($index, $newval);
+        $this->withProp($index, $newval);
     }
 
     /**
@@ -1318,7 +1419,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function offsetGet($index)
     {
-        return $this->propValue($index);
+        return $this->prop($index);
     }
 
     /**
@@ -1328,7 +1429,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function offsetUnset($index): void
     {
-        $this->offsetSet($index, null);
+        $this->withProp($index, null);
     }
 
     /**
@@ -1362,7 +1463,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function saveEntry(string $method, array $data, ?array $fill = null): IEntity
     {
         foreach ($data as $k => $v) {
-            $this->withPropValue($k, $v);
+            $this->withProp($k, $v);
         }
 
         $this->handleEvent(static::BEFORE_SAVE_EVENT);
@@ -1424,7 +1525,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             if (!array_key_exists($prop, $propKey)) {
                 continue;
             }
-            $saveData[$prop] = $this->__get($prop);
+            $saveData[$prop] = $this->prop($prop);
         }
 
         if (!$saveData) {
@@ -1443,7 +1544,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
             $lastInsertId = $this->metaConnect()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
-                $this->withPropValue($auto, $lastInsertId, false, true);
+                $this->withProp($auto, $lastInsertId, false, true);
             }
             $this->leevelNewed = false;
             $this->clearChanged();
@@ -1478,7 +1579,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             if (!array_key_exists($prop, $propKey)) {
                 continue;
             }
-            $saveData[$prop] = $this->__get($prop);
+            $saveData[$prop] = $this->prop($prop);
         }
 
         if (!$saveData) {
@@ -1491,7 +1592,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 unset($saveData[$field]);
             }
 
-            if ($value = $this->__get($field)) {
+            if ($value = $this->prop($field)) {
                 $condition[$field] = $value;
             }
         }
@@ -1524,93 +1625,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $this->leevelReplace = $fill;
         $this->createReal($fill);
-    }
-
-    /**
-     * 改变属性.
-     *
-     * @param string $prop
-     * @param mixed  $value
-     * @param bool   $force
-     * @param bool   $ignoreReadonly
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function withPropValue(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): void
-    {
-        $prop = $this->normalize($prop);
-        $this->validate($prop);
-
-        if ($this->isRelation($prop)) {
-            $e = sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $this->propSetter($prop, $value);
-
-        if (!$force) {
-            return;
-        }
-
-        if (false === $ignoreReadonly &&
-            isset(static::STRUCT[$prop][self::READONLY]) &&
-            true === static::STRUCT[$prop][self::READONLY]) {
-            $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (in_array($prop, $this->leevelChangedProp, true)) {
-            return;
-        }
-
-        $this->leevelChangedProp[] = $prop;
-    }
-
-    /**
-     * 返回属性.
-     *
-     * @param string $prop
-     *
-     * @return mixed
-     */
-    protected function propValue(string $prop)
-    {
-        $prop = $this->normalize($prop);
-        $this->validate($prop);
-
-        if (!$this->isRelation($prop)) {
-            return $this->propGetter($prop);
-        }
-
-        return $this->loadRelationProp($prop);
-    }
-
-    /**
-     * 是否存在属性.
-     *
-     * @param string $prop
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return bool
-     */
-    protected function hasProp(string $prop): bool
-    {
-        $prop = $this->normalize($prop);
-        if (!$this->hasField($prop)) {
-            return false;
-        }
-
-        $prop = $this->asProp($prop);
-        if (!property_exists($this, $prop)) {
-            $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        return true;
     }
 
     /**
@@ -1682,11 +1696,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         if (null === $value) {
             $camelizeClass = 'fill'.ucfirst($this->asProp($prop));
             if (method_exists($this, $camelizeClass)) {
-                $value = $this->{$camelizeClass}($this->propValue($prop));
+                $value = $this->{$camelizeClass}($this->prop($prop));
             }
         }
 
-        $this->withPropValue($prop, $value);
+        $this->withProp($prop, $value);
     }
 
     /**
@@ -1811,7 +1825,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             if ($this->isRelation($k)) {
                 continue;
             }
-            $value = $this->propValue($k);
+            $value = $this->prop($k);
             if (null === $value &&
                 !(isset($option[self::SHOW_PROP_NULL]) && true === $option[self::SHOW_PROP_NULL])) {
                 continue;

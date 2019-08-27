@@ -120,7 +120,7 @@ class ManyMany extends Relation
         $maps = $this->buildMap($result);
 
         foreach ($entitys as $entity) {
-            $key = $entity->__get($this->sourceKey);
+            $key = $entity->prop($this->sourceKey);
 
             if (isset($maps[$key])) {
                 $entity->withRelationProp(
@@ -140,7 +140,7 @@ class ManyMany extends Relation
      */
     public function getSourceValue()
     {
-        return $this->sourceEntity->__get($this->sourceKey);
+        return $this->sourceEntity->prop($this->sourceKey);
     }
 
     /**
@@ -264,7 +264,7 @@ class ManyMany extends Relation
     {
         $data = [];
         foreach ($entitys as $sourceEntity) {
-            if (null !== $value = $sourceEntity->__get($this->sourceKey)) {
+            if (null !== $value = $sourceEntity->prop($this->sourceKey)) {
                 $data[] = $value;
             }
         }
@@ -283,7 +283,7 @@ class ManyMany extends Relation
     {
         $maps = [];
         foreach ($result as $entity) {
-            $maps[$entity->middle()->__get($this->middleSourceKey)][] = $entity;
+            $maps[$entity->middle()->prop($this->middleSourceKey)][] = $entity;
         }
 
         return $maps;

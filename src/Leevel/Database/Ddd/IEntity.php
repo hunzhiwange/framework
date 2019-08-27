@@ -323,6 +323,40 @@ interface IEntity
     public function withProps(array $data): self;
 
     /**
+     * 改变属性.
+     *
+     * @param string $prop
+     * @param mixed  $value
+     * @param bool   $force
+     * @param bool   $ignoreReadonly
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): self;
+
+    /**
+     * 返回属性.
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    public function prop(string $prop);
+
+    /**
+     * 是否存在属性.
+     *
+     * @param string $prop
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return bool
+     */
+    public function hasProp(string $prop): bool;
+
+    /**
      * 自动判断快捷方式.
      *
      * @param array      $data

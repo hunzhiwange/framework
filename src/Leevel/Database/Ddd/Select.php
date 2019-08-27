@@ -203,7 +203,7 @@ class Select
     public function findOrFail(int $id, array $column = ['*']): IEntity
     {
         $result = $this->find($id, $column);
-        if (null !== $result->__get($this->entity->singlePrimaryKey())) {
+        if (null !== $result->prop($this->entity->singlePrimaryKey())) {
             return $result;
         }
 
@@ -218,7 +218,7 @@ class Select
      */
     public function softDelete(): int
     {
-        $this->entity->__set($this->deleteAtColumn(), time());
+        $this->entity->withProp($this->deleteAtColumn(), time());
         $this->entity->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
         $num = $this->entity->update()->flush();
         $this->entity->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
@@ -262,7 +262,7 @@ class Select
     public function softRestore(): int
     {
         $this->entity->handleEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
-        $this->entity->__set($this->deleteAtColumn(), 0);
+        $this->entity->withProp($this->deleteAtColumn(), 0);
         $num = $this->entity->update()->flush();
         $this->entity->handleEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
 
@@ -296,7 +296,7 @@ class Select
      */
     public function softDeleted(): bool
     {
-        return (int) $this->entity->__get($this->deleteAtColumn()) > 0;
+        return (int) $this->entity->prop($this->deleteAtColumn()) > 0;
     }
 
     /**

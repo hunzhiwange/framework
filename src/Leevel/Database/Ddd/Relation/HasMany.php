@@ -105,7 +105,7 @@ class HasMany extends Relation
      */
     public function getSourceValue()
     {
-        return $this->sourceEntity->__get($this->sourceKey);
+        return $this->sourceEntity->prop($this->sourceKey);
     }
 
     /**
@@ -137,7 +137,7 @@ class HasMany extends Relation
         $maps = $this->buildMap($result);
 
         foreach ($entitys as &$entity) {
-            $key = $entity->__get($this->sourceKey);
+            $key = $entity->prop($this->sourceKey);
             if (isset($maps[$key])) {
                 $entity->withRelationProp(
                     $relation,
@@ -176,7 +176,7 @@ class HasMany extends Relation
     {
         $maps = [];
         foreach ($result as $value) {
-            $maps[$value->__get($this->targetKey)][] = $value;
+            $maps[$value->prop($this->targetKey)][] = $value;
         }
 
         return $maps;

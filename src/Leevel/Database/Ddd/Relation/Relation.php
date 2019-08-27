@@ -248,7 +248,7 @@ abstract class Relation
             array_values(
                 array_map(function ($entity) use ($key) {
                     return $key ?
-                        $entity->__get($key) :
+                        $entity->prop($key) :
                         $entity->singleId();
                 }, $entitys)
             )

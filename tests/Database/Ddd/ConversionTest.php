@@ -49,8 +49,7 @@ class ConversionTest extends TestCase
     public function testBaseUse($field, $source, $prop, $conversion): void
     {
         $entity = $this->makeEntity();
-
-        $entity->__set($field, $source);
+        $entity->withProp($field, $source);
 
         $assertMethod = in_array($field, [
             'obj1', 'obj2',
@@ -60,7 +59,7 @@ class ConversionTest extends TestCase
         ], true) ? 'assertEquals' : 'assertSame';
 
         $this->assertSame($prop, $this->getTestProperty($entity, $field));
-        $this->{$assertMethod}($conversion, $entity->__get($field));
+        $this->{$assertMethod}($conversion, $entity->prop($field));
     }
 
     public function getBaseUseData()
