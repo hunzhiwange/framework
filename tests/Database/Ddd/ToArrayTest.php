@@ -43,7 +43,6 @@ class ToArrayTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "name": "实体名字",
                 "description": "goods name",
                 "address": "四川成都",
@@ -66,7 +65,6 @@ class ToArrayTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "name": "实体名字",
                 "description": "goods name",
                 "address": "四川成都",
@@ -134,7 +132,6 @@ class ToArrayTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "name": "实体名字",
                 "description": "goods name",
                 "address": "四川成都",
@@ -152,7 +149,6 @@ class ToArrayTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "description": "goods name",
                 "address": "四川成都",
                 "foo_bar": "foo",
@@ -170,7 +166,6 @@ class ToArrayTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "address": "四川成都",
                 "foo_bar": "foo",
                 "hello": "hello world"
@@ -187,7 +182,6 @@ class ToArrayTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "description": "goods name",
                 "hello": "hello world"
             }
@@ -208,7 +202,6 @@ class ToArrayTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "name": "实体名字",
                 "description": "goods name",
                 "address": "四川成都",
@@ -264,7 +257,6 @@ class ToArrayTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "name": "实体名字",
                 "address": "四川成都",
                 "hello": "hello world"

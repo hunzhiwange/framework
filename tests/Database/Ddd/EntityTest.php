@@ -134,7 +134,6 @@ class EntityTest extends TestCase
 
         $data = <<<'eot'
             {
-                "id": null,
                 "title": "foo",
                 "status": "1",
                 "status_enum": "启用"
