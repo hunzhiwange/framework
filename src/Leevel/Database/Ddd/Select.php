@@ -43,6 +43,8 @@ use Leevel\Support\Str\starts_with;
  */
 class Select
 {
+    use Proxy;
+
     /**
      * 模型实体.
      *
@@ -86,23 +88,18 @@ class Select
     public function __call(string $method, array $args)
     {
         $result = $this->select->{$method}(...$args);
-        if ($result instanceof DatabaseSelect) {
-            return $this;
-        }
 
-        if (!$this->preLoads) {
-            return $result;
-        }
+        return $this->normalizeSelectResult($result);
+    }
 
-        if (is_array($result) &&
-            isset($result[DatabaseSelect::PAGE]) &&
-            true === $result[DatabaseSelect::PAGE]) {
-            $result[1] = $this->preLoadResult($result[1]);
-        } else {
-            $result = $this->preLoadResult($result);
-        }
-
-        return $result;
+    /**
+     * 返回代理.
+     *
+     * @return \Leevel\Database\Select
+     */
+    public function proxy(): DatabaseSelect
+    {
+        return $this->select;
     }
 
     /**
@@ -502,6 +499,35 @@ class Select
         call_user_func($condition, $relation);
 
         return $relation->matchPreLoad($entitys, $relation->getPreLoad(), $name);
+    }
+
+    /**
+     * 整理查询结果.
+     *
+     * @param mixed $result
+     *
+     * @return mixed
+     */
+    protected function normalizeSelectResult($result)
+    {
+        if ($result instanceof DatabaseSelect) {
+            return $this;
+        }
+
+        if (!$this->preLoads) {
+            return $result;
+        }
+
+        if (is_array($result)) {
+            if (isset($result[DatabaseSelect::PAGE]) &&
+                true === $result[DatabaseSelect::PAGE]) {
+                $result[1] = $this->preLoadResult($result[1]);
+            }
+
+            return $result;
+        }
+
+        return $this->preLoadResult($result);
     }
 }
 
