@@ -644,7 +644,6 @@ class Select
 
         // 解析结果
         $result = [];
-
         foreach ($tmps as $tmp) {
             $tmp = (array) $tmp;
 
@@ -678,7 +677,6 @@ class Select
             }
 
             $page++;
-
             $result = $this
                 ->forPage($page, $count)
                 ->findAll();
@@ -714,7 +712,6 @@ class Select
     public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
     {
         $result = $this->findAggregateResult('count', $field, $alias, $flag);
-
         if (!is_array($result)) {
             $result = (int) $result;
         }
@@ -888,9 +885,7 @@ class Select
     public function pageCount(string $cols = '*'): int
     {
         $this->backupPageArgs();
-
         $count = $this->findCount($cols);
-
         $this->restorePageArgs();
 
         return $count;
@@ -920,7 +915,6 @@ class Select
         if (true === $this->onlyMakeSql) {
             return $this;
         }
-
         $this->onlyMakeSql = $flag;
 
         return $this;
@@ -1053,7 +1047,6 @@ class Select
     protected function runNativeSql(string $nativeType, string $data, array $bindParams = [])
     {
         $sqlType = $this->connect->normalizeSqlType($data);
-
         if ('procedure' === $sqlType) {
             $sqlType = 'select';
         }

@@ -203,7 +203,6 @@ class Condition
     public function __construct(IDatabase $connect)
     {
         $this->connect = $connect;
-
         $this->initOption();
     }
 
