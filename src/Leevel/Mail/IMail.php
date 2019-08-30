@@ -41,7 +41,6 @@ use Swift_Signer;
  * @version 1.0
  *
  * @see \Swift_Transport 接口参考，加入强类型
- * @see \Leevel\Mail\Proxy\IMail 请保持接口设计的一致性
  */
 interface IMail
 {

@@ -44,7 +44,7 @@ use Swift_Signer;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Mail implements IMail
+class Mail
 {
     /**
      * call.

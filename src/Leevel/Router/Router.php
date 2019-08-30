@@ -35,8 +35,6 @@ use Leevel\Pipeline\Pipeline;
  * @since 2018.04.10 开始进行一次重构系统路由架构.
  *
  * @version 1.0
- *
- * @see \Leevel\Router\Proxy\IRouter 请保持接口设计的一致性
  */
 class Router implements IRouter
 {

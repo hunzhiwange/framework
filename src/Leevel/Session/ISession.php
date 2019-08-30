@@ -30,7 +30,6 @@ namespace Leevel\Session;
  * @version 1.0
  *
  * @see \SessionHandlerInterface 底层接口参考
- * @see \Leevel\Session\Proxy\ISession 请保持接口设计的一致性
  */
 interface ISession
 {

@@ -39,7 +39,7 @@ use Leevel\Router\Response as RouterResponse;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Response implements IResponse
+class Response
 {
     /**
      * call.

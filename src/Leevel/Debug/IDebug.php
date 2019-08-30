@@ -40,8 +40,6 @@ use Throwable;
  * @since 2019.05.28
  *
  * @version 1.0
- *
- * @see \Leevel\Debug\Proxy\IDebug 请保持接口设计的一致性
  */
 interface IDebug
 {

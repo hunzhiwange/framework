@@ -36,7 +36,7 @@ use Leevel\Throttler\Throttler as BaseThrottler;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Throttler implements IThrottler
+class Throttler
 {
     /**
      * call.

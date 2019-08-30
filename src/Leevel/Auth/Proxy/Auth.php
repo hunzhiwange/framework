@@ -33,7 +33,7 @@ use Leevel\Di\Container;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Auth implements IAuth
+class Auth
 {
     /**
      * call.

@@ -33,7 +33,7 @@ use Leevel\Event\Dispatch;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Event implements IEvent
+class Event
 {
     /**
      * call.

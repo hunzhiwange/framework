@@ -33,7 +33,7 @@ use Leevel\I18n\I18n as BaseI18n;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class I18n implements II18n
+class I18n
 {
     /**
      * call.

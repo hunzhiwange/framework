@@ -30,8 +30,6 @@ use Leevel\Http\IRequest;
  * @since 2017.01.10
  *
  * @version 1.0
- *
- * @see \Leevel\Router\Proxy\IUrl 请保持接口设计的一致性
  */
 interface IUrl
 {

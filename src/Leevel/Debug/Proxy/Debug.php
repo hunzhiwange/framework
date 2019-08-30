@@ -47,7 +47,7 @@ use Throwable;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Debug implements IDebug
+class Debug
 {
     /**
      * call.

@@ -35,7 +35,7 @@ use Leevel\Router\Url as BaseUrl;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Url implements IUrl
+class Url
 {
     /**
      * call.

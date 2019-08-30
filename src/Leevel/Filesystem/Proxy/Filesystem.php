@@ -36,7 +36,7 @@ use Leevel\Filesystem\Manager;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Filesystem implements IFilesystem
+class Filesystem
 {
     /**
      * 设置配置.

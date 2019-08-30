@@ -33,7 +33,7 @@ use Leevel\Option\Option as BaseOption;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Option implements IOption
+class Option
 {
     /**
      * call.

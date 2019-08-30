@@ -34,7 +34,7 @@ use Leevel\Di\Container;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Cache implements ICache
+class Cache
 {
     /**
      * call.

@@ -34,7 +34,7 @@ use Leevel\Http\IRequest as IBaseRequest;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Request implements IRequest
+class Request
 {
     /**
      * call.

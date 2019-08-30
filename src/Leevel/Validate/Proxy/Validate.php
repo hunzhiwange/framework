@@ -34,7 +34,7 @@ use Leevel\Validate\Validate as BaseValidate;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Validate implements IValidate
+class Validate
 {
     /**
      * call.

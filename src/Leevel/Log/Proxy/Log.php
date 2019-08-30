@@ -35,7 +35,7 @@ use Monolog\Logger;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Log implements ILog
+class Log
 {
     /**
      * call.
