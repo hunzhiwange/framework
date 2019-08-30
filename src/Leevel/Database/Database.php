@@ -183,7 +183,7 @@ abstract class Database implements IConnection
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Leevel\Database\Select
      * @codeCoverageIgnore

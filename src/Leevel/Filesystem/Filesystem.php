@@ -103,7 +103,7 @@ abstract class Filesystem
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \League\Flysystem\Filesystem
      */

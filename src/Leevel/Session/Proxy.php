@@ -442,7 +442,7 @@ trait Proxy
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Leevel\Session\ISession
      */

@@ -48,7 +48,7 @@ class Manager extends Managers
     const TRANSACTION_SERVICE = 'transaction.service';
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Leevel\Database\IDatabase
      * @codeCoverageIgnore

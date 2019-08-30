@@ -386,7 +386,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Swift_Transport
      */
@@ -396,7 +396,7 @@ abstract class Mail implements IMail
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Swift_Message
      * @codeCoverageIgnore

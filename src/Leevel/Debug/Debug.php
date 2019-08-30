@@ -129,7 +129,7 @@ class Debug implements IDebug
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \DebugBar\DebugBar
      */

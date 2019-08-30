@@ -102,7 +102,7 @@ trait Proxy
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Leevel\View\IView
      */

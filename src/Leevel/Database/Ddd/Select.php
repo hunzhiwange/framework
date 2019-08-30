@@ -93,7 +93,7 @@ class Select
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Leevel\Database\Select
      */

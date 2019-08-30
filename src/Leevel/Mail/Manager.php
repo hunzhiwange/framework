@@ -37,7 +37,7 @@ class Manager extends Managers implements IMail
     use ProxyMessage;
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Leevel\Mail\IMail
      * @codeCoverageIgnore
@@ -48,7 +48,7 @@ class Manager extends Managers implements IMail
     }
 
     /**
-     * 返回代理.
+     * 代理.
      *
      * @return \Leevel\Mail\IMail
      * @codeCoverageIgnore
