@@ -57,8 +57,9 @@ class MysqlPool implements IDatabase
      * 代理.
      *
      * @return \Leevel\Database\IDatabase
+     * @codeCoverageIgnore
      */
-    public function proxy(): IDatabase
+    protected function proxy(): IDatabase
     {
         /** @var \Leevel\Database\IDatabase $mysql */
         $mysql = $this->mysqlPool->borrowConnection();

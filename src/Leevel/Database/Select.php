@@ -207,28 +207,6 @@ class Select
     }
 
     /**
-     * 查询条件代理.
-     *
-     * @return \Leevel\Database\Condition
-     * @codeCoverageIgnore
-     */
-    public function proxyCondition(): Condition
-    {
-        return $this->condition;
-    }
-
-    /**
-     * 查询条件代理.
-     *
-     * @return \Leevel\Database\Select
-     * @codeCoverageIgnore
-     */
-    public function proxyConditionReturn(): self
-    {
-        return $this;
-    }
-
-    /**
      * 查询对象
      *
      * @return \Leevel\Database\Condition
@@ -920,6 +898,28 @@ class Select
     public function makeSql(bool $withLogicGroup = false): string
     {
         return $this->condition->makeSql($withLogicGroup);
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\Condition
+     * @codeCoverageIgnore
+     */
+    protected function proxyCondition(): Condition
+    {
+        return $this->condition;
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    protected function proxyConditionReturn(): self
+    {
+        return $this;
     }
 
     /**

@@ -48,39 +48,6 @@ class Manager extends Managers
     const TRANSACTION_SERVICE = 'transaction.service';
 
     /**
-     * 代理.
-     *
-     * @return \Leevel\Database\IDatabase
-     * @codeCoverageIgnore
-     */
-    public function proxy(): IDatabase
-    {
-        return $this->connect();
-    }
-
-    /**
-     * 查询条件代理.
-     *
-     * @return \Leevel\Database\IDatabase
-     * @codeCoverageIgnore
-     */
-    public function proxyCondition(): IDatabase
-    {
-        return $this->connect();
-    }
-
-    /**
-     * 查询条件代理.
-     *
-     * @return \Leevel\Database\Select
-     * @codeCoverageIgnore
-     */
-    public function proxyConditionReturn(): Select
-    {
-        return $this->connect()->selfDatabaseSelect();
-    }
-
-    /**
      * 设置当前协程事务中的连接.
      *
      * @param \Leevel\Protocol\Pool\IConnection $connection
@@ -124,6 +91,39 @@ class Manager extends Managers
     public function removeTransactionConnection(): void
     {
         $this->container->remove(self::TRANSACTION_SERVICE);
+    }
+
+    /**
+     * 代理.
+     *
+     * @return \Leevel\Database\IDatabase
+     * @codeCoverageIgnore
+     */
+    protected function proxy(): IDatabase
+    {
+        return $this->connect();
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\IDatabase
+     * @codeCoverageIgnore
+     */
+    protected function proxyCondition(): IDatabase
+    {
+        return $this->connect();
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    protected function proxyConditionReturn(): Select
+    {
+        return $this->connect()->selfDatabaseSelect();
     }
 
     /**

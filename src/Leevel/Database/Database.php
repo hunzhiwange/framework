@@ -183,43 +183,6 @@ abstract class Database implements IConnection
     }
 
     /**
-     * 代理.
-     *
-     * @return \Leevel\Database\Select
-     * @codeCoverageIgnore
-     */
-    public function proxy(): Select
-    {
-        $this->initSelect();
-
-        return $this->select;
-    }
-
-    /**
-     * 返回查询条件代理.
-     *
-     * @return \Leevel\Database\Select
-     * @codeCoverageIgnore
-     */
-    public function proxyCondition(): Select
-    {
-        $this->initSelect();
-
-        return $this->select;
-    }
-
-    /**
-     * 查询条件代理返回值.
-     *
-     * @return \Leevel\Database\Select
-     * @codeCoverageIgnore
-     */
-    public function proxyConditionReturn(): Select
-    {
-        return $this->select;
-    }
-
-    /**
      * 返回 Pdo 查询连接.
      *
      * @param bool|int $master
@@ -736,6 +699,43 @@ abstract class Database implements IConnection
             default:
                 return PDO::PARAM_STMT;
         }
+    }
+
+    /**
+     * 代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    protected function proxy(): Select
+    {
+        $this->initSelect();
+
+        return $this->select;
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    protected function proxyCondition(): Select
+    {
+        $this->initSelect();
+
+        return $this->select;
+    }
+
+    /**
+     * 查询条件代理返回值.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    protected function proxyConditionReturn(): Select
+    {
+        return $this->select;
     }
 
     /**

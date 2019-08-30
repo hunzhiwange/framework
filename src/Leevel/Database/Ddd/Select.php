@@ -24,6 +24,8 @@ use Closure;
 use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
+use Leevel\Database\Proxy;
+use Leevel\Database\ProxyCondition;
 use Leevel\Database\Select as DatabaseSelect;
 use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Arr\normalize;
@@ -44,6 +46,7 @@ use Leevel\Support\Str\starts_with;
 class Select
 {
     use Proxy;
+    use ProxyCondition;
 
     /**
      * 模型实体.
@@ -90,16 +93,6 @@ class Select
         $result = $this->select->{$method}(...$args);
 
         return $this->normalizeSelectResult($result);
-    }
-
-    /**
-     * 代理.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function proxy(): DatabaseSelect
-    {
-        return $this->select;
     }
 
     /**
@@ -330,6 +323,39 @@ class Select
         }
 
         return $deleteAt;
+    }
+
+    /**
+     * 代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    protected function proxy(): DatabaseSelect
+    {
+        return $this->select;
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    protected function proxyCondition(): DatabaseSelect
+    {
+        return $this->select;
+    }
+
+    /**
+     * 查询条件代理返回值.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    protected function proxyConditionReturn(): DatabaseSelect
+    {
+        return $this->select;
     }
 
     /**
