@@ -27,7 +27,7 @@ use Leevel\Protocol\Pool\IConnection;
 use RuntimeException;
 
 /**
- * database 入口.
+ * Database 入口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -37,9 +37,6 @@ use RuntimeException;
  */
 class Manager extends Managers
 {
-    use Proxy;
-    use ProxyCondition;
-
     /**
      * 当前协程事务服务标识.
      *

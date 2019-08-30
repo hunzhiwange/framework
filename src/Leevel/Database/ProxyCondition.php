@@ -44,9 +44,9 @@ trait ProxyCondition
      */
     public function forPage(int $page, int $perPage = 15): Select
     {
-        $this->proxyCondition()->forPage($page, $perPage);
+        $this->proxy()->forPage($page, $perPage);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -58,9 +58,9 @@ trait ProxyCondition
      */
     public function time(string $type = 'date'): Select
     {
-        $this->proxyCondition()->time($type);
+        $this->proxy()->time($type);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -70,9 +70,9 @@ trait ProxyCondition
      */
     public function endTime(): Select
     {
-        $this->proxyCondition()->endTime();
+        $this->proxy()->endTime();
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -84,9 +84,9 @@ trait ProxyCondition
      */
     public function reset(?string $option = null): Select
     {
-        $this->proxyCondition()->reset($option);
+        $this->proxy()->reset($option);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -98,9 +98,9 @@ trait ProxyCondition
      */
     public function prefix(string $prefix): Select
     {
-        $this->proxyCondition()->prefix($prefix);
+        $this->proxy()->prefix($prefix);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -113,9 +113,9 @@ trait ProxyCondition
      */
     public function table($table, $cols = '*'): Select
     {
-        $this->proxyCondition()->table($table, $cols);
+        $this->proxy()->table($table, $cols);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -125,7 +125,7 @@ trait ProxyCondition
      */
     public function getAlias(): string
     {
-        return $this->proxyCondition()->getAlias();
+        return $this->proxy()->getAlias();
     }
 
     /**
@@ -138,9 +138,9 @@ trait ProxyCondition
      */
     public function columns($cols = '*', ?string $table = null): Select
     {
-        $this->proxyCondition()->columns($cols, $table);
+        $this->proxy()->columns($cols, $table);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -153,9 +153,9 @@ trait ProxyCondition
      */
     public function setColumns($cols = '*', ?string $table = null): Select
     {
-        $this->proxyCondition()->setColumns($cols, $table);
+        $this->proxy()->setColumns($cols, $table);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -167,9 +167,9 @@ trait ProxyCondition
      */
     public function where(...$cond): Select
     {
-        $this->proxyCondition()->where(...$cond);
+        $this->proxy()->where(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -181,9 +181,9 @@ trait ProxyCondition
      */
     public function orWhere(...$cond): Select
     {
-        $this->proxyCondition()->orWhere(...$cond);
+        $this->proxy()->orWhere(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -195,9 +195,9 @@ trait ProxyCondition
      */
     public function whereRaw(string $raw): Select
     {
-        $this->proxyCondition()->whereRaw($raw);
+        $this->proxy()->whereRaw($raw);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -209,9 +209,9 @@ trait ProxyCondition
      */
     public function orWhereRaw(string $raw): Select
     {
-        $this->proxyCondition()->orWhereRaw($raw);
+        $this->proxy()->orWhereRaw($raw);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -223,9 +223,9 @@ trait ProxyCondition
      */
     public function whereExists($exists): Select
     {
-        $this->proxyCondition()->whereExists($exists);
+        $this->proxy()->whereExists($exists);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -237,9 +237,9 @@ trait ProxyCondition
      */
     public function whereNotExists($exists): Select
     {
-        $this->proxyCondition()->whereNotExists($exists);
+        $this->proxy()->whereNotExists($exists);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -251,9 +251,9 @@ trait ProxyCondition
      */
     public function whereBetween(...$cond): Select
     {
-        $this->proxyCondition()->whereBetween(...$cond);
+        $this->proxy()->whereBetween(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -265,9 +265,9 @@ trait ProxyCondition
      */
     public function whereNotBetween(...$cond): Select
     {
-        $this->proxyCondition()->whereNotBetween(...$cond);
+        $this->proxy()->whereNotBetween(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -279,9 +279,9 @@ trait ProxyCondition
      */
     public function whereNull(...$cond): Select
     {
-        $this->proxyCondition()->whereNull(...$cond);
+        $this->proxy()->whereNull(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -293,9 +293,9 @@ trait ProxyCondition
      */
     public function whereNotNull(...$cond): Select
     {
-        $this->proxyCondition()->whereNotNull(...$cond);
+        $this->proxy()->whereNotNull(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -307,9 +307,9 @@ trait ProxyCondition
      */
     public function whereIn(...$cond): Select
     {
-        $this->proxyCondition()->whereIn(...$cond);
+        $this->proxy()->whereIn(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -321,9 +321,9 @@ trait ProxyCondition
      */
     public function whereNotIn(...$cond): Select
     {
-        $this->proxyCondition()->whereNotIn(...$cond);
+        $this->proxy()->whereNotIn(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -335,9 +335,9 @@ trait ProxyCondition
      */
     public function whereLike(...$cond): Select
     {
-        $this->proxyCondition()->whereLike(...$cond);
+        $this->proxy()->whereLike(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -349,9 +349,9 @@ trait ProxyCondition
      */
     public function whereNotLike(...$cond): Select
     {
-        $this->proxyCondition()->whereNotLike(...$cond);
+        $this->proxy()->whereNotLike(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -363,9 +363,9 @@ trait ProxyCondition
      */
     public function whereDate(...$cond): Select
     {
-        $this->proxyCondition()->whereDate(...$cond);
+        $this->proxy()->whereDate(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -377,9 +377,9 @@ trait ProxyCondition
      */
     public function whereDay(...$cond): Select
     {
-        $this->proxyCondition()->whereDay(...$cond);
+        $this->proxy()->whereDay(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -391,9 +391,9 @@ trait ProxyCondition
      */
     public function whereMonth(...$cond): Select
     {
-        $this->proxyCondition()->whereMonth(...$cond);
+        $this->proxy()->whereMonth(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -405,9 +405,9 @@ trait ProxyCondition
      */
     public function whereYear(...$cond): Select
     {
-        $this->proxyCondition()->whereYear(...$cond);
+        $this->proxy()->whereYear(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -421,9 +421,9 @@ trait ProxyCondition
      */
     public function bind($names, $value = null, int $type = PDO::PARAM_STR): Select
     {
-        $this->proxyCondition()->bind($names, $value, $type);
+        $this->proxy()->bind($names, $value, $type);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -436,9 +436,9 @@ trait ProxyCondition
      */
     public function forceIndex($indexs, $type = 'FORCE'): Select
     {
-        $this->proxyCondition()->forceIndex($indexs, $type);
+        $this->proxy()->forceIndex($indexs, $type);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -450,9 +450,9 @@ trait ProxyCondition
      */
     public function ignoreIndex($indexs): Select
     {
-        $this->proxyCondition()->ignoreIndex($indexs);
+        $this->proxy()->ignoreIndex($indexs);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -466,9 +466,9 @@ trait ProxyCondition
      */
     public function join($table, $cols, ...$cond): Select
     {
-        $this->proxyCondition()->join($table, $cols, ...$cond);
+        $this->proxy()->join($table, $cols, ...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -482,9 +482,9 @@ trait ProxyCondition
      */
     public function innerJoin($table, $cols, ...$cond): Select
     {
-        $this->proxyCondition()->innerJoin($table, $cols, ...$cond);
+        $this->proxy()->innerJoin($table, $cols, ...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -498,9 +498,9 @@ trait ProxyCondition
      */
     public function leftJoin($table, $cols, ...$cond): Select
     {
-        $this->proxyCondition()->leftJoin($table, $cols, ...$cond);
+        $this->proxy()->leftJoin($table, $cols, ...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -514,9 +514,9 @@ trait ProxyCondition
      */
     public function rightJoin($table, $cols, ...$cond): Select
     {
-        $this->proxyCondition()->rightJoin($table, $cols, ...$cond);
+        $this->proxy()->rightJoin($table, $cols, ...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -530,9 +530,9 @@ trait ProxyCondition
      */
     public function fullJoin($table, $cols, ...$cond): Select
     {
-        $this->proxyCondition()->fullJoin($table, $cols, ...$cond);
+        $this->proxy()->fullJoin($table, $cols, ...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -546,9 +546,9 @@ trait ProxyCondition
      */
     public function crossJoin($table, $cols, ...$cond): Select
     {
-        $this->proxyCondition()->crossJoin($table, $cols, ...$cond);
+        $this->proxy()->crossJoin($table, $cols, ...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -562,9 +562,9 @@ trait ProxyCondition
      */
     public function naturalJoin($table, $cols, ...$cond): Select
     {
-        $this->proxyCondition()->naturalJoin($table, $cols, ...$cond);
+        $this->proxy()->naturalJoin($table, $cols, ...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -577,9 +577,9 @@ trait ProxyCondition
      */
     public function union($selects, string $type = 'UNION'): Select
     {
-        $this->proxyCondition()->union($selects, $type);
+        $this->proxy()->union($selects, $type);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -591,9 +591,9 @@ trait ProxyCondition
      */
     public function unionAll($selects): Select
     {
-        $this->proxyCondition()->unionAll($selects);
+        $this->proxy()->unionAll($selects);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -605,9 +605,9 @@ trait ProxyCondition
      */
     public function groupBy($expression): Select
     {
-        $this->proxyCondition()->groupBy($expression);
+        $this->proxy()->groupBy($expression);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -620,9 +620,9 @@ trait ProxyCondition
      */
     public function having(...$cond): Select
     {
-        $this->proxyCondition()->having(...$cond);
+        $this->proxy()->having(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -634,9 +634,9 @@ trait ProxyCondition
      */
     public function orHaving(...$cond): Select
     {
-        $this->proxyCondition()->orHaving(...$cond);
+        $this->proxy()->orHaving(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -648,9 +648,9 @@ trait ProxyCondition
      */
     public function havingRaw(string $raw): Select
     {
-        $this->proxyCondition()->havingRaw($raw);
+        $this->proxy()->havingRaw($raw);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -662,9 +662,9 @@ trait ProxyCondition
      */
     public function orHavingRaw(string $raw): Select
     {
-        $this->proxyCondition()->orHavingRaw($raw);
+        $this->proxy()->orHavingRaw($raw);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -676,9 +676,9 @@ trait ProxyCondition
      */
     public function havingBetween(...$cond): Select
     {
-        $this->proxyCondition()->havingBetween(...$cond);
+        $this->proxy()->havingBetween(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -690,9 +690,9 @@ trait ProxyCondition
      */
     public function havingNotBetween(...$cond): Select
     {
-        $this->proxyCondition()->havingNotBetween(...$cond);
+        $this->proxy()->havingNotBetween(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -704,9 +704,9 @@ trait ProxyCondition
      */
     public function havingNull(...$cond): Select
     {
-        $this->proxyCondition()->havingNull(...$cond);
+        $this->proxy()->havingNull(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -718,9 +718,9 @@ trait ProxyCondition
      */
     public function havingNotNull(...$cond): Select
     {
-        $this->proxyCondition()->havingNotNull(...$cond);
+        $this->proxy()->havingNotNull(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -732,9 +732,9 @@ trait ProxyCondition
      */
     public function havingIn(...$cond): Select
     {
-        $this->proxyCondition()->havingIn(...$cond);
+        $this->proxy()->havingIn(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -746,9 +746,9 @@ trait ProxyCondition
      */
     public function havingNotIn(...$cond): Select
     {
-        $this->proxyCondition()->havingNotIn(...$cond);
+        $this->proxy()->havingNotIn(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -760,9 +760,9 @@ trait ProxyCondition
      */
     public function havingLike(...$cond): Select
     {
-        $this->proxyCondition()->havingLike(...$cond);
+        $this->proxy()->havingLike(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -774,9 +774,9 @@ trait ProxyCondition
      */
     public function havingNotLike(...$cond): Select
     {
-        $this->proxyCondition()->havingNotLike(...$cond);
+        $this->proxy()->havingNotLike(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -788,9 +788,9 @@ trait ProxyCondition
      */
     public function havingDate(...$cond): Select
     {
-        $this->proxyCondition()->havingDate(...$cond);
+        $this->proxy()->havingDate(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -802,9 +802,9 @@ trait ProxyCondition
      */
     public function havingDay(...$cond): Select
     {
-        $this->proxyCondition()->havingDay(...$cond);
+        $this->proxy()->havingDay(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -816,9 +816,9 @@ trait ProxyCondition
      */
     public function havingMonth(...$cond): Select
     {
-        $this->proxyCondition()->havingMonth(...$cond);
+        $this->proxy()->havingMonth(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -830,9 +830,9 @@ trait ProxyCondition
      */
     public function havingYear(...$cond): Select
     {
-        $this->proxyCondition()->havingYear(...$cond);
+        $this->proxy()->havingYear(...$cond);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -845,9 +845,9 @@ trait ProxyCondition
      */
     public function orderBy($expression, string $orderDefault = 'ASC'): Select
     {
-        $this->proxyCondition()->orderBy($expression, $orderDefault);
+        $this->proxy()->orderBy($expression, $orderDefault);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -859,9 +859,9 @@ trait ProxyCondition
      */
     public function latest(string $field = 'create_at'): Select
     {
-        $this->proxyCondition()->latest($field);
+        $this->proxy()->latest($field);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -873,9 +873,9 @@ trait ProxyCondition
      */
     public function oldest(string $field = 'create_at'): Select
     {
-        $this->proxyCondition()->oldest($field);
+        $this->proxy()->oldest($field);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -887,9 +887,9 @@ trait ProxyCondition
      */
     public function distinct(bool $flag = true): Select
     {
-        $this->proxyCondition()->distinct($flag);
+        $this->proxy()->distinct($flag);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -902,9 +902,9 @@ trait ProxyCondition
      */
     public function count(string $field = '*', string $alias = 'row_count'): Select
     {
-        $this->proxyCondition()->count($field, $alias);
+        $this->proxy()->count($field, $alias);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -917,9 +917,9 @@ trait ProxyCondition
      */
     public function avg(string $field, string $alias = 'avg_value'): Select
     {
-        $this->proxyCondition()->avg($field, $alias);
+        $this->proxy()->avg($field, $alias);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -932,9 +932,9 @@ trait ProxyCondition
      */
     public function max(string $field, string $alias = 'max_value'): Select
     {
-        $this->proxyCondition()->max($field, $alias);
+        $this->proxy()->max($field, $alias);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -947,9 +947,9 @@ trait ProxyCondition
      */
     public function min(string $field, string $alias = 'min_value'): Select
     {
-        $this->proxyCondition()->min($field, $alias);
+        $this->proxy()->min($field, $alias);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -962,9 +962,9 @@ trait ProxyCondition
      */
     public function sum(string $field, string $alias = 'sum_value'): Select
     {
-        $this->proxyCondition()->sum($field, $alias);
+        $this->proxy()->sum($field, $alias);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -974,9 +974,9 @@ trait ProxyCondition
      */
     public function one(): Select
     {
-        $this->proxyCondition()->one();
+        $this->proxy()->one();
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -986,9 +986,9 @@ trait ProxyCondition
      */
     public function all(): Select
     {
-        $this->proxyCondition()->all();
+        $this->proxy()->all();
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -1000,9 +1000,9 @@ trait ProxyCondition
      */
     public function top(int $count = 30): Select
     {
-        $this->proxyCondition()->top($count);
+        $this->proxy()->top($count);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -1015,9 +1015,9 @@ trait ProxyCondition
      */
     public function limit(int $offset = 0, int $count = 0): Select
     {
-        $this->proxyCondition()->limit($offset, $count);
+        $this->proxy()->limit($offset, $count);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -1029,9 +1029,9 @@ trait ProxyCondition
      */
     public function forUpdate(bool $flag = true): Select
     {
-        $this->proxyCondition()->forUpdate($flag);
+        $this->proxy()->forUpdate($flag);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -1044,9 +1044,9 @@ trait ProxyCondition
      */
     public function setOption(string $name, $value): Select
     {
-        $this->proxyCondition()->setOption($name, $value);
+        $this->proxy()->setOption($name, $value);
 
-        return $this->proxyConditionReturn();
+        return $this;
     }
 
     /**
@@ -1056,7 +1056,7 @@ trait ProxyCondition
      */
     public function getOption(): array
     {
-        return $this->proxyCondition()->getOption();
+        return $this->proxy()->getOption();
     }
 
     /**
@@ -1066,6 +1066,6 @@ trait ProxyCondition
      */
     public function getBindParams(): array
     {
-        return $this->proxyCondition()->getBindParams();
+        return $this->proxy()->getBindParams();
     }
 }

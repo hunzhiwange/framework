@@ -901,25 +901,14 @@ class Select
     }
 
     /**
-     * 查询条件代理.
+     * 代理.
      *
      * @return \Leevel\Database\Condition
      * @codeCoverageIgnore
      */
-    protected function proxyCondition(): Condition
+    protected function proxy(): Condition
     {
         return $this->condition;
-    }
-
-    /**
-     * 查询条件代理.
-     *
-     * @return \Leevel\Database\Select
-     * @codeCoverageIgnore
-     */
-    protected function proxyConditionReturn(): self
-    {
-        return $this;
     }
 
     /**
