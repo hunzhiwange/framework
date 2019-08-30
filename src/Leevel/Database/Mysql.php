@@ -184,16 +184,6 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * 获取是否启用部分事务
-     *
-     * @return bool
-     */
-    public function hasSavepoints(): bool
-    {
-        return $this->transactionWithSavepoints;
-    }
-
-    /**
      * 基本.
      *
      * @param array $option

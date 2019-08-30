@@ -350,20 +350,6 @@ abstract class Database implements IConnection
     }
 
     /**
-     * 归还连接池.
-     */
-    public function release(): void
-    {
-        if (!$this->manager) {
-            return;
-        }
-
-        if (!$this->manager->inTransactionConnection()) {
-            $this->baseRelease();
-        }
-    }
-
-    /**
      * 检查是否处于事务中.
      *
      * @return bool
@@ -448,6 +434,16 @@ abstract class Database implements IConnection
     }
 
     /**
+     * 获取是否启用部分事务.
+     *
+     * @return bool
+     */
+    public function hasSavepoints(): bool
+    {
+        return $this->transactionWithSavepoints;
+    }
+
+    /**
      * 获取最后插入 ID 或者列.
      *
      * @param null|string $name 自增序列名
@@ -509,6 +505,20 @@ abstract class Database implements IConnection
     {
         $this->connects = [];
         $this->connect = null;
+    }
+
+    /**
+     * 归还连接池.
+     */
+    public function release(): void
+    {
+        if (!$this->manager) {
+            return;
+        }
+
+        if (!$this->manager->inTransactionConnection()) {
+            $this->baseRelease();
+        }
     }
 
     /**

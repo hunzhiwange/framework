@@ -124,6 +124,20 @@ interface IDatabase
     public function rollBack(): void;
 
     /**
+     * 设置是否启用部分事务.
+     *
+     * @param bool $savepoints
+     */
+    public function setSavepoints(bool $savepoints): void;
+
+    /**
+     * 获取是否启用部分事务.
+     *
+     * @return bool
+     */
+    public function hasSavepoints(): bool;
+
+    /**
      * 获取最后插入 ID 或者列.
      *
      * @param null|string $name 自增序列名
@@ -160,6 +174,11 @@ interface IDatabase
      * 关闭数据库连接.
      */
     public function closeConnects(): void;
+
+    /**
+     * 归还连接池.
+     */
+    public function release(): void;
 
     /**
      * sql 表达式格式化.
