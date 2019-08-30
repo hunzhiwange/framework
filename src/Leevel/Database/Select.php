@@ -45,6 +45,8 @@ use Leevel\Page\Page;
  */
 class Select
 {
+    use ProxyCondition;
+
     /**
      * 分页查询结果标识.
      *
@@ -145,11 +147,6 @@ class Select
 
             return $this;
         } catch (ConditionNotFoundException $e) {
-            // 不使用反射
-            if (method_exists($this->connect, $method) &&
-                is_callable([$this->connect, $method])) {
-                return $this->connect->{$method}(...$args);
-            }
         }
 
         // 动态查询支持
@@ -204,9 +201,31 @@ class Select
                 ->find();
         }
 
-        $e = sprintf('Select do not implement magic method %s.', $method);
+        $e = sprintf('Select do not implement magic method `%s`,maybe you can try `$select->databaseConnect()->%s(...).', $method, $method);
 
         throw new InvalidArgumentException($e);
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\Condition
+     * @codeCoverageIgnore
+     */
+    public function proxyCondition(): Condition
+    {
+        return $this->condition;
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    public function proxyConditionReturn(): self
+    {
+        return $this;
     }
 
     /**
