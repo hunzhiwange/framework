@@ -323,7 +323,7 @@ trait Proxy
     }
 
     /**
-     * 查询对象
+     * 查询对象.
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -335,7 +335,7 @@ trait Proxy
     }
 
     /**
-     * 返回数据库连接对象
+     * 返回数据库连接对象.
      *
      * @return \Leevel\Database\IDatabase
      */
@@ -345,7 +345,7 @@ trait Proxy
     }
 
     /**
-     * 占位符返回本对象
+     * 占位符返回本对象.
      *
      * @return \Leevel\Database\Ddd\Select
      */

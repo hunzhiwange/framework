@@ -41,6 +41,7 @@ use Throwable;
 abstract class Database implements IConnection
 {
     use Proxy;
+    use ProxyCondition;
     use Connection {
         release as baseRelease;
     }
@@ -185,11 +186,36 @@ abstract class Database implements IConnection
      * 返回代理.
      *
      * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
      */
     public function proxy(): Select
     {
         $this->initSelect();
 
+        return $this->select;
+    }
+
+    /**
+     * 返回查询条件代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    public function proxyCondition(): Select
+    {
+        $this->initSelect();
+
+        return $this->select;
+    }
+
+    /**
+     * 查询条件代理返回值.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    public function proxyConditionReturn(): Select
+    {
         return $this->select;
     }
 

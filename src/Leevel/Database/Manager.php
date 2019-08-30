@@ -35,9 +35,10 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class Manager extends Managers implements IDatabase
+class Manager extends Managers
 {
     use Proxy;
+    use ProxyCondition;
 
     /**
      * 当前协程事务服务标识.
@@ -55,6 +56,28 @@ class Manager extends Managers implements IDatabase
     public function proxy(): IDatabase
     {
         return $this->connect();
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\IDatabase
+     * @codeCoverageIgnore
+     */
+    public function proxyCondition(): IDatabase
+    {
+        return $this->connect();
+    }
+
+    /**
+     * 查询条件代理.
+     *
+     * @return \Leevel\Database\Select
+     * @codeCoverageIgnore
+     */
+    public function proxyConditionReturn(): Select
+    {
+        return $this->connect()->selfDatabaseSelect();
     }
 
     /**
