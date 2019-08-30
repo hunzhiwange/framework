@@ -632,7 +632,7 @@ class SelectTest extends TestCase
         $this->assertSame(
             $sql,
             $this->varJson(
-                $select->lastSql()
+                $select->databaseConnect()->lastSql()
             )
         );
     }
