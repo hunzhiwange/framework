@@ -54,8 +54,6 @@ class IdeHelper extends Command
 
     /**
      * 响应命令.
-     *
-     * @throws \InvalidArgumentException
      */
     public function handle(): void
     {
