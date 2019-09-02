@@ -31,11 +31,18 @@ use RuntimeException;
  * @since 2017.02.15
  *
  * @version 1.0
+ *
+ * @method static void put($keys, $value = null)                           批量插入.
+ * @method static remember(string $name, $data, array $option = [])        缓存存在读取否则重新设置.
+ * @method static \Leevel\Cache\ICache setOption(string $name, $value)     设置配置.
+ * @method static get(string $name, $defaults = false, array $option = []) 获取缓存.
+ * @method static void set(string $name, $data, array $option = [])        设置缓存.
+ * @method static void delete(string $name)                                清除缓存.
+ * @method static handle()                                                 返回缓存句柄.
+ * @method static void close()                                             关闭.
  */
-class Manager extends Managers implements ICache
+class Manager extends Managers
 {
-    use Proxy;
-
     /**
      * 取得配置命名空间.
      *
