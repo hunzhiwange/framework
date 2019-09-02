@@ -57,11 +57,33 @@ use Throwable;
  * @since 2018.09.20
  *
  * @version 1.0
+ *
+ * @method static \DebugBar\DebugBar addCollector(\DebugBar\DataCollector\DataCollectorInterface $collector)                                          添加数据收集器.
+ * @method static bool hasCollector(string $name)                                                                                                     检查是否已添加数据收集器.
+ * @method static \DebugBar\DataCollector\DataCollectorInterface getCollector(string $name)                                                           返回数据收集器.
+ * @method static array getCollectors()                                                                                                               返回所有数据收集器的数组.
+ * @method static \DebugBar\DebugBar setRequestIdGenerator(\DebugBar\RequestIdGeneratorInterface $generator)                                          设置请求 ID 生成器.
+ * @method static \DebugBar\RequestIdGeneratorInterface getRequestIdGenerator()                                                                       返回请求 ID 生成器.
+ * @method static string getCurrentRequestId()                                                                                                        返回当前请求的 ID.
+ * @method static \DebugBar\DebugBar setStorage(?\DebugBar\Storage\StorageInterface $storage = null)                                                  设置用于存储收集数据的存储后端.
+ * @method static \DebugBar\Storage\StorageInterface getStorage()                                                                                     返回用于存储收集数据的存储后端.
+ * @method static bool isDataPersisted()                                                                                                              检查是否保持数据.
+ * @method static \DebugBar\DebugBar setHttpDriver(\DebugBar\HttpDriverInterface $driver)                                                             设置 HTTP 驱动.
+ * @method static \DebugBar\HttpDriverInterface getHttpDriver()                                                                                       返回 HTTP 驱动.
+ * @method static array collect()                                                                                                                     从收集器收集数据.
+ * @method static array getData()                                                                                                                     返回收集的数据.
+ * @method static array getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000)         返回包含数据的 HTTP 头数组.
+ * @method static \DebugBar\DebugBar sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096) 通过 HTTP 头数组发送数据.
+ * @method static \DebugBar\DebugBar stackData()                                                                                                      将数据存在 session 中.
+ * @method static bool hasStackedData()                                                                                                               检查 session 中是否存在数据.
+ * @method static array getStackedData(bool $delete = true)                                                                                           返回 session 中保存的数据.
+ * @method static \DebugBar\DebugBar setStackDataSessionNamespace(string $ns)                                                                         设置 session 中保存数据的 key.
+ * @method static string getStackDataSessionNamespace()                                                                                               获取 session 中保存数据的 key.
+ * @method static \DebugBar\DebugBar setStackAlwaysUseSessionStorage(bool $enabled = true)                                                            设置是否仅使用 session 来保存数据，即使已启用存储.
+ * @method static bool isStackAlwaysUseSessionStorage()                                                                                               检查 session 是否始终用于保存数据，即使已启用存储.
  */
 class Debug implements IDebug
 {
-    use Proxy;
-
     /**
      * IOC 容器.
      *
@@ -125,17 +147,7 @@ class Debug implements IDebug
      */
     public function __call(string $method, array $args)
     {
-        $this->debugBar->{$method}(...$args);
-    }
-
-    /**
-     * 代理.
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function proxy(): DebugBar
-    {
-        return $this->debugBar;
+        return $this->debugBar->{$method}(...$args);
     }
 
     /**
@@ -175,12 +187,10 @@ class Debug implements IDebug
             return;
         }
 
-        if (
-                $request->isJson() ||
-                $response instanceof ApiResponse ||
-                $response instanceof JsonResponse ||
-                $response->isJson()
-            ) {
+        if ($request->isJson() ||
+            $response instanceof ApiResponse ||
+            $response instanceof JsonResponse ||
+            $response->isJson()) {
             if ($this->option['json'] && is_array($data = $response->getData())) {
                 $jsonRenderer = $this->getJsonRenderer();
 

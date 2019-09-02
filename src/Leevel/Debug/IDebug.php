@@ -21,12 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Debug;
 
 use Closure;
-use DebugBar\DataCollector\DataCollectorInterface;
-use DebugBar\DebugBar;
-use DebugBar\HttpDriverInterface;
 use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
-use DebugBar\RequestIdGeneratorInterface;
-use DebugBar\Storage\StorageInterface;
 use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
@@ -40,204 +35,33 @@ use Throwable;
  * @since 2019.05.28
  *
  * @version 1.0
+ *
+ * @method static \DebugBar\DebugBar addCollector(\DebugBar\DataCollector\DataCollectorInterface $collector)                                          添加数据收集器.
+ * @method static bool hasCollector(string $name)                                                                                                     检查是否已添加数据收集器.
+ * @method static \DebugBar\DataCollector\DataCollectorInterface getCollector(string $name)                                                           返回数据收集器.
+ * @method static array getCollectors()                                                                                                               返回所有数据收集器的数组.
+ * @method static \DebugBar\DebugBar setRequestIdGenerator(\DebugBar\RequestIdGeneratorInterface $generator)                                          设置请求 ID 生成器.
+ * @method static \DebugBar\RequestIdGeneratorInterface getRequestIdGenerator()                                                                       返回请求 ID 生成器.
+ * @method static string getCurrentRequestId()                                                                                                        返回当前请求的 ID.
+ * @method static \DebugBar\DebugBar setStorage(?\DebugBar\Storage\StorageInterface $storage = null)                                                  设置用于存储收集数据的存储后端.
+ * @method static \DebugBar\Storage\StorageInterface getStorage()                                                                                     返回用于存储收集数据的存储后端.
+ * @method static bool isDataPersisted()                                                                                                              检查是否保持数据.
+ * @method static \DebugBar\DebugBar setHttpDriver(\DebugBar\HttpDriverInterface $driver)                                                             设置 HTTP 驱动.
+ * @method static \DebugBar\HttpDriverInterface getHttpDriver()                                                                                       返回 HTTP 驱动.
+ * @method static array collect()                                                                                                                     从收集器收集数据.
+ * @method static array getData()                                                                                                                     返回收集的数据.
+ * @method static array getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000)         返回包含数据的 HTTP 头数组.
+ * @method static \DebugBar\DebugBar sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096) 通过 HTTP 头数组发送数据.
+ * @method static \DebugBar\DebugBar stackData()                                                                                                      将数据存在 session 中.
+ * @method static bool hasStackedData()                                                                                                               检查 session 中是否存在数据.
+ * @method static array getStackedData(bool $delete = true)                                                                                           返回 session 中保存的数据.
+ * @method static \DebugBar\DebugBar setStackDataSessionNamespace(string $ns)                                                                         设置 session 中保存数据的 key.
+ * @method static string getStackDataSessionNamespace()                                                                                               获取 session 中保存数据的 key.
+ * @method static \DebugBar\DebugBar setStackAlwaysUseSessionStorage(bool $enabled = true)                                                            设置是否仅使用 session 来保存数据，即使已启用存储.
+ * @method static bool isStackAlwaysUseSessionStorage()                                                                                               检查 session 是否始终用于保存数据，即使已启用存储.
  */
 interface IDebug
 {
-    /**
-     * 添加数据收集器.
-     *
-     * @param \DebugBar\DataCollector\DataCollectorInterface $collector
-     *
-     * @throws \DebugBar\DebugBarException
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function addCollector(DataCollectorInterface $collector): DebugBar;
-
-    /**
-     * 检查是否已添加数据收集器.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasCollector(string $name): bool;
-
-    /**
-     * 返回数据收集器.
-     *
-     * @param string $name
-     *
-     * @throws \DebugBar\DebugBarException
-     *
-     * @return \DebugBar\DataCollector\DataCollectorInterface
-     */
-    public function getCollector(string $name): DataCollectorInterface;
-
-    /**
-     * 返回所有数据收集器的数组.
-     *
-     * @return \DebugBar\DataCollector\DataCollectorInterface[]
-     */
-    public function getCollectors(): array;
-
-    /**
-     * 设置请求 ID 生成器.
-     *
-     * @param \DebugBar\RequestIdGeneratorInterface $generator
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function setRequestIdGenerator(RequestIdGeneratorInterface $generator): DebugBar;
-
-    /**
-     * 返回请求 ID 生成器.
-     *
-     * @return \DebugBar\RequestIdGeneratorInterface
-     */
-    public function getRequestIdGenerator(): RequestIdGeneratorInterface;
-
-    /**
-     * 返回当前请求的 ID.
-     *
-     * @return string
-     */
-    public function getCurrentRequestId(): string;
-
-    /**
-     * 设置用于存储收集数据的存储后端.
-     *
-     * @param null|\DebugBar\Storage\StorageInterface $storage
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function setStorage(?StorageInterface $storage = null): DebugBar;
-
-    /**
-     * 返回用于存储收集数据的存储后端.
-     *
-     * @return \DebugBar\Storage\StorageInterface
-     */
-    public function getStorage(): StorageInterface;
-
-    /**
-     * 检查是否保持数据.
-     *
-     * @return bool
-     */
-    public function isDataPersisted(): bool;
-
-    /**
-     * 设置 HTTP 驱动.
-     *
-     * @param \DebugBar\HttpDriverInterface $driver
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function setHttpDriver(HttpDriverInterface $driver): DebugBar;
-
-    /**
-     * 返回 HTTP 驱动.
-     *
-     * 如果没有定义 HTTP 驱动，则会自动创建 \DebugBar\PhpHttpDriver.
-     *
-     * @return \DebugBar\HttpDriverInterface
-     */
-    public function getHttpDriver(): HttpDriverInterface;
-
-    /**
-     * 从收集器收集数据.
-     *
-     * @return array
-     */
-    public function collect(): array;
-
-    /**
-     * 返回收集的数据.
-     *
-     * 如果尚未收集到数据，将收集数据.
-     *
-     * @return array
-     */
-    public function getData(): array;
-
-    /**
-     * 返回包含数据的 HTTP 头数组.
-     *
-     * @param string $headerName
-     * @param int    $maxHeaderLength
-     * @param int    $maxTotalHeaderLength
-     *
-     * @return array
-     */
-    public function getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000): array;
-
-    /**
-     * 通过 HTTP 头数组发送数据.
-     *
-     * @param null|bool $useOpenHandler
-     * @param string    $headerName
-     * @param int       $maxHeaderLength
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096): DebugBar;
-
-    /**
-     * 将数据存在 session 中.
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function stackData(): DebugBar;
-
-    /**
-     * 检查 session 中是否存在数据.
-     *
-     * @return bool
-     */
-    public function hasStackedData(): bool;
-
-    /**
-     * 返回 session 中保存的数据.
-     *
-     * @param bool $delete
-     *
-     * @return array
-     */
-    public function getStackedData(bool $delete = true): array;
-
-    /**
-     * 设置 session 中保存数据的 key.
-     *
-     * @param string $ns
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function setStackDataSessionNamespace(string $ns): DebugBar;
-
-    /**
-     * 获取 session 中保存数据的 key.
-     *
-     * @return string
-     */
-    public function getStackDataSessionNamespace(): string;
-
-    /**
-     * 设置是否仅使用 session 来保存数据，即使已启用存储.
-     *
-     * @param bool $enabled
-     *
-     * @return \DebugBar\DebugBar
-     */
-    public function setStackAlwaysUseSessionStorage(bool $enabled = true): DebugBar;
-
-    /**
-     * 检查 session 是否始终用于保存数据，即使已启用存储.
-     *
-     * @return bool
-     */
-    public function isStackAlwaysUseSessionStorage(): bool;
-
     /**
      * 返回此实例的 \DebugBar\JavascriptRenderer.
      *
