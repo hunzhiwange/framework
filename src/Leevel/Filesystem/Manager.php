@@ -23,29 +23,42 @@ namespace Leevel\Filesystem;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * filesystem 入口.
+ * Filesystem 入口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.08.29
  *
  * @version 1.0
+ *
+ * @method static \Leevel\Filesystem\IFilesystem setOption(string $name, $value)                             设置配置.
+ * @method static \League\Flysystem\Filesystem getFilesystem()                                               返回 Filesystem.
+ * @method static bool has(string $path)                                                                     判断文件是否存在.
+ * @method static read(string $path)                                                                         读取文件.
+ * @method static readStream(string $path)                                                                   从路径读取流数据.
+ * @method static array listContents(string $directory = '', bool $recursive = false)                        读取文件目录.
+ * @method static getMetadata(string $path)                                                                  获取文件元数据.
+ * @method static getSize(string $path)                                                                      获取文件大小.
+ * @method static getMimetype(string $path)                                                                  获取文件的 mime 类型.
+ * @method static getTimestamp(string $path)                                                                 获取文件的时间戳.
+ * @method static getVisibility(string $path)                                                                获取文件的可见性.
+ * @method static bool write(string $path, string $contents, array $config = [])                             写一个新文件.
+ * @method static bool writeStream(string $path, $resource, array $config = [])                              使用流写入新文件.
+ * @method static bool update(string $path, string $contents, array $config = [])                            更新现有文件.
+ * @method static bool updateStream(string $path, $resource, array $config = [])                             使用流更新现有文件.
+ * @method static bool rename(string $path, string $newpath)                                                 重命名文件.
+ * @method static bool copy(string $path, string $newpath)                                                   复制文件.
+ * @method static bool delete(string $path)                                                                  删除文件.
+ * @method static bool deleteDir(string $dirname)                                                            删除文件夹.
+ * @method static bool createDir(string $dirname, array $config = [])                                        创建一个文件夹.
+ * @method static bool setVisibility(string $path, $visibility)                                              设置文件的可见性.
+ * @method static bool put(string $path, string $contents, array $config = [])                               创建或者更新文件.
+ * @method static bool putStream(string $path, $resource, array $config = [])                                使用流创建或者更新文件.
+ * @method static readAndDelete(string $path)                                                                读取并删除一个文件.
+ * @method static \League\Flysystem\FilesystemInterface addPlugin(\League\Flysystem\PluginInterface $plugin) 注册一个插件.
  */
-class Manager extends Managers implements IFilesystem
+class Manager extends Managers
 {
-    use Proxy;
-
-    /**
-     * 代理.
-     *
-     * @return \Leevel\Filesystem\IFilesystem
-     * @codeCoverageIgnore
-     */
-    public function proxy(): IFilesystem
-    {
-        return $this->connect();
-    }
-
     /**
      * 取得配置命名空间.
      *
