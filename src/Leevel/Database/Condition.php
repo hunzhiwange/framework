@@ -1608,7 +1608,7 @@ class Condition
     }
 
     /**
-     * 最大值
+     * 最大值.
      *
      * @param string $field
      * @param string $alias
@@ -1625,7 +1625,7 @@ class Condition
     }
 
     /**
-     * 最小值
+     * 最小值.
      *
      * @param string $field
      * @param string $alias

@@ -37,6 +37,8 @@ use PDO;
  *
  * @version 1.0
  * @codeCoverageIgnore
+ *
+ * @example php leevel make:idehelper Leevel\\Database\\Proxy\\Db
  */
 class Db
 {
@@ -340,7 +342,7 @@ class Db
     }
 
     /**
-     * 查询对象
+     * 查询对象.
      *
      * @return \Leevel\Database\Condition
      */
@@ -350,7 +352,7 @@ class Db
     }
 
     /**
-     * 返回数据库连接对象
+     * 返回数据库连接对象.
      *
      * @return \Leevel\Database\IDatabase
      */
@@ -360,7 +362,7 @@ class Db
     }
 
     /**
-     * 占位符返回本对象
+     * 占位符返回本对象.
      *
      * @return \Leevel\Database\Select
      */
@@ -699,7 +701,7 @@ class Db
     }
 
     /**
-     * 最大值
+     * 最大值.
      *
      * @param string $field
      * @param string $alias
@@ -713,7 +715,7 @@ class Db
     }
 
     /**
-     * 最小值
+     * 最小值.
      *
      * @param string $field
      * @param string $alias
@@ -727,7 +729,7 @@ class Db
     }
 
     /**
-     * 合计
+     * 合计.
      *
      * @param string $field
      * @param string $alias
@@ -1594,7 +1596,7 @@ class Db
     }
 
     /**
-     * 最大值
+     * 最大值.
      *
      * @param string $field
      * @param string $alias
@@ -1607,7 +1609,7 @@ class Db
     }
 
     /**
-     * 最小值
+     * 最小值.
      *
      * @param string $field
      * @param string $alias
