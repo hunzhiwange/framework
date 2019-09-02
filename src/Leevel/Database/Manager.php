@@ -36,21 +36,21 @@ use RuntimeException;
  * @version 1.0
  *
  * @method static pdo($master = false)                                                                                                         返回 Pdo 查询连接.
- * @method static query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = NULL, array $ctorArgs = []) 查询数据记录.
+ * @method static query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = []) 查询数据记录.
  * @method static execute(string $sql, array $bindParams = [])                                                                                 执行 sql 语句.
  * @method static transaction(\Closure $action)                                                                                                执行数据库事务
  * @method static void beginTransaction()                                                                                                      启动事务.
  * @method static bool inTransaction()                                                                                                         检查是否处于事务中.
  * @method static void commit()                                                                                                                用于非自动提交状态下面的查询提交.
  * @method static void rollBack()                                                                                                              事务回滚.
- * @method static string lastInsertId(?string $name = NULL)                                                                                    获取最后插入 ID 或者列.
+ * @method static string lastInsertId(?string $name = null)                                                                                    获取最后插入 ID 或者列.
  * @method static array lastSql()                                                                                                              获取最近一次查询的 sql 语句.
  * @method static int numRows()                                                                                                                返回影响记录.
  * @method static void close()                                                                                                                 关闭数据库.
  * @method static void freePDOStatement()                                                                                                      释放 PDO 预处理查询.
  * @method static void closeConnects()                                                                                                         关闭数据库连接.
  * @method static string normalizeExpression(string $sql, string $tableName)                                                                   sql 表达式格式化.
- * @method static string normalizeTableOrColumn(string $name, ?string $alias = NULL, ?string $as = NULL)                                       表或者字段格式化（支持别名）.
+ * @method static string normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)                                       表或者字段格式化（支持别名）.
  * @method static string normalizeColumn(string $key, string $tableName)                                                                       字段格式化.
  * @method static normalizeColumnValue($value, bool $quotationMark = true)                                                                     字段值格式化.
  * @method static string normalizeSqlType(string $sql)                                                                                         分析 sql 类型数据.
@@ -59,31 +59,31 @@ use RuntimeException;
  * @method static array tableNames(string $dbName, $master = false)                                                                            取得数据库表名列表.
  * @method static array tableColumns(string $tableName, $master = false)                                                                       取得数据库表字段信息.
  * @method static string identifierColumn($name)                                                                                               sql 字段格式化.
- * @method static string limitCount(?int $limitCount = NULL, ?int $limitOffset = NULL)                                                         分析 limit.
+ * @method static string limitCount(?int $limitCount = null, ?int $limitOffset = null)                                                         分析 limit.
  * @method static \Leevel\Database\Condition databaseCondition()                                                                               查询对象.
  * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                 返回数据库连接对象.
  * @method static \Leevel\Database\Select selfDatabaseSelect()                                                                                 占位符返回本对象.
  * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                               指定返回 SQL 不做任何操作.
  * @method static \Leevel\Database\Select master(bool $master = false)                                                                         设置是否查询主服务器.
- * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = NULL, array $ctorArgs = [])                              设置查询参数.
+ * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                              设置查询参数.
  * @method static \Leevel\Database\Select asClass(string $className, array $args = [])                                                         设置以类返会结果.
  * @method static \Leevel\Database\Select asDefault()                                                                                          设置默认形式返回.
  * @method static \Leevel\Database\Select asCollection(bool $acollection = true)                                                               设置是否以集合返回.
- * @method static select($data = NULL, array $bind = [], bool $flag = false)                                                                   原生 sql 查询数据 select.
+ * @method static select($data = null, array $bind = [], bool $flag = false)                                                                   原生 sql 查询数据 select.
  * @method static insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                   插入数据 insert (支持原生 sql).
  * @method static insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                          批量插入数据 insertAll.
  * @method static update($data, array $bind = [], bool $flag = false)                                                                          更新数据 update (支持原生 sql).
  * @method static updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                   更新某个字段的值
  * @method static updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                          字段递增.
  * @method static updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                          字段减少.
- * @method static delete(?string $data = NULL, array $bind = [], bool $flag = false)                                                           删除数据 delete (支持原生 sql).
+ * @method static delete(?string $data = null, array $bind = [], bool $flag = false)                                                           删除数据 delete (支持原生 sql).
  * @method static truncate(bool $flag = false)                                                                                                 清空表重置自增 ID.
  * @method static findOne(bool $flag = false)                                                                                                  返回一条记录.
  * @method static findAll(bool $flag = false)                                                                                                  返回所有记录.
- * @method static find(?int $num = NULL, bool $flag = false)                                                                                   返回最后几条记录.
+ * @method static find(?int $num = null, bool $flag = false)                                                                                   返回最后几条记录.
  * @method static value(string $field, bool $flag = false)                                                                                     返回一个字段的值
  * @method static pull(string $field, bool $flag = false)                                                                                      返回一个字段的值(别名).
- * @method static array list($fieldValue, ?string $fieldKey = NULL, bool $flag = false)                                                        返回一列数据.
+ * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                        返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                                      数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                                        数据分块处理依次回调.
  * @method static findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                              总记录数.
@@ -100,12 +100,12 @@ use RuntimeException;
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                                                                根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                          时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                            时间控制语句结束.
- * @method static \Leevel\Database\Select reset(?string $option = NULL)                                                                        重置查询条件.
+ * @method static \Leevel\Database\Select reset(?string $option = null)                                                                        重置查询条件.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                               prefix 查询.
  * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                           添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                            获取表别名.
- * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = NULL)                                                          添加字段.
- * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = NULL)                                                       设置字段.
+ * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)                                                          添加字段.
+ * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)                                                       设置字段.
  * @method static \Leevel\Database\Select where(...$cond)                                                                                      where 查询条件.
  * @method static \Leevel\Database\Select orWhere(...$cond)                                                                                    orWhere 查询条件.
  * @method static \Leevel\Database\Select whereRaw(string $raw)                                                                                Where 原生查询.
@@ -124,7 +124,7 @@ use RuntimeException;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                   whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                 whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                  whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = NULL, int $type = 2)                                                           参数绑定支持
+ * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)                                                           参数绑定支持
  * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                                 index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                                 index 忽略索引.
  * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                                        join 查询.

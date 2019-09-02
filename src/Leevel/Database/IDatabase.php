@@ -37,25 +37,25 @@ use PDO;
  * @method static \Leevel\Database\Select selfDatabaseSelect()                                                                      占位符返回本对象.
  * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                    指定返回 SQL 不做任何操作.
  * @method static \Leevel\Database\Select master(bool $master = false)                                                              设置是否查询主服务器.
- * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = NULL, array $ctorArgs = [])                   设置查询参数.
+ * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                   设置查询参数.
  * @method static \Leevel\Database\Select asClass(string $className, array $args = [])                                              设置以类返会结果.
  * @method static \Leevel\Database\Select asDefault()                                                                               设置默认形式返回.
  * @method static \Leevel\Database\Select asCollection(bool $acollection = true)                                                    设置是否以集合返回.
- * @method static select($data = NULL, array $bind = [], bool $flag = false)                                                        原生 sql 查询数据 select.
+ * @method static select($data = null, array $bind = [], bool $flag = false)                                                        原生 sql 查询数据 select.
  * @method static insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                        插入数据 insert (支持原生 sql).
  * @method static insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                               批量插入数据 insertAll.
  * @method static update($data, array $bind = [], bool $flag = false)                                                               更新数据 update (支持原生 sql).
  * @method static updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                        更新某个字段的值
  * @method static updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                               字段递增.
  * @method static updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                               字段减少.
- * @method static delete(?string $data = NULL, array $bind = [], bool $flag = false)                                                删除数据 delete (支持原生 sql).
+ * @method static delete(?string $data = null, array $bind = [], bool $flag = false)                                                删除数据 delete (支持原生 sql).
  * @method static truncate(bool $flag = false)                                                                                      清空表重置自增 ID.
  * @method static findOne(bool $flag = false)                                                                                       返回一条记录.
  * @method static findAll(bool $flag = false)                                                                                       返回所有记录.
- * @method static find(?int $num = NULL, bool $flag = false)                                                                        返回最后几条记录.
+ * @method static find(?int $num = null, bool $flag = false)                                                                        返回最后几条记录.
  * @method static value(string $field, bool $flag = false)                                                                          返回一个字段的值
  * @method static pull(string $field, bool $flag = false)                                                                           返回一个字段的值(别名).
- * @method static array list($fieldValue, ?string $fieldKey = NULL, bool $flag = false)                                             返回一列数据.
+ * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                             返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                           数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                             数据分块处理依次回调.
  * @method static findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                   总记录数.
@@ -72,12 +72,12 @@ use PDO;
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                                                     根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                               时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                 时间控制语句结束.
- * @method static \Leevel\Database\Select reset(?string $option = NULL)                                                             重置查询条件.
+ * @method static \Leevel\Database\Select reset(?string $option = null)                                                             重置查询条件.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                    prefix 查询.
  * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                                                                 获取表别名.
- * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = NULL)                                               添加字段.
- * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = NULL)                                            设置字段.
+ * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)                                               添加字段.
+ * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)                                            设置字段.
  * @method static \Leevel\Database\Select where(...$cond)                                                                           where 查询条件.
  * @method static \Leevel\Database\Select orWhere(...$cond)                                                                         orWhere 查询条件.
  * @method static \Leevel\Database\Select whereRaw(string $raw)                                                                     Where 原生查询.
@@ -96,7 +96,7 @@ use PDO;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                                                        whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                      whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                                                       whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = NULL, int $type = 2)                                                参数绑定支持
+ * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)                                                参数绑定支持
  * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                      index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                      index 忽略索引.
  * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                             join 查询.

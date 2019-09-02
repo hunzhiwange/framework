@@ -46,12 +46,12 @@ use Leevel\Page\Page;
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                   根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                             时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                               时间控制语句结束.
- * @method static \Leevel\Database\Select reset(?string $option = NULL)                           重置查询条件.
+ * @method static \Leevel\Database\Select reset(?string $option = null)                           重置查询条件.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                  prefix 查询.
  * @method static \Leevel\Database\Select table($table, $cols = '*')                              添加一个要查询的表及其要查询的字段.
  * @method static string getAlias()                                                               获取表别名.
- * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = NULL)             添加字段.
- * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = NULL)          设置字段.
+ * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)             添加字段.
+ * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)          设置字段.
  * @method static \Leevel\Database\Select where(...$cond)                                         where 查询条件.
  * @method static \Leevel\Database\Select orWhere(...$cond)                                       orWhere 查询条件.
  * @method static \Leevel\Database\Select whereRaw(string $raw)                                   Where 原生查询.
@@ -70,7 +70,7 @@ use Leevel\Page\Page;
  * @method static \Leevel\Database\Select whereDay(...$cond)                                      whereDay 查询条件.
  * @method static \Leevel\Database\Select whereMonth(...$cond)                                    whereMonth 查询条件.
  * @method static \Leevel\Database\Select whereYear(...$cond)                                     whereYear 查询条件.
- * @method static \Leevel\Database\Select bind($names, $value = NULL, int $type = 2)              参数绑定支持
+ * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)              参数绑定支持
  * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                    index 强制索引（或者忽略索引）.
  * @method static \Leevel\Database\Select ignoreIndex($indexs)                                    index 忽略索引.
  * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                           join 查询.
