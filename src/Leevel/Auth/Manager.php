@@ -30,11 +30,16 @@ use Leevel\Manager\Manager as Managers;
  * @since 2017.09.07
  *
  * @version 1.0
+ *
+ * @method static bool isLogin()                              用户是否已经登录.
+ * @method static array getLogin()                            获取登录信息.
+ * @method static void login(array $data, int $loginTime = 0) 登录写入数据.
+ * @method static void logout()                               登出.
+ * @method static void setTokenName(string $tokenName)        设置认证名字.
+ * @method static string getTokenName()                       取得认证名字.
  */
-class Manager extends Managers implements IAuth
+class Manager extends Managers
 {
-    use Proxy;
-
     /**
      * 返回默认驱动.
      *
