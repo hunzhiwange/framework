@@ -91,7 +91,6 @@ class Encryption implements IEncryption
     public function encrypt(string $value, int $expiry = 0): string
     {
         $iv = $this->createIv();
-
         $value = $this->packData($value, $expiry, $iv);
 
         return $this->encryptData($value, $iv);
@@ -109,7 +108,6 @@ class Encryption implements IEncryption
         if (false === ($value = $this->decryptData($value))) {
             return '';
         }
-
         list($data, $iv) = $value;
 
         return $this->validateData($data, $iv);
@@ -146,7 +144,6 @@ class Encryption implements IEncryption
     protected function unpackData(string $value)
     {
         $data = explode("\t", $value);
-
         if (4 !== count($data)) {
             return false;
         }
@@ -169,7 +166,6 @@ class Encryption implements IEncryption
     protected function encryptData(string $value, string $iv): string
     {
         $value = openssl_encrypt($value, $this->cipher, $this->key, OPENSSL_RAW_DATA, $iv);
-
         if (false === $value) {
             throw new InvalidArgumentException('Encrypt the data failed.'); // @codeCoverageIgnore
         }
@@ -230,13 +226,11 @@ class Encryption implements IEncryption
     protected function unpackDataWithIv(string $value)
     {
         $data = explode("\t", $value);
-
         if (2 !== count($data)) {
             return false;
         }
 
         $key = ['value', 'iv'];
-
         $data[0] = base64_decode($data[0], true);
         $data[1] = base64_decode($data[1], true);
 
