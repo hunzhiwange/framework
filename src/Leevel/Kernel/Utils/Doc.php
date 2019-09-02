@@ -121,7 +121,6 @@ class Doc
         $this->setSavePath($path);
 
         $markdown = trim($this->handle($className));
-
         if (!$markdown || !$this->savePath) {
             return false;
         }
@@ -143,9 +142,7 @@ class Doc
     public static function getMethodBody(string $className, string $method, bool $isDoc = false): string
     {
         $doc = new static('', '');
-
         $lines = $doc->parseFileContnet(new ReflectionClass($className));
-
         $method = new ReflectionMethod($className, $method);
 
         return $doc->parseMethodBody($lines, $method, $isDoc);
@@ -161,9 +158,7 @@ class Doc
     public static function getClassBody(string $className): string
     {
         $doc = new static('', '');
-
         $lines = $doc->parseFileContnet($reflectionClass = new ReflectionClass($className));
-
         $startLine = $reflectionClass->getStartLine() - 1;
         $endLine = $reflectionClass->getEndLine();
         $hasUse = false;
