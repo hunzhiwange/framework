@@ -79,7 +79,7 @@ class IdeHelper extends Command
      */
     protected function parseClassName(string $pathOrClassName): string
     {
-        if (class_exists($pathOrClassName)) {
+        if (class_exists($pathOrClassName) || interface_exists($pathOrClassName)) {
             return $pathOrClassName;
         }
 

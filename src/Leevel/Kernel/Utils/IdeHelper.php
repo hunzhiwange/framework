@@ -67,7 +67,7 @@ class IdeHelper
         $methodsResult = [];
 
         foreach ($reflectionClass->getMethods() as $method) {
-            if (!$method->isPublic()) {
+            if (!$method->isPublic() || 0 === strpos($method->getName(), '__')) {
                 continue;
             }
 
@@ -87,7 +87,7 @@ class IdeHelper
             }
 
             $methodsResult[] = [
-                'name'        => $method->name,
+                'name'        => $method->getName(),
                 'params'      => $params,
                 'return_type' => $returnTypeResult,
                 'description' => $description,
@@ -114,7 +114,7 @@ class IdeHelper
         $result = (string) $param;
         $result = substr($result, strpos($result, '<'));
         $result = rtrim($result, '] ');
-        $result = str_replace(['<required> ', '<optional> ', ' = Array'], ['', '', ' = []'], $result);
+        $result = str_replace(['<required> ', '<optional> ', ' = Array', '= NULL'], ['', '', ' = []', '= null'], $result);
         $result = str_replace('?...', '...', $result);
 
         if ($paramClassName) {
@@ -170,7 +170,7 @@ class IdeHelper
                 continue;
             }
 
-            $v = trim($v, '* ');
+            $v = trim($v, '/* ');
             if ($v) {
                 $description .= $v.' ';
             } else {
