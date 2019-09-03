@@ -119,8 +119,6 @@ use Leevel\Page\Page;
  */
 class Select
 {
-    //use ProxyCondition;
-
     /**
      * 分页查询结果标识.
      *
