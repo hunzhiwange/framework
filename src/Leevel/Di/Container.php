@@ -289,7 +289,6 @@ class Container implements IContainer, ArrayAccess
             }
         } else {
             $value = (array) $value;
-
             foreach ($value as $item) {
                 $this->alias[$item] = $alias;
             }
@@ -405,13 +404,7 @@ class Container implements IContainer, ArrayAccess
     {
         $name = $this->normalize($name);
 
-        $prop = [
-            'services',
-            'instances',
-            'singletons',
-        ];
-
-        foreach ($prop as $item) {
+        foreach (['services', 'instances', 'singletons'] as $item) {
             if (isset($this->{$item}[$name])) {
                 unset($this->{$item}[$name]);
             }
@@ -535,14 +528,12 @@ class Container implements IContainer, ArrayAccess
         }
 
         $this->deferredProviders = $deferredProviders;
-
         foreach ($deferredAlias as $alias) {
             $this->alias($alias);
         }
 
         foreach ($providers as $provider) {
             $provider = $this->register($provider);
-
             if (method_exists($provider, 'bootstrap')) {
                 $this->providerBootstraps[] = $provider;
             }
@@ -602,7 +593,6 @@ class Container implements IContainer, ArrayAccess
             }
         } else {
             $name = $this->normalize($name);
-
             if ($this->existsCoroutine($name)) {
                 unset($this->coroutineInstances[$this->coroutineCid()][$name]);
             }
@@ -686,9 +676,7 @@ class Container implements IContainer, ArrayAccess
     protected function registerDeferredProvider(string $provider): void
     {
         $providerInstance = $this->register($this->deferredProviders[$provider]);
-
         $this->callProviderBootstrap($providerInstance);
-
         unset($this->deferredProviders[$provider]);
     }
 
@@ -814,7 +802,6 @@ class Container implements IContainer, ArrayAccess
     {
         $result = [];
         $required = 0;
-
         $param = $this->parseReflection($injection);
         $validArgs = count($param);
 
@@ -881,11 +868,7 @@ class Container implements IContainer, ArrayAccess
             }
         }
 
-        return [
-            $result,
-            $required,
-            $validArgs,
-        ];
+        return [$result, $required, $validArgs];
     }
 
     /**
@@ -898,7 +881,6 @@ class Container implements IContainer, ArrayAccess
     protected function parseParamClass(ReflectionParameter $param)
     {
         $classObject = $param->getClass();
-
         if (!$classObject || !($classObject instanceof ReflectionClass)) {
             return false;
         }
@@ -918,7 +900,6 @@ class Container implements IContainer, ArrayAccess
     protected function parseClassFromContainer(string $argsclass): object
     {
         $itemMake = $this->make($argsclass);
-
         if (is_object($itemMake)) {
             return $itemMake;
         }
@@ -993,7 +974,6 @@ class Container implements IContainer, ArrayAccess
     protected function parseClassReflection(string $injection): array
     {
         $reflection = new ReflectionClass($injection);
-
         if (!$reflection->isInstantiable()) {
             $e = sprintf('Class %s is not instantiable.', $injection);
 
@@ -1001,7 +981,6 @@ class Container implements IContainer, ArrayAccess
         }
 
         $param = [];
-
         if (($constructor = $reflection->getConstructor())) {
             $param = $constructor->getParameters();
         }
