@@ -71,23 +71,7 @@ class PhpRedis implements IRedis
         }
 
         $this->option = array_merge($this->option, $option);
-        $this->handle = $this->createRedis();
-
-        $this->handle->{$this->option['persistent'] ? 'pconnect' : 'connect'}(
-            $this->option['host'],
-            (int) ($this->option['port']),
-            $this->option['timeout']
-        );
-
-        if ($this->option['password']) {
-            // @codeCoverageIgnoreStart
-            $this->handle->auth($this->option['password']);
-            // @codeCoverageIgnoreEnd
-        }
-
-        if ($this->option['select']) {
-            $this->handle->select($this->option['select']);
-        }
+        $this->connect();
     }
 
     /**
@@ -109,6 +93,8 @@ class PhpRedis implements IRedis
      */
     public function get(string $name)
     {
+        $this->checkConnect();
+
         return $this->handle->get($name);
     }
 
@@ -121,6 +107,8 @@ class PhpRedis implements IRedis
      */
     public function set(string $name, $data, ?int $expire = null): void
     {
+        $this->checkConnect();
+
         if ($expire) {
             $this->handle->setex($name, $expire, $data);
         } else {
@@ -135,6 +123,7 @@ class PhpRedis implements IRedis
      */
     public function delete(string $name): void
     {
+        $this->checkConnect();
         $this->handle->del($name);
     }
 
@@ -143,12 +132,50 @@ class PhpRedis implements IRedis
      */
     public function close(): void
     {
+        if (!$this->handle) {
+            return;
+        }
+
         $this->handle->close();
         $this->handle = null;
     }
 
     /**
-     * 返回 redis 对象
+     * 连接 Redis.
+     */
+    protected function connect(): void
+    {
+        $this->handle = $this->createRedis();
+
+        $this->handle->{$this->option['persistent'] ? 'pconnect' : 'connect'}(
+            $this->option['host'],
+            (int) ($this->option['port']),
+            $this->option['timeout']
+        );
+
+        if ($this->option['password']) {
+            // @codeCoverageIgnoreStart
+            $this->handle->auth($this->option['password']);
+            // @codeCoverageIgnoreEnd
+        }
+
+        if ($this->option['select']) {
+            $this->handle->select($this->option['select']);
+        }
+    }
+
+    /**
+     * 校验是否连接.
+     */
+    protected function checkConnect(): void
+    {
+        if (!$this->handle) {
+            $this->connect();
+        }
+    }
+
+    /**
+     * 返回 redis 对象.
      *
      * @return \Redis
      */
