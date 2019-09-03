@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
+use Closure;
 use Leevel\Database\Mysql\MysqlPool as MysqlPools;
+use PDO;
 
 /**
  * MySQL pool 缓存.
@@ -170,8 +172,6 @@ use Leevel\Database\Mysql\MysqlPool as MysqlPools;
  */
 class MysqlPool implements IDatabase
 {
-    use Proxy;
-
     /**
      * MySQL 连接池.
      *
@@ -187,6 +187,333 @@ class MysqlPool implements IDatabase
     public function __construct(MysqlPools $mysqlPool)
     {
         $this->mysqlPool = $mysqlPool;
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        return $this->proxy()->{$method}(...$args);
+    }
+
+    /**
+     * 返回 Pdo 查询连接.
+     *
+     * @param bool|int $master
+     *                         - bool false (读服务器) true (写服务器)
+     *                         - int 其它去对应服务器连接ID 0 表示主服务器
+     *
+     * @return mixed
+     */
+    public function pdo($master = false)
+    {
+        return $this->proxy()->pdo($master);
+    }
+
+    /**
+     * 查询数据记录.
+     *
+     * @param string     $sql           sql 语句
+     * @param array      $bindParams    sql 参数绑定
+     * @param bool|int   $master
+     * @param int        $fetchType
+     * @param null|mixed $fetchArgument
+     * @param array      $ctorArgs
+     *
+     * @return mixed
+     */
+    public function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = [])
+    {
+        return $this->proxy()->query($sql, $bindParams, $master, $fetchType, $fetchArgument, $ctorArgs);
+    }
+
+    /**
+     * 执行 sql 语句.
+     *
+     * @param string $sql        sql 语句
+     * @param array  $bindParams sql 参数绑定
+     *
+     * @return int|string
+     */
+    public function execute(string $sql, array $bindParams = [])
+    {
+        return $this->proxy()->execute($sql, $bindParams);
+    }
+
+    /**
+     * 执行数据库事务
+     *
+     * @param \Closure $action 事务回调
+     *
+     * @return mixed
+     */
+    public function transaction(Closure $action)
+    {
+        return $this->proxy()->transaction($action);
+    }
+
+    /**
+     * 启动事务.
+     */
+    public function beginTransaction(): void
+    {
+        $this->proxy()->beginTransaction();
+    }
+
+    /**
+     * 检查是否处于事务中.
+     *
+     * @return bool
+     */
+    public function inTransaction(): bool
+    {
+        return $this->proxy()->inTransaction();
+    }
+
+    /**
+     * 用于非自动提交状态下面的查询提交.
+     */
+    public function commit(): void
+    {
+        $this->proxy()->commit();
+    }
+
+    /**
+     * 事务回滚.
+     */
+    public function rollBack(): void
+    {
+        $this->proxy()->rollBack();
+    }
+
+    /**
+     * 设置是否启用部分事务.
+     *
+     * @param bool $savepoints
+     */
+    public function setSavepoints(bool $savepoints): void
+    {
+        $this->proxy()->setSavepoints($savepoints);
+    }
+
+    /**
+     * 获取是否启用部分事务.
+     *
+     * @return bool
+     */
+    public function hasSavepoints(): bool
+    {
+        return $this->proxy()->hasSavepoints();
+    }
+
+    /**
+     * 获取最后插入 ID 或者列.
+     *
+     * @param null|string $name 自增序列名
+     *
+     * @return string
+     */
+    public function lastInsertId(?string $name = null): string
+    {
+        return $this->proxy()->lastInsertId($name);
+    }
+
+    /**
+     * 获取最近一次查询的 sql 语句.
+     *
+     * @return array
+     */
+    public function lastSql(): array
+    {
+        return $this->proxy()->lastSql();
+    }
+
+    /**
+     * 返回影响记录.
+     *
+     * @return int
+     */
+    public function numRows(): int
+    {
+        return $this->proxy()->numRows();
+    }
+
+    /**
+     * 关闭数据库.
+     */
+    public function close(): void
+    {
+        $this->proxy()->close();
+    }
+
+    /**
+     * 释放 PDO 预处理查询.
+     */
+    public function freePDOStatement(): void
+    {
+        $this->proxy()->freePDOStatement();
+    }
+
+    /**
+     * 关闭数据库连接.
+     */
+    public function closeConnects(): void
+    {
+        $this->proxy()->closeConnects();
+    }
+
+    /**
+     * 归还连接池.
+     */
+    public function release(): void
+    {
+        $this->proxy()->release();
+    }
+
+    /**
+     * sql 表达式格式化.
+     *
+     * @param string $sql
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public function normalizeExpression(string $sql, string $tableName): string
+    {
+        return $this->proxy()->normalizeExpression($sql, $tableName);
+    }
+
+    /**
+     * 表或者字段格式化（支持别名）.
+     *
+     * @param string      $name
+     * @param null|string $alias
+     * @param null|string $as
+     *
+     * @return string
+     */
+    public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
+    {
+        return $this->proxy()->normalizeTableOrColumn($name, $alias, $as);
+    }
+
+    /**
+     * 字段格式化.
+     *
+     * @param string $key
+     * @param string $tableName
+     *
+     * @return string
+     */
+    public function normalizeColumn(string $key, string $tableName): string
+    {
+        return $this->proxy()->normalizeColumn($key, $tableName);
+    }
+
+    /**
+     * 字段值格式化.
+     *
+     * @param mixed $value
+     * @param bool  $quotationMark
+     *
+     * @return mixed
+     */
+    public function normalizeColumnValue($value, bool $quotationMark = true)
+    {
+        return $this->proxy()->normalizeColumnValue($value, $quotationMark);
+    }
+
+    /**
+     * 分析 sql 类型数据.
+     *
+     * @param string $sql
+     *
+     * @return string
+     */
+    public function normalizeSqlType(string $sql): string
+    {
+        return $this->proxy()->normalizeSqlType($sql);
+    }
+
+    /**
+     * 分析绑定参数类型数据.
+     *
+     * @param mixed $value
+     *
+     * @return int
+     */
+    public function normalizeBindParamType($value): int
+    {
+        return $this->proxy()->normalizeBindParamType($value);
+    }
+
+    /**
+     * dsn 解析.
+     *
+     * @param array $option
+     *
+     * @return string
+     */
+    public function parseDsn(array $option): string
+    {
+        return $this->proxy()->parseDsn($option);
+    }
+
+    /**
+     * 取得数据库表名列表.
+     *
+     * @param string   $dbName
+     * @param bool|int $master
+     *
+     * @return array
+     */
+    public function tableNames(string $dbName, $master = false): array
+    {
+        return $this->proxy()->tableNames($dbName, $master);
+    }
+
+    /**
+     * 取得数据库表字段信息.
+     *
+     * @param string   $tableName
+     * @param bool|int $master
+     *
+     * @return array
+     */
+    public function tableColumns(string $tableName, $master = false): array
+    {
+        return $this->proxy()->tableColumns($tableName, $master);
+    }
+
+    /**
+     * sql 字段格式化.
+     *
+     * @param mixed $name
+     *
+     * @return string
+     */
+    public function identifierColumn($name): string
+    {
+        return $this->proxy()->identifierColumn($name);
+    }
+
+    /**
+     * 分析 limit.
+     *
+     * @param null|int $limitCount
+     * @param null|int $limitOffset
+     *
+     * @return string
+     */
+    public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
+    {
+        return $this->proxy()->limitCount($limitCount, $limitOffset);
     }
 
     /**
