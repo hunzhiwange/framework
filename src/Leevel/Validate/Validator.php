@@ -774,19 +774,23 @@ class Validator implements IValidator
      */
     protected function parseRule(string $rule): array
     {
-        $param = [];
+        $rule = trim($rule);
+        list($rule, $params) = array_pad(explode(':', $rule, 2), 2, []);
 
-        if (false !== strpos($rule, ':')) {
-            list($rule, $param) = explode(':', $rule, 2);
-
-            if (isset($this->alias[$rule])) {
-                $rule = $this->alias[$rule];
-            }
-
-            $param = $this->parseParams($rule, $param);
+        if (is_string($params)) {
+            $params = $this->parseParams($rule, $params);
         }
 
-        return [trim($rule), $param];
+        $params = array_map(function (string $item) {
+            return ctype_digit($item) ? (int) $item :
+                (is_numeric($item) ? (float) $item : $item);
+        }, $params);
+
+        if (isset($this->alias[$rule])) {
+            $rule = $this->alias[$rule];
+        }
+
+        return [$rule, $params];
     }
 
     /**
