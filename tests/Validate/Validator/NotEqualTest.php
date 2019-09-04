@@ -66,8 +66,9 @@ class NotEqualTest extends TestCase
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
-            [1, '1'],
-            [23, '23'],
+            ['1', '1'],
+            ['23', '23'],
+            [(string) (3), 3],
         ];
     }
 
@@ -94,9 +95,9 @@ class NotEqualTest extends TestCase
     public function badProvider(): array
     {
         return [
-            [(string) (3), 3],
-            ['1.5', '1.5'],
-            ['1', true],
+            [3, 3],
+            [1.5, '1.5'],
+            [1, true],
             ['', false],
         ];
     }

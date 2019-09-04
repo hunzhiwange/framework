@@ -50,16 +50,16 @@ class EqualTest extends TestCase
                 'name'     => 'equal:'.$param,
             ]
         );
-
+        dump('xx'.true);
         $this->assertTrue($validate->success());
     }
 
     public function baseUseProvider(): array
     {
         return [
-            [(string) (3), 3],
-            ['1.5', '1.5'],
-            ['1', true],
+            [3, 3],
+            [1.5, '1.5'],
+            [1, true],
             ['', false],
         ];
     }
@@ -87,6 +87,8 @@ class EqualTest extends TestCase
     public function badProvider(): array
     {
         return [
+            ['1', true],
+            [(string) (3), 3],
             [2, 3],
             ['1.1', '1.5'],
             ['1.5', '2'],
@@ -96,8 +98,8 @@ class EqualTest extends TestCase
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
-            [1, '1'],
-            [23, '23'],
+            ['1', '1'],
+            ['23', '23'],
         ];
     }
 

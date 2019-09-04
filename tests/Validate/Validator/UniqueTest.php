@@ -186,7 +186,7 @@ class UniqueTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Unique additional conditions must be string.'
+            'Unique additional conditions must be scalar type.'
         );
 
         $validate = new Validator(
