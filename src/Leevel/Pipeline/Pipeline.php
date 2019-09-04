@@ -226,7 +226,8 @@ class Pipeline implements IPipeline
         }
 
         $params = array_map(function (string $item) {
-            return ctype_digit($item) ? (int) $item : $item;
+            return ctype_digit($item) ? (int) $item :
+                (is_numeric($item) ? (float) $item : $item);
         }, $params);
 
         return [$name, $params];
