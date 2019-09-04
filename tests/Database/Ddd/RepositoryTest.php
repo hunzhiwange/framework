@@ -1214,7 +1214,6 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $newPost = $repository
-            ->select()
             ->where('id', 5)
             ->findEntity(1);
 
