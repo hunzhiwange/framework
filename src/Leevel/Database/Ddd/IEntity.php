@@ -420,16 +420,16 @@ interface IEntity
      *
      * @return int
      */
-    public static function destroys(array $ids): int;
+    public static function destroy(array $ids): int;
 
     /**
-     * 销毁模型实体.
+     * 删除模型实体.
      *
      * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function destroy(): self;
+    public function delete(): self;
 
     /**
      * 根据主键 ID 删除模型实体.

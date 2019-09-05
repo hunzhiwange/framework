@@ -532,7 +532,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return int
      */
-    public static function destroys(array $ids): int
+    public static function destroy(array $ids): int
     {
         $count = 0;
         $entitys = static::select()
@@ -541,7 +541,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         /** @var \Leevel\Database\Ddd\IEntity $entity */
         foreach ($entitys as $entity) {
-            if ($entity->destroy()->flush()) {
+            if ($entity->delete()->flush()) {
                 $count++;
             }
         }
@@ -550,13 +550,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 销毁模型实体.
+     * 删除模型实体.
      *
      * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function destroy(): IEntity
+    public function delete(): IEntity
     {
         if (null === static::primaryKey()) {
             $e = sprintf('Entity %s has no primary key.', static::class);

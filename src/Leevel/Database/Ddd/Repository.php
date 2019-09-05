@@ -473,7 +473,7 @@ class Repository implements IRepository
             return false;
         }
 
-        return $entity->destroy()->flush();
+        return $entity->delete()->flush();
     }
 
     /**

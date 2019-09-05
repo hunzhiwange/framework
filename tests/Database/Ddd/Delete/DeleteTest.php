@@ -46,7 +46,7 @@ class DeleteTest extends TestCase
 
         $this->assertNull($entity->flushData());
 
-        $entity->destroy();
+        $entity->delete();
 
         $data = <<<'eot'
             [
