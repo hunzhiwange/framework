@@ -70,7 +70,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @var mixed
      */
-    protected $leevelConnect;
+    protected static $leevelConnect;
 
     /**
      * 已修改的模型实体属性.
@@ -336,6 +336,30 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
+     * 返回数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function select(): Select
+    {
+        return new Select(new static());
+    }
+
+    /**
+     * 返回模型实体类的 meta 对象.
+     *
+     * @return \Leevel\Database\Ddd\IMeta
+     */
+    public static function meta(): IMeta
+    {
+        return Meta::instance(static::TABLE)
+            ->setDatabaseConnect(static::$leevelConnect);
+    }
+
+    /**
      * 批量修改属性.
      *
      * @param array $data
@@ -513,8 +537,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $count = 0;
         $instance = new static();
-
-        foreach ($instance->whereIn($instance->singlePrimaryKey(), $ids)->findAll() as $entity) {
+        $entitys = $instance->whereIn($instance->singlePrimaryKey(), $ids)->findAll();
+        foreach ($entitys as $entity) {
             if ($entity->destroy()->flush()) {
                 $count++;
             }
@@ -541,7 +565,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushed = false;
         $this->leevelFlush = function ($condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
-            $num = $this->metaConnect()->delete($condition);
+            $num = static::meta()->delete($condition);
             $this->handleEvent(static::AFTER_DELETE_EVENT);
 
             return $num;
@@ -669,8 +693,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $map = [$this->singlePrimaryKey(), $this->id()];
         }
 
-        $data = $this
-            ->metaConnect()
+        $data = static::meta()
             ->select()
             ->where($map)
             ->findOne();
@@ -814,7 +837,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function eager(array $relation): Select
     {
-        return (new static())->selectForEntity()->eager($relation);
+        return static::select()->eager($relation);
     }
 
     /**
@@ -1184,17 +1207,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 设置连接.
+     * 设置数据库连接.
      *
      * @param mixed $connect
-     *
-     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function withConnect($connect): IEntity
+    public static function withConnect($connect): void
     {
-        $this->leevelConnect = $connect;
-
-        return $this;
+        self::$leevelConnect = $connect;
     }
 
     /**
@@ -1333,10 +1352,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @return \Leevel\Database\Select
      */
-    public function databaseSelect(): DatabaseSelect
+    public static function databaseSelect(): DatabaseSelect
     {
-        return $this
-            ->metaConnect()
+        return static::meta()
             ->select()
             ->asClass(static::class, [true])
             ->asCollection();
@@ -1350,41 +1368,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function selectForEntity(): Select
     {
         return new Select($this);
-    }
-
-    /**
-     * 返回数据库查询集合对象.
-     *
-     * - 查询静态方法入口，更好的 IDE 用户体验.
-     * - 屏蔽 __callStatic 防止 IDE 无法识别.
-     *
-     * @return \Leevel\Database\Ddd\Select
-     */
-    public static function select(): Select
-    {
-        return new Select(new static());
-    }
-
-    /**
-     * 返回模型实体类的 meta 对象.
-     *
-     * @return \Leevel\Database\Ddd\IMeta
-     */
-    public function metaConnect(): IMeta
-    {
-        return static::meta($this->leevelConnect);
-    }
-
-    /**
-     * 返回模型实体类的 meta 对象.
-     *
-     * @param null|mixed $connect
-     *
-     * @return \Leevel\Database\Ddd\IMeta
-     */
-    public static function meta($connect = null): IMeta
-    {
-        return Meta::instance(static::TABLE)->setConnect($connect);
     }
 
     /**
@@ -1542,7 +1525,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
-            $lastInsertId = $this->metaConnect()->insert($saveData);
+            $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
                 $this->withProp($auto, $lastInsertId, false, true);
             }
@@ -1603,7 +1586,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = function ($condition, $saveData) {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
-            $num = $this->metaConnect()->update($condition, $saveData);
+            $num = static::meta()->update($condition, $saveData);
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, null, null);
             $this->clearChanged();
             $this->handleEvent(static::AFTER_UPDATE_EVENT);

@@ -314,6 +314,23 @@ interface IEntity
     public static function make(array $data = [], bool $fromStorage = false): self;
 
     /**
+     * 返回数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function select(): Select;
+
+    /**
+     * 返回模型实体类的 meta 对象
+     *
+     * @return \Leevel\Database\Ddd\IMeta
+     */
+    public static function meta(): IMeta;
+
+    /**
      * 批量修改属性.
      *
      * @param array $data
@@ -721,13 +738,11 @@ interface IEntity
     public static function table(): string;
 
     /**
-     * 设置连接.
+     * 设置数据库连接.
      *
      * @param mixed $connect
-     *
-     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function withConnect($connect): self;
+    public static function withConnect($connect): void;
 
     /**
      * 获取 enum.
@@ -766,7 +781,7 @@ interface IEntity
      *
      * @return \Leevel\Database\Select
      */
-    public function databaseSelect(): DatabaseSelect;
+    public static function databaseSelect(): DatabaseSelect;
 
     /**
      * 返回数据库查询集合对象
@@ -774,30 +789,4 @@ interface IEntity
      * @return \Leevel\Database\Ddd\Select
      */
     public function selectForEntity(): Select;
-
-    /**
-     * 返回数据库查询集合对象.
-     *
-     * - 查询静态方法入口，更好的 IDE 用户体验.
-     * - 屏蔽 __callStatic 防止 IDE 无法识别.
-     *
-     * @return \Leevel\Database\Ddd\Select
-     */
-    public static function select(): Select;
-
-    /**
-     * 返回模型实体类的 meta 对象
-     *
-     * @return \Leevel\Database\Ddd\IMeta
-     */
-    public function metaConnect(): IMeta;
-
-    /**
-     * 返回模型实体类的 meta 对象
-     *
-     * @param null|mixed $connect
-     *
-     * @return \Leevel\Database\Ddd\IMeta
-     */
-    public static function meta($connect = null): IMeta;
 }

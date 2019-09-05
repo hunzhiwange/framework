@@ -65,11 +65,11 @@ class Meta implements IMeta
     protected $table;
 
     /**
-     * 表连接.
+     * 数据库连接.
      *
      * @var \Leevel\Database\IDatabase
      */
-    protected $connect;
+    protected $databaseConnect;
 
     /**
      * 构造函数
@@ -136,15 +136,15 @@ class Meta implements IMeta
     }
 
     /**
-     * 返回数据库元对象连接.
+     * 设置数据库元对象连接.
      *
-     * @param null|mixed $connect
+     * @param null|mixed $databaseConnect
      *
      * @return \Leevel\Database\Ddd\IMeta
      */
-    public function setConnect($connect = null): IMeta
+    public function setDatabaseConnect($databaseConnect = null): IMeta
     {
-        $this->connect = self::resolveDatabase()->connect($connect);
+        $this->databaseConnect = self::resolveDatabase()->connect($databaseConnect);
 
         return $this;
     }
@@ -197,7 +197,7 @@ class Meta implements IMeta
      */
     public function select(): DatabaseSelect
     {
-        return $this->connect->table($this->table);
+        return $this->databaseConnect->table($this->table);
     }
 
     /**
