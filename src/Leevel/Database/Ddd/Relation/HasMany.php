@@ -22,6 +22,7 @@ namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 HasMany.
@@ -119,7 +120,9 @@ class HasMany extends Relation
             return new Collection();
         }
 
-        return $this->select->findAll();
+        return Select::withoutPreLoadsResult(function () {
+            return $this->select->findAll();
+        });
     }
 
     /**

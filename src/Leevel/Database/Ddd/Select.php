@@ -201,6 +201,13 @@ class Select
     protected $preLoads = [];
 
     /**
+     * 是否执行预载入查询.
+     *
+     * @var bool
+     */
+    protected static $preLoadsResult = true;
+
+    /**
      * 构造函数.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
@@ -234,6 +241,23 @@ class Select
     public function entity(): IEntity
     {
         return $this->entity;
+    }
+
+    /**
+     * 获取不执行预载入的查询结果.
+     *
+     * @param \Closure $preLoadsResult
+     *
+     * @return mixed
+     */
+    public static function withoutPreLoadsResult(Closure $preLoadsResult)
+    {
+        $old = static::$preLoadsResult;
+        static::$preLoadsResult = false;
+        $result = call_user_func($preLoadsResult);
+        static::$preLoadsResult = $old;
+
+        return $result;
     }
 
     /**
@@ -287,10 +311,12 @@ class Select
      */
     public function findEntity(int $id, array $column = ['*']): IEntity
     {
-        return $this->select
+        $result = $this->select
             ->where($this->entity->singlePrimaryKey(), '=', $id)
             ->setColumns($column)
             ->findOne();
+
+        return $this->normalizeSelectResult($result);
     }
 
     /**
@@ -307,10 +333,12 @@ class Select
             return $this->entity->collection();
         }
 
-        return $this->select
+        $result = $this->select
             ->whereIn($this->entity->singlePrimaryKey(), $ids)
             ->setColumns($column)
             ->findAll();
+
+        return $this->normalizeSelectResult($result);
     }
 
     /**
@@ -505,7 +533,6 @@ class Select
     protected function nestedRelation(string $relation): array
     {
         $nested = [];
-
         foreach ($this->preLoads as $name => $condition) {
             if ($this->isNested($name, $relation)) {
                 $nested[substr($name, strlen($relation.'.'))] = $condition;
@@ -538,14 +565,9 @@ class Select
     protected function parseWithRelation(array $relation): array
     {
         $data = [];
-
         foreach ($relation as $name => $condition) {
             if (is_numeric($name)) {
-                list($name, $condition) = [
-                    $condition,
-                    function () {
-                    },
-                ];
+                list($name, $condition) = [$condition, null];
             }
 
             $data = $this->parseNestedWith($name, $data);
@@ -566,13 +588,10 @@ class Select
     protected function parseNestedWith(string $name, array $result): array
     {
         $progress = [];
-
         foreach (explode('.', $name) as $segment) {
             $progress[] = $segment;
-
             if (!isset($result[$last = implode('.', $progress)])) {
-                $result[$last] = function () {
-                };
+                $result[$last] = null;
             }
         }
 
@@ -589,14 +608,11 @@ class Select
     protected function conversionToEntitys($result): array
     {
         $type = '';
-
         if ($result instanceof Collection) {
             $data = [];
-
             foreach ($result as $entity) {
                 $data[] = $entity;
             }
-
             $result = $data;
             $type = 'collection';
         } elseif (is_object($result) && $result instanceof IEntity) {
@@ -612,15 +628,17 @@ class Select
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
      * @param string                         $name
-     * @param \Closure                       $condition
+     * @param null|\Closure                  $condition
      *
      * @return array
      */
-    protected function loadRelation(array $entitys, string $name, Closure $condition): array
+    protected function loadRelation(array $entitys, string $name, ?Closure $condition = null): array
     {
         $relation = $this->getRelation($name);
         $relation->preLoadCondition($entitys);
-        call_user_func($condition, $relation);
+        if ($condition) {
+            call_user_func($condition, $relation);
+        }
 
         return $relation->matchPreLoad($entitys, $relation->getPreLoad(), $name);
     }
@@ -638,7 +656,7 @@ class Select
             return $this;
         }
 
-        if (!$this->preLoads) {
+        if (false === static::$preLoadsResult || !$this->preLoads) {
             return $result;
         }
 

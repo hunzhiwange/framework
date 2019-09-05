@@ -221,7 +221,7 @@ abstract class Relation
     protected $sourceKey;
 
     /**
-     * 是否初始化查询.
+     * 是否初始化关联查询条件.
      *
      * @var bool
      */
@@ -264,7 +264,6 @@ abstract class Relation
     public function __call(string $method, array $args)
     {
         $select = $this->select->{$method}(...$args);
-
         if ($this->getSelect() === $select) {
             return $this;
         }
@@ -289,11 +288,7 @@ abstract class Relation
      */
     public function getPreLoad()
     {
-        return $this->targetEntity
-            ->selectForEntity()
-            ->preLoadResult(
-                $this->findAll()
-            );
+        return $this->getSelect()->preLoadResult($this->findAll());
     }
 
     /**
@@ -396,9 +391,7 @@ abstract class Relation
         return array_unique(
             array_values(
                 array_map(function ($entity) use ($key) {
-                    return $key ?
-                        $entity->prop($key) :
-                        $entity->singleId();
+                    return $key ? $entity->prop($key) : $entity->singleId();
                 }, $entitys)
             )
         );

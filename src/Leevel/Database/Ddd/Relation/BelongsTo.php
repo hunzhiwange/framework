@@ -22,6 +22,7 @@ namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 BelongsTo.
@@ -123,7 +124,9 @@ class BelongsTo extends Relation
             return $this->targetEntity->make();
         }
 
-        return $this->select->findOne();
+        return Select::withoutPreLoadsResult(function () {
+            return $this->select->findOne();
+        });
     }
 
     /**

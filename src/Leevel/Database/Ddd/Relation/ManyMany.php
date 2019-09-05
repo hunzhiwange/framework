@@ -22,6 +22,7 @@ namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 ManyMany.
@@ -154,7 +155,9 @@ class ManyMany extends Relation
             return new Collection();
         }
 
-        $tmps = $this->select->findAll();
+        $tmps = Select::withoutPreLoadsResult(function () {
+            return $this->select->findAll();
+        });
         if (!$tmps) {
             return new Collection();
         }
@@ -190,11 +193,7 @@ class ManyMany extends Relation
      */
     public function getPreLoad()
     {
-        return $this->targetEntity
-            ->selectForEntity()
-            ->preLoadResult(
-                $this->sourceQuery()
-            );
+        return $this->getSelect()->preLoadResult($this->sourceQuery());
     }
 
     /**
