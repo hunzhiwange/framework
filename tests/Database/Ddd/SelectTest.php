@@ -26,6 +26,7 @@ use Leevel\Database\Ddd\Select;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
+use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
 
 /**
  * select test.
@@ -223,9 +224,9 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
         $this->assertSame(0, $post->delete_at);
 
-        $this->assertFalse($post->selectForEntity()->softDeleted());
-        $this->assertSame(1, $select->softDelete());
-        $this->assertTrue($post->selectForEntity()->softDeleted());
+        $this->assertFalse($post->softDeleted());
+        $this->assertSame(1, $post->softDelete());
+        $this->assertTrue($post->softDeleted());
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -276,9 +277,9 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
         $this->assertSame(0, $post->delete_at);
 
-        $this->assertFalse($post->selectForEntity()->softDeleted());
-        $this->assertSame(1, $select->softDestroy([1]));
-        $this->assertFalse($post->selectForEntity()->softDeleted());
+        $this->assertFalse($post->softDeleted());
+        $this->assertSame(1, Post::softDestroy([1]));
+        $this->assertFalse($post->softDeleted());
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -329,9 +330,9 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
         $this->assertSame(0, $post->delete_at);
 
-        $this->assertFalse($post->selectForEntity()->softDeleted());
-        $this->assertSame(1, $select->softDelete());
-        $this->assertTrue($post->selectForEntity()->softDeleted());
+        $this->assertFalse($post->softDeleted());
+        $this->assertSame(1, $post->softDelete());
+        $this->assertTrue($post->softDeleted());
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -347,10 +348,10 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post2->summary);
         $this->assertSame(0, $post2->delete_at);
 
-        $newSelect = new Select(Post::select()->findEntity(1));
-        $this->assertTrue($newSelect->softDeleted());
-        $this->assertSame(1, $newSelect->softRestore());
-        $this->assertFalse($newSelect->softDeleted());
+        $newPost = Post::select()->findEntity(1);
+        $this->assertTrue($newPost->softDeleted());
+        $this->assertSame(1, $newPost->softRestore());
+        $this->assertFalse($newPost->softDeleted());
 
         $restorePost1 = Post::select()->findEntity(1);
         $this->assertSame(0, $restorePost1->delete_at);
@@ -389,9 +390,9 @@ class SelectTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(2, $posts);
 
-        $this->assertFalse($post->selectForEntity()->softDeleted());
-        $this->assertSame(1, $select->softDestroy([1]));
-        $this->assertFalse($post->selectForEntity()->softDeleted());
+        $this->assertFalse($post->softDeleted());
+        $this->assertSame(1, Post::softDestroy([1]));
+        $this->assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
 
@@ -437,9 +438,9 @@ class SelectTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(2, $posts);
 
-        $this->assertFalse($post->selectForEntity()->softDeleted());
-        $this->assertSame(1, $select->softDestroy([1]));
-        $this->assertFalse($post->selectForEntity()->softDeleted());
+        $this->assertFalse($post->softDeleted());
+        $this->assertSame(1, Post::softDestroy([1]));
+        $this->assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
 
@@ -452,15 +453,26 @@ class SelectTest extends TestCase
         $this->assertCount(1, $posts);
     }
 
+    public function testDeleteAtColumnNotDefined(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\PostContent` soft delete field was not defined.'
+        );
+
+        $entity = new PostContent();
+        $entity->softDeleted();
+    }
+
     public function testDeleteAtColumnNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\PostContent` soft delete field `delete_at` was not found.'
+            'Entity `Tests\\Database\\Ddd\\Entity\\SoftDeleteNotFoundDeleteAtField` soft delete field `delete_at` was not found.'
         );
 
-        $select = new Select(new PostContent());
-        $select->softDeleted();
+        $entity = new SoftDeleteNotFoundDeleteAtField();
+        $entity->softDeleted();
     }
 
     public function t22222222estScopeBase(): void
