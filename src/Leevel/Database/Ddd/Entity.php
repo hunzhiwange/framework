@@ -362,6 +362,19 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
+     * 返回数据库查询集合对象.
+     *
+     * @return \Leevel\Database\Select
+     */
+    public static function selectCollection(): DatabaseSelect
+    {
+        return static::meta()
+            ->select()
+            ->asClass(static::class, [true])
+            ->asCollection();
+    }
+
+    /**
      * 返回模型实体类的 meta 对象.
      *
      * @return \Leevel\Database\Ddd\IMeta
@@ -1466,19 +1479,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         return $ids;
-    }
-
-    /**
-     * 返回数据库查询集合对象.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public static function databaseSelect(): DatabaseSelect
-    {
-        return static::meta()
-            ->select()
-            ->asClass(static::class, [true])
-            ->asCollection();
     }
 
     /**

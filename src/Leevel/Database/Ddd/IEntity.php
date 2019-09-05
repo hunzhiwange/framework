@@ -335,6 +335,13 @@ interface IEntity
     public static function find(): Select;
 
     /**
+     * 返回数据库查询集合对象
+     *
+     * @return \Leevel\Database\Select
+     */
+    public static function selectCollection(): DatabaseSelect;
+
+    /**
      * 返回模型实体类的 meta 对象
      *
      * @return \Leevel\Database\Ddd\IMeta
@@ -828,11 +835,4 @@ interface IEntity
      * @return array
      */
     public function idCondition(): array;
-
-    /**
-     * 返回数据库查询集合对象
-     *
-     * @return \Leevel\Database\Select
-     */
-    public static function databaseSelect(): DatabaseSelect;
 }

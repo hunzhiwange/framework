@@ -214,7 +214,7 @@ class Select
     public function __construct(IEntity $entity)
     {
         $this->entity = $entity;
-        $this->select = $this->entity->databaseSelect();
+        $this->select = $this->entity->selectCollection();
     }
 
     /**
