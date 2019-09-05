@@ -174,7 +174,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function __construct(array $data = [], bool $fromStorage = false)
     {
         $className = static::class;
-
         foreach (['TABLE', 'ID', 'AUTO', 'STRUCT'] as $item) {
             if (!defined($className.'::'.$item)) {
                 $e = sprintf('The entity const %s was not defined.', $item);
@@ -536,8 +535,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function destroys(array $ids): int
     {
         $count = 0;
-        $instance = new static();
-        $entitys = $instance->whereIn($instance->singlePrimaryKey(), $ids)->findAll();
+        $entitys = static::select()
+            ->whereIn(static::singlePrimaryKey(), $ids)
+            ->findAll();
+
+        /** @var \Leevel\Database\Ddd\IEntity $entity */
         foreach ($entitys as $entity) {
             if ($entity->destroy()->flush()) {
                 $count++;
@@ -556,7 +558,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function destroy(): IEntity
     {
-        if (null === $this->primaryKey()) {
+        if (null === static::primaryKey()) {
             $e = sprintf('Entity %s has no primary key.', static::class);
 
             throw new InvalidArgumentException($e);
@@ -574,6 +576,112 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushData = [$this->idCondition()];
 
         return $this;
+    }
+
+    /**
+     * 根据主键 ID 删除模型实体.
+     *
+     * @param array $ids
+     * @param bool  $flush
+     *
+     * @return int
+     */
+    public static function softDestroy(array $ids, bool $flush = true): int
+    {
+        $count = 0;
+        $entitys = static::select()
+            ->whereIn(static::singlePrimaryKey(), $ids)
+            ->findAll();
+
+        /** @var \Leevel\Database\Ddd\IEntity $entity */
+        foreach ($entitys as $entity) {
+            if ($entity->softDelete($flush)) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * 从模型实体中软删除数据.
+     *
+     * @param bool $flush
+     *
+     * @return int
+     */
+    public function softDelete(bool $flush = true): int
+    {
+        $this->withProp(static::deleteAtColumn(), time());
+
+        $num = 1;
+        if (true === $flush) {
+            $this->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
+            $num = $this->update()->flush();
+            $this->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
+        }
+
+        return $num;
+    }
+
+    /**
+     * 恢复软删除的模型实体.
+     *
+     * @return int
+     */
+    public function softRestore(bool $flush = true): int
+    {
+        $this->withProp(static::deleteAtColumn(), 0);
+
+        $num = 1;
+        if (true === $flush) {
+            $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT);
+            $num = $this->update()->flush();
+            $this->handleEvent(self::AFTER_SOFT_RESTORE_EVENT);
+        }
+
+        return $num;
+    }
+
+    /**
+     * 检查模型实体是否已经被软删除了.
+     *
+     * @return bool
+     */
+    public function softDeleted(): bool
+    {
+        return (int) $this->prop(static::deleteAtColumn()) > 0;
+    }
+
+    /**
+     * 获取软删除字段.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    public static function deleteAtColumn(): string
+    {
+        if (!defined(static::class.'::DELETE_AT')) {
+            $e = sprintf(
+                'Entity `%s` soft delete field was not defined.',
+                static::class
+            );
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $deleteAt = static::DELETE_AT;
+        if (!static::hasField($deleteAt)) {
+            $e = sprintf(
+                'Entity `%s` soft delete field `%s` was not found.',
+                static::class, $deleteAt
+            );
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return $deleteAt;
     }
 
     /**
@@ -649,7 +757,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function id()
     {
         $result = [];
-        foreach (($keys = $this->primaryKeys()) as $value) {
+        foreach (($keys = static::primaryKeys()) as $value) {
             if (!($tmp = $this->prop($value))) {
                 continue;
             }
@@ -679,8 +787,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function refresh(): void
     {
-        $key = $this->primaryKey();
-
+        $key = static::primaryKey();
         if (null === $key) {
             $e = sprintf('Entity %s do not have primary key.', static::class);
 
@@ -690,7 +797,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         if (is_array($key)) {
             $map = $this->id();
         } else {
-            $map = [$this->singlePrimaryKey(), $this->id()];
+            $map = [static::singlePrimaryKey(), $this->id()];
         }
 
         $data = static::meta()
@@ -1191,7 +1298,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function singleId()
     {
-        $this->singlePrimaryKey();
+        static::singlePrimaryKey();
 
         return $this->id();
     }
@@ -1341,7 +1448,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         if (!is_array($ids)) {
-            $ids = [$this->singlePrimaryKey() => $ids];
+            $ids = [static::singlePrimaryKey() => $ids];
         }
 
         return $ids;
@@ -1512,7 +1619,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         if (!$saveData) {
-            if (null === (($primaryKey = $this->primaryKeys()))) {
+            if (null === (($primaryKey = static::primaryKeys()))) {
                 $e = sprintf('Entity %s has no primary key.', static::class);
 
                 throw new InvalidArgumentException($e);
@@ -1570,7 +1677,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         $condition = [];
-        foreach ($this->primaryKeys() as $field) {
+        foreach (static::primaryKeys() as $field) {
             if (isset($saveData[$field])) {
                 unset($saveData[$field]);
             }

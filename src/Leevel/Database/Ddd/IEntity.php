@@ -432,6 +432,48 @@ interface IEntity
     public function destroy(): self;
 
     /**
+     * 根据主键 ID 删除模型实体.
+     *
+     * @param array $ids
+     * @param bool  $flush
+     *
+     * @return int
+     */
+    public static function softDestroy(array $ids, bool $flush = true): int;
+
+    /**
+     * 从模型实体中软删除数据.
+     *
+     * @param bool $flush
+     *
+     * @return int
+     */
+    public function softDelete(bool $flush = true): int;
+
+    /**
+     * 恢复软删除的模型实体.
+     *
+     * @return int
+     */
+    public function softRestore(bool $flush = true): int;
+
+    /**
+     * 检查模型实体是否已经被软删除了.
+     *
+     * @return bool
+     */
+    public function softDeleted(): bool;
+
+    /**
+     * 获取软删除字段.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    public static function deleteAtColumn(): string;
+
+    /**
      * 数据持久化数据.
      *
      * @return mixed

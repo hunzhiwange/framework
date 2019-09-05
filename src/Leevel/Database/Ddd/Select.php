@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Closure;
-use InvalidArgumentException;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Select as DatabaseSelect;
@@ -361,80 +360,13 @@ class Select
     }
 
     /**
-     * 从模型实体中软删除数据.
-     *
-     * @param bool $flush
-     *
-     * @return int
-     */
-    public function softDelete(bool $flush = true): int
-    {
-        $this->entity->withProp($this->deleteAtColumn(), time());
-
-        $num = 1;
-        if (true === $flush) {
-            $this->entity->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
-            $num = $this->entity->update()->flush();
-            $this->entity->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
-        }
-
-        return $num;
-    }
-
-    /**
-     * 根据主键 ID 删除模型实体.
-     *
-     * @param array $ids
-     * @param bool  $flush
-     *
-     * @return int
-     */
-    public function softDestroy(array $ids, bool $flush = true): int
-    {
-        $count = 0;
-        $instance = $this->entity->make();
-        $entitys = $instance
-            ->select()
-            ->whereIn($instance->singlePrimaryKey(), $ids)
-            ->findAll();
-
-        /** @var \Leevel\Database\Ddd\IEntity $entity */
-        foreach ($entitys as $entity) {
-            if ($entity->selectForEntity()->softDelete($flush)) {
-                $count++;
-            }
-        }
-
-        return $count;
-    }
-
-    /**
-     * 恢复软删除的模型实体.
-     *
-     * @return int
-     */
-    public function softRestore(bool $flush = true): int
-    {
-        $this->entity->withProp($this->deleteAtColumn(), 0);
-
-        $num = 1;
-        if (true === $flush) {
-            $this->entity->handleEvent(IEntity::BEFORE_SOFT_RESTORE_EVENT);
-            $num = $this->entity->update()->flush();
-            $this->entity->handleEvent(IEntity::AFTER_SOFT_RESTORE_EVENT);
-        }
-
-        return $num;
-    }
-
-    /**
      * 获取不包含软删除的数据.
      *
      * @return \Leevel\Database\Select
      */
     public function withoutSoftDeleted(): DatabaseSelect
     {
-        return $this->select->where($this->deleteAtColumn(), 0);
+        return $this->select->where($this->entity->deleteAtColumn(), 0);
     }
 
     /**
@@ -444,44 +376,7 @@ class Select
      */
     public function onlySoftDeleted(): DatabaseSelect
     {
-        return $this->select->where($this->deleteAtColumn(), '>', 0);
-    }
-
-    /**
-     * 检查模型实体是否已经被软删除了.
-     *
-     * @return bool
-     */
-    public function softDeleted(): bool
-    {
-        return (int) $this->entity->prop($this->deleteAtColumn()) > 0;
-    }
-
-    /**
-     * 获取软删除字段.
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return string
-     */
-    public function deleteAtColumn(): string
-    {
-        if (defined(get_class($this->entity).'::DELETE_AT')) {
-            $deleteAt = $this->entity::DELETE_AT;
-        } else {
-            $deleteAt = 'delete_at';
-        }
-
-        if (!$this->entity->hasField($deleteAt)) {
-            $e = sprintf(
-                'Entity `%s` soft delete field `%s` was not found.',
-                get_class($this->entity), $deleteAt
-            );
-
-            throw new InvalidArgumentException($e);
-        }
-
-        return $deleteAt;
+        return $this->select->where($this->entity->deleteAtColumn(), '>', 0);
     }
 
     /**
