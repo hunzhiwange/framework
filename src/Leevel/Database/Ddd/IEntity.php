@@ -824,11 +824,4 @@ interface IEntity
      * @return \Leevel\Database\Select
      */
     public static function databaseSelect(): DatabaseSelect;
-
-    /**
-     * 返回数据库查询集合对象
-     *
-     * @return \Leevel\Database\Ddd\Select
-     */
-    public function selectForEntity(): Select;
 }

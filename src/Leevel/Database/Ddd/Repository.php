@@ -199,7 +199,7 @@ class Repository implements IRepository
      */
     public function __call(string $method, array $args)
     {
-        return $this->entity->selectForEntity()->{$method}(...$args);
+        return $this->entity->select()->{$method}(...$args);
     }
 
     /**

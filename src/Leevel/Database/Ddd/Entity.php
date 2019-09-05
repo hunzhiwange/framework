@@ -1468,16 +1468,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 返回数据库查询集合对象.
-     *
-     * @return \Leevel\Database\Ddd\Select
-     */
-    public function selectForEntity(): Select
-    {
-        return new Select($this);
-    }
-
-    /**
      * 实现 ArrayAccess::offsetExists.
      *
      * @param string $index
