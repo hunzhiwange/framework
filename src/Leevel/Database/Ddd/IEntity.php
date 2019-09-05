@@ -324,6 +324,17 @@ interface IEntity
     public static function select(): Select;
 
     /**
+     * 返回数据库查询集合对象 find.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     * - select 别名，致敬经典 QeePHP.
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function find(): Select;
+
+    /**
      * 返回模型实体类的 meta 对象
      *
      * @return \Leevel\Database\Ddd\IMeta
