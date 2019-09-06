@@ -174,22 +174,14 @@ class UniqueRule
      */
     protected function parseEntity(array $param): IEntity
     {
-        $connect = null;
-
         if (is_string($param[0])) {
-            if (false !== strpos($param[0], self::SEPARATE)) {
-                list($connect, $entityClass) = explode(self::SEPARATE, $param[0]);
-            } else {
-                $entityClass = $param[0];
-            }
-
-            if (!class_exists($entityClass)) {
-                $e = sprintf('Validate entity `%s` was not found.', $entityClass);
+            if (!class_exists($param[0])) {
+                $e = sprintf('Validate entity `%s` was not found.', $param[0]);
 
                 throw new InvalidArgumentException($e);
             }
 
-            $entity = new $entityClass();
+            $entity = new $param[0]();
         } else {
             $entity = $param[0];
         }
@@ -199,10 +191,6 @@ class UniqueRule
             $e = sprintf('Validate entity `%s` must be an entity.', get_class($entity));
 
             throw new InvalidArgumentException($e);
-        }
-
-        if ($connect) {
-            $entity->withConnect($connect);
         }
 
         return $entity;
