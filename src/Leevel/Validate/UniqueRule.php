@@ -194,6 +194,7 @@ class UniqueRule
             $entity = $param[0];
         }
 
+        /** @var \Leevel\Database\Ddd\IEntity $entity */
         if (!($entity instanceof IEntity)) {
             $e = sprintf('Validate entity `%s` must be an entity.', get_class($entity));
 
