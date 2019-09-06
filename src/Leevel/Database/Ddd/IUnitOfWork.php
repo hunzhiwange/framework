@@ -65,12 +65,9 @@ interface IUnitOfWork
     /**
      * 创建一个工作单元.
      *
-     * @param null|\Leevel\Database\Ddd\IEntity $rootEntity
-     * @param null|mixed                        $connect
-     *
      * @return static
      */
-    public static function make(?IEntity $rootEntity = null, $connect = null): self;
+    public static function make(): self;
 
     /**
      * 执行数据库事务.

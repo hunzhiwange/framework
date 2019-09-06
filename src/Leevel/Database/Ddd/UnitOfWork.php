@@ -191,6 +191,7 @@ class UnitOfWork implements IUnitOfWork
             const ID = null;
             const AUTO = null;
             const STRUCT = [];
+            private static $leevelConnect;
 
             public function setter(string $prop, $value): IEntity
             {
@@ -203,20 +204,27 @@ class UnitOfWork implements IUnitOfWork
             {
                 return $this->{$this->realProp($prop)};
             }
+
+            public static function withConnect($connect): void
+            {
+                static::$leevelConnect = $connect;
+            }
+
+            public static function connect()
+            {
+                return static::$leevelConnect;
+            }
         };
     }
 
     /**
      * 创建一个工作单元.
      *
-     * @param null|\Leevel\Database\Ddd\IEntity $rootEntity
-     * @param null|mixed                        $connect
-     *
      * @return static
      */
-    public static function make(?IEntity $rootEntity = null, $connect = null): IUnitOfWork
+    public static function make(): IUnitOfWork
     {
-        return new static($rootEntity, $connect);
+        return new static();
     }
 
     /**
