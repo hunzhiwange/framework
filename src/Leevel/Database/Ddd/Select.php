@@ -210,11 +210,12 @@ class Select
      * 构造函数.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $softDeletedType
      */
-    public function __construct(IEntity $entity, int $softDeleteType = IEntity::WITHOUT_SOFT_DELETED)
+    public function __construct(IEntity $entity, int $softDeletedType = IEntity::WITHOUT_SOFT_DELETED)
     {
         $this->entity = $entity;
-        $this->select = $this->entity->selectCollection($softDeleteType);
+        $this->select = $this->entity->selectCollection($softDeletedType);
     }
 
     /**

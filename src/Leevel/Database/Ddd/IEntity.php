@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Closure;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\BelongsTo;
 use Leevel\Database\Ddd\Relation\HasMany;
@@ -341,11 +342,11 @@ interface IEntity
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - select 别名，致敬经典 QeePHP.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    public static function find(int $softDeleteType = self::WITHOUT_SOFT_DELETED): Select;
+    public static function find(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select;
 
     /**
      * 返回数据库查询集合对象 select.
@@ -354,7 +355,7 @@ interface IEntity
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - 获取包含软删除的数据.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -367,7 +368,7 @@ interface IEntity
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - 获取只包含软删除的数据.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -376,11 +377,11 @@ interface IEntity
     /**
      * 返回数据库查询集合对象.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Select
      */
-    public static function selectCollection(int $softDeleteType = self::WITHOUT_SOFT_DELETED): DatabaseSelect;
+    public static function selectCollection(int $softDeletedType = self::WITHOUT_SOFT_DELETED): DatabaseSelect;
 
     /**
      * 返回模型实体类的 meta 对象
@@ -388,6 +389,16 @@ interface IEntity
      * @return \Leevel\Database\Ddd\IMeta
      */
     public static function meta(): IMeta;
+
+    /**
+     * 数据库连接沙盒.
+     *
+     * @param mixed    $connect
+     * @param \Closure $preLoadsResult
+     *
+     * @return mixed
+     */
+    public static function connectSandbox($connect, Closure $preLoadsResult);
 
     /**
      * 批量修改属性.
@@ -839,13 +850,6 @@ interface IEntity
     public static function table(): string;
 
     /**
-     * 设置数据库连接.
-     *
-     * @param mixed $connect
-     */
-    public static function withConnect($connect): void;
-
-    /**
      * 获取 enum.
      * 不存在返回 false.
      *
@@ -876,4 +880,37 @@ interface IEntity
      * @return array
      */
     public function idCondition(): array;
+
+    /**
+     * setter.
+     *
+     * @param string $prop
+     * @param mixed  $value
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function setter(string $prop, $value): self;
+
+    /**
+     * getter.
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    public function getter(string $prop);
+
+    /**
+     * set database connect.
+     *
+     * @param mixed $connect
+     */
+    public static function withConnect($connect): void;
+
+    /**
+     * get database connect.
+     *
+     * @return mixed
+     */
+    public static function connect();
 }

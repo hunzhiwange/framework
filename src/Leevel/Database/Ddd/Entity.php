@@ -22,6 +22,7 @@ namespace Leevel\Database\Ddd;
 
 use ArrayAccess;
 use BadMethodCallException;
+use Closure;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
@@ -65,13 +66,6 @@ use Leevel\Support\Str\un_camelize;
  */
 abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, ArrayAccess
 {
-    /**
-     * 此模型实体的连接名称.
-     *
-     * @var mixed
-     */
-    protected static $leevelConnect;
-
     /**
      * 已修改的模型实体属性.
      *
@@ -340,13 +334,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    public static function select(int $softDeleteType = self::WITHOUT_SOFT_DELETED): Select
+    public static function select(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
     {
-        return new Select(new static(), $softDeleteType);
+        return new Select(new static(), $softDeletedType);
     }
 
     /**
@@ -356,13 +350,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - select 别名，致敬经典 QeePHP.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
-    public static function find(int $softDeleteType = self::WITHOUT_SOFT_DELETED): Select
+    public static function find(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
     {
-        return static::select($softDeleteType);
+        return static::select($softDeletedType);
     }
 
     /**
@@ -372,7 +366,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - 获取包含软删除的数据.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -388,7 +382,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - 获取只包含软删除的数据.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -400,18 +394,18 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 返回数据库查询集合对象.
      *
-     * @param int $softDeleteType
+     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Select
      */
-    public static function selectCollection(int $softDeleteType = self::WITHOUT_SOFT_DELETED): DatabaseSelect
+    public static function selectCollection(int $softDeletedType = self::WITHOUT_SOFT_DELETED): DatabaseSelect
     {
         $select = static::meta()
             ->select()
             ->asClass(static::class, [true])
             ->asCollection();
 
-        static::prepareSoftDeleted($select, $softDeleteType);
+        static::prepareSoftDeleted($select, $softDeletedType);
 
         return $select;
     }
@@ -424,7 +418,25 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function meta(): IMeta
     {
         return Meta::instance(static::TABLE)
-            ->setDatabaseConnect(static::$leevelConnect);
+            ->setDatabaseConnect(static::connect());
+    }
+
+    /**
+     * 数据库连接沙盒.
+     *
+     * @param mixed    $connect
+     * @param \Closure $preLoadsResult
+     *
+     * @return mixed
+     */
+    public static function connectSandbox($connect, Closure $preLoadsResult)
+    {
+        $old = static::connect();
+        static::withConnect($connect);
+        $result = call_user_func($preLoadsResult);
+        static::withConnect($old);
+
+        return $result;
     }
 
     /**
@@ -1383,16 +1395,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 设置数据库连接.
-     *
-     * @param mixed $connect
-     */
-    public static function withConnect($connect): void
-    {
-        self::$leevelConnect = $connect;
-    }
-
-    /**
      * 获取 enum.
      * 不存在返回 false.
      *
@@ -1588,26 +1590,46 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     abstract public function getter(string $prop);
 
     /**
+     * set database connect.
+     *
+     * @param mixed $connect
+     */
+    abstract public static function withConnect($connect): void;
+
+    /**
+     * get database connect.
+     *
+     * @return mixed
+     */
+    abstract public static function connect();
+
+    /**
      * 准备软删除查询条件.
      *
      * @param \Leevel\Database\Select $select
-     * @param int                     $softDeleteType
+     * @param int                     $softDeletedType
+     *
+     * @throws \InvalidArgumentException
      */
-    protected static function prepareSoftDeleted(DatabaseSelect $select, int $softDeleteType): void
+    protected static function prepareSoftDeleted(DatabaseSelect $select, int $softDeletedType): void
     {
-        if (defined(static::class.'::DELETE_AT')) {
-            switch ($softDeleteType) {
-                case self::WITH_SOFT_DELETED:
-                    break;
-                case self::ONLY_SOFT_DELETED:
-                    $select->where(static::deleteAtColumn(), '>', 0);
+        if (!defined(static::class.'::DELETE_AT')) {
+            return;
+        }
 
-                    break;
-                default:
-                    $select->where(static::deleteAtColumn(), 0);
+        switch ($softDeletedType) {
+            case self::WITH_SOFT_DELETED:
+                break;
+            case self::ONLY_SOFT_DELETED:
+                $select->where(static::deleteAtColumn(), '>', 0);
 
-                    break;
-            }
+                break;
+            case self::WITHOUT_SOFT_DELETED:
+                $select->where(static::deleteAtColumn(), 0);
+
+                break;
+            default:
+                throw new InvalidArgumentException('Invalid ');
         }
     }
 
