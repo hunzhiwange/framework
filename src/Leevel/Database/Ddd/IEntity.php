@@ -304,6 +304,27 @@ interface IEntity
     const MIDDLE_ENTITY = 'middle_entity';
 
     /**
+     * 不包含软删除的数据.
+     *
+     * @var int
+     */
+    const WITHOUT_SOFT_DELETED = 1;
+
+    /**
+     * 包含软删除的数据.
+     *
+     * @var int
+     */
+    const WITH_SOFT_DELETED = 2;
+
+    /**
+     * 只包含软删除的数据.
+     *
+     * @var int
+     */
+    const ONLY_SOFT_DELETED = 3;
+
+    /**
      * 创建新的实例.
      *
      * @param array $data
@@ -314,32 +335,52 @@ interface IEntity
     public static function make(array $data = [], bool $fromStorage = false): self;
 
     /**
-     * 返回数据库查询集合对象.
-     *
-     * - 查询静态方法入口，更好的 IDE 用户体验.
-     * - 屏蔽 __callStatic 防止 IDE 无法识别.
-     *
-     * @return \Leevel\Database\Ddd\Select
-     */
-    public static function select(): Select;
-
-    /**
      * 返回数据库查询集合对象 find.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - select 别名，致敬经典 QeePHP.
      *
+     * @param int $softDeleteType
+     *
      * @return \Leevel\Database\Ddd\Select
      */
-    public static function find(): Select;
+    public static function find(int $softDeleteType = self::WITHOUT_SOFT_DELETED): Select;
 
     /**
-     * 返回数据库查询集合对象
+     * 返回数据库查询集合对象 select.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     * - 获取包含软删除的数据.
+     *
+     * @param int $softDeleteType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function withSoftDeleted(): Select;
+
+    /**
+     * 返回数据库查询集合对象 select.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     * - 获取只包含软删除的数据.
+     *
+     * @param int $softDeleteType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function onlySoftDeleted(): Select;
+
+    /**
+     * 返回数据库查询集合对象.
+     *
+     * @param int $softDeleteType
      *
      * @return \Leevel\Database\Select
      */
-    public static function selectCollection(): DatabaseSelect;
+    public static function selectCollection(int $softDeleteType = self::WITHOUT_SOFT_DELETED): DatabaseSelect;
 
     /**
      * 返回模型实体类的 meta 对象

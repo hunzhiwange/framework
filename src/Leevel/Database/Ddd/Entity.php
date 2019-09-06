@@ -340,11 +340,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      *
+     * @param int $softDeleteType
+     *
      * @return \Leevel\Database\Ddd\Select
      */
-    public static function select(): Select
+    public static function select(int $softDeleteType = self::WITHOUT_SOFT_DELETED): Select
     {
-        return new Select(new static());
+        return new Select(new static(), $softDeleteType);
     }
 
     /**
@@ -354,24 +356,64 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - select 别名，致敬经典 QeePHP.
      *
+     * @param int $softDeleteType
+     *
      * @return \Leevel\Database\Ddd\Select
      */
-    public static function find(): Select
+    public static function find(int $softDeleteType = self::WITHOUT_SOFT_DELETED): Select
     {
-        return new Select(new static());
+        return static::select($softDeleteType);
+    }
+
+    /**
+     * 返回数据库查询集合对象 select.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     * - 获取包含软删除的数据.
+     *
+     * @param int $softDeleteType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function withSoftDeleted(): Select
+    {
+        return static::select(static::WITH_SOFT_DELETED);
+    }
+
+    /**
+     * 返回数据库查询集合对象 select.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     * - 获取只包含软删除的数据.
+     *
+     * @param int $softDeleteType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function onlySoftDeleted(): Select
+    {
+        return static::select(static::ONLY_SOFT_DELETED);
     }
 
     /**
      * 返回数据库查询集合对象.
      *
+     * @param int $softDeleteType
+     *
      * @return \Leevel\Database\Select
      */
-    public static function selectCollection(): DatabaseSelect
+    public static function selectCollection(int $softDeleteType = self::WITHOUT_SOFT_DELETED): DatabaseSelect
     {
-        return static::meta()
+        $select = static::meta()
             ->select()
             ->asClass(static::class, [true])
             ->asCollection();
+
+        static::prepareSoftDeleted($select, $softDeleteType);
+
+        return $select;
     }
 
     /**
@@ -1544,6 +1586,30 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @return mixed
      */
     abstract public function getter(string $prop);
+
+    /**
+     * 准备软删除查询条件.
+     *
+     * @param \Leevel\Database\Select $select
+     * @param int                     $softDeleteType
+     */
+    protected static function prepareSoftDeleted(DatabaseSelect $select, int $softDeleteType): void
+    {
+        if (defined(static::class.'::DELETE_AT')) {
+            switch ($softDeleteType) {
+                case self::WITH_SOFT_DELETED:
+                    break;
+                case self::ONLY_SOFT_DELETED:
+                    $select->where(static::deleteAtColumn(), '>', 0);
+
+                    break;
+                default:
+                    $select->where(static::deleteAtColumn(), 0);
+
+                    break;
+            }
+        }
+    }
 
     /**
      * 保存统一入口.

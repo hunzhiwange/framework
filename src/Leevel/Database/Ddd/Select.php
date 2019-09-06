@@ -211,10 +211,10 @@ class Select
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    public function __construct(IEntity $entity)
+    public function __construct(IEntity $entity, int $softDeleteType = IEntity::WITHOUT_SOFT_DELETED)
     {
         $this->entity = $entity;
-        $this->select = $this->entity->selectCollection();
+        $this->select = $this->entity->selectCollection($softDeleteType);
     }
 
     /**
@@ -357,26 +357,6 @@ class Select
 
         throw (new EntityNotFoundException())
             ->setEntity(get_class($this->entity));
-    }
-
-    /**
-     * 获取不包含软删除的数据.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function withoutSoftDeleted(): DatabaseSelect
-    {
-        return $this->select->where($this->entity->deleteAtColumn(), 0);
-    }
-
-    /**
-     * 获取只包含软删除的数据.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function onlySoftDeleted(): DatabaseSelect
-    {
-        return $this->select->where($this->entity->deleteAtColumn(), '>', 0);
     }
 
     /**
