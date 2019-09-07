@@ -162,9 +162,9 @@ class Db
      *
      * @return string
      */
-    public static function lastSql(): string
+    public static function getLastSql(): string
     {
-        return self::proxy()->lastSql();
+        return self::proxy()->getLastSql();
     }
 
     /**

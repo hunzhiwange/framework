@@ -473,14 +473,14 @@ class ConnectTest extends TestCase
             ->insert(['name' => 'tom']); // `tom` will not rollBack
 
         $connect->beginTransaction();
-        $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
+        $this->assertSame('SAVEPOINT trans2', $connect->getLastSql()[0]);
 
         $connect
             ->table('guest_book')
             ->insert(['name' => 'jerry']);
 
         $connect->rollBack();
-        $this->assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->lastSql()[0]);
+        $this->assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->getLastSql()[0]);
         $connect->commit();
 
         $book = $connect
@@ -532,14 +532,14 @@ class ConnectTest extends TestCase
             ->insert(['name' => 'tom']);
 
         $connect->beginTransaction();
-        $this->assertSame('SAVEPOINT trans2', $connect->lastSql()[0]);
+        $this->assertSame('SAVEPOINT trans2', $connect->getLastSql()[0]);
 
         $connect
             ->table('guest_book')
             ->insert(['name' => 'jerry']);
 
         $connect->commit();
-        $this->assertSame('RELEASE SAVEPOINT trans2', $connect->lastSql()[0]);
+        $this->assertSame('RELEASE SAVEPOINT trans2', $connect->getLastSql()[0]);
         $connect->commit();
 
         $book = $connect

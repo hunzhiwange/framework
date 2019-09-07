@@ -260,7 +260,7 @@ interface IDatabase
      *
      * @return string
      */
-    public function lastSql(): string;
+    public function getLastSql(): string;
 
     /**
      * 返回影响记录.

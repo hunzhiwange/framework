@@ -561,7 +561,7 @@ abstract class Database implements IConnection
      *
      * @return string
      */
-    public function lastSql(): string
+    public function getLastSql(): string
     {
         return $this->sql;
     }

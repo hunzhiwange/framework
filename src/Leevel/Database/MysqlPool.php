@@ -304,9 +304,9 @@ class MysqlPool implements IDatabase
      *
      * @return string
      */
-    public function lastSql(): string
+    public function getLastSql(): string
     {
-        return $this->proxy()->lastSql();
+        return $this->proxy()->getLastSql();
     }
 
     /**
