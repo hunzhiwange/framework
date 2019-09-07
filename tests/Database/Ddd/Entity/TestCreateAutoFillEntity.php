@@ -61,6 +61,8 @@ class TestCreateAutoFillEntity extends Entity
         ],
     ];
 
+    private static $leevelConnect;
+
     private $id;
 
     private $name;
@@ -83,6 +85,16 @@ class TestCreateAutoFillEntity extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 
     protected function fillDescription($old): string

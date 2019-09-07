@@ -47,6 +47,8 @@ class TestEventEntity extends Entity
         'name' => [],
     ];
 
+    private static $leevelConnect;
+
     private $id;
 
     private $name;
@@ -63,9 +65,20 @@ class TestEventEntity extends Entity
         return $this->{$this->realProp($prop)};
     }
 
-    public static function meta($connect = null): IMeta
+    public static function withConnect($connect): void
     {
-        return MockMeta::instance('test', $connect);
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
+    }
+
+    public static function meta(): IMeta
+    {
+        return MockMeta::instance('test')
+            ->setDatabaseConnect(static::connect());
     }
 }
 

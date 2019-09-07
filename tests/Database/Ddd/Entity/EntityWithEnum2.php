@@ -53,6 +53,8 @@ class EntityWithEnum2 extends Entity
         'enable'  => ['t', '启用'],
     ];
 
+    private static $leevelConnect;
+
     private $id;
 
     private $title;
@@ -69,5 +71,15 @@ class EntityWithEnum2 extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

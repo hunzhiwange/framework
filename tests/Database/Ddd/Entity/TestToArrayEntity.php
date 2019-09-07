@@ -49,6 +49,8 @@ class TestToArrayEntity extends Entity
         'hello'       => [],
     ];
 
+    private static $leevelConnect;
+
     private $id;
 
     private $name;
@@ -71,5 +73,15 @@ class TestToArrayEntity extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

@@ -51,6 +51,8 @@ class TestUpdatePropWhiteEntity extends Entity
         'description' => [],
     ];
 
+    private static $leevelConnect;
+
     private $id;
 
     private $name;
@@ -67,5 +69,15 @@ class TestUpdatePropWhiteEntity extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

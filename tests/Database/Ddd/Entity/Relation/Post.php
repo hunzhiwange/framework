@@ -72,6 +72,8 @@ class Post extends Entity
 
     const DELETE_AT = 'delete_at';
 
+    private static $leevelConnect;
+
     private $id;
 
     private $title;
@@ -100,6 +102,16 @@ class Post extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 
     protected function relationScopeComment(Relation $relation): void

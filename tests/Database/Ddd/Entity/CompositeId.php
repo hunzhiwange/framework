@@ -46,6 +46,8 @@ class CompositeId extends Entity
         'name'     => [],
     ];
 
+    private static $leevelConnect;
+
     private $id1;
 
     private $id2;
@@ -62,5 +64,15 @@ class CompositeId extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

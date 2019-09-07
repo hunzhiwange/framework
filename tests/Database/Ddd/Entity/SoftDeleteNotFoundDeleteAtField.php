@@ -39,6 +39,8 @@ class SoftDeleteNotFoundDeleteAtField extends Entity
 
     const DELETE_AT = 'delete_at';
 
+    private static $leevelConnect;
+
     private $id;
 
     public function setter(string $prop, $value): IEntity
@@ -51,5 +53,15 @@ class SoftDeleteNotFoundDeleteAtField extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

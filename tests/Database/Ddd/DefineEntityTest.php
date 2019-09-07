@@ -83,6 +83,8 @@ class DefineEntityTest extends TestCase
 
 class Test1Entity extends Entity
 {
+    private static $leevelConnect;
+
     public function setter(string $prop, $value): IEntity
     {
         $this->{$this->realProp($prop)} = $value;
@@ -93,6 +95,16 @@ class Test1Entity extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }
 
@@ -100,6 +112,8 @@ class Test2Entity extends Entity
 {
     const TABLE = 'test2';
 
+    private static $leevelConnect;
+
     public function setter(string $prop, $value): IEntity
     {
         $this->{$this->realProp($prop)} = $value;
@@ -110,6 +124,16 @@ class Test2Entity extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }
 
@@ -121,6 +145,8 @@ class Test3Entity extends Entity
         'id',
     ];
 
+    private static $leevelConnect;
+
     public function setter(string $prop, $value): IEntity
     {
         $this->{$this->realProp($prop)} = $value;
@@ -131,6 +157,16 @@ class Test3Entity extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }
 
@@ -144,6 +180,8 @@ class Test4Entity extends Entity
 
     const AUTO = 'id';
 
+    private static $leevelConnect;
+
     public function setter(string $prop, $value): IEntity
     {
         $this->{$this->realProp($prop)} = $value;
@@ -154,5 +192,15 @@ class Test4Entity extends Entity
     public function getter(string $prop)
     {
         return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }
