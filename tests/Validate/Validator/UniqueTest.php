@@ -326,34 +326,6 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
-    public function testValidateWithConnect(): void
-    {
-        $validate = new Validator(
-            [
-                'name' => 'foo',
-            ],
-            [
-                'name'     => UniqueRule::rule('fooconnect:'.Guestbook::class, 'name:content', 1),
-            ]
-        );
-
-        $this->assertTrue($validate->success());
-
-        $connect = $this->createDatabaseConnect();
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('guest_book')
-                ->insert([
-                    'name'    => 'foo',
-                    'content' => '',
-                ]),
-        );
-
-        $this->assertTrue($validate->success());
-    }
-
     public function testValidateWithParseAdditional(): void
     {
         $validate = new Validator(
