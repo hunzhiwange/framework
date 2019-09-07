@@ -40,7 +40,7 @@ use Leevel\Collection\Collection;
  * @method static void commit()                                                                                                                用于非自动提交状态下面的查询提交.
  * @method static void rollBack()                                                                                                              事务回滚.
  * @method static string lastInsertId(?string $name = null)                                                                                    获取最后插入 ID 或者列.
- * @method static array lastSql()                                                                                                              获取最近一次查询的 sql 语句.
+ * @method static string lastSql()                                                                                                             获取最近一次查询的 sql 语句.
  * @method static int numRows()                                                                                                                返回影响记录.
  * @method static void close()                                                                                                                 关闭数据库.
  * @method static void freePDOStatement()                                                                                                      释放 PDO 预处理查询.

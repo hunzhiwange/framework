@@ -170,8 +170,8 @@ interface IDatabase
      * 返回 Pdo 查询连接.
      *
      * @param bool|int $master
-     *                         - bool false (读服务器) true (写服务器)
-     *                         - int 其它去对应服务器连接ID 0 表示主服务器
+     *                         - bool,false (读服务器),true (写服务器)
+     *                         - int,其它去对应服务器连接 ID,0 表示主服务器
      *
      * @return mixed
      */
@@ -258,9 +258,9 @@ interface IDatabase
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @return array
+     * @return string
      */
-    public function lastSql(): array;
+    public function lastSql(): string;
 
     /**
      * 返回影响记录.

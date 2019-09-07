@@ -27,6 +27,7 @@ use Leevel\Protocol\Pool\Connection;
 use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
+use PDOStatement;
 use Throwable;
 
 /**
@@ -172,7 +173,7 @@ abstract class Database implements IConnection
     /**
      * PDO 预处理语句对象
      *
-     * @var PDOStatement
+     * @var \PDOStatement
      */
     protected $pdoStatement;
 
@@ -196,13 +197,6 @@ abstract class Database implements IConnection
      * @var string
      */
     protected $sql;
-
-    /**
-     * sql 绑定参数.
-     *
-     * @var array
-     */
-    protected $bindParams = [];
 
     /**
      * sql 影响记录数量.
@@ -295,8 +289,8 @@ abstract class Database implements IConnection
      * 返回 Pdo 查询连接.
      *
      * @param bool|int $master
-     *                         - bool false (读服务器) true (写服务器)
-     *                         - int 其它去对应服务器连接ID 0 表示主服务器
+     *                         - bool,false (读服务器),true (写服务器)
+     *                         - int,其它去对应服务器连接 ID,0 表示主服务器
      *
      * @return mixed
      */
@@ -330,19 +324,17 @@ abstract class Database implements IConnection
     public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
     {
         $this->initSelect();
-        $this->setLastSql($sql, $bindParams);
-
         if (!in_array(($sqlType = $this->normalizeSqlType($sql)), ['select', 'procedure'], true)) {
             $e = 'The query method only allows select and procedure SQL statements.';
 
             throw new InvalidArgumentException($e);
         }
-
         $this->pdoStatement = $this->pdo($master)->prepare($sql);
         $this->bindParams($bindParams);
 
         try {
             $this->pdoStatement->execute();
+            $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
             $this->reconnectRetry = 0;
         } catch (PDOException $e) {
             if ($this->needReconnect($e)) {
@@ -375,19 +367,17 @@ abstract class Database implements IConnection
     public function execute(string $sql, array $bindParams = [])
     {
         $this->initSelect();
-        $this->setLastSql($sql, $bindParams);
-
         if (in_array(($sqlType = $this->normalizeSqlType($sql)), ['select', 'procedure'], true)) {
             $e = 'The query method not allows select and procedure SQL statements.';
 
             throw new InvalidArgumentException($e);
         }
-
         $this->pdoStatement = $this->pdo(true)->prepare($sql);
         $this->bindParams($bindParams);
 
         try {
             $this->pdoStatement->execute();
+            $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
             $this->reconnectRetry = 0;
         } catch (PDOException $e) {
             if ($this->needReconnect($e)) {
@@ -569,11 +559,11 @@ abstract class Database implements IConnection
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @return array
+     * @return string
      */
-    public function lastSql(): array
+    public function lastSql(): string
     {
-        return [$this->sql, $this->bindParams];
+        return $this->sql;
     }
 
     /**
@@ -642,11 +632,8 @@ abstract class Database implements IConnection
      */
     public function normalizeExpression(string $sql, string $tableName): string
     {
-        preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql,
-            $matches, PREG_OFFSET_CAPTURE);
-
+        preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql, $matches, PREG_OFFSET_CAPTURE);
         $matches = reset($matches);
-
         $out = '';
         $offset = 0;
 
@@ -693,7 +680,6 @@ abstract class Database implements IConnection
             $name = $this->identifierColumn($name);
         } else {
             $tmp = explode('.', $name);
-
             foreach ($tmp as $offset => $name) {
                 if (empty($name)) {
                     unset($tmp[$offset]);
@@ -701,7 +687,6 @@ abstract class Database implements IConnection
                     $tmp[$offset] = $this->identifierColumn($name);
                 }
             }
-
             $name = implode('.', $tmp);
         }
 
@@ -744,7 +729,7 @@ abstract class Database implements IConnection
         }
 
         if (null === $value) {
-            return;
+            return null;
         }
 
         $value = trim($value);
@@ -821,6 +806,23 @@ abstract class Database implements IConnection
     }
 
     /**
+     * 整理当前执行 SQL.
+     *
+     * @param \PDOStatement $pdoStatement
+     *
+     * @return string
+     */
+    protected function normalizeLastSql(PDOStatement $pdoStatement): string
+    {
+        ob_start();
+        $pdoStatement->debugDumpParams();
+        $sql = str_replace(PHP_EOL, ' | ', ob_get_contents());
+        ob_end_clean();
+
+        return $sql;
+    }
+
+    /**
      * 连接主服务器.
      *
      * @return \PDO
@@ -852,7 +854,6 @@ abstract class Database implements IConnection
         }
 
         $connects = $this->connects;
-
         if (true === $this->option['separate'] && isset($connects[IDatabase::MASTER])) {
             unset($connects[IDatabase::MASTER]);
         }
@@ -862,7 +863,6 @@ abstract class Database implements IConnection
         }
 
         $connects = array_values($connects);
-
         if (1 === count($connects)) {
             return $connects[0];
         }
@@ -896,7 +896,6 @@ abstract class Database implements IConnection
                 $option['password'],
                 $option['options']
             );
-
             $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             return $connect;
@@ -990,26 +989,12 @@ abstract class Database implements IConnection
      * 设置 sql 绑定参数.
      *
      * @param string $sql
-     * @param array  $bindParams
      */
-    protected function setLastSql(string $sql, array $bindParams = []): void
+    protected function setLastSql(string $sql): void
     {
         $this->sql = $sql;
-        $this->bindParams = $bindParams;
-
-        $this->handleDispatch($sql, $bindParams);
-    }
-
-    /**
-     * 事件派发.
-     *
-     * @param string $sql
-     * @param array  $bindParams
-     */
-    protected function handleDispatch(string $sql, array $bindParams = []): void
-    {
         if ($this->dispatch) {
-            $this->dispatch->handle(IDatabase::SQL_EVENT, $sql, $bindParams);
+            $this->dispatch->handle(IDatabase::SQL_EVENT, $sql);
         }
     }
 

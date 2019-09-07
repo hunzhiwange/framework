@@ -160,9 +160,9 @@ class Db
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @return array
+     * @return string
      */
-    public static function lastSql(): array
+    public static function lastSql(): string
     {
         return self::proxy()->lastSql();
     }

@@ -485,10 +485,14 @@ class Debug implements IDebug
     {
         $this
             ->getEventDispatch()
-            ->register(IDatabase::SQL_EVENT, function (string $event, string $sql, array $bindParams = []) {
+            ->register(IDatabase::SQL_EVENT, function (string $event, string $sql) {
                 $this
                     ->getCollector('logs')
-                    ->addMessage($sql.': '.json_encode($bindParams, JSON_UNESCAPED_UNICODE), 'sql');
+                    ->addMessage($sql, 'sql');
+
+                $this->container
+                    ->make('logs')
+                    ->info('[SQL] '.$sql);
             });
     }
 
