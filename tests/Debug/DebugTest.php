@@ -503,17 +503,15 @@ class DebugTest extends TestCase
         $response = new JsonResponse(['foo' => 'bar']);
 
         $database = $container->make('database');
-
         $database
             ->table('guest_book')
             ->findAll();
 
         $debug->handle($request, $response);
-
         $content = $response->getContent();
 
         $this->assertStringContainsString('"logs":{"count":1,', $content);
-        $this->assertStringContainsString('SELECT `guest_book`.* FROM `guest_book`: []', $content);
+        $this->assertStringContainsString('SQL: [39] SELECT `guest_book`.* FROM `guest_book` | Params:  0', $content);
     }
 
     /**
@@ -852,10 +850,9 @@ class DebugTest extends TestCase
         $app = new App($container = new Container(), '');
 
         $container->instance('app', $app);
-
         $container->instance('session', $this->createSession());
-
         $container->instance('option', $this->createOption());
+        $container->instance('logs', $this->createLog());
 
         $eventDispatch = new Dispatch($container);
         $container->singleton(IDispatch::class, $eventDispatch);
