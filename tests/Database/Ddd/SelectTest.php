@@ -225,7 +225,7 @@ class SelectTest extends TestCase
         $this->assertSame(0, $post->delete_at);
 
         $this->assertFalse($post->softDeleted());
-        $this->assertSame(1, $post->softDelete());
+        $post->softDelete()->flush();
         $this->assertTrue($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
@@ -331,7 +331,7 @@ class SelectTest extends TestCase
         $this->assertSame(0, $post->delete_at);
 
         $this->assertFalse($post->softDeleted());
-        $this->assertSame(1, $post->softDelete());
+        $post->softDelete()->flush();
         $this->assertTrue($post->softDeleted());
 
         $post1 = Post::select()->findEntity(1);
@@ -357,7 +357,7 @@ class SelectTest extends TestCase
 
         $newPost = Post::withSoftDeleted()->findEntity(1);
         $this->assertTrue($newPost->softDeleted());
-        $this->assertSame(1, $newPost->softRestore());
+        $newPost->softRestore()->flush();
         $this->assertFalse($newPost->softDeleted());
 
         $restorePost1 = Post::select()->findEntity(1);
@@ -642,17 +642,12 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post->summary);
 
         $sql = <<<'eot'
-            [
-                "SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 1 LIMIT 1",
-                []
-            ]
+            SQL: [84] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 1 LIMIT 1 | Params:  0
             eot;
 
         $this->assertSame(
             $sql,
-            $this->varJson(
-                $select->databaseConnect()->getLastSql()
-            )
+            $select->databaseConnect()->getLastSql(),
         );
     }
 
