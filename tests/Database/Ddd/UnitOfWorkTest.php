@@ -827,10 +827,10 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('post summary', $post->getSummary());
 
         $work->delete($post);
-
         $work->flush();
 
-        $this->assertSame(0, $connect->table('post')->findCount());
+        $this->assertSame(1, $connect->table('post')->findCount());
+        $this->assertSame(0, $connect->table('post')->where('delete_at', 0)->findCount());
     }
 
     /**
@@ -1090,7 +1090,8 @@ class UnitOfWorkTest extends TestCase
 
         $postNew = Post::select()->findEntity(1);
 
-        $this->assertSame(0, $connect->table('post')->findCount());
+        $this->assertSame(1, $connect->table('post')->findCount());
+        $this->assertSame(0, $connect->table('post')->where('delete_at', 0)->findCount());
         $this->assertNull($postNew->id);
         $this->assertNull($postNew->title);
     }
@@ -1123,7 +1124,8 @@ class UnitOfWorkTest extends TestCase
 
         $postNew = Post::select()->findEntity(1);
 
-        $this->assertSame(0, $connect->table('post')->findCount());
+        $this->assertSame(1, $connect->table('post')->findCount());
+        $this->assertSame(0, $connect->table('post')->where('delete_at', 0)->findCount());
         $this->assertNull($postNew->id);
         $this->assertNull($postNew->title);
     }
