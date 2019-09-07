@@ -505,30 +505,27 @@ interface IEntity
      * 根据主键 ID 删除模型实体.
      *
      * @param array $ids
-     * @param bool  $flush
      *
      * @return int
      */
-    public static function softDestroy(array $ids, bool $flush = true): int;
+    public static function softDestroy(array $ids): int;
 
     /**
      * 从模型实体中软删除数据.
      *
-     * @param bool $flush
-     *
-     * @return int
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function softDelete(bool $flush = true): int;
+    public function softDelete(): self;
 
     /**
      * 恢复软删除的模型实体.
      *
-     * @return int
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function softRestore(bool $flush = true): int;
+    public function softRestore(): self;
 
     /**
-     * 检查模型实体是否已经被软删除了.
+     * 检查模型实体是否已经被软删除.
      *
      * @return bool
      */

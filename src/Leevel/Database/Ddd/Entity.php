@@ -158,6 +158,20 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected static $leevelEnums = [];
 
     /**
+     * 是否为软删除数据.
+     *
+     * @var bool
+     */
+    protected $leevelSoftDelete = false;
+
+    /**
+     * 是否为软删除恢复数据.
+     *
+     * @var bool
+     */
+    protected $leevelSoftRestore = false;
+
+    /**
      * 构造函数.
      *
      * @param array $data
@@ -615,19 +629,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function destroy(array $ids): int
     {
-        $count = 0;
-        $entitys = static::select()
-            ->whereIn(static::singlePrimaryKey(), $ids)
-            ->findAll();
-
-        /** @var \Leevel\Database\Ddd\IEntity $entity */
-        foreach ($entitys as $entity) {
-            if ($entity->delete()->flush()) {
-                $count++;
-            }
-        }
-
-        return $count;
+        return static::selectAndDestroyEntitys($ids, 'delete');
     }
 
     /**
@@ -639,6 +641,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function delete(): IEntity
     {
+        if (defined(static::class.'::DELETE_AT')) {
+            return $this->softDelete();
+        }
+
         if (null === static::primaryKey()) {
             $e = sprintf('Entity %s has no primary key.', static::class);
 
@@ -663,69 +669,42 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 根据主键 ID 删除模型实体.
      *
      * @param array $ids
-     * @param bool  $flush
      *
      * @return int
      */
-    public static function softDestroy(array $ids, bool $flush = true): int
+    public static function softDestroy(array $ids): int
     {
-        $count = 0;
-        $entitys = static::select()
-            ->whereIn(static::singlePrimaryKey(), $ids)
-            ->findAll();
-
-        /** @var \Leevel\Database\Ddd\IEntity $entity */
-        foreach ($entitys as $entity) {
-            if ($entity->softDelete($flush)) {
-                $count++;
-            }
-        }
-
-        return $count;
+        return static::selectAndDestroyEntitys($ids, 'softDelete');
     }
 
     /**
      * 从模型实体中软删除数据.
      *
-     * @param bool $flush
-     *
-     * @return int
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function softDelete(bool $flush = true): int
+    public function softDelete(): IEntity
     {
+        $this->leevelSoftDelete = true;
         $this->withProp(static::deleteAtColumn(), time());
 
-        $num = 1;
-        if (true === $flush) {
-            $this->handleEvent(IEntity::BEFORE_SOFT_DELETE_EVENT);
-            $num = $this->update()->flush();
-            $this->handleEvent(IEntity::AFTER_SOFT_DELETE_EVENT);
-        }
-
-        return $num;
+        return $this->update();
     }
 
     /**
      * 恢复软删除的模型实体.
      *
-     * @return int
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function softRestore(bool $flush = true): int
+    public function softRestore(): IEntity
     {
+        $this->leevelSoftRestore = true;
         $this->withProp(static::deleteAtColumn(), 0);
 
-        $num = 1;
-        if (true === $flush) {
-            $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT);
-            $num = $this->update()->flush();
-            $this->handleEvent(self::AFTER_SOFT_RESTORE_EVENT);
-        }
-
-        return $num;
+        return $this->update();
     }
 
     /**
-     * 检查模型实体是否已经被软删除了.
+     * 检查模型实体是否已经被软删除.
      *
      * @return bool
      */
@@ -1604,6 +1583,28 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     abstract public static function connect();
 
     /**
+     * 查找并删除实体.
+     *
+     * @param array  $ids
+     * @param string $type
+     *
+     * @return int
+     */
+    protected static function selectAndDestroyEntitys(array $ids, string $type): int
+    {
+        $entitys = static::select()
+            ->whereIn(static::singlePrimaryKey(), $ids)
+            ->findAll();
+
+        /** @var \Leevel\Database\Ddd\IEntity $entity */
+        foreach ($entitys as $entity) {
+            $entity->{$type}()->flush();
+        }
+
+        return count($entitys);
+    }
+
+    /**
      * 准备软删除查询条件.
      *
      * @param \Leevel\Database\Select $select
@@ -1629,7 +1630,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
                 break;
             default:
-                throw new InvalidArgumentException('Invalid ');
+                $e = sprinf('Invalid soft deleted type %d.', $softDeletedType);
+
+                throw new InvalidArgumentException($e);
         }
     }
 
@@ -1724,12 +1727,14 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
+
             $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
                 $this->withProp($auto, $lastInsertId, false, true);
             }
             $this->leevelNewed = false;
             $this->clearChanged();
+
             $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
 
             return $lastInsertId;
@@ -1785,10 +1790,25 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = function ($condition, $saveData) {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
+            if (true === $this->leevelSoftDelete) {
+                $this->handleEvent(static::BEFORE_SOFT_DELETE_EVENT, $saveData, $condition);
+            }
+            if (true === $this->leevelSoftRestore) {
+                $this->handleEvent(static::BEFORE_SOFT_RESTORE_EVENT, $saveData, $condition);
+            }
+
             $num = static::meta()->update($condition, $saveData);
-            $this->handleEvent(static::BEFORE_UPDATE_EVENT, null, null);
             $this->clearChanged();
+
             $this->handleEvent(static::AFTER_UPDATE_EVENT);
+            if (true === $this->leevelSoftDelete) {
+                $this->handleEvent(static::AFTER_SOFT_DELETE_EVENT);
+                $this->leevelSoftDelete = false;
+            }
+            if (true === $this->leevelSoftRestore) {
+                $this->handleEvent(static::AFTER_SOFT_RESTORE_EVENT);
+                $this->leevelSoftRestore = false;
+            }
 
             return $num;
         };
