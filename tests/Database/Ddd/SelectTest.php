@@ -228,7 +228,7 @@ class SelectTest extends TestCase
         $this->assertSame(1, $post->softDelete());
         $this->assertTrue($post->softDeleted());
 
-        $post1 = Post::select()->findEntity(1);
+        $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
@@ -281,7 +281,7 @@ class SelectTest extends TestCase
         $this->assertSame(1, Post::softDestroy([1]));
         $this->assertFalse($post->softDeleted());
 
-        $post1 = Post::select()->findEntity(1);
+        $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
@@ -336,6 +336,13 @@ class SelectTest extends TestCase
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
         $this->assertSame(1, $post1->userId);
         $this->assertSame('hello world', $post1->title);
         $this->assertSame('post summary', $post1->summary);
@@ -348,7 +355,7 @@ class SelectTest extends TestCase
         $this->assertSame('post summary', $post2->summary);
         $this->assertSame(0, $post2->delete_at);
 
-        $newPost = Post::select()->findEntity(1);
+        $newPost = Post::withSoftDeleted()->findEntity(1);
         $this->assertTrue($newPost->softDeleted());
         $this->assertSame(1, $newPost->softRestore());
         $this->assertFalse($newPost->softDeleted());
@@ -397,9 +404,9 @@ class SelectTest extends TestCase
         $posts = $select->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        $this->assertCount(1, $posts);
 
-        $posts = $select->withoutSoftDeleted()->findAll();
+        $posts = Post::select()->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(1, $posts);
@@ -445,9 +452,9 @@ class SelectTest extends TestCase
         $posts = $select->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
+        $this->assertCount(1, $posts);
 
-        $posts = $select->onlySoftDeleted()->findAll();
+        $posts = Post::onlySoftDeleted()->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(1, $posts);
@@ -636,7 +643,7 @@ class SelectTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `post`.* FROM `post` WHERE `post`.`id` = 1 LIMIT 1",
+                "SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 1 LIMIT 1",
                 []
             ]
             eot;
