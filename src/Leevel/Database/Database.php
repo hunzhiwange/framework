@@ -394,7 +394,7 @@ abstract class Database implements IConnection
         $this->release();
 
         if (in_array($sqlType, ['insert', 'replace'], true)) {
-            return (int) $this->getLastInsertId();
+            return (int) $this->lastInsertId();
         }
 
         return $this->numRows;
@@ -551,9 +551,9 @@ abstract class Database implements IConnection
      *
      * @return string
      */
-    public function getLastInsertId(?string $name = null): string
+    public function lastInsertId(?string $name = null): string
     {
-        return $this->connect->getLastInsertId($name);
+        return $this->connect->lastInsertId($name);
     }
 
     /**

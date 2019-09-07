@@ -294,9 +294,9 @@ class MysqlPool implements IDatabase
      *
      * @return string
      */
-    public function getLastInsertId(?string $name = null): string
+    public function lastInsertId(?string $name = null): string
     {
-        return $this->proxy()->getLastInsertId($name);
+        return $this->proxy()->lastInsertId($name);
     }
 
     /**

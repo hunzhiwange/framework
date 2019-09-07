@@ -253,7 +253,7 @@ interface IDatabase
      *
      * @return string
      */
-    public function getLastInsertId(?string $name = null): string;
+    public function lastInsertId(?string $name = null): string;
 
     /**
      * 获取最近一次查询的 sql 语句.

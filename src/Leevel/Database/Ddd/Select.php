@@ -48,7 +48,7 @@ use Leevel\Support\Str\starts_with;
  * @method static bool inTransaction()                                                                                                         检查是否处于事务中.
  * @method static void commit()                                                                                                                用于非自动提交状态下面的查询提交.
  * @method static void rollBack()                                                                                                              事务回滚.
- * @method static string getLastInsertId(?string $name = null)                                                                                 获取最后插入 ID 或者列.
+ * @method static string lastInsertId(?string $name = null)                                                                                    获取最后插入 ID 或者列.
  * @method static string getLastSql()                                                                                                          获取最近一次查询的 sql 语句.
  * @method static int numRows()                                                                                                                返回影响记录.
  * @method static void close()                                                                                                                 关闭数据库.

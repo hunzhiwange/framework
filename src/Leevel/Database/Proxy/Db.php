@@ -152,9 +152,9 @@ class Db
      *
      * @return string
      */
-    public static function getLastInsertId(?string $name = null): string
+    public static function lastInsertId(?string $name = null): string
     {
-        return self::proxy()->getLastInsertId($name);
+        return self::proxy()->lastInsertId($name);
     }
 
     /**
