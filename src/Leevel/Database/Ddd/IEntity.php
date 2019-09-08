@@ -487,19 +487,39 @@ interface IEntity
      * 根据主键 ID 删除模型实体.
      *
      * @param array $ids
+     * @param bool  $forceDelete
      *
      * @return int
      */
-    public static function destroy(array $ids): int;
+    public static function destroy(array $ids, bool $forceDelete = false): int;
+
+    /**
+     * 根据主键 ID 强制删除模型实体.
+     *
+     * @param array $ids
+     * @param bool  $forceDelete
+     *
+     * @return int
+     */
+    public static function forceDestroy(array $ids): int;
 
     /**
      * 删除模型实体.
+     *
+     * @param bool $forceDelete
      *
      * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function delete(): self;
+    public function delete(bool $forceDelete = false): self;
+
+    /**
+     * 强制删除模型实体.
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function forceDelete(): self;
 
     /**
      * 根据主键 ID 删除模型实体.

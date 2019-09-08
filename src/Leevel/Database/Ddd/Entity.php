@@ -624,24 +624,40 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 根据主键 ID 删除模型实体.
      *
      * @param array $ids
+     * @param bool  $forceDelete
      *
      * @return int
      */
-    public static function destroy(array $ids): int
+    public static function destroy(array $ids, bool $forceDelete = false): int
     {
-        return static::selectAndDestroyEntitys($ids, 'delete');
+        return static::selectAndDestroyEntitys($ids, 'delete', $forceDelete);
+    }
+
+    /**
+     * 根据主键 ID 强制删除模型实体.
+     *
+     * @param array $ids
+     * @param bool  $forceDelete
+     *
+     * @return int
+     */
+    public static function forceDestroy(array $ids): int
+    {
+        return static::destroy($ids, true);
     }
 
     /**
      * 删除模型实体.
      *
+     * @param bool $forceDelete
+     *
      * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function delete(): IEntity
+    public function delete(bool $forceDelete = false): IEntity
     {
-        if (defined(static::class.'::DELETE_AT')) {
+        if (false === $forceDelete && defined(static::class.'::DELETE_AT')) {
             return $this->softDelete();
         }
 
@@ -663,6 +679,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->leevelFlushData = [$this->idCondition()];
 
         return $this;
+    }
+
+    /**
+     * 强制删除模型实体.
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function forceDelete(): IEntity
+    {
+        return $this->delete(true);
     }
 
     /**
@@ -1587,10 +1613,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param array  $ids
      * @param string $type
+     * @param bool   $forceDelete
      *
      * @return int
      */
-    protected static function selectAndDestroyEntitys(array $ids, string $type): int
+    protected static function selectAndDestroyEntitys(array $ids, string $type, bool $forceDelete = false): int
     {
         $entitys = static::select()
             ->whereIn(static::singlePrimaryKey(), $ids)
@@ -1598,7 +1625,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         /** @var \Leevel\Database\Ddd\IEntity $entity */
         foreach ($entitys as $entity) {
-            $entity->{$type}()->flush();
+            $entity->{$type}($forceDelete)->flush();
         }
 
         return count($entitys);
