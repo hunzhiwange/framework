@@ -816,7 +816,8 @@ abstract class Database implements IConnection
     {
         ob_start();
         $pdoStatement->debugDumpParams();
-        $sql = str_replace(PHP_EOL, ' | ', trim(ob_get_contents(), PHP_EOL.' '));
+        $sql = trim(ob_get_contents(), PHP_EOL.' ');
+        $sql = str_replace(PHP_EOL, ' | ', $sql);
         ob_end_clean();
 
         return $sql;
