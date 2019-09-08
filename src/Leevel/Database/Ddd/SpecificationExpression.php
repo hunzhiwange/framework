@@ -38,7 +38,7 @@ class SpecificationExpression implements ISpecification
      *
      * @var \Closure
      */
-    public $spec;
+    protected $spec;
 
     /**
      * 闭包规约实现.
