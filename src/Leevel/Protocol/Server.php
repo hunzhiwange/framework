@@ -166,7 +166,6 @@ abstract class Server
 
                 $processName = $this->option['process_name'].'.'.$newProgress->getName();
                 $worker->name($processName);
-
                 $newProgress->handle($this, $worker);
             }
         );
@@ -413,7 +412,6 @@ abstract class Server
     protected function parseTask(string $task): array
     {
         list($task, $params) = array_pad(explode(':', $task, 2), 2, []);
-
         if (is_string($params)) {
             $params = explode(',', $params);
         }
