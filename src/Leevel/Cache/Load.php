@@ -78,7 +78,6 @@ class Load implements ILoad
         }
 
         $result = [];
-
         foreach ($names as $name) {
             $result[$name] = $this->cacheLoaded[$name];
         }
@@ -153,7 +152,6 @@ class Load implements ILoad
     protected function normalize(string $name): array
     {
         list($name, $params) = $this->parse($name);
-
         $rc = new ReflectionClass($name);
 
         if (!in_array(IBlock::class, $rc->getInterfaceNames(), true)) {
@@ -216,7 +214,6 @@ class Load implements ILoad
     protected function parse(string $name): array
     {
         list($name, $params) = array_pad(explode(':', $name, 2), 2, []);
-
         if (is_string($params)) {
             $params = explode(',', $params);
         }
