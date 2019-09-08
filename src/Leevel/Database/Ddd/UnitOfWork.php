@@ -343,7 +343,6 @@ class UnitOfWork implements IUnitOfWork
     public function createBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->createEntity($entity);
-
         $id = spl_object_id($entity);
         $this->createsFlagBefore[$id] = $priority;
 
@@ -361,7 +360,6 @@ class UnitOfWork implements IUnitOfWork
     public function create(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->createEntity($entity);
-
         $id = spl_object_id($entity);
         $this->createsFlag[$id] = $priority;
 
@@ -379,7 +377,6 @@ class UnitOfWork implements IUnitOfWork
     public function createAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->createEntity($entity);
-
         $id = spl_object_id($entity);
         $this->createsFlagAfter[$id] = $priority;
 
@@ -409,7 +406,6 @@ class UnitOfWork implements IUnitOfWork
     public function updateBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->updateEntity($entity);
-
         $id = spl_object_id($entity);
         $this->updatesFlagBefore[$id] = $priority;
 
@@ -427,7 +423,6 @@ class UnitOfWork implements IUnitOfWork
     public function update(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->updateEntity($entity);
-
         $id = spl_object_id($entity);
         $this->updatesFlag[$id] = $priority;
 
@@ -445,7 +440,6 @@ class UnitOfWork implements IUnitOfWork
     public function updateAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->updateEntity($entity);
-
         $id = spl_object_id($entity);
         $this->updatesFlagAfter[$id] = $priority;
 
@@ -475,7 +469,6 @@ class UnitOfWork implements IUnitOfWork
     public function replaceBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->replaceEntity($entity);
-
         $id = spl_object_id($entity);
         $this->replacesFlagBefore[$id] = $priority;
 
@@ -493,7 +486,6 @@ class UnitOfWork implements IUnitOfWork
     public function replace(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->replaceEntity($entity);
-
         $id = spl_object_id($entity);
         $this->replacesFlag[$id] = $priority;
 
@@ -511,7 +503,6 @@ class UnitOfWork implements IUnitOfWork
     public function replaceAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->replaceEntity($entity);
-
         $id = spl_object_id($entity);
         $this->replacesFlagAfter[$id] = $priority;
 
@@ -541,7 +532,6 @@ class UnitOfWork implements IUnitOfWork
     public function deleteBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->deleteEntity($entity);
-
         $id = spl_object_id($entity);
         $this->deletesFlagBefore[$id] = $priority;
 
@@ -559,7 +549,6 @@ class UnitOfWork implements IUnitOfWork
     public function delete(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->deleteEntity($entity);
-
         $id = spl_object_id($entity);
         $this->deletesFlag[$id] = $priority;
 
@@ -577,7 +566,6 @@ class UnitOfWork implements IUnitOfWork
     public function deleteAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->deleteEntity($entity);
-
         $id = spl_object_id($entity);
         $this->deletesFlagAfter[$id] = $priority;
 
@@ -716,7 +704,6 @@ class UnitOfWork implements IUnitOfWork
 
         try {
             $result = $action($this);
-
             $this->flush();
             $this->commit();
 
@@ -808,7 +795,6 @@ class UnitOfWork implements IUnitOfWork
     public function getEntityState(IEntity $entity, ?int $defaults = null): int
     {
         $id = spl_object_id($entity);
-
         if (isset($this->entityStates[$id])) {
             return $this->entityStates[$id];
         }
@@ -838,9 +824,7 @@ class UnitOfWork implements IUnitOfWork
     protected function persistEntity(string $position, IEntity $entity, string $method = 'save'): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
-
         $entityState = $this->getEntityState($entity, self::STATE_NEW);
 
         switch ($entityState) {
@@ -853,7 +837,6 @@ class UnitOfWork implements IUnitOfWork
             case self::STATE_REMOVED:
                 if (isset($this->entityDeletes[$id])) {
                     unset($this->entityDeletes[$id]);
-
                     foreach (['deletesFlagBefore', 'deletesFlag', 'deletesFlagAfter'] as $flag) {
                         if (isset($this->{$flag}[$id])) {
                             unset($this->{$flag}[$id]);
@@ -887,8 +870,6 @@ class UnitOfWork implements IUnitOfWork
      */
     protected function removeEntity(string $position, IEntity $entity, int $priority = 500): IUnitOfWork
     {
-        $id = spl_object_id($entity);
-
         $entityState = $this->getEntityState($entity);
 
         switch ($entityState) {
@@ -922,7 +903,6 @@ class UnitOfWork implements IUnitOfWork
     protected function createEntity(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
 
         if (isset($this->entityUpdates[$id])) {
@@ -967,7 +947,6 @@ class UnitOfWork implements IUnitOfWork
     protected function updateEntity(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
 
         if (!$entity->id()) {
@@ -1018,7 +997,6 @@ class UnitOfWork implements IUnitOfWork
     protected function replaceEntity(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
 
         if (isset($this->entityDeletes[$id])) {
@@ -1063,7 +1041,6 @@ class UnitOfWork implements IUnitOfWork
     protected function deleteEntity(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
 
         if (isset($this->entityCreates[$id])) {
@@ -1100,7 +1077,6 @@ class UnitOfWork implements IUnitOfWork
 
         if (isset($this->entityUpdates[$id])) {
             unset($this->entityUpdates[$id]);
-
             foreach (['updatesFlagBefore', 'updatesFlag', 'updatesFlagAfter'] as $flag) {
                 if (isset($this->{$flag}[$id])) {
                     unset($this->{$flag}[$id]);
