@@ -118,11 +118,9 @@ class Pipeline implements IPipeline
     public function then(?Closure $end = null)
     {
         $stage = $this->stage;
-
         if ($end) {
             $stage[] = $end;
         }
-
         $this->generator = $this->stageGenerator($stage);
 
         return $this->traverseGenerator(...$this->passed);
@@ -170,7 +168,6 @@ class Pipeline implements IPipeline
     protected function stageGenerator(array $stage): Generator
     {
         array_unshift($stage, null);
-
         foreach ($stage as $item) {
             yield $this->stageCallback($item);
         }
@@ -196,7 +193,6 @@ class Pipeline implements IPipeline
         }
 
         list($stage, $params) = $this->parse($stages);
-
         if (false !== strpos($stage, '@')) {
             list($stage, $method) = explode('@', $stage);
         } else {
@@ -220,7 +216,6 @@ class Pipeline implements IPipeline
     protected function parse(string $name): array
     {
         list($name, $params) = array_pad(explode(':', $name, 2), 2, []);
-
         if (is_string($params)) {
             $params = explode(',', $params);
         }
