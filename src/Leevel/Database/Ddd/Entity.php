@@ -94,8 +94,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * Replace 模式.
-     * 先插入出现主键重复.
-     * false 表示非 replace 模式，其它值表示 replace 模式附带的 fill 数据.
+     *
+     * - 先插入出现主键重复.
+     * - false 表示非 replace 模式，其它值表示 replace 模式附带的 fill 数据.
      *
      * @var mixed
      */
