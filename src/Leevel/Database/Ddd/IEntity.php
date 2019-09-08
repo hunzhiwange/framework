@@ -568,13 +568,6 @@ interface IEntity
     public function flush();
 
     /**
-     * 获取是否已经持久化数据.
-     *
-     * @return bool
-     */
-    public function flushed(): bool;
-
-    /**
      * 获取数据持久化数据.
      *
      * @return null|array

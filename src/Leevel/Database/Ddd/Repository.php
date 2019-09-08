@@ -421,10 +421,6 @@ class Repository implements IRepository
      */
     public function create(IEntity $entity)
     {
-        if ($entity->flushed()) {
-            return false;
-        }
-
         return $entity->create()->flush();
     }
 
@@ -437,10 +433,6 @@ class Repository implements IRepository
      */
     public function update(IEntity $entity)
     {
-        if ($entity->flushed()) {
-            return false;
-        }
-
         return $entity->update()->flush();
     }
 
@@ -453,10 +445,6 @@ class Repository implements IRepository
      */
     public function replace(IEntity $entity)
     {
-        if ($entity->flushed()) {
-            return false;
-        }
-
         return $entity->replace()->flush();
     }
 
@@ -469,10 +457,6 @@ class Repository implements IRepository
      */
     public function delete(IEntity $entity)
     {
-        if ($entity->flushed()) {
-            return false;
-        }
-
         return $entity->delete()->flush();
     }
 

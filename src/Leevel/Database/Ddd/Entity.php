@@ -124,13 +124,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected $leevelFlushData;
 
     /**
-     * 是否已经持久化数据.
-     *
-     * @var bool
-     */
-    protected $leevelFlushed = false;
-
-    /**
      * 模型实体事件处理器.
      *
      * @var \Leevel\Event\IDispatch
@@ -668,7 +661,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             throw new InvalidArgumentException($e);
         }
 
-        $this->leevelFlushed = false;
         $this->leevelFlush = function ($condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
             $num = static::meta()->delete($condition);
@@ -676,7 +668,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
             return $num;
         };
-
         $this->leevelFlushData = [$this->idCondition()];
 
         return $this;
@@ -778,7 +769,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function flush()
     {
-        if (!$this->leevelFlush || true === $this->leevelFlushed) {
+        if (!$this->leevelFlush) {
             return;
         }
 
@@ -799,20 +790,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = null;
         $this->leevelFlushData = null;
-        $this->leevelFlushed = true;
         $this->handleEvent(static::AFTER_SAVE_EVENT);
 
         return $result;
-    }
-
-    /**
-     * 获取是否已经持久化数据.
-     *
-     * @return bool
-     */
-    public function flushed(): bool
-    {
-        return $this->leevelFlushed;
     }
 
     /**
@@ -1726,8 +1706,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function createReal(?array $fill = null): IEntity
     {
-        $this->leevelFlushed = false;
-
         $this->parseAutoFill('create', $fill);
         $propKey = $this->normalizeWhiteAndBlack(
             array_flip($this->leevelChangedProp), 'create_prop'
@@ -1767,7 +1745,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
             return $lastInsertId;
         };
-
         $this->leevelFlushData = [$saveData];
 
         return $this;
@@ -1782,8 +1759,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function updateReal(?array $fill = null): IEntity
     {
-        $this->leevelFlushed = false;
-
         $this->parseAutoFill('update', $fill);
         $propKey = $this->normalizeWhiteAndBlack(
             array_flip($this->leevelChangedProp), 'update_prop'
@@ -1840,7 +1815,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
             return $num;
         };
-
         $this->leevelFlushData = [$condition, $saveData];
 
         return $this;
