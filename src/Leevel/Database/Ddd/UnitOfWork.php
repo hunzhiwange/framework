@@ -822,6 +822,7 @@ class UnitOfWork implements IUnitOfWork
         $this->deletesFlagBefore = [];
         $this->deletesFlag = [];
         $this->deletesFlagAfter = [];
+        $this->forceDeleteFlag = [];
     }
 
     /**
@@ -900,7 +901,7 @@ class UnitOfWork implements IUnitOfWork
      */
     protected function forceDeleteFlag(IEntity $entity): void
     {
-        $this->forceDeleteFlag[] = spl_object_id($entity);
+        $this->forceDeleteFlag[spl_object_id($entity)] = true;
     }
 
     /**
@@ -934,6 +935,9 @@ class UnitOfWork implements IUnitOfWork
                         if (isset($this->{$flag}[$id])) {
                             unset($this->{$flag}[$id]);
                         }
+                    }
+                    if (isset($this->forceDeleteFlag[$id])) {
+                        unset($this->forceDeleteFlag[$id]);
                     }
                 }
 
@@ -1238,7 +1242,7 @@ class UnitOfWork implements IUnitOfWork
         $entity = $this->{'entity'.ucfirst($type)}[$id];
 
         if ('deletes' === $type) {
-            $params = [$entity, in_array($id, $this->forceDeleteFlag, true)];
+            $params = [$entity, isset($this->forceDeleteFlag[$id])];
         } else {
             $params = [$entity];
         }
