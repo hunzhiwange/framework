@@ -24,7 +24,7 @@ use Closure;
 use Leevel\Database\IDatabase;
 
 /**
- * 工作单元接口.
+ * 事务工作单元接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -63,7 +63,7 @@ interface IUnitOfWork
     public const STATE_REMOVED = 4;
 
     /**
-     * 创建一个工作单元.
+     * 创建一个事务工作单元.
      *
      * @return static
      */
