@@ -314,10 +314,20 @@ interface IRepository
      * 响应删除.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param bool                         $forceDelete
      *
      * @return mixed
      */
-    public function delete(IEntity $entity);
+    public function delete(IEntity $entity, bool $forceDelete = false);
+
+    /**
+     * 响应删除(强制删除).
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     *
+     * @return mixed
+     */
+    public function forceDelete(IEntity $entity);
 
     /**
      * 重新载入.
