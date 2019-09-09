@@ -55,8 +55,8 @@ class Comment extends AbstractMigration
     {
         $sql = <<<'EOT'
             CREATE TABLE `comment` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `title` varchar(64) NOT NULL,
+                `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                `title` varchar(64) NOT NULL DEFAULT '' COMMENT '标题',
                 `post_id` int(11) NOT NULL COMMENT '文章 ID',
                 `content` varchar(200) NOT NULL DEFAULT '' COMMENT '评论内容',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

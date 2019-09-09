@@ -55,9 +55,9 @@ class UserRole extends AbstractMigration
     {
         $sql = <<<'EOT'
             CREATE TABLE `user_role` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `user_id` int(11) NOT NULL COMMENT '用户 ID',
-                `role_id` int(11) NOT NULL COMMENT '角色 ID',
+                `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户 ID',
+                `role_id` int(11) NOT NULL DEFAULT '0' COMMENT '角色 ID',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

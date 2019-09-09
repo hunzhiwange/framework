@@ -55,9 +55,9 @@ class Post extends AbstractMigration
     {
         $sql = <<<'EOT'
             CREATE TABLE `post` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `title` varchar(64) NOT NULL,
-                `user_id` int(11) NOT NULL COMMENT '用户 ID',
+                `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                `title` varchar(64) NOT NULL DEFAULT '' COMMENT '标题',
+                `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户 ID',
                 `summary` varchar(200) NOT NULL DEFAULT '' COMMENT '文章摘要',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 `delete_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间 0=未删除;大于0=删除时间;',

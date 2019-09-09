@@ -55,8 +55,8 @@ class GuestBook extends AbstractMigration
     {
         $sql = <<<'EOT'
             CREATE TABLE `guest_book` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `name` varchar(64) NOT NULL,
+                `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名字',
                 `content` longtext NOT NULL COMMENT '评论内容',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)
