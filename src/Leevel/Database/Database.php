@@ -729,7 +729,7 @@ abstract class Database implements IConnection
         }
 
         if (null === $value) {
-            return null;
+            return;
         }
 
         $value = trim($value);
