@@ -1224,7 +1224,7 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->summary);
     }
 
-    public function testCreateFlushed(): void
+    public function testCreateTwiceWillClearCreateChangedData(): void
     {
         $repository = new Repository(new Post());
 
@@ -1234,13 +1234,23 @@ class RepositoryTest extends TestCase
             'user_id' => 0,
         ]));
 
-        $repository->create($post); // do nothing.
+        $this->assertSame(5, $post->id);
+        $this->assertSame('foo', $post->title);
+        $this->assertSame(0, $post->userId);
+        $this->assertSame([], $post->changed());
+        $repository->create($post);
 
         $newPost = $repository->findEntity(5);
 
         $this->assertInstanceof(Post::class, $newPost);
         $this->assertSame(5, $newPost->id);
         $this->assertSame('foo', $newPost->title);
+
+        $newPost = $repository->findEntity(6);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        $this->assertSame(6, $newPost->id);
+        $this->assertSame('', $newPost->title);
     }
 
     public function testUpdateFlushed(): void
