@@ -138,15 +138,12 @@ class HasMany extends Relation
     protected function matchPreLoadOneOrMany(array $entitys, Collection $result, string $relation, string $type): array
     {
         $maps = $this->buildMap($result);
-
         foreach ($entitys as &$entity) {
             $key = $entity->prop($this->sourceKey);
-            if (isset($maps[$key])) {
-                $entity->withRelationProp(
-                    $relation,
-                    $this->getRelationValue($maps, $key, $type)
-                );
-            }
+            $entity->withRelationProp(
+                $relation,
+                $this->getRelationValue($maps[$key] ?? [], $type)
+            );
         }
 
         return $entitys;
@@ -155,17 +152,22 @@ class HasMany extends Relation
     /**
      * 取得关联模型实体数据.
      *
-     * @param array      $maps
-     * @param int|string $key
-     * @param string     $type
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param string                         $type
      *
      * @return mixed
      */
-    protected function getRelationValue(array $maps, $key, string $type)
+    protected function getRelationValue(array $entitys, string $type)
     {
-        $value = $maps[$key];
+        if (!$entitys) {
+            return 'one' === $type ?
+                $this->targetEntity->make() :
+                $this->targetEntity->collection();
+        }
 
-        return 'one' === $type ? reset($value) : $this->targetEntity->collection($value);
+        return 'one' === $type ?
+            reset($entitys) :
+            $this->targetEntity->collection($entitys);
     }
 
     /**
