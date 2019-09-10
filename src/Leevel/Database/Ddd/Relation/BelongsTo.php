@@ -75,12 +75,9 @@ class BelongsTo extends Relation
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
-
         foreach ($entitys as $value) {
             $key = $value->prop($this->sourceKey);
-            if (isset($maps[$key])) {
-                $value->withRelationProp($relation, $maps[$key]);
-            }
+            $value->withRelationProp($relation, $maps[$key] ?? $this->targetEntity->make());
         }
 
         return $entitys;
