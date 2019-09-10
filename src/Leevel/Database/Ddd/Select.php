@@ -442,7 +442,7 @@ class Select
     {
         $data = [];
         foreach ($relation as $name => $condition) {
-            if (is_numeric($name)) {
+            if (is_int($name)) {
                 list($name, $condition) = [$condition, null];
             }
 
