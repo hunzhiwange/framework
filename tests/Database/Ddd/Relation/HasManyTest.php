@@ -340,6 +340,74 @@ class HasManyTest extends TestCase
         }
     }
 
+    public function testEagerWithCondition(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'foo bar',
+                    'user_id'   => 1,
+                    'summary'   => 'Say foo to the bar.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 1,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 2,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        $posts = Post::eager(['comment' => function ($select) {
+            $select->where('id', '>', 99999);
+        }])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(2, $posts);
+
+        foreach ($posts as $k => $value) {
+            $comments = $value->comment;
+
+            $this->assertInstanceof(Collection::class, $comments);
+            $this->assertCount(0, $comments);
+        }
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'comment'];
