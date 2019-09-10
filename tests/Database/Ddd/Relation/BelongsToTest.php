@@ -278,6 +278,56 @@ class BelongsToTest extends TestCase
         }
     }
 
+    public function testEagerWithCondition(): void
+    {
+        $posts = Post::select()->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(0, $posts);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; $i++) {
+            $this->assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title'     => 'hello world',
+                        'user_id'   => 1,
+                        'summary'   => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]),
+            );
+        }
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
+
+        $posts = Post::eager(['user' => function ($select) {
+            $select->where('id', '>', 9999);
+        }])
+            ->limit(5)
+            ->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(5, $posts);
+
+        foreach ($posts as $value) {
+            $user = $value->user;
+
+            $this->assertInstanceof(User::class, $user);
+            $this->assertNull($user->id);
+            $this->assertNull($user->name);
+        }
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'user'];
