@@ -119,16 +119,12 @@ class ManyMany extends Relation
     public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
-
         foreach ($entitys as $entity) {
             $key = $entity->prop($this->sourceKey);
-
-            if (isset($maps[$key])) {
-                $entity->withRelationProp(
-                    $relation,
-                    $this->targetEntity->collection($maps[$key]),
-                );
-            }
+            $entity->withRelationProp(
+                $relation,
+                $this->targetEntity->collection($maps[$key] ?? []),
+            );
         }
 
         return $entitys;
