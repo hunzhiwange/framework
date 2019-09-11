@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\BelongsTo;
+use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Ddd\Select;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
@@ -310,8 +311,8 @@ class BelongsToTest extends TestCase
                 ]),
         );
 
-        $posts = Post::eager(['user' => function ($select) {
-            $select->where('id', '>', 9999);
+        $posts = Post::eager(['user' => function (Relation $select) {
+            $select->where('id', '>', 99999);
         }])
             ->limit(5)
             ->findAll();
@@ -321,8 +322,9 @@ class BelongsToTest extends TestCase
 
         foreach ($posts as $value) {
             $user = $value->user;
-
             $this->assertInstanceof(User::class, $user);
+            $this->assertNotSame(1, $user->id);
+            $this->assertNotSame('niu', $user->name);
             $this->assertNull($user->id);
             $this->assertNull($user->name);
         }
