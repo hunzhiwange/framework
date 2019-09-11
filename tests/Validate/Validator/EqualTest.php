@@ -50,7 +50,7 @@ class EqualTest extends TestCase
                 'name'     => 'equal:'.$param,
             ]
         );
-        dump('xx'.true);
+
         $this->assertTrue($validate->success());
     }
 
