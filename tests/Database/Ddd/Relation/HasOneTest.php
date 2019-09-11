@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\HasOne;
+use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Ddd\Select;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
@@ -273,6 +274,54 @@ class HasOneTest extends TestCase
             $postContent = $value->postContent;
 
             $this->assertInstanceof(PostContent::class, $postContent);
+            $this->assertNull($postContent->postId);
+            $this->assertNull($postContent->content);
+        }
+    }
+
+    public function testEagerWithCondition(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; $i++) {
+            $this->assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title'     => 'hello world',
+                        'user_id'   => 1,
+                        'summary'   => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]));
+
+            $this->assertSame(
+                0,
+                $connect
+                    ->table('post_content')
+                    ->insert([
+                        'post_id' => $i + 1,
+                        'content' => 'I am content with big data.',
+                    ]));
+        }
+
+        $posts = Post::eager(['post_content' => function (Relation $select) {
+            $select->where('post_id', '>', 99999);
+        }])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(6, $posts);
+
+        foreach ($posts as $value) {
+            $postContent = $value->postContent;
+            $this->assertInstanceof(PostContent::class, $postContent);
+            $this->assertNotSame($value->id, $postContent->postId);
+            $this->assertNotSame('I am content with big data.', $postContent->content);
             $this->assertNull($postContent->postId);
             $this->assertNull($postContent->content);
         }
