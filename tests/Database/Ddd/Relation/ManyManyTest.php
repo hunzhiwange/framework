@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\ManyMany;
+use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Ddd\Select;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Role;
@@ -469,6 +470,84 @@ class ManyManyTest extends TestCase
                 ]));
 
         $user = User::eager(['role'])
+            ->where('id', 1)
+            ->findOne();
+
+        $this->assertSame(1, $user->id);
+        $this->assertSame(1, $user['id']);
+        $this->assertSame(1, $user->getId());
+        $this->assertSame('niu', $user->name);
+        $this->assertSame('niu', $user['name']);
+        $this->assertSame('niu', $user->getName());
+
+        $role = $user->role;
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertCount(0, $role);
+    }
+
+    public function testEagerWithCondition(): void
+    {
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]));
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '管理员',
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '版主',
+                ]));
+
+        $this->assertSame(
+            3,
+            $connect
+                ->table('role')
+                ->insert([
+                    'name' => '会员',
+                ]));
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 1,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('user_role')
+                ->insert([
+                    'user_id' => 1,
+                    'role_id' => 3,
+                ]));
+
+        $user = User::eager(['role' => function (Relation $select) {
+            $select->where('id', '>', 99999);
+        }])
             ->where('id', 1)
             ->findOne();
 
