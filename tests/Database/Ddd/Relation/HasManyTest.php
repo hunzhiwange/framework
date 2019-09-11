@@ -402,7 +402,6 @@ class HasManyTest extends TestCase
 
         foreach ($posts as $k => $value) {
             $comments = $value->comment;
-
             $this->assertInstanceof(Collection::class, $comments);
             $this->assertCount(0, $comments);
         }
