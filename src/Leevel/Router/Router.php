@@ -544,7 +544,7 @@ class Router implements IRouter
     protected function completeRequest(): void
     {
         $this->pathinfoRestful();
-        $this->container->instance('app_name', $this->matchedApp());
+        $this->container->instance('app_name', $this->matchedApp(), true);
         $this->request->params->add($this->matchedParams());
     }
 
