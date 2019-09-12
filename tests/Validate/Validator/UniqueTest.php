@@ -46,10 +46,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
     }
 
@@ -60,10 +61,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -88,10 +90,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, 1, 'id'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1, 'id'),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,id', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -116,10 +119,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(CompositeId::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(CompositeId::class, null, 1),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\CompositeId,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -142,10 +146,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -277,10 +282,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, 'name', 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', 1),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__int@1,_', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -305,10 +311,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, 'name:content', 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name:content', 1),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name:content,__int@1,_', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -333,10 +340,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, null, null, 'id', '1'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id', '1'),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id,__string@1', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -361,10 +369,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, null, null, 'content', 'hello'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'content', 'hello'),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -389,10 +398,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, null, null, 'content', 'hello'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'content', 'hello'),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -417,10 +427,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, null, null, 'id:>', '1'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id:>', '1'),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id:>,__string@1', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
@@ -450,10 +461,11 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, null, null, 'id'),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, null, null, 'id'),
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id', $rule);
         $validate->success();
     }
 
@@ -464,12 +476,13 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(Guestbook::class, null, 1),
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, null, 1),
             ]
         );
 
         $validate->setContainer(new Container());
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
     }
 
@@ -480,7 +493,7 @@ class UniqueTest extends TestCase
                 'name' => 'foo',
             ],
             [
-                'name'     => UniqueRule::rule(
+                'name'     => $rule = UniqueRule::rule(
                     Guestbook::class,
                     UniqueRule::PLACEHOLDER,
                     UniqueRule::PLACEHOLDER,
@@ -491,6 +504,7 @@ class UniqueTest extends TestCase
             ]
         );
 
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__string@_,_,content,__string@hello', $rule);
         $this->assertTrue($validate->success());
 
         $connect = $this->createDatabaseConnect();
