@@ -703,6 +703,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function softDelete(): IEntity
     {
         $this->leevelSoftDelete = true;
+        $this->clearChanged();
         $this->withProp(static::deleteAtColumn(), time());
 
         return $this->update();
@@ -716,6 +717,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function softRestore(): IEntity
     {
         $this->leevelSoftRestore = true;
+        $this->clearChanged();
         $this->withProp(static::deleteAtColumn(), 0);
 
         return $this->update();
