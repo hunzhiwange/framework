@@ -187,4 +187,11 @@ trait Database
             $connect->close();
         }
     }
+
+    protected function getLastSql(string $table): string
+    {
+        return Meta::instance($table)
+            ->select()
+            ->getLastSql();
+    }
 }

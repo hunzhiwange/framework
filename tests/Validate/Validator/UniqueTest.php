@@ -508,6 +508,42 @@ class UniqueTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
+    public function testValidateWithStringFloatAndStringInt(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 'foo',
+            ],
+            [
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', '1', null, 'content', '1.5'),
+            ]
+        );
+
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__string@1,_,content,__string@1.5', $rule);
+        $this->assertTrue($validate->success());
+
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [152] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> '1' AND `guest_book`.`content` = '1.5' LIMIT 1 | Params:  0");
+    }
+
+    public function testValidateWithFloatAndInt(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 'foo',
+            ],
+            [
+                'name'     => $rule = UniqueRule::rule(Guestbook::class, 'name', 1, null, 'content', 1.5),
+            ]
+        );
+
+        $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__int@1,_,content,__float@1.5', $rule);
+        $this->assertTrue($validate->success());
+
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 AND `guest_book`.`content` = 1.5 LIMIT 1 | Params:  0");
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['guest_book', 'composite_id'];
