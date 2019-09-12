@@ -219,6 +219,10 @@ class Select
 
             return $this;
         } catch (ConditionNotFoundException $e) {
+            if (method_exists($this->connect, $method) &&
+                is_callable([$this->connect, $method])) {
+                return $this->connect->{$method}(...$args);
+            }
         }
 
         // 动态查询支持
@@ -273,7 +277,7 @@ class Select
                 ->find();
         }
 
-        $e = sprintf('Select do not implement magic method `%s`,maybe you can try `$select->databaseConnect()->%s(...).', $method, $method);
+        $e = sprintf('Select do not implement magic method `%s`.', $method, $method);
 
         throw new InvalidArgumentException($e);
     }
