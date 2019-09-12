@@ -482,49 +482,6 @@ class SelectTest extends TestCase
         $entity->softDeleted();
     }
 
-    public function t22222222estScopeBase(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
-                    'delete_at' => 0,
-                ]);
-        }
-
-        $select = new Select($post = Post::select()->findEntity(1));
-
-        $posts = $select->findAll();
-
-        $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(10, $posts);
-
-        $result1 = Post::make()->test()->findAll();
-
-        $this->assertInstanceof(Collection::class, $result1);
-        $this->assertCount(6, $result1);
-
-        $result2 = Post::make()->test2()->findAll();
-
-        $this->assertInstanceof(Collection::class, $result2);
-        $this->assertCount(9, $result2);
-
-        $result3 = Post::select()->scope('test,test2')->findAll();
-
-        $this->assertInstanceof(Collection::class, $result3);
-        $this->assertCount(5, $result3);
-
-        $result4 = Post::select()->scope(['test', 'test2'])->findAll();
-
-        $this->assertInstanceof(Collection::class, $result4);
-        $this->assertCount(5, $result4);
-    }
-
     public function testFindPage(): void
     {
         $connect = $this->createDatabaseConnect();
