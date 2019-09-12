@@ -66,6 +66,13 @@ class UniqueRule
     const TYPE_FLOAT = '__float@';
 
     /**
+     * 字符串类型标识符.
+     *
+     * @var string
+     */
+    const TYPE_STRING = '__string@';
+
+    /**
      * 校验.
      *
      * @param mixed                       $value
@@ -266,6 +273,10 @@ class UniqueRule
             return $value;
         }
 
+        if (0 === strpos($value, self::TYPE_STRING)) {
+            return (string) substr($value, strlen(self::TYPE_STRING));
+        }
+
         if (0 === strpos($value, self::TYPE_FLOAT)) {
             return (float) substr($value, strlen(self::TYPE_FLOAT));
         }
@@ -294,7 +305,7 @@ class UniqueRule
             return self::TYPE_FLOAT.$value;
         }
 
-        return $value;
+        return self::TYPE_STRING.$value;
     }
 }
 
