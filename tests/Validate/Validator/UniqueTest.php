@@ -52,6 +52,9 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
+
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [115] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
     }
 
     public function testValidateWithExceptId(): void
@@ -67,6 +70,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [115] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -96,6 +101,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,id', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [115] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -125,6 +132,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\CompositeId,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [115] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -152,6 +161,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [88] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -194,7 +205,7 @@ class UniqueTest extends TestCase
             'Unique additional conditions must be scalar type.'
         );
 
-        $validate = new Validator(
+        new Validator(
             [
                 'name' => 'foo',
             ],
@@ -288,6 +299,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name,__int@1,_', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [115] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -317,6 +330,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,name:content,__int@1,_', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [150] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -346,6 +361,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id,__string@1', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [116] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` = '1' LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -375,6 +392,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [125] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -404,6 +423,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,content,__string@hello', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [125] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`content` = 'hello' LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -433,6 +454,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,_,_,id:>,__string@1', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [116] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` > '1' LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -484,6 +507,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [115] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
     }
 
     public function testWithPlaceHolder(): void
@@ -506,6 +531,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\Guestbook,_,__string@_,_,content,__string@hello', $rule);
         $this->assertTrue($validate->success());
+        $sql = $this->getLastSql('guest_book');
+        $this->assertSame($sql, "SQL: [154] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> '_' AND `guest_book`.`content` = 'hello' LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
