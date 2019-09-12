@@ -720,16 +720,8 @@ abstract class Database implements IConnection
      */
     public function normalizeColumnValue($value, bool $quotationMark = true)
     {
-        if (is_int($value)) {
+        if (!is_string($value)) {
             return $value;
-        }
-
-        if (is_bool($value)) {
-            return $value;
-        }
-
-        if (null === $value) {
-            return;
         }
 
         $value = trim($value);
@@ -994,6 +986,7 @@ abstract class Database implements IConnection
     protected function setLastSql(string $sql): void
     {
         $this->sql = $sql;
+
         if ($this->dispatch) {
             $this->dispatch->handle(IDatabase::SQL_EVENT, $sql);
         }
