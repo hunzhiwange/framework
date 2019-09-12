@@ -1022,7 +1022,7 @@ class WhereTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Select do not implement magic method `whereNotSupportMethod`,maybe you can try `$select->databaseConnect()->whereNotSupportMethod(...).'
+            'Select do not implement magic method `whereNotSupportMethod`.'
         );
 
         $connect = $this->createDatabaseConnectMock();

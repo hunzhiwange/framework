@@ -616,7 +616,7 @@ class HavingTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Select do not implement magic method `havingNotSupportMethod`,maybe you can try `$select->databaseConnect()->havingNotSupportMethod(...).'
+            'Select do not implement magic method `havingNotSupportMethod`.'
         );
 
         $connect = $this->createDatabaseConnectMock();
