@@ -1224,7 +1224,7 @@ class RepositoryTest extends TestCase
         $this->assertNull($newPost->summary);
     }
 
-    public function testCreateTwiceWillClearCreateChangedData(): void
+    public function testCreateTwice(): void
     {
         $repository = new Repository(new Post());
 
@@ -1234,11 +1234,15 @@ class RepositoryTest extends TestCase
             'user_id' => 0,
         ]));
 
+        $this->assertSame('SQL: [93] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:id,:title,:user_id) | Params:  3 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=1 | Key: Name: [6] :title | paramno=1 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=2 | name=[8] ":user_id" | is_param=1 | param_type=1', $repository->getLastSql());
+
         $this->assertSame(5, $post->id);
         $this->assertSame('foo', $post->title);
         $this->assertSame(0, $post->userId);
         $this->assertSame([], $post->changed());
         $repository->create($post);
+
+        $this->assertSame('SQL: [45] INSERT INTO `post` (`post`.`id`) VALUES (:id) | Params:  1 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=0', $repository->getLastSql());
 
         $newPost = $repository->findEntity(5);
 
@@ -1253,7 +1257,7 @@ class RepositoryTest extends TestCase
         $this->assertSame('', $newPost->title);
     }
 
-    public function testUpdateFlushed(): void
+    public function testUpdateTwice(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -1269,10 +1273,12 @@ class RepositoryTest extends TestCase
                 ]));
 
         $repository = new Repository(new Post());
-
         $repository->update($post = new Post(['id' => 1, 'title' => 'new title']));
 
-        $repository->update($post); // do nothing.
+        $this->assertSame('SQL: [63] UPDATE `post` SET `post`.`title` = :title WHERE `post`.`id` = 1 | Params:  1 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2', $repository->getLastSql());
+
+        $this->assertSame([], $post->changed());
+        $repository->update($post); // 不做任何事情.
 
         $newPost = $repository->findEntity(1);
 
@@ -1281,7 +1287,7 @@ class RepositoryTest extends TestCase
         $this->assertSame('new title', $newPost->title);
     }
 
-    public function testReplaceFlushed(): void
+    public function testReplaceTwiceAndFindExistData(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -1297,24 +1303,34 @@ class RepositoryTest extends TestCase
                 ]));
 
         $repository = new Repository(new Post());
-
         $affectedRow = $repository->replace($post = new Post([
             'id'      => 1,
             'title'   => 'new title',
             'user_id' => 1,
         ]));
+        $this->assertSame('SQL: [91] UPDATE `post` SET `post`.`title` = :title,`post`.`user_id` = :user_id WHERE `post`.`id` = 1 | Params:  2 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=1 | name=[8] ":user_id" | is_param=1 | param_type=1', $repository->getLastSql());
 
         $this->assertSame(1, $affectedRow);
+        $this->assertSame([], $post->changed());
+
+        $repository->replace($post); // 新增一条数据.
+        $this->assertSame('SQL: [45] INSERT INTO `post` (`post`.`id`) VALUES (:id) | Params:  1 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=0', $repository->getLastSql());
 
         $updatedPost = $repository->findEntity(1);
-
         $this->assertSame(1, $updatedPost->id);
         $this->assertSame('new title', $updatedPost->title);
         $this->assertSame(1, $updatedPost->userId);
         $this->assertSame('post summary', $updatedPost->summary);
+
+        $newPost2 = $repository->findEntity(2);
+
+        $this->assertInstanceof(Post::class, $newPost2);
+        $this->assertSame(2, $newPost2->id);
+        $this->assertSame('', $newPost2->title);
+        $this->assertSame('', $newPost2->summary);
     }
 
-    public function testReplaceFlushed2(): void
+    public function testReplaceTwiceAndNotFindExistData(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -1330,14 +1346,16 @@ class RepositoryTest extends TestCase
                 ]));
 
         $repository = new Repository(new Post());
-
         $repository->replace($post = new Post([
             'id'      => 2,
             'title'   => 'new title',
             'user_id' => 0,
         ]));
+        $this->assertSame('SQL: [93] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:id,:title,:user_id) | Params:  3 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=1 | Key: Name: [6] :title | paramno=1 | name=[6] ":title" | is_param=1 | param_type=2 | Key: Name: [8] :user_id | paramno=2 | name=[8] ":user_id" | is_param=1 | param_type=1', $repository->getLastSql());
 
-        $repository->replace($post); // do nothing.
+        $this->assertSame([], $post->changed());
+        $repository->replace($post); // 新增一条数据.
+        $this->assertSame('SQL: [45] INSERT INTO `post` (`post`.`id`) VALUES (:id) | Params:  1 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=0', $repository->getLastSql());
 
         $newPost = $repository->findEntity(1);
 
@@ -1352,6 +1370,13 @@ class RepositoryTest extends TestCase
         $this->assertSame(2, $newPost2->id);
         $this->assertSame('new title', $newPost2->title);
         $this->assertSame('', $newPost2->summary);
+
+        $newPost3 = $repository->findEntity(3);
+
+        $this->assertInstanceof(Post::class, $newPost3);
+        $this->assertSame(3, $newPost3->id);
+        $this->assertSame('', $newPost3->title);
+        $this->assertSame('', $newPost3->summary);
     }
 
     public function testReplaceUnique(): void
@@ -1378,7 +1403,6 @@ class RepositoryTest extends TestCase
         $testUnique = new TestUnique(['id' => 1, 'name' => 'hello new', 'identity' => 'hello']);
 
         $repository = new Repository($testUnique);
-
         $repository->replace($testUnique);
 
         $testUniqueData = TestUnique::select()->findEntity(1);
@@ -1389,7 +1413,7 @@ class RepositoryTest extends TestCase
         $this->assertSame('hello', $testUniqueData->identity);
     }
 
-    public function testDeleteFlushed(): void
+    public function testSoftDeleteTwice(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -1407,9 +1431,41 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $repository->delete($post = new Post(['id' => 1, 'title' => 'new title']));
+        $this->assertSame('SQL: [71] UPDATE `post` SET `post`.`delete_at` = :delete_at WHERE `post`.`id` = 1 | Params:  1 | Key: Name: [10] :delete_at | paramno=0 | name=[10] ":delete_at" | is_param=1 | param_type=1', $repository->getLastSql());
 
-        $repository->delete($post); // do nothing.
+        $repository->delete($post); // 将会更新 `delete_at` 字段.
+        $this->assertSame('SQL: [71] UPDATE `post` SET `post`.`delete_at` = :delete_at WHERE `post`.`id` = 1 | Params:  1 | Key: Name: [10] :delete_at | paramno=0 | name=[10] ":delete_at" | is_param=1 | param_type=1', $repository->getLastSql());
 
+        $newPost = $repository->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        $this->assertNull($newPost->id);
+        $this->assertNull($newPost->userId);
+        $this->assertNull($newPost->title);
+        $this->assertNull($newPost->summary);
+    }
+
+    public function testForceDeleteTwice(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $repository = new Repository(new Post());
+
+        $repository->forceDelete($post = new Post(['id' => 1, 'title' => 'new title']));
+        $this->assertSame('SQL: [40] DELETE FROM `post` WHERE `post`.`id` = 1 | Params:  0', $repository->getLastSql());
+        $repository->forceDelete($post); // 会执行 SQL，因为应删出了，没有任何影响.
+        $this->assertSame('SQL: [40] DELETE FROM `post` WHERE `post`.`id` = 1 | Params:  0', $repository->getLastSql());
         $newPost = $repository->findEntity(1);
 
         $this->assertInstanceof(Post::class, $newPost);
