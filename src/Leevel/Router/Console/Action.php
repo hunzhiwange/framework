@@ -81,31 +81,73 @@ class Action extends Make
         // 设置模板路径
         $this->setTemplatePath($this->getStubPath());
 
+        // 关键参数
         $controllerNamespace = $router->getControllerDir();
-        $controllerName = ucfirst(camelize($this->argument('controller')));
+        $controller = $this->parseController();
+        $action = $this->parseAction();
 
-        $action = ucfirst($this->normalizeAction($this->argument('name')));
-
-        $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
-
-        $this->setCustomReplaceKeyValue('file_name', $controllerName);
-
-        $this->setCustomReplaceKeyValue('controller', $controllerName);
-
-        $this->setCustomReplaceKeyValue('action', $action);
+        // 设置自定义替换 KEY
+        $this->setCustomReplace($controllerNamespace, $controller, $action);
 
         // 保存路径
-        $this->setSaveFilePath(
-            $this->getNamespacePath().
-            str_replace('\\', '/', $controllerNamespace).'/'.
-            $controllerName.'/'.$action.'.php'
-        );
+        $this->setSaveFilePath($this->parseSaveFilePath($controllerNamespace, $controller, $action));
 
         // 设置类型
         $this->setMakeType('action');
 
         // 执行
         $this->create();
+    }
+
+    /**
+     * 设置自定义替换 KEY.
+     *
+     * @param string $controllerNamespace
+     * @param string $controller
+     * @param string $action
+     */
+    protected function setCustomReplace(string $controllerNamespace, string $controller, string $action): void
+    {
+        $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
+        $this->setCustomReplaceKeyValue('file_name', $controller);
+        $this->setCustomReplaceKeyValue('controller', $controller);
+        $this->setCustomReplaceKeyValue('action', $action);
+    }
+
+    /**
+     * 获取保存文件路径.
+     *
+     * @param string $controllerNamespace
+     * @param string $controller
+     * @param string $action
+     *
+     * @return string
+     */
+    protected function parseSaveFilePath(string $controllerNamespace, string $controller, string $action): string
+    {
+        return $this->getNamespacePath().
+            str_replace('\\', '/', $controllerNamespace).'/'.
+            $controller.'/'.$action.'.php';
+    }
+
+    /**
+     * 获取控制器.
+     *
+     * @return string
+     */
+    protected function parseController(): string
+    {
+        return ucfirst(camelize($this->argument('controller')));
+    }
+
+    /**
+     * 获取方法.
+     *
+     * @return string
+     */
+    protected function parseAction(): string
+    {
+        return ucfirst($this->normalizeAction($this->argument('name')));
     }
 
     /**
