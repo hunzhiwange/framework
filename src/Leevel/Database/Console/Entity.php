@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
+use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
@@ -72,6 +73,10 @@ class Entity extends Make
         You can also by using the <comment>--table</comment> option:
         
           <info>php %command.full_name% name --table=test</info>
+
+        You can also by using the <comment>--stub</comment> option:
+        
+          <info>php %command.full_name% name --stub=/stub/entity</info>
         EOF;
 
     /**
@@ -94,7 +99,7 @@ class Entity extends Make
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(__DIR__.'/stub/entity');
+        $this->setTemplatePath($this->getStubPath());
 
         // 保存路径
         $this->setSaveFilePath(
@@ -196,7 +201,6 @@ class Entity extends Make
     protected function getStruct(array $columns): string
     {
         $struct = ['['];
-
         foreach ($columns['list'] as $val) {
             if ($val['primary_key']) {
                 $struct[] = "        '{$val['name']}' => [
@@ -206,7 +210,6 @@ class Entity extends Make
                 $struct[] = "        '{$val['name']}' => [],";
             }
         }
-
         $struct[] = '    ]';
 
         return implode(PHP_EOL, $struct);
@@ -222,7 +225,6 @@ class Entity extends Make
     protected function getProps(array $columns): string
     {
         $props = [];
-
         foreach ($columns['list'] as $val) {
             $comment = $val['comment'] ?: $val['name'];
 
@@ -239,7 +241,6 @@ class Entity extends Make
      */
     private \${$propName};
 ";
-
             $props[] = $tmpProp;
         }
 
@@ -258,6 +259,30 @@ class Entity extends Make
         }
 
         return un_camelize($this->argument('name'));
+    }
+
+    /**
+     * 获取模板路径.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    protected function getStubPath(): string
+    {
+        if ($this->option('stub')) {
+            $stub = $this->option('stub');
+        } else {
+            $stub = __DIR__.'/stub/entity';
+        }
+
+        if (!is_file($stub)) {
+            $e = sprintf('Entity stub file `%s` was not found.', $stub);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return $stub;
     }
 
     /**
@@ -306,6 +331,12 @@ class Entity extends Make
                 null,
                 Option::VALUE_OPTIONAL,
                 'The database table of entity',
+            ],
+            [
+                'stub',
+                null,
+                Option::VALUE_OPTIONAL,
+                'Custom stub of entity',
             ],
         ];
     }
