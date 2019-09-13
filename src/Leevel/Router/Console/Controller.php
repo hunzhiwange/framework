@@ -85,27 +85,73 @@ class Controller extends Make
         // 设置模板路径
         $this->setTemplatePath($this->getStubPath());
 
+        // 关键参数
         $controllerNamespace = $router->getControllerDir();
-        $controllerName = ucfirst(camelize($this->argument('name')));
+        $controller = $this->parseController();
+        $action = $this->parseAction();
 
-        $this->setCustomReplaceKeyValue('file_name', $controllerName);
-
-        $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
-
-        $this->setCustomReplaceKeyValue('action', $this->normalizeAction($this->argument('action')));
+        // 设置自定义替换 KEY
+        $this->setCustomReplace($controllerNamespace, $controller, $action);
 
         // 保存路径
-        $this->setSaveFilePath(
-            $this->getNamespacePath().
-            str_replace('\\', '/', $controllerNamespace).'/'.
-            $controllerName.'.php'
-        );
+        $saveFilePath = $this->parseSaveFilePath($controllerNamespace, $controller);
+        $this->setSaveFilePath($saveFilePath);
 
         // 设置类型
         $this->setMakeType('controller');
 
         // 执行
         $this->create();
+    }
+
+    /**
+     * 设置自定义替换 KEY.
+     *
+     * @param string $controllerNamespace
+     * @param string $controller
+     * @param string $action
+     */
+    protected function setCustomReplace(string $controllerNamespace, string $controller, string $action): void
+    {
+        $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
+        $this->setCustomReplaceKeyValue('file_name', $controller);
+        $this->setCustomReplaceKeyValue('controller', $controller);
+        $this->setCustomReplaceKeyValue('action', $action);
+    }
+
+    /**
+     * 获取保存文件路径.
+     *
+     * @param string $controllerNamespace
+     * @param string $controller
+     *
+     * @return string
+     */
+    protected function parseSaveFilePath(string $controllerNamespace, string $controller): string
+    {
+        return $this->getNamespacePath().
+            str_replace('\\', '/', $controllerNamespace).'/'.
+            $controller.'.php';
+    }
+
+    /**
+     * 获取控制器.
+     *
+     * @return string
+     */
+    protected function parseController(): string
+    {
+        return ucfirst(camelize($this->argument('name')));
+    }
+
+    /**
+     * 获取方法.
+     *
+     * @return string
+     */
+    protected function parseAction(): string
+    {
+        return $this->normalizeAction($this->argument('action'));
     }
 
     /**

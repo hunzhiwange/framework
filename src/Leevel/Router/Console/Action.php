@@ -94,7 +94,8 @@ class Action extends Make
         $this->setCustomReplace($controllerNamespace, $controller, $action);
 
         // 保存路径
-        $this->setSaveFilePath($this->parseSaveFilePath($controllerNamespace, $controller, $action));
+        $saveFilePath = $this->parseSaveFilePath($controllerNamespace, $controller, $action);
+        $this->setSaveFilePath($saveFilePath);
 
         // 设置类型
         $this->setMakeType('action');
