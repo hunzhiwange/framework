@@ -66,6 +66,10 @@ class Controller extends Make
         You can also by using the <comment>--namespace</comment> option:
         
           <info>php %command.full_name% name action --namespace=common</info>
+
+        You can also by using the <comment>--stub</comment> option:
+        
+          <info>php %command.full_name% name --stub=/stub/controller</info>
         EOF;
 
     /**
