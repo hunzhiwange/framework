@@ -49,7 +49,7 @@ class LinkDebugBar extends Command
      *
      * @var string
      */
-    protected $description = 'Create a symbolic link from `debugbar` to `www/debugbar`.';
+    protected $description = 'Create a symbolic link from `vendor/maximebf/debugbar/src/DebugBar/Resources` to `www/debugbar`.';
 
     /**
      * 响应命令.
@@ -66,7 +66,7 @@ class LinkDebugBar extends Command
             return;
         }
 
-        link($path = $app->path('debugbar'), $link);
+        link($path = $app->path('vendor/maximebf/debugbar/src/DebugBar/Resources'), $link);
 
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
     }
