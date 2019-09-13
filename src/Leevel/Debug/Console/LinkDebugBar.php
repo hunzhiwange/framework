@@ -49,7 +49,7 @@ class LinkDebugBar extends Command
      *
      * @var string
      */
-    protected $description = 'Create a symbolic link from `vendor/maximebf/debugbar/src/DebugBar/Resources` to `www/debugbar`.';
+    protected $description = 'Create a symbolic link from `vendor/maximebf/debugbar/src/DebugBar/Resources` to `www/debugbar` and `debugbar`,`debugbar` just for Swoole.';
 
     /**
      * 响应命令.
@@ -58,17 +58,29 @@ class LinkDebugBar extends Command
      */
     public function handle(IApp $app): void
     {
-        if (file_exists($link = $app->path('www/debugbar'))) {
+        $source = $app->path('vendor/maximebf/debugbar/src/DebugBar/Resources');
+        $this->createLink($source, $app->path('www/debugbar'));
+        $this->createLink($source, $app->path('debugbar'));
+    }
+
+    /**
+     * 创建软连接.
+     *
+     * @param string $source
+     * @param string $target
+     */
+    protected function createLink(string $source, string $target): void
+    {
+        if (file_exists($target)) {
             $this->error(
-                sprintf('The `%s` directory already exists.', $link)
+                sprintf('The `%s` directory already exists.', $target)
             );
 
             return;
         }
 
-        link($path = $app->path('vendor/maximebf/debugbar/src/DebugBar/Resources'), $link);
-
-        $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
+        link($source, $target);
+        $this->info(sprintf('Linked `%s` directory to `%s` successed.', $source, $target));
     }
 
     /**
