@@ -69,10 +69,8 @@ class Cache extends Command
 
         $load = new Load($app->optionPath());
         $data = $load->loadData($app);
-
         $cachePath = $app->optionCachedPath();
         $this->basePath = $app->path();
-
         $this->writeCache($cachePath, $data);
 
         $this->info(sprintf('Option cache file %s cache successed.', $cachePath));
@@ -120,9 +118,7 @@ class Cache extends Command
     {
         $relativePathLevel = $this->computeRelativePath($cachePath);
         $isRelativePath = $relativePathLevel > -1;
-
-        $content = '<?'.'php /* '.date('Y-m-d H:i:s').
-            ' */ ?'.'>';
+        $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>';
 
         if ($isRelativePath) {
             $content .= PHP_EOL.'<?'.'php $baseDir = dirname(__DIR__, '.$relativePathLevel.'); ?>';

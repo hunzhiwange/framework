@@ -62,9 +62,7 @@ class Cache extends Command
         $this->line('Start to cache router.');
 
         $data = $routerProvider->getRouters();
-
         $cachePath = $app->routerCachedPath();
-
         $this->writeCache($cachePath, $data);
 
         $this->info(sprintf('Router cache file %s cache successed.', $cachePath));
