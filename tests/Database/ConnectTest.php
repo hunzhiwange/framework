@@ -460,14 +460,12 @@ class ConnectTest extends TestCase
         $connect->query('SELECT * FROM db_not_found where id = 1;');
     }
 
-    public function t2estBeginTransactionWithCreateSavepoint(): void
+    public function testBeginTransactionWithCreateSavepoint(): void
     {
         $connect = $this->createDatabaseConnect();
 
         $connect->setSavepoints(true);
-
         $connect->beginTransaction();
-
         $connect
             ->table('guest_book')
             ->insert(['name' => 'tom']); // `tom` will not rollBack
