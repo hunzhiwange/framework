@@ -120,7 +120,6 @@ class Mysql extends Database implements IDatabase
                 }
 
                 $tmp['comment'] = $column['Comment'];
-
                 $result['list'][$tmp['name']] = $tmp;
 
                 if ($tmp['auto_increment']) {
@@ -131,13 +130,10 @@ class Mysql extends Database implements IDatabase
                     if (!is_array($result['primary_key'])) {
                         $result['primary_key'] = [];
                     }
-
                     $result['primary_key'][] = $tmp['name'];
                 }
             }
         }
-
-        unset($columns, $sql);
 
         return $result;
     }
