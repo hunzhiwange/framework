@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Console;
 
+use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
@@ -78,7 +79,7 @@ class Action extends Make
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(__DIR__.'/stub/action');
+        $this->setTemplatePath($this->getStubPath());
 
         $controllerNamespace = $router->getControllerDir();
         $controllerName = ucfirst(camelize($this->argument('controller')));
@@ -105,6 +106,30 @@ class Action extends Make
 
         // 执行
         $this->create();
+    }
+
+    /**
+     * 获取模板路径.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    protected function getStubPath(): string
+    {
+        if ($this->option('stub')) {
+            $stub = $this->option('stub');
+        } else {
+            $stub = __DIR__.'/stub/action';
+        }
+
+        if (!is_file($stub)) {
+            $e = sprintf('Action stub file `%s` was not found.', $stub);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return $stub;
     }
 
     /**
@@ -163,6 +188,12 @@ class Action extends Make
                 Option::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
                 'app',
+            ],
+            [
+                'stub',
+                null,
+                Option::VALUE_OPTIONAL,
+                'Custom stub of entity',
             ],
         ];
     }
