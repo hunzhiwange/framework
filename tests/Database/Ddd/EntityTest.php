@@ -26,6 +26,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
 use Tests\Database\Ddd\Entity\Relation\Post;
+use Tests\Database\Ddd\Entity\Relation\PostContent;
+use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
 use Tests\Database\Ddd\Entity\TestPropErrorEntity;
 
 /**
@@ -41,6 +43,7 @@ class EntityTest extends TestCase
 {
     protected function tearDown(): void
     {
+        parent::tearDown();
         Container::singletons()->clear();
     }
 
@@ -235,6 +238,223 @@ class EntityTest extends TestCase
         $entity->toArray();
     }
 
+    public function testSoftDelete(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame(0, $post->delete_at);
+
+        $this->assertFalse($post->softDeleted());
+        $post->softDelete()->flush();
+        $this->assertTrue($post->softDeleted());
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertSame(1, $post1->userId);
+        $this->assertSame('hello world', $post1->title);
+        $this->assertSame('post summary', $post1->summary);
+        $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+
+        $post2 = Post::select()->findEntity(2);
+        $this->assertInstanceof(Post::class, $post2);
+        $this->assertSame(1, $post2->userId);
+        $this->assertSame('hello world', $post2->title);
+        $this->assertSame('post summary', $post2->summary);
+        $this->assertSame(0, $post2->delete_at);
+
+        $post1 = Post::select()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+    }
+
+    public function testSoftDestroy(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame(0, $post->delete_at);
+
+        $this->assertFalse($post->softDeleted());
+        $this->assertSame(1, Post::softDestroy([1]));
+        $this->assertFalse($post->softDeleted());
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertSame(1, $post1->userId);
+        $this->assertSame('hello world', $post1->title);
+        $this->assertSame('post summary', $post1->summary);
+        $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+
+        $post2 = Post::select()->findEntity(2);
+        $this->assertInstanceof(Post::class, $post2);
+        $this->assertSame(1, $post2->userId);
+        $this->assertSame('hello world', $post2->title);
+        $this->assertSame('post summary', $post2->summary);
+        $this->assertSame(0, $post2->delete_at);
+
+        $post1 = Post::select()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+    }
+
+    public function testSoftRestore(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame(0, $post->delete_at);
+
+        $this->assertFalse($post->softDeleted());
+        $post->softDelete()->flush();
+        $this->assertTrue($post->softDeleted());
+
+        $post1 = Post::select()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertSame(1, $post1->userId);
+        $this->assertSame('hello world', $post1->title);
+        $this->assertSame('post summary', $post1->summary);
+        $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+
+        $post2 = Post::select()->findEntity(2);
+        $this->assertInstanceof(Post::class, $post2);
+        $this->assertSame(1, $post2->userId);
+        $this->assertSame('hello world', $post2->title);
+        $this->assertSame('post summary', $post2->summary);
+        $this->assertSame(0, $post2->delete_at);
+
+        $newPost = Post::withSoftDeleted()->findEntity(1);
+        $this->assertTrue($newPost->softDeleted());
+        $newPost->softRestore()->flush();
+        $this->assertFalse($newPost->softDeleted());
+
+        $restorePost1 = Post::select()->findEntity(1);
+        $this->assertSame(0, $restorePost1->delete_at);
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertSame(1, $post1->userId);
+        $this->assertSame('hello world', $post1->title);
+        $this->assertSame('post summary', $post1->summary);
+        $this->assertSame(0, $post1->delete_at);
+    }
+
+    public function testDeleteAtColumnNotDefined(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\PostContent` soft delete field was not defined.'
+        );
+
+        $entity = new PostContent();
+        $entity->softDeleted();
+    }
+
+    public function testDeleteAtColumnNotFound(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\SoftDeleteNotFoundDeleteAtField` soft delete field `delete_at` was not found.'
+        );
+
+        $entity = new SoftDeleteNotFoundDeleteAtField();
+        $entity->softDeleted();
+    }
+
     protected function initI18n(): void
     {
         $container = Container::singletons();
@@ -243,5 +463,10 @@ class EntityTest extends TestCase
         $container->singleton('i18n', function (): I18nMock {
             return new I18nMock();
         });
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['post'];
     }
 }
