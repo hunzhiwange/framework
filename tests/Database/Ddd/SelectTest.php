@@ -285,7 +285,7 @@ class SelectTest extends TestCase
         $this->assertCount(1, $posts);
     }
 
-    public function testFindPage(): void
+    public function t2estFindPage(): void
     {
         $connect = $this->createDatabaseConnect();
 

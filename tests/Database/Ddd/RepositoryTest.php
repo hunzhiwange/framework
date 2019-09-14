@@ -1514,8 +1514,7 @@ class RepositoryTest extends TestCase
         );
 
         $repository = new Repository(new Post());
-
-        $select = $repository->condition(5);
+        $repository->condition(5);
     }
 
     public function testFindPage(): void
@@ -1537,25 +1536,10 @@ class RepositoryTest extends TestCase
 
         list($page, $result) = $repository->findPage(1, 10);
 
-        $this->assertIsArray($page);
+        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(10, $result);
-
-        $data = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 10,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-                $this->varJson(
-                    $page
-                )
-        );
     }
 
     public function testFindPageWithCondition(): void
@@ -1582,77 +1566,6 @@ class RepositoryTest extends TestCase
         };
 
         list($page, $result) = $repository->findPage(1, 10, $condition);
-
-        $this->assertIsArray($page);
-        $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(7, $result);
-
-        $data = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 7,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-                $this->varJson(
-                    $page
-                )
-        );
-    }
-
-    public function testFindPageHtml(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
-                    'delete_at' => 0,
-                ]);
-        }
-
-        $repository = new Repository(new Post());
-
-        list($page, $result) = $repository->findPageHtml(1, 10);
-
-        $this->assertInstanceof(IPage::class, $page);
-        $this->assertInstanceof(Page::class, $page);
-        $this->assertInstanceof(Collection::class, $result);
-        $this->assertCount(10, $result);
-    }
-
-    public function testFindPageHtmlWithCondition(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; $i++) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
-                    'delete_at' => 0,
-                ]);
-        }
-
-        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
-
-        $repository = new Repository(new Post());
-
-        $condition = function (Select $select, IEntity $entity) use ($request) {
-            $select->where('id', '<', 8);
-        };
-
-        list($page, $result) = $repository->findPageHtml(1, 10, $condition);
 
         $this->assertInstanceof(IPage::class, $page);
         $this->assertInstanceof(Page::class, $page);

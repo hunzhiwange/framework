@@ -22,9 +22,10 @@ namespace Tests\Database;
 
 use I18nMock;
 use Leevel\Collection\Collection;
+use Leevel\Database\Page;
 use Leevel\Di\Container;
-use Leevel\Page\IPage;
-use Leevel\Page\Page;
+use Leevel\Page\IPage as IBasePage;
+use Leevel\Page\Page as BasePage;
 use PDO;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -869,53 +870,6 @@ class SelectTest extends TestCase
 
     public function testPage(): void
     {
-        $connect = $this->createDatabaseConnect();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        for ($n = 0; $n <= 25; $n++) {
-            $connect
-                ->table('guest_book')
-                ->insert($data);
-        }
-
-        list($page, $result) = $connect
-            ->table('guest_book')
-            ->page(1);
-
-        $this->assertIsArray($page);
-        $this->assertCount(10, $result);
-
-        $n = 0;
-
-        foreach ($result as $key => $value) {
-            $this->assertSame($key, $n);
-            $this->assertInstanceof(stdClass::class, $value);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
-
-            $n++;
-        }
-
-        $data = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 26,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-                $this->varJson(
-                    $page
-                )
-        );
-    }
-
-    public function testPageHtml(): void
-    {
         $this->initI18n();
 
         $connect = $this->createDatabaseConnect();
@@ -928,11 +882,13 @@ class SelectTest extends TestCase
                 ->insert($data);
         }
 
-        list($page, $result) = $connect
+        $page = $connect
             ->table('guest_book')
-            ->pageHtml(1);
+            ->page(1);
+        $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(10, $result);
 
@@ -986,14 +942,14 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->toArray()
+                    $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->jsonSerialize()
+                    $page->jsonSerialize()['page']
                 )
         );
 
@@ -1003,7 +959,7 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-            $page->toJson()
+            json_encode($page->toArray()['page'])
         );
 
         $this->clearI18n();
@@ -1023,11 +979,13 @@ class SelectTest extends TestCase
                 ->insert($data);
         }
 
-        list($page, $result) = $connect
+        $page = $connect
             ->table('guest_book')
             ->pageMacro(1);
+        $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(10, $result);
 
@@ -1081,14 +1039,14 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->toArray()
+                    $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->jsonSerialize()
+                    $page->jsonSerialize()['page']
                 )
         );
 
@@ -1098,7 +1056,7 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-            $page->toJson()
+            json_encode($page->toArray()['page'])
         );
 
         $this->clearI18n();
@@ -1118,11 +1076,13 @@ class SelectTest extends TestCase
                 ->insert($data);
         }
 
-        list($page, $result) = $connect
+        $page = $connect
             ->table('guest_book')
             ->pagePrevNext(1, 15);
+        $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(15, $result);
 
@@ -1176,14 +1136,14 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->toArray()
+                    $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->jsonSerialize()
+                    $page->jsonSerialize()['page']
                 )
         );
 
@@ -1193,7 +1153,7 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-            $page->toJson()
+            json_encode($page->toArray()['page'])
         );
 
         $this->clearI18n();
