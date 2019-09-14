@@ -462,6 +462,8 @@ class ConnectTest extends TestCase
 
     public function testBeginTransactionWithCreateSavepoint(): void
     {
+        dump($GLOBALS);
+        die;
         $connect = $this->createDatabaseConnect();
 
         $connect->setSavepoints(true);
@@ -471,6 +473,7 @@ class ConnectTest extends TestCase
             ->insert(['name' => 'tom']); // `tom` will not rollBack
 
         $connect->beginTransaction();
+        dump($connect->getLastSql());
         $this->assertSame('SAVEPOINT trans2', $connect->getLastSql());
 
         $connect
