@@ -24,6 +24,7 @@ use Closure;
 use Leevel\Database\Condition;
 use Leevel\Database\IDatabase;
 use Leevel\Database\Manager;
+use Leevel\Database\Page;
 use Leevel\Database\Select;
 use Leevel\Di\Container;
 use PDO;
@@ -752,9 +753,9 @@ class Db
      * @param string $column
      * @param array  $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public static function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array
+    public static function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): Page
     {
         return self::proxy()->page($currentPage, $perPage, $flag, $column, $option);
     }
@@ -767,9 +768,9 @@ class Db
      * @param bool  $flag
      * @param array $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public static function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
+    public static function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
         return self::proxy()->pageMacro($currentPage, $perPage, $flag, $option);
     }
@@ -782,9 +783,9 @@ class Db
      * @param bool  $flag
      * @param array $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public static function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
+    public static function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
         return self::proxy()->pagePrevNext($currentPage, $perPage, $flag, $option);
     }
