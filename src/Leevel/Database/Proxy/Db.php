@@ -744,22 +744,6 @@ class Db
 
     /**
      * 分页查询.
-     *
-     * @param int    $currentPage
-     * @param int    $perPage
-     * @param bool   $flag
-     * @param bool   $withTotal
-     * @param string $column
-     *
-     * @return array
-     */
-    public static function page(int $currentPage, int $perPage = 10, bool $flag = false, bool $withTotal = true, string $column = '*'): array
-    {
-        return self::proxy()->page($currentPage, $perPage, $flag, $withTotal, $column);
-    }
-
-    /**
-     * 分页查询.
      * 可以渲染 HTML.
      *
      * @param int    $currentPage
@@ -770,9 +754,9 @@ class Db
      *
      * @return array
      */
-    public static function pageHtml(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array
+    public static function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array
     {
-        return self::proxy()->pageHtml($currentPage, $perPage, $flag, $column, $option);
+        return self::proxy()->page($currentPage, $perPage, $flag, $column, $option);
     }
 
     /**

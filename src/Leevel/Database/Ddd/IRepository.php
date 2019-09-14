@@ -88,7 +88,7 @@ use Leevel\Collection\Collection;
  * @method static findMin(string $field, string $alias = 'min_value', bool $flag = false)                                                      最小值.
  * @method static findSum(string $field, string $alias = 'sum_value', bool $flag = false)                                                      合计.
  * @method static array page(int $currentPage, int $perPage = 10, bool $flag = false, bool $withTotal = true, string $column = '*')            分页查询.
- * @method static array pageHtml(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = [])            分页查询. 可以渲染 HTML.
+ * @method static array page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = [])                分页查询. 可以渲染 HTML.
  * @method static array pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])                                 创建一个无限数据的分页查询.
  * @method static array pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])                              创建一个只有上下页的分页查询.
  * @method static int pageCount(string $cols = '*')                                                                                            取得分页查询记录数量.
@@ -220,20 +220,6 @@ interface IRepository
     public function findCount($condition = null, string $field = '*'): int;
 
     /**
-     * 分页查询记录.
-     *
-     * @param int                                                            $currentPage
-     * @param int                                                            $perPage
-     * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
-     * @param bool                                                           $flag
-     * @param bool                                                           $withTotal
-     * @param string                                                         $column
-     *
-     * @return array
-     */
-    public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, bool $withTotal = true, string $column = '*'): array;
-
-    /**
      * 分页查询.
      * 可以渲染 HTML.
      *
@@ -246,7 +232,7 @@ interface IRepository
      *
      * @return array
      */
-    public function findPageHtml(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): array;
+    public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): array;
 
     /**
      * 创建一个无限数据的分页查询.

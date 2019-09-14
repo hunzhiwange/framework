@@ -23,8 +23,6 @@ namespace Leevel\Database;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Collection\Collection;
-use Leevel\Page\IPage;
-use Leevel\Page\Page;
 
 /**
  * 数据库查询器.
@@ -850,35 +848,6 @@ class Select
 
     /**
      * 分页查询.
-     *
-     * @param int    $currentPage
-     * @param int    $perPage
-     * @param bool   $flag
-     * @param bool   $withTotal
-     * @param string $column
-     *
-     * @return array
-     */
-    public function page(int $currentPage, int $perPage = 10, bool $flag = false, bool $withTotal = true, string $column = '*'): array
-    {
-        $from = ($currentPage - 1) * $perPage;
-
-        return [
-            [
-                'per_page'     => $perPage,
-                'current_page' => $currentPage,
-                'total_record' => $withTotal ? $this->pageCount($column) : null,
-                'from'         => $from,
-            ],
-            $this
-                ->limit($from, $perPage)
-                ->findAll($flag),
-            self::PAGE => true,
-        ];
-    }
-
-    /**
-     * 分页查询.
      * 可以渲染 HTML.
      *
      * @param int    $currentPage
@@ -887,19 +856,17 @@ class Select
      * @param string $column
      * @param array  $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public function pageHtml(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array
+    public function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): Page
     {
         $page = new Page($currentPage, $perPage, $this->pageCount($column), $option);
+        $data = $this
+            ->limit($page->getFromRecord(), $perPage)
+            ->findAll($flag);
+        $page->setData($data);
 
-        return [
-            $page,
-            $this
-                ->limit($page->getFromRecord(), $perPage)
-                ->findAll($flag),
-            self::PAGE => true,
-        ];
+        return $page;
     }
 
     /**
@@ -910,19 +877,17 @@ class Select
      * @param bool  $flag
      * @param array $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
+    public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
-        $page = new Page($currentPage, $perPage, IPage::MACRO, $option);
+        $page = new Page($currentPage, $perPage, Page::MACRO, $option);
+        $data = $this
+            ->limit($page->getFromRecord(), $perPage)
+            ->findAll($flag);
+        $page->setData($data);
 
-        return [
-            $page,
-            $this
-                ->limit($page->getFromRecord(), $perPage)
-                ->findAll($flag),
-            self::PAGE => true,
-        ];
+        return $page;
     }
 
     /**
@@ -933,19 +898,17 @@ class Select
      * @param bool  $flag
      * @param array $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
+    public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
         $page = new Page($currentPage, $perPage, null, $option);
+        $data = $this
+            ->limit($page->getFromRecord(), $perPage)
+            ->findAll($flag);
+        $page->setData($data);
 
-        return [
-            $page,
-            $this
-                ->limit($page->getFromRecord(), $perPage)
-                ->findAll($flag),
-            self::PAGE => true,
-        ];
+        return $page;
     }
 
     /**
