@@ -25,7 +25,6 @@ use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
-use Tests\Database\Ddd\Entity\Relation\PostContent;
 
 /**
  * select test.
@@ -283,98 +282,6 @@ class SelectTest extends TestCase
 
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(1, $posts);
-    }
-
-    public function t2estFindPage(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $this->assertSame(
-            1,
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
-                    'delete_at' => 0,
-                ]));
-
-        $this->assertSame(
-            2,
-            $connect
-                ->table('post')
-                ->insert([
-                    'title'     => 'hello world',
-                    'user_id'   => 1,
-                    'summary'   => 'post summary',
-                    'delete_at' => 0,
-                ]));
-
-        $this->assertSame(
-            0,
-           $connect
-               ->table('post_content')
-               ->insert([
-                   'post_id' => 1,
-                   'content' => 'I am content with big data.',
-               ]));
-
-        $this->assertSame(
-            0,
-            $connect
-                ->table('post_content')
-                ->insert([
-                    'post_id' => 2,
-                    'content' => 'I am content with big data2.',
-                ]));
-
-        $select = new Select(new Post());
-        $select->eager(['post_content']);
-        list($page, $posts) = $select->page(1, 10);
-
-        $this->assertInstanceof(Collection::class, $posts);
-        $this->assertCount(2, $posts);
-
-        $post1 = $posts[0];
-        $this->assertInstanceof(Post::class, $post1);
-        $this->assertSame(1, $post1->userId);
-        $this->assertSame('hello world', $post1->title);
-        $this->assertSame('post summary', $post1->summary);
-
-        $postContent = $post1->postContent;
-
-        $this->assertInstanceof(PostContent::class, $postContent);
-        $this->assertSame($post1->id, $postContent->postId);
-        $this->assertSame('I am content with big data.', $postContent->content);
-
-        $post2 = $posts[1];
-        $this->assertInstanceof(Post::class, $post2);
-        $this->assertSame(1, $post2->userId);
-        $this->assertSame('hello world', $post2->title);
-        $this->assertSame('post summary', $post2->summary);
-
-        $postContent = $post2->postContent;
-
-        $this->assertInstanceof(PostContent::class, $postContent);
-        $this->assertSame($post2->id, $postContent->postId);
-        $this->assertSame('I am content with big data2.', $postContent->content);
-
-        $sql = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 2,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $sql,
-            $this->varJson(
-                $page
-            )
-        );
     }
 
     public function testLastSql(): void
