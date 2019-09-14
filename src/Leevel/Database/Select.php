@@ -118,13 +118,6 @@ use Leevel\Collection\Collection;
 class Select
 {
     /**
-     * 分页查询结果标识.
-     *
-     * @var string
-     */
-    const PAGE = ':page';
-
-    /**
      * 数据库连接.
      *
      * @var \Leevel\Database\IDatabase

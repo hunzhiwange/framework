@@ -23,6 +23,7 @@ namespace Leevel\Database\Ddd;
 use Closure;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\Relation;
+use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
 use function Leevel\Support\Arr\normalize;
 use Leevel\Support\Arr\normalize;
@@ -535,11 +536,8 @@ class Select
             return $result;
         }
 
-        if (is_array($result)) {
-            if (isset($result[DatabaseSelect::PAGE]) &&
-                true === $result[DatabaseSelect::PAGE]) {
-                $result[1] = $this->preLoadResult($result[1]);
-            }
+        if ($result instanceof Page) {
+            $result->setData($this->preLoadResult($result->getData()));
 
             return $result;
         }
