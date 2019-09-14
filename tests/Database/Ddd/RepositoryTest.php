@@ -27,8 +27,9 @@ use Leevel\Database\Ddd\Repository;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Ddd\Specification;
 use Leevel\Database\Ddd\SpecificationExpression;
-use Leevel\Page\IPage;
-use Leevel\Page\Page;
+use Leevel\Database\Page;
+use Leevel\Page\IPage as IBasePage;
+use Leevel\Page\Page as BasePage;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\TestUnique;
@@ -1534,9 +1535,11 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        list($page, $result) = $repository->findPage(1, 10);
+        $page = $repository->findPage(1, 10);
+        $result = $page->getData();
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(10, $result);
@@ -1565,9 +1568,11 @@ class RepositoryTest extends TestCase
             $select->where('id', '<', 8);
         };
 
-        list($page, $result) = $repository->findPage(1, 10, $condition);
+        $page = $repository->findPage(1, 10, $condition);
+        $result = $page->getData();
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(7, $result);
@@ -1590,9 +1595,11 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        list($page, $result) = $repository->findPageMacro(1, 10);
+        $page = $repository->findPageMacro(1, 10);
+        $result = $page->getData();
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(10, $result);
@@ -1621,9 +1628,11 @@ class RepositoryTest extends TestCase
             $select->where('id', '<', 8);
         };
 
-        list($page, $result) = $repository->findPageMacro(1, 10, $condition);
+        $page = $repository->findPageMacro(1, 10, $condition);
+        $result = $page->getData();
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(7, $result);
@@ -1646,9 +1655,11 @@ class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        list($page, $result) = $repository->findPagePrevNext(1, 10);
+        $page = $repository->findPagePrevNext(1, 10);
+        $result = $page->getData();
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(10, $result);
@@ -1677,9 +1688,11 @@ class RepositoryTest extends TestCase
             $select->where('id', '<', 8);
         };
 
-        list($page, $result) = $repository->findPagePrevNext(1, 10, $condition);
+        $page = $repository->findPagePrevNext(1, 10, $condition);
+        $result = $page->getData();
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(7, $result);
