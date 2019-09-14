@@ -462,8 +462,12 @@ class ConnectTest extends TestCase
 
     public function testBeginTransactionWithCreateSavepoint(): void
     {
-        dump($GLOBALS);
-        die;
+        if (isset($GLOBALS['TRAVIS_COMMIT'])) {
+            $this->markTestSkipped('Mysql of travis-ci not support savepoint.');
+
+            return;
+        }
+
         $connect = $this->createDatabaseConnect();
 
         $connect->setSavepoints(true);
@@ -473,7 +477,6 @@ class ConnectTest extends TestCase
             ->insert(['name' => 'tom']); // `tom` will not rollBack
 
         $connect->beginTransaction();
-        dump($connect->getLastSql());
         $this->assertSame('SAVEPOINT trans2', $connect->getLastSql());
 
         $connect
@@ -520,12 +523,16 @@ class ConnectTest extends TestCase
         $connect->commit();
     }
 
-    public function t2estCommitWithReleaseSavepoint(): void
+    public function testCommitWithReleaseSavepoint(): void
     {
+        if (isset($GLOBALS['TRAVIS_COMMIT'])) {
+            $this->markTestSkipped('Mysql of travis-ci not support savepoint.');
+
+            return;
+        }
+
         $connect = $this->createDatabaseConnect();
-
         $connect->setSavepoints(true);
-
         $connect->beginTransaction();
 
         $connect
