@@ -462,6 +462,9 @@ class ConnectTest extends TestCase
 
     public function testBeginTransactionWithCreateSavepoint(): void
     {
+        var_dump($GLOBALS);
+        die;
+
         if (isset($GLOBALS['TRAVIS_COMMIT'])) {
             $this->markTestSkipped('Mysql of travis-ci not support savepoint.');
 
@@ -525,6 +528,8 @@ class ConnectTest extends TestCase
 
     public function testCommitWithReleaseSavepoint(): void
     {
+        var_dump($GLOBALS);
+        die;
         if (isset($GLOBALS['TRAVIS_COMMIT'])) {
             $this->markTestSkipped('Mysql of travis-ci not support savepoint.');
 
