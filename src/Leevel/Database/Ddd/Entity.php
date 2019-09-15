@@ -352,7 +352,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 返回数据库查询集合对象 find.
+     * 数据库查询集合对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
@@ -400,7 +400,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 返回数据库查询集合对象.
+     * 数据库查询集合对象.
      *
      * @param int $softDeletedType
      *

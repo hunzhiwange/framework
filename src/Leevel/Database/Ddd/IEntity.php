@@ -336,7 +336,7 @@ interface IEntity
     public static function make(array $data = [], bool $fromStorage = false): self;
 
     /**
-     * 返回数据库查询集合对象 find.
+     * 数据库查询集合对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
@@ -375,7 +375,7 @@ interface IEntity
     public static function onlySoftDeleted(): Select;
 
     /**
-     * 返回数据库查询集合对象.
+     * 数据库查询集合对象.
      *
      * @param int $softDeletedType
      *
