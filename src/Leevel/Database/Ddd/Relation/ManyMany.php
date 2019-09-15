@@ -91,7 +91,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 返回数据库查询集合对象 select.
+     * 数据库查询集合对象.
      *
      * - 获取包含软删除的数据.
      *
@@ -107,7 +107,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 返回数据库查询集合对象 select.
+     * 数据库查询集合对象.
      *
      * - 获取只包含软删除的数据.
      *
