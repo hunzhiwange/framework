@@ -231,6 +231,13 @@ class ManyMany extends Relation
     {
         $this->emptySourceData = false;
 
+        $middleCondition = [
+            $this->middleTargetKey => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
+        ];
+        if (defined(get_class($this->middleEntity).'::DELETE_AT')) {
+            $middleCondition[$this->middleEntity->table().'.'.$this->middleEntity::deleteAtColumn()] = 0;
+        }
+
         $this->select
             ->join(
                 $this->middleEntity->table(),
@@ -238,9 +245,7 @@ class ManyMany extends Relation
                     'middle_'.$this->middleTargetKey => $this->middleTargetKey,
                     'middle_'.$this->middleSourceKey => $this->middleSourceKey,
                 ],
-                [
-                    $this->middleTargetKey => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
-                ],
+                $middleCondition,
             )
             ->whereIn(
                 $this->middleEntity->table().'.'.$this->middleSourceKey,
