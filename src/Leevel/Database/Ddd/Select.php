@@ -215,7 +215,7 @@ class Select
     public function __construct(IEntity $entity, int $softDeletedType = IEntity::WITHOUT_SOFT_DELETED)
     {
         $this->entity = $entity;
-        $this->select = $this->entity->selectCollection($softDeletedType);
+        $this->initSelect($softDeletedType);
     }
 
     /**
@@ -258,6 +258,40 @@ class Select
         static::$preLoadsResult = $old;
 
         return $result;
+    }
+
+    /**
+     * 返回数据库查询集合对象 select.
+     *
+     * - 获取包含软删除的数据.
+     * - 会覆盖查询条件，需要首先调用.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public function withSoftDeleted(): self
+    {
+        $this->initSelect(IEntity::WITH_SOFT_DELETED);
+
+        return $this;
+    }
+
+    /**
+     * 返回数据库查询集合对象 select.
+     *
+     * - 获取只包含软删除的数据.
+     * - 会覆盖查询条件，需要首先调用.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public function onlySoftDeleted(): self
+    {
+        $this->initSelect(IEntity::WITH_SOFT_DELETED);
+
+        return $this;
     }
 
     /**
@@ -358,6 +392,16 @@ class Select
 
         throw (new EntityNotFoundException())
             ->setEntity(get_class($this->entity));
+    }
+
+    /**
+     * 初始化查询.
+     *
+     * @param int $softDeletedType
+     */
+    protected function initSelect(int $softDeletedType): void
+    {
+        $this->select = $this->entity->selectCollection($softDeletedType);
     }
 
     /**

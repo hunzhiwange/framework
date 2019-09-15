@@ -40,13 +40,8 @@ use Leevel\Database\Ddd\Select;
  * @method static \Leevel\Database\Ddd\IEntity findEntity(int $id, array $column = [])                                                          通过主键查找模型实体.
  * @method static \Leevel\Collection\Collection findMany(array $ids, array $column = [])                                                        根据主键查找模型实体.
  * @method static \Leevel\Database\Ddd\IEntity findOrFail(int $id, array $column = [])                                                          通过主键查找模型实体，未找到则抛出异常.
- * @method static int softDelete(bool $flush = true)                                                                                            从模型实体中软删除数据.
- * @method static int softDestroy(array $ids, bool $flush = true)                                                                               根据主键 ID 删除模型实体.
- * @method static int softRestore(bool $flush = true)                                                                                           恢复软删除的模型实体.
- * @method static \Leevel\Database\Select withoutSoftDeleted()                                                                                  获取不包含软删除的数据.
- * @method static \Leevel\Database\Select onlySoftDeleted()                                                                                     获取只包含软删除的数据.
- * @method static bool softDeleted()                                                                                                            检查模型实体是否已经被软删除了.
- * @method static string deleteAtColumn()                                                                                                       获取软删除字段.
+ * @method static \Leevel\Database\Ddd\Select withoutSoftDeleted()                                                                              获取不包含软删除的数据.
+ * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()                                                                                 获取只包含软删除的数据.
  * @method static pdo($master = false)                                                                                                          返回 Pdo 查询连接.
  * @method static query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = [])  查询数据记录.
  * @method static execute(string $sql, array $bindParams = [])                                                                                  执行 sql 语句.

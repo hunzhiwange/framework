@@ -57,6 +57,20 @@ class ManyMany extends Relation
     protected $middleSourceKey;
 
     /**
+     * 中间表只包含软删除的数据.
+     *
+     * @var bool
+     */
+    protected $middleOnlySoftDeleted = false;
+
+    /**
+     * 中间表包含软删除的数据.
+     *
+     * @var bool
+     */
+    protected $middleWithSoftDeleted = false;
+
+    /**
      * 构造函数.
      *
      * @param \Leevel\Database\Ddd\IEntity $targetEntity
@@ -74,6 +88,38 @@ class ManyMany extends Relation
         $this->middleSourceKey = $middleSourceKey;
 
         parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
+    }
+
+    /**
+     * 返回数据库查询集合对象 select.
+     *
+     * - 获取包含软删除的数据.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public function middleWithSoftDeleted(bool $middleWithSoftDeleted = true): self
+    {
+        $this->middleWithSoftDeleted = $middleWithSoftDeleted;
+
+        return $this;
+    }
+
+    /**
+     * 返回数据库查询集合对象 select.
+     *
+     * - 获取只包含软删除的数据.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public function middleOnlySoftDeleted(bool $middleOnlySoftDeleted = true): self
+    {
+        $this->middleOnlySoftDeleted = $middleOnlySoftDeleted;
+
+        return $this;
     }
 
     /**
@@ -234,9 +280,7 @@ class ManyMany extends Relation
         $middleCondition = [
             $this->middleTargetKey => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
         ];
-        if (defined(get_class($this->middleEntity).'::DELETE_AT')) {
-            $middleCondition[$this->middleEntity->table().'.'.$this->middleEntity::deleteAtColumn()] = 0;
-        }
+        $this->prepareMiddleSoftDeleted($middleCondition);
 
         $this->select
             ->join(
@@ -253,6 +297,31 @@ class ManyMany extends Relation
             )
             ->asDefault()
             ->asCollection(false);
+    }
+
+    /**
+     * 中间表软删除处理.
+     *
+     * @param array $middleCondition
+     */
+    protected function prepareMiddleSoftDeleted(array &$middleCondition): void
+    {
+        if (!defined(get_class($this->middleEntity).'::DELETE_AT')) {
+            return;
+        }
+
+        if (true === $this->middleWithSoftDeleted) {
+            return;
+        }
+
+        if (true === $this->middleOnlySoftDeleted) {
+            $value = ['>', 0];
+        } else {
+            $value = 0;
+        }
+
+        $field = $this->middleEntity->table().'.'.$this->middleEntity::deleteAtColumn();
+        $middleCondition[$field] = $value;
     }
 
     /**
