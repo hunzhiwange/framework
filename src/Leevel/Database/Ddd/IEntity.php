@@ -349,7 +349,7 @@ interface IEntity
     public static function find(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select;
 
     /**
-     * 数据库查询集合对象.
+     * 包含软删除数据的数据库查询集合对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
@@ -362,7 +362,7 @@ interface IEntity
     public static function withSoftDeleted(): Select;
 
     /**
-     * 数据库查询集合对象.
+     * 仅仅包含软删除数据的数据库查询集合对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.

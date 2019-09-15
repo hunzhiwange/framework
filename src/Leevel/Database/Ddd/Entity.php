@@ -368,7 +368,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 数据库查询集合对象.
+     * 包含软删除数据的数据库查询集合对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
@@ -384,7 +384,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 数据库查询集合对象.
+     * 仅仅包含软删除数据的数据库查询集合对象.
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.

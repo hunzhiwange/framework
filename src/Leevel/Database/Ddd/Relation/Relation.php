@@ -40,8 +40,8 @@ use Leevel\Database\Ddd\Select;
  * @method static \Leevel\Database\Ddd\IEntity findEntity(int $id, array $column = [])                                                          通过主键查找模型实体.
  * @method static \Leevel\Collection\Collection findMany(array $ids, array $column = [])                                                        根据主键查找模型实体.
  * @method static \Leevel\Database\Ddd\IEntity findOrFail(int $id, array $column = [])                                                          通过主键查找模型实体，未找到则抛出异常.
- * @method static \Leevel\Database\Ddd\Select withoutSoftDeleted()                                                                              获取不包含软删除的数据.
- * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()                                                                                 获取只包含软删除的数据.
+ * @method static \Leevel\Database\Ddd\Select withSoftDeleted()                                                                                 包含软删除数据的数据库查询集合对象.
+ * @method static \Leevel\Database\Ddd\Select onlySoftDeleted()                                                                                 仅仅包含软删除数据的数据库查询集合对象.
  * @method static pdo($master = false)                                                                                                          返回 Pdo 查询连接.
  * @method static query(string $sql, array $bindParams = [], $master = false, int $fetchType = 5, $fetchArgument = null, array $ctorArgs = [])  查询数据记录.
  * @method static execute(string $sql, array $bindParams = [])                                                                                  执行 sql 语句.
