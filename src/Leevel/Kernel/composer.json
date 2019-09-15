@@ -16,6 +16,12 @@
         "leevel/di": "1.0.*",
         "leevel/support": "1.0.*",
         "leevel/http": "1.0.*",
+        "leevel/i18n": "1.0.*",
+        "leevel/option": "1.0.*",
+        "leevel/event": "1.0.*",
+        "leevel/log": "1.0.*",
+        "leevel/router": "1.0.*",
+        "nunomaduro/collision": "~3.0",
         "symfony/console": "~4.0"
     },
     "autoload": {
