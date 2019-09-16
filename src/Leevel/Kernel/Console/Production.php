@@ -47,7 +47,7 @@ class Production extends Command
      *
      * @var string
      */
-    protected $description = 'Let your app run faster in production.';
+    protected $description = 'Let your app run faster in production';
 
     /**
      * 响应命令.

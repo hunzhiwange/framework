@@ -49,7 +49,7 @@ class DocFramework extends Command
      *
      * @var string
      */
-    protected $description = 'Markdown generation based on within test cases.';
+    protected $description = 'Markdown generation based on within test cases';
 
     /**
      * 响应命令.

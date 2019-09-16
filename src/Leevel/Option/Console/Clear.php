@@ -46,7 +46,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $description = 'Clear cache of option.';
+    protected $description = 'Clear cache of option';
 
     /**
      * 响应命令.

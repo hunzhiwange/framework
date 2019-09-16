@@ -50,7 +50,7 @@ class IdeHelper extends Command
      *
      * @var string
      */
-    protected $description = 'IDE helper generation.';
+    protected $description = 'IDE helper generation';
 
     /**
      * 响应命令.

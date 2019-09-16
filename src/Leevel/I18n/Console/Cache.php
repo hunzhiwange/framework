@@ -52,7 +52,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $description = 'Cache i18n to a file.';
+    protected $description = 'Cache i18n to a file';
 
     /**
      * IOC 容器.

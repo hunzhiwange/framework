@@ -54,7 +54,7 @@ class Entity extends Make
      *
      * @var string
      */
-    protected $description = 'Create a new entity.';
+    protected $description = 'Create a new entity';
 
     /**
      * 命令帮助.

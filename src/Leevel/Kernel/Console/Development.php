@@ -47,7 +47,7 @@ class Development extends Command
      *
      * @var string
      */
-    protected $description = 'Clear all caches for development mode.';
+    protected $description = 'Clear all caches for development mode';
 
     /**
      * 响应命令.

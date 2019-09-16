@@ -49,7 +49,7 @@ class LinkDebugBar extends Command
      *
      * @var string
      */
-    protected $description = 'Create a symbolic link from `vendor/maximebf/debugbar/src/DebugBar/Resources` to `www/debugbar` and `debugbar`,`debugbar` just for Swoole.';
+    protected $description = 'Create a symbolic link from `vendor/maximebf/debugbar/src/DebugBar/Resources` to `www/debugbar` and `debugbar`,`debugbar` just for Swoole';
 
     /**
      * 响应命令.

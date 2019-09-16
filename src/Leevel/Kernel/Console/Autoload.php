@@ -47,7 +47,7 @@ class Autoload extends Command
      *
      * @var string
      */
-    protected $description = 'Optimize base on composer dump-autoload --optimize [--no-dev].';
+    protected $description = 'Optimize base on composer dump-autoload --optimize [--no-dev]';
 
     /**
      * 响应命令.

@@ -53,7 +53,7 @@ class Doc extends Command
      *
      * @var string
      */
-    protected $description = 'Markdown generation based on test cases.';
+    protected $description = 'Markdown generation based on test cases';
 
     /**
      * 文档解析器.

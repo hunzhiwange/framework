@@ -46,7 +46,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $description = 'Clear cache of router.';
+    protected $description = 'Clear cache of router';
 
     /**
      * 响应命令.

@@ -56,7 +56,7 @@ class RoadRunnerServer extends Command
      *
      * @var string
      */
-    protected $description = 'Start road runner server.';
+    protected $description = 'Start road runner server';
 
     /**
      * 响应命令.
