@@ -529,29 +529,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 是否存在属性.
+     * 是否存在属性数据.
      *
      * @param string $prop
-     *
-     * @throws \InvalidArgumentException
      *
      * @return bool
      */
     public function hasProp(string $prop): bool
     {
-        $prop = $this->normalize($prop);
-        if (!$this->hasField($prop)) {
-            return false;
-        }
-
-        $prop = $this->asProp($prop);
-        if (!property_exists($this, $prop)) {
-            $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        return true;
+        return null !== $this->prop($prop);
     }
 
     /**
@@ -1248,7 +1234,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function addChanged(array $props): IEntity
     {
         foreach ($props as $prop) {
-            if (!in_array($prop, $this->leevelChangedProp, true)) {
+            if (in_array($prop, $this->leevelChangedProp, true)) {
                 continue;
             }
 
@@ -1466,7 +1452,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $option = JSON_UNESCAPED_UNICODE;
         }
 
-        return json_encode($this->toArray(), $option);
+        $args = func_get_args();
+        array_shift($args);
+
+        return json_encode($this->toArray(...$args), $option);
     }
 
     /**
@@ -1476,7 +1465,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray();
+        return $this->toArray(...func_get_args());
     }
 
     /**
@@ -1590,6 +1579,32 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @return mixed
      */
     abstract public static function connect();
+
+    /**
+     * 是否定义属性数据.
+     *
+     * @param string $prop
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return bool
+     */
+    protected function hasPropDefined(string $prop): bool
+    {
+        $prop = $this->normalize($prop);
+        if (!$this->hasField($prop)) {
+            return false;
+        }
+
+        $prop = $this->asProp($prop);
+        if (!property_exists($this, $prop)) {
+            $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return true;
+    }
 
     /**
      * 查找并删除实体.
@@ -1950,7 +1965,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $prop = $this->normalize($prop);
 
-        if (!$this->hasProp($prop)) {
+        if (!$this->hasPropDefined($prop)) {
             $e = sprintf('Entity `%s` prop or field of struct `%s` was not defined.', get_class($this), $prop);
 
             throw new InvalidArgumentException($e);
