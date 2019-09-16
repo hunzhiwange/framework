@@ -23,8 +23,11 @@ namespace Tests\Database\Ddd;
 use I18nMock;
 use Leevel\Di\Container;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnum2;
+use Tests\Database\Ddd\Entity\EntityWithInvalidEnum;
+use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
 use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
@@ -453,6 +456,238 @@ class EntityTest extends TestCase
 
         $entity = new SoftDeleteNotFoundDeleteAtField();
         $entity->softDeleted();
+    }
+
+    public function testHasChanged(): void
+    {
+        $entity = new Post();
+        $this->assertFalse($entity->hasChanged('title'));
+        $entity->title = 'change';
+        $this->assertTrue($entity->hasChanged('title'));
+    }
+
+    public function testAddChanged(): void
+    {
+        $entity = new Post();
+        $data = <<<'eot'
+            []
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed()
+            )
+        );
+
+        $entity->addChanged(['user_id', 'title']);
+
+        $data = <<<'eot'
+            [
+                "user_id",
+                "title"
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed(),
+                1
+            )
+        );
+    }
+
+    public function testDeleteChanged(): void
+    {
+        $entity = new Post();
+        $data = <<<'eot'
+            []
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed()
+            )
+        );
+
+        $entity->addChanged(['user_id', 'title']);
+
+        $data = <<<'eot'
+            [
+                "user_id",
+                "title"
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed(),
+                1,
+            )
+        );
+
+        $entity->deleteChanged(['user_id']);
+
+        $data = <<<'eot'
+            [
+                "title"
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed(),
+                2,
+            )
+        );
+    }
+
+    public function testClearChanged(): void
+    {
+        $entity = new Post();
+        $data = <<<'eot'
+            []
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed()
+            )
+        );
+
+        $entity->addChanged(['user_id', 'title']);
+
+        $data = <<<'eot'
+            [
+                "user_id",
+                "title"
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed(),
+                1,
+            )
+        );
+
+        $entity->clearChanged(['user_id']);
+
+        $data = <<<'eot'
+            []
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed(),
+                2,
+            )
+        );
+    }
+
+    public function testSinglePrimaryKeyNotFound(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey do not have primary key or composite id not supported.'
+        );
+
+        $entity = new EntityWithoutPrimaryKey();
+        $entity->singlePrimaryKey();
+    }
+
+    public function testSinglePrimaryKeyNotSupportComposite(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\CompositeId do not have primary key or composite id not supported.'
+        );
+
+        $entity = new CompositeId();
+        $entity->singlePrimaryKey();
+    }
+
+    public function testSingleId(): void
+    {
+        $entity = new Post();
+        $this->assertNull($entity->singleId());
+
+        $entity = new Post(['id' => 5]);
+        $this->assertSame(5, $entity->singleId());
+    }
+
+    public function testEntityWithInvalidEnum(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid enum in the field `status` of entity `Tests\\Database\\Ddd\\Entity\\EntityWithInvalidEnum`.'
+        );
+
+        $this->initI18n();
+
+        $entity = new EntityWithInvalidEnum([
+            'title'   => 'foo',
+            'status'  => '1',
+        ]);
+
+        $this->assertSame('foo', $entity->title);
+        $this->assertSame('1', $entity->status);
+
+        $data = <<<'eot'
+            {
+                "title": "foo"
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->toArray(['title'])
+            )
+        );
+
+        $entity->toArray();
+    }
+
+    public function testIdCondition(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertSame(['id' => 5], $entity->idCondition());
+    }
+
+    public function testIdConditionHasNoPrimaryKeyData(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no primary key data.'
+        );
+
+        $entity = new Post();
+        $this->assertNull($entity->idCondition());
+    }
+
+    public function testArrayAccessOffsetExists(): void
+    {
+        $entity = new Post(['id' => 5, 'title' => 'hello']);
+        $this->assertTrue(isset($entity['title']));
+        $this->assertFalse(isset($entity['user_id']));
+    }
+
+    public function testArrayAccessOffsetSet(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertFalse(isset($entity['title']));
+        $this->assertNull($entity->title);
+        $entity['title'] = 'world';
+        $this->assertTrue(isset($entity['title']));
+        $this->assertSame('world', $entity->title);
     }
 
     protected function initI18n(): void
