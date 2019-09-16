@@ -690,6 +690,34 @@ class EntityTest extends TestCase
         $this->assertSame('world', $entity->title);
     }
 
+    public function testArrayAccessOffsetGet(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertNull($entity['title']);
+        $entity['title'] = 'world';
+        $this->assertSame('world', $entity['title']);
+    }
+
+    public function testArrayAccessOffsetUnset(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertNull($entity['title']);
+        $entity['title'] = 'world';
+        $this->assertSame('world', $entity['title']);
+        unset($entity['title']);
+        $this->assertNull($entity['title']);
+    }
+
+    public function testSelectWithNotSupportSoftDeletedType(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid soft deleted type 9999.'
+        );
+
+        Post::select(9999);
+    }
+
     protected function initI18n(): void
     {
         $container = Container::singletons();
