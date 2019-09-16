@@ -433,11 +433,9 @@ interface IEntity
     public function prop(string $prop);
 
     /**
-     * 是否存在属性.
+     * 是否存在属性数据.
      *
      * @param string $prop
-     *
-     * @throws \InvalidArgumentException
      *
      * @return bool
      */
