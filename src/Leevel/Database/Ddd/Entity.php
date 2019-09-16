@@ -1655,7 +1655,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
                 break;
             default:
-                $e = sprinf('Invalid soft deleted type %d.', $softDeletedType);
+                $e = sprintf('Invalid soft deleted type %d.', $softDeletedType);
 
                 throw new InvalidArgumentException($e);
         }
