@@ -330,6 +330,34 @@ class BelongsToTest extends TestCase
         }
     }
 
+    public function testValidateRelationKeyNotDefinedSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `source_key` field was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->userNotDefinedSourceKey;
+    }
+
+    public function testValidateRelationKeyNotDefinedTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `target_key` field was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->userNotDefinedTargetKey;
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'user'];

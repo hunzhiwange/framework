@@ -564,6 +564,76 @@ class ManyManyTest extends TestCase
         $this->assertCount(0, $role);
     }
 
+    public function testValidateRelationKeyNotDefinedMiddleEntity(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `middle_entity` field was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+        $user->roleNotDefinedMiddleEntity;
+    }
+
+    public function testValidateRelationKeyNotDefinedSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `source_key` field was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+        $user->roleNotDefinedSourceKey;
+    }
+
+    public function testValidateRelationKeyNotDefinedTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `target_key` field was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+        $user->roleNotDefinedTargetKey;
+    }
+
+    public function testValidateRelationKeyNotDefinedMiddleSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `middle_source_key` field was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+        $user->roleNotDefinedMiddleSourceKey;
+    }
+
+    public function testValidateRelationKeyNotDefinedMiddleTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `middle_target_key` field was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+        $user->roleNotDefinedMiddleTargetKey;
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['user', 'user_role', 'role'];

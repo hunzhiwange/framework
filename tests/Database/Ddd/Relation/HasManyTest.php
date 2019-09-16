@@ -407,6 +407,34 @@ class HasManyTest extends TestCase
         }
     }
 
+    public function testValidateRelationKeyNotDefinedSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `source_key` field was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->commentNotDefinedSourceKey;
+    }
+
+    public function testValidateRelationKeyNotDefinedTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `target_key` field was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->commentNotDefinedTargetKey;
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'comment'];

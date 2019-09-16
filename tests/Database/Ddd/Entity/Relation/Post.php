@@ -68,6 +68,32 @@ class Post extends Entity
             self::SOURCE_KEY  => 'id',
             self::TARGET_KEY  => 'post_id',
         ],
+        'user_not_defined_source_key'      => [
+            self::BELONGS_TO     => User::class,
+            self::TARGET_KEY     => 'id',
+        ],
+        'user_not_defined_target_key'      => [
+            self::BELONGS_TO     => User::class,
+            self::SOURCE_KEY     => 'id',
+        ],
+        'comment_not_defined_source_key' => [
+            self::HAS_MANY          => Comment::class,
+            self::TARGET_KEY        => 'post_id',
+            self::RELATION_SCOPE    => 'comment',
+        ],
+        'comment_not_defined_target_key' => [
+            self::HAS_MANY          => Comment::class,
+            self::SOURCE_KEY        => 'id',
+            self::RELATION_SCOPE    => 'comment',
+        ],
+        'post_content_not_defined_source_key' => [
+            self::HAS_ONE     => PostContent::class,
+            self::TARGET_KEY  => 'post_id',
+        ],
+        'post_content_not_defined_target_key' => [
+            self::HAS_ONE     => PostContent::class,
+            self::SOURCE_KEY  => 'id',
+        ],
     ];
 
     const DELETE_AT = 'delete_at';
@@ -91,6 +117,18 @@ class Post extends Entity
     private $comment;
 
     private $postContent;
+
+    private $userNotDefinedSourceKey;
+
+    private $userNotDefinedTargetKey;
+
+    private $commentNotDefinedSourceKey;
+
+    private $commentNotDefinedTargetKey;
+
+    private $postContentNotDefinedSourceKey;
+
+    private $postContentNotDefinedTargetKey;
 
     public function setter(string $prop, $value): IEntity
     {

@@ -52,6 +52,41 @@ class User extends Entity
             self::MIDDLE_SOURCE_KEY => 'user_id',
             self::MIDDLE_TARGET_KEY => 'role_id',
         ],
+        'role_not_defined_middle_entity'      => [
+            self::MANY_MANY         => Role::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+        ],
+        'role_not_defined_source_key'      => [
+            self::MANY_MANY         => Role::class,
+            self::MIDDLE_ENTITY     => UserRole::class,
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+        ],
+        'role_not_defined_target_key'      => [
+            self::MANY_MANY         => Role::class,
+            self::MIDDLE_ENTITY     => UserRole::class,
+            self::SOURCE_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+        ],
+        'role_not_defined_middle_source_key'      => [
+            self::MANY_MANY         => Role::class,
+            self::MIDDLE_ENTITY     => UserRole::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+        ],
+        'role_not_defined_middle_target_key'      => [
+            self::MANY_MANY         => Role::class,
+            self::MIDDLE_ENTITY     => UserRole::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+        ],
     ];
 
     private static $leevelConnect;
@@ -63,6 +98,16 @@ class User extends Entity
     private $createAt;
 
     private $role;
+
+    private $roleNotDefinedMiddleEntity;
+
+    private $roleNotDefinedSourceKey;
+
+    private $roleNotDefinedTargetKey;
+
+    private $roleNotDefinedMiddleSourceKey;
+
+    private $roleNotDefinedMiddleTargetKey;
 
     public function setter(string $prop, $value): IEntity
     {
