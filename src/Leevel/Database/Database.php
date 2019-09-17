@@ -342,6 +342,7 @@ abstract class Database implements IConnection
 
                 return self::query($sql, $bindParams, $master, $fetchStyle, $fetchArgument, $ctorArgs);
             }
+            $this->setLastSql($this->normalizeLastSql($this->pdoStatement, true));
 
             throw $e;
         }
@@ -386,6 +387,7 @@ abstract class Database implements IConnection
                 return self::execute($sql, $bindParams);
             }
 
+            $this->setLastSql($this->normalizeLastSql($this->pdoStatement, true));
             $this->pdoException($e);
         }
 
@@ -414,7 +416,6 @@ abstract class Database implements IConnection
             $result = call_user_func_array($action, [
                 $this,
             ]);
-
             $this->commit();
 
             return $result;
@@ -435,13 +436,11 @@ abstract class Database implements IConnection
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
                 $this->pdo(true)->beginTransaction();
-
                 if ($this->manager) {
                     $this->manager->setTransactionConnection($this);
                 }
             } catch (Exception $e) { // @codeCoverageIgnore
                 $this->transactionLevel--; // @codeCoverageIgnore
-
                 throw $e; // @codeCoverageIgnore
             } // @codeCoverageIgnore
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
@@ -480,7 +479,6 @@ abstract class Database implements IConnection
 
         if (1 === $this->transactionLevel) {
             $this->pdo(true)->commit();
-
             if ($this->manager) {
                 $this->manager->removeTransactionConnection();
                 $this->release();
@@ -509,7 +507,6 @@ abstract class Database implements IConnection
             $this->transactionLevel = 0;
             $this->pdo(true)->rollBack();
             $this->isRollbackOnly = false;
-
             if ($this->manager) {
                 $this->manager->removeTransactionConnection();
                 $this->release();
@@ -800,16 +797,21 @@ abstract class Database implements IConnection
      * 整理当前执行 SQL.
      *
      * @param \PDOStatement $pdoStatement
+     * @param bool          $failed
      *
      * @return string
      */
-    protected function normalizeLastSql(PDOStatement $pdoStatement): string
+    protected function normalizeLastSql(PDOStatement $pdoStatement, bool $failed = false): string
     {
         ob_start();
         $pdoStatement->debugDumpParams();
         $sql = trim(ob_get_contents(), PHP_EOL.' ');
         $sql = str_replace(PHP_EOL, ' | ', $sql);
         ob_end_clean();
+
+        if (true === $failed) {
+            $sql = '[FAILED] '.$sql;
+        }
 
         return $sql;
     }
