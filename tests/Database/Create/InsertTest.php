@@ -218,4 +218,52 @@ class InsertTest extends TestCase
             )
         );
     }
+
+    public function testInsertWithEmptyData(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "INSERT INTO `test` () VALUES ()",
+                []
+            ]
+            eot;
+
+        $data = [];
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data)
+            )
+        );
+    }
+
+    public function testReplaceWithEmptyData(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "REPLACE INTO `test` () VALUES ()",
+                []
+            ]
+            eot;
+
+        $data = [];
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->sql()
+                    ->table('test')
+                    ->insert($data, [], true)
+            )
+        );
+    }
 }
