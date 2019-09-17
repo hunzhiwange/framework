@@ -248,17 +248,13 @@ class Condition
             }
 
             // 构造 insert 语句
-            if ($values) {
-                $sql = [];
-                $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
-                $sql[] = $this->parseTable();
-                $sql[] = '('.implode(',', $fields).')';
-                $sql[] = 'VALUES';
-                $sql[] = '('.implode(',', $values).')';
-                $data = implode(' ', $sql);
-
-                unset($fields, $values, $sql);
-            }
+            $sql = [];
+            $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
+            $sql[] = $this->parseTable();
+            $sql[] = '('.implode(',', $fields).')';
+            $sql[] = 'VALUES';
+            $sql[] = '('.implode(',', $values).')';
+            $data = implode(' ', $sql);
         }
 
         $bind = array_merge($this->getBindParams(), $bind);

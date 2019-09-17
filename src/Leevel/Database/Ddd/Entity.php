@@ -1736,18 +1736,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $saveData[$prop] = $this->prop($prop);
         }
 
-        if (!$saveData) {
-            if (null === (($primaryKey = static::primaryKeys()))) {
-                $e = sprintf('Entity %s has no primary key.', static::class);
-
-                throw new InvalidArgumentException($e);
-            }
-
-            foreach ($primaryKey as $value) {
-                $saveData[$value] = null;
-            }
-        }
-
         $this->leevelFlush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
 
