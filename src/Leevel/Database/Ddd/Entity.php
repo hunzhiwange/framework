@@ -208,7 +208,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 魔术方法获取.
+     * 获取数据数据.
      *
      * @param string $key
      *
@@ -220,7 +220,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 更新属性值
+     * 更新属性数据.
      *
      * @param string $key
      * @param mixed  $value
@@ -231,7 +231,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 是否存在属性.
+     * 是否存在属性数据.
      *
      * @param string $prop
      *
@@ -243,7 +243,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 删除属性.
+     * 删除属性数据.
      *
      * @param string $prop
      */
@@ -448,7 +448,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 批量修改属性.
+     * 批量设置属性数据.
      *
      * @param array $data
      *
@@ -464,7 +464,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 改变属性.
+     * 设置属性数据.
      *
      * @param string $prop
      * @param mixed  $value
@@ -510,7 +510,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 返回属性.
+     * 获取属性数据.
      *
      * @param string $prop
      *
@@ -1581,7 +1581,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     abstract public static function connect();
 
     /**
-     * 是否定义属性数据.
+     * 是否定义属性.
      *
      * @param string $prop
      *

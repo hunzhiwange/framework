@@ -401,7 +401,7 @@ interface IEntity
     public static function connectSandbox($connect, Closure $preLoadsResult);
 
     /**
-     * 批量修改属性.
+     * 批量设置属性数据.
      *
      * @param array $data
      *
@@ -410,7 +410,7 @@ interface IEntity
     public function withProps(array $data): self;
 
     /**
-     * 改变属性.
+     * 设置属性数据.
      *
      * @param string $prop
      * @param mixed  $value
@@ -424,7 +424,7 @@ interface IEntity
     public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): self;
 
     /**
-     * 返回属性.
+     * 获取属性数据.
      *
      * @param string $prop
      *
