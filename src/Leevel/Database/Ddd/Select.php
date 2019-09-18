@@ -247,17 +247,17 @@ class Select
     /**
      * 获取不执行预载入的查询结果.
      *
-     * @param \Closure $preLoadsResult
+     * @param \Closure $call
      *
      * @return mixed
      */
-    public static function withoutPreLoadsResult(Closure $preLoadsResult)
+    public static function withoutPreLoadsResult(Closure $call)
     {
         $old = static::$preLoadsResult;
         static::$preLoadsResult = false;
 
         try {
-            $result = call_user_func($preLoadsResult);
+            $result = call_user_func($call);
             static::$preLoadsResult = $old;
         } catch (Throwable $th) {
             static::$preLoadsResult = $old;
