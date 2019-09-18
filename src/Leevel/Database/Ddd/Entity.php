@@ -277,13 +277,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         // relation tips
-        if ($this->isRelation($unCamelize = $this->normalize($method))) {
-            $e = sprintf(
-                'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
-                $method, static::class, $unCamelize
-            );
+        try {
+            if ($this->isRelation($unCamelize = $this->normalize($method))) {
+                $e = sprintf(
+                    'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
+                    $method, static::class, $unCamelize
+                );
 
-            throw new BadMethodCallException($e);
+                throw new BadMethodCallException($e);
+            }
+        } catch (InvalidArgumentException $th) {
         }
 
         // other method tips
