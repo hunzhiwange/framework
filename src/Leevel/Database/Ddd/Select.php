@@ -31,6 +31,7 @@ use function Leevel\Support\Str\contains;
 use Leevel\Support\Str\contains;
 use function Leevel\Support\Str\starts_with;
 use Leevel\Support\Str\starts_with;
+use Throwable;
 
 /**
  * 模型实体查询.
@@ -254,8 +255,15 @@ class Select
     {
         $old = static::$preLoadsResult;
         static::$preLoadsResult = false;
-        $result = call_user_func($preLoadsResult);
-        static::$preLoadsResult = $old;
+
+        try {
+            $result = call_user_func($preLoadsResult);
+            static::$preLoadsResult = $old;
+        } catch (Throwable $th) {
+            static::$preLoadsResult = $old;
+
+            throw $th;
+        }
 
         return $result;
     }
