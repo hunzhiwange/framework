@@ -323,7 +323,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function __toString(): string
     {
-        return $this->toJson();
+        return $this->toJson(...func_get_args());
     }
 
     /**
