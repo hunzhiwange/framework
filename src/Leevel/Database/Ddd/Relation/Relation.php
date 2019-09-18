@@ -24,6 +24,7 @@ use Closure;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
+use Throwable;
 
 /**
  * 关联模型实体基类.
@@ -336,8 +337,15 @@ abstract class Relation
     {
         $old = static::$relationCondition;
         static::$relationCondition = false;
-        $relation = call_user_func($returnRelation);
-        static::$relationCondition = $old;
+
+        try {
+            $relation = call_user_func($returnRelation);
+            static::$relationCondition = $old;
+        } catch (Throwable $th) {
+            static::$relationCondition = $old;
+
+            throw $th;
+        }
 
         return $relation;
     }
