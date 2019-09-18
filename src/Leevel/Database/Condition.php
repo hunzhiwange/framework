@@ -321,6 +321,8 @@ class Condition
      * @param array|string $data
      * @param array        $bind
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
     public function update($data, array $bind = []): array
@@ -336,27 +338,28 @@ class Condition
 
             // SET 语句
             $setData = [];
-
             foreach ($fields as $key => $field) {
                 $field = $this->normalizeColumn($field, $tableName);
                 $setData[] = $field.' = '.$values[$key];
             }
 
             // 构造 update 语句
-            if ($values) {
-                $sql = [];
-                $sql[] = 'UPDATE';
-                $sql[] = ltrim($this->parseFrom(), 'FROM ');
-                $sql[] = 'SET '.implode(',', $setData);
-                $sql[] = $this->parseWhere();
-                $sql[] = $this->parseOrder();
-                $sql[] = $this->parseLimitCount();
-                $sql[] = $this->parseForUpdate();
-                $sql = array_filter($sql);
-                $data = implode(' ', $sql);
+            if (!$values) {
+                $e = 'Data for update can not be empty.';
 
-                unset($bindData, $fields, $values, $setData, $sql);
+                throw new InvalidArgumentException($e);
             }
+
+            $sql = [];
+            $sql[] = 'UPDATE';
+            $sql[] = ltrim($this->parseFrom(), 'FROM ');
+            $sql[] = 'SET '.implode(',', $setData);
+            $sql[] = $this->parseWhere();
+            $sql[] = $this->parseOrder();
+            $sql[] = $this->parseLimitCount();
+            $sql[] = $this->parseForUpdate();
+            $sql = array_filter($sql);
+            $data = implode(' ', $sql);
         }
 
         $bind = array_merge($this->getBindParams(), $bind);
