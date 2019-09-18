@@ -1242,8 +1242,7 @@ class RepositoryTest extends TestCase
         $this->assertSame(0, $post->userId);
         $this->assertSame([], $post->changed());
         $repository->create($post);
-
-        $this->assertSame('SQL: [45] INSERT INTO `post` (`post`.`id`) VALUES (:id) | Params:  1 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=0', $repository->getLastSql());
+        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0', $repository->getLastSql());
 
         $newPost = $repository->findEntity(5);
 
@@ -1315,7 +1314,7 @@ class RepositoryTest extends TestCase
         $this->assertSame([], $post->changed());
 
         $repository->replace($post); // 新增一条数据.
-        $this->assertSame('SQL: [45] INSERT INTO `post` (`post`.`id`) VALUES (:id) | Params:  1 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=0', $repository->getLastSql());
+        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0', $repository->getLastSql());
 
         $updatedPost = $repository->findEntity(1);
         $this->assertSame(1, $updatedPost->id);
@@ -1356,7 +1355,7 @@ class RepositoryTest extends TestCase
 
         $this->assertSame([], $post->changed());
         $repository->replace($post); // 新增一条数据.
-        $this->assertSame('SQL: [45] INSERT INTO `post` (`post`.`id`) VALUES (:id) | Params:  1 | Key: Name: [3] :id | paramno=0 | name=[3] ":id" | is_param=1 | param_type=0', $repository->getLastSql());
+        $this->assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0', $repository->getLastSql());
 
         $newPost = $repository->findEntity(1);
 

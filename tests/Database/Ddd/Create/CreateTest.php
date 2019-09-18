@@ -188,9 +188,7 @@ class CreateTest extends TestCase
 
         $data = <<<'eot'
             [
-                {
-                    "id": null
-                }
+                []
             ]
             eot;
 
