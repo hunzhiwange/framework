@@ -310,7 +310,6 @@ class Condition
         $sql[] = 'VALUES';
         $sql[] = implode(',', $dataResult);
         $data = implode(' ', $sql);
-
         $bind = array_merge($this->getBindParams(), $bind);
 
         return [$replace ? 'replace' : 'insert', $data, $bind];
