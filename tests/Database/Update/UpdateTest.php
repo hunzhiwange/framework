@@ -239,4 +239,20 @@ class UpdateTest extends TestCase
             )
         );
     }
+
+    public function testUpdateWithEmptyDataException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Data for update can not be empty.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+
+        $connect
+            ->sql()
+            ->table('test')
+            ->where('id', 503)
+            ->update([]);
+    }
 }
