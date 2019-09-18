@@ -42,6 +42,7 @@ use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
+use Throwable;
 
 /**
  * 模型实体 Object Relational Mapping.
@@ -444,8 +445,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $old = static::connect();
         static::withConnect($connect);
-        $result = call_user_func($preLoadsResult);
-        static::withConnect($old);
+
+        try {
+            $result = call_user_func($preLoadsResult);
+            static::withConnect($old);
+        } catch (Throwable $th) {
+            static::withConnect($old);
+
+            throw $th;
+        }
 
         return $result;
     }
