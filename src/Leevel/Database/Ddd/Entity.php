@@ -437,17 +437,17 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 数据库连接沙盒.
      *
      * @param mixed    $connect
-     * @param \Closure $preLoadsResult
+     * @param \Closure $call
      *
      * @return mixed
      */
-    public static function connectSandbox($connect, Closure $preLoadsResult)
+    public static function connectSandbox($connect, Closure $call)
     {
         $old = static::connect();
         static::withConnect($connect);
 
         try {
-            $result = call_user_func($preLoadsResult);
+            $result = call_user_func($call);
             static::withConnect($old);
         } catch (Throwable $th) {
             static::withConnect($old);
