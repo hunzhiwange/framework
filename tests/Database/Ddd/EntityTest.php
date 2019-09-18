@@ -708,6 +708,41 @@ class EntityTest extends TestCase
         $this->assertNull($entity['title']);
     }
 
+    public function testMagicIsset(): void
+    {
+        $entity = new Post(['id' => 5, 'title' => 'hello']);
+        $this->assertTrue(isset($entity->title));
+        $this->assertFalse(isset($entity->userId));
+    }
+
+    public function testMagicSet(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertFalse(isset($entity->title));
+        $this->assertNull($entity->title);
+        $entity->title = 'world';
+        $this->assertTrue(isset($entity->title));
+        $this->assertSame('world', $entity->title);
+    }
+
+    public function testMagicGet(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertNull($entity->title);
+        $entity->title = 'world';
+        $this->assertSame('world', $entity->title);
+    }
+
+    public function testMagicUnset(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertNull($entity->title);
+        $entity->title = 'world';
+        $this->assertSame('world', $entity->title);
+        unset($entity->title);
+        $this->assertNull($entity->title);
+    }
+
     public function testSelectWithNotSupportSoftDeletedType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -716,6 +751,60 @@ class EntityTest extends TestCase
         );
 
         Post::select(9999);
+    }
+
+    public function testCallSetter(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertNull($entity->title);
+        $this->assertNull($entity->userId);
+        $entity->setTitle('hello');
+        $entity->setUserId(5);
+        $this->assertSame('hello', $entity->title);
+        $this->assertSame(5, $entity->userId);
+    }
+
+    public function testCallGetter(): void
+    {
+        $entity = new Post(['id' => 5]);
+        $this->assertNull($entity->getTitle());
+        $this->assertNull($entity->getUserId());
+        $entity->setTitle('hello');
+        $entity->setUserId(5);
+        $this->assertSame('hello', $entity->getTitle());
+        $this->assertSame(5, $entity->getUserId());
+    }
+
+    public function testCallTryLoadRelation(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage(
+            'Method `user` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::make()->loadRelation(\'user\')`.'
+        );
+
+        $entity = new Post();
+        $entity->user();
+    }
+
+    public function testCallTryNotFoundMethod(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage(
+            'Method `notFoundMethod` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::select|make()->notFoundMethod(...)`.'
+        );
+
+        $entity = new Post();
+        $entity->notFoundMethod();
+    }
+
+    public function testCallStaticTryNotFoundMethod(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage(
+            'Method `notFoundMethod` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::select|make()->notFoundMethod(...)`.'
+        );
+
+        Post::notFoundMethod();
     }
 
     protected function initI18n(): void
