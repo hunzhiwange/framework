@@ -279,46 +279,37 @@ class Condition
         $bind = array_merge($this->getBindParams(), $bind);
 
         // 构造数据批量插入
-        if (is_array($data)) {
-            $dataResult = [];
-            $questionMark = 0;
-            $tableName = $this->getTable();
+        $dataResult = [];
+        $questionMark = 0;
+        $tableName = $this->getTable();
 
-            foreach ($data as $key => $tmp) {
-                if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
-                    $e = 'Data for insertAll is not invalid.';
+        foreach ($data as $key => $tmp) {
+            if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
+                $e = 'Data for insertAll is not invalid.';
 
-                    throw new InvalidArgumentException($e);
-                }
+                throw new InvalidArgumentException($e);
+            }
 
-                list($tmpFields, $values, $bind, $questionMark) = $this->normalizeBindData($tmp, $bind, $questionMark, $key);
+            list($tmpFields, $values, $bind, $questionMark) = $this->normalizeBindData($tmp, $bind, $questionMark, $key);
 
-                if (0 === $key) {
-                    $fields = $tmpFields;
-
-                    foreach ($fields as $fieldKey => $field) {
-                        $fields[$fieldKey] = $this->normalizeColumn($field, $tableName);
-                    }
-                }
-
-                if ($values) {
-                    $dataResult[] = '('.implode(',', $values).')';
+            if (0 === $key) {
+                $fields = $tmpFields;
+                foreach ($fields as $fieldKey => $field) {
+                    $fields[$fieldKey] = $this->normalizeColumn($field, $tableName);
                 }
             }
 
-            // 构造 insertAll 语句
-            if ($dataResult) {
-                $sql = [];
-                $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
-                $sql[] = $this->parseTable();
-                $sql[] = '('.implode(',', $fields).')';
-                $sql[] = 'VALUES';
-                $sql[] = implode(',', $dataResult);
-                $data = implode(' ', $sql);
-
-                unset($fields, $values, $sql, $dataResult);
-            }
+            $dataResult[] = '('.implode(',', $values).')';
         }
+
+        // 构造 insertAll 语句
+        $sql = [];
+        $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
+        $sql[] = $this->parseTable();
+        $sql[] = '('.implode(',', $fields).')';
+        $sql[] = 'VALUES';
+        $sql[] = implode(',', $dataResult);
+        $data = implode(' ', $sql);
 
         $bind = array_merge($this->getBindParams(), $bind);
 
