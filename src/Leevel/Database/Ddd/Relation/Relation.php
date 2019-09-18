@@ -329,17 +329,17 @@ abstract class Relation
     /**
      * 获取不带关联条件的关联对象.
      *
-     * @param \Closure $returnRelation
+     * @param \Closure $call
      *
      * @return \Leevel\Database\Ddd\Relation\Relation
      */
-    public static function withoutRelationCondition(Closure $returnRelation): self
+    public static function withoutRelationCondition(Closure $call): self
     {
         $old = static::$relationCondition;
         static::$relationCondition = false;
 
         try {
-            $relation = call_user_func($returnRelation);
+            $relation = call_user_func($call);
             static::$relationCondition = $old;
         } catch (Throwable $th) {
             static::$relationCondition = $old;
