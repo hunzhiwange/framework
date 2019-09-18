@@ -436,6 +436,126 @@ class EntityTest extends TestCase
         $this->assertSame(0, $post1->delete_at);
     }
 
+    public function testDelete(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame(0, $post->delete_at);
+
+        $this->assertFalse($post->softDeleted());
+        $post->delete()->flush();
+        $this->assertTrue($post->softDeleted());
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertSame(1, $post1->userId);
+        $this->assertSame('hello world', $post1->title);
+        $this->assertSame('post summary', $post1->summary);
+        $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+
+        $post2 = Post::select()->findEntity(2);
+        $this->assertInstanceof(Post::class, $post2);
+        $this->assertSame(1, $post2->userId);
+        $this->assertSame('hello world', $post2->title);
+        $this->assertSame('post summary', $post2->summary);
+        $this->assertSame(0, $post2->delete_at);
+
+        $post1 = Post::select()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+    }
+
+    public function testForceDelete(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame(0, $post->delete_at);
+
+        $this->assertFalse($post->softDeleted());
+        $post->forceDelete()->flush();
+        $this->assertFalse($post->softDeleted());
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+
+        $post2 = Post::select()->findEntity(2);
+        $this->assertInstanceof(Post::class, $post2);
+        $this->assertSame(1, $post2->userId);
+        $this->assertSame('hello world', $post2->title);
+        $this->assertSame('post summary', $post2->summary);
+        $this->assertSame(0, $post2->delete_at);
+
+        $post1 = Post::select()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+    }
+
     public function testDeleteAtColumnNotDefined(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -456,6 +576,144 @@ class EntityTest extends TestCase
 
         $entity = new SoftDeleteNotFoundDeleteAtField();
         $entity->softDeleted();
+    }
+
+    public function testDestroy(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame(0, $post->delete_at);
+
+        Post::destroy([1]);
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertSame(1, $post1->userId);
+        $this->assertSame('hello world', $post1->title);
+        $this->assertSame('post summary', $post1->summary);
+        $this->assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+
+        $post2 = Post::select()->findEntity(2);
+        $this->assertInstanceof(Post::class, $post2);
+        $this->assertSame(1, $post2->userId);
+        $this->assertSame('hello world', $post2->title);
+        $this->assertSame('post summary', $post2->summary);
+        $this->assertSame(0, $post2->delete_at);
+
+        $post1 = Post::select()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+    }
+
+    public function testForceDestroy(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame(0, $post->delete_at);
+
+        Post::forceDestroy([1]);
+
+        $post1 = Post::withSoftDeleted()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+
+        $post2 = Post::select()->findEntity(2);
+        $this->assertInstanceof(Post::class, $post2);
+        $this->assertSame(1, $post2->userId);
+        $this->assertSame('hello world', $post2->title);
+        $this->assertSame('post summary', $post2->summary);
+        $this->assertSame(0, $post2->delete_at);
+
+        $post1 = Post::select()->findEntity(1);
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+    }
+
+    public function testDeleteButPrimaryKeyDataNotFound(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no primary key data.'
+        );
+
+        $entity = new Post();
+        $entity->delete(true);
+    }
+
+    public function testForceDeleteButPrimaryKeyDataNotFound(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no primary key data.'
+        );
+
+        $entity = new Post();
+        $entity->forceDelete();
     }
 
     public function testHasChanged(): void
@@ -805,6 +1063,127 @@ class EntityTest extends TestCase
         );
 
         Post::notFoundMethod();
+    }
+
+    public function testStaticFind(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::find()->where('id', 1)->findOne();
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+    }
+
+    public function testConnectSandbox(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::connectSandbox(['password' => '123456'], function () {
+            return Post::find()->where('id', 1)->findOne();
+        });
+
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+    }
+
+    public function testConnectSandboxAndPasswordIsError(): void
+    {
+        // 因为消息 IP 有变，所有这里不测试异常消息
+        // SQLSTATE[HY000] [1045] Access denied for user 'root'@'10.0.2.2' (using password: YES)
+        $this->expectException(\PDOException::class);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::connectSandbox(['password' => 'not right'], function () {
+            return Post::find()->where('id', 1)->findOne();
+        });
+    }
+
+    public function testNewed(): void
+    {
+        $entity = new Post();
+        $this->assertTrue($entity->newed());
+
+        $entity = new Post(['id' => 5]);
+        $this->assertTrue($entity->newed());
+
+        $entity = new Post(['id' => 5], true);
+        $this->assertFalse($entity->newed());
+    }
+
+    public function testId(): void
+    {
+        $entity = new Post();
+        $this->assertNull($entity->id());
+
+        $entity = new Post(['id' => 5]);
+        $this->assertSame(5, $entity->id());
+    }
+
+    public function testCompositeId(): void
+    {
+        $entity = new CompositeId();
+        $this->assertNull($entity->id());
+
+        $entity = new CompositeId(['id1' => 5]);
+        $this->assertNull($entity->id());
+
+        $entity = new CompositeId(['id1' => 5, 'id2' => 8]);
+        $this->assertSame(['id1' => 5, 'id2' => 8], $entity->id());
+    }
+
+    public function testRefresh(): void
+    {
+        $post1 = new Post();
+        $post1->create()->flush();
+        $this->assertInstanceof(Post::class, $post1);
+        $this->assertSame(1, $post1->id);
+        $this->assertNull($post1->userId);
+        $this->assertNull($post1->title);
+        $this->assertNull($post1->summary);
+        $this->assertNull($post1->delete_at);
+
+        $post1->refresh();
+        $this->assertSame(1, $post1->id);
+        $this->assertSame(0, $post1->userId);
+        $this->assertSame('', $post1->title);
+        $this->assertSame('', $post1->summary);
+        $this->assertSame(0, $post1->delete_at);
     }
 
     protected function initI18n(): void
