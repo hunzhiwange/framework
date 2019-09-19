@@ -42,7 +42,9 @@ class EventTest extends TestCase
     {
         $dispatch = new Dispatch(new Container());
 
+        $this->assertNull(Entity::eventDispatch());
         Entity::withEventDispatch($dispatch);
+        $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
 
         $test = new TestEventEntity(['name' => 'foo']);
 
