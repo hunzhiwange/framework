@@ -1740,17 +1740,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function createReal(?array $fill = null): IEntity
     {
         $this->parseAutoFill('create', $fill);
-        $propKey = $this->normalizeWhiteAndBlack(
-            array_flip($this->leevelChangedProp), 'create_prop'
-        );
-
-        $saveData = [];
-        foreach ($this->leevelChangedProp as $prop) {
-            if (!array_key_exists($prop, $propKey)) {
-                continue;
-            }
-            $saveData[$prop] = $this->prop($prop);
-        }
+        $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
         $this->leevelFlush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
@@ -1783,25 +1773,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function updateReal(?array $fill = null): IEntity
     {
         $this->parseAutoFill('update', $fill);
-        $propKey = $this->normalizeWhiteAndBlack(
-            array_flip($this->leevelChangedProp), 'update_prop'
-        );
-
-        $saveData = [];
-        foreach ($this->leevelChangedProp as $prop) {
-            if (!array_key_exists($prop, $propKey)) {
-                continue;
-            }
-            $saveData[$prop] = $this->prop($prop);
-        }
-
+        $saveData = $this->normalizeWhiteAndBlackChangedData('update');
         $condition = $this->idCondition();
         foreach ($condition as $field => $value) {
             if (isset($saveData[$field])) {
                 unset($saveData[$field]);
             }
         }
-
         if (!$saveData) {
             $e = 'No data needs to be update.';
 
@@ -1846,6 +1824,43 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $this->leevelReplace = $fill;
         $this->createReal($fill);
+    }
+
+    /**
+     * 整理黑白名单变更数据.
+     *
+     * @param array $type
+     *
+     * @return array
+     */
+    protected function normalizeWhiteAndBlackChangedData(string $type): array
+    {
+        $propKey = $this->normalizeWhiteAndBlack(
+            array_flip($this->leevelChangedProp), $type.'_prop'
+        );
+        $saveData = $this->normalizeChangedData($propKey);
+
+        return $saveData;
+    }
+
+    /**
+     * 整理变更数据.
+     *
+     * @param array $propKey
+     *
+     * @return array
+     */
+    protected function normalizeChangedData(array $propKey): array
+    {
+        $saveData = [];
+        foreach ($this->leevelChangedProp as $prop) {
+            if (!array_key_exists($prop, $propKey)) {
+                continue;
+            }
+            $saveData[$prop] = $this->prop($prop);
+        }
+
+        return $saveData;
     }
 
     /**
