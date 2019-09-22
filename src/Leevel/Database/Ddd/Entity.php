@@ -816,8 +816,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function id()
     {
         $result = [];
-        foreach (($keys = static::primaryKeys()) as $value) {
-            if (!($tmp = $this->prop($value))) {
+        foreach ($keys = static::primaryKeys() as $value) {
+            if (!$tmp = $this->prop($value)) {
                 continue;
             }
             $result[$value] = $tmp;
@@ -844,16 +844,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function refresh(): void
     {
-        $key = static::validatePrimaryKey();
-        if (is_array($key)) {
-            $map = $this->id();
-        } else {
-            $map = [static::singlePrimaryKey(), $this->id()];
-        }
-
         $data = static::meta()
             ->select()
-            ->where($map)
+            ->where($this->idCondition())
             ->findOne();
 
         foreach ($data as $k => $v) {
@@ -1505,6 +1498,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function idCondition(): array
     {
+        static::validatePrimaryKey();
+
         if (null === $ids = $this->id()) {
             $e = sprintf('Entity %s has no primary key data.', static::class);
 
