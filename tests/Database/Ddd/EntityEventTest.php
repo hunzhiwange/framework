@@ -36,7 +36,7 @@ use Tests\Database\Ddd\Entity\TestEventEntity;
  *
  * @version 1.0
  */
-class EventTest extends TestCase
+class EntityEventTest extends TestCase
 {
     public function testBaseUse(): void
     {
