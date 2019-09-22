@@ -1118,15 +1118,19 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string                                 $event
      * @param \Closure|\Leevel\Event\Observer|string $listener
+     *
+     * @throws \InvalidArgumentException
      */
     public static function event(string $event, $listener): void
     {
         if (null === static::$leevelDispatch &&
             static::lazyloadPlaceholder() && null === static::$leevelDispatch) {
-            return;
+            $e = 'Event dispatch was not set.';
+
+            throw new InvalidArgumentException($e);
         }
 
-        static::isSupportEvent($event);
+        static::validateSupportEvent($event);
         static::$leevelDispatch->register(
             "entity.{$event}:".static::class,
             $listener
@@ -1145,27 +1149,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return;
         }
 
-        $this->isSupportEvent($event);
+        static::validateSupportEvent($event);
         array_unshift($args, $this);
         array_unshift($args, "entity.{$event}:".get_class($this));
 
         static::$leevelDispatch->handle(...$args);
-    }
-
-    /**
-     * 验证事件是否受支持
-     *
-     * @param string $event
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function isSupportEvent(string $event): void
-    {
-        if (!in_array($event, static::supportEvent(), true)) {
-            $e = sprintf('Event `%s` do not support.');
-
-            throw new InvalidArgumentException($e);
-        }
     }
 
     /**
@@ -1590,6 +1578,22 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @return mixed
      */
     abstract public static function connect();
+
+    /**
+     * 验证事件是否受支持.
+     *
+     * @param string $event
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected static function validateSupportEvent(string $event): void
+    {
+        if (!in_array($event, static::supportEvent(), true)) {
+            $e = sprintf('Event `%s` do not support.', $event);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
 
     /**
      * 是否定义属性.

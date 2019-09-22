@@ -735,15 +735,6 @@ interface IEntity
     public function handleEvent(string $event, ...$args): void;
 
     /**
-     * 验证事件是否受支持
-     *
-     * @param string $event
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function isSupportEvent(string $event): void;
-
-    /**
      * 返回受支持的事件.
      *
      * @return array
