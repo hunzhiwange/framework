@@ -1289,6 +1289,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function primaryKey()
     {
         $keys = static::primaryKeys();
+        if (!$keys) {
+            return null;
+        }
 
         return 1 === count($keys) ? reset($keys) : $keys;
     }
@@ -1500,7 +1503,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function idCondition(): array
     {
-        if (null === (($ids = $this->id()))) {
+        if (null === $ids = $this->id()) {
             $e = sprintf('Entity %s has no primary key data.', static::class);
 
             throw new InvalidArgumentException($e);
