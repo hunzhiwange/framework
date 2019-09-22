@@ -163,7 +163,7 @@ class UpdateTest extends TestCase
     public function testAutoFile(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No data needs to be update.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestUpdateAutoFillEntity` has no data need to be update.');
 
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
         $entity->save();
@@ -172,7 +172,7 @@ class UpdateTest extends TestCase
     public function testUpdateAutoFile(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No data needs to be update.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestUpdateAutoFillEntity` has no data need to be update.');
 
         $entity = new TestUpdateAutoFillEntity(['id' => 5], true);
         $entity->save();
@@ -335,7 +335,7 @@ class UpdateTest extends TestCase
     public function testSaveWithNoData(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No data needs to be update.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestDatabaseEntity` has no data need to be update.');
 
         $entity = new TestDatabaseEntity(['id' => 1]);
         $entity->save();
@@ -344,7 +344,7 @@ class UpdateTest extends TestCase
     public function testUpdateWithNoData(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('No data needs to be update.');
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestDatabaseEntity` has no data need to be update.');
 
         $entity = new TestDatabaseEntity(['id' => 1]);
         $entity->update();
