@@ -88,4 +88,9 @@ class MockMeta extends Meta
     {
         return 10;
     }
+
+    public function setDatabaseConnect($databaseConnect = null): IMeta
+    {
+        return $this;
+    }
 }
