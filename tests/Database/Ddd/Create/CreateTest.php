@@ -26,6 +26,7 @@ use Tests\Database\Ddd\Entity\TestConstructPropBlackEntity;
 use Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity;
 use Tests\Database\Ddd\Entity\TestCreateAutoFillEntity;
 use Tests\Database\Ddd\Entity\TestCreatePropWhiteEntity;
+use Tests\Database\Ddd\Entity\TestDatabaseEntity;
 use Tests\Database\Ddd\Entity\TestEntity;
 
 /**
@@ -65,7 +66,6 @@ class CreateTest extends TestCase
     public function testBaseUse(): void
     {
         $entity = new TestEntity();
-
         $this->assertInstanceof(Entity::class, $entity);
 
         $entity->name = 'foo';
@@ -76,6 +76,36 @@ class CreateTest extends TestCase
         $this->assertNull($entity->flushData());
 
         $entity->save();
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "foo"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testCreateBaseUse(): void
+    {
+        $entity = new TestEntity();
+        $this->assertInstanceof(Entity::class, $entity);
+
+        $entity->name = 'foo';
+
+        $this->assertSame('foo', $entity->name);
+        $this->assertSame(['name'], $entity->changed());
+
+        $this->assertNull($entity->flushData());
+
+        $entity->create();
 
         $data = <<<'eot'
             [
@@ -145,14 +175,37 @@ class CreateTest extends TestCase
         $this->assertSame('foo', $entity->getName());
     }
 
+    public function testSavePropBlackAndWhite(): void
+    {
+        $entity = new TestCreatePropWhiteEntity([
+            'name'        => 'foo',
+            'description' => 'hello description',
+        ]);
+        $entity->save();
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "foo"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
     public function testCreatePropBlackAndWhite(): void
     {
         $entity = new TestCreatePropWhiteEntity([
             'name'        => 'foo',
             'description' => 'hello description',
         ]);
-
-        $entity->save();
+        $entity->create();
 
         $data = <<<'eot'
             [
@@ -176,15 +229,32 @@ class CreateTest extends TestCase
         $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestEntity` prop or field of struct `not_exists` was not defined.');
 
         $entity = new TestEntity();
-
         $entity->notExists = 'hello';
     }
 
     public function testAutoFile(): void
     {
         $entity = new TestCreateAutoFillEntity();
-
         $entity->save();
+
+        $data = <<<'eot'
+            [
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testCreateAutoFile(): void
+    {
+        $entity = new TestCreateAutoFillEntity();
+        $entity->create();
 
         $data = <<<'eot'
             [
@@ -203,8 +273,32 @@ class CreateTest extends TestCase
     public function testAutoFileWithAll(): void
     {
         $entity = new TestCreateAutoFillEntity();
-
         $entity->save([], []);
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "name for create_fill",
+                    "description": "set description.",
+                    "address": "address is set now.",
+                    "foo_bar": "foo bar.",
+                    "hello": "hello field."
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testCreateAutoFileWithAll(): void
+    {
+        $entity = new TestCreateAutoFillEntity();
+        $entity->create([], []);
 
         $data = <<<'eot'
             [
@@ -229,13 +323,75 @@ class CreateTest extends TestCase
     public function testAutoFileWithCustomField(): void
     {
         $entity = new TestCreateAutoFillEntity();
-
         $entity->save([], ['address']);
 
         $data = <<<'eot'
             [
                 {
                     "address": "address is set now."
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testCreateAutoFileWithCustomField(): void
+    {
+        $entity = new TestCreateAutoFillEntity();
+        $entity->create([], ['address']);
+
+        $data = <<<'eot'
+            [
+                {
+                    "address": "address is set now."
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testSaveWithProp(): void
+    {
+        $entity = new TestDatabaseEntity();
+        $entity->save(['name' => 'hello']);
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "hello"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testCreateWithProp(): void
+    {
+        $entity = new TestDatabaseEntity();
+        $entity->create(['name' => 'hello']);
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "hello"
                 }
             ]
             eot;

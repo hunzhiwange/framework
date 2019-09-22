@@ -767,6 +767,39 @@ class EntityTest extends TestCase
         );
     }
 
+    public function testAddChangedMoreThanOnce(): void
+    {
+        $entity = new Post();
+        $data = <<<'eot'
+            []
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed()
+            )
+        );
+
+        $entity->addChanged(['user_id', 'title']);
+        $entity->addChanged(['user_id', 'title']);
+
+        $data = <<<'eot'
+            [
+                "user_id",
+                "title"
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->changed(),
+                1
+            )
+        );
+    }
+
     public function testDeleteChanged(): void
     {
         $entity = new Post();
