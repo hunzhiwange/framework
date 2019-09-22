@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Meta;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
 use Tests\Database\DatabaseTestCase as TestCase;
