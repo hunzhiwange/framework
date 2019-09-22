@@ -1197,6 +1197,17 @@ class EntityTest extends TestCase
         $this->assertSame(0, $post1->delete_at);
     }
 
+    public function testRefreshWithoutPrimaryKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no primary key.'
+        );
+
+        $entity = new EntityWithoutPrimaryKey();
+        $entity->refresh();
+    }
+
     protected function initI18n(): void
     {
         $container = Container::singletons();
