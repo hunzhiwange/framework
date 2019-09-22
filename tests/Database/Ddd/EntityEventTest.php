@@ -22,7 +22,6 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
-use Leevel\Database\Ddd\Meta;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -70,6 +69,10 @@ class EntityEventTest extends TestCase
         unset($_SERVER['ENTITY.BEFORE_CREATE_EVENT'], $_SERVER['ENTITY.AFTER_CREATE_EVENT']);
 
         Entity::withEventDispatch(null);
-        Meta::setDatabaseResolver(null);
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['test'];
     }
 }
