@@ -69,5 +69,6 @@ class EntityEventTest extends TestCase
         unset($_SERVER['ENTITY.BEFORE_CREATE_EVENT'], $_SERVER['ENTITY.AFTER_CREATE_EVENT']);
 
         Entity::withEventDispatch(null);
+        Meta::setDatabaseResolver(null);
     }
 }
