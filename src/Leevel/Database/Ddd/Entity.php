@@ -1268,7 +1268,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $keys = static::primaryKeys();
         if (!$keys) {
-            return null;
+            return;
         }
 
         return 1 === count($keys) ? reset($keys) : $keys;
