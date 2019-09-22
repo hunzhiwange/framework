@@ -42,6 +42,7 @@ use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -1775,6 +1776,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param null|array $fill
      *
+     * @throws \RuntimeException
+     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     protected function updateReal(?array $fill = null): IEntity
@@ -1792,23 +1795,17 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $saveData[$prop] = $this->prop($prop);
         }
 
-        if (!$saveData) {
-            return $this;
-        }
-
-        $condition = [];
-        foreach (static::primaryKeys() as $field) {
+        $condition = $this->idCondition();
+        foreach ($condition as $field => $value) {
             if (isset($saveData[$field])) {
                 unset($saveData[$field]);
             }
-
-            if ($value = $this->prop($field)) {
-                $condition[$field] = $value;
-            }
         }
 
-        if (empty($condition) || empty($saveData)) {
-            return $this;
+        if (!$saveData) {
+            $e = 'No data needs to be update.';
+
+            throw new RuntimeException($e);
         }
 
         $this->leevelFlush = function ($condition, $saveData) {
