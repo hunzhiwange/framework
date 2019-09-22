@@ -578,6 +578,17 @@ class EntityTest extends TestCase
         $entity->softDeleted();
     }
 
+    public function testDeleteWithoutPrimaryKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no primary key.'
+        );
+
+        $entity = new EntityWithoutPrimaryKey();
+        $entity->delete();
+    }
+
     public function testDestroy(): void
     {
         $connect = $this->createDatabaseConnect();
