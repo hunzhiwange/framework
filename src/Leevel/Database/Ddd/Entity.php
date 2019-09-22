@@ -1781,7 +1781,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             }
         }
         if (!$saveData) {
-            $e = 'No data needs to be update.';
+            $e = sprintf('Entity `%s` has no data need to be update.', static::class);
 
             throw new RuntimeException($e);
         }
