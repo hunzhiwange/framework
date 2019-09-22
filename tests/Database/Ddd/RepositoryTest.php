@@ -1259,6 +1259,11 @@ class RepositoryTest extends TestCase
 
     public function testUpdateTwice(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be update.'
+        );
+
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
@@ -1278,13 +1283,7 @@ class RepositoryTest extends TestCase
         $this->assertSame('SQL: [63] UPDATE `post` SET `post`.`title` = :title WHERE `post`.`id` = 1 | Params:  1 | Key: Name: [6] :title | paramno=0 | name=[6] ":title" | is_param=1 | param_type=2', $repository->getLastSql());
 
         $this->assertSame([], $post->changed());
-        $repository->update($post); // 不做任何事情.
-
-        $newPost = $repository->findEntity(1);
-
-        $this->assertInstanceof(Post::class, $newPost);
-        $this->assertSame(1, $newPost->id);
-        $this->assertSame('new title', $newPost->title);
+        $repository->update($post);
     }
 
     public function testReplaceTwiceAndFindExistData(): void
