@@ -35,7 +35,7 @@ use Tests\Database\Ddd\Entity\TestConversionEntity;
  *
  * @version 1.0
  */
-class ConversionTest extends TestCase
+class EntityConversionTest extends TestCase
 {
     /**
      * @dataProvider getBaseUseData

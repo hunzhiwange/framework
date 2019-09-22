@@ -34,7 +34,7 @@ use Tests\Database\Ddd\Entity\TestEntity;
  *
  * @version 1.0
  */
-class DefineEntityTest extends TestCase
+class EntityDefineTest extends TestCase
 {
     public function testBaseUse(): void
     {
