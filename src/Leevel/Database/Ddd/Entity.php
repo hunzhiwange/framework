@@ -642,8 +642,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param bool $forceDelete
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function delete(bool $forceDelete = false): IEntity
@@ -652,12 +650,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return $this->softDelete();
         }
 
-        if (null === static::primaryKey()) {
-            $e = sprintf('Entity %s has no primary key.', static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
+        static::validatePrimaryKey();
         $this->leevelFlush = function ($condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
             $num = static::meta()->delete($condition);
@@ -848,18 +841,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 从数据库重新读取当前对象的属性.
-     *
-     * @throws \InvalidArgumentException
      */
     public function refresh(): void
     {
-        $key = static::primaryKey();
-        if (null === $key) {
-            $e = sprintf('Entity %s do not have primary key.', static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
+        $key = static::validatePrimaryKey();
         if (is_array($key)) {
             $map = $this->id();
         } else {
@@ -1297,6 +1282,24 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
+     * 验证主键是否存在并返回主键字段.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return array|string
+     */
+    public static function validatePrimaryKey()
+    {
+        if (null === $key = static::primaryKey()) {
+            $e = sprintf('Entity %s has no primary key.', static::class);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return $key;
+    }
+
+    /**
      * 返回主键字段.
      *
      * @return array
@@ -1349,7 +1352,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function singlePrimaryKey(): string
     {
         $key = static::primaryKey();
-
         if (!is_string($key)) {
             $e = sprintf('Entity %s do not have primary key or composite id not supported.', static::class);
 

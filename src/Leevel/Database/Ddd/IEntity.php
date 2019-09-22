@@ -506,8 +506,6 @@ interface IEntity
      *
      * @param bool $forceDelete
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function delete(bool $forceDelete = false): self;
@@ -589,8 +587,6 @@ interface IEntity
 
     /**
      * 从数据库重新读取当前对象的属性.
-     *
-     * @throws \InvalidArgumentException
      */
     public function refresh(): void;
 
@@ -801,6 +797,15 @@ interface IEntity
      * @return null|array|string
      */
     public static function primaryKey();
+
+    /**
+     * 验证主键是否存在并返回主键字段.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return array|string
+     */
+    public static function validatePrimaryKey();
 
     /**
      * 返回主键字段.
