@@ -1197,6 +1197,52 @@ class EntityTest extends TestCase
         $this->assertSame(0, $post1->delete_at);
     }
 
+    public function testRefreshWithCompositeId(): void
+    {
+        $entity = new CompositeId(['id1' => 1, 'id2' => 3]);
+        $entity->create()->flush();
+        $this->assertInstanceof(CompositeId::class, $entity);
+        $this->assertSame(1, $entity->id1);
+        $this->assertSame(3, $entity->id2);
+        $this->assertNull($entity->name);
+
+        $entity->refresh();
+        $this->assertSame(1, $entity->id1);
+        $this->assertSame(3, $entity->id2);
+        $this->assertSame('', $entity->name);
+    }
+
+    public function testRefreshButNoPrimaryKeyData(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no primary key data.'
+        );
+
+        $entity = new Post();
+        $this->assertInstanceof(Post::class, $entity);
+        $this->assertNull($entity->id);
+
+        $entity->refresh();
+    }
+
+    public function testRefreshWithCompositeIdButNoPrimaryKeyData(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity Tests\\Database\\Ddd\\Entity\\CompositeId has no primary key data.'
+        );
+
+        $entity = new CompositeId();
+        $entity->create()->flush();
+        $this->assertInstanceof(CompositeId::class, $entity);
+        $this->assertNull($entity->id1);
+        $this->assertNull($entity->id2);
+        $this->assertNull($entity->name);
+
+        $entity->refresh();
+    }
+
     public function testRefreshWithoutPrimaryKey(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -1220,6 +1266,6 @@ class EntityTest extends TestCase
 
     protected function getDatabaseTable(): array
     {
-        return ['post'];
+        return ['post', 'composite_id'];
     }
 }
