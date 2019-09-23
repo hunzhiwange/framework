@@ -2078,7 +2078,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 }
             }
             $result[$k] = $value;
-            if (true === $isRelationProp) {
+            if (!$isRelationProp) {
                 $result = static::prepareEnum($k, $result);
             }
         }
