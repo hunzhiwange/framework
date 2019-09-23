@@ -326,6 +326,13 @@ interface IEntity
     const ONLY_SOFT_DELETED = 3;
 
     /**
+     * 枚举分隔符号.
+     *
+     * @var int
+     */
+    const ENUM_SEPARATE = ',';
+
+    /**
      * 创建新的实例.
      *
      * @param array $data
@@ -861,13 +868,12 @@ interface IEntity
      *
      * @param string     $prop
      * @param null|mixed $enum
-     * @param string     $separate
      *
      * @throws \InvalidArgumentException
      *
      * @return mixed
      */
-    public static function enum(string $prop, $enum = null, string $separate = ',');
+    public static function enum(string $prop, $enum = null);
 
     /**
      * 创建一个模型实体集合.

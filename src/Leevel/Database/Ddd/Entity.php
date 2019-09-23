@@ -1376,13 +1376,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string     $prop
      * @param null|mixed $enum
-     * @param string     $separate
      *
      * @throws \InvalidArgumentException
      *
      * @return mixed
      */
-    public static function enum(string $prop, $enum = null, string $separate = ',')
+    public static function enum(string $prop, $enum = null)
     {
         $prop = static::normalize($prop);
         $enumDefined = static::class.'::'.strtoupper($prop).'_ENUM';
@@ -1424,11 +1423,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
                 throw new InvalidArgumentException($e);
             }
-
             $result[] = $enums[$v] ?? $enums[(int) $v];
         }
 
-        return implode($separate, $result);
+        return implode(self::ENUM_SEPARATE, $result);
     }
 
     /**
@@ -2049,9 +2047,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 对象转数组.
      *
+     * @param array $white
+     * @param array $black
+     * @param array $relationWhiteAndBlack
+     *
      * @return array
      */
-    protected function toArraySource(array $white = [], array $black = [], string $separate = ','): array
+    protected function toArraySource(array $white = [], array $black = [], array $relationWhiteAndBlack = []): array
     {
         if ($white || $black) {
             $prop = $this->whiteAndBlack($this->fields(), $white, $black);
@@ -2061,19 +2063,67 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $result = [];
         foreach ($prop as $k => $option) {
+            $isRelationProp = false;
             if ($this->isRelation($k)) {
-                continue;
-            }
-            $value = $this->prop($k);
-            if (null === $value &&
-                !(isset($option[self::SHOW_PROP_NULL]) && true === $option[self::SHOW_PROP_NULL])) {
-                continue;
+                $isRelationProp = true;
+                $value = $this->relationProp($k);
+                if ($this->skipPropNullValue($value, $option)) {
+                    continue;
+                }
+                $value = $this->normalizeRelationValue($value, $k, $relationWhiteAndBlack);
+            } else {
+                $value = $this->prop($k);
+                if ($this->skipPropNullValue($value, $option)) {
+                    continue;
+                }
             }
             $result[$k] = $value;
-            $result = static::prepareEnum($k, $result, $separate);
+            if (true === $isRelationProp) {
+                $result = static::prepareEnum($k, $result);
+            }
         }
 
         return $result;
+    }
+
+    /**
+     * 整理关联属性数据.
+     *
+     * @param mixed  $value
+     * @param string $prop
+     * @param array  $relationWhiteAndBlack
+     *
+     * @return array
+     */
+    protected function normalizeRelationValue($value, string $prop, array $relationWhiteAndBlack): array
+    {
+        if (isset($relationWhiteAndBlack[$prop])) {
+            list($white, $black, $whiteAndBlack) = array_pad($relationWhiteAndBlack[$prop], 3, []);
+        } else {
+            $white = $black = $whiteAndBlack = [];
+        }
+
+        $value = $value->toArray($white, $black, $whiteAndBlack);
+
+        return $value;
+    }
+
+    /**
+     * 是否跳过属性 null 值.
+     *
+     * @param mixed $value
+     * @param array $option
+     *
+     * @return bool
+     */
+    protected function skipPropNullValue($value, array $option): bool
+    {
+        if (null === $value &&
+            !(isset($option[self::SHOW_PROP_NULL]) && true === $option[self::SHOW_PROP_NULL])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -2081,17 +2131,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $prop
      * @param array  $data
-     * @param string $separate
      *
      * @return array
      */
-    protected static function prepareEnum(string $prop, array $data, string $separate = ','): array
+    protected static function prepareEnum(string $prop, array $data): array
     {
         if (!isset($data[$prop])) {
             return $data;
         }
 
-        if (false === ($enum = static::enum($prop, $data[$prop], $separate))) {
+        if (false === $enum = static::enum($prop, $data[$prop])) {
             return $data;
         }
 
