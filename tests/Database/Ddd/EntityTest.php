@@ -1287,6 +1287,30 @@ class EntityTest extends TestCase
         $entity->refresh();
     }
 
+    public function testFlushWithoutData(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be flush.'
+        );
+
+        $post1 = new Post();
+        $post1->flush();
+    }
+
+    public function testFlushTwiceWithoutData(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no data need to be flush.'
+        );
+
+        $post1 = new Post();
+        $post1->create();
+        $post1->flush();
+        $post1->flush();
+    }
+
     protected function initI18n(): void
     {
         $container = Container::singletons();
