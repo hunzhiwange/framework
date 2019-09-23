@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Create;
 
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\TestConstructPropBlackEntity;
 use Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity;
 use Tests\Database\Ddd\Entity\TestCreateAutoFillEntity;
@@ -402,5 +403,34 @@ class CreateTest extends TestCase
                 $entity->flushData()
             )
         );
+    }
+
+    public function testSaveWithCompositeId(): void
+    {
+        $entity = new CompositeId();
+        $entity->save(['id1' => 2, 'id2' => 3]);
+
+        $data = <<<'eot'
+            [
+                {
+                    "id1": 2,
+                    "id2": 3
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+
+        $entity->flush();
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['composite_id'];
     }
 }

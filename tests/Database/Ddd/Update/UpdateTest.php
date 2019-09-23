@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Update;
 
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\TestDatabaseEntity;
 use Tests\Database\Ddd\Entity\TestEntity;
 use Tests\Database\Ddd\Entity\TestReadonlyUpdateEntity;
@@ -366,5 +367,83 @@ class UpdateTest extends TestCase
 
         $entity = new TestDatabaseEntity();
         $entity->update();
+    }
+
+    public function testSaveWithCompositeId(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            0,
+            $connect
+                ->table('composite_id')
+                ->insert([
+                    'id1'     => 2,
+                    'id2'     => 3,
+                ]));
+
+        $entity = new CompositeId();
+        $entity->save(['id1' => 2, 'id2' => 3, 'name' => 'hello']);
+
+        $data = <<<'eot'
+            [
+                {
+                    "id1": 2,
+                    "id2": 3,
+                    "name": "hello"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+
+        $entity->flush();
+    }
+
+    public function testSaveWithCompositeIdButNoDataToBeUpdate(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\CompositeId` has no data need to be update.');
+
+        $connect = $this->createDatabaseConnect();
+        $this->assertSame(
+            0,
+            $connect
+                ->table('composite_id')
+                ->insert([
+                    'id1'     => 2,
+                    'id2'     => 3,
+                ]));
+
+        $entity = new CompositeId();
+        $entity->save(['id1' => 2, 'id2' => 3]);
+
+        $data = <<<'eot'
+            [
+                {
+                    "id1": 2,
+                    "id2": 3
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+
+        $entity->flush();
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['composite_id'];
     }
 }
