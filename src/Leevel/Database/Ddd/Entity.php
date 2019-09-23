@@ -758,12 +758,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 数据持久化数据.
      *
+     * @throws \RuntimeException
+     *
      * @return mixed
      */
     public function flush()
     {
         if (!$this->leevelFlush) {
-            return;
+            $e = sprintf('Entity `%s` has no data need to be flush.', static::class);
+
+            throw new RuntimeException($e);
         }
 
         try {
@@ -1711,7 +1715,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             case 'save':
             default:
                 $ids = $this->id();
-
                 if (is_array($ids)) {
                     $this->replaceReal($fill);
                 } else {

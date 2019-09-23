@@ -559,6 +559,8 @@ interface IEntity
     /**
      * 数据持久化数据.
      *
+     * @throws \RuntimeException
+     *
      * @return mixed
      */
     public function flush();
