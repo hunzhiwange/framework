@@ -26,6 +26,9 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\TestToArrayBlackEntity;
 use Tests\Database\Ddd\Entity\TestToArrayEntity;
+use Tests\Database\Ddd\Entity\TestToArrayShowPropNullEntity;
+use Tests\Database\Ddd\Entity\TestToArrayShowPropNullRelationEntity;
+use Tests\Database\Ddd\Entity\TestToArrayShowPropNullRelationTargetEntity;
 use Tests\Database\Ddd\Entity\TestToArrayWhiteEntity;
 
 class EntityToStringTest extends TestCase
@@ -233,6 +236,34 @@ class EntityToStringTest extends TestCase
         );
     }
 
+    public function testWithShowPropNull(): void
+    {
+        $entity = $this->makeShowPropNullEntity();
+
+        $data = <<<'eot'
+            {"name":"实体名字","description":"goods name","address":"","foo_bar":null,"hello":"default_value"}
+            eot;
+
+        $this->assertSame(
+            $data,
+            $entity->__toString(),
+        );
+    }
+
+    public function testWithShowPropNullForRelation(): void
+    {
+        $entity = $this->makeRelationShowPropNullEntity();
+
+        $data = <<<'eot'
+            {"id":5,"name":"I am name","description":"I am description","address":"","foo_bar":null,"hello":"default_value","target":{"id":5,"name":"xiaoniuge"}}
+            eot;
+
+        $this->assertSame(
+            $data,
+            $entity->__toString(),
+        );
+    }
+
     protected function makeWhiteEntity(): TestToArrayWhiteEntity
     {
         $entity = new TestToArrayWhiteEntity();
@@ -283,6 +314,30 @@ class EntityToStringTest extends TestCase
         $entity->summary = 'I am summary';
         $entity->userId = 7;
         $entity->withRelationProp('user', $user);
+
+        return $entity;
+    }
+
+    protected function makeShowPropNullEntity(): TestToArrayShowPropNullEntity
+    {
+        $entity = new TestToArrayShowPropNullEntity();
+        $this->assertInstanceof(Entity::class, $entity);
+        $entity->name = '实体名字';
+        $entity->description = 'goods name';
+
+        return $entity;
+    }
+
+    protected function makeRelationShowPropNullEntity(): TestToArrayShowPropNullRelationEntity
+    {
+        $target = new TestToArrayShowPropNullRelationTargetEntity(['id' => 5]);
+        $target->name = 'xiaoniuge';
+
+        $entity = new TestToArrayShowPropNullRelationEntity(['id' => 5]);
+        $this->assertInstanceof(TestToArrayShowPropNullRelationEntity::class, $entity);
+        $entity->name = 'I am name';
+        $entity->description = 'I am description';
+        $entity->withRelationProp('target', $target);
 
         return $entity;
     }
