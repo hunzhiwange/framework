@@ -634,6 +634,62 @@ class ManyManyTest extends TestCase
         $user->roleNotDefinedMiddleTargetKey;
     }
 
+    public function testValidateRelationFieldSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `user`.`not_found_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\User` was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $user->manyMany(Role::class, UserRole::class, 'id', 'not_found_source_key', 'role_id', 'user_id');
+    }
+
+    public function testValidateRelationFieldTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `role`.`not_found_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Role` was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $user->manyMany(Role::class, UserRole::class, 'not_found_target_key', 'id', 'role_id', 'user_id');
+    }
+
+    public function testValidateRelationFieldMiddleSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `user_role`.`not_found_middle_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\UserRole` was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $user->manyMany(Role::class, UserRole::class, 'id', 'id', 'role_id', 'not_found_middle_source_key');
+    }
+
+    public function testValidateRelationFieldMiddleTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `user_role`.`not_found_middle_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\UserRole` was not defined.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $user->manyMany(Role::class, UserRole::class, 'id', 'id', 'not_found_middle_target_key', 'user_id');
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['user', 'user_role', 'role'];

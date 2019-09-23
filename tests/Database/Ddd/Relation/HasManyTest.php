@@ -435,6 +435,34 @@ class HasManyTest extends TestCase
         $post->commentNotDefinedTargetKey;
     }
 
+    public function testValidateRelationFieldSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `post`.`not_found_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->hasMany(Comment::class, 'post_id', 'not_found_source_key');
+    }
+
+    public function testValidateRelationFieldTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `comment`.`not_found_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Comment` was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->hasMany(Comment::class, 'not_found_target_key', 'id');
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'comment'];

@@ -355,6 +355,34 @@ class HasOneTest extends TestCase
         $post->postContentNotDefinedTargetKey;
     }
 
+    public function testValidateRelationFieldSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `post`.`not_found_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->hasOne(PostContent::class, 'post_id', 'not_found_source_key');
+    }
+
+    public function testValidateRelationFieldTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `post_content`.`not_found_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\PostContent` was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->hasOne(PostContent::class, 'not_found_target_key', 'id');
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'post_content'];
