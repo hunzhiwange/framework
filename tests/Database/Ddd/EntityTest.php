@@ -1173,7 +1173,7 @@ class EntityTest extends TestCase
                     'delete_at' => 0,
                 ]));
 
-        $post = Post::connectSandbox(['password' => 'not right'], function () {
+        Post::connectSandbox(['password' => 'not right'], function () {
             return Post::find()->where('id', 1)->findOne();
         });
     }
