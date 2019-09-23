@@ -2067,16 +2067,19 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             if ($this->isRelation($k)) {
                 $isRelationProp = true;
                 $value = $this->relationProp($k);
-                if ($this->skipPropNullValue($value, $option)) {
-                    continue;
-                }
-                $value = $this->normalizeRelationValue($value, $k, $relationWhiteAndBlack);
             } else {
                 $value = $this->prop($k);
-                if ($this->skipPropNullValue($value, $option)) {
+            }
+
+            if (null === $value) {
+                if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
                     continue;
                 }
+                $value = $option[self::SHOW_PROP_NULL];
+            } elseif ($isRelationProp) {
+                $value = $this->normalizeRelationValue($value, $k, $relationWhiteAndBlack);
             }
+
             $result[$k] = $value;
             if (!$isRelationProp) {
                 $result = static::prepareEnum($k, $result);
@@ -2089,13 +2092,13 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 整理关联属性数据.
      *
-     * @param mixed  $value
-     * @param string $prop
-     * @param array  $relationWhiteAndBlack
+     * @param \Leevel\Support\IArray $value
+     * @param string                 $prop
+     * @param array                  $relationWhiteAndBlack
      *
      * @return array
      */
-    protected function normalizeRelationValue($value, string $prop, array $relationWhiteAndBlack): array
+    protected function normalizeRelationValue(IArray $value, string $prop, array $relationWhiteAndBlack): array
     {
         if (isset($relationWhiteAndBlack[$prop])) {
             list($white, $black, $whiteAndBlack) = array_pad($relationWhiteAndBlack[$prop], 3, []);
@@ -2106,24 +2109,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $value = $value->toArray($white, $black, $whiteAndBlack);
 
         return $value;
-    }
-
-    /**
-     * 是否跳过属性 null 值.
-     *
-     * @param mixed $value
-     * @param array $option
-     *
-     * @return bool
-     */
-    protected function skipPropNullValue($value, array $option): bool
-    {
-        if (null === $value &&
-            !(isset($option[self::SHOW_PROP_NULL]) && true === $option[self::SHOW_PROP_NULL])) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
