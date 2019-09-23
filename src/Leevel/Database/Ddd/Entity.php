@@ -2081,7 +2081,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             }
 
             $result[$k] = $value;
-            if (!$isRelationProp) {
+            if (!$isRelationProp && null !== $value) {
                 $result = static::prepareEnum($k, $result);
             }
         }
@@ -2121,10 +2121,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected static function prepareEnum(string $prop, array $data): array
     {
-        if (!isset($data[$prop])) {
-            return $data;
-        }
-
         if (false === $enum = static::enum($prop, $data[$prop])) {
             return $data;
         }
