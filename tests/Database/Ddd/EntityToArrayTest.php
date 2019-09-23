@@ -22,6 +22,8 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\Relation\Post;
+use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\TestToArrayBlackEntity;
 use Tests\Database\Ddd\Entity\TestToArrayEntity;
 use Tests\Database\Ddd\Entity\TestToArrayWhiteEntity;
@@ -271,6 +273,55 @@ class EntityToArrayTest extends TestCase
         );
     }
 
+    public function testWithRelation(): void
+    {
+        $entity = $this->makeRelationEntity();
+
+        $data = <<<'eot'
+            {
+                "id": 5,
+                "title": "I am title",
+                "user_id": 7,
+                "summary": "I am summary",
+                "user": {
+                    "id": 7,
+                    "name": "xiaoniuge"
+                }
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->toArray()
+            )
+        );
+    }
+
+    public function testWithRelationWhiteAndBlack(): void
+    {
+        $entity = $this->makeRelationEntity();
+
+        $data = <<<'eot'
+            {
+                "id": 5,
+                "title": "I am title",
+                "user_id": 7,
+                "summary": "I am summary",
+                "user": {
+                    "name": "xiaoniuge"
+                }
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->toArray([], [], ['user' => [['name']]])
+            )
+        );
+    }
+
     protected function makeWhiteEntity(): TestToArrayWhiteEntity
     {
         $entity = new TestToArrayWhiteEntity();
@@ -306,6 +357,21 @@ class EntityToArrayTest extends TestCase
         $entity->address = '四川成都';
         $entity->foo_bar = 'foo';
         $entity->hello = 'hello world';
+
+        return $entity;
+    }
+
+    protected function makeRelationEntity(): Post
+    {
+        $user = new User(['id' => 7]);
+        $user->name = 'xiaoniuge';
+
+        $entity = new Post(['id' => 5]);
+        $this->assertInstanceof(Post::class, $entity);
+        $entity->title = 'I am title';
+        $entity->summary = 'I am summary';
+        $entity->userId = 7;
+        $entity->withRelationProp('user', $user);
 
         return $entity;
     }
