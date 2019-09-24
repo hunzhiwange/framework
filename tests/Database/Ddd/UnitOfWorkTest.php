@@ -47,6 +47,22 @@ use Throwable;
  */
 class UnitOfWorkTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        if (isset($GLOBALS['unitofwork'])) {
+            unset($GLOBALS['unitofwork']);
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        if (isset($GLOBALS['unitofwork'])) {
+            unset($GLOBALS['unitofwork']);
+        }
+    }
+
     /**
      * @api(
      *     title="保存一个实体",
@@ -112,8 +128,152 @@ class UnitOfWorkTest extends TestCase
 
         $work->persist($post);
         $work->persist($post2);
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
 
         $work->flush();
+
+        $data = <<<'eot'
+            [
+                2,
+                1
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+
+        $this->assertSame(2, $post2->id);
+        $this->assertSame(2, $post2['id']);
+        $this->assertSame(2, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('foo bar', $post2->summary);
+    }
+
+    public function testPersistBefore(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]);
+
+        $this->assertNull($post->id);
+
+        $post2 = new Post([
+            'title'   => 'hello world',
+            'user_id' => 2,
+            'summary' => 'foo bar',
+        ]);
+
+        $this->assertNull($post2->id);
+
+        $work->persist($post);
+        $work->persistBefore($post2);
+
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
+        $work->flush();
+
+        $data = <<<'eot'
+            [
+                1,
+                2
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
+
+        $this->assertSame(2, $post->id);
+        $this->assertSame(2, $post['id']);
+        $this->assertSame(2, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+
+        $this->assertSame(1, $post2->id);
+        $this->assertSame(1, $post2['id']);
+        $this->assertSame(1, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('foo bar', $post2->summary);
+    }
+
+    public function testPersistAfter(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]);
+
+        $this->assertNull($post->id);
+
+        $post2 = new Post([
+            'title'   => 'hello world',
+            'user_id' => 2,
+            'summary' => 'foo bar',
+        ]);
+
+        $this->assertNull($post2->id);
+
+        $work->persistAfter($post2);
+        $work->persist($post);
+
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
+        $work->flush();
+
+        $data = <<<'eot'
+            [
+                2,
+                1
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
 
         $this->assertSame(1, $post->id);
         $this->assertSame(1, $post['id']);
@@ -169,7 +329,28 @@ class UnitOfWorkTest extends TestCase
         $this->assertTrue($work->registered($post));
         $this->assertTrue($work->registered($post2));
 
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
         $work->flush();
+
+        $data = <<<'eot'
+            [
+                2,
+                1
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
 
         $this->assertFalse($work->created($post));
         $this->assertFalse($work->created($post2));
@@ -223,7 +404,28 @@ class UnitOfWorkTest extends TestCase
         $this->assertTrue($work->registered($post));
         $this->assertTrue($work->registered($post2));
 
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
         $work->flush();
+
+        $data = <<<'eot'
+            [
+                1,
+                2
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
 
         $this->assertFalse($work->created($post));
         $this->assertFalse($work->created($post2));
@@ -239,6 +441,81 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $post2->id);
         $this->assertSame(1, $post2['id']);
         $this->assertSame(1, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('foo bar', $post2->summary);
+    }
+
+    public function testCreateAfter(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post([
+            'title'   => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+        ]);
+
+        $post2 = new Post([
+            'title'   => 'hello world',
+            'user_id' => 2,
+            'summary' => 'foo bar',
+        ]);
+
+        $this->assertNull($post->id);
+        $this->assertNull($post2->id);
+        $this->assertFalse($work->created($post));
+        $this->assertFalse($work->created($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $work->createAfter($post2);
+        $work->create($post);
+
+        $this->assertTrue($work->created($post));
+        $this->assertTrue($work->created($post2));
+        $this->assertTrue($work->registered($post));
+        $this->assertTrue($work->registered($post2));
+
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
+        $work->flush();
+
+        $data = <<<'eot'
+            [
+                2,
+                1
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
+
+        $this->assertFalse($work->created($post));
+        $this->assertFalse($work->created($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+
+        $this->assertSame(2, $post2->id);
+        $this->assertSame(2, $post2['id']);
+        $this->assertSame(2, $post2->getId());
         $this->assertSame(2, $post2->userId);
         $this->assertSame('foo bar', $post2->summary);
     }
@@ -323,7 +600,260 @@ class UnitOfWorkTest extends TestCase
         $this->assertTrue($work->registered($post));
         $this->assertTrue($work->registered($post2));
 
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
         $work->flush();
+
+        $data = <<<'eot'
+            [
+                2,
+                1
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
+
+        $this->assertFalse($work->updated($post));
+        $this->assertFalse($work->updated($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('new post title', $post->title);
+        $this->assertSame('new post summary', $post->summary);
+
+        $this->assertSame(2, $post2->id);
+        $this->assertSame(2, $post2['id']);
+        $this->assertSame(2, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('new post2 title', $post2->title);
+        $this->assertSame('new post2 summary', $post2->summary);
+    }
+
+    public function testUpdateBefore(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 2,
+                    'summary'   => 'foo bar',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $post2 = Post::select()->findEntity(2);
+
+        $this->assertInstanceof(Entity::class, $post);
+        $this->assertInstanceof(Entity::class, $post2);
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertInstanceof(Post::class, $post2);
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame('hello world', $post->title);
+
+        $this->assertSame(2, $post2->id);
+        $this->assertSame(2, $post2['id']);
+        $this->assertSame(2, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('foo bar', $post2->summary);
+        $this->assertSame('hello world', $post2->title);
+
+        $this->assertFalse($work->updated($post));
+        $this->assertFalse($work->updated($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $post->title = 'new post title';
+        $post->summary = 'new post summary';
+
+        $post2->title = 'new post2 title';
+        $post2->summary = 'new post2 summary';
+
+        $work->update($post2);
+        $work->updateBefore($post);
+
+        $this->assertTrue($work->updated($post));
+        $this->assertTrue($work->updated($post2));
+        $this->assertTrue($work->registered($post));
+        $this->assertTrue($work->registered($post2));
+
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
+        $work->flush();
+
+        $data = <<<'eot'
+            [
+                2,
+                1
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
+
+        $this->assertFalse($work->updated($post));
+        $this->assertFalse($work->updated($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('new post title', $post->title);
+        $this->assertSame('new post summary', $post->summary);
+
+        $this->assertSame(2, $post2->id);
+        $this->assertSame(2, $post2['id']);
+        $this->assertSame(2, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('new post2 title', $post2->title);
+        $this->assertSame('new post2 summary', $post2->summary);
+    }
+
+    public function testUpdateAfter(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 2,
+                    'summary'   => 'foo bar',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+
+        $post2 = Post::select()->findEntity(2);
+
+        $this->assertInstanceof(Entity::class, $post);
+        $this->assertInstanceof(Entity::class, $post2);
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertInstanceof(Post::class, $post2);
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame('hello world', $post->title);
+
+        $this->assertSame(2, $post2->id);
+        $this->assertSame(2, $post2['id']);
+        $this->assertSame(2, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('foo bar', $post2->summary);
+        $this->assertSame('hello world', $post2->title);
+
+        $this->assertFalse($work->updated($post));
+        $this->assertFalse($work->updated($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $post->title = 'new post title';
+        $post->summary = 'new post summary';
+
+        $post2->title = 'new post2 title';
+        $post2->summary = 'new post2 summary';
+
+        $work->updateAfter($post2);
+        $work->update($post);
+
+        $this->assertTrue($work->updated($post));
+        $this->assertTrue($work->updated($post2));
+        $this->assertTrue($work->registered($post));
+        $this->assertTrue($work->registered($post2));
+
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
+        $work->flush();
+
+        $data = <<<'eot'
+            [
+                2,
+                1
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
 
         $this->assertFalse($work->updated($post));
         $this->assertFalse($work->updated($post2));
@@ -413,6 +943,12 @@ class UnitOfWorkTest extends TestCase
 
         $work->delete($post);
         $work->delete($post2);
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
 
         $this->assertTrue($work->deleted($post));
         $this->assertTrue($work->deleted($post2));
@@ -421,13 +957,248 @@ class UnitOfWorkTest extends TestCase
 
         $work->flush();
 
+        $data = <<<'eot'
+            [
+                2,
+                1
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
+
         $this->assertFalse($work->deleted($post));
         $this->assertFalse($work->deleted($post2));
         $this->assertFalse($work->registered($post));
         $this->assertFalse($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
+        $post2After = Post::select()->findEntity(2);
 
+        $this->assertNull($postAfter->id);
+        $this->assertNull($postAfter['id']);
+        $this->assertNull($postAfter->getId());
+        $this->assertNull($postAfter->userId);
+        $this->assertNull($postAfter->title);
+        $this->assertNull($postAfter->summary);
+
+        $this->assertNull($post2After->id);
+        $this->assertNull($post2After['id']);
+        $this->assertNull($post2After->getId());
+        $this->assertNull($post2After->userId);
+        $this->assertNull($post2After->title);
+        $this->assertNull($post2After->summary);
+    }
+
+    public function testDeleteBefore(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 2,
+                    'summary'   => 'foo bar',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+        $post2 = Post::select()->findEntity(2);
+
+        $this->assertInstanceof(Entity::class, $post);
+        $this->assertInstanceof(Entity::class, $post2);
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertInstanceof(Post::class, $post2);
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame('hello world', $post->title);
+
+        $this->assertSame(2, $post2->id);
+        $this->assertSame(2, $post2['id']);
+        $this->assertSame(2, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('foo bar', $post2->summary);
+        $this->assertSame('hello world', $post2->title);
+
+        $this->assertFalse($work->deleted($post));
+        $this->assertFalse($work->deleted($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $work->delete($post);
+        $work->deleteBefore($post2);
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
+        $this->assertTrue($work->deleted($post));
+        $this->assertTrue($work->deleted($post2));
+        $this->assertTrue($work->registered($post));
+        $this->assertTrue($work->registered($post2));
+
+        $work->flush();
+
+        $data = <<<'eot'
+            [
+                1,
+                2
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
+
+        $this->assertFalse($work->deleted($post));
+        $this->assertFalse($work->deleted($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $postAfter = Post::select()->findEntity(1);
+        $post2After = Post::select()->findEntity(2);
+
+        $this->assertNull($postAfter->id);
+        $this->assertNull($postAfter['id']);
+        $this->assertNull($postAfter->getId());
+        $this->assertNull($postAfter->userId);
+        $this->assertNull($postAfter->title);
+        $this->assertNull($postAfter->summary);
+
+        $this->assertNull($post2After->id);
+        $this->assertNull($post2After['id']);
+        $this->assertNull($post2After->getId());
+        $this->assertNull($post2After->userId);
+        $this->assertNull($post2After->title);
+        $this->assertNull($post2After->summary);
+    }
+
+    public function testDeleteAfter(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'post summary',
+                    'delete_at' => 0,
+                ]));
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 2,
+                    'summary'   => 'foo bar',
+                    'delete_at' => 0,
+                ]));
+
+        $post = Post::select()->findEntity(1);
+        $post2 = Post::select()->findEntity(2);
+
+        $this->assertInstanceof(Entity::class, $post);
+        $this->assertInstanceof(Entity::class, $post2);
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertInstanceof(Post::class, $post2);
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->userId);
+        $this->assertSame('post summary', $post->summary);
+        $this->assertSame('hello world', $post->title);
+
+        $this->assertSame(2, $post2->id);
+        $this->assertSame(2, $post2['id']);
+        $this->assertSame(2, $post2->getId());
+        $this->assertSame(2, $post2->userId);
+        $this->assertSame('foo bar', $post2->summary);
+        $this->assertSame('hello world', $post2->title);
+
+        $this->assertFalse($work->deleted($post));
+        $this->assertFalse($work->deleted($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $work->deleteAfter($post);
+        $work->delete($post2);
+        $work->on($post2, function () {
+            $GLOBALS['unitofwork'][] = 1;
+        });
+        $work->on($post, function () {
+            $GLOBALS['unitofwork'][] = 2;
+        });
+
+        $this->assertTrue($work->deleted($post));
+        $this->assertTrue($work->deleted($post2));
+        $this->assertTrue($work->registered($post));
+        $this->assertTrue($work->registered($post2));
+
+        $work->flush();
+
+        $data = <<<'eot'
+            [
+                1,
+                2
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $GLOBALS['unitofwork']
+            )
+        );
+
+        $this->assertFalse($work->deleted($post));
+        $this->assertFalse($work->deleted($post2));
+        $this->assertFalse($work->registered($post));
+        $this->assertFalse($work->registered($post2));
+
+        $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
 
         $this->assertNull($postAfter->id);
