@@ -297,7 +297,7 @@ class Select
      */
     public function onlySoftDeleted(): self
     {
-        $this->initSelect(IEntity::WITH_SOFT_DELETED);
+        $this->initSelect(IEntity::ONLY_SOFT_DELETED);
 
         return $this;
     }
