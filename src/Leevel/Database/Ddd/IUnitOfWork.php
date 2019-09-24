@@ -381,6 +381,7 @@ interface IUnitOfWork
      * 设置根实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
+     * @param null|mixed                   $connect
      */
     public function setRootEntity(IEntity $rootEntity): void;
 

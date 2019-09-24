@@ -722,10 +722,14 @@ class UnitOfWork implements IUnitOfWork
      * 设置根实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
+     * @param null|mixed                   $connect
      */
-    public function setRootEntity(IEntity $rootEntity): void
+    public function setRootEntity(IEntity $rootEntity, $connect = null): void
     {
         $this->rootEntity = $rootEntity;
+        if ($connect) {
+            $this->withConnect($connect);
+        }
     }
 
     /**
