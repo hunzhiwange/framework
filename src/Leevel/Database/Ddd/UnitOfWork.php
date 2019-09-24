@@ -200,6 +200,11 @@ class UnitOfWork implements IUnitOfWork
             const STRUCT = [];
             private static $leevelConnect;
 
+            /**
+             * @codeCoverageIgnore
+             *
+             * @param mixed $value
+             */
             public function setter(string $prop, $value): IEntity
             {
                 $this->{$this->realProp($prop)} = $value;
@@ -207,6 +212,9 @@ class UnitOfWork implements IUnitOfWork
                 return $this;
             }
 
+            /**
+             * @codeCoverageIgnore
+             */
             public function getter(string $prop)
             {
                 return $this->{$this->realProp($prop)};
