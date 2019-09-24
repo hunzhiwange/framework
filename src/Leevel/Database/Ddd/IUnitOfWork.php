@@ -383,7 +383,7 @@ interface IUnitOfWork
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
      * @param null|mixed                   $connect
      */
-    public function setRootEntity(IEntity $rootEntity): void;
+    public function setRootEntity(IEntity $rootEntity, $connect = null): void;
 
     /**
      * 设置连接.
