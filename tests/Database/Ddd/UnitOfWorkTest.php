@@ -992,6 +992,23 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($post2After->userId);
         $this->assertNull($post2After->title);
         $this->assertNull($post2After->summary);
+
+        $postAfter = Post::withSoftDeleted()->findEntity(1);
+        $post2After = Post::withSoftDeleted()->findEntity(2);
+
+        $this->assertSame(1, $postAfter->id);
+        $this->assertSame(1, $postAfter['id']);
+        $this->assertSame(1, $postAfter->getId());
+        $this->assertSame(1, $postAfter->userId);
+        $this->assertSame('post summary', $postAfter->summary);
+        $this->assertSame('hello world', $postAfter->title);
+
+        $this->assertSame(2, $post2After->id);
+        $this->assertSame(2, $post2After['id']);
+        $this->assertSame(2, $post2After->getId());
+        $this->assertSame(2, $post2After->userId);
+        $this->assertSame('foo bar', $post2After->summary);
+        $this->assertSame('hello world', $post2After->title);
     }
 
     public function testDeleteBefore(): void
@@ -1103,6 +1120,23 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($post2After->userId);
         $this->assertNull($post2After->title);
         $this->assertNull($post2After->summary);
+
+        $postAfter = Post::withSoftDeleted()->findEntity(1);
+        $post2After = Post::withSoftDeleted()->findEntity(2);
+
+        $this->assertSame(1, $postAfter->id);
+        $this->assertSame(1, $postAfter['id']);
+        $this->assertSame(1, $postAfter->getId());
+        $this->assertSame(1, $postAfter->userId);
+        $this->assertSame('post summary', $postAfter->summary);
+        $this->assertSame('hello world', $postAfter->title);
+
+        $this->assertSame(2, $post2After->id);
+        $this->assertSame(2, $post2After['id']);
+        $this->assertSame(2, $post2After->getId());
+        $this->assertSame(2, $post2After->userId);
+        $this->assertSame('foo bar', $post2After->summary);
+        $this->assertSame('hello world', $post2After->title);
     }
 
     public function testDeleteAfter(): void
@@ -1214,6 +1248,23 @@ class UnitOfWorkTest extends TestCase
         $this->assertNull($post2After->userId);
         $this->assertNull($post2After->title);
         $this->assertNull($post2After->summary);
+
+        $postAfter = Post::withSoftDeleted()->findEntity(1);
+        $post2After = Post::withSoftDeleted()->findEntity(2);
+
+        $this->assertSame(1, $postAfter->id);
+        $this->assertSame(1, $postAfter['id']);
+        $this->assertSame(1, $postAfter->getId());
+        $this->assertSame(1, $postAfter->userId);
+        $this->assertSame('post summary', $postAfter->summary);
+        $this->assertSame('hello world', $postAfter->title);
+
+        $this->assertSame(2, $post2After->id);
+        $this->assertSame(2, $post2After['id']);
+        $this->assertSame(2, $post2After->getId());
+        $this->assertSame(2, $post2After->userId);
+        $this->assertSame('foo bar', $post2After->summary);
+        $this->assertSame('hello world', $post2After->title);
     }
 
     /**
