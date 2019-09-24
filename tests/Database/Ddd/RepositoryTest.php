@@ -173,6 +173,14 @@ class RepositoryTest extends TestCase
         $select = $repository->condition($andSpec);
         $result = $select->findAll();
 
+        $sql = <<<'eot'
+            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $select->getLastSql(),
+        );
+
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(4, $result);
@@ -196,9 +204,7 @@ class RepositoryTest extends TestCase
         $request = ['foo' => 'bar', 'hello' => 'world'];
 
         $repository = new Repository(new Post());
-
         $spec = new Demo1Specification($request);
-
         $andSpec = $spec->and(new Demo2Specification($request));
 
         $this->assertInstanceof(ISpecification::class, $andSpec);
@@ -206,6 +212,14 @@ class RepositoryTest extends TestCase
 
         $select = $repository->condition($andSpec);
         $result = $select->findAll();
+
+        $sql = <<<'eot'
+            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $select->getLastSql(),
+        );
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
@@ -249,6 +263,14 @@ class RepositoryTest extends TestCase
         $select = $repository->condition($specExpr);
         $result = $select->findAll();
 
+        $sql = <<<'eot'
+            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $select->getLastSql(),
+        );
+
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(4, $result);
@@ -286,10 +308,17 @@ class RepositoryTest extends TestCase
         }));
 
         $this->assertInstanceof(ISpecification::class, $andSpec);
-
         $this->assertInstanceof(Specification::class, $andSpec);
 
         $result = $repository->findAll($andSpec);
+
+        $sql = <<<'eot'
+            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
 
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(4, $result);
@@ -322,6 +351,14 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Specification::class, $andSpec);
 
         $result = $repository->findAll($andSpec);
+
+        $sql = <<<'eot'
+            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
 
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(4, $result);
@@ -363,6 +400,14 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findAll($specExpr);
 
+        $sql = <<<'eot'
+            SQL: [96] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
+
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(4, $result);
     }
@@ -403,6 +448,14 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($andSpec);
 
+        $sql = <<<'eot'
+            SQL: [117] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
+
         $this->assertSame(4, $result);
     }
 
@@ -433,6 +486,14 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Specification::class, $andSpec);
 
         $result = $repository->findCount($andSpec);
+
+        $sql = <<<'eot'
+            SQL: [117] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
 
         $this->assertSame(4, $result);
     }
@@ -473,6 +534,14 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findCount($specExpr);
 
+        $sql = <<<'eot'
+            SQL: [117] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 AND `post`.`id` < 8 LIMIT 1 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
+
         $this->assertSame(4, $result);
     }
 
@@ -507,6 +576,14 @@ class RepositoryTest extends TestCase
         $this->assertInstanceof(Specification::class, $notSpec);
 
         $result = $repository->findAll($notSpec);
+
+        $sql = <<<'eot'
+            SQL: [56] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
 
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(10, $result);
@@ -544,6 +621,14 @@ class RepositoryTest extends TestCase
 
         $result = $repository->findAll($notSpec);
 
+        $sql = <<<'eot'
+            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 3 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
+
         $this->assertInstanceof(Collection::class, $result);
         $this->assertCount(7, $result);
     }
@@ -568,7 +653,7 @@ class RepositoryTest extends TestCase
         $repository = new Repository(new Post());
 
         $spec = new Specification(function (IEntity $entity) use ($request) {
-            return 'bar' === $request['foo'];
+            return 'bar_no' === $request['foo'];
         }, function (Select $select, IEntity $entity) {
             $select->where('id', '>', 3);
         });
@@ -584,6 +669,14 @@ class RepositoryTest extends TestCase
 
         $select = $repository->condition($orSpec);
         $result = $select->findAll();
+
+        $sql = <<<'eot'
+            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` < 8 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $select->getLastSql(),
+        );
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
@@ -626,6 +719,14 @@ class RepositoryTest extends TestCase
 
         $select = $repository->condition($orSpec);
         $result = $select->findAll();
+
+        $sql = <<<'eot'
+            SQL: [76] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 4 | Params:  0
+            eot;
+        $this->assertSame(
+            $sql,
+            $select->getLastSql(),
+        );
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
