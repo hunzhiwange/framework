@@ -301,9 +301,9 @@ class MysqlPool implements IDatabase
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @return string
+     * @return null|string
      */
-    public function getLastSql(): string
+    public function getLastSql(): ?string
     {
         return $this->proxy()->getLastSql();
     }

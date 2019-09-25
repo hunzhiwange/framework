@@ -257,9 +257,9 @@ interface IDatabase
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @return string
+     * @return null|string
      */
-    public function getLastSql(): string;
+    public function getLastSql(): ?string;
 
     /**
      * 返回影响记录.
