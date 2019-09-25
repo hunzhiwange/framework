@@ -735,8 +735,8 @@ class UnitOfWork implements IUnitOfWork
     public function setRootEntity(IEntity $rootEntity, $connect = null): void
     {
         $this->rootEntity = $rootEntity;
-        if ($connect) {
-            $this->withConnect($connect);
+        if (null !== $connect) {
+            $this->setConnect($connect);
         }
     }
 
