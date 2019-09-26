@@ -2058,7 +2058,14 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame(1, $connect->table('post')->findCount());
     }
 
-    public function testPersistStageRemovedEntityBefore(): void
+    /**
+     * @api(
+     *     title="重新保存已删除的实体实体",
+     *     description="",
+     *     note="这样被删除的实体并不会被删除。",
+     * )
+     */
+    public function testPersistStageRemovedEntity(): void
     {
         $work = UnitOfWork::make();
 
@@ -2082,20 +2089,15 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('post summary', $post->getSummary());
 
         $work->delete($post);
+
+        $work->persist($post);
+
         $work->flush();
 
         $this->assertSame(1, $connect->table('post')->findCount());
-        $this->assertSame(0, $connect->table('post')->where('delete_at', 0)->findCount());
     }
 
-    /**
-     * @api(
-     *     title="重新保存已删除的实体实体",
-     *     description="",
-     *     note="这样被删除的实体并不会被删除。",
-     * )
-     */
-    public function testPersistStageRemovedEntity(): void
+    public function testPersistStageForceRemovedEntity(): void
     {
         $work = UnitOfWork::make();
 
@@ -2307,7 +2309,7 @@ class UnitOfWorkTest extends TestCase
 
         $connect = $this->createDatabaseConnect();
 
-        $post = new Post(['title' => 'foo']);
+        $post = new Post(['title' => 'foo', 'id' => 5]);
 
         $work->create($post);
         $work->delete($post);
@@ -2315,6 +2317,20 @@ class UnitOfWorkTest extends TestCase
         $work->flush();
 
         $this->assertSame(0, $connect->table('post')->findCount());
+    }
+
+    public function testDeleteCreatedWithoutPrimaryKeyData(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no identity for delete.'
+        );
+
+        $work = UnitOfWork::make();
+        $post = new Post(['title' => 'foo']);
+
+        $work->create($post);
+        $work->delete($post);
     }
 
     public function testDeleteUpdated(): void
@@ -3009,9 +3025,7 @@ class UnitOfWorkTest extends TestCase
         $work->flush($post);
 
         $newPost = Post::select()->findEntity(1);
-
-        $this->assertNull($newPost->id);
-
+        $this->assertSame(1, $newPost->id);
         $work->clear();
     }
 
