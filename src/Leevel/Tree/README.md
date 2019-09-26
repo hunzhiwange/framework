@@ -1,5 +1,3 @@
-# Stack 组件
-
 Tree Component
 =================
 
