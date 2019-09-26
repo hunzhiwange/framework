@@ -1020,24 +1020,9 @@ class UnitOfWork implements IUnitOfWork
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
-
-        if (isset($this->entityUpdates[$id])) {
-            $e = sprintf('Updated entity `%s` cannot be added for create.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityDeletes[$id])) {
-            $e = sprintf('Deleted entity `%s` cannot be added for create.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityReplaces[$id])) {
-            $e = sprintf('Replaced entity `%s` cannot be added for create.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
+        $this->validateUpdateAlreadyExists($entity, 'create');
+        $this->validateDeleteAlreadyExists($entity, 'create');
+        $this->validateReplaceAlreadyExists($entity, 'create');
 
         if (isset($this->entityCreates[$id])) {
             $e = sprintf('Entity `%s` cannot be added for twice.', get_class($entity));
@@ -1064,30 +1049,10 @@ class UnitOfWork implements IUnitOfWork
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
-
-        if (!$entity->id()) {
-            $e = sprintf('Entity `%s` has no identity for update.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityDeletes[$id])) {
-            $e = sprintf('Deleted entity `%s` cannot be added for update.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityCreates[$id])) {
-            $e = sprintf('Created entity `%s` cannot be added for update.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityReplaces[$id])) {
-            $e = sprintf('Replaced entity `%s` cannot be added for update.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
+        $this->validatePrimaryData($entity, 'update');
+        $this->validateDeleteAlreadyExists($entity, 'update');
+        $this->validateCreateAlreadyExists($entity, 'update');
+        $this->validateReplaceAlreadyExists($entity, 'update');
 
         if (isset($this->entityUpdates[$id])) {
             $e = sprintf('Entity `%s` cannot be updated for twice.', get_class($entity));
@@ -1114,24 +1079,9 @@ class UnitOfWork implements IUnitOfWork
     {
         $this->validateClosed();
         $id = spl_object_id($entity);
-
-        if (isset($this->entityDeletes[$id])) {
-            $e = sprintf('Deleted entity `%s` cannot be added for replace.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityCreates[$id])) {
-            $e = sprintf('Created entity `%s` cannot be added for replace.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityUpdates[$id])) {
-            $e = sprintf('Updated entity `%s` cannot be added for replace.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
+        $this->validateDeleteAlreadyExists($entity, 'replace');
+        $this->validateCreateAlreadyExists($entity, 'replace');
+        $this->validateUpdateAlreadyExists($entity, 'replace');
 
         if (isset($this->entityReplaces[$id])) {
             $e = sprintf('Entity `%s` cannot be replaced for twice.', get_class($entity));
@@ -1201,11 +1151,7 @@ class UnitOfWork implements IUnitOfWork
             }
         }
 
-        if (!$entity->id()) {
-            $e = sprintf('Entity `%s` has no identity for delete.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
+        $this->validatePrimaryData($entity, 'delete');
 
         if (isset($this->entityDeletes[$id])) {
             $e = sprintf('Entity `%s` cannot be deleted for twice.', get_class($entity));
@@ -1218,6 +1164,91 @@ class UnitOfWork implements IUnitOfWork
         $this->entityStates[$id] = self::STATE_REMOVED;
 
         return $this;
+    }
+
+    /**
+     * 校验是否已经为新建实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateCreateAlreadyExists(IEntity $entity, string $type): void
+    {
+        if (isset($this->entityCreates[spl_object_id($entity)])) {
+            $e = sprintf('Created entity `%s` cannot be added for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 校验是否已经为更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateUpdateAlreadyExists(IEntity $entity, string $type): void
+    {
+        if (isset($this->entityUpdates[spl_object_id($entity)])) {
+            $e = sprintf('Updated entity `%s` cannot be added for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 校验是否已经为不存在则新增否则更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateReplaceAlreadyExists(IEntity $entity, string $type): void
+    {
+        if (isset($this->entityReplaces[spl_object_id($entity)])) {
+            $e = sprintf('Replaced entity `%s` cannot be added for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 校验是否已经为删除实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalieletentException
+     */
+    protected function validateDeleteAlreadyExists(IEntity $entity, string $type): void
+    {
+        if (isset($this->entityDeletes[spl_object_id($entity)])) {
+            $e = sprintf('Deleted entity `%s` cannot be added for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 校验实体主键值.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validatePrimaryData(IEntity $entity, string $type): void
+    {
+        if (!$entity->id()) {
+            $e = sprintf('Entity `%s` has no identity for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
     }
 
     /**
