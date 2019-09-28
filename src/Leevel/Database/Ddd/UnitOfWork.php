@@ -1126,7 +1126,7 @@ class UnitOfWork implements IUnitOfWork
         }
 
         if (isset($this->entityReplaces[$id])) {
-            unset($this->entityReplaces[$id]);
+            unset($this->entityReplaces[$id], $this->entityStates[$id]);
             foreach (['replacesFlagBefore', 'replacesFlag', 'replacesFlagAfter'] as $flag) {
                 if (isset($this->{$flag}[$id])) {
                     unset($this->{$flag}[$id]);
@@ -1139,7 +1139,7 @@ class UnitOfWork implements IUnitOfWork
         }
 
         if (isset($this->entityUpdates[$id])) {
-            unset($this->entityUpdates[$id]);
+            unset($this->entityUpdates[$id], $this->entityStates[$id]);
             foreach (['updatesFlagBefore', 'updatesFlag', 'updatesFlagAfter'] as $flag) {
                 if (isset($this->{$flag}[$id])) {
                     unset($this->{$flag}[$id]);
