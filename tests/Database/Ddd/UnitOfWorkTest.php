@@ -2120,7 +2120,7 @@ class UnitOfWorkTest extends TestCase
         $this->assertSame('hello world', $post->getTitle());
         $this->assertSame('post summary', $post->getSummary());
 
-        $work->delete($post);
+        $work->forceDelete($post);
 
         $work->persist($post);
 
@@ -2743,6 +2743,126 @@ class UnitOfWorkTest extends TestCase
             $sql,
             $post->select()->getLastSql(),
         );
+    }
+
+    public function testRemoveStageManagedReplaceWillDelete(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post();
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $work->persist($post, 'replace');
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+
+        $work->remove($post);
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+    }
+
+    public function testRemoveBeforeStageManagedReplaceWillDelete(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post();
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $work->persist($post, 'replace');
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+
+        $work->removeBefore($post);
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+    }
+
+    public function testRemoveAfterStageManagedReplaceWillDelete(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post();
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $work->persist($post, 'replace');
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+
+        $work->removeAfter($post);
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+    }
+
+    public function testForceRemoveStageManagedReplaceWillDelete(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post();
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $work->persist($post, 'replace');
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+
+        $work->forceRemove($post);
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+    }
+
+    public function testForceRemoveBeforeStageManagedReplaceWillDelete(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post();
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $work->persist($post, 'replace');
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+
+        $work->forceRemoveBefore($post);
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+    }
+
+    public function testForceRemoveAfterStageManagedReplaceWillDelete(): void
+    {
+        $work = UnitOfWork::make();
+
+        $this->assertInstanceof(UnitOfWork::class, $work);
+        $this->assertInstanceof(IUnitOfWork::class, $work);
+
+        $post = new Post();
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
+
+        $work->persist($post, 'replace');
+
+        $this->assertSame(IUnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+
+        $work->forceRemoveAfter($post);
+
+        $this->assertSame(IUnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     public function testPersistAsSaveUpdate(): void
