@@ -911,13 +911,20 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->validate($prop);
         $defined = static::STRUCT[$prop];
 
+        $relationScope = null;
+        if (isset($defined[self::RELATION_SCOPE])) {
+            $call = [$this, 'relationScope'.ucfirst($defined[self::RELATION_SCOPE])];
+            $relationScope = Closure::fromCallable($call);
+        }
+
         if (isset($defined[self::BELONGS_TO])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             $relation = $this->belongsTo(
                $defined[self::BELONGS_TO],
                $defined[self::TARGET_KEY],
-               $defined[self::SOURCE_KEY]
+               $defined[self::SOURCE_KEY],
+               $relationScope,
            );
         } elseif (isset($defined[self::HAS_MANY])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
@@ -925,7 +932,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $relation = $this->hasMany(
                $defined[self::HAS_MANY],
                $defined[self::TARGET_KEY],
-               $defined[self::SOURCE_KEY]
+               $defined[self::SOURCE_KEY],
+               $relationScope,
            );
         } elseif (isset($defined[self::HAS_ONE])) {
             $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
@@ -933,7 +941,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $relation = $this->hasOne(
                $defined[self::HAS_ONE],
                $defined[self::TARGET_KEY],
-               $defined[self::SOURCE_KEY]
+               $defined[self::SOURCE_KEY],
+               $relationScope,
            );
         } elseif (isset($defined[self::MANY_MANY])) {
             $this->validateRelationDefined($defined, [
@@ -941,18 +950,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
                 self::MIDDLE_TARGET_KEY, self::MIDDLE_SOURCE_KEY,
             ]);
 
-            $relation = $this->ManyMany(
+            $relation = $this->manyMany(
                $defined[self::MANY_MANY],
                $defined[self::MIDDLE_ENTITY],
                $defined[self::TARGET_KEY],
                $defined[self::SOURCE_KEY],
                $defined[self::MIDDLE_TARGET_KEY],
-               $defined[self::MIDDLE_SOURCE_KEY]
+               $defined[self::MIDDLE_SOURCE_KEY],
+               $relationScope,
            );
-        }
-
-        if (isset($defined[self::RELATION_SCOPE])) {
-            call_user_func([$this, 'relationScope'.ucfirst($defined[self::RELATION_SCOPE])], $relation);
         }
 
         return $relation;

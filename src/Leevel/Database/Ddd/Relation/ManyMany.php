@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd\Relation;
 
+use Closure;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
@@ -80,14 +81,15 @@ class ManyMany extends Relation
      * @param string                       $sourceKey
      * @param string                       $middleTargetKey
      * @param string                       $middleSourceKey
+     * @param null|\Closure                $scope
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null)
     {
         $this->middleEntity = $middleEntity;
         $this->middleTargetKey = $middleTargetKey;
         $this->middleSourceKey = $middleSourceKey;
 
-        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
+        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey, $scope);
     }
 
     /**

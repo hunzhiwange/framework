@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
 
 /**
@@ -35,19 +34,6 @@ use Leevel\Database\Ddd\Select;
  */
 class BelongsTo extends Relation
 {
-    /**
-     * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $targetEntity
-     * @param \Leevel\Database\Ddd\IEntity $sourceEntity
-     * @param string                       $targetKey
-     * @param string                       $sourceKey
-     */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey)
-    {
-        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
-    }
-
     /**
      * 关联基础查询条件.
      */

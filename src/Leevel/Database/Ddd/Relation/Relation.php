@@ -236,13 +236,18 @@ abstract class Relation
      * @param \Leevel\Database\Ddd\IEntity $sourceEntity
      * @param string                       $targetKey
      * @param string                       $sourceKey
+     * @param null|\Closure                $scope
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey, ?Closure $scope = null)
     {
         $this->targetEntity = $targetEntity;
         $this->sourceEntity = $sourceEntity;
         $this->targetKey = $targetKey;
         $this->sourceKey = $sourceKey;
+
+        if ($scope) {
+            call_user_func($scope, $this);
+        }
 
         $this->getSelectFromEntity();
         $this->addRelationCondition();
