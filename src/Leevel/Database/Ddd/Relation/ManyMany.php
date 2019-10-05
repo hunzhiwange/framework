@@ -95,9 +95,9 @@ class ManyMany extends Relation
      *
      * - 获取包含软删除的数据.
      *
-     * @param int $softDeletedType
+     * @param bool $middleWithSoftDeleted
      *
-     * @return \Leevel\Database\Ddd\Select
+     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleWithSoftDeleted(bool $middleWithSoftDeleted = true): self
     {
@@ -111,9 +111,9 @@ class ManyMany extends Relation
      *
      * - 获取只包含软删除的数据.
      *
-     * @param int $softDeletedType
+     * @param bool $middleOnlySoftDeleted
      *
-     * @return \Leevel\Database\Ddd\Select
+     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleOnlySoftDeleted(bool $middleOnlySoftDeleted = true): self
     {
