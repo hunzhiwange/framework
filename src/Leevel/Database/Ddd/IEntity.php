@@ -669,49 +669,53 @@ interface IEntity
     /**
      * 一对一关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\HasOne
      */
-    public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey): HasOne;
+    public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasOne;
 
     /**
      * 定义从属关系.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\BelongsTo
      */
-    public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey): BelongsTo;
+    public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): BelongsTo;
 
     /**
      * 一对多关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\HasMany
      */
-    public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey): HasMany;
+    public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasMany;
 
     /**
      * 多对多关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $middleEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
-     * @param string $middleTargetKey
-     * @param string $middleSourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $middleEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param string        $middleTargetKey
+     * @param string        $middleSourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
-    public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey): ManyMany;
+    public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null): ManyMany;
 
     /**
      * 返回模型实体事件处理器.

@@ -1025,70 +1025,74 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 一对一关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\HasOne
      */
-    public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey): HasOne
+    public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasOne
     {
         $entity = new $relatedEntityClass();
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
-        return new HasOne($entity, $this, $targetKey, $sourceKey);
+        return new HasOne($entity, $this, $targetKey, $sourceKey, $scope);
     }
 
     /**
      * 定义从属关系.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\BelongsTo
      */
-    public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey): BelongsTo
+    public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): BelongsTo
     {
         $entity = new $relatedEntityClass();
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
-        return new BelongsTo($entity, $this, $targetKey, $sourceKey);
+        return new BelongsTo($entity, $this, $targetKey, $sourceKey, $scope);
     }
 
     /**
      * 一对多关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\HasMany
      */
-    public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey): HasMany
+    public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasMany
     {
         $entity = new $relatedEntityClass();
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
-        return new HasMany($entity, $this, $targetKey, $sourceKey);
+        return new HasMany($entity, $this, $targetKey, $sourceKey, $scope);
     }
 
     /**
      * 多对多关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $middleEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
-     * @param string $middleTargetKey
-     * @param string $middleSourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $middleEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param string        $middleTargetKey
+     * @param string        $middleSourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
-    public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey): ManyMany
+    public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null): ManyMany
     {
         $entity = new $relatedEntityClass();
         $middleEntity = new $middleEntityClass();
@@ -1100,7 +1104,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         return new ManyMany(
             $entity, $this, $middleEntity, $targetKey,
-            $sourceKey, $middleTargetKey, $middleSourceKey
+            $sourceKey, $middleTargetKey, $middleSourceKey,
+            $scope,
         );
     }
 
