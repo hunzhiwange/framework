@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Relation\ManyMany;
 
 /**
  * user.
@@ -51,6 +52,32 @@ class User extends Entity
             self::TARGET_KEY        => 'id',
             self::MIDDLE_SOURCE_KEY => 'user_id',
             self::MIDDLE_TARGET_KEY => 'role_id',
+        ],
+        'role_soft_deleted'      => [
+            self::MANY_MANY         => RoleSoftDeleted::class,
+            self::MIDDLE_ENTITY     => UserRoleSoftDeleted::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+        ],
+        'role_middle_with_soft_deleted'      => [
+            self::MANY_MANY         => RoleSoftDeleted::class,
+            self::MIDDLE_ENTITY     => UserRoleSoftDeleted::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+            self::RELATION_SCOPE    => 'withSoftDeleted',
+        ],
+        'role_middle_only_soft_deleted'      => [
+            self::MANY_MANY         => RoleSoftDeleted::class,
+            self::MIDDLE_ENTITY     => UserRoleSoftDeleted::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+            self::RELATION_SCOPE    => 'onlySoftDeleted',
         ],
         'role_not_defined_middle_entity'      => [
             self::MANY_MANY         => Role::class,
@@ -99,6 +126,12 @@ class User extends Entity
 
     private $role;
 
+    private $roleMiddleWithSoftDeleted;
+
+    private $roleMiddleOnlySoftDeleted;
+
+    private $roleSoftDeleted;
+
     private $roleNotDefinedMiddleEntity;
 
     private $roleNotDefinedSourceKey;
@@ -129,5 +162,15 @@ class User extends Entity
     public static function connect()
     {
         return static::$leevelConnect;
+    }
+
+    protected function relationScopeWithSoftDeleted(ManyMany $relation): void
+    {
+        $relation->middleWithSoftDeleted();
+    }
+
+    protected function relationScopeOnlySoftDeleted(ManyMany $relation): void
+    {
+        $relation->middleOnlySoftDeleted();
     }
 }
