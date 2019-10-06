@@ -244,12 +244,8 @@ abstract class Relation
         $this->sourceEntity = $sourceEntity;
         $this->targetKey = $targetKey;
         $this->sourceKey = $sourceKey;
-
-        if ($scope) {
-            call_user_func($scope, $this);
-        }
-
         $this->getSelectFromEntity();
+        $this->scope($scope);
         $this->addRelationCondition();
     }
 
@@ -410,5 +406,19 @@ abstract class Relation
     protected function getSelectFromEntity(): void
     {
         $this->select = $this->targetEntity->select();
+    }
+
+    /**
+     * 关联查询作用域.
+     *
+     * @param null|\Closure $scope
+     */
+    protected function scope(?Closure $scope = null): void
+    {
+        if (!$scope) {
+            return;
+        }
+
+        call_user_func($scope, $this);
     }
 }
