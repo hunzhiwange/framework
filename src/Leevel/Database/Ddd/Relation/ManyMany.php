@@ -321,7 +321,7 @@ class ManyMany extends Relation
     {
         $data = [];
         foreach ($entitys as $sourceEntity) {
-            if (null !== $value = $sourceEntity->prop($this->sourceKey)) {
+            if ($value = $sourceEntity->prop($this->sourceKey)) {
                 $data[] = $value;
             }
         }

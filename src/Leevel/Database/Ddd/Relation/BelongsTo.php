@@ -125,7 +125,7 @@ class BelongsTo extends Relation
     {
         $data = [];
         foreach ($entitys as $value) {
-            if (null !== ($tmp = $value->prop($this->sourceKey))) {
+            if ($tmp = $value->prop($this->sourceKey)) {
                 $data[] = $tmp;
             }
         }
