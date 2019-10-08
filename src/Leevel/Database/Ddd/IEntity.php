@@ -622,6 +622,8 @@ interface IEntity
      *
      * @param string $prop
      *
+     * @throws \BadMethodCallException
+     *
      * @return \Leevel\Database\Ddd\Relation\Relation
      */
     public function loadRelation(string $prop): Relation;

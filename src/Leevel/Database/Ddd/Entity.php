@@ -903,6 +903,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $prop
      *
+     * @throws \BadMethodCallException
+     *
      * @return \Leevel\Database\Ddd\Relation\Relation
      */
     public function loadRelation(string $prop): Relation
@@ -914,6 +916,15 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $relationScope = null;
         if (isset($defined[self::RELATION_SCOPE])) {
             $call = [$this, 'relationScope'.ucfirst($defined[self::RELATION_SCOPE])];
+            // 如果关联作用域为 private 会触发 __call 魔术方法中的异常
+            if (!method_exists($this, $call[1])) {
+                $e = sprintf(
+                    'Relation scope `%s` of entity `%s` is not exits.',
+                    $call[1], static::class,
+                );
+
+                throw new BadMethodCallException($e);
+            }
             $relationScope = Closure::fromCallable($call);
         }
 
