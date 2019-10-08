@@ -79,6 +79,24 @@ class User extends Entity
             self::MIDDLE_TARGET_KEY => 'role_id',
             self::RELATION_SCOPE    => 'onlySoftDeleted',
         ],
+        'role_relation_scope_not_found'      => [
+            self::MANY_MANY         => RoleSoftDeleted::class,
+            self::MIDDLE_ENTITY     => UserRoleSoftDeleted::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+            self::RELATION_SCOPE    => 'notFound',
+        ],
+        'role_relation_scope_found_but_private'      => [
+            self::MANY_MANY         => RoleSoftDeleted::class,
+            self::MIDDLE_ENTITY     => UserRoleSoftDeleted::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'id',
+            self::MIDDLE_SOURCE_KEY => 'user_id',
+            self::MIDDLE_TARGET_KEY => 'role_id',
+            self::RELATION_SCOPE    => 'foundButPrivate',
+        ],
         'role_not_defined_middle_entity'      => [
             self::MANY_MANY         => Role::class,
             self::SOURCE_KEY        => 'id',
@@ -132,6 +150,10 @@ class User extends Entity
 
     private $roleSoftDeleted;
 
+    private $roleRelationScopeNotFound;
+
+    private $roleRelationScopeFoundButPrivate;
+
     private $roleNotDefinedMiddleEntity;
 
     private $roleNotDefinedSourceKey;
@@ -172,5 +194,9 @@ class User extends Entity
     protected function relationScopeOnlySoftDeleted(ManyMany $relation): void
     {
         $relation->middleOnlySoftDeleted();
+    }
+
+    private function relationScopeFoundButPrivate(ManyMany $relation): void
+    {
     }
 }

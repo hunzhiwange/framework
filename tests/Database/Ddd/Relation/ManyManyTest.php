@@ -1168,6 +1168,34 @@ class ManyManyTest extends TestCase
         $this->assertSame(3, $middle->roleId);
     }
 
+    public function testRelationScopeIsNotFound(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage(
+            'Relation scope `relationScopeNotFound` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\User` is not exits.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $user->roleRelationScopeNotFound;
+    }
+
+    public function testRelationScopeFoundButIsPrivate(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage(
+            'Method `relationScopeFoundButPrivate` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\User::select|make()->relationScopeFoundButPrivate(...)`.'
+        );
+
+        $user = User::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+
+        $user->roleRelationScopeFoundButPrivate;
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['user', 'user_role', 'role', 'user_role_soft_deleted', 'role_soft_deleted'];
