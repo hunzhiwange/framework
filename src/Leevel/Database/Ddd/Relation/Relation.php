@@ -352,6 +352,16 @@ abstract class Relation
     }
 
     /**
+     * 取回源模型实体对应数据.
+     *
+     * @return mixed
+     */
+    public function getSourceValue()
+    {
+        return $this->sourceEntity->prop($this->sourceKey);
+    }
+
+    /**
      * 关联基础查询条件.
      */
     abstract public function addRelationCondition(): void;

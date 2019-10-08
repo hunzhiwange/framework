@@ -130,7 +130,7 @@ class ManyMany extends Relation
     public function addRelationCondition(): void
     {
         if (static::$relationCondition) {
-            if (null === $sourceValue = $this->getSourceValue()) {
+            if (!$sourceValue = $this->getSourceValue()) {
                 $this->emptySourceData = true;
             } else {
                 $this->selectRelationData([$sourceValue]);
@@ -176,16 +176,6 @@ class ManyMany extends Relation
         }
 
         return $entitys;
-    }
-
-    /**
-     * 取回源模型实体对应数据.
-     *
-     * @return mixed
-     */
-    public function getSourceValue()
-    {
-        return $this->sourceEntity->prop($this->sourceKey);
     }
 
     /**
@@ -344,7 +334,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 模型实体隐射数据.
+     * 模型实体映射数据.
      *
      * @param \Leevel\Collection\Collection $result
      *
