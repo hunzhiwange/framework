@@ -379,6 +379,18 @@ class ManyManyTest extends TestCase
 
         $this->assertInstanceof(User::class, $user);
         $this->assertNull($user->id);
+        $role = $user->role;
+
+        $this->assertInstanceof(Collection::class, $role);
+        $this->assertCount(0, $role);
+    }
+
+    public function testRelationWasNotFound(): void
+    {
+        $user = User::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
 
         $connect = $this->createDatabaseConnect();
 
@@ -429,7 +441,7 @@ class ManyManyTest extends TestCase
         $this->assertCount(0, $role);
     }
 
-    public function testEagerSourceDataIsEmtpy(): void
+    public function testEagerRelationWasNotFound(): void
     {
         $user = User::select()->where('id', 1)->findOne();
 
