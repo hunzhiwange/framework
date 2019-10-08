@@ -420,13 +420,11 @@ abstract class Relation
      */
     protected function getEntityKey(array $entitys, ?string $key = null): array
     {
-        return array_unique(
-            array_values(
-                array_map(function ($entity) use ($key) {
-                    return $key ? $entity->prop($key) : $entity->singleId();
-                }, $entitys)
-            )
-        );
+        $entitys = array_map(function ($entity) use ($key) {
+            return $key ? $entity->prop($key) : $entity->singleId();
+        }, $entitys);
+
+        return array_unique(array_values($entitys));
     }
 
     /**

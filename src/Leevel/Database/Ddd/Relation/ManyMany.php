@@ -264,7 +264,6 @@ class ManyMany extends Relation
     protected function selectRelationData(array $sourceValue): void
     {
         $this->emptySourceData = false;
-
         $middleCondition = [
             $this->middleTargetKey => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
         ];
