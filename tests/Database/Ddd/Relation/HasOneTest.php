@@ -176,7 +176,7 @@ class HasOneTest extends TestCase
         $this->assertInstanceof(Select::class, $postContentRelation->getSelect());
     }
 
-    public function testSourceDataIsEmtpy(): void
+    public function testRelationWasNotFound(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -234,7 +234,7 @@ class HasOneTest extends TestCase
         $this->assertNull($postContent->getContent());
     }
 
-    public function testEagerSourceDataIsEmtpy(): void
+    public function testEagerRelationWasNotFound(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
 
@@ -277,6 +277,25 @@ class HasOneTest extends TestCase
             $this->assertNull($postContent->postId);
             $this->assertNull($postContent->content);
         }
+    }
+
+    public function testSourceDataIsEmtpy(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+        $postContent = $post->postContent;
+
+        $this->assertInstanceof(PostContent::class, $postContent);
+        $this->assertNull($postContent->post_id);
+        $this->assertNull($postContent->postId);
+        $this->assertNull($postContent['post_id']);
+        $this->assertNull($postContent['postId']);
+        $this->assertNull($postContent->getPostId());
+        $this->assertNull($postContent->content);
+        $this->assertNull($postContent['content']);
+        $this->assertNull($postContent->getContent());
     }
 
     public function testEagerWithCondition(): void
