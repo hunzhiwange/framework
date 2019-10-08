@@ -421,6 +421,14 @@ class HasOneTest extends TestCase
         $post->hasOne(PostContent::class, 'not_found_target_key', 'id');
     }
 
+    public function testEagerWithEmptySourceData(): void
+    {
+        $posts = Post::eager(['postContent'])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(0, $posts);
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'post_content'];

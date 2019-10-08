@@ -344,7 +344,7 @@ class HasManyTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         $this->assertCount(2, $posts);
 
-        foreach ($posts as $k => $value) {
+        foreach ($posts as $value) {
             $comments = $value->comment;
 
             $this->assertInstanceof(Collection::class, $comments);
@@ -417,6 +417,14 @@ class HasManyTest extends TestCase
             $this->assertInstanceof(Collection::class, $comments);
             $this->assertCount(0, $comments);
         }
+    }
+
+    public function testEagerWithEmptySourceData(): void
+    {
+        $posts = Post::eager(['comment'])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(0, $posts);
     }
 
     public function testValidateRelationKeyNotDefinedSourceKey(): void
