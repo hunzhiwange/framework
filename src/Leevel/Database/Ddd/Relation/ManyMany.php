@@ -129,13 +129,9 @@ class ManyMany extends Relation
      */
     public function addRelationCondition(): void
     {
-        if (static::$relationCondition) {
-            if (!$sourceValue = $this->getSourceValue()) {
-                $this->emptySourceData = true;
-            } else {
-                $this->selectRelationData([$sourceValue]);
-            }
-        }
+        $this->prepareRelationCondition(function ($sourceValue): void {
+            $this->selectRelationData([$sourceValue]);
+        });
     }
 
     /**

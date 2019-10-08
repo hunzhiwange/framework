@@ -39,14 +39,9 @@ class HasMany extends Relation
      */
     public function addRelationCondition(): void
     {
-        if (static::$relationCondition) {
-            if (!$sourceValue = $this->getSourceValue()) {
-                $this->emptySourceData = true;
-            } else {
-                $this->emptySourceData = false;
-                $this->select->where($this->targetKey, $sourceValue);
-            }
-        }
+        $this->prepareRelationCondition(function ($sourceValue): void {
+            $this->select->where($this->targetKey, $sourceValue);
+        });
     }
 
     /**

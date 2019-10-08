@@ -392,6 +392,25 @@ abstract class Relation
     abstract public function sourceQuery();
 
     /**
+     * 准备关联查询条件.
+     *
+     * @param \Closure $call
+     */
+    protected function prepareRelationCondition(Closure $call): void
+    {
+        if (!static::$relationCondition) {
+            return;
+        }
+
+        if (!$sourceValue = $this->getSourceValue()) {
+            $this->emptySourceData = true;
+        } else {
+            $this->emptySourceData = false;
+            $call($sourceValue);
+        }
+    }
+
+    /**
      * 返回模型实体的主键.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
