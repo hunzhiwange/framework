@@ -192,6 +192,54 @@ class BelongsToTest extends TestCase
         $this->assertCount(0, $posts);
     }
 
+    public function testRelationWasNotFound(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 99999,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(99999, $post->user_id);
+        $this->assertSame(99999, $post->userId);
+        $this->assertSame(99999, $post['user_id']);
+        $this->assertSame(99999, $post->getUserId());
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('hello world', $post['title']);
+        $this->assertSame('hello world', $post->getTitle());
+        $this->assertSame('Say hello to the world.', $post->summary);
+        $this->assertSame('Say hello to the world.', $post['summary']);
+        $this->assertSame('Say hello to the world.', $post->getSummary());
+
+        $user = $post->user;
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+        $this->assertNull($user['id']);
+        $this->assertNull($user->getId());
+        $this->assertNull($user->name);
+        $this->assertNull($user['name']);
+        $this->assertNull($user->getName());
+    }
+
     public function testSourceDataIsEmtpy(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
@@ -229,6 +277,24 @@ class BelongsToTest extends TestCase
         $this->assertSame('Say hello to the world.', $post['summary']);
         $this->assertSame('Say hello to the world.', $post->getSummary());
 
+        $user = $post->user;
+
+        $this->assertInstanceof(User::class, $user);
+        $this->assertNull($user->id);
+        $this->assertNull($user['id']);
+        $this->assertNull($user->getId());
+        $this->assertNull($user->name);
+        $this->assertNull($user['name']);
+        $this->assertNull($user->getName());
+    }
+
+    public function testSourceDataIsEmtpyAndValueIsNull(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+        $this->assertNull($post->user_id);
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);

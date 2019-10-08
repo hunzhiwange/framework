@@ -279,7 +279,26 @@ class HasOneTest extends TestCase
         }
     }
 
-    public function testSourceDataIsEmtpy(): void
+    public function testSourceDataIsEmpty(): void
+    {
+        $post = new Post(['id' => 0]);
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertSame(0, $post->id);
+        $postContent = $post->postContent;
+
+        $this->assertInstanceof(PostContent::class, $postContent);
+        $this->assertNull($postContent->post_id);
+        $this->assertNull($postContent->postId);
+        $this->assertNull($postContent['post_id']);
+        $this->assertNull($postContent['postId']);
+        $this->assertNull($postContent->getPostId());
+        $this->assertNull($postContent->content);
+        $this->assertNull($postContent['content']);
+        $this->assertNull($postContent->getContent());
+    }
+
+    public function testSourceDataIsEmtpyAndValueIsNull(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
 
