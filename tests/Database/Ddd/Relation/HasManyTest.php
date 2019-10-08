@@ -227,6 +227,18 @@ class HasManyTest extends TestCase
 
         $this->assertInstanceof(Post::class, $post);
         $this->assertNull($post->id);
+        $comment = $post->comment;
+
+        $this->assertInstanceof(Collection::class, $comment);
+        $this->assertCount(0, $comment);
+    }
+
+    public function testRelationWasNotFound(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
@@ -274,7 +286,7 @@ class HasManyTest extends TestCase
         $this->assertCount(0, $comment);
     }
 
-    public function testEagerSourceDataIsEmtpy(): void
+    public function testEagerRelationWasNotFound(): void
     {
         $post = Post::select()->where('id', 1)->findOne();
 
