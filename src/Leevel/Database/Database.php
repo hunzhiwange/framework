@@ -323,15 +323,15 @@ abstract class Database implements IConnection
     public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
     {
         $this->initSelect();
-        if (!in_array(($sqlType = $this->normalizeSqlType($sql)), ['select', 'procedure'], true)) {
+        if (!in_array($sqlType = $this->normalizeSqlType($sql), ['select', 'procedure'], true)) {
             $e = 'The query method only allows select and procedure SQL statements.';
 
             throw new InvalidArgumentException($e);
         }
-        $this->pdoStatement = $this->pdo($master)->prepare($sql);
-        $this->bindParams($bindParams);
 
         try {
+            $this->pdoStatement = $this->pdo($master)->prepare($sql);
+            $this->bindParams($bindParams);
             $this->pdoStatement->execute();
             $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
             $this->reconnectRetry = 0;
@@ -342,7 +342,12 @@ abstract class Database implements IConnection
 
                 return self::query($sql, $bindParams, $master, $fetchStyle, $fetchArgument, $ctorArgs);
             }
-            $this->setLastSql($this->normalizeLastSql($this->pdoStatement, true));
+
+            if ($this->pdoStatement) {
+                $this->setLastSql($this->normalizeLastSql($this->pdoStatement, true));
+            } else {
+                $this->setLastSql($this->normalizeErrorLastSql($sql, $bindParams));
+            }
 
             throw $e;
         }
@@ -367,15 +372,15 @@ abstract class Database implements IConnection
     public function execute(string $sql, array $bindParams = [])
     {
         $this->initSelect();
-        if (in_array(($sqlType = $this->normalizeSqlType($sql)), ['select', 'procedure'], true)) {
+        if (in_array($sqlType = $this->normalizeSqlType($sql), ['select', 'procedure'], true)) {
             $e = 'The query method not allows select and procedure SQL statements.';
 
             throw new InvalidArgumentException($e);
         }
-        $this->pdoStatement = $this->pdo(true)->prepare($sql);
-        $this->bindParams($bindParams);
 
         try {
+            $this->pdoStatement = $this->pdo(true)->prepare($sql);
+            $this->bindParams($bindParams);
             $this->pdoStatement->execute();
             $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
             $this->reconnectRetry = 0;
@@ -387,7 +392,12 @@ abstract class Database implements IConnection
                 return self::execute($sql, $bindParams);
             }
 
-            $this->setLastSql($this->normalizeLastSql($this->pdoStatement, true));
+            if ($this->pdoStatement) {
+                $this->setLastSql($this->normalizeLastSql($this->pdoStatement, true));
+            } else {
+                $this->setLastSql($this->normalizeErrorLastSql($sql, $bindParams));
+            }
+
             $this->pdoException($e);
         }
 
@@ -413,9 +423,7 @@ abstract class Database implements IConnection
         $this->beginTransaction();
 
         try {
-            $result = call_user_func_array($action, [
-                $this,
-            ]);
+            $result = call_user_func_array($action, [$this]);
             $this->commit();
 
             return $result;
@@ -513,7 +521,7 @@ abstract class Database implements IConnection
             }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->rollbackSavepoint($this->getSavepointName()); // @codeCoverageIgnore
-            $this->transactionLevel--;
+            $this->transactionLevel--; // @codeCoverageIgnore
         } else {
             $this->isRollbackOnly = true;
             $this->transactionLevel = max(0, $this->transactionLevel - 1);
@@ -820,6 +828,20 @@ abstract class Database implements IConnection
     }
 
     /**
+     * 整理当前错误执行 SQL.
+     *
+     * @param string $sql
+     * @param array  $bindParams
+     *
+     * @return string
+     */
+    protected function normalizeErrorLastSql(string $sql, array $bindParams): string
+    {
+        return '[FAILED] '.$sql.'[FAILED] '.
+            json_encode($bindParams, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
      * 连接主服务器.
      *
      * @return \PDO
@@ -999,7 +1021,10 @@ abstract class Database implements IConnection
     /**
      * 获取部分事务回滚点名字.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @return string
+     * @codeCoverageIgnore
      */
     protected function getSavepointName(): string
     {
