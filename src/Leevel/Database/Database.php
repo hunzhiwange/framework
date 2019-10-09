@@ -1080,6 +1080,10 @@ abstract class Database implements IConnection
      */
     protected function needReconnect(PDOException $e): bool
     {
+        if (!$e->errorInfo || !isset($e->errorInfo[1])) {
+            return false;
+        }
+
         // errorInfo[1] 表示某个驱动错误码，后期扩展需要优化
         // 可以在驱动重写这个方法
         return in_array($e->errorInfo[1], [2006, 2013], true) &&
