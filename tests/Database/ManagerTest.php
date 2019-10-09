@@ -306,6 +306,114 @@ class ManagerTest extends TestCase
         $this->invokeTestMethod($manager, 'parseDatabaseOption', [$option]);
     }
 
+    public function testMysqlCanOnlyBeUsedInSwoole(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'MySQL pool can only be used in swoole scenarios.'
+        );
+
+        $manager = $this->createDatabaseManagerForMysqlPool(false);
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        $this->assertSame(1,
+            $manager
+                ->table('guest_book')
+                ->insert($data)
+        );
+    }
+
+    public function testMysqlPool(): void
+    {
+        $manager = $this->createDatabaseManagerForMysqlPool();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        $this->assertSame(1,
+            $manager
+                ->table('guest_book')
+                ->insert($data)
+        );
+
+        $result = $manager->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
+
+        $this->assertSame('tom', $result->name);
+        $this->assertSame('I love movie.', $result->content);
+    }
+
+    public function testMysqlPoolTransaction(): void
+    {
+        $manager = $this->createDatabaseManagerForMysqlPool();
+        $manager->beginTransaction();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+        $data2 = ['name' => 'tom2', 'content' => 'I love movie2.'];
+
+        $this->assertSame(1,
+            $manager
+                ->table('guest_book')
+                ->insert($data)
+        );
+
+        $this->assertSame(2,
+            $manager
+                ->table('guest_book')
+                ->insert($data2)
+        );
+
+        $manager->commit();
+
+        $result = $manager->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
+
+        $this->assertSame('tom', $result->name);
+        $this->assertSame('I love movie.', $result->content);
+
+        $result = $manager->table('guest_book', 'name,content')
+            ->where('id', 2)
+            ->findOne();
+
+        $this->assertSame('tom2', $result->name);
+        $this->assertSame('I love movie2.', $result->content);
+    }
+
+    public function testMysqlPoolTransactionRollback(): void
+    {
+        $manager = $this->createDatabaseManagerForMysqlPool();
+        $manager->beginTransaction();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+        $data2 = ['name' => 'tom2', 'content' => 'I love movie2.'];
+
+        $this->assertSame(1,
+            $manager
+                ->table('guest_book')
+                ->insert($data)
+        );
+
+        $this->assertSame(2,
+            $manager
+                ->table('guest_book')
+                ->insert($data2)
+        );
+
+        $manager->rollback();
+
+        $result = $manager->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne();
+        $this->assertSame([], $result);
+
+        $result = $manager->table('guest_book', 'name,content')
+            ->where('id', 2)
+            ->findOne();
+        $this->assertSame([], $result);
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['guest_book'];
