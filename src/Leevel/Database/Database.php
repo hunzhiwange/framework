@@ -837,7 +837,7 @@ abstract class Database implements IConnection
      */
     protected function normalizeErrorLastSql(string $sql, array $bindParams): string
     {
-        return '[FAILED] '.$sql.'[FAILED] '.
+        return '[FAILED] '.$sql.' | '.
             json_encode($bindParams, JSON_UNESCAPED_UNICODE);
     }
 
