@@ -31,6 +31,7 @@ use Leevel\Option\Option;
 use Leevel\Protocol\Coroutine;
 use Leevel\Protocol\Pool\IConnection;
 use PDO;
+use PDOException;
 
 /**
  * 数据辅助方法.
@@ -57,7 +58,7 @@ trait Database
         return $connect;
     }
 
-    protected function createDatabaseConnect(?IDispatch $dispatch = null): Mysql
+    protected function createDatabaseConnect(?IDispatch $dispatch = null, ?string $connect = null): Mysql
     {
         $connect = $this->createDatabaseConnectMock([
             'driver'             => 'mysql',
@@ -80,7 +81,7 @@ trait Database
                 ],
             ],
             'slave' => [],
-        ], null, $dispatch);
+        ], $connect, $dispatch);
 
         return $connect;
     }
@@ -276,5 +277,13 @@ class MysqlPoolMock extends MysqlPools
     public function returnConnection(IConnection $connection): bool
     {
         return true;
+    }
+}
+
+class MysqlNeedReconnectMock extends Mysql
+{
+    protected function needReconnect(PDOException $e): bool
+    {
+        return $this->reconnectRetry <= self::RECONNECT_MAX;
     }
 }

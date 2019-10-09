@@ -26,6 +26,7 @@ use Leevel\Database\Mysql;
 use PDO;
 use PDOException;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\MysqlNeedReconnectMock;
 use Throwable;
 
 /**
@@ -95,7 +96,6 @@ class ConnectTest extends TestCase
     public function testQuery(): void
     {
         $connect = $this->createDatabaseConnect();
-
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
@@ -114,6 +114,28 @@ class ConnectTest extends TestCase
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
+    public function testQueryFailed(): void
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'id_not_found\' in \'where clause\''
+        );
+
+        $connect = $this->createDatabaseConnect();
+        $connect->query('select * from guest_book where id_not_found=?', [1]);
+    }
+
+    public function testQueryFailedAndNeedReconnect(): void
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'id_not_found\' in \'where clause\''
+        );
+
+        $connect = $this->createDatabaseConnect(null, MysqlNeedReconnectMock::class);
+        $connect->query('select * from guest_book where id_not_found=?', [1]);
+    }
+
     public function testExecute(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -126,6 +148,28 @@ class ConnectTest extends TestCase
         $this->assertSame('小鸭子', $insertData['name']);
         $this->assertSame('喜欢游泳', $insertData['content']);
         $this->assertStringContainsString(date('Y-m'), $insertData['create_at']);
+    }
+
+    public function testExecuteFailed(): void
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[21S01]: Insert value list does not match column list: 1136 Column count doesn\'t match value count at row 1'
+        );
+
+        $connect = $this->createDatabaseConnect();
+        $connect->execute('insert into guest_book (name, content) values (?, ?, ?)', ['小鸭子', '喜欢游泳']);
+    }
+
+    public function testExecuteFailedAndNeedReconnect(): void
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[21S01]: Insert value list does not match column list: 1136 Column count doesn\'t match value count at row 1'
+        );
+
+        $connect = $this->createDatabaseConnect(null, MysqlNeedReconnectMock::class);
+        $connect->execute('insert into guest_book (name, content) values (?, ?, ?)', ['小鸭子', '喜欢游泳']);
     }
 
     public function testQueryOnlyAllowedSelect(): void
