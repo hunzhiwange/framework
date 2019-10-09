@@ -202,12 +202,13 @@ class Manager extends Managers
     /**
      * 获取当前协程事务中的连接.
      *
+     * @throws \RuntimeException
+     *
      * @return \Leevel\Protocol\Pool\IConnection
      */
     public function getTransactionConnection(): IConnection
     {
         $connection = $this->container->make(self::TRANSACTION_SERVICE);
-
         if (!is_object($connection) || !$connection instanceof IConnection) {
             $e = 'There was no active transaction.';
 
@@ -256,12 +257,14 @@ class Manager extends Managers
      *
      * @param array $options
      *
+     * @throws \RuntimeException
+     *
      * @return \Leevel\Database\MysqlPool
      */
     protected function makeConnectMysqlPool(array $options = []): MysqlPool
     {
         if (!$this->container->getCoroutine()) {
-            $e = 'Mysql pool can only be used in swoole scenarios.';
+            $e = 'MySQL pool can only be used in swoole scenarios.';
 
             throw new RuntimeException($e);
         }
