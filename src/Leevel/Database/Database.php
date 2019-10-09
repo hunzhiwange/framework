@@ -444,7 +444,7 @@ abstract class Database implements IConnection
                 throw $e; // @codeCoverageIgnore
             } // @codeCoverageIgnore
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
-            $this->createSavepoint($this->getSavepointName());
+            $this->createSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
     }
 
@@ -484,7 +484,7 @@ abstract class Database implements IConnection
                 $this->release();
             }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
-            $this->releaseSavepoint($this->getSavepointName());
+            $this->releaseSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
 
         $this->transactionLevel = max(0, $this->transactionLevel - 1);
@@ -512,7 +512,7 @@ abstract class Database implements IConnection
                 $this->release();
             }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
-            $this->rollbackSavepoint($this->getSavepointName());
+            $this->rollbackSavepoint($this->getSavepointName()); // @codeCoverageIgnore
             $this->transactionLevel--;
         } else {
             $this->isRollbackOnly = true;
@@ -523,7 +523,10 @@ abstract class Database implements IConnection
     /**
      * 设置是否启用部分事务.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @param bool $savepoints
+     * @codeCoverageIgnore
      */
     public function setSavepoints(bool $savepoints): void
     {
@@ -591,7 +594,7 @@ abstract class Database implements IConnection
         // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
         try {
             $this->pdoStatement = null;
-        } catch (Throwable $e) {
+        } catch (Throwable $e) { // @codeCoverageIgnore
         }
     }
 
@@ -972,7 +975,7 @@ abstract class Database implements IConnection
         do {
             try {
                 $result[] = $tim = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs);
-            } catch (PDOException $e) {
+            } catch (PDOException $e) { // @codeCoverageIgnore
             }
         } while ($this->pdoStatement->nextRowset());
 
@@ -1006,7 +1009,10 @@ abstract class Database implements IConnection
     /**
      * 保存部分事务保存点.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @param string $savepointName
+     * @codeCoverageIgnore
      */
     protected function createSavepoint(string $savepointName): void
     {
@@ -1017,9 +1023,12 @@ abstract class Database implements IConnection
     /**
      * 回滚部分事务到保存点.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @param string $savepointName
+     * @codeCoverageIgnore
      */
-    protected function rollbackSavepoint(string $savepointName)
+    protected function rollbackSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'ROLLBACK TO SAVEPOINT '.$savepointName);
         $this->pdo(true)->exec($sql);
@@ -1028,7 +1037,10 @@ abstract class Database implements IConnection
     /**
      * 清除前面定义的部分事务保存点.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @param string $savepointName
+     * @codeCoverageIgnore
      */
     protected function releaseSavepoint(string $savepointName): void
     {
