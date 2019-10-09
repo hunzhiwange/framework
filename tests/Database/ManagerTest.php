@@ -414,6 +414,17 @@ class ManagerTest extends TestCase
         $this->assertSame([], $result);
     }
 
+    public function testMysqlPoolNoActiveTransaction(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'There was no active transaction.'
+        );
+
+        $manager = $this->createDatabaseManagerForMysqlPool();
+        $manager->getTransactionConnection();
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['guest_book'];
