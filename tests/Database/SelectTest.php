@@ -832,6 +832,47 @@ class SelectTest extends TestCase
 
                 $n++;
             });
+
+        $this->assertSame(7, $n);
+    }
+
+    public function testEachBreak(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $connect
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $n = $p = 1;
+
+        $result = $connect
+            ->table('guest_book')
+            ->each(2, function ($value, $key, $page) use (&$n, &$p) {
+                if (3 === $n) {
+                    return false;
+                }
+
+                $this->assertInstanceof(stdClass::class, $value);
+                $this->assertSame($n, (int) $value->id);
+                $this->assertSame('tom', $value->name);
+                $this->assertSame('I love movie.', $value->content);
+                $this->assertStringContainsString(date('Y-m'), $value->create_at);
+                $this->assertSame(($n + 1) % 2, $key);
+                $this->assertSame($p, $page);
+
+                if (1 === ($n + 1) % 2) {
+                    $p++;
+                }
+
+                $n++;
+            });
+
+        $this->assertSame(3, $n);
     }
 
     public function testPageCount(): void
