@@ -954,6 +954,20 @@ class ConnectTest extends TestCase
         $connect->execute('DELETE FROM not_found_table WHERE id > 0');
     }
 
+    public function testBindNull(): void
+    {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[23000]: Integrity constraint violation: 1048 Column \'content\' cannot be null'
+        );
+
+        $connect = $this->createDatabaseConnect();
+        $data = ['name' => 'tom', 'content' => null];
+        $connect
+            ->table('guest_book')
+            ->insert($data);
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['guest_book'];
