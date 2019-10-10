@@ -329,30 +329,10 @@ abstract class Database implements IConnection
             throw new InvalidArgumentException($e);
         }
 
-        try {
-            $this->pdoStatement = $this->pdo($master)->prepare($sql);
-            $this->bindParams($bindParams);
-            $this->pdoStatement->execute();
-            $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
-            $this->reconnectRetry = 0;
-        } catch (PDOException $e) {
-            if ($this->needReconnect($e)) {
-                $this->reconnectRetry++;
-                $this->close();
-
-                return self::query($sql, $bindParams, $master, $fetchStyle, $fetchArgument, $ctorArgs);
-            }
-
-            if ($this->pdoStatement) {
-                $this->setLastSql($this->normalizeLastSql($this->pdoStatement, true));
-            } else {
-                $this->setLastSql($this->normalizeErrorLastSql($sql, $bindParams));
-            }
-
-            throw $e;
+        if (true === $this->runSql($sql, $bindParams, $master)) {
+            return self::query($sql, $bindParams, $master, $fetchStyle, $fetchArgument, $ctorArgs);
         }
 
-        $this->numRows = $this->pdoStatement->rowCount();
         $result = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
         $this->release();
 
@@ -378,32 +358,11 @@ abstract class Database implements IConnection
             throw new InvalidArgumentException($e);
         }
 
-        try {
-            $this->pdoStatement = $this->pdo(true)->prepare($sql);
-            $this->bindParams($bindParams);
-            $this->pdoStatement->execute();
-            $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
-            $this->reconnectRetry = 0;
-        } catch (PDOException $e) {
-            if ($this->needReconnect($e)) {
-                $this->reconnectRetry++;
-                $this->close();
-
-                return self::execute($sql, $bindParams);
-            }
-
-            if ($this->pdoStatement) {
-                $this->setLastSql($this->normalizeLastSql($this->pdoStatement, true));
-            } else {
-                $this->setLastSql($this->normalizeErrorLastSql($sql, $bindParams));
-            }
-
-            $this->pdoException($e);
+        if (true === $this->runSql($sql, $bindParams, true)) {
+            return self::execute($sql, $bindParams);
         }
 
-        $this->numRows = $this->pdoStatement->rowCount();
         $this->release();
-
         if (in_array($sqlType, ['insert', 'replace'], true)) {
             return (int) $this->lastInsertId();
         }
@@ -802,6 +761,48 @@ abstract class Database implements IConnection
             default:
                 return PDO::PARAM_STMT;
         }
+    }
+
+    /**
+     * 执行 SQL.
+     *
+     * - 记录 SQL 日志
+     * - 支持重连
+     *
+     * @param string   $sql
+     * @param array    $bindParams
+     * @param bool|int $master
+     *
+     * @return bool
+     */
+    protected function runSql(string $sql, array $bindParams = [], $master = false): bool
+    {
+        try {
+            $this->pdoStatement = $this->pdo($master)->prepare($sql);
+            $this->bindParams($bindParams);
+            $this->pdoStatement->execute();
+            $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
+            $this->reconnectRetry = 0;
+        } catch (PDOException $e) {
+            if ($this->needReconnect($e)) {
+                $this->reconnectRetry++;
+                $this->close();
+
+                return true;
+            }
+
+            if ($this->pdoStatement) {
+                $sql = $this->normalizeLastSql($this->pdoStatement, true);
+            } else {
+                $sql = $this->normalizeErrorLastSql($sql, $bindParams);
+            }
+            $this->setLastSql($sql);
+            $this->pdoException($e);
+        }
+
+        $this->numRows = $this->pdoStatement->rowCount();
+
+        return false;
     }
 
     /**
