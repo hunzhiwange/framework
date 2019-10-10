@@ -29,8 +29,10 @@ if (class_exists(PhinxBreakpoint::class)) { // @codeCoverageIgnore
 } else { // @codeCoverageIgnore
     class_alias(VirtualBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint'); // @codeCoverageIgnore
 }
-/** @codeCoverageIgnore */
-$_ = 1;
+/**
+ * @codeCoverageIgnore
+ * end
+ */
 
 /**
  * 数据库迁移设置断点.
