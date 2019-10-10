@@ -27,7 +27,7 @@ if (class_exists(PhinxTest::class)) { // @codeCoverageIgnore
     class_alias(PhinxTest::class, __NAMESPACE__.'\\BaseTest'); // @codeCoverageIgnore
 } else { // @codeCoverageIgnore
     class_alias(VirtualTest::class, __NAMESPACE__.'\\BaseTest'); // @codeCoverageIgnore
-}
+} // @codeCoverageIgnore
 
 /**
  * 数据库测试环境是否正常.
