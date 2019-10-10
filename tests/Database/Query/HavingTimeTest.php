@@ -100,6 +100,82 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    public function testHavingDataFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $value = strtotime('+6 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
+
+        $this->assertTimeRange(
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->if($condition)
+                    ->havingDate('create_date', '+5 month')
+                    ->else()
+                    ->havingDate('create_date', '+6 month')
+                    ->fi()
+                    ->findOne(true)
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
+        );
+    }
+
+    public function testHavingDataFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $value = strtotime('+5 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
+
+        $this->assertTimeRange(
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->groupBy('create_date')
+                    ->if($condition)
+                    ->havingDate('create_date', '+5 month')
+                    ->else()
+                    ->havingDate('create_date', '+6 month')
+                    ->fi()
+                    ->findOne(true)
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
+        );
+    }
+
     public function testHavingDayWillFormatInt(): void
     {
         $connect = $this->createDatabaseConnectMock();

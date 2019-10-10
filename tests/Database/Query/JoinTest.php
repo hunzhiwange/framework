@@ -155,6 +155,32 @@ class JoinTest extends TestCase
         );
     }
 
+    public function testLeftJoin(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` LEFT JOIN `hello` `t` ON `t`.`name` = '小牛'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->leftJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->findAll(true)
+            )
+        );
+    }
+
     public function testRightJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -346,6 +372,347 @@ class JoinTest extends TestCase
                     ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
                     ->else()
                     ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testInnerJsonFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` INNER JOIN `hello` `t` ON `t`.`name` = '小牛'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testLeftJsonFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` LEFT JOIN `hello` `t` ON `t`.`name` = '仔'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->leftJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->leftJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testLeftJsonFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` LEFT JOIN `hello` `t` ON `t`.`name` = '小牛'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->leftJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->leftJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testRightJsonFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` RIGHT JOIN `hello` `t` ON `t`.`name` = '仔'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testRightJsonFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` RIGHT JOIN `hello` `t` ON `t`.`name` = '小牛'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testFullJsonFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` FULL JOIN `hello` `t` ON `t`.`name` = '仔'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testFullJsonFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` FULL JOIN `hello` `t` ON `t`.`name` = '小牛'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testCrossJsonFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` CROSS JOIN `hello` `t` ON `t`.`name` = '仔'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testCrossJsonFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` CROSS JOIN `hello` `t` ON `t`.`name` = '小牛'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testNaturalJsonFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` NATURAL JOIN `hello` `t` ON `t`.`name` = '仔'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+                    ->fi()
+                    ->findAll(true)
+            )
+        );
+    }
+
+    public function testNaturalJsonFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.*,`t`.`name` AS `nikename`,`t`.`value` AS `tt` FROM `test` NATURAL JOIN `hello` `t` ON `t`.`name` = '小牛'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+                    ->else()
+                    ->naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
                     ->fi()
                     ->findAll(true)
             )

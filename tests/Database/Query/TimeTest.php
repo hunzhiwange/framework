@@ -98,6 +98,80 @@ class TimeTest extends TestCase
         );
     }
 
+    public function testWhereDataFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $value = strtotime('+6 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
+
+        $this->assertTimeRange(
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->whereDate('create_date', '+5 month')
+                    ->else()
+                    ->whereDate('create_date', '+6 month')
+                    ->fi()
+                    ->findOne(true)
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
+        );
+    }
+
+    public function testWhereDataFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $value = strtotime('+5 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
+
+        $this->assertTimeRange(
+            $this->varJson(
+                $connect
+                    ->table('test')
+                    ->if($condition)
+                    ->whereDate('create_date', '+5 month')
+                    ->else()
+                    ->whereDate('create_date', '+6 month')
+                    ->fi()
+                    ->findOne(true)
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
+        );
+    }
+
     public function testWhereDayWillFormatInt(): void
     {
         $connect = $this->createDatabaseConnectMock();
