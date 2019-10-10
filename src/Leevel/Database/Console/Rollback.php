@@ -23,11 +23,13 @@ namespace Leevel\Database\Console;
 use Leevel\Database\Console\Virtual\Rollback as VirtualRollback;
 use Phinx\Console\Command\Rollback as PhinxRollback;
 
-if (class_exists(PhinxRollback::class)) { // @codeCoverageIgnore
-    class_alias(PhinxRollback::class, __NAMESPACE__.'\\BaseRollback'); // @codeCoverageIgnore
-} else { // @codeCoverageIgnore
-    class_alias(VirtualRollback::class, __NAMESPACE__.'\\BaseRollback'); // @codeCoverageIgnore
+// @codeCoverageIgnoreStart
+if (class_exists(PhinxRollback::class)) { 
+    class_alias(PhinxRollback::class, __NAMESPACE__.'\\BaseRollback'); 
+} else { 
+    class_alias(VirtualRollback::class, __NAMESPACE__.'\\BaseRollback'); 
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库迁移回滚数据库脚本.

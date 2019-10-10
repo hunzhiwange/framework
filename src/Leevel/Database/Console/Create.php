@@ -23,11 +23,13 @@ namespace Leevel\Database\Console;
 use Leevel\Database\Console\Virtual\Create as VirtualCreate;
 use Phinx\Console\Command\Create as PhinxCreate;
 
-if (class_exists(PhinxCreate::class)) { // @codeCoverageIgnore
-    class_alias(PhinxCreate::class, __NAMESPACE__.'\\BaseCreate'); // @codeCoverageIgnore
-} else { // @codeCoverageIgnore
-    class_alias(VirtualCreate::class, __NAMESPACE__.'\\BaseCreate'); // @codeCoverageIgnore
+// @codeCoverageIgnoreStart
+if (class_exists(PhinxCreate::class)) { 
+    class_alias(PhinxCreate::class, __NAMESPACE__.'\\BaseCreate'); 
+} else { 
+    class_alias(VirtualCreate::class, __NAMESPACE__.'\\BaseCreate'); 
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库迁移创建一个脚本.

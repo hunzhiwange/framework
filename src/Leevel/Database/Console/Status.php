@@ -23,11 +23,13 @@ namespace Leevel\Database\Console;
 use Leevel\Database\Console\Virtual\Status as VirtualStatus;
 use Phinx\Console\Command\Status as PhinxStatus;
 
-if (class_exists(PhinxStatus::class)) { // @codeCoverageIgnore
-    class_alias(PhinxStatus::class, __NAMESPACE__.'\\BaseStatus'); // @codeCoverageIgnore
-} else { // @codeCoverageIgnore
-    class_alias(VirtualStatus::class, __NAMESPACE__.'\\BaseStatus'); // @codeCoverageIgnore
+// @codeCoverageIgnoreStart
+if (class_exists(PhinxStatus::class)) { 
+    class_alias(PhinxStatus::class, __NAMESPACE__.'\\BaseStatus'); 
+} else { 
+    class_alias(VirtualStatus::class, __NAMESPACE__.'\\BaseStatus'); 
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * 数据库打印所有迁移脚本和他们的状态
