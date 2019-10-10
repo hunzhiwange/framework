@@ -27,7 +27,7 @@ if (class_exists(PhinxStatus::class)) { // @codeCoverageIgnore
     class_alias(PhinxStatus::class, __NAMESPACE__.'\\BaseStatus'); // @codeCoverageIgnore
 } else { // @codeCoverageIgnore
     class_alias(VirtualStatus::class, __NAMESPACE__.'\\BaseStatus'); // @codeCoverageIgnore
-} /** @codeCoverageIgnore */
+}
 
 /**
  * 数据库打印所有迁移脚本和他们的状态

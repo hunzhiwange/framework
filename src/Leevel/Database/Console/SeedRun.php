@@ -27,7 +27,7 @@ if (class_exists(PhinxSeedRun::class)) {// @codeCoverageIgnore
     class_alias(PhinxSeedRun::class, __NAMESPACE__.'\\BaseSeedRun'); // @codeCoverageIgnore
 } else { // @codeCoverageIgnore
     class_alias(VirtualSeedRun::class, __NAMESPACE__.'\\BaseSeedRun'); // @codeCoverageIgnore
-} /** @codeCoverageIgnore */
+}
 
 /**
  * 数据库执行测试数据.

@@ -27,7 +27,7 @@ if (class_exists(PhinxMigrate::class)) { // @codeCoverageIgnore
     class_alias(PhinxMigrate::class, __NAMESPACE__.'\\BaseMigrate'); // @codeCoverageIgnore
 } else { // @codeCoverageIgnore
     class_alias(VirtualMigrate::class, __NAMESPACE__.'\\BaseMigrate'); // @codeCoverageIgnore
-} /** @codeCoverageIgnore */
+}
 
 /**
  * 数据库迁移运行数据库脚本.
