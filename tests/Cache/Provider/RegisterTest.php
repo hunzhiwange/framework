@@ -27,6 +27,9 @@ use Leevel\Di\Container;
 use Leevel\Filesystem\Fso;
 use Leevel\Option\Option;
 use Tests\TestCase;
+use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Protocol\Coroutine;
+use Leevel\Cache\Redis\RedisPool;
 
 /**
  * register test.
@@ -56,8 +59,16 @@ class RegisterTest extends TestCase
         $this->assertFileNotExists($filePath);
         $this->assertFalse($manager->get('hello'));
         Fso::deleteDirectory(__DIR__.'/cache', true);
+    }
+
+    public function testCache(): void
+    { 
+        $test = new Register($container = $this->createContainer());
+        $test->register();
+        $container->alias($test->providers());
 
         // cache
+        $filePath = __DIR__.'/cache/hello.php';
         $file = $container->make('cache');
         $this->assertInstanceOf(File::class, $file);
         $this->assertFileNotExists($filePath);
@@ -67,10 +78,40 @@ class RegisterTest extends TestCase
         $this->assertFileNotExists($filePath);
         $this->assertFalse($file->get('hello'));
         Fso::deleteDirectory(__DIR__.'/cache', true);
+    }
+
+    public function testLoad(): void
+    {
+        $test = new Register($container = $this->createContainer());
+        $test->register();
+        $container->alias($test->providers());
 
         // load
         $load = $container->make('cache.load');
         $this->assertInstanceOf(Load::class, $load);
+    }
+
+    public function testRedis(): void
+    {
+        $test = new Register($container = $this->createContainer());
+        $test->register();
+        $container->alias($test->providers());
+
+        // redis
+        $redis = $container->make('redis');
+        $this->assertInstanceOf(PhpRedis::class, $redis);
+        $redis->set('hello', 'world');
+        $this->assertSame('world', $redis->get('hello'));
+    }
+
+    public function testRedisPool(): void
+    {
+        $test = new Register($container = $this->createContainerWithRedisPool());
+        $test->register();
+        $container->alias($test->providers());
+
+        $redisPool = $container->make('redis.pool');
+        $this->assertInstanceOf(RedisPool::class, $redisPool);
     }
 
     protected function createContainer(): Container
@@ -89,11 +130,72 @@ class RegisterTest extends TestCase
                         'serialize' => true,
                         'expire'    => null,
                     ],
+                    'redis' => [
+                        'driver'     => 'redis',
+                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select'     => 0,
+                        'timeout'    => 0,
+                        'persistent' => false,
+                        'serialize'  => true,
+                        'expire'     => null,
+                    ],
                 ],
             ],
         ]);
 
         $container->singleton('option', $option);
+
+        return $container;
+    }
+
+    protected function createContainerWithRedisPool(): Container
+    {
+        $container = new Container();
+
+        $option = new Option([
+            'cache' => [
+                'default'     => 'redisPool',
+                'expire'      => 86400,
+                'time_preset' => [],
+                'connect'     => [
+                    'file' => [
+                        'driver'    => 'file',
+                        'path'      => __DIR__.'/cache',
+                        'serialize' => true,
+                        'expire'    => null,
+                    ],
+                    'redis' => [
+                        'driver'     => 'redis',
+                        'host'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+                        'port'       => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+                        'password'   => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+                        'select'     => 0,
+                        'timeout'    => 0,
+                        'persistent' => false,
+                        'serialize'  => true,
+                        'expire'     => null,
+                    ],
+                    'redisPool' => [
+                        'driver'               => 'redisPool',
+                        'redis_connect'        => 'redis',
+                        'max_idle_connections' => 30,
+                        'min_idle_connections' => 10,
+                        'max_push_timeout'     => -1000,
+                        'max_pop_timeout'      => 0,
+                        'keep_alive_duration'  => 60000,
+                        'retry_times'          => 3,
+                    ],
+                ],
+            ],
+        ]);
+
+        $container->singleton('option', $option);
+
+        $coroutine = new Coroutine();
+        $container->instance('coroutine', $coroutine);
+        $container->setCoroutine($coroutine);
 
         return $container;
     }

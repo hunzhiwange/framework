@@ -94,8 +94,28 @@ class FileTest extends TestCase
         $this->assertFalse($file->get('hello'));
 
         $this->assertNull($file->close());
-
+        $this->assertNull($file->close()); // 关闭多次不做任何事
         $this->assertNull($file->handle());
+    }
+
+    public function testReconnect(): void
+    {
+        $filePath = __DIR__.'/cacheFile/hello.php';
+
+        if (is_file($filePath)) {
+            unlink($filePath);
+        }
+
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+        $this->assertNull($file->close());
+        $this->assertFalse(is_file($filePath));
+        $this->assertFalse($file->get('hello'));
+        $file->set('hello', 'world');
+        $this->assertTrue(is_file($filePath));
+        $this->assertSame('world', $file->get('hello')); 
+        $file->delete('hello'); 
     }
 
     public function testSetOption(): void
@@ -105,26 +125,21 @@ class FileTest extends TestCase
         ]);
 
         $file->set('setOption', 'bar');
-
         $this->assertSame('bar', $file->get('setOption'));
 
         $filePath = __DIR__.'/cacheFile/setOption.php';
 
         $this->assertTrue(is_file($filePath));
-
         $this->assertStringContainsString('s:3:"bar"', file_get_contents($filePath));
 
         $file->delete('setOption');
-
         $file->setOption('serialize', false);
-
         $file->set('setOption2', 'bar');
 
         $this->assertSame('bar', $file->get('setOption2'));
 
         $filePath = __DIR__.'/cacheFile/setOption2.php';
         $this->assertTrue(is_file($filePath));
-
         $this->assertStringNotContainsString('s:3:"bar"', file_get_contents($filePath));
 
         $file->delete('setOption2');
@@ -181,19 +196,15 @@ class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-
         $this->assertFalse($file->get('get2'));
 
         $filePath = __DIR__.'/cacheFile/get2.php';
-
         if (!is_dir(__DIR__.'/cacheFile')) {
             mkdir(__DIR__.'/cacheFile', 0777);
         }
 
         file_put_contents($filePath, 'foo');
-
         $this->assertFalse($file->get('get2'));
-
         unlink($filePath);
     }
 
@@ -205,17 +216,14 @@ class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-
         $this->assertFalse($file->get('readable'));
 
         $filePath = __DIR__.'/cacheFile/readable.php';
-
         if (!is_dir(__DIR__.'/cacheFile')) {
             mkdir(__DIR__.'/cacheFile', 0777);
         }
 
         file_put_contents($filePath, 'foo');
-
         chmod($filePath, 0000);
 
         if (is_readable($filePath)) {
@@ -230,15 +238,11 @@ class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-
         $this->assertFalse($file->get('isExpired'));
 
         $filePath = __DIR__.'/cacheFile/isExpired.php';
-
         $file->set('isExpired', 'bar');
-
         $this->assertFalse($file->get('isExpired', false, ['expire' => -100]));
-
         unlink($filePath);
     }
 
@@ -249,7 +253,6 @@ class FileTest extends TestCase
         ]);
 
         $filePath = __DIR__.'/cacheFile/withOption.php';
-
         if (is_file($filePath)) {
             unlink($filePath);
         }
@@ -259,7 +262,6 @@ class FileTest extends TestCase
         ]);
 
         $this->assertTrue(is_file($filePath));
-
         $this->assertStringContainsString('s:5:"world"', file_get_contents($filePath));
 
         $file->set('withOption', 'world', [
@@ -267,9 +269,7 @@ class FileTest extends TestCase
         ]);
 
         $this->assertTrue(is_file($filePath));
-
         $this->assertStringNotContainsString('s:5:"world"', file_get_contents($filePath));
-
         unlink($filePath);
     }
 
@@ -292,9 +292,7 @@ class FileTest extends TestCase
         ]);
 
         $file->set('cachePathSub', 'world');
-
         $filePath = $path.'/cachePathSub.php';
-
         $this->assertTrue(is_file($filePath));
 
         unlink($filePath);
