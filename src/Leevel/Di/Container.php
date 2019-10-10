@@ -1004,9 +1004,11 @@ class Container implements IContainer, ArrayAccess
     {
         try { // @codeCoverageIgnore
             return (new ReflectionClass($classname))->newInstanceArgs($args);
-        } catch (ReflectionException $e) { // @codeCoverageIgnore
-            return (new ReflectionClass($classname))->newInstanceWithoutConstructor(); // @codeCoverageIgnore
-        } // @codeCoverageIgnore
+        // @codeCoverageIgnoreStart
+        } catch (ReflectionException $e) { 
+            return (new ReflectionClass($classname))->newInstanceWithoutConstructor(); 
+        } 
+        // @codeCoverageIgnoreEnd
     }
 
     /**
