@@ -23,11 +23,13 @@ namespace Leevel\Database\Console;
 use Leevel\Database\Console\Virtual\Test as VirtualTest;
 use Phinx\Console\Command\Test as PhinxTest;
 
+// @codeCoverageIgnoreStart
 if (class_exists(PhinxTest::class)) {
     class_alias(PhinxTest::class, __NAMESPACE__.'\\BaseTest');
 } else {
     class_alias(VirtualTest::class, __NAMESPACE__.'\\BaseTest');
 }
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库测试环境是否正常.

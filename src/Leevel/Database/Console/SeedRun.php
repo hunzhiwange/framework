@@ -23,11 +23,13 @@ namespace Leevel\Database\Console;
 use Leevel\Database\Console\Virtual\SeedRun as VirtualSeedRun;
 use Phinx\Console\Command\Seedrun as PhinxSeedRun;
 
+// @codeCoverageIgnoreStart
 if (class_exists(PhinxSeedRun::class)) {
     class_alias(PhinxSeedRun::class, __NAMESPACE__.'\\BaseSeedRun');
 } else {
     class_alias(VirtualSeedRun::class, __NAMESPACE__.'\\BaseSeedRun');
 }
+/** @codeCoverageIgnoreEnd */
 
 /**
  * 数据库执行测试数据.
