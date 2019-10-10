@@ -343,5 +343,5 @@ class Entity extends Make
 }
 
 // import fn.
-class_exists(un_camelize::class);
-class_exists(camelize::class);
+class_exists(un_camelize::class); // @codeCoverageIgnore
+class_exists(camelize::class); // @codeCoverageIgnore
