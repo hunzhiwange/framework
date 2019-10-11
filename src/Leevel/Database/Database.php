@@ -406,11 +406,12 @@ abstract class Database implements IConnection
                 if ($this->manager) {
                     $this->manager->setTransactionConnection($this);
                 }
-            // @codeCoverageIgnoreStart
-            } catch (Exception $e) { 
+                // @codeCoverageIgnoreStart
+            } catch (Exception $e) {
                 $this->transactionLevel--;
-                throw $e; 
-            } 
+
+                throw $e;
+            }
             // @codeCoverageIgnoreEnd
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->createSavepoint($this->getSavepointName()); // @codeCoverageIgnore
@@ -482,9 +483,9 @@ abstract class Database implements IConnection
             }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             // @codeCoverageIgnoreStart
-            $this->rollbackSavepoint($this->getSavepointName()); 
-            $this->transactionLevel--; 
-            // @codeCoverageIgnoreEnd
+            $this->rollbackSavepoint($this->getSavepointName());
+            $this->transactionLevel--;
+        // @codeCoverageIgnoreEnd
         } else {
             $this->isRollbackOnly = true;
             $this->transactionLevel = max(0, $this->transactionLevel - 1);
