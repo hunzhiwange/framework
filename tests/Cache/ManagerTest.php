@@ -73,6 +73,35 @@ class ManagerTest extends TestCase
         $this->assertFalse($manager->get('manager-foo'));
     }
 
+    public function testRedisReconnect(): void
+    {
+        $this->checkRedis();
+
+        $manager = $this->createManager('redis');
+        $manager->set('manager-foo', 'bar');
+        $this->assertSame('bar', $manager->get('manager-foo'));
+
+        $manager->delete('manager-foo');
+        $this->assertFalse($manager->get('manager-foo'));
+
+        $manager->close();
+
+        $manager->set('manager-foo', 'bar');
+        $this->assertSame('bar', $manager->get('manager-foo'));
+
+        $manager->delete('manager-foo');
+        $this->assertFalse($manager->get('manager-foo'));
+    }
+
+    public function testRedisCloseTwice(): void
+    {
+        $this->checkRedis();
+
+        $manager = $this->createManager('redis');
+        $manager->close();
+        $manager->close(); // 关闭多次不做任何事
+    } 
+
     public function testRedisPool(): void
     {
         $this->checkRedis();
