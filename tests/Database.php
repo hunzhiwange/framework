@@ -175,6 +175,8 @@ trait Database
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
 
+        $this->databaseConnects[] = $manager->connect();
+
         return $manager;
     }
 
@@ -238,6 +240,8 @@ trait Database
             $container->instance('mysql.pool', $mysqlPool);
         }
 
+        $this->databaseConnects[] = $manager->connect();
+
         return $manager;
     }
 
@@ -266,9 +270,12 @@ trait Database
 
     protected function getLastSql(string $table): string
     {
-        return Meta::instance($table)
-            ->select()
-            ->getLastSql();
+        $select = Meta::instance($table)->select();
+        $lastSql = $select->getLastSql();
+
+        $this->databaseConnects[] = $select->databaseConnect();
+
+        return $lastSql;
     }
 }
 

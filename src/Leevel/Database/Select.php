@@ -234,16 +234,13 @@ class Select
             if (0 === strncasecmp($method, 'By', 2) ||
                 0 === strncasecmp($method, 'AllBy', 5)) {
                 $method = substr($method, ($isOne = 0 === strncasecmp($method, 'By', 2)) ? 2 : 5);
-
                 $isKeep = false;
-
                 if ('_' === substr($method, -1)) {
                     $isKeep = true;
                     $method = substr($method, 0, -1);
                 }
 
                 $keys = explode('And', $method);
-
                 if (count($keys) !== count($args)) {
                     $e = 'Params of findBy or findAllBy was not matched.';
 
