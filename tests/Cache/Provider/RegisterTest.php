@@ -23,13 +23,13 @@ namespace Tests\Cache\Provider;
 use Leevel\Cache\File;
 use Leevel\Cache\Load;
 use Leevel\Cache\Provider\Register;
+use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Cache\Redis\RedisPool;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Fso;
 use Leevel\Option\Option;
-use Tests\TestCase;
-use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Protocol\Coroutine;
-use Leevel\Cache\Redis\RedisPool;
+use Tests\TestCase;
 
 /**
  * register test.
@@ -62,7 +62,7 @@ class RegisterTest extends TestCase
     }
 
     public function testCache(): void
-    { 
+    {
         $test = new Register($container = $this->createContainer());
         $test->register();
         $container->alias($test->providers());

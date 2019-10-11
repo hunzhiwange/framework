@@ -674,7 +674,7 @@ class AppTest extends TestCase
      */
     public function testEnv(string $name, $value, $envValue): void
     {
-        $app = $this->createApp(); 
+        $app = $this->createApp();
         $name = 'test_env_'.$name;
         putenv($name.'='.$value);
         $this->assertSame($envValue, $app->env($name));
@@ -702,7 +702,7 @@ class AppTest extends TestCase
 
     public function testEnvFalse(): void
     {
-        $app = $this->createApp(); 
+        $app = $this->createApp();
         $this->assertSame('default message', $app->env('not_found_env', 'default message'));
         $this->assertNull($app->env('not_found_env'));
     }

@@ -22,14 +22,14 @@ namespace Tests\Cache;
 
 use Leevel\Cache\Manager;
 use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Cache\Redis\RedisPool as RedisPools;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Option\Option;
-use RedisException;
-use Tests\TestCase;
 use Leevel\Protocol\Coroutine;
 use Leevel\Protocol\Pool\IConnection;
-use Leevel\Cache\Redis\RedisPool as RedisPools;
+use RedisException;
+use Tests\TestCase;
 
 /**
  * manager test.
@@ -100,7 +100,7 @@ class ManagerTest extends TestCase
         $manager = $this->createManager('redis');
         $manager->close();
         $manager->close(); // 关闭多次不做任何事
-    } 
+    }
 
     public function testRedisPool(): void
     {

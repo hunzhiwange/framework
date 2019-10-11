@@ -115,7 +115,7 @@ class ControllerTest extends TestCase
             'name'        => 'BarValue',
             'action'      => 'hello',
             '--namespace' => 'common',
-            '--stub' => __DIR__.'/../assert/controller_stub'
+            '--stub'      => __DIR__.'/../assert/controller_stub',
         ], function ($container) {
             $this->initContainerService($container);
         });
@@ -132,7 +132,7 @@ class ControllerTest extends TestCase
             'name'        => 'BarValue',
             'action'      => 'hello',
             '--namespace' => 'common',
-            '--stub' => '/notFound'
+            '--stub'      => '/notFound',
         ], function ($container) {
             $this->initContainerService($container);
         });
