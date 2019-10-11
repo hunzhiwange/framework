@@ -25,12 +25,11 @@ use Tests\TestCase;
 
 // @codeCoverageIgnoreStart
 if (class_exists(PhinxBreakpoint::class)) {
-    //11
     class_alias(PhinxBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint');
 } else {
     class_alias(VirtualBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint');
 }
-/** @codeCoverageIgnoreEnd */
+// @codeCoverageIgnoreEnd
 
 /**
  * file test.
