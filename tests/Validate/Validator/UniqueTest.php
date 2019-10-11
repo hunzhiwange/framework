@@ -585,6 +585,13 @@ class UniqueTest extends TestCase
         $this->assertSame($sql, "SQL: [148] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 AND `guest_book`.`content` = 1.5 LIMIT 1 | Params:  0");
     }
 
+    public function testValidateValueIsNotString(): void
+    {
+        $rule = new UniqueRule();
+        $this->assertTrue($rule->validate(3, [Guestbook::class], $this->createMock(IValidator::class), 'id'));
+        $this->assertTrue($rule->validate(1.5, [Guestbook::class], $this->createMock(IValidator::class), 'id'));
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['guest_book', 'composite_id'];
