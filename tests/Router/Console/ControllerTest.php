@@ -41,7 +41,6 @@ class ControllerTest extends TestCase
     public function testBaseUse(): void
     {
         $file = __DIR__.'/../../Console/BarValue.php';
-
         if (is_file($file)) {
             unlink($file);
         }
@@ -56,16 +55,13 @@ class ControllerTest extends TestCase
         });
 
         $this->assertStringContainsString('controller <BarValue> created successfully.', $result);
-
         $this->assertStringContainsString('class BarValue', file_get_contents($file));
-
         unlink($file);
     }
 
     public function testActionSpecial(): void
     {
         $file = __DIR__.'/../../Console/Hello.php';
-
         if (is_file($file)) {
             unlink($file);
         }
@@ -80,18 +76,14 @@ class ControllerTest extends TestCase
         });
 
         $this->assertStringContainsString('controller <Hello> created successfully.', $result);
-
         $this->assertStringContainsString('class Hello', file_get_contents($file));
-
         $this->assertStringContainsString('function helloWorldYes', file_get_contents($file));
-
         unlink($file);
     }
 
     public function testExtend(): void
     {
         $file = __DIR__.'/../../Console/Hello.php';
-
         if (is_file($file)) {
             unlink($file);
         }
@@ -106,12 +98,46 @@ class ControllerTest extends TestCase
         });
 
         $this->assertStringContainsString('controller <Hello> created successfully.', $result);
-
         $this->assertStringNotContainsString('class Hello extends Controller', file_get_contents($file));
-
         $this->assertStringContainsString('function helloWorldYes', file_get_contents($file));
-
         unlink($file);
+    }
+
+    public function testWithCustomStub(): void
+    {
+        $file = __DIR__.'/../../Console/BarValue.php';
+        if (is_file($file)) {
+            unlink($file);
+        }
+
+        $result = $this->runCommand(new Controller(), [
+            'command'     => 'make:controller',
+            'name'        => 'BarValue',
+            'action'      => 'hello',
+            '--namespace' => 'common',
+            '--stub' => __DIR__.'/../assert/controller_stub'
+        ], function ($container) {
+            $this->initContainerService($container);
+        });
+
+        $this->assertStringContainsString('controller <BarValue> created successfully.', $result);
+        $this->assertStringContainsString('controller_stub', file_get_contents($file));
+        unlink($file);
+    }
+
+    public function testWithCustomStubButNotFound(): void
+    {
+        $result = $this->runCommand(new Controller(), [
+            'command'     => 'make:controller',
+            'name'        => 'BarValue',
+            'action'      => 'hello',
+            '--namespace' => 'common',
+            '--stub' => '/notFound'
+        ], function ($container) {
+            $this->initContainerService($container);
+        });
+
+        $this->assertStringContainsString('Controller stub file `/notFound` was not found.', $result);
     }
 
     protected function initContainerService(IContainer $container): void
