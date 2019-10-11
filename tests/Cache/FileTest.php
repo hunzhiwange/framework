@@ -114,7 +114,7 @@ class FileTest extends TestCase
         $this->assertFalse($file->get('hello'));
         $file->set('hello', 'world');
         $this->assertTrue(is_file($filePath));
-        $this->assertSame('world', $file->get('hello')); 
+        $this->assertSame('world', $file->get('hello'));     
         $file->delete('hello'); 
     }
 
