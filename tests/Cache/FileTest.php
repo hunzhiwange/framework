@@ -23,6 +23,14 @@ namespace Tests\Cache;
 use Leevel\Cache\File;
 use Tests\TestCase;
 
+// @codeCoverageIgnoreStart
+if (class_exists(PhinxBreakpoint::class)) {
+    class_alias(PhinxBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint');
+} else {
+    class_alias(VirtualBreakpoint::class, __NAMESPACE__.'\\BaseBreakpoint');
+}
+/** @codeCoverageIgnoreEnd */
+
 /**
  * file test.
  *
