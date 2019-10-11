@@ -24,10 +24,10 @@ use Leevel\Database\Console\Virtual\Create as VirtualCreate;
 use Phinx\Console\Command\Create as PhinxCreate;
 
 // @codeCoverageIgnoreStart
-if (class_exists(PhinxCreate::class)) { 
-    class_alias(PhinxCreate::class, __NAMESPACE__.'\\BaseCreate'); 
-} else { 
-    class_alias(VirtualCreate::class, __NAMESPACE__.'\\BaseCreate'); 
+if (class_exists(PhinxCreate::class)) {
+    class_alias(PhinxCreate::class, __NAMESPACE__.'\\BaseCreate');
+} else {
+    class_alias(VirtualCreate::class, __NAMESPACE__.'\\BaseCreate');
 }
 // @codeCoverageIgnoreEnd
 

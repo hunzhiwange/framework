@@ -24,10 +24,10 @@ use Leevel\Database\Console\Virtual\Status as VirtualStatus;
 use Phinx\Console\Command\Status as PhinxStatus;
 
 // @codeCoverageIgnoreStart
-if (class_exists(PhinxStatus::class)) { 
-    class_alias(PhinxStatus::class, __NAMESPACE__.'\\BaseStatus'); 
-} else { 
-    class_alias(VirtualStatus::class, __NAMESPACE__.'\\BaseStatus'); 
+if (class_exists(PhinxStatus::class)) {
+    class_alias(PhinxStatus::class, __NAMESPACE__.'\\BaseStatus');
+} else {
+    class_alias(VirtualStatus::class, __NAMESPACE__.'\\BaseStatus');
 }
 // @codeCoverageIgnoreEnd
 

@@ -24,10 +24,10 @@ use Leevel\Database\Console\Virtual\Migrate as VirtualMigrate;
 use Phinx\Console\Command\Migrate as PhinxMigrate;
 
 // @codeCoverageIgnoreStart
-if (class_exists(PhinxMigrate::class)) { 
-    class_alias(PhinxMigrate::class, __NAMESPACE__.'\\BaseMigrate'); 
-} else { 
-    class_alias(VirtualMigrate::class, __NAMESPACE__.'\\BaseMigrate'); 
+if (class_exists(PhinxMigrate::class)) {
+    class_alias(PhinxMigrate::class, __NAMESPACE__.'\\BaseMigrate');
+} else {
+    class_alias(VirtualMigrate::class, __NAMESPACE__.'\\BaseMigrate');
 }
 // @codeCoverageIgnoreEnd
 

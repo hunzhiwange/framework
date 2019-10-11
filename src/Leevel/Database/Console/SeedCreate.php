@@ -24,10 +24,10 @@ use Leevel\Database\Console\Virtual\SeedCreate as VirtualSeedCreate;
 use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
 
 // @codeCoverageIgnoreStart
-if (class_exists(PhinxSeedCreate::class)) { 
-    class_alias(PhinxSeedCreate::class, __NAMESPACE__.'\\BaseSeedCreate'); 
-} else { 
-    class_alias(VirtualSeedCreate::class, __NAMESPACE__.'\\BaseSeedCreate'); 
+if (class_exists(PhinxSeedCreate::class)) {
+    class_alias(PhinxSeedCreate::class, __NAMESPACE__.'\\BaseSeedCreate');
+} else {
+    class_alias(VirtualSeedCreate::class, __NAMESPACE__.'\\BaseSeedCreate');
 }
 // @codeCoverageIgnoreEnd
 

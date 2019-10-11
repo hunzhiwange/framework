@@ -25,9 +25,9 @@ use Phinx\Console\Command\Seedrun as PhinxSeedRun;
 
 // @codeCoverageIgnoreStart
 if (class_exists(PhinxSeedRun::class)) {
-    class_alias(PhinxSeedRun::class, __NAMESPACE__.'\\BaseSeedRun'); 
-} else { 
-    class_alias(VirtualSeedRun::class, __NAMESPACE__.'\\BaseSeedRun'); 
+    class_alias(PhinxSeedRun::class, __NAMESPACE__.'\\BaseSeedRun');
+} else {
+    class_alias(VirtualSeedRun::class, __NAMESPACE__.'\\BaseSeedRun');
 }
 // @codeCoverageIgnoreEnd
 

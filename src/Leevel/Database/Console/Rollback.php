@@ -24,10 +24,10 @@ use Leevel\Database\Console\Virtual\Rollback as VirtualRollback;
 use Phinx\Console\Command\Rollback as PhinxRollback;
 
 // @codeCoverageIgnoreStart
-if (class_exists(PhinxRollback::class)) { 
-    class_alias(PhinxRollback::class, __NAMESPACE__.'\\BaseRollback'); 
-} else { 
-    class_alias(VirtualRollback::class, __NAMESPACE__.'\\BaseRollback'); 
+if (class_exists(PhinxRollback::class)) {
+    class_alias(PhinxRollback::class, __NAMESPACE__.'\\BaseRollback');
+} else {
+    class_alias(VirtualRollback::class, __NAMESPACE__.'\\BaseRollback');
 }
 // @codeCoverageIgnoreEnd
 
