@@ -665,6 +665,48 @@ class AppTest extends TestCase
         $this->assertSame(__DIR__.'/hello/option.php', $app->optionCachedPath());
     }
 
+    /**
+     * @dataProvider envProvider
+     *
+     * @param string $name
+     * @param mixed  $value
+     * @param mixed  $envValue
+     */
+    public function testEnv(string $name, $value, $envValue): void
+    {
+        $app = $this->createApp(); 
+        $name = 'test_env_'.$name;
+        putenv($name.'='.$value);
+        $this->assertSame($envValue, $app->env($name));
+    }
+
+    public function envProvider(): array
+    {
+        return [
+            ['bar', 'true', true],
+            ['bar', '(true)', true],
+            ['bar', 'false', false],
+            ['bar', '(false)', false],
+            ['bar', 'empty', ''],
+            ['bar', '(empty)', ''],
+            ['bar', 'null', null],
+            ['bar', '(null)', null],
+            ['bar', '"hello"', 'hello'],
+            ['bar', "'hello'", "'hello'"],
+            ['bar', true, '1'],
+            ['bar', false, ''],
+            ['bar', 1, '1'],
+            ['bar', '', ''],
+        ];
+    }
+
+    public function testEnvFalse(): void
+    {
+        $app = $this->createApp(); 
+        $this->assertSame('default message', $app->env('not_found_env', 'default message'));
+        $this->assertNull($app->env('not_found_env'));
+    }
+
     protected function createApp(): App
     {
         $container = Container::singletons();
