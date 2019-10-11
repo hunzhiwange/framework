@@ -610,17 +610,14 @@ class Router implements IRouter
     {
         if (false !== strpos($matchedBind, '@')) {
             list($bindClass, $method) = explode('@', $matchedBind);
-
             if (!class_exists($bindClass)) {
                 return false;
             }
-
             $controller = $this->container->make($bindClass);
         } else {
             if (!class_exists($matchedBind)) {
                 return false;
             }
-
             $controller = $this->container->make($matchedBind);
             $method = 'handle';
         }
@@ -659,11 +656,9 @@ class Router implements IRouter
         else {
             $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
             $controllerClass = $this->normalizeForSubdir($controllerClass);
-
             if (!class_exists($controllerClass)) {
                 return false;
             }
-
             $controller = $this->container->make($controllerClass);
             $method = $this->normalizeForSubdir($matchedAction, true);
         }
@@ -718,7 +713,6 @@ class Router implements IRouter
     protected function matchedPrefix(): ?string
     {
         $prefix = $this->matchedData[static::PREFIX];
-
         if (!$prefix || is_scalar($prefix)) {
             return $prefix;
         }

@@ -420,7 +420,7 @@ class RouterTest extends TestCase
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router Tests\Router\Controllers\Hello\ControllerFoundMethodNot::foo() was not found.'
+            'The router Tests\\Router\\Controllers\\Hello\\ControllerFoundMethodNot::foo() was not found.'
         );
 
         $pathInfo = '/:tests/hello/ControllerFoundMethodNot/foo';
@@ -438,7 +438,7 @@ class RouterTest extends TestCase
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router Tests\Router\Controllers\Hello::MethodClassFoundButEnterMethodNot() was not found.'
+            'The router Tests\\Router\\Controllers\\Hello::MethodClassFoundButEnterMethodNot() was not found.'
         );
 
         $pathInfo = '/:tests/hello/MethodClassFoundButEnterMethodNot';

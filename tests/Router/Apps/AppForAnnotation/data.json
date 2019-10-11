@@ -74,6 +74,9 @@
                 "\/bindNotFound\/test2\/": {
                     "bind": "\\Tests\\Router\\Controllers\\Annotation\\BindNotFound"
                 },
+                "\/bindNotFound\/test3\/": {
+                    "bind": "\\Tests\\Router\\Controllers\\Annotation\\BindMethodNotFound"
+                },
                 "\/bindNotSet\/test\/": {
                     "bind": null
                 },

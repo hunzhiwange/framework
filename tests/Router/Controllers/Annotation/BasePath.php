@@ -31,7 +31,7 @@ namespace Tests\Router\Controllers\Annotation;
  */
 class BasePath
 {
-    public function normalize()
+    public function normalize(): string
     {
         return 'hello plus for basePath normalize';
     }

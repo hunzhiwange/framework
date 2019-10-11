@@ -20,25 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Router\Controllers\Annotation;
 
-use Leevel\Di\IContainer;
-
-/**
- * petLeevel.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.18
- *
- * @version 1.0
- */
-class PetLeevel
+class BindMethodNotFound
 {
-    public function handle(IContainer $container): string
+    public function notFound(): string
     {
-        return 'hello plus for petLeevel, params petId is '.
-            $container
-                ->make('request')
-                ->params
-                ->get('petId');
+        return 'bind method not found';
     }
 }
