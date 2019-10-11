@@ -17,9 +17,6 @@ matrix:
       env: setup=lowest swoole_version="v4.4.5"
 
   fast_finish: true
-  allow_failures:
-    - php: 7.3.2
-      env: setup=lowest swoole_version="v4.4.5"
 
 sudo: false
 
