@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
+use Leevel\Http\IRequest;
 use Leevel\Http\RedirectResponse;
 use Leevel\Session\ISession;
 use Tests\TestCase;
@@ -100,8 +101,15 @@ class RedirectResponseTest extends TestCase
 
         $response->with('foo', 'bar');
         $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
+    }
 
-        $data = ['myinput', 'world'];
+    public function testWithInput(): void
+    {
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+
+        $data = ['myinput' => 'world'];
         $response->setSession($this->mokeSessionArrayForWith());
         $response->withInput($data);
         $this->assertSame($response->getSession()->getFlash('inputs'), $data);
@@ -109,10 +117,27 @@ class RedirectResponseTest extends TestCase
 
     public function testWithError(): void
     {
-        $response = new RedirectResponse('foo.bar');
-        $response->setSession($this->mokeSessionForWithError());
-        $this->assertInstanceOf(ISession::class, $response->getSession());
+        $errorsDefault = [
+            'name' => 'less than 6',
+            'age'  => 'must be 18',
+        ];
 
+        $errorsCustom = [
+            'foo' => 'bar is error',
+        ];
+        $data = ['default' => $errorsDefault, 'custom' => $errorsCustom];
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWithError($data));
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+        $response->withErrors($errorsDefault);
+        $response->withErrors($errorsCustom, 'custom');
+
+        $this->assertSame($response->getSession()->getFlash('errors'), $data);
+    }
+
+    public function testWithErrorFlow(): void
+    {
+        $condition = false;
         $errorsDefault = [
             'name' => 'less than 6',
             'age'  => 'must be 18',
@@ -122,13 +147,42 @@ class RedirectResponseTest extends TestCase
             'foo' => 'bar is error',
         ];
 
-        $response->withErrors($errorsDefault);
-        $response->withErrors($errorsCustom, 'custom');
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWithError(false === $condition ? $errorsCustom : $errorsDefault));
+        $this->assertInstanceOf(ISession::class, $response->getSession());
 
-        $this->assertSame($response->getSession()->getFlash('errors'), [
-            'default' => $errorsDefault,
-            'custom'  => $errorsCustom,
-        ]);
+        $response
+            ->if($condition)
+            ->withErrors($errorsDefault)
+            ->else()
+            ->withErrors($errorsCustom, 'custom')
+            ->fi();
+        $this->assertSame($response->getSession()->getFlash('errors'), $errorsCustom);
+    }
+
+    public function testWithErrorFlow2(): void
+    {
+        $condition = true;
+        $errorsDefault = [
+            'name' => 'less than 6',
+            'age'  => 'must be 18',
+        ];
+
+        $errorsCustom = [
+            'foo' => 'bar is error',
+        ];
+
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWithError(false === $condition ? $errorsCustom : $errorsDefault));
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+
+        $response
+            ->if($condition)
+            ->withErrors($errorsDefault)
+            ->else()
+            ->withErrors($errorsCustom, 'custom')
+            ->fi();
+        $this->assertSame($response->getSession()->getFlash('errors'), $errorsDefault);
     }
 
     public function testSetTargetUrlFlow(): void
@@ -163,44 +217,207 @@ class RedirectResponseTest extends TestCase
         $this->assertSame('foo', $response->getTargetUrl());
     }
 
-    protected function mokeSessionForWith(): ISession
+    public function testWithFlow(): void
     {
-        $session = $this->createMock(ISession::class);
+        $condition = false;
 
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith(false === $condition ? 'bar2' : 'bar'));
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+
+        $response
+            ->if($condition)
+            ->with('foo', 'bar')
+            ->else()
+            ->with('foo', 'bar2')
+            ->fi();
+        $this->assertSame($response->getSession()->getFlash('foo'), 'bar2');
+    }
+
+    public function testWithFlow2(): void
+    {
+        $condition = true;
+
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith(false === $condition ? 'bar2' : 'bar'));
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+
+        $response
+            ->if($condition)
+            ->with('foo', 'bar')
+            ->else()
+            ->with('foo', 'bar2')
+            ->fi();
+        $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
+    }
+
+    public function testWithInputFlow(): void
+    {
+        $condition = false;
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+
+        $data = ['myinput' => 'world'];
+        $data2 = ['myinput2' => 'world2'];
+        $response->setSession($this->mokeSessionArrayForWith(false === $condition ? $data2 : $data));
+        $response
+            ->if($condition)
+            ->withInput($data)
+            ->else()
+            ->withInput($data2)
+            ->fi();
+        $this->assertSame($response->getSession()->getFlash('inputs'), $data2);
+    }
+
+    public function testWithInputFlow2(): void
+    {
+        $condition = true;
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+
+        $data = ['myinput', 'world'];
+        $data2 = ['myinput2', 'world2'];
+        $response->setSession($this->mokeSessionArrayForWith(false === $condition ? $data2 : $data));
+        $response
+            ->if($condition)
+            ->withInput($data)
+            ->else()
+            ->withInput($data2)
+            ->fi();
+        $this->assertSame($response->getSession()->getFlash('inputs'), $data);
+    }
+
+    public function testSetRequest(): void
+    {
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+        $this->assertNull($response->getRequest());
+
+        $response->setRequest($this->mockRequest([], []));
+        $this->assertInstanceOf(IRequest::class, $response->getRequest());
+    }
+
+    public function testOnlyInput(): void
+    {
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+        $this->assertNull($response->getRequest());
+
+        $response->setRequest($this->mockRequest(['foo' => 'bar'], []));
+        $this->assertInstanceOf(IRequest::class, $request = $response->getRequest());
+        $response->onlyInput('foo');
+        $this->assertSame(['foo' => 'bar'], $request->only(['foo']));
+        $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
+    }
+
+    public function testOnlyInputMustHasAtLeastOneArg(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Method onlyInput need at least one arg.');
+
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+        $this->assertNull($response->getRequest());
+
+        $response->setRequest($this->mockRequest(['foo' => 'bar'], []));
+        $this->assertInstanceOf(IRequest::class, $request = $response->getRequest());
+        $response->onlyInput();
+    }
+
+    public function testExceptInput(): void
+    {
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+        $this->assertNull($response->getRequest());
+
+        $response->setRequest($this->mockRequest(['foo' => 'bar'], []));
+        $this->assertInstanceOf(IRequest::class, $request = $response->getRequest());
+        $response->exceptInput('hello');
+        $this->assertSame(['foo' => 'bar'], $request->only(['foo']));
+        $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
+    }
+
+    public function testExceptInputMustHasAtLeastOneArg(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Method exceptInput need at least one arg.');
+
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWith());
+        $this->assertInstanceOf(ISession::class, $response->getSession());
+        $this->assertNull($response->getRequest());
+
+        $response->setRequest($this->mockRequest(['foo' => 'bar'], []));
+        $this->assertInstanceOf(IRequest::class, $request = $response->getRequest());
+        $response->exceptInput();
+    }
+
+    public function mokeSessionForWithReturnValue($name)
+    {
+        if ('inputs' === $name) {
+            return [];
+        }
+
+        if (isset($GLOBALS['MOCK_SESSION_VALUE'])) {
+            $value = $GLOBALS['MOCK_SESSION_VALUE'];
+            unset($GLOBALS['MOCK_SESSION_VALUE']);
+
+            return $value;
+        }
+
+        return 'bar';
+    }
+
+    protected function mokeSessionForWith(string $returnValue = 'bar'): ISession
+    {
+        $GLOBALS['MOCK_SESSION_VALUE'] = $returnValue;
+        $session = $this->createMock(ISession::class);
         $session
             ->method('getFlash')
-            ->willReturn('bar');
+            ->willReturnCallback([$this, 'mokeSessionForWithReturnValue']);
 
         return $session;
     }
 
-    protected function mokeSessionArrayForWith()
+    protected function mokeSessionArrayForWith(array $returnValue = ['myinput' => 'world'])
     {
         $session = $this->createMock(ISession::class);
-
         $session
             ->method('getFlash')
-            ->willReturn(['myinput', 'world']);
+            ->willReturn($returnValue);
 
         return $session;
     }
 
-    protected function mokeSessionForWithError()
+    protected function mokeSessionForWithError(array $data): ISession
     {
         $session = $this->createMock(ISession::class);
-
         $session
             ->method('getFlash')
-            ->willReturn([
-                'default' => [
-                    'name' => 'less than 6',
-                    'age'  => 'must be 18',
-                ],
-                'custom' => [
-                    'foo' => 'bar is error',
-                ],
-            ]);
+            ->willReturn($data);
 
         return $session;
+    }
+
+    protected function mockRequest(array $returnValue, array $exceptReturnValue): IRequest
+    {
+        $request = $this->createMock(IRequest::class);
+        $request
+            ->method('only')
+            ->willReturn($returnValue);
+        $request
+            ->method('except')
+            ->willReturn($exceptReturnValue);
+        $request
+            ->method('input')
+            ->willReturn([]);
+
+        return $request;
     }
 }
