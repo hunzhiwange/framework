@@ -687,6 +687,23 @@ class ContainerTest extends TestCase
         $this->assertNull($container->removeCoroutine('test'));
     }
 
+    public function testBindAsCoroutine(): void
+    {
+        $coroutine = $this->createMock(ICoroutine::class);
+
+        $coroutine->method('context')->willReturn(true);
+        $this->assertTrue($coroutine->context('test'));
+
+        $container = new Container();
+        $container->setCoroutine($coroutine);
+        $this->assertInstanceOf(ICoroutine::class, $container->getCoroutine());
+
+        $container->bind('test', new Test26(), true, true);
+
+        $this->assertInstanceOf(Test26::class, $container->make('test'));
+        $this->assertTrue($container->existsCoroutine('test'));
+    }
+
     public function testClassArgsClassAsStringContainer(): void
     {
         $this->expectException(\InvalidArgumentException::class);
