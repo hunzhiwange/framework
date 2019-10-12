@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\ResponseHeaderBag;
+use Leevel\Support\Arr;
 use Tests\TestCase;
 
 /**
@@ -56,5 +57,154 @@ class ResponseHeaderBagTest extends TestCase
         foreach (array_keys($headers) as $headerName) {
             $this->assertArrayHasKey(strtolower($headerName), $all, '->all() gets all input keys in strtolower case');
         }
+    }
+
+    public function testCookie(): void
+    {
+        $headers = [
+            'foo'              => 'bar',
+        ];
+        $bag = new ResponseHeaderBag($headers);
+        $bag->cookie('hello', 'world');
+        $cookie = $bag->getCookies();
+        foreach ($cookie as &$v) {
+            $v = Arr::except($v, [2]);
+        }
+
+        $data = <<<'eot'
+            {
+                "hello": {
+                    "0": "hello",
+                    "1": "world",
+                    "3": "\/",
+                    "4": "",
+                    "5": false,
+                    "6": false
+                }
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $cookie
+            )
+        );
+    }
+
+    public function testSetCookie(): void
+    {
+        $headers = [
+            'foo'              => 'bar',
+        ];
+        $bag = new ResponseHeaderBag($headers);
+        $bag->setCookie('hello', 'world');
+        $cookie = $bag->getCookies();
+        foreach ($cookie as &$v) {
+            $v = Arr::except($v, [2]);
+        }
+
+        $data = <<<'eot'
+            {
+                "hello": {
+                    "0": "hello",
+                    "1": "world",
+                    "3": "\/",
+                    "4": "",
+                    "5": false,
+                    "6": false
+                }
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $cookie
+            )
+        );
+    }
+
+    public function testWithCookies(): void
+    {
+        $headers = [
+            'foo'              => 'bar',
+        ];
+        $bag = new ResponseHeaderBag($headers);
+        $bag->withCookies(['hello' => 'world', 'foo' => 'bar']);
+        $cookie = $bag->getCookies();
+        foreach ($cookie as &$v) {
+            $v = Arr::except($v, [2]);
+        }
+
+        $data = <<<'eot'
+            {
+                "hello": {
+                    "0": "hello",
+                    "1": "world",
+                    "3": "\/",
+                    "4": "",
+                    "5": false,
+                    "6": false
+                },
+                "foo": {
+                    "0": "foo",
+                    "1": "bar",
+                    "3": "\/",
+                    "4": "",
+                    "5": false,
+                    "6": false
+                }
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $cookie
+            )
+        );
+    }
+
+    public function testCall(): void
+    {
+        $headers = [
+            'foo'              => 'bar',
+        ];
+        $bag = new ResponseHeaderBag($headers);
+        $bag->withCookies(['hello' => 'world', 'foo' => 'bar']);
+        $bag->delete('hello');
+        $cookie = $bag->getCookies();
+        foreach ($cookie as &$v) {
+            $v = Arr::except($v, [2]);
+        }
+
+        $data = <<<'eot'
+            {
+                "hello": {
+                    "0": "hello",
+                    "1": null,
+                    "3": "\/",
+                    "4": "",
+                    "5": false,
+                    "6": false
+                },
+                "foo": {
+                    "0": "foo",
+                    "1": "bar",
+                    "3": "\/",
+                    "4": "",
+                    "5": false,
+                    "6": false
+                }
+            }
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $cookie
+            )
+        );
     }
 }
