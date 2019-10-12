@@ -54,7 +54,6 @@ class FileBag extends Bag
     public function __construct(array $elements = [])
     {
         $elements = $this->normalizeArray($elements);
-
         $this->add($elements);
     }
 
@@ -64,9 +63,7 @@ class FileBag extends Bag
     public function replace(array $elements = []): void
     {
         $this->elements = [];
-
         $elements = $this->normalizeArray($elements);
-
         $this->add($elements);
     }
 
@@ -108,7 +105,6 @@ class FileBag extends Bag
     public function getArr(string $key, array $defaults = [])
     {
         $files = [];
-
         foreach ($this->elements as $k => $value) {
             if (0 === strpos($k, $key) && null !== $value) {
                 $files[] = $value;
@@ -132,7 +128,6 @@ class FileBag extends Bag
         }
 
         $file = $this->normalizeFile($file);
-
         if (UPLOAD_ERR_NO_FILE === $file['error']) {
             $file = null;
         } else {
@@ -154,7 +149,6 @@ class FileBag extends Bag
     protected function normalizeFile(array $data): array
     {
         $result = [];
-
         foreach ($data as $key => $value) {
             if (in_array($key, static::$fileKeys, true)) {
                 $result[$key] = $value;
@@ -162,7 +156,6 @@ class FileBag extends Bag
         }
 
         $keys = $this->normalizeKey($result);
-
         if ($keys !== static::$fileKeys) {
             $e = sprintf('An array uploaded file must be contain keys %s.', implode(',', static::$fileKeys));
 
@@ -214,7 +207,6 @@ class FileBag extends Bag
                         }
 
                         $result[$key.'\\'.$index] = $element;
-
                         $result = $this->normalizeArray($result);
                     }
                 } else {
