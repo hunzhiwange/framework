@@ -106,13 +106,9 @@ class FileResponseTest extends TestCase
     public function testSetFileWithSplFileInfo(): void
     {
         $filePath = __DIR__.'/assert/setFileWithSplFileInfo_test.txt';
-
         file_put_contents($filePath, 'foo');
-
         $file = new SplFileInfo($filePath);
-
         $response = new FileResponse($file, 404, ['X-Header' => 'Foo'], null, true, true);
-
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('Foo', $response->headers->get('X-Header'));
         $this->assertTrue($response->headers->has('ETag'));
@@ -123,6 +119,101 @@ class FileResponseTest extends TestCase
         $this->assertSame(404, $response->getStatusCode());
         $this->assertFalse($response->headers->has('ETag'));
         $this->assertSame('inline; filename="setFileWithSplFileInfo_test.txt"', $response->headers->get('Content-Disposition'));
+
+        unlink($filePath);
+    }
+
+    public function testSendContent(): void
+    {
+        $filePath = __DIR__.'/assert/setFileWithSplFileObject_test.txt';
+        file_put_contents($filePath, 'foo');
+        $file = new SplFileObject($filePath);
+        $response = new FileResponse($file, 404, ['X-Header' => 'Foo'], null, true, true);
+
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('Foo', $response->headers->get('X-Header'));
+        $this->assertTrue($response->headers->has('ETag'));
+        $this->assertTrue($response->headers->has('Last-Modified'));
+        $this->assertFalse($response->headers->has('Content-Disposition'));
+
+        $content = $this->obGetContents(function () use ($response): void {
+            $response->sendContent();
+        });
+        $this->assertSame($content, '');
+
+        unlink($filePath);
+    }
+
+    public function testSendContent2(): void
+    {
+        $filePath = __DIR__.'/assert/setFileWithSplFileObject_test.txt';
+        file_put_contents($filePath, 'foo');
+        $file = new SplFileObject($filePath);
+        $response = new FileResponse($file, 200, ['X-Header' => 'Foo'], null, true, true);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('Foo', $response->headers->get('X-Header'));
+        $this->assertTrue($response->headers->has('ETag'));
+        $this->assertTrue($response->headers->has('Last-Modified'));
+        $this->assertFalse($response->headers->has('Content-Disposition'));
+
+        $content = $this->obGetContents(function () use ($response): void {
+            $response->sendContent();
+        });
+        $this->assertSame($content, 'foo');
+
+        unlink($filePath);
+    }
+
+    public function testSendContentFlow(): void
+    {
+        $condition = false;
+        $filePath = __DIR__.'/assert/setFileWithSplFileObject_test.txt';
+        file_put_contents($filePath, 'foo');
+        $file = new SplFileObject($filePath);
+        $response = new FileResponse($file, 200, ['X-Header' => 'Foo'], null, true, true);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('Foo', $response->headers->get('X-Header'));
+        $this->assertTrue($response->headers->has('ETag'));
+        $this->assertTrue($response->headers->has('Last-Modified'));
+        $this->assertFalse($response->headers->has('Content-Disposition'));
+
+        $content = $this->obGetContents(function () use ($response, $condition): void {
+            $response
+                ->if($condition)
+                ->sendContent()
+                ->else()
+                ->if();
+        });
+        $this->assertSame($content, '');
+
+        unlink($filePath);
+    }
+
+    public function testSendContentFlow2(): void
+    {
+        $condition = true;
+
+        $filePath = __DIR__.'/assert/setFileWithSplFileObject_test.txt';
+        file_put_contents($filePath, 'foo');
+        $file = new SplFileObject($filePath);
+        $response = new FileResponse($file, 200, ['X-Header' => 'Foo'], null, true, true);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('Foo', $response->headers->get('X-Header'));
+        $this->assertTrue($response->headers->has('ETag'));
+        $this->assertTrue($response->headers->has('Last-Modified'));
+        $this->assertFalse($response->headers->has('Content-Disposition'));
+
+        $content = $this->obGetContents(function () use ($response, $condition): void {
+            $response
+                ->if($condition)
+                ->sendContent()
+                ->else()
+                ->if();
+        });
+        $this->assertSame($content, 'foo');
 
         unlink($filePath);
     }
@@ -230,6 +321,9 @@ class FileResponseTest extends TestCase
         $this->assertTrue($response->headers->has('Last-Modified'));
         $this->assertTrue($response->headers->has('Content-Disposition'));
         $this->assertSame('inline; filename="setFileFlow_test2.txt"', $response->headers->get('Content-Disposition'));
+        $this->assertInstanceOf(File::class, $file = $response->getFile());
+        $this->assertSame($filePath2, $file->getPathname());
+        $this->assertSame('setFileFlow_test2.txt', $file->getFilename());
 
         unlink($filePath);
         unlink($filePath2);
