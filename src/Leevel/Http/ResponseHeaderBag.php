@@ -59,7 +59,6 @@ class ResponseHeaderBag extends HeaderBag
     public function __construct(array $elements = [])
     {
         parent::__construct($elements);
-
         $this->cookie = new Cookie();
     }
 

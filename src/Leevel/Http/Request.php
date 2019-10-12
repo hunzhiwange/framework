@@ -207,7 +207,6 @@ class Request implements IRequest, IArray, ArrayAccess
         $this->files = new FileBag($files);
         $this->server = new ServerBag($server);
         $this->headers = new HeaderBag($this->server->getHeaders());
-
         $this->content = $content;
         $this->baseUrl = null;
         $this->requestUri = null;
@@ -224,7 +223,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public static function createFromGlobals(): IRequest
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
-
         $request = static::normalizeRequestFromContent($request);
 
         return $request;
@@ -272,7 +270,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function get(string $key, $defaults = null)
     {
         $all = $this->all();
-
         if (array_key_exists($key, $all)) {
             return $all[$key];
         }
@@ -290,7 +287,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function exists(array $keys): bool
     {
         $input = $this->all();
-
         foreach ($keys as $value) {
             if (!array_key_exists($value, $input)) {
                 return false;
@@ -328,9 +324,7 @@ class Request implements IRequest, IArray, ArrayAccess
     public function only(array $keys): array
     {
         $results = [];
-
         $input = $this->all();
-
         foreach ($keys as $key) {
             $results[$key] = $input[$key] ?? null;
         }
@@ -348,7 +342,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function except(array $keys): array
     {
         $results = $this->all();
-
         foreach ($keys as $key) {
             if (array_key_exists($key, $results)) {
                 unset($results[$key]);
@@ -379,7 +372,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function input(?string $key = null, $defaults = null)
     {
         $input = $this->getInputSource()->all() + $this->query->all();
-
         if (null === $key) {
             return $input;
         }
@@ -464,7 +456,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function hasFile(string $key): bool
     {
         $files = $this->file($key);
-
         if (!is_array($files)) {
             $files = [$files];
         }
@@ -603,7 +594,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function isAjax(): bool
     {
         $field = static::VAR_AJAX;
-
         if ($this->request->has($field) || $this->query->has($field)) {
             return true;
         }
@@ -639,7 +629,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function isPjax(): bool
     {
         $field = static::VAR_PJAX;
-
         if ($this->request->has($field) || $this->query->has($field)) {
             return true;
         }
@@ -665,7 +654,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function isJson(): bool
     {
         $field = static::VAR_JSON;
-
         if ($this->request->has($field) || $this->query->has($field)) {
             return true;
         }
@@ -681,7 +669,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function isRealJson(): bool
     {
         $contentType = $this->headers->get('CONTENT_TYPE');
-
         if (!$contentType) {
             return false;
         }
@@ -703,7 +690,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function isAcceptJson(): bool
     {
         $field = static::VAR_ACCEPT_JSON;
-
         if ($this->request->has($field) || $this->query->has($field)) {
             return true;
         }
@@ -723,7 +709,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function isRealAcceptJson(): bool
     {
         $accept = $this->headers->get('ACCEPT');
-
         if (!$accept) {
             return false;
         }
@@ -745,7 +730,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function isAcceptAny(): bool
     {
         $accept = $this->headers->get('ACCEPT');
-
         if (!$accept) {
             return true;
         }
@@ -869,7 +853,6 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $this->method = strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
-
         if ('POST' === $this->method) {
             if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
                 $this->method = strtoupper($method);
@@ -961,7 +944,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function getContent(): string
     {
         $resources = is_resource($this->content);
-
         if ($resources) {
             rewind($this->content);
 
@@ -998,7 +980,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
         $scriptName = $this->getScriptName();
         $scriptName = dirname($scriptName);
-
         if ('\\' === $scriptName) {
             $scriptName = '/';
         }
@@ -1043,7 +1024,6 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $scheme = $this->getScheme();
         $port = $this->getPort();
-
         if (('http' === $scheme && 80 === $port) || ('https' === $scheme && 443 === $port)) {
             return $this->getHost();
         }
@@ -1059,7 +1039,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function getHost(): string
     {
         $host = $this->headers->get('X_FORWARDED_HOST', $this->headers->get('HOST', ''));
-
         if (!$host) {
             $host = $this->server->get('SERVER_NAME', $this->server->get('SERVER_ADDR', ''));
         }
@@ -1103,7 +1082,6 @@ class Request implements IRequest, IArray, ArrayAccess
     public function getPort(): int
     {
         $port = (int) $this->server->get('SERVER_PORT');
-
         if (!$port) {
             $port = 'https' === $this->getScheme() ? 443 : 80;
         }
@@ -1159,7 +1137,6 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $pathInfo = $this->server->get('PATH_INFO');
-
         if ($pathInfo) {
             return $this->pathInfo = $this->parsePathInfo($pathInfo);
         }
@@ -1198,13 +1175,11 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $baseUrl = $this->getBaseUrl();
-
         if (empty($baseUrl)) {
             return '';
         }
 
         $filename = basename($this->server->get('SCRIPT_FILENAME', ''));
-
         if (basename($baseUrl) === $filename) {
             $basePath = dirname($baseUrl);
         } else {
@@ -1214,7 +1189,6 @@ class Request implements IRequest, IArray, ArrayAccess
         if ('\\' === \DIRECTORY_SEPARATOR) {
             $basePath = str_replace('\\', '/', $basePath);
         }
-
         $this->basePath = rtrim($basePath, '/');
 
         return $this->basePath;
@@ -1256,31 +1230,25 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         // 比对请求
-        $requestUri = $this->getRequestUri();
-
-        $requestUri = (string) $requestUri;
+        $requestUri = (string) $this->getRequestUri();
         $url = (string) $url;
-
         if ('' !== $requestUri && '/' !== substr($requestUri, 0, 1)) {
             $requestUri = '/'.$requestUri;
         }
 
         if ($url) {
             $prefix = $this->getUrlencodedPrefix($requestUri, $url);
-
             if (false !== $prefix) {
                 return $this->baseUrl = $prefix;
             }
 
             $prefix = $this->getUrlencodedPrefix($requestUri, dirname($url));
-
             if (false !== $prefix) {
                 return $this->baseUrl = rtrim($prefix, '/').'/';
             }
         }
 
         $basename = basename($url);
-
         if (empty($basename) || !strpos(rawurldecode($requestUri), $basename)) {
             return $this->baseUrl = '';
         }
@@ -1305,10 +1273,8 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $requestUri = $this->headers->get('X_REWRITE_URL', $this->server->get('REQUEST_URI', ''));
-
         if (!$requestUri) {
             $requestUri = $this->server->get('ORIG_PATH_INFO');
-
             if ($this->server->get('QUERY_STRING')) {
                 $requestUri .= '?'.$this->server->get('QUERY_STRING');
             }
@@ -1385,7 +1351,6 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         if ($pathInfo) {
             $ext = pathinfo($pathInfo, PATHINFO_EXTENSION);
-
             if ($ext) {
                 $pathInfo = substr($pathInfo, 0, -(strlen($ext) + 1));
             }
@@ -1410,12 +1375,10 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $parts = [];
-
         foreach (explode('&', $queryString) as $item) {
             if ('' === $item && '0' !== $item) {
                 continue;
             }
-
             $parts[] = $item;
         }
 
@@ -1461,7 +1424,6 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $len = strlen($prefix);
-
         if (preg_match(sprintf('#^(%%[[:xdigit:]]{2}|.){%d}#', $len), $strings, $matches)) {
             return $matches[0];
         }

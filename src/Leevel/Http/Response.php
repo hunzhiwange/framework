@@ -212,7 +212,6 @@ class Response implements IResponse
     public function send(): IResponse
     {
         $this->sendHeaders();
-
         $this->sendContent();
 
         return $this;
@@ -277,9 +276,7 @@ class Response implements IResponse
 
         if ($this->contentShouldJson($content)) {
             $this->setHeader('Content-Type', 'application/json');
-
             $this->isJson = true;
-
             $content = $this->contentToJson($content);
         }
 
@@ -693,7 +690,6 @@ class Response implements IResponse
 
         $date = new DateTime();
         $date->modify('+'.$minutes.'minutes');
-
         $this->setExpires($date);
         $this->setHeader('Cache-Control', 'max-age='.($minutes * 60));
 
@@ -922,7 +918,6 @@ class Response implements IResponse
     protected function normalizeDateTime(DateTime $datetime): string
     {
         $date = clone $datetime;
-
         $date->setTimezone(new DateTimeZone('UTC'));
 
         return $date->format('D, d M Y H:i:s').' GMT';

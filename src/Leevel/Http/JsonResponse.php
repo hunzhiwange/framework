@@ -85,7 +85,6 @@ class JsonResponse extends Response
         }
 
         $json ? $this->setJson($data) : $this->setData($data);
-
         $this->isJson = true;
     }
 

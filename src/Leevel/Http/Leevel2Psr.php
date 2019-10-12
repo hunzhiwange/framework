@@ -57,9 +57,7 @@ class Leevel2Psr
     {
         $server = normalizeServer($leevelRequest->server->all());
         $headers = $leevelRequest->headers->all();
-
         $body = new DiactorosStream($this->normalizeContent($leevelRequest->getContent()));
-
         $request = new ServerRequest(
             $server,
             normalizeUploadedFiles($this->getFiles($leevelRequest->files->all())),
@@ -68,7 +66,6 @@ class Leevel2Psr
             $body,
             $headers
         );
-
         $request = $request
             ->withCookieParams($leevelRequest->cookies->all())
             ->withQueryParams($leevelRequest->query->all())
@@ -93,7 +90,6 @@ class Leevel2Psr
     {
         $stream = new DiactorosStream('php://temp', 'wb+');
         $stream->write($leevelResponse->getContent());
-
         $headers = $leevelResponse->headers->all();
 
         if (!isset($headers['Set-Cookie']) &&
@@ -111,7 +107,6 @@ class Leevel2Psr
         );
 
         $protocolVersion = $leevelResponse->getProtocolVersion();
-
         if ('1.1' !== $protocolVersion) {
             $response = $response->withProtocolVersion($protocolVersion);
         }
@@ -145,7 +140,6 @@ class Leevel2Psr
     protected function getFiles(array $uploadedFiles): array
     {
         $files = [];
-
         foreach ($uploadedFiles as $key => $value) {
             if (null === $value) {
                 $files[$key] = new DiactorosUploadedFile(null, 0, UPLOAD_ERR_NO_FILE, null, null);

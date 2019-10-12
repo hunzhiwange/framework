@@ -92,7 +92,6 @@ class UploadedFile extends File
         $this->originalName = $originalName;
         $this->mimeType = $mimeType ?: 'application/octet-stream';
         $this->error = $error ?: UPLOAD_ERR_OK;
-
         $this->test = 5 === func_num_args();
 
         parent::__construct($path);
@@ -163,7 +162,6 @@ class UploadedFile extends File
             }
 
             $target = $this->getTargetFile($directory, $name);
-
             $this->moveToTarget($this->getPathname(), $target, true);
 
             return new File($target);
@@ -181,13 +179,11 @@ class UploadedFile extends File
     public static function getMaxFilesize(): int
     {
         $iniMax = strtolower(ini_get('upload_max_filesize'));
-
         if ('' === $iniMax) {
             return PHP_INT_MAX;
         }
 
         $max = ltrim($iniMax, '+');
-
         if (0 === strpos($max, '0x')) {
             $max = intval($max, 16);
         } elseif (0 === strpos($max, '0')) {
@@ -222,11 +218,9 @@ class UploadedFile extends File
     {
         $errorCode = $this->error;
         $maxFilesize = UPLOAD_ERR_INI_SIZE === $errorCode ? self::getMaxFilesize() / 1024 : 0;
-
         $message = isset(self::$errors[$errorCode]) ?
             self::$errors[$errorCode] :
             'The file %s was not uploaded due to an unknown error.';
-
         $message = sprintf($message, $this->getOriginalName(), $maxFilesize);
 
         return $message;
