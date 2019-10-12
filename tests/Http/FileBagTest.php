@@ -41,7 +41,6 @@ class FileBagTest extends TestCase
     protected function setUp(): void
     {
         $dir = sys_get_temp_dir().'/form_test';
-
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
@@ -69,9 +68,7 @@ class FileBagTest extends TestCase
     public function testShouldConvertsUploadedFiles(): void
     {
         $tmpFile = $this->createTempFile();
-
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
-
         $bag = new FileBag([
             'file' => [
                 'name'     => basename($tmpFile),
@@ -249,7 +246,6 @@ class FileBagTest extends TestCase
 
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
-
         $bag = new FileBag([
             'child' => [
                 'name' => [
@@ -266,6 +262,42 @@ class FileBagTest extends TestCase
                 ],
             ],
         ]);
+    }
+
+    public function testReplace(): void
+    {
+        $tmpFile = $this->createTempFile();
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+        $bag = new FileBag();
+        $bag->replace([
+            'file' => [
+                'name'     => basename($tmpFile),
+                'type'     => 'text/plain',
+                'tmp_name' => $tmpFile,
+                'error'    => 0,
+                'size'     => null,
+            ], ]);
+
+        $this->assertEquals($file, $bag->get('file'));
+    }
+
+    public function testUploadedInvalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'An array uploaded file must be contain keys error,name,size,tmp_name,type.'
+        );
+
+        $tmpFile = $this->createTempFile();
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+        $bag = new FileBag([
+            'file' => [
+                'name'     => basename($tmpFile),
+                'type'     => 'text/plain',
+                'error'    => 0,
+            ], ]);
+
+        $this->assertEquals($file, $bag->get('file'));
     }
 
     protected function createTempFile(): string
