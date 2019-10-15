@@ -215,4 +215,4 @@ class HotOverload extends Process
 }
 
 // import fn.
-class_exists(list_directory::class);
+class_exists(list_directory::class); // @codeCoverageIgnore
