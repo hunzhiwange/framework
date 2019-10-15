@@ -588,5 +588,5 @@ abstract class Server
 }
 
 // import fn.
-class_exists(create_directory::class);
-class_exists(create_file::class);
+class_exists(create_directory::class); // @codeCoverageIgnore
+class_exists(create_file::class); // @codeCoverageIgnore
