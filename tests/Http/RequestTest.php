@@ -452,6 +452,16 @@ class RequestTest extends TestCase
         $this->assertSame('/goods/foo/index.php/', $request->getBaseUrl());
     }
 
+    public function testGetBaseUrl4(): void
+    {
+        $server = [];
+        $server['SCRIPT_NAME'] = '/foo/index.php';
+        $server['SCRIPT_FILENAME'] = '/bar/index.php';
+        $server['REQUEST_URI'] = 'goods/foo/index.php/foo/bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/goods/foo/index.php/', $request->getBaseUrl());
+    }
+
     public function testGetBasePath(): void
     {
         $request = new Request();
@@ -516,6 +526,16 @@ class RequestTest extends TestCase
         $this->assertSame('', $request->getBasePath()); // 缓存
     }
 
+    public function testGetBasePath8(): void
+    {
+        $server = [];
+        $server['SCRIPT_NAME'] = '/hello/foo/'.PHP_EOL.'ind'.PHP_EOL.'ex.php';
+        $server['SCRIPT_FILENAME'] = '/hello/foo/'.PHP_EOL.'/ind'.PHP_EOL.'ex.php';
+        $server['REQUEST_URI'] = '/foo/'.PHP_EOL.'/index.php/foo/bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('', $request->getBasePath());
+    }
+
     public function testGetPathInfo(): void
     {
         $request = new Request();
@@ -544,6 +564,26 @@ class RequestTest extends TestCase
         $server['REQUEST_URI'] = '?a=b';
         $request = new Request([], [], [], [], [], $server);
         $this->assertSame('/', $request->getPathInfo());
+    }
+
+    public function testGetPathInfo5(): void
+    {
+        $server = [];
+        $server['SCRIPT_NAME'] = '/foo999999999999999999999999999999999999/index.php';
+        $server['SCRIPT_FILENAME'] = '/bar999999999999999999999999999999999999/index.php';
+        $server['REQUEST_URI'] = '/goods/info/index.php/foo/bar?a=b';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/', $request->getPathInfo());
+    }
+
+    public function testGetPathInfo6(): void
+    {
+        $server = [];
+        $server['SCRIPT_NAME'] = '/foo/index.php';
+        $server['SCRIPT_FILENAME'] = '/bar/index.php';
+        $server['REQUEST_URI'] = '/goods/info/index.php/foo/bar?a=b';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/ex.php/foo/bar', $request->getPathInfo());
     }
 
     public function testGetPathInfoWithExt(): void
@@ -1196,13 +1236,12 @@ class RequestTest extends TestCase
         $this->assertTrue($request->isSecure());
     }
 
-    public function testGetRequestUri(): void
+    public function testGetUrlEncodedPrefix(): void
     {
-        $server = [];
-        $server['REQUEST_URI'] = '';
-        $server['QUERY_STRING'] = 'foo=bar&hello=world';
-        $request = new Request([], [], [], [], [], $server);
-        $this->assertSame('?foo=bar&hello=world', $request->getRequestUri());
+        $request = new Request();
+        $value = '/hello/'.PHP_EOL.'/index.php';
+        $prefix = '/hello/'.PHP_EOL;
+        $this->assertFalse($this->invokeTestMethod($request, 'getUrlEncodedPrefix', [$value, $prefix]));
     }
 
     protected function createTempFile(): string
