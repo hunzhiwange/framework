@@ -147,11 +147,7 @@ class Leevel2Psr
                 continue;
             }
 
-            if ($value instanceof UploadedFile) {
-                $files[$key] = $this->createUploadedFile($value);
-            } else {
-                $files[$key] = $this->getFiles($value);
-            }
+            $files[$key] = $this->createUploadedFile($value);
         }
 
         return $files;
