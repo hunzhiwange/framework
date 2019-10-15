@@ -216,7 +216,7 @@ class Psr2Leevel
             }
         }
 
-        if (!isset($cookieName)) {
+        if (!$cookieName) {
             $e = 'The value of the Set-Cookie header is malformed.';
 
             throw new InvalidArgumentException($e);
