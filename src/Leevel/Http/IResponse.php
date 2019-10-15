@@ -544,24 +544,24 @@ interface IResponse
     /**
      * 设置 COOKIE 别名.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      *
      * @return \Leevel\Http\IResponse
      */
-    public function cookie(string $name, string $value = '', array $option = []): self;
+    public function cookie(string $name, $value = null, array $option = []): self;
 
     /**
      * 设置 COOKIE.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      *
      * @return \Leevel\Http\IResponse
      */
-    public function setCookie(string $name, string $value = '', array $option = []): self;
+    public function setCookie(string $name, $value = null, array $option = []): self;
 
     /**
      * 批量设置 COOKIE.

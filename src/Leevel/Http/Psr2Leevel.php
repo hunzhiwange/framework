@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use DateTime;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -88,12 +87,11 @@ class Psr2Leevel
     public function createResponse(ResponseInterface $psrResponse): IResponse
     {
         $response = new Response(
-            $psrResponse->getBody()->__toString(),
+            (string) $psrResponse->getBody(),
             $psrResponse->getStatusCode(),
             $psrResponse->getHeaders()
         );
         $response->setProtocolVersion($psrResponse->getProtocolVersion());
-
         foreach ($psrResponse->getHeader('Set-Cookie') as $cookie) {
             $response->setCookie(...$this->createCookie($cookie));
         }
@@ -188,7 +186,7 @@ class Psr2Leevel
             }
 
             if ('expires' === strtolower($name) && null !== $value) {
-                $cookieExpire = new DateTime($value);
+                $cookieExpire = strtotime($value) - time();
 
                 continue;
             }

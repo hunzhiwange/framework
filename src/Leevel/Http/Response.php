@@ -356,13 +356,13 @@ class Response implements IResponse
     /**
      * 设置 COOKIE 别名.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      *
      * @return \Leevel\Http\IResponse
      */
-    public function cookie(string $name, string $value = '', array $option = []): IResponse
+    public function cookie(string $name, $value = null, array $option = []): IResponse
     {
         return $this->setCookie($name, $value, $option);
     }
@@ -370,13 +370,13 @@ class Response implements IResponse
     /**
      * 设置 COOKIE.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      *
      * @return \Leevel\Http\IResponse
      */
-    public function setCookie(string $name, string $value = '', array $option = []): IResponse
+    public function setCookie(string $name, $value = null, array $option = []): IResponse
     {
         if ($this->checkFlowControl()) {
             return $this;
