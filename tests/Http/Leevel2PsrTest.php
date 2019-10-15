@@ -62,7 +62,6 @@ class Leevel2PsrTest extends TestCase
     {
         $tmpFile = $this->createTempFile();
         $tmpFile2 = $this->createTempFile();
-
         $files = [
             'file' => [
                 'name'     => [basename($tmpFile), basename($tmpFile2)],
@@ -87,6 +86,79 @@ class Leevel2PsrTest extends TestCase
         $this->assertCount(2, $uploadFiles);
         $this->assertInstanceOf(UploadedFile::class, $uploadFiles['file\\0']);
         $this->assertInstanceOf(UploadedFile::class, $uploadFiles['file\\1']);
+        $this->assertSame(0, $uploadFiles['file\\0']->getError());
+        $this->assertSame(0, $uploadFiles['file\\1']->getError());
+    }
+
+    public function testCreateRequestWithSubFile(): void
+    {
+        $tmpFile = $this->createTempFile();
+        $files = [
+            'child' => [
+                'name' => [
+                    'sub' => ['file' => basename($tmpFile)],
+                ],
+                'type' => [
+                    'sub' => ['file' => 'text/plain'],
+                ],
+                'tmp_name' => [
+                    'sub' => ['file' => $tmpFile],
+                ],
+                'error' => [
+                    'sub' => ['file' => 0],
+                ],
+                'size' => [
+                    'sub' => ['file' => null],
+                ],
+            ],
+        ];
+
+        $request = new Request(['hello' => 'world'], [], ['foo' => 'bar'], [], $files, ['REQUEST_URI' => 'http://queryphp.com/hello.html']);
+        $l2p = new Leevel2Psr();
+        $psrRequest = $l2p->createRequest($request);
+
+        $this->assertInstanceOf(ServerRequestInterface::class, $psrRequest);
+        $this->assertSame(['hello' => 'world'], $psrRequest->getQueryParams());
+        $this->assertSame(['foo' => 'bar'], $psrRequest->getAttributes());
+        $this->assertSame(['REQUEST_URI' => 'http://queryphp.com/hello.html'], $psrRequest->getServerParams());
+
+        $uploadFiles = $psrRequest->getUploadedFiles();
+        $this->assertIsArray($uploadFiles);
+        $this->assertCount(1, $uploadFiles);
+        $this->assertInstanceOf(UploadedFile::class, $uploadFiles['child\\sub\\file']);
+        $this->assertSame(0, $uploadFiles['child\\sub\\file']->getError());
+    }
+
+    public function testCreateRequestWithUploadErrNoFile(): void
+    {
+        $tmpFile = $this->createTempFile();
+        $tmpFile2 = $this->createTempFile();
+        $files = [
+            'file' => [
+                'name'     => [basename($tmpFile), basename($tmpFile2)],
+                'type'     => ['text/plain', 'text/plain'],
+                'tmp_name' => [$tmpFile, $tmpFile2],
+                'error'    => [0, UPLOAD_ERR_NO_FILE],
+                'size'     => [null, null],
+            ],
+        ];
+
+        $request = new Request(['hello' => 'world'], [], ['foo' => 'bar'], [], $files, ['REQUEST_URI' => 'http://queryphp.com/hello.html']);
+        $l2p = new Leevel2Psr();
+        $psrRequest = $l2p->createRequest($request);
+
+        $this->assertInstanceOf(ServerRequestInterface::class, $psrRequest);
+        $this->assertSame(['hello' => 'world'], $psrRequest->getQueryParams());
+        $this->assertSame(['foo' => 'bar'], $psrRequest->getAttributes());
+        $this->assertSame(['REQUEST_URI' => 'http://queryphp.com/hello.html'], $psrRequest->getServerParams());
+
+        $uploadFiles = $psrRequest->getUploadedFiles();
+        $this->assertIsArray($uploadFiles);
+        $this->assertCount(2, $uploadFiles);
+        $this->assertInstanceOf(UploadedFile::class, $uploadFiles['file\\0']);
+        $this->assertInstanceOf(UploadedFile::class, $uploadFiles['file\\1']);
+        $this->assertSame(0, $uploadFiles['file\\0']->getError());
+        $this->assertSame(UPLOAD_ERR_NO_FILE, $uploadFiles['file\\1']->getError());
     }
 
     public function testCreateResponse(): void
