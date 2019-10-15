@@ -86,7 +86,7 @@ class Psr2LeevelTest extends TestCase
         $this->assertEquals('hello world', $leevelRequest->getContent());
     }
 
-    public function testCreateResponse()
+    public function testCreateResponse(): void
     {
         $response = new Response(
             '1.0',
@@ -146,6 +146,27 @@ class Psr2LeevelTest extends TestCase
 
         $this->assertEquals('hello world', $leevelResponse->getContent());
         $this->assertEquals(200, $leevelResponse->getStatusCode());
+    }
+
+    public function testCreateResponseButCookieIsInvalid(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The value of the Set-Cookie header is malformed.');
+
+        $response = new Response(
+            '1.0',
+            [
+                'Set-Cookie' => [
+                    'theme=light',
+                    ' ',
+                ],
+            ],
+            new Stream(fopen(__DIR__.'/assert/stream.txt', 'r')),
+            200
+        );
+
+        $p2l = new Psr2Leevel();
+        $leevelResponse = $p2l->createResponse($response);
     }
 
     private function createUploadedFile($content, $error, $clientFileName, $clientMediaType)
