@@ -398,50 +398,119 @@ class RequestTest extends TestCase
     {
         $request = new Request();
         $this->assertSame('', $request->getScriptName());
+    }
 
+    public function testGetScriptName2(): void
+    {
         $server = [];
         $server['SCRIPT_NAME'] = '/index.php';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('/index.php', $request->getScriptName());
+    }
 
+    public function testGetScriptName3(): void
+    {
         $server = [];
         $server['ORIG_SCRIPT_NAME'] = '/frontend.php';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('/frontend.php', $request->getScriptName());
+    }
 
+    public function testGetScriptName4(): void
+    {
         $server = [];
         $server['SCRIPT_NAME'] = '/index.php';
         $server['ORIG_SCRIPT_NAME'] = '/frontend.php';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('/index.php', $request->getScriptName());
+    }
+
+    public function testGetBaseUrl(): void
+    {
+        $request = new Request();
+        $this->assertSame('', $request->getBaseUrl());
+    }
+
+    public function testGetBaseUrl2(): void
+    {
+        $server = [];
+        $server['SCRIPT_NAME'] = '/foo/index.php';
+        $server['SCRIPT_FILENAME'] = '/bar/index.php';
+        $server['REQUEST_URI'] = '/goods/info/index.php/foo/bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/foo/index.php/', $request->getBaseUrl());
+    }
+
+    public function testGetBaseUrl3(): void
+    {
+        $server = [];
+        $server['SCRIPT_NAME'] = '/foo/index.php';
+        $server['SCRIPT_FILENAME'] = '/bar/index.php';
+        $server['REQUEST_URI'] = '/goods/foo/index.php/foo/bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/goods/foo/index.php/', $request->getBaseUrl());
     }
 
     public function testGetBasePath(): void
     {
         $request = new Request();
         $this->assertSame('', $request->getBasePath());
+    }
 
+    public function testGetBasePath2(): void
+    {
         $server = [];
         $server['SCRIPT_FILENAME'] = '/some/where/index.php';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
+    }
 
+    public function testGetBasePath3(): void
+    {
         $server = [];
         $server['SCRIPT_FILENAME'] = '/some/where/index.php';
         $server['SCRIPT_NAME'] = '/index.php';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
+    }
 
+    public function testGetBasePath4(): void
+    {
         $server = [];
         $server['SCRIPT_FILENAME'] = '/some/where/index.php';
         $server['PHP_SELF'] = '/index.php';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
+    }
 
+    public function testGetBasePath5(): void
+    {
         $server = [];
         $server['SCRIPT_FILENAME'] = '/some/where/index.php';
         $server['ORIG_SCRIPT_NAME'] = '/index.php';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('', $request->getBasePath());
+        $this->assertSame('', $request->getBasePath()); // 缓存
+    }
+
+    public function testGetBasePath6(): void
+    {
+        $server = [];
+        $server['SCRIPT_NAME'] = '/foo/index.php';
+        $server['SCRIPT_FILENAME'] = '/bar/index.php';
+        $server['REQUEST_URI'] = '/goods/info/index.php/foo/bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/foo', $request->getBasePath());
+        $this->assertSame('/foo', $request->getBasePath()); // 缓存
+    }
+
+    public function testGetBasePath7(): void
+    {
+        $server = [];
+        $server['SCRIPT_NAME'] = '/foo/index.php';
+        $server['SCRIPT_FILENAME'] = '/bar/hello.php';
+        $server['REQUEST_URI'] = '/goods/info/index.php/foo/bar';
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
         $this->assertSame('', $request->getBasePath()); // 缓存
     }
@@ -450,20 +519,29 @@ class RequestTest extends TestCase
     {
         $request = new Request();
         $this->assertSame('/', $request->getPathInfo());
+    }
 
+    public function testGetPathInfo2(): void
+    {
         $server = [];
         $server['REQUEST_URI'] = '/path/info';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('/path/info', $request->getPathInfo());
+    }
 
+    public function testGetPathInfo3(): void
+    {
         $server = [];
         $server['REQUEST_URI'] = '/path%20test/info';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('/path%20test/info', $request->getPathInfo());
+    }
 
+    public function testGetPathInfo4(): void
+    {
         $server = [];
         $server['REQUEST_URI'] = '?a=b';
-        $request->reset([], [], [], [], [], $server);
+        $request = new Request([], [], [], [], [], $server);
         $this->assertSame('/', $request->getPathInfo());
     }
 
@@ -525,6 +603,18 @@ class RequestTest extends TestCase
         $request->query->set(Request::VAR_ACCEPT_JSON, '1');
         $this->assertTrue($request->isAcceptJson());
         $this->assertFalse($request->isRealAcceptJson());
+    }
+
+    public function testIsRealAcceptJsonIsFalse(): void
+    {
+        $request = new Request();
+
+        $this->assertFalse($request->isRealAcceptJson());
+        $this->assertFalse($request->isAcceptJson());
+
+        $request->headers->set('accept', 'application/pdf, text/plain, */*');
+        $this->assertFalse($request->isRealAcceptJson());
+        $this->assertFalse($request->isAcceptJson());
     }
 
     public function testGetParamPrecedence(): void
@@ -1060,6 +1150,60 @@ class RequestTest extends TestCase
         $this->assertNull($request['foo']);
     }
 
+    public function testIsPjax(): void
+    {
+        $request = new Request();
+
+        $this->assertFalse($request->isPjax());
+        $request->request->set(Request::VAR_PJAX, true);
+        $this->assertTrue($request->isPjax());
+    }
+
+    public function testIsSecure(): void
+    {
+        $request = new Request();
+
+        $this->assertFalse($request->isSecure());
+        $request->server->set('HTTPS', 'on');
+        $this->assertTrue($request->isSecure());
+    }
+
+    public function testIsSecure2(): void
+    {
+        $request = new Request();
+
+        $this->assertFalse($request->isSecure());
+        $request->server->set('HTTPS', '1');
+        $this->assertTrue($request->isSecure());
+    }
+
+    public function testIsSecure3(): void
+    {
+        $request = new Request();
+
+        $this->assertFalse($request->isSecure());
+        $request->server->set('HTTPS', 1);
+        $this->assertTrue($request->isSecure());
+    }
+
+    public function testIsSecureByPort(): void
+    {
+        $request = new Request();
+
+        $this->assertFalse($request->isSecure());
+        $request->server->set('SERVER_PORT', 443);
+        $this->assertTrue($request->isSecure());
+    }
+
+    public function testGetRequestUri(): void
+    {
+        $server = [];
+        $server['REQUEST_URI'] = '';
+        $server['QUERY_STRING'] = 'foo=bar&hello=world';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('?foo=bar&hello=world', $request->getRequestUri());
+    }
+
     protected function createTempFile(): string
     {
         $tempFile = sys_get_temp_dir().'/form_test/'.md5(time().rand()).'.tmp';
@@ -1079,7 +1223,6 @@ class RequestContentProxy extends Request
     public static function createFromGlobals(): IRequest
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
-
         $request = static::normalizeRequestFromContent($request);
 
         return $request;
@@ -1101,7 +1244,6 @@ class RequestContentApplicationJson extends Request
     public static function createFromGlobals(): IRequest
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
-
         $request = static::normalizeRequestFromContent($request);
 
         return $request;
