@@ -1130,16 +1130,12 @@ class Request implements IRequest, IArray, ArrayAccess
             return $this->pathInfo;
         }
 
-        $pathInfo = $this->server->get('PATH_INFO');
+        $pathInfo = $this->server->get('PATH_INFO', '');
         if ($pathInfo) {
             return $this->pathInfo = $this->parsePathInfo($pathInfo);
         }
 
-        // 分析基础 url
-        $baseUrl = $this->getBaseUrl();
-
-        // 分析请求参数
-        if (null === ($requestUri = $this->getRequestUri())) {
+        if ('' === ($requestUri = $this->getRequestUri())) {
             return $this->pathInfo = $this->parsePathInfo('');
         }
 
@@ -1147,10 +1143,11 @@ class Request implements IRequest, IArray, ArrayAccess
             $requestUri = substr($requestUri, 0, $pos);
         }
 
-        if (null !== $baseUrl &&
+        $baseUrl = $this->getBaseUrl();
+        if ('' !== $baseUrl &&
             (false === ($pathInfo = substr($requestUri, strlen($baseUrl))))) {
             $pathInfo = '';
-        } elseif (null === $baseUrl || '/' === $baseUrl) {
+        } elseif ('' === $baseUrl || '/' === $baseUrl) {
             $pathInfo = $requestUri;
         }
 
@@ -1198,9 +1195,7 @@ class Request implements IRequest, IArray, ArrayAccess
             return $this->baseUrl;
         }
 
-        // 兼容分析
         $fileName = basename($this->server->get('SCRIPT_FILENAME', ''));
-
         if (basename($this->server->get('SCRIPT_NAME', '')) === $fileName) {
             $url = $this->server->get('SCRIPT_NAME');
         } elseif (basename($this->server->get('PHP_SELF', '')) === $fileName) {
@@ -1226,7 +1221,6 @@ class Request implements IRequest, IArray, ArrayAccess
             return $this->baseUrl = '';
         }
 
-        // 比对请求
         $requestUri = (string) $this->getRequestUri();
         if ('' !== $requestUri && '/' !== substr($requestUri, 0, 1)) {
             $requestUri = '/'.$requestUri;
@@ -1259,7 +1253,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getRequestUri(): ?string
+    public function getRequestUri(): string
     {
         if (null !== $this->requestUri) {
             return $this->requestUri;
@@ -1267,7 +1261,7 @@ class Request implements IRequest, IArray, ArrayAccess
 
         $requestUri = $this->headers->get('X_REWRITE_URL', $this->server->get('REQUEST_URI', ''));
         if (!$requestUri) {
-            $requestUri = $this->server->get('ORIG_PATH_INFO');
+            $requestUri = $this->server->get('ORIG_PATH_INFO', '');
             if ($this->server->get('QUERY_STRING')) {
                 $requestUri .= '?'.$this->server->get('QUERY_STRING');
             }
