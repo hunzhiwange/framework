@@ -978,13 +978,7 @@ class Request implements IRequest, IArray, ArrayAccess
             return '';
         }
 
-        $scriptName = $this->getScriptName();
-        $scriptName = dirname($scriptName);
-        if ('\\' === $scriptName) {
-            $scriptName = '/';
-        }
-
-        return $scriptName;
+        return dirname($this->getScriptName());
     }
 
     /**
@@ -1004,11 +998,11 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isSecure(): bool
     {
-        if (in_array($this->server->get('HTTPS'), ['1', 'on'], true)) {
+        if (in_array((string) $this->server->get('HTTPS'), ['1', 'on'], true)) {
             return true;
         }
 
-        if ('443' === $this->server->get('SERVER_PORT')) {
+        if (443 === (int) $this->server->get('SERVER_PORT')) {
             return true;
         }
 
@@ -1176,22 +1170,21 @@ class Request implements IRequest, IArray, ArrayAccess
 
         $baseUrl = $this->getBaseUrl();
         if (empty($baseUrl)) {
-            return '';
+            return $this->basePath = '';
         }
 
-        $filename = basename($this->server->get('SCRIPT_FILENAME', ''));
-        if (basename($baseUrl) === $filename) {
+        $fileName = basename($this->server->get('SCRIPT_FILENAME', ''));
+        if (basename($baseUrl) === $fileName) {
             $basePath = dirname($baseUrl);
         } else {
             $basePath = $baseUrl;
         }
 
         if ('\\' === \DIRECTORY_SEPARATOR) {
-            $basePath = str_replace('\\', '/', $basePath);
+            $basePath = str_replace('\\', '/', $basePath); // @codeCoverageIgnore
         }
-        $this->basePath = rtrim($basePath, '/');
 
-        return $this->basePath;
+        return $this->basePath = rtrim($basePath, '/');
     }
 
     /**
@@ -1220,7 +1213,6 @@ class Request implements IRequest, IArray, ArrayAccess
             $segs = array_reverse($segs);
             $index = 0;
             $maxCount = count($segs);
-
             $url = '';
             do {
                 $seg = $segs[$index];
@@ -1229,32 +1221,33 @@ class Request implements IRequest, IArray, ArrayAccess
             } while (($maxCount > $index) && (false !== ($pos = strpos($path, $url))) && (0 !== $pos));
         }
 
+        $url = (string) $url;
+        if (!$url) {
+            return $this->baseUrl = '';
+        }
+
         // 比对请求
         $requestUri = (string) $this->getRequestUri();
-        $url = (string) $url;
         if ('' !== $requestUri && '/' !== substr($requestUri, 0, 1)) {
             $requestUri = '/'.$requestUri;
         }
 
-        if ($url) {
-            $prefix = $this->getUrlencodedPrefix($requestUri, $url);
-            if (false !== $prefix) {
-                return $this->baseUrl = $prefix;
-            }
-
-            $prefix = $this->getUrlencodedPrefix($requestUri, dirname($url));
-            if (false !== $prefix) {
-                return $this->baseUrl = rtrim($prefix, '/').'/';
-            }
+        $prefix = $this->getUrlEncodedPrefix($requestUri, $url);
+        if (false !== $prefix) {
+            return $this->baseUrl = $prefix;
         }
 
-        $basename = basename($url);
-        if (empty($basename) || !strpos(rawurldecode($requestUri), $basename)) {
+        $prefix = $this->getUrlEncodedPrefix($requestUri, dirname($url));
+        if (false !== $prefix) {
+            return $this->baseUrl = rtrim($prefix, '/').'/';
+        }
+
+        if (!strpos(rawurldecode($requestUri), basename($url))) {
             return $this->baseUrl = '';
         }
 
-        if ((strlen($requestUri) >= strlen($url)) &&
-            ((false !== ($pos = strpos($requestUri, $url))) && (0 !== $pos))) {
+        if (strlen($requestUri) >= strlen($url) &&
+            false !== ($pos = strpos($requestUri, $url)) && 0 !== $pos) {
             $url = substr($requestUri, 0, $pos + strlen($url));
         }
 
@@ -1410,21 +1403,21 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * URL 前缀编码
+     * URL 前缀编码.
      *
-     * @param string $strings
+     * @param string $value
      * @param string $prefix
      *
      * @return bool|string
      */
-    protected function getUrlencodedPrefix(string $strings, string $prefix)
+    protected function getUrlEncodedPrefix(string $value, string $prefix)
     {
-        if (0 !== strpos(rawurldecode($strings), $prefix)) {
+        if (0 !== strpos(rawurldecode($value), $prefix)) {
             return false;
         }
 
         $len = strlen($prefix);
-        if (preg_match(sprintf('#^(%%[[:xdigit:]]{2}|.){%d}#', $len), $strings, $matches)) {
+        if (preg_match(sprintf('#^(%%[[:xdigit:]]{2}|.){%d}#', $len), $value, $matches)) {
             return $matches[0];
         }
 
