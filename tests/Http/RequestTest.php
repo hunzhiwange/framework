@@ -594,6 +594,39 @@ class RequestTest extends TestCase
         $this->assertSame('/path/info', $request->getPathInfo());
     }
 
+    public function testGetRequestUri(): void
+    {
+        $server = [];
+        $server['REQUEST_URI'] = '/goods/info/index.php/foo/bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/goods/info/index.php/foo/bar', $request->getRequestUri());
+    }
+
+    public function testGetRequestUriWithQueryString(): void
+    {
+        $server = [];
+        $server['REQUEST_URI'] = '/goods/info/index.php/foo/bar?foo=bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/goods/info/index.php/foo/bar?foo=bar', $request->getRequestUri());
+    }
+
+    public function testGetRequestUri2(): void
+    {
+        $server = [];
+        $server['ORIG_PATH_INFO'] = '/goods/info/index.php/foo/bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/goods/info/index.php/foo/bar', $request->getRequestUri());
+    }
+
+    public function testGetRequestUriWithQueryString2(): void
+    {
+        $server = [];
+        $server['ORIG_PATH_INFO'] = '/goods/info/index.php/foo/bar';
+        $server['QUERY_STRING'] = 'foo=bar';
+        $request = new Request([], [], [], [], [], $server);
+        $this->assertSame('/goods/info/index.php/foo/bar?foo=bar', $request->getRequestUri());
+    }
+
     public function testIsJson(): void
     {
         $request = new Request();
