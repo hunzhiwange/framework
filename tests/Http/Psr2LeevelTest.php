@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\Psr2Leevel;
+use Tests\Http\Fixtures\Response;
 use Tests\TestCase;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\Stream;
@@ -29,9 +30,12 @@ use Zend\Diactoros\UploadedFile;
 /**
  * Psr2LeevelTest test.
  *
+ * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2019.04.03
+ * @see https://github.com/symfony/psr-http-message-bridge/blob/master/Tests/Factory/HttpFoundationFactoryTest.php
  *
  * @version 1.0
  */
@@ -80,6 +84,68 @@ class Psr2LeevelTest extends TestCase
         $this->assertEquals('/foo/bar/hello.html', $leevelRequest->server->get('REQUEST_URI'));
         $this->assertEquals('GET', $leevelRequest->server->get('REQUEST_METHOD'));
         $this->assertEquals('hello world', $leevelRequest->getContent());
+    }
+
+    public function testCreateResponse()
+    {
+        $response = new Response(
+            '1.0',
+            [
+                'Set-Cookie' => [
+                    'theme=light',
+                    'test',
+                    'ABC=AeD; Domain=dunglas.fr; Path=/kevin; Expires=Wed, 13 Jan 2021 22:23:01 GMT; Secure; HttpOnly; SameSite=Strict',
+                ],
+            ],
+            new Stream(fopen(__DIR__.'/assert/stream.txt', 'r')),
+            200
+        );
+
+        $p2l = new Psr2Leevel();
+        $leevelResponse = $p2l->createResponse($response);
+        $this->assertEquals('1.0', $leevelResponse->getProtocolVersion());
+        $cookies = $leevelResponse->headers->getCookies();
+        $value = <<<'eot'
+            {
+                "theme": [
+                    "theme",
+                    "light",
+                    0,
+                    "\/",
+                    null,
+                    false,
+                    false
+                ],
+                "test": [
+                    "test",
+                    null,
+                    0,
+                    "\/",
+                    null,
+                    false,
+                    false
+                ],
+                "ABC": [
+                    "ABC",
+                    "AeD",
+                    1610576581,
+                    "\/kevin",
+                    "dunglas.fr",
+                    true,
+                    true
+                ]
+            }
+            eot;
+
+        $this->assertSame(
+            $value,
+            $this->varJson(
+                $cookies
+            )
+        );
+
+        $this->assertEquals('hello world', $leevelResponse->getContent());
+        $this->assertEquals(200, $leevelResponse->getStatusCode());
     }
 
     private function createUploadedFile($content, $error, $clientFileName, $clientMediaType)
