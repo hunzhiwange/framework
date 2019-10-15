@@ -25,8 +25,9 @@ use Leevel\Http\UploadedFile;
 use Tests\TestCase;
 
 /**
- * FileBagTest test
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ * FileBagTest test.
+ *
+ * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

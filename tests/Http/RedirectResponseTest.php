@@ -26,8 +26,9 @@ use Leevel\Session\ISession;
 use Tests\TestCase;
 
 /**
- * RedirectResponse test
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ * RedirectResponse test.
+ *
+ * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
