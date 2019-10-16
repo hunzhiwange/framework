@@ -346,6 +346,7 @@ abstract class Server
      */
     public function onTask(SwooleServer $server, int $taskId, int $fromId, string $data): void
     {
+        return;
         $message = sprintf(
             'Task %d form workder %d, the result is %s',
             $taskId, $fromId, $data
@@ -359,7 +360,7 @@ abstract class Server
         } else {
             $method = 'handle';
         }
-
+        dump($task);
         if (!is_object($task = $this->container->make($task))) {
             throw new InvalidArgumentException('Task is invalid.');
         }
@@ -582,7 +583,7 @@ abstract class Server
         if (version_compare(phpversion('swoole'), '4.4.5', '<')) {
             $e = 'Swoole 4.4.5 OR Higher';
 
-            throw new InvalidArgumentException($e);
+            //throw new InvalidArgumentException($e);
         }
     }
 }
