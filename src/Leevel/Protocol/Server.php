@@ -342,11 +342,12 @@ abstract class Server
      * @param int            $fromId
      * @param string         $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @see https://wiki.swoole.com/wiki/page/134.html
      */
     public function onTask(SwooleServer $server, int $taskId, int $fromId, string $data): void
     {
-        return;
         $message = sprintf(
             'Task %d form workder %d, the result is %s',
             $taskId, $fromId, $data
@@ -360,7 +361,7 @@ abstract class Server
         } else {
             $method = 'handle';
         }
-        dump($task);
+
         if (!is_object($task = $this->container->make($task))) {
             throw new InvalidArgumentException('Task is invalid.');
         }
