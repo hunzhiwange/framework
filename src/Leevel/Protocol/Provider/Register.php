@@ -51,7 +51,6 @@ class Register extends Provider
         $this->coroutine();
         $this->httpServer();
         $this->websocketServer();
-        $this->rpc();
         $this->task();
         $this->timer();
     }
