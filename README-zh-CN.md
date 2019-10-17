@@ -23,7 +23,7 @@
 
 QueryPHP 是一款现代化的高性能 PHP 渐进式协程框架, 我们还是主要面向传统 PHP-FPM 场景，以工程师用户体验为历史使命，让每一个 PHP 应用都有一个好框架。
 
-百分之百单元测试覆盖直面 Bug，基于 Zephir 实现框架核心常驻，依托 Swoole 协程提升业务性能，此刻未来逐步渐进。 我们的愿景是 **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, 让您的业务撑起更多的用户服务。
+百分之百单元测试覆盖直面 Bug，我们一直致力于高品质 level level leevel，依托 Swoole 协程提升业务性能，此刻未来逐步渐进。 我们的愿景是 **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, 让您的业务撑起更多的用户服务。
 
 *代码如诗，自由如风, 此刻携手 QueryPHP 共创美好.*
 
@@ -41,9 +41,6 @@ QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://raw
  * QueryPHP On Gitee: <https://gitee.com/dyhb/queryphp/>
  * Framework On Github: <https://github.com/hunzhiwange/framework/>
  * Framework On Gitee: <https://gitee.com/dyhb/framework/>
- * Leevel On Github: <https://github.com/hunzhiwange/leevel/>
- * Leevel On Gitee: <https://gitee.com/dyhb/leevel>
- * Tests: <https://github.com/leevels/tests/>
  * Packages: <https://github.com/leevels/>
  * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
  * Packages From Leevel: <https://packagist.org/packages/leevel/>
@@ -52,11 +49,9 @@ QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://raw
 
 <img src="./engineering-zh-CN.jpg" />
 
-## 可选 C 扩展
+## 可选扩展
 
 <p>
-  <a href="https://github.com/hunzhiwange/leevel">
-    <img alt="Leevel Version" src="https://img.shields.io/badge/leevel-=1.0.0-brightgreen.svg" /></a>
   <a href="http://pecl.php.net/package/swoole">
     <img alt="Swoole Version" src="https://img.shields.io/badge/swoole-%3E=4.2.6-brightgreen.svg" /></a>
   <a href="https://github.com/spiral/roadrunner">
@@ -66,7 +61,6 @@ QueryPHP 基于一款成立于 2010 年的 PHP 框架 [DoYouHaoBaby](https://raw
 我们认为，PHP 应用程序的性能非常重要，但是工程师开发乐趣也需要被考虑，这就是我们开发 QueryPHP 框架以实现伟大理想的原因。
 
 * PHP 7 - 我们选择 7.3.2 最为最低版本，因为 PHP 7 相对于早期版本具有独特的优势。
-* Leevel - 我们提供了一个可选的 C 扩展来接管框架的核心组件，如 IOC、日志、缓存。
 * Swoole - 使 PHP 开发人员可以编写高性能的异步并发 TCP、UDP、Unix Socket、HTTP，WebSocket 服务。
 * Redis - QueryPHP 实现了缓存组件封装，包括文件、Redis，它们可以降低数据库压力。
 * Roadrunner - RoadRunner 是一个开源的高性能 PHP 应用服务器、负载均衡器和流程管理器。它支持作为一个服务运行，能够在每个项目的基础上扩展其功能。

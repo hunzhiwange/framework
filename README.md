@@ -23,7 +23,7 @@
 
 QueryPHP is a modern, high performance PHP progressive coroutine framework, we still focus on traditional PHP-FPM scenarios,with engineer user experience as its historical mission, let every PHP application have a good framework.
 
-A hundred percent coverage of the unit tests to facing the bug,based on Zephir implemented framework core resident,with Swoole coroutine to improving business performance,now or in the future step by step. Our vision is **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, let your business to support more user services.
+A hundred percent coverage of the unit tests to facing the bug,with our continuous commitment to level level leevel,with Swoole coroutine to improving business performance,now or in the future step by step. Our vision is **<span style="color:#e82e7d;">USE LEEVEL WITH SWOOLE DO BETTER</span>**, let your business to support more user services.
 
 *The PHP Framework For Code Poem As Free As Wind, Starts From This Moment With QueryPHP.*
 
@@ -41,9 +41,6 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
  * QueryPHP On Gitee: <https://gitee.com/dyhb/queryphp/>
  * Framework On Github: <https://github.com/hunzhiwange/framework/>
  * Framework On Gitee: <https://gitee.com/dyhb/framework/>
- * Leevel On Github: <https://github.com/hunzhiwange/leevel/>
- * Leevel On Gitee: <https://gitee.com/dyhb/leevel>
- * Tests: <https://github.com/leevels/tests/>
  * Packages: <https://github.com/leevels/>
  * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
  * Packages From Leevel: <https://packagist.org/packages/leevel/>
@@ -55,8 +52,6 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
 ## Optional Extension
 
 <p>
-  <a href="https://github.com/hunzhiwange/leevel">
-    <img alt="Leevel Version" src="https://img.shields.io/badge/leevel-=1.0.0-brightgreen.svg" /></a>
   <a href="http://pecl.php.net/package/swoole">
     <img alt="Swoole Version" src="https://img.shields.io/badge/swoole-%3E=4.2.6-brightgreen.svg" /></a>
   <a href="https://github.com/spiral/roadrunner">
@@ -66,7 +61,6 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
 We think the performance of PHP applications is very important and the development of pleasure also needs to be considered, and that's why we have developed the QueryPHP framework to achieve great ideals.
 
 * PHP 7 - We choose the lowest version of 7.3.2, because php7 has a unique advantage over the earlier version.
-* Leevel - We provides an optional c extension to takeover core components of the framework,such as ioc, log, cache.
 * Swoole - Enable PHP developers to write high-performance, scalable, concurrent TCP, UDP, Unix socket, HTTP, Websocket services in PHP programming language.
 * Redis - QueryPHP encapsulation a cache component, including files, redis and so on, so as to reduce the pressure of database.
 * Roadrunner - RoadRunner is an open source high-performance PHP application server, load balancer and process manager. It supports running as a service with the ability to extend its functionality on a per-project basis.
