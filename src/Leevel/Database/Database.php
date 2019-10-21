@@ -149,7 +149,7 @@ use Throwable;
  * @method static array getOption()                                                                                                             返回查询参数.
  * @method static array getBindParams()                                                                                                         返回参数绑定.
  */
-abstract class Database implements IConnection
+abstract class Database implements IDatabase, IConnection
 {
     use Connection {
         release as baseRelease;
