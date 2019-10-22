@@ -66,7 +66,11 @@ class DocFramework extends Command
             'git'       => $option->get('console\\framework_doc_git'),
         ];
 
-        $this->call('make:doc', $input);
+        $i18n = explode(',', $option->get('console\\framework_doc_i18n'));
+        foreach ($i18n as $v) {
+            $input['--i18n'] = $v;
+            $this->call('make:doc', $input);
+        }
     }
 
     /**

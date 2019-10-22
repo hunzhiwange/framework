@@ -55,6 +55,20 @@ class Doc
     protected $git;
 
     /**
+     * 国际化.
+     *
+     * @var string
+     */
+    protected $i18n;
+
+    /**
+     * 默认语言.
+     *
+     * @var string
+     */
+    protected $defaultI18n;
+
+    /**
      * 解析文档保存路径.
      *
      * @var string
@@ -80,11 +94,14 @@ class Doc
      *
      * @param string $path
      * @param string $git
+     * @param string $i18n
      */
-    public function __construct(string $path, string $git)
+    public function __construct(string $path, string $git, string $i18n, string $defaultI18n = 'zh-CN')
     {
         $this->basePath = $path;
         $this->git = $git;
+        $this->i18n = $i18n;
+        $this->defaultI18n = $defaultI18n;
     }
 
     /**
@@ -114,9 +131,9 @@ class Doc
      * @param string      $className
      * @param null|string $path
      *
-     * @return bool
+     * @return array|bool
      */
-    public function handleAndSave(string $className, ?string $path = null): bool
+    public function handleAndSave(string $className, ?string $path = null)
     {
         $this->setSavePath($path);
 
@@ -127,7 +144,7 @@ class Doc
 
         $this->writeCache($this->savePath, $markdown);
 
-        return true;
+        return [$this->savePath, $markdown];
     }
 
     /**
@@ -141,7 +158,7 @@ class Doc
      */
     public static function getMethodBody(string $className, string $method, bool $isDoc = false): string
     {
-        $doc = new static('', '');
+        $doc = new static('', '', '');
         $lines = $doc->parseFileContnet(new ReflectionClass($className));
         $method = new ReflectionMethod($className, $method);
 
@@ -157,7 +174,7 @@ class Doc
      */
     public static function getClassBody(string $className): string
     {
-        $doc = new static('', '');
+        $doc = new static('', '', '');
         $lines = $doc->parseFileContnet($reflectionClass = new ReflectionClass($className));
         $startLine = $reflectionClass->getStartLine() - 1;
         $endLine = $reflectionClass->getEndLine();
@@ -197,7 +214,8 @@ class Doc
         if (null === $path) {
             $this->savePath = null;
         } else {
-            $this->savePath = $this->basePath.'/'.$path.'.md';
+            $basePath = str_replace('{i18n}', $this->i18n ? '/'.$this->i18n : '', $this->basePath);
+            $this->savePath = $basePath.'/'.$path.'.md';
         }
     }
 
@@ -242,9 +260,9 @@ class Doc
         }
 
         $data = [];
-        $data[] = $this->formatTitle($info['title'] ?? '', '#');
+        $data[] = $this->formatTitle($this->parseDocItem($info, 'title'), '#');
         $data[] = $this->formatFrom($this->git, $this->filePath);
-        $data[] = $this->formatDescription($info['description'] ?? '');
+        $data[] = $this->formatDescription($this->parseDocItem($info, 'description'));
         $data[] = $this->formatUsers($reflection);
 
         // 指定保存路径
@@ -252,7 +270,7 @@ class Doc
             $this->setSavePath($info['path']);
         }
 
-        return implode(PHP_EOL, $data);
+        return implode(PHP_EOL, $data).PHP_EOL;
     }
 
     /**
@@ -265,12 +283,10 @@ class Doc
     protected function parseMethodContents(ReflectionClass $reflection): string
     {
         $markdown = '';
-
         foreach ($reflection->getMethods() as $method) {
             if (!$this->isMethodNeedParsed($method)) {
                 continue;
             }
-
             $markdown .= $this->parseMethodContent($method);
         }
 
@@ -292,12 +308,31 @@ class Doc
         }
 
         $data = [];
-        $data[] = $this->formatTitle($info['title'] ?? '', $info['level'] ?? '##');
-        $data[] = $this->formatDescription($info['description'] ?? '');
-        $data[] = $this->formatBody($method, $info['lang'] ?? 'php');
-        $data[] = $this->formatNote($info['note'] ?? '');
+        $data[] = $this->formatTitle($this->parseDocItem($info, 'title'), $this->parseDocItem($info, 'level', '##'));
+        $data[] = $this->formatDescription($this->parseDocItem($info, 'description'));
+        $data[] = $this->formatBody($method, $this->parseDocItem($info, 'lang', 'php'));
+        $data[] = $this->formatNote($this->parseDocItem($info, 'note'));
 
         return implode(PHP_EOL, $data).PHP_EOL;
+    }
+
+    /**
+     * 解析文档项.
+     *
+     * @param array  $info
+     * @param string $name
+     * @param string $defaultValue
+     *
+     * @return string
+     */
+    protected function parseDocItem(array $info, string $name, string $defaultValue = ''): string
+    {
+        $i18n = $this->i18n ? $this->i18n.':' : '';
+        $defaultI18n = $this->defaultI18n ? $this->defaultI18n.':' : '';
+
+        return $info[$i18n.$name] ??
+            ($info[$defaultI18n.$name] ??
+                ($info[$name] ?? $defaultValue));
     }
 
     /**
@@ -345,7 +380,6 @@ class Doc
     protected function formatUsers(ReflectionClass $reflection): string
     {
         $uses = $this->parseUseDefined($this->lines, $reflection);
-
         if ($uses) {
             $uses = <<<EOT
                 **引入相关类**
@@ -406,7 +440,6 @@ class Doc
     protected function formatBody(ReflectionMethod $method, string $lang): string
     {
         $body = $this->parseMethodBody($this->lines, $method, 0 === strpos($method->getName(), 'doc'));
-
         if ($body) {
             $body = <<<EOT
                 ``` {$lang}
@@ -483,7 +516,6 @@ class Doc
             if ($k < $startLine || $k >= $endLine) {
                 continue;
             }
-
             $result[] = substr($v, $offsetLength);
         }
 
@@ -515,13 +547,13 @@ class Doc
                 if (')' === $v) {
                     break;
                 }
+
                 // 匹配字段格式，以便于支持多行
                 if (preg_match('/^\S+=\"/', $v)) {
                     $pos = strpos($v, '=');
                     $left = '"'.substr($v, 0, $pos).'"';
                     $right = substr($v, $pos + 1);
                     $right = str_replace('$', '\$', $right); // 转义变量
-
                     $code[] = $left.'=>'.$right;
                 } else {
                     // 空行加两个换行符撑开
@@ -531,11 +563,9 @@ class Doc
                         if (0 === strpos($backupV, '     * ')) {
                             $backupV = substr($backupV, 7);
                         }
-
                         if (0 === strpos($backupV, ' * ')) {
                             $backupV = substr($backupV, 3);
                         }
-
                         $code[] = str_replace('$', '\$', $backupV).PHP_EOL; // 转义变量
                     }
                 }
