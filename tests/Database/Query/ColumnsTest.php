@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.20
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.columns",
+ *     path="database/query/columns",
+ *     description="",
+ * )
  */
 class ColumnsTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="Columns 添加字段",
+     *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详细可以查看《查询语言.table》。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -60,6 +73,13 @@ class ColumnsTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="SetColumns 设置字段",
+     *     description="清空原有字段，然后添加新的字段。",
+     *     note="",
+     * )
+     */
     public function testSetColumns(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -88,6 +108,13 @@ class ColumnsTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Columns 字段支持表达式",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testColumnsExpressionForSelectString(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -247,6 +274,13 @@ class ColumnsTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Columns 字段在连表中的查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetColumnsWithTableName(): void
     {
         $connect = $this->createDatabaseConnectMock();

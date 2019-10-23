@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.union",
+ *     path="database/query/union",
+ *     description="",
+ * )
  */
 class UnionTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="Union 联合查询基本用法",
+     *     description="",
+     *     note="参数支持字符串、子查询器以及它们构成的一维数组。",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -76,6 +89,13 @@ class UnionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="UnionAll 联合查询不去重",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUnionAll(): void
     {
         $connect = $this->createDatabaseConnectMock();

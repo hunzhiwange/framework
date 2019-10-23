@@ -31,9 +31,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.10
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.table",
+ *     path="database/query/table",
+ *     description="",
+ * )
  */
 class TableTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -57,6 +70,18 @@ class TableTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询指定数据库的表",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testWithDatabaseName(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -78,6 +103,18 @@ class TableTest extends TestCase
                 1
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表，表支持别名",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testWithAlias(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -101,6 +138,13 @@ class TableTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表指定字段",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testField(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -124,6 +168,18 @@ class TableTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表指定字段，字段支持别名",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testWithFieldAlias(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -223,6 +279,13 @@ class TableTest extends TestCase
             ->findAll(true);
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表支持子查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -249,6 +312,13 @@ class TableTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为数据库查询对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSubIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -275,6 +345,13 @@ class TableTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为数据库条件对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSubIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -301,6 +378,13 @@ class TableTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSubIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -328,6 +412,13 @@ class TableTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包,未指定别名默认为自身",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSubIsClosureWithItSeltAsAlias(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -355,6 +446,13 @@ class TableTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包,还可以进行 join 查询",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSubIsClosureWithJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
