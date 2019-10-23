@@ -42,7 +42,7 @@ class ColumnsTest extends TestCase
     /**
      * @api(
      *     zh-CN:title="Columns 添加字段",
-     *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详细可以查看《查询语言.table》。",
+     *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。",
      *     note="",
      * )
      */
