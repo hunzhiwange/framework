@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.orderBy",
+ *     path="database/query/orderby",
+ *     description="",
+ * )
  */
 class OrderByTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="排序基础用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -58,6 +71,18 @@ class OrderByTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="指定表排序",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWithTable(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -80,6 +105,18 @@ class OrderByTest extends TestCase
                 1
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="表达式排序",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWithExpression(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -102,28 +139,18 @@ class OrderByTest extends TestCase
                 2
             )
         );
+    }
 
-        $sql = <<<'eot'
-            [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY SUM(`test`.`num`) ASC",
-                [],
-                false,
-                null,
-                null,
-                []
-            ]
-            eot;
-
-        $this->assertSame(
-            $sql,
-            $this->varJson(
-                $connect
-                    ->table('test', 'tid as id,tname as value')
-                    ->orderBy('{SUM([num]) ASC}')
-                    ->findAll(true),
-                3
-            )
-        );
+    /**
+     * @api(
+     *     zh-CN:title="表达式和普通排序混合",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWithExpressionAndNormal(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -146,6 +173,18 @@ class OrderByTest extends TestCase
                 4
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="排序支持数组",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWithArray(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -168,6 +207,18 @@ class OrderByTest extends TestCase
                 5
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="排序数组支持自定义升降",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWithArrayAndSetType(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -192,7 +243,14 @@ class OrderByTest extends TestCase
         );
     }
 
-    public function testLatestOrOldest(): void
+    /**
+     * @api(
+     *     zh-CN:title="快捷降序",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testLatest(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -216,6 +274,18 @@ class OrderByTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="快捷降序支持自定义字段",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testLatestWithCustomField(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -238,6 +308,18 @@ class OrderByTest extends TestCase
                 1
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="快捷升序",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testOldest(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -260,6 +342,18 @@ class OrderByTest extends TestCase
                 2
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="快捷升序支持自定义字段",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testOldestWithCustomField(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -284,6 +378,13 @@ class OrderByTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="表达式排序默认为升序",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testOrderByExpressionNotSetWithDefaultAsc(): void
     {
         $connect = $this->createDatabaseConnectMock();

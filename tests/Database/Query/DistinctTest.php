@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.distinct",
+ *     path="database/query/distinct",
+ *     description="",
+ * )
  */
 class DistinctTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="查询去重",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -57,6 +70,18 @@ class DistinctTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="取消查询去重",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testCancelDistinct(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [

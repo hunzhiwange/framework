@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.limit",
+ *     path="database/query/limit",
+ *     description="",
+ * )
  */
 class LimitTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="limit 限制条数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -57,6 +70,18 @@ class LimitTest extends TestCase
                     ->find(null, true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="指示仅查询第一个符合条件的记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testOne(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -79,6 +104,18 @@ class LimitTest extends TestCase
                 1
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="指示查询所有符合条件的记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testAll(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -101,6 +138,18 @@ class LimitTest extends TestCase
                 2
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="查询几条记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testTop(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [

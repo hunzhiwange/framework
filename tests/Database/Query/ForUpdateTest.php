@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.20
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.forUpdate",
+ *     path="database/query/forupdate",
+ *     description="",
+ * )
  */
 class ForUpdateTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="数据库悲观锁",
+     *     zh-CN:description="对数据库悲观锁的支持。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -57,6 +70,18 @@ class ForUpdateTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="取消数据库悲观锁",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCancelUpdate(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [

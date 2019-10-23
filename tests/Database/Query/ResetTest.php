@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.20
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.reset",
+ *     path="database/query/reset",
+ *     description="",
+ * )
  */
 class ResetTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="重置所有",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -61,6 +74,18 @@ class ResetTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="重置某一项",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testResetItem(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
