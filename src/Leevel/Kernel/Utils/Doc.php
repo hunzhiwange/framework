@@ -264,6 +264,7 @@ class Doc
         $data[] = $this->formatFrom($this->git, $this->filePath);
         $data[] = $this->formatDescription($this->parseDocItem($info, 'description'));
         $data[] = $this->formatUsers($reflection);
+        $data = array_filter($data);
 
         // 指定保存路径
         if (isset($info['path'])) {
@@ -312,6 +313,7 @@ class Doc
         $data[] = $this->formatDescription($this->parseDocItem($info, 'description'));
         $data[] = $this->formatBody($method, $this->parseDocItem($info, 'lang', 'php'));
         $data[] = $this->formatNote($this->parseDocItem($info, 'note'));
+        $data = array_filter($data);
 
         return implode(PHP_EOL, $data).PHP_EOL;
     }
