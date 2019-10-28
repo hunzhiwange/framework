@@ -193,13 +193,11 @@ class Debug implements IDebug
             $response->isJson()) {
             if ($this->option['json'] && is_array($data = $response->getData())) {
                 $jsonRenderer = $this->getJsonRenderer();
-
                 if (array_values($data) !== $data) {
                     $data[':trace'] = $jsonRenderer->render();
                 } else {
                     $data[] = [':trace' => $jsonRenderer->render()];
                 }
-
                 $response->setData($data);
             }
         } elseif (!($response instanceof RedirectResponse)) {
@@ -231,7 +229,6 @@ class Debug implements IDebug
     public function enable(): void
     {
         $this->enabled = true;
-
         if (!$this->isBootstrap) {
             $this->bootstrap();
         }
@@ -437,6 +434,7 @@ class Debug implements IDebug
             return;
         }
 
+        $this->isBootstrap = true;
         $this->addCollector(new PhpInfoCollector());
         $this->addCollector(new MessagesCollector());
         $this->addCollector(new RequestDataCollector());
@@ -448,12 +446,9 @@ class Debug implements IDebug
         $this->addCollector(new SessionCollector($this->container->make('session')));
         $this->addCollector(new FilesCollector());
         $this->addCollector(new LogsCollector());
-
         $this->initData();
         $this->databaseEventDispatch();
         $this->logEventDispatch();
-
-        $this->isBootstrap = true;
     }
 
     /**
@@ -472,7 +467,6 @@ class Debug implements IDebug
     protected function initData(): void
     {
         $this->message('Starts from this moment with QueryPHP.', '');
-
         $this
             ->getCollector('config')
             ->setData($this->container->make('option')->all());
@@ -489,7 +483,6 @@ class Debug implements IDebug
                 $this
                     ->getCollector('logs')
                     ->addMessage($sql, 'sql');
-
                 $this->container
                     ->make('logs')
                     ->info('[SQL] '.$sql);

@@ -162,14 +162,12 @@ class Load
 
             if ($provider::isDeferred()) {
                 $providerAlias = $provider::providers();
-
                 foreach ($providerAlias as $key => $alias) {
                     if (is_int($key)) {
                         $key = $alias;
                     }
                     $deferredProviders[$key] = $provider;
                 }
-
                 $deferredAlias[$provider] = $providerAlias;
                 unset($providers[$k]);
             }
@@ -210,11 +208,9 @@ class Load
 
         foreach ($files as $file) {
             $type = substr(basename($file), 0, -4);
-
             if ('app' === $type) {
                 $findApp = true;
             }
-
             $data[$type] = (array) include $file;
         }
 
@@ -248,18 +244,15 @@ class Load
             }
 
             $optionData = [];
-
             foreach ($files as $item) {
                 if (!is_file($item)) {
                     $item = $path.'/'.$item;
                 }
-
                 if (!is_file($item)) {
                     $e = sprintf('Option file %s is not exist.', $item);
 
                     throw new RuntimeException($e);
                 }
-
                 $optionData = array_merge($optionData, include $item);
             }
 

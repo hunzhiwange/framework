@@ -86,8 +86,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
         } else {
             $this->elements = $elements;
         }
-
-        unset($elements);
     }
 
     /**

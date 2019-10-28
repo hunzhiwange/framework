@@ -154,7 +154,6 @@ abstract class Make extends Command
     protected function saveTemplateResult(): void
     {
         $saveFilePath = $this->getSaveFilePath();
-
         if (is_file($saveFilePath)) {
             $e = 'File is already exits.'.PHP_EOL.
                 $this->formatFile($saveFilePath);
@@ -183,7 +182,6 @@ abstract class Make extends Command
     protected function parseTemplateSource(): void
     {
         $templateSource = $this->getTemplatePath();
-
         if (!is_file($templateSource)) {
             $e = 'Stub not found.'.PHP_EOL.
                 $this->formatFile($templateSource);
@@ -212,11 +210,9 @@ abstract class Make extends Command
     protected function parseSourceAndReplace(): array
     {
         $replaceKeyValue = array_merge(static::$globalReplace, $this->getDefaultReplaceKeyValue());
-
         $sourceKey = array_map(function ($item) {
             return '{{'.$item.'}}';
         }, array_keys($replaceKeyValue));
-
         $replace = array_values($replaceKeyValue);
 
         return [$sourceKey, $replace];

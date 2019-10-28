@@ -53,7 +53,6 @@ class Application extends SymfonyApplication implements IApplication
     public function __construct(IContainer $container, string $version)
     {
         $this->container = $container;
-
         parent::__construct($this->getLogo(), $version);
     }
 

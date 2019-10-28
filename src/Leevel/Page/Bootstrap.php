@@ -60,7 +60,6 @@ class Bootstrap implements IRender
     public function __construct(IPage $page, array $option = [])
     {
         $this->page = $page;
-
         if ($option) {
             $this->option = array_merge($this->option, $option);
             $this->intOption();
@@ -224,11 +223,9 @@ class Bootstrap implements IRender
         }
 
         $result = '';
-
         for ($i = $this->page->getPageStart();
             $i <= $this->page->getPageEnd(); $i++) {
             $active = $this->page->getCurrentPage() === $i;
-
             $result .= sprintf(
                 '<li class="%s"><a%s>%d</a></li>',
                 $active ? ' active' : '',

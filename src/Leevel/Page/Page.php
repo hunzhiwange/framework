@@ -114,7 +114,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
         $this->currentPage = $currentPage;
         $this->perPage = $perPage;
         $this->totalRecord = $totalRecord;
-
         $this->option = array_merge($this->option, $option);
     }
 
@@ -206,7 +205,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     {
         $tmp = $this->option['param'];
         $tmp[$key] = $value;
-
         $this->setOption('param', $tmp);
 
         return $this;
@@ -224,7 +222,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     {
         $tmp = $this->option['render_option'];
         $tmp[$key] = $value;
-
         $this->setOption('render_option', $tmp);
 
         return $this;
@@ -455,7 +452,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
         }
 
         $this->pageStart = $this->getCurrentPage() - $this->getRange();
-
         if ($this->pageStart < $this->getRange() * 2) {
             $this->pageStart = 1;
         }
@@ -475,7 +471,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
         }
 
         $this->pageEnd = $this->getCurrentPage() + $this->getRange();
-
         if (1 === $this->getPageStart()) {
             $this->pageEnd = $this->getRange() * 2 + 2;
         }
@@ -659,7 +654,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
         }
 
         $result = $render->render($option);
-
         $this->cachedUrl = null;
 
         return $result;
@@ -722,13 +716,10 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
         }
 
         $url = (string) ($this->option['url']);
-
         $param = $this->option['param'];
-
         if (isset($param[$this->option['page']])) {
             unset($param[$this->option['page']]);
         }
-
         if (false === strpos($url, '{page}')) {
             $param[$this->option['page']] = '{page}';
         }

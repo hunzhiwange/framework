@@ -60,7 +60,6 @@ class Manager extends Managers
     public function setDefaultDriver(string $name): void
     {
         $option = $this->getContainerOption('default');
-
         $this->setContainerOption($option.'_default', $name);
     }
 

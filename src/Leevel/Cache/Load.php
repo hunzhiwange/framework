@@ -153,7 +153,6 @@ class Load implements ILoad
     {
         list($name, $params) = $this->parse($name);
         $rc = new ReflectionClass($name);
-
         if (!in_array(IBlock::class, $rc->getInterfaceNames(), true)) {
             $e = sprintf('Cache `%s` must implements `%s`.', $name, IBlock::class);
 

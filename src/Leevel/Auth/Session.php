@@ -49,7 +49,6 @@ class Session extends Auth implements IAuth
     public function __construct(ISession $session, array $option = [])
     {
         $this->session = $session;
-
         parent::__construct($option);
     }
 

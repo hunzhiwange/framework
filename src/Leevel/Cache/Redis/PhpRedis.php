@@ -146,7 +146,6 @@ class PhpRedis implements IRedis
     protected function connect(): void
     {
         $this->handle = $this->createRedis();
-
         $this->handle->{$this->option['persistent'] ? 'pconnect' : 'connect'}(
             $this->option['host'],
             (int) ($this->option['port']),
