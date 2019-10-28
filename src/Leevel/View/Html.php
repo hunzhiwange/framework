@@ -84,7 +84,6 @@ class Html extends View implements IView
         }
 
         $cachepath = $this->getCachePath($file); // 编译文件路径
-
         if ($this->isCacheExpired($file, $cachepath)) { // 重新编译
             $this->parser()->doCompile($file, $cachepath);
         }
@@ -130,7 +129,6 @@ class Html extends View implements IView
         }
 
         $file = str_replace('//', '/', str_replace('\\', '/', $file));
-
         $file = basename($file, '.'.pathinfo($file, PATHINFO_EXTENSION)).'.'.md5($file).'.php';
 
         return $this->option['cache_path'].'/'.$file;

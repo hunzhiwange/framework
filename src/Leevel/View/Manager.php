@@ -67,7 +67,6 @@ class Manager extends Managers
         );
         $container = $this->container;
         $html = new Html($options);
-
         $html->setParseResolver(function () use ($container) {
             return $container['view.parser'];
         });
