@@ -41,7 +41,7 @@ class OrderByTest extends TestCase
 {
     /**
      * @api(
-     *     zh-CN:title="排序基础用法",
+     *     zh-CN:title="orderBy 排序基础用法",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -75,7 +75,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="指定表排序",
+     *     zh-CN:title="orderBy 指定表排序",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -109,7 +109,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="表达式排序",
+     *     zh-CN:title="orderBy 表达式排序",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -143,7 +143,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="表达式和普通排序混合",
+     *     zh-CN:title="orderBy 表达式和普通排序混合",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -177,7 +177,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="排序支持数组",
+     *     zh-CN:title="orderBy 排序支持数组",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -211,7 +211,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="排序数组支持自定义升降",
+     *     zh-CN:title="orderBy 排序数组支持自定义升降",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -245,7 +245,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="快捷降序",
+     *     zh-CN:title="latest 快捷降序",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -278,7 +278,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="快捷降序支持自定义字段",
+     *     zh-CN:title="latest 快捷降序支持自定义字段",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -312,7 +312,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="快捷升序",
+     *     zh-CN:title="oldest 快捷升序",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -346,7 +346,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="快捷升序支持自定义字段",
+     *     zh-CN:title="oldest 快捷升序支持自定义字段",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -380,7 +380,7 @@ class OrderByTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="表达式排序默认为升序",
+     *     zh-CN:title="orderBy 表达式排序默认为升序",
      *     zh-CN:description="",
      *     note="",
      * )

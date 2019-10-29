@@ -31,9 +31,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.17
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.bind",
+ *     path="database/query/bind",
+ *     description="",
+ * )
  */
 class BindTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="命名参数绑定",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -64,6 +77,18 @@ class BindTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="命名参数绑定，支持绑定类型",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testBindWithType(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -92,6 +117,18 @@ class BindTest extends TestCase
                 1
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="命名参数绑定，绑定值支持类型定义",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWithTypeAndValueCanBeArray(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -120,6 +157,18 @@ class BindTest extends TestCase
                 2
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="命名参数绑定，支持多个字段绑定",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testNameBind(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -153,6 +202,18 @@ class BindTest extends TestCase
                 3
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="问号 `?` 参数绑定，支持多个字段绑定",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testQuestionMarkBind(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [

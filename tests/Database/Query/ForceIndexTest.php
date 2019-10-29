@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.14
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.forceIndex",
+ *     path="database/query/forceindex",
+ *     description="",
+ * )
  */
 class ForceIndexTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="forceIndex,ignoreIndex 基础用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -61,7 +74,14 @@ class ForceIndexTest extends TestCase
         );
     }
 
-    public function testForceIndex(): void
+    /**
+     * @api(
+     *     zh-CN:title="forceIndex 数组支持",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testForceIndexWithArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -88,7 +108,14 @@ class ForceIndexTest extends TestCase
         );
     }
 
-    public function testIgnoreIndex(): void
+    /**
+     * @api(
+     *     zh-CN:title="ignoreIndex 数组支持",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testIgnoreIndexWithArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 

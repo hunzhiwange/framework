@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.14
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="查询语言.prefix",
+ *     path="database/query/prefix",
+ *     description="",
+ * )
  */
 class PrefixTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="prefix 基础用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -58,6 +71,18 @@ class PrefixTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="prefix 示例用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testSqlNoCache(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
