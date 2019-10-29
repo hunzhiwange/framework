@@ -49,6 +49,25 @@ abstract class DatabaseTestCase extends TestCase
         $this->freeDatabaseConnects();
     }
 
+    protected function varJson(array $data, ?int $id = null): string
+    {
+        $this->runSql($data);
+
+        return parent::varJson($data, $id);
+    }
+
+    protected function runSql(array $data): void
+    {
+        // 校验 SQL 语句的正确性，真实查询实际数据库
+        if (6 !== count($data)) {
+            return;
+        }
+
+        $connect = $this->createDatabaseConnect();
+        $connect->query(...$data);
+        $this->assertSame(1, 1);
+    }
+
     protected function clearDatabaseTable(): void
     {
         if (!method_exists($this, 'getDatabaseTable')) {
