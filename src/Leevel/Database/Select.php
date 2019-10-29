@@ -1013,7 +1013,6 @@ class Select
     protected function queryClass(array $data)
     {
         $className = $this->queryParams['as_class'];
-
         if (!class_exists($className)) {
             $e = sprintf('The class of query `%s` was not found.', $className);
 
