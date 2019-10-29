@@ -55,15 +55,13 @@ trait Database
             $this->assertSame(
                 sprintf($sql, $table),
                 $this->varJson(
-                    Db::sql()->
-                    table($table)->
-                    truncate()
+                    Db::sql()
+                        ->table($table)
+                        ->truncate()
                 )
             );
 
-            Db::table($table)->
-
-            truncate();
+            Db::table($table)->truncate();
         }
     }
 }
