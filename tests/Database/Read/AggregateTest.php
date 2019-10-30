@@ -39,7 +39,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT COUNT(*) AS row_count FROM `test` LIMIT 1",
+                "SELECT COUNT(*) AS row_count FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -53,7 +53,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findCount()
             )
         );
@@ -63,7 +63,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->count()
                     ->find(),
                 1
@@ -72,7 +72,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT COUNT(*) AS row_count2 FROM `test` LIMIT 1",
+                "SELECT COUNT(*) AS row_count2 FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -86,7 +86,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findCount('*', 'row_count2'),
                 2
             )
@@ -99,7 +99,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT AVG(`test`.`num`) AS avg_value FROM `test` LIMIT 1",
+                "SELECT AVG(`test_query`.`num`) AS avg_value FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -113,7 +113,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findAvg('num')
             )
         );
@@ -123,7 +123,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->avg('num')
                     ->find(),
                 1
@@ -132,7 +132,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT AVG(`test`.`num`) AS avg_value2 FROM `test` LIMIT 1",
+                "SELECT AVG(`test_query`.`num`) AS avg_value2 FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -146,7 +146,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findAvg('num', 'avg_value2'),
                 2
             )
@@ -159,7 +159,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT MAX(`test`.`num`) AS max_value FROM `test` LIMIT 1",
+                "SELECT MAX(`test_query`.`num`) AS max_value FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -173,7 +173,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findMax('num')
             )
         );
@@ -183,7 +183,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->max('num')
                     ->find(),
                 1
@@ -192,7 +192,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT MAX(`test`.`num`) AS max_value2 FROM `test` LIMIT 1",
+                "SELECT MAX(`test_query`.`num`) AS max_value2 FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -206,7 +206,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findMax('num', 'max_value2'),
                 2
             )
@@ -219,7 +219,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT MIN(`test`.`num`) AS min_value FROM `test` LIMIT 1",
+                "SELECT MIN(`test_query`.`num`) AS min_value FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -233,7 +233,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findMin('num')
             )
         );
@@ -243,7 +243,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->min('num')
                     ->find(),
                 1
@@ -252,7 +252,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT MIN(`test`.`num`) AS min_value2 FROM `test` LIMIT 1",
+                "SELECT MIN(`test_query`.`num`) AS min_value2 FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -266,7 +266,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findMin('num', 'min_value2'),
                 2
             )
@@ -279,7 +279,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SUM(`test`.`num`) AS sum_value FROM `test` LIMIT 1",
+                "SELECT SUM(`test_query`.`num`) AS sum_value FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -293,7 +293,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findSum('num')
             )
         );
@@ -303,7 +303,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->sum('num')
                     ->find(),
                 1
@@ -312,7 +312,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SUM(`test`.`num`) AS sum_value2 FROM `test` LIMIT 1",
+                "SELECT SUM(`test_query`.`num`) AS sum_value2 FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -326,7 +326,7 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findSum('num', 'sum_value2'),
                 2
             )
@@ -339,7 +339,7 @@ class AggregateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT AVG(`test`.`num`) AS avg_value FROM `test` LIMIT 1",
+                "SELECT AVG(`test_query`.`num`) AS avg_value FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -353,8 +353,8 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
-                    ->findAvg('test.num')
+                    ->table('test_query')
+                    ->findAvg('test_query.num')
             )
         );
 
@@ -363,8 +363,8 @@ class AggregateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
-                    ->avg('test.num')
+                    ->table('test_query')
+                    ->avg('test_query.num')
                     ->find(),
                 1
             )
