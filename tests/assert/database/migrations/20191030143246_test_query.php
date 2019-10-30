@@ -55,9 +55,9 @@ class TestQuery extends AbstractMigration
     {
         $sql = <<<'EOT'
             CREATE TABLE `test_query` (
-                `tid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'tid',
-                `id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'id',
-                `id2` int(10) NOT NULL,
+                `tid` int(11) NOT NULL AUTO_INCREMENT,
+                `id` int(11) unsigned NOT NULL DEFAULT '0',
+                `id2` int(10) NOT NULL DEFAULT '0',
                 `tname` varchar(64) NOT NULL DEFAULT '',
                 `name` varchar(200) NOT NULL DEFAULT '',
                 `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
