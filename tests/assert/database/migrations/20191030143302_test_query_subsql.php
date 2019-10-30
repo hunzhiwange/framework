@@ -56,11 +56,11 @@ class TestQuerySubsql extends AbstractMigration
         $sql = <<<'EOT'
             CREATE TABLE `test_query_subsql` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
-                `name` varchar(255) NOT NULL,
-                `value` varchar(255) NOT NULL,
-                `new` varchar(255) NOT NULL,
-                `hello` varchar(255) NOT NULL,
-                `test` varchar(255) NOT NULL,
+                `name` varchar(255) NOT NULL DEFAULT '',
+                `value` varchar(255) NOT NULL DEFAULT '',
+                `new` varchar(255) NOT NULL DEFAULT '',
+                `hello` varchar(255) NOT NULL DEFAULT '',
+                `test` varchar(255) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             EOT;
