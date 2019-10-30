@@ -29,6 +29,7 @@ services:
   - mysql
 
 before_install:
+  - mysql -e "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));" -uroot 
   - mysql -e "create database IF NOT EXISTS test;" -uroot
   - phpenv config-add build/redis.ini
   - wget https://github.com/swoole/swoole-src/archive/$swoole_version.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure && make -j$(nproc) && make install && cd - && rm -rf swoole
