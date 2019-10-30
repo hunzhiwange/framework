@@ -915,7 +915,7 @@ abstract class Database implements IDatabase, IConnection
         }
 
         try {
-            $connect = $this->connects[$linkid] = new PDO(
+            $connect = new PDO(
                 $this->parseDsn($option),
                 $option['user'],
                 $option['password'],
@@ -923,7 +923,7 @@ abstract class Database implements IDatabase, IConnection
             );
             $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            return $connect;
+            return $this->connects[$linkid] = $connect;
         } catch (PDOException $e) {
             if (false === $throwException) {
                 return false;

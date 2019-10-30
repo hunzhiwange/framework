@@ -2706,7 +2706,7 @@ class Condition
         } elseif (!preg_match('/\(.*\)/', $field)) {
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
                 $currentTableName = $matches[1];
-                $tmp = $matches[2];
+                $field = $matches[2];
             } else {
                 $currentTableName = $tableName;
             }
