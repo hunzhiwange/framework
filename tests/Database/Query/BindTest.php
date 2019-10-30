@@ -53,7 +53,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
                         1,
@@ -71,7 +71,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind('id', 1)
                     ->where('id', '=', '[:id]')
                     ->findAll(true)
@@ -92,7 +92,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
                         1,
@@ -110,7 +110,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind('id', 1, PDO::PARAM_INT)
                     ->where('id', '=', '[:id]')
                     ->findAll(true),
@@ -132,7 +132,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
                         1,
@@ -150,7 +150,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind('id', [1, PDO::PARAM_INT])
                     ->where('id', '=', '[:id]')
                     ->findAll(true),
@@ -172,7 +172,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id AND `test`.`hello` LIKE :name",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id AND `test_query`.`hello` LIKE :name",
                 {
                     "id": [
                         1,
@@ -194,7 +194,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind(['id' => [1, PDO::PARAM_INT], 'name'=>'小鸭子'])
                     ->where('id', '=', '[:id]')
                     ->where('hello', 'like', '[:name]')
@@ -217,7 +217,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = ? AND `test`.`hello` LIKE ?",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = ? AND `test_query`.`hello` LIKE ?",
                 [
                     [
                         5,
@@ -239,7 +239,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind([[5, PDO::PARAM_INT], '小鸭子'])
                     ->where('id', '=', '[?]')
                     ->where('hello', 'like', '[?]')
@@ -257,7 +257,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`name` = :name",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` = :name",
                 {
                     "name": [
                         1,
@@ -275,7 +275,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->bind('id', 1)
                     ->where('id', '=', '[:id]')
@@ -296,7 +296,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
                         1,
@@ -314,7 +314,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->bind('id', 1)
                     ->where('id', '=', '[:id]')

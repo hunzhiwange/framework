@@ -58,14 +58,41 @@ abstract class DatabaseTestCase extends TestCase
 
     protected function runSql(array $data): void
     {
-        // 校验 SQL 语句的正确性，真实查询实际数据库
-        if (6 !== count($data)) {
+        // 排除掉明显异常的数据
+        if (!isset($data[0]) ||
+            count($data) < 2 ||
+            !is_string($data[0]) ||
+            !is_array($data[1])) {
             return;
         }
 
-        $connect = $this->createDatabaseConnect();
-        $connect->query(...$data);
-        $this->assertSame(1, 1);
+        // 校验 SQL 语句的正确性，真实查询实际数据库
+        if (6 === count($data) && $this->isQuerySql($data[0])) {
+            // MySQL 不支持 FULL JOIN，仅示例
+            if (false !== strpos($data[0], 'FULL JOIN')) {
+                return;
+            }
+
+            $connect = $this->createDatabaseConnect();
+            $connect->query(...$data);
+            $this->assertSame(1, 1);
+        } elseif (2 === count($data) && $this->isExecuteSql($data[0])) {
+            $connect = $this->createDatabaseConnect();
+            $connect->execute(...$data);
+            $this->assertSame(1, 1);
+        }
+    }
+
+    protected function isQuerySql(string $sql): bool
+    {
+        return false !== strpos($sql, 'SELECT');
+    }
+
+    protected function isExecuteSql(string $sql): bool
+    {
+        return false !== strpos($sql, 'INSERT INTO') ||
+            false !== strpos($sql, 'REPLACE INTO') ||
+            false !== strpos($sql, 'TRUNCATE TABLE');
     }
 
     protected function clearDatabaseTable(): void

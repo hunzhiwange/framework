@@ -52,7 +52,7 @@ class ColumnsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.*,`test`.`id`,`test`.`name`,`test`.`value` FROM `test`",
+                "SELECT `test_query`.*,`test_query`.`id`,`test_query`.`name`,`test_query`.`value` FROM `test_query`",
                 [],
                 false,
                 null,
@@ -65,7 +65,7 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->columns('id')
                     ->columns('name,value')
                     ->findAll(true)
@@ -86,7 +86,7 @@ class ColumnsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`remark` FROM `test`",
+                "SELECT `test_query`.`remark` FROM `test_query`",
                 [],
                 false,
                 null,
@@ -99,7 +99,7 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->columns('id')
                     ->columns('name,value')
                     ->setColumns('remark')
@@ -152,7 +152,7 @@ class ColumnsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.*,`test`.`name`,`test`.`value` FROM `test`",
+                "SELECT `test_query`.*,`test_query`.`name`,`test_query`.`value` FROM `test_query`",
                 [],
                 false,
                 null,
@@ -165,7 +165,7 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->columns('id')
                     ->else()
@@ -184,7 +184,7 @@ class ColumnsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.*,`test`.`id` FROM `test`",
+                "SELECT `test_query`.*,`test_query`.`id` FROM `test_query`",
                 [],
                 false,
                 null,
@@ -197,7 +197,7 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->columns('id')
                     ->else()
@@ -216,7 +216,7 @@ class ColumnsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name`,`test`.`value` FROM `test`",
+                "SELECT `test_query`.`name`,`test_query`.`value` FROM `test_query`",
                 [],
                 false,
                 null,
@@ -229,7 +229,7 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->setColumns('foo')
                     ->if($condition)
                     ->setColumns('id')
@@ -249,7 +249,7 @@ class ColumnsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`id` FROM `test`",
+                "SELECT `test_query`.`id` FROM `test_query`",
                 [],
                 false,
                 null,
@@ -262,7 +262,7 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->setColumns('foo')
                     ->if($condition)
                     ->setColumns('id')
@@ -287,7 +287,7 @@ class ColumnsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name`,`test`.`value`,`hello`.`name`,`hello`.`value` FROM `test` INNER JOIN `hello` ON `hello`.`name` = `test`.`name`",
+                "SELECT `test_query`.`name`,`test_query`.`value`,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = `test_query`.`name`",
                 [],
                 false,
                 null,
@@ -300,9 +300,9 @@ class ColumnsTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
-                    ->setColumns('test.name,test.value')
-                    ->join('hello', 'name,value', 'name', '=', '{[test.name]}')
+                    ->table('test_query')
+                    ->setColumns('test_query.name,test_query.value')
+                    ->join('test_query_subsql', 'name,value', 'name', '=', '{[test_query.name]}')
                     ->findAll(true)
             )
         );

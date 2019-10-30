@@ -52,7 +52,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 ORDER BY `test`.`name` DESC LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2 ORDER BY `test_query`.`name` DESC LIMIT 1",
                 [],
                 false,
                 null,
@@ -67,7 +67,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -85,7 +85,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 1 LIMIT 1",
                 [],
                 false,
                 null,
@@ -100,7 +100,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -119,7 +119,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 3 AND `test_query`.`id` = 1111 LIMIT 1",
                 [],
                 false,
                 null,
@@ -134,7 +134,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -153,7 +153,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 4 LIMIT 1",
                 [],
                 false,
                 null,
@@ -168,7 +168,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -199,7 +199,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`id` = 4 ORDER BY `test`.`name` DESC LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2 AND `test_query`.`id` = 4 ORDER BY `test_query`.`name` DESC LIMIT 1",
                 [],
                 false,
                 null,
@@ -214,7 +214,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -232,7 +232,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 3 AND `test_query`.`id` = 1111 LIMIT 1",
                 [],
                 false,
                 null,
@@ -247,7 +247,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -266,7 +266,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 4 LIMIT 1",
                 [],
                 false,
                 null,
@@ -281,7 +281,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)

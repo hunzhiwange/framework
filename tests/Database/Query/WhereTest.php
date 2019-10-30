@@ -1808,7 +1808,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1823,7 +1823,7 @@ class WhereTest extends TestCase
                 $connect
                     ->table('test_query')
                     ->whereIn('id', function ($select) {
-                        $select->table('test_query_subsql');
+                        $select->table('test_query_subsql', 'id');
                     })
                     ->findAll(true)
             )
@@ -1836,7 +1836,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1846,7 +1846,7 @@ class WhereTest extends TestCase
             eot;
 
         $subSql = $connect
-            ->table('test_query_subsql')
+            ->table('test_query_subsql', 'id')
             ->makeSql(true);
 
         $this->assertSame(
@@ -1866,7 +1866,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1875,7 +1875,7 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $subSql = $connect->table('test_query_subsql');
+        $subSql = $connect->table('test_query_subsql', 'id');
 
         $this->assertSame(
             $sql,

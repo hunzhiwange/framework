@@ -39,7 +39,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:value_1),(:name_2,:value_2),(:name_3,:value_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:value_1),(:name_2,:value_2),(:name_3,:value_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -89,7 +89,7 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->insertAll($data)
             )
         );
@@ -101,7 +101,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -151,14 +151,14 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->insertAll($data, ['吃肉1', '吃肉2'])
             )
         );
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:hello),(:name_2,:value_2),(:name_3,:world)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:hello),(:name_2,:value_2),(:name_3,:world)",
                 {
                     "name": [
                         "小鸭子1",
@@ -202,7 +202,7 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤']),
                 1
             )
@@ -215,7 +215,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -265,7 +265,7 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->bind(['吃鱼', '吃肉'])
                     ->insertAll($data)
             )
@@ -278,7 +278,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -328,7 +328,7 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->bind(['吃鱼', '吃肉'])
                     ->insertAll($data, [], true)
             )
@@ -351,7 +351,7 @@ class InsertAllTest extends TestCase
 
         $connect
             ->sql()
-            ->table('test')
+            ->table('test_query')
             ->insertAll($data);
     }
 
@@ -371,7 +371,7 @@ class InsertAllTest extends TestCase
 
         $connect
             ->sql()
-            ->table('test')
+            ->table('test_query')
             ->insertAll($data);
     }
 
@@ -381,7 +381,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` () VALUES (),(),(),()",
+                "INSERT INTO `test_query` () VALUES (),(),(),()",
                 []
             ]
             eot;
@@ -398,7 +398,7 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->insertAll($data)
             )
         );
@@ -410,7 +410,7 @@ class InsertAllTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test` () VALUES (),(),(),()",
+                "REPLACE INTO `test_query` () VALUES (),(),(),()",
                 []
             ]
             eot;
@@ -427,9 +427,14 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->insertAll($data, [], true)
             )
         );
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['test_query'];
     }
 }

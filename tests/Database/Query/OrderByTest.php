@@ -52,7 +52,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`id` DESC,`test`.`name` ASC",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`id` DESC,`test_query`.`name` ASC",
                 [],
                 false,
                 null,
@@ -65,7 +65,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->orderBy('id DESC')
                     ->orderBy('name')
                     ->findAll(true)
@@ -86,7 +86,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`id` DESC",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`id` DESC",
                 [],
                 false,
                 null,
@@ -99,8 +99,8 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
-                    ->orderBy('test.id DESC')
+                    ->table('test_query', 'tid as id,tname as value')
+                    ->orderBy('test_query.id DESC')
                     ->findAll(true),
                 1
             )
@@ -120,7 +120,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY SUM(`test`.`num`) ASC",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY SUM(`test_query`.`num`) ASC",
                 [],
                 false,
                 null,
@@ -133,7 +133,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->orderBy('{SUM([num]) ASC}')
                     ->findAll(true),
                 2
@@ -154,7 +154,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` ASC,`test`.`id` ASC,concat('1234',`test`.`id`,'ttt') DESC",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`title` ASC,`test_query`.`id` ASC,concat('1234',`test_query`.`id`,'ttt') DESC",
                 [],
                 false,
                 null,
@@ -167,7 +167,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->orderBy("title,id,{concat('1234',[id],'ttt') desc}")
                     ->findAll(true),
                 4
@@ -188,7 +188,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` ASC,`test`.`id` ASC,`test`.`ttt` ASC,`test`.`value` DESC",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`title` ASC,`test_query`.`id` ASC,`test_query`.`ttt` ASC,`test_query`.`value` DESC",
                 [],
                 false,
                 null,
@@ -201,7 +201,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->orderBy(['title,id,ttt', 'value desc'])
                     ->findAll(true),
                 5
@@ -222,7 +222,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` ORDER BY `test`.`title` DESC,`test`.`id` DESC,`test`.`ttt` ASC,`test`.`value` DESC",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` ORDER BY `test_query`.`title` DESC,`test_query`.`id` DESC,`test_query`.`ttt` ASC,`test_query`.`value` DESC",
                 [],
                 false,
                 null,
@@ -235,7 +235,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->orderBy(['title,id,ttt asc', 'value'], 'desc')
                     ->findAll(true),
                 6
@@ -256,7 +256,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` DESC",
                 [],
                 false,
                 null,
@@ -269,7 +269,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->latest()
                     ->findAll(true)
             )
@@ -289,7 +289,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`foo` DESC",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`foo` DESC",
                 [],
                 false,
                 null,
@@ -302,7 +302,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->latest('foo')
                     ->findAll(true),
                 1
@@ -323,7 +323,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` ASC",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` ASC",
                 [],
                 false,
                 null,
@@ -336,7 +336,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->oldest()
                     ->findAll(true),
                 2
@@ -357,7 +357,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`bar` ASC",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`bar` ASC",
                 [],
                 false,
                 null,
@@ -370,7 +370,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->oldest('bar')
                     ->findAll(true),
                 3
@@ -391,7 +391,7 @@ class OrderByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY foo ASC",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY foo ASC",
                 [],
                 false,
                 null,
@@ -404,7 +404,7 @@ class OrderByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->orderBy('{foo}')
                     ->findAll(true)
             )

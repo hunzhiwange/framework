@@ -52,7 +52,7 @@ class DistinctTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT DISTINCT `test`.* FROM `test`",
+                "SELECT DISTINCT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -65,7 +65,7 @@ class DistinctTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->distinct()
                     ->findAll(true)
             )
@@ -85,7 +85,7 @@ class DistinctTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -98,7 +98,7 @@ class DistinctTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->distinct()
                     ->distinct(false)
                     ->findAll(true),
@@ -114,7 +114,7 @@ class DistinctTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -127,7 +127,7 @@ class DistinctTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->distinct()
                     ->else()
@@ -146,7 +146,7 @@ class DistinctTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT DISTINCT `test`.* FROM `test`",
+                "SELECT DISTINCT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -159,7 +159,7 @@ class DistinctTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->distinct()
                     ->else()

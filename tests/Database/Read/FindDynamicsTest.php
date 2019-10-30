@@ -39,7 +39,7 @@ class FindDynamicsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 0,10",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 0,10",
                 [],
                 false,
                 null,
@@ -53,14 +53,14 @@ class FindDynamicsTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->find10()
             )
         );
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 3,10",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 3,10",
                 [],
                 false,
                 null,
@@ -74,7 +74,7 @@ class FindDynamicsTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->find10start3(),
                 1
             )
@@ -82,7 +82,7 @@ class FindDynamicsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`user_name` = '1111' LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`user_name` = '1111' LIMIT 1",
                 [],
                 false,
                 null,
@@ -96,7 +96,7 @@ class FindDynamicsTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findByUserName('1111'),
                 2
             )
@@ -104,7 +104,7 @@ class FindDynamicsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`UserName` = '1111' LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`UserName` = '1111' LIMIT 1",
                 [],
                 false,
                 null,
@@ -118,7 +118,7 @@ class FindDynamicsTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findByUserName_('1111'),
                 3
             )
@@ -126,7 +126,7 @@ class FindDynamicsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`user_name` = '1111' AND `test`.`sex` = '222'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`user_name` = '1111' AND `test_query`.`sex` = '222'",
                 [],
                 false,
                 null,
@@ -140,7 +140,7 @@ class FindDynamicsTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findAllByUserNameAndSex('1111', '222'),
                 4
             )
@@ -148,7 +148,7 @@ class FindDynamicsTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`UserName` = '1111' AND `test`.`Sex` = '222'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`UserName` = '1111' AND `test_query`.`Sex` = '222'",
                 [],
                 false,
                 null,
@@ -162,7 +162,7 @@ class FindDynamicsTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->findAllByUserNameAndSex_('1111', '222'),
                 5
             )

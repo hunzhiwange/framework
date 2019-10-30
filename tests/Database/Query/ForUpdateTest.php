@@ -52,7 +52,7 @@ class ForUpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` FOR UPDATE",
+                "SELECT `test_query`.* FROM `test_query` FOR UPDATE",
                 [],
                 false,
                 null,
@@ -65,7 +65,7 @@ class ForUpdateTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->forUpdate()
                     ->findAll(true)
             )
@@ -85,7 +85,7 @@ class ForUpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -98,7 +98,7 @@ class ForUpdateTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->forUpdate()
                     ->forUpdate(false)
                     ->findAll(true),
@@ -114,7 +114,7 @@ class ForUpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -127,7 +127,7 @@ class ForUpdateTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->forUpdate()
                     ->else()
@@ -145,7 +145,7 @@ class ForUpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` FOR UPDATE",
+                "SELECT `test_query`.* FROM `test_query` FOR UPDATE",
                 [],
                 false,
                 null,
@@ -158,7 +158,7 @@ class ForUpdateTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->forUpdate()
                     ->else()

@@ -72,6 +72,8 @@ class ConnectTest extends TestCase
             )
         );
 
+        $this->truncateDatabase(['guest_book']);
+
         // 写入数据
         $this->assertSame(
             1,

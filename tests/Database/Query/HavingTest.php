@@ -1252,7 +1252,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1268,7 +1268,7 @@ class HavingTest extends TestCase
                     ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', function ($select) {
-                        $select->table('test_query_subsql');
+                        $select->table('test_query_subsql', 'id');
                     })
                     ->findAll(true)
             )
@@ -1281,7 +1281,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1291,7 +1291,7 @@ class HavingTest extends TestCase
             eot;
 
         $subSql = $connect
-            ->table('test_query_subsql')
+            ->table('test_query_subsql', 'id')
             ->makeSql(true);
 
         $this->assertSame(
@@ -1312,7 +1312,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1321,7 +1321,7 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $subSql = $connect->table('test_query_subsql');
+        $subSql = $connect->table('test_query_subsql', 'id');
 
         $this->assertSame(
             $sql,

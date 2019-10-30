@@ -52,7 +52,7 @@ class PrefixTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SQL_CALC_FOUND_ROWS `test`.* FROM `test` WHERE `test`.`id` = 5",
+                "SELECT SQL_CALC_FOUND_ROWS `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 5",
                 [],
                 false,
                 null,
@@ -65,7 +65,7 @@ class PrefixTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->prefix('SQL_CALC_FOUND_ROWS')
                     ->where('id', '=', 5)
                     ->findAll(true)
@@ -86,7 +86,7 @@ class PrefixTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SQL_NO_CACHE `test`.* FROM `test` WHERE `test`.`id` = 5",
+                "SELECT SQL_NO_CACHE `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 5",
                 [],
                 false,
                 null,
@@ -99,7 +99,7 @@ class PrefixTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->prefix('SQL_NO_CACHE')
                     ->where('id', '=', 5)
                     ->findAll(true),
@@ -115,7 +115,7 @@ class PrefixTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SQL_CALC_FOUND_ROWS `test`.* FROM `test`",
+                "SELECT SQL_CALC_FOUND_ROWS `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -128,7 +128,7 @@ class PrefixTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->prefix('SQL_NO_CACHE')
                     ->else()
@@ -146,7 +146,7 @@ class PrefixTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT SQL_NO_CACHE `test`.* FROM `test`",
+                "SELECT SQL_NO_CACHE `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -159,7 +159,7 @@ class PrefixTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->prefix('SQL_NO_CACHE')
                     ->else()

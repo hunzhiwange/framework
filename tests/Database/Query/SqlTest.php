@@ -52,7 +52,7 @@ class SqlTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` DESC LIMIT 1",
                 [],
                 false,
                 null,
@@ -65,7 +65,7 @@ class SqlTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->sql(true)
                     ->latest()
                     ->findOne()
@@ -105,7 +105,7 @@ class SqlTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` DESC LIMIT 1",
                 [],
                 false,
                 null,
@@ -118,7 +118,7 @@ class SqlTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->latest()
                     ->findOne(true),
                 2

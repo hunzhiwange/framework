@@ -60,7 +60,7 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`id`,`test`.`name`",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`id`,`test_query`.`name`",
                 [],
                 false,
                 null,
@@ -73,7 +73,7 @@ class GroupByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->groupBy('id')
                     ->groupBy('name')
                     ->findAll(true)
@@ -94,7 +94,7 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `post`.`id`",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`id`",
                 [],
                 false,
                 null,
@@ -107,8 +107,8 @@ class GroupByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
-                    ->groupBy('post.id')
+                    ->table('test_query', 'tid as id,tname as value')
+                    ->groupBy('test_query.id')
                     ->findAll(true),
                 1
             )
@@ -128,7 +128,7 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY SUM(`test`.`num`)",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`num` HAVING SUM(`test_query`.`num`) > 9 IS NULL",
                 [],
                 false,
                 null,
@@ -141,8 +141,9 @@ class GroupByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
-                    ->groupBy('{SUM([num])}')
+                    ->table('test_query', 'tid as id,tname as value')
+                    ->groupBy('{[num]}')
+                    ->having('{SUM([num]) > 9}')
                     ->findAll(true),
                 2
             )
@@ -162,7 +163,7 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`title`,`test`.`id`,concat('1234',`test`.`id`,'ttt')",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`title`,`test_query`.`id`,concat('1234',`test_query`.`id`,'ttt')",
                 [],
                 false,
                 null,
@@ -175,7 +176,7 @@ class GroupByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->groupBy("title,id,{concat('1234',[id],'ttt')}")
                     ->findAll(true),
                 3
@@ -196,7 +197,7 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`title`,`test`.`id`,`test`.`ttt`,`test`.`value`",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`title`,`test_query`.`id`,`test_query`.`ttt`,`test_query`.`value`",
                 [],
                 false,
                 null,
@@ -209,7 +210,7 @@ class GroupByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->groupBy(['title,id,ttt', 'value'])
                     ->findAll(true),
                 4
@@ -224,7 +225,7 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name`",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name`",
                 [],
                 false,
                 null,
@@ -237,7 +238,7 @@ class GroupByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->groupBy('id')
                     ->else()
@@ -256,7 +257,7 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`id`",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id`",
                 [],
                 false,
                 null,
@@ -269,7 +270,7 @@ class GroupByTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->groupBy('id')
                     ->else()

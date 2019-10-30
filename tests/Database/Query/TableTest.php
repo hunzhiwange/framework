@@ -53,7 +53,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `posts`.* FROM `posts`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -66,7 +66,7 @@ class TableTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('posts')
+                    ->table('test_query')
                     ->findAll(true)
             )
         );
@@ -85,7 +85,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `posts`.* FROM `mydb`.`posts`",
+                "SELECT `test_query`.* FROM `test`.`test_query`",
                 [],
                 false,
                 null,
@@ -98,7 +98,7 @@ class TableTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('mydb.posts')
+                    ->table('test.test_query')
                     ->findAll(true),
                 1
             )
@@ -118,7 +118,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `p`.* FROM `mydb`.`posts` `p`",
+                "SELECT `p`.* FROM `test`.`test_query` `p`",
                 [],
                 false,
                 null,
@@ -131,7 +131,7 @@ class TableTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table(['p' => 'mydb.posts'])
+                    ->table(['p' => 'test.test_query'])
                     ->findAll(true),
                 2
             )
@@ -151,7 +151,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `posts`.`title`,`posts`.`body` FROM `posts`",
+                "SELECT `test_query`.`title`,`test_query`.`body` FROM `test_query`",
                 [],
                 false,
                 null,
@@ -164,7 +164,7 @@ class TableTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('posts', 'title,body')
+                    ->table('test_query', 'title,body')
                     ->findAll(true)
             )
         );
@@ -183,7 +183,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `posts`.`title` AS `t`,`posts`.`name`,`posts`.`remark`,`posts`.`value` FROM `mydb`.`posts`",
+                "SELECT `test_query`.`title` AS `t`,`test_query`.`name`,`test_query`.`remark`,`test_query`.`value` FROM `test`.`test_query`",
                 [],
                 false,
                 null,
@@ -196,7 +196,7 @@ class TableTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('mydb.posts', [
+                    ->table('test.test_query', [
                         't' => 'title', 'name', 'remark,value',
                     ])
                     ->findAll(true),
@@ -212,7 +212,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `foo`.* FROM `foo`",
+                "SELECT `test_query_subsql`.* FROM `test_query_subsql`",
                 [],
                 false,
                 null,
@@ -226,9 +226,9 @@ class TableTest extends TestCase
             $this->varJson(
                 $connect
                     ->if($condition)
-                    ->table('test')
+                    ->table('test_query')
                     ->else()
-                    ->table('foo')
+                    ->table('test_query_subsql')
                     ->fi()
                     ->findAll(true)
             )
@@ -242,7 +242,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -256,9 +256,9 @@ class TableTest extends TestCase
             $this->varJson(
                 $connect
                     ->if($condition)
-                    ->table('test')
+                    ->table('test_query')
                     ->else()
-                    ->table('foo')
+                    ->table('test_query_subsql')
                     ->fi()
                     ->findAll(true)
             )
@@ -289,11 +289,11 @@ class TableTest extends TestCase
     public function testSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        $subSql = $connect->table('test')->makeSql(true);
+        $subSql = $connect->table('test_query')->makeSql(true);
 
         $sql = <<<'eot'
             [
-                "SELECT `a`.* FROM (SELECT `test`.* FROM `test`) a",
+                "SELECT `a`.* FROM (SELECT `test_query`.* FROM `test_query`) a",
                 [],
                 false,
                 null,
@@ -322,11 +322,11 @@ class TableTest extends TestCase
     public function testSubIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        $subSql = $connect->table('test');
+        $subSql = $connect->table('test_query');
 
         $sql = <<<'eot'
             [
-                "SELECT `bb`.* FROM (SELECT `test`.* FROM `test`) bb",
+                "SELECT `bb`.* FROM (SELECT `test_query`.* FROM `test_query`) bb",
                 [],
                 false,
                 null,
@@ -355,11 +355,11 @@ class TableTest extends TestCase
     public function testSubIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        $subSql = $connect->table('test')->databaseCondition();
+        $subSql = $connect->table('test_query')->databaseCondition();
 
         $sql = <<<'eot'
             [
-                "SELECT `bb`.* FROM (SELECT `test`.* FROM `test`) bb",
+                "SELECT `bb`.* FROM (SELECT `test_query`.* FROM `test_query`) bb",
                 [],
                 false,
                 null,
@@ -391,7 +391,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `b`.* FROM (SELECT `world`.* FROM `world`) b",
+                "SELECT `b`.* FROM (SELECT `test_query`.* FROM `test_query`) b",
                 [],
                 false,
                 null,
@@ -405,7 +405,7 @@ class TableTest extends TestCase
             $this->varJson(
                 $connect
                     ->table(['b'=> function ($select) {
-                        $select->table('world');
+                        $select->table('test_query');
                     }])
                     ->findAll(true)
             )
@@ -459,7 +459,7 @@ class TableTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `world`.`remark`,`hello`.`name`,`hello`.`value` FROM (SELECT `world`.* FROM `world`) world INNER JOIN `hello` ON `hello`.`name` = `world`.`name`",
+                "SELECT `test_query`.`remark`,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM (SELECT `test_query`.* FROM `test_query`) test_query INNER JOIN `test_query_subsql` ON `test_query_subsql`.`name` = `test_query`.`name`",
                 [],
                 false,
                 null,
@@ -473,9 +473,9 @@ class TableTest extends TestCase
             $this->varJson(
                 $connect
                     ->table(function ($select) {
-                        $select->table('world');
+                        $select->table('test_query');
                     }, 'remark')
-                    ->join('hello', 'name,value', 'name', '=', '{[world.name]}')
+                    ->join('test_query_subsql', 'name,value', 'name', '=', '{[test_query.name]}')
                     ->findAll(true)
             )
         );
