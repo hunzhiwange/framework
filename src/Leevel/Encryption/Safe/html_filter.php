@@ -32,7 +32,6 @@ function html_filter($data, int $maxNum = 20000)
 {
     if (is_array($data)) {
         $result = [];
-
         foreach ($data as $key => $val) {
             $result[html_filter($key)] = html_filter($val, $maxNum);
         }
@@ -41,7 +40,6 @@ function html_filter($data, int $maxNum = 20000)
     }
 
     $data = trim(length_limit((string) ($data), $maxNum));
-
     $data = preg_replace([
         '/<\s*a[^>]*href\s*=\s*[\'\"]?(javascript|vbscript)[^>]*>/i',
         '/<([^>]*)on(\w)+=[^>]*>/i',
@@ -51,7 +49,6 @@ function html_filter($data, int $maxNum = 20000)
         '<$1>',
         '&lt;$1&gt;',
     ], $data);
-
     $data = str_replace('　', '', $data);
 
     return $data;

@@ -60,11 +60,9 @@ class Cache extends Command
     public function handle(IApp $app, RouterProvider $routerProvider): void
     {
         $this->line('Start to cache router.');
-
         $data = $routerProvider->getRouters();
         $cachePath = $app->routerCachedPath();
         $this->writeCache($cachePath, $data);
-
         $this->info(sprintf('Router cache file %s cache successed.', $cachePath));
     }
 
@@ -78,7 +76,6 @@ class Cache extends Command
     {
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>'.
             PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
-
         create_file($cachePath, $content);
     }
 

@@ -119,7 +119,6 @@ class HttpServer extends Server implements IServer
 
         $request = $this->normalizeRequest($swooleRequest);
         $response = $this->dispatchRouter($request);
-
         $swooleResponse = $this->normalizeResponse($response, $swooleResponse);
         $swooleResponse->end();
     }

@@ -128,7 +128,6 @@ class Doc extends Command
     {
         $fileOrDir = dirname($this->testsDir()).'/'.$this->path();
         $result = [];
-
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
@@ -148,7 +147,6 @@ class Doc extends Command
     protected function includeBootstrapFile(): void
     {
         $bootstrap = $this->testsDir().'/bootstrap.php';
-
         if (is_file($bootstrap)) {
             include $bootstrap;
         }

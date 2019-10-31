@@ -151,7 +151,6 @@ abstract class Server
         $newProgress = new Process(
             function (Process $worker) use ($process) {
                 $newProgress = $this->container->make($process);
-
                 if (!is_object($newProgress) || ($newProgress instanceof ProtocolProcess)) {
                     $e = sprintf('Process `%s` was invalid.', $process);
 
@@ -215,7 +214,6 @@ abstract class Server
         $this->log('Server master worker start.', true);
 
         $this->setProcessName($this->option['process_name'].'.master');
-
         $pidContent = $server->master_pid."\n".$server->manager_pid;
         create_file($this->option['pid_path'], $pidContent);
     }
@@ -355,7 +353,6 @@ abstract class Server
         $this->log($message);
 
         list($task, $params) = $this->parseTask($data);
-
         if (false !== strpos($task, '@')) {
             list($task, $method) = explode('@', $task);
         } else {
@@ -491,7 +488,6 @@ abstract class Server
             if (!method_exists($this, $onEvent = 'on'.$type.ucfirst($event))) {
                 $onEvent = 'on'.ucfirst($event);
             }
-
             $this->server->on($event, [$this, $onEvent]);
         }
     }

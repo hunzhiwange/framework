@@ -32,7 +32,6 @@ function custom_stripslashes($data, bool $recursive = true)
 {
     if (true === $recursive && is_array($data)) {
         $result = [];
-
         foreach ($data as $key => $value) {
             $result[custom_stripslashes($key)] = custom_stripslashes($value);
         }

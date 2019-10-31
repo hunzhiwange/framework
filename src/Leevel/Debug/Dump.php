@@ -52,7 +52,6 @@ class Dump
         }
 
         $dumper->dump($var, Debug\Dumper::ERROR_LOG);
-
         foreach ($moreVars as $v) {
             $dumper->dump($v);
         }

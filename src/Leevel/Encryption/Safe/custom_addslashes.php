@@ -32,7 +32,6 @@ function custom_addslashes($data, bool $recursive = true)
 {
     if (true === $recursive && is_array($data)) {
         $result = [];
-
         foreach ($data as $key => $value) {
             $result[custom_addslashes($key)] = custom_addslashes($value);
         }

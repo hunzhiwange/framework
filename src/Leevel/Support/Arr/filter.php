@@ -41,7 +41,6 @@ function filter(array $input, array $rules): array
 
         if (isset($rules[$k])) {
             $rule = $rules[$k];
-
             if (!is_array($rule)) {
                 $e = sprintf('Rule of `%s` must be an array.', $k);
 

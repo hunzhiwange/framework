@@ -41,7 +41,6 @@ function create_directory(string $dir, int $mode = 0777, bool $writableValid = t
 
             throw new RuntimeException($e);
         }
-
         mkdir($dir, $mode, true);
     }
 

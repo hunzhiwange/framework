@@ -66,10 +66,7 @@ class LinkStorage extends Command
             return;
         }
 
-        link(
-            $path = $app->storagePath(), $link
-        );
-
+        link($path = $app->storagePath(), $link);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
     }
 

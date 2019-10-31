@@ -73,7 +73,6 @@ class Encryption implements IEncryption
     public function __construct(string $key, string $cipher = 'AES-256-CBC', ?string $rsaPrivate = null, ?string $rsaPublic = null)
     {
         $this->validateCipher($cipher);
-
         $this->key = $key;
         $this->cipher = $cipher;
         $this->rsaPrivate = $rsaPrivate;
@@ -276,7 +275,6 @@ class Encryption implements IEncryption
 
         try {
             $rsaPrivate = openssl_pkey_get_private($this->rsaPrivate);
-
             if (openssl_sign($value, $sign, $rsaPrivate)) {
                 return base64_encode($sign);
             }
@@ -324,7 +322,6 @@ class Encryption implements IEncryption
         }
 
         $result = base64_decode($data['value'], true) ?: false;
-
         if (false === $result) {
             return '';
         }
@@ -350,7 +347,6 @@ class Encryption implements IEncryption
 
         try {
             $rsaPublic = openssl_pkey_get_public($this->rsaPublic);
-
             if (1 === openssl_verify($value, base64_decode($sign, true), $rsaPublic)) {
                 return $value;
             }

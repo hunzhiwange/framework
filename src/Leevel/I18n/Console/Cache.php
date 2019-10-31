@@ -128,7 +128,6 @@ class Cache extends Command
     {
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>'.
             PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
-
         create_file($cachePath, $content);
     }
 

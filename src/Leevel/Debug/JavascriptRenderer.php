@@ -44,7 +44,6 @@ class JavascriptRenderer extends BaseJavascriptRenderer
     public function __construct(DebugBar $debugBar, ?string $baseUrl = null, ?string $basePath = null)
     {
         parent::__construct($debugBar, $baseUrl, $basePath);
-
         $this->addInlineAssets([file_get_contents(__DIR__.'/resources/debug.css')], [], []);
     }
 }

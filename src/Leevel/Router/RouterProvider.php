@@ -63,7 +63,6 @@ abstract class RouterProvider extends Provider
     public function bootstrap(): void
     {
         $this->setControllerDir();
-
         $this->setMiddleware();
 
         if ($this->isRouterCached()) {
@@ -109,7 +108,6 @@ abstract class RouterProvider extends Provider
     protected function importCachedRouters(): void
     {
         $routers = include $this->getRouterCachePath();
-
         $this->setRoutersData($routers);
     }
 

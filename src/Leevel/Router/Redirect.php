@@ -123,11 +123,9 @@ class Redirect
     protected function createRedirectResponse(string $url, int $status = 302, array $headers = []): RedirectResponse
     {
         $redirect = new RedirectResponse($url, $status, $headers);
-
         if (isset($this->session)) {
             $redirect->setSession($this->session);
         }
-
         $redirect->setRequest($this->url->getRequest());
 
         return $redirect;

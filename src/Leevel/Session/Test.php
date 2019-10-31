@@ -49,7 +49,6 @@ class Test extends Session implements ISession
     public function __construct(array $option = [])
     {
         $this->option = array_merge($this->option, $option);
-
         $this->setName($this->option['name']);
     }
 

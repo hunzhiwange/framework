@@ -181,7 +181,6 @@ abstract class Mail implements IMail
         $this->view = $view;
         $this->dispatch = $dispatch;
         $this->option = array_merge($this->option, $option);
-
         $this->swiftMailer();
     }
 
@@ -197,7 +196,6 @@ abstract class Mail implements IMail
     public function __call(string $method, array $args)
     {
         $transport = $this->swiftMailer->getTransport();
-
         if (method_exists($transport, $method)) {
             return $transport->{$method}(...$args);
         }
@@ -408,7 +406,6 @@ abstract class Mail implements IMail
     public function attachChinese(string $file): string
     {
         $ext = pathinfo($file, PATHINFO_EXTENSION);
-
         if ($ext) {
             $file = substr($file, 0, strrpos($file, '.'.$ext));
         }
@@ -427,7 +424,6 @@ abstract class Mail implements IMail
     public function flush(?Closure $callbacks = null, bool $htmlPriority = true): int
     {
         $this->makeMessage();
-
         $this->parseMailContent($htmlPriority);
 
         if ($callbacks) {
@@ -500,9 +496,7 @@ abstract class Mail implements IMail
     protected function parseMailContent(bool $htmlPriority = true): void
     {
         $findBody = false;
-
         $messageData = $this->messageData;
-
         if (!empty($messageData['html']) && !empty($messageData['plain'])) {
             unset($messageData[true === $htmlPriority ? 'plain' : 'html']);
         }
@@ -568,7 +562,6 @@ abstract class Mail implements IMail
         }
 
         $message = new Swift_Message();
-
         if (!empty($this->option['global_from']['address'])) {
             $message->setFrom(
                 $this->option['global_from']['address'],
@@ -630,7 +623,6 @@ abstract class Mail implements IMail
         if ($callbacks) {
             $callbacks($attachment, $this);
         }
-
         $this->message->attach($attachment);
 
         return $this;

@@ -47,7 +47,6 @@ abstract class Server extends Command
         $this->warn($this->getVersion());
 
         $server = $this->createServer();
-
         if (true === $this->option('daemonize')) {
             $server->setOption('daemonize', '1');
         }
@@ -55,7 +54,6 @@ abstract class Server extends Command
         $this->checkPort($option = $server->getOption());
         $this->checkService($option);
         $this->start($option);
-
         $server->startServer();
     }
 
@@ -89,11 +87,9 @@ abstract class Server extends Command
             if (is_array($val)) {
                 continue;
             }
-
             if (in_array($key, ['pid_path', 'document_root'], true)) {
                 $val = str_replace($basePath, '@path', $val);
             }
-
             $show[] = [$key, $val];
         }
 
@@ -108,7 +104,6 @@ abstract class Server extends Command
     protected function checkPort(array $option): void
     {
         $bind = $this->portBind((int) ($option['port']));
-
         if ($bind) {
             foreach ($bind as $k => $val) {
                 if ('*' === $val['ip'] || $val['ip'] === $option['host']) {
@@ -133,15 +128,12 @@ abstract class Server extends Command
     protected function portBind(int $port): array
     {
         $result = [];
-
         $cmd = "lsof -i :{$port}|awk '$1 != \"COMMAND\"  {print $1, $2, $9}'";
         exec($cmd, $out);
-
         if (!empty($out)) {
             foreach ($out as $val) {
                 $tmp = explode(' ', $val);
                 list($ip, $p) = explode(':', $tmp[2]);
-
                 $result[$tmp[1]] = [
                     'cmd'  => $tmp[0],
                     'ip'   => $ip,
@@ -163,16 +155,13 @@ abstract class Server extends Command
     protected function checkService(array $option): void
     {
         $file = $option['pid_path'];
-
         if (!is_file($file)) {
             return;
         }
 
         $pid = explode(PHP_EOL, file_get_contents($file));
-
         $cmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$pid[0]}$\"";
         exec($cmd, $out);
-
         if (!empty($out)) {
             $e = sprintf(
                 'Swoole pid file %s is already exists,pid is %d',

@@ -171,7 +171,6 @@ class Router implements IRouter
     {
         $method = !$passedExtend ? 'handle' : 'terminate';
         $middlewares = $this->matchedMiddlewares();
-
         if (empty($middlewares[$method])) {
             return;
         }
@@ -379,7 +378,6 @@ class Router implements IRouter
     protected function annotationRouterBind(array $dataPathInfo)
     {
         $data = $this->normalizeMatchedData('Annotation');
-
         if (!$data) {
             $data = $dataPathInfo;
         } else {
@@ -421,7 +419,6 @@ class Router implements IRouter
     protected function mergeMatchedData(array $before, array $after): array
     {
         $result = [];
-
         foreach (self::MATCHED as $key) {
             if (self::MIDDLEWARES === $key) {
                 $result[$key] = $this->mergeMiddlewares($before[$key] ?? [], $after[$key] ?? []);
@@ -530,7 +527,6 @@ class Router implements IRouter
     protected function parseControllerDir(): string
     {
         $result = $this->getControllerDir();
-
         if ($this->matchedPrefix()) {
             $result .= '\\'.$this->matchedPrefix();
         }

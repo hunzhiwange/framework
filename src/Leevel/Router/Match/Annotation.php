@@ -120,7 +120,6 @@ class Annotation extends Match implements IMatch
     protected function matcheStatic(array $routers)
     {
         $pathInfo = $this->getPathInfo();
-
         if (isset($routers['static'], $routers['static'][$pathInfo])) {
             $routers = $routers['static'][$pathInfo];
 
@@ -154,7 +153,6 @@ class Annotation extends Match implements IMatch
     protected function matcheGroups(string $pathInfo, array $routers): array
     {
         $matchGroup = false;
-
         foreach ($this->router->getGroups() as $group) {
             if (0 === strpos($pathInfo, $group)) {
                 $routers = $routers[$group];
@@ -181,7 +179,6 @@ class Annotation extends Match implements IMatch
     protected function matcheRegexGroups(array $routers)
     {
         $pathInfo = $this->getPathInfo();
-
         foreach ($routers['regex'] as $key => $regex) {
             if (!preg_match($regex, $pathInfo, $matches)) {
                 continue;
@@ -224,10 +221,8 @@ class Annotation extends Match implements IMatch
         }
 
         $result = [];
-
         $result[IRouter::BIND] = $routers['bind'];
         $result[IRouter::APP] = $this->findApp($routers['bind']);
-
         $result['params'] = [];
 
         // 域名匹配参数 {subdomain}.{domain}
@@ -287,18 +282,15 @@ class Annotation extends Match implements IMatch
     protected function matcheDomain(array $routers)
     {
         $domainVars = [];
-
         if (!empty($routers['domain'])) {
             // ignore the port
             $host = $this->request->getHost();
-
             if (!empty($routers['domain_regex'])) {
                 if (!preg_match($routers['domain_regex'], $host, $matches)) {
                     return false;
                 }
 
                 array_shift($matches);
-
                 foreach ($routers['domain_var'] as $var) {
                     $value = array_shift($matches);
                     $domainVars[$var] = $value;
@@ -324,7 +316,6 @@ class Annotation extends Match implements IMatch
     {
         $result = [];
         array_shift($matches);
-
         foreach ($routers['var'] as $key => $var) {
             $result[$var] = $matches[$key];
             $this->addVariable($var, $matches[$key]);

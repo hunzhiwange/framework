@@ -77,7 +77,6 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
                 $content[] = 'console.log(\'%c '.$key.'\', \'color: blue; background: #045efc; color: #fff; padding: 8px 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; border-radius: 15px;\');';
                 $content[] = 'console.log(\'\');';
             }
-
             if ($item) {
                 $content[] = 'console.log('.json_encode($item, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT).');';
             }

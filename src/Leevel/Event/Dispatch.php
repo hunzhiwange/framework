@@ -84,13 +84,11 @@ class Dispatch implements IDispatch
         array_unshift($params, $event);
 
         $listeners = $this->get($name);
-
         if (!$listeners) {
             return;
         }
 
         ksort($listeners);
-
         $listeners = array_reduce($listeners, function (array $result, array $value) {
             return array_merge($result, $value);
         }, []);
@@ -108,10 +106,8 @@ class Dispatch implements IDispatch
     public function register($event, $listener, int $priority = 500): void
     {
         $event = is_object($event) ? [$event] : (array) $event;
-
         foreach ($event as $item) {
             $item = $this->normalizeEvent($item);
-
             if (false !== strpos($item, '*')) {
                 $this->wildcards[$item][$priority][] = $listener;
             } else {
@@ -130,16 +126,13 @@ class Dispatch implements IDispatch
     public function get($event): array
     {
         $listeners = [];
-
         $event = $this->normalizeEvent($event);
-
         if (isset($this->listeners[$event])) {
             $listeners = $this->listeners[$event];
         }
 
         foreach ($this->wildcards as $key => $item) {
             $key = $this->prepareRegexForWildcard($key);
-
             if (preg_match($key, $event, $res)) {
                 foreach ($item as $priority => $value) {
                     $listeners[$priority] = array_merge($listeners[$priority] ?? [], $value);
@@ -190,7 +183,6 @@ class Dispatch implements IDispatch
     protected function makeSubject(array $listeners): Subject
     {
         $subject = new Subject($this->container);
-
         foreach ($listeners as $item) {
             $subject->register($item);
         }

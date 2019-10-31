@@ -35,7 +35,6 @@ function create_file(string $path, ?string $content = null, int $mode = 0666): v
 {
     if (!is_file($path)) {
         $dirname = dirname($path);
-
         if (is_file($dirname)) {
             $e = sprintf('Dir `%s` cannot be a file.', $dirname);
 
@@ -52,7 +51,6 @@ function create_file(string $path, ?string $content = null, int $mode = 0666): v
     }
 
     chmod($path, $mode & ~umask());
-
     if ($content) {
         file_put_contents($path, $content);
     }

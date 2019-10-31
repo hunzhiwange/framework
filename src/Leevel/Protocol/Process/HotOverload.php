@@ -112,7 +112,6 @@ class HotOverload extends Process
         Coroutine::create(function () use ($server) {
             while (true) {
                 Coroutine::sleep($this->timeInterval / 1000);
-
                 if (true === $this->serverNeedReload()) {
                     $this->reload($server);
                 }
@@ -168,7 +167,6 @@ class HotOverload extends Process
     protected function files(): array
     {
         $files = [];
-
         foreach ((array) $this->option->get('protocol\\hotoverload_watch', []) as $dir) {
             if (is_file($dir)) {
                 $files[] = $dir;

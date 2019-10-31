@@ -48,24 +48,20 @@ class LoadOption
 
         if ($app->isCachedOption()) {
             $data = (array) include $app->optionCachedPath();
-
             $this->setEnvs($data['app']['_env']);
         } else {
             $load = new Load($app->optionPath());
-
             $data = $load->loadData($app);
         }
 
         $app
             ->container()
             ->instance('option', $option = new Option($data));
-
         $app
             ->container()
             ->alias('option', [IOption::class, Option::class]);
 
         $test = 2 === func_num_args();
-
         if (!$test) {
             // @codeCoverageIgnoreStart
             $this->initialization($option);

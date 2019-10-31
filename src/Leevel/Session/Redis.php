@@ -60,7 +60,6 @@ class Redis extends Session implements ISession
     public function __construct(array $option = [])
     {
         $this->option = array_merge($this->option, $option);
-
         parent::__construct($this->createCache());
     }
 

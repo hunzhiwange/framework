@@ -49,7 +49,6 @@ trait Helper
     protected function invokeTestMethod($classObj, string $method, array $args = [])
     {
         $method = $this->parseTestMethod($classObj, $method);
-
         if ($args) {
             return $method->invokeArgs($classObj, $args);
         }
@@ -69,7 +68,6 @@ trait Helper
     protected function invokeTestStaticMethod($classOrObject, string $method, array $args = [])
     {
         $method = $this->parseTestMethod($classOrObject, $method);
-
         if ($args) {
             return $method->invokeArgs(null, $args);
         }
@@ -87,8 +85,9 @@ trait Helper
      */
     protected function getTestProperty($classOrObject, string $prop)
     {
-        return $this->parseTestProperty($classOrObject, $prop)->
-        getValue($classOrObject);
+        return $this
+            ->parseTestProperty($classOrObject, $prop)
+            ->getValue($classOrObject);
     }
 
     /**
@@ -100,9 +99,9 @@ trait Helper
      */
     protected function setTestProperty($classOrObject, string $prop, $value)
     {
-        $this->parseTestProperty($classOrObject, $prop)->
-
-        setValue($value);
+        $this
+            ->parseTestProperty($classOrObject, $prop)
+            ->setValue($value);
     }
 
     /**
@@ -161,9 +160,7 @@ trait Helper
     protected function varJson(array $data, ?int $id = null): string
     {
         $method = debug_backtrace()[1]['function'].$id;
-
         list($traceDir, $className) = $this->makeLogsDir();
-
         file_put_contents(
             $traceDir.'/'.sprintf('%s::%s.log', $className, $method),
             $result = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)

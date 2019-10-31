@@ -192,10 +192,8 @@ abstract class Pool implements IPool
 
         // 从通道中获取连接,支持重试次数
         $retryTimes = $this->retryTimes;
-
         while ($retryTimes) {
             $retryTimes--;
-
             if ($connection = $this->getConnectionFromChannel($timeout)) {
                 $this->updateConnectionLastActiveTime($connection);
 
@@ -210,7 +208,6 @@ abstract class Pool implements IPool
 
         // 通道为空，尝试等待其他协程调用 push 方法生产数据
         $connection = $this->connections->pop($this->maxPopTimeout / 1000);
-
         if (false === $connection) {
             $e = sprintf('Timeout `%f` ms of reading data from channels.', $this->maxPopTimeout);
 
@@ -270,7 +267,6 @@ abstract class Pool implements IPool
                 }
 
                 $connection = $this->connections->pop($this->maxPopTimeout / 1000);
-
                 if (false !== $connection) {
                     $this->disconnect($connection);
                 }
@@ -377,7 +373,6 @@ abstract class Pool implements IPool
     public function setRetryTimes(int $retryTimes): IPool
     {
         $this->retryTimes = $retryTimes;
-
         if ($this->retryTimes < 1) {
             $e = sprintf('Retry times `%d` must greater than or equal to 1.', $this->retryTimes);
 
@@ -442,14 +437,12 @@ abstract class Pool implements IPool
         while (!$this->connections->isEmpty()) {
             // 在规定时间内没有生产者 push 数据，将返回 false
             $connection = $this->connections->pop($timeout / 1000);
-
             if (false === $connection) {
                 continue;
             }
 
             // 连接过期释放掉
             $lastActiveTime = $connection->{self::LAST_ACTIVE_TIME} ?? 0;
-
             if ($time - $lastActiveTime > $this->keepAliveDuration) {
                 $this->disconnect($connection);
 
@@ -472,7 +465,6 @@ abstract class Pool implements IPool
     protected function disconnect(IConnection $connection): void
     {
         $this->connectionsCount--;
-
         Coroutine::create(function () use ($connection) {
             try {
                 $connection->close();

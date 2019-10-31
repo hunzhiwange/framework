@@ -54,15 +54,10 @@ class Links extends Command
     public function handle(): void
     {
         $this->line('Start to create symbolic links.');
-
         $this->callApis();
-
         $this->callPublic();
-
         $this->callStorage();
-
         $this->callDebugBar();
-
         $this->line('');
         $this->info('Links created successed.');
     }

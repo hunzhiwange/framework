@@ -110,14 +110,11 @@ class Assert
         }
 
         array_unshift($args, $this->value);
-
         if (false === self::validateAssert($method, $args)) {
             $message = self::normalizeMessage($args, $this->message);
-
             if (false === $this->lazy) {
                 throw new AssertException($message);
             }
-
             $this->error[] = $message;
         }
 
@@ -316,12 +313,10 @@ class Assert
 
         $multi = [];
         $argsSource = $args;
-
         foreach ($args[0] as $v) {
             if (null === $v && true === $optional) {
                 continue;
             }
-
             $argsSource[0] = $v;
             $multi[] = $argsSource;
         }

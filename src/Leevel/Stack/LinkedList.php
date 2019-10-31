@@ -76,7 +76,6 @@ class LinkedList extends SplDoublyLinkedList
     public function add($index, $newval): void
     {
         $this->validate($newval);
-
         parent::add($index, $newval);
     }
 
@@ -86,7 +85,6 @@ class LinkedList extends SplDoublyLinkedList
     public function offsetSet($index, $newval): void
     {
         $this->validate($newval);
-
         parent::offsetSet($index, $newval);
     }
 
@@ -96,7 +94,6 @@ class LinkedList extends SplDoublyLinkedList
     public function push($value): void
     {
         $this->validate($value);
-
         parent::push($value);
     }
 
@@ -106,7 +103,6 @@ class LinkedList extends SplDoublyLinkedList
     public function unshift($value)
     {
         $this->validate($value);
-
         parent::unshift($value);
     }
 

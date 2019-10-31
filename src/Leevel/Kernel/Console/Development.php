@@ -55,21 +55,13 @@ class Development extends Command
     public function handle(): void
     {
         $this->line('Start to clears caches.');
-
         $this->callI18n();
-
         $this->callLog();
-
         $this->callOption();
-
         $this->callRouter();
-
         $this->callSession();
-
         $this->callView();
-
         $this->callAutoload();
-
         $this->line('');
         $this->info('Caches cleared successed.');
     }

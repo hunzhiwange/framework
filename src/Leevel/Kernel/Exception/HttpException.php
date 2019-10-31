@@ -59,7 +59,6 @@ abstract class HttpException extends RuntimeException
     public function __construct(int $statusCode, ?string $message = null, int $code = 0, ?Exception $previous = null)
     {
         $this->statusCode = $statusCode;
-
         parent::__construct((string) ($message), (int) ($code), $previous);
     }
 

@@ -36,7 +36,6 @@ function int_arr_filter($data)
     if (!is_array($data)) {
         $data = explode(',', $data);
     }
-
     $data = array_map('intval', $data);
 
     return implode(',', $data);

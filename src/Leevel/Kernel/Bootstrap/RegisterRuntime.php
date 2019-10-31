@@ -55,15 +55,11 @@ class RegisterRuntime
         $this->app = $app;
 
         $test = 2 === func_num_args();
-
         if (!$test) {
             // @codeCoverageIgnoreStart
             error_reporting(E_ALL);
-
             set_error_handler([$this, 'setErrorHandle']);
-
             set_exception_handler([$this, 'setExceptionHandler']);
-
             register_shutdown_function([$this, 'registerShutdownFunction']);
 
             if ('production' === $app->environment()) {

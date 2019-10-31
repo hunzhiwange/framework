@@ -38,7 +38,6 @@ function limit_time(array $limitTime, int $time): void
 
     $limitMinTime = strtotime($limitTime[0]);
     $limitMaxTime = strtotime($limitTime[1] ?? '');
-
     if (false === $limitMinTime || false === $limitMaxTime) {
         return;
     }
@@ -46,7 +45,6 @@ function limit_time(array $limitTime, int $time): void
     if ($limitMaxTime < $limitMinTime) {
         $limitMaxTime += 60 * 60 * 24;
     }
-
     if ($time < $limitMinTime || $time > $limitMaxTime) {
         return;
     }

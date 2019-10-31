@@ -76,7 +76,6 @@ class Smtp extends Mail implements IMail
             $transport->setUsername(
                 $this->option['username']
             );
-
             $transport->setPassword(
                 $this->option['password']
             );

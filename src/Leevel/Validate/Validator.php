@@ -174,7 +174,6 @@ class Validator implements IValidator
     {
         if (0 === strpos($method, 'validate')) {
             $extend = un_camelize(substr($method, 8));
-
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $args);
             }
@@ -182,7 +181,6 @@ class Validator implements IValidator
 
         if (count($args) > 0) {
             $extend = 'validate'.ucfirst($method);
-
             $param = [''];
             $param[] = array_shift($args);
             $param[] = $args;
@@ -195,7 +193,6 @@ class Validator implements IValidator
             }
 
             $extend = un_camelize($method);
-
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $param);
             }
@@ -229,7 +226,6 @@ class Validator implements IValidator
     public function success(): bool
     {
         $skipRule = $this->getSkipRule();
-
         $this->failedRules = $this->errorMessages = [];
 
         foreach ($this->rules as $field => $rules) {
@@ -577,10 +573,8 @@ class Validator implements IValidator
     public function getParseRule(string $field, $rules): array
     {
         $rules = (array) $rules;
-
         foreach ($this->rules[$field] as $rule) {
             list($rule, $param) = $this->parseRule($rule);
-
             if (in_array($rule, $rules, true)) {
                 return [$rule, $param];
             }
@@ -605,12 +599,10 @@ class Validator implements IValidator
         } else {
             $parts = explode('.', $rule);
             $data = $this->data;
-
             foreach ($parts as $part) {
                 if (!isset($data[$part])) {
                     return;
                 }
-
                 $data = $data[$part];
             }
 
@@ -628,7 +620,6 @@ class Validator implements IValidator
     protected function arrayMessage(array $messages): array
     {
         $result = [];
-
         foreach ($messages as $field => $message) {
             // 字段消息或者通配符
             // ['name' => ['required' => '{field} required']]
@@ -667,9 +658,7 @@ class Validator implements IValidator
     protected function wildcardMessageItem(string $field, $message): array
     {
         $field = $this->prepareRegexForWildcard($field);
-
         $messages = [];
-
         foreach ($this->parseDataKey() as $key) {
             if (preg_match($field, $key, $matche)) {
                 $messages = array_merge($messages,
@@ -708,7 +697,6 @@ class Validator implements IValidator
     protected function arrayMessageItem(string $field, $message): array
     {
         $result = [];
-
         if (is_array($message)) {
             foreach ($message as $key => $message) {
                 $result[$field.'.'.$key] = $message;

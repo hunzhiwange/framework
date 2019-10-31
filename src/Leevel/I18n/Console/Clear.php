@@ -62,11 +62,8 @@ class Clear extends Command
         list_directory($app->i18nPath(), false, function ($item) use ($app) {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
-
                 $cachePath = $app->i18nCachedPath($i18n);
-
                 $this->clearCache($cachePath);
-
                 $this->info(sprintf('I18n cache file %s clear successed.', $cachePath));
             }
         });

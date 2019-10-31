@@ -62,16 +62,13 @@ class Swoole2Leevel
     protected function normalizeSwooleHeaderAndServer(SwooleHttpRequest $swooleRequest): void
     {
         $servers = [];
-
         if ($swooleRequest->header) {
             $headers = [];
-
             foreach ($swooleRequest->header as $key => $value) {
                 $key = strtoupper(str_replace('-', '_', $key));
                 $headers[$key] = $value;
                 $servers['HTTP_'.$key] = $value;
             }
-
             $swooleRequest->header = $headers;
         }
 
@@ -91,7 +88,6 @@ class Swoole2Leevel
                 $swooleRequest->server,
                 CASE_UPPER
             );
-
             $servers = array_merge($servers, $swooleRequest->server);
             $swooleRequest->server = $servers;
         } else {
@@ -115,7 +111,6 @@ class Swoole2Leevel
             'files'  => 'files',
             'post'   => 'request',
         ];
-
         foreach ($propMap as $swooleProp => $prop) {
             if ($swooleRequest->{$swooleProp}) {
                 $request->{$prop}->replace($swooleRequest->{$swooleProp});

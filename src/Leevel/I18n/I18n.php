@@ -53,7 +53,6 @@ class I18n implements II18n
     public function __construct(string $i18n)
     {
         $this->i18n = $i18n;
-
         $this->text[$i18n] = [];
     }
 

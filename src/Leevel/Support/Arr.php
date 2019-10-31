@@ -45,7 +45,6 @@ class Arr
     public static function __callStatic(string $method, array $args)
     {
         $fn = __NAMESPACE__.'\\Arr\\'.un_camelize($method);
-
         if (!function_exists($fn)) {
             class_exists($fn);
         }

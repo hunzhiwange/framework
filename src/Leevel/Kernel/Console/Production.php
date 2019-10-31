@@ -55,17 +55,11 @@ class Production extends Command
     public function handle(): void
     {
         $this->line('Start to optimize you app.');
-
         $this->callRouter();
-
         $this->callOption();
-
         $this->callI18n();
-
         $this->callView();
-
         $this->callAutoload();
-
         $this->line('');
         $this->info('Optimize successed.');
     }
@@ -112,9 +106,7 @@ class Production extends Command
     protected function callAutoload(): void
     {
         $this->line('');
-        $this->call('autoload', [
-            '--composer' => $this->composer(),
-        ]);
+        $this->call('autoload', ['--composer' => $this->composer()]);
     }
 
     /**

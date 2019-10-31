@@ -38,9 +38,7 @@ function signature(array $query, string $secret, array $ignore = []): string
     }
 
     ksort($query);
-
     $sign = '';
-
     foreach ($query as $k => $v) {
         if (!is_array($v)) {
             $sign .= $k.'='.$v;

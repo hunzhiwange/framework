@@ -66,7 +66,6 @@ class MiddlewareParser
         $middlewareAlias = $this->router->getMiddlewareAlias();
 
         $result = [];
-
         foreach ($middlewares as $m) {
             if (!is_string($m)) {
                 $e = 'Middleware only allowed string.';
@@ -75,14 +74,11 @@ class MiddlewareParser
             }
 
             list($m, $params) = $this->parseMiddleware($m);
-
             if (isset($middlewareGroups[$m])) {
                 $temp = is_array($middlewareGroups[$m]) ?
                     $middlewareGroups[$m] : [$middlewareGroups[$m]];
-
                 foreach ($temp as $item) {
                     list($item, $params) = $this->parseMiddleware($item);
-
                     $result[] = $this->middlewareName($middlewareAlias[$item] ?? $item, $params);
                 }
             } else {
@@ -154,7 +150,6 @@ class MiddlewareParser
     protected function parseMiddleware(string $middleware): array
     {
         $params = '';
-
         if (false !== strpos($middleware, ':')) {
             list($middleware, $params) = explode(':', $middleware);
         }

@@ -137,14 +137,12 @@ class Load
     protected function findMoFile(array $dirs): array
     {
         $files = [];
-
         foreach ($dirs as $dir) {
             if (!is_dir($dir)) {
                 $e = sprintf('I18n load dir %s is not exits.', $dir);
 
                 throw new RuntimeException($e);
             }
-
             $files = array_merge($files, $this->getMoFiles($dir));
         }
 

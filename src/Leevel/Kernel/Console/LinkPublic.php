@@ -66,10 +66,7 @@ class LinkPublic extends Command
             return;
         }
 
-        link(
-            $path = $app->publicPath(), $link
-        );
-
+        link($path = $app->publicPath(), $link);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
     }
 

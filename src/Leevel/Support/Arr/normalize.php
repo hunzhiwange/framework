@@ -37,7 +37,6 @@ function normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false)
         }
 
         $inputs = array_filter($inputs);
-
         if (true === $allowedEmpty) {
             return $inputs;
         }

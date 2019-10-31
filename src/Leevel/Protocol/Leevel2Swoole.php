@@ -59,7 +59,6 @@ class Leevel2Swoole
         foreach ($response->headers->all() as $key => $value) {
             $swooleResponse->header($key, $value);
         }
-
         $swooleResponse->status($response->getStatusCode());
         $swooleResponse->write($response->getContent() ?: ' ');
 

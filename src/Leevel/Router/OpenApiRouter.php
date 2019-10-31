@@ -337,7 +337,6 @@ class OpenApiRouter
     {
         $routerPath = $this->normalizePath($path);
         $pathPrefix = '';
-
         if ($groupPaths) {
             foreach ($groupPaths as $key => $item) {
                 if (0 === strpos($routerPath, $key)) {
@@ -351,7 +350,6 @@ class OpenApiRouter
 
         $prefix = $routerPath[1];
         $groupPrefix = '_';
-
         foreach ($groups as $g) {
             if (0 === strpos($routerPath, $g)) {
                 $groupPrefix = $g;
@@ -393,7 +391,6 @@ class OpenApiRouter
     protected function parseRouterDomain(array $router): array
     {
         $router['domain'] = $this->normalizeDomain($router['domain'] ?? '', $this->domain ?: '');
-
         if ($router['domain'] && false !== strpos($router['domain'], '{')) {
             list($router['domain_regex'], $router['domain_var']) =
                 $this->ruleRegex($router['domain'], true);
@@ -465,7 +462,6 @@ class OpenApiRouter
 
                 foreach ($second as $secondKey => &$three) {
                     $groups = $this->parseToGroups($three);
-
                     foreach ($groups as $groupKey => $groupThree) {
                         list($three['regex'][$groupKey], $three['map'][$groupKey]) =
                             $this->parseGroupRegex($groupThree);
@@ -488,7 +484,6 @@ class OpenApiRouter
     {
         $groups = [];
         $groupIndex = 0;
-
         foreach ($routers as $key => &$item) {
             $groups[(int) ($groupIndex / 10)][$key] = $item;
             unset($item['regex']);
@@ -612,7 +607,6 @@ class OpenApiRouter
 
             $regex = '('.$regex.')';
             $regexEncode = '`'.md5($regex).'`';
-
             $mapRegex['find'][] = $regexEncode;
             $mapRegex['replace'][] = $regex;
 
@@ -672,7 +666,6 @@ class OpenApiRouter
         }
 
         $externalDocs = $openApi->externalDocs;
-
         if (!property_exists($externalDocs, 'leevels')) {
             return [[], []];
         }

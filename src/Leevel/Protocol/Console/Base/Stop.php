@@ -73,7 +73,6 @@ abstract class Stop extends Command
     {
         $pidFile = $option['pid_path'];
         $processName = $option['process_name'];
-
         if (!file_exists($pidFile)) {
             $e = sprintf('Pid path `%s` was not found.', $pidFile);
 
@@ -82,7 +81,6 @@ abstract class Stop extends Command
 
         $pids = explode(PHP_EOL, file_get_contents($pidFile));
         $pid = (int) $pids[0];
-
         if (!Process::kill($pid, 0)) {
             $e = sprintf('Pid `%s` was not found.', $pid);
 
@@ -90,7 +88,6 @@ abstract class Stop extends Command
         }
 
         Process::kill($pid, SIGKILL);
-
         if (is_file($pidFile)) {
             unlink($pidFile);
         }

@@ -31,7 +31,6 @@ namespace Leevel\Support\Arr;
 function only(array $input, array $filter): array
 {
     $result = [];
-
     foreach ($filter as $f) {
         $result[$f] = $input[$f] ?? null;
     }

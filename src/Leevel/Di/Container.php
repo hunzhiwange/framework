@@ -284,7 +284,6 @@ class Container implements IContainer, ArrayAccess
                 if (is_int($key)) {
                     continue;
                 }
-
                 $this->alias($key, $item);
             }
         } else {
@@ -309,7 +308,6 @@ class Container implements IContainer, ArrayAccess
     {
         // 别名
         $name = $this->getAlias($name);
-
         if (isset($this->deferredProviders[$name])) {
             $this->registerDeferredProvider($name);
         }
@@ -403,7 +401,6 @@ class Container implements IContainer, ArrayAccess
     public function remove(string $name): void
     {
         $name = $this->normalize($name);
-
         foreach (['services', 'instances', 'singletons'] as $item) {
             if (isset($this->{$item}[$name])) {
                 unset($this->{$item}[$name]);
@@ -778,7 +775,6 @@ class Container implements IContainer, ArrayAccess
     protected function normalizeInjectionArgs($value, array $args): array
     {
         list($args, $required, $validArgs) = $this->parseInjection($value, $args);
-
         if ($validArgs < $required) {
             $e = sprintf('There are %d required args,but %d gived.', $required, $validArgs);
 
@@ -804,13 +800,11 @@ class Container implements IContainer, ArrayAccess
         $required = 0;
         $param = $this->parseReflection($injection);
         $validArgs = count($param);
-
         foreach ($param as $key => $item) {
             try {
                 switch (true) {
                     case $argsclass = $this->parseParamClass($item):
                         $argsclass = (string) $argsclass;
-
                         if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsclass) {
                             $data = array_shift($args);
                         } elseif (array_key_exists($argsclass, $args)) {
@@ -831,7 +825,6 @@ class Container implements IContainer, ArrayAccess
                         break;
                     default:
                         $required++;
-
                         if (array_key_exists($item->name, $args)) {
                             $data = $args[$item->name];
                             $validArgs++;
@@ -855,11 +848,9 @@ class Container implements IContainer, ArrayAccess
 
         if ($args) {
             $result = array_values($result);
-
             // 定义函数 function(IFoo $foo)，调用方法 call([1, 2])，则进行基本的 count($result) 逻辑
             // 定义函数 function($foo)，调用方法 call([1, 2])，则进行 -($required-$validArgs) 填充 null
             $min = count($result) - ($required - $validArgs);
-
             foreach ($args as $k => $value) {
                 if (is_int($k)) {
                     $result[$k + $min] = $value;
