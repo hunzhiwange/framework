@@ -323,6 +323,7 @@ abstract class Database implements IDatabase, IConnection
     public function query(string $sql, array $bindParams = [], $master = false, ?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [])
     {
         $this->initSelect();
+
         if (!in_array($sqlType = $this->normalizeSqlType($sql), ['select', 'procedure'], true)) {
             $e = 'The query method only allows select and procedure SQL statements.';
 
@@ -352,6 +353,7 @@ abstract class Database implements IDatabase, IConnection
     public function execute(string $sql, array $bindParams = [])
     {
         $this->initSelect();
+
         if (in_array($sqlType = $this->normalizeSqlType($sql), ['select', 'procedure'], true)) {
             $e = 'The query method not allows select and procedure SQL statements.';
 
@@ -646,7 +648,6 @@ abstract class Database implements IDatabase, IConnection
     public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
     {
         $name = str_replace('`', '', $name);
-
         if (false === strpos($name, '.')) {
             $name = $this->identifierColumn($name);
         } else {
