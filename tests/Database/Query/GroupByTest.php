@@ -128,7 +128,7 @@ class GroupByTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`num` HAVING SUM(`test_query`.`num`) > 9 IS NULL",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`num` HAVING SUM(`test_query`.`num`) > 9",
                 [],
                 false,
                 null,
@@ -143,7 +143,7 @@ class GroupByTest extends TestCase
                 $connect
                     ->table('test_query', 'tid as id,tname as value')
                     ->groupBy('{[num]}')
-                    ->having('{SUM([num]) > 9}')
+                    ->having('{SUM([num])}', '>', 9)
                     ->findAll(true),
                 2
             )
