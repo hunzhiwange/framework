@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.23
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="插入单条数据.insert",
+ *     path="database/create/insert",
+ *     description="",
+ * )
  */
 class InsertTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="insert 基本用法",
+     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -66,6 +79,13 @@ class InsertTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="insert 绑定参数",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -125,6 +145,13 @@ class InsertTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="bind.insert 绑定参数写入数据",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWithBindFunction(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -159,6 +186,13 @@ class InsertTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="insert 支持 replace 用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testReplace(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -189,6 +223,13 @@ class InsertTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="insert 支持字段指定表名",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testInsertSupportTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -219,6 +260,13 @@ class InsertTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="insert 空数据写入示例",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testInsertWithEmptyData(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -243,6 +291,13 @@ class InsertTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="insert.replace 空数据写入示例",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testReplaceWithEmptyData(): void
     {
         $connect = $this->createDatabaseConnectMock();
