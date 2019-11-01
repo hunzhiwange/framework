@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.25
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="清空数据.truncate",
+ *     path="database/truncate",
+ *     description="",
+ * )
  */
 class TruncateTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="truncate 基本用法",
+     *     zh-CN:description="清理没有返回值。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
