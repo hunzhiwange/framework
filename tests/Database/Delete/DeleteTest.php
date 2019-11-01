@@ -30,16 +30,29 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.25
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="删除数据.delete",
+ *     path="database/delete/delete",
+ *     description="",
+ * )
  */
 class DeleteTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="delete 基本用法",
+     *     zh-CN:description="删除成功后，返回影响行数。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "DELETE FROM `test` WHERE `test`.`id` = 1 ORDER BY `test`.`id` DESC LIMIT 1",
+                "DELETE FROM `test_query` WHERE `test_query`.`id` = 1 ORDER BY `test_query`.`id` DESC LIMIT 1",
                 []
             ]
             eot;
@@ -49,7 +62,7 @@ class DeleteTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 1)
                     ->limit(1)
                     ->orderBy('id desc')
@@ -58,13 +71,20 @@ class DeleteTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="delete.join 连表删除",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "DELETE t FROM `test` `t` INNER JOIN `hello` `h` ON `h`.`name` = `t`.`content` WHERE `t`.`id` = 1",
+                "DELETE t FROM `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `h`.`name` = `t`.`name` WHERE `t`.`id` = 1",
                 []
             ]
             eot;
@@ -74,8 +94,8 @@ class DeleteTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test as t')
-                    ->innerJoin(['h' => 'hello'], [], 'name', '=', '{[t.content]}')
+                    ->table('test_query as t')
+                    ->innerJoin(['h' => 'test_query_subsql'], [], 'name', '=', '{[t.name]}')
                     ->where('id', 1)
                     ->limit(1)
                     ->orderBy('id desc')

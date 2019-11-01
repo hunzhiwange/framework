@@ -92,7 +92,8 @@ abstract class DatabaseTestCase extends TestCase
     {
         return false !== strpos($sql, 'INSERT INTO') ||
             false !== strpos($sql, 'REPLACE INTO') ||
-            false !== strpos($sql, 'TRUNCATE TABLE');
+            false !== strpos($sql, 'TRUNCATE TABLE') ||
+            false !== strpos($sql, 'DELETE');
     }
 
     protected function clearDatabaseTable(): void
