@@ -32,7 +32,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.aggregate",
+ *     title="Query lang.aggregate",
+ *     zh-CN:title="查询语言.aggregate",
  *     path="database/query/aggregate",
  *     description="数据库聚合查询功能。",
  * )

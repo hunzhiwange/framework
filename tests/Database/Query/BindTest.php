@@ -33,7 +33,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.bind",
+ *     title="Query lang.bind",
+ *     zh-CN:title="查询语言.bind",
  *     path="database/query/bind",
  *     description="",
  * )

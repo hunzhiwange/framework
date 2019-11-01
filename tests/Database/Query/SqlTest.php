@@ -32,7 +32,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.sql",
+ *     title="Query lang.sql",
+ *     zh-CN:title="查询语言.sql",
  *     path="database/query/sql",
  *     description="",
  * )

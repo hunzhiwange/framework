@@ -30,9 +30,23 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.09.29
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.whereDate",
+ *     zh-CN:title="查询语言.whereDate",
+ *     path="database/query/wheredate",
+ *     description="",
+ * )
  */
 class TimeTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="whereDate 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -65,6 +79,13 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereDay 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -238,6 +259,13 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereMonth 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -337,6 +365,13 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereYear 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -433,6 +468,13 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time().where.endTime 时间查询，等价于 whereDate",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTime(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -467,6 +509,13 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(date).where.endTime 时间查询，等价于 whereDate",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeDateIsDefault(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -501,6 +550,13 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(day).where.endTime 时间查询，等价于 whereDay",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -536,6 +592,13 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(month).where.endTime 时间查询，等价于 whereMonth",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -571,6 +634,13 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(year).where.endTime 时间查询，等价于 whereYear",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeYear(): void
     {
         $connect = $this->createDatabaseConnectMock();

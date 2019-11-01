@@ -32,7 +32,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.distinct",
+ *     title="Query lang.distinct",
+ *     zh-CN:title="查询语言.distinct",
  *     path="database/query/distinct",
  *     description="",
  * )

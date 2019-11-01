@@ -32,7 +32,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.forUpdate",
+ *     title="Query lang.forUpdate",
+ *     zh-CN:title="查询语言.forUpdate",
  *     path="database/query/forupdate",
  *     description="",
  * )

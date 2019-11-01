@@ -32,7 +32,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.limit",
+ *     title="Query lang.limit",
+ *     zh-CN:title="查询语言.limit",
  *     path="database/query/limit",
  *     description="",
  * )

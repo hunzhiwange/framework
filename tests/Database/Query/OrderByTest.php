@@ -32,7 +32,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.orderBy",
+ *     title="Query lang.orderBy",
+ *     zh-CN:title="查询语言.orderBy",
  *     path="database/query/orderby",
  *     description="",
  * )

@@ -32,7 +32,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.having",
+ *     title="Query lang.having",
+ *     zh-CN:title="查询语言.having",
  *     path="database/query/having",
  *     description="having 和 where 用法几乎一致。",
  * )

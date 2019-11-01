@@ -32,7 +32,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @version 1.0
  *
  * @api(
- *     title="查询语言.reset",
+ *     title="Query lang.reset",
+ *     zh-CN:title="查询语言.reset",
  *     path="database/query/reset",
  *     description="",
  * )
