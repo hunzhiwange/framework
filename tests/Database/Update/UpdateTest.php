@@ -39,6 +39,13 @@ use Tests\Database\DatabaseTestCase as TestCase;
  */
 class UpdateTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="update 基本用法",
+     *     zh-CN:description="更新成功后，返回影响行数。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -67,6 +74,13 @@ class UpdateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="update 更新指定条数",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWithLimit(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -96,6 +110,13 @@ class UpdateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="update 更新排序",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWithOrderBy(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -125,7 +146,14 @@ class UpdateTest extends TestCase
         );
     }
 
-    public function testWithLimitAndOrder(): void
+    /**
+     * @api(
+     *     zh-CN:title="update 更新排序和指定条数",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWithOrderAndLimit(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
@@ -155,6 +183,13 @@ class UpdateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="update 连表更新",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWithJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -184,6 +219,13 @@ class UpdateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="update 更新参数绑定",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -222,6 +264,13 @@ class UpdateTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="update 更新支持表达式",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
