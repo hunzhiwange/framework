@@ -23,7 +23,7 @@ namespace Tests\Database\Read;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 /**
- * valuePull test.
+ * value test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *
  * @version 1.0
  */
-class ValuePullTest extends TestCase
+class ValueTest extends TestCase
 {
     public function testBaseUse(): void
     {
