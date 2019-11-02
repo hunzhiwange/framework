@@ -36,7 +36,6 @@ class ValuePullTest extends TestCase
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.`id` FROM `test` LIMIT 1",
@@ -55,17 +54,6 @@ class ValuePullTest extends TestCase
                     ->sql()
                     ->table('test')
                     ->value('id')
-            )
-        );
-
-        $this->assertSame(
-            $sql,
-            $this->varJson(
-                $connect
-                    ->sql()
-                    ->table('test')
-                    ->pull('id'),
-                1
             )
         );
     }

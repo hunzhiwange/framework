@@ -590,7 +590,7 @@ class SelectTest extends TestCase
         $content = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->pull('content');
+            ->value('content');
 
         $this->assertSame('tom', $name);
         $this->assertSame('I love movie.', $content);
