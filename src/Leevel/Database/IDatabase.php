@@ -54,7 +54,6 @@ use PDO;
  * @method static findAll(bool $flag = false)                                                                                                   返回所有记录.
  * @method static find(?int $num = null, bool $flag = false)                                                                                    返回最后几条记录.
  * @method static value(string $field, bool $flag = false)                                                                                      返回一个字段的值
- * @method static pull(string $field, bool $flag = false)                                                                                       返回一个字段的值(别名).
  * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                         返回一列数据.
  * @method static void chunk(int $count, \Closure $chunk)                                                                                       数据分块处理.
  * @method static void each(int $count, \Closure $each)                                                                                         数据分块处理依次回调.

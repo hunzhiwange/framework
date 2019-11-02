@@ -656,19 +656,6 @@ class Select
     }
 
     /**
-     * 返回一个字段的值(别名).
-     *
-     * @param string $field
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function pull(string $field, bool $flag = false)
-    {
-        return $this->value($field, $flag);
-    }
-
-    /**
      * 返回一列数据.
      *
      * @param mixed       $fieldValue
