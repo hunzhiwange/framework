@@ -356,8 +356,7 @@ class Condition
             $sql[] = 'SET '.implode(',', $setData);
             $sql[] = $this->parseWhere();
             $sql[] = $this->parseOrder();
-            $sql[] = $this->parseLimitCount();
-            $sql[] = $this->parseForUpdate();
+            $sql[] = $this->parseLimitCount(true);
             $sql = array_filter($sql);
             $data = implode(' ', $sql);
         }
