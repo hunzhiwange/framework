@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database;
+namespace Tests\Database\Delete;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
@@ -33,7 +33,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *
  * @api(
  *     zh-CN:title="清空数据.truncate",
- *     path="database/truncate",
+ *     path="database/delete/truncate",
  *     description="",
  * )
  */
