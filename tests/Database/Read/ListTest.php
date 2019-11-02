@@ -36,7 +36,6 @@ class ListTest extends TestCase
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.`name` FROM `test`",
@@ -57,7 +56,11 @@ class ListTest extends TestCase
                     ->list('name')
             )
         );
+    }
 
+    public function testStringByCommaSeparation(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
                 "SELECT `test`.`name`,`test`.`id` FROM `test`",
@@ -79,6 +82,21 @@ class ListTest extends TestCase
                 1
             )
         );
+    }
+
+    public function testMoreString(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.`name`,`test`.`id` FROM `test`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -90,6 +108,21 @@ class ListTest extends TestCase
                 2
             )
         );
+    }
+
+    public function testArray(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.`name`,`test`.`id` FROM `test`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -101,6 +134,21 @@ class ListTest extends TestCase
                 3
             )
         );
+    }
+
+    public function testArrayAndString(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.`name`,`test`.`id` FROM `test`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,

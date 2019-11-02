@@ -36,7 +36,6 @@ class SelectTest extends TestCase
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "select *from test where id = ?",
@@ -55,7 +54,11 @@ class SelectTest extends TestCase
                     ->select('select *from test where id = ?', [1])
             )
         );
+    }
 
+    public function testSelect(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test`",
@@ -77,7 +80,11 @@ class SelectTest extends TestCase
                 1
             )
         );
+    }
 
+    public function testSelectClosure(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1",
@@ -101,7 +108,11 @@ class SelectTest extends TestCase
                 2
             )
         );
+    }
 
+    public function testSelectObject(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5",
