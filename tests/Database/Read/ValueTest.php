@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.23
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="查询一个字段的值.value",
+ *     path="database/read/value",
+ *     description="",
+ * )
  */
 class ValueTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="value 查询基础用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
