@@ -30,9 +30,22 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.21
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="查询数据.select",
+ *     path="database/read/select",
+ *     description="",
+ * )
  */
 class SelectTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="select 查询指定 SQL",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -56,6 +69,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="select 直接查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -82,6 +102,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="select 查询支持闭包",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testSelectClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -110,6 +137,13 @@ class SelectTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="select 查询支持 \Leevel\Database\Select 对象",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testSelectObject(): void
     {
         $connect = $this->createDatabaseConnectMock();
