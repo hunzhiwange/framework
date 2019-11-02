@@ -90,10 +90,11 @@ abstract class DatabaseTestCase extends TestCase
 
     protected function isExecuteSql(string $sql): bool
     {
-        return false !== strpos($sql, 'INSERT INTO') ||
-            false !== strpos($sql, 'REPLACE INTO') ||
-            false !== strpos($sql, 'TRUNCATE TABLE') ||
-            false !== strpos($sql, 'DELETE');
+        return false !== strpos($sql, 'INSERT') ||
+            false !== strpos($sql, 'REPLACE') ||
+            false !== strpos($sql, 'TRUNCATE') ||
+            false !== strpos($sql, 'DELETE') ||
+            false !== strpos($sql, 'UPDATE');
     }
 
     protected function clearDatabaseTable(): void
