@@ -668,7 +668,6 @@ class Select
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
-
         if (is_array($fieldValue)) {
             $fields = $fieldValue;
         } else {
@@ -694,7 +693,6 @@ class Select
         $result = [];
         foreach ($tmps as $tmp) {
             $tmp = (array) $tmp;
-
             if (1 === count($tmp)) {
                 $result[] = reset($tmp);
             } else {
