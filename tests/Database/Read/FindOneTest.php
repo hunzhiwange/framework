@@ -30,13 +30,25 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.21
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="查询单条数据.findOne",
+ *     path="database/read/findone",
+ *     description="",
+ * )
  */
 class FindOneTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="findOne 查询单条数据",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test` LIMIT 1",
@@ -57,6 +69,28 @@ class FindOneTest extends TestCase
                     ->findOne()
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="one.find 查询单条数据",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testOneFind(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test` LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -73,9 +107,7 @@ class FindOneTest extends TestCase
     public function testOneFlow(): void
     {
         $condition = false;
-
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test`",
@@ -106,9 +138,7 @@ class FindOneTest extends TestCase
     public function testOneFlow2(): void
     {
         $condition = true;
-
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test` LIMIT 1",

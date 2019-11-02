@@ -41,7 +41,7 @@ class FindAllTest extends TestCase
 {
     /**
      * @api(
-     *     zh-CN:title="findAll 查询基础用法",
+     *     zh-CN:title="findAll 查询多条数据",
      *     zh-CN:description="",
      *     note="",
      * )
@@ -73,7 +73,7 @@ class FindAllTest extends TestCase
 
     /**
      * @api(
-     *     zh-CN:title="all.find 查询基础用法",
+     *     zh-CN:title="all.find 查询多条数据",
      *     zh-CN:description="",
      *     note="",
      * )
