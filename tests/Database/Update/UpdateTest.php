@@ -30,6 +30,12 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.24
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="更新数据.update",
+ *     path="database/update/update",
+ *     description="",
+ * )
  */
 class UpdateTest extends TestCase
 {
@@ -39,7 +45,7 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = 503",
                 {
                     "name": [
                         "小猪",
@@ -54,37 +60,8 @@ class UpdateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
-                    ->update(['name' => '小猪'])
-            )
-        );
-    }
-
-    public function testForUpdate(): void
-    {
-        $connect = $this->createDatabaseConnectMock();
-
-        $sql = <<<'eot'
-            [
-                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 FOR UPDATE",
-                {
-                    "name": [
-                        "小猪",
-                        2
-                    ]
-                }
-            ]
-            eot;
-
-        $this->assertSame(
-            $sql,
-            $this->varJson(
-                $connect
-                    ->sql()
-                    ->table('test')
-                    ->where('id', 503)
-                    ->forUpdate()
                     ->update(['name' => '小猪'])
             )
         );
@@ -96,7 +73,7 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 LIMIT 0,2",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = 503 LIMIT 5",
                 {
                     "name": [
                         "小猪",
@@ -111,9 +88,9 @@ class UpdateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
-                    ->top(2)
+                    ->limit(5)
                     ->update(['name' => '小猪'])
             )
         );
@@ -125,7 +102,7 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503 ORDER BY `test`.`id` DESC",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = 503 ORDER BY `test_query`.`id` DESC",
                 {
                     "name": [
                         "小猪",
@@ -140,9 +117,39 @@ class UpdateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->orderBy('id desc')
+                    ->update(['name' => '小猪'])
+            )
+        );
+    }
+
+    public function testWithLimitAndOrder(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = 503 ORDER BY `test_query`.`id` DESC LIMIT 2",
+                {
+                    "name": [
+                        "小猪",
+                        2
+                    ]
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->sql()
+                    ->table('test_query')
+                    ->where('id', 503)
+                    ->orderBy('id desc')
+                    ->limit(2)
                     ->update(['name' => '小猪'])
             )
         );
@@ -154,7 +161,7 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` `t` INNER JOIN `hello` `h` ON `t`.`id` = `h`.`size` SET `t`.`name` = :name WHERE `t`.`id` = 503",
+                "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :name WHERE `t`.`id` = 503",
                 {
                     "name": [
                         "小猪",
@@ -169,8 +176,8 @@ class UpdateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test as t')
-                    ->join('hello as h', '', 't.id', '=', '{[size]}')
+                    ->table('test_query as t')
+                    ->join('test_query_subsql as h', '', 't.id', '=', '{[value]}')
                     ->where('id', 503)
                     ->update(['name' => '小猪'])
             )
@@ -183,7 +190,7 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = :hello,`test`.`value` = :questionmark_0 WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`name` = :hello,`test_query`.`value` = :questionmark_0 WHERE `test_query`.`id` = 503",
                 {
                     "questionmark_0": [
                         "小牛逼",
@@ -199,7 +206,7 @@ class UpdateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->bind(['小牛逼'])
                     ->update(
@@ -221,7 +228,7 @@ class UpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = 503",
                 []
             ]
             eot;
@@ -231,7 +238,7 @@ class UpdateTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->update([
                         'name' => '{concat([value],[name])}',
@@ -251,7 +258,7 @@ class UpdateTest extends TestCase
 
         $connect
             ->sql()
-            ->table('test')
+            ->table('test_query')
             ->where('id', 503)
             ->update([]);
     }

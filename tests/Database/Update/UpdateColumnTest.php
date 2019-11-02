@@ -39,7 +39,7 @@ class UpdateColumnTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = 503",
                 {
                     "name": [
                         "小小小鸟，怎么也飞不高。",
@@ -54,7 +54,7 @@ class UpdateColumnTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->updateColumn('name', '小小小鸟，怎么也飞不高。')
             )
@@ -67,7 +67,7 @@ class UpdateColumnTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = 503",
                 []
             ]
             eot;
@@ -77,7 +77,7 @@ class UpdateColumnTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->updateColumn('name', '{concat([value],[name])}')
             )

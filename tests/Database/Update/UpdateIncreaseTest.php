@@ -39,7 +39,7 @@ class UpdateIncreaseTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`num` = `test`.`num`+3 WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`+3 WHERE `test_query`.`id` = 503",
                 []
             ]
             eot;
@@ -49,7 +49,7 @@ class UpdateIncreaseTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->updateIncrease('num', 3)
             )
@@ -62,7 +62,7 @@ class UpdateIncreaseTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`num` = `test`.`num`+3 WHERE `test`.`id` = ?",
+                "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`+3 WHERE `test_query`.`id` = ?",
                 [
                     503
                 ]
@@ -74,7 +74,7 @@ class UpdateIncreaseTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', '[?]')
                     ->updateIncrease('num', 3, [503])
             )
