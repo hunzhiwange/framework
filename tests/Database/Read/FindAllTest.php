@@ -30,13 +30,25 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.21
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="查询多条数据.findAll",
+ *     path="database/read/findall",
+ *     description="",
+ * )
  */
 class FindAllTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="findAll 查询基础用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test`",
@@ -57,6 +69,28 @@ class FindAllTest extends TestCase
                     ->findAll()
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="all.find 查询基础用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testAllFind(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test`",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
 
         $this->assertSame(
             $sql,
@@ -73,7 +107,6 @@ class FindAllTest extends TestCase
     public function testFromOneToAll(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test`",

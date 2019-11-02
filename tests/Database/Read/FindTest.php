@@ -49,7 +49,6 @@ class FindTest extends TestCase
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test`",
@@ -82,7 +81,6 @@ class FindTest extends TestCase
     public function testFindLimit(): void
     {
         $connect = $this->createDatabaseConnectMock();
-
         $sql = <<<'eot'
             [
                 "SELECT `test`.* FROM `test` LIMIT 0,5",
