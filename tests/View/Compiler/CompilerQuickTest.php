@@ -30,11 +30,24 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="快捷标签",
+ *     path="template/quick",
+ *     description="为了使得模板定义更加简洁，系统还支持一些常用的变量输出快捷标签。",
+ * )
  */
 class CompilerQuickTest extends TestCase
 {
     use Compiler;
 
+    /**
+     * @api(
+     *     title="# 注释标签",
+     *     description="模板中的注释仅供模板制作人员查看，最终不会显示出来。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $parser = $this->createParser();
@@ -55,6 +68,18 @@ class CompilerQuickTest extends TestCase
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="~ 原样 PHP 标签",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testOriginalPhp(): void
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
             {~$value = 'Make QueryPHP greater !'}
@@ -67,6 +92,18 @@ class CompilerQuickTest extends TestCase
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title=": echo 快捷方式",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testEcho(): void
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
             {:'Hello QueryPHP!'}
