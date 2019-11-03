@@ -18,19 +18,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Docs;
+namespace Tests\Docs\Architecture;
 
 /**
  * @api(
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
- *     path="started/README",
+ *     path="architecture/README",
  *     description="",
  *     zh-CN:description="",
  *     zh-TW:description="",
  * )
  */
-class StartedSummaryDoc
+class ArchitectureSummaryDoc
 {
 }
