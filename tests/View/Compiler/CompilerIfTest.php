@@ -30,11 +30,24 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="流程控制",
+ *     path="template/if",
+ *     description="条件表达式是最基本流程控制语句，这个在任何地方都是相当的实用。",
+ * )
  */
 class CompilerIfTest extends TestCase
 {
     use Compiler;
 
+    /**
+     * @api(
+     *     title="Code 语法流程控制",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $parser = $this->createParser();
@@ -60,6 +73,18 @@ class CompilerIfTest extends TestCase
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="Code 语法流程控制支持表达式",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCodeStyleSupportExpression(): void
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
             {if $a->name == 1}
@@ -82,6 +107,40 @@ class CompilerIfTest extends TestCase
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="Node 语法流程控制",
+     *     description="条件支持的一些运算符替换语法如下：
+     *
+     * |支持字符|替换字符|
+     * |:-|:-|
+     * |band|&|
+     * |bxor|^|
+     * |bor|&#x7C;|
+     * |bnot|~|
+     * |bleft|<<|
+     * |bright|>>|
+     * |and|&&|
+     * |or|&#x7C;&#x7C;|
+     * |not|!=|
+     * |dot|->|
+     * |nheq|!==|
+     * |heq|===|
+     * |neq|!=|
+     * |eq|==|
+     * |egt|>=|
+     * |gt|>|
+     * |elt|<=|
+     * |lt|<|
+     * ",
+     *     note="",
+     * )
+     */
+    public function testNodeStyle(): void
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
             <if condition="($id eq 1) OR ($id gt 100)">one
@@ -98,6 +157,18 @@ class CompilerIfTest extends TestCase
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="Node 语法流程控制支持表达式",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testNodeStyleSupportExpression(): void
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
             <if condition="$a.name == 1">
@@ -120,6 +191,18 @@ class CompilerIfTest extends TestCase
             eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    /**
+     * @api(
+     *     title="JS 语法流程控制",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testJsStyle(): void
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
             {% if length(users) > 0 %}
