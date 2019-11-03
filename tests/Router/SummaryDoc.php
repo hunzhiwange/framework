@@ -22,7 +22,8 @@ namespace Tests\Router;
 
 /**
  * @api(
- *     title="概述",
+ * @api(
+ *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
  *     path="router/README",
@@ -44,7 +45,6 @@ class SummaryDoc
      * Route::middleware(['first', 'second'])->group(function () {
      *     Route::get('/', function () {
      *     });
-     *
      *     Route::get('user/profile', function () {
      *     });
      * });

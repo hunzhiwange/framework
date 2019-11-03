@@ -18,19 +18,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database;
+namespace Tests\Docs;
 
 /**
  * @api(
  *     title="Summary",
  *     zh-CN:title="概述",
  *     zh-TW:title="概述",
- *     path="database/README",
- *     description="QueryPHP database is 666",
- *     zh-CN:description="QueryPHP 数据库非常强大",
- *     zh-TW:description="QueryPHP 資料庫非常强大",
+ *     path="started/README",
+ *     description="",
+ *     zh-CN:description="",
+ *     zh-TW:description="",
  * )
  */
-class SummaryDoc
+class StartedSummaryDoc
 {
 }

@@ -22,9 +22,9 @@ namespace Tests\Database\Ddd;
 
 /**
  * @api(
- *     title="ORM",
- *     zh-CN:title="ORM",
- *     zh-TW:title="ORM",
+ *     title="Summary",
+ *     zh-CN:title="概述",
+ *     zh-TW:title="概述",
  *     path="orm/README",
  *     description="QueryPHP ORM is 666",
  *     zh-CN:description="QueryPHP ORM 非常强大",
