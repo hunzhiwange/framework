@@ -22,8 +22,11 @@ namespace Leevel\Kernel\Utils;
 
 use Leevel\Filesystem\Fso\create_file;
 use function Leevel\Filesystem\Fso\create_file;
+use Leevel\Support\Str\ends_with;
+use function Leevel\Support\Str\ends_with;
 use ReflectionClass;
 use ReflectionMethod;
+use Throwable;
 
 /**
  * 文档解析 Markdown.
@@ -365,8 +368,8 @@ class Doc
     protected function formatFrom(string $git, string $filePath): string
     {
         return <<<EOT
-            ::: tip 单元测试即文档
-            [基于原始文档 {$filePath} 自动构建]({$git}/{$filePath})
+            ::: tip Testing Is Documentation
+            [{$filePath}]({$git}/{$filePath})
             :::
                 
             EOT;
@@ -384,7 +387,7 @@ class Doc
         $uses = $this->parseUseDefined($this->lines, $reflection);
         if ($uses) {
             $uses = <<<EOT
-                **引入相关类**
+                **Uses**
                 
                 {$uses}
 
@@ -539,9 +542,8 @@ class Doc
         $code = ['$result = ['];
 
         foreach ($comments as $v) {
-            $backupV = $v;
+            $originalV = $v;
             $v = trim($v, '* ');
-            $v = trim($v, '_'); // 删除占位符
 
             if ('@api(' === $v) {
                 $findApi = true;
@@ -550,34 +552,83 @@ class Doc
                     break;
                 }
 
-                // 匹配字段格式，以便于支持多行
-                if (preg_match('/^\S+=\"/', $v)) {
+                // 匹配字段格式，以便于支持多行, `leevelScheme` 等特殊值排查
+                if (0 !== strpos($v, 'leevel') && preg_match('/^[a-zA-Z:-]+=\"/', $v)) {
                     $pos = strpos($v, '=');
                     $left = '"'.substr($v, 0, $pos).'"';
                     $right = substr($v, $pos + 1);
-                    $right = str_replace('$', '\$', $right); // 转义变量
+                    $right = $this->parseExecutableCode($right);
+                    if (0 === strpos($right, '\"')) {
+                        $right = substr($right, 1);
+                    }
+                    if (ends_with($right, '\",')) {
+                        $right = substr($right, 0, strlen($right) - 3).'",';
+                    }
+                    $right = str_replace('$', '\$', $right);
                     $code[] = $left.'=>'.$right;
                 } else {
                     // 空行加两个换行符撑开
                     if ('' === $v) {
-                        $code[] = PHP_EOL.PHP_EOL;
+                        $code[] = PHP_EOL;
                     } else {
-                        if (0 === strpos($backupV, '     * ')) {
-                            $backupV = substr($backupV, 7);
+                        $v = $originalV;
+                        if (0 === strpos($v, '     * ')) {
+                            $v = substr($v, 7);
                         }
-                        if (0 === strpos($backupV, ' * ')) {
-                            $backupV = substr($backupV, 3);
+                        if (0 === strpos($v, ' * ')) {
+                            $v = substr($v, 3);
                         }
-                        $code[] = str_replace('$', '\$', $backupV).PHP_EOL; // 转义变量
+                        // 开头或者结尾
+                        if (!in_array(trim($v), ['"', '",'], true)) {
+                            $v = $this->parseExecutableCode($v);
+                        }
+                        $code[] = str_replace('$', '\$', $v).PHP_EOL;
                     }
                 }
             }
         }
 
         $code[] = '];';
-        eval(implode('', $code));
+        $code = implode('', $code);
+
+        try {
+            eval($code);
+            file_put_contents(__DIR__.'/doc.rightlog.php', '<?php'.PHP_EOL.$code);
+        } catch (Throwable $th) {
+            file_put_contents(__DIR__.'/doc.errorlog.php', '<?php'.PHP_EOL.$code);
+
+            throw $th;
+        }
 
         return $result;
+    }
+
+    /**
+     * 分析可执行代码.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function parseExecutableCode(string $content): string
+    {
+        if (preg_match_all('/\{\[(.+)\]\}/', $content, $matches)) {
+            $content = str_replace(
+                $matches[1][0],
+                base64_encode($matches[1][0]),
+                $content,
+            );
+        }
+
+        $content = addslashes($content);
+
+        if (!empty($matches)) {
+            foreach ($matches[1] as $tmp) {
+                $content = str_replace('{['.base64_encode($tmp).']}', '".'.$tmp.'."', $content);
+            }
+        }
+
+        return $content;
     }
 
     /**
@@ -594,3 +645,4 @@ class Doc
 
 // import fn.
 class_exists(create_file::class); // @codeCoverageIgnore
+class_exists(ends_with::class); // @codeCoverageIgnore

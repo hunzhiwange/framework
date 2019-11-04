@@ -9,3 +9,5 @@ package-lock.json
 /tests/config.local.php
 .phpunit.result.cache
 /.idea
+.doc.errorlog.php
+.doc.rightlog.php
