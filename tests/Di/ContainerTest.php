@@ -61,9 +61,11 @@ use Tests\TestCase;
  * @api(
  *     title="IOC 容器",
  *     path="architecture/ioc",
- *     description="IOC 容器是整个框架最核心的部分，负责服务的管理和解耦组件。
+ *     description="
+ * IOC 容器是整个框架最核心的部分，负责服务的管理和解耦组件。
  *
- * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。",
+ * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。
+ * ",
  * )
  */
 class ContainerTest extends TestCase
@@ -71,11 +73,13 @@ class ContainerTest extends TestCase
     /**
      * @api(
      *     title="闭包绑定",
-     *     description="闭包属于惰性，真正使用的时候才会执行。
+     *     description="
+     * 闭包属于惰性，真正使用的时候才会执行。
      *
      * 我们可以通过 `bind` 来绑定一个闭包，通过 `make` 来运行服务，第二次运行如果是单例则直接使用生成后的结果，否则会每次执行闭包的代码。
      *
-     * 通常来说，系统大部分服务都是单例来提升性能和共享。",
+     * 通常来说，系统大部分服务都是单例来提升性能和共享。
+     * ",
      *     note="",
      * )
      */
@@ -161,24 +165,25 @@ class ContainerTest extends TestCase
     /**
      * @api(
      *     title="接口绑定接口作为构造器参数",
-     *     description="接口可以作为控制器参数来做依赖注入。
+     *     description="
+     * 接口可以作为控制器参数来做依赖注入。
      *
      * **ITest2 定义**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)."
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)]}
      * ```
      *
      * **Test2 定义**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)."
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)]}
      * ```
      *
      * **Test3 定义**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)."
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)]}
      * ```
      *
      * 通过 `Test3` 的构造函数注入 `ITest2` 的实现 `Test2`，通过 IOC 容器可以实现代码解耦。

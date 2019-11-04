@@ -236,12 +236,13 @@ class CollectionTest extends TestCase
     /**
      * @api(
      *     title="集合数据支持实现 \Leevel\Support\IArray 的对象",
-     *     description="对象实现了 `\Leevel\Support\IArray` 可以转化为集合数据。
+     *     description="
+     * 对象实现了 `\Leevel\Support\IArray` 可以转化为集合数据。
      *
      * **例子**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestIArray::class)."
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestIArray::class)]}
      * ```
      *
      * > 实现了 `\Leevel\Support\IArray` 的对象的方法 `toArray` 返回集合的数据。
@@ -264,12 +265,13 @@ class CollectionTest extends TestCase
     /**
      * @api(
      *     title="集合数据支持实现 \Leevel\Support\IJson 的对象",
-     *     description="对象实现了 `\Leevel\Support\IJson` 可以转化为集合数据。
+     *     description="
+     * 对象实现了 `\Leevel\Support\IJson` 可以转化为集合数据。
      *
      * **例子**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestIJson::class)."
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestIJson::class)]}
      * ```
      *
      * > 实现了 `\Leevel\Support\IJson` 的对象的方法 `toJson` 返回集合的数据。
@@ -292,12 +294,13 @@ class CollectionTest extends TestCase
     /**
      * @api(
      *     title="集合数据支持实现 \JsonSerializable 的对象",
-     *     description="对象实现了 `\JsonSerializable` 可以转化为集合数据。
+     *     description="
+     * 对象实现了 `\JsonSerializable` 可以转化为集合数据。
      *
      * **例子**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestJsonSerializable::class)."
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestJsonSerializable::class)]}
      * ```
      *
      * > 实现了 `\JsonSerializable` 的对象的方法 `jsonSerialize` 返回集合的数据。

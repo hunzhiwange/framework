@@ -112,7 +112,8 @@ class CompilerIfTest extends TestCase
     /**
      * @api(
      *     title="Node 语法流程控制",
-     *     description="条件支持的一些运算符替换语法如下：
+     *     description="
+     * 条件支持的一些运算符替换语法如下：
      *
      * |支持字符|替换字符|
      * |:-|:-|

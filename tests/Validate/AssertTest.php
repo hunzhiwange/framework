@@ -179,7 +179,8 @@ class AssertTest extends TestCase
     /**
      * @api(
      *     title="断言支持链式表达式",
-     *     description="我们可以使用链式表达式来校验规则。
+     *     description="
+     * 我们可以使用链式表达式来校验规则。
      *
      * **make 原型**
      *
@@ -204,7 +205,8 @@ class AssertTest extends TestCase
     /**
      * @api(
      *     title="断言支持延迟释放",
-     *     description="可以将所有错误几种抛出。
+     *     description="
+     * 可以将所有错误几种抛出。
      *
      * **lazy 原型**
      *

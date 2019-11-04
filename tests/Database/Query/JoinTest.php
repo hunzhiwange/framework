@@ -43,7 +43,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * ```
  *
  *  - 其中 $table 和 $cols 与 《查询语言.table》中的用法一致。
- *  - $cond 与《查询语言.where》中的用法一致。",
+ *  - $cond 与《查询语言.where》中的用法一致。
+ * ",
  * )
  */
 class JoinTest extends TestCase

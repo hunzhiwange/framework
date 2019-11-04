@@ -37,7 +37,8 @@ class SummaryDoc
     /**
      * @api(
      *     title="路由解析",
-     *     description="QueryPHP 有一个非常独特的地方就是路由设计与其它框架有点出入，我们不需要像 Laravel 5、Thinkphp 5 等框架一样定义路由。
+     *     description="
+     * QueryPHP 有一个非常独特的地方就是路由设计与其它框架有点出入，我们不需要像 Laravel 5、Thinkphp 5 等框架一样定义路由。
      *
      * ### Laravel 5
      *
@@ -94,8 +95,10 @@ class SummaryDoc
     /**
      * @api(
      *     title="路由匹配过程",
-     *     description="QueryPHP 会优先进行`MVC 自动路由`匹配，也包含 `Restful` 路由匹配,如果匹配失败就会进行注解路由匹配阶段，如果还是
-     * 匹配失败则会抛出一个路由无法找到的异常。",
+     *     description="
+     * QueryPHP 会优先进行`MVC 自动路由`匹配，也包含 `Restful` 路由匹配,如果匹配失败就会进行注解路由匹配阶段，如果还是
+     * 匹配失败则会抛出一个路由无法找到的异常。
+     * ",
      *     note="",
      *     lang="",
      * )
@@ -107,7 +110,8 @@ class SummaryDoc
     /**
      * @api(
      *     title="自动 MVC 路由",
-     *     description="很多时候我们不是特别关心它是 GET、POST 还是 Put，我们就想简单输入一个地址就可以访问到我们的控制器。
+     *     description="
+     * 很多时候我们不是特别关心它是 GET、POST 还是 Put，我们就想简单输入一个地址就可以访问到我们的控制器。
      *
      * 路径  |  匹配控制器 |  备注
      * --|---|--
@@ -175,17 +179,18 @@ class SummaryDoc
     /**
      * @api(
      *     title="自动 restful 路由",
-     *     description="Restful 已经是一种开发主流，前后端分离的场景我们通常会定义 Restful 路由来向前端提供接口服务。
+     *     description="
+     * Restful 已经是一种开发主流，前后端分离的场景我们通常会定义 Restful 路由来向前端提供接口服务。
      *
      * 我们访问同一个 URL 的时候,根据不同的`请求类型`访问不同的后台。
      *
      * 路径 | 请求类型 |  匹配控制器 |  备注
-     * --|---|---|--
-     * /car | GET | App\App\Controller\Car::index()  | 没有参数则请求列表
-     * /car/5  | GET  | App\App\Controller\Car::show()  |
-     *  /car/5 | POST | App\App\Controller\Car::store()  |
-     *  /car/5 | DELETE| App\App\Controller\Car::destroy() |
-     *  /car/5 | PUT | App\App\Controller\Car::update() |
+     * --     | ---    | ---                               |--
+     * /car   | GET    | App\App\Controller\Car::index()   | 没有参数则请求列表
+     * /car/5 | GET    | App\App\Controller\Car::show()    |
+     * /car/5 | POST   | App\App\Controller\Car::store()   |
+     * /car/5 | DELETE | App\App\Controller\Car::destroy() |
+     * /car/5 | PUT    | App\App\Controller\Car::update()  |
      *
      * 我们系统会分析 pathInfo，会将`数字类数据`扔进 params，其它字符将会合并进行上面的 `自动 MVC 路由`，这个时候没有方法，系统根据
      * 请求类型自动补全方法完成 Restful 请求.
@@ -212,7 +217,8 @@ class SummaryDoc
     /**
      * @api(
      *     title="Swagger PHP 注解路由",
-     *     description="上面是一种预热，我们的框架路由设计是这样，优先进行 `pathInfo` 解析，如果解析失败将进入注解路由高级解析阶段。
+     *     description="
+     * 上面是一种预热，我们的框架路由设计是这样，优先进行 `pathInfo` 解析，如果解析失败将进入注解路由高级解析阶段。
      *
      * ### 基础
      *
@@ -274,7 +280,8 @@ class SummaryDoc
     /**
      * @api(
      *     title="",
-     *     description="VS Laravel:
+     *     description="
+     * VS Laravel:
      *
      * ``` php
      * Route::get('/', function () {
@@ -289,11 +296,11 @@ class SummaryDoc
      * 系统支持一些自定义属性，可以扩展看路由的功能。
      *
      * ```
-     * leevelScheme=\"https\",
-     * leevelDomain=\"{subdomain:[A-Za-z]+}-vip.{domain}\",
-     * leevelParams={\"args1\": \"hello\", \"args2\": \"world\"},
-     * leevelMiddlewares=\"api\"
-     * leevelBind=\"\XXX\XXX\class@method\"
+     * leevelScheme = "https",
+     * leevelDomain = "{subdomain:[A-Za-z]+}-vip.{domain}",
+     * leevelParams = {"args1": "hello", "args2": "world"},
+     * leevelMiddlewares = "api"
+     * leevelBind = "\XXX\XXX\class@method"
      * ```
      *
      * ::: danger

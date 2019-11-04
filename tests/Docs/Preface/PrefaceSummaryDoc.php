@@ -36,7 +36,8 @@ class PrefaceSummaryDoc
     /**
      * @api(
      *     title="概览",
-     *     description="QueryPHP 文档系统概览。
+     *     description="
+     * QueryPHP 文档系统概览。
      *
      * 项目  |  标识 |  备注
      * --   |---|--

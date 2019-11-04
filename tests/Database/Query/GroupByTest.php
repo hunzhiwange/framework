@@ -42,7 +42,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * public function groupBy($expression);
  * ```
  *
- *  - 参数支持字符串以及它们构成的一维数组，用法和 《查询语言.orderBy》 非常相似。",
+ *  - 参数支持字符串以及它们构成的一维数组，用法和 《查询语言.orderBy》 非常相似。
+ * ",
  * )
  */
 class GroupByTest extends TestCase

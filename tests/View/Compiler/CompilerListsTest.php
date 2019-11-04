@@ -44,8 +44,10 @@ class CompilerListsTest extends TestCase
     /**
      * @api(
      *     title="普通输出",
-     *     description="lists 标签的 `name` 属性表示模板赋值的变量名称，因此不可随意在模板文件中改变。
-     * `id` 表示当前的循环变量，可以随意指定，但确保不要和 name 属性冲突。",
+     *     description="
+     * lists 标签的 `name` 属性表示模板赋值的变量名称，因此不可随意在模板文件中改变。
+     * `id` 表示当前的循环变量，可以随意指定，但确保不要和 name 属性冲突。
+     * ",
      *     note="",
      * )
      */

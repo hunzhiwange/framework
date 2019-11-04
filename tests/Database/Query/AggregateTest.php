@@ -43,7 +43,8 @@ class AggregateTest extends TestCase
     /**
      * @api(
      *     title="记录数量 count",
-     *     description="计算记录数量。
+     *     description="
+     * 计算记录数量。
      *
      * `函数原型`
      *

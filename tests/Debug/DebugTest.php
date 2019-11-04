@@ -97,12 +97,13 @@ class DebugTest extends TestCase
     /**
      * @api(
      *     title="JSON 关联数组调试",
-     *     description="关联数组结构会在尾部追加一个选项 `:trace` 用于调试。
+     *     description="
+     * 关联数组结构会在尾部追加一个选项 `:trace` 用于调试。
      *
      * **返回结构**
      *
      * ``` php
-     * $response = [\"foo\" => \"bar\", \":trace\" => []];
+     * $response = ["foo" => "bar", ":trace" => []];
      * ```
      *
      * 关联数组在尾部追加一个选项作为调试信息，这与非关联数组有所不同。
@@ -137,12 +138,13 @@ class DebugTest extends TestCase
     /**
      * @api(
      *     title="JSON 非关联数组调试",
-     *     description="非关联数组结构会在尾部追加一个 `:trace` 用于调试。
+     *     description="
+     * 非关联数组结构会在尾部追加一个 `:trace` 用于调试。
      *
      * **返回结构**
      *
      * ``` php
-     * $response = [\"foo\", \"bar\", [\":trace\" => []]];
+     * $response = ["foo", "bar", [":trace" => []]];
      * ```
      *
      * 非关联数组在尾部追加一个调试信息，将不会破坏返回接口的 JSON 结构。
@@ -370,7 +372,7 @@ class DebugTest extends TestCase
      * **支持的消息类型**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')."
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')]}
      * ```
      *
      * 系统支持多种消息类型，可以参考这个进行调试。
