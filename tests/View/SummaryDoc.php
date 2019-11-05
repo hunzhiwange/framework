@@ -138,7 +138,6 @@ class SummaryDoc
      * @api(
      *     title="扩展支持",
      *     description="为了减少学习成本，系统还支持 PHP 自身作为 UI 模板。",
-     *
      *     note="",
      * )
      */
