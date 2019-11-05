@@ -296,11 +296,11 @@ class SummaryDoc
      * 系统支持一些自定义属性，可以扩展看路由的功能。
      *
      * ```
-     * leevelScheme = "https",
-     * leevelDomain = "{subdomain:[A-Za-z]+}-vip.{domain}",
-     * leevelParams = {"args1": "hello", "args2": "world"},
-     * leevelMiddlewares = "api"
-     * leevelBind = "\XXX\XXX\class@method"
+     * leevelScheme="https",
+     * leevelDomain="{subdomain:[A-Za-z]+}-vip.{domain}",
+     * leevelParams={"args1": "hello", "args2": "world"},
+     * leevelMiddlewares="api"
+     * leevelBind="\XXX\XXX\class@method"
      * ```
      *
      * ::: danger
