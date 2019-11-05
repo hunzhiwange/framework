@@ -536,54 +536,29 @@ class Doc
      */
     protected function parseComment(string $comment): array
     {
-        $comments = explode(PHP_EOL, $comment);
-        $findApi = false;
+        $findApi = $isMultiComment = false;
         $result = [];
         $code = ['$result = ['];
 
-        foreach ($comments as $v) {
+        foreach (explode(PHP_EOL, $comment) as $v) {
             $originalV = $v;
             $v = trim($v, '* ');
 
+            // @api 开始
             if ('@api(' === $v) {
                 $findApi = true;
             } elseif (true === $findApi) {
+                // @api 结尾
                 if (')' === $v) {
                     break;
                 }
 
-                // 匹配字段格式，以便于支持多行, `leevelScheme` 等特殊值排查
-                if (0 !== strpos($v, 'leevel') && preg_match('/^[a-zA-Z:-]+=\"/', $v)) {
-                    $pos = strpos($v, '=');
-                    $left = '"'.substr($v, 0, $pos).'"';
-                    $right = substr($v, $pos + 1);
-                    $right = $this->parseExecutableCode($right);
-                    if (0 === strpos($right, '\"')) {
-                        $right = substr($right, 1);
-                    }
-                    if (ends_with($right, '\",')) {
-                        $right = substr($right, 0, strlen($right) - 3).'",';
-                    }
-                    $right = str_replace('$', '\$', $right);
-                    $code[] = $left.'=>'.$right;
+                // 匹配字段格式，以便于支持多行
+                if (false === $isMultiComment && preg_match('/^[a-zA-Z:-]+=\"/', $v)) {
+                    $code[] = $this->parseSingleComment($v);
                 } else {
-                    // 空行加两个换行符撑开
-                    if ('' === $v) {
-                        $code[] = PHP_EOL;
-                    } else {
-                        $v = $originalV;
-                        if (0 === strpos($v, '     * ')) {
-                            $v = substr($v, 7);
-                        }
-                        if (0 === strpos($v, ' * ')) {
-                            $v = substr($v, 3);
-                        }
-                        // 开头或者结尾
-                        if (!in_array(trim($v), ['"', '",'], true)) {
-                            $v = $this->parseExecutableCode($v);
-                        }
-                        $code[] = str_replace('$', '\$', $v).PHP_EOL;
-                    }
+                    list($content, $isMultiComment) = $this->parseMultiComment($v, $originalV);
+                    $code[] = $content;
                 }
             }
         }
@@ -604,6 +579,77 @@ class Doc
     }
 
     /**
+     * 分析多行注释.
+     *
+     * @param string $content
+     * @param string $originalContent
+     *
+     * @return array
+     */
+    protected function parseMultiComment(string $content, string $originalContent): array
+    {
+        $isMultiComment = true;
+        if ('' === $content) {
+            return [PHP_EOL, $isMultiComment];
+        }
+
+        $content = $originalContent;
+        if (0 === strpos($content, '     * ')) {
+            $content = substr($content, 7);
+        }
+        if (0 === strpos($content, ' * ')) {
+            $content = substr($content, 3);
+        }
+
+        // 多行结尾必须独立以便于区分
+        if ('",' !== trim($content)) {
+            $content = $this->parseExecutableCode($content);
+        } else {
+            $isMultiComment = false;
+        }
+
+        $content = str_replace('$', '\$', $content).PHP_EOL;
+
+        return [$content, $isMultiComment];
+    }
+
+    /**
+     * 分析单行注释.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function parseSingleComment(string $content): string
+    {
+        $pos = strpos($content, '=');
+        $left = '"'.substr($content, 0, $pos).'"';
+        $right = $this->normalizeSinggleRight(substr($content, $pos + 1));
+
+        return $left.'=>'.$right;
+    }
+
+    /**
+     * 整理单行注释右边值.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function normalizeSinggleRight(string $content): string
+    {
+        $content = $this->parseExecutableCode($content);
+        if (0 === strpos($content, '\"')) {
+            $content = substr($content, 1);
+        }
+        if (ends_with($content, '\",')) {
+            $content = substr($content, 0, strlen($content) - 3).'",';
+        }
+
+        return str_replace('$', '\$', $content);
+    }
+
+    /**
      * 分析可执行代码.
      *
      * @param string $content
@@ -620,7 +666,10 @@ class Doc
             );
         }
 
+        // 保护单引号不被转义
+        $content = str_replace($singleQuote = '\'', $singleQuoteEncoded = base64_encode('single-quote'), $content);
         $content = addslashes($content);
+        $content = str_replace($singleQuoteEncoded, $singleQuote, $content);
 
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
