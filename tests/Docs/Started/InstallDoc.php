@@ -173,6 +173,7 @@ class InstallDoc
      *   * php-5.6.23
      *   * php-7.1.6
      *   * php-7.2.1
+     *   * php-7.3.2
      *   * redis-2.8.17
      *
      * Windows 开发者如果不需要 Swoole 则可以按照其他普通的 PHP 项目来搭建就是了，如果依赖 Swoole 可以采用上面这种虚拟机的方式来搭建环境。
