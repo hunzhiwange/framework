@@ -536,7 +536,7 @@ class Doc
      */
     protected function parseComment(string $comment): array
     {
-        $findApi = $isMultiComment = false;
+        $findApi = $inMultiComment = false;
         $result = [];
         $code = ['$result = ['];
 
@@ -554,10 +554,10 @@ class Doc
                 }
 
                 // 匹配字段格式，以便于支持多行
-                if (false === $isMultiComment && preg_match('/^[a-zA-Z:-]+=\"/', $v)) {
+                if (false === $inMultiComment && preg_match('/^[a-zA-Z:-]+=\"/', $v)) {
                     $code[] = $this->parseSingleComment($v);
                 } else {
-                    list($content, $isMultiComment) = $this->parseMultiComment($v, $originalV);
+                    list($content, $inMultiComment) = $this->parseMultiComment($v, $originalV);
                     $code[] = $content;
                 }
             }
@@ -588,9 +588,9 @@ class Doc
      */
     protected function parseMultiComment(string $content, string $originalContent): array
     {
-        $isMultiComment = true;
+        $inMultiComment = true;
         if ('' === $content) {
-            return [PHP_EOL, $isMultiComment];
+            return [PHP_EOL, $inMultiComment];
         }
 
         $content = $originalContent;
@@ -605,12 +605,12 @@ class Doc
         if ('",' !== trim($content)) {
             $content = $this->parseExecutableCode($content);
         } else {
-            $isMultiComment = false;
+            $inMultiComment = false;
         }
 
         $content = str_replace('$', '\$', $content).PHP_EOL;
 
-        return [$content, $isMultiComment];
+        return [$content, $inMultiComment];
     }
 
     /**
