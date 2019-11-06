@@ -98,6 +98,7 @@ class Doc
      * @param string $path
      * @param string $git
      * @param string $i18n
+     * @param string $defaultI18n
      */
     public function __construct(string $path, string $git, string $i18n, string $defaultI18n = 'zh-CN')
     {
