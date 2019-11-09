@@ -50,7 +50,6 @@ class Validate implements IValidate
     public function __construct(IContainer $container)
     {
         $this->container = $container;
-
         $this->initMessages();
     }
 
