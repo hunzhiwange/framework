@@ -35,7 +35,7 @@ use Tests\TestCase;
  * @api(
  *     title="断言",
  *     path="component/validate/assert",
- *     description="这里为系统提供的基础的断言功能。",
+ *     description="这里为系统提供的基础的断言功能，断言的规则与验证器共享校验规则。",
  * )
  */
 class AssertTest extends TestCase
