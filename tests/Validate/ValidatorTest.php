@@ -35,6 +35,27 @@ use Tests\TestCase;
  * @since 2018.07.12
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validate",
+ *     zh-CN:title="验证器",
+ *     zh-TW:title="驗證器",
+ *     path="component/validate/README",
+ *     zh-CN:description="
+ * **构造器函数原型**
+ *
+ * ``` php
+ * public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = []);
+ * ```
+ *
+ *   * $data 验证的数据
+ *   * $rules 验证规则
+ *   * $names 校验名字隐射
+ *   * $messages 校验失败消息
+ *
+ * 可以通过构造器传递参数，也可以通过 `name`,`message` 等方法传入。
+ * ",
+ * )
  */
 class ValidatorTest extends TestCase
 {
@@ -55,6 +76,15 @@ class ValidatorTest extends TestCase
         Container::singletons()->clear();
     }
 
+    /**
+     * @api(
+     *     title="验证器基本使用方法",
+     *     description="
+     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $validate = new Validator(
@@ -94,6 +124,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="make 创建验证器",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMake(): void
     {
         $validate = Validator::make(
@@ -131,6 +168,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="验证器校验错误",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testError(): void
     {
         $validate = new Validator(
@@ -164,6 +208,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="设置校验数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testData(): void
     {
         $validate = new Validator(
@@ -202,6 +253,13 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
+    /**
+     * @api(
+     *     title="添加校验数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAddData(): void
     {
         $validate = new Validator(
@@ -239,6 +297,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="设置校验规则",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRule(): void
     {
         $validate = new Validator(
@@ -281,6 +346,13 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
+    /**
+     * @api(
+     *     title="设置校验规则支持条件",
+     *     description="第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。",
+     *     note="",
+     * )
+     */
     public function testRuleIf(): void
     {
         $validate = new Validator(
@@ -316,6 +388,23 @@ class ValidatorTest extends TestCase
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
+    }
+
+    public function testRuleIf2(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '中国',
+            ],
+            [
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
 
         $validate->rule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -342,6 +431,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="添加校验规则",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAddRule(): void
     {
         $validate = new Validator(
@@ -395,6 +491,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="添加校验规则支持条件",
+     *     description="第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。",
+     *     note="",
+     * )
+     */
     public function testAddRuleIf(): void
     {
         $validate = new Validator(
@@ -430,6 +533,23 @@ class ValidatorTest extends TestCase
 
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
+    }
+
+    public function testAddRuleIf2(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '中国',
+            ],
+            [
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
 
         $validate->addRule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -456,6 +576,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="设置验证消息",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMessage(): void
     {
         $validate = new Validator(
@@ -507,6 +634,46 @@ class ValidatorTest extends TestCase
                 $validate->error()
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="添加验证消息",
+     *     description="设置规则所有字段的验证消息。",
+     *     note="",
+     * )
+     */
+    public function testAddMessage(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '中国',
+            ],
+            [
+                'name'     => 'required|min_length:20',
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $error = <<<'eot'
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
 
         $validate->addMessage(['min_length' => '{field} foo bar {rule}']);
 
@@ -514,6 +681,46 @@ class ValidatorTest extends TestCase
             {
                 "name": [
                     "用户名 foo bar 20"
+                ]
+            }
+            eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     title="添加指定字段验证规则消息",
+     *     description="可以单独为某个字段指定验证消息规则，其它字段验证消息保持不变。",
+     *     note="",
+     * )
+     */
+    public function testAddMessageForOneField(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '中国',
+            ],
+            [
+                'name'     => 'required|min_length:20',
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $error = <<<'eot'
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
                 ]
             }
             eot;
@@ -549,7 +756,14 @@ class ValidatorTest extends TestCase
         );
     }
 
-    public function testMessage2(): void
+    /**
+     * @api(
+     *     title="添加指定字段验证规则消息(圆点分隔)",
+     *     description="通过圆点 `.` 分隔开来。",
+     *     note="",
+     * )
+     */
+    public function testAddMessageForOneFieldSeparateByDot(): void
     {
         $validate = new Validator(
             [
@@ -567,46 +781,6 @@ class ValidatorTest extends TestCase
             {
                 "name": [
                     "用户名 不满足最小长度 20"
-                ]
-            }
-            eot;
-
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-
-        $this->assertSame(
-            $error,
-            $this->varJson(
-                $validate->error()
-            )
-        );
-
-        $validate->addMessage(['min_length' => '{field} not min {rule}']);
-
-        $error = <<<'eot'
-            {
-                "name": [
-                    "用户名 not min 20"
-                ]
-            }
-            eot;
-
-        $this->assertFalse($validate->success());
-        $this->assertTrue($validate->fail());
-
-        $this->assertSame(
-            $error,
-            $this->varJson(
-                $validate->error()
-            )
-        );
-
-        $validate->addMessage(['name' => ['min_length' => '{field} haha {rule}']]);
-
-        $error = <<<'eot'
-            {
-                "name": [
-                    "用户名 haha 20"
                 ]
             }
             eot;
@@ -642,6 +816,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="添加指定多层子字段验证规则消息(圆点分隔)",
+     *     description="通过圆点 `.` 分隔开来。",
+     *     note="",
+     * )
+     */
     public function testSubDataWithSubMessage(): void
     {
         $validate = new Validator(
@@ -683,6 +864,46 @@ class ValidatorTest extends TestCase
             {
                 "name.sub.sub": [
                     "字段 name.sub.sub 不能为空"
+                ]
+            }
+            eot;
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     title="添加通配符字段验证规则消息",
+     *     description="通过 `*` 来代表通配符。",
+     *     note="",
+     * )
+     */
+    public function testWildcardSubDataWithSubMessage(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => ['sub' => ['sub' => '']],
+            ],
+            [
+                'name.sub.sub' => 'required|'.Validator::MUST,
+            ],
+            [
+                'name'     => '歌曲',
+            ]
+        );
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+            {
+                "name.sub.sub": [
+                    "name.sub.sub 不能为空"
                 ]
             }
             eot;
@@ -748,6 +969,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="设置验证字段隐射",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testName(): void
     {
         $validate = new Validator(
@@ -800,6 +1028,47 @@ class ValidatorTest extends TestCase
                 $validate->error()
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="添加验证字段隐射",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testAddName(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '中国',
+            ],
+            [
+                'name'     => 'required|min_length:20',
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $error = <<<'eot'
+            {
+                "name": [
+                    "用户名 不满足最小长度 20"
+                ]
+            }
+            eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '用户名'], $validate->getName());
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
 
         $validate->addName(['name' => 'hello world']);
 
@@ -822,6 +1091,13 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="设置验证规则别名",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAlias(): void
     {
         $validate = new Validator(
@@ -856,7 +1132,6 @@ class ValidatorTest extends TestCase
         );
 
         $validate->alias('min_length', 'minl');
-
         $validate->rule(['name' => 'required|minl:9']);
 
         $error = <<<'eot'
@@ -876,9 +1151,49 @@ class ValidatorTest extends TestCase
                 $validate->error()
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="批量设置验证规则别名",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testAliasMany(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => '成都',
+            ],
+            [
+                'name'     => 'required|min_length:5',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $error = <<<'eot'
+            {
+                "name": [
+                    "地名 不满足最小长度 5"
+                ]
+            }
+            eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名'], $validate->getName());
+
+        $this->assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
 
         $validate->aliasMany(['min_length' => 'min2']);
-
         $validate->rule(['name' => 'required|min2:11']);
 
         $error = <<<'eot'
@@ -940,6 +1255,13 @@ class ValidatorTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="验证后回调",
+     *     description="无论成功或者失败都会执行回调。",
+     *     note="",
+     * )
+     */
     public function testAfter(): void
     {
         $validate = new Validator(
@@ -962,6 +1284,13 @@ class ValidatorTest extends TestCase
         $this->assertFalse($validate->fail());
     }
 
+    /**
+     * @api(
+     *     title="自定义扩展验证规则",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testExtend(): void
     {
         $validate = new Validator(
@@ -993,6 +1322,13 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->fail());
     }
 
+    /**
+     * @api(
+     *     title="直接调用验证规则",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCall(): void
     {
         $validate = new Validator();
@@ -1000,11 +1336,17 @@ class ValidatorTest extends TestCase
         $this->assertTrue($validate->minLength('成都', 1));
         $this->assertTrue($validate->minLength('成都', 2));
         $this->assertFalse($validate->minLength('成都', 3));
-
         $this->assertFalse($validate->alpha('成都'));
         $this->assertTrue($validate->alpha('cd'));
     }
 
+    /**
+     * @api(
+     *     title="直接调用自定义验证规则",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCallCustom(): void
     {
         $validate = new Validator();
@@ -1029,7 +1371,6 @@ class ValidatorTest extends TestCase
         );
 
         $validate = new Validator();
-
         $validate->notFoundMethod();
     }
 
@@ -1079,6 +1420,21 @@ class ValidatorTest extends TestCase
         $validate->success();
     }
 
+    /**
+     * @api(
+     *     title="自定义扩展验证规则(类)",
+     *     description="
+     * 自定义扩展规则可以为一个独立的类，例如下面的例子。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ExtendClassTest1::class)]}
+     * ```
+     *
+     * 默认情况下，此时自定义类的 `handle` 方法将作为验证入口。
+     * ",
+     *     note="",
+     * )
+     */
     public function testCallExtendClass(): void
     {
         $validate = new Validator(
@@ -1094,18 +1450,28 @@ class ValidatorTest extends TestCase
         );
 
         $container = new Container();
-
         $validate->setContainer($container);
-
         $validate->extend('custom_foobar', ExtendClassTest1::class);
-
         $this->assertTrue($validate->success());
-
         $validate->data(['name' => 'foo']);
-
         $this->assertFalse($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="自定义扩展验证规则(类)，指定验证方法",
+     *     description="
+     * 自定义扩展规则可以为一个独立的类，例如下面的例子。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ExtendClassTest1::class)]}
+     * ```
+     *
+     * 指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `handle2` 方法将作为验证入口。
+     * ",
+     *     note="",
+     * )
+     */
     public function testCallExtendClassWithCustomMethod(): void
     {
         $validate = new Validator(
@@ -1121,19 +1487,14 @@ class ValidatorTest extends TestCase
         );
 
         $container = new Container();
-
         $validate->setContainer($container);
-
         $validate->extend('custom_foobar', ExtendClassTest1::class.'@handle2');
-
         $this->assertTrue($validate->success());
-
         $validate->data(['name' => 'foo']);
-
         $this->assertFalse($validate->success());
     }
 
-    public function testCallExtendClassWithRun(): void
+    public function testCallExtendClassWithCustomMethod2(): void
     {
         $validate = new Validator(
             [
@@ -1148,15 +1509,10 @@ class ValidatorTest extends TestCase
         );
 
         $container = new Container();
-
         $validate->setContainer($container);
-
         $validate->extend('custom_foobar', ExtendClassTest2::class);
-
         $this->assertTrue($validate->success());
-
         $validate->data(['name' => 'foo']);
-
         $this->assertFalse($validate->success());
     }
 
@@ -1180,11 +1536,8 @@ class ValidatorTest extends TestCase
         );
 
         $container = new Container();
-
         $validate->setContainer($container);
-
         $validate->extend('custom_foobar', 'Tests\\Validate\\NotFound');
-
         $validate->success();
     }
 
@@ -1208,11 +1561,8 @@ class ValidatorTest extends TestCase
         );
 
         $container = new Container();
-
         $validate->setContainer($container);
-
         $validate->extend('custom_foobar', ['foo' => 'bar']);
-
         $validate->success();
     }
 
@@ -1248,6 +1598,15 @@ class ValidatorTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="验证失败则跳过其它验证规则",
+     *     description="
+     * 只需要在校验规则中加入 `SKIP_OTHER` 即可。
+     * ",
+     *     note="",
+     * )
+     */
     public function testShouldSkipOther(): void
     {
         $validate = new Validator(
@@ -1309,6 +1668,15 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="验证失败则跳过自身其它验证规则",
+     *     description="
+     * 只需要在校验规则中加入 `SKIP_SELF` 即可，只会跳过当前字段的其他验证规则，而其它字段的验证规则不受影响。
+     * ",
+     *     note="",
+     * )
+     */
     public function testShouldSkipSelf(): void
     {
         $validate = new Validator(
@@ -1373,6 +1741,43 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="值为 null 会跳过可选验证规则",
+     *     description="
+     * 如果校验规则中有 `OPTIONAL` ，那么字段值为 `null` 则不会执行验证规则。
+     * ",
+     *     note="",
+     * )
+     */
+    public function testOptional(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => null,
+            ],
+            [
+                'name'     => 'required|'.Validator::OPTIONAL,
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+        $this->assertSame(['name' => '地名'], $validate->getName());
+    }
+
+    /**
+     * @api(
+     *     title="值为 null 默认必须验证",
+     *     description="
+     * 我们加入 `MUST` 或者默认不指定，那么 `null` 也会执行验证。
+     * ",
+     *     note="",
+     * )
+     */
     public function testMustRequired(): void
     {
         $validate = new Validator(
@@ -1634,6 +2039,15 @@ class ValidatorTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="通配符验证规则支持",
+     *     description="
+     * 可以通过 `*` 来表示通配符验证规则。
+     * ",
+     *     note="",
+     * )
+     */
     public function testWildcardRule(): void
     {
         $validate = new Validator(
