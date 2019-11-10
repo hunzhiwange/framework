@@ -31,9 +31,22 @@ use Tests\TestCase;
  * @since 2019.08.21
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="验证助手函数",
+ *     path="component/validate/helper",
+ *     description="框架提供助手函数来提供简洁的校验服务，助手的规则与验证器共享校验规则。",
+ * )
  */
 class HelperTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="助手基础功能",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $this->assertTrue(Helper::validateRequired(5));
