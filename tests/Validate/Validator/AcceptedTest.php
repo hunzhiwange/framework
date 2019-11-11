@@ -33,8 +33,8 @@ use Tests\TestCase;
  * @version 1.0
  *
  * @api(
- *     title="Accepted validator",
- *     zh-CN:title="是否可接受的验证器",
+ *     title="Validator.accepted",
+ *     zh-CN:title="验证器.是否可接受的",
  *     path="component/validate/validator/accepted",
  *     description="",
  * )

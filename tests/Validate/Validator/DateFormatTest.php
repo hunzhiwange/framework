@@ -31,6 +31,13 @@ use Tests\TestCase;
  * @since 2018.08.08
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.date_format",
+ *     zh-CN:title="验证器.是否为时间",
+ *     path="component/validate/validator/dateformat",
+ *     description="",
+ * )
  */
 class DateFormatTest extends TestCase
 {
@@ -39,6 +46,20 @@ class DateFormatTest extends TestCase
      *
      * @param mixed  $value
      * @param string $format
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\DateFormatTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, string $format): void
     {
@@ -67,6 +88,20 @@ class DateFormatTest extends TestCase
      *
      * @param mixed  $value
      * @param string $format
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\DateFormatTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, string $format): void
     {
@@ -90,6 +125,13 @@ class DateFormatTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="date_format 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);
