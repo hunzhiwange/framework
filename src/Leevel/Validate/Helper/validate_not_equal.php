@@ -24,7 +24,8 @@ use InvalidArgumentException;
 
 /**
  * 两个值是否不相同.
- * 全等匹配，为了严禁.
+ *
+ * - 全等匹配，为了严禁.
  *
  * @param mixed $value
  * @param array $param

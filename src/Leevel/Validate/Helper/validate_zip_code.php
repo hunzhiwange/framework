@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 /**
- * 是否为中国邮政编码
+ * 是否为中国邮政编码.
  *
  * @param mixed $value
  *

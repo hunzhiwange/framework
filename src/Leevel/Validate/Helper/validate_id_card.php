@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 /**
- * 是否为大陆身份证
+ * 是否为大陆身份证.
  *
  * @param mixed $value
  *

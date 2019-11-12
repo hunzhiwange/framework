@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 /**
- * 验证是否为 url 地址
+ * 验证是否为 URL 地址.
  *
  * @param mixed $value
  *

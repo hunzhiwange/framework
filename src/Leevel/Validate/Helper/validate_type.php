@@ -23,7 +23,7 @@ namespace Leevel\Validate\Helper;
 use InvalidArgumentException;
 
 /**
- * 数据类型验证
+ * 数据类型验证.
  *
  * @param mixed $value
  * @param array $param

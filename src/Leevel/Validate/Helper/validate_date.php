@@ -23,7 +23,7 @@ namespace Leevel\Validate\Helper;
 use DateTime;
 
 /**
- * 是否为日期
+ * 是否为日期.
  *
  * @param mixed $value
  *

@@ -24,7 +24,8 @@ use InvalidArgumentException;
 
 /**
  * 验证值上限.
- * 小于或者全等.
+ *
+ * - 小于或者全等.
  *
  * @param mixed $value
  * @param array $param
