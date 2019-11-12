@@ -28,7 +28,7 @@ namespace Leevel\Support\Arr;
  *
  * @return array
  */
-function except(array $input, array $filter): array
+function except(array &$input, array $filter): array
 {
     foreach ($filter as $f) {
         if (array_key_exists($f, $input)) {

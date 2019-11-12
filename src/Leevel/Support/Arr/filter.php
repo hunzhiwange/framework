@@ -32,7 +32,7 @@ use InvalidArgumentException;
  *
  * @return array
  */
-function filter(array $input, array $rules): array
+function filter(array &$input, array $rules): array
 {
     foreach ($input as $k => &$v) {
         if (is_string($v)) {
