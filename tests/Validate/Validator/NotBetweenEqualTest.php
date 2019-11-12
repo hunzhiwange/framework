@@ -31,6 +31,13 @@ use Tests\TestCase;
  * @since 2018.08.09
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.not_between_equal",
+ *     zh-CN:title="验证器.未处于 betweenEqual 范围，包含等于",
+ *     path="component/validate/validator/notbetweenequal",
+ *     description="",
+ * )
  */
 class NotBetweenEqualTest extends TestCase
 {
@@ -39,6 +46,20 @@ class NotBetweenEqualTest extends TestCase
      *
      * @param mixed  $value
      * @param string $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotBetweenEqualTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, string $param): void
     {
@@ -74,6 +95,20 @@ class NotBetweenEqualTest extends TestCase
      *
      * @param mixed  $value
      * @param string $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotBetweenEqualTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, string $param): void
     {
@@ -102,6 +137,13 @@ class NotBetweenEqualTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="not_between_equal 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

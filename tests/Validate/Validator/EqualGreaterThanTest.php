@@ -31,6 +31,13 @@ use Tests\TestCase;
  * @since 2018.08.09
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.equal_greater_than",
+ *     zh-CN:title="验证器.大于或者全等",
+ *     path="component/validate/validator/equalgreaterthan",
+ *     description="",
+ * )
  */
 class EqualGreaterThanTest extends TestCase
 {
@@ -39,6 +46,20 @@ class EqualGreaterThanTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualGreaterThanTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, $param): void
     {
@@ -77,6 +98,20 @@ class EqualGreaterThanTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualGreaterThanTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, $param): void
     {
@@ -108,15 +143,28 @@ class EqualGreaterThanTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="特殊例子的数据校验",
+     *     description="特别注意字符串和数字的严格区分。",
+     *     note="",
+     * )
+     */
     public function testSpecial(): void
     {
         $validate = new Validator();
-
         $this->assertTrue($validate->equalGreaterThan('0', '0'));
         $this->assertFalse($validate->equalGreaterThan(0, '0'));
         $this->assertFalse($validate->equalGreaterThan('0', 0));
     }
 
+    /**
+     * @api(
+     *     title="equal_greater_than 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

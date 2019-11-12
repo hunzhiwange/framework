@@ -32,6 +32,13 @@ use Tests\TestCase;
  * @since 2018.08.11
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.max_length",
+ *     zh-CN:title="验证器.验证数据最大长度",
+ *     path="component/validate/validator/maxlength",
+ *     description="",
+ * )
  */
 class MaxLengthTest extends TestCase
 {
@@ -40,6 +47,20 @@ class MaxLengthTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\MaxLengthTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, $param): void
     {
@@ -77,6 +98,20 @@ class MaxLengthTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\MaxLengthTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, $param): void
     {
@@ -111,6 +146,13 @@ class MaxLengthTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="max_length 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

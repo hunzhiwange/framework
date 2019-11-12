@@ -62,7 +62,6 @@ class AssertTest extends TestCase
         Assert::notEmpty(55);
         Assert::notEmpty(66);
         Assert::lessThan(4, [5]);
-
         $this->assertSame(1, 1);
     }
 

@@ -32,6 +32,13 @@ use Tests\TestCase;
  * @since 2018.08.11
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.different",
+ *     zh-CN:title="验证器.两个字段是否不同",
+ *     path="component/validate/validator/different",
+ *     description="",
+ * )
  */
 class DifferentTest extends TestCase
 {
@@ -41,6 +48,20 @@ class DifferentTest extends TestCase
      * @param mixed  $value
      * @param mixed  $valueCompare
      * @param string $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\DifferentTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, $valueCompare, string $param): void
     {
@@ -75,6 +96,20 @@ class DifferentTest extends TestCase
      * @param mixed  $value
      * @param mixed  $valueCompare
      * @param string $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\DifferentTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, $valueCompare, string $param): void
     {
@@ -101,6 +136,13 @@ class DifferentTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="different 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

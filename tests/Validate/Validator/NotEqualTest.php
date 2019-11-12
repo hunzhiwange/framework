@@ -31,6 +31,13 @@ use Tests\TestCase;
  * @since 2018.08.09
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.not_equal",
+ *     zh-CN:title="验证器.两个值是否不相同",
+ *     path="component/validate/validator/notequal",
+ *     description="全等匹配，为了严禁。",
+ * )
  */
 class NotEqualTest extends TestCase
 {
@@ -39,6 +46,20 @@ class NotEqualTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotEqualTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, $param): void
     {
@@ -77,6 +98,20 @@ class NotEqualTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotEqualTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, $param): void
     {
@@ -102,6 +137,13 @@ class NotEqualTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="not_equal 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

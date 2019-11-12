@@ -36,6 +36,13 @@ use Tests\Database\Ddd\Entity\Guestbook;
  * @since 2018.12.04
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.unique",
+ *     zh-CN:title="验证器.是否可接受的",
+ *     path="component/validate/validator/unique",
+ *     description="",
+ * )
  */
 class UniqueTest extends TestCase
 {

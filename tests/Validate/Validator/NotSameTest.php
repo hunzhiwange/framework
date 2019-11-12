@@ -31,6 +31,13 @@ use Tests\TestCase;
  * @since 2018.08.09
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.not_same",
+ *     zh-CN:title="验证器.两个值是否完全相同",
+ *     path="component/validate/validator/notsame",
+ *     description="",
+ * )
  */
 class NotSameTest extends TestCase
 {
@@ -39,6 +46,20 @@ class NotSameTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotSameTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, $param): void
     {
@@ -76,6 +97,20 @@ class NotSameTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotSameTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, $param): void
     {
@@ -101,6 +136,13 @@ class NotSameTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="not_same 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);
