@@ -165,7 +165,6 @@ trait Date
     protected function makeDateTimeFormat(string $format, string $value)
     {
         $date = DateTime::createFromFormat($format, $value);
-
         if ($date) {
             return $date;
         }
