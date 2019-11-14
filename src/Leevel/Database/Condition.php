@@ -86,7 +86,7 @@ class Condition
     /**
      * 数据库连接.
      *
-     * @var Leevel\Database\IDatabase
+     * @var \Leevel\Database\IDatabase
      */
     protected $connect;
 
@@ -2314,10 +2314,7 @@ class Condition
                         elseif (is_object($tmp) && $tmp instanceof Closure) {
                             $select = new static($this->connect);
                             $select->setTable($this->getTable());
-                            call_user_func_array($tmp, [
-                                $select,
-                            ]);
-
+                            $tmp($select);
                             $tmp = $select->makeSql(true);
                         }
 
@@ -2427,10 +2424,7 @@ class Condition
         if ($cond instanceof Closure) {
             $select = new static($this->connect);
             $select->setTable($this->getTable());
-            call_user_func_array($cond, [
-                $select,
-            ]);
-
+            $cond($select);
             $tmp = $select->{'parse'.ucwords($type)}(true);
             $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, ':string');
 
@@ -2556,10 +2550,7 @@ class Condition
                 } elseif (is_object($tmp) && $tmp instanceof Closure) {
                     $select = new static($this->connect);
                     $select->setTable($this->getTable());
-                    call_user_func_array($tmp, [
-                        $select,
-                    ]);
-
+                    $tmp($select);
                     $tmp = $select->makeSql();
                 }
 
@@ -2742,7 +2733,6 @@ class Condition
 
         if (is_array($names)) {
             $tmp = $names;
-
             foreach ($tmp as $alias => $names) {
                 if (!is_string($alias)) {
                     $e = sprintf('Alias must be string,but %s given.', gettype($alias));
@@ -2756,25 +2746,18 @@ class Condition
 
         if (is_object($names) && ($names instanceof self || $names instanceof Select)) { // 对象子表达式
             $table = $names->makeSql(true);
-
             if (!$alias) {
                 $alias = $names instanceof Select ? $names->databaseCondition()->getAlias() : $names->getAlias();
             }
-
             $parseSchema = false;
         } elseif (is_object($names) && $names instanceof Closure) { // 回调方法
             $condition = new static($this->connect);
             $condition->setTable($this->getTable());
-            call_user_func_array($names, [
-                $condition,
-            ]);
-
+            $names($condition);
             $table = $condition->makeSql(true);
-
             if (!$alias) {
                 $alias = $condition->getAlias();
             }
-
             $parseSchema = false;
         } elseif (is_string($names) && 0 === strpos($names, '(')) { // 字符串子表达式
             if (false !== ($position = strripos($names, 'as'))) {
@@ -2782,12 +2765,10 @@ class Condition
                 $alias = trim(substr($names, $position + 2));
             } else {
                 $table = $names;
-
                 if (!$alias) {
                     $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                 }
             }
-
             $parseSchema = false;
         } elseif (is_string($names)) {
             // 字符串指定别名
@@ -2804,7 +2785,6 @@ class Condition
         // 确定 table_name 和 schema
         if (true === $parseSchema) {
             $tmp = explode('.', $table);
-
             if (isset($tmp[1])) {
                 $schema = $tmp[0];
                 $tableName = $tmp[1];
@@ -2826,7 +2806,6 @@ class Condition
             $this->setTable(
                 ($schema ? $schema.'.' : '').$alias
             );
-
             $this->alias = $alias;
         }
 
@@ -2840,12 +2819,7 @@ class Condition
 
             $select = new static($this->connect);
             $select->setTable($alias);
-
-            call_user_func_array([
-                $select,
-                'where',
-            ], $args);
-
+            $select->where(...$args);
             $cond = $select->parseWhere(true);
         }
 
