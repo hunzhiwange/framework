@@ -412,7 +412,6 @@ class Condition
      */
     public function truncate(): array
     {
-        // 构造 truncate 语句
         $sql = [];
         $sql[] = 'TRUNCATE TABLE';
         $sql[] = $this->parseTable();
@@ -870,14 +869,12 @@ class Condition
                 if (!is_array($item)) {
                     $item = [$item, $type];
                 }
-
                 $this->bindParams[$key] = $item;
             }
         } else {
             if (!is_array($value)) {
                 $value = [$value, $type];
             }
-
             $this->bindParams[$names] = $value;
         }
 
@@ -1176,7 +1173,6 @@ class Condition
 
                 // 表达式支持
                 $tmp = $this->normalizeColumn($tmp, $currentTableName);
-
                 $this->options['group'][] = $tmp;
             }
         }
@@ -3049,7 +3045,6 @@ class Condition
                     $key = 'questionmark_'.$questionMark;
                     $value = $bind[$questionMark];
                     unset($bind[$questionMark]);
-
                     $this->deleteBindParams($questionMark);
                     $questionMark++;
                 }
@@ -3059,7 +3054,6 @@ class Condition
                 }
 
                 $values[] = ':'.$key;
-
                 $this->bind($key, $value, $this->connect->normalizeBindParamType($value));
             }
         }
