@@ -21,14 +21,13 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 /**
- * 验证是否为有效的 url 或者 IP 地址
+ * 验证是否为有效的域名.
  *
  * @param mixed $value
  *
  * @return bool
- * @codeCoverageIgnore
  */
-function validate_active_url($value): bool
+function validate_checkdnsrr($value): bool
 {
     if (!is_string($value)) {
         return false;
@@ -37,6 +36,6 @@ function validate_active_url($value): bool
     return checkdnsrr($value);
 }
 
-class validate_active_url
+class validate_checkdnsrr
 {
 }
