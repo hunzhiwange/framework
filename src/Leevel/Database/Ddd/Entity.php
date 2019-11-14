@@ -448,7 +448,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         static::withConnect($connect);
 
         try {
-            $result = call_user_func($call);
+            $result = $call();
             static::withConnect($old);
         } catch (Throwable $th) {
             static::withConnect($old);
@@ -771,7 +771,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         try {
-            $result = call_user_func_array($this->leevelFlush, $this->leevelFlushData);
+            $result = $this->leevelFlush(...$this->leevelFlushData);
         } catch (ReplaceException $e) {
             if (false === $this->leevelReplace) {
                 throw $e;
