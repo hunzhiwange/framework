@@ -828,7 +828,6 @@ class Router implements IRouter
     protected function findApp(string $path): string
     {
         $paths = explode('/', trim($path, '/'));
-
         if ($paths && 0 === strpos($paths[0], ':')) {
             return $paths[0].'/';
         }
