@@ -256,7 +256,7 @@ class Select
         static::$preLoadsResult = false;
 
         try {
-            $result = call_user_func($call);
+            $result = $call();
             static::$preLoadsResult = $old;
         } catch (Throwable $th) {
             static::$preLoadsResult = $old;
