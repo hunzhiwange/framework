@@ -118,7 +118,7 @@ class Meta implements IMeta
             throw new InvalidArgumentException($e);
         }
 
-        return static::$resolveDatabase = call_user_func(static::$databaseResolver);
+        return static::$resolveDatabase = static::$databaseResolver();
     }
 
     /**
