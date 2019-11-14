@@ -46,6 +46,27 @@ use Tests\Database\Ddd\Entity\Guestbook;
  */
 class UniqueTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="唯一值基本使用方法",
+     *     description="
+     * 框架提供了一个唯一值创建生成规则方法
+     *
+     * ``` php
+     * \Leevel\Validate\UniqueRule::rule(string $entity, ?string $field = null, $exceptId = null, ?string $primaryKey = null, ...$additional): string;
+     * ```
+     *
+     *   * entity 实体
+     *   * field 指定数据库字段，未指定默认为待验证的字段作为数据库字段
+     *   * exceptId 排除主键，一般用于编辑数据项校验
+     *   * primaryKey 指定主键
+     *   * additional 附加查询条件，成对出现
+     *
+     * 唯一值是一个非常常用的功能，框架强化了这一功能。
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $validate = new Validator(
@@ -64,6 +85,13 @@ class UniqueTest extends TestCase
         $this->assertSame($sql, "SQL: [115] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
     }
 
+    /**
+     * @api(
+     *     title="排除主键",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithExceptId(): void
     {
         $validate = new Validator(
@@ -95,6 +123,13 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="排除主键，并且指定主键",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithExceptIdAndPrimaryKey(): void
     {
         $validate = new Validator(
@@ -126,6 +161,13 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="排除主键，复合主键将会被忽略",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithExceptIdAndCompositeIdAndIgnore(): void
     {
         $validate = new Validator(
@@ -139,8 +181,8 @@ class UniqueTest extends TestCase
 
         $this->assertSame('unique:Tests\\Database\\Ddd\\Entity\\CompositeId,_,__int@1,_', $rule);
         $this->assertTrue($validate->success());
-        $sql = $this->getLastSql('guest_book');
-        $this->assertSame($sql, "SQL: [115] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> 1 LIMIT 1 | Params:  0");
+        $sql = $this->getLastSql('composite_id');
+        $this->assertSame($sql, "SQL: [92] SELECT COUNT(*) AS row_count FROM `composite_id` WHERE `composite_id`.`name` = 'foo' LIMIT 1 | Params:  0");
 
         $connect = $this->createDatabaseConnect();
 
@@ -155,6 +197,13 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="不排除主键",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithoutExceptId(): void
     {
         $validate = new Validator(
@@ -186,6 +235,13 @@ class UniqueTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="unique 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCheckParamLengthException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -244,7 +300,6 @@ class UniqueTest extends TestCase
     public function testValidateArgsNotObjectAndNotStringWillReturnFalse(): void
     {
         $rule = new UniqueRule();
-
         $this->assertFalse($rule->validate('value', [['arr']], $this->createMock(IValidator::class), 'field'));
     }
 
@@ -293,6 +348,13 @@ class UniqueTest extends TestCase
         $rule->validate('value', ['Tests\\Validate\\Validator\\DemoUnique1'], $this->createMock(IValidator::class), 'name');
     }
 
+    /**
+     * @api(
+     *     title="指定验证数据库字段",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithValidateField(): void
     {
         $validate = new Validator(
@@ -324,6 +386,13 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="指定验证数据库字段，支持多个字段",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithValidateMultiField(): void
     {
         $validate = new Validator(
@@ -355,6 +424,13 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="带附加条件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithParseAdditional(): void
     {
         $validate = new Validator(
@@ -448,6 +524,13 @@ class UniqueTest extends TestCase
         $this->assertTrue($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="带附加条件，附加条件支持表达式",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithParseAdditionalCustomOperate(): void
     {
         $validate = new Validator(
@@ -556,6 +639,13 @@ class UniqueTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="带附加条件，附加条件区分整数和浮点数的字符串",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithStringFloatAndStringInt(): void
     {
         $validate = new Validator(
@@ -574,6 +664,13 @@ class UniqueTest extends TestCase
         $this->assertSame($sql, "SQL: [152] SELECT COUNT(*) AS row_count FROM `guest_book` WHERE `guest_book`.`name` = 'foo' AND `guest_book`.`id` <> '1' AND `guest_book`.`content` = '1.5' LIMIT 1 | Params:  0");
     }
 
+    /**
+     * @api(
+     *     title="带附加条件，附加条件为整数和浮点数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testValidateWithFloatAndInt(): void
     {
         $validate = new Validator(
