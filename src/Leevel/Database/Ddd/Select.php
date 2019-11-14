@@ -564,7 +564,7 @@ class Select
         $relation = $this->getRelation($name);
         $relation->preLoadCondition($entitys);
         if ($condition) {
-            call_user_func($condition, $relation);
+            $condition($relation);
         }
 
         return $relation->matchPreLoad($entitys, $relation->getPreLoad(), $name);
