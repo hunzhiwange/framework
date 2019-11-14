@@ -383,7 +383,7 @@ abstract class Database implements IDatabase, IConnection
         $this->beginTransaction();
 
         try {
-            $result = call_user_func_array($action, [$this]);
+            $result = $action($this);
             $this->commit();
 
             return $result;
