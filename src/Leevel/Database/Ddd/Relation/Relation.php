@@ -339,7 +339,7 @@ abstract class Relation
         static::$relationCondition = false;
 
         try {
-            $relation = call_user_func($call);
+            $relation = $call();
             static::$relationCondition = $old;
         } catch (Throwable $th) {
             static::$relationCondition = $old;
@@ -445,6 +445,6 @@ abstract class Relation
             return;
         }
 
-        call_user_func($scope, $this);
+        $scope($this);
     }
 }
