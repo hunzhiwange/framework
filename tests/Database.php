@@ -272,7 +272,6 @@ trait Database
     {
         $select = Meta::instance($table)->select();
         $lastSql = $select->getLastSql();
-
         $this->databaseConnects[] = $select->databaseConnect();
 
         return $lastSql;
