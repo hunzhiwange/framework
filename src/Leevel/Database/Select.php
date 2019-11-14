@@ -412,9 +412,7 @@ class Select
 
         // 回调
         if ($data instanceof Closure) {
-            call_user_func_array($data, [
-                $this,
-            ]);
+            $data($this);
             $data = null;
         }
 
