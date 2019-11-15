@@ -771,7 +771,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         try {
-            $result = $this->leevelFlush(...$this->leevelFlushData);
+            $leevelFlush = $this->leevelFlush;
+            $result = $leevelFlush(...$this->leevelFlushData);
         } catch (ReplaceException $e) {
             if (false === $this->leevelReplace) {
                 throw $e;
