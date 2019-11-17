@@ -8,7 +8,7 @@
   <a href="https://travis-ci.org/hunzhiwange/framework">
     <img alt="Build Status" src="https://img.shields.io/travis/hunzhiwange/framework.svg" /></a>
   <a href='https://coveralls.io/github/hunzhiwange/framework?branch=master'><img src='https://coveralls.io/repos/github/hunzhiwange/framework/badge.svg?branch=master' alt='Coverage Status' /></a>
-  [![Latest Stable Version](http://img.shields.io/packagist/v/leevel/view.svg)](https://packagist.org/packages/leevel/view)
+  <a href='https://packagist.org/packages/hunzhiwange/framework'><img src='http://img.shields.io/packagist/v/hunzhiwange/framework.svg' alt='Latest Stable Version' /></a>
   <a href="http://opensource.org/licenses/MIT">
     <img alt="QueryPHP License" src="https://poser.pugx.org/hunzhiwange/framework/license.svg" /></a>
 </p>
