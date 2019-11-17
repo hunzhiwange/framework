@@ -238,7 +238,7 @@ class Response implements IResponse
 
         // COOKIE
         foreach ($this->getCookies() as $item) {
-            call_user_func_array('setcookie', $item);
+            setcookie(...$item);
         }
 
         return $this;
