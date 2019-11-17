@@ -149,7 +149,9 @@ class Html extends View implements IView
             throw new RuntimeException($e);
         }
 
-        return call_user_func($this->parseResolver);
+        $parseResolver = $this->parseResolver;
+
+        return $parseResolver();
     }
 
     /**

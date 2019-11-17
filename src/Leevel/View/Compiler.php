@@ -403,28 +403,25 @@ class Compiler implements ICompiler
      */
     public function foreachCodeCompiler(array &$theme): void
     {
-        $theme['content'] = call_user_func(
-            function ($content) {
-                $matches = null;
-                preg_match_all('/\\$([\S]+)/', $content, $matches);
-                $matches = $matches[1];
-                $num = count($matches);
-                if ($num > 0) {
-                    if (2 === $num) {
-                        $result = "\${$matches[1]}";
-                    } elseif (3 === $num) {
-                        $result = "\${$matches[1]} => \${$matches[2]}";
-                    } else {
-                        $e = 'The param of code.foreach tag can be at most three.';
+        $theme['content'] = (function ($content) {
+            $matches = null;
+            preg_match_all('/\\$([\S]+)/', $content, $matches);
+            $matches = $matches[1];
+            $num = count($matches);
+            if ($num > 0) {
+                if (2 === $num) {
+                    $result = "\${$matches[1]}";
+                } elseif (3 === $num) {
+                    $result = "\${$matches[1]} => \${$matches[2]}";
+                } else {
+                    $e = 'The param of code.foreach tag can be at most three.';
 
-                        throw new InvalidArgumentException($e);
-                    }
-
-                    return "if (is_array(\${$matches[0]})): foreach(\${$matches[0]} as {$result})";
+                    throw new InvalidArgumentException($e);
                 }
-            },
-            $theme['content']
-        );
+
+                return "if (is_array(\${$matches[0]})): foreach(\${$matches[0]} as {$result})";
+            }
+        })($theme['content']);
 
         $theme['content'] = $this->encodeContent(
             $this->withPhpTag($theme['content'].':')
@@ -526,40 +523,38 @@ class Compiler implements ICompiler
             strripos($theme['source'], '}') - 1
         );
 
-        $theme['content'] = call_user_func(
-            function ($content) {
-                $content = ltrim(trim($content), '/');
+        $theme['content'] = (function ($content) {
+            $content = ltrim(trim($content), '/');
 
-                switch ($content) {
-                    case 'list':
-                        $content = $this->withPhpTag('endforeach; endif;');
+            switch ($content) {
+                case 'list':
+                    $content = $this->withPhpTag('endforeach; endif;');
 
-                        break;
-                    case 'for':
-                        $content = $this->withPhpTag('endfor;');
+                    break;
+                case 'for':
+                    $content = $this->withPhpTag('endfor;');
 
-                        break;
-                    case 'while':
-                        $content = $this->withPhpTag('endwhile;');
+                    break;
+                case 'while':
+                    $content = $this->withPhpTag('endwhile;');
 
-                        break;
-                    case 'if':
-                        $content = $this->withPhpTag('endif;');
+                    break;
+                case 'if':
+                    $content = $this->withPhpTag('endif;');
 
-                        break;
-                    case 'script':
-                        $content = '</script>';
+                    break;
+                case 'script':
+                    $content = '</script>';
 
-                        break;
-                    case 'style':
-                        $content = '</style>';
+                    break;
+                case 'style':
+                    $content = '</style>';
 
-                        break;
-                }
+                    break;
+            }
 
-                return $content;
-            }, $theme['content']
-        );
+            return $content;
+        })($theme['content']);
 
         $theme['content'] = $this->encodeContent($theme['content']);
     }
