@@ -48,7 +48,7 @@ class Leevel2Swoole
     public function createResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
         foreach ($response->getCookies() as $item) {
-            call_user_func_array([$swooleResponse, 'cookie'], $item);
+            $swooleResponse->cookie(...$item);
         }
 
         if ($response instanceof RedirectResponse &&
