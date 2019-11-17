@@ -224,7 +224,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * 编码
+     * 编码.
      *
      * @param array $option
      *
