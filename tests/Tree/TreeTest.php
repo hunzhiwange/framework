@@ -247,7 +247,18 @@ class TreeTest extends TestCase
     /**
      * @api(
      *     title="Tree.getChildrenTree 获取节点子树",
-     *     description="",
+     *     description="
+     *
+     * `测试树数据`
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Tree\TreeTest::class, 'providerTree')]}
+     * ```
+     *
+     * ::: warning
+     * 后面的测试，也会用到这个测试树数据。
+     * :::
+     * ",
      *     note="",
      * )
      */
