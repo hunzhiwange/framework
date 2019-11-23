@@ -50,17 +50,11 @@ class ArrTest extends TestCase
     public function testBaseUse(): void
     {
         $this->assertTrue(Arr::normalize(true));
-
         $this->assertSame(['a', 'b'], Arr::normalize('a,b'));
-
         $this->assertSame(['a', 'b'], Arr::normalize(['a', 'b']));
-
         $this->assertSame(['a'], Arr::normalize(['a', '']));
-
         $this->assertSame(['a'], Arr::normalize(['a', ''], ',', true));
-
         $this->assertSame(['a', ' 0 '], Arr::normalize(['a', ' 0 '], ',', true));
-
         $this->assertSame(['a', '0'], Arr::normalize(['a', ' 0 '], ','));
     }
 
