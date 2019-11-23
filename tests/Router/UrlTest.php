@@ -54,6 +54,13 @@ use Tests\TestCase;
  */
 class UrlTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="基础格式化",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeUrl(): void
     {
         $request = $this->makeRequest();
@@ -81,6 +88,14 @@ class UrlTest extends TestCase
 
         $this->assertSame($url->make('hello/world', [], '', true), '/hello/world.html');
         $this->assertSame($url->make('hello/world', [], '', '.jsp'), '/hello/world.jsp');
+    }
+
+    public function testMakeUrlSupportVar(): void
+    {
+        $request = $this->makeRequest();
+        $url = new Url($request);
+
+        $this->assertSame($url->make('test/{id}?arg1=5', ['id' => 5]), '/test/5?arg1=5');
     }
 
     public function testMakeUrlForApp(): void
