@@ -53,7 +53,7 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
 
 <p>
   <a href="http://pecl.php.net/package/swoole">
-    <img alt="Swoole Version" src="https://img.shields.io/badge/swoole-%3E=4.2.6-brightgreen.svg" /></a>
+    <img alt="Swoole Version" src="https://img.shields.io/badge/swoole-%3E=4.4.5-brightgreen.svg" /></a>
   <a href="https://github.com/spiral/roadrunner">
     <img alt="Roadrunner Version" src="https://img.shields.io/badge/roadrunner-%3E=1.3.5-brightgreen.svg" /></a>
 </p>
