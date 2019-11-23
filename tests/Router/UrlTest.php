@@ -56,7 +56,7 @@ class UrlTest extends TestCase
 {
     /**
      * @api(
-     *     title="基础格式化",
+     *     title="基本 URL 生成",
      *     description="",
      *     note="",
      * )
@@ -69,8 +69,16 @@ class UrlTest extends TestCase
 
         // 开始不带斜线，自动添加
         $this->assertSame($url->make('test/hello'), '/test/hello');
+        $this->assertSame($url->make('/hello-world'), '/hello-world');
     }
 
+    /**
+     * @api(
+     *     title="生成带参数的 URL",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeUrlWithParams(): void
     {
         $request = $this->makeRequest();
@@ -81,6 +89,13 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('test/sub1/sub2/hello', ['arg1' => 1, 'arg2' => 3]), '/test/sub1/sub2/hello?arg1=1&arg2=3');
     }
 
+    /**
+     * @api(
+     *     title="生成带后缀的 URL",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeUrlWithSuffix(): void
     {
         $request = $this->makeRequest();
@@ -90,14 +105,31 @@ class UrlTest extends TestCase
         $this->assertSame($url->make('hello/world', [], '', '.jsp'), '/hello/world.jsp');
     }
 
+    /**
+     * @api(
+     *     title="生成 URL 支持变量替换",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeUrlSupportVar(): void
     {
         $request = $this->makeRequest();
         $url = new Url($request);
 
         $this->assertSame($url->make('test/{id}?arg1=5', ['id' => 5]), '/test/5?arg1=5');
+        $this->assertSame($url->make('/new-{id}-{name}', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom?arg1=5');
+        $this->assertSame($url->make('/new-{id}-{name}?hello=world', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom?hello=world&arg1=5');
+        $this->assertSame($url->make('/new-{id}-{name}?hello={foo}', ['id' => 5, 'name' => 'tom', 'foo' => 'bar', 'arg1' => '5']), '/new-5-tom?hello=bar&arg1=5');
     }
 
+    /**
+     * @api(
+     *     title="生成指定应用的 URL",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeUrlForApp(): void
     {
         $request = $this->makeRequest();
@@ -107,6 +139,13 @@ class UrlTest extends TestCase
         $this->assertSame($url->make(':myapp/test'), '/:myapp/test');
     }
 
+    /**
+     * @api(
+     *     title="生成首页地址",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeUrlForHome(): void
     {
         $request = $this->makeRequest();
@@ -116,25 +155,13 @@ class UrlTest extends TestCase
         $this->assertSame($url->make(''), '/');
     }
 
-    public function testMakeUrlForAbsolute(): void
-    {
-        $request = $this->makeRequest();
-        $url = new Url($request);
-
-        // 开始可带斜线
-        $this->assertSame($url->make('/hello-world'), '/hello-world');
-    }
-
-    public function testMakeUrlForAbsoluteSupportVar(): void
-    {
-        $request = $this->makeRequest();
-        $url = new Url($request);
-
-        $this->assertSame($url->make('/new-{id}-{name}', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom?arg1=5');
-        $this->assertSame($url->make('/new-{id}-{name}?hello=world', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom?hello=world&arg1=5');
-        $this->assertSame($url->make('/new-{id}-{name}?hello={foo}', ['id' => 5, 'name' => 'tom', 'foo' => 'bar', 'arg1' => '5']), '/new-5-tom?hello=bar&arg1=5');
-    }
-
+    /**
+     * @api(
+     *     title="生成带域名的 URL",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithDomainTop(): void
     {
         $request = $this->makeRequest();
@@ -177,6 +204,13 @@ class UrlTest extends TestCase
         $this->assertSame('/hello/{foo}', $url->make('hello/{foo}', []));
     }
 
+    /**
+     * @api(
+     *     title="生成带 HTTPS 的 URL",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSecureWithDomainTop(): void
     {
         $request = $this->makeRequest(true);
