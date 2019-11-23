@@ -29,3 +29,4 @@ phpunit.xml.html export-ignore
 /php_cs.dist export-ignore
 /CHANGELOG-1.0.md export-ignore
 /CHANGELOG.md export-ignore
+/.php_cs.dist export-ignore
