@@ -364,6 +364,13 @@ class ArrTest extends TestCase
         Arr::filter($sourceData, $rule);
     }
 
+    /**
+     * @api(
+     *     title="数据过滤默认不处理 NULL 值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFilterWithoutMust(): void
     {
         $sourceData = ['foo' => null];
@@ -385,6 +392,13 @@ class ArrTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="数据过滤强制处理 NULL 值",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFilterWithMust(): void
     {
         $sourceData = ['foo' => null];
