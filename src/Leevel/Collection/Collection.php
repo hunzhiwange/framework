@@ -77,7 +77,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
             $this->type = $type;
         }
 
-        $elements = $this->getArrayElements($elements);
+        $elements = $this->elementsToArray($elements);
 
         if ($this->type) {
             foreach ($elements as $key => $value) {
@@ -282,16 +282,20 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     public function jsonSerialize(): array
     {
         return array_map(function ($value) {
-            if ($value instanceof JsonSerializable) {
-                return $value->jsonSerialize();
+            if ($value instanceof IArray) {
+                return $value->toArray();
             }
 
             if ($value instanceof IJson) {
                 return json_decode($value->toJson(), true);
             }
 
-            if ($value instanceof IArray) {
-                return $value->toArray();
+            if ($value instanceof JsonSerializable) {
+                return $value->jsonSerialize();
+            }
+
+            if ($value instanceof stdClass) {
+                return json_decode(json_encode($value), true);
             }
 
             return $value;
@@ -357,7 +361,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      *
      * @return array
      */
-    protected function getArrayElements($elements): array
+    protected function elementsToArray($elements): array
     {
         if (is_array($elements)) {
             return $elements;

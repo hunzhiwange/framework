@@ -242,7 +242,7 @@ class CollectionTest extends TestCase
      * **例子**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestIArray::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestArray::class)]}
      * ```
      *
      * > 实现了 `\Leevel\Support\IArray` 的对象的方法 `toArray` 返回集合的数据。
@@ -257,7 +257,7 @@ class CollectionTest extends TestCase
             'world',
         ];
 
-        $collection = new Collection(new TestIArray());
+        $collection = new Collection(new TestArray());
 
         $this->assertSame($collection->toArray(), $data);
     }
@@ -271,7 +271,7 @@ class CollectionTest extends TestCase
      * **例子**
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestIJson::class)]}
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Collection\TestJson::class)]}
      * ```
      *
      * > 实现了 `\Leevel\Support\IJson` 的对象的方法 `toJson` 返回集合的数据。
@@ -286,7 +286,7 @@ class CollectionTest extends TestCase
             'world',
         ];
 
-        $collection = new Collection(new TestIJson());
+        $collection = new Collection(new TestJson());
 
         $this->assertSame($collection->toArray(), $data);
     }
@@ -320,6 +320,13 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
+    /**
+     * @api(
+     *     title="集合数据支持普通数据转化为数组",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetArrayElements5(): void
     {
         $data = [
@@ -331,6 +338,17 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
+    /**
+     * @api(
+     *     title="集合数据支持 \stdClass 的对象",
+     *     description="
+     * 对象为 `\stdClass` 可以转化为集合数据。
+     *
+     * > `\stdClass` 的对象返回转化为数组作为集合的数据。
+     * ",
+     *     note="",
+     * )
+     */
     public function testGetArrayElementsWithStdClass(): void
     {
         $data = [
@@ -347,6 +365,15 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
     }
 
+    /**
+     * @api(
+     *     title="集合数据支持类型验证",
+     *     description="
+     * 比如下面的数据类型为 `string`，只有字符串类型才能加入集合。
+     * ",
+     *     note="",
+     * )
+     */
     public function testTypeValidate(): void
     {
         $data = [
@@ -355,10 +382,16 @@ class CollectionTest extends TestCase
         ];
 
         $collection = new Collection($data, ['string']);
-
         $this->assertSame($collection->toArray(), $data);
     }
 
+    /**
+     * @api(
+     *     title="集合数据支持类型验证不符合规则示例",
+     *     description="比如下面的数据类型为 `int`，字符串类型就会抛出异常。",
+     *     note="",
+     * )
+     */
     public function testTypeValidateException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -371,9 +404,16 @@ class CollectionTest extends TestCase
             'world',
         ];
 
-        $collection = new Collection($data, ['int']);
+        new Collection($data, ['int']);
     }
 
+    /**
+     * @api(
+     *     title="each 集合数据遍历元素项",
+     *     description="使用闭包进行遍历，闭包的第一个参数为元素值，第二为元素键。",
+     *     note="",
+     * )
+     */
     public function testEach(): void
     {
         $data = [
@@ -384,7 +424,6 @@ class CollectionTest extends TestCase
         $collection = new Collection($data);
 
         $i = 0;
-
         $collection->each(function ($item, $key) use (&$i) {
             $this->assertSame($i, $key);
 
@@ -398,6 +437,13 @@ class CollectionTest extends TestCase
         });
     }
 
+    /**
+     * @api(
+     *     title="each 集合数据遍历元素项支持中断",
+     *     description="遍历元素项的时候返回 `false` 将会中断后续遍历操作。",
+     *     note="",
+     * )
+     */
     public function testEachAndBreak(): void
     {
         $data = [
@@ -424,6 +470,13 @@ class CollectionTest extends TestCase
         $this->assertSame($i, 0);
     }
 
+    /**
+     * @api(
+     *     title="toJson 集合数据支持 JSON 输出",
+     *     description="集合实现了 `\Leevel\Support\IJson` 接口，可以通过方法 `toJson` 输出 JSON 字符串。",
+     *     note="",
+     * )
+     */
     public function testToJson(): void
     {
         $data = [
@@ -438,6 +491,19 @@ class CollectionTest extends TestCase
         $this->assertSame($data, $collection->toJson());
     }
 
+    /**
+     * @api(
+     *     title="toJson 集合数据支持 JSON 输出默认不要编码 Unicode",
+     *     description="
+     * JSON_UNESCAPED_UNICODE 可以让有中文的 JSON 字符串更加友好地输出。
+     *
+     * ``` php
+     * json_encode('中文', JSON_UNESCAPED_UNICODE);
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testToJsonWithCn(): void
     {
         $data = [
@@ -466,12 +532,24 @@ class CollectionTest extends TestCase
         $this->assertSame($data, $collection->toJson(JSON_HEX_TAG));
     }
 
+    /**
+     * @api(
+     *     title="toJson 集合数据支持 JSON 输出",
+     *     description="集合实现了 `\JsonSerializable` 接口，可以通过方法 `toJson` 输出 JSON 字符串。",
+     *     note="",
+     * )
+     */
     public function testJsonSerialize(): void
     {
+        $std = new stdClass();
+        $std->hello = 'world';
+        $std->foo = 'bar';
+
         $data = [
             new TestJsonSerializable(),
-            new TestIArray(),
-            new TestIJson(),
+            new TestArray(),
+            new TestJson(),
+            $std,
             'foo',
             'bar',
         ];
@@ -492,6 +570,10 @@ class CollectionTest extends TestCase
                     "hello",
                     "world"
                 ],
+                {
+                    "hello": "world",
+                    "foo": "bar"
+                },
                 "foo",
                 "bar"
             ]
@@ -505,6 +587,13 @@ class CollectionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="__toString 集合数据可以转化为字符串",
+     *     description="集合实现了 `__toString` 方法，可以强制转化为字符串。",
+     *     note="",
+     * )
+     */
     public function testGetSetString(): void
     {
         $data = [
@@ -552,7 +641,7 @@ class CollectionTest extends TestCase
     }
 }
 
-class TestIArray implements IArray
+class TestArray implements IArray
 {
     public function toArray(): array
     {
@@ -563,7 +652,7 @@ class TestIArray implements IArray
     }
 }
 
-class TestIJson implements IJson
+class TestJson implements IJson
 {
     public function toJson(?int $option = null): string
     {
