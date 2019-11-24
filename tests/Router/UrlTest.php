@@ -36,7 +36,8 @@ use Tests\TestCase;
  * @api(
  *     title="URL 生成",
  *     path="router/url",
- *     description="QueryPHP 支持路由 URL 地址的统一生成，提供一套简洁的生成方法，无需记忆即可学会使用。
+ *     description="
+ * QueryPHP 支持路由 URL 地址的统一生成，提供一套简洁的生成方法，无需记忆即可学会使用。
  *
  * 使用助手函数
  *
