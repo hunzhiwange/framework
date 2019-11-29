@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use DateTime;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -54,7 +53,6 @@ class Psr2Leevel
     {
         $server = [];
         $uri = $psrRequest->getUri();
-
         if ($uri instanceof UriInterface) {
             $server['SERVER_NAME'] = $uri->getHost();
             $server['SERVER_PORT'] = $uri->getPort();
@@ -63,12 +61,9 @@ class Psr2Leevel
         }
 
         $server['REQUEST_METHOD'] = $psrRequest->getMethod();
-
         $server = array_replace($server, $psrRequest->getServerParams());
-
         $parsedBody = $psrRequest->getParsedBody();
         $parsedBody = is_array($parsedBody) ? $parsedBody : [];
-
         $request = new Request(
             $psrRequest->getQueryParams(),
             $parsedBody,
@@ -92,13 +87,11 @@ class Psr2Leevel
     public function createResponse(ResponseInterface $psrResponse): IResponse
     {
         $response = new Response(
-            $psrResponse->getBody()->__toString(),
+            (string) $psrResponse->getBody(),
             $psrResponse->getStatusCode(),
             $psrResponse->getHeaders()
         );
-
         $response->setProtocolVersion($psrResponse->getProtocolVersion());
-
         foreach ($psrResponse->getHeader('Set-Cookie') as $cookie) {
             $response->setCookie(...$this->createCookie($cookie));
         }
@@ -117,10 +110,8 @@ class Psr2Leevel
     protected function getFiles(array $uploadedFiles, string $parent = ''): array
     {
         $files = [];
-
         foreach ($uploadedFiles as $key => $value) {
             $key = ($parent ? $parent.'\\' : '').$key;
-
             if ($value instanceof UploadedFileInterface) {
                 $files[$key] = $this->createUploadedFile($value);
             } else {
@@ -146,7 +137,6 @@ class Psr2Leevel
         if (UPLOAD_ERR_NO_FILE !== $psrUploadedFile->getError()) {
             $temporaryPath = $this->getTemporaryPath();
             $psrUploadedFile->moveTo($temporaryPath);
-
             $clientFileName = $psrUploadedFile->getClientFilename();
         }
 
@@ -182,10 +172,8 @@ class Psr2Leevel
     protected function createCookie(string $cookie): array
     {
         $cookieName = $cookieValue = null;
-
         foreach (explode(';', $cookie) as $part) {
             $part = trim($part);
-
             $data = explode('=', $part, 2);
             $name = $data[0];
             $value = isset($data[1]) ? trim($data[1], " \n\r\t\0\x0B\"") : null;
@@ -198,7 +186,7 @@ class Psr2Leevel
             }
 
             if ('expires' === strtolower($name) && null !== $value) {
-                $cookieExpire = new DateTime($value);
+                $cookieExpire = strtotime($value) - time();
 
                 continue;
             }
@@ -228,7 +216,7 @@ class Psr2Leevel
             }
         }
 
-        if (!isset($cookieName)) {
+        if (!$cookieName) {
             $e = 'The value of the Set-Cookie header is malformed.';
 
             throw new InvalidArgumentException($e);

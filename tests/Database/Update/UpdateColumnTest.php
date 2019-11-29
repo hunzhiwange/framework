@@ -30,16 +30,29 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.24
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="更新字段.updateColumn",
+ *     path="database/update/updatecolumn",
+ *     description="",
+ * )
  */
 class UpdateColumnTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="updateColumn 基本用法",
+     *     zh-CN:description="更新成功后，返回影响行数，`updateColumn` 实际上调用的是 `update` 方法。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = :name WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`name` = :name WHERE `test_query`.`id` = 503",
                 {
                     "name": [
                         "小小小鸟，怎么也飞不高。",
@@ -54,20 +67,27 @@ class UpdateColumnTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->updateColumn('name', '小小小鸟，怎么也飞不高。')
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="updateColumn 支持表达式",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`name` = concat(`test`.`value`,`test`.`name`) WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`name` = concat(`test_query`.`value`,`test_query`.`name`) WHERE `test_query`.`id` = 503",
                 []
             ]
             eot;
@@ -77,7 +97,7 @@ class UpdateColumnTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->updateColumn('name', '{concat([value],[name])}')
             )

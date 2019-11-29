@@ -48,7 +48,6 @@ abstract class Provider
     public function __construct(IContainer $container)
     {
         $this->container = $container;
-
         $this->registerAlias();
     }
 

@@ -33,30 +33,6 @@ function session(): ISession
     return Container::singletons()->make('sessions');
 }
 
-/**
- * 取回 session.
- *
- * @param string     $name
- * @param null|mixed $defaults
- *
- * @return mixed
- */
-function session_get(string $name, $defaults = null)
-{
-    return session()->get($name, $defaults);
-}
-
-/**
- * 设置 session.
- *
- * @param string $name
- * @param mixed  $value
- */
-function session_set(string $name, $value): void
-{
-    session()->set($name, $value);
-}
-
 class session
 {
 }

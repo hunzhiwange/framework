@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.20
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.forUpdate",
+ *     zh-CN:title="查询语言.forUpdate",
+ *     path="database/query/forupdate",
+ *     description="",
+ * )
  */
 class ForUpdateTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="数据库悲观锁",
+     *     zh-CN:description="对数据库悲观锁的支持。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` FOR UPDATE",
+                "SELECT `test_query`.* FROM `test_query` FOR UPDATE",
                 [],
                 false,
                 null,
@@ -52,15 +66,27 @@ class ForUpdateTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->forUpdate()
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="取消数据库悲观锁",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testCancelUpdate(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -73,7 +99,7 @@ class ForUpdateTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->forUpdate()
                     ->forUpdate(false)
                     ->findAll(true),
@@ -89,7 +115,7 @@ class ForUpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -102,7 +128,7 @@ class ForUpdateTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->forUpdate()
                     ->else()
@@ -120,7 +146,7 @@ class ForUpdateTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` FOR UPDATE",
+                "SELECT `test_query`.* FROM `test_query` FOR UPDATE",
                 [],
                 false,
                 null,
@@ -133,7 +159,7 @@ class ForUpdateTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->forUpdate()
                     ->else()

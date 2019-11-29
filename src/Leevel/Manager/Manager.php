@@ -92,13 +92,11 @@ abstract class Manager
     public function connect($options = null, bool $onlyNew = false): object
     {
         list($options, $unique) = $this->parseOptionAndUnique($options);
-
         if (false === $onlyNew && isset($this->connects[$unique])) {
             return $this->connects[$unique];
         }
 
         $driver = $options['driver'] ?? $this->getDefaultDriver();
-
         $connect = $this->makeConnect(
             $driver, $options
         );
@@ -132,7 +130,6 @@ abstract class Manager
     public function disconnect($options = []): void
     {
         list($options, $unique) = $this->parseOptionAndUnique($options);
-
         if (isset($this->connects[$unique])) {
             unset($this->connects[$unique]);
         }
@@ -191,7 +188,6 @@ abstract class Manager
     public function setContainerOption(string $name, $value): void
     {
         $name = $this->normalizeOptionName($name);
-
         $this->container['option'][$name] = $value;
     }
 
@@ -265,7 +261,6 @@ abstract class Manager
 
         if (is_string($options)) {
             $options = $this->getContainerOption('connect.'.$options);
-
             if (!is_array($options)) {
                 return [];
             }

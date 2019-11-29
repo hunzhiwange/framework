@@ -31,23 +31,22 @@ namespace Leevel\Support\Arr;
  */
 function normalize($inputs, string $delimiter = ',', bool $allowedEmpty = false)
 {
-    if (is_array($inputs) || is_string($inputs)) {
-        if (!is_array($inputs)) {
-            $inputs = (array) explode($delimiter, $inputs);
-        }
-
-        $inputs = array_filter($inputs);
-
-        if (true === $allowedEmpty) {
-            return $inputs;
-        }
-
-        $inputs = array_map('trim', $inputs);
-
-        return array_filter($inputs, 'strlen');
+    if (!is_array($inputs) && !is_string($inputs)) {
+        return $inputs;
     }
 
-    return $inputs;
+    if (!is_array($inputs)) {
+        $inputs = (array) explode($delimiter, $inputs);
+    }
+    $inputs = array_filter($inputs);
+
+    if (true === $allowedEmpty) {
+        return $inputs;
+    }
+
+    $inputs = array_map('trim', $inputs);
+
+    return array_filter($inputs, 'strlen');
 }
 
 class normalize

@@ -49,7 +49,7 @@ class Server extends Command
      *
      * @var string
      */
-    protected string $description = 'Start php build-in server.';
+    protected string $description = 'Start php build-in server';
 
     /**
      * IOC 容器.
@@ -66,14 +66,11 @@ class Server extends Command
     public function handle(IApp $app): void
     {
         $this->app = $app;
-
         $this->line("<info>The QueryPHP server started:</info> <http://{$this->host()}:{$this->port()}>");
-
         $this->table(['key', 'value'], [
             ['php', $this->php()],
             ['server', $this->server()],
         ]);
-
         passthru($this->normalizeCommand(), $status);
     }
 

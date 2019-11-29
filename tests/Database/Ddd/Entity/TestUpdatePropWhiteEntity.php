@@ -42,14 +42,16 @@ class TestUpdatePropWhiteEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'update_prop_white' => true,
-            'readonly'          => true,
+            self::UPDATE_PROP_WHITE => true,
+            self::READONLY          => true,
         ],
         'name' => [
-            'update_prop_white' => true,
+            self::UPDATE_PROP_WHITE => true,
         ],
         'description' => [],
     ];
+
+    private static $leevelConnect;
 
     private $id;
 
@@ -59,13 +61,23 @@ class TestUpdatePropWhiteEntity extends Entity
 
     public function setter(string $prop, $value): IEntity
     {
-        $this->{$this->prop($prop)} = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$this->prop($prop)};
+        return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

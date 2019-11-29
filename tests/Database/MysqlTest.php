@@ -59,7 +59,7 @@ class MysqlTest extends TestCase
                         "primary_key": true,
                         "auto_increment": true,
                         "default": null,
-                        "comment": ""
+                        "comment": "ID"
                     },
                     "name": {
                         "name": "name",
@@ -67,8 +67,8 @@ class MysqlTest extends TestCase
                         "length": "varchar",
                         "primary_key": false,
                         "auto_increment": false,
-                        "default": null,
-                        "comment": ""
+                        "default": "",
+                        "comment": "名字"
                     },
                     "content": {
                         "name": "content",

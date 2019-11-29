@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Proxy;
 
+use League\Flysystem\Filesystem as LeagueFilesystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
 use Leevel\Di\Container;
@@ -36,8 +37,21 @@ use Leevel\Filesystem\Manager;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Filesystem implements IFilesystem
+class Filesystem
 {
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        return self::proxy()->{$method}(...$args);
+    }
+
     /**
      * 设置配置.
      *
@@ -49,6 +63,16 @@ class Filesystem implements IFilesystem
     public static function setOption(string $name, $value): IBaseFilesystem
     {
         return self::proxy()->setOption($name, $value);
+    }
+
+    /**
+     * 返回 Filesystem.
+     *
+     * @return \League\Flysystem\Filesystem
+     */
+    public static function getFilesystem(): LeagueFilesystem
+    {
+        return self::proxy()->getFilesystem();
     }
 
     /**
@@ -385,7 +409,7 @@ class Filesystem implements IFilesystem
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Filesystem\Manager
      */

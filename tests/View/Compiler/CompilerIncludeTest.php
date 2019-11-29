@@ -44,10 +44,11 @@ class CompilerIncludeTest extends TestCase
     /**
      * @api(
      *     title="使用完整文件名包含",
-     *     description="使用方法如下：
+     *     description="
+     * 使用方法如下：
      *
      * ``` html
-     * <include file=\"完整模板文件名\" />
+     * <include file="完整模板文件名" />
      * ```
      *
      * 这种情况下，模板文件名必须包含后缀。

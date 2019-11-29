@@ -31,8 +31,6 @@ use Leevel\Http\IResponse;
  * @since 2018.03.08
  *
  * @version 1.0
- *
- * @see \Leevel\Router\Proxy\IRouter 请保持接口设计的一致性
  */
 interface IRouter
 {

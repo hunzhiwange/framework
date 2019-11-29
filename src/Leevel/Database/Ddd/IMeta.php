@@ -61,13 +61,13 @@ interface IMeta
     public static function setDatabaseResolver(?Closure $databaseResolver = null): void;
 
     /**
-     * 返回数据库元对象连接.
+     * 设置数据库元对象连接.
      *
-     * @param null|mixed $connect
+     * @param null|mixed $databaseConnect
      *
      * @return \Leevel\Database\Ddd\IMeta
      */
-    public function setConnect($connect = null): self;
+    public function setDatabaseConnect($databaseConnect = null): self;
 
     /**
      * 新增数据并返回上一次插入 ID.

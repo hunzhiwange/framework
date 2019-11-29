@@ -44,14 +44,16 @@ class TestToArrayBlackEntity extends Entity
         'id'          => [],
         'name'        => [],
         'description' => [
-            'show_prop_black' => true,
+            self::SHOW_PROP_BLACK => true,
         ],
         'address'     => [],
         'foo_bar'     => [
-            'show_prop_black' => true,
+            self::SHOW_PROP_BLACK => true,
         ],
         'hello'       => [],
     ];
+
+    private static $leevelConnect;
 
     private $id;
 
@@ -67,13 +69,23 @@ class TestToArrayBlackEntity extends Entity
 
     public function setter(string $prop, $value): IEntity
     {
-        $this->{$this->prop($prop)} = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$this->prop($prop)};
+        return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

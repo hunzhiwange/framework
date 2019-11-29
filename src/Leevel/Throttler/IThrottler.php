@@ -30,8 +30,6 @@ use Leevel\Http\IRequest;
  * @since 2017.08.07
  *
  * @version 1.0
- *
- * @see \Leevel\Throttler\Proxy\IThrottler 请保持接口设计的一致
  */
 interface IThrottler
 {

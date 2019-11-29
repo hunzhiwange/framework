@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Log;
 
 use Leevel\Di\Container;
+use Leevel\Log\Helper;
 use Leevel\Log\ILog;
 use Tests\TestCase;
 
@@ -57,6 +58,30 @@ class HelperTest extends TestCase
 
         $this->assertInstanceof(ILog::class, f('Leevel\\Log\\Helper\\log'));
         $this->assertNull(f('Leevel\\Log\\Helper\\log_record', 'bar', [], ILog::INFO));
+    }
+
+    public function testOptionHelper(): void
+    {
+        $log = $this->createMock(ILog::class);
+        $this->assertNull($log->log(ILog::INFO, 'bar', []));
+
+        $container = $this->createContainer();
+        $container->singleton('logs', function () use ($log) {
+            return $log;
+        });
+
+        $this->assertInstanceof(ILog::class, Helper::log());
+        $this->assertNull(Helper::logRecord('bar', [], ILog::INFO));
+    }
+
+    public function testHelperNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage(
+            'Call to undefined function Leevel\\Log\\Helper\\not_found()'
+        );
+
+        $this->assertFalse(Helper::notFound());
     }
 
     protected function createContainer(): Container

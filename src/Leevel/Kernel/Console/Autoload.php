@@ -47,7 +47,7 @@ class Autoload extends Command
      *
      * @var string
      */
-    protected string $description = 'Optimize base on composer dump-autoload --optimize [--no-dev].';
+    protected string $description = 'Optimize base on composer dump-autoload --optimize [--no-dev]';
 
     /**
      * 响应命令.
@@ -55,10 +55,8 @@ class Autoload extends Command
     public function handle(): void
     {
         $this->line('Start to cache autoload.');
-
         $this->line($command = $this->normalizeComposerCommand());
         exec($command);
-
         $this->info('Autoload cache successed.');
     }
 
@@ -73,7 +71,6 @@ class Autoload extends Command
             '%s dump-autoload --optimize',
             escapeshellarg($this->composer())
         );
-
         if (false === $this->dev()) {
             $command .= ' --no-dev';
         }

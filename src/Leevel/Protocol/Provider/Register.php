@@ -23,12 +23,10 @@ namespace Leevel\Protocol\Provider;
 use Leevel\Di\IContainer;
 use Leevel\Di\ICoroutine;
 use Leevel\Di\Provider;
-use Leevel\Protocol\Client\Rpc;
 use Leevel\Protocol\Coroutine;
 use Leevel\Protocol\HttpServer;
 use Leevel\Protocol\ITask;
 use Leevel\Protocol\ITimer;
-use Leevel\Protocol\RpcServer;
 use Leevel\Protocol\Task;
 use Leevel\Protocol\Timer;
 use Leevel\Protocol\WebsocketServer;
@@ -53,8 +51,6 @@ class Register extends Provider
         $this->coroutine();
         $this->httpServer();
         $this->websocketServer();
-        $this->rpcServer();
-        $this->rpc();
         $this->task();
         $this->timer();
     }
@@ -70,9 +66,7 @@ class Register extends Provider
             'coroutine'        => [ICoroutine::class, Coroutine::class],
             'http.server'      => HttpServer::class,
             'websocket.server' => WebsocketServer::class,
-            'rpc.server'       => RpcServer::class,
             'pool'             => [IPool::class, Pool::class],
-            'rpc'              => Rpc::class,
             'task'             => [ITask::class, Task::class],
             'timer'            => [ITimer::class, Timer::class],
         ];
@@ -133,36 +127,6 @@ class Register extends Provider
                         $this->normalizeOptions($container, 'websocket'),
                     );
                 },
-            );
-    }
-
-    /**
-     * 注册 rpc.server 服务.
-     */
-    protected function rpcServer(): void
-    {
-        $this->container
-            ->singleton(
-                'rpc.server',
-                function (IContainer $container): RpcServer {
-                    return new RpcServer(
-                        $container,
-                        $container->make('coroutine'),
-                        $this->normalizeOptions($container, 'rpc'),
-                    );
-                },
-            );
-    }
-
-    /**
-     * 注册 rpc 服务.
-     */
-    protected function rpc(): void
-    {
-        $this->container
-            ->singleton(
-                'rpc',
-                fn (): Rpc => new Rpc(),
             );
     }
 

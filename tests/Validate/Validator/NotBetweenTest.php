@@ -31,6 +31,13 @@ use Tests\TestCase;
  * @since 2018.08.09
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.not_between",
+ *     zh-CN:title="验证器.未处于 between 范围，不包含等于",
+ *     path="component/validate/validator/notbetween",
+ *     description="",
+ * )
  */
 class NotBetweenTest extends TestCase
 {
@@ -39,6 +46,20 @@ class NotBetweenTest extends TestCase
      *
      * @param mixed  $value
      * @param string $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotBetweenTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, string $param): void
     {
@@ -70,6 +91,20 @@ class NotBetweenTest extends TestCase
      *
      * @param mixed  $value
      * @param string $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotBetweenTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, string $param): void
     {
@@ -90,8 +125,8 @@ class NotBetweenTest extends TestCase
         return [
             ['a', 'a,z'],
             ['z', 'a,z'],
-            ['1', '1,5'],
-            ['5', '1,5'],
+            [1, '1,5'],
+            [5, '1,5'],
             ['1.1', '1,5'],
             ['2', '1,5'],
             ['3', '1,5'],
@@ -102,6 +137,13 @@ class NotBetweenTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="not_between 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

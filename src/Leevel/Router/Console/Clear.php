@@ -46,7 +46,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected string $description = 'Clear cache of router.';
+    protected string $description = 'Clear cache of router';
 
     /**
      * 响应命令.
@@ -56,10 +56,8 @@ class Clear extends Command
     public function handle(IApp $app): void
     {
         $this->line('Start to clear cache router.');
-
         $cachePath = $app->routerCachedPath();
         $this->clearCache($cachePath);
-
         $this->info(sprintf('Router cache file %s cache clear successed.', $cachePath));
     }
 

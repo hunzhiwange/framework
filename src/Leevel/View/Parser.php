@@ -220,7 +220,6 @@ class Parser implements IParser
             }
 
             $cache = file_get_contents($file);
-
             $this->sourceFile = $file;
             $this->cachePath = $cachePath;
         } else {
@@ -237,7 +236,6 @@ class Parser implements IParser
                 'content'  => $cache,
                 'position' => $this->getPosition($cache, '', 0),
             ];
-
             $theme = $this->normalizeThemeStruct($theme);
             $this->topTheme($theme);
 
@@ -299,7 +297,6 @@ class Parser implements IParser
     protected function globalParse(string &$compiled): void
     {
         $tag = $this->getTag('global');
-
         if (preg_match_all(
             "/{$tag['left']}tagself{$tag['right']}(.+?){$tag['left']}\\/tagself{$tag['right']}/isx",
             $compiled, $res)) {
@@ -308,19 +305,15 @@ class Parser implements IParser
             foreach ($res[1] as $index => $encode) {
                 $source = trim($res[0][$index]);
                 $content = trim($res[1][$index]);
-
                 $theme = [
                     'source'   => $source,
                     'content'  => $content,
-                    'compiler' => 'global', // 编译器
+                    'compiler' => 'global',
                     'children' => [],
                 ];
-
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
                 $startPos = $theme['position']['end'] + 1;
                 $theme = $this->normalizeThemeStruct($theme);
-
-                // 将模板数据加入到树结构中
                 $this->addTheme($theme);
             }
         }
@@ -334,27 +327,21 @@ class Parser implements IParser
     protected function jsvarParse(string &$compiled): void
     {
         $tag = $this->getTag('jsvar');
-
         if (preg_match_all("/{$tag['left']}(.+?){$tag['right']}/isx",
             $compiled, $res)) {
             $startPos = 0;
-
             foreach ($res[1] as $index => $encode) {
                 $source = trim($res[0][$index]);
                 $content = trim($res[1][$index]);
-
                 $theme = [
                     'source'   => $source,
                     'content'  => $content,
-                    'compiler' => 'jsvar', // 编译器
+                    'compiler' => 'jsvar',
                     'children' => [],
                 ];
-
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
                 $startPos = $theme['position']['end'] + 1;
                 $theme = $this->normalizeThemeStruct($theme);
-
-                // 将模板数据加入到树结构中
                 $this->addTheme($theme);
             }
         }
@@ -379,25 +366,19 @@ class Parser implements IParser
 
         if (preg_match_all($regex, $compiled, $res)) {
             $startPos = 0;
-
             foreach ($res[0] as $index => &$source) {
                 $type = trim($res[1][$index]);
                 !$type && $type = '/';
-
                 $content = trim($res[2][$index]);
-
                 $theme = [
                     'source'   => $source,
                     'content'  => $content,
-                    'compiler' => $this->compilers['code'][$type].'Code', // 编译器
+                    'compiler' => $this->compilers['code'][$type].'Code',
                     'children' => [],
                 ];
-
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
                 $startPos = $theme['position']['end'] + 1;
                 $theme = $this->normalizeThemeStruct($theme);
-
-                // 将模板数据加入到树结构中
                 $this->addTheme($theme);
             }
         }
@@ -411,7 +392,6 @@ class Parser implements IParser
     protected function jsParse(string &$compiled): void
     {
         $this->jsNode = true;
-
         $this->normalizeNodeParse($compiled);
     }
 
@@ -423,7 +403,6 @@ class Parser implements IParser
     protected function nodeParse(string &$compiled): void
     {
         $this->jsNode = false;
-
         $this->normalizeNodeParse($compiled);
     }
 
@@ -434,10 +413,7 @@ class Parser implements IParser
      */
     protected function normalizeNodeParse(string &$compiled): void
     {
-        // 查找分析 Node 的标签
         $this->findNodeTag($compiled);
-
-        // 用标签组装 Node
         $this->packNode($compiled);
     }
 
@@ -452,22 +428,17 @@ class Parser implements IParser
             '/__##revert##START##\d+@(.+?)##END##revert##__/',
             $compiled, $res)) {
             $startPos = 0;
-
             foreach ($res[1] as $index => $encode) {
                 $source = $res[0][$index];
-
                 $theme = [
                     'source'   => $source,
                     'content'  => $encode,
-                    'compiler' => 'revert', // 编译器
+                    'compiler' => 'revert',
                     'children' => [],
                 ];
-
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
                 $startPos = $theme['position']['end'] + 1;
                 $theme = $this->normalizeThemeStruct($theme);
-
-                // 将模板数据加入到树结构中
                 $this->addTheme($theme);
             }
         }
@@ -484,23 +455,18 @@ class Parser implements IParser
             '/__##global##START##\d+@(.+?)##END##global##__/',
             $compiled, $res)) {
             $startPos = 0;
-
             foreach ($res[1] as $index => $encode) {
                 $source = $res[0][$index];
                 $content = $res[1][$index];
-
                 $theme = [
                     'source'   => $source,
                     'content'  => $content,
-                    'compiler' => 'globalrevert', // 编译器
+                    'compiler' => 'globalrevert',
                     'children' => [],
                 ];
-
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
                 $startPos = $theme['position']['end'] + 1;
                 $theme = $this->normalizeThemeStruct($theme);
-
-                // 将模板数据加入到树结构中
                 $this->addTheme($theme);
             }
         }
@@ -564,7 +530,6 @@ class Parser implements IParser
                 // 将节点名称统一为小写
                 $nodeName = strtolower($nodeName);
                 $nodeTopName = strtolower($nodeTopName);
-
                 $theme = [
                     'source' => $tagSource,
                     'name'   => $compiler[$nodeTopName],
@@ -577,7 +542,6 @@ class Parser implements IParser
                 } else {
                     $theme['attribute'] = '';
                 }
-
                 $theme['content'] = $theme['attribute'];
                 $theme['position'] = $this->getPosition($compiled, $tagSource, $startPos);
                 $startPos = $theme['position']['end'] + 1;

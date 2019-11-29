@@ -48,13 +48,14 @@ class HasManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'Say hello to the world.',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -70,13 +71,13 @@ class HasManyTest extends TestCase
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        $this->assertSame('1', $post->id);
-        $this->assertSame('1', $post['id']);
-        $this->assertSame('1', $post->getId());
-        $this->assertSame('1', $post->user_id);
-        $this->assertSame('1', $post->userId);
-        $this->assertSame('1', $post['user_id']);
-        $this->assertSame('1', $post->getUserId());
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
         $this->assertSame('hello world', $post->title);
         $this->assertSame('hello world', $post['title']);
         $this->assertSame('hello world', $post->getTitle());
@@ -120,24 +121,26 @@ class HasManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'Say hello to the world.',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
                 ]),
         );
 
         $this->assertSame(
-            '2',
+            2,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'foo bar',
-                    'user_id' => 1,
-                    'summary' => 'Say foo to the bar.',
+                    'title'     => 'foo bar',
+                    'user_id'   => 1,
+                    'summary'   => 'Say foo to the bar.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -176,8 +179,7 @@ class HasManyTest extends TestCase
 
             foreach ($comments as $comment) {
                 $this->assertInstanceof(Comment::class, $comment);
-                $this->assertSame((string) $min, $comment->id);
-
+                $this->assertSame($min, $comment->id);
                 $min++;
             }
         }
@@ -188,13 +190,14 @@ class HasManyTest extends TestCase
         $connect = $this->createDatabaseConnect();
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('post')
                 ->insert([
-                    'title'   => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'Say hello to the world.',
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
                 ]),
         );
 
@@ -216,6 +219,268 @@ class HasManyTest extends TestCase
         $this->assertInstanceof(Post::class, $commentRelation->getSourceEntity());
         $this->assertInstanceof(Comment::class, $commentRelation->getTargetEntity());
         $this->assertInstanceof(Select::class, $commentRelation->getSelect());
+    }
+
+    public function testSourceDataIsEmtpy(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+        $comment = $post->comment;
+
+        $this->assertInstanceof(Collection::class, $comment);
+        $this->assertCount(0, $comment);
+    }
+
+    public function testRelationWasNotFound(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 2,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertSame(1, $post->id);
+        $this->assertSame(1, $post['id']);
+        $this->assertSame(1, $post->getId());
+        $this->assertSame(1, $post->user_id);
+        $this->assertSame(1, $post->userId);
+        $this->assertSame(1, $post['user_id']);
+        $this->assertSame(1, $post->getUserId());
+        $this->assertSame('hello world', $post->title);
+        $this->assertSame('hello world', $post['title']);
+        $this->assertSame('hello world', $post->getTitle());
+        $this->assertSame('Say hello to the world.', $post->summary);
+        $this->assertSame('Say hello to the world.', $post['summary']);
+        $this->assertSame('Say hello to the world.', $post->getSummary());
+
+        $comment = $post->comment;
+
+        $this->assertInstanceof(Collection::class, $comment);
+        $this->assertCount(0, $comment);
+    }
+
+    public function testEagerRelationWasNotFound(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'foo bar',
+                    'user_id'   => 1,
+                    'summary'   => 'Say foo to the bar.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 5,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 99,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        $posts = Post::eager(['comment'])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(2, $posts);
+
+        foreach ($posts as $value) {
+            $comments = $value->comment;
+
+            $this->assertInstanceof(Collection::class, $comments);
+            $this->assertCount(0, $comments);
+        }
+    }
+
+    public function testEagerWithCondition(): void
+    {
+        $post = Post::select()->where('id', 1)->findOne();
+
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $connect = $this->createDatabaseConnect();
+
+        $this->assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'hello world',
+                    'user_id'   => 1,
+                    'summary'   => 'Say hello to the world.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        $this->assertSame(
+            2,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title'     => 'foo bar',
+                    'user_id'   => 1,
+                    'summary'   => 'Say foo to the bar.',
+                    'delete_at' => 0,
+                ]),
+        );
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 1,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
+            $connect
+                ->table('comment')
+                ->insert([
+                    'title'   => 'niu'.($i + 1),
+                    'post_id' => 2,
+                    'content' => 'Comment data.'.($i + 1),
+                ]);
+        }
+
+        $posts = Post::eager(['comment' => function ($select) {
+            $select->where('id', '>', 99999);
+        }])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(2, $posts);
+
+        foreach ($posts as $k => $value) {
+            $comments = $value->comment;
+            $this->assertInstanceof(Collection::class, $comments);
+            $this->assertCount(0, $comments);
+        }
+    }
+
+    public function testEagerWithEmptySourceData(): void
+    {
+        $posts = Post::eager(['comment'])->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        $this->assertCount(0, $posts);
+    }
+
+    public function testValidateRelationKeyNotDefinedSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `source_key` field was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->commentNotDefinedSourceKey;
+    }
+
+    public function testValidateRelationKeyNotDefinedTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Relation `target_key` field was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->commentNotDefinedTargetKey;
+    }
+
+    public function testValidateRelationFieldSourceKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `post`.`not_found_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->hasMany(Comment::class, 'post_id', 'not_found_source_key');
+    }
+
+    public function testValidateRelationFieldTargetKey(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The field `comment`.`not_found_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Comment` was not defined.'
+        );
+
+        $post = Post::select()->where('id', 1)->findOne();
+        $this->assertInstanceof(Post::class, $post);
+        $this->assertNull($post->id);
+
+        $post->hasMany(Comment::class, 'not_found_target_key', 'id');
     }
 
     protected function getDatabaseTable(): array

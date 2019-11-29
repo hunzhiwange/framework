@@ -48,7 +48,6 @@ class ViewTest extends TestCase
         $view->setVar('hello', 'world');
 
         $this->assertSame('world', $view->getVar('hello'));
-
         $this->assertSame('world', $html->getVar('hello'));
     }
 
@@ -61,14 +60,12 @@ class ViewTest extends TestCase
         $view->setVar('hello', 'world');
 
         $this->assertSame('world', $view->getVar('hello'));
-
         $this->assertSame('world', $html->getVar('hello'));
 
         // delete
         $view->deleteVar(['hello']);
 
         $this->assertNull($view->getVar('hello'));
-
         $this->assertNull($html->getVar('hello'));
     }
 
@@ -81,20 +78,18 @@ class ViewTest extends TestCase
         $view->setVar('foo', 'bar');
 
         $this->assertSame('bar', $view->getVar('foo'));
-
         $this->assertSame('bar', $html->getVar('foo'));
 
         $view->clearVar();
 
         $this->assertNull($view->getVar('foo'));
-
         $this->assertNull($html->getVar('foo'));
     }
 
     public function testDisplay(): void
     {
         $view = new View(
-            $phpui = new Phpui([
+            new Phpui([
                 'theme_path' => __DIR__,
             ])
         );
@@ -116,13 +111,11 @@ class ViewTest extends TestCase
         $view->setVar('foo', 'bar');
 
         $this->assertSame('bar', $view->getVar('foo'));
-
         $this->assertSame('bar', $phpui->getVar('foo'));
 
         $view->switchView($html = new Html());
 
         $this->assertSame('bar', $view->getVar('foo'));
-
         $this->assertSame('bar', $html->getVar('foo'));
     }
 }

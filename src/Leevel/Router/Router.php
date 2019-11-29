@@ -35,8 +35,6 @@ use Leevel\Pipeline\Pipeline;
  * @since 2018.04.10 开始进行一次重构系统路由架构.
  *
  * @version 1.0
- *
- * @see \Leevel\Router\Proxy\IRouter 请保持接口设计的一致性
  */
 class Router implements IRouter
 {
@@ -173,7 +171,6 @@ class Router implements IRouter
     {
         $method = !$passedExtend ? 'handle' : 'terminate';
         $middlewares = $this->matchedMiddlewares();
-
         if (empty($middlewares[$method])) {
             return;
         }
@@ -381,7 +378,6 @@ class Router implements IRouter
     protected function annotationRouterBind(array $dataPathInfo)
     {
         $data = $this->normalizeMatchedData('Annotation');
-
         if (!$data) {
             $data = $dataPathInfo;
         } else {
@@ -423,7 +419,6 @@ class Router implements IRouter
     protected function mergeMatchedData(array $before, array $after): array
     {
         $result = [];
-
         foreach (self::MATCHED as $key) {
             if (self::MIDDLEWARES === $key) {
                 $result[$key] = $this->mergeMiddlewares($before[$key] ?? [], $after[$key] ?? []);
@@ -532,7 +527,6 @@ class Router implements IRouter
     protected function parseControllerDir(): string
     {
         $result = $this->getControllerDir();
-
         if ($this->matchedPrefix()) {
             $result .= '\\'.$this->matchedPrefix();
         }
@@ -546,7 +540,7 @@ class Router implements IRouter
     protected function completeRequest(): void
     {
         $this->pathinfoRestful();
-        $this->container->instance('app_name', $this->matchedApp());
+        $this->container->instance('app_name', $this->matchedApp(), true);
         $this->request->params->add($this->matchedParams());
     }
 
@@ -612,17 +606,14 @@ class Router implements IRouter
     {
         if (false !== strpos($matchedBind, '@')) {
             list($bindClass, $method) = explode('@', $matchedBind);
-
             if (!class_exists($bindClass)) {
                 return false;
             }
-
             $controller = $this->container->make($bindClass);
         } else {
             if (!class_exists($matchedBind)) {
                 return false;
             }
-
             $controller = $this->container->make($matchedBind);
             $method = 'handle';
         }
@@ -661,11 +652,9 @@ class Router implements IRouter
         else {
             $controllerClass = $matchedApp.'\\'.$this->parseControllerDir().'\\'.$matchedController;
             $controllerClass = $this->normalizeForSubdir($controllerClass);
-
             if (!class_exists($controllerClass)) {
                 return false;
             }
-
             $controller = $this->container->make($controllerClass);
             $method = $this->normalizeForSubdir($matchedAction, true);
         }
@@ -720,7 +709,6 @@ class Router implements IRouter
     protected function matchedPrefix(): ?string
     {
         $prefix = $this->matchedData[static::PREFIX];
-
         if (!$prefix || is_scalar($prefix)) {
             return $prefix;
         }
@@ -840,7 +828,6 @@ class Router implements IRouter
     protected function findApp(string $path): string
     {
         $paths = explode('/', trim($path, '/'));
-
         if ($paths && 0 === strpos($paths[0], ':')) {
             return $paths[0].'/';
         }

@@ -110,7 +110,6 @@ class Load
     public function findConsoleFile(array $namespaces): array
     {
         $files = [];
-
         foreach ($namespaces as $key => $dir) {
             if (!is_dir($dir)) {
                 $e = sprintf('Console load dir %s is not exits.', $dir);

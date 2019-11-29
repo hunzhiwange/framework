@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.20
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.reset",
+ *     zh-CN:title="查询语言.reset",
+ *     path="database/query/reset",
+ *     description="",
+ * )
  */
 class ResetTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="重置所有",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `newtable`.* FROM `newtable` WHERE `newtable`.`new` = 'world'",
+                "SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`new` = 'world'",
                 [],
                 false,
                 null,
@@ -52,19 +66,31 @@ class ResetTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', '=', 5)
                     ->where('name', 'like', 'me')
                     ->reset()
-                    ->table('newtable')
+                    ->table('test_query_subsql')
                     ->where('new', '=', 'world')
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="重置某一项",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testResetItem(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`new` LIKE 'new'",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`new` LIKE 'new'",
                 [],
                 false,
                 null,
@@ -77,7 +103,7 @@ class ResetTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', '=', 5)
                     ->where('name', 'like', 'me')
                     ->setColumns('name,id')
@@ -97,7 +123,7 @@ class ResetTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name`,`test`.`id` FROM `test` WHERE `test`.`id` = 5 AND `test`.`name` LIKE 'me' AND `test`.`foo` LIKE 'bar'",
+                "SELECT `test_query`.`name`,`test_query`.`id` FROM `test_query` WHERE `test_query`.`id` = 5 AND `test_query`.`name` LIKE 'me' AND `test_query`.`foo` LIKE 'bar'",
                 [],
                 false,
                 null,
@@ -110,7 +136,7 @@ class ResetTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', '=', 5)
                     ->where('name', 'like', 'me')
                     ->setColumns('name,id')
@@ -133,7 +159,7 @@ class ResetTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `foo`.* FROM `foo`",
+                "SELECT `test_query_subsql`.* FROM `test_query_subsql`",
                 [],
                 false,
                 null,
@@ -146,13 +172,13 @@ class ResetTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', '=', 5)
                     ->where('name', 'like', 'me')
                     ->setColumns('name,id')
                     ->if($condition)
                     ->reset()
-                    ->table('foo')
+                    ->table('test_query_subsql')
                     ->else()
                     ->where('foo', 'like', 'bar')
                     ->fi()

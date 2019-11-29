@@ -35,7 +35,7 @@ use Leevel\View\IView as IViews;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class View implements IView
+class View
 {
     /**
      * call.
@@ -126,7 +126,7 @@ class View implements IView
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Router\View
      */

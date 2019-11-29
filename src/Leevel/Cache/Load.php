@@ -78,7 +78,6 @@ class Load implements ILoad
         }
 
         $result = [];
-
         foreach ($names as $name) {
             $result[$name] = $this->cacheLoaded[$name];
         }
@@ -153,9 +152,7 @@ class Load implements ILoad
     protected function normalize(string $name): array
     {
         list($name, $params) = $this->parse($name);
-
         $rc = new ReflectionClass($name);
-
         if (!in_array(IBlock::class, $rc->getInterfaceNames(), true)) {
             $e = sprintf('Cache `%s` must implements `%s`.', $name, IBlock::class);
 
@@ -216,12 +213,11 @@ class Load implements ILoad
     protected function parse(string $name): array
     {
         list($name, $params) = array_pad(explode(':', $name, 2), 2, []);
-
         if (is_string($params)) {
             $params = explode(',', $params);
         }
 
-        $params = array_map(fn(string $item) => ctype_digit($item) ? (int) $item : $item, $params);
+        $params = array_map(fn(string $item) => ctype_digit($item) ? (int) $item : (is_numeric($item) ? (float) $item : $item), $params);
 
         return [$name, $params];
     }

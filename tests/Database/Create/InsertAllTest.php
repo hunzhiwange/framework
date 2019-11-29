@@ -30,16 +30,29 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.24
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="批量写入数据.insertAll",
+ *     path="database/create/insertall",
+ *     description="",
+ * )
  */
 class InsertAllTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="insertAll 基本用法",
+     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:value_1),(:name_2,:value_2),(:name_3,:value_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:value_1),(:name_2,:value_2),(:name_3,:value_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -89,19 +102,26 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->insertAll($data)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="insertAll 绑定参数",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -151,14 +171,14 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->insertAll($data, ['吃肉1', '吃肉2'])
             )
         );
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:hello),(:name_2,:value_2),(:name_3,:world)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:hello),(:name_2,:value_2),(:name_3,:world)",
                 {
                     "name": [
                         "小鸭子1",
@@ -202,20 +222,27 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤']),
                 1
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="bind.insertAll 绑定参数批量写入数据",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWithBindFunction(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "INSERT INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -265,20 +292,27 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->bind(['吃鱼', '吃肉'])
                     ->insertAll($data)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="insertAll 支持 replace 用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testReplace(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
+                "REPLACE INTO `test_query` (`test_query`.`name`,`test_query`.`value`) VALUES (:name,:value),(:name_1,:questionmark_0_1),(:name_2,:value_2),(:name_3,:questionmark_1_3)",
                 {
                     "name": [
                         "小鸭子1",
@@ -328,7 +362,7 @@ class InsertAllTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->bind(['吃鱼', '吃肉'])
                     ->insertAll($data, [], true)
             )
@@ -351,7 +385,7 @@ class InsertAllTest extends TestCase
 
         $connect
             ->sql()
-            ->table('test')
+            ->table('test_query')
             ->insertAll($data);
     }
 
@@ -371,7 +405,84 @@ class InsertAllTest extends TestCase
 
         $connect
             ->sql()
-            ->table('test')
+            ->table('test_query')
             ->insertAll($data);
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="insertAll 空数据批量写入示例",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testInsertWithEmptyData(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "INSERT INTO `test_query` () VALUES (),(),(),()",
+                []
+            ]
+            eot;
+
+        $data = [
+            [],
+            [],
+            [],
+            [],
+        ];
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->sql()
+                    ->table('test_query')
+                    ->insertAll($data)
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="insertAll.replace 空数据写入示例",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testReplaceWithEmptyData(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "REPLACE INTO `test_query` () VALUES (),(),(),()",
+                []
+            ]
+            eot;
+
+        $data = [
+            [],
+            [],
+            [],
+            [],
+        ];
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->sql()
+                    ->table('test_query')
+                    ->insertAll($data, [], true)
+            )
+        );
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['test_query'];
     }
 }

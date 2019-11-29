@@ -33,7 +33,7 @@ use Leevel\Option\Option as BaseOption;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Option implements IOption
+class Option
 {
     /**
      * call.
@@ -115,7 +115,7 @@ class Option implements IOption
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Option\Option
      */

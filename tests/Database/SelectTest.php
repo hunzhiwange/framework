@@ -22,9 +22,10 @@ namespace Tests\Database;
 
 use I18nMock;
 use Leevel\Collection\Collection;
+use Leevel\Database\Page;
 use Leevel\Di\Container;
-use Leevel\Page\IPage;
-use Leevel\Page\Page;
+use Leevel\Page\IPage as IBasePage;
+use Leevel\Page\Page as BasePage;
 use PDO;
 use stdClass;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -99,7 +100,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -113,11 +114,11 @@ class SelectTest extends TestCase
 
         $this->assertIsArray($result);
 
-        $this->assertSame('1', $result['id']);
+        $this->assertSame(1, $result['id']);
         $this->assertSame('tom', $result['name']);
         $this->assertSame('I love movie.', $result['content']);
         $this->assertStringContainsString(date('Y-m'), $result['create_at']);
-        $this->assertSame('1', $result[0]);
+        $this->assertSame(1, $result[0]);
         $this->assertSame('tom', $result[1]);
         $this->assertSame('I love movie.', $result[2]);
         $this->assertStringContainsString(date('Y-m'), $result[3]);
@@ -167,7 +168,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -207,7 +208,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -305,7 +306,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -362,7 +363,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -402,7 +403,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -575,7 +576,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -589,7 +590,7 @@ class SelectTest extends TestCase
         $content = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->pull('content');
+            ->value('content');
 
         $this->assertSame('tom', $name);
         $this->assertSame('I love movie.', $content);
@@ -602,7 +603,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -634,7 +635,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -666,7 +667,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -698,7 +699,7 @@ class SelectTest extends TestCase
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
         $this->assertSame(
-            '1',
+            1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
@@ -831,6 +832,47 @@ class SelectTest extends TestCase
 
                 $n++;
             });
+
+        $this->assertSame(7, $n);
+    }
+
+    public function testEachBreak(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; $n++) {
+            $connect
+                ->table('guest_book')
+                ->insert($data);
+        }
+
+        $n = $p = 1;
+
+        $result = $connect
+            ->table('guest_book')
+            ->each(2, function ($value, $key, $page) use (&$n, &$p) {
+                if (3 === $n) {
+                    return false;
+                }
+
+                $this->assertInstanceof(stdClass::class, $value);
+                $this->assertSame($n, (int) $value->id);
+                $this->assertSame('tom', $value->name);
+                $this->assertSame('I love movie.', $value->content);
+                $this->assertStringContainsString(date('Y-m'), $value->create_at);
+                $this->assertSame(($n + 1) % 2, $key);
+                $this->assertSame($p, $page);
+
+                if (1 === ($n + 1) % 2) {
+                    $p++;
+                }
+
+                $n++;
+            });
+
+        $this->assertSame(3, $n);
     }
 
     public function testPageCount(): void
@@ -869,53 +911,6 @@ class SelectTest extends TestCase
 
     public function testPage(): void
     {
-        $connect = $this->createDatabaseConnect();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        for ($n = 0; $n <= 25; $n++) {
-            $connect
-                ->table('guest_book')
-                ->insert($data);
-        }
-
-        list($page, $result) = $connect
-            ->table('guest_book')
-            ->page(1);
-
-        $this->assertIsArray($page);
-        $this->assertCount(10, $result);
-
-        $n = 0;
-
-        foreach ($result as $key => $value) {
-            $this->assertSame($key, $n);
-            $this->assertInstanceof(stdClass::class, $value);
-            $this->assertSame('tom', $value->name);
-            $this->assertSame('I love movie.', $value->content);
-
-            $n++;
-        }
-
-        $data = <<<'eot'
-            {
-                "per_page": 10,
-                "current_page": 1,
-                "total_record": 26,
-                "from": 0
-            }
-            eot;
-
-        $this->assertSame(
-            $data,
-                $this->varJson(
-                    $page
-                )
-        );
-    }
-
-    public function testPageHtml(): void
-    {
         $this->initI18n();
 
         $connect = $this->createDatabaseConnect();
@@ -928,11 +923,13 @@ class SelectTest extends TestCase
                 ->insert($data);
         }
 
-        list($page, $result) = $connect
+        $page = $connect
             ->table('guest_book')
-            ->pageHtml(1);
+            ->page(1);
+        $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(10, $result);
 
@@ -986,14 +983,14 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->toArray()
+                    $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->jsonSerialize()
+                    $page->jsonSerialize()['page']
                 )
         );
 
@@ -1003,7 +1000,7 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-            $page->toJson()
+            json_encode($page->toArray()['page'])
         );
 
         $this->clearI18n();
@@ -1023,11 +1020,13 @@ class SelectTest extends TestCase
                 ->insert($data);
         }
 
-        list($page, $result) = $connect
+        $page = $connect
             ->table('guest_book')
             ->pageMacro(1);
+        $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(10, $result);
 
@@ -1081,14 +1080,14 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->toArray()
+                    $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->jsonSerialize()
+                    $page->jsonSerialize()['page']
                 )
         );
 
@@ -1098,7 +1097,7 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-            $page->toJson()
+            json_encode($page->toArray()['page'])
         );
 
         $this->clearI18n();
@@ -1118,11 +1117,13 @@ class SelectTest extends TestCase
                 ->insert($data);
         }
 
-        list($page, $result) = $connect
+        $page = $connect
             ->table('guest_book')
             ->pagePrevNext(1, 15);
+        $result = $page->toArray()['data'];
 
-        $this->assertInstanceof(IPage::class, $page);
+        $this->assertInstanceof(IBasePage::class, $page);
+        $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
         $this->assertCount(15, $result);
 
@@ -1176,14 +1177,14 @@ class SelectTest extends TestCase
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->toArray()
+                    $page->toArray()['page']
                 )
         );
 
         $this->assertSame(
             $data,
                 $this->varJson(
-                    $page->jsonSerialize()
+                    $page->jsonSerialize()['page']
                 )
         );
 
@@ -1193,7 +1194,7 @@ class SelectTest extends TestCase
 
         $this->assertSame(
             $data,
-            $page->toJson()
+            json_encode($page->toArray()['page'])
         );
 
         $this->clearI18n();

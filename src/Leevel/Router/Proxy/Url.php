@@ -35,7 +35,7 @@ use Leevel\Router\Url as BaseUrl;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Url implements IUrl
+class Url
 {
     /**
      * call.
@@ -99,7 +99,7 @@ class Url implements IUrl
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Router\Url
      */

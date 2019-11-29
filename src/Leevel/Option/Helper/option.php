@@ -33,31 +33,6 @@ function option(): IOption
     return Container::singletons()->make('option');
 }
 
-/**
- * 获取 opiton 值
- *
- * @param string     $key
- * @param mixed      $defaults
- * @param null|mixed $default
- *
- * @return mixed
- */
-function option_get(string $key, $default = null)
-{
-    return option()->get($key, $default);
-}
-
-/**
- * 设置 opiton 值
- *
- * @param mixed      $name
- * @param null|mixed $value
- */
-function option_set($name, $value = null): void
-{
-    option()->set($name, $value);
-}
-
 class option
 {
 }

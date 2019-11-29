@@ -18,8 +18,11 @@ class {{file_name}}
 
     /**
      * 默认方法.
+     *
+     * @return array
      */
-    public function {{action}}()
+    public function {{action}}(): array
     {
+        return ['hello' => 'world'];
     }
 }

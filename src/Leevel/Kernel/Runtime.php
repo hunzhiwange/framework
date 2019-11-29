@@ -108,7 +108,6 @@ abstract class Runtime implements IRuntime
         }
 
         $e = $this->prepareException($e);
-
         if ($request->isAcceptJson()) {
             return $this->makeJsonResponse($e);
         }
@@ -133,7 +132,6 @@ abstract class Runtime implements IRuntime
             ->register()
             ->getHandler()
             ->setOutput($output);
-
         $handler->setInspector(new Inspector($e));
         $handler->handle();
     }
@@ -148,7 +146,6 @@ abstract class Runtime implements IRuntime
     public function rendorWithHttpExceptionView(Exception $e): IResponse
     {
         $filepath = $this->getHttpExceptionView($e);
-
         if (file_exists($filepath)) {
             $vars = $this->getExceptionVars($e);
             $content = $this->renderWithFile($filepath, $vars);
@@ -398,7 +395,6 @@ abstract class Runtime implements IRuntime
         }
 
         extract($vars);
-
         ob_start();
         require $filepath;
         $content = ob_get_contents();

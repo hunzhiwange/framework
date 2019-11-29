@@ -28,8 +28,6 @@ namespace Leevel\Auth;
  * @since 2017.11.08
  *
  * @version 1.0
- *
- * @see \Leevel\Auth\Proxy\IAuth 请保持接口设计的一致性
  */
 interface IAuth
 {

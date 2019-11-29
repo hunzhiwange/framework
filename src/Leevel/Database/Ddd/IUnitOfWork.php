@@ -24,7 +24,7 @@ use Closure;
 use Leevel\Database\IDatabase;
 
 /**
- * 工作单元接口.
+ * 事务工作单元接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -63,14 +63,11 @@ interface IUnitOfWork
     public const STATE_REMOVED = 4;
 
     /**
-     * 创建一个工作单元.
-     *
-     * @param null|\Leevel\Database\Ddd\IEntity $rootEntity
-     * @param null|mixed                        $connect
+     * 创建一个事务工作单元.
      *
      * @return static
      */
-    public static function make(?IEntity $rootEntity = null, $connect = null): self;
+    public static function make(): self;
 
     /**
      * 执行数据库事务.
@@ -105,7 +102,7 @@ interface IUnitOfWork
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
-    public function persisteAfter(IEntity $entity, string $method = 'save'): self;
+    public function persistAfter(IEntity $entity, string $method = 'save'): self;
 
     /**
      * 移除实体到前置区域.
@@ -120,6 +117,9 @@ interface IUnitOfWork
     /**
      * 移除实体.
      *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
@@ -130,12 +130,54 @@ interface IUnitOfWork
     /**
      * 移除实体到后置区域.
      *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function removeAfter(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 移除实体(强制删除)到前置区域.
+     *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceRemoveBefore(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 移除实体(强制删除).
+     *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceRemove(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 移除实体(强制删除)到后置区域.
+     *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceRemoveAfter(IEntity $entity, int $priority = 500): self;
 
     /**
      * 注册新建实体到前置区域.
@@ -285,6 +327,36 @@ interface IUnitOfWork
     public function deleteAfter(IEntity $entity, int $priority = 500): self;
 
     /**
+     * 注册删除实体(强制删除)到前置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceDeleteBefore(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册删除实体(强制删除).
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceDelete(IEntity $entity, int $priority = 500): self;
+
+    /**
+     * 注册删除实体(强制删除)到后置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceDeleteAfter(IEntity $entity, int $priority = 500): self;
+
+    /**
      * 实体是否已经注册删除.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
@@ -324,8 +396,9 @@ interface IUnitOfWork
      * 设置根实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
+     * @param null|mixed                   $connect
      */
-    public function setRootEntity(IEntity $rootEntity): void;
+    public function setRootEntity(IEntity $rootEntity, $connect = null): void;
 
     /**
      * 设置连接.
@@ -366,7 +439,7 @@ interface IUnitOfWork
     public function transaction(Closure $action);
 
     /**
-     * 清理工作单元.
+     * 清理事务工作单元.
      */
     public function clear(): void;
 

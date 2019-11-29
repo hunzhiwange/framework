@@ -36,7 +36,6 @@ function link(string $target, string $link): void
     }
 
     $mode = is_dir($target) ? 'J' : 'H';
-
     exec("mklink /{$mode} \"{$link}\" \"{$target}\"");
 }
 

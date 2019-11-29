@@ -34,7 +34,7 @@ use Leevel\Di\Container;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Cache implements ICache
+class Cache
 {
     /**
      * call.
@@ -142,7 +142,7 @@ class Cache implements ICache
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Cache\Manager
      */

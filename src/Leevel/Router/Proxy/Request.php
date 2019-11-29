@@ -34,7 +34,7 @@ use Leevel\Http\IRequest as IBaseRequest;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Request implements IRequest
+class Request
 {
     /**
      * call.
@@ -814,7 +814,7 @@ class Request implements IRequest
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Http\Request
      */

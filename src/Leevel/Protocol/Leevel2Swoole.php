@@ -33,6 +33,7 @@ use Swoole\Http\Response as SwooleHttpResponse;
  * @since 2019.08.02
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Leevel2Swoole
 {
@@ -47,7 +48,7 @@ class Leevel2Swoole
     public function createResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
         foreach ($response->getCookies() as $item) {
-            call_user_func_array([$swooleResponse, 'cookie'], $item);
+            $swooleResponse->cookie(...$item);
         }
 
         if ($response instanceof RedirectResponse &&
@@ -58,7 +59,6 @@ class Leevel2Swoole
         foreach ($response->headers->all() as $key => $value) {
             $swooleResponse->header($key, $value);
         }
-
         $swooleResponse->status($response->getStatusCode());
         $swooleResponse->write($response->getContent() ?: ' ');
 

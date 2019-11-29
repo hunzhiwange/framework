@@ -52,7 +52,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected string $description = 'Cache i18n to a file.';
+    protected string $description = 'Cache i18n to a file';
 
     /**
      * IOC 容器.
@@ -77,19 +77,14 @@ class Cache extends Command
     {
         $this->app = $app;
         $this->extends = $this->extends();
-
         $this->line('Start to cache i18n.');
 
         list_directory($app->i18nPath(), false, function ($item) use ($app) {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
-
                 $data = $this->data($i18n);
-
                 $cachePath = $app->i18nCachedPath($i18n);
-
                 $this->writeCache($cachePath, $data);
-
                 $this->info(sprintf('I18n cache file %s cache successed.', $cachePath));
             }
         });
@@ -133,7 +128,6 @@ class Cache extends Command
     {
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>'.
             PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
-
         create_file($cachePath, $content);
     }
 

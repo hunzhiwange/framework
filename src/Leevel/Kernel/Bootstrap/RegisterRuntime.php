@@ -54,7 +54,6 @@ class RegisterRuntime
     {
         $this->app = $app;
         $test = 2 === func_num_args();
-
         if (!$test) {
             // @codeCoverageIgnoreStart
             error_reporting(E_ALL);

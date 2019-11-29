@@ -72,7 +72,6 @@ abstract class Status extends Command
 
         if (true === $this->option('all')) {
             $item = '$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11';
-
             $nikename = [
                 // 进程的用户
                 'USER',
@@ -109,7 +108,6 @@ abstract class Status extends Command
             ];
         } else {
             $item = '$1, $2, $3, $4, $8, $9, $10, $11';
-
             $nikename = [
                 // 进程的用户
                 'USER',
@@ -138,11 +136,8 @@ abstract class Status extends Command
         }
 
         $cmd = 'ps aux|grep '.$processName."|grep -v grep|awk '{print ".$item."}'";
-
         exec($cmd, $out);
-
         $this->info($cmd, true);
-
         if (empty($out)) {
             $this->warn('No swoole service process was found', true);
 

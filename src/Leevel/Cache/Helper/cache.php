@@ -33,32 +33,6 @@ function cache(): ICache
     return Container::singletons()->make('caches');
 }
 
-/**
- * 获取 cache 值
- *
- * @param string     $key
- * @param null|mixed $defaults
- * @param array      $option
- *
- * @return mixed
- */
-function cache_get(string $key, $defaults = null, array $option = [])
-{
-    return cache()->get($key, $defaults, $option);
-}
-
-/**
- * 设置 cache 值
- *
- * @param array|string $key
- * @param null|mixed   $value
- * @param array        $option
- */
-function cache_set($key, $value = null, array $option = []): void
-{
-    cache()->put($key, $value, $option);
-}
-
 class cache
 {
 }

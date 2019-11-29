@@ -16,6 +16,7 @@
         "leevel/di": "1.0.*",
         "leevel/cache": "1.0.*",
         "leevel/support": "1.0.*",
+        "leevel/kernel": "1.0.*",
         "leevel/http": "1.0.*"
     },
     "autoload": {

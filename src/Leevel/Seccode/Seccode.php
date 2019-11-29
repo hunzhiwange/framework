@@ -219,7 +219,7 @@ class Seccode implements ISeccode
     protected function makeBackground(): string
     {
         $resImage = imagecreatetruecolor($this->normalizeWidth(), $this->normalizeHeight());
-        $resColor = imagecolorallocate($resImage, 255, 255, 255);
+        imagecolorallocate($resImage, 255, 255, 255);
 
         if (false === $this->makeBackgroundWithImage($resImage)) {
             $this->makeBackgroundDefault($resImage);
@@ -245,7 +245,6 @@ class Seccode implements ISeccode
         $height = $this->normalizeHeight();
 
         $lineNum = $height / 10;
-
         for ($i = 0; $i <= $lineNum; $i++) {
             $resColor = $this->option['color'] ?
                 imagecolorallocate(
@@ -304,7 +303,6 @@ class Seccode implements ISeccode
         }
 
         list($font, $code, $widthTotal) = $this->getFontOption();
-
         $width = $this->normalizeWidth();
         $height = $this->normalizeHeight();
 
@@ -501,7 +499,6 @@ class Seccode implements ISeccode
                 $resColorIndex = imagecolorat($resBackground, 0, 0);
                 $color = imagecolorsforindex($resBackground, $resColorIndex);
                 $resColorIndex = imagecolorat($resBackground, 1, 0);
-
                 imagesetpixel($resBackground, 0, 0, $resColorIndex);
 
                 $color[0] = (int) ($color['red']);
@@ -521,9 +518,7 @@ class Seccode implements ISeccode
                 );
 
                 imagedestroy($resBackground);
-
                 $findBackground = true;
-
                 $this->fontColor = $color;
             }
         }
@@ -573,14 +568,11 @@ class Seccode implements ISeccode
         $color[0] -= 20;
         $color[1] -= 20;
         $color[2] -= 20;
-
         $color[0] = (int) ($color[0]);
         $color[1] = (int) ($color[1]);
         $color[2] = (int) ($color[2]);
 
         $this->fontColor = $color;
-
-        unset($color);
     }
 
     /**
@@ -603,7 +595,6 @@ class Seccode implements ISeccode
         }
 
         $ttf = glob($fontPath.'/*.*');
-
         if (empty($ttf)) {
             throw new InvalidArgumentException('Font files not found.');
         }
@@ -637,7 +628,6 @@ class Seccode implements ISeccode
         }
 
         $randMethod = 'Leevel\\Support\\Str\\rand_'.$autoType;
-
         if (!function_exists($randMethod)) {
             class_exists($randMethod);
         }
@@ -688,7 +678,6 @@ class Seccode implements ISeccode
     {
         $numFirst = (int) ($numFirst);
         $numSecond = (int) ($numSecond);
-
         if ($numFirst > $numSecond) {
             list($numSecond, $numFirst) = [$numFirst, $numSecond];
         }

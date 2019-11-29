@@ -18,8 +18,11 @@ class {{action}}
 
     /**
      * 执行入口.
+     *
+     * @return array
      */
-    public function handle()
+    public function handle(): array
     {
+        return ['hello' => 'world'];
     }
 }

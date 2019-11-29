@@ -30,16 +30,29 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.24
  *
  * @version 1.0
+ *
+ * @api(
+ *     zh-CN:title="更新字段递增.updateIncrease",
+ *     path="database/update/updateincrease",
+ *     description="",
+ * )
  */
 class UpdateIncreaseTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="updateIncrease 基本用法",
+     *     zh-CN:description="更新成功后，返回影响行数，`updateIncrease` 实际上调用的是 `updateColumn` 方法。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`num` = `test`.`num`+3 WHERE `test`.`id` = 503",
+                "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`+3 WHERE `test_query`.`id` = 503",
                 []
             ]
             eot;
@@ -49,20 +62,27 @@ class UpdateIncreaseTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 503)
                     ->updateIncrease('num', 3)
             )
         );
     }
 
-    public function testExpression(): void
+    /**
+     * @api(
+     *     zh-CN:title="updateIncrease 支持参数绑定",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "UPDATE `test` SET `test`.`num` = `test`.`num`+3 WHERE `test`.`id` = ?",
+                "UPDATE `test_query` SET `test_query`.`num` = `test_query`.`num`+3 WHERE `test_query`.`id` = ?",
                 [
                     503
                 ]
@@ -74,7 +94,7 @@ class UpdateIncreaseTest extends TestCase
             $this->varJson(
                 $connect
                     ->sql()
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', '[?]')
                     ->updateIncrease('num', 3, [503])
             )

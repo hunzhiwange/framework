@@ -32,13 +32,11 @@ namespace Leevel\Support\Str;
 function format_date(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-d H:i'): string
 {
     $sec = time() - $dateTemp;
-
     if ($sec < 0) {
         return date($dateFormat, $dateTemp);
     }
 
     $hover = (int) (floor($sec / 3600));
-
     if (0 === $hover) {
         if (0 === ($min = (int) (floor($sec / 60)))) {
             return $sec.' '.($lang['seconds'] ?? 'seconds ago');

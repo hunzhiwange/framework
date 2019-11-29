@@ -48,6 +48,8 @@ class Comment extends Entity
         'create_at' => [],
     ];
 
+    private static $leevelConnect;
+
     private $id;
 
     private $title;
@@ -60,13 +62,23 @@ class Comment extends Entity
 
     public function setter(string $prop, $value): IEntity
     {
-        $this->{$this->prop($prop)} = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$this->prop($prop)};
+        return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

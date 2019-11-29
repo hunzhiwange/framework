@@ -30,9 +30,23 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.having",
+ *     zh-CN:title="查询语言.having",
+ *     path="database/query/having",
+ *     description="having 和 where 用法几乎一致。",
+ * )
  */
 class HavingTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件",
+     *     zh-CN:description="最基本的用法为字段 （表达式） 值。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -40,7 +54,7 @@ class HavingTest extends TestCase
         // 字段 （表达式） 值
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`tid` HAVING `test`.`tid` > 5",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`tid` HAVING `test_query`.`tid` > 5",
                 [],
                 false,
                 null,
@@ -53,7 +67,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->groupBy('tid')
                     ->having('tid', '>', 5)
                     ->findAll(true)
@@ -61,13 +75,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件支持数组方式",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` LIKE '技术'",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE '技术'",
                 [],
                 false,
                 null,
@@ -80,7 +101,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value')
+                    ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
                     ->having(['name', 'like', '技术'])
                     ->findAll(true)
@@ -88,13 +109,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="orHaving 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testOrHaving(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` LIKE '技术' OR `test`.`tname` LIKE '技术'",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE '技术' OR `test_query`.`tname` LIKE '技术'",
                 [],
                 false,
                 null,
@@ -107,7 +135,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value')
+                    ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
                     ->having(['name', 'like', '技术'])
                     ->orHaving(['tname', 'like', '技术'])
@@ -116,13 +144,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingBetween 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN 1 AND 10 AND `test`.`id` BETWEEN 1 AND 100",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` BETWEEN 1 AND 10 AND `test_query`.`name` BETWEEN 1 AND 100",
                 [],
                 false,
                 null,
@@ -135,17 +170,17 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value')
+                    ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
-                    ->having('id', 'between', [1, 10])
-                    ->havingBetween('id', [1, 100])
+                    ->having('name', 'between', [1, 10])
+                    ->havingBetween('name', [1, 100])
                     ->findAll(true)
             )
         );
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` BETWEEN 1 AND 100 AND `test`.`tname` BETWEEN 5 AND 22",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` BETWEEN 1 AND 100 AND `test_query`.`tname` BETWEEN 5 AND 22",
                 [],
                 false,
                 null,
@@ -158,7 +193,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value')
+                    ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
                     ->havingBetween([
                         ['name', [1, 100]],
@@ -170,13 +205,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingNotBetween 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingNotBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` NOT BETWEEN 1 AND 10 AND `test`.`id` NOT BETWEEN 1 AND 100",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` NOT BETWEEN 1 AND 10 AND `test_query`.`id` NOT BETWEEN 1 AND 100",
                 [],
                 false,
                 null,
@@ -189,7 +231,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'not between', [1, 10])
                     ->havingNotBetween('id', [1, 100])
@@ -198,13 +240,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingIn 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN (2,50) AND `test`.`num` IN (2,50)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (2,50) AND `test_query`.`num` IN (2,50)",
                 [],
                 false,
                 null,
@@ -217,7 +266,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'in', [2, 50])
                     ->havingIn('num', [2, 50])
@@ -226,13 +275,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingNotIn 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingNotIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` NOT IN (2,50) AND `test`.`num` NOT IN (2,50)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` NOT IN (2,50) AND `test_query`.`num` NOT IN (2,50)",
                 [],
                 false,
                 null,
@@ -245,7 +301,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'not in', [2, 50])
                     ->havingNotIn('num', [2, 50])
@@ -254,13 +310,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingNull 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IS NULL AND `test`.`num` IS NULL",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IS NULL AND `test_query`.`num` IS NULL",
                 [],
                 false,
                 null,
@@ -273,7 +336,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'null')
                     ->havingNull('num')
@@ -282,13 +345,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingNotNull 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingNotNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IS NOT NULL AND `test`.`num` IS NOT NULL",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IS NOT NULL AND `test_query`.`num` IS NOT NULL",
                 [],
                 false,
                 null,
@@ -301,7 +371,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'not null')
                     ->havingNotNull('num')
@@ -310,13 +380,20 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testOrHavingDefaultNull(): void
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件未指定值默认为 null",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testHavingDefaultNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IS NULL",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IS NULL",
                 [],
                 false,
                 null,
@@ -329,7 +406,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id')
                     ->findAll(true)
@@ -337,13 +414,20 @@ class HavingTest extends TestCase
         );
     }
 
-    public function testHavingLike(): void
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件指定值为 null",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testHavingEqualNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` LIKE '123' AND `test`.`num` LIKE '55'",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IS NULL",
                 [],
                 false,
                 null,
@@ -356,7 +440,41 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
+                    ->groupBy('name')
+                    ->having('id', '=', null)
+                    ->findAll(true)
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="havingLike 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testHavingLike(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` LIKE '123' AND `test_query`.`num` LIKE '55'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'like', '123')
                     ->havingLike('num', '55')
@@ -365,13 +483,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingNotLike 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingNotLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` NOT LIKE '123' AND `test`.`num` NOT LIKE '55'",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` NOT LIKE '123' AND `test_query`.`num` NOT LIKE '55'",
                 [],
                 false,
                 null,
@@ -384,7 +509,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'not like', '123')
                     ->havingNotLike('num', '55')
@@ -393,13 +518,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件支持分组",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`id` = 5 OR (`test`.`votes` > 100 AND `test`.`title` <> 'Admin')",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` = 5 OR (`test_query`.`votes` > 100 AND `test_query`.`title` <> 'Admin')",
                 [],
                 false,
                 null,
@@ -412,7 +544,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('id')
                     ->having('id', 5)
                     ->orHaving(function ($select) {
@@ -425,13 +557,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件支持表达式",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testConditionalExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`post`,`test`.`value`,concat(\"tt_\",`test`.`id`) FROM `test` GROUP BY `test`.`id` HAVING concat(\"hello_\",`test`.`posts`) = `test`.`id`",
+                "SELECT `test_query`.`posts`,`test_query`.`value`,concat(\"tt_\",`test_query`.`id`) FROM `test_query` GROUP BY `test_query`.`id` HAVING concat(\"hello_\",`test_query`.`posts`) = `test_query`.`id`",
                 [],
                 false,
                 null,
@@ -444,7 +583,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'post,value,{concat("tt_",[id])}')
+                    ->table('test_query', 'posts,value,{concat("tt_",[id])}')
                     ->groupBy('id')
                     ->having('{concat("hello_",[posts])}', '=', '{[id]}')
                     ->findAll(true)
@@ -452,13 +591,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件支持二维数组的键值为字段",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testArrayKeyAsField(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`id` = '故事' AND `test`.`name` IN (1,2,3) AND `test`.`weidao` BETWEEN '40' AND '100' AND `test`.`value` IS NULL AND `test`.`remark` IS NOT NULL AND `test`.`goods` = '东亚商品' AND `test`.`hello` = 'world'",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` = '故事' AND `test_query`.`name` IN (1,2,3) AND `test_query`.`weidao` BETWEEN '40' AND '100' AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = '东亚商品' AND `test_query`.`hello` = 'world'",
                 [],
                 false,
                 null,
@@ -471,7 +617,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('id')
                     ->having([
                         'id'     => ['=', '故事'],
@@ -487,13 +633,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件支持字符串语法 `:string`",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testSupportString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`name` = 11 and `post`.`value` = 22 and concat(\"tt_\",`test`.`id`)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`name` = 11 and `test_query`.`value` = 22 and concat(\"tt_\",`test_query`.`id`)",
                 [],
                 false,
                 null,
@@ -506,21 +659,28 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('id')
-                    ->having([':string' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}'])
+                    ->having([':string' => '{[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])}'])
                     ->findAll(true)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件支持分组语法 `:subor` 和 `suband` ",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testSupportSubandSubor(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`hello` = 'world' OR (`test`.`id` LIKE '你好')",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`hello` = 'world' OR (`test_query`.`id` LIKE '你好')",
                 [],
                 false,
                 null,
@@ -532,7 +692,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('id')
                     ->having(
                         [
@@ -543,10 +703,22 @@ class HavingTest extends TestCase
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件支持分组语法 `:subor` 和 `suband` 任意嵌套",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testSupportSubandSuborMore(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`hello` = '111' OR (`test`.`id` LIKE '你好' AND `test`.`value` = 'helloworld') AND (`test`.`id` LIKE '你好' OR `test`.`value` = 'helloworld' OR (`test`.`child_one` > '123' AND `test`.`child_two` LIKE '123'))",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`hello` = '111' OR (`test_query`.`id` LIKE '你好' AND `test_query`.`value` = 'helloworld') AND (`test_query`.`id` LIKE '你好' OR `test_query`.`value` = 'helloworld' OR (`test_query`.`child_one` > '123' AND `test_query`.`child_two` LIKE '123'))",
                 [],
                 false,
                 null,
@@ -559,7 +731,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('id')
                     ->having(
                         [
@@ -589,13 +761,13 @@ class HavingTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Select do not implement magic method havingNotSupportMethod.'
+            'Select do not implement magic method `havingNotSupportMethod`.'
         );
 
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->havingNotSupportMethod()
             ->findAll(true);
     }
@@ -608,7 +780,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`id` LIKE '6'",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` LIKE '6'",
                 [],
                 false,
                 null,
@@ -621,7 +793,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('id')
                     ->if($condition)
                     ->havingLike('id', '5')
@@ -641,7 +813,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`id` HAVING `test`.`id` LIKE '5'",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`id` HAVING `test_query`.`id` LIKE '5'",
                 [],
                 false,
                 null,
@@ -654,7 +826,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('id')
                     ->if($condition)
                     ->havingLike('id', '5')
@@ -674,7 +846,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` LIKE '技术' OR `test`.`tname` LIKE '改变世界'",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE '技术' OR `test_query`.`tname` LIKE '改变世界'",
                 [],
                 false,
                 null,
@@ -687,7 +859,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value')
+                    ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
                     ->having(['name', 'like', '技术'])
                     ->if($condition)
@@ -708,7 +880,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value` FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` LIKE '技术' OR `test`.`tname` LIKE '技术'",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` LIKE '技术' OR `test_query`.`tname` LIKE '技术'",
                 [],
                 false,
                 null,
@@ -721,7 +893,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value')
+                    ->table('test_query', 'name as id,tname as value')
                     ->groupBy('name')
                     ->having(['name', 'like', '技术'])
                     ->if($condition)
@@ -744,7 +916,7 @@ class HavingTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->having([':exists' => 'select *from d_sub'])
             ->findAll(true);
     }
@@ -759,18 +931,25 @@ class HavingTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->having([':notexists' => 'select *from d_sub'])
             ->findAll(true);
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件字段可以指定表",
+     *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。",
+     *     note="",
+     * )
+     */
     public function testHavingFieldWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`name` = 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`name` = 1",
                 [],
                 false,
                 null,
@@ -783,9 +962,9 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
-                    ->having('test.name', '=', 1)
+                    ->having('test_query.name', '=', 1)
                     ->findAll(true)
             )
         );
@@ -801,7 +980,7 @@ class HavingTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->groupBy('name')
             ->havingBetween('id', 'foo')
             ->findAll(true);
@@ -817,7 +996,7 @@ class HavingTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->groupBy('name')
             ->havingBetween('id', [1])
             ->findAll(true);
@@ -829,7 +1008,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN (SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1) AND 100",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1) AND 100",
                 [],
                 false,
                 null,
@@ -842,11 +1021,11 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingBetween('id', [function ($select) {
                         $select
-                            ->table('subsql', 'id')
+                            ->table('test_query_subsql', 'id')
                             ->where('id', 1);
                     }, 100])
                     ->findAll(true)
@@ -854,13 +1033,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="having 查询条件支持复杂的子查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingInArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN ((SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1),100)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1),100)",
                 [],
                 false,
                 null,
@@ -873,11 +1059,11 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', [function ($select) {
                         $select
-                            ->table('subsql', 'id')
+                            ->table('test_query_subsql', 'id')
                             ->where('id', 1);
                     }, 100])
                     ->findAll(true)
@@ -891,7 +1077,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN (SELECT 1) AND 100",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT 1) AND 100",
                 [],
                 false,
                 null,
@@ -904,7 +1090,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingBetween('id', ['(SELECT 1)', 100])
                     ->findAll(true)
@@ -918,7 +1104,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN ((SELECT 1),100)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT 1),100)",
                 [],
                 false,
                 null,
@@ -931,7 +1117,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', ['(SELECT 1)', 100])
                     ->findAll(true)
@@ -945,7 +1131,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND 100",
                 [],
                 false,
                 null,
@@ -954,13 +1140,13 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $select = $connect->table('foo', 'id')->one();
+        $select = $connect->table('test_query_subsql', 'id')->one();
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingBetween('id', [$select, 100])
                     ->findAll(true)
@@ -974,7 +1160,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),100)",
                 [],
                 false,
                 null,
@@ -983,13 +1169,13 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $select = $connect->table('foo', 'id')->one();
+        $select = $connect->table('test_query_subsql', 'id')->one();
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', [$select, 100])
                     ->findAll(true)
@@ -1003,7 +1189,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND 100",
                 [],
                 false,
                 null,
@@ -1013,7 +1199,7 @@ class HavingTest extends TestCase
             eot;
 
         $condition = $connect
-            ->table('foo', 'id')
+            ->table('test_query_subsql', 'id')
             ->one()
             ->databaseCondition();
 
@@ -1021,7 +1207,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingBetween('id', [$condition, 100])
                     ->findAll(true)
@@ -1035,7 +1221,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`name` HAVING `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),100)",
                 [],
                 false,
                 null,
@@ -1045,7 +1231,7 @@ class HavingTest extends TestCase
             eot;
 
         $condition = $connect
-            ->table('foo', 'id')
+            ->table('test_query_subsql', 'id')
             ->one()
             ->databaseCondition();
 
@@ -1053,7 +1239,7 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', [$condition, 100])
                     ->findAll(true)
@@ -1067,7 +1253,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` GROUP BY `hello`.`name` HAVING `hello`.`id` IN (SELECT `world`.* FROM `world`)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1080,10 +1266,10 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->havingIn('id', function ($select) {
-                        $select->table('world');
+                        $select->table('test_query_subsql', 'id');
                     })
                     ->findAll(true)
             )
@@ -1096,7 +1282,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` GROUP BY `hello`.`name` HAVING `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1106,14 +1292,14 @@ class HavingTest extends TestCase
             eot;
 
         $subSql = $connect
-            ->table('test')
+            ->table('test_query_subsql', 'id')
             ->makeSql(true);
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'in', $subSql)
                     ->findAll(true)
@@ -1127,7 +1313,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` GROUP BY `hello`.`name` HAVING `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1136,13 +1322,13 @@ class HavingTest extends TestCase
             ]
             eot;
 
-        $subSql = $connect->table('test');
+        $subSql = $connect->table('test_query_subsql', 'id');
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', 'in', $subSql)
                     ->findAll(true)
@@ -1156,7 +1342,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` GROUP BY `hello`.`name` HAVING `hello`.`id` = (SELECT `test`.`id` FROM `test` WHERE `test`.`id` = 1)",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`name` HAVING `test_query`.`id` = (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
                 [],
                 false,
                 null,
@@ -1169,11 +1355,11 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
+                    ->table('test_query')
                     ->groupBy('name')
                     ->having('id', '=', function ($select) {
                         $select
-                            ->table('test', 'id')
+                            ->table('test_query_subsql', 'id')
                             ->where('id', 1);
                     })
                     ->findAll(true)
@@ -1181,13 +1367,20 @@ class HavingTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingRaw 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(1, id)",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`)",
                 [],
                 false,
                 null,
@@ -1200,21 +1393,28 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value,id')
+                    ->table('test_query', 'name as id,tname as value,id')
                     ->groupBy('name')
-                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
                     ->findAll(true)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="orHavingRaw 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testOrHavingRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id`,`test`.`value` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(1, id) OR FIND_IN_SET(1, value)",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`) OR FIND_IN_SET(1, `test_query`.`value`)",
                 [],
                 false,
                 null,
@@ -1227,10 +1427,10 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value,id,value')
+                    ->table('test_query', 'name as id,tname as value,id,value')
                     ->groupBy('name')
-                    ->havingRaw('FIND_IN_SET(1, id)')
-                    ->orHavingRaw('FIND_IN_SET(1, value)')
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                    ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
                     ->findAll(true)
             )
         );
@@ -1244,7 +1444,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(2, id)",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(2, `test_query`.`id`)",
                 [],
                 false,
                 null,
@@ -1257,12 +1457,12 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value,id')
+                    ->table('test_query', 'name as id,tname as value,id')
                     ->groupBy('name')
                     ->if($condition)
-                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
                     ->else()
-                    ->havingRaw('FIND_IN_SET(2, id)')
+                    ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
                     ->fi()
                     ->findAll(true)
             )
@@ -1277,7 +1477,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(1, id)",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`)",
                 [],
                 false,
                 null,
@@ -1290,12 +1490,12 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value,id')
+                    ->table('test_query', 'name as id,tname as value,id')
                     ->groupBy('name')
                     ->if($condition)
-                    ->havingRaw('FIND_IN_SET(1, id)')
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
                     ->else()
-                    ->havingRaw('FIND_IN_SET(2, id)')
+                    ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
                     ->fi()
                     ->findAll(true)
             )
@@ -1310,7 +1510,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(1, id) OR FIND_IN_SET(2, value)",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(1, `test_query`.`id`) OR FIND_IN_SET(2, `test_query`.`value`)",
                 [],
                 false,
                 null,
@@ -1323,14 +1523,14 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value,id')
+                    ->table('test_query', 'name as id,tname as value,id,value')
                     ->groupBy('name')
                     ->if($condition)
-                    ->havingRaw('FIND_IN_SET(2, id)')
-                    ->orHavingRaw('FIND_IN_SET(1, value)')
+                    ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
+                    ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
                     ->else()
-                    ->havingRaw('FIND_IN_SET(1, id)')
-                    ->orHavingRaw('FIND_IN_SET(2, value)')
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                    ->orHavingRaw('FIND_IN_SET(2, `test_query`.`value`)')
                     ->fi()
                     ->findAll(true)
             )
@@ -1345,7 +1545,7 @@ class HavingTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`name` AS `id`,`test`.`tname` AS `value`,`test`.`id` FROM `test` GROUP BY `test`.`name` HAVING FIND_IN_SET(2, id) OR FIND_IN_SET(1, value)",
+                "SELECT `test_query`.`name` AS `id`,`test_query`.`tname` AS `value`,`test_query`.`id`,`test_query`.`value` FROM `test_query` GROUP BY `test_query`.`name` HAVING FIND_IN_SET(2, `test_query`.`id`) OR FIND_IN_SET(1, `test_query`.`value`)",
                 [],
                 false,
                 null,
@@ -1358,14 +1558,14 @@ class HavingTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'name as id,tname as value,id')
+                    ->table('test_query', 'name as id,tname as value,id,value')
                     ->groupBy('name')
                     ->if($condition)
-                    ->havingRaw('FIND_IN_SET(2, id)')
-                    ->orHavingRaw('FIND_IN_SET(1, value)')
+                    ->havingRaw('FIND_IN_SET(2, `test_query`.`id`)')
+                    ->orHavingRaw('FIND_IN_SET(1, `test_query`.`value`)')
                     ->else()
-                    ->havingRaw('FIND_IN_SET(1, id)')
-                    ->orHavingRaw('FIND_IN_SET(2, value)')
+                    ->havingRaw('FIND_IN_SET(1, `test_query`.`id`)')
+                    ->orHavingRaw('FIND_IN_SET(2, `test_query`.`value`)')
                     ->fi()
                     ->findAll(true)
             )

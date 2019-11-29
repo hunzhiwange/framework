@@ -30,10 +30,10 @@ use function OpenApi\scan;
 
 /**
  * OpenApi 注解路由.
- * 
- * - 1:忽略已删除的路由 deprecated 和带有 leevelIgnore 的路由
- * - 2:如果没有绑定路由参数 leevelBind,系统会尝试自动解析注解所在控制器方法.
- * - 3:只支持最新的 zircote/swagger-php 3，支持最新的 OpenApi 3.0 规范.
+ *
+ * - 忽略已删除的路由 deprecated 和带有 leevelIgnore 的路由.
+ * - 如果没有绑定路由参数 leevelBind,系统会尝试自动解析注解所在控制器方法.
+ * - 只支持最新的 zircote/swagger-php 3，支持最新的 OpenApi 3.0 规范.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -202,7 +202,6 @@ class OpenApiRouter
     protected function parseMainRouters(OpenApi $openApi): array
     {
         $routers = [];
-
         if ($openApi->paths) {
             foreach ($openApi->paths as $path) {
                 $routers = $this->parseOpenApiPath($path, $routers);
@@ -292,10 +291,8 @@ class OpenApiRouter
     protected function parseRouterField($method): array
     {
         $result = [];
-
         foreach ($this->routerField as $f) {
             $field = 'leevel'.ucfirst($f);
-
             if (property_exists($method, $field)) {
                 $result[$f] = $method->{$field};
             }
@@ -340,7 +337,6 @@ class OpenApiRouter
     {
         $routerPath = $this->normalizePath($path);
         $pathPrefix = '';
-
         if ($groupPaths) {
             foreach ($groupPaths as $key => $item) {
                 if (0 === strpos($routerPath, $key)) {
@@ -354,7 +350,6 @@ class OpenApiRouter
 
         $prefix = $routerPath[1];
         $groupPrefix = '_';
-
         foreach ($groups as $g) {
             if (0 === strpos($routerPath, $g)) {
                 $groupPrefix = $g;
@@ -396,7 +391,6 @@ class OpenApiRouter
     protected function parseRouterDomain(array $router): array
     {
         $router['domain'] = $this->normalizeDomain($router['domain'] ?? '', $this->domain ?: '');
-
         if ($router['domain'] && false !== strpos($router['domain'], '{')) {
             list($router['domain_regex'], $router['domain_var']) =
                 $this->ruleRegex($router['domain'], true);
@@ -468,7 +462,6 @@ class OpenApiRouter
 
                 foreach ($second as $secondKey => &$three) {
                     $groups = $this->parseToGroups($three);
-
                     foreach ($groups as $groupKey => $groupThree) {
                         list($three['regex'][$groupKey], $three['map'][$groupKey]) =
                             $this->parseGroupRegex($groupThree);
@@ -491,12 +484,9 @@ class OpenApiRouter
     {
         $groups = [];
         $groupIndex = 0;
-
         foreach ($routers as $key => &$item) {
             $groups[(int) ($groupIndex / 10)][$key] = $item;
-
             unset($item['regex']);
-
             $groupIndex++;
         }
 
@@ -513,7 +503,6 @@ class OpenApiRouter
     protected function parseGroupRegex(array $routers): array
     {
         $minCount = $this->computeMinCountVar($routers);
-
         $regex = [];
         $ruleMap = [];
         $ruleKey = 0;
@@ -522,11 +511,8 @@ class OpenApiRouter
         foreach ($routers as $key => $router) {
             $countVar = $minCount + $ruleKey;
             $emptyMatche = $countVar - count($router['var']);
-
             $ruleMap[$countVar + 1] = $key;
-
             $regex[] = '|'.$router['regex'].($emptyMatche ? str_repeat('()', $emptyMatche) : '');
-
             $ruleKey++;
         }
 
@@ -548,7 +534,6 @@ class OpenApiRouter
     protected function computeMinCountVar(array $routers): int
     {
         $minCount = 1;
-
         foreach ($routers as $item) {
             if (($curCount = count($item['var'])) > $minCount) {
                 $minCount = $curCount;
@@ -584,7 +569,6 @@ class OpenApiRouter
     protected function parseGroups(OpenApi $openApi): array
     {
         $groups = [];
-
         if ($openApi->tags) {
             foreach ($openApi->tags as $tag) {
                 if (property_exists($tag, 'leevelGroup')) {
@@ -608,7 +592,6 @@ class OpenApiRouter
     protected function ruleRegex(string $rule, bool $forSingleRegex = false): array
     {
         $routerVar = [];
-
         $mapRegex = [
             'find'    => [],
             'replace' => [],
@@ -624,7 +607,6 @@ class OpenApiRouter
 
             $regex = '('.$regex.')';
             $regexEncode = '`'.md5($regex).'`';
-
             $mapRegex['find'][] = $regexEncode;
             $mapRegex['replace'][] = $regex;
 
@@ -684,7 +666,6 @@ class OpenApiRouter
         }
 
         $externalDocs = $openApi->externalDocs;
-
         if (!property_exists($externalDocs, 'leevels')) {
             return [[], []];
         }

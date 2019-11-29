@@ -54,7 +54,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected string $description = 'Compile all view files.';
+    protected string $description = 'Compile all view files';
 
     /**
      * IOC 容器.
@@ -80,7 +80,7 @@ class Cache extends Command
     /**
      * 响应命令.
      *
-     * @param \Leevel\Kernel\IApp    $app
+     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -173,11 +173,8 @@ class Cache extends Command
         }
 
         $options = $this->getFileContent($path);
-
         $paths = $options['extra']['leevel-console']['view-cache']['paths'] ?? [];
-
         $path = $this->app->path();
-
         $paths = array_map(function (string $value) use ($path) {
             if (!is_file($value)) {
                 $value = $path.'/'.$value;

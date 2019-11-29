@@ -37,6 +37,13 @@ class {{file_name}} extends Entity
      * @var array
      */
     const STRUCT = {{struct}};
+    
+    /**
+     * database connect.
+     *
+     * @var mixed
+     */
+    private static $leevelConnect;
     {{props}}
     /**
      * setter.
@@ -48,7 +55,7 @@ class {{file_name}} extends Entity
      */
     public function setter(string $prop, $value): IEntity
     {
-        $this->{$this->prop($prop)} = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
@@ -62,6 +69,26 @@ class {{file_name}} extends Entity
      */
     public function getter(string $prop)
     {
-        return $this->{$this->prop($prop)};
+        return $this->{$this->realProp($prop)};
+    }
+
+    /**
+     * set database connect.
+     *
+     * @param mixed $connect
+     */
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    /**
+     * get database connect.
+     *
+     * @param mixed $connect
+     */
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

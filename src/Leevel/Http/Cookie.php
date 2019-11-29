@@ -100,7 +100,6 @@ class Cookie
         }
 
         $option['expire'] = (int) ($option['expire']);
-
         if ($option['expire'] < 0) {
             $e = 'Cookie expire date must greater than or equal 0.';
 
@@ -133,9 +132,7 @@ class Cookie
     public function put($keys, $value = null, array $option = []): void
     {
         if (!is_array($keys)) {
-            $keys = [
-                $keys => $value,
-            ];
+            $keys = [$keys => $value];
         }
 
         foreach ($keys as $key => $value) {
@@ -268,7 +265,6 @@ class Cookie
     public function clear(array $option = []): void
     {
         $option = $this->normalizeOptions($option);
-
         foreach ($this->cookies as $key => $val) {
             $this->delete($key, $option);
         }
@@ -302,12 +298,10 @@ class Cookie
         }
 
         $str = $cookie[0].'=';
-
         if ('' === (string) $cookie[1]) {
             $str .= 'deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001).'; Max-Age=0';
         } else {
             $str .= $cookie[1];
-
             if (0 !== $cookie[2]) {
                 $str .= '; expires='.gmdate('D, d-M-Y H:i:s T', $cookie[2]).'; Max-Age='.
                     ($cookie[2] - time() ?: 0);

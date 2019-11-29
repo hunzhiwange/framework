@@ -147,7 +147,6 @@ class ApiResponse extends JsonResponse
         }
 
         $this->setStatusCode(static::HTTP_UNPROCESSABLE_ENTITY, $text);
-
         $this->setData([
             'message' => $this->parseErrorMessage($message), 'errors'  => $errors ?: [],
         ]);

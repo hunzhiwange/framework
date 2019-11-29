@@ -35,7 +35,7 @@ use Monolog\Logger;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Log implements ILog
+class Log
 {
     /**
      * call.
@@ -247,7 +247,7 @@ class Log implements ILog
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Log\Manager
      */

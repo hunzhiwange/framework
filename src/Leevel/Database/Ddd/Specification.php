@@ -81,7 +81,9 @@ class Specification implements ISpecification
      */
     public function isSatisfiedBy(IEntity $entity): bool
     {
-        return call_user_func($this->spec, $entity);
+        $spec = $this->spec;
+
+        return $spec($entity);
     }
 
     /**
@@ -92,7 +94,8 @@ class Specification implements ISpecification
      */
     public function handle(Select $select, IEntity $entity): void
     {
-        call_user_func($this->handle, $select, $entity);
+        $handle = $this->handle;
+        $handle($select, $entity);
     }
 
     /**

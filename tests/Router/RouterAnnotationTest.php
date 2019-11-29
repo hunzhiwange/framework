@@ -975,6 +975,38 @@ class RouterAnnotationTest extends TestCase
         $result = $router->dispatch($request);
     }
 
+    public function testBindMethodNotFound(): void
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router \\Tests\\Router\\Controllers\\Annotation\\BindMethodNotFound was not found.'
+        );
+
+        $pathInfo = '/bindNotFound/test3';
+        $params = [];
+        $method = 'GET';
+        $controllerDir = 'Controllers';
+
+        $container = $this->createContainer();
+
+        $request = new Request([], [], $params);
+        $request->setPathInfo($pathInfo);
+        $request->setMethod($method);
+
+        $container->singleton('router', $router = $this->createRouter($container));
+        $container->instance(IRequest::class, $request);
+        $container->instance(IContainer::class, $container);
+
+        $provider = new RouterProviderAnnotation($container);
+
+        $router->setControllerDir($controllerDir);
+
+        $provider->register();
+        $provider->bootstrap();
+
+        $result = $router->dispatch($request);
+    }
+
     protected function createRouter(Container $container): Router
     {
         $router = new Router($container);

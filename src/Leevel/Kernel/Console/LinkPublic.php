@@ -49,7 +49,7 @@ class LinkPublic extends Command
      *
      * @var string
      */
-    protected string $description = 'Create a symbolic link from `public` to `www/public`.';
+    protected string $description = 'Create a symbolic link from `public` to `www/public`';
 
     /**
      * 响应命令.
@@ -66,10 +66,7 @@ class LinkPublic extends Command
             return;
         }
 
-        link(
-            $path = $app->publicPath(), $link
-        );
-
+        link($path = $app->publicPath(), $link);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
     }
 

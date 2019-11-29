@@ -36,7 +36,6 @@ function fields_filter($fields)
     $fields = array_map(function ($str) {
         return sql_filter($str);
     }, $fields);
-
     $fields = implode(',', $fields);
     $fields = preg_replace('/^,|,$/', '', $fields);
 

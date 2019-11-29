@@ -60,7 +60,6 @@ class RedisPool extends Pool
     public function __construct(Manager $manager, string $redisConnect, array $option = [])
     {
         parent::__construct($option);
-
         $this->manager = $manager;
         $this->redisConnect = $redisConnect;
     }

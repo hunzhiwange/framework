@@ -688,5 +688,5 @@ interface IRequest
      *
      * @return string
      */
-    public function getRequestUri(): ?string;
+    public function getRequestUri(): string;
 }

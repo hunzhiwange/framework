@@ -28,8 +28,6 @@ namespace Leevel\Validate;
  * @since 2018.11.26
  *
  * @version 1.0
- *
- * @see \Leevel\Validate\Proxy\IValidate 请保持接口设计的一
  */
 interface IValidate
 {

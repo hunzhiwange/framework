@@ -53,8 +53,8 @@ class Doc extends Command
      *
      * @var string
      */
-    protected string $description = 'Markdown generation based on test cases.';
-
+    protected string $description = 'Markdown generation based on test cases';
+    
     /**
      * 文档解析器.
      *
@@ -82,11 +82,10 @@ class Doc extends Command
             throw new InvalidArgumentException('Files was not found.');
         }
 
-        $this->utilsDoc = new UtilsDoc($this->outputDir(), $this->git());
+        $this->utilsDoc = new UtilsDoc($this->outputDir(), $this->git(), $this->i18n());
         $this->classParser = new ClassParser();
 
         $succeedCount = 0;
-
         foreach ($files as $file) {
             if (true === $this->convertMarkdown($file)) {
                 $succeedCount++;
@@ -107,18 +106,17 @@ class Doc extends Command
     protected function convertMarkdown(string $file): bool
     {
         $className = $this->classParser->handle($file);
-
         if (!class_exists($className)) {
             return false;
         }
 
         $result = $this->utilsDoc->handleAndSave($className);
-
-        if (true === $result) {
-            $this->line(sprintf('Class <info>%s</info> was generate succeed.', $className));
+        if (false !== $result) {
+            $message = sprintf('Class <info>%s</info> was generate succeed at <info>%s</info>.', $className, $result[0]);
+            $this->line($message);
         }
 
-        return $result;
+        return false !== $result;
     }
 
     /**
@@ -130,7 +128,6 @@ class Doc extends Command
     {
         $fileOrDir = dirname($this->testsDir()).'/'.$this->path();
         $result = [];
-
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
@@ -150,7 +147,6 @@ class Doc extends Command
     protected function includeBootstrapFile(): void
     {
         $bootstrap = $this->testsDir().'/bootstrap.php';
-
         if (is_file($bootstrap)) {
             include $bootstrap;
         }
@@ -184,6 +180,16 @@ class Doc extends Command
     protected function outputDir(): string
     {
         return $this->argument('outputdir');
+    }
+
+    /**
+     * i18n 参数.
+     *
+     * @return string
+     */
+    protected function i18n(): string
+    {
+        return $this->option('i18n');
     }
 
     /**
@@ -234,7 +240,14 @@ class Doc extends Command
      */
     protected function getOptions(): array
     {
-        return [];
+        return [
+            [
+                'i18n',
+                null,
+                Argument::OPTIONAL,
+                'This is the i18n.',
+            ],
+        ];
     }
 }
 

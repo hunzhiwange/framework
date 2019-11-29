@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.distinct",
+ *     zh-CN:title="查询语言.distinct",
+ *     path="database/query/distinct",
+ *     description="",
+ * )
  */
 class DistinctTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="查询去重",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT DISTINCT `test`.* FROM `test`",
+                "SELECT DISTINCT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -52,15 +66,27 @@ class DistinctTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->distinct()
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="取消查询去重",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testCancelDistinct(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -73,7 +99,7 @@ class DistinctTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->distinct()
                     ->distinct(false)
                     ->findAll(true),
@@ -89,7 +115,7 @@ class DistinctTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -102,7 +128,7 @@ class DistinctTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->distinct()
                     ->else()
@@ -121,7 +147,7 @@ class DistinctTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT DISTINCT `test`.* FROM `test`",
+                "SELECT DISTINCT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -134,7 +160,7 @@ class DistinctTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->distinct()
                     ->else()

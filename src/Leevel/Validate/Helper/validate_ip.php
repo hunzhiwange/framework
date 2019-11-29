@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 /**
- * 是否为合法的 IP 地址
+ * 是否为合法的 IP 地址.
  *
  * @param mixed $value
  *

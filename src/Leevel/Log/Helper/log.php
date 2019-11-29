@@ -33,18 +33,6 @@ function log(): ILog
     return Container::singletons()->make('logs');
 }
 
-/**
- * 记录日志.
- *
- * @param string $message
- * @param array  $context
- * @param string $level
- */
-function log_record(string $message, array $context = [], string $level = ILog::INFO): void
-{
-    log()->log($level, $message, $context);
-}
-
 class log
 {
 }

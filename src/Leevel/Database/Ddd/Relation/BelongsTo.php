@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 BelongsTo.
@@ -35,29 +35,13 @@ use Leevel\Database\Ddd\IEntity;
 class BelongsTo extends Relation
 {
     /**
-     * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $targetEntity
-     * @param \Leevel\Database\Ddd\IEntity $sourceEntity
-     * @param string                       $targetKey
-     * @param string                       $sourceKey
-     */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey)
-    {
-        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
-    }
-
-    /**
      * 关联基础查询条件.
      */
     public function addRelationCondition(): void
     {
-        if (static::$relationCondition) {
-            $this->select->where(
-                $this->targetKey,
-                $this->getSourceValue()
-            );
-        }
+        $this->prepareRelationCondition(function ($sourceValue): void {
+            $this->select->where($this->targetKey, $sourceValue);
+        });
     }
 
     /**
@@ -72,13 +56,9 @@ class BelongsTo extends Relation
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
-
         foreach ($entitys as $value) {
-            $key = $value->__get($this->sourceKey);
-
-            if (isset($maps[$key])) {
-                $value->withRelationProp($relation, $maps[$key]);
-            }
+            $key = $value->prop($this->sourceKey);
+            $value->withRelationProp($relation, $maps[$key] ?? $this->targetEntity->make());
         }
 
         return $entitys;
@@ -91,20 +71,14 @@ class BelongsTo extends Relation
      */
     public function preLoadCondition(array $entitys): void
     {
-        $this->select->whereIn(
-            $this->targetKey,
-            $this->getPreLoadEntityValue($entitys)
-        );
-    }
+        if (!$sourceValue = $this->getPreLoadEntityValue($entitys)) {
+            $this->emptySourceData = true;
 
-    /**
-     * 取回源模型实体对应数据.
-     *
-     * @return mixed
-     */
-    public function getSourceValue()
-    {
-        return $this->sourceEntity->__get($this->sourceKey);
+            return;
+        }
+
+        $this->emptySourceData = false;
+        $this->select->whereIn($this->targetKey, $sourceValue);
     }
 
     /**
@@ -114,11 +88,17 @@ class BelongsTo extends Relation
      */
     public function sourceQuery()
     {
-        return $this->select->findOne();
+        if (true === $this->emptySourceData) {
+            return $this->targetEntity->make();
+        }
+
+        return Select::withoutPreLoadsResult(function () {
+            return $this->select->findOne();
+        });
     }
 
     /**
-     * 模型实体隐射数据.
+     * 模型实体映射数据.
      *
      * @param \Leevel\Collection\Collection $result
      *
@@ -127,9 +107,8 @@ class BelongsTo extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
-
         foreach ($result as $entity) {
-            $maps[$entity->__get($this->targetKey)] = $entity;
+            $maps[$entity->prop($this->targetKey)] = $entity;
         }
 
         return $maps;
@@ -145,15 +124,14 @@ class BelongsTo extends Relation
     protected function getPreLoadEntityValue(array $entitys): array
     {
         $data = [];
-
         foreach ($entitys as $value) {
-            if (null !== ($tmp = $value->__get($this->sourceKey))) {
+            if ($tmp = $value->prop($this->sourceKey)) {
                 $data[] = $tmp;
             }
         }
 
-        if (0 === count($data)) {
-            return [0];
+        if (!$data) {
+            return [];
         }
 
         return array_values(array_unique($data));

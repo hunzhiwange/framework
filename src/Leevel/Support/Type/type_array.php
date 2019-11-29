@@ -38,7 +38,6 @@ function type_array($data, array $types): bool
     // 判断数组内部每一个值是否为给定的类型
     foreach ($data as $value) {
         $ret = false;
-
         foreach ($types as $item) {
             if (type($value, $item)) {
                 $ret = true;

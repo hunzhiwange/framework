@@ -112,6 +112,7 @@ class RedisTest extends TestCase
         $redis = $this->makeRedis($phpRedis);
 
         $this->assertNull($redis->close());
+        $this->assertNull($redis->close()); // 关闭多次不做任何事
     }
 
     protected function makeRedis(IRedis $phpRedis, array $option = []): Redis

@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.10.02
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.havingDate",
+ *     zh-CN:title="查询语言.havingDate",
+ *     path="database/query/havingdate",
+ *     description="",
+ * )
  */
 class HavingTimeTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="havingDate 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -55,7 +69,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingDate('create_date', '+5 month')
                     ->findOne(true)
@@ -66,13 +80,20 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingDay 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -89,9 +110,85 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingDay('create_date', 5)
+                    ->findOne(true)
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
+        );
+    }
+
+    public function testHavingDataFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $value = strtotime('+6 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
+
+        $this->assertTimeRange(
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('create_date')
+                    ->if($condition)
+                    ->havingDate('create_date', '+5 month')
+                    ->else()
+                    ->havingDate('create_date', '+6 month')
+                    ->fi()
+                    ->findOne(true)
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
+        );
+    }
+
+    public function testHavingDataFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $value = strtotime('+5 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
+
+        $this->assertTimeRange(
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->groupBy('create_date')
+                    ->if($condition)
+                    ->havingDate('create_date', '+5 month')
+                    ->else()
+                    ->havingDate('create_date', '+6 month')
+                    ->fi()
                     ->findOne(true)
             ),
             sprintf($sql, $value),
@@ -106,7 +203,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -123,7 +220,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingDay('create_date', '5')
                     ->findOne(true)
@@ -140,7 +237,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -157,7 +254,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingDay('create_date', '5 foo')
                     ->findOne(true)
@@ -168,13 +265,20 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingMonth 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -191,7 +295,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingMonth('create_date', 5)
                     ->findOne(true)
@@ -208,7 +312,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -225,7 +329,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingMonth('create_date', '5')
                     ->findOne(true)
@@ -242,7 +346,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -259,7 +363,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingMonth('create_date', '5 foo')
                     ->findOne(true)
@@ -270,13 +374,20 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="havingYear 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testHavingYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -292,7 +403,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingYear('create_date', 2018)
                     ->findOne(true)
@@ -309,7 +420,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -325,7 +436,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingYear('create_date', '2018')
                     ->findOne(true)
@@ -342,7 +453,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -358,7 +469,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->havingYear('create_date', '2018 foo')
                     ->findOne(true)
@@ -369,13 +480,20 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time().having.endTime 时间查询，等价于 havingDate",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTime(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -392,7 +510,7 @@ class HavingTimeTest extends TestCase
             in_array(
                 $this->varJson(
                     $connect
-                        ->table('test')
+                        ->table('test_query')
                         ->groupBy('create_date')
                         ->time()
                         ->having('create_date', '+5 month')
@@ -407,13 +525,20 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(date).having.endTime 时间查询，等价于 havingDate",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeDateIsDefault(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -430,7 +555,7 @@ class HavingTimeTest extends TestCase
             in_array(
                 $this->varJson(
                     $connect
-                        ->table('test')
+                        ->table('test_query')
                         ->groupBy('create_date')
                         ->time('date')
                         ->having('create_date', '+5 month')
@@ -444,13 +569,20 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(day).having.endTime 时间查询，等价于 havingDay",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -467,7 +599,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->time('day')
                     ->having('create_date', 5)
@@ -480,13 +612,20 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(month).having.endTime 时间查询，等价于 havingMonth",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -503,7 +642,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->time('month')
                     ->having('create_date', 5)
@@ -516,13 +655,20 @@ class HavingTimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(year).having.endTime 时间查询，等价于 havingYear",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -538,7 +684,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->time('year')
                     ->having('create_date', 2018)
@@ -557,7 +703,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_year` = %s AND `test`.`create_month` = %s AND `test`.`create_day` = %s AND `test`.`create_date` = %s LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_year` = %s AND `test_query`.`create_month` = %s AND `test_query`.`create_day` = %s AND `test_query`.`create_date` = %s LIMIT 1",
                 [],
                 false,
                 null,
@@ -577,7 +723,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->time('year')
                     ->having('create_year', 2018)
@@ -605,7 +751,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_year` = %s AND `test`.`create_month` = %s AND `test`.`create_day` = %s AND `test`.`create_date` = %s LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_year` = %s AND `test_query`.`create_month` = %s AND `test_query`.`create_day` = %s AND `test_query`.`create_date` = %s LIMIT 1",
                 [],
                 false,
                 null,
@@ -626,7 +772,7 @@ class HavingTimeTest extends TestCase
             in_array(
                 $this->varJson(
                     $connect
-                        ->table('test')
+                        ->table('test_query')
                         ->groupBy('create_date')
                         ->time('year')
                         ->having('create_year', 2018)
@@ -657,7 +803,7 @@ class HavingTimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->groupBy('create_date')
             ->havingDate('create_date', 'hello')
             ->findOne(true);
@@ -673,7 +819,7 @@ class HavingTimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->groupBy('create_date')
             ->havingDay('create_date', 40)
             ->findOne(true);
@@ -689,7 +835,7 @@ class HavingTimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->groupBy('create_date')
             ->havingMonth('create_date', 13)
             ->findOne(true);
@@ -705,7 +851,7 @@ class HavingTimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->groupBy('create_date')
             ->time('foo')
             ->having('create_date', 5)
@@ -720,7 +866,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = %d",
                 [],
                 false,
                 null,
@@ -737,7 +883,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->if($condition)
                     ->time('month')
@@ -763,7 +909,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = %d",
                 [],
                 false,
                 null,
@@ -780,7 +926,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->if($condition)
                     ->time('month')
@@ -806,7 +952,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d AND `test`.`create_at` = 6",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = %d AND `test_query`.`create_at` = 6",
                 [],
                 false,
                 null,
@@ -823,7 +969,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->time('day')
                     ->having('create_at', 5)
@@ -848,7 +994,7 @@ class HavingTimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` GROUP BY `test`.`create_date` HAVING `test`.`create_at` = %d AND `test`.`create_at` = %d",
+                "SELECT `test_query`.* FROM `test_query` GROUP BY `test_query`.`create_date` HAVING `test_query`.`create_at` = %d AND `test_query`.`create_at` = %d",
                 [],
                 false,
                 null,
@@ -868,7 +1014,7 @@ class HavingTimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->groupBy('create_date')
                     ->time('day')
                     ->having('create_at', 5)

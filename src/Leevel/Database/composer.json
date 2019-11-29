@@ -20,6 +20,7 @@
         "leevel/flow": "1.0.*",
         "leevel/collection": "1.0.*",
         "leevel/filesystem": "1.0.*",
+        "leevel/kernel": "1.0.*",
         "robmorgan/phinx": "^0.9.2",
         "fzaninotto/faker": "^1.6"
     },

@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\PluginInterface;
+use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
  * IFilesystem 接口.
@@ -33,7 +32,29 @@ use League\Flysystem\PluginInterface;
  *
  * @version 1.0
  *
- * @see \Leevel\Filesystem\Proxy\IFilesystem 请保持接口设计的一致性
+ * @method static bool has(string $path)                                                                     判断文件是否存在.
+ * @method static read(string $path)                                                                         读取文件.
+ * @method static readStream(string $path)                                                                   从路径读取流数据.
+ * @method static array listContents(string $directory = '', bool $recursive = false)                        读取文件目录.
+ * @method static getMetadata(string $path)                                                                  获取文件元数据.
+ * @method static getSize(string $path)                                                                      获取文件大小.
+ * @method static getMimetype(string $path)                                                                  获取文件的 mime 类型.
+ * @method static getTimestamp(string $path)                                                                 获取文件的时间戳.
+ * @method static getVisibility(string $path)                                                                获取文件的可见性.
+ * @method static bool write(string $path, string $contents, array $config = [])                             写一个新文件.
+ * @method static bool writeStream(string $path, $resource, array $config = [])                              使用流写入新文件.
+ * @method static bool update(string $path, string $contents, array $config = [])                            更新现有文件.
+ * @method static bool updateStream(string $path, $resource, array $config = [])                             使用流更新现有文件.
+ * @method static bool rename(string $path, string $newpath)                                                 重命名文件.
+ * @method static bool copy(string $path, string $newpath)                                                   复制文件.
+ * @method static bool delete(string $path)                                                                  删除文件.
+ * @method static bool deleteDir(string $dirname)                                                            删除文件夹.
+ * @method static bool createDir(string $dirname, array $config = [])                                        创建一个文件夹.
+ * @method static bool setVisibility(string $path, $visibility)                                              设置文件的可见性.
+ * @method static bool put(string $path, string $contents, array $config = [])                               创建或者更新文件.
+ * @method static bool putStream(string $path, $resource, array $config = [])                                使用流创建或者更新文件.
+ * @method static readAndDelete(string $path)                                                                读取并删除一个文件.
+ * @method static \League\Flysystem\FilesystemInterface addPlugin(\League\Flysystem\PluginInterface $plugin) 注册一个插件.
  */
 interface IFilesystem
 {
@@ -48,266 +69,9 @@ interface IFilesystem
     public function setOption(string $name, $value): self;
 
     /**
-     * 判断文件是否存在.
+     * 返回 Filesystem.
      *
-     * @param string $path
-     *
-     * @return bool
+     * @return \League\Flysystem\Filesystem
      */
-    public function has(string $path): bool;
-
-    /**
-     * 读取文件.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return false|string
-     */
-    public function read(string $path);
-
-    /**
-     * 从路径读取流数据.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return false|resource
-     */
-    public function readStream(string $path);
-
-    /**
-     * 读取文件目录.
-     *
-     * @param string $directory
-     * @param bool   $recursive
-     *
-     * @return array
-     */
-    public function listContents(string $directory = '', bool $recursive = false): array;
-
-    /**
-     * 获取文件元数据.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return array|false
-     */
-    public function getMetadata(string $path);
-
-    /**
-     * 获取文件大小.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return false|int
-     */
-    public function getSize(string $path);
-
-    /**
-     * 获取文件的 mime 类型.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return false|string
-     */
-    public function getMimetype(string $path);
-
-    /**
-     * 获取文件的时间戳.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return false|string
-     */
-    public function getTimestamp(string $path);
-
-    /**
-     * 获取文件的可见性.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return false|string public|private|false
-     */
-    public function getVisibility(string $path);
-
-    /**
-     * 写一个新文件.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param array  $config
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return bool
-     */
-    public function write(string $path, string $contents, array $config = []): bool;
-
-    /**
-     * 使用流写入新文件.
-     *
-     * @param string   $path
-     * @param resource $resource
-     * @param array    $config
-     *
-     * @throws \InvalidArgumentException
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return bool
-     */
-    public function writeStream(string $path, $resource, array $config = []): bool;
-
-    /**
-     * 更新现有文件.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param array  $config
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return bool
-     */
-    public function update(string $path, string $contents, array $config = []): bool;
-
-    /**
-     * 使用流更新现有文件.
-     *
-     * @param string   $path
-     * @param resource $resource
-     * @param array    $config
-     *
-     * @throws \InvalidArgumentException
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return bool
-     */
-    public function updateStream(string $path, $resource, array $config = []): bool;
-
-    /**
-     * 重命名文件.
-     *
-     * @param string $path
-     * @param string $newpath
-     *
-     * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return bool
-     */
-    public function rename(string $path, string $newpath): bool;
-
-    /**
-     * 复制文件.
-     *
-     * @param string $path
-     * @param string $newpath
-     *
-     * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return bool
-     */
-    public function copy(string $path, string $newpath): bool;
-
-    /**
-     * 删除文件.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return bool
-     */
-    public function delete(string $path): bool;
-
-    /**
-     * 删除文件夹.
-     *
-     * @param string $dirname
-     *
-     * @throws \League\Flysystem\RootViolationException
-     *
-     * @return bool
-     */
-    public function deleteDir(string $dirname): bool;
-
-    /**
-     * 创建一个文件夹.
-     *
-     * @param string $dirname
-     * @param array  $config
-     *
-     * @return bool
-     */
-    public function createDir(string $dirname, array $config = []): bool;
-
-    /**
-     * 设置文件的可见性.
-     *
-     * @param string $path
-     * @param string $visibility public|private
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return bool
-     */
-    public function setVisibility(string $path, $visibility): bool;
-
-    /**
-     * 创建或者更新文件.
-     *
-     * @param string $path
-     * @param string $contents
-     * @param array  $config
-     *
-     * @return bool
-     */
-    public function put(string $path, string $contents, array $config = []): bool;
-
-    /**
-     * 使用流创建或者更新文件.
-     *
-     * @param string   $path
-     * @param resource $resource
-     * @param array    $config
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return bool
-     */
-    public function putStream(string $path, $resource, array $config = []): bool;
-
-    /**
-     * 读取并删除一个文件.
-     *
-     * @param string $path
-     *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return false|string
-     */
-    public function readAndDelete(string $path);
-
-    /**
-     * 注册一个插件.
-     *
-     * @param \League\Flysystem\PluginInterface $plugin
-     *
-     * @return \League\Flysystem\FilesystemInterface
-     */
-    public function addPlugin(PluginInterface $plugin): FilesystemInterface;
+    public function getFilesystem(): LeagueFilesystem;
 }

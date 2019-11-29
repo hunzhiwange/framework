@@ -151,7 +151,6 @@ abstract class Server
         $newProgress = new Process(
             function (Process $worker) use ($process) {
                 $newProgress = $this->container->make($process);
-
                 if (!is_object($newProgress) || ($newProgress instanceof ProtocolProcess)) {
                     $e = sprintf('Process `%s` was invalid.', $process);
 
@@ -166,7 +165,6 @@ abstract class Server
 
                 $processName = $this->option['process_name'].'.'.$newProgress->getName();
                 $worker->name($processName);
-
                 $newProgress->handle($this, $worker);
             }
         );
@@ -216,7 +214,6 @@ abstract class Server
         $this->log('Server master worker start.', true);
 
         $this->setProcessName($this->option['process_name'].'.master');
-
         $pidContent = $server->master_pid."\n".$server->manager_pid;
         create_file($this->option['pid_path'], $pidContent);
     }
@@ -343,6 +340,8 @@ abstract class Server
      * @param int            $fromId
      * @param string         $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @see https://wiki.swoole.com/wiki/page/134.html
      */
     public function onTask(SwooleServer $server, int $taskId, int $fromId, string $data): void
@@ -354,7 +353,6 @@ abstract class Server
         $this->log($message);
 
         list($task, $params) = $this->parseTask($data);
-
         if (false !== strpos($task, '@')) {
             list($task, $method) = explode('@', $task);
         } else {
@@ -413,13 +411,13 @@ abstract class Server
     protected function parseTask(string $task): array
     {
         list($task, $params) = array_pad(explode(':', $task, 2), 2, []);
-
         if (is_string($params)) {
             $params = explode(',', $params);
         }
 
         $params = array_map(function (string $item) {
-            return ctype_digit($item) ? (int) $item : $item;
+            return ctype_digit($item) ? (int) $item :
+                (is_numeric($item) ? (float) $item : $item);
         }, $params);
 
         return [$task, $params];
@@ -490,7 +488,6 @@ abstract class Server
             if (!method_exists($this, $onEvent = 'on'.$type.ucfirst($event))) {
                 $onEvent = 'on'.ucfirst($event);
             }
-
             $this->server->on($event, [$this, $onEvent]);
         }
     }
@@ -580,8 +577,8 @@ abstract class Server
             throw new InvalidArgumentException($e);
         }
 
-        if (version_compare(phpversion('swoole'), '4.4.2', '<')) {
-            $e = 'Swoole 4.4.2 OR Higher';
+        if (version_compare(phpversion('swoole'), '4.4.5', '<')) {
+            $e = 'Swoole 4.4.5 OR Higher';
 
             throw new InvalidArgumentException($e);
         }
@@ -589,5 +586,5 @@ abstract class Server
 }
 
 // import fn.
-class_exists(create_directory::class);
-class_exists(create_file::class);
+class_exists(create_directory::class); // @codeCoverageIgnore
+class_exists(create_file::class); // @codeCoverageIgnore

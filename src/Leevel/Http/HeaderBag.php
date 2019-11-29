@@ -53,9 +53,7 @@ class HeaderBag extends Bag
         }
 
         ksort($headers);
-
         $content = '';
-
         foreach ($headers as $name => $value) {
             $name = ucwords($name, '-');
             $content .= $name.': '.$value."\r\n";
@@ -70,7 +68,6 @@ class HeaderBag extends Bag
     public function replace(array $elements = []): void
     {
         $this->elements = [];
-
         $this->add($elements);
     }
 

@@ -138,15 +138,12 @@ class File extends Cache implements ICache
     public function set(string $name, $data, array $option = []): void
     {
         $option = $this->normalizeOptions($option);
-
         if ($option['serialize']) {
             $data = serialize($data);
         }
 
         $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
-
         $cachePath = $this->getCachePath($name);
-
         $this->writeData($cachePath, $data);
     }
 
@@ -158,7 +155,6 @@ class File extends Cache implements ICache
     public function delete(string $name): void
     {
         $cachePath = $this->getCachePath($name);
-
         if ($this->exist($name)) {
             unlink($cachePath);
         }
@@ -182,9 +178,7 @@ class File extends Cache implements ICache
     protected function isExpired(string $name, array $option): bool
     {
         $filePath = $this->getCachePath($name);
-
         $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
-
         if ($option['expire'] <= 0) {
             return true;
         }
@@ -221,7 +215,6 @@ class File extends Cache implements ICache
     protected function writeData(string $fileName, string $data): void
     {
         create_file($fileName);
-
         file_put_contents($fileName, $data, LOCK_EX);
     }
 

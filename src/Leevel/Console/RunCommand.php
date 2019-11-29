@@ -66,7 +66,6 @@ class RunCommand
     public function handle($command, array $inputs): string
     {
         $this->normalizeCommand($command);
-
         $input = new ArrayInput($inputs);
         $output = new BufferedOutput();
         $this->application->run($input, $output);

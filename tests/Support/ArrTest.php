@@ -50,17 +50,11 @@ class ArrTest extends TestCase
     public function testBaseUse(): void
     {
         $this->assertTrue(Arr::normalize(true));
-
         $this->assertSame(['a', 'b'], Arr::normalize('a,b'));
-
         $this->assertSame(['a', 'b'], Arr::normalize(['a', 'b']));
-
         $this->assertSame(['a'], Arr::normalize(['a', '']));
-
         $this->assertSame(['a'], Arr::normalize(['a', ''], ',', true));
-
         $this->assertSame(['a', ' 0 '], Arr::normalize(['a', ' 0 '], ',', true));
-
         $this->assertSame(['a', '0'], Arr::normalize(['a', ' 0 '], ','));
     }
 
@@ -368,5 +362,61 @@ class ArrTest extends TestCase
         ];
 
         Arr::filter($sourceData, $rule);
+    }
+
+    /**
+     * @api(
+     *     title="数据过滤默认不处理 NULL 值",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testFilterWithoutMust(): void
+    {
+        $sourceData = ['foo' => null];
+        $rule = ['foo' => ['intval']];
+
+        $result = Arr::filter($sourceData, $rule);
+
+        $json = <<<'eot'
+            {
+                "foo": null
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $result
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     title="数据过滤强制处理 NULL 值",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testFilterWithMust(): void
+    {
+        $sourceData = ['foo' => null];
+        $rule = ['foo' => ['intval', 'must']];
+
+        $result = Arr::filter($sourceData, $rule);
+
+        $json = <<<'eot'
+            {
+                "foo": 0
+            }
+            eot;
+
+        $this->assertSame(
+            $json,
+            $this->varJson(
+                $result
+            )
+        );
     }
 }

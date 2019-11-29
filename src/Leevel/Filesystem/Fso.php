@@ -45,7 +45,6 @@ class Fso
     public static function __callStatic(string $method, array $args)
     {
         $fn = __NAMESPACE__.'\\Fso\\'.un_camelize($method);
-
         if (!function_exists($fn)) {
             class_exists($fn);
         }

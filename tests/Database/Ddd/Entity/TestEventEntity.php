@@ -23,7 +23,6 @@ namespace Tests\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\IMeta;
-use Leevel\Database\Ddd\Meta;
 
 /**
  * TestEventEntity.
@@ -47,32 +46,37 @@ class TestEventEntity extends Entity
         'name' => [],
     ];
 
+    private static $leevelConnect;
+
     private $id;
 
     private $name;
 
     public function setter(string $prop, $value): IEntity
     {
-        $this->{$this->prop($prop)} = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$this->prop($prop)};
+        return $this->{$this->realProp($prop)};
     }
 
-    public static function meta($connect = null): IMeta
+    public static function withConnect($connect): void
     {
-        return MockMeta::instance('test', $connect);
+        static::$leevelConnect = $connect;
     }
-}
 
-class MockMeta extends Meta
-{
-    public function insert(array $saveData)
+    public static function connect()
     {
-        return 10;
+        return static::$leevelConnect;
+    }
+
+    public static function m22eta(): IMeta
+    {
+        return MockMeta::instance('test')
+            ->setDatabaseConnect(static::connect());
     }
 }

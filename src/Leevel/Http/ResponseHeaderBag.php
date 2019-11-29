@@ -44,6 +44,7 @@ class ResponseHeaderBag extends HeaderBag
      * @var string
      */
     const DISPOSITION_INLINE = 'inline';
+
     /**
      * Cookie.
      *
@@ -59,7 +60,6 @@ class ResponseHeaderBag extends HeaderBag
     public function __construct(array $elements = [])
     {
         parent::__construct($elements);
-
         $this->cookie = new Cookie();
     }
 
@@ -79,11 +79,11 @@ class ResponseHeaderBag extends HeaderBag
     /**
      * 设置 COOKIE 别名.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      */
-    public function cookie(string $name, string $value = '', array $option = [])
+    public function cookie(string $name, $value = null, array $option = [])
     {
         $this->setCookie($name, $value, $option);
     }
@@ -91,11 +91,11 @@ class ResponseHeaderBag extends HeaderBag
     /**
      * 设置 COOKIE.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      */
-    public function setCookie(string $name, string $value = '', array $option = []): void
+    public function setCookie(string $name, $value = null, array $option = []): void
     {
         $this->cookie->set($name, $value, $option);
     }

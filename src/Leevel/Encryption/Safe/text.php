@@ -41,11 +41,9 @@ function text(string $strings, bool $deep = true, array $black = []): string
     $strings = clean_js($strings);
     $strings = preg_replace('/\s(?=\s)/', '', $strings); // 彻底过滤空格
     $strings = preg_replace('/[\n\r\t]/', ' ', $strings);
-
     if ($black) {
         $strings = str_replace($black, '', $strings);
     }
-
     $strings = strip_tags($strings);
     $strings = htmlspecialchars($strings);
     $strings = str_replace("'", '', $strings);

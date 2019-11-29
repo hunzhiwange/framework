@@ -284,12 +284,10 @@ class Container implements IContainer, ArrayAccess
                 if (is_int($key)) {
                     continue;
                 }
-
                 $this->alias($key, $item);
             }
         } else {
             $value = (array) $value;
-
             foreach ($value as $item) {
                 $this->alias[$item] = $alias;
             }
@@ -310,7 +308,6 @@ class Container implements IContainer, ArrayAccess
     {
         // 别名
         $name = $this->getAlias($name);
-
         if (isset($this->deferredProviders[$name])) {
             $this->registerDeferredProvider($name);
         }
@@ -404,14 +401,7 @@ class Container implements IContainer, ArrayAccess
     public function remove(string $name): void
     {
         $name = $this->normalize($name);
-
-        $prop = [
-            'services',
-            'instances',
-            'singletons',
-        ];
-
-        foreach ($prop as $item) {
+        foreach (['services', 'instances', 'singletons'] as $item) {
             if (isset($this->{$item}[$name])) {
                 unset($this->{$item}[$name]);
             }
@@ -535,14 +525,12 @@ class Container implements IContainer, ArrayAccess
         }
 
         $this->deferredProviders = $deferredProviders;
-
         foreach ($deferredAlias as $alias) {
             $this->alias($alias);
         }
 
         foreach ($providers as $provider) {
             $provider = $this->register($provider);
-
             if (method_exists($provider, 'bootstrap')) {
                 $this->providerBootstraps[] = $provider;
             }
@@ -602,7 +590,6 @@ class Container implements IContainer, ArrayAccess
             }
         } else {
             $name = $this->normalize($name);
-
             if ($this->existsCoroutine($name)) {
                 unset($this->coroutineInstances[$this->coroutineCid()][$name]);
             }
@@ -686,9 +673,7 @@ class Container implements IContainer, ArrayAccess
     protected function registerDeferredProvider(string $provider): void
     {
         $providerInstance = $this->register($this->deferredProviders[$provider]);
-
         $this->callProviderBootstrap($providerInstance);
-
         unset($this->deferredProviders[$provider]);
     }
 
@@ -790,7 +775,6 @@ class Container implements IContainer, ArrayAccess
     protected function normalizeInjectionArgs($value, array $args): array
     {
         list($args, $required, $validArgs) = $this->parseInjection($value, $args);
-
         if ($validArgs < $required) {
             $e = sprintf('There are %d required args,but %d gived.', $required, $validArgs);
 
@@ -814,16 +798,13 @@ class Container implements IContainer, ArrayAccess
     {
         $result = [];
         $required = 0;
-
         $param = $this->parseReflection($injection);
         $validArgs = count($param);
-
         foreach ($param as $key => $item) {
             try {
                 switch (true) {
                     case $argsclass = $this->parseParamClass($item):
                         $argsclass = (string) $argsclass;
-
                         if (isset($args[0]) && is_object($args[0]) && $args[0] instanceof $argsclass) {
                             $data = array_shift($args);
                         } elseif (array_key_exists($argsclass, $args)) {
@@ -844,7 +825,6 @@ class Container implements IContainer, ArrayAccess
                         break;
                     default:
                         $required++;
-
                         if (array_key_exists($item->name, $args)) {
                             $data = $args[$item->name];
                             $validArgs++;
@@ -868,11 +848,9 @@ class Container implements IContainer, ArrayAccess
 
         if ($args) {
             $result = array_values($result);
-
             // 定义函数 function(IFoo $foo)，调用方法 call([1, 2])，则进行基本的 count($result) 逻辑
             // 定义函数 function($foo)，调用方法 call([1, 2])，则进行 -($required-$validArgs) 填充 null
             $min = count($result) - ($required - $validArgs);
-
             foreach ($args as $k => $value) {
                 if (is_int($k)) {
                     $result[$k + $min] = $value;
@@ -881,11 +859,7 @@ class Container implements IContainer, ArrayAccess
             }
         }
 
-        return [
-            $result,
-            $required,
-            $validArgs,
-        ];
+        return [$result, $required, $validArgs];
     }
 
     /**
@@ -898,7 +872,6 @@ class Container implements IContainer, ArrayAccess
     protected function parseParamClass(ReflectionParameter $param)
     {
         $classObject = $param->getClass();
-
         if (!$classObject || !($classObject instanceof ReflectionClass)) {
             return false;
         }
@@ -918,7 +891,6 @@ class Container implements IContainer, ArrayAccess
     protected function parseClassFromContainer(string $argsclass): object
     {
         $itemMake = $this->make($argsclass);
-
         if (is_object($itemMake)) {
             return $itemMake;
         }
@@ -993,7 +965,6 @@ class Container implements IContainer, ArrayAccess
     protected function parseClassReflection(string $injection): array
     {
         $reflection = new ReflectionClass($injection);
-
         if (!$reflection->isInstantiable()) {
             $e = sprintf('Class %s is not instantiable.', $injection);
 
@@ -1001,7 +972,6 @@ class Container implements IContainer, ArrayAccess
         }
 
         $param = [];
-
         if (($constructor = $reflection->getConstructor())) {
             $param = $constructor->getParameters();
         }
@@ -1025,9 +995,11 @@ class Container implements IContainer, ArrayAccess
     {
         try { // @codeCoverageIgnore
             return (new ReflectionClass($classname))->newInstanceArgs($args);
-        } catch (ReflectionException $e) { // @codeCoverageIgnore
-            return (new ReflectionClass($classname))->newInstanceWithoutConstructor(); // @codeCoverageIgnore
-        } // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+        } catch (ReflectionException $e) {
+            return (new ReflectionClass($classname))->newInstanceWithoutConstructor();
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     /**

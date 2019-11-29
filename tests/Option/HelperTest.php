@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Option;
 
 use Leevel\Di\Container;
+use Leevel\Option\Helper;
 use Leevel\Option\IOption;
 use Tests\TestCase;
 
@@ -60,6 +61,33 @@ class HelperTest extends TestCase
         $this->assertInstanceof(IOption::class, f('Leevel\\Option\\Helper\\option'));
         $this->assertNull(f('Leevel\\Option\\Helper\\option_set', ['foo' => 'bar']));
         $this->assertSame('bar', f('Leevel\\Option\\Helper\\option_get', 'foo'));
+    }
+
+    public function testOptionHelper(): void
+    {
+        $option = $this->createMock(IOption::class);
+        $this->assertNull($option->set(['foo' => 'bar']));
+        $option->method('get')->willReturn('bar');
+        $this->assertSame('bar', $option->get('foo'));
+
+        $container = $this->createContainer();
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+
+        $this->assertInstanceof(IOption::class, Helper::option());
+        $this->assertNull(Helper::optionSet(['foo' => 'bar']));
+        $this->assertSame('bar', Helper::optionGet('foo'));
+    }
+
+    public function testHelperNotFound(): void
+    {
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage(
+            'Call to undefined function Leevel\\Option\\Helper\\not_found()'
+        );
+
+        $this->assertFalse(Helper::notFound());
     }
 
     protected function createContainer(): Container

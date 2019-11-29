@@ -28,8 +28,6 @@ namespace Leevel\Cache;
  * @since 2019.06.05
  *
  * @version 1.0
- *
- * @see \Leevel\Cache\Proxy\ILoad 请保持接口设计的一致性
  */
 interface ILoad
 {

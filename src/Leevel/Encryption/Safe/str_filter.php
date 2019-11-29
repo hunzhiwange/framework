@@ -32,7 +32,6 @@ function str_filter($data, int $maxNum = 20000)
 {
     if (is_array($data)) {
         $result = [];
-
         foreach ($data as $key => $val) {
             $result[str_filter($key)] = str_filter($val, $maxNum);
         }
@@ -41,13 +40,11 @@ function str_filter($data, int $maxNum = 20000)
     }
 
     $data = trim(length_limit((string) ($data), $maxNum));
-
     $data = preg_replace(
             '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
             '&\\1',
             custom_htmlspecialchars($data)
         );
-
     $data = str_replace('　', '', $data);
 
     return $data;

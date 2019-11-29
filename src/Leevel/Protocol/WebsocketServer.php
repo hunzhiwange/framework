@@ -135,13 +135,10 @@ class WebsocketServer extends HttpServer implements IServer
         $this->log($message);
 
         $this->setClientPathInfo($swooleRequest->fd, $swooleRequest->server['path_info']);
-
         $request = $this->normalizeRequest($swooleRequest);
         $request->setPathInfo($this->normalizePathInfo($request->getPathInfo(), self::OPEN));
-
         $this->setPreRequestMatched($request, [$server, $request, $swooleRequest->fd]);
-
-        $response = $this->dispatchRouter($request);
+        $this->dispatchRouter($request);
     }
 
     /**
@@ -165,10 +162,8 @@ class WebsocketServer extends HttpServer implements IServer
         }
 
         $request = $this->createRequestWithPathInfo($pathInfo, self::MESSAGE);
-
         $this->setPreRequestMatched($request, [$server, $frame, $frame->fd]);
-
-        $response = $this->dispatchRouter($request);
+        $this->dispatchRouter($request);
     }
 
     /**
@@ -195,7 +190,6 @@ class WebsocketServer extends HttpServer implements IServer
          * @see https://wiki.swoole.com/wiki/page/413.html
          */
         $clientInfo = $this->server->getClientInfo($fd);
-
         if ($clientInfo['websocket_status'] <= 0) {
             return;
         }
@@ -210,10 +204,8 @@ class WebsocketServer extends HttpServer implements IServer
         }
 
         $request = $this->createRequestWithPathInfo($pathInfo, self::CLOSE);
-
         $this->setPreRequestMatched($request, [$server, $fd, $reactorId]);
-
-        $response = $this->dispatchRouter($request);
+        $this->dispatchRouter($request);
     }
 
     /**
@@ -292,7 +284,6 @@ class WebsocketServer extends HttpServer implements IServer
     {
         $key = self::PATHINFO.$fd;
         $pathInfo = $this->container->make($key);
-
         if ($key === $pathInfo) {
             return false;
         }

@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.union",
+ *     zh-CN:title="查询语言.union",
+ *     path="database/query/union",
+ *     description="",
+ * )
  */
 class UnionTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="Union 联合查询基本用法",
+     *     description="",
+     *     note="参数支持字符串、子查询器以及它们构成的一维数组。",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION SELECT `yyyyy`.`yid` AS `id`,`yyyyy`.`name` AS `value` FROM `yyyyy` WHERE `yyyyy`.`first_name` = '222'\nUNION SELECT id,value FROM test2\nUNION SELECT `yyyyy`.`yid` AS `id`,`yyyyy`.`name` AS `value` FROM `yyyyy` WHERE `yyyyy`.`first_name` = '222'",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = '222'\nUNION SELECT id,value FROM test_query WHERE id > 3\nUNION SELECT `test_query`.`tid` AS `id`,`test_query`.`name` AS `value` FROM `test_query` WHERE `test_query`.`first_name` = '222'",
                 [],
                 false,
                 null,
@@ -49,15 +63,15 @@ class UnionTest extends TestCase
             eot;
 
         $union1 = $connect
-            ->table('yyyyy', 'yid as id,name as value')
+            ->table('test_query', 'tid as id,name as value')
             ->where('first_name', '=', '222');
-        $union2 = 'SELECT id,value FROM test2';
+        $union2 = 'SELECT id,value FROM test_query WHERE id > 3';
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid AS id,tname as value')
                     ->union($union1)
                     ->union($union2)
                     ->union($union1)
@@ -69,20 +83,27 @@ class UnionTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->union([$union1, $union2, $union1])
                     ->findAll(true)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="UnionAll 联合查询不去重",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUnionAll(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION ALL SELECT id,value FROM test2",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION ALL SELECT id,value FROM test_query WHERE id > 1",
                 [],
                 false,
                 null,
@@ -91,13 +112,13 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $union1 = 'SELECT id,value FROM test2';
+        $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->unionAll($union1)
                     ->findAll(true)
             )
@@ -112,7 +133,7 @@ class UnionTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION SELECT id,value FROM test3",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT id,value FROM test_query WHERE id > 2",
                 [],
                 false,
                 null,
@@ -121,14 +142,14 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $union1 = 'SELECT id,value FROM test2';
-        $union2 = 'SELECT id,value FROM test3';
+        $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
+        $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->if($condition)
                     ->union($union1)
                     ->else()
@@ -147,7 +168,7 @@ class UnionTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION SELECT id,value FROM test2",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION SELECT id,value FROM test_query WHERE id > 1",
                 [],
                 false,
                 null,
@@ -156,14 +177,14 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $union1 = 'SELECT id,value FROM test2';
-        $union2 = 'SELECT id,value FROM test3';
+        $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
+        $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->if($condition)
                     ->union($union1)
                     ->else()
@@ -182,7 +203,7 @@ class UnionTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION ALL SELECT id,value FROM test3",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION ALL SELECT id,value FROM test_query WHERE id > 2",
                 [],
                 false,
                 null,
@@ -191,14 +212,14 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $union1 = 'SELECT id,value FROM test2';
-        $union2 = 'SELECT id,value FROM test3';
+        $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
+        $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->if($condition)
                     ->unionAll($union1)
                     ->else()
@@ -217,7 +238,7 @@ class UnionTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`tid` AS `id`,`test`.`tname` AS `value` FROM `test` \nUNION ALL SELECT id,value FROM test2",
+                "SELECT `test_query`.`tid` AS `id`,`test_query`.`tname` AS `value` FROM `test_query` \nUNION ALL SELECT id,value FROM test_query WHERE id > 1",
                 [],
                 false,
                 null,
@@ -226,14 +247,14 @@ class UnionTest extends TestCase
             ]
             eot;
 
-        $union1 = 'SELECT id,value FROM test2';
-        $union2 = 'SELECT id,value FROM test3';
+        $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
+        $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'tid as id,tname as value')
+                    ->table('test_query', 'tid as id,tname as value')
                     ->if($condition)
                     ->unionAll($union1)
                     ->else()
@@ -255,7 +276,7 @@ class UnionTest extends TestCase
         $union1 = 'SELECT id,value FROM test2';
 
         $connect
-            ->table('test', 'tid as id,tname as value')
+            ->table('test_query', 'tid as id,tname as value')
             ->union($union1, 'NOT FOUND')
             ->findAll(true);
     }

@@ -69,9 +69,7 @@ class Token extends Auth implements IAuth
     {
         $this->cache = $cache;
         $this->request = $request;
-
         parent::__construct($option);
-
         $this->option['token'] = $this->getTokenNameFromRequest();
     }
 
@@ -117,7 +115,6 @@ class Token extends Auth implements IAuth
     protected function getTokenNameFromRequest(): string
     {
         $token = $this->request->query($this->option['input_token'], '');
-
         if (!$token) {
             $token = $this->request->input($this->option['input_token'], '');
         }

@@ -33,7 +33,7 @@ use Leevel\Encryption\Encryption as BaseEncryption;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Encryption implements IEncryption
+class Encryption
 {
     /**
      * call.
@@ -74,7 +74,7 @@ class Encryption implements IEncryption
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Encryption\Encryption
      */

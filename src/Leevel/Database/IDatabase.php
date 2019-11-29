@@ -32,7 +32,114 @@ use PDO;
  *
  * @version 1.0
  *
- * @see \Leevel\Database\Proxy\IDatabase 请保持接口设计的一致性
+ * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.
+ * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                  返回数据库连接对象.
+ * @method static \Leevel\Database\Select selfDatabaseSelect()                                                                                  占位符返回本对象.
+ * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                指定返回 SQL 不做任何操作.
+ * @method static \Leevel\Database\Select master(bool $master = false)                                                                          设置是否查询主服务器.
+ * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                               设置查询参数.
+ * @method static \Leevel\Database\Select asClass(string $className, array $args = [])                                                          设置以类返会结果.
+ * @method static \Leevel\Database\Select asDefault()                                                                                           设置默认形式返回.
+ * @method static \Leevel\Database\Select asCollection(bool $acollection = true)                                                                设置是否以集合返回.
+ * @method static select($data = null, array $bind = [], bool $flag = false)                                                                    原生 sql 查询数据 select.
+ * @method static insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                    插入数据 insert (支持原生 sql).
+ * @method static insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                           批量插入数据 insertAll.
+ * @method static update($data, array $bind = [], bool $flag = false)                                                                           更新数据 update (支持原生 sql).
+ * @method static updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                    更新某个字段的值
+ * @method static updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                           字段递增.
+ * @method static updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                           字段减少.
+ * @method static delete(?string $data = null, array $bind = [], bool $flag = false)                                                            删除数据 delete (支持原生 sql).
+ * @method static truncate(bool $flag = false)                                                                                                  清空表重置自增 ID.
+ * @method static findOne(bool $flag = false)                                                                                                   返回一条记录.
+ * @method static findAll(bool $flag = false)                                                                                                   返回所有记录.
+ * @method static find(?int $num = null, bool $flag = false)                                                                                    返回最后几条记录.
+ * @method static value(string $field, bool $flag = false)                                                                                      返回一个字段的值
+ * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                         返回一列数据.
+ * @method static void chunk(int $count, \Closure $chunk)                                                                                       数据分块处理.
+ * @method static void each(int $count, \Closure $each)                                                                                         数据分块处理依次回调.
+ * @method static findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                               总记录数.
+ * @method static findAvg(string $field, string $alias = 'avg_value', bool $flag = false)                                                       平均数.
+ * @method static findMax(string $field, string $alias = 'max_value', bool $flag = false)                                                       最大值.
+ * @method static findMin(string $field, string $alias = 'min_value', bool $flag = false)                                                       最小值.
+ * @method static findSum(string $field, string $alias = 'sum_value', bool $flag = false)                                                       合计.
+ * @method static \Leevel\Database\Page page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []) 分页查询. 可以渲染 HTML.
+ * @method static \Leevel\Database\Page pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])                  创建一个无限数据的分页查询.
+ * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])               创建一个只有上下页的分页查询.
+ * @method static int pageCount(string $cols = '*')                                                                                             取得分页查询记录数量.
+ * @method static string makeSql(bool $withLogicGroup = false)                                                                                  获得查询字符串.
+ * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                                                                 根据分页设置条件.
+ * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
+ * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
+ * @method static \Leevel\Database\Select reset(?string $option = null)                                                                         重置查询条件.
+ * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                prefix 查询.
+ * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                            添加一个要查询的表及其要查询的字段.
+ * @method static string getAlias()                                                                                                             获取表别名.
+ * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)                                                           添加字段.
+ * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)                                                        设置字段.
+ * @method static \Leevel\Database\Select where(...$cond)                                                                                       where 查询条件.
+ * @method static \Leevel\Database\Select orWhere(...$cond)                                                                                     orWhere 查询条件.
+ * @method static \Leevel\Database\Select whereRaw(string $raw)                                                                                 Where 原生查询.
+ * @method static \Leevel\Database\Select orWhereRaw(string $raw)                                                                               Where 原生 OR 查询.
+ * @method static \Leevel\Database\Select whereExists($exists)                                                                                  exists 方法支持
+ * @method static \Leevel\Database\Select whereNotExists($exists)                                                                               not exists 方法支持
+ * @method static \Leevel\Database\Select whereBetween(...$cond)                                                                                whereBetween 查询条件.
+ * @method static \Leevel\Database\Select whereNotBetween(...$cond)                                                                             whereNotBetween 查询条件.
+ * @method static \Leevel\Database\Select whereNull(...$cond)                                                                                   whereNull 查询条件.
+ * @method static \Leevel\Database\Select whereNotNull(...$cond)                                                                                whereNotNull 查询条件.
+ * @method static \Leevel\Database\Select whereIn(...$cond)                                                                                     whereIn 查询条件.
+ * @method static \Leevel\Database\Select whereNotIn(...$cond)                                                                                  whereNotIn 查询条件.
+ * @method static \Leevel\Database\Select whereLike(...$cond)                                                                                   whereLike 查询条件.
+ * @method static \Leevel\Database\Select whereNotLike(...$cond)                                                                                whereNotLike 查询条件.
+ * @method static \Leevel\Database\Select whereDate(...$cond)                                                                                   whereDate 查询条件.
+ * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                    whereDay 查询条件.
+ * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                  whereMonth 查询条件.
+ * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                   whereYear 查询条件.
+ * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)                                                            参数绑定支持
+ * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                                  index 强制索引（或者忽略索引）.
+ * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                                  index 忽略索引.
+ * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                                         join 查询.
+ * @method static \Leevel\Database\Select innerJoin($table, $cols, ...$cond)                                                                    innerJoin 查询.
+ * @method static \Leevel\Database\Select leftJoin($table, $cols, ...$cond)                                                                     leftJoin 查询.
+ * @method static \Leevel\Database\Select rightJoin($table, $cols, ...$cond)                                                                    rightJoin 查询.
+ * @method static \Leevel\Database\Select fullJoin($table, $cols, ...$cond)                                                                     fullJoin 查询.
+ * @method static \Leevel\Database\Select crossJoin($table, $cols, ...$cond)                                                                    crossJoin 查询.
+ * @method static \Leevel\Database\Select naturalJoin($table, $cols, ...$cond)                                                                  naturalJoin 查询.
+ * @method static \Leevel\Database\Select union($selects, string $type = 'UNION')                                                               添加一个 UNION 查询.
+ * @method static \Leevel\Database\Select unionAll($selects)                                                                                    添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Select groupBy($expression)                                                                                  指定 GROUP BY 子句.
+ * @method static \Leevel\Database\Select having(...$cond)                                                                                      添加一个 HAVING 条件 < 参数规范参考 where()方法 >.
+ * @method static \Leevel\Database\Select orHaving(...$cond)                                                                                    orHaving 查询条件.
+ * @method static \Leevel\Database\Select havingRaw(string $raw)                                                                                Having 原生查询.
+ * @method static \Leevel\Database\Select orHavingRaw(string $raw)                                                                              Having 原生 OR 查询.
+ * @method static \Leevel\Database\Select havingBetween(...$cond)                                                                               havingBetween 查询条件.
+ * @method static \Leevel\Database\Select havingNotBetween(...$cond)                                                                            havingNotBetween 查询条件.
+ * @method static \Leevel\Database\Select havingNull(...$cond)                                                                                  havingNull 查询条件.
+ * @method static \Leevel\Database\Select havingNotNull(...$cond)                                                                               havingNotNull 查询条件.
+ * @method static \Leevel\Database\Select havingIn(...$cond)                                                                                    havingIn 查询条件.
+ * @method static \Leevel\Database\Select havingNotIn(...$cond)                                                                                 havingNotIn 查询条件.
+ * @method static \Leevel\Database\Select havingLike(...$cond)                                                                                  havingLike 查询条件.
+ * @method static \Leevel\Database\Select havingNotLike(...$cond)                                                                               havingNotLike 查询条件.
+ * @method static \Leevel\Database\Select havingDate(...$cond)                                                                                  havingDate 查询条件.
+ * @method static \Leevel\Database\Select havingDay(...$cond)                                                                                   havingDay 查询条件.
+ * @method static \Leevel\Database\Select havingMonth(...$cond)                                                                                 havingMonth 查询条件.
+ * @method static \Leevel\Database\Select havingYear(...$cond)                                                                                  havingYear 查询条件.
+ * @method static \Leevel\Database\Select orderBy($expression, string $orderDefault = 'ASC')                                                    添加排序.
+ * @method static \Leevel\Database\Select latest(string $field = 'create_at')                                                                   最近排序数据.
+ * @method static \Leevel\Database\Select oldest(string $field = 'create_at')                                                                   最早排序数据.
+ * @method static \Leevel\Database\Select distinct(bool $flag = true)                                                                           创建一个 SELECT DISTINCT 查询.
+ * @method static \Leevel\Database\Select count(string $field = '*', string $alias = 'row_count')                                               总记录数.
+ * @method static \Leevel\Database\Select avg(string $field, string $alias = 'avg_value')                                                       平均数.
+ * @method static \Leevel\Database\Select max(string $field, string $alias = 'max_value')                                                       最大值.
+ * @method static \Leevel\Database\Select min(string $field, string $alias = 'min_value')                                                       最小值.
+ * @method static \Leevel\Database\Select sum(string $field, string $alias = 'sum_value')                                                       合计
+ * @method static \Leevel\Database\Select one()                                                                                                 指示仅查询第一个符合条件的记录.
+ * @method static \Leevel\Database\Select all()                                                                                                 指示查询所有符合条件的记录.
+ * @method static \Leevel\Database\Select top(int $count = 30)                                                                                  查询几条记录.
+ * @method static \Leevel\Database\Select limit(int $offset = 0, int $count = 0)                                                                limit 限制条数.
+ * @method static \Leevel\Database\Select forUpdate(bool $flag = true)                                                                          是否构造一个 FOR UPDATE 查询.
+ * @method static \Leevel\Database\Select setOption(string $name, $value)                                                                       设置查询参数.
+ * @method static array getOption()                                                                                                             返回查询参数.
+ * @method static array getBindParams()                                                                                                         返回参数绑定.
  */
 interface IDatabase
 {
@@ -61,8 +168,8 @@ interface IDatabase
      * 返回 Pdo 查询连接.
      *
      * @param bool|int $master
-     *                         - bool false (读服务器) true (写服务器)
-     *                         - int 其它去对应服务器连接ID 0 表示主服务器
+     *                         - bool,false (读服务器),true (写服务器)
+     *                         - int,其它去对应服务器连接 ID,0 表示主服务器
      *
      * @return mixed
      */
@@ -124,6 +231,20 @@ interface IDatabase
     public function rollBack(): void;
 
     /**
+     * 设置是否启用部分事务.
+     *
+     * @param bool $savepoints
+     */
+    public function setSavepoints(bool $savepoints): void;
+
+    /**
+     * 获取是否启用部分事务.
+     *
+     * @return bool
+     */
+    public function hasSavepoints(): bool;
+
+    /**
      * 获取最后插入 ID 或者列.
      *
      * @param null|string $name 自增序列名
@@ -135,9 +256,9 @@ interface IDatabase
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @return array
+     * @return null|string
      */
-    public function lastSql(): array;
+    public function getLastSql(): ?string;
 
     /**
      * 返回影响记录.
@@ -160,6 +281,11 @@ interface IDatabase
      * 关闭数据库连接.
      */
     public function closeConnects(): void;
+
+    /**
+     * 归还连接池.
+     */
+    public function release(): void;
 
     /**
      * sql 表达式格式化.
@@ -267,1057 +393,4 @@ interface IDatabase
      * @return string
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string;
-
-    /**
-     * 查询对象
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function databaseCondition(): Condition;
-
-    /**
-     * 返回数据库连接对象
-     *
-     * @return \Leevel\Database\IDatabase
-     */
-    public function databaseConnect(): self;
-
-    /**
-     * 占位符返回本对象
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function selfDatabaseSelect(): Select;
-
-    /**
-     * 指定返回 SQL 不做任何操作.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function sql(bool $flag = true): Select;
-
-    /**
-     * 设置是否查询主服务器.
-     *
-     * @param bool $master
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function master(bool $master = false): Select;
-
-    /**
-     * 设置查询参数.
-     *
-     * @param int        $fetchStyle
-     * @param null|mixed $fetchArgument
-     * @param array      $ctorArgs
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = []): Select;
-
-    /**
-     * 设置以类返会结果.
-     *
-     * @param string $className
-     * @param array  $args
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function asClass(string $className, array $args = []): Select;
-
-    /**
-     * 设置默认形式返回.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function asDefault(): Select;
-
-    /**
-     * 设置是否以集合返回.
-     *
-     * @param bool $acollection
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function asCollection(bool $acollection = true): Select;
-
-    /**
-     * 原生 sql 查询数据 select.
-     *
-     * @param null|callable|\Leevel\Database\Select|string $data
-     * @param array                                        $bind
-     * @param bool                                         $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function select($data = null, array $bind = [], bool $flag = false);
-
-    /**
-     * 插入数据 insert (支持原生 sql).
-     *
-     * @param array|string $data
-     * @param array        $bind
-     * @param bool         $replace
-     * @param bool         $flag    指示是否不做任何操作只返回 SQL
-     *
-     * @return null|array|int
-     */
-    public function insert($data, array $bind = [], bool $replace = false, bool $flag = false);
-
-    /**
-     * 批量插入数据 insertAll.
-     *
-     * @param array $data
-     * @param array $bind
-     * @param bool  $replace
-     * @param bool  $flag    指示是否不做任何操作只返回 SQL
-     *
-     * @return null|array|int
-     */
-    public function insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false);
-
-    /**
-     * 更新数据 update (支持原生 sql).
-     *
-     * @param array|string $data
-     * @param array        $bind
-     * @param bool         $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return array|int
-     */
-    public function update($data, array $bind = [], bool $flag = false);
-
-    /**
-     * 更新某个字段的值
-     *
-     * @param string $column
-     * @param mixed  $value
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
-     *
-     * @return array|int
-     */
-    public function updateColumn(string $column, $value, array $bind = [], bool $flag = false);
-
-    /**
-     * 字段递增.
-     *
-     * @param string $column
-     * @param int    $step
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
-     *
-     * @return array|int
-     */
-    public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false);
-
-    /**
-     * 字段减少.
-     *
-     * @param string $column
-     * @param int    $step
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
-     *
-     * @return array|int
-     */
-    public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false);
-
-    /**
-     * 删除数据 delete (支持原生 sql).
-     *
-     * @param null|string $data
-     * @param array       $bind
-     * @param bool        $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return array|int
-     */
-    public function delete(?string $data = null, array $bind = [], bool $flag = false);
-
-    /**
-     * 清空表重置自增 ID.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return array|int
-     */
-    public function truncate(bool $flag = false);
-
-    /**
-     * 返回一条记录.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function findOne(bool $flag = false);
-
-    /**
-     * 返回所有记录.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function findAll(bool $flag = false);
-
-    /**
-     * 返回最后几条记录.
-     *
-     * @param null|int $num
-     * @param bool     $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function find(?int $num = null, bool $flag = false);
-
-    /**
-     * 返回一个字段的值
-     *
-     * @param string $field
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function value(string $field, bool $flag = false);
-
-    /**
-     * 返回一个字段的值(别名).
-     *
-     * @param string $field
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function pull(string $field, bool $flag = false);
-
-    /**
-     * 返回一列数据.
-     *
-     * @param mixed       $fieldValue
-     * @param null|string $fieldKey
-     * @param bool        $flag       指示是否不做任何操作只返回 SQL
-     *
-     * @return array
-     */
-    public function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array;
-
-    /**
-     * 数据分块处理.
-     *
-     * @param int      $count
-     * @param \Closure $chunk
-     */
-    public function chunk(int $count, Closure $chunk): void;
-
-    /**
-     * 数据分块处理依次回调.
-     *
-     * @param int     $count
-     * @param Closure $each
-     */
-    public function each(int $count, Closure $each): void;
-
-    /**
-     * 总记录数.
-     *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return array|int
-     */
-    public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false);
-
-    /**
-     * 平均数.
-     *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false);
-
-    /**
-     * 最大值
-     *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function findMax(string $field, string $alias = 'max_value', bool $flag = false);
-
-    /**
-     * 最小值
-     *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function findMin(string $field, string $alias = 'min_value', bool $flag = false);
-
-    /**
-     * 合计
-     *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function findSum(string $field, string $alias = 'sum_value', bool $flag = false);
-
-    /**
-     * 分页查询.
-     *
-     * @param int    $currentPage
-     * @param int    $perPage
-     * @param bool   $flag
-     * @param bool   $withTotal
-     * @param string $column
-     *
-     * @return array
-     */
-    public function page(int $currentPage, int $perPage = 10, bool $flag = false, bool $withTotal = true, string $column = '*'): array;
-
-    /**
-     * 分页查询.
-     * 可以渲染 HTML.
-     *
-     * @param int    $currentPage
-     * @param int    $perPage
-     * @param bool   $flag
-     * @param string $column
-     * @param array  $option
-     *
-     * @return array
-     */
-    public function pageHtml(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array;
-
-    /**
-     * 创建一个无限数据的分页查询.
-     *
-     * @param int   $currentPage
-     * @param int   $perPage
-     * @param bool  $flag
-     * @param array $option
-     *
-     * @return array
-     */
-    public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array;
-
-    /**
-     * 创建一个只有上下页的分页查询.
-     *
-     * @param int   $currentPage
-     * @param int   $perPage
-     * @param bool  $flag
-     * @param array $option
-     *
-     * @return array
-     */
-    public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array;
-
-    /**
-     * 取得分页查询记录数量.
-     *
-     * @param string $cols
-     *
-     * @return int
-     */
-    public function pageCount(string $cols = '*'): int;
-
-    /**
-     * 获得查询字符串.
-     *
-     * @param $withLogicGroup
-     *
-     * @return string
-     */
-    public function makeSql(bool $withLogicGroup = false): string;
-
-    /**
-     * 根据分页设置条件.
-     *
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function forPage(int $page, int $perPage = 15): Condition;
-
-    /**
-     * 时间控制语句开始.
-     *
-     * @param string $type
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function time(string $type = 'date'): Condition;
-
-    /**
-     * 时间控制语句结束.
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function endTime(): Condition;
-
-    /**
-     * 重置查询条件.
-     *
-     * @param null|string $option
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function reset(?string $option = null): Condition;
-
-    /**
-     * prefix 查询.
-     *
-     * @param string $prefix
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function prefix(string $prefix): Condition;
-
-    /**
-     * 添加一个要查询的表及其要查询的字段.
-     *
-     * @param mixed        $table
-     * @param array|string $cols
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function table($table, $cols = '*'): Select;
-
-    /**
-     * 获取表别名.
-     *
-     * @return string
-     */
-    public function getAlias(): string;
-
-    /**
-     * 添加字段.
-     *
-     * @param mixed       $cols
-     * @param null|string $table
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function columns($cols = '*', ?string $table = null): Select;
-
-    /**
-     * 设置字段.
-     *
-     * @param mixed       $cols
-     * @param null|string $table
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function setColumns($cols = '*', ?string $table = null): Select;
-
-    /**
-     * where 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function where(...$cond): Select;
-
-    /**
-     * orWhere 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function orWhere(...$cond): Condition;
-
-    /**
-     * Where 原生查询.
-     *
-     * @param string $raw
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereRaw(string $raw): Condition;
-
-    /**
-     * Where 原生 OR 查询.
-     *
-     * @param string $raw
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function orWhereRaw(string $raw): Condition;
-
-    /**
-     * exists 方法支持
-     *
-     * @param mixed $exists
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereExists($exists): Condition;
-
-    /**
-     * not exists 方法支持
-     *
-     * @param mixed $exists
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereNotExists($exists): Condition;
-
-    /**
-     * whereBetween 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereBetween(...$cond): Condition;
-
-    /**
-     * whereNotBetween 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereNotBetween(...$cond): Condition;
-
-    /**
-     * whereNull 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereNull(...$cond): Condition;
-
-    /**
-     * whereNotNull 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereNotNull(...$cond): Condition;
-
-    /**
-     * whereIn 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereIn(...$cond): Condition;
-
-    /**
-     * whereNotIn 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereNotIn(...$cond): Condition;
-
-    /**
-     * whereLike 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereLike(...$cond): Condition;
-
-    /**
-     * whereNotLike 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereNotLike(...$cond): Condition;
-
-    /**
-     * whereDate 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereDate(...$cond): Condition;
-
-    /**
-     * whereDay 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereDay(...$cond): Condition;
-
-    /**
-     * whereMonth 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereMonth(...$cond): Condition;
-
-    /**
-     * whereYear 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function whereYear(...$cond): Condition;
-
-    /**
-     * 参数绑定支持
-     *
-     * @param mixed      $names
-     * @param null|mixed $value
-     * @param int        $type
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function bind($names, $value = null, int $type = PDO::PARAM_STR): Condition;
-
-    /**
-     * index 强制索引（或者忽略索引）.
-     *
-     * @param array|string $indexs
-     * @param string       $type
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function forceIndex($indexs, $type = 'FORCE'): Condition;
-
-    /**
-     * index 忽略索引.
-     *
-     * @param array|string $indexs
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function ignoreIndex($indexs): Condition;
-
-    /**
-     * join 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function join($table, $cols, ...$cond): Condition;
-
-    /**
-     * innerJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function innerJoin($table, $cols, ...$cond): Condition;
-
-    /**
-     * leftJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function leftJoin($table, $cols, ...$cond): Condition;
-
-    /**
-     * rightJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function rightJoin($table, $cols, ...$cond): Condition;
-
-    /**
-     * fullJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function fullJoin($table, $cols, ...$cond): Condition;
-
-    /**
-     * crossJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function crossJoin($table, $cols, ...$cond): Condition;
-
-    /**
-     * naturalJoin 查询.
-     *
-     * @param mixed        $table   同 table $table
-     * @param array|string $cols    同 table $cols
-     * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function naturalJoin($table, $cols, ...$cond): Condition;
-
-    /**
-     * 添加一个 UNION 查询.
-     *
-     * @param array|callable|string $selects
-     * @param string                $type
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function union($selects, string $type = 'UNION'): Condition;
-
-    /**
-     * 添加一个 UNION ALL 查询.
-     *
-     * @param array|callable|string $selects
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function unionAll($selects): Condition;
-
-    /**
-     * 指定 GROUP BY 子句.
-     *
-     * @param array|string $expression
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function groupBy($expression): Condition;
-
-    /**
-     * 添加一个 HAVING 条件
-     * < 参数规范参考 where()方法 >.
-     *
-     * @param array $data
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function having(...$cond): Condition;
-
-    /**
-     * orHaving 查询条件.
-     *
-     * @param array $data
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function orHaving(...$cond): Condition;
-
-    /**
-     * Having 原生查询.
-     *
-     * @param string $raw
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingRaw(string $raw): Condition;
-
-    /**
-     * Having 原生 OR 查询.
-     *
-     * @param string $raw
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function orHavingRaw(string $raw): Condition;
-
-    /**
-     * havingBetween 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingBetween(...$cond): Condition;
-
-    /**
-     * havingNotBetween 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingNotBetween(...$cond): Condition;
-
-    /**
-     * havingNull 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingNull(...$cond): Condition;
-
-    /**
-     * havingNotNull 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingNotNull(...$cond): Condition;
-
-    /**
-     * havingIn 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingIn(...$cond): Condition;
-
-    /**
-     * havingNotIn 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingNotIn(...$cond): Condition;
-
-    /**
-     * havingLike 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingLike(...$cond): Condition;
-
-    /**
-     * havingNotLike 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingNotLike(...$cond): Condition;
-
-    /**
-     * havingDate 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingDate(...$cond): Condition;
-
-    /**
-     * havingDay 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingDay(...$cond): Condition;
-
-    /**
-     * havingMonth 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingMonth(...$cond): Condition;
-
-    /**
-     * havingYear 查询条件.
-     *
-     * @param array ...$cond
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function havingYear(...$cond): Condition;
-
-    /**
-     * 添加排序.
-     *
-     * @param array|string $expression
-     * @param string       $orderDefault
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function orderBy($expression, string $orderDefault = 'ASC'): Condition;
-
-    /**
-     * 最近排序数据.
-     *
-     * @param string $field
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function latest(string $field = 'create_at'): Condition;
-
-    /**
-     * 最早排序数据.
-     *
-     * @param string $field
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function oldest(string $field = 'create_at'): Condition;
-
-    /**
-     * 创建一个 SELECT DISTINCT 查询.
-     *
-     * @param bool $flag 指示是否是一个 SELECT DISTINCT 查询（默认 true）
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function distinct(bool $flag = true): Condition;
-
-    /**
-     * 总记录数.
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function count(string $field = '*', string $alias = 'row_count'): Condition;
-
-    /**
-     * 平均数.
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function avg(string $field, string $alias = 'avg_value'): Condition;
-
-    /**
-     * 最大值
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function max(string $field, string $alias = 'max_value'): Condition;
-
-    /**
-     * 最小值
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function min(string $field, string $alias = 'min_value'): Condition;
-
-    /**
-     * 合计
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function sum(string $field, string $alias = 'sum_value'): Condition;
-
-    /**
-     * 指示仅查询第一个符合条件的记录.
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function one(): Condition;
-
-    /**
-     * 指示查询所有符合条件的记录.
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function all(): Condition;
-
-    /**
-     * 查询几条记录.
-     *
-     * @param int $count
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function top(int $count = 30): Condition;
-
-    /**
-     * limit 限制条数.
-     *
-     * @param int $offset
-     * @param int $count
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function limit(int $offset = 0, int $count = 0): Condition;
-
-    /**
-     * 是否构造一个 FOR UPDATE 查询.
-     *
-     * @param bool $flag
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function forUpdate(bool $flag = true): Condition;
-
-    /**
-     * 设置查询参数.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return \Leevel\Database\Condition
-     */
-    public function setOption(string $name, $value): Condition;
-
-    /**
-     * 返回查询参数.
-     *
-     * @return array
-     */
-    public function getOption(): array;
-
-    /**
-     * 返回参数绑定.
-     *
-     * @return array
-     */
-    public function getBindParams(): array;
 }

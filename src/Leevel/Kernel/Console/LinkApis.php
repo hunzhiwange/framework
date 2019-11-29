@@ -49,7 +49,7 @@ class LinkApis extends Command
      *
      * @var string
      */
-    protected string $description = 'Create a symbolic link from `apis` to `www/apis`.';
+    protected string $description = 'Create a symbolic link from `apis` to `www/apis`';
 
     /**
      * 响应命令.
@@ -66,10 +66,7 @@ class LinkApis extends Command
             return;
         }
 
-        link(
-            $path = $app->path('apis'), $link
-        );
-
+        link($path = $app->path('apis'), $link);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
     }
 

@@ -39,7 +39,6 @@ class ServerBag extends Bag
     public function getHeaders(): array
     {
         $result = [];
-
         $contentHeaders = [
             'CONTENT_LENGTH',
             'CONTENT_MD5',

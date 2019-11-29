@@ -22,6 +22,7 @@ namespace Leevel\Database\Ddd;
 
 use ArrayAccess;
 use BadMethodCallException;
+use Closure;
 use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
@@ -41,6 +42,8 @@ use function Leevel\Support\Str\camelize;
 use Leevel\Support\Str\camelize;
 use function Leevel\Support\Str\un_camelize;
 use Leevel\Support\Str\un_camelize;
+use RuntimeException;
+use Throwable;
 
 /**
  * 模型实体 Object Relational Mapping.
@@ -66,13 +69,6 @@ use Leevel\Support\Str\un_camelize;
 abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, ArrayAccess
 {
     /**
-     * 此模型实体的连接名称.
-     *
-     * @var mixed
-     */
-    protected $leevelConnect;
-
-    /**
      * 已修改的模型实体属性.
      *
      * @var array
@@ -85,30 +81,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @var array
      */
     protected array $leevelBlackWhites = [
-        'construct_prop' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'create_prop' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'update_prop' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'show_prop' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'create_fill' => [
-            'white' => [],
-            'black' => [],
-        ],
-        'update_fill' => [
-            'white' => [],
-            'black' => [],
-        ],
+        'construct_prop' => ['white' => [], 'black' => []],
+        'create_prop'    => ['white' => [], 'black' => []],
+        'update_prop'    => ['white' => [], 'black' => []],
+        'show_prop'      => ['white' => [], 'black' => []],
     ];
 
     /**
@@ -120,8 +96,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * Replace 模式.
-     * 先插入出现主键重复.
-     * false 表示非 replace 模式，其它值表示 replace 模式附带的 fill 数据.
+     *
+     * - 先插入出现主键重复.
+     * - false 表示非 replace 模式，其它值表示 replace 模式附带的 fill 数据.
      *
      * @var mixed
      */
@@ -147,13 +124,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @var array
      */
     protected $leevelFlushData;
-
-    /**
-     * 是否已经持久化数据.
-     *
-     * @var bool
-     */
-    protected bool $leevelFlushed = false;
 
     /**
      * 模型实体事件处理器.
@@ -184,6 +154,20 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected static array $leevelEnums = [];
 
     /**
+     * 是否为软删除数据.
+     *
+     * @var bool
+     */
+    protected $leevelSoftDelete = false;
+
+    /**
+     * 是否为软删除恢复数据.
+     *
+     * @var bool
+     */
+    protected $leevelSoftRestore = false;
+
+    /**
      * 构造函数.
      *
      * @param array $data
@@ -194,7 +178,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function __construct(array $data = [], bool $fromStorage = false)
     {
         $className = static::class;
-
         foreach (['TABLE', 'ID', 'AUTO', 'STRUCT'] as $item) {
             if (!defined($className.'::'.$item)) {
                 $e = sprintf('The entity const %s was not defined.', $item);
@@ -204,10 +187,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         foreach (static::STRUCT as $field => $v) {
-            foreach ([
-                'construct_prop', 'show_prop', 'create_prop',
-                'update_prop', 'create_fill', 'update_fill',
-            ] as $type) {
+            foreach (['construct_prop', 'show_prop', 'create_prop', 'update_prop'] as $type) {
                 foreach (['black', 'white'] as $bw) {
                     if (isset($v[$type.'_'.$bw]) && true === $v[$type.'_'.$bw]) {
                         $this->leevelBlackWhites[$type][$bw][] = $field;
@@ -223,14 +203,14 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         if ($data) {
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $value) {
                 if (isset($data[$prop])) {
-                    $this->withPropValue($prop, $data[$prop], !$fromStorage, true);
+                    $this->withProp($prop, $data[$prop], !$fromStorage, true);
                 }
             }
         }
     }
 
     /**
-     * 魔术方法获取.
+     * 获取数据数据.
      *
      * @param string $key
      *
@@ -238,22 +218,22 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function __get(string $prop)
     {
-        return $this->offsetGet($prop);
+        return $this->prop($prop);
     }
 
     /**
-     * 更新属性值
+     * 更新属性数据.
      *
      * @param string $key
      * @param mixed  $value
      */
     public function __set(string $prop, $value): void
     {
-        $this->offsetSet($prop, $value);
+        $this->withProp($prop, $value);
     }
 
     /**
-     * 是否存在属性.
+     * 是否存在属性数据.
      *
      * @param string $prop
      *
@@ -261,7 +241,17 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function __isset(string $prop): bool
     {
-        return $this->offsetExists($prop);
+        return $this->hasProp($prop);
+    }
+
+    /**
+     * 删除属性数据.
+     *
+     * @param string $prop
+     */
+    public function __unset(string $prop): void
+    {
+        $this->withProp($prop, null);
     }
 
     /**
@@ -289,13 +279,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         }
 
         // relation tips
-        if ($this->isRelation($unCamelize = $this->normalize($method))) {
-            $e = sprintf(
-                'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
-                $method, static::class, $unCamelize
-            );
+        try {
+            if ($this->isRelation($unCamelize = $this->normalize($method))) {
+                $e = sprintf(
+                    'Method `%s` is not exits,maybe you can try `%s::make()->loadRelation(\'%s\')`.',
+                    $method, static::class, $unCamelize
+                );
 
-            throw new BadMethodCallException($e);
+                throw new BadMethodCallException($e);
+            }
+        } catch (InvalidArgumentException $th) {
         }
 
         // other method tips
@@ -332,7 +325,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function __toString(): string
     {
-        return $this->toJson();
+        return $this->toJson(...func_get_args());
     }
 
     /**
@@ -341,7 +334,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * @param array $data
      * @param bool  $fromStorage
      *
-     * @return static
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public static function make(array $data = [], bool $fromStorage = false): IEntity
     {
@@ -349,7 +342,125 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 批量修改属性.
+     * 数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function select(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
+    {
+        return new Select(new static(), $softDeletedType);
+    }
+
+    /**
+     * 数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     * - select 别名，致敬经典 QeePHP.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function find(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
+    {
+        return static::select($softDeletedType);
+    }
+
+    /**
+     * 包含软删除数据的数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     * - 获取包含软删除的数据.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function withSoftDeleted(): Select
+    {
+        return static::select(static::WITH_SOFT_DELETED);
+    }
+
+    /**
+     * 仅仅包含软删除数据的数据库查询集合对象.
+     *
+     * - 查询静态方法入口，更好的 IDE 用户体验.
+     * - 屏蔽 __callStatic 防止 IDE 无法识别.
+     * - 获取只包含软删除的数据.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Ddd\Select
+     */
+    public static function onlySoftDeleted(): Select
+    {
+        return static::select(static::ONLY_SOFT_DELETED);
+    }
+
+    /**
+     * 数据库查询集合对象.
+     *
+     * @param int $softDeletedType
+     *
+     * @return \Leevel\Database\Select
+     */
+    public static function selectCollection(int $softDeletedType = self::WITHOUT_SOFT_DELETED): DatabaseSelect
+    {
+        $select = static::meta()
+            ->select()
+            ->asClass(static::class, [true])
+            ->asCollection();
+
+        static::prepareSoftDeleted($select, $softDeletedType);
+
+        return $select;
+    }
+
+    /**
+     * 返回模型实体类的 meta 对象.
+     *
+     * @return \Leevel\Database\Ddd\IMeta
+     */
+    public static function meta(): IMeta
+    {
+        return Meta::instance(static::TABLE)
+            ->setDatabaseConnect(static::connect());
+    }
+
+    /**
+     * 数据库连接沙盒.
+     *
+     * @param mixed    $connect
+     * @param \Closure $call
+     *
+     * @return mixed
+     */
+    public static function connectSandbox($connect, Closure $call)
+    {
+        $old = static::connect();
+        static::withConnect($connect);
+
+        try {
+            $result = $call();
+            static::withConnect($old);
+        } catch (Throwable $th) {
+            static::withConnect($old);
+
+            throw $th;
+        }
+
+        return $result;
+    }
+
+    /**
+     * 批量设置属性数据.
      *
      * @param array $data
      *
@@ -358,10 +469,87 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function withProps(array $data): IEntity
     {
         foreach ($data as $prop => $value) {
-            $this->offsetSet($prop, $value);
+            $this->withProp($prop, $value);
         }
 
         return $this;
+    }
+
+    /**
+     * 设置属性数据.
+     *
+     * @param string $prop
+     * @param mixed  $value
+     * @param bool   $force
+     * @param bool   $ignoreReadonly
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function withProp(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): IEntity
+    {
+        $prop = $this->normalize($prop);
+        $this->validate($prop);
+
+        if ($this->isRelation($prop)) {
+            $e = sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $this->propSetter($prop, $value);
+
+        if (!$force) {
+            return $this;
+        }
+
+        if (false === $ignoreReadonly &&
+            isset(static::STRUCT[$prop][self::READONLY]) &&
+            true === static::STRUCT[$prop][self::READONLY]) {
+            $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        if (in_array($prop, $this->leevelChangedProp, true)) {
+            return $this;
+        }
+
+        $this->leevelChangedProp[] = $prop;
+
+        return $this;
+    }
+
+    /**
+     * 获取属性数据.
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    public function prop(string $prop)
+    {
+        $prop = $this->normalize($prop);
+        $this->validate($prop);
+
+        if (!$this->isRelation($prop)) {
+            return $this->propGetter($prop);
+        }
+
+        return $this->loadRelationProp($prop);
+    }
+
+    /**
+     * 是否存在属性数据.
+     *
+     * @param string $prop
+     *
+     * @return bool
+     */
+    public function hasProp(string $prop): bool
+    {
+        return null !== $this->prop($prop);
     }
 
     /**
@@ -428,69 +616,163 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 根据主键 ID 删除模型实体.
      *
      * @param array $ids
+     * @param bool  $forceDelete
      *
      * @return int
      */
-    public static function destroys(array $ids): int
+    public static function destroy(array $ids, bool $forceDelete = false): int
     {
-        $count = 0;
-
-        $instance = new static();
-
-        foreach ($instance->whereIn($instance->singlePrimaryKey(), $ids)->findAll() as $entity) {
-            if ($entity->destroy()->flush()) {
-                $count++;
-            }
-        }
-
-        return $count;
+        return static::selectAndDestroyEntitys($ids, 'delete', $forceDelete);
     }
 
     /**
-     * 销毁模型实体.
+     * 根据主键 ID 强制删除模型实体.
      *
-     * @throws \InvalidArgumentException
+     * @param array $ids
+     * @param bool  $forceDelete
+     *
+     * @return int
+     */
+    public static function forceDestroy(array $ids): int
+    {
+        return static::destroy($ids, true);
+    }
+
+    /**
+     * 删除模型实体.
+     *
+     * @param bool $forceDelete
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function destroy(): IEntity
+    public function delete(bool $forceDelete = false): IEntity
     {
-        if (null === $this->primaryKey()) {
-            $e = sprintf('Entity %s has no primary key.', static::class);
-
-            throw new InvalidArgumentException($e);
+        if (false === $forceDelete && defined(static::class.'::DELETE_AT')) {
+            return $this->softDelete();
         }
 
-        $this->leevelFlushed = false;
-
+        static::validatePrimaryKey();
         $this->leevelFlush = function ($condition) {
             $this->handleEvent(static::BEFORE_DELETE_EVENT, $condition);
-
-            $num = $this->metaConnect()->delete($condition);
-
+            $num = static::meta()->delete($condition);
             $this->handleEvent(static::AFTER_DELETE_EVENT);
 
             return $num;
         };
-
         $this->leevelFlushData = [$this->idCondition()];
 
         return $this;
     }
 
     /**
+     * 强制删除模型实体.
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function forceDelete(): IEntity
+    {
+        return $this->delete(true);
+    }
+
+    /**
+     * 根据主键 ID 删除模型实体.
+     *
+     * @param array $ids
+     *
+     * @return int
+     */
+    public static function softDestroy(array $ids): int
+    {
+        return static::selectAndDestroyEntitys($ids, 'softDelete');
+    }
+
+    /**
+     * 从模型实体中软删除数据.
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function softDelete(): IEntity
+    {
+        $this->leevelSoftDelete = true;
+        $this->clearChanged();
+        $this->withProp(static::deleteAtColumn(), time());
+
+        return $this->update();
+    }
+
+    /**
+     * 恢复软删除的模型实体.
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    public function softRestore(): IEntity
+    {
+        $this->leevelSoftRestore = true;
+        $this->clearChanged();
+        $this->withProp(static::deleteAtColumn(), 0);
+
+        return $this->update();
+    }
+
+    /**
+     * 检查模型实体是否已经被软删除.
+     *
+     * @return bool
+     */
+    public function softDeleted(): bool
+    {
+        return (int) $this->prop(static::deleteAtColumn()) > 0;
+    }
+
+    /**
+     * 获取软删除字段.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    public static function deleteAtColumn(): string
+    {
+        if (!defined(static::class.'::DELETE_AT')) {
+            $e = sprintf(
+                'Entity `%s` soft delete field was not defined.',
+                static::class
+            );
+
+            throw new InvalidArgumentException($e);
+        }
+
+        $deleteAt = static::DELETE_AT;
+        if (!static::hasField($deleteAt)) {
+            $e = sprintf(
+                'Entity `%s` soft delete field `%s` was not found.',
+                static::class, $deleteAt
+            );
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return $deleteAt;
+    }
+
+    /**
      * 数据持久化数据.
+     *
+     * @throws \RuntimeException
      *
      * @return mixed
      */
     public function flush()
     {
-        if (!$this->leevelFlush || true === $this->leevelFlushed) {
-            return;
+        if (!$this->leevelFlush) {
+            $e = sprintf('Entity `%s` has no data need to be flush.', static::class);
+
+            throw new RuntimeException($e);
         }
 
         try {
-            $result = call_user_func_array($this->leevelFlush, $this->leevelFlushData);
+            $leevelFlush = $this->leevelFlush;
+            $result = $leevelFlush(...$this->leevelFlushData);
         } catch (ReplaceException $e) {
             if (false === $this->leevelReplace) {
                 throw $e;
@@ -506,21 +788,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         $this->leevelFlush = null;
         $this->leevelFlushData = null;
-        $this->leevelFlushed = true;
-
         $this->handleEvent(static::AFTER_SAVE_EVENT);
 
         return $result;
-    }
-
-    /**
-     * 获取是否已经持久化数据.
-     *
-     * @return bool
-     */
-    public function flushed(): bool
-    {
-        return $this->leevelFlushed;
     }
 
     /**
@@ -552,12 +822,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function id()
     {
         $result = [];
-
-        foreach (($keys = $this->primaryKeys()) as $value) {
-            if (!($tmp = $this->__get($value))) {
+        foreach ($keys = static::primaryKeys() as $value) {
+            if (!$tmp = $this->prop($value)) {
                 continue;
             }
-
             $result[$value] = $tmp;
         }
 
@@ -579,33 +847,16 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 从数据库重新读取当前对象的属性.
-     *
-     * @throws \InvalidArgumentException
      */
     public function refresh(): void
     {
-        $key = $this->primaryKey();
-
-        if (null === $key) {
-            $e = sprintf('Entity %s do not have primary key.', static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (is_array($key)) {
-            $map = $this->id();
-        } else {
-            $map = [$this->singlePrimaryKey(), $this->id()];
-        }
-
-        $data = $this
-            ->metaConnect()
+        $data = static::meta()
             ->select()
-            ->where($map)
+            ->where($this->idCondition())
             ->findOne();
 
         foreach ($data as $k => $v) {
-            $this->withPropValue($k, $v, false);
+            $this->withProp($k, $v, false);
         }
     }
 
@@ -635,11 +886,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function isRelation(string $prop): bool
     {
         $prop = $this->normalize($prop);
-
         $this->validate($prop);
 
         $struct = static::STRUCT[$prop];
-
         if (isset($struct[self::BELONGS_TO]) ||
            isset($struct[self::HAS_MANY]) ||
            isset($struct[self::HAS_ONE]) ||
@@ -655,6 +904,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $prop
      *
+     * @throws \BadMethodCallException
+     *
      * @return \Leevel\Database\Ddd\Relation\Relation
      */
     public function loadRelation(string $prop): Relation
@@ -663,48 +914,63 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         $this->validate($prop);
         $defined = static::STRUCT[$prop];
 
+        $relationScope = null;
+        if (isset($defined[self::RELATION_SCOPE])) {
+            $call = [$this, 'relationScope'.ucfirst($defined[self::RELATION_SCOPE])];
+            // 如果关联作用域为 private 会触发 __call 魔术方法中的异常
+            if (!method_exists($this, $call[1])) {
+                $e = sprintf(
+                    'Relation scope `%s` of entity `%s` is not exits.',
+                    $call[1], static::class,
+                );
+
+                throw new BadMethodCallException($e);
+            }
+            $relationScope = Closure::fromCallable($call);
+        }
+
         if (isset($defined[self::BELONGS_TO])) {
-            $this->validateRelationDefined($defined, ['source_key', 'target_key']);
+            $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             $relation = $this->belongsTo(
                $defined[self::BELONGS_TO],
-               $defined['target_key'],
-               $defined['source_key']
+               $defined[self::TARGET_KEY],
+               $defined[self::SOURCE_KEY],
+               $relationScope,
            );
         } elseif (isset($defined[self::HAS_MANY])) {
-            $this->validateRelationDefined($defined, ['source_key', 'target_key']);
+            $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             $relation = $this->hasMany(
                $defined[self::HAS_MANY],
-               $defined['target_key'],
-               $defined['source_key']
+               $defined[self::TARGET_KEY],
+               $defined[self::SOURCE_KEY],
+               $relationScope,
            );
         } elseif (isset($defined[self::HAS_ONE])) {
-            $this->validateRelationDefined($defined, ['source_key', 'target_key']);
+            $this->validateRelationDefined($defined, [self::SOURCE_KEY, self::TARGET_KEY]);
 
             $relation = $this->hasOne(
                $defined[self::HAS_ONE],
-               $defined['target_key'],
-               $defined['source_key']
+               $defined[self::TARGET_KEY],
+               $defined[self::SOURCE_KEY],
+               $relationScope,
            );
         } elseif (isset($defined[self::MANY_MANY])) {
             $this->validateRelationDefined($defined, [
-                'middle_entity', 'source_key', 'target_key',
-                'middle_target_key', 'middle_source_key',
+                self::MIDDLE_ENTITY, self::SOURCE_KEY, self::TARGET_KEY,
+                self::MIDDLE_TARGET_KEY, self::MIDDLE_SOURCE_KEY,
             ]);
 
-            $relation = $this->ManyMany(
+            $relation = $this->manyMany(
                $defined[self::MANY_MANY],
-               $defined['middle_entity'],
-               $defined['target_key'],
-               $defined['source_key'],
-               $defined['middle_target_key'],
-               $defined['middle_source_key']
+               $defined[self::MIDDLE_ENTITY],
+               $defined[self::TARGET_KEY],
+               $defined[self::SOURCE_KEY],
+               $defined[self::MIDDLE_TARGET_KEY],
+               $defined[self::MIDDLE_SOURCE_KEY],
+               $relationScope,
            );
-        }
-
-        if (isset($defined[self::SCOPE])) {
-            call_user_func([$this, 'scope'.ucfirst($defined[self::SCOPE])], $relation);
         }
 
         return $relation;
@@ -745,7 +1011,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public static function eager(array $relation): Select
     {
-        return (new static())->selectForEntity()->eager($relation);
+        return static::select()->eager($relation);
     }
 
     /**
@@ -771,73 +1037,74 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 一对一关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\HasOne
      */
-    public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey): HasOne
+    public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasOne
     {
         $entity = new $relatedEntityClass();
-
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
-        return new HasOne($entity, $this, $targetKey, $sourceKey);
+        return new HasOne($entity, $this, $targetKey, $sourceKey, $scope);
     }
 
     /**
      * 定义从属关系.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\BelongsTo
      */
-    public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey): BelongsTo
+    public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): BelongsTo
     {
         $entity = new $relatedEntityClass();
-
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
-        return new BelongsTo($entity, $this, $targetKey, $sourceKey);
+        return new BelongsTo($entity, $this, $targetKey, $sourceKey, $scope);
     }
 
     /**
      * 一对多关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\HasMany
      */
-    public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey): HasMany
+    public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasMany
     {
         $entity = new $relatedEntityClass();
-
         $this->validateRelationField($entity, $targetKey);
         $this->validateRelationField($this, $sourceKey);
 
-        return new HasMany($entity, $this, $targetKey, $sourceKey);
+        return new HasMany($entity, $this, $targetKey, $sourceKey, $scope);
     }
 
     /**
      * 多对多关联.
      *
-     * @param string $relatedEntityClass
-     * @param string $middleEntityClass
-     * @param string $targetKey
-     * @param string $sourceKey
-     * @param string $middleTargetKey
-     * @param string $middleSourceKey
+     * @param string        $relatedEntityClass
+     * @param string        $middleEntityClass
+     * @param string        $targetKey
+     * @param string        $sourceKey
+     * @param string        $middleTargetKey
+     * @param string        $middleSourceKey
+     * @param null|\Closure $scope
      *
      * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
-    public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey): ManyMany
+    public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null): ManyMany
     {
         $entity = new $relatedEntityClass();
         $middleEntity = new $middleEntityClass();
@@ -849,7 +1116,8 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
         return new ManyMany(
             $entity, $this, $middleEntity, $targetKey,
-            $sourceKey, $middleTargetKey, $middleSourceKey
+            $sourceKey, $middleTargetKey, $middleSourceKey,
+            $scope,
         );
     }
 
@@ -878,16 +1146,19 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string                                 $event
      * @param \Closure|\Leevel\Event\Observer|string $listener
+     *
+     * @throws \InvalidArgumentException
      */
     public static function event(string $event, $listener): void
     {
         if (null === static::$leevelDispatch &&
             static::lazyloadPlaceholder() && null === static::$leevelDispatch) {
-            return;
+            $e = 'Event dispatch was not set.';
+
+            throw new InvalidArgumentException($e);
         }
 
-        static::isSupportEvent($event);
-
+        static::validateSupportEvent($event);
         static::$leevelDispatch->register(
             "entity.{$event}:".static::class,
             $listener
@@ -906,28 +1177,11 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             return;
         }
 
-        $this->isSupportEvent($event);
-
+        static::validateSupportEvent($event);
         array_unshift($args, $this);
         array_unshift($args, "entity.{$event}:".get_class($this));
 
         static::$leevelDispatch->handle(...$args);
-    }
-
-    /**
-     * 验证事件是否受支持
-     *
-     * @param string $event
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function isSupportEvent(string $event): void
-    {
-        if (!in_array($event, static::supportEvent(), true)) {
-            $e = sprintf('Event `%s` do not support.');
-
-            throw new InvalidArgumentException($e);
-        }
     }
 
     /**
@@ -985,7 +1239,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public function addChanged(array $props): IEntity
     {
         foreach ($props as $prop) {
-            if (!in_array($prop, $this->leevelChangedProp, true)) {
+            if (in_array($prop, $this->leevelChangedProp, true)) {
                 continue;
             }
 
@@ -1029,8 +1283,29 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function primaryKey()
     {
         $keys = static::primaryKeys();
+        if (!$keys) {
+            return;
+        }
 
         return 1 === count($keys) ? reset($keys) : $keys;
+    }
+
+    /**
+     * 验证主键是否存在并返回主键字段.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return array|string
+     */
+    public static function validatePrimaryKey()
+    {
+        if (null === $key = static::primaryKey()) {
+            $e = sprintf('Entity %s has no primary key.', static::class);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return $key;
     }
 
     /**
@@ -1086,7 +1361,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     public static function singlePrimaryKey(): string
     {
         $key = static::primaryKey();
-
         if (!is_string($key)) {
             $e = sprintf('Entity %s do not have primary key or composite id not supported.', static::class);
 
@@ -1104,7 +1378,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function singleId()
     {
-        $this->singlePrimaryKey();
+        static::singlePrimaryKey();
 
         return $this->id();
     }
@@ -1120,32 +1394,17 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 设置连接.
-     *
-     * @param mixed $connect
-     *
-     * @return \Leevel\Database\Ddd\IEntity
-     */
-    public function withConnect($connect): IEntity
-    {
-        $this->leevelConnect = $connect;
-
-        return $this;
-    }
-
-    /**
      * 获取 enum.
      * 不存在返回 false.
      *
      * @param string     $prop
      * @param null|mixed $enum
-     * @param string     $separate
      *
      * @throws \InvalidArgumentException
      *
      * @return mixed
      */
-    public static function enum(string $prop, $enum = null, string $separate = ',')
+    public static function enum(string $prop, $enum = null)
     {
         $prop = static::normalize($prop);
         $enumDefined = static::class.'::'.strtoupper($prop).'_ENUM';
@@ -1187,11 +1446,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
                 throw new InvalidArgumentException($e);
             }
-
             $result[] = $enums[$v] ?? $enums[(int) $v];
         }
 
-        return implode($separate, $result);
+        return implode(self::ENUM_SEPARATE, $result);
     }
 
     /**
@@ -1217,7 +1475,10 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             $option = JSON_UNESCAPED_UNICODE;
         }
 
-        return json_encode($this->toArray(), $option);
+        $args = func_get_args();
+        array_shift($args);
+
+        return json_encode($this->toArray(...$args), $option);
     }
 
     /**
@@ -1227,7 +1488,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray();
+        return $this->toArray(...func_get_args());
     }
 
     /**
@@ -1251,76 +1512,19 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function idCondition(): array
     {
-        if (null === (($ids = $this->id()))) {
+        static::validatePrimaryKey();
+
+        if (null === $ids = $this->id()) {
             $e = sprintf('Entity %s has no primary key data.', static::class);
 
             throw new InvalidArgumentException($e);
         }
 
         if (!is_array($ids)) {
-            $ids = [$this->singlePrimaryKey() => $ids];
+            $ids = [static::singlePrimaryKey() => $ids];
         }
 
         return $ids;
-    }
-
-    /**
-     * 返回数据库查询集合对象.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function databaseSelect(): DatabaseSelect
-    {
-        return $this
-            ->metaConnect()
-            ->select()
-            ->asClass(static::class, [true])
-            ->asCollection();
-    }
-
-    /**
-     * 返回数据库查询集合对象.
-     *
-     * @return \Leevel\Database\Ddd\Select
-     */
-    public function selectForEntity(): Select
-    {
-        return new Select($this);
-    }
-
-    /**
-     * 返回数据库查询集合对象.
-     *
-     * - 查询静态方法入口，更好的 IDE 用户体验.
-     * - 屏蔽 __callStatic 防止 IDE 无法识别.
-     *
-     * @return \Leevel\Database\Ddd\Select
-     */
-    public static function select(): Select
-    {
-        return new Select(new static());
-    }
-
-    /**
-     * 返回模型实体类的 meta 对象.
-     *
-     * @return \Leevel\Database\Ddd\IMeta
-     */
-    public function metaConnect(): IMeta
-    {
-        return static::meta($this->leevelConnect);
-    }
-
-    /**
-     * 返回模型实体类的 meta 对象.
-     *
-     * @param null|mixed $connect
-     *
-     * @return \Leevel\Database\Ddd\IMeta
-     */
-    public static function meta($connect = null): IMeta
-    {
-        return Meta::instance(static::TABLE)->setConnect($connect);
     }
 
     /**
@@ -1343,7 +1547,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function offsetSet($index, $newval): void
     {
-        $this->withPropValue($index, $newval);
+        $this->withProp($index, $newval);
     }
 
     /**
@@ -1355,7 +1559,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function offsetGet($index)
     {
-        return $this->propValue($index);
+        return $this->prop($index);
     }
 
     /**
@@ -1365,7 +1569,137 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     public function offsetUnset($index): void
     {
-        $this->offsetSet($index, null);
+        $this->withProp($index, null);
+    }
+
+    /**
+     * setter.
+     *
+     * @param string $prop
+     * @param mixed  $value
+     *
+     * @return \Leevel\Database\Ddd\IEntity
+     */
+    abstract public function setter(string $prop, $value): IEntity;
+
+    /**
+     * getter.
+     *
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    abstract public function getter(string $prop);
+
+    /**
+     * set database connect.
+     *
+     * @param mixed $connect
+     */
+    abstract public static function withConnect($connect): void;
+
+    /**
+     * get database connect.
+     *
+     * @return mixed
+     */
+    abstract public static function connect();
+
+    /**
+     * 验证事件是否受支持.
+     *
+     * @param string $event
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected static function validateSupportEvent(string $event): void
+    {
+        if (!in_array($event, static::supportEvent(), true)) {
+            $e = sprintf('Event `%s` do not support.', $event);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 是否定义属性.
+     *
+     * @param string $prop
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return bool
+     */
+    protected function hasPropDefined(string $prop): bool
+    {
+        $prop = $this->normalize($prop);
+        if (!$this->hasField($prop)) {
+            return false;
+        }
+
+        $prop = $this->asProp($prop);
+        if (!property_exists($this, $prop)) {
+            $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return true;
+    }
+
+    /**
+     * 查找并删除实体.
+     *
+     * @param array  $ids
+     * @param string $type
+     * @param bool   $forceDelete
+     *
+     * @return int
+     */
+    protected static function selectAndDestroyEntitys(array $ids, string $type, bool $forceDelete = false): int
+    {
+        $entitys = static::select()
+            ->whereIn(static::singlePrimaryKey(), $ids)
+            ->findAll();
+
+        /** @var \Leevel\Database\Ddd\IEntity $entity */
+        foreach ($entitys as $entity) {
+            $entity->{$type}($forceDelete)->flush();
+        }
+
+        return count($entitys);
+    }
+
+    /**
+     * 准备软删除查询条件.
+     *
+     * @param \Leevel\Database\Select $select
+     * @param int                     $softDeletedType
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected static function prepareSoftDeleted(DatabaseSelect $select, int $softDeletedType): void
+    {
+        if (!defined(static::class.'::DELETE_AT')) {
+            return;
+        }
+
+        switch ($softDeletedType) {
+            case self::WITH_SOFT_DELETED:
+                break;
+            case self::ONLY_SOFT_DELETED:
+                $select->where(static::deleteAtColumn(), '>', 0);
+
+                break;
+            case self::WITHOUT_SOFT_DELETED:
+                $select->where(static::deleteAtColumn(), 0);
+
+                break;
+            default:
+                $e = sprintf('Invalid soft deleted type %d.', $softDeletedType);
+
+                throw new InvalidArgumentException($e);
+        }
     }
 
     /**
@@ -1380,7 +1714,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     protected function saveEntry(string $method, array $data, ?array $fill = null): IEntity
     {
         foreach ($data as $k => $v) {
-            $this->withPropValue($k, $v);
+            $this->withProp($k, $v);
         }
 
         $this->handleEvent(static::BEFORE_SAVE_EVENT);
@@ -1402,7 +1736,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
             case 'save':
             default:
                 $ids = $this->id();
-
                 if (is_array($ids)) {
                     $this->replaceReal($fill);
                 } else {
@@ -1430,49 +1763,23 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      */
     protected function createReal(?array $fill = null): IEntity
     {
-        $this->leevelFlushed = false;
-
         $this->parseAutoFill('create', $fill);
-        $propKey = $this->normalizeWhiteAndBlack(
-            array_flip($this->leevelChangedProp), 'create_prop'
-        );
-
-        $saveData = [];
-        foreach ($this->leevelChangedProp as $prop) {
-            if (!array_key_exists($prop, $propKey)) {
-                continue;
-            }
-
-            $saveData[$prop] = $this->__get($prop);
-        }
-
-        if (!$saveData) {
-            if (null === (($primaryKey = $this->primaryKeys()))) {
-                $e = sprintf('Entity %s has no primary key.', static::class);
-
-                throw new InvalidArgumentException($e);
-            }
-
-            foreach ($primaryKey as $value) {
-                $saveData[$value] = null;
-            }
-        }
+        $saveData = $this->normalizeWhiteAndBlackChangedData('create');
 
         $this->leevelFlush = function ($saveData) {
             $this->handleEvent(static::BEFORE_CREATE_EVENT, $saveData);
-            $lastInsertId = $this->metaConnect()->insert($saveData);
 
+            $lastInsertId = static::meta()->insert($saveData);
             if ($auto = $this->autoIncrement()) {
-                $this->withPropValue($auto, $lastInsertId, false, true);
+                $this->withProp($auto, $lastInsertId, false, true);
             }
-
             $this->leevelNewed = false;
             $this->clearChanged();
+
             $this->handleEvent(static::AFTER_CREATE_EVENT, $saveData);
 
             return $lastInsertId;
         };
-
         $this->leevelFlushData = [$saveData];
 
         return $this;
@@ -1483,55 +1790,50 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param null|array $fill
      *
+     * @throws \RuntimeException
+     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     protected function updateReal(?array $fill = null): IEntity
     {
-        $this->leevelFlushed = false;
-
         $this->parseAutoFill('update', $fill);
-        $propKey = $this->normalizeWhiteAndBlack(
-            array_flip($this->leevelChangedProp), 'update_prop'
-        );
-
-        $saveData = [];
-        foreach ($this->leevelChangedProp as $prop) {
-            if (!array_key_exists($prop, $propKey)) {
-                continue;
-            }
-
-            $saveData[$prop] = $this->__get($prop);
-        }
-
-        if (!$saveData) {
-            return $this;
-        }
-
-        $condition = [];
-        foreach ($this->primaryKeys() as $field) {
+        $saveData = $this->normalizeWhiteAndBlackChangedData('update');
+        $condition = $this->idCondition();
+        foreach ($condition as $field => $value) {
             if (isset($saveData[$field])) {
                 unset($saveData[$field]);
             }
-
-            if ($value = $this->__get($field)) {
-                $condition[$field] = $value;
-            }
         }
+        if (!$saveData) {
+            $e = sprintf('Entity `%s` has no data need to be update.', static::class);
 
-        if (empty($condition) || empty($saveData)) {
-            return $this;
+            throw new RuntimeException($e);
         }
 
         $this->leevelFlush = function ($condition, $saveData) {
             $this->handleEvent(static::BEFORE_UPDATE_EVENT, $saveData, $condition);
-            $num = $this->metaConnect()->update($condition, $saveData);
-            $this->handleEvent(static::BEFORE_UPDATE_EVENT, null, null);
+            if (true === $this->leevelSoftDelete) {
+                $this->handleEvent(static::BEFORE_SOFT_DELETE_EVENT, $saveData, $condition);
+            }
+            if (true === $this->leevelSoftRestore) {
+                $this->handleEvent(static::BEFORE_SOFT_RESTORE_EVENT, $saveData, $condition);
+            }
+
+            $num = static::meta()->update($condition, $saveData);
             $this->clearChanged();
+
             $this->handleEvent(static::AFTER_UPDATE_EVENT);
+            if (true === $this->leevelSoftDelete) {
+                $this->handleEvent(static::AFTER_SOFT_DELETE_EVENT);
+                $this->leevelSoftDelete = false;
+            }
+            if (true === $this->leevelSoftRestore) {
+                $this->handleEvent(static::AFTER_SOFT_RESTORE_EVENT);
+                $this->leevelSoftRestore = false;
+            }
 
             return $num;
         };
-
         $this->leevelFlushData = [$condition, $saveData];
 
         return $this;
@@ -1549,93 +1851,40 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 改变属性.
+     * 整理黑白名单变更数据.
      *
-     * @param string $prop
-     * @param mixed  $value
-     * @param bool   $force
-     * @param bool   $ignoreReadonly
+     * @param array $type
      *
-     * @throws \InvalidArgumentException
+     * @return array
      */
-    protected function withPropValue(string $prop, $value, bool $force = true, bool $ignoreReadonly = false): void
+    protected function normalizeWhiteAndBlackChangedData(string $type): array
     {
-        $prop = $this->normalize($prop);
-        $this->validate($prop);
+        $propKey = $this->normalizeWhiteAndBlack(
+            array_flip($this->leevelChangedProp), $type.'_prop'
+        );
+        $saveData = $this->normalizeChangedData($propKey);
 
-        if ($this->isRelation($prop)) {
-            $e = sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        $this->propSetter($prop, $value);
-
-        if (!$force) {
-            return;
-        }
-
-        if (false === $ignoreReadonly &&
-            isset(static::STRUCT[$prop]['readonly']) &&
-            true === static::STRUCT[$prop]['readonly']) {
-            $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (in_array($prop, $this->leevelChangedProp, true)) {
-            return;
-        }
-
-        $this->leevelChangedProp[] = $prop;
+        return $saveData;
     }
 
     /**
-     * 返回属性.
+     * 整理变更数据.
      *
-     * @param string $prop
+     * @param array $propKey
      *
-     * @return mixed
+     * @return array
      */
-    protected function propValue(string $prop)
+    protected function normalizeChangedData(array $propKey): array
     {
-        $prop = $this->normalize($prop);
-
-        $this->validate($prop);
-
-        if (!$this->isRelation($prop)) {
-            return $this->propGetter($prop);
+        $saveData = [];
+        foreach ($this->leevelChangedProp as $prop) {
+            if (!array_key_exists($prop, $propKey)) {
+                continue;
+            }
+            $saveData[$prop] = $this->prop($prop);
         }
 
-        return $this->loadRelationProp($prop);
-    }
-
-    /**
-     * 是否存在属性.
-     *
-     * @param string $prop
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return bool
-     */
-    protected function hasProp(string $prop): bool
-    {
-        $prop = $this->normalize($prop);
-
-        if (!$this->hasField($prop)) {
-            return false;
-        }
-
-        $prop = $this->asProp($prop);
-
-        if (!property_exists($this, $prop)) {
-            $e = sprintf('Prop `%s` of entity `%s` was not defined.', $prop, get_class($this));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        return true;
+        return $saveData;
     }
 
     /**
@@ -1706,13 +1955,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         if (null === $value) {
             $camelizeClass = 'fill'.ucfirst($this->asProp($prop));
-
             if (method_exists($this, $camelizeClass)) {
-                $value = $this->{$camelizeClass}($this->propValue($prop));
+                $value = $this->{$camelizeClass}($this->prop($prop));
             }
         }
 
-        $this->withPropValue($prop, $value);
+        $this->withProp($prop, $value);
     }
 
     /**
@@ -1726,20 +1974,19 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $relation = $this->loadRelation($prop);
         $result = $relation->sourceQuery();
-
         $this->withRelationProp($prop, $result);
 
         return $result;
     }
 
     /**
-     * 校验并转换 prop.
+     * 校验并转换真实属性.
      *
      * @param string $prop
      *
      * @return string
      */
-    protected function prop(string $prop): string
+    protected function realProp(string $prop): string
     {
         $this->validate($prop);
 
@@ -1757,7 +2004,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     {
         $prop = $this->normalize($prop);
 
-        if (!$this->hasProp($prop)) {
+        if (!$this->hasPropDefined($prop)) {
             $e = sprintf('Entity `%s` prop or field of struct `%s` was not defined.', get_class($this), $prop);
 
             throw new InvalidArgumentException($e);
@@ -1823,34 +2070,68 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 对象转数组.
      *
+     * @param array $white
+     * @param array $black
+     * @param array $relationWhiteAndBlack
+     *
      * @return array
      */
-    protected function toArraySource(array $white = [], array $black = [], string $separate = ','): array
+    protected function toArraySource(array $white = [], array $black = [], array $relationWhiteAndBlack = []): array
     {
         if ($white || $black) {
-            $prop = $this->whiteAndBlack(
-                $this->fields(), $white, $black
-            );
+            $prop = $this->whiteAndBlack($this->fields(), $white, $black);
         } else {
-            $prop = $this->normalizeWhiteAndBlack(
-                $this->fields(), 'show_prop'
-            );
+            $prop = $this->normalizeWhiteAndBlack($this->fields(), 'show_prop');
         }
 
         $result = [];
-
-        foreach ($prop as $k => $value) {
+        foreach ($prop as $k => $option) {
+            $isRelationProp = false;
             if ($this->isRelation($k)) {
-                continue;
+                $isRelationProp = true;
+                $value = $this->relationProp($k);
+            } else {
+                $value = $this->prop($k);
             }
 
-            $value = $this->propValue($k);
-            $result[$k] = $value;
+            if (null === $value) {
+                if (!array_key_exists(self::SHOW_PROP_NULL, $option)) {
+                    continue;
+                }
+                $value = $option[self::SHOW_PROP_NULL];
+            } elseif ($isRelationProp) {
+                $value = $this->normalizeRelationValue($value, $k, $relationWhiteAndBlack);
+            }
 
-            $result = static::prepareEnum($k, $result, $separate);
+            $result[$k] = $value;
+            if (!$isRelationProp && null !== $value) {
+                $result = static::prepareEnum($k, $result);
+            }
         }
 
         return $result;
+    }
+
+    /**
+     * 整理关联属性数据.
+     *
+     * @param \Leevel\Support\IArray $value
+     * @param string                 $prop
+     * @param array                  $relationWhiteAndBlack
+     *
+     * @return array
+     */
+    protected function normalizeRelationValue(IArray $value, string $prop, array $relationWhiteAndBlack): array
+    {
+        if (isset($relationWhiteAndBlack[$prop])) {
+            list($white, $black, $whiteAndBlack) = array_pad($relationWhiteAndBlack[$prop], 3, []);
+        } else {
+            $white = $black = $whiteAndBlack = [];
+        }
+
+        $value = $value->toArray($white, $black, $whiteAndBlack);
+
+        return $value;
     }
 
     /**
@@ -1858,17 +2139,12 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * @param string $prop
      * @param array  $data
-     * @param string $separate
      *
      * @return array
      */
-    protected static function prepareEnum(string $prop, array $data, string $separate = ','): array
+    protected static function prepareEnum(string $prop, array $data): array
     {
-        if (!isset($data[$prop])) {
-            return $data;
-        }
-
-        if (false === ($enum = static::enum($prop, $data[$prop], $separate))) {
+        if (false === $enum = static::enum($prop, $data[$prop])) {
             return $data;
         }
 

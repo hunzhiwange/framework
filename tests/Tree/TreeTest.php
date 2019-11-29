@@ -31,9 +31,22 @@ use Tests\TestCase;
  * @since 2018.06.21
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="树 tree",
+ *     path="component/tree",
+ *     description="树组件 `tree` 提供了一些实用方法，用于整理数据为一棵树，并提供一些方法来获取树相关节点的信息。",
+ * )
  */
 class TreeTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="Tree 基本使用",
+     *     description="将子父节点整理为树结构。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $tree = new Tree([
@@ -62,6 +75,45 @@ class TreeTest extends TestCase
                 $tree->toArray()
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.toJson 树结构输出为 JSON 格式字符串",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testToJson(): void
+    {
+        $tree = new Tree([
+            [1, 0, 'hello'],
+            [2, 1, 'world'],
+        ]);
+
+        $nodes = <<<'eot'
+            [{"value":1,"data":"hello","children":[{"value":2,"data":"world"}]}]
+            eot;
+
+        $this->assertSame(
+            $nodes,
+            $tree->toJson(),
+        );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.setNode 设置节点",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testSetNode(): void
+    {
+        $tree = new Tree([
+            [1, 0, 'hello'],
+            [2, 1, 'world'],
+        ]);
 
         // 尾部插入节点
         $tree->setNode(5, 1, 'foo');
@@ -91,6 +143,21 @@ class TreeTest extends TestCase
                 $tree->toArray()
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.setNode 在头部设置节点",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testSetNodeAtHeader(): void
+    {
+        $tree = new Tree([
+            [1, 0, 'hello'],
+            [2, 1, 'world'],
+        ]);
 
         // 头部插入节点
         $tree->setNode(6, 1, 'bar', true);
@@ -108,10 +175,6 @@ class TreeTest extends TestCase
                         {
                             "value": 2,
                             "data": "world"
-                        },
-                        {
-                            "value": 5,
-                            "data": "foo"
                         }
                     ]
                 }
@@ -124,9 +187,24 @@ class TreeTest extends TestCase
                 $tree->toArray()
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.setNode 设置子节点",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testSetNodeAsChildren(): void
+    {
+        $tree = new Tree([
+            [1, 0, 'hello'],
+            [2, 1, 'world'],
+        ]);
 
         // 子节点测试
-        $tree->setNode(8, 6, 'subbar');
+        $tree->setNode(8, 2, 'subbar');
 
         $nodes = <<<'eot'
             [
@@ -135,22 +213,14 @@ class TreeTest extends TestCase
                     "data": "hello",
                     "children": [
                         {
-                            "value": 6,
-                            "data": "bar",
+                            "value": 2,
+                            "data": "world",
                             "children": [
                                 {
                                     "value": 8,
                                     "data": "subbar"
                                 }
                             ]
-                        },
-                        {
-                            "value": 2,
-                            "data": "world"
-                        },
-                        {
-                            "value": 5,
-                            "data": "foo"
                         }
                     ]
                 }
@@ -165,7 +235,7 @@ class TreeTest extends TestCase
         );
 
         $json = <<<'eot'
-            [{"value":1,"data":"hello","children":[{"value":6,"data":"bar","children":[{"value":8,"data":"subbar"}]},{"value":2,"data":"world"},{"value":5,"data":"foo"}]}]
+            [{"value":1,"data":"hello","children":[{"value":2,"data":"world","children":[{"value":8,"data":"subbar"}]}]}]
             eot;
 
         $this->assertSame(
@@ -174,7 +244,25 @@ class TreeTest extends TestCase
         );
     }
 
-    public function testChildrenUse(): void
+    /**
+     * @api(
+     *     title="Tree.getChildrenTree 获取节点子树",
+     *     description="
+     *
+     * `测试树数据`
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Tree\TreeTest::class, 'providerTree')]}
+     * ```
+     *
+     * ::: warning
+     * 后面的测试，也会用到这个测试树数据。
+     * :::
+     * ",
+     *     note="",
+     * )
+     */
+    public function testGetChildrenTree(): void
     {
         $tree = $this->providerTree();
 
@@ -241,6 +329,18 @@ class TreeTest extends TestCase
                 $tree->getChildrenTree(3)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.getChild 获取一级子节点 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testGetChild(): void
+    {
+        $tree = $this->providerTree();
 
         $nodes = <<<'eot'
             {
@@ -254,6 +354,18 @@ class TreeTest extends TestCase
                 $tree->getChild(0)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.getChildren 获取所有子节点 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testGetChildren(): void
+    {
+        $tree = $this->providerTree();
 
         $nodes = <<<'eot'
             [
@@ -268,6 +380,18 @@ class TreeTest extends TestCase
                 $tree->getChildren(3)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.hasChild 是否存在一级子节点 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testHasChild(): void
+    {
+        $tree = $this->providerTree();
 
         $this->assertTrue(
             $tree->hasChild(3)
@@ -276,6 +400,18 @@ class TreeTest extends TestCase
         $this->assertFalse(
             $tree->hasChild(6)
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.hasChildren 是否存在子节点 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testHasChildren(): void
+    {
+        $tree = $this->providerTree();
 
         // hasChildren 存在严格和不严格校验
         $this->assertFalse(
@@ -301,7 +437,14 @@ class TreeTest extends TestCase
         );
     }
 
-    public function testParentsUse(): void
+    /**
+     * @api(
+     *     title="Tree.getParent 获取一级父节点 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testGetParent(): void
     {
         $tree = $this->providerTree();
 
@@ -344,6 +487,36 @@ class TreeTest extends TestCase
                 $tree->getParent(5, true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.getParent 不存在的节点父级 ID 为空数组",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testGetParentButNodeNotFound(): void
+    {
+        $tree = $this->providerTree();
+
+        // 不存对应的节点查询父节点
+        $this->assertSame(
+            [],
+            $tree->getParent(400000000)
+        );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.getParents 获取所有父节点 ID",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testGetParents(): void
+    {
+        $tree = $this->providerTree();
 
         $nodes = <<<'eot'
             [
@@ -373,14 +546,15 @@ class TreeTest extends TestCase
                 $tree->getParents(5, true)
             )
         );
-
-        // 不存对应的节点查询父节点
-        $this->assertSame(
-            [],
-            $tree->getParent(400000000)
-        );
     }
 
+    /**
+     * @api(
+     *     title="Tree.getLevel 获取节点所在的层级",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetLevel(): void
     {
         $tree = $this->providerTree();
@@ -411,6 +585,13 @@ class TreeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="Tree.getData.setData 设置和获取节点数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetSetData(): void
     {
         $tree = new Tree([
@@ -475,6 +656,13 @@ class TreeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="Tree.normalize 返回整理树节点数据结构",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNormalize(): void
     {
         $tree = new Tree([
@@ -556,6 +744,19 @@ class TreeTest extends TestCase
                 })
             )
         );
+    }
+
+    /**
+     * @api(
+     *     title="Tree.normalize 返回整理树某个节点及下级的数据结构",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testNormalizeNode(): void
+    {
+        // 可以返回子树
+        $tree = $this->providerTree();
 
         $nodes = <<<'eot'
             [
@@ -572,9 +773,6 @@ class TreeTest extends TestCase
             ]
             eot;
 
-        // 可以返回子树
-        $tree = $this->providerTree();
-
         $this->assertSame(
             $nodes,
             $this->varJson(
@@ -587,7 +785,7 @@ class TreeTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $tree = new Tree([
+        new Tree([
             1,
         ]);
     }

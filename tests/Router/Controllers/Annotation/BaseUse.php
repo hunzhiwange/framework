@@ -31,7 +31,7 @@ namespace Tests\Router\Controllers\Annotation;
  */
 class BaseUse
 {
-    public function handle()
+    public function handle(): string
     {
         return 'hello plus base use';
     }

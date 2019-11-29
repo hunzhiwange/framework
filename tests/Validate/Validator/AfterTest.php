@@ -32,6 +32,13 @@ use Tests\TestCase;
  * @since 2018.08.11
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.after",
+ *     zh-CN:title="验证器.验证在给定日期之后",
+ *     path="component/validate/validator/after",
+ *     description="",
+ * )
  */
 class AfterTest extends TestCase
 {
@@ -40,6 +47,20 @@ class AfterTest extends TestCase
      *
      * @param mixed  $value
      * @param string $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\AfterTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, string $param): void
     {
@@ -70,6 +91,20 @@ class AfterTest extends TestCase
      *
      * @param mixed  $value
      * @param string $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\AfterTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, string $param): void
     {
@@ -99,6 +134,13 @@ class AfterTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="日期格式化不一致无法通过验证",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMakeDateTimeFormatWithNewDateTimeExceptionError(): void
     {
         $validate = new Validator(
@@ -113,6 +155,13 @@ class AfterTest extends TestCase
         $this->assertFalse($validate->success());
     }
 
+    /**
+     * @api(
+     *     title="after 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

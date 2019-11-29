@@ -38,7 +38,6 @@ function delete_directory(string $dir, bool $recursive = false): void
         rmdir($dir);
     } else {
         $instance = new DirectoryIterator($dir);
-
         foreach ($instance as $file) {
             if ($file->isDot()) {
                 continue;

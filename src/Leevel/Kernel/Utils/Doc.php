@@ -22,8 +22,11 @@ namespace Leevel\Kernel\Utils;
 
 use Leevel\Filesystem\Fso\create_file;
 use function Leevel\Filesystem\Fso\create_file;
+use Leevel\Support\Str\ends_with;
+use function Leevel\Support\Str\ends_with;
 use ReflectionClass;
 use ReflectionMethod;
+use Throwable;
 
 /**
  * 文档解析 Markdown.
@@ -55,6 +58,20 @@ class Doc
     protected string $git;
 
     /**
+     * 国际化.
+     *
+     * @var string
+     */
+    protected $i18n;
+
+    /**
+     * 默认语言.
+     *
+     * @var string
+     */
+    protected $defaultI18n;
+
+    /**
      * 解析文档保存路径.
      *
      * @var string
@@ -80,11 +97,15 @@ class Doc
      *
      * @param string $path
      * @param string $git
+     * @param string $i18n
+     * @param string $defaultI18n
      */
-    public function __construct(string $path, string $git)
+    public function __construct(string $path, string $git, string $i18n, string $defaultI18n = 'zh-CN')
     {
         $this->basePath = $path;
         $this->git = $git;
+        $this->i18n = $i18n;
+        $this->defaultI18n = $defaultI18n;
     }
 
     /**
@@ -114,21 +135,20 @@ class Doc
      * @param string      $className
      * @param null|string $path
      *
-     * @return bool
+     * @return array|bool
      */
-    public function handleAndSave(string $className, ?string $path = null): bool
+    public function handleAndSave(string $className, ?string $path = null)
     {
         $this->setSavePath($path);
 
         $markdown = trim($this->handle($className));
-
         if (!$markdown || !$this->savePath) {
             return false;
         }
 
         $this->writeCache($this->savePath, $markdown);
 
-        return true;
+        return [$this->savePath, $markdown];
     }
 
     /**
@@ -142,7 +162,7 @@ class Doc
      */
     public static function getMethodBody(string $className, string $method, bool $isDoc = false): string
     {
-        $doc = new static('', '');
+        $doc = new static('', '', '');
         $lines = $doc->parseFileContnet(new ReflectionClass($className));
         $method = new ReflectionMethod($className, $method);
 
@@ -158,9 +178,8 @@ class Doc
      */
     public static function getClassBody(string $className): string
     {
-        $doc = new static('', '');
+        $doc = new static('', '', '');
         $lines = $doc->parseFileContnet($reflectionClass = new ReflectionClass($className));
-
         $startLine = $reflectionClass->getStartLine() - 1;
         $endLine = $reflectionClass->getEndLine();
         $hasUse = false;
@@ -199,7 +218,8 @@ class Doc
         if (null === $path) {
             $this->savePath = null;
         } else {
-            $this->savePath = $this->basePath.'/'.$path.'.md';
+            $basePath = str_replace('{i18n}', $this->i18n ? '/'.$this->i18n : '', $this->basePath);
+            $this->savePath = $basePath.'/'.$path.'.md';
         }
     }
 
@@ -244,17 +264,18 @@ class Doc
         }
 
         $data = [];
-        $data[] = $this->formatTitle($info['title'] ?? '', '#');
+        $data[] = $this->formatTitle($this->parseDocItem($info, 'title'), '#');
         $data[] = $this->formatFrom($this->git, $this->filePath);
-        $data[] = $this->formatDescription($info['description'] ?? '');
+        $data[] = $this->formatDescription($this->parseDocItem($info, 'description'));
         $data[] = $this->formatUsers($reflection);
+        $data = array_filter($data);
 
         // 指定保存路径
         if (isset($info['path'])) {
             $this->setSavePath($info['path']);
         }
 
-        return implode(PHP_EOL, $data);
+        return implode(PHP_EOL, $data).PHP_EOL;
     }
 
     /**
@@ -267,12 +288,10 @@ class Doc
     protected function parseMethodContents(ReflectionClass $reflection): string
     {
         $markdown = '';
-
         foreach ($reflection->getMethods() as $method) {
             if (!$this->isMethodNeedParsed($method)) {
                 continue;
             }
-
             $markdown .= $this->parseMethodContent($method);
         }
 
@@ -294,12 +313,32 @@ class Doc
         }
 
         $data = [];
-        $data[] = $this->formatTitle($info['title'] ?? '', $info['level'] ?? '##');
-        $data[] = $this->formatDescription($info['description'] ?? '');
-        $data[] = $this->formatBody($method, $info['lang'] ?? 'php');
-        $data[] = $this->formatNote($info['note'] ?? '');
+        $data[] = $this->formatTitle($this->parseDocItem($info, 'title'), $this->parseDocItem($info, 'level', '##'));
+        $data[] = $this->formatDescription($this->parseDocItem($info, 'description'));
+        $data[] = $this->formatBody($method, $this->parseDocItem($info, 'lang', 'php'));
+        $data[] = $this->formatNote($this->parseDocItem($info, 'note'));
+        $data = array_filter($data);
 
         return implode(PHP_EOL, $data).PHP_EOL;
+    }
+
+    /**
+     * 解析文档项.
+     *
+     * @param array  $info
+     * @param string $name
+     * @param string $defaultValue
+     *
+     * @return string
+     */
+    protected function parseDocItem(array $info, string $name, string $defaultValue = ''): string
+    {
+        $i18n = $this->i18n ? $this->i18n.':' : '';
+        $defaultI18n = $this->defaultI18n ? $this->defaultI18n.':' : '';
+
+        return $info[$i18n.$name] ??
+            ($info[$defaultI18n.$name] ??
+                ($info[$name] ?? $defaultValue));
     }
 
     /**
@@ -330,8 +369,8 @@ class Doc
     protected function formatFrom(string $git, string $filePath): string
     {
         return <<<EOT
-            ::: tip 单元测试即文档
-            [基于原始文档 {$filePath} 自动构建]({$git}/{$filePath})
+            ::: tip Testing Is Documentation
+            [{$filePath}]({$git}/{$filePath})
             :::
                 
             EOT;
@@ -347,10 +386,9 @@ class Doc
     protected function formatUsers(ReflectionClass $reflection): string
     {
         $uses = $this->parseUseDefined($this->lines, $reflection);
-
         if ($uses) {
             $uses = <<<EOT
-                **引入相关类**
+                **Uses**
                 
                 {$uses}
 
@@ -408,7 +446,6 @@ class Doc
     protected function formatBody(ReflectionMethod $method, string $lang): string
     {
         $body = $this->parseMethodBody($this->lines, $method, 0 === strpos($method->getName(), 'doc'));
-
         if ($body) {
             $body = <<<EOT
                 ``` {$lang}
@@ -485,7 +522,6 @@ class Doc
             if ($k < $startLine || $k >= $endLine) {
                 continue;
             }
-
             $result[] = substr($v, $offsetLength);
         }
 
@@ -501,53 +537,148 @@ class Doc
      */
     protected function parseComment(string $comment): array
     {
-        $comments = explode(PHP_EOL, $comment);
-        $findApi = false;
+        $findApi = $inMultiComment = false;
         $result = [];
         $code = ['$result = ['];
 
-        foreach ($comments as $v) {
-            $backupV = $v;
+        foreach (explode(PHP_EOL, $comment) as $v) {
+            $originalV = $v;
             $v = trim($v, '* ');
-            $v = trim($v, '_'); // 删除占位符
 
+            // @api 开始
             if ('@api(' === $v) {
                 $findApi = true;
             } elseif (true === $findApi) {
+                // @api 结尾
                 if (')' === $v) {
                     break;
                 }
+
                 // 匹配字段格式，以便于支持多行
-                if (preg_match('/^\S+=\"/', $v)) {
-                    $pos = strpos($v, '=');
-                    $left = '"'.substr($v, 0, $pos).'"';
-                    $right = substr($v, $pos + 1);
-                    $right = str_replace('$', '\$', $right); // 转义变量
-
-                    $code[] = $left.'=>'.$right;
+                if (false === $inMultiComment && preg_match('/^[a-zA-Z:-]+=\"/', $v)) {
+                    $code[] = $this->parseSingleComment($v);
                 } else {
-                    // 空行加两个换行符撑开
-                    if ('' === $v) {
-                        $code[] = PHP_EOL.PHP_EOL;
-                    } else {
-                        if (0 === strpos($backupV, '     * ')) {
-                            $backupV = substr($backupV, 7);
-                        }
-
-                        if (0 === strpos($backupV, ' * ')) {
-                            $backupV = substr($backupV, 3);
-                        }
-
-                        $code[] = str_replace('$', '\$', $backupV).PHP_EOL; // 转义变量
-                    }
+                    list($content, $inMultiComment) = $this->parseMultiComment($v, $originalV);
+                    $code[] = $content;
                 }
             }
         }
 
         $code[] = '];';
-        eval(implode('', $code));
+        $code = implode('', $code);
+
+        try {
+            eval($code);
+            file_put_contents(__DIR__.'/doc.rightlog.php', '<?php'.PHP_EOL.$code);
+        } catch (Throwable $th) {
+            file_put_contents(__DIR__.'/doc.errorlog.php', '<?php'.PHP_EOL.$code);
+
+            throw $th;
+        }
 
         return $result;
+    }
+
+    /**
+     * 分析多行注释.
+     *
+     * @param string $content
+     * @param string $originalContent
+     *
+     * @return array
+     */
+    protected function parseMultiComment(string $content, string $originalContent): array
+    {
+        $inMultiComment = true;
+        if ('' === $content) {
+            return [PHP_EOL, $inMultiComment];
+        }
+
+        $content = $originalContent;
+        if (0 === strpos($content, '     * ')) {
+            $content = substr($content, 7);
+        }
+        if (0 === strpos($content, ' * ')) {
+            $content = substr($content, 3);
+        }
+
+        // 多行结尾必须独立以便于区分
+        if ('",' !== trim($content)) {
+            $content = $this->parseExecutableCode($content);
+        } else {
+            $inMultiComment = false;
+        }
+
+        $content = str_replace('$', '\$', $content).PHP_EOL;
+
+        return [$content, $inMultiComment];
+    }
+
+    /**
+     * 分析单行注释.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function parseSingleComment(string $content): string
+    {
+        $pos = strpos($content, '=');
+        $left = '"'.substr($content, 0, $pos).'"';
+        $right = $this->normalizeSinggleRight(substr($content, $pos + 1));
+
+        return $left.'=>'.$right;
+    }
+
+    /**
+     * 整理单行注释右边值.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function normalizeSinggleRight(string $content): string
+    {
+        $content = $this->parseExecutableCode($content);
+        if (0 === strpos($content, '\"')) {
+            $content = substr($content, 1);
+        }
+        if (ends_with($content, '\",')) {
+            $content = substr($content, 0, strlen($content) - 3).'",';
+        }
+
+        return str_replace('$', '\$', $content);
+    }
+
+    /**
+     * 分析可执行代码.
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    protected function parseExecutableCode(string $content): string
+    {
+        if (preg_match_all('/\{\[(.+)\]\}/', $content, $matches)) {
+            $content = str_replace(
+                $matches[1][0],
+                base64_encode($matches[1][0]),
+                $content,
+            );
+        }
+
+        // 保护单引号不被转义
+        $content = str_replace($singleQuote = '\'', $singleQuoteEncoded = base64_encode('single-quote'), $content);
+        $content = addslashes($content);
+        $content = str_replace($singleQuoteEncoded, $singleQuote, $content);
+
+        if (!empty($matches)) {
+            foreach ($matches[1] as $tmp) {
+                $content = str_replace('{['.base64_encode($tmp).']}', '".'.$tmp.'."', $content);
+            }
+        }
+
+        return $content;
     }
 
     /**
@@ -564,3 +695,4 @@ class Doc
 
 // import fn.
 class_exists(create_file::class); // @codeCoverageIgnore
+class_exists(ends_with::class); // @codeCoverageIgnore

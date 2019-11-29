@@ -35,7 +35,7 @@ use Tests\TestCase;
  * @api(
  *     title="断言",
  *     path="component/validate/assert",
- *     description="这里为系统提供的基础的断言功能。",
+ *     description="这里为系统提供的基础的断言功能，断言的规则与验证器共享校验规则。",
  * )
  */
 class AssertTest extends TestCase
@@ -62,7 +62,6 @@ class AssertTest extends TestCase
         Assert::notEmpty(55);
         Assert::notEmpty(66);
         Assert::lessThan(4, [5]);
-
         $this->assertSame(1, 1);
     }
 
@@ -179,7 +178,8 @@ class AssertTest extends TestCase
     /**
      * @api(
      *     title="断言支持链式表达式",
-     *     description="我们可以使用链式表达式来校验规则。
+     *     description="
+     * 我们可以使用链式表达式来校验规则。
      *
      * **make 原型**
      *
@@ -204,7 +204,8 @@ class AssertTest extends TestCase
     /**
      * @api(
      *     title="断言支持延迟释放",
-     *     description="可以将所有错误几种抛出。
+     *     description="
+     * 可以将所有错误几种抛出。
      *
      * **lazy 原型**
      *

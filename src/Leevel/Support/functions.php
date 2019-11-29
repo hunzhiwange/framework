@@ -83,7 +83,6 @@ if (!function_exists('f_exists')) {
             }
 
             class_exists($virtualClass);
-
             if (function_exists($fn)) {
                 return true;
             }

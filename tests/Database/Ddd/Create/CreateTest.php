@@ -22,10 +22,12 @@ namespace Tests\Database\Ddd\Create;
 
 use Leevel\Database\Ddd\Entity;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\TestConstructPropBlackEntity;
 use Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity;
 use Tests\Database\Ddd\Entity\TestCreateAutoFillEntity;
 use Tests\Database\Ddd\Entity\TestCreatePropWhiteEntity;
+use Tests\Database\Ddd\Entity\TestDatabaseEntity;
 use Tests\Database\Ddd\Entity\TestEntity;
 
 /**
@@ -65,7 +67,6 @@ class CreateTest extends TestCase
     public function testBaseUse(): void
     {
         $entity = new TestEntity();
-
         $this->assertInstanceof(Entity::class, $entity);
 
         $entity->name = 'foo';
@@ -93,6 +94,36 @@ class CreateTest extends TestCase
         );
     }
 
+    public function testCreateBaseUse(): void
+    {
+        $entity = new TestEntity();
+        $this->assertInstanceof(Entity::class, $entity);
+
+        $entity->name = 'foo';
+
+        $this->assertSame('foo', $entity->name);
+        $this->assertSame(['name'], $entity->changed());
+
+        $this->assertNull($entity->flushData());
+
+        $entity->create();
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "foo"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
     /**
      * @api(
      *     title="创建一个实体支持构造器白名单",
@@ -100,7 +131,7 @@ class CreateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity::class)."
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropWhiteEntity::class)]}
      * ```
      *
      * 调用 `construct_prop_white => true` 来设置字段白名单，一旦设置了白名单只有通过了白名单的数据才能够通过构造器更新模型属性。
@@ -126,7 +157,7 @@ class CreateTest extends TestCase
      * **完整模型**
      *
      * ``` php
-     * ".\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropBlackEntity::class)."
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\TestConstructPropBlackEntity::class)]}
      * ```
      *
      * 调用 `construct_prop_black => true` 来设置字段黑名单，一旦设置了黑名单处于黑名单的数据无法通过构造器更新模型属性。
@@ -145,14 +176,37 @@ class CreateTest extends TestCase
         $this->assertSame('foo', $entity->getName());
     }
 
+    public function testSavePropBlackAndWhite(): void
+    {
+        $entity = new TestCreatePropWhiteEntity([
+            'name'        => 'foo',
+            'description' => 'hello description',
+        ]);
+        $entity->save();
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "foo"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
     public function testCreatePropBlackAndWhite(): void
     {
         $entity = new TestCreatePropWhiteEntity([
             'name'        => 'foo',
             'description' => 'hello description',
         ]);
-
-        $entity->save();
+        $entity->create();
 
         $data = <<<'eot'
             [
@@ -176,21 +230,36 @@ class CreateTest extends TestCase
         $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\TestEntity` prop or field of struct `not_exists` was not defined.');
 
         $entity = new TestEntity();
-
         $entity->notExists = 'hello';
     }
 
     public function testAutoFile(): void
     {
         $entity = new TestCreateAutoFillEntity();
-
         $entity->save();
 
         $data = <<<'eot'
             [
-                {
-                    "id": null
-                }
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testCreateAutoFile(): void
+    {
+        $entity = new TestCreateAutoFillEntity();
+        $entity->create();
+
+        $data = <<<'eot'
+            [
+                []
             ]
             eot;
 
@@ -205,8 +274,32 @@ class CreateTest extends TestCase
     public function testAutoFileWithAll(): void
     {
         $entity = new TestCreateAutoFillEntity();
-
         $entity->save([], []);
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "name for create_fill",
+                    "description": "set description.",
+                    "address": "address is set now.",
+                    "foo_bar": "foo bar.",
+                    "hello": "hello field."
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testCreateAutoFileWithAll(): void
+    {
+        $entity = new TestCreateAutoFillEntity();
+        $entity->create([], []);
 
         $data = <<<'eot'
             [
@@ -231,7 +324,6 @@ class CreateTest extends TestCase
     public function testAutoFileWithCustomField(): void
     {
         $entity = new TestCreateAutoFillEntity();
-
         $entity->save([], ['address']);
 
         $data = <<<'eot'
@@ -248,5 +340,97 @@ class CreateTest extends TestCase
                 $entity->flushData()
             )
         );
+    }
+
+    public function testCreateAutoFileWithCustomField(): void
+    {
+        $entity = new TestCreateAutoFillEntity();
+        $entity->create([], ['address']);
+
+        $data = <<<'eot'
+            [
+                {
+                    "address": "address is set now."
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testSaveWithProp(): void
+    {
+        $entity = new TestDatabaseEntity();
+        $entity->save(['name' => 'hello']);
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "hello"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testCreateWithProp(): void
+    {
+        $entity = new TestDatabaseEntity();
+        $entity->create(['name' => 'hello']);
+
+        $data = <<<'eot'
+            [
+                {
+                    "name": "hello"
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+    }
+
+    public function testSaveWithCompositeId(): void
+    {
+        $entity = new CompositeId();
+        $entity->save(['id1' => 2, 'id2' => 3]);
+
+        $data = <<<'eot'
+            [
+                {
+                    "id1": 2,
+                    "id2": 3
+                }
+            ]
+            eot;
+
+        $this->assertSame(
+            $data,
+            $this->varJson(
+                $entity->flushData()
+            )
+        );
+
+        $entity->flush();
+    }
+
+    protected function getDatabaseTable(): array
+    {
+        return ['composite_id'];
     }
 }

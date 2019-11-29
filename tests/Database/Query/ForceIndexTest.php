@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.14
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.forceIndex",
+ *     zh-CN:title="查询语言.forceIndex",
+ *     path="database/query/forceindex",
+ *     description="",
+ * )
  */
 class ForceIndexTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="forceIndex,ignoreIndex 基础用法",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) IGNORE INDEX(testindex) WHERE `test`.`id` = 5",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) IGNORE INDEX(testindex) WHERE `test_query`.`id` = 5",
                 [],
                 false,
                 null,
@@ -52,7 +66,7 @@ class ForceIndexTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->forceIndex('nameindex,statusindex')
                     ->ignoreIndex('testindex')
                     ->where('id', '=', 5)
@@ -61,13 +75,20 @@ class ForceIndexTest extends TestCase
         );
     }
 
-    public function testForceIndex(): void
+    /**
+     * @api(
+     *     zh-CN:title="forceIndex 数组支持",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testForceIndexWithArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) WHERE `test`.`id` = 2",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = 2",
                 [],
                 false,
                 null,
@@ -80,7 +101,7 @@ class ForceIndexTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->forceIndex(['nameindex', 'statusindex'])
                     ->where('id', '=', 2)
                     ->findAll(true)
@@ -88,13 +109,20 @@ class ForceIndexTest extends TestCase
         );
     }
 
-    public function testIgnoreIndex(): void
+    /**
+     * @api(
+     *     zh-CN:title="ignoreIndex 数组支持",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testIgnoreIndexWithArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` IGNORE INDEX(nameindex,statusindex) WHERE `test`.`id` = 6",
+                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = 6",
                 [],
                 false,
                 null,
@@ -107,7 +135,7 @@ class ForceIndexTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->ignoreIndex(['nameindex', 'statusindex'])
                     ->where('id', '=', 6)
                     ->findAll(true)
@@ -125,7 +153,7 @@ class ForceIndexTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->forceIndex('foo', 'NOT_SUPPORT')
             ->findAll(true);
     }
@@ -137,7 +165,7 @@ class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` IGNORE INDEX(testindex) WHERE `test`.`id` = 5",
+                "SELECT `test_query`.* FROM `test_query` IGNORE INDEX(testindex) WHERE `test_query`.`id` = 5",
                 [],
                 false,
                 null,
@@ -150,7 +178,7 @@ class ForceIndexTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->forceIndex('nameindex,statusindex')
                     ->else()
@@ -169,7 +197,7 @@ class ForceIndexTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` FORCE INDEX(nameindex,statusindex) WHERE `test`.`id` = 5",
+                "SELECT `test_query`.* FROM `test_query` FORCE INDEX(nameindex,statusindex) WHERE `test_query`.`id` = 5",
                 [],
                 false,
                 null,
@@ -182,7 +210,7 @@ class ForceIndexTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->forceIndex('nameindex,statusindex')
                     ->else()

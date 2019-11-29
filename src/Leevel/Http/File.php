@@ -66,7 +66,6 @@ class File extends SplFileObject
     public function move(string $directory, ?string $name = null): self
     {
         $target = $this->getTargetFile($directory, $name);
-
         $this->moveToTarget($this->getPathname(), $target);
 
         return new self($target);
@@ -83,7 +82,6 @@ class File extends SplFileObject
     protected function getTargetFile(string $directory, ?string $name = null): string
     {
         create_directory($directory);
-
         $target = rtrim($directory, '/\\').\DIRECTORY_SEPARATOR.
             ($name ?? $this->getBasename());
 
@@ -107,9 +105,7 @@ class File extends SplFileObject
 
         $method = $isUploaded ? 'move_uploaded_file' : 'rename';
         $method($sourcePath, $target);
-
         restore_error_handler();
-
         chmod($target, 0666 & ~umask());
     }
 }

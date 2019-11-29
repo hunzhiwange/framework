@@ -93,7 +93,6 @@ class Subject implements ISubject, SplSubject
     public function notify(...$args)
     {
         $this->notifyArgs = $args;
-
         foreach ($this->observers as $observer) {
             $observer->update($this);
         }

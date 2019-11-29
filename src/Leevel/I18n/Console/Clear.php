@@ -48,7 +48,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected string $description = 'Clear cache of i18n.';
+    protected string $description = 'Clear cache of i18n';
 
     /**
      * 响应命令.
@@ -62,11 +62,8 @@ class Clear extends Command
         list_directory($app->i18nPath(), false, function ($item) use ($app) {
             if ($item->isDir()) {
                 $i18n = $item->getFilename();
-
                 $cachePath = $app->i18nCachedPath($i18n);
-
                 $this->clearCache($cachePath);
-
                 $this->info(sprintf('I18n cache file %s clear successed.', $cachePath));
             }
         });

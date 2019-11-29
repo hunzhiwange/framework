@@ -31,7 +31,8 @@ namespace Tests\Docs;
  * @api(
  *     title="如何成为 QueryPHP 开发者",
  *     path="developer/README",
- *     description="QueryPHP 非常欢迎各位给我们共同的伟大的作品添砖加瓦，实现为 PHP 社区提供一个好框架的美好愿景。
+ *     description="
+ * QueryPHP 非常欢迎各位给我们共同的充满想象且令人惊叹的完成度的开源作品添砖加瓦，实现为 PHP 社区提供一个好框架的美好愿景。
  *
  *  * 文档开发.基于单元测试实现的自动化文档 [当前文档开发](https://github.com/hunzhiwange/framework/projects/2)
  *  * 计划功能.开发 [当前计划功能](https://github.com/hunzhiwange/framework/projects/6)
@@ -53,7 +54,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="克隆 `queryphp` 仓库",
-     *     description="QueryPHP 框架的开发来自于从克隆主仓库开始，由于国内访问 Github 网速的问题，只需要等待一小段时间。
+     *     description="
+     * QueryPHP 框架的开发来自于从克隆主仓库开始，由于国内访问 Github 网速的问题，只需要等待一小段时间。
      *
      * **下载代码**
      *
@@ -105,7 +107,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="搭建后台 API 端",
-     *     description="首先我们需要创建一个数据库来运行我们的后台，让我们对 QueryPHP 有一个直观的感受，同时方便后期开发调试等。
+     *     description="
+     * 首先我们需要创建一个数据库来运行我们的后台，让我们对 QueryPHP 有一个直观的感受，同时方便后期开发调试等。
      *
      * **首先创建一个数据库**
      *
@@ -221,7 +224,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="搭建前端",
-     *     description="后台 API 搭建好了，我们开始搭建前端了，前端基于 `Vue-cli 3` 和 `IView`，首先需要安装 `node` 才能够跑起来。
+     *     description="
+     * 后台 API 搭建好了，我们开始搭建前端了，前端基于 `Vue-cli 3` 和 `IView`，首先需要安装 `node` 才能够跑起来。
      *
      * 对于开发 QueryPHP 来说，你不需要会 `Vue` 或者 `JavaScript`，所以请放心不要有心里负担。
      *
@@ -267,7 +271,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="运行测试用例",
-     *     description="QueryPHP 推崇通过编写测试用例来让代码变得可维护，所以这里需要本地开发跑通测试用例。
+     *     description="
+     * QueryPHP 推崇通过编写测试用例来让代码变得可维护，所以这里需要本地开发跑通测试用例。
      *
      * **首先创建一个数据库**
      *
@@ -394,7 +399,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="统一团队代码风格",
-     *     description="风格统一对保证我们系统一致性非常重要，我们做到开箱即用，支持 `PHP` 和 `JavaScript`。
+     *     description="
+     * 风格统一对保证我们系统一致性非常重要，我们做到开箱即用，支持 `PHP` 和 `JavaScript`。
      *
      * **使用 Git 钩子**
      *
@@ -550,7 +556,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="克隆 `framework` 仓库将框架替换为开发版本",
-     *     description="应用层框架全部搭建完毕，接下来我们将框架层代码替换为开发阶段的代码来进行日常框架迭代。
+     *     description="
+     * 应用层框架全部搭建完毕，接下来我们将框架层代码替换为开发阶段的代码来进行日常框架迭代。
      *
      * **删除框架层**
      *
@@ -609,7 +616,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="运行框架核心测试用例",
-     *     description="QueryPHP 底层框架拥有 3000 多例测试用例，这些测试用例需要被维护，所以这里需要本地开发跑通测试用例。
+     *     description="
+     * QueryPHP 底层框架拥有 3000 多例测试用例，这些测试用例需要被维护，所以这里需要本地开发跑通测试用例。
      *
      * **首先创建一个数据库**
      *
@@ -746,7 +754,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="统一框架核心团队代码风格",
-     *     description="风格统一对保证我们系统一致性非常重要，我们做到开箱即用，核心库只包含 PHP 文件。
+     *     description="
+     * 风格统一对保证我们系统一致性非常重要，我们做到开箱即用，核心库只包含 PHP 文件。
      *
      * **使用 Git 钩子**
      *
@@ -806,7 +815,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="格式化后的 PHP",
-     *     description="代码干净漂亮了不少，不是吗。
+     *     description="
+     * 代码干净漂亮了不少，不是吗。
      *
      * 测试代码回滚请见上面的方法，谢谢。
      * ",
@@ -851,7 +861,8 @@ class BecomeAQueryphpDeveloperDoc
     /**
      * @api(
      *     title="克隆 `queryphp.com` 仓库实现自动化文档搭建",
-     *     description="QueryPHP 底层的文档基于单元测试加备注的方式来实现的，通过命名工具全部采用自动化生成 Markdown，这大幅度简化了文档的编写工作，同时保证了文档实时性。
+     *     description="
+     * QueryPHP 底层的文档基于单元测试加备注的方式来实现的，通过命名工具全部采用自动化生成 Markdown，这大幅度简化了文档的编写工作，同时保证了文档实时性。
      *
      * **官方文档采用 VuePress 读取 Markdown 来实现的**
      *
@@ -867,7 +878,7 @@ class BecomeAQueryphpDeveloperDoc
      * $vim .env
      *
      * # 修改路径
-     * FRAMEWORK_DOC_OUTPUTDIR = \"/data/codes/test/queryphp.com/docs/docs/\"
+     * FRAMEWORK_DOC_OUTPUTDIR = "/data/codes/test/queryphp.com/docs/docs/"
      * ```
      *
      * **生成文档**

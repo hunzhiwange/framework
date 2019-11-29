@@ -33,7 +33,7 @@ use Leevel\Event\Dispatch;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Event implements IEvent
+class Event
 {
     /**
      * call.
@@ -106,7 +106,7 @@ class Event implements IEvent
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Event\Dispatch
      */

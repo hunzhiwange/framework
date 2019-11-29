@@ -30,9 +30,23 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.10
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.where",
+ *     zh-CN:title="查询语言.where",
+ *     path="database/query/where",
+ *     description="",
+ * )
  */
 class WhereTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件",
+     *     zh-CN:description="最基本的用法为字段 （表达式） 值。",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -40,7 +54,7 @@ class WhereTest extends TestCase
         // 字段 （表达式） 值
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 1",
                 [],
                 false,
                 null,
@@ -53,20 +67,27 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', '=', 1)
                     ->findAll(true)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件默认为等于 `=`",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse2(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2",
                 [],
                 false,
                 null,
@@ -79,7 +100,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 2)
                     ->findAll(true),
                 1
@@ -87,13 +108,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持多次调用",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse3(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`name` > '狗蛋' AND `test`.`value` LIKE '小鸭子'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2 AND `test_query`.`name` > '狗蛋' AND `test_query`.`value` LIKE '小鸭子'",
                 [],
                 false,
                 null,
@@ -106,7 +134,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 2)
                     ->where('name', '>', '狗蛋')
                     ->where('value', 'like', '小鸭子')
@@ -116,13 +144,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持数组方式",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE '技术'",
                 [],
                 false,
                 null,
@@ -135,15 +170,27 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where(['name', 'like', '技术'])
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持二维数组多个条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testMultiDimensionalArray(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术' AND `test`.`value` <> '结局'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE '技术' AND `test_query`.`value` <> '结局'",
                 [],
                 false,
                 null,
@@ -156,7 +203,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where([
                         ['name', 'like', '技术'],
                         ['value', '<>', '结局'],
@@ -167,13 +214,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="orWhere 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testOrWhere(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE '技术' OR `test`.`value` <> '结局'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` LIKE '技术' OR `test_query`.`value` <> '结局'",
                 [],
                 false,
                 null,
@@ -186,7 +240,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('name', 'like', '技术')
                     ->orWhere('value', '<>', '结局')
                     ->findAll(true)
@@ -194,13 +248,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereBetween 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 100",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN 1 AND 100",
                 [],
                 false,
                 null,
@@ -213,7 +274,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereBetween('id', [1, 100])
                     ->findAll(true)
             )
@@ -221,7 +282,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 10",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN 1 AND 10",
                 [],
                 false,
                 null,
@@ -234,7 +295,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'between', [1, 10])
                     ->findAll(true),
                 1
@@ -243,7 +304,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN 1 AND 100 AND `test`.`name` BETWEEN 5 AND 22",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN 1 AND 100 AND `test_query`.`name` BETWEEN 5 AND 22",
                 [],
                 false,
                 null,
@@ -256,7 +317,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereBetween([
                         ['id', [1, 100]],
                         ['name', [5, 22]],
@@ -267,13 +328,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereNotBetween 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereNotBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN 1 AND 10",
                 [],
                 false,
                 null,
@@ -286,7 +354,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereNotBetween('id', [1, 10])
                     ->findAll(true)
             )
@@ -294,7 +362,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT BETWEEN 1 AND 10",
                 [],
                 false,
                 null,
@@ -307,7 +375,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'not between', [1, 10])
                     ->findAll(true),
                 1
@@ -315,13 +383,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereIn 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN (2,50)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (2,50)",
                 [],
                 false,
                 null,
@@ -334,7 +409,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereIn('id', [2, 50])
                     ->findAll(true)
             )
@@ -342,7 +417,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ('1','10')",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ('1','10')",
                 [],
                 false,
                 null,
@@ -355,7 +430,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'in', '1,10')
                     ->findAll(true),
                 1
@@ -364,7 +439,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN (2,50)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (2,50)",
                 [],
                 false,
                 null,
@@ -377,7 +452,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'in', [2, 50])
                     ->findAll(true),
                 2
@@ -385,13 +460,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereNotIn 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereNotIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT IN (2,50)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN (2,50)",
                 [],
                 false,
                 null,
@@ -404,7 +486,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereNotIn('id', [2, 50])
                     ->findAll(true)
             )
@@ -412,7 +494,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT IN ('1','10')",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT IN ('1','10')",
                 [],
                 false,
                 null,
@@ -425,7 +507,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'not in', '1,10')
                     ->findAll(true),
                 1
@@ -433,13 +515,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereNull 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IS NULL",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IS NULL",
                 [],
                 false,
                 null,
@@ -452,7 +541,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereNull('id')
                     ->findAll(true)
             )
@@ -462,7 +551,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'null')
                     ->findAll(true),
                 1
@@ -470,13 +559,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereNotNull 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereNotNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IS NOT NULL",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IS NOT NULL",
                 [],
                 false,
                 null,
@@ -489,7 +585,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereNotNull('id')
                     ->findAll(true)
             )
@@ -499,7 +595,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'not null')
                     ->findAll(true),
                 1
@@ -507,13 +603,20 @@ class WhereTest extends TestCase
         );
     }
 
-    public function testOrWhereDefaultNull(): void
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件未指定值默认为 null",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWhereDefaultNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT WHERE `id` IS NULL",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IS NULL",
                 [],
                 false,
                 null,
@@ -526,19 +629,27 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
+                    ->table('test_query')
                     ->where('id')
                     ->findAll(true)
             )
         );
     }
 
-    public function testWhereLike(): void
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件指定值为 null",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWhereEqualNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '5'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IS NULL",
                 [],
                 false,
                 null,
@@ -551,7 +662,40 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
+                    ->where('id', '=', null)
+                    ->findAll(true)
+            )
+        );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="whereLike 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWhereLike(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE '5'",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varJson(
+                $connect
+                    ->table('test_query')
                     ->whereLike('id', '5')
                     ->findAll(true)
             )
@@ -561,7 +705,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'like', '5')
                     ->findAll(true),
                 1
@@ -569,13 +713,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereNotLike 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereNotLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` NOT LIKE '5'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` NOT LIKE '5'",
                 [],
                 false,
                 null,
@@ -588,7 +739,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereNotLike('id', '5')
                     ->findAll(true)
             )
@@ -598,7 +749,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 'not like', '5')
                     ->findAll(true),
                 1
@@ -606,13 +757,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereExists 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereExists(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
                 [],
                 false,
                 null,
@@ -625,10 +783,10 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereExists(
                         function ($select) {
-                            $select->table('subsql')->where('id', 1);
+                            $select->table('test_query_subsql')->where('id', 1);
                         }
                     )
                     ->findAll(true)
@@ -637,7 +795,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql`)",
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -646,13 +804,13 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $subSelect = $connect->table('subsql');
+        $subSelect = $connect->table('test_query_subsql');
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where([':exists' => $subSelect])
                     ->findAll(true),
                 1
@@ -661,7 +819,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE EXISTS (select *from d_sub)",
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (select *from test_query_subsql)",
                 [],
                 false,
                 null,
@@ -670,14 +828,12 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $subSelect = $connect->table('subsql');
-
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
-                    ->where([':exists' => 'select *from d_sub'])
+                    ->table('test_query')
+                    ->where([':exists' => 'select *from test_query_subsql'])
                     ->findAll(true),
                 2
             )
@@ -685,7 +841,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
                 [],
                 false,
                 null,
@@ -694,18 +850,16 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $subSelect = $connect->table('subsql');
-
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where(
                         [
                             ':exists' => function ($select) {
                                 $select
-                                    ->table('subsql')
+                                    ->table('test_query_subsql')
                                     ->where('id', 1);
                             },
                         ]
@@ -716,13 +870,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereNotExists 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereNotExists(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE NOT EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE NOT EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
                 [],
                 false,
                 null,
@@ -735,11 +896,11 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereNotExists(
                         function ($select) {
                             $select
-                                ->table('subsql')
+                                ->table('test_query_subsql')
                                 ->where('id', 1);
                         }
                     )
@@ -748,13 +909,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持分组",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5 OR (`test`.`votes` > 100 AND `test`.`title` <> 'Admin')",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 5 OR (`test_query`.`votes` > 100 AND `test_query`.`title` <> 'Admin')",
                 [],
                 false,
                 null,
@@ -767,7 +935,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 5)
                     ->orWhere(function ($select) {
                         $select
@@ -780,7 +948,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 5 OR `test`.`name` = '小牛' AND (`test`.`votes` > 100 OR `test`.`title` <> 'Admin')",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 5 OR `test_query`.`name` = '小牛' AND (`test_query`.`votes` > 100 OR `test_query`.`title` <> 'Admin')",
                 [],
                 false,
                 null,
@@ -793,7 +961,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where('id', 5)
                     ->orWhere('name', '小牛')
                     ->where(function ($select) {
@@ -807,13 +975,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持表达式",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testConditionalExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.`post`,`test`.`value`,concat(\"tt_\",`test`.`id`) FROM `test` WHERE concat(\"hello_\",`test`.`posts`) = `test`.`id`",
+                "SELECT `test_query`.`post`,`test_query`.`value`,concat(\"tt_\",`test_query`.`id`) FROM `test_query` WHERE concat(\"hello_\",`test_query`.`posts`) = `test_query`.`id`",
                 [],
                 false,
                 null,
@@ -826,20 +1001,27 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test', 'post,value,{concat("tt_",[id])}')
+                    ->table('test_query', 'post,value,{concat("tt_",[id])}')
                     ->where('{concat("hello_",[posts])}', '=', '{[id]}')
                     ->findAll(true)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持二维数组的键值为字段",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testArrayKeyAsField(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = '故事' AND `test`.`name` IN (1,2,3) AND `test`.`weidao` BETWEEN '40' AND '100' AND `test`.`value` IS NULL AND `test`.`remark` IS NOT NULL AND `test`.`goods` = '东亚商品' AND `test`.`hello` = 'world'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = '故事' AND `test_query`.`name` IN (1,2,3) AND `test_query`.`weidao` BETWEEN '40' AND '100' AND `test_query`.`value` IS NULL AND `test_query`.`remark` IS NOT NULL AND `test_query`.`goods` = '东亚商品' AND `test_query`.`hello` = 'world'",
                 [],
                 false,
                 null,
@@ -852,7 +1034,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where([
                         'id'     => ['=', '故事'],
                         'name'   => ['in', [1, 2, 3]],
@@ -867,13 +1049,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持字符串语法 `:string`",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testSupportString(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`name` = 11 and `post`.`value` = 22 and concat(\"tt_\",`test`.`id`)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` = 11 and `test_query`.`value` = 22 and concat(\"tt_\",`test_query`.`id`)",
                 [],
                 false,
                 null,
@@ -886,8 +1075,8 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
-                    ->where([':string' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}'])
+                    ->table('test_query')
+                    ->where([':string' => '{[name] = 11 and [test_query.value] = 22 and concat("tt_",[id])}'])
                     ->findAll(true)
             )
         );
@@ -903,7 +1092,7 @@ class WhereTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->where([':string' => []])
             ->findAll(true);
     }
@@ -918,18 +1107,25 @@ class WhereTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->where([':string' => 1])
             ->findAll(true);
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持分组语法 `:subor` 和 `suband` ",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testSupportSubandSubor(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`hello` = 'world' OR (`test`.`id` LIKE '你好')",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = 'world' OR (`test_query`.`id` LIKE '你好')",
                 [],
                 false,
                 null,
@@ -941,7 +1137,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where([
                         'hello'   => 'world',
                         ':subor'  => ['id', 'like', '你好'],
@@ -951,13 +1147,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持分组语法 `:subor` 和 `suband` 任意嵌套",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testSupportSubandSuborMore(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`hello` = '111' OR (`test`.`id` LIKE '你好' AND `test`.`value` = 'helloworld') AND (`test`.`id2` LIKE '你好2' OR `test`.`value2` = 'helloworld2' OR (`test`.`child_one` > '123' AND `test`.`child_two` LIKE '123'))",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = '111' OR (`test_query`.`id` LIKE '你好' AND `test_query`.`value` = 'helloworld') AND (`test_query`.`id2` LIKE '你好2' OR `test_query`.`value2` = 'helloworld2' OR (`test_query`.`child_one` > '123' AND `test_query`.`child_two` LIKE '123'))",
                 [],
                 false,
                 null,
@@ -970,7 +1173,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->where([
                         'hello'   => '111',
                         ':subor'  => [
@@ -997,13 +1200,13 @@ class WhereTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Select do not implement magic method whereNotSupportMethod.'
+            'Select do not implement magic method `whereNotSupportMethod`.'
         );
 
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->whereNotSupportMethod()
             ->findAll(true);
     }
@@ -1016,7 +1219,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '6'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE '6'",
                 [],
                 false,
                 null,
@@ -1029,7 +1232,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereLike('id', '5')
                     ->else()
@@ -1048,7 +1251,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE '5'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` LIKE '5'",
                 [],
                 false,
                 null,
@@ -1061,7 +1264,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereLike('id', '5')
                     ->else()
@@ -1080,7 +1283,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`value` <> 'bar'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`value` <> 'bar'",
                 [],
                 false,
                 null,
@@ -1093,7 +1296,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->orWhere('value', '<>', 'foo')
                     ->else()
@@ -1112,7 +1315,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`value` <> 'foo'",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`value` <> 'foo'",
                 [],
                 false,
                 null,
@@ -1125,7 +1328,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->orWhere('value', '<>', 'foo')
                     ->else()
@@ -1144,7 +1347,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `bar`.* FROM `bar` WHERE `bar`.`id` = 2)",
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 2)",
                 [],
                 false,
                 null,
@@ -1157,17 +1360,17 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereExists(
                         function ($select) {
-                            $select->table('foo')->where('id', 2);
+                            $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->else()
                     ->whereExists(
                         function ($select) {
-                            $select->table('bar')->where('id', 2);
+                            $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->fi()
@@ -1184,7 +1387,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `foo`.* FROM `foo` WHERE `foo`.`id` = 2)",
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 2)",
                 [],
                 false,
                 null,
@@ -1197,17 +1400,17 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereExists(
                         function ($select) {
-                            $select->table('foo')->where('id', 2);
+                            $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->else()
                     ->whereExists(
                         function ($select) {
-                            $select->table('bar')->where('id', 2);
+                            $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->fi()
@@ -1224,7 +1427,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE NOT EXISTS (SELECT `bar`.* FROM `bar` WHERE `bar`.`id` = 2)",
+                "SELECT `test_query`.* FROM `test_query` WHERE NOT EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 2)",
                 [],
                 false,
                 null,
@@ -1237,17 +1440,17 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereNotExists(
                         function ($select) {
-                            $select->table('foo')->where('id', 2);
+                            $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->else()
                     ->whereNotExists(
                         function ($select) {
-                            $select->table('bar')->where('id', 2);
+                            $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->fi()
@@ -1264,7 +1467,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `foo`.* FROM `foo` WHERE `foo`.`id` = 2)",
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 2)",
                 [],
                 false,
                 null,
@@ -1277,17 +1480,17 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereExists(
                         function ($select) {
-                            $select->table('foo')->where('id', 2);
+                            $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->else()
                     ->whereExists(
                         function ($select) {
-                            $select->table('bar')->where('id', 2);
+                            $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->fi()
@@ -1296,13 +1499,20 @@ class WhereTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件字段可以指定表",
+     *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。",
+     *     note="",
+     * )
+     */
     public function testWhereFieldWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`name` = 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` = 1",
                 [],
                 false,
                 null,
@@ -1315,8 +1525,8 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
-                    ->where('test.name', '=', 1)
+                    ->table('test_query')
+                    ->where('test_query.name', '=', 1)
                     ->findAll(true)
             )
         );
@@ -1332,7 +1542,7 @@ class WhereTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->whereBetween('id', 'foo')
             ->findAll(true);
     }
@@ -1347,7 +1557,7 @@ class WhereTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->whereBetween('id', [1])
             ->findAll(true);
     }
@@ -1358,7 +1568,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1) AND 100",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1) AND 100",
                 [],
                 false,
                 null,
@@ -1371,22 +1581,31 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereBetween('id', [function ($select) {
-                        $select->table('subsql', 'id')->where('id', 1);
+                        $select
+                            ->table('test_query_subsql', 'id')
+                            ->where('id', 1);
                     }, 100])
                     ->findAll(true)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="where 查询条件支持复杂的子查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereInArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `subsql`.`id` FROM `subsql` WHERE `subsql`.`id` = 1),100)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1),100)",
                 [],
                 false,
                 null,
@@ -1399,9 +1618,11 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereIn('id', [function ($select) {
-                        $select->table('subsql', 'id')->where('id', 1);
+                        $select
+                            ->table('test_query_subsql', 'id')
+                            ->where('id', 1);
                     }, 100])
                     ->findAll(true)
             )
@@ -1414,7 +1635,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT 1) AND 100",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT 1) AND 100",
                 [],
                 false,
                 null,
@@ -1427,7 +1648,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereBetween('id', ['(SELECT 1)', 100])
                     ->findAll(true)
             )
@@ -1440,7 +1661,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT 1),100)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT 1),100)",
                 [],
                 false,
                 null,
@@ -1453,7 +1674,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereIn('id', ['(SELECT 1)', 100])
                     ->findAll(true)
             )
@@ -1466,7 +1687,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND 100",
                 [],
                 false,
                 null,
@@ -1476,14 +1697,14 @@ class WhereTest extends TestCase
             eot;
 
         $select = $connect
-            ->table('foo', 'id')
+            ->table('test_query_subsql', 'id')
             ->one();
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereBetween('id', [$select, 100])
                     ->findAll(true)
             )
@@ -1496,7 +1717,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),100)",
                 [],
                 false,
                 null,
@@ -1506,14 +1727,14 @@ class WhereTest extends TestCase
             eot;
 
         $select = $connect
-            ->table('foo', 'id')
+            ->table('test_query_subsql', 'id')
             ->one();
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereIn('id', [$select, 100])
                     ->findAll(true)
             )
@@ -1526,7 +1747,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` BETWEEN (SELECT `foo`.`id` FROM `foo` LIMIT 1) AND 100",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` BETWEEN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1) AND 100",
                 [],
                 false,
                 null,
@@ -1536,7 +1757,7 @@ class WhereTest extends TestCase
             eot;
 
         $condition = $connect
-            ->table('foo', 'id')
+            ->table('test_query_subsql', 'id')
             ->one()
             ->databaseCondition();
 
@@ -1544,7 +1765,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereBetween('id', [$condition, 100])
                     ->findAll(true)
             )
@@ -1557,7 +1778,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` IN ((SELECT `foo`.`id` FROM `foo` LIMIT 1),100)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN ((SELECT `test_query_subsql`.`id` FROM `test_query_subsql` LIMIT 1),100)",
                 [],
                 false,
                 null,
@@ -1567,7 +1788,7 @@ class WhereTest extends TestCase
             eot;
 
         $condition = $connect
-            ->table('foo', 'id')
+            ->table('test_query_subsql', 'id')
             ->one()
             ->databaseCondition();
 
@@ -1575,7 +1796,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereIn('id', [$condition, 100])
                     ->findAll(true)
             )
@@ -1588,7 +1809,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `world`.* FROM `world`)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1601,9 +1822,9 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
+                    ->table('test_query')
                     ->whereIn('id', function ($select) {
-                        $select->table('world');
+                        $select->table('test_query_subsql', 'id');
                     })
                     ->findAll(true)
             )
@@ -1616,7 +1837,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1626,14 +1847,14 @@ class WhereTest extends TestCase
             eot;
 
         $subSql = $connect
-            ->table('test')
+            ->table('test_query_subsql', 'id')
             ->makeSql(true);
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
+                    ->table('test_query')
                     ->where('id', 'in', $subSql)
                     ->findAll(true)
             )
@@ -1646,7 +1867,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` IN (SELECT `test`.* FROM `test`)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` IN (SELECT `test_query_subsql`.`id` FROM `test_query_subsql`)",
                 [],
                 false,
                 null,
@@ -1655,13 +1876,13 @@ class WhereTest extends TestCase
             ]
             eot;
 
-        $subSql = $connect->table('test');
+        $subSql = $connect->table('test_query_subsql', 'id');
 
         $this->assertSame(
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
+                    ->table('test_query')
                     ->where('id', 'in', $subSql)
                     ->findAll(true)
             )
@@ -1674,7 +1895,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` WHERE `hello`.`id` = (SELECT `test`.`id` FROM `test` WHERE `test`.`id` = 1)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = (SELECT `test_query_subsql`.`id` FROM `test_query_subsql` WHERE `test_query_subsql`.`id` = 1)",
                 [],
                 false,
                 null,
@@ -1687,22 +1908,31 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
+                    ->table('test_query')
                     ->where('id', '=', function ($select) {
-                        $select->table('test', 'id')->where('id', 1);
+                        $select
+                            ->table('test_query_subsql', 'id')
+                            ->where('id', 1);
                     })
                     ->findAll(true)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereRaw 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` WHERE FIND_IN_SET(1, goods_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, id)",
                 [],
                 false,
                 null,
@@ -1715,20 +1945,27 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
-                    ->whereRaw('FIND_IN_SET(1, goods_id)')
+                    ->table('test_query')
+                    ->whereRaw('FIND_IN_SET(1, id)')
                     ->findAll(true)
             )
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="orWhereRaw 查询条件",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testOrWhereRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `hello`.* FROM `hello` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, id) OR FIND_IN_SET(1, id)",
                 [],
                 false,
                 null,
@@ -1741,9 +1978,9 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('hello')
-                    ->whereRaw('FIND_IN_SET(1, goods_id)')
-                    ->orWhereRaw('FIND_IN_SET(1, options_id)')
+                    ->table('test_query')
+                    ->whereRaw('FIND_IN_SET(1, id)')
+                    ->orWhereRaw('FIND_IN_SET(1, id)')
                     ->findAll(true)
             )
         );
@@ -1757,7 +1994,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, options_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, options_id)",
                 [],
                 false,
                 null,
@@ -1770,7 +2007,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->else()
@@ -1789,7 +2026,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, goods_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, goods_id)",
                 [],
                 false,
                 null,
@@ -1802,7 +2039,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->else()
@@ -1821,7 +2058,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, options_id) OR FIND_IN_SET(1, goods_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, options_id) OR FIND_IN_SET(1, goods_id)",
                 [],
                 false,
                 null,
@@ -1834,7 +2071,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->orWhereRaw('FIND_IN_SET(1, options_id)')
@@ -1855,7 +2092,7 @@ class WhereTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
                 [],
                 false,
                 null,
@@ -1868,7 +2105,7 @@ class WhereTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->orWhereRaw('FIND_IN_SET(1, options_id)')

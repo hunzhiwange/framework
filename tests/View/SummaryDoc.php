@@ -29,13 +29,16 @@ namespace Tests\View;
  *
  * @version 1.0
  * @api(
- *     title="模板",
+ *     title="Summary",
+ *     zh-CN:title="概述",
+ *     zh-TW:title="概述",
  *     path="template/README",
- *     description="QueryPHP 内置三种方式的模板引擎，一种是类似于 smart 模板的 Code 语法，一种是 HTML 标签式的 Node 语法，例外还有一种类 Javascript 的语法与 Twig 比较相似。
+ *     description="
+ * QueryPHP 内置三种方式的模板引擎，一种是类似于 Smart 模板的 Code 语法，一种是 HTML 标签式的 Node 语法，例外还有一种类 Javascript 的语法与 Twig 比较相似。
  *
- *  _* code 语法，侧重简单实用
- *  _* Node 语法，严谨务实
- *  _* JS 语法，现代潮流
+ *  * code 语法，侧重简单实用
+ *  * Node 语法，严谨务实
+ *  * JS 语法，现代潮流
  *
  * 例外，三种语法随心嵌套，随意使用，QueryPHP 模板引擎底层分析器和编译器非常健壮，完美运行 8 年。
  *
@@ -135,7 +138,6 @@ class SummaryDoc
      * @api(
      *     title="扩展支持",
      *     description="为了减少学习成本，系统还支持 PHP 自身作为 UI 模板。",
-     *
      *     note="",
      * )
      */

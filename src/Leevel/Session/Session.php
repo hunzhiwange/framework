@@ -208,7 +208,6 @@ abstract class Session
     public function arr(string $key, $keys, $value = null): void
     {
         $data = $this->get($key, []);
-
         if (is_string($keys)) {
             $data[$keys] = $value;
         } elseif (is_array($keys)) {
@@ -231,7 +230,6 @@ abstract class Session
         if (!is_array($keys)) {
             $keys = [$keys];
         }
-
         foreach ($keys as $item) {
             if (isset($data[$item])) {
                 unset($data[$item]);
@@ -277,7 +275,6 @@ abstract class Session
     public function delete(string $name): void
     {
         $name = $this->getNormalizeName($name);
-
         if (isset($this->data[$name])) {
             unset($this->data[$name]);
         }
@@ -339,7 +336,6 @@ abstract class Session
     public function nowFlash(string $key, $value): void
     {
         $this->set($this->flashDataKey($key), $value);
-
         $this->mergeOldFlash([$key]);
     }
 
@@ -364,7 +360,6 @@ abstract class Session
         $this->mergeNewFlash(
             $this->get($this->flashOldKey(), [])
         );
-
         $this->set($this->flashOldKey(), []);
     }
 
@@ -376,7 +371,6 @@ abstract class Session
     public function keepFlash(array $keys): void
     {
         $this->mergeNewFlash($keys);
-
         $this->popOldFlash($keys);
     }
 
@@ -410,9 +404,7 @@ abstract class Session
         foreach ($keys as $item) {
             $this->delete($this->flashDataKey($item));
         }
-
         $this->mergeOldFlash($keys);
-
         $this->popNewFlash($keys);
     }
 
@@ -431,11 +423,9 @@ abstract class Session
     {
         $data = $this->get($this->flashNewKey(), []);
         $old = $this->get($this->flashOldKey(), []);
-
         foreach ($old as $item) {
             $this->delete($this->flashDataKey($item));
         }
-
         $this->delete($this->flashNewKey());
         $this->set($this->flashOldKey(), $data);
     }
@@ -467,7 +457,6 @@ abstract class Session
     {
         $this->clear();
         $this->destroy($this->getId());
-
         $this->id = null;
         $this->started = false;
     }
@@ -731,25 +720,20 @@ abstract class Session
     protected function getPartData(string $key, $defaults = null, ?string $type = null)
     {
         list($key, $name) = explode('\\', $key);
-
         if ('flash' === $type) {
             $key = $this->flashDataKey($key);
         }
 
         $value = $this->get($key);
-
         if (is_array($value)) {
             if (!strpos($name, '.')) {
                 return array_key_exists($name, $value) ? $value[$name] : $defaults;
             }
-
             $parts = explode('.', $name);
-
             foreach ($parts as $part) {
                 if (!isset($value[$part])) {
                     return $defaults;
                 }
-
                 $value = $value[$part];
             }
 

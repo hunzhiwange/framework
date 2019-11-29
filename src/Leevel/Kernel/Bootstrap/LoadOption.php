@@ -57,13 +57,11 @@ class LoadOption
         $app
             ->container()
             ->instance('option', $option = new Option($data));
-
         $app
             ->container()
             ->alias('option', [IOption::class, Option::class]);
 
         $test = 2 === func_num_args();
-
         if (!$test) {
             // @codeCoverageIgnoreStart
             $this->initialization($option);

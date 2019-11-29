@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
+use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 HasOne.
@@ -40,7 +41,13 @@ class HasOne extends HasMany
      */
     public function sourceQuery()
     {
-        return $this->select->findOne();
+        if (true === $this->emptySourceData) {
+            return $this->targetEntity->make();
+        }
+
+        return Select::withoutPreLoadsResult(function () {
+            return $this->select->findOne();
+        });
     }
 
     /**

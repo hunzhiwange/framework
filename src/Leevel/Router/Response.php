@@ -180,8 +180,9 @@ class Response implements IResponse
      */
     public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
-        return $this->json($data, $status, $headers, $json)->
-        setCallback($callback);
+        return $this
+            ->json($data, $status, $headers, $json)
+            ->setCallback($callback);
     }
 
     /**
@@ -199,7 +200,6 @@ class Response implements IResponse
     public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
     {
         $response = new FileResponse($file, $status, $headers, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
-
         if (null !== $name) {
             return $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $name);
         }

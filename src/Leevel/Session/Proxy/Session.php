@@ -33,7 +33,7 @@ use Leevel\Session\Manager;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Session implements ISession
+class Session
 {
     /**
      * call.
@@ -458,7 +458,7 @@ class Session implements ISession
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Session\Manager
      */

@@ -67,9 +67,7 @@ class File extends Log implements ILog
     public function store(array $data): void
     {
         $level = $data[0][0];
-
         $this->checkSize($filepath = $this->normalizePath($level));
-
         foreach ($data as $value) {
             error_log(self::formatMessage(...$value), 3, $filepath);
         }
@@ -101,7 +99,6 @@ class File extends Log implements ILog
     protected function checkSize(string $filePath): void
     {
         $dirname = dirname($filePath);
-
         if (!is_file($filePath)) {
             create_directory($dirname);
         }

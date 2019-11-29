@@ -31,6 +31,13 @@ use Tests\TestCase;
  * @since 2018.08.09
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.max",
+ *     zh-CN:title="验证器.验证值上限",
+ *     path="component/validate/validator/max",
+ *     description="小于或者全等",
+ * )
  */
 class MaxTest extends TestCase
 {
@@ -39,6 +46,20 @@ class MaxTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\MaxTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, $param): void
     {
@@ -58,15 +79,15 @@ class MaxTest extends TestCase
     {
         return [
             [2, 3],
-            ['1.1', '1.5'],
-            ['1.5', '2'],
-            ['1.5', '3'],
-            ['1.5', '4'],
-            ['1.5', '4.5'],
+            [1.1, '1.5'],
+            [1.5, '2'],
+            [1.5, '3'],
+            [1.5, '4'],
+            [1.5, '4.5'],
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
-            ['1.1', '1.1'],
+            [1.1, '1.1'],
         ];
     }
 
@@ -75,6 +96,20 @@ class MaxTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\MaxTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, $param): void
     {
@@ -94,7 +129,7 @@ class MaxTest extends TestCase
     {
         return [
             [3, 2],
-            [1.1, '1.1'],
+            ['1.1', '1.1'],
             ['1.5', '1.1'],
             ['2', '1.5'],
             ['3', '1.5'],
@@ -106,6 +141,13 @@ class MaxTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="max 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

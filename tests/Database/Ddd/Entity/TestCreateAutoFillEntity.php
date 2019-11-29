@@ -42,24 +42,26 @@ class TestCreateAutoFillEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly' => true,
+            self::READONLY => true,
         ],
         'name' => [
-            'create_fill'       => 'name for create_fill',
+            self::CREATE_FILL       => 'name for '.self::CREATE_FILL,
         ],
         'description' => [
-            'create_fill'    => null,
+            self::CREATE_FILL   => null,
         ],
         'address' => [
-            'create_fill'    => null,
+            self::CREATE_FILL    => null,
         ],
         'foo_bar' => [
-            'create_fill'    => null,
+            self::CREATE_FILL    => null,
         ],
         'hello' => [
-            'create_fill'      => null,
+            self::CREATE_FILL      => null,
         ],
     ];
+
+    private static $leevelConnect;
 
     private $id;
 
@@ -75,14 +77,24 @@ class TestCreateAutoFillEntity extends Entity
 
     public function setter(string $prop, $value): IEntity
     {
-        $this->{$this->prop($prop)} = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$this->prop($prop)};
+        return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 
     protected function fillDescription($old): string

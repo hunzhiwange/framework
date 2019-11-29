@@ -238,7 +238,7 @@ class Response implements IResponse
 
         // COOKIE
         foreach ($this->getCookies() as $item) {
-            call_user_func_array('setcookie', $item);
+            setcookie(...$item);
         }
 
         return $this;
@@ -276,9 +276,7 @@ class Response implements IResponse
 
         if ($this->contentShouldJson($content)) {
             $this->setHeader('Content-Type', 'application/json');
-
             $this->isJson = true;
-
             $content = $this->contentToJson($content);
         }
 
@@ -358,13 +356,13 @@ class Response implements IResponse
     /**
      * 设置 COOKIE 别名.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      *
      * @return \Leevel\Http\IResponse
      */
-    public function cookie(string $name, string $value = '', array $option = []): IResponse
+    public function cookie(string $name, $value = null, array $option = []): IResponse
     {
         return $this->setCookie($name, $value, $option);
     }
@@ -372,13 +370,13 @@ class Response implements IResponse
     /**
      * 设置 COOKIE.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $option
+     * @param string            $name
+     * @param null|array|string $value
+     * @param array             $option
      *
      * @return \Leevel\Http\IResponse
      */
-    public function setCookie(string $name, string $value = '', array $option = []): IResponse
+    public function setCookie(string $name, $value = null, array $option = []): IResponse
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -692,7 +690,6 @@ class Response implements IResponse
 
         $date = new DateTime();
         $date->modify('+'.$minutes.'minutes');
-
         $this->setExpires($date);
         $this->setHeader('Cache-Control', 'max-age='.($minutes * 60));
 
@@ -921,7 +918,6 @@ class Response implements IResponse
     protected function normalizeDateTime(DateTime $datetime): string
     {
         $date = clone $datetime;
-
         $date->setTimezone(new DateTimeZone('UTC'));
 
         return $date->format('D, d M Y H:i:s').' GMT';

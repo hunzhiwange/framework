@@ -237,15 +237,12 @@ abstract class Log
     public function log(string $level, string $message, array $context = []): void
     {
         $level = $this->normalizeLevel($level);
-
         if (!in_array($level, $this->option['levels'], true)) {
             return;
         }
 
         $data = [$level, $message, $context];
-
         $this->handleDispatch($data);
-
         $this->count++;
         $this->logs[$level][] = $data;
 

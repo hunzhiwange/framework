@@ -36,7 +36,7 @@ use Leevel\Kernel\App as BaseApp;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class App implements IApp, IContainer
+class App
 {
     /**
      * call.

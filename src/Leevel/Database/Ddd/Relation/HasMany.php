@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 HasMany.
@@ -35,33 +35,13 @@ use Leevel\Database\Ddd\IEntity;
 class HasMany extends Relation
 {
     /**
-     * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $targetEntity
-     * @param \Leevel\Database\Ddd\IEntity $sourceEntity
-     * @param string                       $targetKey
-     * @param string                       $sourceKey
-     */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey)
-    {
-        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
-    }
-
-    /**
      * 关联基础查询条件.
      */
     public function addRelationCondition(): void
     {
-        if (static::$relationCondition) {
-            $this->select->where(
-                $this->targetKey,
-                $this->getSourceValue()
-            );
-
-            $this->select->whereNotNull(
-                $this->targetKey
-            );
-        }
+        $this->prepareRelationCondition(function ($sourceValue): void {
+            $this->select->where($this->targetKey, $sourceValue);
+        });
     }
 
     /**
@@ -71,10 +51,14 @@ class HasMany extends Relation
      */
     public function preLoadCondition(array $entitys): void
     {
-        $this->select->whereIn(
-            $this->targetKey,
-            $this->getEntityKey($entitys, $this->sourceKey)
-        );
+        if (!$sourceValue = $this->getEntityKey($entitys, $this->sourceKey)) {
+            $this->emptySourceData = true;
+
+            return;
+        }
+
+        $this->emptySourceData = false;
+        $this->select->whereIn($this->targetKey, $sourceValue);
     }
 
     /**
@@ -97,23 +81,19 @@ class HasMany extends Relation
     }
 
     /**
-     * 取回源模型实体对应数据.
-     *
-     * @return mixed
-     */
-    public function getSourceValue()
-    {
-        return $this->sourceEntity->__get($this->sourceKey);
-    }
-
-    /**
      * 查询关联对象
      *
      * @return mixed
      */
     public function sourceQuery()
     {
-        return $this->select->findAll();
+        if (true === $this->emptySourceData) {
+            return new Collection();
+        }
+
+        return Select::withoutPreLoadsResult(function () {
+            return $this->select->findAll();
+        });
     }
 
     /**
@@ -129,16 +109,12 @@ class HasMany extends Relation
     protected function matchPreLoadOneOrMany(array $entitys, Collection $result, string $relation, string $type): array
     {
         $maps = $this->buildMap($result);
-
         foreach ($entitys as &$entity) {
-            $key = $entity->__get($this->sourceKey);
-
-            if (isset($maps[$key])) {
-                $entity->withRelationProp(
-                    $relation,
-                    $this->getRelationValue($maps, $key, $type)
-                );
-            }
+            $key = $entity->prop($this->sourceKey);
+            $entity->withRelationProp(
+                $relation,
+                $this->getRelationValue($maps[$key] ?? [], $type)
+            );
         }
 
         return $entitys;
@@ -147,21 +123,26 @@ class HasMany extends Relation
     /**
      * 取得关联模型实体数据.
      *
-     * @param array  $maps
-     * @param string $key
-     * @param string $type
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param string                         $type
      *
      * @return mixed
      */
-    protected function getRelationValue(array $maps, string $key, string $type)
+    protected function getRelationValue(array $entitys, string $type)
     {
-        $value = $maps[$key];
+        if (!$entitys) {
+            return 'one' === $type ?
+                $this->targetEntity->make() :
+                $this->targetEntity->collection();
+        }
 
-        return 'one' === $type ? reset($value) : $this->targetEntity->collection($value);
+        return 'one' === $type ?
+            reset($entitys) :
+            $this->targetEntity->collection($entitys);
     }
 
     /**
-     * 模型实体隐射数据.
+     * 模型实体映射数据.
      *
      * @param \Leevel\Collection\Collection $result
      *
@@ -170,9 +151,8 @@ class HasMany extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
-
         foreach ($result as $value) {
-            $maps[$value->__get($this->targetKey)][] = $value;
+            $maps[$value->prop($this->targetKey)][] = $value;
         }
 
         return $maps;

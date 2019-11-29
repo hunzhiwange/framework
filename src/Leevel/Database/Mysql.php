@@ -23,7 +23,7 @@ namespace Leevel\Database;
 use PDO;
 
 /**
- * mysql 数据库连接.
+ * MySQL 数据库连接.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -120,7 +120,6 @@ class Mysql extends Database implements IDatabase
                 }
 
                 $tmp['comment'] = $column['Comment'];
-
                 $result['list'][$tmp['name']] = $tmp;
 
                 if ($tmp['auto_increment']) {
@@ -131,13 +130,10 @@ class Mysql extends Database implements IDatabase
                     if (!is_array($result['primary_key'])) {
                         $result['primary_key'] = [];
                     }
-
                     $result['primary_key'][] = $tmp['name'];
                 }
             }
         }
-
-        unset($columns, $sql);
 
         return $result;
     }
@@ -181,16 +177,6 @@ class Mysql extends Database implements IDatabase
         }
 
         return '';
-    }
-
-    /**
-     * 获取是否启用部分事务
-     *
-     * @return bool
-     */
-    public function hasSavepoints(): bool
-    {
-        return $this->transactionWithSavepoints;
     }
 
     /**
@@ -238,7 +224,7 @@ class Mysql extends Database implements IDatabase
     }
 
     /**
-     * 编码
+     * 编码.
      *
      * @param array $option
      *

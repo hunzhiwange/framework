@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.09.29
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.whereDate",
+ *     zh-CN:title="查询语言.whereDate",
+ *     path="database/query/wheredate",
+ *     description="",
+ * )
  */
 class TimeTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="whereDate 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -55,7 +69,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereDate('create_date', '+5 month')
                     ->findOne(true)
             ),
@@ -65,13 +79,20 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereDay 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -88,8 +109,82 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereDay('create_date', 5)
+                    ->findOne(true)
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
+        );
+    }
+
+    public function testWhereDataFlow(): void
+    {
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $value = strtotime('+6 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
+
+        $this->assertTimeRange(
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->if($condition)
+                    ->whereDate('create_date', '+5 month')
+                    ->else()
+                    ->whereDate('create_date', '+6 month')
+                    ->fi()
+                    ->findOne(true)
+            ),
+            sprintf($sql, $value),
+            sprintf($sql, $value2),
+            sprintf($sql, $value3)
+        );
+    }
+
+    public function testWhereDataFlow2(): void
+    {
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
+                [],
+                false,
+                null,
+                null,
+                []
+            ]
+            eot;
+
+        $value = strtotime('+5 month');
+        $value2 = $value + 1;
+        $value3 = $value + 2;
+
+        $this->assertTimeRange(
+            $this->varJson(
+                $connect
+                    ->table('test_query')
+                    ->if($condition)
+                    ->whereDate('create_date', '+5 month')
+                    ->else()
+                    ->whereDate('create_date', '+6 month')
+                    ->fi()
                     ->findOne(true)
             ),
             sprintf($sql, $value),
@@ -104,7 +199,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -121,7 +216,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereDay('create_date', '5')
                     ->findOne(true)
             ),
@@ -137,7 +232,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -154,7 +249,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereDay('create_date', '5 foo')
                     ->findOne(true)
             ),
@@ -164,13 +259,20 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereMonth 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -187,7 +289,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereMonth('create_date', 5)
                     ->findOne(true)
             ),
@@ -203,7 +305,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -220,7 +322,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereMonth('create_date', '5')
                     ->findOne(true)
             ),
@@ -236,7 +338,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -253,7 +355,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereMonth('create_date', '5 foo')
                     ->findOne(true)
             ),
@@ -263,13 +365,20 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="whereYear 时间查询",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testWhereYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -285,7 +394,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereYear('create_date', 2018)
                     ->findOne(true)
             ),
@@ -301,7 +410,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -317,7 +426,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereYear('create_date', '2018')
                     ->findOne(true)
             ),
@@ -333,7 +442,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -349,7 +458,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->whereYear('create_date', '2018 foo')
                     ->findOne(true)
             ),
@@ -359,13 +468,20 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time().where.endTime 时间查询，等价于 whereDate",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTime(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -381,7 +497,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->time()
                     ->where('create_date', '+5 month')
                     ->endTime()
@@ -393,13 +509,20 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(date).where.endTime 时间查询，等价于 whereDate",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeDateIsDefault(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -415,7 +538,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->time('date')
                     ->where('create_date', '+5 month')
                     ->endTime()
@@ -427,13 +550,20 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(day).where.endTime 时间查询，等价于 whereDay",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -450,7 +580,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->time('day')
                     ->where('create_date', 5)
                     ->endTime()
@@ -462,13 +592,20 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(month).where.endTime 时间查询，等价于 whereMonth",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -485,7 +622,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->time('month')
                     ->where('create_date', 5)
                     ->endTime()
@@ -497,13 +634,20 @@ class TimeTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     zh-CN:title="time(year).where.endTime 时间查询，等价于 whereYear",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testTimeYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_date` = %d LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_date` = %d LIMIT 1",
                 [],
                 false,
                 null,
@@ -519,7 +663,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->time('year')
                     ->where('create_date', 2018)
                     ->endTime()
@@ -537,7 +681,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_year` = %s AND `test`.`create_month` = %s AND `test`.`create_day` = %s AND `test`.`create_date` = %s LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_year` = %s AND `test_query`.`create_month` = %s AND `test_query`.`create_day` = %s AND `test_query`.`create_date` = %s LIMIT 1",
                 [],
                 false,
                 null,
@@ -558,7 +702,7 @@ class TimeTest extends TestCase
             in_array(
                 $this->varJson(
                     $connect
-                        ->table('test')
+                        ->table('test_query')
                         ->time('year')
                         ->where('create_year', 2018)
                         ->endTime()
@@ -586,7 +730,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_year` = %s AND `test`.`create_month` = %s AND `test`.`create_day` = %s AND `test`.`create_date` = %s LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_year` = %s AND `test_query`.`create_month` = %s AND `test_query`.`create_day` = %s AND `test_query`.`create_date` = %s LIMIT 1",
                 [],
                 false,
                 null,
@@ -606,7 +750,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->time('year')
                     ->where('create_year', 2018)
                     ->time('month')
@@ -634,7 +778,7 @@ class TimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->whereDate('create_date', 'hello')
             ->findOne(true);
     }
@@ -649,7 +793,7 @@ class TimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->whereDay('create_date', 40)
             ->findOne(true);
     }
@@ -664,7 +808,7 @@ class TimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->whereMonth('create_date', 13)
             ->findOne(true);
     }
@@ -679,7 +823,7 @@ class TimeTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
 
         $connect
-            ->table('test')
+            ->table('test_query')
             ->time('foo')
             ->where('create_date', 5)
             ->endTime()
@@ -693,7 +837,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_at` = %d",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = %d",
                 [],
                 false,
                 null,
@@ -710,7 +854,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->time('month')
                     ->where('create_at', 5)
@@ -735,7 +879,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_at` = %d",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = %d",
                 [],
                 false,
                 null,
@@ -752,7 +896,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->time('month')
                     ->where('create_at', 5)
@@ -777,7 +921,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_at` = %d AND `test`.`create_at` = 6",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = %d AND `test_query`.`create_at` = 6",
                 [],
                 false,
                 null,
@@ -794,7 +938,7 @@ class TimeTest extends TestCase
         $this->assertTimeRange(
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->time('day')
                     ->where('create_at', 5)
                     ->if($condition)
@@ -818,7 +962,7 @@ class TimeTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`create_at` = %d AND `test`.`create_at` = %d",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`create_at` = %d AND `test_query`.`create_at` = %d",
                 [],
                 false,
                 null,
@@ -835,7 +979,7 @@ class TimeTest extends TestCase
             sprintf($sql, $time, $time2),
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->time('day')
                     ->where('create_at', 5)
                     ->if($condition)

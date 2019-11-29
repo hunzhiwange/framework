@@ -115,10 +115,7 @@ class RedirectResponse extends Response
             return $this;
         }
 
-        $key = is_array($key) ? $key : [
-            $key => $value,
-        ];
-
+        $key = is_array($key) ? $key : [$key => $value];
         foreach ($key as $k => $v) {
             $this->session->flash($k, $v);
         }
@@ -129,20 +126,18 @@ class RedirectResponse extends Response
     /**
      * 闪存输入信息.
      *
-     * @param null|array $input
+     * @param array $input
      *
      * @return \Leevel\Http\IResponse
      */
-    public function withInput(?array $input = null): IResponse
+    public function withInput(array $input = []): IResponse
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        $input = $input ?: $this->request->input();
-
+        $input = $input ?: ($this->request ? $this->request->input() : []);
         $inputs = array_merge($this->session->getFlash('inputs', []), $input);
-
         $this->session->flash('inputs', $inputs);
 
         return $this;
@@ -158,12 +153,12 @@ class RedirectResponse extends Response
     public function onlyInput(...$args): IResponse
     {
         if (!$args) {
-            $e = 'Method onlyInput need an args.';
+            $e = 'Method onlyInput need at least one arg.';
 
             throw new InvalidArgumentException($e);
         }
 
-        return $this->withInput($this->request->only($args));
+        return $this->withInput($this->request ? $this->request->only($args) : []);
     }
 
     /**
@@ -176,12 +171,12 @@ class RedirectResponse extends Response
     public function exceptInput(...$args): IResponse
     {
         if (!$args) {
-            $e = 'Method exceptInput need an args.';
+            $e = 'Method exceptInput need at least one arg.';
 
             throw new InvalidArgumentException($e);
         }
 
-        return $this->withInput($this->request->except($args));
+        return $this->withInput($this->request ? $this->request->except($args) : []);
     }
 
     /**
@@ -200,7 +195,6 @@ class RedirectResponse extends Response
 
         $errors = $this->session->getFlash('errors', []);
         $errors[$key] = $value;
-
         $this->session->flash('errors', $errors);
 
         return $this;
@@ -238,7 +232,6 @@ class RedirectResponse extends Response
         }
 
         $this->targetUrl = $url;
-
         $this->setContent(
             sprintf('<!DOCTYPE html>
 <html>
@@ -251,7 +244,6 @@ class RedirectResponse extends Response
         Redirecting to <a href="%1$s">%1$s</a>.
     </body>
 </html>', htmlspecialchars($url, ENT_QUOTES, 'UTF-8')));
-
         $this->headers->set('Location', $url);
 
         return $this;

@@ -20,8 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd\Relation;
 
+use Closure;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Select;
 
 /**
  * 关联模型实体 ManyMany.
@@ -56,6 +58,20 @@ class ManyMany extends Relation
     protected string $middleSourceKey;
 
     /**
+     * 中间表只包含软删除的数据.
+     *
+     * @var bool
+     */
+    protected $middleOnlySoftDeleted = false;
+
+    /**
+     * 中间表包含软删除的数据.
+     *
+     * @var bool
+     */
+    protected $middleWithSoftDeleted = false;
+
+    /**
      * 构造函数.
      *
      * @param \Leevel\Database\Ddd\IEntity $targetEntity
@@ -65,14 +81,47 @@ class ManyMany extends Relation
      * @param string                       $sourceKey
      * @param string                       $middleTargetKey
      * @param string                       $middleSourceKey
+     * @param null|\Closure                $scope
      */
-    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null)
     {
         $this->middleEntity = $middleEntity;
         $this->middleTargetKey = $middleTargetKey;
         $this->middleSourceKey = $middleSourceKey;
 
-        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
+        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey, $scope);
+    }
+
+    /**
+     * 中间表包含软删除数据的数据库查询集合对象.
+     *
+     * - 获取包含软删除的数据.
+     *
+     * @param bool $middleWithSoftDeleted
+     *
+     * @return \Leevel\Database\Ddd\Relation\ManyMany
+     */
+    public function middleWithSoftDeleted(bool $middleWithSoftDeleted = true): self
+    {
+        $this->middleWithSoftDeleted = $middleWithSoftDeleted;
+
+        return $this;
+    }
+
+    /**
+     * 中间表仅仅包含软删除数据的数据库查询集合对象.
+     *
+     * - 获取只包含软删除的数据.
+     *
+     * @param bool $middleOnlySoftDeleted
+     *
+     * @return \Leevel\Database\Ddd\Relation\ManyMany
+     */
+    public function middleOnlySoftDeleted(bool $middleOnlySoftDeleted = true): self
+    {
+        $this->middleOnlySoftDeleted = $middleOnlySoftDeleted;
+
+        return $this;
     }
 
     /**
@@ -80,10 +129,9 @@ class ManyMany extends Relation
      */
     public function addRelationCondition(): void
     {
-        if (static::$relationCondition &&
-            null !== $sourceValue = $this->getSourceValue()) {
+        $this->prepareRelationCondition(function ($sourceValue): void {
             $this->selectRelationData([$sourceValue]);
-        }
+        });
     }
 
     /**
@@ -94,9 +142,12 @@ class ManyMany extends Relation
     public function preLoadCondition(array $entitys): void
     {
         if (!$sourceValue = $this->getPreLoadSourceValue($entitys)) {
+            $this->emptySourceData = true;
+
             return;
         }
 
+        $this->emptySourceData = false;
         $this->selectRelationData($sourceValue);
     }
 
@@ -112,29 +163,15 @@ class ManyMany extends Relation
     public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
-
         foreach ($entitys as $entity) {
-            $key = $entity->__get($this->sourceKey);
-
-            if (isset($maps[$key])) {
-                $entity->withRelationProp(
-                    $relation,
-                    $this->targetEntity->collection($maps[$key]),
-                );
-            }
+            $key = $entity->prop($this->sourceKey);
+            $entity->withRelationProp(
+                $relation,
+                $this->targetEntity->collection($maps[$key] ?? []),
+            );
         }
 
         return $entitys;
-    }
-
-    /**
-     * 取回源模型实体对应数据.
-     *
-     * @return mixed
-     */
-    public function getSourceValue()
-    {
-        return $this->sourceEntity->__get($this->sourceKey);
     }
 
     /**
@@ -144,20 +181,23 @@ class ManyMany extends Relation
      */
     public function sourceQuery()
     {
-        $tmps = $this->select->findAll();
+        if (true === $this->emptySourceData) {
+            return new Collection();
+        }
 
+        $tmps = Select::withoutPreLoadsResult(function () {
+            return $this->select->findAll();
+        });
         if (!$tmps) {
             return new Collection();
         }
 
         $result = [];
-
         $middelClass = get_class($this->middleEntity);
         $targetClass = get_class($this->targetEntity);
 
         foreach ($tmps as $value) {
             $value = (array) $value;
-
             $middleEnity = new $middelClass([
                 $this->middleSourceKey => $value['middle_'.$this->middleSourceKey],
                 $this->middleTargetKey => $value['middle_'.$this->middleTargetKey],
@@ -169,9 +209,7 @@ class ManyMany extends Relation
             );
 
             $targetEntity = new $targetClass($value);
-
             $targetEntity->withMiddle($middleEnity);
-
             $result[] = $targetEntity;
         }
 
@@ -185,11 +223,7 @@ class ManyMany extends Relation
      */
     public function getPreLoad()
     {
-        return $this->targetEntity
-            ->selectForEntity()
-            ->preLoadResult(
-                $this->sourceQuery()
-            );
+        return $this->getSelect()->preLoadResult($this->sourceQuery());
     }
 
     /**
@@ -229,6 +263,12 @@ class ManyMany extends Relation
      */
     protected function selectRelationData(array $sourceValue): void
     {
+        $this->emptySourceData = false;
+        $middleCondition = [
+            $this->middleTargetKey => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
+        ];
+        $this->prepareMiddleSoftDeleted($middleCondition);
+
         $this->select
             ->join(
                 $this->middleEntity->table(),
@@ -236,9 +276,7 @@ class ManyMany extends Relation
                     'middle_'.$this->middleTargetKey => $this->middleTargetKey,
                     'middle_'.$this->middleSourceKey => $this->middleSourceKey,
                 ],
-                [
-                    $this->middleTargetKey => '{['.$this->targetEntity->table().'.'.$this->targetKey.']}',
-                ],
+                $middleCondition,
             )
             ->whereIn(
                 $this->middleEntity->table().'.'.$this->middleSourceKey,
@@ -249,6 +287,31 @@ class ManyMany extends Relation
     }
 
     /**
+     * 中间表软删除处理.
+     *
+     * @param array $middleCondition
+     */
+    protected function prepareMiddleSoftDeleted(array &$middleCondition): void
+    {
+        if (!defined(get_class($this->middleEntity).'::DELETE_AT')) {
+            return;
+        }
+
+        if (true === $this->middleWithSoftDeleted) {
+            return;
+        }
+
+        if (true === $this->middleOnlySoftDeleted) {
+            $value = ['>', 0];
+        } else {
+            $value = 0;
+        }
+
+        $field = $this->middleEntity->table().'.'.$this->middleEntity::deleteAtColumn();
+        $middleCondition[$field] = $value;
+    }
+
+    /**
      * 取回源模型实体对应数据.
      *
      * @return array
@@ -256,9 +319,8 @@ class ManyMany extends Relation
     protected function getPreLoadSourceValue(array $entitys): array
     {
         $data = [];
-
         foreach ($entitys as $sourceEntity) {
-            if (null !== $value = $sourceEntity->__get($this->sourceKey)) {
+            if ($value = $sourceEntity->prop($this->sourceKey)) {
                 $data[] = $value;
             }
         }
@@ -267,7 +329,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 模型实体隐射数据.
+     * 模型实体映射数据.
      *
      * @param \Leevel\Collection\Collection $result
      *
@@ -276,9 +338,8 @@ class ManyMany extends Relation
     protected function buildMap(Collection $result): array
     {
         $maps = [];
-
         foreach ($result as $entity) {
-            $maps[$entity->middle()->__get($this->middleSourceKey)][] = $entity;
+            $maps[$entity->middle()->prop($this->middleSourceKey)][] = $entity;
         }
 
         return $maps;

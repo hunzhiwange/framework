@@ -31,10 +31,8 @@ namespace Leevel\Encryption\Safe;
 function deep_replace(array $search, string $subject): string
 {
     $found = true;
-
     while ($found) {
         $found = false;
-
         foreach ($search as $val) {
             while (false !== strpos($subject, $val)) {
                 $found = true;

@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.20
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.sql",
+ *     zh-CN:title="查询语言.sql",
+ *     path="database/query/sql",
+ *     description="",
+ * )
  */
 class SqlTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="基本用法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` DESC LIMIT 1",
                 [],
                 false,
                 null,
@@ -52,7 +66,7 @@ class SqlTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->sql(true)
                     ->latest()
                     ->findOne()
@@ -77,10 +91,22 @@ class SqlTest extends TestCase
                 1
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="例外 findOne 等也支持快捷",
+     *     description="绝大多数都支持这个功能，例如 findAll,insertAll 等。",
+     *     note="",
+     * )
+     */
+    public function testFindOne(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` ORDER BY `test`.`create_at` DESC LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` ORDER BY `test_query`.`create_at` DESC LIMIT 1",
                 [],
                 false,
                 null,
@@ -93,7 +119,7 @@ class SqlTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->latest()
                     ->findOne(true),
                 2

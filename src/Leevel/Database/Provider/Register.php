@@ -121,8 +121,7 @@ class Register extends Provider
      */
     protected function unitOfWork(): void
     {
-        $this->container
-            ->bind(IUnitOfWork::class, UnitOfWork::class);
+        $this->container->bind(IUnitOfWork::class, UnitOfWork::class);
     }
 
     /**

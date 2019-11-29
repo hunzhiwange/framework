@@ -23,8 +23,6 @@ namespace Leevel\Database;
 use Closure;
 use InvalidArgumentException;
 use Leevel\Collection\Collection;
-use Leevel\Page\IPage;
-use Leevel\Page\Page;
 
 /**
  * 数据库查询器.
@@ -42,16 +40,83 @@ use Leevel\Page\Page;
  *
  * @see http://qeephp.com
  * @see http://qeephp.cn/docs/qeephp-manual/
+ *
+ * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                   根据分页设置条件.
+ * @method static \Leevel\Database\Select time(string $type = 'date')                             时间控制语句开始.
+ * @method static \Leevel\Database\Select endTime()                                               时间控制语句结束.
+ * @method static \Leevel\Database\Select reset(?string $option = null)                           重置查询条件.
+ * @method static \Leevel\Database\Select prefix(string $prefix)                                  prefix 查询.
+ * @method static \Leevel\Database\Select table($table, $cols = '*')                              添加一个要查询的表及其要查询的字段.
+ * @method static string getAlias()                                                               获取表别名.
+ * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)             添加字段.
+ * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)          设置字段.
+ * @method static \Leevel\Database\Select where(...$cond)                                         where 查询条件.
+ * @method static \Leevel\Database\Select orWhere(...$cond)                                       orWhere 查询条件.
+ * @method static \Leevel\Database\Select whereRaw(string $raw)                                   Where 原生查询.
+ * @method static \Leevel\Database\Select orWhereRaw(string $raw)                                 Where 原生 OR 查询.
+ * @method static \Leevel\Database\Select whereExists($exists)                                    exists 方法支持
+ * @method static \Leevel\Database\Select whereNotExists($exists)                                 not exists 方法支持
+ * @method static \Leevel\Database\Select whereBetween(...$cond)                                  whereBetween 查询条件.
+ * @method static \Leevel\Database\Select whereNotBetween(...$cond)                               whereNotBetween 查询条件.
+ * @method static \Leevel\Database\Select whereNull(...$cond)                                     whereNull 查询条件.
+ * @method static \Leevel\Database\Select whereNotNull(...$cond)                                  whereNotNull 查询条件.
+ * @method static \Leevel\Database\Select whereIn(...$cond)                                       whereIn 查询条件.
+ * @method static \Leevel\Database\Select whereNotIn(...$cond)                                    whereNotIn 查询条件.
+ * @method static \Leevel\Database\Select whereLike(...$cond)                                     whereLike 查询条件.
+ * @method static \Leevel\Database\Select whereNotLike(...$cond)                                  whereNotLike 查询条件.
+ * @method static \Leevel\Database\Select whereDate(...$cond)                                     whereDate 查询条件.
+ * @method static \Leevel\Database\Select whereDay(...$cond)                                      whereDay 查询条件.
+ * @method static \Leevel\Database\Select whereMonth(...$cond)                                    whereMonth 查询条件.
+ * @method static \Leevel\Database\Select whereYear(...$cond)                                     whereYear 查询条件.
+ * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)              参数绑定支持
+ * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                    index 强制索引（或者忽略索引）.
+ * @method static \Leevel\Database\Select ignoreIndex($indexs)                                    index 忽略索引.
+ * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                           join 查询.
+ * @method static \Leevel\Database\Select innerJoin($table, $cols, ...$cond)                      innerJoin 查询.
+ * @method static \Leevel\Database\Select leftJoin($table, $cols, ...$cond)                       leftJoin 查询.
+ * @method static \Leevel\Database\Select rightJoin($table, $cols, ...$cond)                      rightJoin 查询.
+ * @method static \Leevel\Database\Select fullJoin($table, $cols, ...$cond)                       fullJoin 查询.
+ * @method static \Leevel\Database\Select crossJoin($table, $cols, ...$cond)                      crossJoin 查询.
+ * @method static \Leevel\Database\Select naturalJoin($table, $cols, ...$cond)                    naturalJoin 查询.
+ * @method static \Leevel\Database\Select union($selects, string $type = 'UNION')                 添加一个 UNION 查询.
+ * @method static \Leevel\Database\Select unionAll($selects)                                      添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Select groupBy($expression)                                    指定 GROUP BY 子句.
+ * @method static \Leevel\Database\Select having(...$cond)                                        添加一个 HAVING 条件 < 参数规范参考 where()方法 >.
+ * @method static \Leevel\Database\Select orHaving(...$cond)                                      orHaving 查询条件.
+ * @method static \Leevel\Database\Select havingRaw(string $raw)                                  Having 原生查询.
+ * @method static \Leevel\Database\Select orHavingRaw(string $raw)                                Having 原生 OR 查询.
+ * @method static \Leevel\Database\Select havingBetween(...$cond)                                 havingBetween 查询条件.
+ * @method static \Leevel\Database\Select havingNotBetween(...$cond)                              havingNotBetween 查询条件.
+ * @method static \Leevel\Database\Select havingNull(...$cond)                                    havingNull 查询条件.
+ * @method static \Leevel\Database\Select havingNotNull(...$cond)                                 havingNotNull 查询条件.
+ * @method static \Leevel\Database\Select havingIn(...$cond)                                      havingIn 查询条件.
+ * @method static \Leevel\Database\Select havingNotIn(...$cond)                                   havingNotIn 查询条件.
+ * @method static \Leevel\Database\Select havingLike(...$cond)                                    havingLike 查询条件.
+ * @method static \Leevel\Database\Select havingNotLike(...$cond)                                 havingNotLike 查询条件.
+ * @method static \Leevel\Database\Select havingDate(...$cond)                                    havingDate 查询条件.
+ * @method static \Leevel\Database\Select havingDay(...$cond)                                     havingDay 查询条件.
+ * @method static \Leevel\Database\Select havingMonth(...$cond)                                   havingMonth 查询条件.
+ * @method static \Leevel\Database\Select havingYear(...$cond)                                    havingYear 查询条件.
+ * @method static \Leevel\Database\Select orderBy($expression, string $orderDefault = 'ASC')      添加排序.
+ * @method static \Leevel\Database\Select latest(string $field = 'create_at')                     最近排序数据.
+ * @method static \Leevel\Database\Select oldest(string $field = 'create_at')                     最早排序数据.
+ * @method static \Leevel\Database\Select distinct(bool $flag = true)                             创建一个 SELECT DISTINCT 查询.
+ * @method static \Leevel\Database\Select count(string $field = '*', string $alias = 'row_count') 总记录数.
+ * @method static \Leevel\Database\Select avg(string $field, string $alias = 'avg_value')         平均数.
+ * @method static \Leevel\Database\Select max(string $field, string $alias = 'max_value')         最大值.
+ * @method static \Leevel\Database\Select min(string $field, string $alias = 'min_value')         最小值.
+ * @method static \Leevel\Database\Select sum(string $field, string $alias = 'sum_value')         合计
+ * @method static \Leevel\Database\Select one()                                                   指示仅查询第一个符合条件的记录.
+ * @method static \Leevel\Database\Select all()                                                   指示查询所有符合条件的记录.
+ * @method static \Leevel\Database\Select top(int $count = 30)                                    查询几条记录.
+ * @method static \Leevel\Database\Select limit(int $offset = 0, int $count = 0)                  limit 限制条数.
+ * @method static \Leevel\Database\Select forUpdate(bool $flag = true)                            是否构造一个 FOR UPDATE 查询.
+ * @method static \Leevel\Database\Select setOption(string $name, $value)                         设置查询参数.
+ * @method static array getOption()                                                               返回查询参数.
+ * @method static array getBindParams()                                                           返回参数绑定.
  */
 class Select
 {
-    /**
-     * 分页查询结果标识.
-     *
-     * @var string
-     */
-    const PAGE = ':page';
-
     /**
      * 数据库连接.
      *
@@ -124,9 +189,7 @@ class Select
     public function __construct($connect)
     {
         $this->connect = $connect;
-
         $this->condition = new Condition($connect);
-
         $this->initOption();
     }
 
@@ -147,7 +210,6 @@ class Select
 
             return $this;
         } catch (ConditionNotFoundException $e) {
-            // 不使用反射
             if (method_exists($this->connect, $method) &&
                 is_callable([$this->connect, $method])) {
                 return $this->connect->{$method}(...$args);
@@ -164,8 +226,7 @@ class Select
                 $num = (int) (array_shift($values));
                 $offset = (int) (array_shift($values));
 
-                return $this->limit($offset, $num)->
-                find();
+                return $this->limit($offset, $num)->find();
             }
 
             // support findByName findByNameAndSex etc.
@@ -173,16 +234,13 @@ class Select
             if (0 === strncasecmp($method, 'By', 2) ||
                 0 === strncasecmp($method, 'AllBy', 5)) {
                 $method = substr($method, ($isOne = 0 === strncasecmp($method, 'By', 2)) ? 2 : 5);
-
                 $isKeep = false;
-
                 if ('_' === substr($method, -1)) {
                     $isKeep = true;
                     $method = substr($method, 0, -1);
                 }
 
                 $keys = explode('And', $method);
-
                 if (count($keys) !== count($args)) {
                     $e = 'Params of findBy or findAllBy was not matched.';
 
@@ -207,13 +265,13 @@ class Select
                 ->find();
         }
 
-        $e = sprintf('Select do not implement magic method %s.', $method);
+        $e = sprintf('Select do not implement magic method `%s`.', $method, $method);
 
         throw new InvalidArgumentException($e);
     }
 
     /**
-     * 查询对象
+     * 查询对象.
      *
      * @return \Leevel\Database\Condition
      */
@@ -223,7 +281,7 @@ class Select
     }
 
     /**
-     * 返回数据库连接对象
+     * 返回数据库连接对象.
      *
      * @return \Leevel\Database\IDatabase
      */
@@ -233,7 +291,7 @@ class Select
     }
 
     /**
-     * 占位符返回本对象
+     * 占位符返回本对象.
      *
      * @return \Leevel\Database\Select
      */
@@ -354,9 +412,7 @@ class Select
 
         // 回调
         if ($data instanceof Closure) {
-            call_user_func_array($data, [
-                $this,
-            ]);
+            $data($this);
             $data = null;
         }
 
@@ -598,19 +654,6 @@ class Select
     }
 
     /**
-     * 返回一个字段的值(别名).
-     *
-     * @param string $field
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return mixed
-     */
-    public function pull(string $field, bool $flag = false)
-    {
-        return $this->value($field, $flag);
-    }
-
-    /**
      * 返回一列数据.
      *
      * @param mixed       $fieldValue
@@ -623,7 +666,6 @@ class Select
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $fields = [];
-
         if (is_array($fieldValue)) {
             $fields = $fieldValue;
         } else {
@@ -647,10 +689,8 @@ class Select
 
         // 解析结果
         $result = [];
-
         foreach ($tmps as $tmp) {
             $tmp = (array) $tmp;
-
             if (1 === count($tmp)) {
                 $result[] = reset($tmp);
             } else {
@@ -671,9 +711,9 @@ class Select
      */
     public function chunk(int $count, Closure $chunk): void
     {
-        $result = $this->forPage($page = 1, $count)->
-
-        findAll();
+        $result = $this
+            ->forPage($page = 1, $count)
+            ->findAll();
 
         while (count($result) > 0) {
             if (false === $chunk($result, $page)) {
@@ -681,7 +721,6 @@ class Select
             }
 
             $page++;
-
             $result = $this
                 ->forPage($page, $count)
                 ->findAll();
@@ -717,7 +756,6 @@ class Select
     public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
     {
         $result = $this->findAggregateResult('count', $field, $alias, $flag);
-
         if (!is_array($result)) {
             $result = (int) $result;
         }
@@ -740,7 +778,7 @@ class Select
     }
 
     /**
-     * 最大值
+     * 最大值.
      *
      * @param string $field
      * @param string $alias
@@ -754,7 +792,7 @@ class Select
     }
 
     /**
-     * 最小值
+     * 最小值.
      *
      * @param string $field
      * @param string $alias
@@ -768,7 +806,7 @@ class Select
     }
 
     /**
-     * 合计
+     * 合计.
      *
      * @param string $field
      * @param string $alias
@@ -783,35 +821,6 @@ class Select
 
     /**
      * 分页查询.
-     *
-     * @param int    $currentPage
-     * @param int    $perPage
-     * @param bool   $flag
-     * @param bool   $withTotal
-     * @param string $column
-     *
-     * @return array
-     */
-    public function page(int $currentPage, int $perPage = 10, bool $flag = false, bool $withTotal = true, string $column = '*'): array
-    {
-        $from = ($currentPage - 1) * $perPage;
-
-        return [
-            [
-                'per_page'     => $perPage,
-                'current_page' => $currentPage,
-                'total_record' => $withTotal ? $this->pageCount($column) : null,
-                'from'         => $from,
-            ],
-            $this
-                ->limit($from, $perPage)
-                ->findAll($flag),
-            self::PAGE => true,
-        ];
-    }
-
-    /**
-     * 分页查询.
      * 可以渲染 HTML.
      *
      * @param int    $currentPage
@@ -820,19 +829,17 @@ class Select
      * @param string $column
      * @param array  $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public function pageHtml(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): array
+    public function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): Page
     {
         $page = new Page($currentPage, $perPage, $this->pageCount($column), $option);
+        $data = $this
+            ->limit($page->getFromRecord(), $perPage)
+            ->findAll($flag);
+        $page->setData($data);
 
-        return [
-            $page,
-            $this
-                ->limit($page->getFromRecord(), $perPage)
-                ->findAll($flag),
-            self::PAGE => true,
-        ];
+        return $page;
     }
 
     /**
@@ -843,19 +850,17 @@ class Select
      * @param bool  $flag
      * @param array $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
+    public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
-        $page = new Page($currentPage, $perPage, IPage::MACRO, $option);
+        $page = new Page($currentPage, $perPage, Page::MACRO, $option);
+        $data = $this
+            ->limit($page->getFromRecord(), $perPage)
+            ->findAll($flag);
+        $page->setData($data);
 
-        return [
-            $page,
-            $this
-                ->limit($page->getFromRecord(), $perPage)
-                ->findAll($flag),
-            self::PAGE => true,
-        ];
+        return $page;
     }
 
     /**
@@ -866,19 +871,17 @@ class Select
      * @param bool  $flag
      * @param array $option
      *
-     * @return array
+     * @return \Leevel\Database\Page
      */
-    public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): array
+    public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
         $page = new Page($currentPage, $perPage, null, $option);
+        $data = $this
+            ->limit($page->getFromRecord(), $perPage)
+            ->findAll($flag);
+        $page->setData($data);
 
-        return [
-            $page,
-            $this
-                ->limit($page->getFromRecord(), $perPage)
-                ->findAll($flag),
-            self::PAGE => true,
-        ];
+        return $page;
     }
 
     /**
@@ -891,9 +894,7 @@ class Select
     public function pageCount(string $cols = '*'): int
     {
         $this->backupPageArgs();
-
         $count = $this->findCount($cols);
-
         $this->restorePageArgs();
 
         return $count;
@@ -923,7 +924,6 @@ class Select
         if (true === $this->onlyMakeSql) {
             return $this;
         }
-
         $this->onlyMakeSql = $flag;
 
         return $this;
@@ -944,10 +944,8 @@ class Select
      */
     protected function query()
     {
-        $sql = $this->makeSql();
-
         $args = [
-            $sql,
+            $this->makeSql(),
             $this->condition->getBindParams(),
             $this->queryParams['master'],
             $this->queryParams['fetch_args']['fetch_style'],
@@ -961,7 +959,6 @@ class Select
         }
 
         $data = $this->connect->query(...$args);
-
         if ($this->queryParams['as_default']) {
             $data = $this->queryDefault($data);
         } else {
@@ -999,7 +996,6 @@ class Select
     protected function queryClass(array $data)
     {
         $className = $this->queryParams['as_class'];
-
         if (!class_exists($className)) {
             $e = sprintf('The class of query `%s` was not found.', $className);
 
@@ -1059,7 +1055,6 @@ class Select
     protected function runNativeSql(string $nativeType, string $data, array $bindParams = [])
     {
         $sqlType = $this->connect->normalizeSqlType($data);
-
         if ('procedure' === $sqlType) {
             $sqlType = 'select';
         }

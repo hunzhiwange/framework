@@ -49,7 +49,7 @@ class Clear extends Command
      *
      * @var string
      */
-    protected string $description = 'Clear cache of log.';
+    protected string $description = 'Clear cache of log';
 
     /**
      * 响应命令.
@@ -59,9 +59,7 @@ class Clear extends Command
     public function handle(IApp $app): void
     {
         $this->line('Start to clear cache log.');
-
         delete_directory($cachePath = $app->runtimePath('log'), true);
-
         $this->info(sprintf('Log files in path %s cache clear successed.', $cachePath));
     }
 

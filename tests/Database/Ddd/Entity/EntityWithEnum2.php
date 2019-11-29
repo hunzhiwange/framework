@@ -42,7 +42,7 @@ class EntityWithEnum2 extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'           => true,
+            self::READONLY           => true,
         ],
         'title'       => [],
         'status'      => [],
@@ -53,6 +53,8 @@ class EntityWithEnum2 extends Entity
         'enable'  => ['t', '启用'],
     ];
 
+    private static $leevelConnect;
+
     private $id;
 
     private $title;
@@ -61,13 +63,23 @@ class EntityWithEnum2 extends Entity
 
     public function setter(string $prop, $value): IEntity
     {
-        $this->{$this->prop($prop)} = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$this->prop($prop)};
+        return $this->{$this->realProp($prop)};
+    }
+
+    public static function withConnect($connect): void
+    {
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
     }
 }

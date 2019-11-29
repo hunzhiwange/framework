@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.14
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.flow",
+ *     zh-CN:title="查询语言.flow",
+ *     path="database/query/flow",
+ *     description="QueryPHP 数据构造器支持条件运算符，可以根据不同条件做不同的事情，支持所有的构造器函数，即返回 `$this`。",
+ * )
  */
 class FlowTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="limit 限制条数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 ORDER BY `test`.`name` DESC LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2 ORDER BY `test_query`.`name` DESC LIMIT 1",
                 [],
                 false,
                 null,
@@ -54,7 +68,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -72,7 +86,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 1 LIMIT 1",
                 [],
                 false,
                 null,
@@ -87,7 +101,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -106,7 +120,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 3 AND `test_query`.`id` = 1111 LIMIT 1",
                 [],
                 false,
                 null,
@@ -121,7 +135,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -140,7 +154,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 4 LIMIT 1",
                 [],
                 false,
                 null,
@@ -155,7 +169,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -173,13 +187,20 @@ class FlowTest extends TestCase
         );
     }
 
-    public function testElses(): void
+    /**
+     * @api(
+     *     zh-CN:title="else 浅记忆",
+     *     description="else 仅仅能记忆上一次 if,elif 的结果，上一次的反向结果就是 else 的条件值，我们建议不要在 SQL 链式中使用过度的条件判断。",
+     *     note="命令遵循 shell 命令风格，即 if,elif,else,fi。",
+     * )
+     */
+    public function testElse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 2 AND `test`.`id` = 4 ORDER BY `test`.`name` DESC LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 2 AND `test_query`.`id` = 4 ORDER BY `test_query`.`name` DESC LIMIT 1",
                 [],
                 false,
                 null,
@@ -194,7 +215,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -212,7 +233,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 3 AND `test`.`id` = 1111 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 3 AND `test_query`.`id` = 1111 LIMIT 1",
                 [],
                 false,
                 null,
@@ -227,7 +248,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)
@@ -246,7 +267,7 @@ class FlowTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = 4 LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = 4 LIMIT 1",
                 [],
                 false,
                 null,
@@ -261,7 +282,7 @@ class FlowTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if(1 === $id)
                     ->where('id', 1)
                     ->elif(2 === $id)

@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 /**
- * 是否为 QQ 号码
+ * 是否为 QQ 号码.
  *
  * @param mixed $value
  *

@@ -39,7 +39,7 @@ use Leevel\Router\Response as RouterResponse;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Response implements IResponse
+class Response
 {
     /**
      * call.
@@ -417,7 +417,7 @@ class Response implements IResponse
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Router\Response
      */

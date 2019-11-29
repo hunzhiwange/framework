@@ -24,8 +24,9 @@ use Leevel\Http\HeaderBag;
 use Tests\TestCase;
 
 /**
- * HeaderBagTest test
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ * HeaderBagTest test.
+ *
+ * - This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

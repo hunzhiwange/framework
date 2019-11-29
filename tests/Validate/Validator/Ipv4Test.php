@@ -31,6 +31,13 @@ use Tests\TestCase;
  * @since 2018.08.09
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.ipv4",
+ *     zh-CN:title="验证器.是否为 ipv4",
+ *     path="component/validate/validator/ipv4",
+ *     description="",
+ * )
  */
 class Ipv4Test extends TestCase
 {
@@ -38,6 +45,20 @@ class Ipv4Test extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\Ipv4Test::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value): void
     {
@@ -66,6 +87,20 @@ class Ipv4Test extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\Ipv4Test::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value): void
     {

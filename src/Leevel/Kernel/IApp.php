@@ -30,8 +30,6 @@ use Leevel\Di\IContainer;
  * @since 2017.04.23
  *
  * @version 1.0
- *
- * @see \Leevel\Kernel\Proxy\IApp 请保持接口设计的一致
  */
 interface IApp
 {

@@ -35,7 +35,7 @@ use Leevel\Router\Router as BaseRouter;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Router implements IRouter
+class Router
 {
     /**
      * call.
@@ -248,7 +248,7 @@ class Router implements IRouter
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Router\Router
      */

@@ -44,7 +44,7 @@ use Swift_Signer;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Mail implements IMail
+class Mail
 {
     /**
      * call.
@@ -1062,7 +1062,7 @@ class Mail implements IMail
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Mail\Manager
      */

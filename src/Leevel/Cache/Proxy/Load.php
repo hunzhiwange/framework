@@ -33,7 +33,7 @@ use Leevel\Di\Container;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Load implements ILoad
+class Load
 {
     /**
      * call.
@@ -74,7 +74,7 @@ class Load implements ILoad
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Cache\Load
      */

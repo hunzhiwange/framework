@@ -27,6 +27,7 @@ use Leevel\Protocol\Pool\Connection;
 use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
+use PDOStatement;
 use Throwable;
 use PDOStatement;
 
@@ -38,10 +39,118 @@ use PDOStatement;
  * @since 2017.03.09
  *
  * @version 1.0
+ *
+ * @method static \Leevel\Database\Condition databaseCondition()                                                                                查询对象.
+ * @method static \Leevel\Database\IDatabase databaseConnect()                                                                                  返回数据库连接对象.
+ * @method static \Leevel\Database\Select selfDatabaseSelect()                                                                                  占位符返回本对象.
+ * @method static \Leevel\Database\Select sql(bool $flag = true)                                                                                指定返回 SQL 不做任何操作.
+ * @method static \Leevel\Database\Select master(bool $master = false)                                                                          设置是否查询主服务器.
+ * @method static \Leevel\Database\Select fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = [])                               设置查询参数.
+ * @method static \Leevel\Database\Select asClass(string $className, array $args = [])                                                          设置以类返会结果.
+ * @method static \Leevel\Database\Select asDefault()                                                                                           设置默认形式返回.
+ * @method static \Leevel\Database\Select asCollection(bool $acollection = true)                                                                设置是否以集合返回.
+ * @method static select($data = null, array $bind = [], bool $flag = false)                                                                    原生 sql 查询数据 select.
+ * @method static insert($data, array $bind = [], bool $replace = false, bool $flag = false)                                                    插入数据 insert (支持原生 sql).
+ * @method static insertAll(array $data, array $bind = [], bool $replace = false, bool $flag = false)                                           批量插入数据 insertAll.
+ * @method static update($data, array $bind = [], bool $flag = false)                                                                           更新数据 update (支持原生 sql).
+ * @method static updateColumn(string $column, $value, array $bind = [], bool $flag = false)                                                    更新某个字段的值
+ * @method static updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                           字段递增.
+ * @method static updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)                                           字段减少.
+ * @method static delete(?string $data = null, array $bind = [], bool $flag = false)                                                            删除数据 delete (支持原生 sql).
+ * @method static truncate(bool $flag = false)                                                                                                  清空表重置自增 ID.
+ * @method static findOne(bool $flag = false)                                                                                                   返回一条记录.
+ * @method static findAll(bool $flag = false)                                                                                                   返回所有记录.
+ * @method static find(?int $num = null, bool $flag = false)                                                                                    返回最后几条记录.
+ * @method static value(string $field, bool $flag = false)                                                                                      返回一个字段的值
+ * @method static array list($fieldValue, ?string $fieldKey = null, bool $flag = false)                                                         返回一列数据.
+ * @method static void chunk(int $count, \Closure $chunk)                                                                                       数据分块处理.
+ * @method static void each(int $count, \Closure $each)                                                                                         数据分块处理依次回调.
+ * @method static findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)                                               总记录数.
+ * @method static findAvg(string $field, string $alias = 'avg_value', bool $flag = false)                                                       平均数.
+ * @method static findMax(string $field, string $alias = 'max_value', bool $flag = false)                                                       最大值.
+ * @method static findMin(string $field, string $alias = 'min_value', bool $flag = false)                                                       最小值.
+ * @method static findSum(string $field, string $alias = 'sum_value', bool $flag = false)                                                       合计.
+ * @method static \Leevel\Database\Page page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []) 分页查询. 可以渲染 HTML.
+ * @method static \Leevel\Database\Page pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])                  创建一个无限数据的分页查询.
+ * @method static \Leevel\Database\Page pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = [])               创建一个只有上下页的分页查询.
+ * @method static int pageCount(string $cols = '*')                                                                                             取得分页查询记录数量.
+ * @method static string makeSql(bool $withLogicGroup = false)                                                                                  获得查询字符串.
+ * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 15)                                                                 根据分页设置条件.
+ * @method static \Leevel\Database\Select time(string $type = 'date')                                                                           时间控制语句开始.
+ * @method static \Leevel\Database\Select endTime()                                                                                             时间控制语句结束.
+ * @method static \Leevel\Database\Select reset(?string $option = null)                                                                         重置查询条件.
+ * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                prefix 查询.
+ * @method static \Leevel\Database\Select table($table, $cols = '*')                                                                            添加一个要查询的表及其要查询的字段.
+ * @method static string getAlias()                                                                                                             获取表别名.
+ * @method static \Leevel\Database\Select columns($cols = '*', ?string $table = null)                                                           添加字段.
+ * @method static \Leevel\Database\Select setColumns($cols = '*', ?string $table = null)                                                        设置字段.
+ * @method static \Leevel\Database\Select where(...$cond)                                                                                       where 查询条件.
+ * @method static \Leevel\Database\Select orWhere(...$cond)                                                                                     orWhere 查询条件.
+ * @method static \Leevel\Database\Select whereRaw(string $raw)                                                                                 Where 原生查询.
+ * @method static \Leevel\Database\Select orWhereRaw(string $raw)                                                                               Where 原生 OR 查询.
+ * @method static \Leevel\Database\Select whereExists($exists)                                                                                  exists 方法支持
+ * @method static \Leevel\Database\Select whereNotExists($exists)                                                                               not exists 方法支持
+ * @method static \Leevel\Database\Select whereBetween(...$cond)                                                                                whereBetween 查询条件.
+ * @method static \Leevel\Database\Select whereNotBetween(...$cond)                                                                             whereNotBetween 查询条件.
+ * @method static \Leevel\Database\Select whereNull(...$cond)                                                                                   whereNull 查询条件.
+ * @method static \Leevel\Database\Select whereNotNull(...$cond)                                                                                whereNotNull 查询条件.
+ * @method static \Leevel\Database\Select whereIn(...$cond)                                                                                     whereIn 查询条件.
+ * @method static \Leevel\Database\Select whereNotIn(...$cond)                                                                                  whereNotIn 查询条件.
+ * @method static \Leevel\Database\Select whereLike(...$cond)                                                                                   whereLike 查询条件.
+ * @method static \Leevel\Database\Select whereNotLike(...$cond)                                                                                whereNotLike 查询条件.
+ * @method static \Leevel\Database\Select whereDate(...$cond)                                                                                   whereDate 查询条件.
+ * @method static \Leevel\Database\Select whereDay(...$cond)                                                                                    whereDay 查询条件.
+ * @method static \Leevel\Database\Select whereMonth(...$cond)                                                                                  whereMonth 查询条件.
+ * @method static \Leevel\Database\Select whereYear(...$cond)                                                                                   whereYear 查询条件.
+ * @method static \Leevel\Database\Select bind($names, $value = null, int $type = 2)                                                            参数绑定支持
+ * @method static \Leevel\Database\Select forceIndex($indexs, $type = 'FORCE')                                                                  index 强制索引（或者忽略索引）.
+ * @method static \Leevel\Database\Select ignoreIndex($indexs)                                                                                  index 忽略索引.
+ * @method static \Leevel\Database\Select join($table, $cols, ...$cond)                                                                         join 查询.
+ * @method static \Leevel\Database\Select innerJoin($table, $cols, ...$cond)                                                                    innerJoin 查询.
+ * @method static \Leevel\Database\Select leftJoin($table, $cols, ...$cond)                                                                     leftJoin 查询.
+ * @method static \Leevel\Database\Select rightJoin($table, $cols, ...$cond)                                                                    rightJoin 查询.
+ * @method static \Leevel\Database\Select fullJoin($table, $cols, ...$cond)                                                                     fullJoin 查询.
+ * @method static \Leevel\Database\Select crossJoin($table, $cols, ...$cond)                                                                    crossJoin 查询.
+ * @method static \Leevel\Database\Select naturalJoin($table, $cols, ...$cond)                                                                  naturalJoin 查询.
+ * @method static \Leevel\Database\Select union($selects, string $type = 'UNION')                                                               添加一个 UNION 查询.
+ * @method static \Leevel\Database\Select unionAll($selects)                                                                                    添加一个 UNION ALL 查询.
+ * @method static \Leevel\Database\Select groupBy($expression)                                                                                  指定 GROUP BY 子句.
+ * @method static \Leevel\Database\Select having(...$cond)                                                                                      添加一个 HAVING 条件 < 参数规范参考 where()方法 >.
+ * @method static \Leevel\Database\Select orHaving(...$cond)                                                                                    orHaving 查询条件.
+ * @method static \Leevel\Database\Select havingRaw(string $raw)                                                                                Having 原生查询.
+ * @method static \Leevel\Database\Select orHavingRaw(string $raw)                                                                              Having 原生 OR 查询.
+ * @method static \Leevel\Database\Select havingBetween(...$cond)                                                                               havingBetween 查询条件.
+ * @method static \Leevel\Database\Select havingNotBetween(...$cond)                                                                            havingNotBetween 查询条件.
+ * @method static \Leevel\Database\Select havingNull(...$cond)                                                                                  havingNull 查询条件.
+ * @method static \Leevel\Database\Select havingNotNull(...$cond)                                                                               havingNotNull 查询条件.
+ * @method static \Leevel\Database\Select havingIn(...$cond)                                                                                    havingIn 查询条件.
+ * @method static \Leevel\Database\Select havingNotIn(...$cond)                                                                                 havingNotIn 查询条件.
+ * @method static \Leevel\Database\Select havingLike(...$cond)                                                                                  havingLike 查询条件.
+ * @method static \Leevel\Database\Select havingNotLike(...$cond)                                                                               havingNotLike 查询条件.
+ * @method static \Leevel\Database\Select havingDate(...$cond)                                                                                  havingDate 查询条件.
+ * @method static \Leevel\Database\Select havingDay(...$cond)                                                                                   havingDay 查询条件.
+ * @method static \Leevel\Database\Select havingMonth(...$cond)                                                                                 havingMonth 查询条件.
+ * @method static \Leevel\Database\Select havingYear(...$cond)                                                                                  havingYear 查询条件.
+ * @method static \Leevel\Database\Select orderBy($expression, string $orderDefault = 'ASC')                                                    添加排序.
+ * @method static \Leevel\Database\Select latest(string $field = 'create_at')                                                                   最近排序数据.
+ * @method static \Leevel\Database\Select oldest(string $field = 'create_at')                                                                   最早排序数据.
+ * @method static \Leevel\Database\Select distinct(bool $flag = true)                                                                           创建一个 SELECT DISTINCT 查询.
+ * @method static \Leevel\Database\Select count(string $field = '*', string $alias = 'row_count')                                               总记录数.
+ * @method static \Leevel\Database\Select avg(string $field, string $alias = 'avg_value')                                                       平均数.
+ * @method static \Leevel\Database\Select max(string $field, string $alias = 'max_value')                                                       最大值.
+ * @method static \Leevel\Database\Select min(string $field, string $alias = 'min_value')                                                       最小值.
+ * @method static \Leevel\Database\Select sum(string $field, string $alias = 'sum_value')                                                       合计
+ * @method static \Leevel\Database\Select one()                                                                                                 指示仅查询第一个符合条件的记录.
+ * @method static \Leevel\Database\Select all()                                                                                                 指示查询所有符合条件的记录.
+ * @method static \Leevel\Database\Select top(int $count = 30)                                                                                  查询几条记录.
+ * @method static \Leevel\Database\Select limit(int $offset = 0, int $count = 0)                                                                limit 限制条数.
+ * @method static \Leevel\Database\Select forUpdate(bool $flag = true)                                                                          是否构造一个 FOR UPDATE 查询.
+ * @method static \Leevel\Database\Select setOption(string $name, $value)                                                                       设置查询参数.
+ * @method static array getOption()                                                                                                             返回查询参数.
+ * @method static array getBindParams()                                                                                                         返回参数绑定.
  */
-abstract class Database implements IConnection
+abstract class Database implements IDatabase, IConnection
 {
-    use Proxy;
     use Connection {
         release as baseRelease;
     }
@@ -63,7 +172,7 @@ abstract class Database implements IConnection
     /**
      * PDO 预处理语句对象
      *
-     * @var PDOStatement
+     * @var \PDOStatement
      */
     protected ?PDOStatement $pdoStatement;
 
@@ -87,13 +196,6 @@ abstract class Database implements IConnection
      * @var string
      */
     protected string $sql;
-
-    /**
-     * sql 绑定参数.
-     *
-     * @var array
-     */
-    protected array $bindParams = [];
 
     /**
      * sql 影响记录数量.
@@ -183,23 +285,11 @@ abstract class Database implements IConnection
     }
 
     /**
-     * 返回代理.
-     *
-     * @return \Leevel\Database\Select
-     */
-    public function proxy(): Select
-    {
-        $this->initSelect();
-
-        return $this->select;
-    }
-
-    /**
      * 返回 Pdo 查询连接.
      *
      * @param bool|int $master
-     *                         - bool false (读服务器) true (写服务器)
-     *                         - int 其它去对应服务器连接ID 0 表示主服务器
+     *                         - bool,false (读服务器),true (写服务器)
+     *                         - int,其它去对应服务器连接 ID,0 表示主服务器
      *
      * @return mixed
      */
@@ -234,36 +324,16 @@ abstract class Database implements IConnection
     {
         $this->initSelect();
 
-        $this->setLastSql($sql, $bindParams);
-
-        if (!in_array(($sqlType = $this->normalizeSqlType($sql)), [
-            'select',
-            'procedure',
-        ], true)) {
+        if (!in_array($sqlType = $this->normalizeSqlType($sql), ['select', 'procedure'], true)) {
             $e = 'The query method only allows select and procedure SQL statements.';
 
             throw new InvalidArgumentException($e);
         }
 
-        $this->pdoStatement = $this->pdo($master)->prepare($sql);
-
-        $this->bindParams($bindParams);
-
-        try {
-            $this->pdoStatement->execute();
-            $this->reconnectRetry = 0;
-        } catch (PDOException $e) {
-            if ($this->needReconnect($e)) {
-                $this->reconnectRetry++;
-                $this->close();
-
-                return self::query($sql, $bindParams, $master, $fetchStyle, $fetchArgument, $ctorArgs);
-            }
-
-            throw $e;
+        if (true === $this->runSql($sql, $bindParams, $master)) {
+            return self::query($sql, $bindParams, $master, $fetchStyle, $fetchArgument, $ctorArgs);
         }
 
-        $this->numRows = $this->pdoStatement->rowCount();
         $result = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs, 'procedure' === $sqlType);
         $this->release();
 
@@ -284,45 +354,20 @@ abstract class Database implements IConnection
     {
         $this->initSelect();
 
-        $this->setLastSql($sql, $bindParams);
-
-        if (in_array(($sqlType = $this->normalizeSqlType($sql)), [
-            'select',
-            'procedure',
-        ], true)) {
+        if (in_array($sqlType = $this->normalizeSqlType($sql), ['select', 'procedure'], true)) {
             $e = 'The query method not allows select and procedure SQL statements.';
 
             throw new InvalidArgumentException($e);
         }
 
-        $this->pdoStatement = $this->pdo(true)->prepare($sql);
-
-        $this->bindParams($bindParams);
-
-        try {
-            $this->pdoStatement->execute();
-            $this->reconnectRetry = 0;
-        } catch (PDOException $e) {
-            if ($this->needReconnect($e)) {
-                $this->reconnectRetry++;
-                $this->close();
-
-                return self::execute($sql, $bindParams);
-            }
-
-            $this->pdoException($e);
-        }
-
-        $this->numRows = $this->pdoStatement->rowCount();
-
-        if (in_array($sqlType, [
-            'insert',
-            'replace',
-        ], true)) {
-            return $this->lastInsertId();
+        if (true === $this->runSql($sql, $bindParams, true)) {
+            return self::execute($sql, $bindParams);
         }
 
         $this->release();
+        if (in_array($sqlType, ['insert', 'replace'], true)) {
+            return (int) $this->lastInsertId();
+        }
 
         return $this->numRows;
     }
@@ -339,10 +384,7 @@ abstract class Database implements IConnection
         $this->beginTransaction();
 
         try {
-            $result = call_user_func_array($action, [
-                $this,
-            ]);
-
+            $result = $action($this);
             $this->commit();
 
             return $result;
@@ -363,31 +405,18 @@ abstract class Database implements IConnection
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
                 $this->pdo(true)->beginTransaction();
-
                 if ($this->manager) {
                     $this->manager->setTransactionConnection($this);
                 }
-            } catch (Exception $e) { // @codeCoverageIgnore
-                $this->transactionLevel--; // @codeCoverageIgnore
+                // @codeCoverageIgnoreStart
+            } catch (Exception $e) {
+                $this->transactionLevel--;
 
-                throw $e; // @codeCoverageIgnore
-            } // @codeCoverageIgnore
+                throw $e;
+            }
+            // @codeCoverageIgnoreEnd
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
-            $this->createSavepoint($this->getSavepointName());
-        }
-    }
-
-    /**
-     * 归还连接池.
-     */
-    public function release(): void
-    {
-        if (!$this->manager) {
-            return;
-        }
-
-        if (!$this->manager->inTransactionConnection()) {
-            $this->baseRelease();
+            $this->createSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
     }
 
@@ -422,13 +451,12 @@ abstract class Database implements IConnection
 
         if (1 === $this->transactionLevel) {
             $this->pdo(true)->commit();
-
             if ($this->manager) {
                 $this->manager->removeTransactionConnection();
                 $this->release();
             }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
-            $this->releaseSavepoint($this->getSavepointName());
+            $this->releaseSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
 
         $this->transactionLevel = max(0, $this->transactionLevel - 1);
@@ -451,14 +479,15 @@ abstract class Database implements IConnection
             $this->transactionLevel = 0;
             $this->pdo(true)->rollBack();
             $this->isRollbackOnly = false;
-
             if ($this->manager) {
                 $this->manager->removeTransactionConnection();
                 $this->release();
             }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
+            // @codeCoverageIgnoreStart
             $this->rollbackSavepoint($this->getSavepointName());
             $this->transactionLevel--;
+        // @codeCoverageIgnoreEnd
         } else {
             $this->isRollbackOnly = true;
             $this->transactionLevel = max(0, $this->transactionLevel - 1);
@@ -468,11 +497,24 @@ abstract class Database implements IConnection
     /**
      * 设置是否启用部分事务.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @param bool $savepoints
+     * @codeCoverageIgnore
      */
     public function setSavepoints(bool $savepoints): void
     {
         $this->transactionWithSavepoints = $savepoints;
+    }
+
+    /**
+     * 获取是否启用部分事务.
+     *
+     * @return bool
+     */
+    public function hasSavepoints(): bool
+    {
+        return $this->transactionWithSavepoints;
     }
 
     /**
@@ -490,11 +532,11 @@ abstract class Database implements IConnection
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @return array
+     * @return null|string
      */
-    public function lastSql(): array
+    public function getLastSql(): ?string
     {
-        return [$this->sql, $this->bindParams];
+        return $this->sql;
     }
 
     /**
@@ -521,7 +563,13 @@ abstract class Database implements IConnection
      */
     public function freePDOStatement(): void
     {
-        $this->pdoStatement = null;
+        // Fix errors
+        // Error while sending STMT_CLOSE packet. PID=32336
+        // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
+        try {
+            $this->pdoStatement = null;
+        } catch (Throwable $e) { // @codeCoverageIgnore
+        }
     }
 
     /**
@@ -534,6 +582,20 @@ abstract class Database implements IConnection
     }
 
     /**
+     * 归还连接池.
+     */
+    public function release(): void
+    {
+        if (!$this->manager) {
+            return;
+        }
+
+        if (!$this->manager->inTransactionConnection()) {
+            $this->baseRelease();
+        }
+    }
+
+    /**
      * sql 表达式格式化.
      *
      * @param string $sql
@@ -543,11 +605,8 @@ abstract class Database implements IConnection
      */
     public function normalizeExpression(string $sql, string $tableName): string
     {
-        preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql,
-            $matches, PREG_OFFSET_CAPTURE);
-
+        preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sql, $matches, PREG_OFFSET_CAPTURE);
         $matches = reset($matches);
-
         $out = '';
         $offset = 0;
 
@@ -589,12 +648,10 @@ abstract class Database implements IConnection
     public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
     {
         $name = str_replace('`', '', $name);
-
         if (false === strpos($name, '.')) {
             $name = $this->identifierColumn($name);
         } else {
             $tmp = explode('.', $name);
-
             foreach ($tmp as $offset => $name) {
                 if (empty($name)) {
                     unset($tmp[$offset]);
@@ -602,7 +659,6 @@ abstract class Database implements IConnection
                     $tmp[$offset] = $this->identifierColumn($name);
                 }
             }
-
             $name = implode('.', $tmp);
         }
 
@@ -636,16 +692,8 @@ abstract class Database implements IConnection
      */
     public function normalizeColumnValue($value, bool $quotationMark = true)
     {
-        if (is_int($value)) {
+        if (!is_string($value)) {
             return $value;
-        }
-
-        if (is_bool($value)) {
-            return $value;
-        }
-
-        if (null === $value) {
-            return;
         }
 
         $value = trim($value);
@@ -722,6 +770,85 @@ abstract class Database implements IConnection
     }
 
     /**
+     * 执行 SQL.
+     *
+     * - 记录 SQL 日志
+     * - 支持重连
+     *
+     * @param string   $sql
+     * @param array    $bindParams
+     * @param bool|int $master
+     *
+     * @return bool
+     */
+    protected function runSql(string $sql, array $bindParams = [], $master = false): bool
+    {
+        try {
+            $this->pdoStatement = $this->pdo($master)->prepare($sql);
+            $this->bindParams($bindParams);
+            $this->pdoStatement->execute();
+            $this->setLastSql($this->normalizeLastSql($this->pdoStatement));
+            $this->reconnectRetry = 0;
+        } catch (PDOException $e) {
+            if ($this->needReconnect($e)) {
+                $this->reconnectRetry++;
+                $this->close();
+
+                return true;
+            }
+
+            if ($this->pdoStatement) {
+                $sql = $this->normalizeLastSql($this->pdoStatement, true);
+            } else {
+                $sql = $this->normalizeErrorLastSql($sql, $bindParams);
+            }
+            $this->setLastSql($sql);
+            $this->pdoException($e);
+        }
+
+        $this->numRows = $this->pdoStatement->rowCount();
+
+        return false;
+    }
+
+    /**
+     * 整理当前执行 SQL.
+     *
+     * @param \PDOStatement $pdoStatement
+     * @param bool          $failed
+     *
+     * @return string
+     */
+    protected function normalizeLastSql(PDOStatement $pdoStatement, bool $failed = false): string
+    {
+        ob_start();
+        $pdoStatement->debugDumpParams();
+        $sql = trim(ob_get_contents(), PHP_EOL.' ');
+        $sql = str_replace(PHP_EOL, ' | ', $sql);
+        ob_end_clean();
+
+        if (true === $failed) {
+            $sql = '[FAILED] '.$sql;
+        }
+
+        return $sql;
+    }
+
+    /**
+     * 整理当前错误执行 SQL.
+     *
+     * @param string $sql
+     * @param array  $bindParams
+     *
+     * @return string
+     */
+    protected function normalizeErrorLastSql(string $sql, array $bindParams): string
+    {
+        return '[FAILED] '.$sql.' | '.
+            json_encode($bindParams, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
      * 连接主服务器.
      *
      * @return \PDO
@@ -753,7 +880,6 @@ abstract class Database implements IConnection
         }
 
         $connects = $this->connects;
-
         if (true === $this->option['separate'] && isset($connects[IDatabase::MASTER])) {
             unset($connects[IDatabase::MASTER]);
         }
@@ -763,7 +889,6 @@ abstract class Database implements IConnection
         }
 
         $connects = array_values($connects);
-
         if (1 === count($connects)) {
             return $connects[0];
         }
@@ -791,16 +916,15 @@ abstract class Database implements IConnection
         }
 
         try {
-            $connect = $this->connects[$linkid] = new PDO(
+            $connect = new PDO(
                 $this->parseDsn($option),
                 $option['user'],
                 $option['password'],
                 $option['options']
             );
-
             $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            return $connect;
+            return $this->connects[$linkid] = $connect;
         } catch (PDOException $e) {
             if (false === $throwException) {
                 return false;
@@ -852,10 +976,8 @@ abstract class Database implements IConnection
         }
 
         $args = [$fetchStyle];
-
         if ($fetchArgument) {
             $args[] = $fetchArgument;
-
             if ($ctorArgs) {
                 $args[] = $ctorArgs;
             }
@@ -882,7 +1004,7 @@ abstract class Database implements IConnection
         do {
             try {
                 $result[] = $tim = $this->fetchResult($fetchStyle, $fetchArgument, $ctorArgs);
-            } catch (PDOException $e) {
+            } catch (PDOException $e) { // @codeCoverageIgnore
             }
         } while ($this->pdoStatement->nextRowset());
 
@@ -893,33 +1015,23 @@ abstract class Database implements IConnection
      * 设置 sql 绑定参数.
      *
      * @param string $sql
-     * @param array  $bindParams
      */
-    protected function setLastSql(string $sql, array $bindParams = []): void
+    protected function setLastSql(string $sql): void
     {
         $this->sql = $sql;
-        $this->bindParams = $bindParams;
 
-        $this->handleDispatch($sql, $bindParams);
-    }
-
-    /**
-     * 事件派发.
-     *
-     * @param string $sql
-     * @param array  $bindParams
-     */
-    protected function handleDispatch(string $sql, array $bindParams = []): void
-    {
         if ($this->dispatch) {
-            $this->dispatch->handle(IDatabase::SQL_EVENT, $sql, $bindParams);
+            $this->dispatch->handle(IDatabase::SQL_EVENT, $sql);
         }
     }
 
     /**
      * 获取部分事务回滚点名字.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @return string
+     * @codeCoverageIgnore
      */
     protected function getSavepointName(): string
     {
@@ -929,7 +1041,10 @@ abstract class Database implements IConnection
     /**
      * 保存部分事务保存点.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @param string $savepointName
+     * @codeCoverageIgnore
      */
     protected function createSavepoint(string $savepointName): void
     {
@@ -940,9 +1055,12 @@ abstract class Database implements IConnection
     /**
      * 回滚部分事务到保存点.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @param string $savepointName
+     * @codeCoverageIgnore
      */
-    protected function rollbackSavepoint(string $savepointName)
+    protected function rollbackSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'ROLLBACK TO SAVEPOINT '.$savepointName);
         $this->pdo(true)->exec($sql);
@@ -951,7 +1069,10 @@ abstract class Database implements IConnection
     /**
      * 清除前面定义的部分事务保存点.
      *
+     * - Travis CI 无法通过测试忽略
+     *
      * @param string $savepointName
+     * @codeCoverageIgnore
      */
     protected function releaseSavepoint(string $savepointName): void
     {
@@ -966,6 +1087,10 @@ abstract class Database implements IConnection
      */
     protected function needReconnect(PDOException $e): bool
     {
+        if (!$e->errorInfo || !isset($e->errorInfo[1])) {
+            return false;
+        }
+
         // errorInfo[1] 表示某个驱动错误码，后期扩展需要优化
         // 可以在驱动重写这个方法
         return in_array($e->errorInfo[1], [2006, 2013], true) &&

@@ -34,7 +34,7 @@ use Leevel\Validate\Validate as BaseValidate;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Validate implements IValidate
+class Validate
 {
     /**
      * call.
@@ -73,7 +73,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Validate\Validate
      */

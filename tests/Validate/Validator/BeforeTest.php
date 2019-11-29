@@ -32,6 +32,13 @@ use Tests\TestCase;
  * @since 2018.08.11
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.before",
+ *     zh-CN:title="验证器.验证在给定日期之前",
+ *     path="component/validate/validator/before",
+ *     description="",
+ * )
  */
 class BeforeTest extends TestCase
 {
@@ -40,6 +47,20 @@ class BeforeTest extends TestCase
      *
      * @param mixed  $value
      * @param string $param
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\BeforeTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, string $param): void
     {
@@ -70,6 +91,20 @@ class BeforeTest extends TestCase
      *
      * @param mixed  $value
      * @param string $param
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\BeforeTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, string $param): void
     {
@@ -99,6 +134,34 @@ class BeforeTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="日期格式化不一致无法通过验证",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testMakeDateTimeFormatWithNewDateTimeExceptionError(): void
+    {
+        $validate = new Validator(
+            [
+                'name'  => '2018-08-10',
+            ],
+            [
+                'name'     => 'before:foobar|date_format:y',
+            ]
+        );
+
+        $this->assertFalse($validate->success());
+    }
+
+    /**
+     * @api(
+     *     title="before 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

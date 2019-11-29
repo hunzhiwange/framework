@@ -32,6 +32,13 @@ use Tests\TestCase;
  * @since 2018.08.10
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Validator.strlen",
+ *     zh-CN:title="验证器.长度验证",
+ *     path="component/validate/validator/strlen",
+ *     description="",
+ * )
  */
 class StrlenTest extends TestCase
 {
@@ -40,6 +47,20 @@ class StrlenTest extends TestCase
      *
      * @param mixed $value
      * @param int   $length
+     *
+     * @api(
+     *     title="验证通过的数据",
+     *     description="
+     * 以下是通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\StrlenTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse($value, int $length): void
     {
@@ -72,6 +93,20 @@ class StrlenTest extends TestCase
      *
      * @param mixed $value
      * @param int   $length
+     *
+     * @api(
+     *     title="未验证通过的数据",
+     *     description="
+     * 以下是未通过的校验数据示例。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\StrlenTest::class, 'badProvider')]}
+     * ```
+     *
+     * 上面的数据是测试的数据提供者。
+     * ",
+     *     note="",
+     * )
      */
     public function testBad($value, int $length): void
     {
@@ -104,6 +139,13 @@ class StrlenTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="strlen 参数缺失",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

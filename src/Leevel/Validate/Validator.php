@@ -174,7 +174,6 @@ class Validator implements IValidator
     {
         if (0 === strpos($method, 'validate')) {
             $extend = un_camelize(substr($method, 8));
-
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $args);
             }
@@ -182,7 +181,6 @@ class Validator implements IValidator
 
         if (count($args) > 0) {
             $extend = 'validate'.ucfirst($method);
-
             $param = [''];
             $param[] = array_shift($args);
             $param[] = $args;
@@ -195,7 +193,6 @@ class Validator implements IValidator
             }
 
             $extend = un_camelize($method);
-
             if (isset($this->extends[$extend])) {
                 return $this->callExtend($extend, $param);
             }
@@ -229,7 +226,6 @@ class Validator implements IValidator
     public function success(): bool
     {
         $skipRule = $this->getSkipRule();
-
         $this->failedRules = $this->errorMessages = [];
 
         foreach ($this->rules as $field => $rules) {
@@ -577,10 +573,8 @@ class Validator implements IValidator
     public function getParseRule(string $field, $rules): array
     {
         $rules = (array) $rules;
-
         foreach ($this->rules[$field] as $rule) {
             list($rule, $param) = $this->parseRule($rule);
-
             if (in_array($rule, $rules, true)) {
                 return [$rule, $param];
             }
@@ -605,12 +599,10 @@ class Validator implements IValidator
         } else {
             $parts = explode('.', $rule);
             $data = $this->data;
-
             foreach ($parts as $part) {
                 if (!isset($data[$part])) {
                     return;
                 }
-
                 $data = $data[$part];
             }
 
@@ -628,7 +620,6 @@ class Validator implements IValidator
     protected function arrayMessage(array $messages): array
     {
         $result = [];
-
         foreach ($messages as $field => $message) {
             // 字段消息或者通配符
             // ['name' => ['required' => '{field} required']]
@@ -667,9 +658,7 @@ class Validator implements IValidator
     protected function wildcardMessageItem(string $field, $message): array
     {
         $field = $this->prepareRegexForWildcard($field);
-
         $messages = [];
-
         foreach ($this->parseDataKey() as $key) {
             if (preg_match($field, $key, $matche)) {
                 $messages = array_merge($messages,
@@ -708,7 +697,6 @@ class Validator implements IValidator
     protected function arrayMessageItem(string $field, $message): array
     {
         $result = [];
-
         if (is_array($message)) {
             foreach ($message as $key => $message) {
                 $result[$field.'.'.$key] = $message;
@@ -774,19 +762,22 @@ class Validator implements IValidator
      */
     protected function parseRule(string $rule): array
     {
-        $param = [];
-
-        if (false !== strpos($rule, ':')) {
-            list($rule, $param) = explode(':', $rule, 2);
-
-            if (isset($this->alias[$rule])) {
-                $rule = $this->alias[$rule];
-            }
-
-            $param = $this->parseParams($rule, $param);
+        $rule = trim($rule);
+        list($rule, $params) = array_pad(explode(':', $rule, 2), 2, []);
+        if (is_string($params)) {
+            $params = $this->parseParams($rule, $params);
         }
 
-        return [trim($rule), $param];
+        $params = array_map(function (string $item) {
+            return ctype_digit($item) ? (int) $item :
+                (is_numeric($item) ? (float) $item : $item);
+        }, $params);
+
+        if (isset($this->alias[$rule])) {
+            $rule = $this->alias[$rule];
+        }
+
+        return [$rule, $params];
     }
 
     /**
@@ -799,7 +790,6 @@ class Validator implements IValidator
     protected function arrayRule(array $rules): array
     {
         $result = [];
-
         foreach ($rules as $field => $rules) {
             if (false === strpos($field, '*')) {
                 $result[$field] = $this->arrayRuleItem($rules);
@@ -835,9 +825,7 @@ class Validator implements IValidator
     protected function wildcardRuleItem(string $field, $rules): array
     {
         $field = $this->prepareRegexForWildcard($field);
-
         $result = [];
-
         foreach ($this->parseDataKey() as $key) {
             if (preg_match($field, $key, $matche)) {
                 $result[$key] = $this->arrayRuleItem($rules);
@@ -868,10 +856,8 @@ class Validator implements IValidator
     protected function parseDataKeyRecursion(array $data, string $parentKey = ''): array
     {
         $dataKeys = [];
-
         foreach ($data as $key => $d) {
             $first = ($parentKey ? $parentKey.'.' : '').$key;
-
             if (is_array($d)) {
                 $dataKeys = array_merge($dataKeys, $this->parseDataKeyRecursion($d, $first));
             } else {
@@ -927,7 +913,6 @@ class Validator implements IValidator
     protected function doValidateItem(string $field, string $rule)
     {
         list($rule, $param) = $this->parseRule($rule);
-
         if ('' === $rule) {
             return;
         }
@@ -1001,7 +986,6 @@ class Validator implements IValidator
     protected function addFailure(string $field, string $rule, array $param): void
     {
         $this->addError($field, $rule, $param);
-
         $this->failedRules[$field][$rule] = $param;
     }
 
@@ -1015,10 +999,7 @@ class Validator implements IValidator
     protected function addError(string $field, string $rule, array $param): void
     {
         $message = $this->getFieldRuleMessage($field, $rule);
-
-        $replace = [
-            'field' => $this->parseFieldName($field),
-        ];
+        $replace = ['field' => $this->parseFieldName($field)];
 
         if (!$this->isImplodeRuleParam($rule)) {
             foreach ($param as $key => $param) {
@@ -1070,12 +1051,7 @@ class Validator implements IValidator
      */
     protected function isImplodeRuleParam(string $rule): bool
     {
-        return in_array($rule, [
-            'in',
-            'not_in',
-            'allow_ip',
-            'deny_ip',
-        ], true);
+        return in_array($rule, ['in', 'not_in', 'allow_ip', 'deny_ip'], true);
     }
 
     /**
@@ -1127,7 +1103,6 @@ class Validator implements IValidator
     protected function callExtend(string $rule, array $param): bool
     {
         $extends = $this->extends[$rule];
-
         if (is_callable($extends)) {
             $param[] = $this;
 

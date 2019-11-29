@@ -151,7 +151,6 @@ abstract class KernelConsole implements IKernelConsole
         $this->app
             ->container()
             ->instance('request', Request::createFromGlobals());
-
         $this->app
             ->container()
             ->alias('request', [IRequest::class, Request::class]);
@@ -175,7 +174,6 @@ abstract class KernelConsole implements IKernelConsole
             ->container()
             ->make('option')
             ->get('console\\template') ?: [];
-
         Make::setGlobalReplace($replace);
     }
 
@@ -189,7 +187,6 @@ abstract class KernelConsole implements IKernelConsole
     protected function normalizeCommands(array $commands): array
     {
         $result = $tmp = [];
-
         foreach ($commands as $item) {
             $tmp[class_exists($item) ? 'class' : 'namespace'][] = $item;
         }
@@ -215,7 +212,6 @@ abstract class KernelConsole implements IKernelConsole
     protected function getCommandsWithNamespace(array $namespaces): array
     {
         $data = [];
-
         foreach ($namespaces as $item) {
             $data[$item] = $this->app->namespacePath($item.'\\index');
         }

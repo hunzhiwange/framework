@@ -31,16 +31,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.17
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.bind",
+ *     zh-CN:title="查询语言.bind",
+ *     path="database/query/bind",
+ *     description="",
+ * )
  */
 class BindTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="命名参数绑定",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
                         1,
@@ -58,16 +72,28 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind('id', 1)
                     ->where('id', '=', '[:id]')
                     ->findAll(true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="命名参数绑定，支持绑定类型",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testBindWithType(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
                         1,
@@ -85,17 +111,29 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind('id', 1, PDO::PARAM_INT)
                     ->where('id', '=', '[:id]')
                     ->findAll(true),
                 1
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="命名参数绑定，绑定值支持类型定义",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testWithTypeAndValueCanBeArray(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
                         1,
@@ -113,17 +151,29 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind('id', [1, PDO::PARAM_INT])
                     ->where('id', '=', '[:id]')
                     ->findAll(true),
                 2
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="命名参数绑定，支持多个字段绑定",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testNameBind(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id AND `test`.`hello` LIKE :name",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id AND `test_query`.`hello` LIKE :name",
                 {
                     "id": [
                         1,
@@ -145,7 +195,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind(['id' => [1, PDO::PARAM_INT], 'name'=>'小鸭子'])
                     ->where('id', '=', '[:id]')
                     ->where('hello', 'like', '[:name]')
@@ -153,10 +203,22 @@ class BindTest extends TestCase
                 3
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="问号 `?` 参数绑定，支持多个字段绑定",
+     *     zh-CN:description="",
+     *     note="",
+     * )
+     */
+    public function testQuestionMarkBind(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = ? AND `test`.`hello` LIKE ?",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = ? AND `test_query`.`hello` LIKE ?",
                 [
                     [
                         5,
@@ -178,7 +240,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->bind([[5, PDO::PARAM_INT], '小鸭子'])
                     ->where('id', '=', '[?]')
                     ->where('hello', 'like', '[?]')
@@ -196,7 +258,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`name` = :name",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`name` = :name",
                 {
                     "name": [
                         1,
@@ -214,7 +276,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->bind('id', 1)
                     ->where('id', '=', '[:id]')
@@ -235,7 +297,7 @@ class BindTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` WHERE `test`.`id` = :id",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
                 {
                     "id": [
                         1,
@@ -253,7 +315,7 @@ class BindTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->bind('id', 1)
                     ->where('id', '=', '[:id]')

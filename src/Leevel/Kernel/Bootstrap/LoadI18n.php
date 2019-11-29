@@ -48,7 +48,6 @@ class LoadI18n
             ->container()
             ->make('option')
             ->get('i18n\\default');
-
         if ($app->isCachedI18n($i18nDefault)) {
             $data = (array) include $app->i18nCachedPath($i18nDefault);
         } else {
@@ -61,11 +60,9 @@ class LoadI18n
         $app
             ->container()
             ->instance('i18n', $i18n = new I18n($i18nDefault));
-
         $app
             ->container()
             ->alias('i18n', [II18n::class, I18n::class]);
-
         $i18n->addtext($i18nDefault, $data);
     }
 

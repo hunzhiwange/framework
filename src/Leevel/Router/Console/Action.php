@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Console;
 
+use InvalidArgumentException;
 use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
@@ -50,7 +51,7 @@ class Action extends Make
      *
      * @var string
      */
-    protected string $description = 'Create a new action.';
+    protected string $description = 'Create a new action';
 
     /**
      * 命令帮助.
@@ -65,6 +66,10 @@ class Action extends Make
         You can also by using the <comment>--namespace</comment> option:
         
           <info>php %command.full_name% controller name --namespace=common</info>
+
+        You can also by using the <comment>--stub</comment> option:
+        
+          <info>php %command.full_name% name --stub=/stub/action</info>
         EOF;
 
     /**
@@ -78,29 +83,100 @@ class Action extends Make
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(__DIR__.'/stub/action');
+        $this->setTemplatePath($this->getStubPath());
 
+        // 关键参数
         $controllerNamespace = $router->getControllerDir();
-        $controllerName = ucfirst(camelize($this->argument('controller')));
-        $action = ucfirst($this->normalizeAction($this->argument('name')));
+        $controller = $this->parseController();
+        $action = $this->parseAction();
 
-        $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
-        $this->setCustomReplaceKeyValue('file_name', $controllerName);
-        $this->setCustomReplaceKeyValue('controller', $controllerName);
-        $this->setCustomReplaceKeyValue('action', $action);
+        // 设置自定义替换 KEY
+        $this->setCustomReplace($controllerNamespace, $controller, $action);
 
         // 保存路径
-        $this->setSaveFilePath(
-            $this->getNamespacePath().
-            str_replace('\\', '/', $controllerNamespace).'/'.
-            $controllerName.'/'.$action.'.php'
-        );
+        $saveFilePath = $this->parseSaveFilePath($controllerNamespace, $controller, $action);
+        $this->setSaveFilePath($saveFilePath);
 
         // 设置类型
         $this->setMakeType('action');
 
         // 执行
         $this->create();
+    }
+
+    /**
+     * 设置自定义替换 KEY.
+     *
+     * @param string $controllerNamespace
+     * @param string $controller
+     * @param string $action
+     */
+    protected function setCustomReplace(string $controllerNamespace, string $controller, string $action): void
+    {
+        $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
+        $this->setCustomReplaceKeyValue('file_name', $controller);
+        $this->setCustomReplaceKeyValue('controller', $controller);
+        $this->setCustomReplaceKeyValue('action', $action);
+    }
+
+    /**
+     * 获取保存文件路径.
+     *
+     * @param string $controllerNamespace
+     * @param string $controller
+     * @param string $action
+     *
+     * @return string
+     */
+    protected function parseSaveFilePath(string $controllerNamespace, string $controller, string $action): string
+    {
+        return $this->getNamespacePath().
+            str_replace('\\', '/', $controllerNamespace).'/'.
+            $controller.'/'.$action.'.php';
+    }
+
+    /**
+     * 获取控制器.
+     *
+     * @return string
+     */
+    protected function parseController(): string
+    {
+        return ucfirst(camelize($this->argument('controller')));
+    }
+
+    /**
+     * 获取方法.
+     *
+     * @return string
+     */
+    protected function parseAction(): string
+    {
+        return ucfirst($this->normalizeAction($this->argument('name')));
+    }
+
+    /**
+     * 获取模板路径.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    protected function getStubPath(): string
+    {
+        if ($this->option('stub')) {
+            $stub = $this->option('stub');
+        } else {
+            $stub = __DIR__.'/stub/action';
+        }
+
+        if (!is_file($stub)) {
+            $e = sprintf('Action stub file `%s` was not found.', $stub);
+
+            throw new InvalidArgumentException($e);
+        }
+
+        return $stub;
     }
 
     /**
@@ -159,6 +235,12 @@ class Action extends Make
                 Option::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
                 'app',
+            ],
+            [
+                'stub',
+                null,
+                Option::VALUE_OPTIONAL,
+                'Custom stub of entity',
             ],
         ];
     }

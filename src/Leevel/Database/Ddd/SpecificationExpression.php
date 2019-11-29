@@ -38,7 +38,7 @@ class SpecificationExpression implements ISpecification
      *
      * @var \Closure
      */
-    public Closure $spec;
+    protected Closure $spec;
 
     /**
      * 闭包规约实现.
@@ -81,7 +81,9 @@ class SpecificationExpression implements ISpecification
      */
     public function isSatisfiedBy(IEntity $entity): bool
     {
-        return call_user_func($this->spec, $entity);
+        $spec = $this->spec;
+
+        return $spec($entity);
     }
 
     /**
@@ -92,7 +94,8 @@ class SpecificationExpression implements ISpecification
      */
     public function handle(Select $select, IEntity $entity): void
     {
-        call_user_func($this->handle, $select, $entity);
+        $handle = $this->handle;
+        $handle($select, $entity);
     }
 
     /**

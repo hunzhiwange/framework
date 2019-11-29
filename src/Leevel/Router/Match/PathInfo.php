@@ -99,7 +99,6 @@ class PathInfo extends Match implements IMatch
     protected function matcheApp(array $path): array
     {
         $result = [];
-
         if ($path && $this->isFindApp($path[0])) {
             $result[IRouter::APP] = substr(array_shift($path), 1);
         }
@@ -125,7 +124,6 @@ class PathInfo extends Match implements IMatch
     protected function matcheMvc(array $path): array
     {
         $result = [];
-
         if (1 === count($path)) {
             $result[IRouter::CONTROLLER] = array_pop($path);
         } else {
@@ -168,11 +166,9 @@ class PathInfo extends Match implements IMatch
     {
         $restfulPath = implode('/', $path);
         $regex = '/^(\S+)\/('.IRouter::RESTFUL_REGEX.')(\/*\S*)$/';
-
         if (preg_match($regex, $restfulPath, $matches)) {
             $result[IRouter::CONTROLLER] = $matches[1];
             $result[IRouter::PARAMS][IRouter::RESTFUL_ID] = $matches[2];
-
             if ('' !== $matches[3]) {
                 $result[IRouter::ACTION] = substr($matches[3], 1);
             }

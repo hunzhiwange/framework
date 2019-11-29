@@ -8,3 +8,6 @@ package-lock.json
 *.log
 /tests/config.local.php
 .phpunit.result.cache
+/.idea
+doc.errorlog.php
+doc.rightlog.php

@@ -28,15 +28,14 @@ namespace Leevel\Support\Arr;
  *
  * @return array
  */
-function only(array $input, array $filter): array
+function only(array &$input, array $filter): array
 {
     $result = [];
-
     foreach ($filter as $f) {
         $result[$f] = $input[$f] ?? null;
     }
 
-    return $result;
+    return $input = $result;
 }
 
 class only

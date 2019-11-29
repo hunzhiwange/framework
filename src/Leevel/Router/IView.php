@@ -30,8 +30,6 @@ use Leevel\View\IView as IViews;
  * @since 2017.04.23
  *
  * @version 1.0
- *
- * @see \Leevel\Router\Proxy\IView 请保持接口设计的一致性
  */
 interface IView
 {

@@ -30,16 +30,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Query lang.limit",
+ *     zh-CN:title="查询语言.limit",
+ *     path="database/query/limit",
+ *     description="",
+ * )
  */
 class LimitTest extends TestCase
 {
+    /**
+     * @api(
+     *     zh-CN:title="limit 限制条数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 5,10",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 5,10",
                 [],
                 false,
                 null,
@@ -52,15 +66,27 @@ class LimitTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->limit(5, 10)
                     ->find(null, true)
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="指示仅查询第一个符合条件的记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testOne(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 1",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 1",
                 [],
                 false,
                 null,
@@ -73,16 +99,28 @@ class LimitTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->one()
                     ->find(null, true),
                 1
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="指示查询所有符合条件的记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testAll(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test`",
+                "SELECT `test_query`.* FROM `test_query`",
                 [],
                 false,
                 null,
@@ -95,16 +133,28 @@ class LimitTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->all()
                     ->find(null, true),
                 2
             )
         );
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="查询几条记录",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function testTop(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 0,15",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 0,15",
                 [],
                 false,
                 null,
@@ -117,7 +167,7 @@ class LimitTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->top(15)
                     ->find(null, true),
                 3
@@ -132,7 +182,7 @@ class LimitTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 0,6",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 0,6",
                 [],
                 false,
                 null,
@@ -145,7 +195,7 @@ class LimitTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->top(5)
                     ->else()
@@ -163,7 +213,7 @@ class LimitTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 0,5",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 0,5",
                 [],
                 false,
                 null,
@@ -176,7 +226,7 @@ class LimitTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->top(5)
                     ->else()
@@ -194,7 +244,7 @@ class LimitTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 2,3",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 2,3",
                 [],
                 false,
                 null,
@@ -207,7 +257,7 @@ class LimitTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->limit(0, 5)
                     ->else()
@@ -225,7 +275,7 @@ class LimitTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 0,5",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 0,5",
                 [],
                 false,
                 null,
@@ -238,7 +288,7 @@ class LimitTest extends TestCase
             $sql,
             $this->varJson(
                 $connect
-                    ->table('test')
+                    ->table('test_query')
                     ->if($condition)
                     ->limit(0, 5)
                     ->else()

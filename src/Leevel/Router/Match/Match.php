@@ -105,7 +105,6 @@ abstract class Match
     protected function matcheBasePaths(string $pathInfo): array
     {
         $middlewares = [];
-
         foreach ($this->router->getBasePaths() as $item => $option) {
             if ('*' === $item) {
                 if (isset($option['middlewares'])) {
@@ -136,7 +135,6 @@ abstract class Match
         foreach ($this->router->getGroupPaths() as $item => $option) {
             if (0 === strpos($pathInfo, $item)) {
                 $pathInfo = substr($pathInfo, strlen($item));
-
                 if (isset($option['middlewares'])) {
                     $middlewares = $this->mergeMiddlewares($middlewares, $option['middlewares']);
                 }

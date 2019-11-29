@@ -38,7 +38,6 @@ function copy_directory(string $sourcePath, string $targetPath, array $filter = 
     }
 
     $instance = new DirectoryIterator($sourcePath);
-
     foreach ($instance as $file) {
         if ($file->isDot() ||
             in_array($file->getFilename(), $filter, true)) {

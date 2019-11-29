@@ -114,7 +114,6 @@ abstract class Command extends SymfonyCommand
     public function __construct()
     {
         parent::__construct($this->name);
-
         $this->setDescription($this->description);
         $this->setHelp($this->help);
         $this->specifyParams();
@@ -360,7 +359,6 @@ abstract class Command extends SymfonyCommand
         if (!$this->output->getFormatter()->hasStyle('warning')) {
             $this->output->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
         }
-
         $this->line($message, 'warning', $verbosity);
     }
 
@@ -374,7 +372,6 @@ abstract class Command extends SymfonyCommand
     public function line(string $message, ?string $style = null, $verbosity = null): void
     {
         $message = $style ? "<{$style}>{$message}</{$style}>" : $message;
-
         $this->output->writeln($message, $this->parseVerbosity($verbosity));
     }
 

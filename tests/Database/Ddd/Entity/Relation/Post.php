@@ -22,6 +22,7 @@ namespace Tests\Database\Ddd\Entity\Relation;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IEntity;
+use Leevel\Database\Ddd\Relation\Relation;
 
 /**
  * post.
@@ -42,32 +43,62 @@ class Post extends Entity
 
     const STRUCT = [
         'id' => [
-            'readonly'           => true,
+            self::READONLY           => true,
         ],
         'title'     => [],
         'user_id'   => [],
         'summary'   => [],
         'create_at' => [],
-        'delete_at' => [],
+        'delete_at' => [
+            self::CREATE_FILL => 0,
+        ],
         'user'      => [
-            self::BELONGS_TO => User::class,
-            'source_key'     => 'user_id',
-            'target_key'     => 'id',
+            self::BELONGS_TO     => User::class,
+            self::SOURCE_KEY     => 'user_id',
+            self::TARGET_KEY     => 'id',
         ],
         'comment' => [
-            self::HAS_MANY => Comment::class,
-            'source_key'   => 'id',
-            'target_key'   => 'post_id',
-            self::SCOPE    => 'comment',
+            self::HAS_MANY          => Comment::class,
+            self::SOURCE_KEY        => 'id',
+            self::TARGET_KEY        => 'post_id',
+            self::RELATION_SCOPE    => 'comment',
         ],
         'post_content' => [
-            self::HAS_ONE => PostContent::class,
-            'source_key'  => 'id',
-            'target_key'  => 'post_id',
+            self::HAS_ONE     => PostContent::class,
+            self::SOURCE_KEY  => 'id',
+            self::TARGET_KEY  => 'post_id',
+        ],
+        'user_not_defined_source_key'      => [
+            self::BELONGS_TO     => User::class,
+            self::TARGET_KEY     => 'id',
+        ],
+        'user_not_defined_target_key'      => [
+            self::BELONGS_TO     => User::class,
+            self::SOURCE_KEY     => 'id',
+        ],
+        'comment_not_defined_source_key' => [
+            self::HAS_MANY          => Comment::class,
+            self::TARGET_KEY        => 'post_id',
+            self::RELATION_SCOPE    => 'comment',
+        ],
+        'comment_not_defined_target_key' => [
+            self::HAS_MANY          => Comment::class,
+            self::SOURCE_KEY        => 'id',
+            self::RELATION_SCOPE    => 'comment',
+        ],
+        'post_content_not_defined_source_key' => [
+            self::HAS_ONE     => PostContent::class,
+            self::TARGET_KEY  => 'post_id',
+        ],
+        'post_content_not_defined_target_key' => [
+            self::HAS_ONE     => PostContent::class,
+            self::SOURCE_KEY  => 'id',
         ],
     ];
 
     const DELETE_AT = 'delete_at';
+
+    private static $leevelConnect;
 
     private $id;
 
@@ -87,20 +118,42 @@ class Post extends Entity
 
     private $postContent;
 
+    private $userNotDefinedSourceKey;
+
+    private $userNotDefinedTargetKey;
+
+    private $commentNotDefinedSourceKey;
+
+    private $commentNotDefinedTargetKey;
+
+    private $postContentNotDefinedSourceKey;
+
+    private $postContentNotDefinedTargetKey;
+
     public function setter(string $prop, $value): IEntity
     {
-        $this->{$this->prop($prop)} = $value;
+        $this->{$this->realProp($prop)} = $value;
 
         return $this;
     }
 
     public function getter(string $prop)
     {
-        return $this->{$this->prop($prop)};
+        return $this->{$this->realProp($prop)};
     }
 
-    public function scopeComment($select)
+    public static function withConnect($connect): void
     {
-        $select->where('id', '>', 4);
+        static::$leevelConnect = $connect;
+    }
+
+    public static function connect()
+    {
+        return static::$leevelConnect;
+    }
+
+    protected function relationScopeComment(Relation $relation): void
+    {
+        $relation->where('id', '>', 4);
     }
 }

@@ -49,8 +49,8 @@ class LinkStorage extends Command
      *
      * @var string
      */
-    protected string $description = 'Create a symbolic link from `storage` to `www/storage`.';
-
+    protected string $description = 'Create a symbolic link from `storage` to `www/storage`';
+    
     /**
      * 响应命令.
      *
@@ -66,10 +66,7 @@ class LinkStorage extends Command
             return;
         }
 
-        link(
-            $path = $app->storagePath(), $link
-        );
-
+        link($path = $app->storagePath(), $link);
         $this->info(sprintf('Linked `%s` directory to `%s` successed.', $path, $link));
     }
 

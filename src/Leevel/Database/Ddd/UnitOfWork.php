@@ -26,10 +26,10 @@ use Leevel\Database\IDatabase;
 use Throwable;
 
 /**
- * 工作单元.
+ * 事务工作单元.
  *
- * - 工作单元大量参考了 Doctrine2 以及 Java Bean 的实现和设计.
- * - 最早基于 .NET 里面关于领域驱动设计代码实现，工作单元、仓储等概念均来源于此.
+ * - 事务工作单元大量参考了 Doctrine2 以及 Java Bean 的实现和设计.
+ * - 最早基于 .NET 里面关于领域驱动设计代码实现，事务工作单元、仓储等概念均来源于此.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -175,11 +175,18 @@ class UnitOfWork implements IUnitOfWork
     protected array $onCallbacks = [];
 
     /**
-     * 工作单元是否关闭.
+     * 事务工作单元是否关闭.
      *
      * @var bool
      */
     protected bool $closed = false;
+
+    /**
+     * 强制删除标识.
+     *
+     * @var array
+     */
+    protected $forceDeleteFlag = [];
 
     /**
      * 构造函数.
@@ -191,32 +198,48 @@ class UnitOfWork implements IUnitOfWork
             const ID = null;
             const AUTO = null;
             const STRUCT = [];
+            private static $leevelConnect;
 
+            /**
+             * @codeCoverageIgnore
+             *
+             * @param mixed $value
+             */
             public function setter(string $prop, $value): IEntity
             {
-                $this->{$this->prop($prop)} = $value;
+                $this->{$this->realProp($prop)} = $value;
 
                 return $this;
             }
 
+            /**
+             * @codeCoverageIgnore
+             */
             public function getter(string $prop)
             {
-                return $this->{$this->prop($prop)};
+                return $this->{$this->realProp($prop)};
+            }
+
+            public static function withConnect($connect): void
+            {
+                static::$leevelConnect = $connect;
+            }
+
+            public static function connect()
+            {
+                return static::$leevelConnect;
             }
         };
     }
 
     /**
-     * 创建一个工作单元.
-     *
-     * @param null|\Leevel\Database\Ddd\IEntity $rootEntity
-     * @param null|mixed                        $connect
+     * 创建一个事务工作单元.
      *
      * @return static
      */
-    public static function make(?IEntity $rootEntity = null, $connect = null): IUnitOfWork
+    public static function make(): IUnitOfWork
     {
-        return new static($rootEntity, $connect);
+        return new static();
     }
 
     /**
@@ -280,13 +303,16 @@ class UnitOfWork implements IUnitOfWork
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
-    public function persisteAfter(IEntity $entity, string $method = 'save'): IUnitOfWork
+    public function persistAfter(IEntity $entity, string $method = 'save'): IUnitOfWork
     {
         return $this->persistEntity('After', $entity, $method);
     }
 
     /**
      * 移除实体到前置区域.
+     *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
@@ -301,6 +327,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 移除实体.
      *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
@@ -314,6 +343,9 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 移除实体到后置区域.
      *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
      * @param \Leevel\Database\Ddd\IEntity $entity
      * @param int                          $priority
      *
@@ -322,6 +354,60 @@ class UnitOfWork implements IUnitOfWork
     public function removeAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         return $this->removeEntity('After', $entity, $priority);
+    }
+
+    /**
+     * 移除实体(强制删除)到前置区域.
+     *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceRemoveBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    {
+        $this->forceDeleteFlag($entity);
+
+        return $this->removeBefore($entity, $priority);
+    }
+
+    /**
+     * 移除实体(强制删除).
+     *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceRemove(IEntity $entity, int $priority = 500): IUnitOfWork
+    {
+        $this->forceDeleteFlag($entity);
+
+        return $this->remove($entity, $priority);
+    }
+
+    /**
+     * 移除实体(强制删除)到后置区域.
+     *
+     * - 已经被管理的实体直接清理管理状态，但是不做删除然后直接返回
+     * - 未被管理的实体为直接删除
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceRemoveAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    {
+        $this->forceDeleteFlag($entity);
+
+        return $this->removeAfter($entity, $priority);
     }
 
     /**
@@ -335,9 +421,7 @@ class UnitOfWork implements IUnitOfWork
     public function createBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->createEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->createsFlagBefore[$id] = $priority;
+        $this->createsFlagBefore[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -353,9 +437,7 @@ class UnitOfWork implements IUnitOfWork
     public function create(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->createEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->createsFlag[$id] = $priority;
+        $this->createsFlag[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -371,9 +453,7 @@ class UnitOfWork implements IUnitOfWork
     public function createAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->createEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->createsFlagAfter[$id] = $priority;
+        $this->createsFlagAfter[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -401,9 +481,7 @@ class UnitOfWork implements IUnitOfWork
     public function updateBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->updateEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->updatesFlagBefore[$id] = $priority;
+        $this->updatesFlagBefore[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -419,9 +497,7 @@ class UnitOfWork implements IUnitOfWork
     public function update(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->updateEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->updatesFlag[$id] = $priority;
+        $this->updatesFlag[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -437,9 +513,7 @@ class UnitOfWork implements IUnitOfWork
     public function updateAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->updateEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->updatesFlagAfter[$id] = $priority;
+        $this->updatesFlagAfter[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -467,9 +541,7 @@ class UnitOfWork implements IUnitOfWork
     public function replaceBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->replaceEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->replacesFlagBefore[$id] = $priority;
+        $this->replacesFlagBefore[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -485,9 +557,7 @@ class UnitOfWork implements IUnitOfWork
     public function replace(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->replaceEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->replacesFlag[$id] = $priority;
+        $this->replacesFlag[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -503,9 +573,7 @@ class UnitOfWork implements IUnitOfWork
     public function replaceAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
         $this->replaceEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->replacesFlagAfter[$id] = $priority;
+        $this->replacesFlagAfter[spl_object_id($entity)] = $priority;
 
         return $this;
     }
@@ -532,12 +600,7 @@ class UnitOfWork implements IUnitOfWork
      */
     public function deleteBefore(IEntity $entity, int $priority = 500): IUnitOfWork
     {
-        $this->deleteEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->deletesFlagBefore[$id] = $priority;
-
-        return $this;
+        return $this->deleteEntity($entity, 'Before', $priority);
     }
 
     /**
@@ -550,12 +613,7 @@ class UnitOfWork implements IUnitOfWork
      */
     public function delete(IEntity $entity, int $priority = 500): IUnitOfWork
     {
-        $this->deleteEntity($entity);
-
-        $id = spl_object_id($entity);
-        $this->deletesFlag[$id] = $priority;
-
-        return $this;
+        return $this->deleteEntity($entity, '', $priority);
     }
 
     /**
@@ -568,12 +626,52 @@ class UnitOfWork implements IUnitOfWork
      */
     public function deleteAfter(IEntity $entity, int $priority = 500): IUnitOfWork
     {
-        $this->deleteEntity($entity);
+        return $this->deleteEntity($entity, 'After', $priority);
+    }
 
-        $id = spl_object_id($entity);
-        $this->deletesFlagAfter[$id] = $priority;
+    /**
+     * 注册删除实体(强制删除)到前置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceDeleteBefore(IEntity $entity, int $priority = 500): IUnitOfWork
+    {
+        $this->forceDeleteFlag($entity);
 
-        return $this;
+        return $this->deleteBefore($entity, $priority);
+    }
+
+    /**
+     * 注册删除实体(强制删除).
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceDelete(IEntity $entity, int $priority = 500): IUnitOfWork
+    {
+        $this->forceDeleteFlag($entity);
+
+        return $this->delete($entity, $priority);
+    }
+
+    /**
+     * 注册删除实体(强制删除)到后置区域.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param int                          $priority
+     *
+     * @return \Leevel\Database\Ddd\IUnitOfWork
+     */
+    public function forceDeleteAfter(IEntity $entity, int $priority = 500): IUnitOfWork
+    {
+        $this->forceDeleteFlag($entity);
+
+        return $this->deleteAfter($entity, $priority);
     }
 
     /**
@@ -617,13 +715,11 @@ class UnitOfWork implements IUnitOfWork
     public function refresh(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
-
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
             $e = sprintf('Entity `%s` was not managed.', get_class($entity));
 
             throw new InvalidArgumentException($e);
         }
-
         $this->repository($entity)->refresh($entity);
 
         return $this;
@@ -643,10 +739,14 @@ class UnitOfWork implements IUnitOfWork
      * 设置根实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $rootEntity
+     * @param null|mixed                   $connect
      */
-    public function setRootEntity(IEntity $rootEntity): void
+    public function setRootEntity(IEntity $rootEntity, $connect = null): void
     {
         $this->rootEntity = $rootEntity;
+        if (null !== $connect) {
+            $this->setConnect($connect);
+        }
     }
 
     /**
@@ -666,9 +766,7 @@ class UnitOfWork implements IUnitOfWork
      */
     public function connect(): IDatabase
     {
-        return $this->rootEntity
-            ->select()
-            ->databaseConnect();
+        return $this->rootEntity->select()->databaseConnect();
     }
 
     /**
@@ -708,7 +806,6 @@ class UnitOfWork implements IUnitOfWork
 
         try {
             $result = $action($this);
-
             $this->flush();
             $this->commit();
 
@@ -722,7 +819,7 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 清理工作单元.
+     * 清理事务工作单元.
      */
     public function clear(): void
     {
@@ -744,6 +841,7 @@ class UnitOfWork implements IUnitOfWork
         $this->deletesFlagBefore = [];
         $this->deletesFlag = [];
         $this->deletesFlagAfter = [];
+        $this->forceDeleteFlag = [];
     }
 
     /**
@@ -800,7 +898,6 @@ class UnitOfWork implements IUnitOfWork
     public function getEntityState(IEntity $entity, ?int $defaults = null): int
     {
         $id = spl_object_id($entity);
-
         if (isset($this->entityStates[$id])) {
             return $this->entityStates[$id];
         }
@@ -817,6 +914,16 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
+     * 强制删除标识.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     */
+    protected function forceDeleteFlag(IEntity $entity): void
+    {
+        $this->forceDeleteFlag[spl_object_id($entity)] = true;
+    }
+
+    /**
      * 保持实体.
      *
      * @param string                       $position
@@ -830,9 +937,7 @@ class UnitOfWork implements IUnitOfWork
     protected function persistEntity(string $position, IEntity $entity, string $method = 'save'): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
-
         $entityState = $this->getEntityState($entity, self::STATE_NEW);
 
         switch ($entityState) {
@@ -845,11 +950,13 @@ class UnitOfWork implements IUnitOfWork
             case self::STATE_REMOVED:
                 if (isset($this->entityDeletes[$id])) {
                     unset($this->entityDeletes[$id]);
-
                     foreach (['deletesFlagBefore', 'deletesFlag', 'deletesFlagAfter'] as $flag) {
                         if (isset($this->{$flag}[$id])) {
                             unset($this->{$flag}[$id]);
                         }
+                    }
+                    if (isset($this->forceDeleteFlag[$id])) {
+                        unset($this->forceDeleteFlag[$id]);
                     }
                 }
 
@@ -879,8 +986,6 @@ class UnitOfWork implements IUnitOfWork
      */
     protected function removeEntity(string $position, IEntity $entity, int $priority = 500): IUnitOfWork
     {
-        $id = spl_object_id($entity);
-
         $entityState = $this->getEntityState($entity);
 
         switch ($entityState) {
@@ -888,7 +993,7 @@ class UnitOfWork implements IUnitOfWork
             case self::STATE_REMOVED:
                 break;
             case self::STATE_MANAGED:
-                $this->{'delete'.$position}($entity, $priority);
+                $this->deleteEntity($entity, $position, $priority, true);
 
                 break;
              case self::STATE_DETACHED:
@@ -914,26 +1019,10 @@ class UnitOfWork implements IUnitOfWork
     protected function createEntity(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
-
-        if (isset($this->entityUpdates[$id])) {
-            $e = sprintf('Updated entity `%s` cannot be added for create.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityDeletes[$id])) {
-            $e = sprintf('Deleted entity `%s` cannot be added for create.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityReplaces[$id])) {
-            $e = sprintf('Replaced entity `%s` cannot be added for create.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
+        $this->validateUpdateAlreadyExists($entity, 'create');
+        $this->validateDeleteAlreadyExists($entity, 'create');
+        $this->validateReplaceAlreadyExists($entity, 'create');
 
         if (isset($this->entityCreates[$id])) {
             $e = sprintf('Entity `%s` cannot be added for twice.', get_class($entity));
@@ -959,32 +1048,11 @@ class UnitOfWork implements IUnitOfWork
     protected function updateEntity(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
-
-        if (!$entity->id()) {
-            $e = sprintf('Entity `%s` has no identity for update.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityDeletes[$id])) {
-            $e = sprintf('Deleted entity `%s` cannot be added for update.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityCreates[$id])) {
-            $e = sprintf('Created entity `%s` cannot be added for update.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityReplaces[$id])) {
-            $e = sprintf('Replaced entity `%s` cannot be added for update.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
+        $this->validatePrimaryData($entity, 'update');
+        $this->validateDeleteAlreadyExists($entity, 'update');
+        $this->validateCreateAlreadyExists($entity, 'update');
+        $this->validateReplaceAlreadyExists($entity, 'update');
 
         if (isset($this->entityUpdates[$id])) {
             $e = sprintf('Entity `%s` cannot be updated for twice.', get_class($entity));
@@ -1010,26 +1078,10 @@ class UnitOfWork implements IUnitOfWork
     protected function replaceEntity(IEntity $entity): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
-
-        if (isset($this->entityDeletes[$id])) {
-            $e = sprintf('Deleted entity `%s` cannot be added for replace.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityCreates[$id])) {
-            $e = sprintf('Created entity `%s` cannot be added for replace.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
-        if (isset($this->entityUpdates[$id])) {
-            $e = sprintf('Updated entity `%s` cannot be added for replace.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
+        $this->validateDeleteAlreadyExists($entity, 'replace');
+        $this->validateCreateAlreadyExists($entity, 'replace');
+        $this->validateUpdateAlreadyExists($entity, 'replace');
 
         if (isset($this->entityReplaces[$id])) {
             $e = sprintf('Entity `%s` cannot be replaced for twice.', get_class($entity));
@@ -1047,58 +1099,59 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $position
+     * @param int                          $priority
+     * @param bool                         $remove
      *
      * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
-    protected function deleteEntity(IEntity $entity): IUnitOfWork
+    protected function deleteEntity(IEntity $entity, string $position, int $priority = 500, bool $remove = false): IUnitOfWork
     {
         $this->validateClosed();
-
         $id = spl_object_id($entity);
 
         if (isset($this->entityCreates[$id])) {
             unset($this->entityCreates[$id], $this->entityStates[$id]);
-
             foreach (['createsFlagBefore', 'createsFlag', 'createsFlagAfter'] as $flag) {
                 if (isset($this->{$flag}[$id])) {
                     unset($this->{$flag}[$id]);
                 }
             }
 
-            return $this;
+            if (true === $remove) {
+                return $this;
+            }
         }
 
         if (isset($this->entityReplaces[$id])) {
-            unset($this->entityReplaces[$id]);
-
+            unset($this->entityReplaces[$id], $this->entityStates[$id]);
             foreach (['replacesFlagBefore', 'replacesFlag', 'replacesFlagAfter'] as $flag) {
                 if (isset($this->{$flag}[$id])) {
                     unset($this->{$flag}[$id]);
                 }
             }
 
-            if (!$entity->id()) {
+            if (true === $remove) {
                 return $this;
             }
         }
 
-        if (!$entity->id()) {
-            $e = sprintf('Entity `%s` has no identity for delete.', get_class($entity));
-
-            throw new InvalidArgumentException($e);
-        }
-
         if (isset($this->entityUpdates[$id])) {
-            unset($this->entityUpdates[$id]);
-
+            unset($this->entityUpdates[$id], $this->entityStates[$id]);
             foreach (['updatesFlagBefore', 'updatesFlag', 'updatesFlagAfter'] as $flag) {
                 if (isset($this->{$flag}[$id])) {
                     unset($this->{$flag}[$id]);
                 }
             }
+
+            if (true === $remove) {
+                return $this;
+            }
         }
+
+        $this->validatePrimaryData($entity, 'delete');
 
         if (isset($this->entityDeletes[$id])) {
             $e = sprintf('Entity `%s` cannot be deleted for twice.', get_class($entity));
@@ -1106,10 +1159,96 @@ class UnitOfWork implements IUnitOfWork
             throw new InvalidArgumentException($e);
         }
 
+        $this->{'deletesFlag'.$position}[spl_object_id($entity)] = $priority;
         $this->entityDeletes[$id] = $entity;
         $this->entityStates[$id] = self::STATE_REMOVED;
 
         return $this;
+    }
+
+    /**
+     * 校验是否已经为新建实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateCreateAlreadyExists(IEntity $entity, string $type): void
+    {
+        if (isset($this->entityCreates[spl_object_id($entity)])) {
+            $e = sprintf('Created entity `%s` cannot be added for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 校验是否已经为更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateUpdateAlreadyExists(IEntity $entity, string $type): void
+    {
+        if (isset($this->entityUpdates[spl_object_id($entity)])) {
+            $e = sprintf('Updated entity `%s` cannot be added for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 校验是否已经为不存在则新增否则更新实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateReplaceAlreadyExists(IEntity $entity, string $type): void
+    {
+        if (isset($this->entityReplaces[spl_object_id($entity)])) {
+            $e = sprintf('Replaced entity `%s` cannot be added for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 校验是否已经为删除实体.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalieletentException
+     */
+    protected function validateDeleteAlreadyExists(IEntity $entity, string $type): void
+    {
+        if (isset($this->entityDeletes[spl_object_id($entity)])) {
+            $e = sprintf('Deleted entity `%s` cannot be added for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
+    }
+
+    /**
+     * 校验实体主键值.
+     *
+     * @param \Leevel\Database\Ddd\IEntity $entity
+     * @param string                       $type
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validatePrimaryData(IEntity $entity, string $type): void
+    {
+        if (!$entity->id()) {
+            $e = sprintf('Entity `%s` has no identity for %s.', get_class($entity), $type);
+
+            throw new InvalidArgumentException($e);
+        }
     }
 
     /**
@@ -1119,24 +1258,9 @@ class UnitOfWork implements IUnitOfWork
     {
         foreach (['Before', '', 'After'] as $position) {
             foreach (['creates', 'replaces', 'updates', 'deletes'] as $type) {
-                $flag = $type.'Flag'.$position;
-
-                if ($this->{$flag}) {
-                    $flags = $this->{$flag};
-                    asort($flags);
-
-                    foreach ($flags as $id => $_) {
-                        $entity = $this->{'entity'.ucfirst($type)}[$id];
-                        $this->repository($entity)->{substr($type, 0, -1)}($entity);
-
-                        if (isset($this->onCallbacks[$id])) {
-                            foreach ($this->onCallbacks[$id] as $c) {
-                                $c($entity, $this);
-                            }
-                        }
-
-                        $this->entityStates[$id] = self::STATE_DETACHED;
-                    }
+                foreach ($this->normalizeRepositoryEntity($type.'Flag'.$position) as $id => $_) {
+                    $this->flushRepositoryEntity($type, $id);
+                    $this->entityStates[$id] = self::STATE_DETACHED;
                 }
             }
         }
@@ -1144,6 +1268,50 @@ class UnitOfWork implements IUnitOfWork
         $oldStates = $this->entityStates;
         $this->clear();
         $this->entityStates = $oldStates;
+    }
+
+    /**
+     * 整理仓储实体.
+     *
+     * @param string $flag
+     *
+     * @return array
+     */
+    protected function normalizeRepositoryEntity(string $flag): array
+    {
+        if (!$this->{$flag}) {
+            return [];
+        }
+
+        $entitys = $this->{$flag};
+        asort($entitys);
+
+        return $entitys;
+    }
+
+    /**
+     * 释放仓储实体.
+     *
+     * @param string $type
+     * @param int    $id
+     */
+    protected function flushRepositoryEntity(string $type, int $id): void
+    {
+        $entity = $this->{'entity'.ucfirst($type)}[$id];
+
+        if ('deletes' === $type) {
+            $params = [$entity, isset($this->forceDeleteFlag[$id])];
+        } else {
+            $params = [$entity];
+        }
+
+        $this->repository($entity)->{substr($type, 0, -1)}(...$params);
+
+        if (isset($this->onCallbacks[$id])) {
+            foreach ($this->onCallbacks[$id] as $callback) {
+                $callback($entity, $this);
+            }
+        }
     }
 
     /**
@@ -1187,7 +1355,7 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 校验工作单元是否关闭.
+     * 校验事务工作单元是否关闭.
      *
      * @throws \InvalidArgumentException
      */

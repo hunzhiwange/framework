@@ -57,7 +57,6 @@ class Redis extends Cache implements ICache, IConnection
     public function __construct(IRedis $handle, array $option = [])
     {
         parent::__construct($option);
-
         $this->handle = $handle;
     }
 
@@ -77,7 +76,6 @@ class Redis extends Cache implements ICache, IConnection
         $data = $this->handle->get(
             $this->getCacheName($name)
         );
-
         if (false === $data) {
             return $defaults;
         }
@@ -101,13 +99,11 @@ class Redis extends Cache implements ICache, IConnection
     public function set(string $name, $data, array $option = []): void
     {
         $option = $this->normalizeOptions($option);
-
         if ($option['serialize']) {
             $data = serialize($data);
         }
 
         $option['expire'] = $this->cacheTime($name, (int) $option['expire']);
-
         $this->handle->set(
             $this->getCacheName($name), $data,
             $option['expire'] ? (int) $option['expire'] : null
@@ -126,7 +122,6 @@ class Redis extends Cache implements ICache, IConnection
         $this->handle->delete(
             $this->getCacheName($name)
         );
-
         $this->release();
     }
 

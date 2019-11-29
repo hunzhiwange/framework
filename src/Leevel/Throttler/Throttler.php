@@ -91,12 +91,10 @@ class Throttler implements IThrottler
     public function create(?string $key = null, int $limit = 60, int $time = 60): IRateLimiter
     {
         $key = $this->getRequestKey($key);
-
         if (isset($this->rateLimiter[$key])) {
-            return $this->rateLimiter[$key]->
-            limit($limit)->
-
-            time($time);
+            return $this->rateLimiter[$key]
+                ->limit($limit)
+                ->time($time);
         }
 
         return $this->rateLimiter[$key] = new RateLimiter(

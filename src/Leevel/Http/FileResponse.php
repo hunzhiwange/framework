@@ -61,7 +61,6 @@ class FileResponse extends Response
     public function __construct($file, int $status = 200, array $headers = [], ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true)
     {
         parent::__construct(null, $status, $headers);
-
         $this->setFile($file, $contentDisposition, $autoEtag, $autoLastModified);
     }
 
@@ -107,7 +106,6 @@ class FileResponse extends Response
                 if (!is_readable($file)) {
                     throw new FileException('File must be readable.');
                 }
-
                 $file = new File((string) $file);
             }
         }
@@ -171,7 +169,6 @@ class FileResponse extends Response
         }
 
         $etag = base64_encode(hash_file('sha256', $this->file->getPathname(), true));
-
         $this->setEtag($etag);
 
         return $this;

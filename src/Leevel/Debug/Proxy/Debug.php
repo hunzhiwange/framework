@@ -47,7 +47,7 @@ use Throwable;
  * @version 1.0
  * @codeCoverageIgnore
  */
-class Debug implements IDebug
+class Debug
 {
     /**
      * call.
@@ -583,7 +583,7 @@ class Debug implements IDebug
     }
 
     /**
-     * 代理服务
+     * 代理服务.
      *
      * @return \Leevel\Debug\Debug
      */

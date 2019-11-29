@@ -86,7 +86,7 @@ class Condition
     /**
      * 数据库连接.
      *
-     * @var Leevel\Database\IDatabase
+     * @var \Leevel\Database\IDatabase
      */
     protected IDatabase $connect;
 
@@ -203,7 +203,6 @@ class Condition
     public function __construct(IDatabase $connect)
     {
         $this->connect = $connect;
-
         $this->initOption();
     }
 
@@ -249,17 +248,13 @@ class Condition
             }
 
             // 构造 insert 语句
-            if ($values) {
-                $sql = [];
-                $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
-                $sql[] = $this->parseTable();
-                $sql[] = '('.implode(',', $fields).')';
-                $sql[] = 'VALUES';
-                $sql[] = '('.implode(',', $values).')';
-                $data = implode(' ', $sql);
-
-                unset($fields, $values, $sql);
-            }
+            $sql = [];
+            $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
+            $sql[] = $this->parseTable();
+            $sql[] = '('.implode(',', $fields).')';
+            $sql[] = 'VALUES';
+            $sql[] = '('.implode(',', $values).')';
+            $data = implode(' ', $sql);
         }
 
         $bind = array_merge($this->getBindParams(), $bind);
@@ -284,47 +279,37 @@ class Condition
         $bind = array_merge($this->getBindParams(), $bind);
 
         // 构造数据批量插入
-        if (is_array($data)) {
-            $dataResult = [];
-            $questionMark = 0;
-            $tableName = $this->getTable();
+        $dataResult = [];
+        $questionMark = 0;
+        $tableName = $this->getTable();
 
-            foreach ($data as $key => $tmp) {
-                if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
-                    $e = 'Data for insertAll is not invalid.';
+        foreach ($data as $key => $tmp) {
+            if (!is_array($tmp) || count($tmp) !== count($tmp, 1)) {
+                $e = 'Data for insertAll is not invalid.';
 
-                    throw new InvalidArgumentException($e);
-                }
+                throw new InvalidArgumentException($e);
+            }
 
-                list($tmpFields, $values, $bind, $questionMark) = $this->normalizeBindData($tmp, $bind, $questionMark, $key);
+            list($tmpFields, $values, $bind, $questionMark) = $this->normalizeBindData($tmp, $bind, $questionMark, $key);
 
-                if (0 === $key) {
-                    $fields = $tmpFields;
-
-                    foreach ($fields as $fieldKey => $field) {
-                        $fields[$fieldKey] = $this->normalizeColumn($field, $tableName);
-                    }
-                }
-
-                if ($values) {
-                    $dataResult[] = '('.implode(',', $values).')';
+            if (0 === $key) {
+                $fields = $tmpFields;
+                foreach ($fields as $fieldKey => $field) {
+                    $fields[$fieldKey] = $this->normalizeColumn($field, $tableName);
                 }
             }
 
-            // 构造 insertAll 语句
-            if ($dataResult) {
-                $sql = [];
-                $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
-                $sql[] = $this->parseTable();
-                $sql[] = '('.implode(',', $fields).')';
-                $sql[] = 'VALUES';
-                $sql[] = implode(',', $dataResult);
-                $data = implode(' ', $sql);
-
-                unset($fields, $values, $sql, $dataResult);
-            }
+            $dataResult[] = '('.implode(',', $values).')';
         }
 
+        // 构造 insertAll 语句
+        $sql = [];
+        $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
+        $sql[] = $this->parseTable();
+        $sql[] = '('.implode(',', $fields).')';
+        $sql[] = 'VALUES';
+        $sql[] = implode(',', $dataResult);
+        $data = implode(' ', $sql);
         $bind = array_merge($this->getBindParams(), $bind);
 
         return [$replace ? 'replace' : 'insert', $data, $bind];
@@ -335,6 +320,8 @@ class Condition
      *
      * @param array|string $data
      * @param array        $bind
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */
@@ -351,27 +338,27 @@ class Condition
 
             // SET 语句
             $setData = [];
-
             foreach ($fields as $key => $field) {
                 $field = $this->normalizeColumn($field, $tableName);
                 $setData[] = $field.' = '.$values[$key];
             }
 
             // 构造 update 语句
-            if ($values) {
-                $sql = [];
-                $sql[] = 'UPDATE';
-                $sql[] = ltrim($this->parseFrom(), 'FROM ');
-                $sql[] = 'SET '.implode(',', $setData);
-                $sql[] = $this->parseWhere();
-                $sql[] = $this->parseOrder();
-                $sql[] = $this->parseLimitCount();
-                $sql[] = $this->parseForUpdate();
-                $sql = array_filter($sql);
-                $data = implode(' ', $sql);
+            if (!$values) {
+                $e = 'Data for update can not be empty.';
 
-                unset($bindData, $fields, $values, $setData, $sql);
+                throw new InvalidArgumentException($e);
             }
+
+            $sql = [];
+            $sql[] = 'UPDATE';
+            $sql[] = ltrim($this->parseFrom(), 'FROM ');
+            $sql[] = 'SET '.implode(',', $setData);
+            $sql[] = $this->parseWhere();
+            $sql[] = $this->parseOrder();
+            $sql[] = $this->parseLimitCount(true);
+            $sql = array_filter($sql);
+            $data = implode(' ', $sql);
         }
 
         $bind = array_merge($this->getBindParams(), $bind);
@@ -425,7 +412,6 @@ class Condition
      */
     public function truncate(): array
     {
-        // 构造 truncate 语句
         $sql = [];
         $sql[] = 'TRUNCATE TABLE';
         $sql[] = $this->parseTable();
@@ -883,14 +869,12 @@ class Condition
                 if (!is_array($item)) {
                     $item = [$item, $type];
                 }
-
                 $this->bindParams[$key] = $item;
             }
         } else {
             if (!is_array($value)) {
                 $value = [$value, $type];
             }
-
             $this->bindParams[$names] = $value;
         }
 
@@ -1189,7 +1173,6 @@ class Condition
 
                 // 表达式支持
                 $tmp = $this->normalizeColumn($tmp, $currentTableName);
-
                 $this->options['group'][] = $tmp;
             }
         }
@@ -1609,7 +1592,7 @@ class Condition
     }
 
     /**
-     * 最大值
+     * 最大值.
      *
      * @param string $field
      * @param string $alias
@@ -1626,7 +1609,7 @@ class Condition
     }
 
     /**
-     * 最小值
+     * 最小值.
      *
      * @param string $field
      * @param string $alias
@@ -1767,9 +1750,7 @@ class Condition
      */
     public function makeSql(bool $withLogicGroup = false): string
     {
-        $sql = [
-            'SELECT',
-        ];
+        $sql = ['SELECT'];
 
         foreach (array_keys($this->options) as $option) {
             if ('from' === $option) {
@@ -1778,7 +1759,6 @@ class Condition
                 continue;
             } else {
                 $method = 'parse'.ucfirst($option);
-
                 if (method_exists($this, $method)) {
                     $sql[$option] = $this->{$method}();
                 }
@@ -1795,7 +1775,6 @@ class Condition
         }
 
         $sql[] = $this->parseUnion();
-
         $result = trim(implode(' ', $sql));
 
         if (true === $withLogicGroup) {
@@ -2317,7 +2296,7 @@ class Condition
                 }
 
                 // 格式化字段值，支持数组
-                if (isset($cond[2])) {
+                if (array_key_exists(2, $cond)) {
                     $isArray = true;
 
                     if (!is_array($cond[2])) {
@@ -2335,10 +2314,7 @@ class Condition
                         elseif (is_object($tmp) && $tmp instanceof Closure) {
                             $select = new static($this->connect);
                             $select->setTable($this->getTable());
-                            call_user_func_array($tmp, [
-                                $select,
-                            ]);
-
+                            $tmp($select);
                             $tmp = $select->makeSql(true);
                         }
 
@@ -2394,6 +2370,8 @@ class Condition
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2][0].' AND '.$cond[2][1];
                 } elseif (is_scalar($cond[2])) {
                     $sqlCond[] = $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
+                } elseif ('=' === $cond[1] && null === $cond[2]) {
+                    $sqlCond[] = $cond[0].' IS NULL';
                 }
             }
         }
@@ -2446,10 +2424,7 @@ class Condition
         if ($cond instanceof Closure) {
             $select = new static($this->connect);
             $select->setTable($this->getTable());
-            call_user_func_array($cond, [
-                $select,
-            ]);
-
+            $cond($select);
             $tmp = $select->{'parse'.ucwords($type)}(true);
             $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, ':string');
 
@@ -2575,10 +2550,7 @@ class Condition
                 } elseif (is_object($tmp) && $tmp instanceof Closure) {
                     $select = new static($this->connect);
                     $select->setTable($this->getTable());
-                    call_user_func_array($tmp, [
-                        $select,
-                    ]);
-
+                    $tmp($select);
                     $tmp = $select->makeSql();
                 }
 
@@ -2720,7 +2692,7 @@ class Condition
         } elseif (!preg_match('/\(.*\)/', $field)) {
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
                 $currentTableName = $matches[1];
-                $tmp = $matches[2];
+                $field = $matches[2];
             } else {
                 $currentTableName = $tableName;
             }
@@ -2761,7 +2733,6 @@ class Condition
 
         if (is_array($names)) {
             $tmp = $names;
-
             foreach ($tmp as $alias => $names) {
                 if (!is_string($alias)) {
                     $e = sprintf('Alias must be string,but %s given.', gettype($alias));
@@ -2775,25 +2746,18 @@ class Condition
 
         if (is_object($names) && ($names instanceof self || $names instanceof Select)) { // 对象子表达式
             $table = $names->makeSql(true);
-
             if (!$alias) {
                 $alias = $names instanceof Select ? $names->databaseCondition()->getAlias() : $names->getAlias();
             }
-
             $parseSchema = false;
         } elseif (is_object($names) && $names instanceof Closure) { // 回调方法
             $condition = new static($this->connect);
             $condition->setTable($this->getTable());
-            call_user_func_array($names, [
-                $condition,
-            ]);
-
+            $names($condition);
             $table = $condition->makeSql(true);
-
             if (!$alias) {
                 $alias = $condition->getAlias();
             }
-
             $parseSchema = false;
         } elseif (is_string($names) && 0 === strpos($names, '(')) { // 字符串子表达式
             if (false !== ($position = strripos($names, 'as'))) {
@@ -2801,12 +2765,10 @@ class Condition
                 $alias = trim(substr($names, $position + 2));
             } else {
                 $table = $names;
-
                 if (!$alias) {
                     $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                 }
             }
-
             $parseSchema = false;
         } elseif (is_string($names)) {
             // 字符串指定别名
@@ -2823,7 +2785,6 @@ class Condition
         // 确定 table_name 和 schema
         if (true === $parseSchema) {
             $tmp = explode('.', $table);
-
             if (isset($tmp[1])) {
                 $schema = $tmp[0];
                 $tableName = $tmp[1];
@@ -2845,7 +2806,6 @@ class Condition
             $this->setTable(
                 ($schema ? $schema.'.' : '').$alias
             );
-
             $this->alias = $alias;
         }
 
@@ -2859,12 +2819,7 @@ class Condition
 
             $select = new static($this->connect);
             $select->setTable($alias);
-
-            call_user_func_array([
-                $select,
-                'where',
-            ], $args);
-
+            $select->where(...$args);
             $cond = $select->parseWhere(true);
         }
 
@@ -3064,7 +3019,6 @@ class Condition
                     $key = 'questionmark_'.$questionMark;
                     $value = $bind[$questionMark];
                     unset($bind[$questionMark]);
-
                     $this->deleteBindParams($questionMark);
                     $questionMark++;
                 }
@@ -3074,7 +3028,6 @@ class Condition
                 }
 
                 $values[] = ':'.$key;
-
                 $this->bind($key, $value, $this->connect->normalizeBindParamType($value));
             }
         }

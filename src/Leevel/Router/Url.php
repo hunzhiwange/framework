@@ -67,7 +67,6 @@ class Url implements IUrl
     public function __construct(IRequest $request, array $option = [])
     {
         $this->request = $request;
-
         if ($option) {
             $this->option = array_merge($this->option, $option);
         }
@@ -161,7 +160,6 @@ class Url implements IUrl
             $queryUrl = http_build_query($this->params);
             $url .= (false !== strpos($url, '?') ? '&' : '?').$queryUrl;
         }
-
         $url = $this->withSuffix($url, $suffix);
 
         return $url;

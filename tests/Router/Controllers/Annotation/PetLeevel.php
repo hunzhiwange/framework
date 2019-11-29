@@ -33,7 +33,7 @@ use Leevel\Di\IContainer;
  */
 class PetLeevel
 {
-    public function handle(IContainer $container)
+    public function handle(IContainer $container): string
     {
         return 'hello plus for petLeevel, params petId is '.
             $container

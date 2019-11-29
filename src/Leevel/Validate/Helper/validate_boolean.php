@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 /**
- * 验证是否为布尔值
+ * 验证是否为布尔值.
  *
  * @param mixed $value
  *
