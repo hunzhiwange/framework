@@ -21,12 +21,9 @@ phpunit.xml.html export-ignore
 /phinx.php export-ignore
 /package.json export-ignore
 /logo.png export-ignore
-/engineering.jpg export-ignore
-/engineering-zh-CN.jpg export-ignore
 /doyouhaobaby.png export-ignore
 /doyouhaobaby-googlecode.jpg export-ignore
 /changelog.sh export-ignore
 /php_cs.dist export-ignore
 /CHANGELOG-1.0.md export-ignore
 /CHANGELOG.md export-ignore
-/.php_cs.dist export-ignore
