@@ -124,7 +124,7 @@ It can be used without installation,we download a version for you.
 ```diff
 $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 - $php-cs-fixer fix --config=.php_cs.dist
-+ $./build/php-cs-fixer fix --config=.php_cs.dist
++ $php ./build/php-cs-fixer fix --config=.php_cs.dist
 ```
 
 ### With Git hooks
