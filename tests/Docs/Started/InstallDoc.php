@@ -37,15 +37,15 @@ class InstallDoc
      * @api(
      *     title="环境要求",
      *     description="
-     * 事实上，QueryPHP 也是一个普通的 PHP 框架，目前最低版本要求 PHP 7.3.2，我们对环境并没有特别的要求。
+     * 事实上，QueryPHP 也是一个普通的 PHP 框架，目前最低版本要求 PHP 7.4.0，我们对环境并没有特别的要求。
      *
-     *  * PHP ^7.3.2
+     *  * PHP ^7.4.0
      *  * ext-mbstring [字符处理](https://github.com/hunzhiwange/framework/blob/master/src/Leevel/Support/Str.php)
      *  * ext-openssl [加密组件](https://github.com/hunzhiwange/framework/blob/master/src/Leevel/Encryption/Encryption.php)
      *
      * 我们系统依赖的组件可以通过 [composer.json](https://github.com/hunzhiwange/queryphp/blob/master/composer.json) 找到，我们提供了大量开箱即用的功能。
      *
-     * 实际上，QueryPHP 对于环境来说`只需要`安装一个 `PHP 7.3.2` 及以上版本即可，这个时候甚至无需安装 Nginx 而使用 PHP 内置 WebServer 即可将 QueryPHP 跑起来。
+     * 实际上，QueryPHP 对于环境来说`只需要`安装一个 `PHP 7.4.0` 及以上版本即可，这个时候甚至无需安装 Nginx 而使用 PHP 内置 WebServer 即可将 QueryPHP 跑起来。
      *
      * 对于每位 PHP 工程师来说，您的电脑早已经运行着一个 PHP 7 版本，接着您可以进行安装了。
      * ",
@@ -173,7 +173,7 @@ class InstallDoc
      *   * php-5.6.23
      *   * php-7.1.6
      *   * php-7.2.1
-     *   * php-7.3.2
+     *   * php-7.4.0
      *   * redis-2.8.17
      *
      * Windows 开发者如果不需要 Swoole 则可以按照其他普通的 PHP 项目来搭建就是了，如果依赖 Swoole 可以采用上面这种虚拟机的方式来搭建环境。

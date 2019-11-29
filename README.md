@@ -1,7 +1,7 @@
 <img src="./queryphp.png" />
 
 <p align="center">
-  <a href="https://php.net"><img src="https://img.shields.io/badge/php-%3E%3D%207.3.2-8892BF.svg" alt="Minimum PHP Version"></a>
+  <a href="https://php.net"><img src="https://img.shields.io/badge/php-%3E%3D%207.4.0-8892BF.svg" alt="Minimum PHP Version"></a>
   <a href="https://www.swoole.com/"><img src="https://img.shields.io/badge/swoole-%3E%3D%204.4.5-008de0.svg" alt="Minimum Swoole Version"></a>
   <a href="https://github.styleci.io/repos/91284136"><img src="https://github.styleci.io/repos/91284136/shield?branch=master" alt="StyleCI"></a>
   <a href='https://www.queryphp.com/docs/'><img src='https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000' alt='QueryPHP Doc' /></a>
@@ -60,7 +60,7 @@ QueryPHP was based on the [DoYouHaoBaby](https://raw.githubusercontent.com/hunzh
 
 We think the performance of PHP applications is very important and the development of pleasure also needs to be considered, and that's why we have developed the QueryPHP framework to achieve great ideals.
 
-* PHP 7 - We choose the lowest version of 7.3.2, because php7 has a unique advantage over the earlier version.
+* PHP 7 - We choose the lowest version of 7.4.0, because php7 has a unique advantage over the earlier version.
 * Swoole - Enable PHP developers to write high-performance, scalable, concurrent TCP, UDP, Unix socket, HTTP, Websocket services in PHP programming language.
 * Redis - QueryPHP encapsulation a cache component, including files, redis and so on, so as to reduce the pressure of database.
 * Roadrunner - RoadRunner is an open source high-performance PHP application server, load balancer and process manager. It supports running as a service with the ability to extend its functionality on a per-project basis.
