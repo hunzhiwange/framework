@@ -28,7 +28,6 @@ use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
 use PDOStatement;
-use PDOStatement;
 use Throwable;
 
 /**
