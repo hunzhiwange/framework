@@ -59,6 +59,32 @@ use Tests\TestCase;
  * __(string $text, ...$data): string;
  * ```
  *
+ * ### 语言目录
+ *
+ *  * 国际化语言配置位于 `option/i18n.php`，可以定义当前的语言。
+ *  * 主要语言包文件位于 `i18n` 目录，包含 `zh-CN`、`zh-TW`、`en-US`。
+ *  * 扩展语言包 `common/ui/i18n` 目录，在 `composer.json` 中定义。
+ *
+ * QueryPHP 会自动扫面语言包文件完成翻译，无需人工干预。
+ *
+ * composer.json 可以扩展目录
+ *
+ * ``` json
+ * {
+ *     "extra": {
+ *         "leevel": {
+ *             "@i18ns": "The extend i18ns",
+ *             "i18ns": {
+ *                 "test": "common/ui/i18n"
+ *             }
+ *         }
+ *     }
+ * }
+ *
+ * 注意，其它软件包也可以采用这种方式自动注入扩展默认语言。
+ *
+ * ### 语言缓存
+ *
  * 可以结合 `poedit` 软件扫描为 `po` 文件，系统会自动解析为数组。
  *
  * 例外语言包支持生成缓存，通过内置的命令即可实现。
@@ -89,14 +115,6 @@ use Tests\TestCase;
  * I18n cache file /data/codes/queryphp/bootstrap/i18n/en-US.php clear successed.
  * I18n cache files clear successed.
  * ```
- *
- * ### 相关文件
- *
- *  * 国际化语言配置位于 `option\i18n.php`，可以定义当前的语言。
- *  * 主要语言包文件位于 `i18n` 目录，包含 `zh-CN`、`zh-TW`、`en-US`。
- *  * 扩展语言包 `common/ui/i18n` 目录，在 `composer.json` 中定义。
- *
- * QueryPHP 会自动扫面语言包文件完成翻译，无需人工干预。
  * ",
  * )
  */
