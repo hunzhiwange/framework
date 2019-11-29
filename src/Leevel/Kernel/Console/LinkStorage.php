@@ -50,7 +50,7 @@ class LinkStorage extends Command
      * @var string
      */
     protected string $description = 'Create a symbolic link from `storage` to `www/storage`';
-    
+
     /**
      * 响应命令.
      *

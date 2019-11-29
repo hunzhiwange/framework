@@ -488,9 +488,9 @@ class BecomeAQueryphpDeveloperDoc
     {
         <<<'EOT'
             <?php
-    
+
             declare(strict_types=1);
-    
+
             /*
              * This file is part of the your app package.
              *
@@ -500,9 +500,9 @@ class BecomeAQueryphpDeveloperDoc
              * For the full copyright and license information, please view the LICENSE
              * file that was distributed with this source code.
              */
-    
+
             namespace Common;
-    
+
             class Test
             {
                 public function demo($a = 1, $b = 4)

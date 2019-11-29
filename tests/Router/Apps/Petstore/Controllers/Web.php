@@ -23,7 +23,6 @@ namespace Tests\Router\Apps\Petstore\Controllers;
 /**
  * Class Web.
  *
- *
  * @author  Xiangmin Liu <635750556@qq.com>
  */
 class Web

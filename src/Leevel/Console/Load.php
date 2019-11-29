@@ -90,7 +90,7 @@ class Load
         if (true === $this->isLoaded) {
             return $this->loaded;
         }
-        
+
         $this->isLoaded = true;
 
         $files = $this->findConsoleFile($this->namespaces);

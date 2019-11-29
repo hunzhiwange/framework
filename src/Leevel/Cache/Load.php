@@ -218,7 +218,7 @@ class Load implements ILoad
             $params = explode(',', $params);
         }
 
-        $params = array_map(fn(string $item) => ctype_digit($item) ? (int) $item : (is_numeric($item) ? (float) $item : $item), $params);
+        $params = array_map(fn (string $item) => ctype_digit($item) ? (int) $item : (is_numeric($item) ? (float) $item : $item), $params);
 
         return [$name, $params];
     }

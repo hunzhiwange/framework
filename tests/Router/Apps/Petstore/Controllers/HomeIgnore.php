@@ -23,7 +23,6 @@ namespace Tests\Router\Apps\Petstore\Controllers;
 /**
  * Class HomeIgnore.
  *
- *
  * @author  Xiangmin Liu <635750556@qq.com>
  */
 class HomeIgnore

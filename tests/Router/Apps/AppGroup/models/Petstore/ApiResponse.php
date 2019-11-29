@@ -23,7 +23,6 @@ namespace Petstore;
 /**
  * Class ApiResponse.
  *
- *
  * @author  Donii Sergii <doniysa@gmail.com>
  *
  * @OA\Schema(

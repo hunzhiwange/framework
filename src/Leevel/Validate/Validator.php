@@ -48,7 +48,7 @@ class Validator implements IValidator
     /**
      * IOC 容器.
      *
-     * @var \Leevel\Di\IContainer|null
+     * @var null|\Leevel\Di\IContainer
      */
     protected ?IContainer $container = null;
 
@@ -803,7 +803,6 @@ class Validator implements IValidator
 
     /**
      * 转换单条规则为数组.
-     *
      *
      * @param mixed $rules
      *

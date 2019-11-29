@@ -22,9 +22,9 @@ namespace Leevel\Database\Ddd;
 
 use Closure;
 use InvalidArgumentException;
+use Leevel\Database\IDatabase;
 use Leevel\Database\Manager as DatabaseManager;
 use Leevel\Database\Select as DatabaseSelect;
-use Leevel\Database\IDatabase;
 
 /**
  * 数据库元对象

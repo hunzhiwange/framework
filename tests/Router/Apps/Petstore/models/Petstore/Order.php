@@ -23,7 +23,6 @@ namespace Petstore;
 /**
  * Class Order.
  *
- *
  * @author  Donii Sergii <doniysa@gmail.com>
  * @OA\Schema(
  *     title="Order model",

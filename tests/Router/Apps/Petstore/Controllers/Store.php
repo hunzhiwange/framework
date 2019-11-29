@@ -23,7 +23,6 @@ namespace Tests\Router\Apps\Petstore\Controllers;
 /**
  * Class Store.
  *
- *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class Store

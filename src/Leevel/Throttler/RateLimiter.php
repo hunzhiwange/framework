@@ -298,7 +298,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     {
         $data = explode(static::SEPARATE, $data);
 
-        return array_map(fn($v) => (int) ($v), $data);
+        return array_map(fn ($v) => (int) ($v), $data);
     }
 
     /**

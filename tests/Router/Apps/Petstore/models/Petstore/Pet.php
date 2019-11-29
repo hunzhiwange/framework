@@ -23,7 +23,6 @@ namespace Petstore;
 /**
  * Class Pet.
  *
- *
  * @author  Donii Sergii <doniysa@gmail.com>
  *
  * @OA\Schema(

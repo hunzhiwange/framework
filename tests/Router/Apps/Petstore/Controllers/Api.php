@@ -23,7 +23,6 @@ namespace Tests\Router\Apps\Petstore\Controllers;
 /**
  * Class Api.
  *
- *
  * @author  Xiangmin Liu <635750556@qq.com>
  */
 class Api

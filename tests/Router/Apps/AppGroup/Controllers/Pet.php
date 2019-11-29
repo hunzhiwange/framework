@@ -23,7 +23,6 @@ namespace Tests\Router\Apps\AppWithoutExternalDocs\Controllers;
 /**
  * Class Pet.
  *
- *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class Pet

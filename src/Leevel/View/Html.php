@@ -44,7 +44,7 @@ class Html extends View implements IView
     /**
      * 解析 parse.
      *
-     * @var \Closure|null
+     * @var null|\Closure
      */
     protected ?Closure $parseResolver = null;
 

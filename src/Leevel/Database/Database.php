@@ -28,8 +28,8 @@ use Leevel\Protocol\Pool\IConnection;
 use PDO;
 use PDOException;
 use PDOStatement;
-use Throwable;
 use PDOStatement;
+use Throwable;
 
 /**
  * 数据库连接抽象层
@@ -165,7 +165,7 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 当前数据库连接.
      *
-     * @var \PDO 
+     * @var \PDO
      */
     protected ?PDO $connect;
 

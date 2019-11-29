@@ -55,7 +55,7 @@ class Router implements IRouter
     /**
      * 路由匹配数据.
      *
-     * @var array|null
+     * @var null|array
      */
     protected ?array $matchedData = null;
 

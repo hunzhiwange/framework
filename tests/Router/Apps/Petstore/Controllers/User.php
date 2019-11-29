@@ -23,7 +23,6 @@ namespace Tests\Router\Apps\Petstore\Controllers;
 /**
  * Class User.
  *
- *
  * @author  Donii Sergii <doniysa@gmail.com>
  */
 class User
