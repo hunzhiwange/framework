@@ -12,7 +12,7 @@ declare(strict_types=1);
  *         \_\                /_/_/         /_/
  *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
- * (c) 2010-2019 http://queryphp.com All rights reserved.
+ * (c) 2010-2020 http://queryphp.com All rights reserved.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
