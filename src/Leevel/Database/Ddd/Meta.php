@@ -42,14 +42,14 @@ class Meta implements IMeta
      *
      * @var \Leevel\Database\Manager
      */
-    protected static ?DatabaseManager $resolveDatabase;
+    protected static ?DatabaseManager $resolveDatabase = null;
 
     /**
      * Database 管理.
      *
      * @var \Closure
      */
-    protected static ?Closure $databaseResolver;
+    protected static ?Closure $databaseResolver = null;
 
     /**
      * meta 对象实例.
