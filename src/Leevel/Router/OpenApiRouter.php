@@ -55,7 +55,7 @@ class OpenApiRouter
      *
      * @var string
      */
-    protected string $domain;
+    protected ?string $domain = null;
 
     /**
      * 扫描目录.
