@@ -43,14 +43,14 @@ class IdeHelper extends Command
      *
      * @var string
      */
-    protected $name = 'make:idehelper';
+    protected string $name = 'make:idehelper';
 
     /**
      * 命令行描述.
      *
      * @var string
      */
-    protected $description = 'IDE helper generation';
+    protected string $description = 'IDE helper generation';
 
     /**
      * 响应命令.
