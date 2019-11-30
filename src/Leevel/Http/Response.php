@@ -138,7 +138,7 @@ class Response implements IResponse
      *
      * @var string
      */
-    protected string $content;
+    protected ?string $content = null;
 
     /**
      * HTTP 协议版本.

@@ -39,18 +39,18 @@ use Leevel\Session\ISession;
 class RedirectResponse extends Response
 {
     /**
-     * 目标 URL 地址
+     * 目标 URL 地址.
      *
      * @var string
      */
     protected string $targetUrl;
 
     /**
-     * HTTP 请求
+     * HTTP 请求.
      *
      * @var \Leevel\Http\IRequest
      */
-    protected IRequest $request;
+    protected ?IRequest $request = null;
 
     /**
      * SESSION 仓储.
