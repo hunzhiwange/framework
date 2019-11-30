@@ -62,21 +62,21 @@ class Doc
      *
      * @var string
      */
-    protected $i18n;
+    protected string $i18n;
 
     /**
      * 默认语言.
      *
      * @var string
      */
-    protected $defaultI18n;
+    protected string $defaultI18n;
 
     /**
      * 解析文档保存路径.
      *
      * @var string
      */
-    protected string $savePath;
+    protected ?string $savePath = null;
 
     /**
      * 解析文档行内容.
