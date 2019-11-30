@@ -7,6 +7,7 @@
 <p align="center">
   <a href="https://php.net"><img src="https://img.shields.io/badge/php-%3E%3D%207.4.0-8892BF.svg" alt="Minimum PHP Version"></a>
   <a href="https://www.swoole.com/"><img src="https://img.shields.io/badge/swoole-%3E%3D%204.4.5-008de0.svg" alt="Minimum Swoole Version"></a>
+  <a href="https://github.com/spiral/roadrunner"><img alt="Roadrunner Version" src="https://img.shields.io/badge/roadrunner-%3E=1.3.5-brightgreen.svg" /></a>
   <a href="https://github.styleci.io/repos/91284136"><img src="https://github.styleci.io/repos/91284136/shield?branch=master" alt="StyleCI"></a>
   <a href='https://www.queryphp.com/docs/'><img src='https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000' alt='QueryPHP Doc' /></a>
   <a href="https://travis-ci.org/hunzhiwange/framework">
@@ -49,14 +50,7 @@ QueryPHP was based on the [DoYouHaoBaby](https://github.com/hunzhiwange/dyhb.blo
  * Packages From Hunzhiwange: <https://packagist.org/packages/hunzhiwange/>
  * Packages From Leevel: <https://packagist.org/packages/leevel/>
 
-## Optional Extension
-
-<p>
-  <a href="http://pecl.php.net/package/swoole">
-    <img alt="Swoole Version" src="https://img.shields.io/badge/swoole-%3E=4.4.5-brightgreen.svg" /></a>
-  <a href="https://github.com/spiral/roadrunner">
-    <img alt="Roadrunner Version" src="https://img.shields.io/badge/roadrunner-%3E=1.3.5-brightgreen.svg" /></a>
-</p>
+## Why is QueryPHP?
 
 We think the performance of PHP applications is very important and the development of pleasure also needs to be considered, and that's why we have developed the QueryPHP framework to achieve great ideals.
 
