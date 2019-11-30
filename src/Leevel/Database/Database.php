@@ -166,7 +166,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @var \PDO
      */
-    protected ?PDO $connect;
+    protected ?PDO $connect = null;
 
     /**
      * PDO 预处理语句对象
@@ -194,7 +194,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @var string
      */
-    protected string $sql;
+    protected ?string $sql = null;
 
     /**
      * sql 影响记录数量.
