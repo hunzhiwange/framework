@@ -41,27 +41,27 @@ class DirectoryDoc
      * .
      * ├── apis Swagger API 目录
      * ├── application
-     * │   ├── admin （后台应用）_(**通用后台 API 接口**)_
+     * │   ├── admin （后台应用）通用后台 API 接口
      * │   ├── app （默认应用）
-     * │   │   ├── `App` _(**应用层（Application）**)_
-     * │   │   ├── `Domain` _(**领域模型层（Domain Model）**)_
-     * │   │   │   └── Entity _(**实体 (Entity)**)_
-     * │   │   │   └── Event _(**事件（Event）**)_
-     * │   │   │   └── Listener _(**监听器（Listener）**)_
-     * │   │   ├── `Infra` _(**基础设施层（Infrastructure）**)_
-     * │   │   │   └── Provider _(**服务提供者 (Provider)**)_
-     * │   │   │   └── Repository _(**仓储 (Repository)**)_
-     * │   │   ├── `ui` _(**用户界面 User Interface（表现层 Presentation）**)_
+     * │   │   ├── App 应用层（Application）
+     * │   │   ├── Domain 领域模型层（Domain Model）
+     * │   │   │   └── Entity 实体 (Entity)
+     * │   │   │   └── Event 事件（Event）
+     * │   │   │   └── Listener 监听器（Listener）
+     * │   │   ├── Infra 基础设施层（Infrastructure）
+     * │   │   │   └── Provider 服务提供者 (Provider)
+     * │   │   │   └── Repository 仓储 (Repository)
+     * │   │   ├── ui 用户界面 User Interface（表现层 Presentation）
      * │-- build 一些脚本
      * │-- common 公共组件 (结构类 application/app)
      * │-- database 数据库迁移
-     * │   ├── migrations _(**数据库迁移**)_
-     * │   ├── seeds _(**填充数据**)_
+     * │   ├── migrations 数据库迁移
+     * │   ├── seeds 填充数据
      * │-- frontend 基于 Vue2+IView 前端通用权限管理系统
      * │-- i18n 语言包
-     * │   ├── zh-CN _(**中文**)_
-     * │   ├── zh-TW _(**台湾繁体**)_
-     * │   ├── en-US _(**美国英语**)_
+     * │   ├── zh-CN 中文
+     * │   ├── zh-TW 台湾繁体
+     * │   ├── en-US 美国英语
      * │-- option 配置目录
      * │-- public 静态资源目录，比如图片、CSS
      * │-- runtime 运行缓存目录
