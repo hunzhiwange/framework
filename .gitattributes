@@ -22,7 +22,6 @@ phpunit.xml.html export-ignore
 /package.json export-ignore
 /logo.png export-ignore
 /doyouhaobaby.png export-ignore
-/doyouhaobaby-googlecode.jpg export-ignore
 /changelog.sh export-ignore
 /php_cs.dist export-ignore
 /CHANGELOG-1.0.md export-ignore
