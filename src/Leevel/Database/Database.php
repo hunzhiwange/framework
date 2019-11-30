@@ -173,7 +173,7 @@ abstract class Database implements IDatabase, IConnection
      *
      * @var \PDOStatement
      */
-    protected ?PDOStatement $pdoStatement;
+    protected ?PDOStatement $pdoStatement = null;
 
     /**
      * 数据查询组件.
