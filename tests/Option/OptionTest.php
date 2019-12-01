@@ -69,6 +69,13 @@ use Tests\TestCase;
  * }
  * ```
  *
+ * 使用静态代理
+ *
+ * ``` php
+ * \Leevel\Option\Proxy\Option::set($name, $value = null): void;
+ * \Leevel\Option\Proxy\Option::get(string $name = 'app\\', $defaults = null);
+ * ```
+ *
  * ### 配置目录
  *
  * 系统配置文件为 option 目录，每个配置文件对应不同的组件，当然你也可以增加自定义的配置文件。
@@ -144,6 +151,13 @@ use Tests\TestCase;
  */
 class OptionTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="all 返回所有配置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAll(): void
     {
         $data = [
@@ -156,6 +170,13 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), $data);
     }
 
+    /**
+     * @api(
+     *     title="get 获取配置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGet(): void
     {
         $data = [
@@ -201,6 +222,13 @@ class OptionTest extends TestCase
         $this->assertNull($option->get('cache\\time_preset.foo2'));
     }
 
+    /**
+     * @api(
+     *     title="has 是否存在配置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHas(): void
     {
         $data = [
@@ -225,11 +253,8 @@ class OptionTest extends TestCase
         $this->assertFalse($option->has('app\\hello'), 'The default namespace is app, so it equal app\\hello');
         $this->assertTrue($option->has('hello\\'));
         $this->assertTrue($option->has('hello\\*'));
-
         $this->assertTrue($option->has('app\\'));
-
         $this->assertTrue($option->has('app\\*'));
-
         $this->assertFalse($option->has('app'), 'The default namespace is app, so it equal app\\app');
 
         // namespace\sub.sub1.sub2
@@ -237,6 +262,13 @@ class OptionTest extends TestCase
         $this->assertFalse($option->has('cache\\time_preset.foo2'));
     }
 
+    /**
+     * @api(
+     *     title="set 设置配置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSet(): void
     {
         $data = [];
@@ -281,12 +313,18 @@ class OptionTest extends TestCase
         ];
 
         $option = new Option();
-
         $option->set($data);
 
         $this->assertSame($data, $option->get());
     }
 
+    /**
+     * @api(
+     *     title="delete 删除配置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDelete(): void
     {
         $data = [
@@ -304,7 +342,6 @@ class OptionTest extends TestCase
         ];
 
         $option = new Option($data);
-
         $option->delete('debug');
 
         $this->assertSame($option->all(), [
@@ -382,12 +419,18 @@ class OptionTest extends TestCase
         ];
 
         $option = new Option($data);
-
         $option->delete('debug2.foo.bar');
 
         $this->assertSame($option->all(), $data);
     }
 
+    /**
+     * @api(
+     *     title="reset 重置配置",
+     *     description="危险操作，一般没有必要调用。",
+     *     note="",
+     * )
+     */
     public function testReset(): void
     {
         $data = [
@@ -423,6 +466,13 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), []);
     }
 
+    /**
+     * @api(
+     *     title="数组访问配置对象",
+     *     description="配置实现了 \ArrayAccess，可以通过以数组的方式访问配置对象，在服务提供者中经常运用。",
+     *     note="",
+     * )
+     */
     public function testArrayAccess(): void
     {
         $data = [
