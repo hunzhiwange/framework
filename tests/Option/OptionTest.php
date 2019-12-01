@@ -38,7 +38,7 @@ use Tests\TestCase;
  *     description="
  * QueryPHP 为系统提供了灵活的配置，通常来说通过服务提供者将配置打包到服务容器中，可以很方便地使用。
  *
- * ### 使用方式
+ * ## 使用方式
  *
  * 使用助手函数
  *
@@ -76,7 +76,7 @@ use Tests\TestCase;
  * \Leevel\Option\Proxy\Option::get(string $name = 'app\\', $defaults = null);
  * ```
  *
- * ### 配置目录
+ * ## 配置目录
  *
  * 系统配置文件为 option 目录，每个配置文件对应不同的组件，当然你也可以增加自定义的配置文件。
  *
@@ -97,8 +97,11 @@ use Tests\TestCase;
  *         }
  *     }
  * }
+ * ```
  *
+ * ::: warning
  * 注意，其它软件包也可以采用这种方式自动注入扩展默认配置。
+ * :::
  *
  * 系统默认常见配置：
  *
@@ -119,9 +122,8 @@ use Tests\TestCase;
  * |session|Session 配置|
  * |throttler|限流配置|
  * |view|视图配置|
- * ```
  *
- * ### 配置缓存
+ * ## 配置缓存
  *
  * 配置支持生成缓存，通过内置的命令即可实现。
  *
@@ -136,6 +138,8 @@ use Tests\TestCase;
  * Option cache file /data/codes/queryphp/bootstrap/option.php cache successed.
  * ```
  *
+ * 清理配置缓存
+ *
  * ``` sh
  * php leevel option:clear
  * ```
@@ -145,6 +149,57 @@ use Tests\TestCase;
  * ```
  * Start to clear cache option.
  * Option cache file /data/codes/queryphp/bootstrap/option.php cache clear successed.
+ * ```
+ *
+ * ## 配置定义
+ *
+ * 可以直接在相应的配置文件已数组的方式定义，新的配置文件直接放入目录即可。
+ *
+ * ::: tip
+ * 配置参数名严格区分大小写，建议是使用小写定义配置参数的规范。
+ * :::
+ *
+ * app 应用配置中几个核心的配置项，这是整个系统关键的配置。
+ *
+ * | 配置项 | 配置值 | 描述  |
+ * | :- | :- | :- |
+ * | environment |  development | 运行环境，可以为 production : 生产环境 testing : 测试环境 development : 开发环境 |
+ * | debug  | true | 是否打开调试模式，可以为 true : 开启调试 false 关闭调试，打开调试模式可以显示更多精确的错误信息。  |
+ * | auth_key  | 7becb888f518b20224a988906df51e05  | 安全 key，请妥善保管此安全 key,防止密码被人破解。 |
+ *
+ * ## 环境变量定义
+ *
+ * 可以在应用的根目录下定义一个特殊的 `.env` 环境变量文件，一般用于平时开发使用。
+ *
+ * ### 自定义环境变量
+ *
+ * 可以通过 `RUNTIME_ENVIRONMENT` 来定义自定义的环境变量文件，比如定义 `.test` 的环境变量。
+ *
+ * ``` php
+ * putenv('RUNTIME_ENVIRONMENT=test');
+ * ```
+ *
+ * 环境变量配置格式
+ *
+ * ```
+ * // Environment production、testing and development
+ * ENVIRONMENT = development
+ *
+ * // Debug
+ * DEBUG = true
+ * DEBUG_JSON = true
+ * DEBUG_CONSOLE = true
+ * DEBUG_JAVASCRIPT = true
+ *
+ * ...
+ * ```
+ *
+ * 获取环境配置
+ *
+ * ``` php
+ * \env('environment');
+ * \Leevel::env('environment');
+ * \App::env('environment');
  * ```
  * ",
  * )
@@ -469,7 +524,7 @@ class OptionTest extends TestCase
     /**
      * @api(
      *     title="数组访问配置对象",
-     *     description="配置实现了 \ArrayAccess，可以通过以数组的方式访问配置对象，在服务提供者中经常运用。",
+     *     description="配置实现了 `\ArrayAccess`，可以通过以数组的方式访问配置对象，在服务提供者中经常运用。",
      *     note="",
      * )
      */
