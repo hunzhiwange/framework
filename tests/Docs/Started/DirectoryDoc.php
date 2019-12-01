@@ -90,10 +90,6 @@ class DirectoryDoc
      *
      * ::: danger
      * 在 Mac 或者 Linux 环境下面，注意需要设置 `runtime`、`bootstrap` 和 `storage` 目录权限为 0777。
-     * 当然实际上我们在 Mac 开发环境直接给某个目录授权给用户。
-     * ```
-     * drwxr-xr-x  62 dyhb  staff   1.9K 11 19 11:14 codes
-     * ```
      * :::
      * ",
      *     note="",
