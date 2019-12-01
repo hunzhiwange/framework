@@ -36,7 +36,7 @@ class DirectoryDoc
      *     title="基本结构",
      *     description="
      * 下面是整个应用基本目录结构，系统结构可以自由定义。
-     * 
+     *
      * ```
      * .
      * ├── apis Swagger API 目录
