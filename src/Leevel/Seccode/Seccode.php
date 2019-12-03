@@ -52,41 +52,32 @@ class Seccode implements ISeccode
     /**
      * 配置.
      *
+     * - width:验证码宽度
+     * - height:验证码高度
+     * - adulterate:随机背景图形
+     * - tilt:随机倾斜度
+     * - color:随机颜色
+     * - size:随机大小
+     * - shadow:文字阴影
+     * - font_path:英文字体路径
+     * - chinese_font_path:中文字体路径
+     * - background_path:背景图路径
+     * - background:启用背景图像
+     *
      * @var array
      */
     protected array $option = [
-        // 验证码宽度
-        'width' => 160,
-
-        // 验证码高度
-        'height' => 60,
-
-        // 随机背景图形
-        'adulterate' => true,
-
-        // 随机倾斜度
-        'tilt' => true,
-
-        // 随机颜色
-        'color' => true,
-
-        // 随机大小
-        'size' => true,
-
-        // 文字阴影
-        'shadow' => true,
-
-        // 英文字体路径
-        'font_path' => '',
-
-        // 中文字体路径
+        'width'             => 160,
+        'height'            => 60,
+        'adulterate'        => true,
+        'tilt'              => true,
+        'color'             => true,
+        'size'              => true,
+        'shadow'            => true,
+        'font_path'         => '',
         'chinese_font_path' => '',
-
-        // 背景图路径
-        'background_path' => '',
-
-        // 启用背景图像
-        'background' => true,
+        'background_path'   => '',
+        'background'        => true,
     ];
 
     /**
