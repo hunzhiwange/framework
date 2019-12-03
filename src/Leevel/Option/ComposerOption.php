@@ -71,8 +71,6 @@ class ComposerOption
 
     /**
      * 构造函数.
-     *
-     * @param string $path
      */
     public function __construct(string $path)
     {
@@ -81,8 +79,6 @@ class ComposerOption
 
     /**
      * 读取配置信息.
-     *
-     * @return array
      */
     public function loadData(): array
     {
@@ -106,8 +102,6 @@ class ComposerOption
 
     /**
      * 获取包列表.
-     *
-     * @return array
      */
     protected function getPackages(): array
     {
@@ -124,11 +118,6 @@ class ComposerOption
 
     /**
      * 合并配置信息.
-     *
-     * @param array $olds
-     * @param array $options
-     *
-     * @return array
      */
     protected function mergeOption(array $olds, array $options): array
     {
@@ -143,10 +132,6 @@ class ComposerOption
 
     /**
      * 获取一个包的 leevel 配置.
-     *
-     * @param array $package
-     *
-     * @return array
      */
     protected function getLeevelOption(array $package): array
     {
@@ -161,10 +146,6 @@ class ComposerOption
 
     /**
      * 格式化配置信息.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function normalizeOption(array $options): array
     {
@@ -185,8 +166,6 @@ class ComposerOption
 
     /**
      * 取得应用的 composer 配置.
-     *
-     * @return array
      */
     protected function getAppComposerOption(): array
     {
@@ -201,10 +180,6 @@ class ComposerOption
 
     /**
      * 获取配置信息.
-     *
-     * @param string $path
-     *
-     * @return array
      */
     protected function getFileContent(string $path): array
     {

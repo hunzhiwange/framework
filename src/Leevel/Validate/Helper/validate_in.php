@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 是否处于某个范围.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_in($value, array $param): bool
 {

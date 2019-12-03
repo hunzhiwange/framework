@@ -52,8 +52,6 @@ class Clear extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -73,8 +71,6 @@ class Clear extends Command
 
     /**
      * 删除缓存.
-     *
-     * @param string $cachePath
      */
     protected function clearCache(string $cachePath): void
     {
@@ -89,8 +85,6 @@ class Clear extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -99,8 +93,6 @@ class Clear extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

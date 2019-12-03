@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 是否为电子邮件.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_email($value): bool
 {

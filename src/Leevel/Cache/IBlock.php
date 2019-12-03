@@ -33,10 +33,6 @@ interface IBlock
 {
     /**
      * 响应.
-     *
-     * @param array $params
-     *
-     * @return array
      */
     public function handle(array $params = []): array;
 
@@ -49,10 +45,6 @@ interface IBlock
 
     /**
      * 缓存 key.
-     *
-     * @param array $params
-     *
-     * @return string
      */
     public static function key(array $params = []): string;
 }

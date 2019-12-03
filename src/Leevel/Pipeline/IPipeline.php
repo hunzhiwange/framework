@@ -36,8 +36,6 @@ interface IPipeline
     /**
      * 将传输对象传入管道.
      *
-     * @param array $passed
-     *
      * @return \Leevel\Pipeline\IPipeline
      */
     public function send(array $passed): self;
@@ -45,16 +43,12 @@ interface IPipeline
     /**
      * 设置管道中的执行工序.
      *
-     * @param array $stage
-     *
      * @return \Leevel\Pipeline\IPipeline
      */
     public function through(array $stage): self;
 
     /**
      * 执行管道工序响应结果.
-     *
-     * @param null|\Closure $end
      *
      * @return mixed
      */

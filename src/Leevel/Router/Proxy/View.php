@@ -40,9 +40,6 @@ class View
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -52,10 +49,6 @@ class View
 
     /**
      * 切换视图.
-     *
-     * @param \Leevel\View\IView $view
-     *
-     * @return \Leevel\Router\IView
      */
     public static function switchView(IViews $view): IBaseView
     {
@@ -67,8 +60,6 @@ class View
      *
      * @param mixed      $name
      * @param null|mixed $value
-     *
-     * @return \Leevel\Router\IView
      */
     public static function setVar($name, $value = null): IBaseView
     {
@@ -77,8 +68,6 @@ class View
 
     /**
      * 获取变量赋值.
-     *
-     * @param null|string $name
      *
      * @return mixed
      */
@@ -89,10 +78,6 @@ class View
 
     /**
      * 删除变量值.
-     *
-     * @param array $name
-     *
-     * @return \Leevel\Router\IView
      */
     public static function deleteVar(array $name): IBaseView
     {
@@ -101,10 +86,6 @@ class View
 
     /**
      * 清空变量值.
-     *
-     * @param null|string $name
-     *
-     * @return \Leevel\Router\IView
      */
     public static function clearVar(): IBaseView
     {
@@ -113,12 +94,6 @@ class View
 
     /**
      * 加载视图文件.
-     *
-     * @param string      $file
-     * @param array       $vars
-     * @param null|string $ext
-     *
-     * @return string
      */
     public static function display(string $file, array $vars = [], ?string $ext = null): string
     {
@@ -127,8 +102,6 @@ class View
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Router\View
      */
     public static function proxy(): BaseView
     {

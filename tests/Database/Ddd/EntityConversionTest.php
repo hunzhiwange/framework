@@ -44,7 +44,6 @@ class EntityConversionTest extends TestCase
      * @param mixed  $source
      * @param mixed  $prop
      * @param mixed  $conversion
-     * @param mixed  $msg
      */
     public function testBaseUse($field, $source, $prop, $conversion): void
     {

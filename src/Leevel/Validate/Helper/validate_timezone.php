@@ -27,8 +27,6 @@ use Exception;
  * 是否为正确的时区.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_timezone($value): bool
 {

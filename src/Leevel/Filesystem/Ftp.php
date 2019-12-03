@@ -69,8 +69,6 @@ class Ftp extends Filesystem implements IFilesystem
 
     /**
      * 创建连接.
-     *
-     * @return \League\Flysystem\AdapterInterface
      */
     protected function makeAdapter(): AdapterInterface
     {

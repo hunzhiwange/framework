@@ -22,11 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * 深度过滤.
- *
- * @param array  $search
- * @param string $subject
- *
- * @return string
  */
 function deep_replace(array $search, string $subject): string
 {

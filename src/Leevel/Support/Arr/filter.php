@@ -25,12 +25,7 @@ use InvalidArgumentException;
 /**
  * 返回过滤后的数据.
  *
- * @param array $input
- * @param array $rules
- *
  * @throws \InvalidArgumentException
- *
- * @return array
  */
 function filter(array &$input, array $rules): array
 {

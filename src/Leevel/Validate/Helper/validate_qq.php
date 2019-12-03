@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 是否为 QQ 号码.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_qq($value): bool
 {

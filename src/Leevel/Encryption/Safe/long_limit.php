@@ -22,11 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * 长字符串长度验证
- *
- * @param string $strings
- * @param int    $maxLength
- *
- * @return string
  */
 function long_limit(string $strings, int $maxLength = 3000): string
 {

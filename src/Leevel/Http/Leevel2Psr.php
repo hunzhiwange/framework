@@ -50,8 +50,6 @@ class Leevel2Psr
      * 从 Leevel 请求对象创建 Psr 请求对象.
      *
      * @param \Leevel\Http\IRequest $leevelRequest
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface
      */
     public function createRequest(IRequest $leevelRequest): ServerRequestInterface
     {
@@ -83,8 +81,6 @@ class Leevel2Psr
      * 从 Leevel 响应对象创建 Psr 响应对象.
      *
      * @param \Leevel\Http\IResponse $leevelResponse
-     *
-     * @return \Psr\Http\Message\ResponseInterface
      */
     public function createResponse(Response $leevelResponse): ResponseInterface
     {
@@ -117,8 +113,6 @@ class Leevel2Psr
     /**
      * 格式化响应内容.
      *
-     * @param string $content
-     *
      * @return resource
      */
     protected function normalizeContent(string $content)
@@ -132,10 +126,6 @@ class Leevel2Psr
 
     /**
      * 转换上传文件结构.
-     *
-     * @param array $uploadedFiles
-     *
-     * @return array
      */
     protected function getFiles(array $uploadedFiles): array
     {
@@ -157,8 +147,6 @@ class Leevel2Psr
      * 创建 PSR-7 上传对象.
      *
      * @param \Leevel\Http\UploadedFile $leevelUploadedFile
-     *
-     * @return \Psr\Http\Message\UploadedFileInterface
      */
     protected function createUploadedFile(UploadedFile $leevelUploadedFile): UploadedFileInterface
     {

@@ -26,8 +26,6 @@ namespace Tests\Support\Fixtures\Func;
  * ``` php
  * echo f('Tests\\Support\\Fixtures\\Func\\single_fn');
  * ```
- *
- * @return string
  */
 function single_fn(): string
 {

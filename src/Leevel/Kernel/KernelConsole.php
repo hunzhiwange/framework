@@ -81,11 +81,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 响应命令行请求
-     *
-     * @param null|\Symfony\Component\Console\Input\InputInterface   $input
-     * @param null|\Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return int
      */
     public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
@@ -100,8 +95,6 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 执行结束
      *
-     * @param int                                                  $status
-     * @param null|\Symfony\Component\Console\Input\InputInterface $input
      * @codeCoverageIgnore
      */
     public function terminate(int $status, ?InputInterface $input = null): void
@@ -131,7 +124,6 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 取得命令行应用.
      *
-     * @return \Leevel\Console\Application
      * @codeCoverageIgnore
      */
     protected function getConsoleApplication(): Application
@@ -179,10 +171,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 整理命令.
-     *
-     * @param array $commands
-     *
-     * @return array
      */
     protected function normalizeCommands(array $commands): array
     {
@@ -204,10 +192,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 整理命令.
-     *
-     * @param array $namespaces
-     *
-     * @return array
      */
     protected function getCommandsWithNamespace(array $namespaces): array
     {
@@ -223,8 +207,6 @@ abstract class KernelConsole implements IKernelConsole
 
     /**
      * 获取系统命令.
-     *
-     * @return array
      */
     protected function getCommands(): array
     {

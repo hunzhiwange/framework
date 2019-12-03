@@ -64,8 +64,6 @@ abstract class Runtime implements IRuntime
     /**
      * 异常上报.
      *
-     * @param \Exception $e
-     *
      * @return mixed
      */
     public function report(Exception $e)
@@ -88,11 +86,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 异常渲染.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param \Exception            $e
-     *
-     * @return \Leevel\Http\IResponse
      */
     public function render(IRequest $request, Exception $e): IResponse
     {
@@ -118,8 +111,6 @@ abstract class Runtime implements IRuntime
     /**
      * 命令行渲染.
      *
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Exception                                        $e
      * @codeCoverageIgnore
      */
     public function renderForConsole(OutputInterface $output, Exception $e): void
@@ -138,10 +129,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 尝试返回 HTTP 异常响应.
-     *
-     * @param \Exception $e
-     *
-     * @return \Leevel\Http\IResponse
      */
     public function rendorWithHttpExceptionView(Exception $e): IResponse
     {
@@ -161,26 +148,16 @@ abstract class Runtime implements IRuntime
 
     /**
      * 获取 HTTP 状态的异常模板
-     *
-     * @param Exception $e
-     *
-     * @return string
      */
     abstract public function getHttpExceptionView(Exception $e): string;
 
     /**
      * 获取 HTTP 状态的默认异常模板
-     *
-     * @return string
      */
     abstract public function getDefaultHttpExceptionView(): string;
 
     /**
      * HTTP 响应异常.
-     *
-     * @param \Exception $e
-     *
-     * @return \Leevel\Http\IResponse
      */
     protected function makeHttpResponse(Exception $e): IResponse
     {
@@ -198,10 +175,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * JSON 响应异常.
-     *
-     * @param \Exception $e
-     *
-     * @return \Leevel\Http\IResponse
      */
     protected function makeJsonResponse(Exception $e): IResponse
     {
@@ -223,10 +196,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 异常创建响应.
-     *
-     * @param \Exception $e
-     *
-     * @return \Leevel\Http\IResponse
      */
     protected function convertExceptionToResponse(Exception $e): IResponse
     {
@@ -239,10 +208,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 取得异常默认渲染.
-     *
-     * @param \Exception $e
-     *
-     * @return string
      */
     protected function renderExceptionContent(Exception $e): string
     {
@@ -255,10 +220,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 默认异常渲染.
-     *
-     * @param \Exception $e
-     *
-     * @return string
      */
     protected function renderExceptionWithDefault(Exception $e): string
     {
@@ -269,10 +230,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * Whoops 渲染异常.
-     *
-     * @param \Exception $e
-     *
-     * @return string
      */
     protected function renderExceptionWithWhoops(Exception $e): string
     {
@@ -286,10 +243,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 获取异常格式化变量.
-     *
-     * @param \Exception $e
-     *
-     * @return array
      */
     protected function getExceptionVars(Exception $e): array
     {
@@ -306,10 +259,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 格式化 HTTP 状态码
-     *
-     * @param \Exception $e
-     *
-     * @return int
      */
     protected function normalizeStatusCode(Exception $e): int
     {
@@ -318,10 +267,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 格式化响应头.
-     *
-     * @param \Exception $e
-     *
-     * @return array
      */
     protected function normalizeHeaders(Exception $e): array
     {
@@ -330,8 +275,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 创建 Whoops.
-     *
-     * @return \Whoops\Run
      */
     protected function makeWhoops(): Run
     {
@@ -344,8 +287,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 创建 JSON 响应句柄.
-     *
-     * @return \Whoops\Handler\JsonResponseHandler
      */
     protected function makeJsonResponseHandler(): JsonResponseHandler
     {
@@ -354,10 +295,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 准备异常.
-     *
-     * @param \Exception $e
-     *
-     * @return \Exception
      */
     protected function prepareException(Exception $e): Exception
     {
@@ -366,10 +303,6 @@ abstract class Runtime implements IRuntime
 
     /**
      * 是否为 HTTP 异常.
-     *
-     * @param \Exception $e
-     *
-     * @return bool
      */
     protected function isHttpException(Exception $e): bool
     {
@@ -379,12 +312,7 @@ abstract class Runtime implements IRuntime
     /**
      * 通过模板渲染异常.
      *
-     * @param string $filepath
-     * @param array  $vars
-     *
      * @throws \Exception
-     *
-     * @return string
      */
     protected function renderWithFile(string $filepath, array $vars = []): string
     {
@@ -406,10 +334,6 @@ abstract class Runtime implements IRuntime
     /**
      * 过滤物理路径
      * 基于安全考虑.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     protected function filterPhysicalPath(string $path): string
     {

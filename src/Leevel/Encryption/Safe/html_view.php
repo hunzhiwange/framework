@@ -22,10 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * 字符 HTML 安全显示.
- *
- * @param string $strings
- *
- * @return string
  */
 function html_view(string $strings): string
 {

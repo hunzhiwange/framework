@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 验证是否为有效的域名.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_checkdnsrr($value): bool
 {

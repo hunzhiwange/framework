@@ -22,11 +22,6 @@ namespace Leevel\Support\Str;
 
 /**
  * 随机字中文.
- *
- * @param int         $length
- * @param null|string $charBox
- *
- * @return string
  */
 function rand_chinese(int $length, ?string $charBox = null): string
 {

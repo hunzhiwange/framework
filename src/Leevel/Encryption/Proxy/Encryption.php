@@ -38,9 +38,6 @@ class Encryption
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -50,11 +47,6 @@ class Encryption
 
     /**
      * 加密.
-     *
-     * @param string $value
-     * @param int    $expiry
-     *
-     * @return string
      */
     public static function encrypt(string $value, int $expiry = 0): string
     {
@@ -63,10 +55,6 @@ class Encryption
 
     /**
      * 解密.
-     *
-     * @param string $value
-     *
-     * @return string
      */
     public static function decrypt(string $value): string
     {
@@ -75,8 +63,6 @@ class Encryption
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Encryption\Encryption
      */
     public static function proxy(): BaseEncryption
     {

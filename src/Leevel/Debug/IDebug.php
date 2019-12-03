@@ -64,26 +64,18 @@ interface IDebug
 {
     /**
      * 返回此实例的 \DebugBar\JavascriptRenderer.
-     *
-     * @param null|string $baseUrl
-     * @param null|string $basePath
-     *
-     * @return \DebugBar\JavascriptRenderer
      */
     public function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer;
 
     /**
      * 返回应用管理.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function getContainer(): IContainer;
 
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Debug\IDebug
      */
@@ -91,9 +83,6 @@ interface IDebug
 
     /**
      * 响应.
-     *
-     * @param \Leevel\Http\IRequest  $request
-     * @param \Leevel\Http\IResponse $response
      */
     public function handle(IRequest $request, IResponse $response): void;
 
@@ -110,8 +99,7 @@ interface IDebug
     /**
      * 添加一条消息.
      *
-     * @param mixed  $message
-     * @param string $label
+     * @param mixed $message
      */
     public function message($message, string $label = 'info'): void;
 
@@ -180,40 +168,26 @@ interface IDebug
 
     /**
      * 开始调试时间.
-     *
-     * @param string      $name
-     * @param null|string $label
      */
     public function time(string $name, ?string $label = null): void;
 
     /**
      * 停止调试时间.
-     *
-     * @param string $name
      */
     public function end(string $name): void;
 
     /**
      * 添加一个时间调试.
-     *
-     * @param string $label
-     * @param float  $start
-     * @param float  $end
      */
     public function addTime(string $label, float $start, float $end): void;
 
     /**
      * 调试闭包执行时间.
-     *
-     * @param string   $label
-     * @param \Closure $closure
      */
     public function closureTime(string $label, Closure $closure): void;
 
     /**
      * 添加异常.
-     *
-     * @param \Throwable $e
      */
     public function exception(Throwable $e): void;
 
@@ -238,8 +212,6 @@ interface IDebug
 
     /**
      * 是否初始化.
-     *
-     * @return bool
      */
     public function isBootstrap(): bool;
 }

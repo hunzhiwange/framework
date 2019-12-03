@@ -36,10 +36,6 @@ class Mysql extends Database implements IDatabase
 {
     /**
      * dsn 解析.
-     *
-     * @param array $option
-     *
-     * @return string
      */
     public function parseDsn(array $option): string
     {
@@ -55,10 +51,7 @@ class Mysql extends Database implements IDatabase
     /**
      * 取得数据库表名列表.
      *
-     * @param string   $dbName
      * @param bool|int $master
-     *
-     * @return array
      */
     public function tableNames(string $dbName, $master = false): array
     {
@@ -80,10 +73,7 @@ class Mysql extends Database implements IDatabase
     /**
      * 取得数据库表字段信息.
      *
-     * @param string   $tableName
      * @param bool|int $master
-     *
-     * @return array
      */
     public function tableColumns(string $tableName, $master = false): array
     {
@@ -142,8 +132,6 @@ class Mysql extends Database implements IDatabase
      * sql 字段格式化.
      *
      * @param mixed $name
-     *
-     * @return string
      */
     public function identifierColumn($name): string
     {
@@ -152,11 +140,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 分析 limit.
-     *
-     * @param null|int $limitCount
-     * @param null|int $limitOffset
-     *
-     * @return string
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {
@@ -181,10 +164,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 基本.
-     *
-     * @param array $option
-     *
-     * @return string
      */
     protected function parseBase(array $option): string
     {
@@ -193,10 +172,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 端口.
-     *
-     * @param array $option
-     *
-     * @return string
      */
     protected function parsePort(array $option): string
     {
@@ -209,10 +184,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 用 unix socket 加速 php-fpm、mysql、redis 连接.
-     *
-     * @param array $option
-     *
-     * @return string
      */
     protected function parseSocket(array $option): string
     {
@@ -225,10 +196,6 @@ class Mysql extends Database implements IDatabase
 
     /**
      * 编码.
-     *
-     * @param array $option
-     *
-     * @return string
      */
     protected function parseCharset(array $option): string
     {

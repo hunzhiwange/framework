@@ -35,8 +35,6 @@ class ApiResponse extends JsonResponse
      * 创建一个 API 响应.
      *
      * @param mixed $data
-     * @param int   $status
-     * @param array $headers
      *
      * @return static
      */
@@ -49,8 +47,7 @@ class ApiResponse extends JsonResponse
      * 请求成功
      * 一般用于GET与POST请求: 200.
      *
-     * @param mixed       $content
-     * @param null|string $text
+     * @param mixed $content
      *
      * @return \Leevel\Http\IResponse
      */
@@ -69,8 +66,7 @@ class ApiResponse extends JsonResponse
      * 已创建
      * 成功请求并创建了新的资源: 201.
      *
-     * @param null|string $location
-     * @param mixed       $content
+     * @param mixed $content
      *
      * @return \Leevel\Http\IResponse
      */
@@ -94,8 +90,7 @@ class ApiResponse extends JsonResponse
      * 已接受
      * 已经接受请求，但未处理完成: 202.
      *
-     * @param null|string $location
-     * @param mixed       $content
+     * @param mixed $content
      *
      * @return \Leevel\Http\IResponse
      */
@@ -134,10 +129,6 @@ class ApiResponse extends JsonResponse
      * 无法处理的实体
      * 请求格式正确，但是由于含有语义错误，无法响应: 422.
      *
-     * @param null|array  $errors
-     * @param null|string $message
-     * @param null|string $text
-     *
      * @return \Leevel\Http\IResponse
      */
     public function unprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): IResponse
@@ -158,10 +149,6 @@ class ApiResponse extends JsonResponse
      * 错误请求
      * 服务器不理解请求的语法: 400.
      *
-     * @param null|string $message
-     * @param int         $statusCode
-     * @param null|string $text
-     *
      * @return \Leevel\Http\IResponse
      */
     public function error(?string $message, int $statusCode, ?string $text = null): IResponse
@@ -179,9 +166,6 @@ class ApiResponse extends JsonResponse
      * 错误请求
      * 服务器不理解请求的语法: 400.
      *
-     * @param null|string $message
-     * @param null|string $text
-     *
      * @return \Leevel\Http\IResponse
      */
     public function badRequest(?string $message = null, ?string $text = null): IResponse
@@ -192,9 +176,6 @@ class ApiResponse extends JsonResponse
     /**
      * 未授权
      * 对于需要登录的网页，服务器可能返回此响应: 401.
-     *
-     * @param null|string $message
-     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -207,9 +188,6 @@ class ApiResponse extends JsonResponse
      * 禁止
      * 服务器拒绝请求: 403.
      *
-     * @param null|string $message
-     * @param null|string $text
-     *
      * @return \Leevel\Http\IResponse
      */
     public function forbidden(?string $message = null, ?string $text = null): IResponse
@@ -220,9 +198,6 @@ class ApiResponse extends JsonResponse
     /**
      * 未找到
      * 用户发出的请求针对的是不存在的记录: 404.
-     *
-     * @param null|string $message
-     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -235,9 +210,6 @@ class ApiResponse extends JsonResponse
      * 方法禁用
      * 禁用请求中指定的方法: 405.
      *
-     * @param null|string $message
-     * @param null|string $text
-     *
      * @return \Leevel\Http\IResponse
      */
     public function methodNotAllowed(?string $message = null, ?string $text = null): IResponse
@@ -248,9 +220,6 @@ class ApiResponse extends JsonResponse
     /**
      * 太多请求
      * 用户在给定的时间内发送了太多的请求: 429.
-     *
-     * @param null|string $message
-     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -263,9 +232,6 @@ class ApiResponse extends JsonResponse
      * 服务器内部错误
      * 服务器遇到错误，无法完成请求: 500.
      *
-     * @param null|string $message
-     * @param null|string $text
-     *
      * @return \Leevel\Http\IResponse
      */
     public function internalServerError(?string $message = null, ?string $text = null): IResponse
@@ -275,9 +241,6 @@ class ApiResponse extends JsonResponse
 
     /**
      * 格式化错误消息.
-     *
-     * @param null|string $message
-     * @param null|string $text
      *
      * @return \Leevel\Http\IResponse
      */
@@ -290,10 +253,6 @@ class ApiResponse extends JsonResponse
 
     /**
      * 分析错误消息.
-     *
-     * @param null|string $message
-     *
-     * @return string
      */
     protected function parseErrorMessage(?string $message = null): string
     {

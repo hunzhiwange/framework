@@ -473,8 +473,6 @@ interface IResponse
      * 创建一个响应.
      *
      * @param mixed $content
-     * @param int   $status
-     * @param array $headers
      *
      * @return static
      */
@@ -515,18 +513,12 @@ interface IResponse
     /**
      * 附加内容.
      *
-     * @param null|string $content
-     *
      * @return \Leevel\Http\IResponse
      */
     public function appendContent(?string $content = null): self;
 
     /**
      * 设置响应头.
-     *
-     * @param string $key
-     * @param string $value
-     * @param bool   $replace
      *
      * @return \Leevel\Http\IResponse
      */
@@ -535,8 +527,6 @@ interface IResponse
     /**
      * 批量设置响应头.
      *
-     * @param array $headers
-     *
      * @return \Leevel\Http\IResponse
      */
     public function withHeaders(array $headers): self;
@@ -544,9 +534,7 @@ interface IResponse
     /**
      * 设置 COOKIE 别名.
      *
-     * @param string            $name
      * @param null|array|string $value
-     * @param array             $option
      *
      * @return \Leevel\Http\IResponse
      */
@@ -555,9 +543,7 @@ interface IResponse
     /**
      * 设置 COOKIE.
      *
-     * @param string            $name
      * @param null|array|string $value
-     * @param array             $option
      *
      * @return \Leevel\Http\IResponse
      */
@@ -566,25 +552,17 @@ interface IResponse
     /**
      * 批量设置 COOKIE.
      *
-     * @param array $cookies
-     * @param array $option
-     *
      * @return \Leevel\Http\IResponse
      */
     public function withCookies(array $cookies, array $option = []): self;
 
     /**
      * 获取 COOKIE.
-     *
-     * @return array
      */
     public function getCookies(): array;
 
     /**
      * 取回 JSON 数据.
-     *
-     * @param bool $assoc
-     * @param int  $depth
      *
      * @return mixed
      */
@@ -593,8 +571,7 @@ interface IResponse
     /**
      * 设置 JSON 数据.
      *
-     * @param mixed    $data
-     * @param null|int $encodingOptions
+     * @param mixed $data
      *
      * @throws \InvalidArgumentException
      *
@@ -626,24 +603,17 @@ interface IResponse
     /**
      * 设置 HTTP 协议版本 (1.0 or 1.1).
      *
-     * @param string $protocolVersion
-     *
      * @return \Leevel\Http\IResponse
      */
     public function setProtocolVersion(string $protocolVersion): self;
 
     /**
      * 获取 HTTP 协议版本.
-     *
-     * @return string
      */
     public function getProtocolVersion(): string;
 
     /**
      * 设置相应状态码.
-     *
-     * @param int         $code
-     * @param null|string $text
      *
      * @throws \InvalidArgumentException
      *
@@ -653,22 +623,16 @@ interface IResponse
 
     /**
      * 获取状态码.
-     *
-     * @return int
      */
     public function status(): int;
 
     /**
      * 获取状态码.
-     *
-     * @return int
      */
     public function getStatusCode(): int;
 
     /**
      * 编码设置.
-     *
-     * @param string $charset
      *
      * @return \Leevel\Http\IResponse
      */
@@ -676,8 +640,6 @@ interface IResponse
 
     /**
      * 编码设置.
-     *
-     * @param string $charset
      *
      * @return \Leevel\Http\IResponse
      */
@@ -693,8 +655,6 @@ interface IResponse
     /**
      * 设置过期时间.
      *
-     * @param null|\DateTime $datetime
-     *
      * @return \Leevel\Http\IResponse
      */
     public function setExpires(?DateTime $datetime = null): self;
@@ -702,16 +662,12 @@ interface IResponse
     /**
      * 设置最后修改时间.
      *
-     * @param null|\DateTime $datetime
-     *
      * @return \Leevel\Http\IResponse
      */
     public function setLastModified(?DateTime $datetime = null): self;
 
     /**
      * 设置缓存.
-     *
-     * @param int $minutes
      *
      * @return \Leevel\Http\IResponse
      */
@@ -727,17 +683,12 @@ interface IResponse
     /**
      * 设置响应内容类型.
      *
-     * @param string      $contentType
-     * @param null|string $charset
-     *
      * @return \Leevel\Http\IResponse
      */
     public function setContentType(string $contentType, ?string $charset = null): self;
 
     /**
      * 设置响应内容长度.
-     *
-     * @param int $contentLength
      *
      * @return \Leevel\Http\IResponse
      */
@@ -746,95 +697,67 @@ interface IResponse
     /**
      * 设置自定义标识符.
      *
-     * @param string $etag
-     *
      * @return \Leevel\Http\IResponse
      */
     public function setEtag(string $etag): self;
 
     /**
      * 响应是否为 JSON.
-     *
-     * @return bool
      */
     public function isJson(): bool;
 
     /**
      * 响应是否正确.
-     *
-     * @return bool
      */
     public function isInvalid(): bool;
 
     /**
      * 是否为信息性响应.
-     *
-     * @return bool
      */
     public function isInformational(): bool;
 
     /**
      * 是否为正确响应.
-     *
-     * @return bool
      */
     public function isSuccessful(): bool;
 
     /**
      * 是否为重定向响应.
-     *
-     * @return bool
      */
     public function isRedirection(): bool;
 
     /**
      * 是否为客户端错误响应.
-     *
-     * @return bool
      */
     public function isClientError(): bool;
 
     /**
      * 是否为服务端错误响应.
-     *
-     * @return bool
      */
     public function isServerError(): bool;
 
     /**
      * 是否为正常响应.
-     *
-     * @return bool
      */
     public function isOk(): bool;
 
     /**
      * 是否为受限响应.
-     *
-     * @return bool
      */
     public function isForbidden(): bool;
 
     /**
      * 是否为 404 NOT FOUND.
-     *
-     * @return bool
      */
     public function isNotFound(): bool;
 
     /**
      * 是否为表单重定向响应.
-     *
-     * @param null|string $location
-     *
-     * @return bool
      */
     public function isRedirect(?string $location = null): bool;
 
     /**
      * 是否为空响应.
-     *
-     * @return bool
      */
     public function isEmpty(): bool;
 }

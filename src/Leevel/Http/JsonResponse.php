@@ -73,9 +73,6 @@ class JsonResponse extends Response
      * 构造函数.
      *
      * @param null|mixed $data
-     * @param int        $status
-     * @param array      $headers
-     * @param bool       $json
      */
     public function __construct($data = null, int $status = 200, array $headers = [], bool $json = false)
     {
@@ -93,8 +90,6 @@ class JsonResponse extends Response
      * 创建一个 JSON 响应.
      *
      * @param null|mixed $data
-     * @param int        $status
-     * @param array      $headers
      *
      * @return static
      */
@@ -106,9 +101,8 @@ class JsonResponse extends Response
     /**
      * 从 JSON 字符串创建响应对象
      *
-     * @param null|string $data
-     * @param int         $status
-     * @param array       $headers
+     * @param int   $status
+     * @param array $headers
      *
      * @return static
      */
@@ -119,8 +113,6 @@ class JsonResponse extends Response
 
     /**
      * 设置 JSONP 回调.
-     *
-     * @param null|string $callback
      *
      * @return \Leevel\Http\IResponse
      */
@@ -164,8 +156,7 @@ class JsonResponse extends Response
     /**
      * 设置数据作为 JSON.
      *
-     * @param mixed    $data
-     * @param null|int $encodingOptions
+     * @param mixed $data
      *
      * @throws \InvalidArgumentException
      *
@@ -201,9 +192,6 @@ class JsonResponse extends Response
     /**
      * 取回数据.
      *
-     * @param bool $assoc
-     * @param int  $depth
-     *
      * @return mixed
      */
     public function getData(bool $assoc = true, int $depth = 512)
@@ -213,8 +201,6 @@ class JsonResponse extends Response
 
     /**
      * 获取编码参数.
-     *
-     * @return int
      */
     public function getEncodingOptions(): int
     {
@@ -223,8 +209,6 @@ class JsonResponse extends Response
 
     /**
      * 设置编码参数.
-     *
-     * @param int $encodingOptions
      *
      * @return \Leevel\Http\IResponse
      */
@@ -243,8 +227,6 @@ class JsonResponse extends Response
      * 验证是否为正常的 JSON 字符串.
      *
      * @param mixed $data
-     *
-     * @return bool
      */
     protected function isJsonData($data): bool
     {

@@ -1217,8 +1217,6 @@ class ValidatorTest extends TestCase
 
     /**
      * @dataProvider aliasSkipExceptionProvider
-     *
-     * @param string $skipRule
      */
     public function testAliasSkipException(string $skipRule): void
     {
@@ -1568,8 +1566,6 @@ class ValidatorTest extends TestCase
 
     /**
      * @dataProvider skipRuleProvider
-     *
-     * @param string $skipRule
      */
     public function testSkipRule(string $skipRule): void
     {

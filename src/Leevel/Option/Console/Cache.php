@@ -60,8 +60,6 @@ class Cache extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -79,10 +77,6 @@ class Cache extends Command
     /**
      * 计算相对路径
      * 忽略未包含在基础路径中的缓存相对路径.
-     *
-     * @param string $cachePath
-     *
-     * @return int
      */
     protected function computeRelativePath(string $cachePath): int
     {
@@ -98,10 +92,6 @@ class Cache extends Command
 
     /**
      * 替换相对路径.
-     *
-     * @param string $data
-     *
-     * @return string
      */
     protected function replaceRelativePath(string $data): string
     {
@@ -110,9 +100,6 @@ class Cache extends Command
 
     /**
      * 写入缓存.
-     *
-     * @param string $cachePath
-     * @param array  $data
      */
     protected function writeCache(string $cachePath, array $data): void
     {
@@ -136,8 +123,6 @@ class Cache extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -146,8 +131,6 @@ class Cache extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

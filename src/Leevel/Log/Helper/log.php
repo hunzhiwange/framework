@@ -25,8 +25,6 @@ use Leevel\Log\ILog;
 
 /**
  * 日志服务
- *
- * @return \Leevel\Log\ILog
  */
 function log(): ILog
 {

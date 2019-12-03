@@ -24,8 +24,7 @@ if (!function_exists('f')) {
     /**
      * 执行惰性加载函数.
      *
-     * @param string $fn
-     * @param array  ...$args
+     * @param array ...$args
      *
      * @return mixed
      */
@@ -45,12 +44,7 @@ if (!function_exists('f_exists')) {
      *
      * 系统会自动搜索并导入函数文件.
      *
-     * @param string $fn
-     * @param bool   $throwException
-     *
      * @throws \Leevel\Support\FunctionNotFoundException
-     *
-     * @return bool
      */
     function f_exists(string $fn, bool $throwException = true): bool
     {

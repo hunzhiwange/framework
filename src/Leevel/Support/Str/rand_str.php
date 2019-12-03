@@ -22,11 +22,6 @@ namespace Leevel\Support\Str;
 
 /**
  * 随机字符串.
- *
- * @param int    $length
- * @param string $charBox
- *
- * @return string
  */
 function rand_str(int $length, string $charBox): string
 {

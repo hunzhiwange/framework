@@ -61,8 +61,6 @@ class Manager extends Managers
 {
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     protected function normalizeOptionNamespace(): string
     {
@@ -71,8 +69,6 @@ class Manager extends Managers
 
     /**
      * 创建 local 连接.
-     *
-     * @param array $options
      *
      * @return \Leevel\Filesystem\Local
      */
@@ -85,8 +81,6 @@ class Manager extends Managers
 
     /**
      * 创建 ftp 连接.
-     *
-     * @param array $options
      *
      * @return \Leevel\Filesystem\Ftp
      * @codeCoverageIgnore
@@ -101,8 +95,6 @@ class Manager extends Managers
     /**
      * 创建 sftp 连接.
      *
-     * @param array $options
-     *
      * @return \Leevel\Filesystem\Sftp
      * @codeCoverageIgnore
      */
@@ -115,8 +107,6 @@ class Manager extends Managers
 
     /**
      * 创建 zip 连接.
-     *
-     * @param array $options
      *
      * @return \Leevel\Filesystem\Zip
      * @codeCoverageIgnore

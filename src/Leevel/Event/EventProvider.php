@@ -67,8 +67,6 @@ abstract class EventProvider extends Provider
 
     /**
      * 取得监听器.
-     *
-     * @return array
      */
     public function get(): array
     {

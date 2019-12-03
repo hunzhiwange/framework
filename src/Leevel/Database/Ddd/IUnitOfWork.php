@@ -78,7 +78,6 @@ interface IUnitOfWork
      * 保持实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $method
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -88,7 +87,6 @@ interface IUnitOfWork
      * 保持实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $method
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -98,7 +96,6 @@ interface IUnitOfWork
      * 保持实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $method
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -108,7 +105,6 @@ interface IUnitOfWork
      * 移除实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -121,7 +117,6 @@ interface IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -134,7 +129,6 @@ interface IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -147,7 +141,6 @@ interface IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -160,7 +153,6 @@ interface IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -173,7 +165,6 @@ interface IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -183,7 +174,6 @@ interface IUnitOfWork
      * 注册新建实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -193,7 +183,6 @@ interface IUnitOfWork
      * 注册新建实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -203,7 +192,6 @@ interface IUnitOfWork
      * 注册新建实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -213,8 +201,6 @@ interface IUnitOfWork
      * 实体是否已经注册新增.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function created(IEntity $entity): bool;
 
@@ -222,7 +208,6 @@ interface IUnitOfWork
      * 注册更新实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -232,7 +217,6 @@ interface IUnitOfWork
      * 注册更新实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -242,7 +226,6 @@ interface IUnitOfWork
      * 注册更新实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -252,8 +235,6 @@ interface IUnitOfWork
      * 实体是否已经注册更新.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function updated(IEntity $entity): bool;
 
@@ -261,7 +242,6 @@ interface IUnitOfWork
      * 注册不存在则新增否则更新实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priorit
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -271,7 +251,6 @@ interface IUnitOfWork
      * 注册不存在则新增否则更新实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priorit
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -281,7 +260,6 @@ interface IUnitOfWork
      * 注册不存在则新增否则更新实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priorit
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -291,8 +269,6 @@ interface IUnitOfWork
      * 实体是否已经注册不存在则新增否则更新.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function replaced(IEntity $entity): bool;
 
@@ -300,7 +276,6 @@ interface IUnitOfWork
      * 注册删除实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -310,7 +285,6 @@ interface IUnitOfWork
      * 注册删除实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -320,7 +294,6 @@ interface IUnitOfWork
      * 注册删除实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -330,7 +303,6 @@ interface IUnitOfWork
      * 注册删除实体(强制删除)到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -340,7 +312,6 @@ interface IUnitOfWork
      * 注册删除实体(强制删除).
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -350,7 +321,6 @@ interface IUnitOfWork
      * 注册删除实体(强制删除)到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -360,8 +330,6 @@ interface IUnitOfWork
      * 实体是否已经注册删除.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function deleted(IEntity $entity): bool;
 
@@ -369,8 +337,6 @@ interface IUnitOfWork
      * 实体是否已经注册.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function registered(IEntity $entity): bool;
 
@@ -409,8 +375,6 @@ interface IUnitOfWork
 
     /**
      * 返回数据库连接.
-     *
-     * @return \Leevel\Database\IDatabase
      */
     public function connect(): IDatabase;
 
@@ -431,8 +395,6 @@ interface IUnitOfWork
 
     /**
      * 执行数据库事务.
-     *
-     * @param \Closure $action
      *
      * @return mixed
      */
@@ -461,9 +423,6 @@ interface IUnitOfWork
      * 取得实体状态.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param null|int                     $defaults
-     *
-     * @return int
      */
     public function getEntityState(IEntity $entity, ?int $defaults = null): int;
 }

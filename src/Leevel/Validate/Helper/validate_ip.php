@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 是否为合法的 IP 地址.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_ip($value): bool
 {

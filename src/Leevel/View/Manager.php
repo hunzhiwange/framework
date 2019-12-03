@@ -44,8 +44,6 @@ class Manager extends Managers
 {
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     protected function normalizeOptionNamespace(): string
     {
@@ -54,8 +52,6 @@ class Manager extends Managers
 
     /**
      * 创建 html 模板驱动.
-     *
-     * @param array $options
      *
      * @return \Leevel\View\Html
      */
@@ -77,8 +73,6 @@ class Manager extends Managers
     /**
      * 创建 phpui 模板驱动.
      *
-     * @param array $options
-     *
      * @return \Leevel\View\Phpui
      */
     protected function makeConnectPhpui(array $options = []): Phpui
@@ -93,8 +87,6 @@ class Manager extends Managers
 
     /**
      * 视图公共配置.
-     *
-     * @return array
      */
     protected function viewOptionCommon(): array
     {

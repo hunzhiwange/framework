@@ -42,8 +42,6 @@ abstract class Auth implements IAuth
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -52,8 +50,6 @@ abstract class Auth implements IAuth
 
     /**
      * 用户是否已经登录.
-     *
-     * @return bool
      */
     public function isLogin(): bool
     {
@@ -62,8 +58,6 @@ abstract class Auth implements IAuth
 
     /**
      * 获取登录信息.
-     *
-     * @return array
      */
     public function getLogin(): array
     {
@@ -72,9 +66,6 @@ abstract class Auth implements IAuth
 
     /**
      * 登录写入数据.
-     *
-     * @param array $data
-     * @param int   $loginTime
      */
     public function login(array $data, int $loginTime = 0): void
     {
@@ -91,8 +82,6 @@ abstract class Auth implements IAuth
 
     /**
      * 设置认证名字.
-     *
-     * @param string $tokenName
      */
     public function setTokenName(string $tokenName): void
     {
@@ -103,8 +92,6 @@ abstract class Auth implements IAuth
      * 取得认证名字.
      *
      * @throws \Leevel\Auth\AuthException
-     *
-     * @return string
      */
     public function getTokenName(): string
     {
@@ -117,9 +104,6 @@ abstract class Auth implements IAuth
 
     /**
      * 认证信息持久化.
-     *
-     * @param array $data
-     * @param int   $loginTime
      */
     protected function tokenPersistence(array $data, int $loginTime = 0): void
     {
@@ -128,8 +112,6 @@ abstract class Auth implements IAuth
 
     /**
      * 认证信息获取.
-     *
-     * @return array
      */
     protected function tokenData(): array
     {
@@ -148,17 +130,11 @@ abstract class Auth implements IAuth
 
     /**
      * 数据持久化.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
      */
     abstract protected function setPersistence(string $key, string $value, int $expire = 0): void;
 
     /**
      * 获取持久化数据.
-     *
-     * @param string $key
      *
      * @return mixed
      */
@@ -166,8 +142,6 @@ abstract class Auth implements IAuth
 
     /**
      * 删除持久化数据.
-     *
-     * @param string $key
      */
     abstract protected function deletePersistence(string $key): void;
 }

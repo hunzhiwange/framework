@@ -114,8 +114,7 @@ interface IMail
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Mail\IMail
      */
@@ -124,18 +123,12 @@ interface IMail
     /**
      * 设置邮件发送来源.
      *
-     * @param string      $address
-     * @param null|string $name
-     *
      * @return \Leevel\Mail\IMail
      */
     public function globalFrom(string $address, ?string $name = null): self;
 
     /**
      * 设置邮件发送地址
-     *
-     * @param string      $address
-     * @param null|string $name
      *
      * @return \Leevel\Mail\IMail
      */
@@ -144,17 +137,12 @@ interface IMail
     /**
      * 视图 html 邮件内容.
      *
-     * @param string $file
-     * @param array  $data
-     *
      * @return \Leevel\Mail\IMail
      */
     public function view(string $file, array $data = []): self;
 
     /**
      * html 邮件内容.
-     *
-     * @param string $content
      *
      * @return \Leevel\Mail\IMail
      */
@@ -163,17 +151,12 @@ interface IMail
     /**
      * 纯文本邮件内容.
      *
-     * @param string $content
-     *
      * @return \Leevel\Mail\IMail
      */
     public function plain(string $content): self;
 
     /**
      * 视图纯文本邮件内容.
-     *
-     * @param string $file
-     * @param array  $data
      *
      * @return \Leevel\Mail\IMail
      */
@@ -182,17 +165,12 @@ interface IMail
     /**
      * 消息回调处理.
      *
-     * @param \Closure $callbacks
-     *
      * @return \Leevel\Mail\IMail
      */
     public function message(Closure $callbacks): self;
 
     /**
      * 添加附件.
-     *
-     * @param string        $file
-     * @param null|\Closure $callbacks
      *
      * @return \Leevel\Mail\IMail
      */
@@ -202,57 +180,32 @@ interface IMail
      * 添加内存内容附件
      * file_get_content(path).
      *
-     * @param string        $data
-     * @param string        $name
-     * @param null|\Closure $callbacks
-     *
      * @return \Leevel\Mail\IMail
      */
     public function attachData(string $data, string $name, ?Closure $callbacks = null): self;
 
     /**
      * 图片嵌入邮件.
-     *
-     * @param string $file
-     *
-     * @return string
      */
     public function attachView(string $file): string;
 
     /**
      * 内存内容图片嵌入邮件.
-     *
-     * @param string      $data
-     * @param string      $name
-     * @param null|string $contentType
-     *
-     * @return string
      */
     public function attachDataView(string $data, string $name, ?string $contentType = null): string;
 
     /**
      * 格式化中文附件名字.
-     *
-     * @param string $file
-     *
-     * @return string
      */
     public function attachChinese(string $file): string;
 
     /**
      * 发送邮件.
-     *
-     * @param null|\Closure $callbacks
-     * @param bool          $htmlPriority
-     *
-     * @return int
      */
     public function flush(?Closure $callbacks = null, bool $htmlPriority = true): int;
 
     /**
      * 错误消息.
-     *
-     * @return array
      */
     public function failedRecipients(): array;
 }

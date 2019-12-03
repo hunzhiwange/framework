@@ -40,9 +40,6 @@ class Url
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -53,12 +50,7 @@ class Url
     /**
      * 生成路由地址
      *
-     * @param string           $url
-     * @param array            $params
-     * @param string           $subdomain
      * @param null|bool|string $suffix
-     *
-     * @return string
      */
     public static function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
     {
@@ -67,8 +59,6 @@ class Url
 
     /**
      * 返回 HTTP 请求
-     *
-     * @return \Leevel\Http\IRequest
      */
     public static function getRequest(): IRequest
     {
@@ -78,10 +68,7 @@ class Url
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return \Leevel\Router\IUrl
+     * @param mixed $value
      */
     public static function setOption(string $name, $value): IBaseUrl
     {
@@ -90,8 +77,6 @@ class Url
 
     /**
      * 获取域名.
-     *
-     * @return string
      */
     public static function getDomain(): string
     {
@@ -100,8 +85,6 @@ class Url
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Router\Url
      */
     public static function proxy(): BaseUrl
     {

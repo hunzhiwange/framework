@@ -28,11 +28,8 @@ use InvalidArgumentException;
  * - 全等匹配，为了严禁.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_not_equal($value, array $param): bool
 {

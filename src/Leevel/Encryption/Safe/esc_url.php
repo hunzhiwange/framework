@@ -22,12 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * url 安全过滤.
- *
- * @param string     $url
- * @param null|array $protocols
- * @param bool       $show
- *
- * @return string
  */
 function esc_url(string $url, ?array $protocols = null, bool $show = true): string
 {

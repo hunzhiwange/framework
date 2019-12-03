@@ -98,10 +98,6 @@ class Doc extends Command
 
     /**
      * 生成 markdown 文件.
-     *
-     * @param string $file
-     *
-     * @return bool
      */
     protected function convertMarkdown(string $file): bool
     {
@@ -121,8 +117,6 @@ class Doc extends Command
 
     /**
      * 分析测试用例文件.
-     *
-     * @return array
      */
     protected function parseFiles(): array
     {
@@ -154,8 +148,6 @@ class Doc extends Command
 
     /**
      * 取得测试用例文件或者目录相对路径.
-     *
-     * @return string
      */
     protected function path(): string
     {
@@ -164,8 +156,6 @@ class Doc extends Command
 
     /**
      * 取得测试用例基础目录.
-     *
-     * @return string
      */
     protected function testsDir(): string
     {
@@ -174,8 +164,6 @@ class Doc extends Command
 
     /**
      * 取得生成的 markdown 输出目录.
-     *
-     * @return string
      */
     protected function outputDir(): string
     {
@@ -184,8 +172,6 @@ class Doc extends Command
 
     /**
      * i18n 参数.
-     *
-     * @return string
      */
     protected function i18n(): string
     {
@@ -194,8 +180,6 @@ class Doc extends Command
 
     /**
      * 取得生成的 markdown Git 原始仓库地址.
-     *
-     * @return string
      */
     protected function git(): string
     {
@@ -204,8 +188,6 @@ class Doc extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -235,8 +217,6 @@ class Doc extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

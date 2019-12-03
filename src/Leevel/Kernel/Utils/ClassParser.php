@@ -38,10 +38,6 @@ class ClassParser
 {
     /**
      * 从文件读取类名.
-     *
-     * @param string $pathToFile
-     *
-     * @return string
      */
     public function handle(string $pathToFile): string
     {

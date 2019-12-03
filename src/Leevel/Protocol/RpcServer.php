@@ -134,10 +134,6 @@ class RpcServer extends Server implements IServer
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Di\IContainer $container
-     * @param \Leevel\Di\ICoroutine $coroutine
-     * @param array                 $option
      */
     public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
@@ -148,11 +144,6 @@ class RpcServer extends Server implements IServer
 
     /**                                                                                                 }
      * 监听数据发送事件.
-     *
-     * @param \Swoole\Server $server
-     * @param int            $fd
-     * @param int            $reactorId
-     * @param string         $data
      *
      * @see https://wiki.swoole.com/wiki/page/50.html
      */
@@ -167,10 +158,6 @@ class RpcServer extends Server implements IServer
      * 监听连接关闭事件
      * 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
      *
-     * @param \Swoole\Server $server
-     * @param int            $fd
-     * @param int            $reactorId
-     *
      * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
      */
     public function onRpcClose(SwooleServer $server, int $fd, int $reactorId): void
@@ -181,8 +168,6 @@ class RpcServer extends Server implements IServer
 
     /**
      * 创建 Thrift 服务
-     *
-     * @return \Leevel\Protocol\Thrift\Base\ThriftServer
      */
     protected function makeThriftServer(): ThriftServer
     {

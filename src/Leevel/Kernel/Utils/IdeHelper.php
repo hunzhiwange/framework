@@ -39,10 +39,6 @@ class IdeHelper
 {
     /**
      * 解析类 @method 方法签名.
-     *
-     * @param string $className
-     *
-     * @return string
      */
     public function handle(string $className): string
     {
@@ -56,10 +52,6 @@ class IdeHelper
 
     /**
      * 整理方法内容.
-     *
-     * @param string $className
-     *
-     * @return array
      */
     protected function normalizeMethod(string $className): array
     {
@@ -99,10 +91,6 @@ class IdeHelper
 
     /**
      * 整理方法参数.
-     *
-     * @param \ReflectionParameter $param
-     *
-     * @return string
      */
     protected function normalizeParam(ReflectionParameter $param): string
     {
@@ -132,10 +120,6 @@ class IdeHelper
      * 组装一个方法签名.
      *
      * - 用于 @method 标准签名
-     *
-     * @param array $method
-     *
-     * @return string
      */
     protected function packageMethod(array $method): string
     {
@@ -152,10 +136,6 @@ class IdeHelper
 
     /**
      * 获取一个方法的描述.
-     *
-     * @param string $docComment
-     *
-     * @return string
      */
     protected function parseDescription(string $docComment): string
     {

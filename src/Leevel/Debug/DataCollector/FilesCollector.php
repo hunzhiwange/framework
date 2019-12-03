@@ -69,8 +69,6 @@ class FilesCollector extends DataCollector implements Renderable
 
     /**
      * 获取系统加载文件.
-     *
-     * @return array
      */
     protected function getIncludedFiles(): array
     {

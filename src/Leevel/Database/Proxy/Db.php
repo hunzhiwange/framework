@@ -46,9 +46,6 @@ class Db
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -76,9 +73,7 @@ class Db
      * @param string     $sql           sql 语句
      * @param array      $bindParams    sql 参数绑定
      * @param bool|int   $master
-     * @param int        $fetchType
      * @param null|mixed $fetchArgument
-     * @param array      $ctorArgs
      *
      * @return mixed
      */
@@ -122,8 +117,6 @@ class Db
 
     /**
      * 检查是否处于事务中.
-     *
-     * @return bool
      */
     public static function inTransaction(): bool
     {
@@ -150,8 +143,6 @@ class Db
      * 获取最后插入 ID 或者列.
      *
      * @param null|string $name 自增序列名
-     *
-     * @return string
      */
     public static function lastInsertId(?string $name = null): string
     {
@@ -160,8 +151,6 @@ class Db
 
     /**
      * 获取最近一次查询的 sql 语句.
-     *
-     * @return null|string
      */
     public static function getLastSql(): ?string
     {
@@ -170,8 +159,6 @@ class Db
 
     /**
      * 返回影响记录.
-     *
-     * @return int
      */
     public static function numRows(): int
     {
@@ -204,11 +191,6 @@ class Db
 
     /**
      * sql 表达式格式化.
-     *
-     * @param string $sql
-     * @param string $tableName
-     *
-     * @return string
      */
     public static function normalizeExpression(string $sql, string $tableName): string
     {
@@ -217,12 +199,6 @@ class Db
 
     /**
      * 表或者字段格式化（支持别名）.
-     *
-     * @param string      $name
-     * @param null|string $alias
-     * @param null|string $as
-     *
-     * @return string
      */
     public static function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
     {
@@ -231,11 +207,6 @@ class Db
 
     /**
      * 字段格式化.
-     *
-     * @param string $key
-     * @param string $tableName
-     *
-     * @return string
      */
     public static function normalizeColumn(string $key, string $tableName): string
     {
@@ -246,7 +217,6 @@ class Db
      * 字段值格式化.
      *
      * @param mixed $value
-     * @param bool  $quotationMark
      *
      * @return mixed
      */
@@ -257,10 +227,6 @@ class Db
 
     /**
      * 分析 sql 类型数据.
-     *
-     * @param string $sql
-     *
-     * @return string
      */
     public static function normalizeSqlType(string $sql): string
     {
@@ -271,8 +237,6 @@ class Db
      * 分析绑定参数类型数据.
      *
      * @param mixed $value
-     *
-     * @return int
      */
     public static function normalizeBindParamType($value): int
     {
@@ -281,10 +245,6 @@ class Db
 
     /**
      * dsn 解析.
-     *
-     * @param array $option
-     *
-     * @return string
      */
     public static function parseDsn(array $option): string
     {
@@ -294,10 +254,7 @@ class Db
     /**
      * 取得数据库表名列表.
      *
-     * @param string   $dbName
      * @param bool|int $master
-     *
-     * @return array
      */
     public static function tableNames(string $dbName, $master = false): array
     {
@@ -307,10 +264,7 @@ class Db
     /**
      * 取得数据库表字段信息.
      *
-     * @param string   $tableName
      * @param bool|int $master
-     *
-     * @return array
      */
     public static function tableColumns(string $tableName, $master = false): array
     {
@@ -321,8 +275,6 @@ class Db
      * sql 字段格式化.
      *
      * @param mixed $name
-     *
-     * @return string
      */
     public static function identifierColumn($name): string
     {
@@ -331,11 +283,6 @@ class Db
 
     /**
      * 分析 limit.
-     *
-     * @param null|int $limitCount
-     * @param null|int $limitOffset
-     *
-     * @return string
      */
     public static function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {
@@ -344,8 +291,6 @@ class Db
 
     /**
      * 查询对象.
-     *
-     * @return \Leevel\Database\Condition
      */
     public static function databaseCondition(): Condition
     {
@@ -354,8 +299,6 @@ class Db
 
     /**
      * 返回数据库连接对象.
-     *
-     * @return \Leevel\Database\IDatabase
      */
     public static function databaseConnect(): IDatabase
     {
@@ -364,8 +307,6 @@ class Db
 
     /**
      * 占位符返回本对象.
-     *
-     * @return \Leevel\Database\Select
      */
     public static function selfDatabaseSelect(): Select
     {
@@ -376,8 +317,6 @@ class Db
      * 指定返回 SQL 不做任何操作.
      *
      * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return \Leevel\Database\Select
      */
     public static function sql(bool $flag = true): Select
     {
@@ -386,10 +325,6 @@ class Db
 
     /**
      * 设置是否查询主服务器.
-     *
-     * @param bool $master
-     *
-     * @return \Leevel\Database\Select
      */
     public static function master(bool $master = false): Select
     {
@@ -399,11 +334,7 @@ class Db
     /**
      * 设置查询参数.
      *
-     * @param int        $fetchStyle
      * @param null|mixed $fetchArgument
-     * @param array      $ctorArgs
-     *
-     * @return \Leevel\Database\Select
      */
     public static function fetchArgs(int $fetchStyle, $fetchArgument = null, array $ctorArgs = []): Select
     {
@@ -412,11 +343,6 @@ class Db
 
     /**
      * 设置以类返会结果.
-     *
-     * @param string $className
-     * @param array  $args
-     *
-     * @return \Leevel\Database\Select
      */
     public static function asClass(string $className, array $args = []): Select
     {
@@ -425,8 +351,6 @@ class Db
 
     /**
      * 设置默认形式返回.
-     *
-     * @return \Leevel\Database\Select
      */
     public static function asDefault(): Select
     {
@@ -435,10 +359,6 @@ class Db
 
     /**
      * 设置是否以集合返回.
-     *
-     * @param bool $acollection
-     *
-     * @return \Leevel\Database\Select
      */
     public static function asCollection(bool $acollection = true): Select
     {
@@ -449,7 +369,6 @@ class Db
      * 原生 sql 查询数据 select.
      *
      * @param null|callable|\Leevel\Database\Select|string $data
-     * @param array                                        $bind
      * @param bool                                         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
@@ -463,9 +382,7 @@ class Db
      * 插入数据 insert (支持原生 sql).
      *
      * @param array|string $data
-     * @param array        $bind
-     * @param bool         $replace
-     * @param bool         $flag    指示是否不做任何操作只返回 SQL
+     * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return null|array|int
      */
@@ -477,10 +394,7 @@ class Db
     /**
      * 批量插入数据 insertAll.
      *
-     * @param array $data
-     * @param array $bind
-     * @param bool  $replace
-     * @param bool  $flag    指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return null|array|int
      */
@@ -493,7 +407,6 @@ class Db
      * 更新数据 update (支持原生 sql).
      *
      * @param array|string $data
-     * @param array        $bind
      * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
@@ -506,10 +419,8 @@ class Db
     /**
      * 更新某个字段的值
      *
-     * @param string $column
-     * @param mixed  $value
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
+     * @param mixed $value
+     * @param bool  $flag  指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -521,10 +432,7 @@ class Db
     /**
      * 字段递增.
      *
-     * @param string $column
-     * @param int    $step
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -536,10 +444,7 @@ class Db
     /**
      * 字段减少.
      *
-     * @param string $column
-     * @param int    $step
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -551,9 +456,7 @@ class Db
     /**
      * 删除数据 delete (支持原生 sql).
      *
-     * @param null|string $data
-     * @param array       $bind
-     * @param bool        $flag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -601,8 +504,7 @@ class Db
     /**
      * 返回最后几条记录.
      *
-     * @param null|int $num
-     * @param bool     $flag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -614,8 +516,7 @@ class Db
     /**
      * 返回一个字段的值
      *
-     * @param string $field
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -627,11 +528,8 @@ class Db
     /**
      * 返回一列数据.
      *
-     * @param mixed       $fieldValue
-     * @param null|string $fieldKey
-     * @param bool        $flag       指示是否不做任何操作只返回 SQL
-     *
-     * @return array
+     * @param mixed $fieldValue
+     * @param bool  $flag       指示是否不做任何操作只返回 SQL
      */
     public static function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {
@@ -640,9 +538,6 @@ class Db
 
     /**
      * 数据分块处理.
-     *
-     * @param int      $count
-     * @param \Closure $chunk
      */
     public static function chunk(int $count, Closure $chunk): void
     {
@@ -651,9 +546,6 @@ class Db
 
     /**
      * 数据分块处理依次回调.
-     *
-     * @param int     $count
-     * @param Closure $each
      */
     public static function each(int $count, Closure $each): void
     {
@@ -663,9 +555,7 @@ class Db
     /**
      * 总记录数.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -677,9 +567,7 @@ class Db
     /**
      * 平均数.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -691,9 +579,7 @@ class Db
     /**
      * 最大值.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -705,9 +591,7 @@ class Db
     /**
      * 最小值.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -719,9 +603,7 @@ class Db
     /**
      * 合计.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -733,14 +615,6 @@ class Db
     /**
      * 分页查询.
      * 可以渲染 HTML.
-     *
-     * @param int    $currentPage
-     * @param int    $perPage
-     * @param bool   $flag
-     * @param string $column
-     * @param array  $option
-     *
-     * @return \Leevel\Database\Page
      */
     public static function page(int $currentPage, int $perPage = 10, bool $flag = false, string $column = '*', array $option = []): Page
     {
@@ -749,13 +623,6 @@ class Db
 
     /**
      * 创建一个无限数据的分页查询.
-     *
-     * @param int   $currentPage
-     * @param int   $perPage
-     * @param bool  $flag
-     * @param array $option
-     *
-     * @return \Leevel\Database\Page
      */
     public static function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
@@ -764,13 +631,6 @@ class Db
 
     /**
      * 创建一个只有上下页的分页查询.
-     *
-     * @param int   $currentPage
-     * @param int   $perPage
-     * @param bool  $flag
-     * @param array $option
-     *
-     * @return \Leevel\Database\Page
      */
     public static function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
     {
@@ -779,10 +639,6 @@ class Db
 
     /**
      * 取得分页查询记录数量.
-     *
-     * @param string $cols
-     *
-     * @return int
      */
     public static function pageCount(string $cols = '*'): int
     {
@@ -793,8 +649,6 @@ class Db
      * 获得查询字符串.
      *
      * @param $withLogicGroup
-     *
-     * @return string
      */
     public static function makeSql(bool $withLogicGroup = false): string
     {
@@ -803,11 +657,6 @@ class Db
 
     /**
      * 根据分页设置条件.
-     *
-     * @param int $page
-     * @param int $perPage
-     *
-     * @return \Leevel\Database\Select
      */
     public static function forPage(int $page, int $perPage = 15): Select
     {
@@ -816,10 +665,6 @@ class Db
 
     /**
      * 时间控制语句开始.
-     *
-     * @param string $type
-     *
-     * @return \Leevel\Database\Select
      */
     public static function time(string $type = 'date'): Select
     {
@@ -828,8 +673,6 @@ class Db
 
     /**
      * 时间控制语句结束.
-     *
-     * @return \Leevel\Database\Select
      */
     public static function endTime(): Select
     {
@@ -838,10 +681,6 @@ class Db
 
     /**
      * 重置查询条件.
-     *
-     * @param null|string $option
-     *
-     * @return \Leevel\Database\Select
      */
     public static function reset(?string $option = null): Select
     {
@@ -850,10 +689,6 @@ class Db
 
     /**
      * prefix 查询.
-     *
-     * @param string $prefix
-     *
-     * @return \Leevel\Database\Select
      */
     public static function prefix(string $prefix): Select
     {
@@ -865,8 +700,6 @@ class Db
      *
      * @param mixed        $table
      * @param array|string $cols
-     *
-     * @return \Leevel\Database\Select
      */
     public static function table($table, $cols = '*'): Select
     {
@@ -875,8 +708,6 @@ class Db
 
     /**
      * 获取表别名.
-     *
-     * @return string
      */
     public static function getAlias(): string
     {
@@ -886,10 +717,7 @@ class Db
     /**
      * 添加字段.
      *
-     * @param mixed       $cols
-     * @param null|string $table
-     *
-     * @return \Leevel\Database\Select
+     * @param mixed $cols
      */
     public static function columns($cols = '*', ?string $table = null): Select
     {
@@ -899,10 +727,7 @@ class Db
     /**
      * 设置字段.
      *
-     * @param mixed       $cols
-     * @param null|string $table
-     *
-     * @return \Leevel\Database\Select
+     * @param mixed $cols
      */
     public static function setColumns($cols = '*', ?string $table = null): Select
     {
@@ -913,8 +738,6 @@ class Db
      * where 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function where(...$cond): Select
     {
@@ -925,8 +748,6 @@ class Db
      * orWhere 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function orWhere(...$cond): Select
     {
@@ -935,10 +756,6 @@ class Db
 
     /**
      * Where 原生查询.
-     *
-     * @param string $raw
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereRaw(string $raw): Select
     {
@@ -947,10 +764,6 @@ class Db
 
     /**
      * Where 原生 OR 查询.
-     *
-     * @param string $raw
-     *
-     * @return \Leevel\Database\Select
      */
     public static function orWhereRaw(string $raw): Select
     {
@@ -961,8 +774,6 @@ class Db
      * exists 方法支持
      *
      * @param mixed $exists
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereExists($exists): Select
     {
@@ -973,8 +784,6 @@ class Db
      * not exists 方法支持
      *
      * @param mixed $exists
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereNotExists($exists): Select
     {
@@ -985,8 +794,6 @@ class Db
      * whereBetween 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereBetween(...$cond): Select
     {
@@ -997,8 +804,6 @@ class Db
      * whereNotBetween 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereNotBetween(...$cond): Select
     {
@@ -1009,8 +814,6 @@ class Db
      * whereNull 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereNull(...$cond): Select
     {
@@ -1021,8 +824,6 @@ class Db
      * whereNotNull 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereNotNull(...$cond): Select
     {
@@ -1033,8 +834,6 @@ class Db
      * whereIn 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereIn(...$cond): Select
     {
@@ -1045,8 +844,6 @@ class Db
      * whereNotIn 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereNotIn(...$cond): Select
     {
@@ -1057,8 +854,6 @@ class Db
      * whereLike 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereLike(...$cond): Select
     {
@@ -1069,8 +864,6 @@ class Db
      * whereNotLike 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereNotLike(...$cond): Select
     {
@@ -1081,8 +874,6 @@ class Db
      * whereDate 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereDate(...$cond): Select
     {
@@ -1093,8 +884,6 @@ class Db
      * whereDay 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereDay(...$cond): Select
     {
@@ -1105,8 +894,6 @@ class Db
      * whereMonth 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereMonth(...$cond): Select
     {
@@ -1117,8 +904,6 @@ class Db
      * whereYear 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function whereYear(...$cond): Select
     {
@@ -1130,9 +915,6 @@ class Db
      *
      * @param mixed      $names
      * @param null|mixed $value
-     * @param int        $type
-     *
-     * @return \Leevel\Database\Select
      */
     public static function bind($names, $value = null, int $type = PDO::PARAM_STR): Select
     {
@@ -1144,8 +926,6 @@ class Db
      *
      * @param array|string $indexs
      * @param string       $type
-     *
-     * @return \Leevel\Database\Select
      */
     public static function forceIndex($indexs, $type = 'FORCE'): Select
     {
@@ -1156,8 +936,6 @@ class Db
      * index 忽略索引.
      *
      * @param array|string $indexs
-     *
-     * @return \Leevel\Database\Select
      */
     public static function ignoreIndex($indexs): Select
     {
@@ -1170,8 +948,6 @@ class Db
      * @param mixed        $table   同 table $table
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function join($table, $cols, ...$cond): Select
     {
@@ -1184,8 +960,6 @@ class Db
      * @param mixed        $table   同 table $table
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function innerJoin($table, $cols, ...$cond): Select
     {
@@ -1198,8 +972,6 @@ class Db
      * @param mixed        $table   同 table $table
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function leftJoin($table, $cols, ...$cond): Select
     {
@@ -1212,8 +984,6 @@ class Db
      * @param mixed        $table   同 table $table
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function rightJoin($table, $cols, ...$cond): Select
     {
@@ -1226,8 +996,6 @@ class Db
      * @param mixed        $table   同 table $table
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function fullJoin($table, $cols, ...$cond): Select
     {
@@ -1240,8 +1008,6 @@ class Db
      * @param mixed        $table   同 table $table
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function crossJoin($table, $cols, ...$cond): Select
     {
@@ -1254,8 +1020,6 @@ class Db
      * @param mixed        $table   同 table $table
      * @param array|string $cols    同 table $cols
      * @param array        ...$cond 同 where $cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function naturalJoin($table, $cols, ...$cond): Select
     {
@@ -1266,9 +1030,6 @@ class Db
      * 添加一个 UNION 查询.
      *
      * @param array|callable|string $selects
-     * @param string                $type
-     *
-     * @return \Leevel\Database\Select
      */
     public static function union($selects, string $type = 'UNION'): Select
     {
@@ -1279,8 +1040,6 @@ class Db
      * 添加一个 UNION ALL 查询.
      *
      * @param array|callable|string $selects
-     *
-     * @return \Leevel\Database\Select
      */
     public static function unionAll($selects): Select
     {
@@ -1291,8 +1050,6 @@ class Db
      * 指定 GROUP BY 子句.
      *
      * @param array|string $expression
-     *
-     * @return \Leevel\Database\Select
      */
     public static function groupBy($expression): Select
     {
@@ -1302,10 +1059,6 @@ class Db
     /**
      * 添加一个 HAVING 条件
      * < 参数规范参考 where()方法 >.
-     *
-     * @param array $data
-     *
-     * @return \Leevel\Database\Select
      */
     public static function having(...$cond): Select
     {
@@ -1314,10 +1067,6 @@ class Db
 
     /**
      * orHaving 查询条件.
-     *
-     * @param array $data
-     *
-     * @return \Leevel\Database\Select
      */
     public static function orHaving(...$cond): Select
     {
@@ -1326,10 +1075,6 @@ class Db
 
     /**
      * Having 原生查询.
-     *
-     * @param string $raw
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingRaw(string $raw): Select
     {
@@ -1338,10 +1083,6 @@ class Db
 
     /**
      * Having 原生 OR 查询.
-     *
-     * @param string $raw
-     *
-     * @return \Leevel\Database\Select
      */
     public static function orHavingRaw(string $raw): Select
     {
@@ -1352,8 +1093,6 @@ class Db
      * havingBetween 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingBetween(...$cond): Select
     {
@@ -1364,8 +1103,6 @@ class Db
      * havingNotBetween 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingNotBetween(...$cond): Select
     {
@@ -1376,8 +1113,6 @@ class Db
      * havingNull 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingNull(...$cond): Select
     {
@@ -1388,8 +1123,6 @@ class Db
      * havingNotNull 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingNotNull(...$cond): Select
     {
@@ -1400,8 +1133,6 @@ class Db
      * havingIn 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingIn(...$cond): Select
     {
@@ -1412,8 +1143,6 @@ class Db
      * havingNotIn 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingNotIn(...$cond): Select
     {
@@ -1424,8 +1153,6 @@ class Db
      * havingLike 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingLike(...$cond): Select
     {
@@ -1436,8 +1163,6 @@ class Db
      * havingNotLike 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingNotLike(...$cond): Select
     {
@@ -1448,8 +1173,6 @@ class Db
      * havingDate 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingDate(...$cond): Select
     {
@@ -1460,8 +1183,6 @@ class Db
      * havingDay 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingDay(...$cond): Select
     {
@@ -1472,8 +1193,6 @@ class Db
      * havingMonth 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingMonth(...$cond): Select
     {
@@ -1484,8 +1203,6 @@ class Db
      * havingYear 查询条件.
      *
      * @param array ...$cond
-     *
-     * @return \Leevel\Database\Select
      */
     public static function havingYear(...$cond): Select
     {
@@ -1496,9 +1213,6 @@ class Db
      * 添加排序.
      *
      * @param array|string $expression
-     * @param string       $orderDefault
-     *
-     * @return \Leevel\Database\Select
      */
     public static function orderBy($expression, string $orderDefault = 'ASC'): Select
     {
@@ -1507,10 +1221,6 @@ class Db
 
     /**
      * 最近排序数据.
-     *
-     * @param string $field
-     *
-     * @return \Leevel\Database\Select
      */
     public static function latest(string $field = 'create_at'): Select
     {
@@ -1519,10 +1229,6 @@ class Db
 
     /**
      * 最早排序数据.
-     *
-     * @param string $field
-     *
-     * @return \Leevel\Database\Select
      */
     public static function oldest(string $field = 'create_at'): Select
     {
@@ -1533,8 +1239,6 @@ class Db
      * 创建一个 SELECT DISTINCT 查询.
      *
      * @param bool $flag 指示是否是一个 SELECT DISTINCT 查询（默认 true）
-     *
-     * @return \Leevel\Database\Select
      */
     public static function distinct(bool $flag = true): Select
     {
@@ -1543,11 +1247,6 @@ class Db
 
     /**
      * 总记录数.
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Select
      */
     public static function count(string $field = '*', string $alias = 'row_count'): Select
     {
@@ -1556,11 +1255,6 @@ class Db
 
     /**
      * 平均数.
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Select
      */
     public static function avg(string $field, string $alias = 'avg_value'): Select
     {
@@ -1569,11 +1263,6 @@ class Db
 
     /**
      * 最大值.
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Select
      */
     public static function max(string $field, string $alias = 'max_value'): Select
     {
@@ -1582,11 +1271,6 @@ class Db
 
     /**
      * 最小值.
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Select
      */
     public static function min(string $field, string $alias = 'min_value'): Select
     {
@@ -1595,11 +1279,6 @@ class Db
 
     /**
      * 合计
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return \Leevel\Database\Select
      */
     public static function sum(string $field, string $alias = 'sum_value'): Select
     {
@@ -1608,8 +1287,6 @@ class Db
 
     /**
      * 指示仅查询第一个符合条件的记录.
-     *
-     * @return \Leevel\Database\Select
      */
     public static function one(): Select
     {
@@ -1618,8 +1295,6 @@ class Db
 
     /**
      * 指示查询所有符合条件的记录.
-     *
-     * @return \Leevel\Database\Select
      */
     public static function all(): Select
     {
@@ -1628,10 +1303,6 @@ class Db
 
     /**
      * 查询几条记录.
-     *
-     * @param int $count
-     *
-     * @return \Leevel\Database\Select
      */
     public static function top(int $count = 30): Select
     {
@@ -1640,11 +1311,6 @@ class Db
 
     /**
      * limit 限制条数.
-     *
-     * @param int $offset
-     * @param int $count
-     *
-     * @return \Leevel\Database\Select
      */
     public static function limit(int $offset = 0, int $count = 0): Select
     {
@@ -1653,10 +1319,6 @@ class Db
 
     /**
      * 是否构造一个 FOR UPDATE 查询.
-     *
-     * @param bool $flag
-     *
-     * @return \Leevel\Database\Select
      */
     public static function forUpdate(bool $flag = true): Select
     {
@@ -1666,10 +1328,7 @@ class Db
     /**
      * 设置查询参数.
      *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return \Leevel\Database\Select
+     * @param mixed $value
      */
     public static function setOption(string $name, $value): Select
     {
@@ -1678,8 +1337,6 @@ class Db
 
     /**
      * 返回查询参数.
-     *
-     * @return array
      */
     public static function getOption(): array
     {
@@ -1688,8 +1345,6 @@ class Db
 
     /**
      * 返回参数绑定.
-     *
-     * @return array
      */
     public static function getBindParams(): array
     {
@@ -1698,8 +1353,6 @@ class Db
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Database\Manager
      */
     public static function proxy(): Manager
     {

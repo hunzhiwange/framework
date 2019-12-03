@@ -93,8 +93,6 @@ abstract class Make extends Command
 
     /**
      * 设置全局变量替换.
-     *
-     * @param array $replace
      */
     public static function setGlobalReplace(array $replace): void
     {
@@ -103,10 +101,6 @@ abstract class Make extends Command
 
     /**
      * 获取全局变量替换.
-     *
-     * @param array $replace
-     *
-     * @return array
      */
     public static function getGlobalReplace(): array
     {
@@ -166,8 +160,6 @@ abstract class Make extends Command
 
     /**
      * 获取模板编译结果.
-     *
-     * @return string
      */
     protected function getTemplateResult(): string
     {
@@ -194,8 +186,6 @@ abstract class Make extends Command
 
     /**
      * 获取模板源码
-     *
-     * @return string
      */
     protected function getTemplateSource(): string
     {
@@ -204,8 +194,6 @@ abstract class Make extends Command
 
     /**
      * 分析变量替换.
-     *
-     * @return array
      */
     protected function parseSourceAndReplace(): array
     {
@@ -220,8 +208,6 @@ abstract class Make extends Command
 
     /**
      * 取得系统的替换变量.
-     *
-     * @return array
      */
     protected function getDefaultReplaceKeyValue(): array
     {
@@ -235,8 +221,6 @@ abstract class Make extends Command
 
     /**
      * 设置文件保存路径.
-     *
-     * @param string $saveFilePath
      */
     protected function setSaveFilePath(string $saveFilePath): void
     {
@@ -245,8 +229,6 @@ abstract class Make extends Command
 
     /**
      * 读取文件保存路径.
-     *
-     * @return string
      */
     protected function getSaveFilePath(): string
     {
@@ -255,8 +237,6 @@ abstract class Make extends Command
 
     /**
      * 获取命名空间路径.
-     *
-     * @return string
      */
     protected function getNamespacePath(): string
     {
@@ -280,8 +260,6 @@ abstract class Make extends Command
 
     /**
      * 设置命名空间.
-     *
-     * @param string $namespace
      */
     protected function setNamespace(string $namespace): void
     {
@@ -290,8 +268,6 @@ abstract class Make extends Command
 
     /**
      * 读取命名空间.
-     *
-     * @return string
      */
     protected function getNamespace(): string
     {
@@ -300,8 +276,6 @@ abstract class Make extends Command
 
     /**
      * 设置创建类型.
-     *
-     * @param string $makeType
      */
     protected function setMakeType(string $makeType): void
     {
@@ -310,8 +284,6 @@ abstract class Make extends Command
 
     /**
      * 读取创建类型.
-     *
-     * @return string
      */
     protected function getMakeType(): string
     {
@@ -320,8 +292,6 @@ abstract class Make extends Command
 
     /**
      * 设置模板文件路径.
-     *
-     * @param string $templatePath
      */
     protected function setTemplatePath(string $templatePath): void
     {
@@ -330,8 +300,6 @@ abstract class Make extends Command
 
     /**
      * 读取模板文件路径.
-     *
-     * @return string
      */
     protected function getTemplatePath(): string
     {
@@ -355,8 +323,6 @@ abstract class Make extends Command
 
     /**
      * 读取自定义变量替换.
-     *
-     * @return array
      */
     protected function getCustomReplaceKeyValue(): array
     {
@@ -365,10 +331,6 @@ abstract class Make extends Command
 
     /**
      * 格式化文件路径.
-     *
-     * @param string $file
-     *
-     * @return string
      */
     protected function formatFile(string $file): string
     {

@@ -273,7 +273,6 @@ class UnitOfWork implements IUnitOfWork
      * 保持实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $method
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -286,7 +285,6 @@ class UnitOfWork implements IUnitOfWork
      * 保持实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $method
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -299,7 +297,6 @@ class UnitOfWork implements IUnitOfWork
      * 保持实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $method
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -315,7 +312,6 @@ class UnitOfWork implements IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -331,7 +327,6 @@ class UnitOfWork implements IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -347,7 +342,6 @@ class UnitOfWork implements IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -363,7 +357,6 @@ class UnitOfWork implements IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -381,7 +374,6 @@ class UnitOfWork implements IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -399,7 +391,6 @@ class UnitOfWork implements IUnitOfWork
      * - 未被管理的实体为直接删除
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -414,7 +405,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册新建实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -430,7 +420,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册新建实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -446,7 +435,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册新建实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -462,8 +450,6 @@ class UnitOfWork implements IUnitOfWork
      * 实体是否已经注册新增.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function created(IEntity $entity, int $priority = 500): bool
     {
@@ -474,7 +460,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册更新实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -490,7 +475,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册更新实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -506,7 +490,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册更新实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -522,8 +505,6 @@ class UnitOfWork implements IUnitOfWork
      * 实体是否已经注册更新.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function updated(IEntity $entity): bool
     {
@@ -534,7 +515,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册不存在则新增否则更新实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priorit
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -550,7 +530,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册不存在则新增否则更新实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priorit
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -566,7 +545,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册不存在则新增否则更新实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priorit
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -582,8 +560,6 @@ class UnitOfWork implements IUnitOfWork
      * 实体是否已经注册不存在则新增否则更新.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function replaced(IEntity $entity): bool
     {
@@ -594,7 +570,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -607,7 +582,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -620,7 +594,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -633,7 +606,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体(强制删除)到前置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -648,7 +620,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体(强制删除).
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -663,7 +634,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体(强制删除)到后置区域.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @return \Leevel\Database\Ddd\IUnitOfWork
      */
@@ -678,8 +648,6 @@ class UnitOfWork implements IUnitOfWork
      * 实体是否已经注册删除.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function deleted(IEntity $entity): bool
     {
@@ -690,8 +658,6 @@ class UnitOfWork implements IUnitOfWork
      * 实体是否已经注册.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function registered(IEntity $entity): bool
     {
@@ -761,8 +727,6 @@ class UnitOfWork implements IUnitOfWork
 
     /**
      * 返回数据库连接.
-     *
-     * @return \Leevel\Database\IDatabase
      */
     public function connect(): IDatabase
     {
@@ -795,8 +759,6 @@ class UnitOfWork implements IUnitOfWork
 
     /**
      * 执行数据库事务.
-     *
-     * @param \Closure $action
      *
      * @return mixed
      */
@@ -857,7 +819,6 @@ class UnitOfWork implements IUnitOfWork
      * 响应回调.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param \Closure                     $callbacks
      */
     public function on(IEntity $entity, Closure $callbacks): void
     {
@@ -891,9 +852,6 @@ class UnitOfWork implements IUnitOfWork
      * 取得实体状态.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param null|int                     $defaults
-     *
-     * @return int
      */
     public function getEntityState(IEntity $entity, ?int $defaults = null): int
     {
@@ -926,9 +884,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 保持实体.
      *
-     * @param string                       $position
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $method
      *
      * @throws \InvalidArgumentException
      *
@@ -976,9 +932,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 移除实体.
      *
-     * @param string                       $position
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @throws \InvalidArgumentException
      *
@@ -1010,7 +964,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册新建实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $priority
      *
      * @throws \InvalidArgumentException
      *
@@ -1099,9 +1052,6 @@ class UnitOfWork implements IUnitOfWork
      * 注册删除实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $position
-     * @param int                          $priority
-     * @param bool                         $remove
      *
      * @throws \InvalidArgumentException
      *
@@ -1170,7 +1120,6 @@ class UnitOfWork implements IUnitOfWork
      * 校验是否已经为新建实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $type
      *
      * @throws \InvalidArgumentException
      */
@@ -1187,7 +1136,6 @@ class UnitOfWork implements IUnitOfWork
      * 校验是否已经为更新实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $type
      *
      * @throws \InvalidArgumentException
      */
@@ -1204,7 +1152,6 @@ class UnitOfWork implements IUnitOfWork
      * 校验是否已经为不存在则新增否则更新实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $type
      *
      * @throws \InvalidArgumentException
      */
@@ -1221,7 +1168,6 @@ class UnitOfWork implements IUnitOfWork
      * 校验是否已经为删除实体.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $type
      *
      * @throws \InvalieletentException
      */
@@ -1238,7 +1184,6 @@ class UnitOfWork implements IUnitOfWork
      * 校验实体主键值.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $type
      *
      * @throws \InvalidArgumentException
      */
@@ -1272,10 +1217,6 @@ class UnitOfWork implements IUnitOfWork
 
     /**
      * 整理仓储实体.
-     *
-     * @param string $flag
-     *
-     * @return array
      */
     protected function normalizeRepositoryEntity(string $flag): array
     {
@@ -1291,9 +1232,6 @@ class UnitOfWork implements IUnitOfWork
 
     /**
      * 释放仓储实体.
-     *
-     * @param string $type
-     * @param int    $id
      */
     protected function flushRepositoryEntity(string $type, int $id): void
     {
@@ -1317,8 +1255,6 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 处理持久化.
      *
-     * @param string                       $position
-     * @param string                       $method
      * @param \Leevel\Database\Ddd\IEntity $entity
      */
     protected function persistNewEntry(string $position, string $method, IEntity $entity): void

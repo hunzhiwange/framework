@@ -171,18 +171,12 @@ interface IRepository
     /**
      * 取得一条数据.
      *
-     * @param int   $id
-     * @param array $column
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function findEntity(int $id, array $column = ['*']): IEntity;
 
     /**
      * 取得一条数据，未找到记录抛出异常.
-     *
-     * @param int   $id
-     * @param array $column
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -192,8 +186,6 @@ interface IRepository
      * 取得所有记录.
      *
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
-     *
-     * @return \Leevel\Collection\Collection
      */
     public function findAll($condition = null): Collection;
 
@@ -202,9 +194,6 @@ interface IRepository
      *
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
      * @param mixed                                                          $fieldValue
-     * @param null|string                                                    $fieldKey
-     *
-     * @return array
      */
     public function findList($condition, $fieldValue, ?string $fieldKey = null): array;
 
@@ -212,9 +201,6 @@ interface IRepository
      * 取得记录数量.
      *
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
-     * @param string                                                         $field
-     *
-     * @return int
      */
     public function findCount($condition = null, string $field = '*'): int;
 
@@ -222,40 +208,21 @@ interface IRepository
      * 分页查询.
      * 可以渲染 HTML.
      *
-     * @param int                                                            $currentPage
-     * @param int                                                            $perPage
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
-     * @param bool                                                           $flag
-     * @param string                                                         $column
-     * @param array                                                          $option
-     *
-     * @return \Leevel\Database\Page
      */
     public function findPage(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, string $column = '*', array $option = []): Page;
 
     /**
      * 创建一个无限数据的分页查询.
      *
-     * @param int                                                            $currentPage
-     * @param int                                                            $perPage
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
-     * @param bool                                                           $flag
-     * @param array                                                          $option
-     *
-     * @return \Leevel\Database\Page
      */
     public function findPageMacro(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): Page;
 
     /**
      * 创建一个只有上下页的分页查询.
      *
-     * @param int                                                            $currentPage
-     * @param int                                                            $perPage
      * @param null|array|\Closure|\Leevel\Database\Ddd\ISpecification|string $condition
-     * @param bool                                                           $flag
-     * @param array                                                          $option
-     *
-     * @return \Leevel\Database\Page
      */
     public function findPagePrevNext(int $currentPage, int $perPage = 10, $condition = null, bool $flag = false, array $option = []): Page;
 
@@ -299,7 +266,6 @@ interface IRepository
      * 响应删除.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param bool                         $forceDelete
      *
      * @return mixed
      */

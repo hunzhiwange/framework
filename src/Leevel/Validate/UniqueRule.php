@@ -76,13 +76,9 @@ class UniqueRule
      * 校验.
      *
      * @param mixed                       $value
-     * @param array                       $param
      * @param \Leevel\Validate\IValidator $validator
-     * @param string                      $field
      *
      * @throws \InvalidArgumentException
-     *
-     * @return bool
      */
     public function validate($value, array $param, IValidator $validator, string $field): bool
     {
@@ -106,15 +102,10 @@ class UniqueRule
     /**
      * 创建语法规则.
      *
-     * @param string      $entity
-     * @param null|string $field
-     * @param null|mixed  $exceptId
-     * @param null|string $primaryKey
-     * @param array       ...$additional
+     * @param null|mixed $exceptId
+     * @param array      ...$additional
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     public static function rule(string $entity, ?string $field = null, $exceptId = null, ?string $primaryKey = null, ...$additional): string
     {
@@ -142,11 +133,7 @@ class UniqueRule
     /**
      * 取得查询.
      *
-     * @param array  $param
-     * @param mixed  $value
-     * @param string $field
-     *
-     * @return \Leevel\Database\Ddd\Select
+     * @param mixed $value
      */
     protected function normalizeSelect($value, array $param, string $field): Select
     {
@@ -173,11 +160,7 @@ class UniqueRule
     /**
      * 分析实体.
      *
-     * @param array $param
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Ddd\IEntity
      */
     protected function parseEntity(array $param): IEntity
     {
@@ -205,9 +188,6 @@ class UniqueRule
 
     /**
      * 排除主键.
-     *
-     * @param \Leevel\Database\Ddd\Select $select
-     * @param array                       $param
      */
     protected function parseExceptId(Select $select, array $param): void
     {
@@ -232,9 +212,6 @@ class UniqueRule
 
     /**
      * 额外条件.
-     *
-     * @param \Leevel\Database\Ddd\Select $select
-     * @param array                       $param
      *
      * @throws \InvalidArgumentException
      */
@@ -292,8 +269,6 @@ class UniqueRule
      * 编码查询条件值.
      *
      * @param mixed $value
-     *
-     * @return string
      */
     protected static function encodeConditionValue($value): string
     {

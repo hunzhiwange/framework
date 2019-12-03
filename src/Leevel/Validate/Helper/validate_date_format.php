@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 是否为时间.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_date_format($value, array $param): bool
 {

@@ -55,11 +55,6 @@ class Timer implements ITimer
 
     /**
      * 执行任务支持失败重试.
-     *
-     * @param \Closure      $work
-     * @param int           $perMillisecond
-     * @param int           $maxCount
-     * @param null|\Closure $failtureCallback
      */
     public function work(Closure $work, int $perMillisecond, int $maxCount, ?Closure $failtureCallback = null): void
     {
@@ -87,11 +82,6 @@ class Timer implements ITimer
 
     /**
      * 每隔一段时间执行同一任务.
-     *
-     * @param \Closure      $work
-     * @param int           $perMillisecond
-     * @param int           $maxCount
-     * @param null|\Closure $failtureCallback
      */
     public function perWork(Closure $work, int $perMillisecond, int $maxCount, ?Closure $failtureCallback = null): void
     {

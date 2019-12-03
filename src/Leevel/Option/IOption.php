@@ -40,17 +40,12 @@ interface IOption
 
     /**
      * 是否存在配置.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function has(string $name = 'app\\'): bool;
 
     /**
      * 获取配置.
      *
-     * @param string     $name
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -59,8 +54,6 @@ interface IOption
 
     /**
      * 返回所有配置.
-     *
-     * @return array
      */
     public function all(): array;
 
@@ -74,8 +67,6 @@ interface IOption
 
     /**
      * 删除配置.
-     *
-     * @param string $name
      */
     public function delete(string $name): void;
 

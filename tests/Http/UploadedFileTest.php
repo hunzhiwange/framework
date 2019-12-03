@@ -271,8 +271,6 @@ class UploadedFileTest extends TestCase
 
     /**
      * @dataProvider uploadedFileErrorProvider
-     *
-     * @param int $error
      */
     public function testIsInvalidOnUploadError(int $error): void
     {

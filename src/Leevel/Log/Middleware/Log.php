@@ -45,8 +45,6 @@ class Log
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Log\Manager $manager
      */
     public function __construct(Manager $manager)
     {
@@ -55,10 +53,6 @@ class Log
 
     /**
      * 响应.
-     *
-     * @param \Closure               $next
-     * @param \Leevel\Http\IRequest  $request
-     * @param \Leevel\Http\IResponse $response
      */
     public function terminate(Closure $next, IRequest $request, IResponse $response): void
     {

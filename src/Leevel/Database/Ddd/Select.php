@@ -210,7 +210,6 @@ class Select
      * 构造函数.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param int                          $softDeletedType
      */
     public function __construct(IEntity $entity, int $softDeletedType = IEntity::WITHOUT_SOFT_DELETED)
     {
@@ -220,9 +219,6 @@ class Select
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      */
@@ -245,8 +241,6 @@ class Select
 
     /**
      * 获取不执行预载入的查询结果.
-     *
-     * @param \Closure $call
      *
      * @return mixed
      */
@@ -273,8 +267,6 @@ class Select
      * - 获取包含软删除的数据.
      * - 会覆盖查询条件，需要首先调用.
      *
-     * @param int $softDeletedType
-     *
      * @return \Leevel\Database\Ddd\Select
      */
     public function withSoftDeleted(): self
@@ -290,8 +282,6 @@ class Select
      * - 获取只包含软删除的数据.
      * - 会覆盖查询条件，需要首先调用.
      *
-     * @param int $softDeletedType
-     *
      * @return \Leevel\Database\Ddd\Select
      */
     public function onlySoftDeleted(): self
@@ -303,8 +293,6 @@ class Select
 
     /**
      * 添加预载入的关联.
-     *
-     * @param array $relation
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -345,9 +333,6 @@ class Select
     /**
      * 通过主键查找模型实体.
      *
-     * @param int   $id
-     * @param array $column
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function findEntity(int $id, array $column = ['*']): IEntity
@@ -362,11 +347,6 @@ class Select
 
     /**
      * 根据主键查找模型实体.
-     *
-     * @param array $ids
-     * @param array $column
-     *
-     * @return \Leevel\Collection\Collection
      */
     public function findMany(array $ids, array $column = ['*']): Collection
     {
@@ -385,9 +365,6 @@ class Select
     /**
      * 通过主键查找模型实体，未找到则抛出异常.
      *
-     * @param int   $id
-     * @param array $column
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function findOrFail(int $id, array $column = ['*']): IEntity
@@ -402,8 +379,6 @@ class Select
 
     /**
      * 初始化查询.
-     *
-     * @param int $softDeletedType
      */
     protected function initSelect(int $softDeletedType): void
     {
@@ -414,8 +389,6 @@ class Select
      * 预载入模型实体.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     *
-     * @return array
      */
     protected function preLoadRelation(array $entitys): array
     {
@@ -430,10 +403,6 @@ class Select
 
     /**
      * 取得关联模型实体.
-     *
-     * @param string $name
-     *
-     * @return \Leevel\Database\Ddd\Relation\Relation
      */
     protected function getRelation(string $name): Relation
     {
@@ -451,10 +420,6 @@ class Select
 
     /**
      * 尝试取得嵌套关联.
-     *
-     * @param string $relation
-     *
-     * @return array
      */
     protected function nestedRelation(string $relation): array
     {
@@ -470,11 +435,6 @@ class Select
 
     /**
      * 判断是否存在嵌套关联.
-     *
-     * @param string $name
-     * @param string $relation
-     *
-     * @return bool
      */
     protected function isNested(string $name, string $relation): bool
     {
@@ -483,10 +443,6 @@ class Select
 
     /**
      * 格式化预载入关联.
-     *
-     * @param array $relation
-     *
-     * @return array
      */
     protected function parseWithRelation(array $relation): array
     {
@@ -505,11 +461,6 @@ class Select
 
     /**
      * 解析嵌套关联.
-     *
-     * @param string $name
-     * @param array  $result
-     *
-     * @return array
      */
     protected function parseNestedWith(string $name, array $result): array
     {
@@ -528,8 +479,6 @@ class Select
      * 转换结果到模型实体类型.
      *
      * @param mixed $result
-     *
-     * @return array
      */
     protected function conversionToEntitys($result): array
     {
@@ -553,10 +502,6 @@ class Select
      * 关联数据设置到模型实体上.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param string                         $name
-     * @param null|\Closure                  $condition
-     *
-     * @return array
      */
     protected function loadRelation(array $entitys, string $name, ?Closure $condition = null): array
     {

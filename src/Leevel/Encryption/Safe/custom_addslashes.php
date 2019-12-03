@@ -24,7 +24,6 @@ namespace Leevel\Encryption\Safe;
  * 添加模式转义.
  *
  * @param mixed $data
- * @param bool  $recursive
  *
  * @return mixed
  */

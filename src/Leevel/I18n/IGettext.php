@@ -33,10 +33,6 @@ interface IGettext
 {
     /**
      * 读取文件数据.
-     *
-     * @param array $filename
-     *
-     * @return array
      */
     public function read(array $filenames): array;
 }

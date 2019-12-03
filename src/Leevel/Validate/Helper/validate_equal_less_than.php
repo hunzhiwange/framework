@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 小于或者全等.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_equal_less_than($value, array $param): bool
 {

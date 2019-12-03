@@ -36,17 +36,11 @@ interface IApplication
 {
     /**
      * 格式化一个命令行.
-     *
-     * @param string $command
-     *
-     * @return \Symfony\Component\Console\Command\Command
      */
     public function normalizeCommand(string $command): SymfonyCommand;
 
     /**
      * 批量格式化命令行.
-     *
-     * @param array $commands
      */
     public function normalizeCommands(array $commands): void;
 

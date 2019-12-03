@@ -335,9 +335,6 @@ interface IEntity
     /**
      * 创建新的实例.
      *
-     * @param array $data
-     * @param bool  $fromStorage
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public static function make(array $data = [], bool $fromStorage = false): self;
@@ -348,8 +345,6 @@ interface IEntity
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - select 别名，致敬经典 QeePHP.
-     *
-     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -362,8 +357,6 @@ interface IEntity
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - 获取包含软删除的数据.
      *
-     * @param int $softDeletedType
-     *
      * @return \Leevel\Database\Ddd\Select
      */
     public static function withSoftDeleted(): Select;
@@ -375,18 +368,12 @@ interface IEntity
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - 获取只包含软删除的数据.
      *
-     * @param int $softDeletedType
-     *
      * @return \Leevel\Database\Ddd\Select
      */
     public static function onlySoftDeleted(): Select;
 
     /**
      * 数据库查询集合对象.
-     *
-     * @param int $softDeletedType
-     *
-     * @return \Leevel\Database\Select
      */
     public static function selectCollection(int $softDeletedType = self::WITHOUT_SOFT_DELETED): DatabaseSelect;
 
@@ -400,8 +387,7 @@ interface IEntity
     /**
      * 数据库连接沙盒.
      *
-     * @param mixed    $connect
-     * @param \Closure $call
+     * @param mixed $connect
      *
      * @return mixed
      */
@@ -410,8 +396,6 @@ interface IEntity
     /**
      * 批量设置属性数据.
      *
-     * @param array $data
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function withProps(array $data): self;
@@ -419,10 +403,7 @@ interface IEntity
     /**
      * 设置属性数据.
      *
-     * @param string $prop
-     * @param mixed  $value
-     * @param bool   $force
-     * @param bool   $ignoreReadonly
+     * @param mixed $value
      *
      * @throws \InvalidArgumentException
      *
@@ -433,26 +414,17 @@ interface IEntity
     /**
      * 获取属性数据.
      *
-     * @param string $prop
-     *
      * @return mixed
      */
     public function prop(string $prop);
 
     /**
      * 是否存在属性数据.
-     *
-     * @param string $prop
-     *
-     * @return bool
      */
     public function hasProp(string $prop): bool;
 
     /**
      * 自动判断快捷方式.
-     *
-     * @param array      $data
-     * @param null|array $fill
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -461,18 +433,12 @@ interface IEntity
     /**
      * 新增快捷方式.
      *
-     * @param array      $data
-     * @param null|array $fill
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function create(array $data = [], array $fill = null): self;
 
     /**
      * 更新快捷方式.
-     *
-     * @param array      $data
-     * @param null|array $fill
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -481,37 +447,22 @@ interface IEntity
     /**
      * replace 快捷方式.
      *
-     * @param array      $data
-     * @param null|array $fill
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function replace(array $data = [], array $fill = null): self;
 
     /**
      * 根据主键 ID 删除模型实体.
-     *
-     * @param array $ids
-     * @param bool  $forceDelete
-     *
-     * @return int
      */
     public static function destroy(array $ids, bool $forceDelete = false): int;
 
     /**
      * 根据主键 ID 强制删除模型实体.
-     *
-     * @param array $ids
-     * @param bool  $forceDelete
-     *
-     * @return int
      */
     public static function forceDestroy(array $ids): int;
 
     /**
      * 删除模型实体.
-     *
-     * @param bool $forceDelete
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -526,10 +477,6 @@ interface IEntity
 
     /**
      * 根据主键 ID 删除模型实体.
-     *
-     * @param array $ids
-     *
-     * @return int
      */
     public static function softDestroy(array $ids): int;
 
@@ -549,8 +496,6 @@ interface IEntity
 
     /**
      * 检查模型实体是否已经被软删除.
-     *
-     * @return bool
      */
     public function softDeleted(): bool;
 
@@ -558,8 +503,6 @@ interface IEntity
      * 获取软删除字段.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     public static function deleteAtColumn(): string;
 
@@ -574,15 +517,11 @@ interface IEntity
 
     /**
      * 获取数据持久化数据.
-     *
-     * @return null|array
      */
     public function flushData(): ?array;
 
     /**
      * 确定对象是否对应数据库中的一条记录.
-     *
-     * @return bool
      */
     public function newed(): bool;
 
@@ -602,36 +541,24 @@ interface IEntity
     /**
      * 返回关联数据.
      *
-     * @param string $prop
-     *
      * @return mixed
      */
     public function loadRelationProp(string $prop);
 
     /**
      * 是否为关联属性.
-     *
-     * @param string $prop
-     *
-     * @return bool
      */
     public function isRelation(string $prop): bool;
 
     /**
      * 读取关联.
      *
-     * @param string $prop
-     *
      * @throws \BadMethodCallException
-     *
-     * @return \Leevel\Database\Ddd\Relation\Relation
      */
     public function loadRelation(string $prop): Relation;
 
     /**
      * 取得关联数据.
-     *
-     * @param string $prop
      *
      * @return mixed
      */
@@ -640,15 +567,12 @@ interface IEntity
     /**
      * 设置关联数据.
      *
-     * @param string $prop
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function withRelationProp(string $prop, $value): void;
 
     /**
      * 预加载关联.
-     *
-     * @param array $relation
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -670,52 +594,21 @@ interface IEntity
 
     /**
      * 一对一关联.
-     *
-     * @param string        $relatedEntityClass
-     * @param string        $targetKey
-     * @param string        $sourceKey
-     * @param null|\Closure $scope
-     *
-     * @return \Leevel\Database\Ddd\Relation\HasOne
      */
     public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasOne;
 
     /**
      * 定义从属关系.
-     *
-     * @param string        $relatedEntityClass
-     * @param string        $targetKey
-     * @param string        $sourceKey
-     * @param null|\Closure $scope
-     *
-     * @return \Leevel\Database\Ddd\Relation\BelongsTo
      */
     public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): BelongsTo;
 
     /**
      * 一对多关联.
-     *
-     * @param string        $relatedEntityClass
-     * @param string        $targetKey
-     * @param string        $sourceKey
-     * @param null|\Closure $scope
-     *
-     * @return \Leevel\Database\Ddd\Relation\HasMany
      */
     public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasMany;
 
     /**
      * 多对多关联.
-     *
-     * @param string        $relatedEntityClass
-     * @param string        $middleEntityClass
-     * @param string        $targetKey
-     * @param string        $sourceKey
-     * @param string        $middleTargetKey
-     * @param string        $middleSourceKey
-     * @param null|\Closure $scope
-     *
-     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null): ManyMany;
 
@@ -728,15 +621,12 @@ interface IEntity
 
     /**
      * 设置模型实体事件处理器.
-     *
-     * @param null|\Leevel\Event\IDispatch $dispatch
      */
     public static function withEventDispatch(?IDispatch $dispatch = null): void;
 
     /**
      * 注册模型实体事件.
      *
-     * @param string                                 $event
      * @param \Closure|\Leevel\Event\Observer|string $listener
      */
     public static function event(string $event, $listener): void;
@@ -744,38 +634,27 @@ interface IEntity
     /**
      * 执行模型实体事件.
      *
-     * @param string $event
-     * @param array  ...$args
+     * @param array ...$args
      */
     public function handleEvent(string $event, ...$args): void;
 
     /**
      * 返回受支持的事件.
-     *
-     * @return array
      */
     public static function supportEvent(): array;
 
     /**
      * 返回已经改变.
-     *
-     * @return array
      */
     public function changed(): array;
 
     /**
      * 检测是否已经改变.
-     *
-     * @param string $prop
-     *
-     * @return bool
      */
     public function hasChanged(string $prop): bool;
 
     /**
      * 将指定的属性设置已改变.
-     *
-     * @param array $props
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -783,8 +662,6 @@ interface IEntity
 
     /**
      * 删除改变属性.
-     *
-     * @param array $props
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -815,8 +692,6 @@ interface IEntity
 
     /**
      * 返回主键字段.
-     *
-     * @return array
      */
     public static function primaryKeys(): array;
 
@@ -829,17 +704,11 @@ interface IEntity
 
     /**
      * 返回字段名字.
-     *
-     * @return array
      */
     public static function fields(): array;
 
     /**
      * 是否存在字段.
-     *
-     * @param string $field
-     *
-     * @return bool
      */
     public static function hasField(string $field): bool;
 
@@ -848,8 +717,6 @@ interface IEntity
      * 复合主键或者没有主键直接抛出异常.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     public static function singlePrimaryKey(): string;
 
@@ -863,8 +730,6 @@ interface IEntity
 
     /**
      * 返回设置表.
-     *
-     * @return string
      */
     public static function table(): string;
 
@@ -872,7 +737,6 @@ interface IEntity
      * 获取 enum.
      * 不存在返回 false.
      *
-     * @param string     $prop
      * @param null|mixed $enum
      *
      * @throws \InvalidArgumentException
@@ -883,10 +747,6 @@ interface IEntity
 
     /**
      * 创建一个模型实体集合.
-     *
-     * @param array $entity
-     *
-     * @return \Leevel\Collection\Collection
      */
     public function collection(array $entity = []): Collection;
 
@@ -894,16 +754,13 @@ interface IEntity
      * 获取查询键值
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     public function idCondition(): array;
 
     /**
      * setter.
      *
-     * @param string $prop
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -911,8 +768,6 @@ interface IEntity
 
     /**
      * getter.
-     *
-     * @param string $prop
      *
      * @return mixed
      */

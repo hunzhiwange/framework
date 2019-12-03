@@ -24,12 +24,6 @@ use DirectoryIterator;
 
 /**
  * 复制目录.
- *
- * @param string $sourcePath
- * @param string $targetPath
- * @param array  $filter
- *
- * @return bool
  */
 function copy_directory(string $sourcePath, string $targetPath, array $filter = []): bool
 {

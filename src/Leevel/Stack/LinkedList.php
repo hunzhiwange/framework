@@ -49,8 +49,6 @@ class LinkedList extends SplDoublyLinkedList
 
     /**
      * 构造函数.
-     *
-     * @param null|array $type
      */
     public function __construct(?array $type = null)
     {
@@ -129,8 +127,6 @@ class LinkedList extends SplDoublyLinkedList
      * 验证类型是否正确.
      *
      * @param mixed $value
-     *
-     * @return bool
      */
     protected function checkType($value): bool
     {

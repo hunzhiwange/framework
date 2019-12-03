@@ -47,8 +47,6 @@ class RegisterRuntime
 
     /**
      * 响应.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -71,11 +69,7 @@ class RegisterRuntime
     /**
      * 设置错误句柄.
      *
-     * @param int         $code
-     * @param string      $description
-     * @param null|string $file
-     * @param null|int    $line
-     * @param null|mixed  $context
+     * @param null|mixed $context
      *
      * @throws \ErrorException
      */
@@ -103,8 +97,6 @@ class RegisterRuntime
 
     /**
      * 响应异常.
-     *
-     * @param \Throwable $e
      */
     public function setExceptionHandler(Throwable $e): void
     {
@@ -135,8 +127,6 @@ class RegisterRuntime
 
     /**
      * 渲染命令行异常并输出.
-     *
-     * @param \Exception $e
      */
     protected function renderConsoleResponse(Exception $e): void
     {
@@ -147,8 +137,6 @@ class RegisterRuntime
 
     /**
      * 渲染 HTTP 异常并输出.
-     *
-     * @param \Exception $e
      */
     protected function renderHttpResponse(Exception $e): void
     {
@@ -164,10 +152,6 @@ class RegisterRuntime
 
     /**
      * 格式化致命错误信息.
-     *
-     * @param array $error
-     *
-     * @return \ErrorException
      */
     protected function formatErrorException(array $error): ErrorException
     {
@@ -178,8 +162,6 @@ class RegisterRuntime
 
     /**
      * 返回运行处理器.
-     *
-     * @return \Leevel\Kernel\IRuntime
      */
     protected function getRuntime(): IRuntime
     {

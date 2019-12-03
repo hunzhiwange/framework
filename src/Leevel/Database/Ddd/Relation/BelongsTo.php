@@ -48,10 +48,6 @@ class BelongsTo extends Relation
      * 匹配关联查询数据到模型实体.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param \Leevel\Collection\Collection  $result
-     * @param string                         $relation
-     *
-     * @return array
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
@@ -99,10 +95,6 @@ class BelongsTo extends Relation
 
     /**
      * 模型实体映射数据.
-     *
-     * @param \Leevel\Collection\Collection $result
-     *
-     * @return array
      */
     protected function buildMap(Collection $result): array
     {
@@ -118,8 +110,6 @@ class BelongsTo extends Relation
      * 分析预载入模型实体中对应的源数据.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     *
-     * @return array
      */
     protected function getPreLoadEntityValue(array $entitys): array
     {

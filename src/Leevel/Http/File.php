@@ -42,8 +42,6 @@ class File extends SplFileObject
     /**
      * 构造函数.
      *
-     * @param string $path
-     *
      * @throws \Leevel\Http\FileNotFoundException
      */
     public function __construct(string $path)
@@ -58,9 +56,6 @@ class File extends SplFileObject
     /**
      * 移动文件.
      *
-     * @param string      $directory
-     * @param null|string $name
-     *
      * @return \Leevel\Http\File
      */
     public function move(string $directory, ?string $name = null): self
@@ -73,11 +68,6 @@ class File extends SplFileObject
 
     /**
      * 获取目标文件.
-     *
-     * @param string      $directory
-     * @param null|string $name
-     *
-     * @return string
      */
     protected function getTargetFile(string $directory, ?string $name = null): string
     {
@@ -90,10 +80,6 @@ class File extends SplFileObject
 
     /**
      * 移动文件到目标文件.
-     *
-     * @param string $sourcePath
-     * @param string $target
-     * @param bool   $isUploaded
      *
      * @throws \Leevel\Http\FileException
      */

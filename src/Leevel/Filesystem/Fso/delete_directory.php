@@ -24,9 +24,6 @@ use DirectoryIterator;
 
 /**
  * 删除目录.
- *
- * @param string $dir
- * @param bool   $recursive
  */
 function delete_directory(string $dir, bool $recursive = false): void
 {

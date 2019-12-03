@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 验证是否为浮点数.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_float($value): bool
 {

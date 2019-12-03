@@ -49,22 +49,16 @@ abstract class Status extends Command
 
     /**
      * 创建 server.
-     *
-     * @return \Leevel\Protocol\IServer
      */
     abstract protected function createServer(): IServer;
 
     /**
      * 返回 Version.
-     *
-     * @return string
      */
     abstract protected function getVersion(): string;
 
     /**
      * 获取 Swoole 服务状态.
-     *
-     * @param array $option
      */
     protected function status(array $option): void
     {
@@ -153,8 +147,6 @@ abstract class Status extends Command
 
     /**
      * 返回 QueryPHP Logo.
-     *
-     * @return string
      */
     protected function getLogo(): string
     {
@@ -170,8 +162,6 @@ abstract class Status extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -180,8 +170,6 @@ abstract class Status extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

@@ -36,11 +36,6 @@ interface IMatch
 {
     /**
      * 匹配数据项.
-     *
-     * @param \Leevel\Router\IRouter $router
-     * @param \Leevel\Http\IRequest  $request
-     *
-     * @return array
      */
     public function matche(IRouter $router, IRequest $request): array;
 }

@@ -43,8 +43,6 @@ class RedisPool implements ICache
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Cache\Redis\RedisPool $redisPool
      */
     public function __construct(RedisPools $redisPool)
     {
@@ -53,9 +51,6 @@ class RedisPool implements ICache
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      */
@@ -78,9 +73,7 @@ class RedisPool implements ICache
     /**
      * 缓存存在读取否则重新设置.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
+     * @param mixed $data
      *
      * @return mixed
      */
@@ -92,8 +85,7 @@ class RedisPool implements ICache
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Cache\ICache
      */
@@ -105,9 +97,7 @@ class RedisPool implements ICache
     /**
      * 获取缓存.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
+     * @param mixed $defaults
      *
      * @return mixed
      */
@@ -119,9 +109,7 @@ class RedisPool implements ICache
     /**
      * 设置缓存.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
+     * @param mixed $data
      */
     public function set(string $name, $data, array $option = []): void
     {
@@ -130,8 +118,6 @@ class RedisPool implements ICache
 
     /**
      * 清除缓存.
-     *
-     * @param string $name
      */
     public function delete(string $name): void
     {

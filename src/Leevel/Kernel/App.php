@@ -146,9 +146,6 @@ class App implements IApp
     /**
      * 构造函数
      * 应用中通过 singletons 生成单一实例.
-     *
-     * @param \Leevel\Di\IContainer $container
-     * @param string                $path
      */
     public function __construct(IContainer $container, string $path)
     {
@@ -159,8 +156,6 @@ class App implements IApp
 
     /**
      * 程序版本.
-     *
-     * @return string
      */
     public function version(): string
     {
@@ -169,8 +164,6 @@ class App implements IApp
 
     /**
      * 是否以扩展方式运行.
-     *
-     * @return bool
      */
     public function runWithExtension(): bool
     {
@@ -179,8 +172,6 @@ class App implements IApp
 
     /**
      * 是否为 Console.
-     *
-     * @return bool
      */
     public function console(): bool
     {
@@ -193,8 +184,6 @@ class App implements IApp
 
     /**
      * 设置基础路径.
-     *
-     * @param string $path
      */
     public function setPath(string $path): void
     {
@@ -203,10 +192,6 @@ class App implements IApp
 
     /**
      * 基础路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function path(string $path = ''): string
     {
@@ -215,8 +200,6 @@ class App implements IApp
 
     /**
      * 设置应用路径.
-     *
-     * @param string $path
      */
     public function setAppPath(string $path): void
     {
@@ -227,9 +210,6 @@ class App implements IApp
      * 应用路径.
      *
      * @param bool|string $app
-     * @param string      $path
-     *
-     * @return string
      */
     public function appPath($app = false, string $path = ''): string
     {
@@ -242,8 +222,6 @@ class App implements IApp
      * 取得应用主题目录.
      *
      * @param bool|string $app
-     *
-     * @return string
      */
     public function themePath($app = false): string
     {
@@ -252,8 +230,6 @@ class App implements IApp
 
     /**
      * 设置公共路径.
-     *
-     * @param string $path
      */
     public function setCommonPath(string $path): void
     {
@@ -262,10 +238,6 @@ class App implements IApp
 
     /**
      * 公共路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function commonPath(string $path = ''): string
     {
@@ -275,8 +247,6 @@ class App implements IApp
 
     /**
      * 设置运行时路径.
-     *
-     * @param string $path
      */
     public function setRuntimePath(string $path): void
     {
@@ -285,10 +255,6 @@ class App implements IApp
 
     /**
      * 运行路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function runtimePath(string $path = ''): string
     {
@@ -298,8 +264,6 @@ class App implements IApp
 
     /**
      * 设置存储路径.
-     *
-     * @param string $path
      */
     public function setStoragePath(string $path): void
     {
@@ -308,10 +272,6 @@ class App implements IApp
 
     /**
      * 附件路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function storagePath(string $path = ''): string
     {
@@ -321,8 +281,6 @@ class App implements IApp
 
     /**
      * 设置资源路径.
-     *
-     * @param string $path
      */
     public function setPublicPath(string $path): void
     {
@@ -331,10 +289,6 @@ class App implements IApp
 
     /**
      * 资源路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function publicPath(string $path = ''): string
     {
@@ -344,8 +298,6 @@ class App implements IApp
 
     /**
      * 设置主题路径.
-     *
-     * @param string $path
      */
     public function setThemesPath(string $path): void
     {
@@ -354,10 +306,6 @@ class App implements IApp
 
     /**
      * 主题路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function themesPath(string $path = ''): string
     {
@@ -367,8 +315,6 @@ class App implements IApp
 
     /**
      * 设置配置路径.
-     *
-     * @param string $path
      */
     public function setOptionPath(string $path): void
     {
@@ -377,10 +323,6 @@ class App implements IApp
 
     /**
      * 配置路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function optionPath(string $path = ''): string
     {
@@ -390,8 +332,6 @@ class App implements IApp
 
     /**
      * 设置语言包路径.
-     *
-     * @param string $path
      */
     public function setI18nPath(string $path): void
     {
@@ -400,10 +340,6 @@ class App implements IApp
 
     /**
      * 语言包路径.
-     *
-     * @param null|string $path
-     *
-     * @return string
      */
     public function i18nPath(?string $path = null): string
     {
@@ -413,8 +349,6 @@ class App implements IApp
 
     /**
      * 设置环境变量路径.
-     *
-     * @param string $path
      */
     public function setEnvPath(string $path): void
     {
@@ -423,8 +357,6 @@ class App implements IApp
 
     /**
      * 环境变量路径.
-     *
-     * @return string
      */
     public function envPath(): string
     {
@@ -433,8 +365,6 @@ class App implements IApp
 
     /**
      * 设置环境变量文件.
-     *
-     * @param string $file
      */
     public function setEnvFile(string $file): void
     {
@@ -443,8 +373,6 @@ class App implements IApp
 
     /**
      * 取得环境变量文件.
-     *
-     * @return string
      */
     public function envFile(): string
     {
@@ -453,8 +381,6 @@ class App implements IApp
 
     /**
      * 取得环境变量完整路径.
-     *
-     * @return string
      */
     public function fullEnvPath(): string
     {
@@ -463,8 +389,6 @@ class App implements IApp
 
     /**
      * 设置语言包缓存路径.
-     *
-     * @param string $i18nCachedPath
      */
     public function setI18nCachedPath(string $i18nCachedPath): void
     {
@@ -473,10 +397,6 @@ class App implements IApp
 
     /**
      * 返回语言包缓存路径.
-     *
-     * @param string $i18n
-     *
-     * @return string
      */
     public function i18nCachedPath(string $i18n): string
     {
@@ -487,10 +407,6 @@ class App implements IApp
 
     /**
      * 是否存在语言包缓存.
-     *
-     * @param string $i18n
-     *
-     * @return bool
      */
     public function isCachedI18n(string $i18n): bool
     {
@@ -499,8 +415,6 @@ class App implements IApp
 
     /**
      * 设置配置缓存路径.
-     *
-     * @param string $optionCachedPath
      */
     public function setOptionCachedPath(string $optionCachedPath): void
     {
@@ -511,8 +425,6 @@ class App implements IApp
      * 返回配置缓存路径.
      *
      * @since 2018.11.23 支持不同环境变量的缓存路径
-     *
-     * @return string
      */
     public function optionCachedPath(): string
     {
@@ -524,8 +436,6 @@ class App implements IApp
 
     /**
      * 是否存在配置缓存.
-     *
-     * @return bool
      */
     public function isCachedOption(): bool
     {
@@ -534,8 +444,6 @@ class App implements IApp
 
     /**
      * 设置路由缓存路径.
-     *
-     * @param string $routerCachedPath
      */
     public function setRouterCachedPath(string $routerCachedPath): void
     {
@@ -544,8 +452,6 @@ class App implements IApp
 
     /**
      * 返回路由缓存路径.
-     *
-     * @return string
      */
     public function routerCachedPath(): string
     {
@@ -554,8 +460,6 @@ class App implements IApp
 
     /**
      * 是否存在路由缓存.
-     *
-     * @return bool
      */
     public function isCachedRouter(): bool
     {
@@ -569,12 +473,8 @@ class App implements IApp
      * - 基于某个具体的类查询该类目录的真实路径。
      * - 为简化开发和提升性能，必须提供具体的存在的类才能够获取目录的真实路径。
      *
-     * @param string $specificClass
-     * @param bool   $throwException
-     *
      * @throws \RuntimeException
      *
-     * @return string
      * @codeCoverageIgnore
      */
     public function namespacePath(string $specificClass, bool $throwException = true): string
@@ -602,8 +502,6 @@ class App implements IApp
 
     /**
      * 是否开启 debug.
-     *
-     * @return bool
      */
     public function debug(): bool
     {
@@ -613,8 +511,6 @@ class App implements IApp
 
     /**
      * 是否为开发环境.
-     *
-     * @return bool
      */
     public function development(): bool
     {
@@ -623,8 +519,6 @@ class App implements IApp
 
     /**
      * 运行环境.
-     *
-     * @return string
      */
     public function environment(): string
     {
@@ -648,8 +542,6 @@ class App implements IApp
 
     /**
      * 初始化应用.
-     *
-     * @param array $bootstraps
      */
     public function bootstrap(array $bootstraps): void
     {
@@ -679,8 +571,6 @@ class App implements IApp
 
     /**
      * 返回 IOC 容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function container(): IContainer
     {
@@ -703,8 +593,6 @@ class App implements IApp
      * 格式化应用名字.
      *
      * @param bool|string $app
-     *
-     * @return string
      */
     protected function normalizeApp($app): string
     {
@@ -713,10 +601,6 @@ class App implements IApp
 
     /**
      * 格式化路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     protected function normalizePath(string $path): string
     {

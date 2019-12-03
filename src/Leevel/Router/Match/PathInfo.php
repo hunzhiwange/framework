@@ -36,11 +36,6 @@ class PathInfo extends Match implements IMatch
 {
     /**
      * 匹配数据项.
-     *
-     * @param \Leevel\Router\IRouter $router
-     * @param \Leevel\Http\IRequest  $request
-     *
-     * @return array
      */
     public function matche(IRouter $router, IRequest $request): array
     {
@@ -51,8 +46,6 @@ class PathInfo extends Match implements IMatch
 
     /**
      * 主匹配.
-     *
-     * @return array
      */
     protected function matchMain(): array
     {
@@ -79,8 +72,6 @@ class PathInfo extends Match implements IMatch
      * 格式化 PathInfo.
      *
      * @param array $pathInfo
-     *
-     * @return array
      */
     protected function normalizePath(string $pathInfo): array
     {
@@ -91,10 +82,6 @@ class PathInfo extends Match implements IMatch
 
     /**
      * 匹配路由应用.
-     *
-     * @param array $path
-     *
-     * @return array
      */
     protected function matcheApp(array $path): array
     {
@@ -116,10 +103,6 @@ class PathInfo extends Match implements IMatch
 
     /**
      * 匹配路由 Mvc.
-     *
-     * @param array $path
-     *
-     * @return array
      */
     protected function matcheMvc(array $path): array
     {
@@ -145,10 +128,6 @@ class PathInfo extends Match implements IMatch
 
     /**
      * 是否找到 app.
-     *
-     * @param string $path
-     *
-     * @return bool
      */
     protected function isFindApp(string $path): bool
     {
@@ -157,10 +136,6 @@ class PathInfo extends Match implements IMatch
 
     /**
      * 匹配路由 Restful.
-     *
-     * @param array $path
-     *
-     * @return array
      */
     protected function matcheRestful(array $path): array
     {

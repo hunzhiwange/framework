@@ -55,8 +55,6 @@ class Cookie
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -66,8 +64,7 @@ class Cookie
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Http\Cookie
      */
@@ -81,9 +78,7 @@ class Cookie
     /**
      * 设置 COOKIE.
      *
-     * @param string            $name
      * @param null|array|string $value
-     * @param array             $option
      *
      * @throws \Exception
      */
@@ -127,7 +122,6 @@ class Cookie
      *
      * @param array|string $keys
      * @param null|mixed   $value
-     * @param array        $option
      */
     public function put($keys, $value = null, array $option = []): void
     {
@@ -143,9 +137,7 @@ class Cookie
     /**
      * 数组插入数据.
      *
-     * @param string $key
-     * @param mixed  $value
-     * @param array  $option
+     * @param mixed $value
      */
     public function push(string $key, $value, array $option = []): void
     {
@@ -156,10 +148,6 @@ class Cookie
 
     /**
      * 合并元素.
-     *
-     * @param string $key
-     * @param array  $value
-     * @param array  $option
      */
     public function merge(string $key, array $value, array $option = []): void
     {
@@ -169,9 +157,7 @@ class Cookie
     /**
      * 弹出元素.
      *
-     * @param string $key
-     * @param mixed  $value
-     * @param array  $option
+     * @param mixed $value
      */
     public function pop(string $key, array $value, array $option = []): void
     {
@@ -181,10 +167,8 @@ class Cookie
     /**
      * 数组插入键值对数据.
      *
-     * @param string     $key
      * @param mixed      $keys
      * @param null|mixed $value
-     * @param array      $option
      */
     public function arr(string $key, $keys, $value = null, array $option = []): void
     {
@@ -202,8 +186,7 @@ class Cookie
     /**
      * 数组键值删除数据.
      *
-     * @param string $key
-     * @param mixed  $keys
+     * @param mixed $keys
      */
     public function arrDelete(string $key, $keys, array $option = []): void
     {
@@ -225,9 +208,7 @@ class Cookie
     /**
      * 获取 cookie.
      *
-     * @param string     $name
      * @param null|mixed $defaults
-     * @param array      $option
      *
      * @return mixed
      */
@@ -248,9 +229,6 @@ class Cookie
 
     /**
      * 删除 cookie.
-     *
-     * @param string $name
-     * @param array  $option
      */
     public function delete(string $name, array $option = []): void
     {
@@ -259,8 +237,6 @@ class Cookie
 
     /**
      * 清空 cookie.
-     *
-     * @param array $option
      */
     public function clear(array $option = []): void
     {
@@ -272,8 +248,6 @@ class Cookie
 
     /**
      * 返回所有 cookie.
-     *
-     * @return array
      */
     public function all(): array
     {
@@ -283,11 +257,7 @@ class Cookie
     /**
      * 格式化 COOKIE 为字符串.
      *
-     * @param array $cookie
-     *
      * @throws \Exception
-     *
-     * @return string
      *
      * @see \Symfony\Component\HttpFoundation\Cookie::__string()
      */
@@ -329,10 +299,6 @@ class Cookie
 
     /**
      * 整理配置.
-     *
-     * @param array $option
-     *
-     * @return array
      */
     protected function normalizeOptions(array $option = []): array
     {
@@ -343,8 +309,6 @@ class Cookie
      * 验证是否为正常的 JSON 字符串.
      *
      * @param mixed $data
-     *
-     * @return bool
      */
     protected function isJson($data): bool
     {

@@ -83,9 +83,6 @@ class Response implements IResponse
      *
      * @param mixed $content
      * @param int   $status
-     * @param array $headers
-     *
-     * @return \Leevel\Http\Response
      */
     public function make($content = '', $status = 200, array $headers = []): BaseResponse
     {
@@ -94,14 +91,6 @@ class Response implements IResponse
 
     /**
      * 返回视图响应.
-     *
-     * @param string      $file
-     * @param array       $vars
-     * @param null|string $ext
-     * @param int         $status
-     * @param array       $headers
-     *
-     * @return \Leevel\Http\Response
      */
     public function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): BaseResponse
     {
@@ -110,14 +99,6 @@ class Response implements IResponse
 
     /**
      * 返回视图成功消息.
-     *
-     * @param string $message
-     * @param string $url
-     * @param int    $time
-     * @param int    $status
-     * @param array  $headers
-     *
-     * @return \Leevel\Http\Response
      */
     public function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): BaseResponse
     {
@@ -132,14 +113,6 @@ class Response implements IResponse
 
     /**
      * 返回视图失败消息.
-     *
-     * @param string $message
-     * @param string $url
-     * @param int    $time
-     * @param int    $status
-     * @param array  $headers
-     *
-     * @return \Leevel\Http\Response
      */
     public function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): BaseResponse
     {
@@ -156,11 +129,6 @@ class Response implements IResponse
      * 返回 JSON 响应.
      *
      * @param null|mixed $data
-     * @param int        $status
-     * @param array      $headers
-     * @param bool       $json
-     *
-     * @return \Leevel\Http\JsonResponse
      */
     public function json($data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
@@ -170,13 +138,7 @@ class Response implements IResponse
     /**
      * 返回 JSONP 响应.
      *
-     * @param string     $callback
      * @param null|mixed $data
-     * @param int        $status
-     * @param array      $headers
-     * @param bool       $json
-     *
-     * @return \Leevel\Http\JsonResponse
      */
     public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
     {
@@ -189,13 +151,6 @@ class Response implements IResponse
      * 返回下载响应.
      *
      * @param \SplFileInfo|\SplFileObject|string $file
-     * @param null|string                        $name
-     * @param int                                $status
-     * @param array                              $headers
-     * @param bool                               $autoEtag
-     * @param bool                               $autoLastModified
-     *
-     * @return \Leevel\Http\FileResponse
      */
     public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
     {
@@ -211,12 +166,6 @@ class Response implements IResponse
      * 返回文件响应.
      *
      * @param \SplFileInfo|\SplFileObject|string $file
-     * @param int                                $status
-     * @param array                              $headers
-     * @param bool                               $autoEtag
-     * @param bool                               $autoLastModified
-     *
-     * @return \Leevel\Http\FileResponse
      */
     public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
     {
@@ -226,14 +175,7 @@ class Response implements IResponse
     /**
      * 返回一个 URL 生成跳转响应.
      *
-     * @param string           $url
-     * @param array            $params
-     * @param string           $subdomain
      * @param null|bool|string $suffix
-     * @param int              $status
-     * @param array            $headers
-     *
-     * @return \Leevel\Http\RedirectResponse
      */
     public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
@@ -242,12 +184,6 @@ class Response implements IResponse
 
     /**
      * 返回一个跳转响应.
-     *
-     * @param string $url
-     * @param int    $status
-     * @param array  $headers
-     *
-     * @return \Leevel\Http\RedirectResponse
      */
     public function redirectRaw(string $url, int $status = 302, array $headers = []): RedirectResponse
     {
@@ -258,10 +194,7 @@ class Response implements IResponse
      * 请求成功
      * 一般用于GET与POST请求： 200.
      *
-     * @param mixed       $content
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
+     * @param mixed $content
      */
     public function apiOk($content = '', ?string $text = null): ApiResponse
     {
@@ -272,10 +205,7 @@ class Response implements IResponse
      * 已创建
      * 成功请求并创建了新的资源: 201.
      *
-     * @param null|string $location
-     * @param mixed       $content
-     *
-     * @return \Leevel\Http\ApiResponse
+     * @param mixed $content
      */
     public function apiCreated(?string $location = null, $content = ''): ApiResponse
     {
@@ -286,10 +216,7 @@ class Response implements IResponse
      * 已接受
      * 已经接受请求，但未处理完成: 202.
      *
-     * @param null|string $location
-     * @param mixed       $content
-     *
-     * @return \Leevel\Http\ApiResponse
+     * @param mixed $content
      */
     public function apiAccepted(?string $location = null, $content = ''): ApiResponse
     {
@@ -299,8 +226,6 @@ class Response implements IResponse
     /**
      * 无内容
      * 服务器成功处理，但未返回内容: 204.
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiNoContent(): ApiResponse
     {
@@ -309,12 +234,6 @@ class Response implements IResponse
 
     /**
      * 错误请求
-     *
-     * @param string      $message
-     * @param int         $statusCode
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiError(string $message, int $statusCode, ?string $text = null): ApiResponse
     {
@@ -324,11 +243,6 @@ class Response implements IResponse
     /**
      * 错误请求
      * 服务器不理解请求的语法: 400.
-     *
-     * @param null|string $message
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiBadRequest(?string $message = null, ?string $text = null): ApiResponse
     {
@@ -338,11 +252,6 @@ class Response implements IResponse
     /**
      * 未授权
      * 对于需要登录的网页，服务器可能返回此响应: 401.
-     *
-     * @param null|string $message
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiUnauthorized(?string $message = null, ?string $text = null): ApiResponse
     {
@@ -352,11 +261,6 @@ class Response implements IResponse
     /**
      * 禁止
      * 服务器拒绝请求: 403.
-     *
-     * @param null|string $message
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiForbidden(?string $message = null, ?string $text = null): ApiResponse
     {
@@ -366,11 +270,6 @@ class Response implements IResponse
     /**
      * 未找到
      * 用户发出的请求针对的是不存在的记录: 404.
-     *
-     * @param null|string $message
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiNotFound(?string $message = null, ?string $text = null): ApiResponse
     {
@@ -380,11 +279,6 @@ class Response implements IResponse
     /**
      * 方法禁用
      * 禁用请求中指定的方法: 405.
-     *
-     * @param null|string $message
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiMethodNotAllowed(?string $message = null, ?string $text = null): ApiResponse
     {
@@ -394,12 +288,6 @@ class Response implements IResponse
     /**
      * 无法处理的实体
      * 请求格式正确，但是由于含有语义错误，无法响应: 422.
-     *
-     * @param null|array  $errors
-     * @param null|string $message
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiUnprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): ApiResponse
     {
@@ -409,11 +297,6 @@ class Response implements IResponse
     /**
      * 太多请求
      * 用户在给定的时间内发送了太多的请求: 429.
-     *
-     * @param null|string $message
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiTooManyRequests(?string $message = null, ?string $text = null): ApiResponse
     {
@@ -423,11 +306,6 @@ class Response implements IResponse
     /**
      * 服务器内部错误
      * 服务器遇到错误，无法完成请求: 500.
-     *
-     * @param null|string $message
-     * @param null|string $text
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     public function apiInternalServerError(?string $message = null, ?string $text = null): ApiResponse
     {
@@ -436,8 +314,6 @@ class Response implements IResponse
 
     /**
      * 设置视图正确模板
-     *
-     * @param string $template
      *
      * @return \Leevel\Router\IResponse
      */
@@ -451,8 +327,6 @@ class Response implements IResponse
     /**
      * 设置视图错误模板
      *
-     * @param string $template
-     *
      * @return \Leevel\Router\IResponse
      */
     public function setViewFailTemplate(string $template): IResponse
@@ -464,8 +338,6 @@ class Response implements IResponse
 
     /**
      * 创建基础 API 响应.
-     *
-     * @return \Leevel\Http\ApiResponse
      */
     protected function createApiResponse(): ApiResponse
     {

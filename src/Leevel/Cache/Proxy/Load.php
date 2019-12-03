@@ -38,9 +38,6 @@ class Load
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -51,12 +48,6 @@ class Load
     /**
      * 载入缓存数据
      * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
-     *
-     * @param array $names
-     * @param array $option
-     * @param bool  $force
-     *
-     * @return array
      */
     public static function data(array $names, array $option = [], bool $force = false): array
     {
@@ -65,8 +56,6 @@ class Load
 
     /**
      * 刷新缓存数据.
-     *
-     * @param array $names
      */
     public static function refresh(array $names): void
     {
@@ -75,8 +64,6 @@ class Load
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Cache\Load
      */
     public static function proxy(): BaseLoad
     {

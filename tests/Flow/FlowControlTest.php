@@ -72,9 +72,6 @@ class FlowControlTest extends TestCase
 
     /**
      * @dataProvider getElsesData
-     *
-     * @param int    $condition
-     * @param string $result
      */
     public function testElse2(int $condition, string $result): void
     {

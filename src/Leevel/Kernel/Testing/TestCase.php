@@ -71,8 +71,6 @@ abstract class TestCase extends TestCases
 
     /**
      * 初始化应用.
-     *
-     * @return \Leevel\Kernel\App
      */
     abstract protected function createApp(): App;
 }

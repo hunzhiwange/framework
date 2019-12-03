@@ -1004,8 +1004,6 @@ class MyMysql extends Mysql
 {
     /**
      * 是否需要重连.
-     *
-     * @return bool
      */
     protected function needReconnect(PDOException $e): bool
     {

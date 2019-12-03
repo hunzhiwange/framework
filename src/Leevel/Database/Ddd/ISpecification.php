@@ -35,8 +35,6 @@ interface ISpecification
      * 是否满足规约.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function isSatisfiedBy(IEntity $entity): bool;
 

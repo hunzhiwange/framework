@@ -92,9 +92,6 @@ trait FlowControl
     /**
      * 设置当前条件表达式状态
      *
-     * @param bool $inFlowControl
-     * @param bool $isFlowControlTrue
-     *
      * @return $this
      */
     public function setFlowControl(bool $inFlowControl, bool $isFlowControlTrue): self
@@ -107,8 +104,6 @@ trait FlowControl
 
     /**
      * 验证一下条件表达式是否通过.
-     *
-     * @return bool
      */
     public function checkFlowControl(): bool
     {

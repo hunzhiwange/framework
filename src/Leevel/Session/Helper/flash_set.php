@@ -25,8 +25,7 @@ use Leevel\Di\Container;
 /**
  * 闪存一个数据，当前请求和下一个请求可用.
  *
- * @param string $key
- * @param mixed  $value
+ * @param mixed $value
  *
  * @return mixed
  */

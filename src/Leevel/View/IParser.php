@@ -48,29 +48,17 @@ interface IParser
     /**
      * 执行编译.
      *
-     * @param string      $file
-     * @param null|string $cachePath
-     * @param bool        $isContent
-     *
      * @return string|void
      */
     public function doCompile(string $file, ?string $cachePath = null, bool $isContent = false);
 
     /**
      * code 编译编码，后还原
-     *
-     * @param string $content
-     *
-     * @return string
      */
     public static function revertEncode(string $content): string;
 
     /**
      * tagself 编译编码，后还原
-     *
-     * @param string $content
-     *
-     * @return string
      */
     public static function globalEncode(string $content): string;
 }

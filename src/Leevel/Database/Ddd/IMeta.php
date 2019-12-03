@@ -38,8 +38,6 @@ interface IMeta
     /**
      * 返回数据库元对象
      *
-     * @param string $table
-     *
      * @return \Leevel\Database\Ddd\IMeta
      */
     public static function instance(string $table): self;
@@ -48,15 +46,11 @@ interface IMeta
      * 返回数据库管理对象.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Manager
      */
     public static function resolveDatabase(): DatabaseManager;
 
     /**
      * 设置数据库管理对象.
-     *
-     * @param null|\Closure $databaseResolver
      */
     public static function setDatabaseResolver(?Closure $databaseResolver = null): void;
 
@@ -72,28 +66,17 @@ interface IMeta
     /**
      * 新增数据并返回上一次插入 ID.
      *
-     * @param array $saveData
-     *
      * @return mixed
      */
     public function insert(array $saveData);
 
     /**
      * 更新数据并返回影响行数.
-     *
-     * @param array $condition
-     * @param array $saveData
-     *
-     * @return int
      */
     public function update(array $condition, array $saveData): int;
 
     /**
      * 删除数据并返回影响行数.
-     *
-     * @param array $condition
-     *
-     * @return int
      */
     public function delete(array $condition): int;
 

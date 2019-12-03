@@ -53,8 +53,6 @@ class Observer implements SplObserver
 
     /**
      * 构造函数.
-     *
-     * @param null|\Closure $handle
      */
     public function __construct(?Closure $handle = null)
     {

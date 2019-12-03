@@ -42,8 +42,6 @@ class Manager extends Managers
 {
     /**
      * 返回默认驱动.
-     *
-     * @return string
      */
     public function getDefaultDriver(): string
     {
@@ -54,8 +52,6 @@ class Manager extends Managers
 
     /**
      * 设置默认驱动.
-     *
-     * @param string $name
      */
     public function setDefaultDriver(string $name): void
     {
@@ -65,8 +61,6 @@ class Manager extends Managers
 
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     protected function normalizeOptionNamespace(): string
     {
@@ -75,8 +69,6 @@ class Manager extends Managers
 
     /**
      * 创建 session 连接.
-     *
-     * @param array $options
      *
      * @return \Leevel\Auth\Session
      */
@@ -91,8 +83,6 @@ class Manager extends Managers
 
     /**
      * 创建 token 连接.
-     *
-     * @param array $options
      *
      * @return \Leevel\Auth\Token
      */

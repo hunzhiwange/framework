@@ -24,9 +24,6 @@ namespace Leevel\Support\Type;
  * 验证数组中的每一项格式化是否正确.
  *
  * @param mixed $data
- * @param array $types
- *
- * @return bool
  */
 function type_array($data, array $types): bool
 {

@@ -44,8 +44,7 @@ class NotBetweenEqualTest extends TestCase
     /**
      * @dataProvider baseUseProvider
      *
-     * @param mixed  $value
-     * @param string $param
+     * @param mixed $value
      *
      * @api(
      *     title="验证通过的数据",
@@ -93,8 +92,7 @@ class NotBetweenEqualTest extends TestCase
     /**
      * @dataProvider badProvider
      *
-     * @param mixed  $value
-     * @param string $param
+     * @param mixed $value
      *
      * @api(
      *     title="未验证通过的数据",

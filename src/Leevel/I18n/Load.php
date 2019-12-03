@@ -63,8 +63,6 @@ class Load
 
     /**
      * 构造函数.
-     *
-     * @param array $dirs
      */
     public function __construct(array $dirs = [])
     {
@@ -73,8 +71,6 @@ class Load
 
     /**
      * 设置当前语言包.
-     *
-     * @param string $i18n
      *
      * @return \Leevel\I18n\Load
      */
@@ -87,8 +83,6 @@ class Load
 
     /**
      * 添加目录.
-     *
-     * @param array $dirs
      *
      * @return \Leevel\I18n\Load
      */
@@ -105,8 +99,6 @@ class Load
      * @author 小牛
      *
      * @since 2016.11.27
-     *
-     * @return array
      */
     public function loadData(): array
     {
@@ -124,15 +116,11 @@ class Load
     /**
      * 分析目录中的 PHP 语言包包含的文件.
      *
-     * @param array $dirs
-     *
      * @author 小牛
      *
      * @since 2016.11.27
      *
      * @throws \RuntimeException
-     *
-     * @return array
      */
     protected function findMoFile(array $dirs): array
     {
@@ -151,10 +139,6 @@ class Load
 
     /**
      * 获取目录中的 MO 文件.
-     *
-     * @param string $dir
-     *
-     * @return array
      */
     protected function getMoFiles(string $dir): array
     {
@@ -164,13 +148,9 @@ class Load
     /**
      * 分析 mo 文件语言包数据.
      *
-     * @param array $files
-     *
      * @author 小牛
      *
      * @since 2016.11.25
-     *
-     * @return array
      */
     protected function parseMoData(array $files): array
     {
@@ -179,10 +159,6 @@ class Load
 
     /**
      * 分析目录.
-     *
-     * @param array $dirs
-     *
-     * @return array
      */
     protected function parseDir(array $dirs): array
     {

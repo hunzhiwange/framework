@@ -37,10 +37,6 @@ abstract class MethodNotAllowedHttpException extends HttpException
 {
     /**
      * 构造函数.
-     *
-     * @param null|string     $message
-     * @param int             $code
-     * @param null|\Exception $previous
      */
     public function __construct(?string $message = null, int $code = 0, ?Exception $previous = null)
     {

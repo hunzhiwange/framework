@@ -56,7 +56,6 @@ class Render implements IRender
      * 构造函数.
      *
      * @param \Leevel\Page\IPage $page
-     * @param array              $option
      */
     public function __construct(IPage $page, array $option = [])
     {
@@ -70,8 +69,7 @@ class Render implements IRender
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Page\IRender
      */
@@ -97,10 +95,6 @@ class Render implements IRender
 
     /**
      * 渲染.
-     *
-     * @param array $option
-     *
-     * @return string
      */
     public function render(array $option = []): string
     {
@@ -122,8 +116,6 @@ class Render implements IRender
      * 替换分页变量.
      *
      * @param int|string $page
-     *
-     * @return string
      */
     public function replace($page): string
     {
@@ -142,8 +134,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 header.
-     *
-     * @return string
      */
     protected function getHeaderRender(): string
     {
@@ -155,8 +145,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 pager.ul.
-     *
-     * @return string
      */
     protected function getUlRender(): string
     {
@@ -165,8 +153,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 total.
-     *
-     * @return string
      */
     protected function getTotalRender(): string
     {
@@ -182,8 +168,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 first.
-     *
-     * @return string
      */
     protected function getFirstRender(): string
     {
@@ -205,8 +189,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 prev.
-     *
-     * @return string
      */
     protected function getPrevRender(): string
     {
@@ -226,8 +208,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 main.
-     *
-     * @return string
      */
     protected function getMainRender(): string
     {
@@ -252,8 +232,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 next.
-     *
-     * @return string
      */
     protected function getNextRender(): string
     {
@@ -271,8 +249,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 last.
-     *
-     * @return string
      */
     protected function getLastRender(): string
     {
@@ -307,8 +283,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 pager.endul.
-     *
-     * @return string
      */
     protected function getEndulRender(): string
     {
@@ -317,8 +291,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 jump.
-     *
-     * @return string
      */
     protected function getJumpRender(): string
     {
@@ -338,8 +310,6 @@ class Render implements IRender
 
     /**
      * 返回渲染 footer.
-     *
-     * @return string
      */
     protected function getFooterRender(): string
     {

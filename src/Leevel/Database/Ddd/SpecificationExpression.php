@@ -49,9 +49,6 @@ class SpecificationExpression implements ISpecification
 
     /**
      * 构造函数.
-     *
-     * @param \Closure $spec
-     * @param \Closure $handle
      */
     public function __construct(Closure $spec, Closure $handle)
     {
@@ -61,9 +58,6 @@ class SpecificationExpression implements ISpecification
 
     /**
      * 创建规约表达式.
-     *
-     * @param \Closure $spec
-     * @param \Closure $handle
      *
      * @return static
      */
@@ -76,8 +70,6 @@ class SpecificationExpression implements ISpecification
      * 是否满足规约.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function isSatisfiedBy(IEntity $entity): bool
     {
@@ -152,8 +144,6 @@ class SpecificationExpression implements ISpecification
     /**
      * 规约 Not 操作.
      *
-     * @param \Leevel\Database\Ddd\ISpecification $spec
-     *
      * @return \Leevel\Database\Ddd\ISpecification
      */
     public function not(): ISpecification
@@ -169,9 +159,6 @@ class SpecificationExpression implements ISpecification
 
     /**
      * 闭包规约 And 操作.
-     *
-     * @param \Closure $spec
-     * @param \Closure $handle
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */
@@ -194,9 +181,6 @@ class SpecificationExpression implements ISpecification
 
     /**
      * 闭包规约 Or 操作.
-     *
-     * @param \Closure $spec
-     * @param \Closure $handle
      *
      * @return \Leevel\Database\Ddd\ISpecification
      */

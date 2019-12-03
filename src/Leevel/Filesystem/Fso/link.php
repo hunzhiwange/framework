@@ -23,8 +23,6 @@ namespace Leevel\Filesystem\Fso;
 /**
  * 创建软连接.
  *
- * @param string $target
- * @param string $link
  * @codeCoverageIgnore
  */
 function link(string $target, string $link): void

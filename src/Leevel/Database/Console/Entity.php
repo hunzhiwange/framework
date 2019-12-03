@@ -88,8 +88,6 @@ class Entity extends Make
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Database\Manager $database
      */
     public function handle(Manager $database): void
     {
@@ -119,8 +117,6 @@ class Entity extends Make
 
     /**
      * 获取实体替换信息.
-     *
-     * @return array
      */
     protected function getReplace(): array
     {
@@ -139,10 +135,6 @@ class Entity extends Make
 
     /**
      * 获取主键信息.
-     *
-     * @param array $columns
-     *
-     * @return string
      */
     protected function getPrimaryKey(array $columns): string
     {
@@ -161,10 +153,6 @@ class Entity extends Make
 
     /**
      * 获取主键类型信息.
-     *
-     * @param array $columns
-     *
-     * @return string
      */
     protected function getPrimaryKeyType(array $columns): string
     {
@@ -181,10 +169,6 @@ class Entity extends Make
 
     /**
      * 获取自增信息.
-     *
-     * @param array $columns
-     *
-     * @return string
      */
     protected function getAutoIncrement(array $columns): string
     {
@@ -193,10 +177,6 @@ class Entity extends Make
 
     /**
      * 获取结构信息.
-     *
-     * @param array $columns
-     *
-     * @return string
      */
     protected function getStruct(array $columns): string
     {
@@ -217,10 +197,6 @@ class Entity extends Make
 
     /**
      * 获取属性信息.
-     *
-     * @param array $columns
-     *
-     * @return string
      */
     protected function getProps(array $columns): string
     {
@@ -249,8 +225,6 @@ class Entity extends Make
 
     /**
      * 获取数据库表名字.
-     *
-     * @return string
      */
     protected function getTableName(): string
     {
@@ -265,8 +239,6 @@ class Entity extends Make
      * 获取模板路径.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function getStubPath(): string
     {
@@ -287,8 +259,6 @@ class Entity extends Make
 
     /**
      * 获取数据库表字段信息.
-     *
-     * @return array
      */
     protected function getColumns(): array
     {
@@ -297,8 +267,6 @@ class Entity extends Make
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -313,8 +281,6 @@ class Entity extends Make
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

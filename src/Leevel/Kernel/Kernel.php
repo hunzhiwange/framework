@@ -72,8 +72,7 @@ abstract class Kernel implements IKernel
     /**
      * 构造函数.
      *
-     * @param \Leevel\Kernel\IApp    $app
-     * @param \Leevel\Router\IRouter $router
+     * @param \Leevel\Kernel\IApp $app
      */
     public function __construct(IApp $app, IRouter $router)
     {
@@ -83,10 +82,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 响应 HTTP 请求
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IResponse
      */
     public function handle(IRequest $request): IResponse
     {
@@ -118,8 +113,6 @@ abstract class Kernel implements IKernel
     /**
      * 执行结束
      *
-     * @param \Leevel\Http\IRequest  $request
-     * @param \Leevel\Http\IResponse $response
      * @codeCoverageIgnore
      */
     public function terminate(IRequest $request, IResponse $response): void
@@ -160,8 +153,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 注册基础服务
-     *
-     * @param \Leevel\Http\IRequest $request
      */
     protected function registerBaseService(IRequest $request): void
     {
@@ -175,10 +166,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 根据请求返回响应.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IResponse
      */
     protected function getResponseWithRequest(IRequest $request): IResponse
     {
@@ -187,10 +174,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 路由调度.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IResponse
      */
     protected function dispatchRouter(IRequest $request): IResponse
     {
@@ -199,8 +182,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 上报错误.
-     *
-     * @param \Exception $e
      */
     protected function reportException(Exception $e): void
     {
@@ -209,11 +190,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 渲染异常.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param \Exception            $e
-     *
-     * @return \Leevel\Http\IResponse
      */
     protected function renderException(IRequest $request, Exception $e): IResponse
     {
@@ -222,9 +198,6 @@ abstract class Kernel implements IKernel
 
     /**
      * 中间件结束响应.
-     *
-     * @param \Leevel\Http\IRequest  $request
-     * @param \Leevel\Http\IResponse $response
      */
     protected function middlewareTerminate(IRequest $request, IResponse $response): void
     {

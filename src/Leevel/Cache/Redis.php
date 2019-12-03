@@ -50,9 +50,6 @@ class Redis extends Cache implements ICache, IConnection
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Cache\Redis\IRedis $handle
-     * @param array                      $option
      */
     public function __construct(IRedis $handle, array $option = [])
     {
@@ -63,9 +60,7 @@ class Redis extends Cache implements ICache, IConnection
     /**
      * 获取缓存.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
+     * @param mixed $defaults
      *
      * @return mixed
      */
@@ -92,9 +87,7 @@ class Redis extends Cache implements ICache, IConnection
     /**
      * 设置缓存.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
+     * @param mixed $data
      */
     public function set(string $name, $data, array $option = []): void
     {
@@ -114,8 +107,6 @@ class Redis extends Cache implements ICache, IConnection
 
     /**
      * 清除缓存.
-     *
-     * @param string $name
      */
     public function delete(string $name): void
     {

@@ -64,9 +64,7 @@ class File extends Cache implements ICache
     /**
      * 获取缓存.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
+     * @param mixed $defaults
      *
      * @throws \InvalidArgumentException
      *
@@ -131,9 +129,7 @@ class File extends Cache implements ICache
     /**
      * 设置缓存.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
+     * @param mixed $data
      */
     public function set(string $name, $data, array $option = []): void
     {
@@ -149,8 +145,6 @@ class File extends Cache implements ICache
 
     /**
      * 清除缓存.
-     *
-     * @param string $name
      */
     public function delete(string $name): void
     {
@@ -169,11 +163,6 @@ class File extends Cache implements ICache
 
     /**
      * 验证缓存是否过期
-     *
-     * @param string $name
-     * @param array  $option
-     *
-     * @return bool
      */
     protected function isExpired(string $name, array $option): bool
     {
@@ -189,11 +178,7 @@ class File extends Cache implements ICache
     /**
      * 获取缓存路径.
      *
-     * @param string $name
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function getCachePath(string $name): string
     {
@@ -208,9 +193,6 @@ class File extends Cache implements ICache
 
     /**
      * 写入缓存数据.
-     *
-     * @param string $fileName
-     * @param string $data
      */
     protected function writeData(string $fileName, string $data): void
     {
@@ -220,10 +202,6 @@ class File extends Cache implements ICache
 
     /**
      * 验证缓存是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     protected function exist(string $name): bool
     {
@@ -233,10 +211,6 @@ class File extends Cache implements ICache
     /**
      * 获取缓存名字
      * 去掉特殊缓存名字字符.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     protected function getCacheName(string $name): string
     {

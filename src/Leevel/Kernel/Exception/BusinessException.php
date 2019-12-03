@@ -45,10 +45,6 @@ abstract class BusinessException extends BadRequestHttpException
 
     /**
      * 构造函数.
-     *
-     * @param null|string $message
-     * @param int         $code
-     * @param int         $importance
      */
     public function __construct(?string $message = null, int $code = 0, int $importance = 0)
     {
@@ -58,8 +54,6 @@ abstract class BusinessException extends BadRequestHttpException
 
     /**
      * 设置业务逻辑异常重要性.
-     *
-     * @param int $importance
      */
     public function setImportance(int $importance): void
     {
@@ -68,8 +62,6 @@ abstract class BusinessException extends BadRequestHttpException
 
     /**
      * 返回业务逻辑异常重要性.
-     *
-     * @return int
      */
     public function getImportance(): int
     {

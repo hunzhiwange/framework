@@ -46,14 +46,9 @@ trait Date
      * 校验日期.
      *
      * @param mixed                       $value
-     * @param array                       $param
      * @param \Leevel\Validate\IValidator $validator
-     * @param string                      $field
-     * @param bool                        $before
      *
      * @throws \InvalidArgumentException
-     *
-     * @return bool
      */
     public function validateDate($value, array $param, IValidator $validator, string $field, bool $before = false): bool
     {
@@ -86,12 +81,6 @@ trait Date
 
     /**
      * 比较时间.
-     *
-     * @param int  $left
-     * @param int  $right
-     * @param bool $before
-     *
-     * @return bool
      */
     protected function compareTime(int $left, int $right, bool $before = false): bool
     {
@@ -105,8 +94,6 @@ trait Date
     /**
      * 获取时间格式化.
      *
-     * @param string $field
-     *
      * @return string|void
      */
     protected function getDateFormat(string $field)
@@ -119,12 +106,7 @@ trait Date
     /**
      * 验证在给定日期之后.
      *
-     * @param string $format
-     * @param mixed  $value
-     * @param array  $param
-     * @param bool   $before
-     *
-     * @return bool
+     * @param mixed $value
      */
     protected function doWithFormat(string $format, $value, array $param, bool $before = false): bool
     {
@@ -139,12 +121,6 @@ trait Date
 
     /**
      * 验证日期顺序.
-     *
-     * @param string $format
-     * @param string $first
-     * @param string $second
-     *
-     * @return bool
      */
     protected function doCheckDate(string $format, string $first, string $second): bool
     {
@@ -156,9 +132,6 @@ trait Date
 
     /**
      * 创建 DateTime 实例.
-     *
-     * @param string $format
-     * @param string $value
      *
      * @return \DateTime|void
      */

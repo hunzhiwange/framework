@@ -22,12 +22,6 @@ namespace Leevel\Support\Str;
 
 /**
  * 日期格式化.
- *
- * @param int    $dateTemp
- * @param array  $lang
- * @param string $dateFormat
- *
- * @return string
  */
 function format_date(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-d H:i'): string
 {

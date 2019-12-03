@@ -128,8 +128,6 @@ abstract class Pool implements IPool
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -151,8 +149,6 @@ abstract class Pool implements IPool
 
     /**
      * 初始化连接池.
-     *
-     * @return bool
      */
     public function init(): bool
     {
@@ -174,8 +170,6 @@ abstract class Pool implements IPool
 
     /**
      * 获取连接.
-     *
-     * @param int $timeout
      *
      * @throws \Leevel\Protocol\Pool\PoolException
      *
@@ -223,8 +217,6 @@ abstract class Pool implements IPool
      * 归还连接.
      *
      * @param \Leevel\Protocol\Pool\IConnection $connection
-     *
-     * @return bool
      */
     public function returnConnection(IConnection $connection): bool
     {
@@ -249,8 +241,6 @@ abstract class Pool implements IPool
 
     /**
      * 关闭通道.
-     *
-     * @return bool
      */
     public function close(): bool
     {
@@ -281,8 +271,6 @@ abstract class Pool implements IPool
 
     /**
      * 获取连接数.
-     *
-     * @return int
      */
     public function getConnectionsCount(): int
     {
@@ -291,8 +279,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置最小空闲连接池数据量.
-     *
-     * @param int $minIdleConnections
      *
      * @return \Leevel\Protocol\Pool\IPool
      */
@@ -307,8 +293,6 @@ abstract class Pool implements IPool
     /**
      * 设置最小空闲连接池数据量.
      *
-     * @param int $maxIdleConnections
-     *
      * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxIdleConnections(int $maxIdleConnections): IPool
@@ -322,8 +306,6 @@ abstract class Pool implements IPool
     /**
      * 设置通道写入最大超时时间设置.
      *
-     * @param int $maxPushTimeout
-     *
      * @return \Leevel\Protocol\Pool\IPool
      */
     public function setMaxPushTimeout(int $maxPushTimeout): IPool
@@ -335,8 +317,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置通道获取最大等待超时.
-     *
-     * @param int $maxPopTimeout
      *
      * @return \Leevel\Protocol\Pool\IPool
      */
@@ -350,8 +330,6 @@ abstract class Pool implements IPool
     /**
      * 设置连接的存活时间.
      *
-     * @param int $keepAliveDuration
-     *
      * @return \Leevel\Protocol\Pool\IPool
      */
     public function setKeepAliveDuration(int $keepAliveDuration): IPool
@@ -363,8 +341,6 @@ abstract class Pool implements IPool
 
     /**
      * 设置最大尝试次数.
-     *
-     * @param int $maxPopTimeout
      *
      * @throws \InvalidArgumentException
      *
@@ -423,8 +399,6 @@ abstract class Pool implements IPool
      *
      * - 通道为空返回 null
      * - 全部超时或者过期将返回 null
-     *
-     * @param int $timeout
      *
      * @return null|\Leevel\Protocol\Pool\IConnection
      *
@@ -485,8 +459,6 @@ abstract class Pool implements IPool
 
     /**
      * 获取当前时间毫秒.
-     *
-     * @return float
      */
     protected function normalizeMillisecond(): float
     {

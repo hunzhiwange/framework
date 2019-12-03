@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 验证 IP 许可.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_allowed_ip($value, array $param): bool
 {

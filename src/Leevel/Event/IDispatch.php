@@ -44,7 +44,6 @@ interface IDispatch
      *
      * @param array|object|string $event
      * @param mixed               $listener
-     * @param int                 $priority
      */
     public function register($event, $listener, int $priority = 500): void;
 
@@ -52,8 +51,6 @@ interface IDispatch
      * 获取一个事件监听器.
      *
      * @param object|string $event
-     *
-     * @return array
      */
     public function get($event): array;
 
@@ -61,8 +58,6 @@ interface IDispatch
      * 判断事件监听器是否存在.
      *
      * @param object|string $event
-     *
-     * @return bool
      */
     public function has($event): bool;
 

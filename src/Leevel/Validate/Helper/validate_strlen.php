@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 长度验证.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_strlen($value, array $param): bool
 {

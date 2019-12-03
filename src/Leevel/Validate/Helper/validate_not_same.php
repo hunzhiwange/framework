@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 两个值是否不完全相同.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_not_same($value, array $param): bool
 {

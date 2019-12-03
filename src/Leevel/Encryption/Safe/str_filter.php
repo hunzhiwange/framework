@@ -24,7 +24,6 @@ namespace Leevel\Encryption\Safe;
  * 字符过滤.
  *
  * @param mixed $data
- * @param int   $maxNum
  *
  * @return mixed
  */

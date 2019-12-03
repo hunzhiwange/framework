@@ -22,10 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * 字符过滤 JS 和 HTML 标签.
- *
- * @param string $strings
- *
- * @return string
  */
 function strip(string $strings): string
 {

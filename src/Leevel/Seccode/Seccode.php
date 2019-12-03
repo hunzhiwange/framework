@@ -82,8 +82,6 @@ class Seccode implements ISeccode
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -93,8 +91,7 @@ class Seccode implements ISeccode
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Seccode\ISeccode
      */
@@ -108,10 +105,7 @@ class Seccode implements ISeccode
     /**
      * 设置验证码
      *
-     * @param null|mixed  $code
-     * @param null|string $outPath
-     * @param bool        $autoCode
-     * @param string      $autoType
+     * @param null|mixed $code
      */
     public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void
     {
@@ -145,8 +139,6 @@ class Seccode implements ISeccode
     /**
      * 设置验证码
      *
-     * @param string $code
-     *
      * @return \Leevel\Seccode\ISeccode
      */
     public function code(string $code): ISeccode
@@ -168,8 +160,6 @@ class Seccode implements ISeccode
 
     /**
      * 返回宽度.
-     *
-     * @return int
      */
     protected function normalizeWidth(): int
     {
@@ -186,8 +176,6 @@ class Seccode implements ISeccode
 
     /**
      * 返回高度.
-     *
-     * @return int
      */
     protected function normalizeHeight(): int
     {
@@ -204,8 +192,6 @@ class Seccode implements ISeccode
 
     /**
      * 创建背景图像.
-     *
-     * @return string
      */
     protected function makeBackground(): string
     {
@@ -379,8 +365,6 @@ class Seccode implements ISeccode
 
     /**
      * 返回字体参数.
-     *
-     * @return array
      */
     protected function getFontOption(): array
     {
@@ -460,8 +444,6 @@ class Seccode implements ISeccode
      * @param resource $resImage
      *
      * @throws \InvalidArgumentException
-     *
-     * @return bool
      */
     protected function makeBackgroundWithImage(&$resImage): bool
     {
@@ -570,8 +552,6 @@ class Seccode implements ISeccode
      * 返回验证字体.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function getTtf(): array
     {
@@ -595,9 +575,6 @@ class Seccode implements ISeccode
 
     /**
      * 自动产生验证码
-     *
-     * @param int    $size
-     * @param string $autoType
      *
      * @throws \InvalidArgumentException
      */
@@ -628,8 +605,6 @@ class Seccode implements ISeccode
 
     /**
      * 返回允许自动验证码类型.
-     *
-     * @return array
      */
     protected function getAllowedAutoType(): array
     {
@@ -647,10 +622,6 @@ class Seccode implements ISeccode
 
     /**
      * 是否为中文.
-     *
-     * @param null|string $code
-     *
-     * @return bool
      */
     protected function isChinese(?string $code = null): bool
     {
@@ -662,8 +633,6 @@ class Seccode implements ISeccode
      *
      * @param number $numFirst
      * @param number $numSecond
-     *
-     * @return int
      */
     protected function mtRand($numFirst, $numSecond): int
     {

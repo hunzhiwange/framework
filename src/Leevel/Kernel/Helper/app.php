@@ -25,8 +25,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * 获取应用.
- *
- * @return \Leevel\Kernel\IApp
  */
 function app(): IApp
 {

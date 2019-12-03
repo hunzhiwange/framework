@@ -45,8 +45,6 @@ class Psr2Leevel
     /**
      * 从 Psr 请求对象创建 Leevel 请求对象.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $psrRequest
-     *
      * @return \Leevel\Http\IRequest
      */
     public function createRequest(ServerRequestInterface $psrRequest): IRequest
@@ -80,8 +78,6 @@ class Psr2Leevel
     /**
      * 从 Psr 响应对象创建 Leevel 响应对象.
      *
-     * @param \Psr\Http\Message\ResponseInterface $psrResponse
-     *
      * @return \Leevel\Http\IResponse
      */
     public function createResponse(ResponseInterface $psrResponse): IResponse
@@ -101,11 +97,6 @@ class Psr2Leevel
 
     /**
      * 转换上传文件结构.
-     *
-     * @param array  $uploadedFiles
-     * @param string $parent
-     *
-     * @return array
      */
     protected function getFiles(array $uploadedFiles, string $parent = ''): array
     {
@@ -124,8 +115,6 @@ class Psr2Leevel
 
     /**
      * 创建 Leevel 上传对象.
-     *
-     * @param \Psr\Http\Message\UploadedFileInterface $psrUploadedFile
      *
      * @return \Leevel\Http\UploadedFile
      */
@@ -150,8 +139,6 @@ class Psr2Leevel
 
     /**
      * 获取上传文件临时目录.
-     *
-     * @return string
      */
     protected function getTemporaryPath(): string
     {
@@ -163,11 +150,7 @@ class Psr2Leevel
      *
      * Some snippets have been taken from the Guzzle app: https://github.com/guzzle/guzzle/blob/5.3/src/Cookie/SetCookie.php#L34
      *
-     * @param string $cookie
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function createCookie(string $cookie): array
     {

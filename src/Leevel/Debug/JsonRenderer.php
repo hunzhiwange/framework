@@ -50,8 +50,6 @@ class JsonRenderer
 
     /**
      * 渲染数据.
-     *
-     * @return array
      */
     public function render(): array
     {

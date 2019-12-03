@@ -25,10 +25,6 @@ use RuntimeException;
 /**
  * 创建目录.
  *
- * @param string $dir
- * @param int    $mode
- * @param bool   $writableValid
- *
  * @throws \RuntimeException
  *
  * @return true

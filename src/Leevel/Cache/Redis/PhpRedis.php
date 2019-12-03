@@ -58,8 +58,6 @@ class PhpRedis implements IRedis
     /**
      * 构造函数.
      *
-     * @param array $option
-     *
      * @throws \RuntimeException
      */
     public function __construct(array $option = [])
@@ -76,8 +74,6 @@ class PhpRedis implements IRedis
 
     /**
      * 返回缓存句柄.
-     *
-     * @return null|object
      */
     public function handle(): ?object
     {
@@ -86,8 +82,6 @@ class PhpRedis implements IRedis
 
     /**
      * 获取缓存.
-     *
-     * @param string $name
      *
      * @return mixed
      */
@@ -101,9 +95,7 @@ class PhpRedis implements IRedis
     /**
      * 设置缓存.
      *
-     * @param string   $name
-     * @param mixed    $data
-     * @param null|int $expire
+     * @param mixed $data
      */
     public function set(string $name, $data, ?int $expire = null): void
     {
@@ -118,8 +110,6 @@ class PhpRedis implements IRedis
 
     /**
      * 清除缓存.
-     *
-     * @param string $name
      */
     public function delete(string $name): void
     {
@@ -175,8 +165,6 @@ class PhpRedis implements IRedis
 
     /**
      * 返回 redis 对象.
-     *
-     * @return \Redis
      */
     protected function createRedis(): Redis
     {

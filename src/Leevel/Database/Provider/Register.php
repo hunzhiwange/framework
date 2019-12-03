@@ -57,8 +57,6 @@ class Register extends Provider
 
     /**
      * bootstrap.
-     *
-     * @param \Leevel\Event\IDispatch $event
      */
     public function bootstrap(IDispatch $event): void
     {
@@ -68,8 +66,6 @@ class Register extends Provider
 
     /**
      * 可用服务提供者.
-     *
-     * @return array
      */
     public static function providers(): array
     {
@@ -84,8 +80,6 @@ class Register extends Provider
 
     /**
      * 是否延迟载入.
-     *
-     * @return bool
      */
     public static function isDeferred(): bool
     {
@@ -136,8 +130,6 @@ class Register extends Provider
 
     /**
      * 设置模型实体事件.
-     *
-     * @param \Leevel\Event\IDispatch $event
      */
     protected function eventDispatch(IDispatch $event): void
     {

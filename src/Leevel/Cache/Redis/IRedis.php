@@ -41,8 +41,6 @@ interface IRedis
     /**
      * 获取缓存.
      *
-     * @param string $name
-     *
      * @return mixed
      */
     public function get(string $name);
@@ -50,16 +48,12 @@ interface IRedis
     /**
      * 设置缓存.
      *
-     * @param string   $name
-     * @param mixed    $data
-     * @param null|int $expire
+     * @param mixed $data
      */
     public function set(string $name, $data, ?int $expire = null): void;
 
     /**
      * 清除缓存.
-     *
-     * @param string $name
      */
     public function delete(string $name): void;
 

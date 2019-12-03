@@ -201,10 +201,6 @@ class Parser implements IParser
     /**
      * 执行编译.
      *
-     * @param string      $file
-     * @param null|string $cachePath
-     * @param bool        $isContent
-     *
      * @throws \InvalidArgumentException
      *
      * @return string|void
@@ -259,10 +255,6 @@ class Parser implements IParser
 
     /**
      * code 编译编码，后还原
-     *
-     * @param string $content
-     *
-     * @return string
      */
     public static function revertEncode(string $content): string
     {
@@ -275,10 +267,6 @@ class Parser implements IParser
 
     /**
      * tagself 编译编码，后还原
-     *
-     * @param string $content
-     *
-     * @return string
      */
     public static function globalEncode(string $content): string
     {
@@ -291,8 +279,6 @@ class Parser implements IParser
 
     /**
      * 全局编译器 tagself.
-     *
-     * @param string $compiled
      */
     protected function globalParse(string &$compiled): void
     {
@@ -321,8 +307,6 @@ class Parser implements IParser
 
     /**
      * js 风格 变量分析器.
-     *
-     * @param string $compiled
      */
     protected function jsvarParse(string &$compiled): void
     {
@@ -349,8 +333,6 @@ class Parser implements IParser
 
     /**
      * code 方式分析器.
-     *
-     * @param string $compiled
      */
     protected function codeParse(string &$compiled): void
     {
@@ -386,8 +368,6 @@ class Parser implements IParser
 
     /**
      * js 风格分析器 与 node 公用分析器.
-     *
-     * @param string $compiled
      */
     protected function jsParse(string &$compiled): void
     {
@@ -397,8 +377,6 @@ class Parser implements IParser
 
     /**
      * node 分析器.
-     *
-     * @param string $compiled
      */
     protected function nodeParse(string &$compiled): void
     {
@@ -408,8 +386,6 @@ class Parser implements IParser
 
     /**
      * 格式化 node 分析器.
-     *
-     * @param string $compiled
      */
     protected function normalizeNodeParse(string &$compiled): void
     {
@@ -419,8 +395,6 @@ class Parser implements IParser
 
     /**
      * code 还原分析器.
-     *
-     * @param string $compiled
      */
     protected function revertParse(string &$compiled): void
     {
@@ -446,8 +420,6 @@ class Parser implements IParser
 
     /**
      * tagself 还原分析器.
-     *
-     * @param string $compiled
      */
     protected function globalrevertParse(string &$compiled): void
     {
@@ -474,8 +446,6 @@ class Parser implements IParser
 
     /**
      * 查找成对节点.
-     *
-     * @param string $compiled
      */
     protected function findNodeTag(string &$compiled): void
     {
@@ -555,8 +525,6 @@ class Parser implements IParser
 
     /**
      * 装配节点.
-     *
-     * @param string $compiled
      *
      * @throws \InvalidArgumentException
      */
@@ -674,11 +642,6 @@ class Parser implements IParser
 
     /**
      * 查找 node 标签.
-     *
-     * @param array $tag
-     * @param array $tailTag
-     *
-     * @return bool
      */
     protected function findHeadTag(array $tag, array $tailTag): bool
     {
@@ -687,8 +650,6 @@ class Parser implements IParser
 
     /**
      * 注册分析器.
-     *
-     * @param string $tag
      */
     protected function registerParser(string $tag): void
     {
@@ -697,10 +658,6 @@ class Parser implements IParser
 
     /**
      * 注册编译器 code 和 node 编译器注册.
-     *
-     * @param string $type
-     * @param string $name
-     * @param string $tag
      */
     protected function registerCompiler(string $type, string $name, string $tag): void
     {
@@ -709,8 +666,6 @@ class Parser implements IParser
 
     /**
      * 逐个编译模板树.
-     *
-     * @return string
      */
     protected function compileThemeTree(): string
     {
@@ -726,8 +681,6 @@ class Parser implements IParser
 
     /**
      * 分析模板调用编译器编译.
-     *
-     * @param array $theme
      */
     protected function compileTheme(array &$theme): void
     {
@@ -756,9 +709,6 @@ class Parser implements IParser
 
     /**
      * 创建缓存文件.
-     *
-     * @param string $cachePath
-     * @param string $compiled
      */
     protected function makeCacheFile(string $cachePath, string &$compiled): void
     {
@@ -770,10 +720,6 @@ class Parser implements IParser
 
     /**
      * 取得模板分析器定界符.
-     *
-     * @param string $type
-     *
-     * @return array
      */
     protected function getTag(string $type): array
     {
@@ -782,8 +728,6 @@ class Parser implements IParser
 
     /**
      * 将模板结构加入树结构中去.
-     *
-     * @param array $theme
      */
     protected function addTheme(array $theme): void
     {
@@ -801,8 +745,6 @@ class Parser implements IParser
 
     /**
      * 添加顶层树对象
-     *
-     * @param array $theme
      */
     protected function topTheme(array $theme): void
     {
@@ -811,11 +753,6 @@ class Parser implements IParser
 
     /**
      * 将新的模板加入到树结构中去.
-     *
-     * @param array $top
-     * @param array $new
-     *
-     * @return array
      */
     protected function addThemeTree(array $top, array $new): array
     {
@@ -964,9 +901,6 @@ class Parser implements IParser
      * 这个和两个时间段之间的关系一样，其中交叉在模板引擎中是不被支持，因为无法实现
      * 除掉交叉，剩下包含、被包含、前面和后面，通过位置组装成一颗树结构.
      *
-     * @param array $value
-     * @param array $beyond
-     *
      * @throws \InvalidArgumentException
      *
      * @return string
@@ -1077,10 +1011,6 @@ class Parser implements IParser
 
     /**
      * 整理模板项结构.
-     *
-     * @param array $theme
-     *
-     * @return array
      */
     protected function normalizeThemeStruct(array $theme): array
     {
@@ -1089,10 +1019,6 @@ class Parser implements IParser
 
     /**
      * 转义正则表达式特殊字符.
-     *
-     * @param string $txt
-     *
-     * @return string
      */
     protected function escapeRegexCharacter(string $txt): string
     {
@@ -1101,10 +1027,6 @@ class Parser implements IParser
 
     /**
      * 取得模板位置.
-     *
-     * @param array $position
-     *
-     * @return string
      */
     protected function getLocation(array $position): string
     {
@@ -1119,10 +1041,6 @@ class Parser implements IParser
 
     /**
      * 取得模板位置源码
-     *
-     * @param array $position
-     *
-     * @return string
      */
     protected function getLocationSource(array $position): string
     {

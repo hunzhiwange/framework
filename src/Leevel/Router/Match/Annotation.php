@@ -43,11 +43,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 匹配数据项.
-     *
-     * @param \Leevel\Router\IRouter $router
-     * @param \Leevel\Http\IRequest  $request
-     *
-     * @return array
      */
     public function matche(IRouter $router, IRequest $request): array
     {
@@ -58,8 +53,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 主匹配.
-     *
-     * @return array
      */
     protected function matchMain(): array
     {
@@ -99,8 +92,6 @@ class Annotation extends Match implements IMatch
     /**
      * 匹配路由方法.
      *
-     * @param array $routers
-     *
      * @return array|false
      */
     protected function matcheMethod(array $routers)
@@ -112,8 +103,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 匹配静态路由.
-     *
-     * @param array $routers
      *
      * @return array|false
      */
@@ -132,9 +121,6 @@ class Annotation extends Match implements IMatch
     /**
      * 匹配首字母.
      *
-     * @param string $pathInfo
-     * @param array  $routers
-     *
      * @return array|false
      */
     protected function matcheFirstLetter(string $pathInfo, array $routers)
@@ -144,11 +130,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 匹配路由分组.
-     *
-     * @param string $pathInfo
-     * @param array  $routers
-     *
-     * @return array
      */
     protected function matcheGroups(string $pathInfo, array $routers): array
     {
@@ -172,8 +153,6 @@ class Annotation extends Match implements IMatch
     /**
      * 匹配路由正则分组.
      *
-     * @param array $routers
-     *
      * @return array|false
      */
     protected function matcheRegexGroups(array $routers)
@@ -196,11 +175,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 注解路由匹配成功处理.
-     *
-     * @param array $routers
-     * @param array $matcheVars
-     *
-     * @return array
      */
     protected function matcheSuccessed(array $routers, array $matcheVars = []): array
     {
@@ -258,10 +232,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 协议匹配.
-     *
-     * @param string $scheme
-     *
-     * @return bool
      */
     protected function matcheScheme(string $scheme): bool
     {
@@ -274,8 +244,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 域名匹配.
-     *
-     * @param array $routers
      *
      * @return array|bool
      */
@@ -306,11 +274,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 变量匹配处理.
-     *
-     * @param array $routers
-     * @param array $matches
-     *
-     * @return array
      */
     protected function matcheVariable(array $routers, array $matches): array
     {
@@ -327,8 +290,7 @@ class Annotation extends Match implements IMatch
     /**
      * 添加解析变量.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
     protected function addVariable(string $name, $value): void
     {
@@ -337,10 +299,6 @@ class Annotation extends Match implements IMatch
 
     /**
      * 查找 App.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     protected function findApp(string $path): string
     {

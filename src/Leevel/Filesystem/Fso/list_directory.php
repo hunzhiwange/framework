@@ -25,11 +25,6 @@ use DirectoryIterator;
 
 /**
  * 浏览目录.
- *
- * @param string   $path
- * @param bool     $recursive
- * @param \Closure $cal
- * @param array    $filter
  */
 function list_directory(string $path, bool $recursive, Closure $cal, array $filter = []): void
 {

@@ -40,9 +40,7 @@ trait Helper
     /**
      * 执行方法.
      *
-     * @param mixed  $classObj
-     * @param string $method
-     * @param array  $args
+     * @param mixed $classObj
      *
      * @return mixed
      */
@@ -59,9 +57,7 @@ trait Helper
     /**
      * 执行静态方法.
      *
-     * @param mixed  $classOrObject
-     * @param string $method
-     * @param array  $args
+     * @param mixed $classOrObject
      *
      * @return mixed
      */
@@ -78,8 +74,7 @@ trait Helper
     /**
      * 获取反射对象属性值
      *
-     * @param mixed  $classOrObject
-     * @param string $prop
+     * @param mixed $classOrObject
      *
      * @return mixed
      */
@@ -93,9 +88,8 @@ trait Helper
     /**
      * 设置反射对象属性值
      *
-     * @param mixed  $classOrObject
-     * @param string $prop
-     * @param mixed  $value
+     * @param mixed $classOrObject
+     * @param mixed $value
      */
     protected function setTestProperty($classOrObject, string $prop, $value)
     {
@@ -107,10 +101,7 @@ trait Helper
     /**
      * 分析对象反射属性.
      *
-     * @param mixed  $classOrObject
-     * @param string $prop
-     *
-     * @return \ReflectionProperty
+     * @param mixed $classOrObject
      */
     protected function parseTestProperty($classOrObject, string $prop): ReflectionProperty
     {
@@ -124,10 +115,7 @@ trait Helper
     /**
      * 分析对象反射方法.
      *
-     * @param mixed  $classOrObject
-     * @param string $method
-     *
-     * @return \ReflectionMethod
+     * @param mixed $classOrObject
      */
     protected function parseTestMethod($classOrObject, string $method): ReflectionMethod
     {
@@ -139,10 +127,6 @@ trait Helper
 
     /**
      * 清理内容.
-     *
-     * @param string $content
-     *
-     * @return string
      */
     protected function normalizeContent(string $content): string
     {
@@ -151,11 +135,6 @@ trait Helper
 
     /**
      * 调试 JSON.
-     *
-     * @param array    $data
-     * @param null|int $id
-     *
-     * @return string
      */
     protected function varJson(array $data, ?int $id = null): string
     {
@@ -173,8 +152,7 @@ trait Helper
      * 时间波动断言.
      * 程序可能在数秒不等的时间内执行，需要给定一个范围.
      *
-     * @param string $data
-     * @param array  ...$timeRange
+     * @param array ...$timeRange
      */
     protected function assertTimeRange(string $data, ...$timeRange): void
     {
@@ -183,8 +161,6 @@ trait Helper
 
     /**
      * 断言真别名.
-     *
-     * @param bool $data
      */
     protected function assert(bool $data): void
     {
@@ -193,10 +169,6 @@ trait Helper
 
     /**
      * 读取缓存区数据.
-     *
-     * @param \Closure $call
-     *
-     * @return string
      */
     protected function obGetContents(Closure $call): string
     {

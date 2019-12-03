@@ -38,9 +38,6 @@ class I18n
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -51,10 +48,7 @@ class I18n
     /**
      * 获取语言 text.
      *
-     * @param string $text
-     * @param array  ...$data
-     *
-     * @return string
+     * @param array ...$data
      */
     public static function __(string $text, ...$data): string
     {
@@ -64,10 +58,7 @@ class I18n
     /**
      * 获取语言 text.
      *
-     * @param string $text
-     * @param array  ...$data
-     *
-     * @return string
+     * @param array ...$data
      */
     public static function gettext(string $text, ...$data): string
     {
@@ -87,8 +78,6 @@ class I18n
 
     /**
      * 设置当前语言包上下文环境.
-     *
-     * @param string $i18n
      */
     public static function setI18n(string $i18n): void
     {
@@ -97,8 +86,6 @@ class I18n
 
     /**
      * 获取当前语言包.
-     *
-     * @return string
      */
     public static function getI18n(): string
     {
@@ -107,8 +94,6 @@ class I18n
 
     /**
      * 返回所有语言包.
-     *
-     * @return array
      */
     public static function all(): array
     {
@@ -117,8 +102,6 @@ class I18n
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\I18n\I18n
      */
     public static function proxy(): BaseI18n
     {

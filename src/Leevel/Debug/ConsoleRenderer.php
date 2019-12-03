@@ -50,8 +50,6 @@ class ConsoleRenderer
 
     /**
      * 渲染数据.
-     *
-     * @return string
      */
     public function render(): string
     {
@@ -60,10 +58,6 @@ class ConsoleRenderer
 
     /**
      * 返回输出到浏览器.
-     *
-     * @param array $data
-     *
-     * @return string
      */
     protected function console(array $data): string
     {

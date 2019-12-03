@@ -51,8 +51,6 @@ class Load implements ILoad
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function __construct(IContainer $container)
     {
@@ -63,12 +61,6 @@ class Load implements ILoad
      * 载入缓存数据.
      *
      * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
-     *
-     * @param array $names
-     * @param array $option
-     * @param bool  $force
-     *
-     * @return array
      */
     public function data(array $names, array $option = [], bool $force = false): array
     {
@@ -88,8 +80,6 @@ class Load implements ILoad
 
     /**
      * 刷新缓存数据.
-     *
-     * @param array $names
      */
     public function refresh(array $names): void
     {
@@ -101,10 +91,6 @@ class Load implements ILoad
 
     /**
      * 读取缓存数据.
-     *
-     * @param string $name
-     * @param array  $option
-     * @param bool   $force
      *
      * @return mixed
      */
@@ -126,11 +112,6 @@ class Load implements ILoad
 
     /**
      * 更新缓存数据.
-     *
-     * @param string $name
-     * @param array  $option
-     *
-     * @return array
      */
     protected function update(string $name, array $option = []): array
     {
@@ -144,11 +125,7 @@ class Load implements ILoad
     /**
      * 缓存属性整理.
      *
-     * @param string $name
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function normalize(string $name): array
     {
@@ -169,9 +146,7 @@ class Load implements ILoad
      * 获取缓存.
      *
      * @param \Leevel\Cache\ICache $cache
-     * @param string               $name
      * @param mixed                $defaults
-     * @param array                $option
      *
      * @return mixed
      */
@@ -184,9 +159,6 @@ class Load implements ILoad
      * 设置缓存.
      *
      * @param \Leevel\Cache\ICache $cache
-     * @param string               $name
-     * @param array                $data
-     * @param array                $option
      */
     protected function setPersistence(ICache $cache, string $name, array $data, array $option = []): void
     {
@@ -197,7 +169,6 @@ class Load implements ILoad
      * 清除缓存.
      *
      * @param \Leevel\Cache\ICache $cache
-     * @param string               $name
      */
     protected function deletePersistence(ICache $cache, string $name): void
     {
@@ -206,10 +177,6 @@ class Load implements ILoad
 
     /**
      * 解析缓存.
-     *
-     * @param string $name
-     *
-     * @return array
      */
     protected function parse(string $name): array
     {

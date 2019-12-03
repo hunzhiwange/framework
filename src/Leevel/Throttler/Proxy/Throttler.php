@@ -41,9 +41,6 @@ class Throttler
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -53,12 +50,6 @@ class Throttler
 
     /**
      * 创建一个节流器.
-     *
-     * @param null|string $key
-     * @param int         $xRateLimitLimit
-     * @param int         $xRateLimitTime
-     *
-     * @return \Leevel\Throttler\IRateLimiter
      */
     public static function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20): IRateLimiter
     {
@@ -67,10 +58,6 @@ class Throttler
 
     /**
      * 设置 http request.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Throttler\IThrottler
      */
     public static function setRequest(IRequest $request): IBaseThrottler
     {
@@ -79,10 +66,6 @@ class Throttler
 
     /**
      * 获取请求 key.
-     *
-     * @param null|string $key
-     *
-     * @return string
      */
     public static function getRequestKey(?string $key = null): string
     {
@@ -91,8 +74,6 @@ class Throttler
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Throttler\Throttler
      */
     public static function proxy(): BaseThrottler
     {

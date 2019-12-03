@@ -74,8 +74,6 @@ class Controller extends Make
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Router\IRouter $router
      */
     public function handle(IRouter $router): void
     {
@@ -106,10 +104,6 @@ class Controller extends Make
 
     /**
      * 设置自定义替换 KEY.
-     *
-     * @param string $controllerNamespace
-     * @param string $controller
-     * @param string $action
      */
     protected function setCustomReplace(string $controllerNamespace, string $controller, string $action): void
     {
@@ -121,11 +115,6 @@ class Controller extends Make
 
     /**
      * 获取保存文件路径.
-     *
-     * @param string $controllerNamespace
-     * @param string $controller
-     *
-     * @return string
      */
     protected function parseSaveFilePath(string $controllerNamespace, string $controller): string
     {
@@ -136,8 +125,6 @@ class Controller extends Make
 
     /**
      * 获取控制器.
-     *
-     * @return string
      */
     protected function parseController(): string
     {
@@ -146,8 +133,6 @@ class Controller extends Make
 
     /**
      * 获取方法.
-     *
-     * @return string
      */
     protected function parseAction(): string
     {
@@ -158,8 +143,6 @@ class Controller extends Make
      * 获取模板路径.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function getStubPath(): string
     {
@@ -180,10 +163,6 @@ class Controller extends Make
 
     /**
      * 格式化方法名.
-     *
-     * @param string $action
-     *
-     * @return string
      */
     protected function normalizeAction(string $action): string
     {
@@ -201,8 +180,6 @@ class Controller extends Make
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -223,8 +200,6 @@ class Controller extends Make
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

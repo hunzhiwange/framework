@@ -36,8 +36,7 @@ interface IServer
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Protocol\IServer
      */
@@ -45,15 +44,11 @@ interface IServer
 
     /**
      * 获取配置.
-     *
-     * @return array
      */
     public function getOption(): array;
 
     /**
      * 添加自定义进程.
-     *
-     * @param string $process
      *
      * @throws \InvalidArgumentException
      */
@@ -66,8 +61,6 @@ interface IServer
 
     /**
      * 返回服务.
-     *
-     * @return \Swoole\Server
      */
     public function getServer(): SwooleServer;
 }

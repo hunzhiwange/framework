@@ -36,8 +36,6 @@ trait Database
 {
     /**
      * 清理数据表.
-     *
-     * @param array $tables
      */
     protected function truncateDatabase(array $tables): void
     {

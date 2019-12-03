@@ -42,8 +42,6 @@ class View implements IView
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\View\IView $view
      */
     public function __construct(IViews $view)
     {
@@ -52,8 +50,6 @@ class View implements IView
 
     /**
      * 切换视图.
-     *
-     * @param \Leevel\View\IView $view
      *
      * @return \Leevel\Router\IView
      */
@@ -84,8 +80,6 @@ class View implements IView
     /**
      * 获取变量赋值.
      *
-     * @param null|string $name
-     *
      * @return mixed
      */
     public function getVar(?string $name = null)
@@ -95,8 +89,6 @@ class View implements IView
 
     /**
      * 删除变量值.
-     *
-     * @param array $name
      *
      * @return \Leevel\Router\IView
      */
@@ -110,8 +102,6 @@ class View implements IView
     /**
      * 清空变量值.
      *
-     * @param null|string $name
-     *
      * @return \Leevel\Router\IView
      */
     public function clearVar(): IView
@@ -123,12 +113,6 @@ class View implements IView
 
     /**
      * 加载视图文件.
-     *
-     * @param string      $file
-     * @param array       $vars
-     * @param null|string $ext
-     *
-     * @return string
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {

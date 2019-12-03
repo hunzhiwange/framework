@@ -22,12 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * 签名算法.
- *
- * @param array  $query
- * @param string $secret
- * @param array  $ignore
- *
- * @return string
  */
 function signature(array $query, string $secret, array $ignore = []): string
 {

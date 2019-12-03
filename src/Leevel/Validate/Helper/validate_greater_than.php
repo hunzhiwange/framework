@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 大于.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_greater_than($value, array $param): bool
 {

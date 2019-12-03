@@ -34,8 +34,7 @@ interface IView
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\View\IView
      */
@@ -45,7 +44,6 @@ interface IView
      * 加载视图文件.
      *
      * @param string      $file    视图文件地址
-     * @param array       $vars
      * @param null|string $ext     后缀
      * @param bool        $display 是否显示
      *
@@ -64,16 +62,12 @@ interface IView
     /**
      * 获取变量值.
      *
-     * @param null|string $name
-     *
      * @return mixed
      */
     public function getVar(?string $name = null);
 
     /**
      * 删除变量值.
-     *
-     * @param array $name
      */
     public function deleteVar(array $name): void;
 

@@ -1125,8 +1125,6 @@ class MyArray implements IArray
 {
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -1140,8 +1138,6 @@ class MyJson implements IJson
      * 对象转 JSON.
      *
      * @param int $option
-     *
-     * @return string
      */
     public function toJson(?int $option = null): string
     {

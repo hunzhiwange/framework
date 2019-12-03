@@ -60,10 +60,6 @@ class Token extends Auth implements IAuth
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Cache\ICache  $cache
-     * @param \Leevel\Http\IRequest $request
-     * @param array                 $option
      */
     public function __construct(ICache $cache, IRequest $request, array $option = [])
     {
@@ -75,10 +71,6 @@ class Token extends Auth implements IAuth
 
     /**
      * 数据持久化.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
      */
     protected function setPersistence(string $key, string $value, int $expire = 0): void
     {
@@ -87,8 +79,6 @@ class Token extends Auth implements IAuth
 
     /**
      * 获取持久化数据.
-     *
-     * @param string $key
      *
      * @return mixed
      */
@@ -99,8 +89,6 @@ class Token extends Auth implements IAuth
 
     /**
      * 删除持久化数据.
-     *
-     * @param string $key
      */
     protected function deletePersistence(string $key): void
     {
@@ -109,8 +97,6 @@ class Token extends Auth implements IAuth
 
     /**
      * 从请求中获取 token.
-     *
-     * @return string
      */
     protected function getTokenNameFromRequest(): string
     {

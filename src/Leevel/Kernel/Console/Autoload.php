@@ -62,8 +62,6 @@ class Autoload extends Command
 
     /**
      * 取得 composer 优化命令.
-     *
-     * @return string
      */
     protected function normalizeComposerCommand(): string
     {
@@ -80,8 +78,6 @@ class Autoload extends Command
 
     /**
      * 取得 Composer 路径.
-     *
-     * @return string
      */
     protected function composer(): string
     {
@@ -90,8 +86,6 @@ class Autoload extends Command
 
     /**
      * 取得是否为开发模式.
-     *
-     * @return bool
      */
     protected function dev(): bool
     {
@@ -100,8 +94,6 @@ class Autoload extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -110,8 +102,6 @@ class Autoload extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

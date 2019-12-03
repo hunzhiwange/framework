@@ -170,9 +170,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 构造函数.
      *
-     * @param array $data
-     * @param bool  $fromStorage
-     *
      * @throws \InvalidArgumentException
      */
     public function __construct(array $data = [], bool $fromStorage = false)
@@ -212,8 +209,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 获取数据数据.
      *
-     * @param string $key
-     *
      * @return mixed
      */
     public function __get(string $prop)
@@ -224,8 +219,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 更新属性数据.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function __set(string $prop, $value): void
     {
@@ -234,10 +228,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 是否存在属性数据.
-     *
-     * @param string $prop
-     *
-     * @return bool
      */
     public function __isset(string $prop): bool
     {
@@ -246,8 +236,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 删除属性数据.
-     *
-     * @param string $prop
      */
     public function __unset(string $prop): void
     {
@@ -256,9 +244,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @throws \BadMethodCallException
      *
@@ -303,9 +288,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * call static.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @throws \BadMethodCallException
      */
     public static function __callStatic(string $method, array $args)
@@ -320,8 +302,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 将模型实体转化为 JSON.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -330,9 +310,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 创建新的实例.
-     *
-     * @param array $data
-     * @param bool  $fromStorage
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -346,8 +323,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      *
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
-     *
-     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -363,8 +338,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - select 别名，致敬经典 QeePHP.
      *
-     * @param int $softDeletedType
-     *
      * @return \Leevel\Database\Ddd\Select
      */
     public static function find(int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select
@@ -378,8 +351,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 查询静态方法入口，更好的 IDE 用户体验.
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - 获取包含软删除的数据.
-     *
-     * @param int $softDeletedType
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -395,8 +366,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * - 屏蔽 __callStatic 防止 IDE 无法识别.
      * - 获取只包含软删除的数据.
      *
-     * @param int $softDeletedType
-     *
      * @return \Leevel\Database\Ddd\Select
      */
     public static function onlySoftDeleted(): Select
@@ -406,10 +375,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 数据库查询集合对象.
-     *
-     * @param int $softDeletedType
-     *
-     * @return \Leevel\Database\Select
      */
     public static function selectCollection(int $softDeletedType = self::WITHOUT_SOFT_DELETED): DatabaseSelect
     {
@@ -437,8 +402,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 数据库连接沙盒.
      *
-     * @param mixed    $connect
-     * @param \Closure $call
+     * @param mixed $connect
      *
      * @return mixed
      */
@@ -462,8 +426,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 批量设置属性数据.
      *
-     * @param array $data
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function withProps(array $data): IEntity
@@ -478,10 +440,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 设置属性数据.
      *
-     * @param string $prop
-     * @param mixed  $value
-     * @param bool   $force
-     * @param bool   $ignoreReadonly
+     * @param mixed $value
      *
      * @throws \InvalidArgumentException
      *
@@ -524,8 +483,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 获取属性数据.
      *
-     * @param string $prop
-     *
      * @return mixed
      */
     public function prop(string $prop)
@@ -542,10 +499,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 是否存在属性数据.
-     *
-     * @param string $prop
-     *
-     * @return bool
      */
     public function hasProp(string $prop): bool
     {
@@ -554,9 +507,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 自动判断快捷方式.
-     *
-     * @param array      $data
-     * @param null|array $fill
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -570,9 +520,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 新增快捷方式.
      *
-     * @param array      $data
-     * @param null|array $fill
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function create(array $data = [], ?array $fill = null): IEntity
@@ -584,9 +531,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 更新快捷方式.
-     *
-     * @param array      $data
-     * @param null|array $fill
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -600,9 +544,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * replace 快捷方式.
      *
-     * @param array      $data
-     * @param null|array $fill
-     *
      * @return \Leevel\Database\Ddd\IEntity
      */
     public function replace(array $data = [], ?array $fill = null): IEntity
@@ -614,11 +555,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 根据主键 ID 删除模型实体.
-     *
-     * @param array $ids
-     * @param bool  $forceDelete
-     *
-     * @return int
      */
     public static function destroy(array $ids, bool $forceDelete = false): int
     {
@@ -627,11 +563,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 根据主键 ID 强制删除模型实体.
-     *
-     * @param array $ids
-     * @param bool  $forceDelete
-     *
-     * @return int
      */
     public static function forceDestroy(array $ids): int
     {
@@ -640,8 +571,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 删除模型实体.
-     *
-     * @param bool $forceDelete
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -676,10 +605,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 根据主键 ID 删除模型实体.
-     *
-     * @param array $ids
-     *
-     * @return int
      */
     public static function softDestroy(array $ids): int
     {
@@ -716,8 +641,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 检查模型实体是否已经被软删除.
-     *
-     * @return bool
      */
     public function softDeleted(): bool
     {
@@ -728,8 +651,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 获取软删除字段.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     public static function deleteAtColumn(): string
     {
@@ -795,8 +716,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 获取数据持久化数据.
-     *
-     * @return null|array
      */
     public function flushData(): ?array
     {
@@ -805,8 +724,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 确定对象是否对应数据库中的一条记录.
-     *
-     * @return bool
      */
     public function newed(): bool
     {
@@ -863,8 +780,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 返回关联数据.
      *
-     * @param string $prop
-     *
      * @return mixed
      */
     public function loadRelationProp(string $prop)
@@ -878,10 +793,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 是否为关联属性.
-     *
-     * @param string $prop
-     *
-     * @return bool
      */
     public function isRelation(string $prop): bool
     {
@@ -902,11 +813,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 读取关联.
      *
-     * @param string $prop
-     *
      * @throws \BadMethodCallException
-     *
-     * @return \Leevel\Database\Ddd\Relation\Relation
      */
     public function loadRelation(string $prop): Relation
     {
@@ -979,8 +886,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 取得关联数据.
      *
-     * @param string $prop
-     *
      * @return mixed
      */
     public function relationProp(string $prop)
@@ -993,8 +898,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 设置关联数据.
      *
-     * @param string $prop
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function withRelationProp(string $prop, $value): void
     {
@@ -1004,8 +908,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 预加载关联.
-     *
-     * @param array $relation
      *
      * @return \Leevel\Database\Ddd\Select
      */
@@ -1036,13 +938,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 一对一关联.
-     *
-     * @param string        $relatedEntityClass
-     * @param string        $targetKey
-     * @param string        $sourceKey
-     * @param null|\Closure $scope
-     *
-     * @return \Leevel\Database\Ddd\Relation\HasOne
      */
     public function hasOne(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasOne
     {
@@ -1055,13 +950,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 定义从属关系.
-     *
-     * @param string        $relatedEntityClass
-     * @param string        $targetKey
-     * @param string        $sourceKey
-     * @param null|\Closure $scope
-     *
-     * @return \Leevel\Database\Ddd\Relation\BelongsTo
      */
     public function belongsTo(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): BelongsTo
     {
@@ -1074,13 +962,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 一对多关联.
-     *
-     * @param string        $relatedEntityClass
-     * @param string        $targetKey
-     * @param string        $sourceKey
-     * @param null|\Closure $scope
-     *
-     * @return \Leevel\Database\Ddd\Relation\HasMany
      */
     public function hasMany(string $relatedEntityClass, string $targetKey, string $sourceKey, ?Closure $scope = null): HasMany
     {
@@ -1093,16 +974,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 多对多关联.
-     *
-     * @param string        $relatedEntityClass
-     * @param string        $middleEntityClass
-     * @param string        $targetKey
-     * @param string        $sourceKey
-     * @param string        $middleTargetKey
-     * @param string        $middleSourceKey
-     * @param null|\Closure $scope
-     *
-     * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function manyMany(string $relatedEntityClass, string $middleEntityClass, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null): ManyMany
     {
@@ -1133,8 +1004,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 设置模型实体事件处理器.
-     *
-     * @param null|\Leevel\Event\IDispatch $dispatch
      */
     public static function withEventDispatch(?IDispatch $dispatch = null): void
     {
@@ -1144,7 +1013,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 注册模型实体事件.
      *
-     * @param string                                 $event
      * @param \Closure|\Leevel\Event\Observer|string $listener
      *
      * @throws \InvalidArgumentException
@@ -1168,8 +1036,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 执行模型实体事件.
      *
-     * @param string $event
-     * @param array  ...$args
+     * @param array ...$args
      */
     public function handleEvent(string $event, ...$args): void
     {
@@ -1186,8 +1053,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 返回受支持的事件.
-     *
-     * @return array
      */
     public static function supportEvent(): array
     {
@@ -1209,8 +1074,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 返回已经改变.
-     *
-     * @return array
      */
     public function changed(): array
     {
@@ -1219,10 +1082,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 检测是否已经改变.
-     *
-     * @param string $prop
-     *
-     * @return bool
      */
     public function hasChanged(string $prop): bool
     {
@@ -1231,8 +1090,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 将指定的属性设置已改变.
-     *
-     * @param array $props
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -1251,8 +1108,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 删除改变属性.
-     *
-     * @param array $props
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -1310,8 +1165,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 返回主键字段.
-     *
-     * @return array
      */
     public static function primaryKeys(): array
     {
@@ -1330,8 +1183,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 返回字段名字.
-     *
-     * @return array
      */
     public static function fields(): array
     {
@@ -1340,10 +1191,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 是否存在字段.
-     *
-     * @param string $field
-     *
-     * @return bool
      */
     public static function hasField(string $field): bool
     {
@@ -1355,8 +1202,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 复合主键或者没有主键直接抛出异常.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     public static function singlePrimaryKey(): string
     {
@@ -1385,8 +1230,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 返回设置表.
-     *
-     * @return string
      */
     public static function table(): string
     {
@@ -1397,7 +1240,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 获取 enum.
      * 不存在返回 false.
      *
-     * @param string     $prop
      * @param null|mixed $enum
      *
      * @throws \InvalidArgumentException
@@ -1454,8 +1296,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -1464,10 +1304,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 对象转 JSON.
-     *
-     * @param null|int $option
-     *
-     * @return string
      */
     public function toJson(?int $option = null): string
     {
@@ -1483,8 +1319,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 实现 JsonSerializable::jsonSerialize.
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {
@@ -1493,10 +1327,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 创建一个模型实体集合.
-     *
-     * @param array $entity
-     *
-     * @return \Leevel\Collection\Collection
      */
     public function collection(array $entity = []): Collection
     {
@@ -1507,8 +1337,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 获取查询键值.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     public function idCondition(): array
     {
@@ -1531,8 +1359,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 实现 ArrayAccess::offsetExists.
      *
      * @param string $index
-     *
-     * @return bool
      */
     public function offsetExists($index): bool
     {
@@ -1575,8 +1401,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * setter.
      *
-     * @param string $prop
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -1584,8 +1409,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * getter.
-     *
-     * @param string $prop
      *
      * @return mixed
      */
@@ -1608,8 +1431,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 验证事件是否受支持.
      *
-     * @param string $event
-     *
      * @throws \InvalidArgumentException
      */
     protected static function validateSupportEvent(string $event): void
@@ -1624,11 +1445,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 是否定义属性.
      *
-     * @param string $prop
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return bool
      */
     protected function hasPropDefined(string $prop): bool
     {
@@ -1649,12 +1466,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 查找并删除实体.
-     *
-     * @param array  $ids
-     * @param string $type
-     * @param bool   $forceDelete
-     *
-     * @return int
      */
     protected static function selectAndDestroyEntitys(array $ids, string $type, bool $forceDelete = false): int
     {
@@ -1672,9 +1483,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 准备软删除查询条件.
-     *
-     * @param \Leevel\Database\Select $select
-     * @param int                     $softDeletedType
      *
      * @throws \InvalidArgumentException
      */
@@ -1704,10 +1512,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 保存统一入口.
-     *
-     * @param string     $method
-     * @param array      $data
-     * @param null|array $fill
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
@@ -1755,8 +1559,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 添加数据.
      *
-     * @param null|array $fill
-     *
      * @throws \InvalidArgumentException
      *
      * @return \Leevel\Database\Ddd\IEntity
@@ -1787,8 +1589,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 更新数据.
-     *
-     * @param null|array $fill
      *
      * @throws \RuntimeException
      *
@@ -1841,8 +1641,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 模拟 replace 数据.
-     *
-     * @param null|array $fill
      */
     protected function replaceReal(?array $fill = null): void
     {
@@ -1854,8 +1652,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 整理黑白名单变更数据.
      *
      * @param array $type
-     *
-     * @return array
      */
     protected function normalizeWhiteAndBlackChangedData(string $type): array
     {
@@ -1869,10 +1665,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 整理变更数据.
-     *
-     * @param array $propKey
-     *
-     * @return array
      */
     protected function normalizeChangedData(array $propKey): array
     {
@@ -1890,8 +1682,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 取得 getter 数据.
      *
-     * @param string $prop
-     *
      * @return mixed
      */
     protected function propGetter(string $prop)
@@ -1908,8 +1698,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 设置 setter 数据.
      *
-     * @param string $prop
-     * @param mixed  $value
+     * @param mixed $value
      */
     protected function propSetter(string $prop, $value): void
     {
@@ -1924,9 +1713,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 自动填充.
-     *
-     * @param string     $type
-     * @param null|array $fill
      */
     protected function parseAutoFill(string $type, ?array $fill = null): void
     {
@@ -1948,8 +1734,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 格式化自动填充.
      *
-     * @param string $prop
-     * @param mixed  $value
+     * @param mixed $value
      */
     protected function normalizeFill(string $prop, $value): void
     {
@@ -1966,8 +1751,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     /**
      * 从关联中读取数据.
      *
-     * @param string $prop
-     *
      * @return mixed
      */
     protected function loadDataFromRelation(string $prop)
@@ -1981,10 +1764,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 校验并转换真实属性.
-     *
-     * @param string $prop
-     *
-     * @return string
      */
     protected function realProp(string $prop): string
     {
@@ -1995,8 +1774,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 验证 getter setter 属性.
-     *
-     * @param string $prop
      *
      * @throws \InvalidArgumentException
      */
@@ -2013,9 +1790,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 校验关联字段定义.
-     *
-     * @param array $defined
-     * @param array $field
      *
      * @throws \InvalidArgumentException
      */
@@ -2034,7 +1808,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
      * 验证关联字段.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     * @param string                       $field
      *
      * @throws \InvalidArgumentException
      */
@@ -2052,11 +1825,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 格式化黑白名单数据.
-     *
-     * @param array  $key
-     * @param string $type
-     *
-     * @return array
      */
     protected function normalizeWhiteAndBlack(array $key, string $type): array
     {
@@ -2069,12 +1837,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 对象转数组.
-     *
-     * @param array $white
-     * @param array $black
-     * @param array $relationWhiteAndBlack
-     *
-     * @return array
      */
     protected function toArraySource(array $white = [], array $black = [], array $relationWhiteAndBlack = []): array
     {
@@ -2114,12 +1876,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 整理关联属性数据.
-     *
-     * @param \Leevel\Support\IArray $value
-     * @param string                 $prop
-     * @param array                  $relationWhiteAndBlack
-     *
-     * @return array
      */
     protected function normalizeRelationValue(IArray $value, string $prop, array $relationWhiteAndBlack): array
     {
@@ -2136,11 +1892,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 准备 enum 数据.
-     *
-     * @param string $prop
-     * @param array  $data
-     *
-     * @return array
      */
     protected static function prepareEnum(string $prop, array $data): array
     {
@@ -2155,12 +1906,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 黑白名单数据解析.
-     *
-     * @param array $key
-     * @param array $white
-     * @param array $black
-     *
-     * @return array
      */
     protected function whiteAndBlack(array $key, array $white, array $black): array
     {
@@ -2175,8 +1920,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 延迟载入占位符.
-     *
-     * @return bool
      */
     protected static function lazyloadPlaceholder(): bool
     {
@@ -2185,10 +1928,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 统一处理前转换下划线命名风格.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     protected static function normalize(string $prop): string
     {
@@ -2201,10 +1940,6 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
 
     /**
      * 返回转驼峰命名.
-     *
-     * @param string $prop
-     *
-     * @return string
      */
     protected function asProp(string $prop): string
     {

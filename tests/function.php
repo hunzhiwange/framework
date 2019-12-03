@@ -32,8 +32,7 @@ class I18nMock
     /**
      * lang.
      *
-     * @param string $text
-     * @param array  $data
+     * @param array $data
      *
      * @return string
      */
@@ -45,8 +44,7 @@ class I18nMock
     /**
      * lang.
      *
-     * @param string $text
-     * @param array  $data
+     * @param array $data
      *
      * @return string
      */

@@ -56,8 +56,6 @@ class Dispatch implements IDispatch
 
     /**
      * 创建一个事件解析器.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function __construct(IContainer $container)
     {
@@ -101,7 +99,6 @@ class Dispatch implements IDispatch
      *
      * @param array|object|string $event
      * @param mixed               $listener
-     * @param int                 $priority
      */
     public function register($event, $listener, int $priority = 500): void
     {
@@ -120,8 +117,6 @@ class Dispatch implements IDispatch
      * 获取一个事件监听器.
      *
      * @param object|string $event
-     *
-     * @return array
      */
     public function get($event): array
     {
@@ -147,8 +142,6 @@ class Dispatch implements IDispatch
      * 判断事件监听器是否存在.
      *
      * @param object|string $event
-     *
-     * @return bool
      */
     public function has($event): bool
     {
@@ -194,8 +187,6 @@ class Dispatch implements IDispatch
      * 格式化事件名字.
      *
      * @param object|string $event
-     *
-     * @return string
      */
     protected function normalizeEvent($event): string
     {
@@ -204,10 +195,6 @@ class Dispatch implements IDispatch
 
     /**
      * 通配符正则.
-     *
-     * @param string $regex
-     *
-     * @return string
      */
     protected function prepareRegexForWildcard(string $regex): string
     {

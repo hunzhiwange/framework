@@ -33,10 +33,6 @@ interface IJson
 {
     /**
      * 对象转 JSON.
-     *
-     * @param null|int $option
-     *
-     * @return string
      */
     public function toJson(?int $option = null): string;
 }

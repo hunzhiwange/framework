@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 是否为英文字母.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_alpha($value): bool
 {

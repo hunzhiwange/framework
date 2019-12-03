@@ -668,9 +668,8 @@ class AppTest extends TestCase
     /**
      * @dataProvider envProvider
      *
-     * @param string $name
-     * @param mixed  $value
-     * @param mixed  $envValue
+     * @param mixed $value
+     * @param mixed $envValue
      */
     public function testEnv(string $name, $value, $envValue): void
     {

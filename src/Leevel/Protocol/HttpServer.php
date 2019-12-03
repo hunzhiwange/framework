@@ -105,9 +105,6 @@ class HttpServer extends Server implements IServer
      * - 浏览器连接服务器后, 页面上的每个请求均会执行一次
      * - nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
      * - 可以通过 nginx deny 屏蔽掉 favicon.ico 的请求，具体请 Google 或者百度.
-     *
-     * @param \Swoole\Http\Request  $swooleRequest
-     * @param \Swoole\Http\Response $swooleResponse
      */
     public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse): void
     {
@@ -128,10 +125,6 @@ class HttpServer extends Server implements IServer
      *
      * - 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
      *
-     * @param \Swoole\Http\Server $server
-     * @param int                 $fd
-     * @param int                 $reactorId
-     *
      * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
      */
     public function onHttpClose(SwooleHttpServer $server, int $fd, int $reactorId): void
@@ -142,10 +135,6 @@ class HttpServer extends Server implements IServer
 
     /**
      * 请求过滤 favicon.
-     *
-     * @param \Swoole\Http\Request $swooleRequest
-     *
-     * @return bool
      */
     protected function isFavicon(SwooleHttpRequest $swooleRequest): bool
     {
@@ -155,8 +144,6 @@ class HttpServer extends Server implements IServer
 
     /**
      * 路由调度.
-     *
-     * @param \Leevel\Http\IRequest $request
      *
      * @return \Leevel\Http\IResource
      */
@@ -172,11 +159,6 @@ class HttpServer extends Server implements IServer
 
     /**
      * 格式化 QueryPHP 响应到 Swoole 响应.
-     *
-     * @param \Leevel\Http\IResponse $response
-     * @param \Swoole\Http\Response  $swooleResponse
-     *
-     * @return \Swoole\Http\Response
      */
     protected function normalizeResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
@@ -188,10 +170,6 @@ class HttpServer extends Server implements IServer
 
     /**
      * 格式化 Swoole 请求到 QueryPHP 请求.
-     *
-     * @param \Swoole\Http\Request $swooleRequest
-     *
-     * @return \Leevel\Http\IRequest
      */
     protected function normalizeRequest(SwooleHttpRequest $swooleRequest): IRequest
     {

@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 验证是否为正常的 JSON 字符串.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_json($value): bool
 {

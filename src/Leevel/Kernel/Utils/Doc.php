@@ -94,11 +94,6 @@ class Doc
 
     /**
      * 构造函数.
-     *
-     * @param string $path
-     * @param string $git
-     * @param string $i18n
-     * @param string $defaultI18n
      */
     public function __construct(string $path, string $git, string $i18n, string $defaultI18n = 'zh-CN')
     {
@@ -110,10 +105,6 @@ class Doc
 
     /**
      * 解析文档.
-     *
-     * @param string $className
-     *
-     * @return string
      */
     public function handle(string $className): string
     {
@@ -131,9 +122,6 @@ class Doc
 
     /**
      * 解析文档并保存.
-     *
-     * @param string      $className
-     * @param null|string $path
      *
      * @return array|bool
      */
@@ -153,12 +141,6 @@ class Doc
 
     /**
      * 获取方法内容.
-     *
-     * @param string $className
-     * @param string $method
-     * @param bool   $isDoc
-     *
-     * @return string
      */
     public static function getMethodBody(string $className, string $method, bool $isDoc = false): string
     {
@@ -171,10 +153,6 @@ class Doc
 
     /**
      * 获取类内容.
-     *
-     * @param string $className
-     *
-     * @return string
      */
     public static function getClassBody(string $className): string
     {
@@ -210,8 +188,6 @@ class Doc
 
     /**
      * 设置保存路径.
-     *
-     * @param null|string $path
      */
     protected function setSavePath(?string $path = null): void
     {
@@ -225,10 +201,6 @@ class Doc
 
     /**
      * 方法是否需要被解析.
-     *
-     * @param \ReflectionMethod $method
-     *
-     * @return bool
      */
     protected function isMethodNeedParsed(ReflectionMethod $method): bool
     {
@@ -239,10 +211,6 @@ class Doc
 
     /**
      * 解析文档内容.
-     *
-     * @param \ReflectionClass $reflection
-     *
-     * @return array
      */
     protected function parseFileContnet(ReflectionClass $reflection): array
     {
@@ -251,10 +219,6 @@ class Doc
 
     /**
      * 解析文档注解内容.
-     *
-     * @param \ReflectionClass $reflection
-     *
-     * @return string
      */
     protected function parseClassContent(ReflectionClass $reflection): string
     {
@@ -280,10 +244,6 @@ class Doc
 
     /**
      * 解析所有方法注解内容.
-     *
-     * @param \ReflectionClass $reflection
-     *
-     * @return string
      */
     protected function parseMethodContents(ReflectionClass $reflection): string
     {
@@ -300,10 +260,6 @@ class Doc
 
     /**
      * 解析方法注解内容.
-     *
-     * @param \ReflectionMethod $comment
-     *
-     * @return string
      */
     protected function parseMethodContent(ReflectionMethod $method): string
     {
@@ -324,12 +280,6 @@ class Doc
 
     /**
      * 解析文档项.
-     *
-     * @param array  $info
-     * @param string $name
-     * @param string $defaultValue
-     *
-     * @return string
      */
     protected function parseDocItem(array $info, string $name, string $defaultValue = ''): string
     {
@@ -343,11 +293,6 @@ class Doc
 
     /**
      * 格式化标题.
-     *
-     * @param string $title
-     * @param string $level
-     *
-     * @return string
      */
     protected function formatTitle(string $title, string $leevel = '##'): string
     {
@@ -360,11 +305,6 @@ class Doc
 
     /**
      * 格式化来源.
-     *
-     * @param string $git
-     * @param string $filePath
-     *
-     * @return string
      */
     protected function formatFrom(string $git, string $filePath): string
     {
@@ -378,10 +318,6 @@ class Doc
 
     /**
      * 格式化 uses.
-     *
-     * @param \ReflectionClass $reflection
-     *
-     * @return string
      */
     protected function formatUsers(ReflectionClass $reflection): string
     {
@@ -400,10 +336,6 @@ class Doc
 
     /**
      * 格式化描述.
-     *
-     * @param string $description
-     *
-     * @return string
      */
     protected function formatDescription(string $description): string
     {
@@ -416,10 +348,6 @@ class Doc
 
     /**
      * 格式化注意事项.
-     *
-     * @param string $note
-     *
-     * @return string
      */
     protected function formatNote(string $note): string
     {
@@ -437,11 +365,6 @@ class Doc
 
     /**
      * 格式化内容.
-     *
-     * @param \ReflectionMethod $method
-     * @param string            $lang
-     *
-     * @return string
      */
     protected function formatBody(ReflectionMethod $method, string $lang): string
     {
@@ -460,11 +383,6 @@ class Doc
 
     /**
      * 解析 use 导入类.
-     *
-     * @param array            $lines
-     * @param \ReflectionClass $classRef
-     *
-     * @return string
      */
     protected function parseUseDefined(array $lines, ReflectionClass $classRef): string
     {
@@ -490,12 +408,6 @@ class Doc
 
     /**
      * 解析方法内容.
-     *
-     * @param array             $lines
-     * @param \ReflectionMethod $method
-     * @param bool              $isDoc
-     *
-     * @return string
      */
     protected function parseMethodBody(array $lines, ReflectionMethod $method, bool $isDoc = false): string
     {
@@ -530,10 +442,6 @@ class Doc
 
     /**
      * 获取 API 注解信息.
-     *
-     * @param string $comment
-     *
-     * @return array
      */
     protected function parseComment(string $comment): array
     {
@@ -581,11 +489,6 @@ class Doc
 
     /**
      * 分析多行注释.
-     *
-     * @param string $content
-     * @param string $originalContent
-     *
-     * @return array
      */
     protected function parseMultiComment(string $content, string $originalContent): array
     {
@@ -616,10 +519,6 @@ class Doc
 
     /**
      * 分析单行注释.
-     *
-     * @param string $content
-     *
-     * @return string
      */
     protected function parseSingleComment(string $content): string
     {
@@ -632,10 +531,6 @@ class Doc
 
     /**
      * 整理单行注释右边值.
-     *
-     * @param string $content
-     *
-     * @return string
      */
     protected function normalizeSinggleRight(string $content): string
     {
@@ -652,10 +547,6 @@ class Doc
 
     /**
      * 分析可执行代码.
-     *
-     * @param string $content
-     *
-     * @return string
      */
     protected function parseExecutableCode(string $content): string
     {
@@ -683,9 +574,6 @@ class Doc
 
     /**
      * 写入缓存.
-     *
-     * @param string $cachePath
-     * @param string $data
      */
     protected function writeCache(string $cachePath, string $data): void
     {

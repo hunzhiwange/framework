@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 验证是否为布尔值.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_boolean($value): bool
 {

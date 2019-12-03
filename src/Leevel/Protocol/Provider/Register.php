@@ -57,8 +57,6 @@ class Register extends Provider
 
     /**
      * 可用服务提供者.
-     *
-     * @return array
      */
     public static function providers(): array
     {
@@ -74,8 +72,6 @@ class Register extends Provider
 
     /**
      * 是否延迟载入.
-     *
-     * @return bool
      */
     public static function isDeferred(): bool
     {
@@ -156,11 +152,6 @@ class Register extends Provider
 
     /**
      * 整理服务配置.
-     *
-     * @param \Leevel\Di\IContainer $container
-     * @param string                $serverType
-     *
-     * @return array
      */
     protected function normalizeOptions(IContainer $container, string $serverType): array
     {
@@ -177,11 +168,6 @@ class Register extends Provider
 
     /**
      * 合并自定义进程配置.
-     *
-     * @param \Leevel\Di\IContainer $container
-     * @param array                 $options
-     *
-     * @return array
      */
     protected function mergeOptionsForProcesses(IContainer $container, array $options): array
     {

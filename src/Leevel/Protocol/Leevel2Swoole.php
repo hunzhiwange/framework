@@ -39,11 +39,6 @@ class Leevel2Swoole
 {
     /**
      * 从 Leevel 响应对象创建 Swoole 响应对象.
-     *
-     * @param \Leevel\Http\IResponse $response
-     * @param \Swoole\Http\Response  $swooleResponse
-     *
-     * @return \Swoole\Http\Response
      */
     public function createResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {

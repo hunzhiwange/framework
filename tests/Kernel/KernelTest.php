@@ -53,8 +53,6 @@ class KernelTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
-     *
-     * @param bool $debug
      */
     public function testBaseUse(bool $debug): void
     {

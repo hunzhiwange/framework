@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 验证值下限.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_min($value, array $param): bool
 {

@@ -42,9 +42,7 @@ interface ICache
     /**
      * 缓存存在读取否则重新设置.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
+     * @param mixed $data
      *
      * @return mixed
      */
@@ -53,8 +51,7 @@ interface ICache
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Cache\ICache
      */
@@ -63,9 +60,7 @@ interface ICache
     /**
      * 获取缓存.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
+     * @param mixed $defaults
      *
      * @return mixed
      */
@@ -74,16 +69,12 @@ interface ICache
     /**
      * 设置缓存.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
+     * @param mixed $data
      */
     public function set(string $name, $data, array $option = []): void;
 
     /**
      * 清除缓存.
-     *
-     * @param string $name
      */
     public function delete(string $name): void;
 

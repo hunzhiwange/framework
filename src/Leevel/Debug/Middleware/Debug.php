@@ -53,9 +53,6 @@ class Debug
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Kernel\IApp $app
-     * @param \Leevel\Debug\Debug $debug
      */
     public function __construct(IApp $app, Debugs $debug)
     {
@@ -65,9 +62,6 @@ class Debug
 
     /**
      * 请求.
-     *
-     * @param \Closure              $next
-     * @param \Leevel\Http\IRequest $request
      */
     public function handle(Closure $next, IRequest $request): void
     {
@@ -84,10 +78,6 @@ class Debug
 
     /**
      * 响应.
-     *
-     * @param \Closure               $next
-     * @param \Leevel\Http\IRequest  $request
-     * @param \Leevel\Http\IResponse $response
      */
     public function terminate(Closure $next, IRequest $request, IResponse $response): void
     {

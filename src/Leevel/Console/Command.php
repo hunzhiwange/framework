@@ -122,9 +122,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 运行命令.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
      * @return int
      */
     public function run(InputInterface $input, OutputInterface $output)
@@ -139,9 +136,6 @@ abstract class Command extends SymfonyCommand
      * 调用其他命令.
      *
      * @param string $command
-     * @param array  $arguments
-     *
-     * @return int
      */
     public function call($command, array $arguments = []): int
     {
@@ -194,7 +188,6 @@ abstract class Command extends SymfonyCommand
      * @param string $question
      * @param bool   $defaults
      *
-     * @return bool
      * @codeCoverageIgnore
      */
     public function confirm($question, $defaults = false): bool
@@ -206,10 +199,6 @@ abstract class Command extends SymfonyCommand
      * 提示用户输入.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string      $question
-     * @param null|string $defaults
-     *
-     * @return string
      * @codeCoverageIgnore
      */
     public function ask(string $question, ?string $defaults = null): string
@@ -220,8 +209,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 输出一个表格文本.
      *
-     * @param array  $headers
-     * @param array  $rows
      * @param string $style
      */
     public function table(array $headers, array $rows, $style = 'default'): void
@@ -236,7 +223,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 输出一个一般信息.
      *
-     * @param string          $message
      * @param null|int|string $verbosity
      */
     public function info(string $message, $verbosity = null): void
@@ -249,8 +235,6 @@ abstract class Command extends SymfonyCommand
      *
      * @param string $message
      * @param string $format
-     *
-     * @return string
      */
     public function time($message, $format = 'H:i:s'): string
     {
@@ -260,7 +244,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 输出一个注释信息.
      *
-     * @param string          $message
      * @param null|int|string $verbosity
      */
     public function comment(string $message, $verbosity = null): void
@@ -271,7 +254,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 输出一个问题信息.
      *
-     * @param string          $message
      * @param null|int|string $verbosity
      */
     public function question(string $message, $verbosity = null): void
@@ -283,11 +265,6 @@ abstract class Command extends SymfonyCommand
      * 提示用户输入根据返回结果自动完成一些功能.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string      $question
-     * @param array       $choices
-     * @param null|string $defaults
-     *
-     * @return string
      * @codeCoverageIgnore
      */
     public function askWithCompletion(string $question, array $choices, ?string $defaults = null): string
@@ -303,9 +280,7 @@ abstract class Command extends SymfonyCommand
      * 等待与用户进行交互，无法被测试.
      *
      * @param string $question
-     * @param bool   $fallback
      *
-     * @return string
      * @codeCoverageIgnore
      */
     public function secret($question, bool $fallback = true): string
@@ -320,13 +295,8 @@ abstract class Command extends SymfonyCommand
      * 给用户一个问题组选择.
      * 等待与用户进行交互，无法被测试.
      *
-     * @param string      $question
-     * @param array       $choices
-     * @param null|string $defaults
-     * @param null|mixed  $attempts
-     * @param null|bool   $multiple
+     * @param null|mixed $attempts
      *
-     * @return string
      * @codeCoverageIgnore
      */
     public function choice(string $question, array $choices, ?string $defaults = null, $attempts = null, ?bool $multiple = null): string
@@ -340,7 +310,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 输出一个错误信息.
      *
-     * @param string          $message
      * @param null|int|string $verbosity
      */
     public function error(string $message, $verbosity = null): void
@@ -351,7 +320,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 输出一个警告信息.
      *
-     * @param string          $message
      * @param null|int|string $verbosity
      */
     public function warn(string $message, $verbosity = null): void
@@ -365,8 +333,6 @@ abstract class Command extends SymfonyCommand
     /**
      * 输出一条独立的信息.
      *
-     * @param string          $message
-     * @param null|string     $style
      * @param null|int|string $verbosity
      */
     public function line(string $message, ?string $style = null, $verbosity = null): void
@@ -377,8 +343,6 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 设置服务容器.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function setContainer(IContainer $container): void
     {
@@ -387,8 +351,6 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 返回服务容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function getContainer(): IContainer
     {
@@ -410,8 +372,6 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -420,8 +380,6 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {
@@ -446,8 +404,6 @@ abstract class Command extends SymfonyCommand
      * 获取输入信息级别.
      *
      * @param null|int|string $level
-     *
-     * @return int
      */
     protected function parseVerbosity($level = null): int
     {

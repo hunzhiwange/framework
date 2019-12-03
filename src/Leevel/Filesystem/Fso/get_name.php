@@ -22,10 +22,6 @@ namespace Leevel\Filesystem\Fso;
 
 /**
  * 获取文件名字.
- *
- * @param string $path
- *
- * @return string
  */
 function get_name(string $path): string
 {

@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 数据是否满足正则条件.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_regex($value, array $param): bool
 {

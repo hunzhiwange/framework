@@ -249,8 +249,6 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 构造函数.
      *
-     * @param array                         $option
-     * @param null|\Leevel\Event\IDispatch  $dispatch
      * @param null|\Leevel\Database\Manager $manager
      */
     public function __construct(array $option, ?IDispatch $dispatch = null, ?Manager $manager = null)
@@ -270,9 +268,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      */
@@ -311,9 +306,7 @@ abstract class Database implements IDatabase, IConnection
      * @param string     $sql           sql 语句
      * @param array      $bindParams    sql 参数绑定
      * @param bool|int   $master
-     * @param null|int   $fetchStyle
      * @param null|mixed $fetchArgument
-     * @param array      $ctorArgs
      *
      * @throws \InvalidArgumentException
      *
@@ -374,8 +367,6 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 执行数据库事务
      *
-     * @param \Closure $action
-     *
      * @return mixed
      */
     public function transaction(Closure $action)
@@ -421,8 +412,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 检查是否处于事务中.
-     *
-     * @return bool
      */
     public function inTransaction(): bool
     {
@@ -498,7 +487,6 @@ abstract class Database implements IDatabase, IConnection
      *
      * - Travis CI 无法通过测试忽略
      *
-     * @param bool $savepoints
      * @codeCoverageIgnore
      */
     public function setSavepoints(bool $savepoints): void
@@ -508,8 +496,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 获取是否启用部分事务.
-     *
-     * @return bool
      */
     public function hasSavepoints(): bool
     {
@@ -520,8 +506,6 @@ abstract class Database implements IDatabase, IConnection
      * 获取最后插入 ID 或者列.
      *
      * @param null|string $name 自增序列名
-     *
-     * @return string
      */
     public function lastInsertId(?string $name = null): string
     {
@@ -530,8 +514,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 获取最近一次查询的 sql 语句.
-     *
-     * @return null|string
      */
     public function getLastSql(): ?string
     {
@@ -540,8 +522,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 返回影响记录.
-     *
-     * @return int
      */
     public function numRows(): int
     {
@@ -596,11 +576,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * sql 表达式格式化.
-     *
-     * @param string $sql
-     * @param string $tableName
-     *
-     * @return string
      */
     public function normalizeExpression(string $sql, string $tableName): string
     {
@@ -637,12 +612,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 表或者字段格式化（支持别名）.
-     *
-     * @param string      $name
-     * @param null|string $alias
-     * @param null|string $as
-     *
-     * @return string
      */
     public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string
     {
@@ -670,11 +639,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 字段格式化.
-     *
-     * @param string $key
-     * @param string $tableName
-     *
-     * @return string
      */
     public function normalizeColumn(string $key, string $tableName): string
     {
@@ -685,7 +649,6 @@ abstract class Database implements IDatabase, IConnection
      * 字段值格式化.
      *
      * @param mixed $value
-     * @param bool  $quotationMark
      *
      * @return mixed
      */
@@ -716,10 +679,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 分析 sql 类型数据.
-     *
-     * @param string $sql
-     *
-     * @return string
      */
     public function normalizeSqlType(string $sql): string
     {
@@ -749,8 +708,6 @@ abstract class Database implements IDatabase, IConnection
      * @see http://php.net/manual/en/pdo.constants.php
      *
      * @param mixed $value
-     *
-     * @return int
      */
     public function normalizeBindParamType($value): int
     {
@@ -774,11 +731,7 @@ abstract class Database implements IDatabase, IConnection
      * - 记录 SQL 日志
      * - 支持重连
      *
-     * @param string   $sql
-     * @param array    $bindParams
      * @param bool|int $master
-     *
-     * @return bool
      */
     protected function runSql(string $sql, array $bindParams = [], $master = false): bool
     {
@@ -812,11 +765,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 整理当前执行 SQL.
-     *
-     * @param \PDOStatement $pdoStatement
-     * @param bool          $failed
-     *
-     * @return string
      */
     protected function normalizeLastSql(PDOStatement $pdoStatement, bool $failed = false): string
     {
@@ -835,11 +783,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 整理当前错误执行 SQL.
-     *
-     * @param string $sql
-     * @param array  $bindParams
-     *
-     * @return string
      */
     protected function normalizeErrorLastSql(string $sql, array $bindParams): string
     {
@@ -849,8 +792,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 连接主服务器.
-     *
-     * @return \PDO
      */
     protected function writeConnect(): PDO
     {
@@ -859,8 +800,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 连接读服务器.
-     *
-     * @return \PDO
      */
     protected function readConnect(): PDO
     {
@@ -898,10 +837,6 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 连接数据库.
      *
-     * @param array    $option
-     * @param null|int $linkid
-     * @param bool     $throwException
-     *
      * @return mixed
      */
     protected function commonConnect(array $option = [], ?int $linkid = null, bool $throwException = false)
@@ -935,8 +870,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * pdo 参数绑定.
-     *
-     * @param array $bindParams
      */
     protected function bindParams(array $bindParams = []): void
     {
@@ -957,12 +890,7 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 获得数据集.
      *
-     * @param null|int   $fetchStyle
      * @param null|mixed $fetchArgument
-     * @param array      $ctorArgs
-     * @param bool       $procedure
-     *
-     * @return array
      */
     protected function fetchResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = [], bool $procedure = false): array
     {
@@ -988,13 +916,9 @@ abstract class Database implements IDatabase, IConnection
     /**
      * 获得数据集.
      *
-     * @param null|int   $fetchStyle
      * @param null|mixed $fetchArgument
-     * @param array      $ctorArgs
      *
      * @see http://php.net/manual/vote-note.php?id=123030&page=pdostatement.nextrowset&vote=down
-     *
-     * @return array
      */
     protected function fetchProcedureResult(?int $fetchStyle = null, $fetchArgument = null, array $ctorArgs = []): array
     {
@@ -1012,8 +936,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 设置 sql 绑定参数.
-     *
-     * @param string $sql
      */
     protected function setLastSql(string $sql): void
     {
@@ -1029,7 +951,6 @@ abstract class Database implements IDatabase, IConnection
      *
      * - Travis CI 无法通过测试忽略
      *
-     * @return string
      * @codeCoverageIgnore
      */
     protected function getSavepointName(): string
@@ -1042,7 +963,6 @@ abstract class Database implements IDatabase, IConnection
      *
      * - Travis CI 无法通过测试忽略
      *
-     * @param string $savepointName
      * @codeCoverageIgnore
      */
     protected function createSavepoint(string $savepointName): void
@@ -1056,7 +976,6 @@ abstract class Database implements IDatabase, IConnection
      *
      * - Travis CI 无法通过测试忽略
      *
-     * @param string $savepointName
      * @codeCoverageIgnore
      */
     protected function rollbackSavepoint(string $savepointName): void
@@ -1070,7 +989,6 @@ abstract class Database implements IDatabase, IConnection
      *
      * - Travis CI 无法通过测试忽略
      *
-     * @param string $savepointName
      * @codeCoverageIgnore
      */
     protected function releaseSavepoint(string $savepointName): void
@@ -1081,8 +999,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * 是否需要重连.
-     *
-     * @return bool
      */
     protected function needReconnect(PDOException $e): bool
     {
@@ -1098,8 +1014,6 @@ abstract class Database implements IDatabase, IConnection
 
     /**
      * PDO 异常处理.
-     *
-     * @param \PDOException $e
      *
      * @throws \Leevel\Database\ReplaceException
      */

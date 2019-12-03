@@ -22,11 +22,6 @@ namespace Leevel\Filesystem\Fso;
 
 /**
  * 整理目录斜线风格
- *
- * @param string $path
- * @param bool   $unix
- *
- * @return string
  */
 function tidy_path(string $path, bool $unix = true): string
 {

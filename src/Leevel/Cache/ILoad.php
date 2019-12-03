@@ -32,21 +32,14 @@ namespace Leevel\Cache;
 interface ILoad
 {
     /**
-     * 载入缓存数据
-     * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
+     * 载入缓存数据.
      *
-     * @param array $names
-     * @param array $option
-     * @param bool  $force
-     *
-     * @return array
+     * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      */
     public function data(array $names, array $option = [], bool $force = false): array;
 
     /**
      * 刷新缓存数据.
-     *
-     * @param array $names
      */
     public function refresh(array $names): void;
 }

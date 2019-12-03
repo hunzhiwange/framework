@@ -53,8 +53,6 @@ class LinkDebugBar extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -65,9 +63,6 @@ class LinkDebugBar extends Command
 
     /**
      * 创建软连接.
-     *
-     * @param string $source
-     * @param string $target
      */
     protected function createLink(string $source, string $target): void
     {
@@ -85,8 +80,6 @@ class LinkDebugBar extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -95,8 +88,6 @@ class LinkDebugBar extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

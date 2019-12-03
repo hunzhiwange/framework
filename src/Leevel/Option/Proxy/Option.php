@@ -38,9 +38,6 @@ class Option
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -50,10 +47,6 @@ class Option
 
     /**
      * 是否存在配置.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function has(string $name = 'app\\'): bool
     {
@@ -63,7 +56,6 @@ class Option
     /**
      * 获取配置.
      *
-     * @param string     $name
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -75,8 +67,6 @@ class Option
 
     /**
      * 返回所有配置.
-     *
-     * @return array
      */
     public static function all(): array
     {
@@ -96,8 +86,6 @@ class Option
 
     /**
      * 删除配置.
-     *
-     * @param string $name
      */
     public static function delete(string $name): void
     {
@@ -116,8 +104,6 @@ class Option
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Option\Option
      */
     public static function proxy(): BaseOption
     {

@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 值是否不为空.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_not_empty($value): bool
 {

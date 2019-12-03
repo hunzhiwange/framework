@@ -60,8 +60,6 @@ class Server extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -76,8 +74,6 @@ class Server extends Command
 
     /**
      * 取得命令.
-     *
-     * @return string
      */
     protected function normalizeCommand(): string
     {
@@ -92,8 +88,6 @@ class Server extends Command
 
     /**
      * 取得主机.
-     *
-     * @return string
      */
     protected function host(): string
     {
@@ -102,8 +96,6 @@ class Server extends Command
 
     /**
      * 取得端口.
-     *
-     * @return string
      */
     protected function port(): string
     {
@@ -112,8 +104,6 @@ class Server extends Command
 
     /**
      * 取得服务入口.
-     *
-     * @return string
      */
     protected function server(): string
     {
@@ -122,8 +112,6 @@ class Server extends Command
 
     /**
      * 取得 PHP 路径.
-     *
-     * @return string
      */
     protected function php(): string
     {
@@ -132,8 +120,6 @@ class Server extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -142,8 +128,6 @@ class Server extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

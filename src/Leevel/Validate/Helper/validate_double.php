@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 是否双精度浮点数.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_double($value): bool
 {

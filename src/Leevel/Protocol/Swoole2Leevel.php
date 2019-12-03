@@ -40,10 +40,6 @@ class Swoole2Leevel
 {
     /**
      * 从 Swoole 请求对象创建 Leevel 请求对象.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $psrRequest
-     *
-     * @return \Leevel\Http\IRequest
      */
     public function createRequest(SwooleHttpRequest $swooleRequest): IRequest
     {
@@ -56,8 +52,6 @@ class Swoole2Leevel
 
     /**
      * 整理 Swoole 请求 Header 和 Server.
-     *
-     * @param \Swoole\Http\Request $swooleRequest
      */
     protected function normalizeSwooleHeaderAndServer(SwooleHttpRequest $swooleRequest): void
     {
@@ -77,9 +71,6 @@ class Swoole2Leevel
 
     /**
      * 整理 Swoole 请求 Server.
-     *
-     * @param \Swoole\Http\Request $swooleRequest
-     * @param array                $servers
      */
     protected function normalizeSwooleServer(SwooleHttpRequest $swooleRequest, array $servers): void
     {
@@ -97,9 +88,6 @@ class Swoole2Leevel
 
     /**
      * 转换请求.
-     *
-     * @param \Swoole\Http\Request  $swooleRequest
-     * @param \Leevel\Http\IRequest $request
      */
     protected function convertRequest(SwooleHttpRequest $swooleRequest, IRequest $request): void
     {

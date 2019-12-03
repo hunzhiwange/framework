@@ -41,8 +41,6 @@ abstract class Process
 
     /**
      * 获取进程名称.
-     *
-     * @return string
      */
     public function getName(): string
     {

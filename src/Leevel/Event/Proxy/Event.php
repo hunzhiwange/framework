@@ -38,9 +38,6 @@ class Event
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -64,7 +61,6 @@ class Event
      *
      * @param array|object|string $event
      * @param mixed               $listener
-     * @param int                 $priority
      */
     public static function register($event, $listener, int $priority = 500): void
     {
@@ -75,8 +71,6 @@ class Event
      * 获取一个事件监听器.
      *
      * @param object|string $event
-     *
-     * @return array
      */
     public static function get($event): array
     {
@@ -87,8 +81,6 @@ class Event
      * 判断事件监听器是否存在.
      *
      * @param object|string $event
-     *
-     * @return bool
      */
     public static function has($event): bool
     {
@@ -107,8 +99,6 @@ class Event
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Event\Dispatch
      */
     public static function proxy(): Dispatch
     {

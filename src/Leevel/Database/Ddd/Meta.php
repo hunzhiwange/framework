@@ -75,8 +75,6 @@ class Meta implements IMeta
     /**
      * 构造函数
      * 禁止直接访问构造函数，只能通过 instance 生成对象
-     *
-     * @param string $table
      */
     protected function __construct(string $table)
     {
@@ -85,8 +83,6 @@ class Meta implements IMeta
 
     /**
      * 返回数据库元对象
-     *
-     * @param string $table
      *
      * @return \Leevel\Database\Ddd\IMeta
      */
@@ -103,8 +99,6 @@ class Meta implements IMeta
      * 返回数据库管理对象.
      *
      * @throws \InvalidArgumentException
-     *
-     * @return \Leevel\Database\Manager
      */
     public static function resolveDatabase(): DatabaseManager
     {
@@ -126,8 +120,6 @@ class Meta implements IMeta
 
     /**
      * 设置数据库管理对象.
-     *
-     * @param null|\Closure $databaseResolver
      */
     public static function setDatabaseResolver(?Closure $databaseResolver = null): void
     {
@@ -155,8 +147,6 @@ class Meta implements IMeta
     /**
      * 新增数据并返回上一次插入 ID.
      *
-     * @param array $saveData
-     *
      * @return mixed
      */
     public function insert(array $saveData)
@@ -166,11 +156,6 @@ class Meta implements IMeta
 
     /**
      * 更新数据并返回影响行数.
-     *
-     * @param array $condition
-     * @param array $saveData
-     *
-     * @return int
      */
     public function update(array $condition, array $saveData): int
     {
@@ -181,10 +166,6 @@ class Meta implements IMeta
 
     /**
      * 删除数据并返回影响行数.
-     *
-     * @param array $condition
-     *
-     * @return int
      */
     public function delete(array $condition): int
     {
@@ -205,8 +186,6 @@ class Meta implements IMeta
 
     /**
      * 延迟载入占位符.
-     *
-     * @return bool
      */
     protected static function lazyloadPlaceholder(): bool
     {

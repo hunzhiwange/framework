@@ -40,9 +40,6 @@ class Log
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -53,10 +50,7 @@ class Log
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return \Leevel\Log\ILog
+     * @param mixed $value
      */
     public static function setOption(string $name, $value): IBaseLog
     {
@@ -65,9 +59,6 @@ class Log
 
     /**
      * 系统无法使用.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public static function emergency(string $message, array $context = []): void
     {
@@ -79,9 +70,6 @@ class Log
      *
      * 比如: 整个网站宕机，数据库不可用等等.
      * 这种错误应该通过短信通知你.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public static function alert(string $message, array $context = []): void
     {
@@ -92,9 +80,6 @@ class Log
      * 临界条件.
      *
      * 比如: 应用程序组件不可用，意外异常.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public static function critical(string $message, array $context = []): void
     {
@@ -104,9 +89,6 @@ class Log
     /**
      * 运行时错误，不需要立即处理.
      * 但是需要被记录和监控.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public static function error(string $message, array $context = []): void
     {
@@ -118,9 +100,6 @@ class Log
      *
      * 比如: 弃用的 API 接口, API 使用不足, 不良事物.
      * 它们不一定是错误的.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public static function warning(string $message, array $context = []): void
     {
@@ -129,9 +108,6 @@ class Log
 
     /**
      * 正常重要事件.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public static function notice(string $message, array $context = []): void
     {
@@ -142,9 +118,6 @@ class Log
      * 想记录的日志.
      *
      * 比如: 用户日志, SQL 日志.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public static function info(string $message, array $context = []): void
     {
@@ -153,9 +126,6 @@ class Log
 
     /**
      * 调试信息.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public static function debug(string $message, array $context = []): void
     {
@@ -165,9 +135,7 @@ class Log
     /**
      * 记录特定级别的日志信息.
      *
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
+     * @param mixed $level
      */
     public static function log(string $level, string $message, array $context = []): void
     {
@@ -184,8 +152,6 @@ class Log
 
     /**
      * 清理日志记录.
-     *
-     * @param null|string $level
      */
     public static function clear(?string $level = null): void
     {
@@ -194,10 +160,6 @@ class Log
 
     /**
      * 获取日志记录.
-     *
-     * @param null|string $level
-     *
-     * @return array
      */
     public static function all(?string $level = null): array
     {
@@ -206,10 +168,6 @@ class Log
 
     /**
      * 获取日志记录数量.
-     *
-     * @param null|string $level
-     *
-     * @return int
      */
     public static function count(?string $level = null): int
     {
@@ -218,8 +176,6 @@ class Log
 
     /**
      * 是否为 Monolog.
-     *
-     * @return bool
      */
     public static function isMonolog(): bool
     {
@@ -228,8 +184,6 @@ class Log
 
     /**
      * 取得 Monolog.
-     *
-     * @return null|\Monolog\Logger
      */
     public static function getMonolog(): ?Logger
     {
@@ -238,8 +192,6 @@ class Log
 
     /**
      * 存储日志.
-     *
-     * @param array $data
      */
     public static function store(array $data): void
     {
@@ -248,8 +200,6 @@ class Log
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Log\Manager
      */
     public static function proxy(): Manager
     {

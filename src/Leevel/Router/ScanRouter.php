@@ -59,8 +59,6 @@ class ScanRouter
 
     /**
      * 响应.
-     *
-     * @return array
      */
     public function handle(): array
     {
@@ -69,8 +67,6 @@ class ScanRouter
 
     /**
      * 获取顶级域名.
-     *
-     * @return string
      */
     protected function getDomain(): string
     {
@@ -79,8 +75,6 @@ class ScanRouter
 
     /**
      * 获取应用目录.
-     *
-     * @return string
      */
     protected function appPath(): string
     {
@@ -89,8 +83,6 @@ class ScanRouter
 
     /**
      * 获取路由目录.
-     *
-     * @return string
      */
     protected function routePath(): string
     {

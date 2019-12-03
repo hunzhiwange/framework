@@ -61,8 +61,6 @@ class Load
     /**
      * 构造函数.
      *
-     * @param string $dir
-     *
      * @throws \RuntimeException
      */
     public function __construct(string $dir)
@@ -78,10 +76,6 @@ class Load
 
     /**
      * 载入配置数据.
-     *
-     * @param \Leevel\Kernel\IApp $app
-     *
-     * @return array
      */
     public function loadData(IApp $app): array
     {
@@ -117,11 +111,7 @@ class Load
     /**
      * 载入环境变量数据.
      *
-     * @param \Leevel\Kernel\IApp $app
-     *
      * @throws \RuntimeException
-     *
-     * @return array
      */
     protected function loadEnvData(IApp $app): array
     {
@@ -144,10 +134,6 @@ class Load
 
     /**
      * 分析延迟加载服务提供者.
-     *
-     * @param array $providers
-     *
-     * @return array
      */
     protected function loadDeferredProviderData(array &$providers): array
     {
@@ -183,10 +169,6 @@ class Load
 
     /**
      * 载入 Composer 配置数据.
-     *
-     * @param string $path
-     *
-     * @return array
      */
     protected function loadComposerOption(string $path): array
     {
@@ -197,8 +179,6 @@ class Load
      * 载入配置数据.
      *
      * @throws \RuntimeException
-     *
-     * @return array
      */
     protected function loadOptionData(): array
     {
@@ -226,13 +206,7 @@ class Load
     /**
      * 合并 composer 配置数据.
      *
-     * @param array               $options
-     * @param \Leevel\Kernel\IApp $app
-     * @param array               $optionFiles
-     *
      * @throws \RuntimeException
-     *
-     * @return array
      */
     protected function mergeComposerOption(array $options, IApp $app, array $optionFiles): array
     {

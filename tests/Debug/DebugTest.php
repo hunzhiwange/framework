@@ -364,8 +364,6 @@ class DebugTest extends TestCase
     /**
      * @dataProvider getMessageLevelsData
      *
-     * @param string $level
-     *
      * @api(
      *     title="调试消息等级",
      *     description="

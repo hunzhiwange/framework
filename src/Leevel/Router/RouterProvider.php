@@ -84,8 +84,6 @@ abstract class RouterProvider extends Provider
 
     /**
      * 可用服务提供者.
-     *
-     * @return array
      */
     public static function providers(): array
     {
@@ -96,8 +94,6 @@ abstract class RouterProvider extends Provider
 
     /**
      * 返回路由.
-     *
-     * @return array
      */
     public function getRouters(): array
     {
@@ -133,8 +129,6 @@ abstract class RouterProvider extends Provider
 
     /**
      * 设置路由数据.
-     *
-     * @param array $routers
      */
     protected function setRoutersData(array $routers): void
     {
@@ -146,8 +140,6 @@ abstract class RouterProvider extends Provider
 
     /**
      * 路由是否已经缓存.
-     *
-     * @return bool
      */
     protected function isRouterCached(): bool
     {
@@ -156,8 +148,6 @@ abstract class RouterProvider extends Provider
 
     /**
      * 获取路由缓存地址
-     *
-     * @return string
      */
     protected function getRouterCachePath(): string
     {

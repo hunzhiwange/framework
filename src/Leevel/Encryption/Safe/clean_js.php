@@ -24,8 +24,6 @@ namespace Leevel\Encryption\Safe;
  * 过滤掉 javascript.
  *
  * @param string $strings 待过滤的字符串
- *
- * @return string
  */
 function clean_js(string $strings): string
 {

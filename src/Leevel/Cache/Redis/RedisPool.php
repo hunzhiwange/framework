@@ -52,10 +52,6 @@ class RedisPool extends Pool
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Cache\Manager $manager
-     * @param string                $redisConnect
-     * @param array                 $option
      */
     public function __construct(Manager $manager, string $redisConnect, array $option = [])
     {
@@ -66,8 +62,6 @@ class RedisPool extends Pool
 
     /**
      * 创建连接.
-     *
-     * @return \Leevel\Protocol\Pool\IConnection
      */
     protected function createConnection(): IConnection
     {

@@ -36,10 +36,6 @@ class JavascriptRenderer extends BaseJavascriptRenderer
 {
     /**
      * 构造函数.
-     *
-     * @param \DebugBar\DebugBar $debugBar
-     * @param null|string        $baseUrl
-     * @param null|string        $basePath
      */
     public function __construct(DebugBar $debugBar, ?string $baseUrl = null, ?string $basePath = null)
     {

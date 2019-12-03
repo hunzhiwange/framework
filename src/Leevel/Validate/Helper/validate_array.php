@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 验证是否为数组.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_array($value): bool
 {

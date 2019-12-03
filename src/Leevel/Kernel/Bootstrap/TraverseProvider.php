@@ -35,8 +35,6 @@ class TraverseProvider
 {
     /**
      * 响应.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {

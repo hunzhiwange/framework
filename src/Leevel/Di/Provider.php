@@ -54,9 +54,6 @@ abstract class Provider
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @throws \BadMethodCallException
      *
      * @return mixed
@@ -89,8 +86,6 @@ abstract class Provider
 
     /**
      * 是否延迟载入.
-     *
-     * @return bool
      */
     public static function isDeferred(): bool
     {
@@ -99,8 +94,6 @@ abstract class Provider
 
     /**
      * 可用服务提供者.
-     *
-     * @return array
      */
     public static function providers(): array
     {

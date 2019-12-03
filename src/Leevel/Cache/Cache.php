@@ -49,8 +49,6 @@ abstract class Cache implements ICache
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -62,7 +60,6 @@ abstract class Cache implements ICache
      *
      * @param array|string $keys
      * @param null|mixed   $value
-     * @param array        $option
      */
     public function put($keys, $value = null, array $option = []): void
     {
@@ -78,9 +75,7 @@ abstract class Cache implements ICache
     /**
      * 缓存存在读取否则重新设置.
      *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
+     * @param mixed $data
      *
      * @return mixed
      */
@@ -102,8 +97,7 @@ abstract class Cache implements ICache
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Cache\ICache
      */
@@ -126,10 +120,6 @@ abstract class Cache implements ICache
 
     /**
      * 获取缓存名字.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     protected function getCacheName(string $name): string
     {
@@ -138,11 +128,6 @@ abstract class Cache implements ICache
 
     /**
      * 读取缓存时间配置.
-     *
-     * @param string $id
-     * @param int    $defaultTime
-     *
-     * @return int
      */
     protected function cacheTime(string $id, int $defaultTime = 0): int
     {
@@ -165,10 +150,6 @@ abstract class Cache implements ICache
 
     /**
      * 通配符正则.
-     *
-     * @param string $regex
-     *
-     * @return string
      */
     protected function prepareRegexForWildcard(string $regex): string
     {
@@ -180,10 +161,6 @@ abstract class Cache implements ICache
 
     /**
      * 整理配置.
-     *
-     * @param array $option
-     *
-     * @return array
      */
     protected function normalizeOptions(array $option = []): array
     {

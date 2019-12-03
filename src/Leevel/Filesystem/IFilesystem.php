@@ -61,8 +61,7 @@ interface IFilesystem
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Filesystem\IFilesystem
      */
@@ -70,8 +69,6 @@ interface IFilesystem
 
     /**
      * 返回 Filesystem.
-     *
-     * @return \League\Flysystem\Filesystem
      */
     public function getFilesystem(): LeagueFilesystem;
 }

@@ -38,9 +38,6 @@ class Auth
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -50,8 +47,6 @@ class Auth
 
     /**
      * 用户是否已经登录.
-     *
-     * @return bool
      */
     public static function isLogin(): bool
     {
@@ -60,8 +55,6 @@ class Auth
 
     /**
      * 获取登录信息.
-     *
-     * @return array
      */
     public static function getLogin(): array
     {
@@ -70,9 +63,6 @@ class Auth
 
     /**
      * 登录写入数据.
-     *
-     * @param array $data
-     * @param int   $loginTime
      */
     public static function login(array $data, int $loginTime = 0): void
     {
@@ -89,8 +79,6 @@ class Auth
 
     /**
      * 设置认证名字.
-     *
-     * @param string $tokenName
      */
     public static function setTokenName(string $tokenName): void
     {
@@ -99,8 +87,6 @@ class Auth
 
     /**
      * 取得认证名字.
-     *
-     * @return string
      */
     public static function getTokenName(): string
     {
@@ -109,8 +95,6 @@ class Auth
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Auth\Manager
      */
     public static function proxy(): Manager
     {

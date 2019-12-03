@@ -58,8 +58,6 @@ class Throttler implements IThrottler
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Cache\ICache $cache
      */
     public function __construct(ICache $cache)
     {
@@ -68,9 +66,6 @@ class Throttler implements IThrottler
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      */
@@ -81,10 +76,6 @@ class Throttler implements IThrottler
 
     /**
      * 创建一个节流器.
-     *
-     * @param null|string $key
-     * @param int         $limit
-     * @param int         $time
      *
      * @return \Leevel\Throttler\IRateLimiter
      */
@@ -105,8 +96,6 @@ class Throttler implements IThrottler
     /**
      * 设置 http request.
      *
-     * @param \Leevel\Http\IRequest $request
-     *
      * @return \Leevel\Throttler\IThrottler
      */
     public function setRequest(IRequest $request): IThrottler
@@ -119,11 +108,7 @@ class Throttler implements IThrottler
     /**
      * 获取请求 key.
      *
-     * @param null|string $key
-     *
      * @throws \RuntimeException
-     *
-     * @return string
      */
     public function getRequestKey(?string $key = null): string
     {

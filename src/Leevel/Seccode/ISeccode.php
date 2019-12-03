@@ -118,8 +118,7 @@ interface ISeccode
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Seccode\ISeccode
      */
@@ -128,17 +127,12 @@ interface ISeccode
     /**
      * 设置验证码
      *
-     * @param null|mixed  $code
-     * @param null|string $outPath
-     * @param bool        $autoCode
-     * @param string      $autoType
+     * @param null|mixed $code
      */
     public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void;
 
     /**
      * 设置验证码
-     *
-     * @param string $code
      *
      * @return \Leevel\Seccode\ISeccode
      */

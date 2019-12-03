@@ -63,7 +63,6 @@ class Html extends View implements IView
      * 加载视图文件.
      *
      * @param string      $file    视图文件地址
-     * @param array       $vars
      * @param null|string $ext     后缀
      * @param bool        $display 是否显示
      *
@@ -103,8 +102,6 @@ class Html extends View implements IView
 
     /**
      * 设置 parser 解析回调.
-     *
-     * @param \Closure $parseResolver
      */
     public function setParseResolver(Closure $parseResolver): void
     {
@@ -114,11 +111,7 @@ class Html extends View implements IView
     /**
      * 获取编译路径.
      *
-     * @param string $file
-     *
      * @throws \RuntimeException
-     *
-     * @return string
      */
     public function getCachePath(string $file): string
     {
@@ -170,11 +163,6 @@ class Html extends View implements IView
 
     /**
      * 判断缓存是否过期
-     *
-     * @param string $file
-     * @param string $cachepath
-     *
-     * @return bool
      */
     protected function isCacheExpired(string $file, string $cachepath): bool
     {

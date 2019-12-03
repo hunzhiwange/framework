@@ -51,22 +51,16 @@ abstract class Reload extends Command
 
     /**
      * 创建 server.
-     *
-     * @return \Leevel\Protocol\IServer
      */
     abstract protected function createServer(): IServer;
 
     /**
      * 返回 Version.
-     *
-     * @return string
      */
     abstract protected function getVersion(): string;
 
     /**
      * 重启 Swoole 服务.
-     *
-     * @param array $option
      *
      * @throws \InvalidArgumentException
      */
@@ -105,8 +99,6 @@ abstract class Reload extends Command
 
     /**
      * 返回 QueryPHP Logo.
-     *
-     * @return string
      */
     protected function getLogo(): string
     {
@@ -122,8 +114,6 @@ abstract class Reload extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -132,8 +122,6 @@ abstract class Reload extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

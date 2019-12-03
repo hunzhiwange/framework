@@ -65,10 +65,6 @@ class HasMany extends Relation
      * 匹配关联查询数据到模型实体 HasMany.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param \Leevel\Collection\Collection  $result
-     * @param string                         $relation
-     *
-     * @return array
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {
@@ -100,11 +96,6 @@ class HasMany extends Relation
      * 匹配预载入数据.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param \Leevel\Collection\Collection  $result
-     * @param string                         $relation
-     * @param string                         $type
-     *
-     * @return array
      */
     protected function matchPreLoadOneOrMany(array $entitys, Collection $result, string $relation, string $type): array
     {
@@ -124,7 +115,6 @@ class HasMany extends Relation
      * 取得关联模型实体数据.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param string                         $type
      *
      * @return mixed
      */
@@ -143,10 +133,6 @@ class HasMany extends Relation
 
     /**
      * 模型实体映射数据.
-     *
-     * @param \Leevel\Collection\Collection $result
-     *
-     * @return array
      */
     protected function buildMap(Collection $result): array
     {

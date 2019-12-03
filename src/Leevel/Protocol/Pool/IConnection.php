@@ -39,8 +39,6 @@ interface IConnection
 
     /**
      * 设置是否归还连接池.
-     *
-     * @param bool $release
      */
     public function setRelease(bool $release): void;
 

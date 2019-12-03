@@ -25,10 +25,7 @@ use Closure;
 /**
  * 验证 PHP 各种变量类型.
  *
- * @param mixed  $value
- * @param string $type
- *
- * @return bool
+ * @param mixed $value
  */
 function type($value, string $type): bool
 {

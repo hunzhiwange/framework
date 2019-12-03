@@ -39,27 +39,17 @@ interface IRuntime
     /**
      * 异常上报.
      *
-     * @param \Exception $e
-     *
      * @return mixed
      */
     public function report(Exception $e);
 
     /**
      * 异常渲染.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param \Exception            $e
-     *
-     * @return \Leevel\Http\IResponse
      */
     public function render(IRequest $request, Exception $e): IResponse;
 
     /**
      * 命令行渲染.
-     *
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Exception                                        $e
      */
     public function renderForConsole(OutputInterface $output, Exception $e): void;
 }

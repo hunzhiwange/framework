@@ -22,10 +22,6 @@ namespace Leevel\Filesystem\Fso;
 
 /**
  * 根据 ID 获取打散目录.
- *
- * @param int $dataId
- *
- * @return array
  */
 function distributed(int $dataId): array
 {

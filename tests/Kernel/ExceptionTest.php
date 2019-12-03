@@ -56,9 +56,7 @@ class ExceptionTest extends TestCase
     /**
      * @dataProvider getHttpExceptionData
      *
-     * @param string $exception
      * @param string $code
-     * @param string $message
      */
     public function testHttpException(string $exception, int $code, string $message): void
     {

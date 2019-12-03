@@ -39,9 +39,6 @@ class Request
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -51,8 +48,6 @@ class Request
 
     /**
      * 是否处于协程上下文.
-     *
-     * @return bool
      */
     public static function coroutineContext(): bool
     {
@@ -62,12 +57,6 @@ class Request
     /**
      * 重置或者初始化.
      *
-     * @param array                $query
-     * @param array                $request
-     * @param array                $params
-     * @param array                $cookies
-     * @param array                $files
-     * @param array                $server
      * @param null|resource|string $content
      */
     public static function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null): void
@@ -77,8 +66,6 @@ class Request
 
     /**
      * 全局变量创建一个 Request.
-     *
-     * @return \Leevel\Http\IRequest
      */
     public static function createFromGlobals(): IBaseRequest
     {
@@ -87,10 +74,6 @@ class Request
 
     /**
      * 格式化请求的内容.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IRequest
      */
     public static function normalizeRequestFromContent(IBaseRequest $request): IBaseRequest
     {
@@ -100,7 +83,6 @@ class Request
     /**
      * 获取参数.
      *
-     * @param string     $key
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -112,10 +94,6 @@ class Request
 
     /**
      * 请求是否包含给定的 keys.
-     *
-     * @param array $keys
-     *
-     * @return bool
      */
     public static function exists(array $keys): bool
     {
@@ -124,10 +102,6 @@ class Request
 
     /**
      * 请求是否包含非空.
-     *
-     * @param array $keys
-     *
-     * @return bool
      */
     public static function has(array $keys): bool
     {
@@ -136,10 +110,6 @@ class Request
 
     /**
      * 取得给定的 keys 数据.
-     *
-     * @param array $keys
-     *
-     * @return array
      */
     public static function only(array $keys): array
     {
@@ -148,10 +118,6 @@ class Request
 
     /**
      * 取得排除给定的 keys 数据.
-     *
-     * @param array $keys
-     *
-     * @return array
      */
     public static function except(array $keys): array
     {
@@ -160,8 +126,6 @@ class Request
 
     /**
      * 取回输入和文件.
-     *
-     * @return array
      */
     public static function all(): array
     {
@@ -171,7 +135,6 @@ class Request
     /**
      * 获取输入数据.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return mixed
@@ -184,7 +147,6 @@ class Request
     /**
      * 取回 query.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -196,10 +158,6 @@ class Request
 
     /**
      * 请求是否存在 COOKIE.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public static function hasCookie(string $key): bool
     {
@@ -209,7 +167,6 @@ class Request
     /**
      * 取回 cookie.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -221,8 +178,6 @@ class Request
 
     /**
      * 取得所有文件.
-     *
-     * @return array
      */
     public static function allFiles(): array
     {
@@ -233,8 +188,7 @@ class Request
      * 获取文件
      * 数组文件请在末尾加上反斜杆访问.
      *
-     * @param null|string $key
-     * @param null|mixed  $defaults
+     * @param null|mixed $defaults
      *
      * @return null|array|\Leevel\Http\UploadedFile
      */
@@ -246,10 +200,6 @@ class Request
     /**
      * 文件是否存在已上传的文件
      * 数组文件请在末尾加上反斜杆访问.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public static function hasFile(string $key): bool
     {
@@ -260,8 +210,6 @@ class Request
      * 验证是否为文件实例.
      *
      * @param mixed $file
-     *
-     * @return bool
      */
     public static function isValidFile($file): bool
     {
@@ -271,7 +219,6 @@ class Request
     /**
      * 取回 header.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -284,7 +231,6 @@ class Request
     /**
      * 取回 server.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -297,7 +243,6 @@ class Request
     /**
      * 取回数据项.
      *
-     * @param string            $source
      * @param string            $key
      * @param null|array|string $defaults
      *
@@ -310,8 +255,6 @@ class Request
 
     /**
      * 合并输入.
-     *
-     * @param array $input
      */
     public static function merge(array $input): void
     {
@@ -320,8 +263,6 @@ class Request
 
     /**
      * 替换输入.
-     *
-     * @param array $input
      */
     public static function replace(array $input): void
     {
@@ -333,8 +274,6 @@ class Request
      * Swoole HTTP 服务器也以命令行运行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
-     *
-     * @return bool
      */
     public static function isCli(): bool
     {
@@ -345,8 +284,6 @@ class Request
      * PHP 运行模式命令行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
-     *
-     * @return bool
      */
     public static function isRealCli(): bool
     {
@@ -357,8 +294,6 @@ class Request
      * PHP 运行模式 cgi.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
-     *
-     * @return bool
      */
     public static function isCgi(): bool
     {
@@ -367,8 +302,6 @@ class Request
 
     /**
      * 是否为 Ajax 请求行为.
-     *
-     * @return bool
      */
     public static function isAjax(): bool
     {
@@ -377,8 +310,6 @@ class Request
 
     /**
      * 是否为 Ajax 请求行为真实.
-     *
-     * @return bool
      */
     public static function isRealAjax(): bool
     {
@@ -387,8 +318,6 @@ class Request
 
     /**
      * 是否为 Ajax 请求行为真实.
-     *
-     * @return bool
      */
     public static function isXmlHttpRequest(): bool
     {
@@ -397,8 +326,6 @@ class Request
 
     /**
      * 是否为 Pjax 请求行为.
-     *
-     * @return bool
      */
     public static function isPjax(): bool
     {
@@ -407,8 +334,6 @@ class Request
 
     /**
      * 是否为 Pjax 请求行为真实.
-     *
-     * @return bool
      */
     public static function isRealPjax(): bool
     {
@@ -417,8 +342,6 @@ class Request
 
     /**
      * 是否为 json 请求行为.
-     *
-     * @return bool
      */
     public static function isJson(): bool
     {
@@ -427,8 +350,6 @@ class Request
 
     /**
      * 是否为 json 请求行为真实.
-     *
-     * @return bool
      */
     public static function isRealJson(): bool
     {
@@ -437,8 +358,6 @@ class Request
 
     /**
      * 是否为接受 json 请求
-     *
-     * @return bool
      */
     public static function isAcceptJson(): bool
     {
@@ -447,8 +366,6 @@ class Request
 
     /**
      * 是否为接受 json 请求真实.
-     *
-     * @return bool
      */
     public static function isRealAcceptJson(): bool
     {
@@ -457,8 +374,6 @@ class Request
 
     /**
      * 是否为接受任何请求
-     *
-     * @return bool
      */
     public static function isAcceptAny(): bool
     {
@@ -467,8 +382,6 @@ class Request
 
     /**
      * 是否为 HEAD 请求行为.
-     *
-     * @return bool
      */
     public static function isHead(): bool
     {
@@ -477,8 +390,6 @@ class Request
 
     /**
      * 是否为 GET 请求行为.
-     *
-     * @return bool
      */
     public static function isGet(): bool
     {
@@ -487,8 +398,6 @@ class Request
 
     /**
      * 是否为 POST 请求行为.
-     *
-     * @return bool
      */
     public static function isPost(): bool
     {
@@ -497,8 +406,6 @@ class Request
 
     /**
      * 是否为 PUT 请求行为.
-     *
-     * @return bool
      */
     public static function isPut(): bool
     {
@@ -507,8 +414,6 @@ class Request
 
     /**
      * 是否为 PATCH 请求行为.
-     *
-     * @return bool
      */
     public static function isPatch(): bool
     {
@@ -517,8 +422,6 @@ class Request
 
     /**
      * 是否为 PURGE 请求行为.
-     *
-     * @return bool
      */
     public static function isPurge(): bool
     {
@@ -527,8 +430,6 @@ class Request
 
     /**
      * 是否为 OPTIONS 请求行为.
-     *
-     * @return bool
      */
     public static function isOptions(): bool
     {
@@ -537,8 +438,6 @@ class Request
 
     /**
      * 是否为 TRACE 请求行为.
-     *
-     * @return bool
      */
     public static function isTrace(): bool
     {
@@ -547,8 +446,6 @@ class Request
 
     /**
      * 是否为 CONNECT 请求行为.
-     *
-     * @return bool
      */
     public static function isConnect(): bool
     {
@@ -557,8 +454,6 @@ class Request
 
     /**
      * 获取 IP 地址.
-     *
-     * @return string
      */
     public static function getClientIp(): string
     {
@@ -567,8 +462,6 @@ class Request
 
     /**
      * 请求类型.
-     *
-     * @return string
      */
     public static function getMethod(): string
     {
@@ -577,10 +470,6 @@ class Request
 
     /**
      * 设置请求类型.
-     *
-     * @param string $method
-     *
-     * @return \Leevel\Http\IRequest
      */
     public static function setMethod(string $method): IBaseRequest
     {
@@ -589,8 +478,6 @@ class Request
 
     /**
      * 实际请求类型.
-     *
-     * @return string
      */
     public static function getRealMethod(): string
     {
@@ -599,10 +486,6 @@ class Request
 
     /**
      * 验证是否为指定的方法.
-     *
-     * @param string $method
-     *
-     * @return bool
      */
     public static function isMethod(string $method): bool
     {
@@ -611,8 +494,6 @@ class Request
 
     /**
      * 返回当前的语言
-     *
-     * @return null|string
      */
     public static function language(): ?string
     {
@@ -621,8 +502,6 @@ class Request
 
     /**
      * 返回当前的语言
-     *
-     * @return null|string
      */
     public static function getLanguage(): ?string
     {
@@ -631,10 +510,6 @@ class Request
 
     /**
      * 设置当前的语言
-     *
-     * @param string $language
-     *
-     * @return \Leevel\Http\IRequest
      */
     public static function setLanguage(string $language): IBaseRequest
     {
@@ -643,8 +518,6 @@ class Request
 
     /**
      * 取得请求内容.
-     *
-     * @return string
      */
     public static function getContent(): string
     {
@@ -653,8 +526,6 @@ class Request
 
     /**
      * 返回 root URL.
-     *
-     * @return string
      */
     public static function getRoot(): string
     {
@@ -663,8 +534,6 @@ class Request
 
     /**
      * 返回入口文件.
-     *
-     * @return string
      */
     public static function getEnter(): string
     {
@@ -673,8 +542,6 @@ class Request
 
     /**
      * 取得脚本名字.
-     *
-     * @return string
      */
     public static function getScriptName(): string
     {
@@ -683,8 +550,6 @@ class Request
 
     /**
      * 是否启用 https.
-     *
-     * @return bool
      */
     public static function isSecure(): bool
     {
@@ -693,8 +558,6 @@ class Request
 
     /**
      * 取得 http host.
-     *
-     * @return string
      */
     public static function getHttpHost(): string
     {
@@ -703,8 +566,6 @@ class Request
 
     /**
      * 获取 host.
-     *
-     * @return string
      */
     public static function getHost(): string
     {
@@ -713,8 +574,6 @@ class Request
 
     /**
      * 取得 Scheme 和 Host.
-     *
-     * @return string
      */
     public static function getSchemeAndHttpHost(): string
     {
@@ -723,8 +582,6 @@ class Request
 
     /**
      * 返回当前 URL 地址.
-     *
-     * @return string
      */
     public static function getUri(): string
     {
@@ -733,8 +590,6 @@ class Request
 
     /**
      * 服务器端口.
-     *
-     * @return int
      */
     public static function getPort(): int
     {
@@ -743,8 +598,6 @@ class Request
 
     /**
      * 返回 scheme.
-     *
-     * @return string
      */
     public static function getScheme(): string
     {
@@ -753,8 +606,6 @@ class Request
 
     /**
      * 取回查询参数.
-     *
-     * @return null|string
      */
     public static function getQueryString(): ?string
     {
@@ -763,10 +614,6 @@ class Request
 
     /**
      * 设置 pathInfo.
-     *
-     * @param string $pathInfo
-     *
-     * @return \Leevel\Http\IRequest
      */
     public static function setPathInfo(string $pathInfo): IBaseRequest
     {
@@ -775,8 +622,6 @@ class Request
 
     /**
      * pathInfo 兼容性分析.
-     *
-     * @return string
      */
     public static function getPathInfo(): string
     {
@@ -785,8 +630,6 @@ class Request
 
     /**
      * 获取基础路径.
-     *
-     * @return string
      */
     public static function getBasePath(): string
     {
@@ -795,8 +638,6 @@ class Request
 
     /**
      * 分析基础 url.
-     *
-     * @return string
      */
     public static function getBaseUrl(): string
     {

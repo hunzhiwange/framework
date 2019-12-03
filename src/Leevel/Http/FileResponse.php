@@ -52,11 +52,6 @@ class FileResponse extends Response
      * 构造函数.
      *
      * @param \SplFileInfo|\SplFileObject|string $file
-     * @param int                                $status
-     * @param array                              $headers
-     * @param null|string                        $contentDisposition
-     * @param bool                               $autoEtag
-     * @param bool                               $autoLastModified
      */
     public function __construct($file, int $status = 200, array $headers = [], ?string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true)
     {
@@ -68,11 +63,6 @@ class FileResponse extends Response
      * 创建一个文件响应.
      *
      * @param null|\SplFileInfo|\SplFileObject|string $file
-     * @param int                                     $status
-     * @param array                                   $headers
-     * @param null|string                             $contentDisposition
-     * @param bool                                    $autoEtag
-     * @param bool                                    $autoLastModified
      *
      * @return static
      */
@@ -85,9 +75,6 @@ class FileResponse extends Response
      * 设置文件.
      *
      * @param \SplFileInfo|\SplFileObject|string $file
-     * @param null|string                        $contentDisposition
-     * @param bool                               $autoEtag
-     * @param bool                               $autoLastModified
      *
      * @throws \Leevel\Http\FileException
      *
@@ -204,9 +191,6 @@ class FileResponse extends Response
 
     /**
      * 设置文件下载模式.
-     *
-     * @param string $disposition
-     * @param string $filename
      *
      * @throws \InvalidArgumentException
      *

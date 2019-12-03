@@ -22,11 +22,6 @@ namespace Leevel\Support\Arr;
 
 /**
  * 返回黑名单排除后的数据.
- *
- * @param array $input
- * @param array $filter
- *
- * @return array
  */
 function except(array &$input, array $filter): array
 {

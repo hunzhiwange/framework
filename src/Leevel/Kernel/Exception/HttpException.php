@@ -50,11 +50,6 @@ abstract class HttpException extends RuntimeException
 
     /**
      * 构造函数.
-     *
-     * @param int             $statusCode
-     * @param null|string     $message
-     * @param int             $code
-     * @param null|\Exception $previous
      */
     public function __construct(int $statusCode, ?string $message = null, int $code = 0, ?Exception $previous = null)
     {
@@ -64,8 +59,6 @@ abstract class HttpException extends RuntimeException
 
     /**
      * 设置 HTTP 状态.
-     *
-     * @param int $statusCode
      */
     public function setStatusCode(int $statusCode): void
     {
@@ -74,8 +67,6 @@ abstract class HttpException extends RuntimeException
 
     /**
      * 返回 HTTP 状态.
-     *
-     * @return int
      */
     public function getStatusCode(): int
     {
@@ -84,8 +75,6 @@ abstract class HttpException extends RuntimeException
 
     /**
      * 设置 headers.
-     *
-     * @param array $headers
      */
     public function setHeaders(array $headers): void
     {
@@ -94,8 +83,6 @@ abstract class HttpException extends RuntimeException
 
     /**
      * 返回 headers.
-     *
-     * @return array
      */
     public function getHeaders(): array
     {

@@ -44,8 +44,6 @@ class LeevelCollector extends DataCollector implements Renderable
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function __construct(IApp $app)
     {

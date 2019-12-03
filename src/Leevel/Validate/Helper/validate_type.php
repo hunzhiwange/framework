@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 数据类型验证.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_type($value, array $param): bool
 {

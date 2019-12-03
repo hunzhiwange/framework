@@ -51,8 +51,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 构造函数.
-     *
-     * @param array $elements
      */
     public function __construct(array $elements = [])
     {
@@ -61,8 +59,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 魔术方法 __toString.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -71,8 +67,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 取回元素.
-     *
-     * @return array
      */
     public function all(): array
     {
@@ -81,8 +75,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 返回元素键值.
-     *
-     * @return array
      */
     public function keys(): array
     {
@@ -91,8 +83,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 替换当前所有元素.
-     *
-     * @param array $elements
      */
     public function replace(array $elements = []): void
     {
@@ -101,8 +91,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 新增元素.
-     *
-     * @param array $elements
      */
     public function add(array $elements = []): void
     {
@@ -112,7 +100,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 取回元素值.
      *
-     * @param string     $key
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -127,8 +114,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 设置元素值.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function set(string $key, $value): void
     {
@@ -139,10 +125,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 判断是否存在元素值.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function has(string $key): bool
     {
@@ -153,8 +135,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 删除元素值.
-     *
-     * @param string $key
      */
     public function remove(string $key): void
     {
@@ -167,10 +147,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 获取过滤变量.
      *
-     * @param string                $key
      * @param null|mixed            $defaults
      * @param null|array|int|string $filter
-     * @param array                 $options
      *
      * @return mixed
      */
@@ -199,8 +177,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 实现 Countable::count.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -209,8 +185,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -219,8 +193,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 实现 JsonSerializable::jsonSerialize.
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {
@@ -229,10 +201,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 对象转 JSON.
-     *
-     * @param null|int $option
-     *
-     * @return string
      */
     public function toJson(?int $option = null): string
     {
@@ -245,8 +213,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 实现 IteratorAggregate::getIterator.
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): ArrayIterator
     {
@@ -255,11 +221,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 分析键值和过滤器.
-     *
-     * @param string $key
-     * @param array  $filter
-     *
-     * @return array
      */
     protected function parseKeyFilter(string $key, array $filter): array
     {
@@ -276,8 +237,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 分析过滤器.
      *
      * @param null|array|string $filter
-     *
-     * @return array
      */
     protected function parseFilter($filter = null): array
     {
@@ -293,8 +252,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param mixed $value
      * @param mixed $defaults
-     * @param array $filters
-     * @param array $options
      *
      * @return mixed
      */
@@ -321,8 +278,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 使用函数过滤值.
      *
-     * @param mixed  $value
-     * @param string $filter
+     * @param mixed $value
      *
      * @return mixed
      */
@@ -367,8 +323,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 使用回调过滤值.
      *
-     * @param mixed  $value
-     * @param string $filter
+     * @param mixed $value
      *
      * @return mixed
      */
@@ -384,7 +339,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param mixed $value
      * @param mixed $filter
-     * @param array $options
      *
      * @see http://php.net/manual/en/function.filter-var.php
      *
@@ -401,8 +355,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 分析转换 filter_var 参数.
      *
      * @param mixed $filter
-     *
-     * @return int
      */
     protected function parseFilterId($filter): int
     {
@@ -430,7 +382,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 返回部分数组数据.
      *
-     * @param string     $key
      * @param mixed      $value
      * @param null|mixed $defaults
      *
@@ -455,10 +406,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
     /**
      * 格式化键值.
-     *
-     * @param string $key
-     *
-     * @return string
      */
     protected function normalize(string $key): string
     {

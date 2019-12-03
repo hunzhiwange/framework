@@ -91,8 +91,6 @@ class HotOverload extends Process
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Option\IOption $option
      */
     public function __construct(IOption $option)
     {
@@ -104,7 +102,6 @@ class HotOverload extends Process
     /**
      * 响应句柄.
      *
-     * @param \Leevel\Protocol\IServer $server
      * @codeCoverageIgnore
      */
     public function handle(IServer $server): void
@@ -121,8 +118,6 @@ class HotOverload extends Process
 
     /**
      * 服务是否需要重启.
-     *
-     * @return bool
      */
     protected function serverNeedReload(): bool
     {
@@ -145,8 +140,6 @@ class HotOverload extends Process
 
     /**
      * 当前文件 MD5 值.
-     *
-     * @return string
      */
     protected function md5Hash(): string
     {
@@ -161,8 +154,6 @@ class HotOverload extends Process
 
     /**
      * 扫描文件.
-     *
-     * @return array
      */
     protected function files(): array
     {
@@ -190,8 +181,6 @@ class HotOverload extends Process
 
     /**
      * 重启.
-     *
-     * @param \Leevel\Protocol\IServer $server
      */
     protected function reload(IServer $server): void
     {
@@ -203,7 +192,6 @@ class HotOverload extends Process
     /**
      * 记录日志.
      *
-     * @param string $log
      * @codeCoverageIgnore
      */
     protected function log(string $log): void

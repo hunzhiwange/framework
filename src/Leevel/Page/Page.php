@@ -103,11 +103,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 构造函数.
-     *
-     * @param int      $currentPage
-     * @param null|int $perPage
-     * @param null|int $totalRecord
-     * @param array    $option
      */
     public function __construct(int $currentPage, ?int $perPage = null, ?int $totalRecord = null, array $option = [])
     {
@@ -119,8 +114,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 转化为字符串.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -130,8 +123,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Page\IPage
      */
@@ -144,8 +136,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 转化输出 HTML.
-     *
-     * @return string
      */
     public function toHtml(): string
     {
@@ -154,9 +144,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 追加分页条件.
-     *
-     * @param string $key
-     * @param string $value
      *
      * @return \Leevel\Page\IPage
      */
@@ -167,8 +154,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 批量追加分页条件.
-     *
-     * @param array $values
      *
      * @return \Leevel\Page\IPage
      */
@@ -184,8 +169,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置分页条件.
      *
-     * @param array $param
-     *
      * @return \Leevel\Page\IPage
      */
     public function param(array $param): IPage
@@ -196,8 +179,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 添加分页条件.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Page\IPage
      */
@@ -213,8 +195,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置渲染参数.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Page\IPage
      */
@@ -230,9 +211,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 批量设置渲染参数.
      *
-     * @param string $key
-     * @param string $value
-     *
      * @return \Leevel\Page\IPage
      */
     public function renderOptions(array $option): IPage
@@ -247,8 +225,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置 url.
      *
-     * @param null|string $url
-     *
      * @return \Leevel\Page\IPage
      */
     public function url(?string $url = null): IPage
@@ -258,8 +234,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置 render.
-     *
-     * @param null|string $render
      *
      * @return \Leevel\Page\IPage
      */
@@ -281,8 +255,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置 range.
      *
-     * @param null|int $range
-     *
      * @return \Leevel\Page\IPage
      */
     public function range(?int $range = null): IPage
@@ -292,8 +264,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 获取 range.
-     *
-     * @return int
      */
     public function getRange(): int
     {
@@ -305,8 +275,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置 url 描点.
      *
-     * @param null|string $fragment
-     *
      * @return \Leevel\Page\IPage
      */
     public function fragment(?string $fragment = null): IPage
@@ -316,8 +284,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 获取 url 描点.
-     *
-     * @return null|string
      */
     public function getFragment(): ?string
     {
@@ -340,8 +306,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回每页数量.
-     *
-     * @return int
      */
     public function getPerPage(): int
     {
@@ -355,8 +319,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 设置分页名字.
      *
-     * @param string $pageName
-     *
      * @return \Leevel\Page\IPage
      */
     public function pageName(string $pageName): IPage
@@ -366,8 +328,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 获取分页名字.
-     *
-     * @return string
      */
     public function getPageName(): string
     {
@@ -376,8 +336,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回总记录数量.
-     *
-     * @return null|int
      */
     public function getTotalRecord(): ?int
     {
@@ -386,8 +344,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 是否为无限分页.
-     *
-     * @return bool
      */
     public function isTotalMacro(): bool
     {
@@ -396,8 +352,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 取得第一个记录的编号.
-     *
-     * @return int
      */
     public function getFromRecord(): int
     {
@@ -406,8 +360,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 取得最后一个记录的编号.
-     *
-     * @return null|int
      */
     public function getToRecord(): ?int
     {
@@ -422,8 +374,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 设置当前分页.
-     *
-     * @param int $page
      */
     public function currentPage(int $page): void
     {
@@ -432,8 +382,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回当前分页.
-     *
-     * @return int
      */
     public function getCurrentPage(): int
     {
@@ -442,8 +390,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回分页视图开始页码
-     *
-     * @return int
      */
     public function getPageStart(): int
     {
@@ -461,8 +407,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回分页视图结束页码
-     *
-     * @return int
      */
     public function getPageEnd(): int
     {
@@ -485,8 +429,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回总分页数量.
-     *
-     * @return null|int
      */
     public function getTotalPage(): ?int
     {
@@ -503,8 +445,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 是否渲染 total.
-     *
-     * @return bool
      */
     public function canTotalRender(): bool
     {
@@ -514,8 +454,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 是否渲染 first.
-     *
-     * @return bool
      */
     public function canFirstRender(): bool
     {
@@ -525,8 +463,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回渲染 first.prev.
-     *
-     * @return int
      */
     public function parseFirstRenderPrev(): int
     {
@@ -535,8 +471,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 是否渲染 prev.
-     *
-     * @return bool
      */
     public function canPrevRender(): bool
     {
@@ -546,8 +480,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回渲染 prev.prev.
-     *
-     * @return int
      */
     public function parsePrevRenderPrev(): int
     {
@@ -556,8 +488,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 是否渲染 main.
-     *
-     * @return bool
      */
     public function canMainRender(): bool
     {
@@ -566,8 +496,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 是否渲染 next.
-     *
-     * @return bool
      */
     public function canNextRender(): bool
     {
@@ -578,8 +506,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 是否渲染 last.
-     *
-     * @return bool
      */
     public function canLastRender(): bool
     {
@@ -590,8 +516,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 是否渲染 last.
-     *
-     * @return bool
      */
     public function canLastRenderNext(): bool
     {
@@ -600,8 +524,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 返回渲染 last.next.
-     *
-     * @return int
      */
     public function parseLastRenderNext(): int
     {
@@ -620,8 +542,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * 替换分页变量.
      *
      * @param int|string $page
-     *
-     * @return string
      */
     public function pageReplace($page): string
     {
@@ -635,11 +555,8 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
      * 渲染分页.
      *
      * @param null|\Leevel\Page\IRender|string $render
-     * @param array                            $option
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
     public function render($render = null, array $option = []): string
     {
@@ -661,8 +578,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -679,8 +594,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 实现 JsonSerializable::jsonSerialize.
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {
@@ -689,10 +602,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 对象转 JSON.
-     *
-     * @param null|int $option
-     *
-     * @return string
      */
     public function toJson(?int $option = null): string
     {
@@ -706,8 +615,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     /**
      * 分析分页 url 地址.
      * {page} 表示自定义分页变量替换.
-     *
-     * @return string
      */
     protected function getUrl(): string
     {
@@ -733,8 +640,6 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 创建描点.
-     *
-     * @return string
      */
     protected function buildFragment(): string
     {

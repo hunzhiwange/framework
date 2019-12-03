@@ -67,10 +67,8 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 构造函数.
      *
-     * @param \Leevel\Cache\ICache $cache
-     * @param string               $key
-     * @param string               $limit
-     * @param string               $time
+     * @param string $limit
+     * @param string $time
      */
     public function __construct(ICache $cache, string $key, int $limit = 60, int $time = 60)
     {
@@ -82,8 +80,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 验证请求
-     *
-     * @return bool
      */
     public function attempt(): bool
     {
@@ -96,8 +92,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 判断资源是否被耗尽.
-     *
-     * @return bool
      */
     public function tooManyAttempt(): bool
     {
@@ -118,8 +112,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 请求返回 HEADER.
-     *
-     * @return array
      */
     public function header(): array
     {
@@ -134,8 +126,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 距离下一次请求等待时间.
-     *
-     * @return int
      */
     public function retryAfter(): int
     {
@@ -144,8 +134,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 指定时间内剩余请求次数.
-     *
-     * @return int
      */
     public function remaining(): int
     {
@@ -154,8 +142,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 指定时间长度.
-     *
-     * @param int $limit
      *
      * @return \Leevel\Throttler\IRateLimiter
      */
@@ -169,8 +155,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 指定时间内允许的最大请求次数.
      *
-     * @param int $time
-     *
      * @return \Leevel\Throttler\IRateLimiter
      */
     public function time(int $time = 60): IRateLimiter
@@ -182,8 +166,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 返回缓存组件.
-     *
-     * @return \Leevel\Cache\ICache
      */
     public function getCache(): ICache
     {
@@ -192,8 +174,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 下次重置时间.
-     *
-     * @return int
      */
     public function endTime(): int
     {
@@ -202,8 +182,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 请求次数.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -212,8 +190,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -223,8 +199,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 距离下一次请求等待时间
      * 实际，可能扣减为负数.
-     *
-     * @return int
      */
     protected function retryAfterReal(): int
     {
@@ -234,8 +208,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 指定时间内剩余请求次数
      * 实际，可能扣减为负数.
-     *
-     * @return int
      */
     protected function remainingReal(): int
     {
@@ -244,8 +216,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 保存缓存数据.
-     *
-     * @param int $count
      */
     protected function saveData(int $count): void
     {
@@ -257,8 +227,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 读取缓存数据.
-     *
-     * @return array
      */
     protected function getData(): array
     {
@@ -276,11 +244,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 组装缓存数据.
-     *
-     * @param int $endTime
-     * @param int $count
-     *
-     * @return string
      */
     protected function getImplodeData(int $endTime, int $count): string
     {
@@ -291,8 +254,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      * 分隔缓存数据.
      *
      * @param array $data
-     *
-     * @return array
      */
     protected function getExplodeData(string $data): array
     {
@@ -305,8 +266,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      * 获取 key.
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
     protected function getKey(): string
     {
@@ -319,8 +278,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 初始化下一次重置时间.
-     *
-     * @return int
      */
     protected function getInitEndTime(): int
     {
@@ -329,8 +286,6 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 初始化点击.
-     *
-     * @return int
      */
     protected function getInitCount(): int
     {

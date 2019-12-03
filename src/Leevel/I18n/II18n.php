@@ -34,20 +34,14 @@ interface II18n
     /**
      * 获取语言 text.
      *
-     * @param string $text
-     * @param array  ...$data
-     *
-     * @return string
+     * @param array ...$data
      */
     public function __(string $text, ...$data): string;
 
     /**
      * 获取语言 text.
      *
-     * @param string $text
-     * @param array  ...$data
-     *
-     * @return string
+     * @param array ...$data
      */
     public function gettext(string $text, ...$data): string;
 
@@ -61,22 +55,16 @@ interface II18n
 
     /**
      * 设置当前语言包上下文环境.
-     *
-     * @param string $i18n
      */
     public function setI18n(string $i18n): void;
 
     /**
      * 获取当前语言包.
-     *
-     * @return string
      */
     public function getI18n(): string;
 
     /**
      * 返回所有语言包.
-     *
-     * @return array
      */
     public function all(): array;
 }

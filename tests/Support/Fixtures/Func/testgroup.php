@@ -26,8 +26,6 @@ namespace Tests\Support\Fixtures\Func;
  * ``` php
  * echo f('Tests\\Support\\Fixtures\\Func\\testgroup_fn1');
  * ```
- *
- * @return string
  */
 function testgroup_fn1(): string
 {
@@ -40,8 +38,6 @@ function testgroup_fn1(): string
  * ``` php
  * echo f('Tests\\Support\\Fixtures\\Func\\testgroup_fn2');
  * ```
- *
- * @return string
  */
 function testgroup_fn2(): string
 {

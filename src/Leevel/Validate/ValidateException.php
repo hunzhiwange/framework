@@ -52,7 +52,6 @@ class ValidateException extends Exception
      * 构造函数.
      *
      * @param \Leevel\Validate\IValidator $validator
-     * @param null|\Leevel\Http\IResponse $response
      */
     public function __construct(IValidator $validator, ?IResponse $response = null)
     {

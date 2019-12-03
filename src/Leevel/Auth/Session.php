@@ -42,9 +42,6 @@ class Session extends Auth implements IAuth
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Session\ISession $session
-     * @param array                    $option
      */
     public function __construct(ISession $session, array $option = [])
     {
@@ -54,10 +51,6 @@ class Session extends Auth implements IAuth
 
     /**
      * 数据持久化.
-     *
-     * @param string $key
-     * @param string $value
-     * @param int    $expire
      */
     protected function setPersistence(string $key, string $value, int $expire = 0): void
     {
@@ -66,8 +59,6 @@ class Session extends Auth implements IAuth
 
     /**
      * 获取持久化数据.
-     *
-     * @param string $key
      *
      * @return mixed
      */
@@ -78,8 +69,6 @@ class Session extends Auth implements IAuth
 
     /**
      * 删除持久化数据.
-     *
-     * @param string $key
      */
     protected function deletePersistence(string $key): void
     {

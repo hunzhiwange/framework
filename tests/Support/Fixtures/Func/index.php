@@ -26,10 +26,6 @@ namespace Tests\Support\Fixtures\Func;
  * ``` php
  * echo f('Tests\\Support\\Fixtures\\Func\\foo_bar');
  * ```
- *
- * @param string $extend
- *
- * @return string
  */
 function foo_bar(string $extend = ''): string
 {

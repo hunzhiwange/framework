@@ -148,8 +148,7 @@ class RouterTest extends TestCase
     /**
      * @dataProvider getRestfulData
      *
-     * @param string $method
-     * @param mixed  $action
+     * @param mixed $action
      */
     public function testRestful(string $method, string $action): void
     {
@@ -178,9 +177,6 @@ class RouterTest extends TestCase
 
     /**
      * @dataProvider getNodeNotFoundData
-     *
-     * @param string $method
-     * @param string $action
      */
     public function testNodeNotFound(string $method, string $action): void
     {
@@ -211,9 +207,6 @@ class RouterTest extends TestCase
 
     /**
      * @dataProvider getNodeNotFoundDataWithParams
-     *
-     * @param string $method
-     * @param string $action
      */
     public function testNodeNotFoundWithParams(string $method, string $action): void
     {

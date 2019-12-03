@@ -33,8 +33,6 @@ class Options
 {
     /**
      * 默认方法.
-     *
-     * @return string
      */
     public function index(): string
     {

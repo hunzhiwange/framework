@@ -22,11 +22,6 @@ namespace Leevel\Support\Str;
 
 /**
  * 文件大小格式化.
- *
- * @param int  $fileSize
- * @param bool $withUnit
- *
- * @return string
  */
 function format_bytes(int $fileSize, bool $withUnit = true): string
 {

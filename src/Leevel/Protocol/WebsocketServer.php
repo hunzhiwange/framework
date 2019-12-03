@@ -124,9 +124,6 @@ class WebsocketServer extends HttpServer implements IServer
     /**
      * WebSocket 客户端与服务器建立连接并完成握手后.
      *
-     * @param \Swoole\Websocket\Server $server
-     * @param \Swoole\Http\Request     $swooleRequest
-     *
      * @see https://wiki.swoole.com/wiki/page/401.html
      */
     public function onOpen(SwooleWebsocketServer $server, SwooleHttpRequest $swooleRequest): void
@@ -143,9 +140,6 @@ class WebsocketServer extends HttpServer implements IServer
 
     /**
      * 监听服务器收到来自客户端的数据帧.
-     *
-     * @param \Swoole\Websocket\Server $server
-     * @param \Swoole\Websocket\Frame  $frame
      *
      * @see https://wiki.swoole.com/wiki/page/397.html
      */
@@ -169,10 +163,6 @@ class WebsocketServer extends HttpServer implements IServer
     /**
      * 监听连接关闭事件
      * 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
-     *
-     * @param \Swoole\Websocket\Server $server
-     * @param int                      $fd
-     * @param int                      $reactorId
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
      */
@@ -210,8 +200,6 @@ class WebsocketServer extends HttpServer implements IServer
 
     /**
      * 获取客户端连接数.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -220,9 +208,6 @@ class WebsocketServer extends HttpServer implements IServer
 
     /**
      * 设置路由匹配数据.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param array                 $data
      */
     protected function setPreRequestMatched(IRequest $request, array $data): void
     {
@@ -233,11 +218,6 @@ class WebsocketServer extends HttpServer implements IServer
 
     /**
      * 根据 pathInfo 创建 HTTP 请求对象
-     *
-     * @param string $pathInfo
-     * @param string $type
-     *
-     * @return \Leevel\Http\IRequest
      */
     protected function createRequestWithPathInfo(string $pathInfo, string $type): IRequest
     {
@@ -249,11 +229,6 @@ class WebsocketServer extends HttpServer implements IServer
 
     /**
      * 格式化 pathInfo.
-     *
-     * @param string $pathInfo
-     * @param string $type
-     *
-     * @return string
      */
     protected function normalizePathInfo(string $pathInfo, string $type): string
     {
@@ -276,8 +251,6 @@ class WebsocketServer extends HttpServer implements IServer
     /**
      * 获取客户端连接 PathInfo.
      *
-     * @param int $fd
-     *
      * @return false|string
      */
     protected function getClientPathInfo(int $fd)
@@ -293,9 +266,6 @@ class WebsocketServer extends HttpServer implements IServer
 
     /**
      * 设置客户端连接 PathInfo.
-     *
-     * @param int    $fd
-     * @param string $pathInfo
      */
     protected function setClientPathInfo(int $fd, string $pathInfo): void
     {

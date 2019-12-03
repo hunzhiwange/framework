@@ -33,10 +33,6 @@ interface ICoroutine
 {
     /**
      * 是否处于协程上下文.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function context(string $key): bool;
 
@@ -49,8 +45,6 @@ interface ICoroutine
 
     /**
      * 当前协程 ID.
-     *
-     * @return int
      *
      * @see https://wiki.swoole.com/wiki/page/871.html
      */

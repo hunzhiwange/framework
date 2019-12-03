@@ -135,8 +135,6 @@ class Container implements IContainer, ArrayAccess
     /**
      * 捕捉支持属性参数.
      *
-     * @param string $key
-     *
      * @return mixed
      */
     public function __get(string $key)
@@ -147,8 +145,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 设置支持属性参数.
      *
-     * @param string $key
-     * @param mixed  $service
+     * @param mixed $service
      */
     public function __set(string $key, $service): IContainer
     {
@@ -159,9 +156,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @throws \BadMethodCallException
      *
@@ -193,8 +187,6 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed      $name
      * @param null|mixed $service
-     * @param bool       $share
-     * @param bool       $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
@@ -227,7 +219,6 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed      $name
      * @param null|mixed $service
-     * @param bool       $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
@@ -260,7 +251,6 @@ class Container implements IContainer, ArrayAccess
      *
      * @param array|scalar $name
      * @param null|mixed   $service
-     * @param bool         $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
@@ -298,9 +288,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 服务容器返回对象.
-     *
-     * @param string $name
-     * @param array  $args
      *
      * @return mixed
      */
@@ -353,7 +340,6 @@ class Container implements IContainer, ArrayAccess
      * 实例回调自动注入.
      *
      * @param array|callable|string $callback
-     * @param array                 $args
      *
      * @throws \InvalidArgumentException
      *
@@ -395,8 +381,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 删除服务和实例.
-     *
-     * @param string $name
      */
     public function remove(string $name): void
     {
@@ -420,10 +404,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 服务或者实例是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function exists(string $name): bool
     {
@@ -472,8 +452,6 @@ class Container implements IContainer, ArrayAccess
     /**
      * 创建服务提供者.
      *
-     * @param string $provider
-     *
      * @return \Leevel\Di\Provider
      */
     public function makeProvider(string $provider): Provider
@@ -507,8 +485,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 是否已经初始化引导.
-     *
-     * @return bool
      */
     public function isBootstrap(): bool
     {
@@ -562,10 +538,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 协程服务或者实例是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function existsCoroutine(string $name): bool
     {
@@ -575,8 +547,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 删除协程上下文服务和实例.
-     *
-     * @param null|string $name
      */
     public function removeCoroutine(?string $name = null): void
     {
@@ -598,8 +568,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 设置服务到协程上下文.
-     *
-     * @param string $service
      */
     public function serviceCoroutine(string $service): void
     {
@@ -614,8 +582,6 @@ class Container implements IContainer, ArrayAccess
      * 实现 ArrayAccess::offsetExits.
      *
      * @param string $index
-     *
-     * @return bool
      */
     public function offsetExists($index): bool
     {
@@ -667,8 +633,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 注册延迟载入服务提供者.
-     *
-     * @param string $provider
      */
     protected function registerDeferredProvider(string $provider): void
     {
@@ -679,10 +643,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 统一去掉前面的斜杠.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     protected function normalize(string $name): string
     {
@@ -691,10 +651,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 返回对象别名.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     protected function getAlias(string $name): string
     {
@@ -705,8 +661,6 @@ class Container implements IContainer, ArrayAccess
      * 是否处于协程上下文.
      *
      * @param mixed $instance
-     *
-     * @return bool
      */
     protected function coroutineContext($instance): bool
     {
@@ -738,9 +692,6 @@ class Container implements IContainer, ArrayAccess
     /**
      * 根据 class 名字创建实例.
      *
-     * @param string $classname
-     * @param array  $args
-     *
      * @throws \Leevel\Di\ContainerInvalidArgumentException
      *
      * @return object|string
@@ -766,11 +717,8 @@ class Container implements IContainer, ArrayAccess
      * 格式化依赖参数.
      *
      * @param mixed $value
-     * @param array $args
      *
      * @throws \Leevel\Di\ContainerInvalidArgumentException
-     *
-     * @return array
      */
     protected function normalizeInjectionArgs($value, array $args): array
     {
@@ -788,11 +736,8 @@ class Container implements IContainer, ArrayAccess
      * 分析自动依赖注入.
      *
      * @param mixed $injection
-     * @param array $args
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function parseInjection($injection, array $args = []): array
     {
@@ -865,8 +810,6 @@ class Container implements IContainer, ArrayAccess
     /**
      * 分析反射参数的类.
      *
-     * @param \ReflectionParameter $param
-     *
      * @return bool|string
      */
     protected function parseParamClass(ReflectionParameter $param)
@@ -882,11 +825,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 从服务容器中获取解析反射参数类实例.
      *
-     * @param string $argsclass
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return object
      */
     protected function parseClassFromContainer(string $argsclass): object
     {
@@ -906,8 +845,6 @@ class Container implements IContainer, ArrayAccess
      * @param mixed $injection
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function parseReflection($injection): array
     {
@@ -927,10 +864,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 解析闭包反射参数.
-     *
-     * @param Closure $injection
-     *
-     * @return array
      */
     protected function parseClosureReflection(Closure $injection): array
     {
@@ -943,8 +876,6 @@ class Container implements IContainer, ArrayAccess
      * 解析数组回调反射参数.
      *
      * @param array|callback $injection
-     *
-     * @return array
      */
     protected function parseMethodReflection(callable $injection): array
     {
@@ -956,11 +887,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 解析类反射参数.
      *
-     * @param string $injection
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function parseClassReflection(string $injection): array
     {
@@ -986,9 +913,6 @@ class Container implements IContainer, ArrayAccess
      * - 例子：Class Tests\\Event\\ListenerNotExtends does not
      * have a constructor, so you cannot pass any constructor arguments.
      *
-     * @param string $classname
-     * @param array  $args
-     *
      * @return mixed
      */
     protected function newInstanceArgs(string $classname, array $args)
@@ -1004,10 +928,6 @@ class Container implements IContainer, ArrayAccess
 
     /**
      * 解析注册容器对象别名.
-     *
-     * @param array $name
-     *
-     * @return array
      */
     protected function parseAlias(array $name): array
     {

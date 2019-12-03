@@ -65,47 +65,32 @@ interface IValidator
     /**
      * 初始化验证器.
      *
-     * @param array $data
-     * @param array $rules
-     * @param array $names
-     * @param array $message
-     *
      * @return \Leevel\Validate\IValidator
      */
     public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): self;
 
     /**
      * 验证是否成功
-     *
-     * @return bool
      */
     public function success(): bool;
 
     /**
      * 验证是否失败.
-     *
-     * @return bool
      */
     public function fail(): bool;
 
     /**
      * 返回所有错误消息.
-     *
-     * @return array
      */
     public function error(): array;
 
     /**
      * 返回验证数据.
-     *
-     * @return array
      */
     public function getData(): array;
 
     /**
      * 设置验证数据.
-     *
-     * @param array $data
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -113,8 +98,6 @@ interface IValidator
 
     /**
      * 添加验证数据.
-     *
-     * @param array $data
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -130,9 +113,6 @@ interface IValidator
     /**
      * 设置验证规则.
      *
-     * @param array         $rules
-     * @param null|\Closure $calCallback
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function rule(array $rules, ?Closure $callbacks = null): self;
@@ -140,24 +120,17 @@ interface IValidator
     /**
      * 添加验证规则.
      *
-     * @param array         $rules
-     * @param null|\Closure $calCallback
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function addRule(array $rules, ?Closure $callbacks = null): self;
 
     /**
      * 返回验证消息.
-     *
-     * @return array
      */
     public function getMessage(): array;
 
     /**
      * 设置验证消息.
-     *
-     * @param array $message
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -166,23 +139,17 @@ interface IValidator
     /**
      * 添加验证消息.
      *
-     * @param array $message
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function addMessage(array $message): self;
 
     /**
      * 返回名字.
-     *
-     * @return array
      */
     public function getName(): array;
 
     /**
      * 设置名字.
-     *
-     * @param array $names
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -191,17 +158,12 @@ interface IValidator
     /**
      * 添加名字.
      *
-     * @param array $names
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function addName(array $names): self;
 
     /**
      * 设置别名.
-     *
-     * @param string $name
-     * @param string $alias
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -210,16 +172,12 @@ interface IValidator
     /**
      * 批量设置别名.
      *
-     * @param array $alias
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function aliasMany(array $alias): self;
 
     /**
      * 设置验证后事件.
-     *
-     * @param \Closure $callbacks
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -228,7 +186,6 @@ interface IValidator
     /**
      * 注册自定义扩展.
      *
-     * @param string          $rule
      * @param \Closure|string $extends
      *
      * @return \Leevel\Validate\IValidator
@@ -238,33 +195,24 @@ interface IValidator
     /**
      * 设置 ioc 容器.
      *
-     * @param \Leevel\Di\IContainer $container
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function setContainer(IContainer $container): self;
 
     /**
      * 初始化默认的消息.
-     *
-     * @param array $messages
      */
     public static function initMessages(array $messages): void;
 
     /**
      * 尝试读取格式化条件.
      *
-     * @param string       $field
      * @param array|string $rules
-     *
-     * @return array
      */
     public function getParseRule(string $field, $rules): array;
 
     /**
      * 获取字段的值
-     *
-     * @param string $rule
      *
      * @return mixed
      */

@@ -34,11 +34,6 @@ interface IValidate
     /**
      * 创建一个验证器.
      *
-     * @param array $data
-     * @param array $rules
-     * @param array $names
-     * @param array $messages
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator;

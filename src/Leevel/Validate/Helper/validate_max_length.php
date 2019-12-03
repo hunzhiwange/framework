@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 验证数据最大长度.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_max_length($value, array $param): bool
 {

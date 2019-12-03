@@ -25,9 +25,6 @@ use RuntimeException;
 /**
  * 访问时间限制.
  *
- * @param array $limitTime
- * @param int   $time
- *
  * @throws \RuntimeException
  */
 function limit_time(array $limitTime, int $time): void

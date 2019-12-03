@@ -53,8 +53,6 @@ class Sendmail extends Mail implements IMail
 
     /**
      * 创建 transport.
-     *
-     * @return object
      */
     protected function makeTransport(): object
     {

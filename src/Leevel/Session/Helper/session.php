@@ -25,8 +25,6 @@ use Leevel\Session\ISession;
 
 /**
  * Session 服务
- *
- * @return \Leevel\Session\ISession
  */
 function session(): ISession
 {

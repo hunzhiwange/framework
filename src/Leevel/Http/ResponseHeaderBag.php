@@ -54,8 +54,6 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * 构造函数.
-     *
-     * @param array $elements
      */
     public function __construct(array $elements = [])
     {
@@ -65,9 +63,6 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      */
@@ -79,9 +74,7 @@ class ResponseHeaderBag extends HeaderBag
     /**
      * 设置 COOKIE 别名.
      *
-     * @param string            $name
      * @param null|array|string $value
-     * @param array             $option
      */
     public function cookie(string $name, $value = null, array $option = [])
     {
@@ -91,9 +84,7 @@ class ResponseHeaderBag extends HeaderBag
     /**
      * 设置 COOKIE.
      *
-     * @param string            $name
      * @param null|array|string $value
-     * @param array             $option
      */
     public function setCookie(string $name, $value = null, array $option = []): void
     {
@@ -102,9 +93,6 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * 批量设置 COOKIE.
-     *
-     * @param array $cookies
-     * @param array $option
      */
     public function withCookies(array $cookies, array $option = []): void
     {
@@ -115,8 +103,6 @@ class ResponseHeaderBag extends HeaderBag
 
     /**
      * 获取 COOKIE.
-     *
-     * @return array
      */
     public function getCookies(): array
     {

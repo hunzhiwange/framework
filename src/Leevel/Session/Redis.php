@@ -54,8 +54,6 @@ class Redis extends Session implements ISession
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -65,8 +63,6 @@ class Redis extends Session implements ISession
 
     /**
      * redis 缓存.
-     *
-     * @return \Leevel\Cache\Redis
      */
     public function createCache(): CacheRedis
     {

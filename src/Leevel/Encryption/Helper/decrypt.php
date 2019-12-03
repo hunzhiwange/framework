@@ -24,10 +24,6 @@ use Leevel\Di\Container;
 
 /**
  * 解密字符串.
- *
- * @param string $value
- *
- * @return string
  */
 function decrypt(string $value): string
 {

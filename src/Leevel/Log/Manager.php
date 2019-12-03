@@ -53,8 +53,6 @@ class Manager extends Managers
 {
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     protected function normalizeOptionNamespace(): string
     {
@@ -63,8 +61,6 @@ class Manager extends Managers
 
     /**
      * 创建 file 日志驱动.
-     *
-     * @param array $options
      *
      * @return \Leevel\Log\File
      */
@@ -78,8 +74,6 @@ class Manager extends Managers
 
     /**
      * 创建 syslog 日志驱动.
-     *
-     * @param array $options
      *
      * @return \Leevel\Log\Syslog
      */

@@ -38,8 +38,6 @@ class LogTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
-     *
-     * @param string $level
      */
     public function testBaseUse(string $level): void
     {

@@ -80,10 +80,7 @@ class Assert
     /**
      * 构造函数.
      *
-     * @param mixed       $value
-     * @param null|string $message
-     * @param bool        $lazy
-     * @param bool        $all
+     * @param mixed $value
      */
     public function __construct($value, ?string $message = null, bool $lazy = false, bool $all = true)
     {
@@ -95,9 +92,6 @@ class Assert
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @throws \Leevel\Validate\AssertException
      *
@@ -124,12 +118,7 @@ class Assert
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @throws \Leevel\Validate\AssertException
-     *
-     * @return bool
      */
     public static function __callStatic(string $method, array $args): bool
     {
@@ -150,10 +139,7 @@ class Assert
      *     ->notEmpty()
      *     ->lessThan([7]);
      *
-     * @param mixed       $value
-     * @param null|string $message
-     * @param bool        $lazy
-     * @param bool        $all
+     * @param mixed $value
      *
      * @return \Leevel\Validate\Assert
      */
@@ -171,9 +157,7 @@ class Assert
      *     ->lessThan([7])
      *     ->flush();
      *
-     * @param mixed       $value
-     * @param null|string $message
-     * @param bool        $all
+     * @param mixed $value
      *
      * @return \Leevel\Validate\Assert
      */
@@ -185,11 +169,7 @@ class Assert
     /**
      * 释放并抛出验证
      *
-     * @param null|\Closure $format
-     *
      * @throws \Leevel\Validate\AssertException
-     *
-     * @return bool
      */
     public function flush(?Closure $format = null): bool
     {
@@ -209,12 +189,7 @@ class Assert
     /**
      * 校验断言
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return bool
      */
     protected static function validateAssert(string $method, array $args): bool
     {
@@ -248,11 +223,6 @@ class Assert
 
     /**
      * 参数校验和消息整理.
-     *
-     * @param array       $args
-     * @param null|string $message
-     *
-     * @return string
      */
     protected static function normalizeMessage(array $args, ?string $message = null): string
     {
@@ -267,9 +237,6 @@ class Assert
 
     /**
      * 匹配可选规则.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return array|bool
      */
@@ -290,10 +257,6 @@ class Assert
 
     /**
      * 匹配多个值
-     *
-     * @param string $method
-     * @param array  $args
-     * @param bool   $optional
      *
      * @throws \InvalidArgumentException
      *
@@ -333,12 +296,7 @@ class Assert
     /**
      * 校验规则.
      *
-     * @param string $method
-     * @param array  $multi
-     *
      * @throws \BadMethodCallException
-     *
-     * @return bool
      */
     protected static function validateRule(string $method, array $multi): bool
     {

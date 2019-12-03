@@ -35,10 +35,6 @@ class Po implements IGettext
 {
     /**
      * 读取文件数据.
-     *
-     * @param array $filenames
-     *
-     * @return array
      */
     public function read(array $filenames): array
     {

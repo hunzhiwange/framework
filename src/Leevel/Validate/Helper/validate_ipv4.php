@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 是否为 ipv4.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_ipv4($value): bool
 {

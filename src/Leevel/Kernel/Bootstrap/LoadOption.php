@@ -39,8 +39,6 @@ class LoadOption
 {
     /**
      * 响应.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -72,8 +70,6 @@ class LoadOption
     /**
      * 载入运行时环境变量.
      *
-     * @param \Leevel\Kernel\IApp $app
-     *
      * @throws \RuntimeException
      */
     protected function checkRuntimeEnv(IApp $app): void
@@ -96,8 +92,6 @@ class LoadOption
 
     /**
      * 初始化处理.
-     *
-     * @param array $env
      */
     protected function setEnvs(array $env): void
     {
@@ -109,7 +103,6 @@ class LoadOption
     /**
      * 设置环境变量.
      *
-     * @param string           $name
      * @param null|bool|string $value
      */
     protected function setEnvVar(string $name, $value = null): void
@@ -129,7 +122,6 @@ class LoadOption
     /**
      * 初始化处理.
      *
-     * @param \Leevel\Option\Option $option
      * @codeCoverageIgnore
      */
     protected function initialization(Option $option): void

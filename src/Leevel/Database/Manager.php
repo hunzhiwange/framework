@@ -180,8 +180,6 @@ class Manager extends Managers
 
     /**
      * 设置当前协程事务中的连接.
-     *
-     * @param \Leevel\Protocol\Pool\IConnection $connection
      */
     public function setTransactionConnection(IConnection $connection): void
     {
@@ -190,8 +188,6 @@ class Manager extends Managers
 
     /**
      * 是否处于当前协程事务中.
-     *
-     * @return bool
      */
     public function inTransactionConnection(): bool
     {
@@ -202,8 +198,6 @@ class Manager extends Managers
      * 获取当前协程事务中的连接.
      *
      * @throws \RuntimeException
-     *
-     * @return \Leevel\Protocol\Pool\IConnection
      */
     public function getTransactionConnection(): IConnection
     {
@@ -227,8 +221,6 @@ class Manager extends Managers
 
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     protected function normalizeOptionNamespace(): string
     {
@@ -237,8 +229,6 @@ class Manager extends Managers
 
     /**
      * 创建 MySQL 连接.
-     *
-     * @param array $option
      *
      * @return \Leevel\Database\Mysql
      */
@@ -253,8 +243,6 @@ class Manager extends Managers
 
     /**
      * 创建 mysqlPool 缓存.
-     *
-     * @param array $options
      *
      * @throws \RuntimeException
      *
@@ -275,11 +263,6 @@ class Manager extends Managers
 
     /**
      * 读取默认配置.
-     *
-     * @param string $connect
-     * @param array  $extendOption
-     *
-     * @return array
      */
     protected function normalizeConnectOption(string $connect, array $extendOption = []): array
     {
@@ -291,11 +274,7 @@ class Manager extends Managers
     /**
      * 分析数据库配置参数.
      *
-     * @param array $option
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function parseDatabaseOption(array $option): array
     {

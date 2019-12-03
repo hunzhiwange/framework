@@ -62,10 +62,6 @@ class RedirectResponse extends Response
     /**
      * 构造函数.
      *
-     * @param null|string $url
-     * @param int         $status
-     * @param array       $headers
-     *
      * @throws \InvalidArgumentException
      */
     public function __construct(?string $url = null, int $status = 302, array $headers = [])
@@ -91,8 +87,6 @@ class RedirectResponse extends Response
      * 创建 URL 跳转响应.
      *
      * @param mixed $url
-     * @param int   $status
-     * @param array $headers
      *
      * @return static
      */
@@ -125,8 +119,6 @@ class RedirectResponse extends Response
 
     /**
      * 闪存输入信息.
-     *
-     * @param array $input
      *
      * @return \Leevel\Http\IResponse
      */
@@ -182,8 +174,7 @@ class RedirectResponse extends Response
     /**
      * 闪存错误信息.
      *
-     * @param mixed  $value
-     * @param string $key
+     * @param mixed $value
      *
      * @return \Leevel\Http\IResponse
      */
@@ -202,8 +193,6 @@ class RedirectResponse extends Response
 
     /**
      * 获取目标 URL 地址.
-     *
-     * @return string
      */
     public function getTargetUrl(): string
     {
@@ -212,8 +201,6 @@ class RedirectResponse extends Response
 
     /**
      * 设置目标 URL 地址
-     *
-     * @param string $url
      *
      * @throws \InvalidArgumentException
      *
@@ -271,8 +258,6 @@ class RedirectResponse extends Response
 
     /**
      * 获取 SESSION 仓储.
-     *
-     * @return null|\Leevel\Session\ISession
      */
     public function getSession(): ?ISession
     {
@@ -281,8 +266,6 @@ class RedirectResponse extends Response
 
     /**
      * 设置 SESSION 仓储.
-     *
-     * @param \Leevel\Session\ISession $session
      */
     public function setSession(ISession $session): void
     {

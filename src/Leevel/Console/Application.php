@@ -45,9 +45,6 @@ class Application extends SymfonyApplication implements IApplication
     /**
      * 创建一个命令行应用程序.
      *
-     * @param \Leevel\Di\IContainer $container
-     * @param string                $version
-     *
      * @return \Leevel\Console\Application
      */
     public function __construct(IContainer $container, string $version)
@@ -58,10 +55,6 @@ class Application extends SymfonyApplication implements IApplication
 
     /**
      * 添加一条命令.
-     *
-     * @param \Symfony\Component\Console\Command\Command $command
-     *
-     * @return \Symfony\Component\Console\Command\Command
      */
     public function add(SymfonyCommand $command): SymfonyCommand
     {
@@ -74,10 +67,6 @@ class Application extends SymfonyApplication implements IApplication
 
     /**
      * 格式化一个命令行.
-     *
-     * @param string $command
-     *
-     * @return \Symfony\Component\Console\Command\Command
      */
     public function normalizeCommand(string $command): SymfonyCommand
     {
@@ -86,8 +75,6 @@ class Application extends SymfonyApplication implements IApplication
 
     /**
      * 批量格式化命令行.
-     *
-     * @param array $commands
      */
     public function normalizeCommands(array $commands): void
     {
@@ -108,8 +95,6 @@ class Application extends SymfonyApplication implements IApplication
 
     /**
      * 返回 QueryPHP Logo.
-     *
-     * @return string
      */
     protected function getLogo(): string
     {

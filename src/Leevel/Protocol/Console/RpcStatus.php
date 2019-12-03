@@ -52,8 +52,6 @@ class RpcStatus extends BaseStatus
 
     /**
      * 创建 server.
-     *
-     * @return \Leevel\Protocol\IServer
      */
     protected function createServer(): IServer
     {
@@ -62,8 +60,6 @@ class RpcStatus extends BaseStatus
 
     /**
      * 返回 Version.
-     *
-     * @return string
      */
     protected function getVersion(): string
     {

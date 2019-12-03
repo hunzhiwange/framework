@@ -23,9 +23,7 @@ namespace Leevel\Support\Arr;
 /**
  * 数组数据格式化.
  *
- * @param mixed  $inputs
- * @param string $delimiter
- * @param bool   $allowedEmpty
+ * @param mixed $inputs
  *
  * @return mixed
  */

@@ -117,7 +117,6 @@ class OpenApiRouter
      * 构造函数.
      *
      * @param \Leevel\Router\MiddlewareParser $middlewareParser
-     * @param null|string                     $domain
      */
     public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null)
     {
@@ -135,8 +134,6 @@ class OpenApiRouter
     /**
      * 添加一个扫描目录.
      *
-     * @param string $dir
-     *
      * @throws \InvalidArgumentException
      */
     public function addScandir(string $dir): void
@@ -152,8 +149,6 @@ class OpenApiRouter
 
     /**
      * 处理 OpenApi 注解路由.
-     *
-     * @return array
      */
     public function handle(): array
     {
@@ -166,10 +161,6 @@ class OpenApiRouter
 
     /**
      * 打包路由解析数据.
-     *
-     * @param array $routers
-     *
-     * @return array
      */
     protected function packageRouters(array $routers): array
     {
@@ -183,8 +174,6 @@ class OpenApiRouter
 
     /**
      * 解析主路径.
-     *
-     * @param \OpenApi\Annotations\OpenApi $openApi
      */
     protected function parseMainPath(OpenApi $openApi): void
     {
@@ -194,10 +183,6 @@ class OpenApiRouter
 
     /**
      * 解析主路由.
-     *
-     * @param \OpenApi\Annotations\OpenApi $openApi
-     *
-     * @return array
      */
     protected function parseMainRouters(OpenApi $openApi): array
     {
@@ -213,11 +198,6 @@ class OpenApiRouter
 
     /**
      * 解析 openApi 每一项路径.
-     *
-     * @param \OpenApi\Annotations\PathItem $path
-     * @param array                         $routers
-     *
-     * @return array
      */
     protected function parseOpenApiPath(PathItem $path, array $routers): array
     {
@@ -262,9 +242,6 @@ class OpenApiRouter
      * 判断是否为忽略路由.
      *
      * @param object|string $method
-     * @param string        $path
-     *
-     * @return bool
      */
     protected function isRouterIgnore($method, string $path): bool
     {
@@ -285,8 +262,6 @@ class OpenApiRouter
      * 解析自定义路由字段.
      *
      * @param object $method
-     *
-     * @return array
      */
     protected function parseRouterField($method): array
     {
@@ -305,9 +280,6 @@ class OpenApiRouter
      * 解析路由绑定.
      *
      * @param object $method
-     * @param array  $router
-     *
-     * @return array
      */
     protected function parseRouterBind($method, array $router): array
     {
@@ -326,12 +298,6 @@ class OpenApiRouter
      * 解析基础路径和分组.
      * 基础路径如 /api/v1、/web/v2 等等.
      * 分组例如 goods、orders.
-     *
-     * @param string $path
-     * @param array  $groupPaths
-     * @param array  $groups
-     *
-     * @return array
      */
     protected function parseRouterPath(string $path, array $groupPaths, array $groups): array
     {
@@ -365,10 +331,6 @@ class OpenApiRouter
 
     /**
      * 解析中间件.
-     *
-     * @param array $router
-     *
-     * @return array
      */
     protected function parseRouterMiddlewares(array $router): array
     {
@@ -383,10 +345,6 @@ class OpenApiRouter
 
     /**
      * 解析域名.
-     *
-     * @param array $router
-     *
-     * @return array
      */
     protected function parseRouterDomain(array $router): array
     {
@@ -405,10 +363,6 @@ class OpenApiRouter
 
     /**
      * 是否为静态路由.
-     *
-     * @param string $router
-     *
-     * @return bool
      */
     protected function isStaticRouter(string $router): bool
     {
@@ -417,11 +371,6 @@ class OpenApiRouter
 
     /**
      * 解析路由正则.
-     *
-     * @param string $path
-     * @param array  $router
-     *
-     * @return array
      */
     protected function parseRouterRegex(string $path, array $router): array
     {
@@ -432,10 +381,6 @@ class OpenApiRouter
 
     /**
      * 格式化路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     protected function normalizePath(string $path): string
     {
@@ -444,10 +389,6 @@ class OpenApiRouter
 
     /**
      * 路由正则分组合并.
-     *
-     * @param array $routers
-     *
-     * @return array
      */
     protected function normalizeFastRoute(array $routers): array
     {
@@ -475,10 +416,6 @@ class OpenApiRouter
 
     /**
      * 将路由进行分组.
-     *
-     * @param array $routers
-     *
-     * @return array
      */
     protected function parseToGroups(array &$routers): array
     {
@@ -495,10 +432,6 @@ class OpenApiRouter
 
     /**
      * 解析分组路由正则.
-     *
-     * @param array $routers
-     *
-     * @return array
      */
     protected function parseGroupRegex(array $routers): array
     {
@@ -526,10 +459,6 @@ class OpenApiRouter
 
     /**
      * 计算初始最低的增长变量数量.
-     *
-     * @param array $routers
-     *
-     * @return int
      */
     protected function computeMinCountVar(array $routers): int
     {
@@ -545,10 +474,6 @@ class OpenApiRouter
 
     /**
      * 根据源代码生成绑定.
-     *
-     * @param \OpenApi\Context $context
-     *
-     * @return null|string
      */
     protected function parseBindBySource(Context $context): ?string
     {
@@ -561,10 +486,6 @@ class OpenApiRouter
 
     /**
      * 分析分组标签.
-     *
-     * @param \OpenApi\Annotations\OpenApi $openApi
-     *
-     * @return array
      */
     protected function parseGroups(OpenApi $openApi): array
     {
@@ -582,12 +503,6 @@ class OpenApiRouter
 
     /**
      * 格式化正则.
-     *
-     * @param string $rule
-     * @param array  $routers
-     * @param bool   $forSingleRegex
-     *
-     * @return array
      */
     protected function ruleRegex(string $rule, bool $forSingleRegex = false): array
     {
@@ -633,11 +548,6 @@ class OpenApiRouter
     /**
      * 格式化域名
      * 如果没有设置域名，则加上顶级域名.
-     *
-     * @param string $domain
-     * @param string $topDomain
-     *
-     * @return string
      */
     protected function normalizeDomain(string $domain, string $topDomain): string
     {
@@ -654,10 +564,6 @@ class OpenApiRouter
 
     /**
      * 分析路径.
-     *
-     * @param \OpenApi\Annotations\OpenApi $openApi
-     *
-     * @return array
      */
     protected function parsePaths(OpenApi $openApi): array
     {
@@ -699,10 +605,6 @@ class OpenApiRouter
 
     /**
      * 通配符正则.
-     *
-     * @param string $regex
-     *
-     * @return string
      */
     protected function prepareRegexForWildcard(string $regex): string
     {
@@ -714,8 +616,6 @@ class OpenApiRouter
 
     /**
      * 生成 OpenApi.
-     *
-     * @return \OpenApi\Annotations\OpenApi
      */
     protected function makeOpenApi(): OpenApi
     {

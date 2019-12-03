@@ -42,8 +42,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -52,10 +50,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 是否存在配置.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function has(string $name = 'app\\'): bool
     {
@@ -86,7 +80,6 @@ class Option implements IOption, ArrayAccess
     /**
      * 获取配置.
      *
-     * @param string     $name
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -121,8 +114,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 返回所有配置.
-     *
-     * @return array
      */
     public function all(): array
     {
@@ -175,8 +166,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 删除配置.
-     *
-     * @param string $name
      */
     public function delete(string $name): void
     {
@@ -234,8 +223,6 @@ class Option implements IOption, ArrayAccess
      * 实现 ArrayAccess::offsetExists.
      *
      * @param mixed $index
-     *
-     * @return bool
      */
     public function offsetExists($index): bool
     {
@@ -277,10 +264,6 @@ class Option implements IOption, ArrayAccess
 
     /**
      * 分析命名空间.
-     *
-     * @param string $name
-     *
-     * @return array
      */
     protected function parseNamespace(string $name): array
     {

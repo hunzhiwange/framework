@@ -62,8 +62,7 @@ interface IPage
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Page\IPage
      */
@@ -72,17 +71,12 @@ interface IPage
     /**
      * 追加分页条件.
      *
-     * @param string $key
-     * @param string $value
-     *
      * @return \Leevel\Page\IPage
      */
     public function append(string $key, string $value): self;
 
     /**
      * 批量追加分页条件.
-     *
-     * @param array $value
      *
      * @return \Leevel\Page\IPage
      */
@@ -91,8 +85,6 @@ interface IPage
     /**
      * 设置分页条件.
      *
-     * @param array $param
-     *
      * @return \Leevel\Page\IPage
      */
     public function param(array $param): self;
@@ -100,8 +92,7 @@ interface IPage
     /**
      * 添加分页条件.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Page\IPage
      */
@@ -110,8 +101,7 @@ interface IPage
     /**
      * 设置渲染参数.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Page\IPage
      */
@@ -120,17 +110,12 @@ interface IPage
     /**
      * 批量设置渲染参数.
      *
-     * @param string $key
-     * @param string $value
-     *
      * @return \Leevel\Page\IPage
      */
     public function renderOptions(array $option): self;
 
     /**
      * 设置 url.
-     *
-     * @param null|string $url
      *
      * @return \Leevel\Page\IPage
      */
@@ -139,23 +124,17 @@ interface IPage
     /**
      * 设置 render.
      *
-     * @param null|string $render
-     *
      * @return \Leevel\Page\IPage
      */
     public function setRender(?string $render = null): self;
 
     /**
      * 获取 render.
-     *
-     * @return null|string
      */
     public function getRender(): ?string;
 
     /**
      * 设置 range.
-     *
-     * @param null|int $range
      *
      * @return \Leevel\Page\IPage
      */
@@ -171,23 +150,17 @@ interface IPage
     /**
      * 设置 url 描点.
      *
-     * @param null|string $fragment
-     *
      * @return \Leevel\Page\IPage
      */
     public function fragment(?string $fragment = null): self;
 
     /**
      * 获取 url 描点.
-     *
-     * @return null|string
      */
     public function getFragment(): ?string;
 
     /**
      * 设置每页分页数量.
-     *
-     * @param int $perPage
      *
      * @return \Leevel\Page\IPage
      */
@@ -195,15 +168,11 @@ interface IPage
 
     /**
      * 返回每页数量.
-     *
-     * @return int
      */
     public function getPerPage(): int;
 
     /**
      * 设置分页名字.
-     *
-     * @param string $pageName
      *
      * @return \Leevel\Page\IPage
      */
@@ -211,120 +180,86 @@ interface IPage
 
     /**
      * 获取分页名字.
-     *
-     * @return string
      */
     public function getPageName(): string;
 
     /**
      * 返回总记录数量.
-     *
-     * @return null|int
      */
     public function getTotalRecord(): ?int;
 
     /**
      * 是否为无限分页.
-     *
-     * @return bool
      */
     public function isTotalMacro(): bool;
 
     /**
      * 取得第一个记录的编号.
-     *
-     * @return int
      */
     public function getFromRecord(): int;
 
     /**
      * 取得最后一个记录的编号.
-     *
-     * @return null|int
      */
     public function getToRecord(): ?int;
 
     /**
      * 设置当前分页.
-     *
-     * @param int $page
      */
     public function currentPage(int $page): void;
 
     /**
      * 返回当前分页.
-     *
-     * @return int
      */
     public function getCurrentPage(): int;
 
     /**
      * 返回分页视图开始页码
-     *
-     * @return int
      */
     public function getPageStart(): int;
 
     /**
      * 返回分页视图结束页码
-     *
-     * @return int
      */
     public function getPageEnd(): int;
 
     /**
      * 返回总分页数量.
-     *
-     * @return null|int
      */
     public function getTotalPage(): ?int;
 
     /**
      * 是否渲染 total.
-     *
-     * @return bool
      */
     public function canTotalRender(): bool;
 
     /**
      * 是否渲染 first.
-     *
-     * @return bool
      */
     public function canFirstRender(): bool;
 
     /**
      * 返回渲染 first.prev.
-     *
-     * @return int
      */
     public function parseFirstRenderPrev(): int;
 
     /**
      * 是否渲染 prev.
-     *
-     * @return bool
      */
     public function canPrevRender(): bool;
 
     /**
      * 返回渲染 prev.prev.
-     *
-     * @return int
      */
     public function parsePrevRenderPrev(): int;
 
     /**
      * 是否渲染 main.
-     *
-     * @return bool
      */
     public function canMainRender(): bool;
 
     /**
      * 是否渲染 next.
-     *
-     * @return bool
      */
     public function canNextRender(): bool;
 
@@ -337,15 +272,11 @@ interface IPage
 
     /**
      * 是否渲染 last.
-     *
-     * @return bool
      */
     public function canLastRenderNext(): bool;
 
     /**
      * 返回渲染 last.next.
-     *
-     * @return int
      */
     public function parseLastRenderNext(): int;
 
@@ -353,8 +284,6 @@ interface IPage
      * 替换分页变量.
      *
      * @param int|string $page
-     *
-     * @return string
      */
     public function pageReplace($page): string;
 
@@ -362,11 +291,8 @@ interface IPage
      * 渲染分页.
      *
      * @param null|\Leevel\Page\IRender|string $render
-     * @param array                            $optoin
      *
      * @throws \RuntimeException
-     *
-     * @return string
      */
     public function render($render = null, array $option = []): string;
 }

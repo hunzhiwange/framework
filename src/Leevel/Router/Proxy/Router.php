@@ -40,9 +40,6 @@ class Router
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -52,10 +49,6 @@ class Router
 
     /**
      * 分发请求到路由.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IResponse
      */
     public static function dispatch(IRequest $request): IResponse
     {
@@ -74,9 +67,6 @@ class Router
      * 设置路由请求预解析结果.
      *
      * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param array                 $matchedData
      */
     public static function setPreRequestMatched(IRequest $request, array $matchedData): void
     {
@@ -85,9 +75,6 @@ class Router
 
     /**
      * 穿越中间件.
-     *
-     * @param \Leevel\Http\IRequest $passed
-     * @param array                 $passedExtend
      */
     public static function throughMiddleware(IRequest $passed, array $passedExtend = []): void
     {
@@ -96,8 +83,6 @@ class Router
 
     /**
      * 设置控制器相对目录.
-     *
-     * @param string $controllerDir
      */
     public static function setControllerDir(string $controllerDir): void
     {
@@ -106,8 +91,6 @@ class Router
 
     /**
      * 返回控制器相对目录.
-     *
-     * @return string
      */
     public static function getControllerDir(): string
     {
@@ -116,8 +99,6 @@ class Router
 
     /**
      * 设置路由.
-     *
-     * @param array $routers
      */
     public static function setRouters(array $routers): void
     {
@@ -126,8 +107,6 @@ class Router
 
     /**
      * 取得当前路由.
-     *
-     * @return array
      */
     public static function getRouters(): array
     {
@@ -136,8 +115,6 @@ class Router
 
     /**
      * 设置基础路径.
-     *
-     * @param array $basePaths
      */
     public static function setBasePaths(array $basePaths): void
     {
@@ -146,8 +123,6 @@ class Router
 
     /**
      * 取得基础路径.
-     *
-     * @return array
      */
     public static function getBasePaths(): array
     {
@@ -156,8 +131,6 @@ class Router
 
     /**
      * 设置分组路径.
-     *
-     * @param array $groupPaths
      */
     public static function setGroupPaths(array $groupPaths): void
     {
@@ -166,8 +139,6 @@ class Router
 
     /**
      * 取得分组路径.
-     *
-     * @return array
      */
     public static function getGroupPaths(): array
     {
@@ -176,8 +147,6 @@ class Router
 
     /**
      * 设置路由分组.
-     *
-     * @param array $groups
      */
     public static function setGroups(array $groups): void
     {
@@ -186,8 +155,6 @@ class Router
 
     /**
      * 取得路由分组.
-     *
-     * @return array
      */
     public static function getGroups(): array
     {
@@ -196,8 +163,6 @@ class Router
 
     /**
      * 设置中间件分组.
-     *
-     * @param array $middlewareGroups
      */
     public static function setMiddlewareGroups(array $middlewareGroups): void
     {
@@ -206,8 +171,6 @@ class Router
 
     /**
      * 取得中间件分组.
-     *
-     * @return array
      */
     public static function getMiddlewareGroups(): array
     {
@@ -216,8 +179,6 @@ class Router
 
     /**
      * 设置中间件别名.
-     *
-     * @param array $middlewareAlias
      */
     public static function setMiddlewareAlias(array $middlewareAlias): void
     {
@@ -226,8 +187,6 @@ class Router
 
     /**
      * 取得中间件别名.
-     *
-     * @return array
      */
     public static function getMiddlewareAlias(): array
     {
@@ -236,11 +195,6 @@ class Router
 
     /**
      * 合并中间件.
-     *
-     * @param array $middlewares
-     * @param array $newMiddlewares
-     *
-     * @return array
      */
     public static function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {
@@ -249,8 +203,6 @@ class Router
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Router\Router
      */
     public static function proxy(): BaseRouter
     {

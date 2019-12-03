@@ -140,12 +140,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 构造函数.
      *
-     * @param array                $query
-     * @param array                $request
-     * @param array                $params
-     * @param array                $cookies
-     * @param array                $files
-     * @param array                $server
      * @param null|resource|string $content
      */
     public function __construct(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null)
@@ -155,10 +149,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否存在输入值.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function __isset(string $key): bool
     {
@@ -167,8 +157,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 获取输入值.
-     *
-     * @param string $key
      *
      * @return mixed
      */
@@ -179,8 +167,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否处于协程上下文.
-     *
-     * @return bool
      */
     public static function coroutineContext(): bool
     {
@@ -190,12 +176,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 重置或者初始化.
      *
-     * @param array                $query
-     * @param array                $request
-     * @param array                $params
-     * @param array                $cookies
-     * @param array                $files
-     * @param array                $server
      * @param null|resource|string $content
      */
     public function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null): void
@@ -262,7 +242,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 获取参数.
      *
-     * @param string     $key
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -279,10 +258,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 请求是否包含给定的 keys.
-     *
-     * @param array $keys
-     *
-     * @return bool
      */
     public function exists(array $keys): bool
     {
@@ -298,10 +273,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 请求是否包含非空.
-     *
-     * @param array $keys
-     *
-     * @return bool
      */
     public function has(array $keys): bool
     {
@@ -316,10 +287,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取得给定的 keys 数据.
-     *
-     * @param array $keys
-     *
-     * @return array
      */
     public function only(array $keys): array
     {
@@ -334,10 +301,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取得排除给定的 keys 数据.
-     *
-     * @param array $keys
-     *
-     * @return array
      */
     public function except(array $keys): array
     {
@@ -353,8 +316,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取回输入和文件.
-     *
-     * @return array
      */
     public function all(): array
     {
@@ -364,7 +325,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 获取输入数据.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return mixed
@@ -382,7 +342,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取回 query.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -394,10 +353,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 请求是否存在 COOKIE.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function hasCookie(string $key): bool
     {
@@ -407,7 +362,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取回 cookie.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -419,8 +373,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取得所有文件.
-     *
-     * @return array
      */
     public function allFiles(): array
     {
@@ -431,8 +383,7 @@ class Request implements IRequest, IArray, ArrayAccess
      * 获取文件
      * 数组文件请在末尾加上反斜杆访问.
      *
-     * @param null|string $key
-     * @param null|mixed  $defaults
+     * @param null|mixed $defaults
      *
      * @return null|array|\Leevel\Http\UploadedFile
      */
@@ -448,10 +399,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 文件是否存在已上传的文件
      * 数组文件请在末尾加上反斜杆访问.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     public function hasFile(string $key): bool
     {
@@ -473,8 +420,6 @@ class Request implements IRequest, IArray, ArrayAccess
      * 验证是否为文件实例.
      *
      * @param mixed $file
-     *
-     * @return bool
      */
     public function isValidFile($file): bool
     {
@@ -484,7 +429,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取回 header.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -497,7 +441,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取回 server.
      *
-     * @param null|string       $key
      * @param null|array|string $defaults
      *
      * @return array|string
@@ -510,7 +453,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取回数据项.
      *
-     * @param string            $source
      * @param string            $key
      * @param null|array|string $defaults
      *
@@ -527,8 +469,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 合并输入.
-     *
-     * @param array $input
      */
     public function merge(array $input): void
     {
@@ -537,8 +477,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 替换输入.
-     *
-     * @param array $input
      */
     public function replace(array $input): void
     {
@@ -550,8 +488,6 @@ class Request implements IRequest, IArray, ArrayAccess
      * Swoole HTTP 服务器也以命令行运行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
-     *
-     * @return bool
      */
     public function isCli(): bool
     {
@@ -566,8 +502,6 @@ class Request implements IRequest, IArray, ArrayAccess
      * PHP 运行模式命令行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
-     *
-     * @return bool
      */
     public function isRealCli(): bool
     {
@@ -578,8 +512,6 @@ class Request implements IRequest, IArray, ArrayAccess
      * PHP 运行模式 cgi.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
-     *
-     * @return bool
      */
     public function isCgi(): bool
     {
@@ -588,8 +520,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 Ajax 请求行为.
-     *
-     * @return bool
      */
     public function isAjax(): bool
     {
@@ -603,8 +533,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 Ajax 请求行为真实.
-     *
-     * @return bool
      */
     public function isRealAjax(): bool
     {
@@ -613,8 +541,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 Ajax 请求行为真实.
-     *
-     * @return bool
      */
     public function isXmlHttpRequest(): bool
     {
@@ -623,8 +549,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 Pjax 请求行为.
-     *
-     * @return bool
      */
     public function isPjax(): bool
     {
@@ -638,8 +562,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 Pjax 请求行为真实.
-     *
-     * @return bool
      */
     public function isRealPjax(): bool
     {
@@ -648,8 +570,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 json 请求行为.
-     *
-     * @return bool
      */
     public function isJson(): bool
     {
@@ -663,8 +583,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 json 请求行为真实.
-     *
-     * @return bool
      */
     public function isRealJson(): bool
     {
@@ -684,8 +602,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为接受 json 请求.
-     *
-     * @return bool
      */
     public function isAcceptJson(): bool
     {
@@ -703,8 +619,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为接受 json 请求真实.
-     *
-     * @return bool
      */
     public function isRealAcceptJson(): bool
     {
@@ -724,8 +638,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为接受任何请求.
-     *
-     * @return bool
      */
     public function isAcceptAny(): bool
     {
@@ -743,8 +655,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 HEAD 请求行为.
-     *
-     * @return bool
      */
     public function isHead(): bool
     {
@@ -753,8 +663,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 GET 请求行为.
-     *
-     * @return bool
      */
     public function isGet(): bool
     {
@@ -763,8 +671,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 POST 请求行为.
-     *
-     * @return bool
      */
     public function isPost(): bool
     {
@@ -773,8 +679,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 PUT 请求行为.
-     *
-     * @return bool
      */
     public function isPut(): bool
     {
@@ -783,8 +687,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 PATCH 请求行为.
-     *
-     * @return bool
      */
     public function isPatch(): bool
     {
@@ -793,8 +695,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 PURGE 请求行为.
-     *
-     * @return bool
      */
     public function isPurge(): bool
     {
@@ -803,8 +703,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 OPTIONS 请求行为.
-     *
-     * @return bool
      */
     public function isOptions(): bool
     {
@@ -813,8 +711,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 TRACE 请求行为.
-     *
-     * @return bool
      */
     public function isTrace(): bool
     {
@@ -823,8 +719,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为 CONNECT 请求行为.
-     *
-     * @return bool
      */
     public function isConnect(): bool
     {
@@ -833,8 +727,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 获取 IP 地址.
-     *
-     * @return string
      */
     public function getClientIp(): string
     {
@@ -843,8 +735,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 请求类型.
-     *
-     * @return string
      */
     public function getMethod(): string
     {
@@ -868,8 +758,6 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 设置请求类型.
      *
-     * @param string $method
-     *
      * @return \Leevel\Http\IRequest
      */
     public function setMethod(string $method): IRequest
@@ -882,8 +770,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 实际请求类型.
-     *
-     * @return string
      */
     public function getRealMethod(): string
     {
@@ -892,10 +778,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 验证是否为指定的方法.
-     *
-     * @param string $method
-     *
-     * @return bool
      */
     public function isMethod(string $method): bool
     {
@@ -904,8 +786,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 返回当前的语言.
-     *
-     * @return null|string
      */
     public function language(): ?string
     {
@@ -914,8 +794,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 返回当前的语言
-     *
-     * @return null|string
      */
     public function getLanguage(): ?string
     {
@@ -924,8 +802,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 设置当前的语言
-     *
-     * @param string $language
      *
      * @return \Leevel\Http\IRequest
      */
@@ -938,8 +814,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取得请求内容.
-     *
-     * @return string
      */
     public function getContent(): string
     {
@@ -959,8 +833,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 返回 root URL.
-     *
-     * @return string
      */
     public function getRoot(): string
     {
@@ -969,8 +841,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 返回入口文件.
-     *
-     * @return string
      */
     public function getEnter(): string
     {
@@ -983,8 +853,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取得脚本名字.
-     *
-     * @return string
      */
     public function getScriptName(): string
     {
@@ -993,8 +861,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否启用 https.
-     *
-     * @return bool
      */
     public function isSecure(): bool
     {
@@ -1011,8 +877,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取得 http host.
-     *
-     * @return string
      */
     public function getHttpHost(): string
     {
@@ -1027,8 +891,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 获取 host.
-     *
-     * @return string
      */
     public function getHost(): string
     {
@@ -1046,8 +908,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取得 Scheme 和 Host.
-     *
-     * @return string
      */
     public function getSchemeAndHttpHost(): string
     {
@@ -1056,8 +916,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 返回当前 URL 地址.
-     *
-     * @return string
      */
     public function getUri(): string
     {
@@ -1070,8 +928,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 服务器端口.
-     *
-     * @return int
      */
     public function getPort(): int
     {
@@ -1085,8 +941,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 返回 scheme.
-     *
-     * @return string
      */
     public function getScheme(): string
     {
@@ -1095,8 +949,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 取回查询参数.
-     *
-     * @return null|string
      */
     public function getQueryString(): ?string
     {
@@ -1107,8 +959,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 设置 pathInfo.
-     *
-     * @param string $pathInfo
      *
      * @return \Leevel\Http\IRequest
      */
@@ -1121,8 +971,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * pathInfo 兼容性分析.
-     *
-     * @return string
      */
     public function getPathInfo(): string
     {
@@ -1156,8 +1004,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 获取基础路径.
-     *
-     * @return string
      */
     public function getBasePath(): string
     {
@@ -1186,8 +1032,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 分析基础 url.
-     *
-     * @return string
      */
     public function getBaseUrl(): string
     {
@@ -1250,8 +1094,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 请求参数.
-     *
-     * @return string
      */
     public function getRequestUri(): string
     {
@@ -1272,8 +1114,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -1284,8 +1124,6 @@ class Request implements IRequest, IArray, ArrayAccess
      * 实现 ArrayAccess::offsetExists.
      *
      * @param mixed $index
-     *
-     * @return bool
      */
     public function offsetExists($index): bool
     {
@@ -1329,10 +1167,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * pathinfo 处理.
-     *
-     * @param string $pathInfo
-     *
-     * @return string
      */
     protected function parsePathInfo(string $pathInfo): string
     {
@@ -1350,10 +1184,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 格式化查询参数.
-     *
-     * @param null|string $queryString
-     *
-     * @return string
      */
     protected function normalizeQueryString(?string $queryString): string
     {
@@ -1384,10 +1214,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * 是否为空字符串.
-     *
-     * @param string $key
-     *
-     * @return bool
      */
     protected function isEmptyString(string $key): bool
     {
@@ -1398,9 +1224,6 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * URL 前缀编码.
-     *
-     * @param string $value
-     * @param string $prefix
      *
      * @return bool|string
      */

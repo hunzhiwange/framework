@@ -187,10 +187,6 @@ interface IRouter
 
     /**
      * 分发请求到路由.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IResponse
      */
     public function dispatch(IRequest $request): IResponse;
 
@@ -203,125 +199,86 @@ interface IRouter
      * 设置路由请求预解析结果.
      *
      * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param array                 $matchedData
      */
     public function setPreRequestMatched(IRequest $request, array $matchedData): void;
 
     /**
      * 穿越中间件.
-     *
-     * @param \Leevel\Http\IRequest $passed
-     * @param array                 $passedExtend
      */
     public function throughMiddleware(IRequest $passed, array $passedExtend = []): void;
 
     /**
      * 设置控制器相对目录.
-     *
-     * @param string $controllerDir
      */
     public function setControllerDir(string $controllerDir): void;
 
     /**
      * 返回控制器相对目录.
-     *
-     * @return string
      */
     public function getControllerDir(): string;
 
     /**
      * 设置路由.
-     *
-     * @param array $routers
      */
     public function setRouters(array $routers): void;
 
     /**
      * 取得当前路由.
-     *
-     * @return array
      */
     public function getRouters(): array;
 
     /**
      * 设置基础路径.
-     *
-     * @param array $basepaths
      */
     public function setBasepaths(array $basepaths): void;
 
     /**
      * 取得基础路径.
-     *
-     * @return array
      */
     public function getBasepaths(): array;
 
     /**
      * 设置分组路径.
-     *
-     * @param array $groupPaths
      */
     public function setGroupPaths(array $groupPaths): void;
 
     /**
      * 取得分组路径.
-     *
-     * @return array
      */
     public function getGroupPaths(): array;
 
     /**
      * 设置路由分组.
-     *
-     * @param array $groups
      */
     public function setGroups(array $groups): void;
 
     /**
      * 取得路由分组.
-     *
-     * @return array
      */
     public function getGroups(): array;
 
     /**
      * 设置中间件分组.
-     *
-     * @param array $middlewareGroups
      */
     public function setMiddlewareGroups(array $middlewareGroups): void;
 
     /**
      * 取得中间件分组.
-     *
-     * @return array
      */
     public function getMiddlewareGroups(): array;
 
     /**
      * 设置中间件别名.
-     *
-     * @param array $middlewareAlias
      */
     public function setMiddlewareAlias(array $middlewareAlias): void;
 
     /**
      * 取得中间件别名.
-     *
-     * @return array
      */
     public function getMiddlewareAlias(): array;
 
     /**
      * 合并中间件.
-     *
-     * @param array $middlewares
-     * @param array $newMiddlewares
-     *
-     * @return array
      */
     public function mergeMiddlewares(array $middlewares, array $newMiddlewares): array;
 }

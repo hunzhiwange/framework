@@ -54,10 +54,6 @@ class HasOne extends HasMany
      * 匹配关联查询数据到模型实体.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param \Leevel\Collection\Collection  $result
-     * @param string                         $relation
-     *
-     * @return array
      */
     public function matchPreLoad(array $entitys, Collection $result, string $relation): array
     {

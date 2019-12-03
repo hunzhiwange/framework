@@ -47,8 +47,6 @@ class I18n implements II18n
 
     /**
      * 构造函数.
-     *
-     * @param string $i18n
      */
     public function __construct(string $i18n)
     {
@@ -59,10 +57,7 @@ class I18n implements II18n
     /**
      * 获取语言 text.
      *
-     * @param string $text
-     * @param array  ...$data
-     *
-     * @return string
+     * @param array ...$data
      */
     public function __(string $text, ...$data): string
     {
@@ -72,10 +67,7 @@ class I18n implements II18n
     /**
      * 获取语言 text.
      *
-     * @param string $text
-     * @param array  ...$data
-     *
-     * @return string
+     * @param array ...$data
      */
     public function gettext(string $text, ...$data): string
     {
@@ -90,9 +82,6 @@ class I18n implements II18n
 
     /**
      * 添加语言包语句.
-     *
-     * @param string $i18nName
-     * @param array  $data
      */
     public function addtext(string $i18n, array $data = []): void
     {
@@ -105,8 +94,6 @@ class I18n implements II18n
 
     /**
      * 设置当前语言包.
-     *
-     * @param string $i18n
      */
     public function setI18n(string $i18n): void
     {
@@ -115,8 +102,6 @@ class I18n implements II18n
 
     /**
      * 获取当前语言包.
-     *
-     * @return string
      */
     public function getI18n(): string
     {
@@ -125,8 +110,6 @@ class I18n implements II18n
 
     /**
      * 返回所有语言包.
-     *
-     * @return array
      */
     public function all(): array
     {

@@ -46,7 +46,6 @@ class StrlenTest extends TestCase
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
-     * @param int   $length
      *
      * @api(
      *     title="验证通过的数据",
@@ -92,7 +91,6 @@ class StrlenTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
-     * @param int   $length
      *
      * @api(
      *     title="未验证通过的数据",

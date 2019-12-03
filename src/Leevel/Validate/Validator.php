@@ -146,11 +146,6 @@ class Validator implements IValidator
 
     /**
      * 构造函数.
-     *
-     * @param array $data
-     * @param array $rules
-     * @param array $names
-     * @param array $messages
      */
     public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = [])
     {
@@ -162,9 +157,6 @@ class Validator implements IValidator
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @throws \BadMethodCallException
      *
@@ -206,11 +198,6 @@ class Validator implements IValidator
     /**
      * 初始化验证器.
      *
-     * @param array $data
-     * @param array $rules
-     * @param array $names
-     * @param array $messages
-     *
      * @return \Leevel\Validate\IValidator
      */
     public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
@@ -220,8 +207,6 @@ class Validator implements IValidator
 
     /**
      * 验证是否成功
-     *
-     * @return bool
      */
     public function success(): bool
     {
@@ -257,8 +242,6 @@ class Validator implements IValidator
 
     /**
      * 验证是否失败.
-     *
-     * @return bool
      */
     public function fail(): bool
     {
@@ -267,8 +250,6 @@ class Validator implements IValidator
 
     /**
      * 返回所有错误消息.
-     *
-     * @return array
      */
     public function error(): array
     {
@@ -277,8 +258,6 @@ class Validator implements IValidator
 
     /**
      * 返回验证数据.
-     *
-     * @return array
      */
     public function getData(): array
     {
@@ -287,8 +266,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证数据.
-     *
-     * @param array $data
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -306,8 +283,6 @@ class Validator implements IValidator
     /**
      * 添加验证数据.
      *
-     * @param array $data
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function addData(array $data): IValidator
@@ -323,8 +298,6 @@ class Validator implements IValidator
 
     /**
      * 返回验证规则.
-     *
-     * @return array
      */
     public function getRule(): array
     {
@@ -333,9 +306,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证规则.
-     *
-     * @param array         $rules
-     * @param null|\Closure $calCallback
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -355,9 +325,6 @@ class Validator implements IValidator
     /**
      * 添加验证规则.
      *
-     * @param array         $rules
-     * @param null|\Closure $calCallback
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function addRule(array $rules, ?Closure $callbacks = null): IValidator
@@ -375,8 +342,6 @@ class Validator implements IValidator
 
     /**
      * 返回验证消息.
-     *
-     * @return array
      */
     public function getMessage(): array
     {
@@ -385,8 +350,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证消息.
-     *
-     * @param array $messages
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -403,8 +366,6 @@ class Validator implements IValidator
 
     /**
      * 添加验证消息.
-     *
-     * @param array $messages
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -424,8 +385,6 @@ class Validator implements IValidator
 
     /**
      * 返回名字.
-     *
-     * @return array
      */
     public function getName(): array
     {
@@ -434,8 +393,6 @@ class Validator implements IValidator
 
     /**
      * 设置名字.
-     *
-     * @param array $names
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -453,8 +410,6 @@ class Validator implements IValidator
     /**
      * 添加名字.
      *
-     * @param array $names
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function addName(array $names): IValidator
@@ -470,9 +425,6 @@ class Validator implements IValidator
 
     /**
      * 设置别名.
-     *
-     * @param string $name
-     * @param string $alias
      *
      * @throws \InvalidArgumentException
      *
@@ -494,8 +446,6 @@ class Validator implements IValidator
     /**
      * 批量设置别名.
      *
-     * @param array $alias
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function aliasMany(array $alias): IValidator
@@ -509,8 +459,6 @@ class Validator implements IValidator
 
     /**
      * 设置验证后事件.
-     *
-     * @param \Closure $callbacks
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -526,7 +474,6 @@ class Validator implements IValidator
     /**
      * 注册自定义扩展.
      *
-     * @param string          $rule
      * @param \Closure|string $extends
      *
      * @return \Leevel\Validate\IValidator
@@ -541,8 +488,6 @@ class Validator implements IValidator
     /**
      * 设置 IOC 容器.
      *
-     * @param \Leevel\Di\IContainer $container
-     *
      * @return \Leevel\Validate\IValidator
      */
     public function setContainer(IContainer $container): IValidator
@@ -554,8 +499,6 @@ class Validator implements IValidator
 
     /**
      * 初始化默认的消息.
-     *
-     * @param array $messages
      */
     public static function initMessages(array $messages): void
     {
@@ -565,10 +508,7 @@ class Validator implements IValidator
     /**
      * 尝试读取格式化条件.
      *
-     * @param string       $field
      * @param array|string $rules
-     *
-     * @return array
      */
     public function getParseRule(string $field, $rules): array
     {
@@ -585,8 +525,6 @@ class Validator implements IValidator
 
     /**
      * 获取字段的值
-     *
-     * @param string $rule
      *
      * @return mixed
      */
@@ -612,10 +550,6 @@ class Validator implements IValidator
 
     /**
      * 转换消息为数组.
-     *
-     * @param array $messages
-     *
-     * @return array
      */
     protected function arrayMessage(array $messages): array
     {
@@ -650,10 +584,7 @@ class Validator implements IValidator
     /**
      * 分析通配符消息.
      *
-     * @param string $field
-     * @param mixed  $message
-     *
-     * @return array
+     * @param mixed $message
      */
     protected function wildcardMessageItem(string $field, $message): array
     {
@@ -672,11 +603,6 @@ class Validator implements IValidator
 
     /**
      * 通配符正则.
-     *
-     * @param string $regex
-     * @param bool   $strict
-     *
-     * @return string
      */
     protected function prepareRegexForWildcard(string $regex, bool $strict = true): string
     {
@@ -689,10 +615,7 @@ class Validator implements IValidator
     /**
      * 转换单条消息为数组.
      *
-     * @param string       $field
      * @param array|string $message
-     *
-     * @return array
      */
     protected function arrayMessageItem(string $field, $message): array
     {
@@ -712,10 +635,6 @@ class Validator implements IValidator
 
     /**
      * 获取单个字段验证规则，排除掉绕过的规则.
-     *
-     * @param string $field
-     *
-     * @return array
      */
     protected function getFieldRuleWithoutSkip(string $field): array
     {
@@ -724,8 +643,6 @@ class Validator implements IValidator
 
     /**
      * 获取需要跳过的验证规则.
-     *
-     * @return array
      */
     protected function getSkipRule(): array
     {
@@ -739,10 +656,6 @@ class Validator implements IValidator
 
     /**
      * 获取单个字段验证规则.
-     *
-     * @param string $field
-     *
-     * @return array
      */
     protected function getFieldRule(string $field): array
     {
@@ -755,10 +668,6 @@ class Validator implements IValidator
 
     /**
      * 分析验证规则和参数.
-     *
-     * @param string $rule
-     *
-     * @return array
      */
     protected function parseRule(string $rule): array
     {
@@ -782,10 +691,6 @@ class Validator implements IValidator
 
     /**
      * 转换规则为数组.
-     *
-     * @param array $rules
-     *
-     * @return array
      */
     protected function arrayRule(array $rules): array
     {
@@ -805,8 +710,6 @@ class Validator implements IValidator
      * 转换单条规则为数组.
      *
      * @param mixed $rules
-     *
-     * @return array
      */
     protected function arrayRuleItem($rules): array
     {
@@ -816,10 +719,7 @@ class Validator implements IValidator
     /**
      * 分析通配符规则.
      *
-     * @param string $field
-     * @param mixed  $rules
-     *
-     * @return array
+     * @param mixed $rules
      */
     protected function wildcardRuleItem(string $field, $rules): array
     {
@@ -836,8 +736,6 @@ class Validator implements IValidator
 
     /**
      * 返回分析后的数据键.
-     *
-     * @return array
      */
     protected function parseDataKey(): array
     {
@@ -846,11 +744,6 @@ class Validator implements IValidator
 
     /**
      * 递归分析.
-     *
-     * @param array  $data
-     * @param string $parentKey
-     *
-     * @return array
      */
     protected function parseDataKeyRecursion(array $data, string $parentKey = ''): array
     {
@@ -869,11 +762,6 @@ class Validator implements IValidator
 
     /**
      * 是否存在单个字段验证规则.
-     *
-     * @param string $field
-     * @param array  $rules
-     *
-     * @return bool
      */
     protected function hasFieldRuleWithParam(string $field, string $rule): bool
     {
@@ -886,11 +774,6 @@ class Validator implements IValidator
 
     /**
      * 解析变量.
-     *
-     * @param string $rule
-     * @param string $param
-     *
-     * @return array
      */
     protected function parseParams(string $rule, string $param): array
     {
@@ -903,9 +786,6 @@ class Validator implements IValidator
 
     /**
      * 验证字段规则.
-     *
-     * @param string $field
-     * @param string $rule
      *
      * @return bool|void
      */
@@ -953,10 +833,6 @@ class Validator implements IValidator
 
     /**
      * 是否需要终止其他验证
-     *
-     * @param string $field
-     *
-     * @return bool
      */
     protected function shouldSkipOther(string $field): bool
     {
@@ -965,10 +841,6 @@ class Validator implements IValidator
 
     /**
      * 是否需要终止自己其他验证
-     *
-     * @param string $field
-     *
-     * @return bool
      */
     protected function shouldSkipSelf(string $field): bool
     {
@@ -977,10 +849,6 @@ class Validator implements IValidator
 
     /**
      * 添加错误规则和验证错误消息.
-     *
-     * @param string $field
-     * @param string $rule
-     * @param array  $param
      */
     protected function addFailure(string $field, string $rule, array $param): void
     {
@@ -990,10 +858,6 @@ class Validator implements IValidator
 
     /**
      * 添加验证错误消息.
-     *
-     * @param string $field
-     * @param string $rule
-     * @param array  $param
      */
     protected function addError(string $field, string $rule, array $param): void
     {
@@ -1017,11 +881,6 @@ class Validator implements IValidator
 
     /**
      * 获取验证消息.
-     *
-     * @param string $field
-     * @param string $rule
-     *
-     * @return string
      */
     protected function getFieldRuleMessage(string $field, string $rule): string
     {
@@ -1031,10 +890,6 @@ class Validator implements IValidator
 
     /**
      * 获取字段名字.
-     *
-     * @param string $field
-     *
-     * @return string
      */
     protected function parseFieldName(string $field): string
     {
@@ -1043,10 +898,6 @@ class Validator implements IValidator
 
     /**
      * 返回需要合并的规则参数.
-     *
-     * @param string $rule
-     *
-     * @return bool
      */
     protected function isImplodeRuleParam(string $rule): bool
     {
@@ -1056,12 +907,7 @@ class Validator implements IValidator
     /**
      * 调用自定义验证器类.
      *
-     * @param string $extend
-     * @param array  $param
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return bool
      */
     protected function callClassExtend(string $extend, array $param): bool
     {
@@ -1092,12 +938,7 @@ class Validator implements IValidator
     /**
      * 调用自定义验证器.
      *
-     * @param string $rule
-     * @param array  $param
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return bool
      */
     protected function callExtend(string $rule, array $param): bool
     {
@@ -1119,10 +960,6 @@ class Validator implements IValidator
 
     /**
      * 验证条件是否通过.
-     *
-     * @param \Closure $calCallback
-     *
-     * @return bool
      */
     protected function isCallbackValid(Closure $callbacks): bool
     {

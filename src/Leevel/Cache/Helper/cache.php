@@ -25,8 +25,6 @@ use Leevel\Di\Container;
 
 /**
  * cache 服务
- *
- * @return \Leevel\Cache\ICache
  */
 function cache(): ICache
 {

@@ -26,11 +26,8 @@ use InvalidArgumentException;
  * 未处于 betweenEqual 范围，包含等于.
  *
  * @param mixed $value
- * @param array $param
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_not_between_equal($value, array $param): bool
 {

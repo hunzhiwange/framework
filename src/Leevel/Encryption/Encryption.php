@@ -64,11 +64,6 @@ class Encryption implements IEncryption
 
     /**
      * 构造函数.
-     *
-     * @param string      $key
-     * @param string      $cipher
-     * @param null|string $rsaPrivate
-     * @param null|string $rsaPublic
      */
     public function __construct(string $key, string $cipher = 'AES-256-CBC', ?string $rsaPrivate = null, ?string $rsaPublic = null)
     {
@@ -81,11 +76,6 @@ class Encryption implements IEncryption
 
     /**
      * 加密.
-     *
-     * @param string $value
-     * @param int    $expiry
-     *
-     * @return string
      */
     public function encrypt(string $value, int $expiry = 0): string
     {
@@ -97,10 +87,6 @@ class Encryption implements IEncryption
 
     /**
      * 解密.
-     *
-     * @param string $value
-     *
-     * @return string
      */
     public function decrypt(string $value): string
     {
@@ -114,12 +100,6 @@ class Encryption implements IEncryption
 
     /**
      * 打包数据.
-     *
-     * @param string $value
-     * @param int    $expiry
-     * @param string $iv
-     *
-     * @return string
      */
     protected function packData(string $value, int $expiry, string $iv): string
     {
@@ -135,8 +115,6 @@ class Encryption implements IEncryption
 
     /**
      * 解包数据.
-     *
-     * @param string $value
      *
      * @return array|bool
      */
@@ -155,12 +133,7 @@ class Encryption implements IEncryption
     /**
      * 加密数据.
      *
-     * @param string $value
-     * @param string $iv
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function encryptData(string $value, string $iv): string
     {
@@ -174,8 +147,6 @@ class Encryption implements IEncryption
 
     /**
      * 解密数据.
-     *
-     * @param string $value
      *
      * @throws \InvalidArgumentException
      *
@@ -204,11 +175,6 @@ class Encryption implements IEncryption
 
     /**
      * 数据加入向量并打包.
-     *
-     * @param string $value
-     * @param string $iv
-     *
-     * @return string
      */
     protected function packDataWithIv(string $value, string $iv): string
     {
@@ -217,8 +183,6 @@ class Encryption implements IEncryption
 
     /**
      * 解包带向量的数据.
-     *
-     * @param string $value
      *
      * @return array|bool
      */
@@ -238,10 +202,6 @@ class Encryption implements IEncryption
 
     /**
      * 格式化过期时间.
-     *
-     * @param int $expiry
-     *
-     * @return string
      */
     protected function normalizeExpiry(int $expiry = 0): string
     {
@@ -250,8 +210,6 @@ class Encryption implements IEncryption
 
     /**
      * 创建初始化向量.
-     *
-     * @return string
      */
     protected function createIv(): string
     {
@@ -261,11 +219,7 @@ class Encryption implements IEncryption
     /**
      * 获取签名.
      *
-     * @param string $value
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function normalizeSign(string $value): string
     {
@@ -289,8 +243,6 @@ class Encryption implements IEncryption
     /**
      * 校验加密算法.
      *
-     * @param string $cipher
-     *
      * @throws \InvalidArgumentException
      */
     protected function validateCipher(string $cipher): void
@@ -304,11 +256,6 @@ class Encryption implements IEncryption
 
     /**
      * 校验数据正确性.
-     *
-     * @param string $data
-     * @param string $iv
-     *
-     * @return string
      */
     protected function validateData(string $data, string $iv): string
     {
@@ -332,12 +279,7 @@ class Encryption implements IEncryption
     /**
      * 验证签名.
      *
-     * @param string $value
-     * @param string $sign
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function validateSign(string $value, string $sign): string
     {

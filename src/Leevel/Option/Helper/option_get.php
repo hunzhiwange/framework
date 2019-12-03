@@ -25,8 +25,6 @@ use Leevel\Di\Container;
 /**
  * 获取 opiton 值
  *
- * @param string     $key
- * @param mixed      $defaults
  * @param null|mixed $default
  *
  * @return mixed

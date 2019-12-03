@@ -45,8 +45,6 @@ class Auth
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Auth\Manager $manager
      */
     public function __construct(Manager $manager)
     {
@@ -54,10 +52,7 @@ class Auth
     }
 
     /**
-     * 请求
-     *
-     * @param \Closure              $next
-     * @param \Leevel\Http\IRequest $request
+     * 请求.
      *
      * @throws \Leevel\Auth\AuthException
      */

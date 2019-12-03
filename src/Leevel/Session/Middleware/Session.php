@@ -45,8 +45,6 @@ class Session
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Session\Manager $manager
      */
     public function __construct(Manager $manager)
     {
@@ -55,9 +53,6 @@ class Session
 
     /**
      * 请求
-     *
-     * @param \Closure              $next
-     * @param \Leevel\Http\IRequest $request
      */
     public function handle(Closure $next, IRequest $request): void
     {
@@ -68,10 +63,6 @@ class Session
 
     /**
      * 响应.
-     *
-     * @param \Closure               $next
-     * @param \Leevel\Http\IRequest  $request
-     * @param \Leevel\Http\IResponse $response
      */
     public function terminate(Closure $next, IRequest $request, IResponse $response): void
     {
@@ -91,8 +82,6 @@ class Session
 
     /**
      * 启动 session.
-     *
-     * @param \Leevel\Http\IRequest $request
      */
     protected function startSession(IRequest $request): void
     {
@@ -109,8 +98,6 @@ class Session
 
     /**
      * 保存当期请求 URL.
-     *
-     * @param \Leevel\Http\IRequest $request
      */
     protected function setPrevUrl(IRequest $request): void
     {
@@ -119,10 +106,6 @@ class Session
 
     /**
      * 获取 session ID.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return null|string
      */
     protected function getSessionId(IRequest $request): ?string
     {
@@ -133,8 +116,6 @@ class Session
 
     /**
      * 获取 session 过期时间.
-     *
-     * @return int
      */
     protected function getSessionExpire(): int
     {

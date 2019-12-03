@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 字符串是否为数字和字母.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_alpha_num($value): bool
 {

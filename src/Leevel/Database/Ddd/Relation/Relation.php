@@ -230,12 +230,6 @@ abstract class Relation
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $targetEntity
-     * @param \Leevel\Database\Ddd\IEntity $sourceEntity
-     * @param string                       $targetKey
-     * @param string                       $sourceKey
-     * @param null|\Closure                $scope
      */
     public function __construct(IEntity $targetEntity, IEntity $sourceEntity, string $targetKey, string $sourceKey, ?Closure $scope = null)
     {
@@ -251,9 +245,6 @@ abstract class Relation
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public function __call(string $method, array $args)
@@ -268,8 +259,6 @@ abstract class Relation
 
     /**
      * 返回查询.
-     *
-     * @return \Leevel\Database\Ddd\Select
      */
     public function getSelect(): Select
     {
@@ -288,8 +277,6 @@ abstract class Relation
 
     /**
      * 取得关联目标模型实体.
-     *
-     * @return \Leevel\Database\Ddd\IEntity
      */
     public function getTargetEntity(): IEntity
     {
@@ -298,8 +285,6 @@ abstract class Relation
 
     /**
      * 取得源模型实体.
-     *
-     * @return \Leevel\Database\Ddd\IEntity
      */
     public function getSourceEntity(): IEntity
     {
@@ -308,8 +293,6 @@ abstract class Relation
 
     /**
      * 取得目标字段.
-     *
-     * @return string
      */
     public function getTargetKey(): string
     {
@@ -318,8 +301,6 @@ abstract class Relation
 
     /**
      * 取得源字段.
-     *
-     * @return string
      */
     public function getSourceKey(): string
     {
@@ -328,8 +309,6 @@ abstract class Relation
 
     /**
      * 获取不带关联条件的关联对象.
-     *
-     * @param \Closure $call
      *
      * @return \Leevel\Database\Ddd\Relation\Relation
      */
@@ -376,10 +355,6 @@ abstract class Relation
      * 匹配关联查询数据到模型实体 HasMany.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param \Leevel\Collection\Collection  $result
-     * @param string                         $relation
-     *
-     * @return array
      */
     abstract public function matchPreLoad(array $entitys, collection $result, string $relation): array;
 
@@ -392,8 +367,6 @@ abstract class Relation
 
     /**
      * 准备关联查询条件.
-     *
-     * @param \Closure $call
      */
     protected function prepareRelationCondition(Closure $call): void
     {
@@ -413,9 +386,6 @@ abstract class Relation
      * 返回模型实体的主键.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param null|string                    $key
-     *
-     * @return array
      */
     protected function getEntityKey(array $entitys, ?string $key = null): array
     {
@@ -436,8 +406,6 @@ abstract class Relation
 
     /**
      * 关联查询作用域.
-     *
-     * @param null|\Closure $scope
      */
     protected function scope(?Closure $scope = null): void
     {

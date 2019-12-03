@@ -60,9 +60,6 @@ class Url implements IUrl
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param array                 $option
      */
     public function __construct(IRequest $request, array $option = [])
     {
@@ -75,12 +72,7 @@ class Url implements IUrl
     /**
      * 生成路由地址
      *
-     * @param string           $url
-     * @param array            $params
-     * @param string           $subdomain
      * @param null|bool|string $suffix
-     *
-     * @return string
      */
     public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
     {
@@ -93,8 +85,6 @@ class Url implements IUrl
 
     /**
      * 返回 HTTP 请求
-     *
-     * @return \Leevel\Http\IRequest
      */
     public function getRequest(): IRequest
     {
@@ -104,8 +94,7 @@ class Url implements IUrl
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Router\IUrl
      */
@@ -118,8 +107,6 @@ class Url implements IUrl
 
     /**
      * 获取域名.
-     *
-     * @return string
      */
     public function getDomain(): string
     {
@@ -129,11 +116,7 @@ class Url implements IUrl
     /**
      * 自定义 URL.
      *
-     * @param string      $url
-     * @param array       $params
      * @param bool|string $suffix
-     *
-     * @return string
      */
     protected function makeUrl(string $url, array $params, $suffix): string
     {
@@ -167,11 +150,6 @@ class Url implements IUrl
 
     /**
      * 返回完整 URL 地址
-     *
-     * @param string $url
-     * @param string $domain
-     *
-     * @return string
      */
     protected function withDomain(string $url, string $domain): string
     {
@@ -186,8 +164,6 @@ class Url implements IUrl
 
     /**
      * 是否启用 https.
-     *
-     * @return bool
      */
     protected function isSecure(): bool
     {
@@ -197,10 +173,7 @@ class Url implements IUrl
     /**
      * url 带后缀
      *
-     * @param string      $url
      * @param bool|string $suffix
-     *
-     * @return string
      */
     protected function withSuffix(string $url, $suffix): string
     {
@@ -221,10 +194,6 @@ class Url implements IUrl
 
     /**
      * 带上入口文件.
-     *
-     * @param string $url
-     *
-     * @return string
      */
     protected function withEnter(string $url): string
     {

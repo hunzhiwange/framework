@@ -33,8 +33,6 @@ interface IHtml
 {
     /**
      * 转化输出 HTML.
-     *
-     * @return string
      */
     public function toHtml(): string;
 }

@@ -83,8 +83,6 @@ abstract class Session
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Cache\ICache $cache
      */
     public function __construct(ICache $cache)
     {
@@ -94,8 +92,6 @@ abstract class Session
 
     /**
      * 启动 session.
-     *
-     * @param null|string $sessionId
      */
     public function start(?string $sessionId = null): void
     {
@@ -126,8 +122,6 @@ abstract class Session
 
     /**
      * 取回所有 session 数据.
-     *
-     * @return array
      */
     public function all(): array
     {
@@ -137,8 +131,7 @@ abstract class Session
     /**
      * 设置 session.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function set(string $name, $value): void
     {
@@ -166,8 +159,7 @@ abstract class Session
     /**
      * 数组插入数据.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function push(string $key, $value): void
     {
@@ -178,9 +170,6 @@ abstract class Session
 
     /**
      * 合并元素.
-     *
-     * @param string $key
-     * @param array  $value
      */
     public function merge(string $key, array $value): void
     {
@@ -190,8 +179,7 @@ abstract class Session
     /**
      * 弹出元素.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function pop(string $key, array $value): void
     {
@@ -201,7 +189,6 @@ abstract class Session
     /**
      * 数组插入键值对数据.
      *
-     * @param string     $key
      * @param mixed      $keys
      * @param null|mixed $value
      */
@@ -220,8 +207,7 @@ abstract class Session
     /**
      * 数组键值删除数据.
      *
-     * @param string $key
-     * @param mixed  $keys
+     * @param mixed $keys
      */
     public function arrDelete(string $key, $keys): void
     {
@@ -242,7 +228,6 @@ abstract class Session
     /**
      * 取回 session.
      *
-     * @param string     $name
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -257,7 +242,6 @@ abstract class Session
     /**
      * 返回数组部分数据.
      *
-     * @param string     $name
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -269,8 +253,6 @@ abstract class Session
 
     /**
      * 删除 session.
-     *
-     * @param string $name
      */
     public function delete(string $name): void
     {
@@ -282,10 +264,6 @@ abstract class Session
 
     /**
      * 是否存在 session.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function has(string $name): bool
     {
@@ -305,8 +283,7 @@ abstract class Session
     /**
      * 闪存一个数据，当前请求和下一个请求可用.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function flash(string $key, $value): void
     {
@@ -317,8 +294,6 @@ abstract class Session
 
     /**
      * 批量闪存数据，当前请求和下一个请求可用.
-     *
-     * @param array $flash
      */
     public function flashs(array $flash): void
     {
@@ -330,8 +305,7 @@ abstract class Session
     /**
      * 闪存一个 flash 用于当前请求使用,下一个请求将无法获取.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function nowFlash(string $key, $value): void
     {
@@ -341,9 +315,6 @@ abstract class Session
 
     /**
      * 批量闪存数据,用于当前请求使用，下一个请求将无法获取.
-     *
-     * @param string $key
-     * @param mixed  $value
      */
     public function nowFlashs(array $flash): void
     {
@@ -365,8 +336,6 @@ abstract class Session
 
     /**
      * 保持闪存数据.
-     *
-     * @param array $keys
      */
     public function keepFlash(array $keys): void
     {
@@ -377,7 +346,6 @@ abstract class Session
     /**
      * 返回闪存数据.
      *
-     * @param string     $key
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -396,8 +364,6 @@ abstract class Session
 
     /**
      * 删除闪存数据.
-     *
-     * @param array $keys
      */
     public function deleteFlash(array $keys): void
     {
@@ -432,8 +398,6 @@ abstract class Session
 
     /**
      * 获取前一个请求地址.
-     *
-     * @return null|string
      */
     public function prevUrl(): ?string
     {
@@ -442,8 +406,6 @@ abstract class Session
 
     /**
      * 设置前一个请求地址
-     *
-     * @param string $url
      */
     public function setPrevUrl(string $url): void
     {
@@ -463,8 +425,6 @@ abstract class Session
 
     /**
      * session 是否已经启动.
-     *
-     * @return bool
      */
     public function isStart(): bool
     {
@@ -473,8 +433,6 @@ abstract class Session
 
     /**
      * 设置 SESSION 名字.
-     *
-     * @param null|string $name
      */
     public function setName(?string $name = null): void
     {
@@ -483,8 +441,6 @@ abstract class Session
 
     /**
      * 取得 SESSION 名字.
-     *
-     * @return null|string
      */
     public function getName(): ?string
     {
@@ -493,8 +449,6 @@ abstract class Session
 
     /**
      * 设置 SESSION ID.
-     *
-     * @param null|string $id
      */
     public function setId(?string $id = null): void
     {
@@ -503,8 +457,6 @@ abstract class Session
 
     /**
      * 取得 SESSION ID.
-     *
-     * @return null|string
      */
     public function getId(): ?string
     {
@@ -513,8 +465,6 @@ abstract class Session
 
     /**
      * 重新生成 SESSION ID.
-     *
-     * @return string
      */
     public function regenerateId(): string
     {
@@ -523,11 +473,6 @@ abstract class Session
 
     /**
      * open.
-     *
-     * @param string $savePath
-     * @param string $sessionName
-     *
-     * @return bool
      */
     public function open(string $savePath, string $sessionName): bool
     {
@@ -536,8 +481,6 @@ abstract class Session
 
     /**
      * close.
-     *
-     * @return bool
      */
     public function close(): bool
     {
@@ -546,10 +489,6 @@ abstract class Session
 
     /**
      * read.
-     *
-     * @param string $sessionId
-     *
-     * @return string
      */
     public function read(string $sessionId): string
     {
@@ -560,11 +499,6 @@ abstract class Session
 
     /**
      * write.
-     *
-     * @param string $sessionId
-     * @param string $sessionData
-     *
-     * @return bool
      */
     public function write(string $sessionId, string $sessionData): bool
     {
@@ -578,10 +512,6 @@ abstract class Session
 
     /**
      * destroy.
-     *
-     * @param string $sessionId
-     *
-     * @return bool
      */
     public function destroy(string $sessionId): bool
     {
@@ -594,10 +524,6 @@ abstract class Session
 
     /**
      * gc.
-     *
-     * @param int $maxLifetime
-     *
-     * @return int
      */
     public function gc(int $maxLifetime): int
     {
@@ -606,10 +532,6 @@ abstract class Session
 
     /**
      * 获取 session 名字.
-     *
-     * @param string $sessionId
-     *
-     * @return string
      */
     protected function getSessionName(string $sessionId): string
     {
@@ -618,8 +540,6 @@ abstract class Session
 
     /**
      * 生成 SESSION ID.
-     *
-     * @return string
      */
     protected function generateSessionId(): string
     {
@@ -628,8 +548,6 @@ abstract class Session
 
     /**
      * 生成微秒数.
-     *
-     * @return string
      */
     protected function parseMicrotime(): string
     {
@@ -640,10 +558,6 @@ abstract class Session
 
     /**
      * 返回 session 名字.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     protected function getNormalizeName(string $name): string
     {
@@ -660,8 +574,6 @@ abstract class Session
 
     /**
      * 从驱动载入 session 数据.
-     *
-     * @return array
      */
     protected function loadDataFromConnect(): array
     {
@@ -670,8 +582,6 @@ abstract class Session
 
     /**
      * 弹出旧闪存 KEY.
-     *
-     * @param array $keys
      */
     protected function popOldFlash(array $keys): void
     {
@@ -680,8 +590,6 @@ abstract class Session
 
     /**
      * 合并旧闪存 KEY.
-     *
-     * @param array $keys
      */
     protected function mergeOldFlash(array $keys): void
     {
@@ -690,8 +598,6 @@ abstract class Session
 
     /**
      * 弹出新闪存 KEY.
-     *
-     * @param array $keys
      */
     protected function popNewFlash(array $keys): void
     {
@@ -700,8 +606,6 @@ abstract class Session
 
     /**
      * 合并新闪存 KEY.
-     *
-     * @param array $keys
      */
     protected function mergeNewFlash(array $keys): void
     {
@@ -711,9 +615,7 @@ abstract class Session
     /**
      * 返回部分闪存数据.
      *
-     * @param string      $key
-     * @param null|mixed  $defaults
-     * @param null|string $type
+     * @param null|mixed $defaults
      *
      * @return mixed
      */
@@ -745,10 +647,6 @@ abstract class Session
 
     /**
      * 闪存值 KEY.
-     *
-     * @param string $key
-     *
-     * @return string
      */
     protected function flashDataKey(string $key): string
     {
@@ -757,8 +655,6 @@ abstract class Session
 
     /**
      * 新值闪存 KEY.
-     *
-     * @return string
      */
     protected function flashNewKey(): string
     {
@@ -767,8 +663,6 @@ abstract class Session
 
     /**
      * 旧值闪存 KEY.
-     *
-     * @return string
      */
     protected function flashOldKey(): string
     {
@@ -777,8 +671,6 @@ abstract class Session
 
     /**
      * 前一个页面 KEY.
-     *
-     * @return string
      */
     protected function prevUrlKey(): string
     {

@@ -79,8 +79,6 @@ class Cache extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -99,9 +97,6 @@ class Cache extends Command
 
     /**
      * 编译视图文件.
-     *
-     * @param \Symfony\Component\Finder\Finder $finder
-     * @param string                           $path
      */
     protected function compiles(Finder $finder, string $path): void
     {
@@ -133,10 +128,6 @@ class Cache extends Command
 
     /**
      * 查找视图目录中的视图文件.
-     *
-     * @param array $paths
-     *
-     * @return \Symfony\Component\Finder\Finder
      */
     protected function findFiles(array $paths): Finder
     {
@@ -149,8 +140,6 @@ class Cache extends Command
 
     /**
      * 获取视图扫描目录.
-     *
-     * @return array
      */
     protected function paths(): array
     {
@@ -161,8 +150,6 @@ class Cache extends Command
      * 取得应用的 composer 配置.
      *
      * @throws \RuntimeException
-     *
-     * @return array
      */
     protected function composerPaths(): array
     {
@@ -194,10 +181,6 @@ class Cache extends Command
 
     /**
      * 获取配置信息.
-     *
-     * @param string $path
-     *
-     * @return array
      */
     protected function getFileContent(string $path): array
     {
@@ -206,8 +189,6 @@ class Cache extends Command
 
     /**
      * 创建模板分析器.
-     *
-     * @return \Leevel\View\Parser
      */
     protected function createParser(): Parser
     {
@@ -218,8 +199,6 @@ class Cache extends Command
 
     /**
      * 获取 HTML 视图仓储.
-     *
-     * @return \Leevel\View\IView
      */
     protected function getHtmlView(): IView
     {
@@ -231,8 +210,6 @@ class Cache extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -241,8 +218,6 @@ class Cache extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

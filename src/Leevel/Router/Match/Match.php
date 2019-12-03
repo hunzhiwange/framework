@@ -57,9 +57,6 @@ abstract class Match
 
     /**
      * 设置路由和请求.
-     *
-     * @param \Leevel\Router\IRouter $router
-     * @param \Leevel\Http\IRequest  $request
      */
     protected function setRouterAndRequest(IRouter $router, IRequest $request): void
     {
@@ -69,8 +66,6 @@ abstract class Match
 
     /**
      * 匹配 PathInfo.
-     *
-     * @return string
      */
     protected function matchePathInfo(): string
     {
@@ -87,8 +82,6 @@ abstract class Match
 
     /**
      * 取得 PathInfo.
-     *
-     * @return string
      */
     protected function getPathInfo(): string
     {
@@ -97,10 +90,6 @@ abstract class Match
 
     /**
      * 匹配基础路径.
-     *
-     * @param string $pathInfo
-     *
-     * @return array
      */
     protected function matcheBasePaths(string $pathInfo): array
     {
@@ -124,11 +113,6 @@ abstract class Match
 
     /**
      * 匹配分组路径.
-     *
-     * @param string $pathInfo
-     * @param array  $middlewares
-     *
-     * @return array
      */
     protected function matcheGroupPaths(string $pathInfo, array $middlewares): array
     {
@@ -148,11 +132,6 @@ abstract class Match
 
     /**
      * 合并中间件.
-     *
-     * @param array $middlewares
-     * @param array $newMiddlewares
-     *
-     * @return array
      */
     protected function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {

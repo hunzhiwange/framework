@@ -42,8 +42,6 @@ interface ISession
 
     /**
      * 启动 session.
-     *
-     * @param null|string $sessionId
      */
     public function start(?string $sessionId = null): void;
 
@@ -54,16 +52,13 @@ interface ISession
 
     /**
      * 取回所有 session 数据.
-     *
-     * @return array
      */
     public function all(): array;
 
     /**
      * 设置 session.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function set(string $name, $value): void;
 
@@ -78,31 +73,25 @@ interface ISession
     /**
      * 数组插入数据.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function push(string $key, $value): void;
 
     /**
      * 合并元素.
-     *
-     * @param string $key
-     * @param array  $value
      */
     public function merge(string $key, array $value): void;
 
     /**
      * 弹出元素.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function pop(string $key, array $value): void;
 
     /**
      * 数组插入键值对数据.
      *
-     * @param string     $key
      * @param mixed      $keys
      * @param null|mixed $value
      */
@@ -111,15 +100,13 @@ interface ISession
     /**
      * 数组键值删除数据.
      *
-     * @param string $key
-     * @param mixed  $keys
+     * @param mixed $keys
      */
     public function arrDelete(string $key, $keys): void;
 
     /**
      * 取回 session.
      *
-     * @param string     $name
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -129,7 +116,6 @@ interface ISession
     /**
      * 返回数组部分数据.
      *
-     * @param string     $name
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -138,17 +124,11 @@ interface ISession
 
     /**
      * 删除 session.
-     *
-     * @param string $name
      */
     public function delete(string $name): void;
 
     /**
      * 是否存在 session.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function has(string $name): bool;
 
@@ -160,23 +140,19 @@ interface ISession
     /**
      * 闪存一个数据，当前请求和下一个请求可用.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function flash(string $key, $value): void;
 
     /**
      * 批量闪存数据，当前请求和下一个请求可用.
-     *
-     * @param array $flash
      */
     public function flashs(array $flash): void;
 
     /**
      * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function nowFlash(string $key, $value): void;
 
@@ -187,15 +163,12 @@ interface ISession
 
     /**
      * 保持闪存数据.
-     *
-     * @param array $keys
      */
     public function keepFlash(array $keys): void;
 
     /**
      * 返回闪存数据.
      *
-     * @param string     $key
      * @param null|mixed $defaults
      *
      * @return mixed
@@ -204,8 +177,6 @@ interface ISession
 
     /**
      * 删除闪存数据.
-     *
-     * @param array $keys
      */
     public function deleteFlash(array $keys): void;
 
@@ -221,15 +192,11 @@ interface ISession
 
     /**
      * 获取前一个请求地址
-     *
-     * @return null|string
      */
     public function prevUrl(): ?string;
 
     /**
      * 设置前一个请求地址
-     *
-     * @param string $url
      */
     public function setPrevUrl(string $url): void;
 
@@ -240,15 +207,11 @@ interface ISession
 
     /**
      * session 是否已经启动.
-     *
-     * @return bool
      */
     public function isStart(): bool;
 
     /**
      * 设置 SESSION 名字.
-     *
-     * @param string $name
      */
     public function setName(string $name): void;
 
@@ -261,8 +224,6 @@ interface ISession
 
     /**
      * 设置 SESSION ID.
-     *
-     * @param null|string $id
      */
     public function setId(?string $id = null): void;
 
@@ -280,55 +241,31 @@ interface ISession
 
     /**
      * open.
-     *
-     * @param string $savePath
-     * @param string $sessionName
-     *
-     * @return bool
      */
     public function open(string $savePath, string $sessionName): bool;
 
     /**
      * close.
-     *
-     * @return bool
      */
     public function close(): bool;
 
     /**
      * read.
-     *
-     * @param string $sessionId
-     *
-     * @return string
      */
     public function read(string $sessionId): string;
 
     /**
      * write.
-     *
-     * @param string $sessionId
-     * @param string $sessionData
-     *
-     * @return bool
      */
     public function write(string $sessionId, string $sessionData): bool;
 
     /**
      * destroy.
-     *
-     * @param string $sessionId
-     *
-     * @return bool
      */
     public function destroy(string $sessionId): bool;
 
     /**
      * gc.
-     *
-     * @param int $maxLifetime
-     *
-     * @return int
      */
     public function gc(int $maxLifetime): int;
 }

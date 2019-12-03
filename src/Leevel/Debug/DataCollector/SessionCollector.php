@@ -45,8 +45,6 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Session\ISession $session
      */
     public function __construct(ISession $session)
     {

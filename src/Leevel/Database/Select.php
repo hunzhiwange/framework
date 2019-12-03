@@ -196,9 +196,6 @@ class Select
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @throws \InvalidArgumentException
      *
      * @return mixed
@@ -317,8 +314,6 @@ class Select
     /**
      * 设置是否查询主服务器.
      *
-     * @param bool $master
-     *
      * @return \Leevel\Database\Select
      */
     public function master(bool $master = false): self
@@ -331,9 +326,7 @@ class Select
     /**
      * 设置查询参数.
      *
-     * @param int        $fetchStyle
      * @param null|mixed $fetchArgument
-     * @param array      $ctorArgs
      *
      * @return \Leevel\Database\Select
      */
@@ -352,9 +345,6 @@ class Select
 
     /**
      * 设置以类返会结果.
-     *
-     * @param string $className
-     * @param array  $args
      *
      * @return \Leevel\Database\Select
      */
@@ -383,8 +373,6 @@ class Select
     /**
      * 设置是否以集合返回.
      *
-     * @param bool $acollection
-     *
      * @return \Leevel\Database\Select
      */
     public function asCollection(bool $acollection = true): self
@@ -398,7 +386,6 @@ class Select
      * 原生 sql 查询数据 select.
      *
      * @param null|callable|\Leevel\Database\Select|string $data
-     * @param array                                        $bind
      * @param bool                                         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
@@ -434,9 +421,7 @@ class Select
      * 插入数据 insert (支持原生 sql).
      *
      * @param array|string $data
-     * @param array        $bind
-     * @param bool         $replace
-     * @param bool         $flag    指示是否不做任何操作只返回 SQL
+     * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return null|array|int
      */
@@ -454,10 +439,7 @@ class Select
     /**
      * 批量插入数据 insertAll.
      *
-     * @param array $data
-     * @param array $bind
-     * @param bool  $replace
-     * @param bool  $flag    指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return null|array|int
      */
@@ -476,7 +458,6 @@ class Select
      * 更新数据 update (支持原生 sql).
      *
      * @param array|string $data
-     * @param array        $bind
      * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
@@ -495,10 +476,8 @@ class Select
     /**
      * 更新某个字段的值
      *
-     * @param string $column
-     * @param mixed  $value
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
+     * @param mixed $value
+     * @param bool  $flag  指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -510,10 +489,7 @@ class Select
     /**
      * 字段递增.
      *
-     * @param string $column
-     * @param int    $step
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -525,10 +501,7 @@ class Select
     /**
      * 字段减少.
      *
-     * @param string $column
-     * @param int    $step
-     * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -540,9 +513,7 @@ class Select
     /**
      * 删除数据 delete (支持原生 sql).
      *
-     * @param null|string $data
-     * @param array       $bind
-     * @param bool        $flag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -610,8 +581,7 @@ class Select
     /**
      * 返回最后几条记录.
      *
-     * @param null|int $num
-     * @param bool     $flag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -629,8 +599,7 @@ class Select
     /**
      * 返回一个字段的值
      *
-     * @param string $field
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -656,11 +625,8 @@ class Select
     /**
      * 返回一列数据.
      *
-     * @param mixed       $fieldValue
-     * @param null|string $fieldKey
-     * @param bool        $flag       指示是否不做任何操作只返回 SQL
-     *
-     * @return array
+     * @param mixed $fieldValue
+     * @param bool  $flag       指示是否不做任何操作只返回 SQL
      */
     public function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {
@@ -705,9 +671,6 @@ class Select
 
     /**
      * 数据分块处理.
-     *
-     * @param int      $count
-     * @param \Closure $chunk
      */
     public function chunk(int $count, Closure $chunk): void
     {
@@ -729,9 +692,6 @@ class Select
 
     /**
      * 数据分块处理依次回调.
-     *
-     * @param int     $count
-     * @param Closure $each
      */
     public function each(int $count, Closure $each): void
     {
@@ -747,9 +707,7 @@ class Select
     /**
      * 总记录数.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -766,9 +724,7 @@ class Select
     /**
      * 平均数.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -780,9 +736,7 @@ class Select
     /**
      * 最大值.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -794,9 +748,7 @@ class Select
     /**
      * 最小值.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -808,9 +760,7 @@ class Select
     /**
      * 合计.
      *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -822,12 +772,6 @@ class Select
     /**
      * 分页查询.
      * 可以渲染 HTML.
-     *
-     * @param int    $currentPage
-     * @param int    $perPage
-     * @param bool   $flag
-     * @param string $column
-     * @param array  $option
      *
      * @return \Leevel\Database\Page
      */
@@ -845,11 +789,6 @@ class Select
     /**
      * 创建一个无限数据的分页查询.
      *
-     * @param int   $currentPage
-     * @param int   $perPage
-     * @param bool  $flag
-     * @param array $option
-     *
      * @return \Leevel\Database\Page
      */
     public function pageMacro(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
@@ -866,11 +805,6 @@ class Select
     /**
      * 创建一个只有上下页的分页查询.
      *
-     * @param int   $currentPage
-     * @param int   $perPage
-     * @param bool  $flag
-     * @param array $option
-     *
      * @return \Leevel\Database\Page
      */
     public function pagePrevNext(int $currentPage, int $perPage = 10, bool $flag = false, array $option = []): Page
@@ -886,10 +820,6 @@ class Select
 
     /**
      * 取得分页查询记录数量.
-     *
-     * @param string $cols
-     *
-     * @return int
      */
     public function pageCount(string $cols = '*'): int
     {
@@ -904,8 +834,6 @@ class Select
      * 获得查询字符串.
      *
      * @param $withLogicGroup
-     *
-     * @return string
      */
     public function makeSql(bool $withLogicGroup = false): string
     {
@@ -971,8 +899,6 @@ class Select
     /**
      * 以默认返回结果.
      *
-     * @param array $data
-     *
      * @return mixed
      */
     protected function queryDefault(array $data)
@@ -986,8 +912,6 @@ class Select
 
     /**
      * 以 class 返回结果.
-     *
-     * @param array $data
      *
      * @throws \InvalidArgumentException
      *
@@ -1018,10 +942,7 @@ class Select
     /**
      * 获取聚合结果.
      *
-     * @param string $method
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -1043,10 +964,6 @@ class Select
 
     /**
      * 原生 sql 执行方法.
-     *
-     * @param string $nativeType
-     * @param string $data
-     * @param array  $bindParams
      *
      * @throws \InvalidArgumentException
      *
@@ -1100,11 +1017,6 @@ class Select
 
     /**
      * 驼峰转下划线.
-     *
-     * @param string $value
-     * @param string $separator
-     *
-     * @return string
      */
     protected function unCamelize(string $value, string $separator = '_'): string
     {

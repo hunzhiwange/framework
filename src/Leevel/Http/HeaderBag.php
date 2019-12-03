@@ -33,8 +33,6 @@ class HeaderBag extends Bag
 {
     /**
      * 构造函数.
-     *
-     * @param array $elements
      */
     public function __construct(array $elements = [])
     {
@@ -43,8 +41,6 @@ class HeaderBag extends Bag
 
     /**
      * 格式化 header 字符串.
-     *
-     * @return string
      */
     public function __toString(): string
     {

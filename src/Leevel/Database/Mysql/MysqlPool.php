@@ -52,10 +52,6 @@ class MysqlPool extends Pool
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\Manager $manager
-     * @param string                   $mysqlConnect
-     * @param array                    $option
      */
     public function __construct(Manager $manager, string $mysqlConnect, array $option = [])
     {
@@ -67,8 +63,6 @@ class MysqlPool extends Pool
 
     /**
      * 创建连接.
-     *
-     * @return \Leevel\Protocol\Pool\IConnection
      */
     protected function createConnection(): IConnection
     {

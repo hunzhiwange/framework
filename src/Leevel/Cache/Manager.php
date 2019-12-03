@@ -45,8 +45,6 @@ class Manager extends Managers
 {
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     protected function normalizeOptionNamespace(): string
     {
@@ -55,8 +53,6 @@ class Manager extends Managers
 
     /**
      * 创建文件缓存.
-     *
-     * @param array $options
      *
      * @return \Leevel\Cache\File
      */
@@ -70,8 +66,6 @@ class Manager extends Managers
     /**
      * 创建 redis 缓存.
      *
-     * @param array $options
-     *
      * @return \Leevel\Cache\Redis
      */
     protected function makeConnectRedis(array $options = []): Redis
@@ -84,8 +78,6 @@ class Manager extends Managers
 
     /**
      * 创建 redisPool 缓存.
-     *
-     * @param array $options
      *
      * @return \Leevel\Cache\RedisPool
      */
@@ -104,10 +96,6 @@ class Manager extends Managers
 
     /**
      * 分析连接配置.
-     *
-     * @param string $connect
-     *
-     * @return array
      */
     protected function getConnectOption(string $connect): array
     {

@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 是否为 ipv6.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_ipv6($value): bool
 {

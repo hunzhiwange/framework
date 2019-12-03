@@ -75,8 +75,6 @@ class Manager extends Managers
 {
     /**
      * 返回 session 配置.
-     *
-     * @return array
      */
     public function getSessionOption(): array
     {
@@ -85,8 +83,6 @@ class Manager extends Managers
 
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     protected function normalizeOptionNamespace(): string
     {
@@ -95,8 +91,6 @@ class Manager extends Managers
 
     /**
      * 创建 test 缓存.
-     *
-     * @param array $options
      *
      * @return \Leevel\Session\Test
      */
@@ -110,8 +104,6 @@ class Manager extends Managers
     /**
      * 创建 file 缓存.
      *
-     * @param array $options
-     *
      * @return \Leevel\Session\File
      */
     protected function makeConnectFile(array $options = []): File
@@ -124,8 +116,6 @@ class Manager extends Managers
     /**
      * 创建 redis 缓存.
      *
-     * @param array $options
-     *
      * @return \Leevel\Session\Redis
      */
     protected function makeConnectRedis(array $options = []): Redis
@@ -137,10 +127,6 @@ class Manager extends Managers
 
     /**
      * 分析连接配置.
-     *
-     * @param string $connect
-     *
-     * @return array
      */
     protected function getConnectOption(string $connect): array
     {

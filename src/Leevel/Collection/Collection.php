@@ -68,8 +68,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
     /**
      * 构造函数.
      *
-     * @param mixed      $elements
-     * @param null|array $type
+     * @param mixed $elements
      */
     public function __construct($elements = [], ?array $type = null)
     {
@@ -174,8 +173,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 验证.
-     *
-     * @return bool
      */
     public function valid(): bool
     {
@@ -184,8 +181,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 实现 IteratorAggregate::getIterator.
-     *
-     * @return \ArrayIterator
      */
     public function getIterator(): ArrayIterator
     {
@@ -196,8 +191,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * 实现 ArrayAccess::offsetExists.
      *
      * @param mixed $index
-     *
-     * @return bool
      */
     public function offsetExists($index): bool
     {
@@ -242,8 +235,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 统计元素数量 count($obj).
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -252,8 +243,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 返回所有元素.
-     *
-     * @return array
      */
     public function all(): array
     {
@@ -262,8 +251,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -276,8 +263,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 实现 JsonSerializable::jsonSerialize.
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {
@@ -304,10 +289,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * 对象转 JSON.
-     *
-     * @param null|int $option
-     *
-     * @return string
      */
     public function toJson(?int $option = null): string
     {
@@ -320,8 +301,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 
     /**
      * each.
-     *
-     * @param \Closure $callback
      */
     public function each(Closure $callback): void
     {
@@ -358,8 +337,6 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
      * 转换数据到数组.
      *
      * @param mixed $elements
-     *
-     * @return array
      */
     protected function elementsToArray($elements): array
     {

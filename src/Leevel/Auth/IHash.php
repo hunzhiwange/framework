@@ -33,21 +33,11 @@ interface IHash
 {
     /**
      * 生成密码.
-     *
-     * @param string $password
-     * @param array  $option
-     *
-     * @return string
      */
     public function password(string $password, array $option = []): string;
 
     /**
      * 校验密码.
-     *
-     * @param string $password
-     * @param string $hash
-     *
-     * @return bool
      */
     public function verify(string $password, string $hash): bool;
 }

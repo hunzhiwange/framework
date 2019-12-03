@@ -82,8 +82,6 @@ class MySmtp extends Smtp
 {
     /**
      * 传输机制是否已经启动.
-     *
-     * @return bool
      */
     public function isStarted(): bool
     {

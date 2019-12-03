@@ -111,8 +111,6 @@ class Production extends Command
 
     /**
      * 取得 Composer 路径.
-     *
-     * @return string
      */
     protected function composer(): string
     {
@@ -121,8 +119,6 @@ class Production extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -131,8 +127,6 @@ class Production extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

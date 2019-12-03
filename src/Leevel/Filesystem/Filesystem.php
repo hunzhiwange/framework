@@ -75,8 +75,6 @@ abstract class Filesystem
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -86,9 +84,6 @@ abstract class Filesystem
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      * @codeCoverageIgnore
@@ -101,8 +96,7 @@ abstract class Filesystem
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Filesystem\IFilesystem
      */
@@ -115,8 +109,6 @@ abstract class Filesystem
 
     /**
      * 返回 Filesystem.
-     *
-     * @return \League\Flysystem\Filesystem
      */
     public function getFilesystem(): LeagueFilesystem
     {
@@ -125,15 +117,11 @@ abstract class Filesystem
 
     /**
      * 创建连接.
-     *
-     * @return \League\Flysystem\AdapterInterface
      */
     abstract protected function makeAdapter(): AdapterInterface;
 
     /**
      * 生成 Filesystem.
-     *
-     * @return \League\Flysystem\Filesystem
      */
     protected function filesystem(): LeagueFilesystem
     {
@@ -145,10 +133,6 @@ abstract class Filesystem
 
     /**
      * 整理配置.
-     *
-     * @param array $option
-     *
-     * @return array
      */
     protected function normalizeOptions(array $option = []): array
     {

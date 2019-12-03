@@ -39,10 +39,8 @@ if (!function_exists('__')) {
     /**
      * 获取语言.
      *
-     * @param string $text
-     * @param array  ...$data
+     * @param array ...$data
      *
-     * @return string
      * @codeCoverageIgnore
      */
     function __(string $text, ...$data): string

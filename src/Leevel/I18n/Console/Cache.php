@@ -70,8 +70,6 @@ class Cache extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -94,8 +92,6 @@ class Cache extends Command
 
     /**
      * 获取语言包扩展.
-     *
-     * @return array
      */
     protected function extends(): array
     {
@@ -104,10 +100,6 @@ class Cache extends Command
 
     /**
      * 获取语言数据.
-     *
-     * @param string $i18n
-     *
-     * @return array
      */
     protected function data(string $i18n): array
     {
@@ -120,9 +112,6 @@ class Cache extends Command
 
     /**
      * 写入缓存.
-     *
-     * @param string $cachePath
-     * @param array  $data
      */
     protected function writeCache(string $cachePath, array $data): void
     {
@@ -133,8 +122,6 @@ class Cache extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -143,8 +130,6 @@ class Cache extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

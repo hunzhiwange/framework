@@ -60,8 +60,6 @@ class RoadRunnerServer extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -84,8 +82,6 @@ class RoadRunnerServer extends Command
 
     /**
      * 取得 Psr 桥接.
-     *
-     * @return \Spiral\RoadRunner\PSR7Client
      */
     protected function getPsr7(): PSR7Client
     {
@@ -96,8 +92,6 @@ class RoadRunnerServer extends Command
 
     /**
      * 取得 Psr 桥接.
-     *
-     * @return array
      */
     protected function getPsrBridge(): array
     {
@@ -110,8 +104,6 @@ class RoadRunnerServer extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -120,8 +112,6 @@ class RoadRunnerServer extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

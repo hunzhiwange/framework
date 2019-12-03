@@ -66,8 +66,6 @@ class Pipeline implements IPipeline
 
     /**
      * 创建一个管道.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function __construct(IContainer $container)
     {
@@ -76,8 +74,6 @@ class Pipeline implements IPipeline
 
     /**
      * 将传输对象传入管道.
-     *
-     * @param array $passed
      *
      * @return \Leevel\Pipeline\IPipeline
      */
@@ -93,8 +89,6 @@ class Pipeline implements IPipeline
     /**
      * 设置管道中的执行工序.
      *
-     * @param array $stage
-     *
      * @return \Leevel\Pipeline\IPipeline
      */
     public function through(array $stage): IPipeline
@@ -108,8 +102,6 @@ class Pipeline implements IPipeline
 
     /**
      * 执行管道工序响应结果.
-     *
-     * @param null|\Closure $end
      *
      * @since 2018.01.03
      *
@@ -160,10 +152,6 @@ class Pipeline implements IPipeline
     /**
      * 工序迭代器
      * 添加一个空的迭代器，第一次迭代 next 自动移除.
-     *
-     * @param array $stage
-     *
-     * @return \Generator
      */
     protected function stageGenerator(array $stage): Generator
     {
@@ -208,10 +196,6 @@ class Pipeline implements IPipeline
 
     /**
      * 解析工序.
-     *
-     * @param string $name
-     *
-     * @return array
      */
     protected function parse(string $name): array
     {

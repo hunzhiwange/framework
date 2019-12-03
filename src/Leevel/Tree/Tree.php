@@ -53,8 +53,6 @@ class Tree implements IJson, IArray
     /**
      * 构造函数.
      *
-     * @param array $nodes
-     *
      * @throws \RuntimeException
      */
     public function __construct(array $nodes = [])
@@ -76,7 +74,6 @@ class Tree implements IJson, IArray
      * @param int|string $id
      * @param int|string $parent
      * @param mixed      $value
-     * @param bool       $priority
      */
     public function setNode($id, $parent, $value, bool $priority = false): void
     {
@@ -97,8 +94,6 @@ class Tree implements IJson, IArray
      * 取得给定 ID 子树.
      *
      * @param int|string $id
-     *
-     * @return array
      */
     public function getChildrenTree($id = 0): array
     {
@@ -109,8 +104,6 @@ class Tree implements IJson, IArray
      * 取得给定 ID 一级子树 ID.
      *
      * @param int|string $id
-     *
-     * @return array
      */
     public function getChild($id): array
     {
@@ -128,8 +121,6 @@ class Tree implements IJson, IArray
      * 取得给定 ID 所有子树 ID.
      *
      * @param int|string $id
-     *
-     * @return array
      */
     public function getChildren($id = 0): array
     {
@@ -146,8 +137,6 @@ class Tree implements IJson, IArray
      * 取得给定 ID 是否包含子树.
      *
      * @param int|string $id
-     *
-     * @return bool
      */
     public function hasChild($id): bool
     {
@@ -158,10 +147,6 @@ class Tree implements IJson, IArray
      * 验证是否存在子菜单.
      *
      * @param int|string $id
-     * @param array      $validateChildren
-     * @param bool       $strict
-     *
-     * @return bool
      */
     public function hasChildren($id, array $validateChildren, bool $strict = true): bool
     {
@@ -184,9 +169,6 @@ class Tree implements IJson, IArray
      * 取得给定 ID 上级父级 ID.
      *
      * @param int|string $id
-     * @param bool       $withItSelf
-     *
-     * @return array
      */
     public function getParent($id, bool $withItSelf = false): array
     {
@@ -209,9 +191,6 @@ class Tree implements IJson, IArray
      * 取得给定 ID 所有父级 ID.
      *
      * @param int|string $id
-     * @param bool       $withItSelf
-     *
-     * @return array
      */
     public function getParents($id, bool $withItSelf = false): array
     {
@@ -228,8 +207,6 @@ class Tree implements IJson, IArray
      * 判断级别.
      *
      * @param int|string $id
-     *
-     * @return int
      */
     public function getLevel($id): int
     {
@@ -265,11 +242,7 @@ class Tree implements IJson, IArray
     /**
      * 树转化为数组.
      *
-     * @param null|\Closure $callables
-     * @param array         $key
-     * @param int|string    $id
-     *
-     * @return array
+     * @param int|string $id
      */
     public function normalize(?Closure $callables = null, array $key = [], $id = 0): array
     {
@@ -299,10 +272,6 @@ class Tree implements IJson, IArray
 
     /**
      * 对象转 JSON.
-     *
-     * @param null|int $option
-     *
-     * @return string
      */
     public function toJson(?int $option = null): string
     {
@@ -318,8 +287,6 @@ class Tree implements IJson, IArray
 
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -330,8 +297,6 @@ class Tree implements IJson, IArray
      * 取得给定 ID 所有父级 ID.
      *
      * @param int|string $id
-     *
-     * @return array
      */
     protected function getParentsReal($id): array
     {

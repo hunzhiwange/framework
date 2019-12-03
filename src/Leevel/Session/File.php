@@ -49,8 +49,6 @@ class File extends Session implements ISession
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -60,8 +58,6 @@ class File extends Session implements ISession
 
     /**
      * 文件缓存.
-     *
-     * @return \Leevel\Cache\File
      */
     public function createCache(): CacheFile
     {

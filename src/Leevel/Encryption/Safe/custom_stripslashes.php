@@ -24,7 +24,6 @@ namespace Leevel\Encryption\Safe;
  * 移除魔术方法转义.
  *
  * @param mixed $data
- * @param bool  $recursive
  *
  * @return mixed
  */

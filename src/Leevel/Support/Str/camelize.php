@@ -22,11 +22,6 @@ namespace Leevel\Support\Str;
 
 /**
  * 下划线转驼峰.
- *
- * @param string $value
- * @param string $separator
- *
- * @return string
  */
 function camelize(string $value, string $separator = '_'): string
 {

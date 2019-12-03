@@ -44,8 +44,6 @@ class Validate implements IValidate
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function __construct(IContainer $container)
     {
@@ -55,11 +53,6 @@ class Validate implements IValidate
 
     /**
      * 创建一个验证器.
-     *
-     * @param array $data
-     * @param array $rules
-     * @param array $names
-     * @param array $messages
      *
      * @return \Leevel\Validate\IValidator
      */

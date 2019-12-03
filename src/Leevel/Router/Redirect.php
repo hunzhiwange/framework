@@ -61,14 +61,7 @@ class Redirect
     /**
      * 返回一个 URL 生成跳转响应.
      *
-     * @param string           $url
-     * @param array            $params
-     * @param string           $subdomain
      * @param null|bool|string $suffix
-     * @param int              $status
-     * @param array            $headers
-     *
-     * @return \Leevel\Http\RedirectResponse
      */
     public function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
     {
@@ -79,12 +72,6 @@ class Redirect
 
     /**
      * 返回一个跳转响应.
-     *
-     * @param string $url
-     * @param int    $status
-     * @param array  $headers
-     *
-     * @return \Leevel\Http\RedirectResponse
      */
     public function raw(string $url, int $status = 302, array $headers = []): RedirectResponse
     {
@@ -103,8 +90,6 @@ class Redirect
 
     /**
      * 设置 SESSION 仓储.
-     *
-     * @param \Leevel\Session\ISession $session
      */
     public function setSession(ISession $session): void
     {
@@ -113,12 +98,6 @@ class Redirect
 
     /**
      * 返回一个跳转响应.
-     *
-     * @param string $url
-     * @param int    $status
-     * @param array  $headers
-     *
-     * @return \Leevel\Http\RedirectResponse
      */
     protected function createRedirectResponse(string $url, int $status = 302, array $headers = []): RedirectResponse
     {

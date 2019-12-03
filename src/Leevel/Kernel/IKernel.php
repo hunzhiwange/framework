@@ -36,18 +36,11 @@ interface IKernel
 {
     /**
      * 响应 HTTP 请求
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IResponse
      */
     public function handle(IRequest $request): IResponse;
 
     /**
      * 执行结束
-     *
-     * @param \Leevel\Http\IRequest  $request
-     * @param \Leevel\Http\IResponse $response
      */
     public function terminate(IRequest $request, IResponse $response): void;
 

@@ -43,8 +43,6 @@ class EntityNotFoundException extends NotFoundHttpException
     /**
      * 设置模型实体.
      *
-     * @param string $entity
-     *
      * @return \Leevel\Database\Ddd\EntityNotFoundException
      */
     public function setEntity(string $entity): self
@@ -57,8 +55,6 @@ class EntityNotFoundException extends NotFoundHttpException
 
     /**
      * 取回模型实体.
-     *
-     * @return string
      */
     public function entity(): string
     {

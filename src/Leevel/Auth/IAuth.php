@@ -33,23 +33,16 @@ interface IAuth
 {
     /**
      * 用户是否已经登录.
-     *
-     * @return bool
      */
     public function isLogin(): bool;
 
     /**
      * 获取登录信息.
-     *
-     * @return array
      */
     public function getLogin(): array;
 
     /**
      * 登录写入数据.
-     *
-     * @param array $data
-     * @param int   $loginTime
      */
     public function login(array $data, int $loginTime = 0): void;
 
@@ -60,8 +53,6 @@ interface IAuth
 
     /**
      * 设置认证名字.
-     *
-     * @param string $tokenName
      */
     public function setTokenName(string $tokenName): void;
 
@@ -69,8 +60,6 @@ interface IAuth
      * 取得认证名字.
      *
      * @throws \Leevel\Auth\AuthException
-     *
-     * @return string
      */
     public function getTokenName(): string;
 }

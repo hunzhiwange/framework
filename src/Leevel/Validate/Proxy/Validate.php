@@ -39,9 +39,6 @@ class Validate
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -51,13 +48,6 @@ class Validate
 
     /**
      * 创建一个验证器.
-     *
-     * @param array $data
-     * @param array $rules
-     * @param array $names
-     * @param array $messages
-     *
-     * @return \Leevel\Validate\IValidator
      */
     public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
@@ -74,8 +64,6 @@ class Validate
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Validate\Validate
      */
     public static function proxy(): BaseValidate
     {

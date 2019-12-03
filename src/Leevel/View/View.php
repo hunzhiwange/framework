@@ -49,8 +49,6 @@ abstract class View
 
     /**
      * 构造函数.
-     *
-     * @param array $option
      */
     public function __construct(array $option = [])
     {
@@ -60,8 +58,7 @@ abstract class View
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\View\IView
      */
@@ -90,8 +87,6 @@ abstract class View
     /**
      * 获取变量值.
      *
-     * @param null|string $name
-     *
      * @return mixed
      */
     public function getVar(?string $name = null)
@@ -105,8 +100,6 @@ abstract class View
 
     /**
      * 删除变量值.
-     *
-     * @param array $name
      */
     public function deleteVar(array $name): void
     {
@@ -119,8 +112,6 @@ abstract class View
 
     /**
      * 清空变量值.
-     *
-     * @param null|string $name
      */
     public function clearVar(): void
     {
@@ -130,12 +121,7 @@ abstract class View
     /**
      * 分析展示的视图文件.
      *
-     * @param null|string $file
-     * @param null|string $ext
-     *
      * @throws \RuntimeException
-     *
-     * @return string
      */
     protected function parseDisplayFile(?string $file = null, ?string $ext = null): string
     {
@@ -155,12 +141,7 @@ abstract class View
     /**
      * 分析模板真实路径.
      *
-     * @param null|string $tpl
-     * @param null|string $ext
-     *
      * @throws \RuntimeException
-     *
-     * @return string
      */
     protected function parseFile(?string $tpl = null, ?string $ext = null): string
     {
@@ -182,10 +163,6 @@ abstract class View
 
     /**
      * 格式化文件名.
-     *
-     * @param string $content
-     *
-     * @return string
      */
     protected function formatFile(string $content): string
     {

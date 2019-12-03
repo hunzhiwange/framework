@@ -103,9 +103,6 @@ abstract class Log
 
     /**
      * 构造函数.
-     *
-     * @param array                        $option
-     * @param null|\Leevel\Event\IDispatch $dispatch
      */
     public function __construct(array $option = [], ?IDispatch $dispatch = null)
     {
@@ -116,8 +113,7 @@ abstract class Log
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Log\ILog
      */
@@ -130,9 +126,6 @@ abstract class Log
 
     /**
      * 系统无法使用.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public function emergency(string $message, array $context = []): void
     {
@@ -144,9 +137,6 @@ abstract class Log
      *
      * 比如: 整个网站宕机，数据库不可用等等.
      * 这种错误应该通过短信通知你.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public function alert(string $message, array $context = []): void
     {
@@ -157,9 +147,6 @@ abstract class Log
      * 临界条件.
      *
      * 比如: 应用程序组件不可用，意外异常.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public function critical(string $message, array $context = []): void
     {
@@ -169,9 +156,6 @@ abstract class Log
     /**
      * 运行时错误，不需要立即处理.
      * 但是需要被记录和监控.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public function error(string $message, array $context = []): void
     {
@@ -183,9 +167,6 @@ abstract class Log
      *
      * 比如: 弃用的 API 接口, API 使用不足, 不良事物.
      * 它们不一定是错误的.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public function warning(string $message, array $context = []): void
     {
@@ -194,9 +175,6 @@ abstract class Log
 
     /**
      * 正常重要事件.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public function notice(string $message, array $context = []): void
     {
@@ -207,9 +185,6 @@ abstract class Log
      * 想记录的日志.
      *
      * 比如: 用户日志, SQL 日志.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public function info(string $message, array $context = []): void
     {
@@ -218,9 +193,6 @@ abstract class Log
 
     /**
      * 调试信息.
-     *
-     * @param string $message
-     * @param array  $context
      */
     public function debug(string $message, array $context = []): void
     {
@@ -230,9 +202,7 @@ abstract class Log
     /**
      * 记录特定级别的日志信息.
      *
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
+     * @param mixed $level
      */
     public function log(string $level, string $message, array $context = []): void
     {
@@ -266,8 +236,6 @@ abstract class Log
 
     /**
      * 清理日志记录.
-     *
-     * @param null|string $level
      */
     public function clear(?string $level = null): void
     {
@@ -284,10 +252,6 @@ abstract class Log
 
     /**
      * 获取日志记录.
-     *
-     * @param null|string $level
-     *
-     * @return array
      */
     public function all(?string $level = null): array
     {
@@ -304,10 +268,6 @@ abstract class Log
 
     /**
      * 获取日志记录数量.
-     *
-     * @param null|string $level
-     *
-     * @return int
      */
     public function count(?string $level = null): int
     {
@@ -320,8 +280,6 @@ abstract class Log
 
     /**
      * 是否为 Monolog.
-     *
-     * @return bool
      */
     public function isMonolog(): bool
     {
@@ -330,8 +288,6 @@ abstract class Log
 
     /**
      * 取得 Monolog.
-     *
-     * @return null|\Monolog\Logger
      */
     public function getMonolog(): ?Logger
     {
@@ -340,8 +296,6 @@ abstract class Log
 
     /**
      * 存储日志.
-     *
-     * @param array $data
      */
     public function store(array $data): void
     {
@@ -361,8 +315,6 @@ abstract class Log
 
     /**
      * 事件派发.
-     *
-     * @param array $data
      */
     protected function handleDispatch(array $data): void
     {
@@ -373,10 +325,6 @@ abstract class Log
 
     /**
      * 设置默认格式化.
-     *
-     * @param \Monolog\Handler\HandlerInterface $handler
-     *
-     * @return \Monolog\Handler\HandlerInterface
      */
     protected function normalizeHandler(HandlerInterface $handler): HandlerInterface
     {
@@ -385,8 +333,6 @@ abstract class Log
 
     /**
      * 默认行格式化.
-     *
-     * @return \Monolog\Formatter\LineFormatter
      */
     protected function lineFormatter(): LineFormatter
     {
@@ -396,10 +342,6 @@ abstract class Log
     /**
      * 格式化级别
      * 不支持级别归并到 DEBUG.
-     *
-     * @param string $level
-     *
-     * @return string
      */
     protected function normalizeLevel(string $level): string
     {
@@ -413,10 +355,6 @@ abstract class Log
     /**
      * 获取 Monolog 级别
      * 不支持级别归并到 DEBUG.
-     *
-     * @param string $level
-     *
-     * @return int
      */
     protected function normalizeMonologLevel(string $level): int
     {

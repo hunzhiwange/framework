@@ -44,8 +44,6 @@ class Task implements ITask
 
     /**
      * 构造函数.
-     *
-     * @param \Swoole\Server $server
      */
     public function __construct(SwooleServer $server)
     {
@@ -54,10 +52,6 @@ class Task implements ITask
 
     /**
      * 投递异步任务.
-     *
-     * @param string        $data
-     * @param int           $workerId
-     * @param null|\Closure $finishCallback
      *
      * @return bool|int
      */
@@ -68,11 +62,6 @@ class Task implements ITask
 
     /**
      * 并发执行任务并进行协程调度.
-     *
-     * @param array      $tasks
-     * @param null|float $timeout
-     *
-     * @return array
      */
     public function taskCo(array $tasks, ?float $timeout = null): array
     {

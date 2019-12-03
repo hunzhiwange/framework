@@ -58,8 +58,6 @@ class Load
 
     /**
      * 构造函数.
-     *
-     * @param array $namespaces
      */
     public function __construct(array $namespaces = [])
     {
@@ -68,8 +66,6 @@ class Load
 
     /**
      * 添加命名空间.
-     *
-     * @param array $namespaces
      *
      * @return \Leevel\Console\Load
      */
@@ -82,8 +78,6 @@ class Load
 
     /**
      * 载入命令行数据.
-     *
-     * @return array
      */
     public function loadData(): array
     {
@@ -101,11 +95,7 @@ class Load
     /**
      * 分析目录中的 PHP 命令包包含的文件.
      *
-     * @param array $namespaces
-     *
      * @throws \RuntimeException
-     *
-     * @return array
      */
     public function findConsoleFile(array $namespaces): array
     {

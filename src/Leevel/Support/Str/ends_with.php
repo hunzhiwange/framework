@@ -22,11 +22,6 @@ namespace Leevel\Support\Str;
 
 /**
  * 判断字符串中是否包含给定的字符结尾.
- *
- * @param string $toSearched
- * @param string $search
- *
- * @return bool
  */
 function ends_with(string $toSearched, string $search): bool
 {

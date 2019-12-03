@@ -25,7 +25,6 @@ use Leevel\Di\Container;
 /**
  * 返回闪存数据.
  *
- * @param string     $key
  * @param null|mixed $defaults
  *
  * @return mixed

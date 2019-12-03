@@ -71,11 +71,7 @@ class IdeHelper extends Command
     /**
      * 分析类名.
      *
-     * @param string $pathOrClassName
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function parseClassName(string $pathOrClassName): string
     {
@@ -96,8 +92,6 @@ class IdeHelper extends Command
 
     /**
      * 取得路径.
-     *
-     * @return string
      */
     protected function path(): string
     {
@@ -106,8 +100,6 @@ class IdeHelper extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -122,8 +114,6 @@ class IdeHelper extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

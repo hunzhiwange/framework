@@ -36,8 +36,6 @@ interface IContainer
      *
      * @param mixed      $name
      * @param null|mixed $service
-     * @param bool       $share
-     * @param bool       $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
@@ -48,7 +46,6 @@ interface IContainer
      *
      * @param mixed $name
      * @param mixed $service
-     * @param bool  $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
@@ -59,7 +56,6 @@ interface IContainer
      *
      * @param array|scalar $name
      * @param null|mixed   $service
-     * @param bool         $coroutine
      *
      * @return \Leevel\Di\IContainer
      */
@@ -78,9 +74,6 @@ interface IContainer
     /**
      * 服务容器返回对象
      *
-     * @param string $name
-     * @param array  $args
-     *
      * @return mixed
      */
     public function make(string $name, array $args = []);
@@ -89,7 +82,6 @@ interface IContainer
      * 实例回调自动注入.
      *
      * @param array|callable|string $callback
-     * @param array                 $args
      *
      * @throws \InvalidArgumentException
      *
@@ -99,17 +91,11 @@ interface IContainer
 
     /**
      * 删除服务和实例.
-     *
-     * @param string $name
      */
     public function remove(string $name): void;
 
     /**
      * 服务或者实例是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function exists(string $name): bool;
 
@@ -128,8 +114,6 @@ interface IContainer
     /**
      * 创建服务提供者.
      *
-     * @param string $provider
-     *
      * @return \Leevel\Di\Provider
      */
     public function makeProvider(string $provider): Provider;
@@ -145,8 +129,6 @@ interface IContainer
 
     /**
      * 是否已经初始化引导.
-     *
-     * @return bool
      */
     public function isBootstrap(): bool;
 
@@ -171,24 +153,16 @@ interface IContainer
 
     /**
      * 协程服务或者实例是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function existsCoroutine(string $name): bool;
 
     /**
      * 删除协程上下文服务和实例.
-     *
-     * @param null|string $name
      */
     public function removeCoroutine(?string $name = null): void;
 
     /**
      * 设置服务到协程上下文.
-     *
-     * @param string $service
      */
     public function serviceCoroutine(string $service): void;
 }

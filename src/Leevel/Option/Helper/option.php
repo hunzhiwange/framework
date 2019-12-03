@@ -25,8 +25,6 @@ use Leevel\Option\IOption;
 
 /**
  * 配置服务
- *
- * @return \Leevel\Option\IOption
  */
 function option(): IOption
 {

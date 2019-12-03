@@ -52,9 +52,6 @@ class Debug
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -65,11 +62,7 @@ class Debug
     /**
      * 添加数据收集器.
      *
-     * @param \DebugBar\DataCollector\DataCollectorInterface $collector
-     *
      * @throws \DebugBar\DebugBarException
-     *
-     * @return \DebugBar\DebugBar
      */
     public static function addCollector(DataCollectorInterface $collector): DebugBar
     {
@@ -78,10 +71,6 @@ class Debug
 
     /**
      * 检查是否已添加数据收集器.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function hasCollector(string $name): bool
     {
@@ -91,11 +80,7 @@ class Debug
     /**
      * 返回数据收集器.
      *
-     * @param string $name
-     *
      * @throws \DebugBar\DebugBarException
-     *
-     * @return \DebugBar\DataCollector\DataCollectorInterface
      */
     public static function getCollector(string $name): DataCollectorInterface
     {
@@ -114,10 +99,6 @@ class Debug
 
     /**
      * 设置请求 ID 生成器.
-     *
-     * @param \DebugBar\RequestIdGeneratorInterface $generator
-     *
-     * @return \DebugBar\DebugBar
      */
     public static function setRequestIdGenerator(RequestIdGeneratorInterface $generator): DebugBar
     {
@@ -126,8 +107,6 @@ class Debug
 
     /**
      * 返回请求 ID 生成器.
-     *
-     * @return \DebugBar\RequestIdGeneratorInterface
      */
     public static function getRequestIdGenerator(): RequestIdGeneratorInterface
     {
@@ -136,8 +115,6 @@ class Debug
 
     /**
      * 返回当前请求的 ID.
-     *
-     * @return string
      */
     public static function getCurrentRequestId(): string
     {
@@ -146,10 +123,6 @@ class Debug
 
     /**
      * 设置用于存储收集数据的存储后端.
-     *
-     * @param null|\DebugBar\Storage\StorageInterface $storage
-     *
-     * @return \DebugBar\DebugBar
      */
     public static function setStorage(?StorageInterface $storage = null): DebugBar
     {
@@ -158,8 +131,6 @@ class Debug
 
     /**
      * 返回用于存储收集数据的存储后端.
-     *
-     * @return \DebugBar\Storage\StorageInterface
      */
     public static function getStorage(): StorageInterface
     {
@@ -168,8 +139,6 @@ class Debug
 
     /**
      * 检查是否保持数据.
-     *
-     * @return bool
      */
     public static function isDataPersisted(): bool
     {
@@ -178,10 +147,6 @@ class Debug
 
     /**
      * 设置 HTTP 驱动.
-     *
-     * @param \DebugBar\HttpDriverInterface $driver
-     *
-     * @return \DebugBar\DebugBar
      */
     public static function setHttpDriver(HttpDriverInterface $driver): DebugBar
     {
@@ -192,8 +157,6 @@ class Debug
      * 返回 HTTP 驱动.
      *
      * 如果没有定义 HTTP 驱动，则会自动创建 \DebugBar\PhpHttpDriver.
-     *
-     * @return \DebugBar\HttpDriverInterface
      */
     public static function getHttpDriver(): HttpDriverInterface
     {
@@ -202,8 +165,6 @@ class Debug
 
     /**
      * 从收集器收集数据.
-     *
-     * @return array
      */
     public static function collect(): array
     {
@@ -214,8 +175,6 @@ class Debug
      * 返回收集的数据.
      *
      * 如果尚未收集到数据，将收集数据.
-     *
-     * @return array
      */
     public static function getData(): array
     {
@@ -224,12 +183,6 @@ class Debug
 
     /**
      * 返回包含数据的 HTTP 头数组.
-     *
-     * @param string $headerName
-     * @param int    $maxHeaderLength
-     * @param int    $maxTotalHeaderLength
-     *
-     * @return array
      */
     public static function getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000): array
     {
@@ -238,12 +191,6 @@ class Debug
 
     /**
      * 通过 HTTP 头数组发送数据.
-     *
-     * @param null|bool $useOpenHandler
-     * @param string    $headerName
-     * @param int       $maxHeaderLength
-     *
-     * @return \DebugBar\DebugBar
      */
     public static function sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096): DebugBar
     {
@@ -252,8 +199,6 @@ class Debug
 
     /**
      * 将数据存在 session 中.
-     *
-     * @return \DebugBar\DebugBar
      */
     public static function stackData(): DebugBar
     {
@@ -262,8 +207,6 @@ class Debug
 
     /**
      * 检查 session 中是否存在数据.
-     *
-     * @return bool
      */
     public static function hasStackedData(): bool
     {
@@ -272,10 +215,6 @@ class Debug
 
     /**
      * 返回 session 中保存的数据.
-     *
-     * @param bool $delete
-     *
-     * @return array
      */
     public static function getStackedData(bool $delete = true): array
     {
@@ -284,10 +223,6 @@ class Debug
 
     /**
      * 设置 session 中保存数据的 key.
-     *
-     * @param string $ns
-     *
-     * @return \DebugBar\DebugBar
      */
     public static function setStackDataSessionNamespace(string $ns): DebugBar
     {
@@ -296,8 +231,6 @@ class Debug
 
     /**
      * 获取 session 中保存数据的 key.
-     *
-     * @return string
      */
     public static function getStackDataSessionNamespace(): string
     {
@@ -306,10 +239,6 @@ class Debug
 
     /**
      * 设置是否仅使用 session 来保存数据，即使已启用存储.
-     *
-     * @param bool $enabled
-     *
-     * @return \DebugBar\DebugBar
      */
     public static function setStackAlwaysUseSessionStorage(bool $enabled = true): DebugBar
     {
@@ -318,8 +247,6 @@ class Debug
 
     /**
      * 检查 session 是否始终用于保存数据，即使已启用存储.
-     *
-     * @return bool
      */
     public static function isStackAlwaysUseSessionStorage(): bool
     {
@@ -328,11 +255,6 @@ class Debug
 
     /**
      * 返回此实例的 \DebugBar\JavascriptRenderer.
-     *
-     * @param null|string $baseUrl
-     * @param null|string $basePath
-     *
-     * @return \DebugBar\JavascriptRenderer
      */
     public static function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer
     {
@@ -341,8 +263,6 @@ class Debug
 
     /**
      * 返回应用管理.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public static function getContainer(): IContainer
     {
@@ -352,10 +272,7 @@ class Debug
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return \Leevel\Debug\IDebug
+     * @param mixed $value
      */
     public static function setOption(string $name, $value): BaseIDebug
     {
@@ -364,9 +281,6 @@ class Debug
 
     /**
      * 响应.
-     *
-     * @param \Leevel\Http\IRequest  $request
-     * @param \Leevel\Http\IResponse $response
      */
     public static function handle(IRequest $request, IResponse $response): void
     {
@@ -392,8 +306,7 @@ class Debug
     /**
      * 添加一条消息.
      *
-     * @param mixed  $message
-     * @param string $label
+     * @param mixed $message
      */
     public static function message($message, string $label = 'info'): void
     {
@@ -492,9 +405,6 @@ class Debug
 
     /**
      * 开始调试时间.
-     *
-     * @param string      $name
-     * @param null|string $label
      */
     public static function time(string $name, ?string $label = null): void
     {
@@ -503,8 +413,6 @@ class Debug
 
     /**
      * 停止调试时间.
-     *
-     * @param string $name
      */
     public static function end(string $name): void
     {
@@ -513,10 +421,6 @@ class Debug
 
     /**
      * 添加一个时间调试.
-     *
-     * @param string $label
-     * @param float  $start
-     * @param float  $end
      */
     public static function addTime(string $label, float $start, float $end): void
     {
@@ -525,9 +429,6 @@ class Debug
 
     /**
      * 调试闭包执行时间.
-     *
-     * @param string   $label
-     * @param \Closure $closure
      */
     public static function closureTime(string $label, Closure $closure): void
     {
@@ -536,8 +437,6 @@ class Debug
 
     /**
      * 添加异常.
-     *
-     * @param \Throwable $e
      */
     public static function exception(Throwable $e): void
     {
@@ -546,8 +445,6 @@ class Debug
 
     /**
      * 获取 JSON 渲染.
-     *
-     * @return \Leevel\Debug\JsonRenderer
      */
     public static function getJsonRenderer(): JsonRenderer
     {
@@ -556,8 +453,6 @@ class Debug
 
     /**
      * 获取 Console 渲染.
-     *
-     * @return \Leevel\Debug\ConsoleRenderer
      */
     public static function getConsoleRenderer(): ConsoleRenderer
     {
@@ -574,8 +469,6 @@ class Debug
 
     /**
      * 是否初始化.
-     *
-     * @return bool
      */
     public static function isBootstrap(): bool
     {
@@ -584,8 +477,6 @@ class Debug
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Debug\Debug
      */
     public static function proxy(): BaseDebug
     {

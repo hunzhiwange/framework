@@ -246,8 +246,6 @@ class Compiler implements ICompiler
 
     /**
      * 获取编译器.
-     *
-     * @return array
      */
     public function getCompilers(): array
     {
@@ -291,8 +289,6 @@ class Compiler implements ICompiler
 
     /**
      * node.tag.
-     *
-     * @return array
      */
     public function getNodeTagHelp(): array
     {
@@ -301,8 +297,6 @@ class Compiler implements ICompiler
 
     /**
      * js.tag.
-     *
-     * @return array
      */
     public function getJsTagHelp(): array
     {
@@ -311,8 +305,6 @@ class Compiler implements ICompiler
 
     /**
      * 全局编译器（保护标签）.
-     *
-     * @param array $theme
      */
     public function globalCompiler(array &$theme): void
     {
@@ -321,8 +313,6 @@ class Compiler implements ICompiler
 
     /**
      * 全局还原编译器（保护标签还原）.
-     *
-     * @param array $theme
      */
     public function globalrevertCompiler(array &$theme): void
     {
@@ -331,8 +321,6 @@ class Compiler implements ICompiler
 
     /**
      * node.code 还原编译器.
-     *
-     * @param array $theme
      */
     public function revertCompiler(array &$theme): void
     {
@@ -341,8 +329,6 @@ class Compiler implements ICompiler
 
     /**
      * 变量.
-     *
-     * @param array $theme
      */
     public function variableCodeCompiler(array &$theme): void
     {
@@ -358,8 +344,6 @@ class Compiler implements ICompiler
 
     /**
      * if.
-     *
-     * @param array $theme
      */
     public function ifCodeCompiler(array &$theme): void
     {
@@ -371,8 +355,6 @@ class Compiler implements ICompiler
 
     /**
      * elseif.
-     *
-     * @param array $theme
      */
     public function elseifCodeCompiler(array &$theme): void
     {
@@ -384,8 +366,6 @@ class Compiler implements ICompiler
 
     /**
      * else 标签.
-     *
-     * @param array $theme
      */
     public function elseCodeCompiler(array &$theme): void
     {
@@ -396,8 +376,6 @@ class Compiler implements ICompiler
 
     /**
      * foreach.
-     *
-     * @param array $theme
      *
      * @throws \InvalidArgumentException
      */
@@ -430,8 +408,6 @@ class Compiler implements ICompiler
 
     /**
      * for.
-     *
-     * @param array $theme
      */
     public function forCodeCompiler(array &$theme): void
     {
@@ -442,8 +418,6 @@ class Compiler implements ICompiler
 
     /**
      * while 头部.
-     *
-     * @param array $theme
      */
     public function whileCodeCompiler(array &$theme): void
     {
@@ -454,8 +428,6 @@ class Compiler implements ICompiler
 
     /**
      * php 脚本.
-     *
-     * @param array $theme
      */
     public function phpCodeCompiler(array &$theme): void
     {
@@ -466,8 +438,6 @@ class Compiler implements ICompiler
 
     /**
      * 注释.
-     *
-     * @param array $theme
      */
     public function noteCodeCompiler(array &$theme): void
     {
@@ -476,8 +446,6 @@ class Compiler implements ICompiler
 
     /**
      * PHP echo 标签.
-     *
-     * @param array $theme
      */
     public function echoCodeCompiler(array &$theme): void
     {
@@ -488,8 +456,6 @@ class Compiler implements ICompiler
 
     /**
      * javascript 初始标签.
-     *
-     * @param array $theme
      */
     public function scriptCodeCompiler(array &$theme): void
     {
@@ -500,8 +466,6 @@ class Compiler implements ICompiler
 
     /**
      * css 初始标签.
-     *
-     * @param array $theme
      */
     public function styleCodeCompiler(array &$theme): void
     {
@@ -512,8 +476,6 @@ class Compiler implements ICompiler
 
     /**
      * endtag.
-     *
-     * @param array $theme
      */
     public function endtagCodeCompiler(array &$theme): void
     {
@@ -561,8 +523,6 @@ class Compiler implements ICompiler
 
     /**
      * 变量及表达式.
-     *
-     * @param array $theme
      */
     public function jsvarCompiler(array &$theme): void
     {
@@ -573,8 +533,6 @@ class Compiler implements ICompiler
 
     /**
      * let 编译器.
-     *
-     * @param array $theme
      */
     public function letJsCompiler(array &$theme): void
     {
@@ -600,8 +558,6 @@ class Compiler implements ICompiler
 
     /**
      * if 编译器.
-     *
-     * @param array $theme
      */
     public function ifJsCompiler(array &$theme): void
     {
@@ -615,8 +571,6 @@ class Compiler implements ICompiler
 
     /**
      * elseif 编译器.
-     *
-     * @param array $theme
      */
     public function elseifJsCompiler(array &$theme): void
     {
@@ -629,8 +583,6 @@ class Compiler implements ICompiler
 
     /**
      * else.
-     *
-     * @param array $theme
      */
     public function elseJsCompiler(array &$theme): void
     {
@@ -639,8 +591,6 @@ class Compiler implements ICompiler
 
     /**
      * for 循环.
-     *
-     * @param array $theme
      *
      * @throws \InvalidArgumentException
      */
@@ -675,8 +625,6 @@ class Compiler implements ICompiler
 
     /**
      * assign.
-     *
-     * @param array $theme
      */
     public function assignNodeCompiler(array &$theme): void
     {
@@ -703,8 +651,6 @@ class Compiler implements ICompiler
 
     /**
      * if.
-     *
-     * @param array $theme
      */
     public function ifNodeCompiler(array &$theme): void
     {
@@ -718,8 +664,6 @@ class Compiler implements ICompiler
 
     /**
      * elseif.
-     *
-     * @param array $theme
      */
     public function elseifNodeCompiler(array &$theme): void
     {
@@ -731,8 +675,6 @@ class Compiler implements ICompiler
 
     /**
      * else.
-     *
-     * @param array $theme
      */
     public function elseNodeCompiler(array &$theme): void
     {
@@ -742,8 +684,6 @@ class Compiler implements ICompiler
 
     /**
      * foreach list.
-     *
-     * @param array $theme
      */
     public function listNodeCompiler(array &$theme): void
     {
@@ -785,8 +725,6 @@ class Compiler implements ICompiler
 
     /**
      * lists 增强版.
-     *
-     * @param array $theme
      */
     public function listsNodeCompiler(array &$theme): void
     {
@@ -845,8 +783,6 @@ class Compiler implements ICompiler
 
     /**
      * include.
-     *
-     * @param array $theme
      */
     public function includeNodeCompiler(array &$theme): void
     {
@@ -875,8 +811,6 @@ class Compiler implements ICompiler
 
     /**
      * for.
-     *
-     * @param array $theme
      */
     public function forNodeCompiler(array &$theme): void
     {
@@ -910,8 +844,6 @@ class Compiler implements ICompiler
 
     /**
      * while.
-     *
-     * @param array $theme
      */
     public function whileNodeCompiler(array &$theme): void
     {
@@ -924,8 +856,6 @@ class Compiler implements ICompiler
 
     /**
      * break.
-     *
-     * @param array $theme
      */
     public function breakNodeCompiler(array &$theme): void
     {
@@ -935,8 +865,6 @@ class Compiler implements ICompiler
 
     /**
      * continue.
-     *
-     * @param array $theme
      */
     public function continueNodeCompiler(array &$theme): void
     {
@@ -946,8 +874,6 @@ class Compiler implements ICompiler
 
     /**
      * php.
-     *
-     * @param array $theme
      */
     public function phpNodeCompiler(array &$theme): void
     {
@@ -957,8 +883,6 @@ class Compiler implements ICompiler
 
     /**
      * 属性编译.
-     *
-     * @param array $theme
      */
     public function attributeNodeCompiler(array &$theme): void
     {
@@ -1016,11 +940,6 @@ class Compiler implements ICompiler
 
     /**
      * 分析if.
-     *
-     * @param string      $content
-     * @param null|string $type
-     *
-     * @return string
      */
     protected function parseContentIf(string $content, ?string $type = null): string
     {
@@ -1044,10 +963,6 @@ class Compiler implements ICompiler
 
     /**
      * 解析 JS 变量内容.
-     *
-     * @param string $content
-     *
-     * @return string
      */
     protected function parseJcontent(string $content): string
     {
@@ -1063,10 +978,6 @@ class Compiler implements ICompiler
 
     /**
      * 解析表达式语法.
-     *
-     * @param string $content
-     *
-     * @return string
      */
     protected function parseExpression(string $content): string
     {
@@ -1153,10 +1064,6 @@ class Compiler implements ICompiler
 
     /**
      * 是否为字符串表达式字符.
-     *
-     * @param string $char
-     *
-     * @return bool
      */
     protected function isVarExpression(string $char): bool
     {
@@ -1169,11 +1076,6 @@ class Compiler implements ICompiler
 
     /**
      * 解析 JS 风格函数.
-     *
-     * @param string $name
-     * @param array  $var
-     *
-     * @return string
      */
     protected function parseJsFunction(string $name, array $var): string
     {
@@ -1182,11 +1084,6 @@ class Compiler implements ICompiler
 
     /**
      * 解析变量内容.
-     *
-     * @param string $content
-     * @param bool   $isFunc
-     *
-     * @return string
      */
     protected function parseContent(string $content, bool $isFunc = true): string
     {
@@ -1234,12 +1131,6 @@ class Compiler implements ICompiler
 
     /**
      * 解析函数.
-     *
-     * @param string $name
-     * @param array  $var
-     * @param bool   $isJavascript
-     *
-     * @return string
      */
     protected function parseVarFunction(string $name, array $var, bool $isJavascript = false): string
     {
@@ -1283,12 +1174,6 @@ class Compiler implements ICompiler
 
     /**
      * 数组格式.
-     *
-     * @param array $vars
-     * @param bool  $forObj
-     * @param int   $start
-     *
-     * @return string
      */
     protected function arrayHandler(array &$vars, bool $forObj = true, int $start = 2): string
     {
@@ -1310,11 +1195,6 @@ class Compiler implements ICompiler
 
     /**
      * 编码内容.
-     *
-     * @param string $content
-     * @param string $type
-     *
-     * @return string
      */
     protected function encodeContent(string $content, string $type = ''): string
     {
@@ -1332,12 +1212,7 @@ class Compiler implements ICompiler
     /**
      * 验证节点是否正确.
      *
-     * @param array $theme
-     * @param bool  $jsNode
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return bool
      */
     protected function checkNode(array $theme, bool $jsNode = false): bool
     {
@@ -1371,10 +1246,6 @@ class Compiler implements ICompiler
 
     /**
      * 取得节点的属性列表.
-     *
-     * @param array $theme
-     *
-     * @return array
      */
     protected function getNodeAttribute(array $theme): array
     {
@@ -1390,8 +1261,6 @@ class Compiler implements ICompiler
     /**
      * 取得body编译内容.
      *
-     * @param array $theme
-     *
      * @return string|void
      */
     protected function getNodeBody(array $theme)
@@ -1405,11 +1274,6 @@ class Compiler implements ICompiler
 
     /**
      * 正则属性转义.
-     *
-     * @param string $txt
-     * @param bool   $esc
-     *
-     * @return string
      */
     protected function escapeRegexCharacter(string $txt, bool $esc = true): string
     {
@@ -1462,11 +1326,6 @@ class Compiler implements ICompiler
 
     /**
      * 正则属性转义.
-     *
-     * @param string $txt
-     * @param bool   $esc
-     *
-     * @return string
      */
     protected function escapeCharacter(string $txt, bool $esc = true): string
     {
@@ -1511,8 +1370,6 @@ class Compiler implements ICompiler
      * PHP 标签包裹内容.
      *
      * @param array $content
-     *
-     * @return string
      */
     protected function withPhpTag(string $content): string
     {
@@ -1521,8 +1378,6 @@ class Compiler implements ICompiler
 
     /**
      * PHP 开始标签.
-     *
-     * @return string
      */
     protected function phpTagStart(): string
     {
@@ -1531,8 +1386,6 @@ class Compiler implements ICompiler
 
     /**
      * PHP 结束标签.
-     *
-     * @return string
      */
     protected function phpTagEnd(): string
     {

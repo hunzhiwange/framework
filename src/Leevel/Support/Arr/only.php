@@ -22,11 +22,6 @@ namespace Leevel\Support\Arr;
 
 /**
  * 返回白名单过滤后的数据.
- *
- * @param array $input
- * @param array $filter
- *
- * @return array
  */
 function only(array &$input, array $filter): array
 {

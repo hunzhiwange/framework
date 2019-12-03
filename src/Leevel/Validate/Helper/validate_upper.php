@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 验证是否都是大写.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_upper($value): bool
 {

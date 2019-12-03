@@ -81,11 +81,6 @@ class UploadedFile extends File
     /**
      * 构造函数
      * $_FILES['foo'](tmp_name, name, type, error).
-     *
-     * @param string      $path
-     * @param string      $originalName
-     * @param null|string $mimeType
-     * @param null|int    $error
      */
     public function __construct(string $path, string $originalName, ?string $mimeType = null, ?int $error = null)
     {
@@ -99,8 +94,6 @@ class UploadedFile extends File
 
     /**
      * 返回文件原始名字.
-     *
-     * @return null|string
      */
     public function getOriginalName(): ?string
     {
@@ -109,8 +102,6 @@ class UploadedFile extends File
 
     /**
      * 返回文件原始名字扩展.
-     *
-     * @return string
      */
     public function getOriginalExtension(): string
     {
@@ -119,8 +110,6 @@ class UploadedFile extends File
 
     /**
      * 返回文件类型.
-     *
-     * @return null|string
      */
     public function getMimeType(): ?string
     {
@@ -129,8 +118,6 @@ class UploadedFile extends File
 
     /**
      * 返回上传错误.
-     *
-     * @return int
      */
     public function getError(): int
     {
@@ -139,8 +126,6 @@ class UploadedFile extends File
 
     /**
      * 文件是否上传成功.
-     *
-     * @return bool
      */
     public function isValid(): bool
     {
@@ -173,7 +158,6 @@ class UploadedFile extends File
     /**
      * 返回文件最大上传字节
      *
-     * @return int
      * @codeCoverageIgnoreStart
      */
     public static function getMaxFilesize(): int
@@ -211,8 +195,6 @@ class UploadedFile extends File
 
     /**
      * 上传错误.
-     *
-     * @return string
      */
     public function getErrorMessage(): string
     {

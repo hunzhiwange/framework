@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 是否为中文、数字、下划线、短横线和字母.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_chinese_alpha_dash($value): bool
 {

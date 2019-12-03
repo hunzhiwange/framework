@@ -208,9 +208,6 @@ class Condition
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @throws \Leevel\Database\ConditionNotFoundException
      *
      * @return mixed
@@ -226,10 +223,6 @@ class Condition
      * 插入数据 insert (支持原生 sql).
      *
      * @param array|string $data
-     * @param array        $bind
-     * @param bool         $replace
-     *
-     * @return array
      */
     public function insert($data, array $bind = [], bool $replace = false): array
     {
@@ -264,13 +257,7 @@ class Condition
     /**
      * 批量插入数据 insertAll.
      *
-     * @param array $data
-     * @param array $bind
-     * @param bool  $replace
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     public function insertAll(array $data, array $bind = [], bool $replace = false): array
     {
@@ -318,11 +305,8 @@ class Condition
      * 更新数据 update (支持原生 sql).
      *
      * @param array|string $data
-     * @param array        $bind
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     public function update($data, array $bind = []): array
     {
@@ -367,11 +351,6 @@ class Condition
 
     /**
      * 删除数据 delete (支持原生 sql).
-     *
-     * @param null|string $data
-     * @param array       $bind
-     *
-     * @return array
      */
     public function delete(?string $data = null, array $bind = []): array
     {
@@ -406,8 +385,6 @@ class Condition
 
     /**
      * 清空表重置自增 ID.
-     *
-     * @return array
      */
     public function truncate(): array
     {
@@ -422,9 +399,6 @@ class Condition
     /**
      * 根据分页设置条件.
      *
-     * @param int $page
-     * @param int $perPage
-     *
      * @return \Leevel\Database\Condition
      */
     public function forPage(int $page, int $perPage = 15): self
@@ -434,8 +408,6 @@ class Condition
 
     /**
      * 时间控制语句开始.
-     *
-     * @param string $type
      *
      * @throws \InvalidArgumentException
      *
@@ -477,8 +449,6 @@ class Condition
     /**
      * 重置查询条件.
      *
-     * @param null|string $option
-     *
      * @return \Leevel\Database\Condition
      */
     public function reset(?string $option = null): self
@@ -498,8 +468,6 @@ class Condition
 
     /**
      * prefix 查询.
-     *
-     * @param string $prefix
      *
      * @return \Leevel\Database\Condition
      */
@@ -537,8 +505,6 @@ class Condition
 
     /**
      * 获取表别名.
-     *
-     * @return string
      */
     public function getAlias(): string
     {
@@ -548,8 +514,7 @@ class Condition
     /**
      * 添加字段.
      *
-     * @param mixed       $cols
-     * @param null|string $table
+     * @param mixed $cols
      *
      * @return \Leevel\Database\Condition
      */
@@ -571,8 +536,7 @@ class Condition
     /**
      * 设置字段.
      *
-     * @param mixed       $cols
-     * @param null|string $table
+     * @param mixed $cols
      *
      * @return \Leevel\Database\Condition
      */
@@ -633,8 +597,6 @@ class Condition
     /**
      * Where 原生查询.
      *
-     * @param string $raw
-     *
      * @return \Leevel\Database\Condition
      */
     public function whereRaw(string $raw): self
@@ -653,8 +615,6 @@ class Condition
 
     /**
      * Where 原生 OR 查询.
-     *
-     * @param string $raw
      *
      * @return \Leevel\Database\Condition
      */
@@ -853,7 +813,6 @@ class Condition
      *
      * @param mixed      $names
      * @param null|mixed $value
-     * @param int        $type
      *
      * @return \Leevel\Database\Condition
      */
@@ -1058,7 +1017,6 @@ class Condition
      * 添加一个 UNION 查询.
      *
      * @param array|callable|string $selects
-     * @param string                $type
      *
      * @throws \InvalidArgumentException
      *
@@ -1183,8 +1141,6 @@ class Condition
      * 添加一个 HAVING 条件
      * < 参数规范参考 where()方法 >.
      *
-     * @param array $data
-     *
      * @return \Leevel\Database\Condition
      */
     public function having(...$cond): self
@@ -1202,8 +1158,6 @@ class Condition
     /**
      * orHaving 查询条件.
      *
-     * @param array $data
-     *
      * @return \Leevel\Database\Condition
      */
     public function orHaving(...$cond): self
@@ -1220,8 +1174,6 @@ class Condition
 
     /**
      * Having 原生查询.
-     *
-     * @param string $raw
      *
      * @return \Leevel\Database\Condition
      */
@@ -1241,8 +1193,6 @@ class Condition
 
     /**
      * Having 原生 OR 查询.
-     *
-     * @param string $raw
      *
      * @return \Leevel\Database\Condition
      */
@@ -1408,7 +1358,6 @@ class Condition
      * 添加排序.
      *
      * @param array|string $expression
-     * @param string       $orderDefault
      *
      * @return \Leevel\Database\Condition
      */
@@ -1517,8 +1466,6 @@ class Condition
     /**
      * 最近排序数据.
      *
-     * @param string $field
-     *
      * @return \Leevel\Database\Condition
      */
     public function latest(string $field = 'create_at'): self
@@ -1528,8 +1475,6 @@ class Condition
 
     /**
      * 最早排序数据.
-     *
-     * @param string $field
      *
      * @return \Leevel\Database\Condition
      */
@@ -1559,9 +1504,6 @@ class Condition
     /**
      * 总记录数.
      *
-     * @param string $field
-     * @param string $alias
-     *
      * @return \Leevel\Database\Condition
      */
     public function count(string $field = '*', string $alias = 'row_count'): self
@@ -1575,9 +1517,6 @@ class Condition
 
     /**
      * 平均数.
-     *
-     * @param string $field
-     * @param string $alias
      *
      * @return \Leevel\Database\Condition
      */
@@ -1593,9 +1532,6 @@ class Condition
     /**
      * 最大值.
      *
-     * @param string $field
-     * @param string $alias
-     *
      * @return \Leevel\Database\Condition
      */
     public function max(string $field, string $alias = 'max_value'): self
@@ -1610,9 +1546,6 @@ class Condition
     /**
      * 最小值.
      *
-     * @param string $field
-     * @param string $alias
-     *
      * @return \Leevel\Database\Condition
      */
     public function min(string $field, string $alias = 'min_value'): self
@@ -1626,9 +1559,6 @@ class Condition
 
     /**
      * 合计
-     *
-     * @param string $field
-     * @param string $alias
      *
      * @return \Leevel\Database\Condition
      */
@@ -1684,8 +1614,6 @@ class Condition
     /**
      * 查询几条记录.
      *
-     * @param int $count
-     *
      * @return \Leevel\Database\Condition
      */
     public function top(int $count = 30): self
@@ -1699,9 +1627,6 @@ class Condition
 
     /**
      * limit 限制条数.
-     *
-     * @param int $offset
-     * @param int $count
      *
      * @return \Leevel\Database\Condition
      */
@@ -1725,8 +1650,6 @@ class Condition
     /**
      * 是否构造一个 FOR UPDATE 查询.
      *
-     * @param bool $flag
-     *
      * @return \Leevel\Database\Condition
      */
     public function forUpdate(bool $flag = true): self
@@ -1742,10 +1665,6 @@ class Condition
 
     /**
      * 获得查询字符串.
-     *
-     * @param bool $withLogicGroup
-     *
-     * @return string
      */
     public function makeSql(bool $withLogicGroup = false): string
     {
@@ -1786,8 +1705,7 @@ class Condition
     /**
      * 设置查询参数.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Database\Condition
      */
@@ -1800,8 +1718,6 @@ class Condition
 
     /**
      * 返回查询参数.
-     *
-     * @return array
      */
     public function getOption(): array
     {
@@ -1810,8 +1726,6 @@ class Condition
 
     /**
      * 返回参数绑定.
-     *
-     * @return array
      */
     public function getBindParams(): array
     {
@@ -1820,9 +1734,6 @@ class Condition
 
     /**
      * 调用 where 语法糖.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return \Leevel\Database\Condition
      */
@@ -1848,9 +1759,6 @@ class Condition
     /**
      * 调用 where 时间语法糖.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return \Leevel\Database\Condition
      */
     protected function callWhereTimeSugar(string $method, array $args): self
@@ -1868,9 +1776,6 @@ class Condition
 
     /**
      * 调用 having 语法糖.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return \Leevel\Database\Condition
      */
@@ -1896,9 +1801,6 @@ class Condition
     /**
      * 调用 having 时间语法糖.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return \Leevel\Database\Condition
      */
     protected function callHavingTimeSugar(string $method, array $args): self
@@ -1916,8 +1818,6 @@ class Condition
 
     /**
      * 解析 prefix 分析结果.
-     *
-     * @return string
      */
     protected function parsePrefix(): string
     {
@@ -1930,8 +1830,6 @@ class Condition
 
     /**
      * 解析 distinct 分析结果.
-     *
-     * @return string
      */
     protected function parseDistinct(): string
     {
@@ -1944,8 +1842,6 @@ class Condition
 
     /**
      * 分析语句中的字段.
-     *
-     * @return string
      */
     protected function parseColumns(): string
     {
@@ -1981,8 +1877,6 @@ class Condition
 
     /**
      * 解析 aggregate 分析结果.
-     *
-     * @return string
      */
     protected function parseAggregate(): string
     {
@@ -2002,8 +1896,6 @@ class Condition
 
     /**
      * 解析 from 分析结果.
-     *
-     * @return string
      */
     protected function parseFrom(): string
     {
@@ -2048,8 +1940,6 @@ class Condition
 
     /**
      * 解析 table 分析结果.
-     *
-     * @return string
      */
     protected function parseTable(): string
     {
@@ -2068,8 +1958,6 @@ class Condition
 
     /**
      * 解析 index 分析结果.
-     *
-     * @return string
      */
     protected function parseIndex(): string
     {
@@ -2094,10 +1982,6 @@ class Condition
 
     /**
      * 解析 where 分析结果.
-     *
-     * @param bool $child
-     *
-     * @return string
      */
     protected function parseWhere(bool $child = false): string
     {
@@ -2110,8 +1994,6 @@ class Condition
 
     /**
      * 解析 union 分析结果.
-     *
-     * @return string
      */
     protected function parseUnion(): string
     {
@@ -2142,8 +2024,6 @@ class Condition
 
     /**
      * 解析 order 分析结果.
-     *
-     * @return string
      */
     protected function parseOrder(): string
     {
@@ -2156,8 +2036,6 @@ class Condition
 
     /**
      * 解析 group 分析结果.
-     *
-     * @return string
      */
     protected function parseGroup(): string
     {
@@ -2170,10 +2048,6 @@ class Condition
 
     /**
      * 解析 having 分析结果.
-     *
-     * @param bool $child
-     *
-     * @return string
      */
     protected function parseHaving(bool $child = false): string
     {
@@ -2186,10 +2060,6 @@ class Condition
 
     /**
      * 解析 limit 分析结果.
-     *
-     * @param bool $withoutOffset
-     *
-     * @return string
      */
     protected function parseLimitCount(bool $withoutOffset = false): string
     {
@@ -2206,8 +2076,6 @@ class Condition
 
     /**
      * 解析 forUpdate 分析结果.
-     *
-     * @return string
      */
     protected function parseForUpdate(): string
     {
@@ -2221,12 +2089,7 @@ class Condition
     /**
      * 解析 condition　条件（包括 where,having）.
      *
-     * @param string $condType
-     * @param bool   $child
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function analyseCondition(string $condType, bool $child = false): string
     {
@@ -2385,8 +2248,7 @@ class Condition
     /**
      * 别名条件.
      *
-     * @param string $conditionType
-     * @param mixed  $cond
+     * @param mixed $cond
      *
      * @return \Leevel\Database\Condition
      */
@@ -2408,9 +2270,7 @@ class Condition
     /**
      * 别名类型和逻辑.
      *
-     * @param string $type
-     * @param string $logic
-     * @param mixed  $cond
+     * @param mixed $cond
      *
      * @return \Leevel\Database\Condition
      *
@@ -2612,7 +2472,6 @@ class Condition
      * 设置条件的一项.
      *
      * @param array|string $items
-     * @param string       $type
      */
     protected function setConditionItem($items, string $type = ''): void
     {
@@ -2644,9 +2503,6 @@ class Condition
 
     /**
      * 设置条件的逻辑和类型.
-     *
-     * @param null|string $type
-     * @param null|string $logic
      */
     protected function setTypeAndLogic(?string $type = null, ?string $logic = null): void
     {
@@ -2661,8 +2517,6 @@ class Condition
 
     /**
      * 获取条件的逻辑和类型.
-     *
-     * @return array
      */
     protected function getTypeAndLogic(): array
     {
@@ -2674,11 +2528,6 @@ class Condition
 
     /**
      * 格式化字段.
-     *
-     * @param string $field
-     * @param string $tableName
-     *
-     * @return string
      */
     protected function normalizeColumn(string $field, string $tableName): string
     {
@@ -2707,7 +2556,6 @@ class Condition
     /**
      * 连表 join 操作.
      *
-     * @param string                                                                   $joinType
      * @param array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $names
      * @param mixed                                                                    $cols
      * @param mixed
@@ -2839,8 +2687,7 @@ class Condition
     /**
      * 添加字段.
      *
-     * @param string $tableName
-     * @param mixed  $cols
+     * @param mixed $cols
      */
     protected function addCols(string $tableName, $cols): void
     {
@@ -2980,13 +2827,6 @@ class Condition
 
     /**
      * 分析绑定参数数据.
-     *
-     * @param array $data
-     * @param array $bind
-     * @param int   $questionMark
-     * @param int   $index
-     *
-     * @return array
      */
     protected function normalizeBindData(array $data, array $bind = [], int $questionMark = 0, int $index = 0): array
     {
@@ -3041,8 +2881,6 @@ class Condition
 
     /**
      * 设置当前表名字.
-     *
-     * @param string $table
      */
     protected function setTable(string $table): void
     {
@@ -3051,8 +2889,6 @@ class Condition
 
     /**
      * 获取当前表名字.
-     *
-     * @return string
      */
     protected function getTable(): string
     {
@@ -3061,8 +2897,6 @@ class Condition
 
     /**
      * 设置是否为表操作.
-     *
-     * @param bool $isTable
      */
     protected function setIsTable(bool $isTable = true): void
     {
@@ -3071,8 +2905,6 @@ class Condition
 
     /**
      * 返回是否为表操作.
-     *
-     * @return bool
      */
     protected function getIsTable(): bool
     {
@@ -3082,9 +2914,7 @@ class Condition
     /**
      * 解析时间信息.
      *
-     * @param string $field
-     * @param mixed  $value
-     * @param string $type
+     * @param mixed $value
      *
      * @throws \InvalidArgumentException
      *
@@ -3152,8 +2982,6 @@ class Condition
 
     /**
      * 设置当前是否处于时间条件状态.
-     *
-     * @param null|string $inTimeCondition
      */
     protected function setInTimeCondition(?string $inTimeCondition = null): void
     {
@@ -3162,8 +2990,6 @@ class Condition
 
     /**
      * 返回当前是否处于时间条件状态.
-     *
-     * @return null|string
      */
     protected function getInTimeCondition(): ?string
     {

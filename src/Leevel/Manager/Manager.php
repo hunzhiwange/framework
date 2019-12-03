@@ -50,8 +50,6 @@ abstract class Manager
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function __construct(IContainer $container)
     {
@@ -60,9 +58,6 @@ abstract class Manager
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      */
@@ -73,8 +68,6 @@ abstract class Manager
 
     /**
      * 返回 IOC 容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function container(): IContainer
     {
@@ -85,9 +78,6 @@ abstract class Manager
      * 连接 connect 并返回连接对象.
      *
      * @param null|array|string $options
-     * @param bool              $onlyNew
-     *
-     * @return object
      */
     public function connect($options = null, bool $onlyNew = false): object
     {
@@ -112,8 +102,6 @@ abstract class Manager
      * 重新连接.
      *
      * @param array|string $options
-     *
-     * @return object
      */
     public function reconnect($options = []): object
     {
@@ -147,8 +135,6 @@ abstract class Manager
 
     /**
      * 返回默认驱动.
-     *
-     * @return string
      */
     public function getDefaultDriver(): string
     {
@@ -157,8 +143,6 @@ abstract class Manager
 
     /**
      * 设置默认驱动.
-     *
-     * @param string $name
      */
     public function setDefaultDriver(string $name): void
     {
@@ -167,8 +151,6 @@ abstract class Manager
 
     /**
      * 获取容器配置值.
-     *
-     * @param null|string $name
      *
      * @return mixed
      */
@@ -182,8 +164,7 @@ abstract class Manager
     /**
      * 设置容器配置值.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function setContainerOption(string $name, $value): void
     {
@@ -193,17 +174,11 @@ abstract class Manager
 
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     abstract protected function normalizeOptionNamespace(): string;
 
     /**
      * 取得连接名字.
-     *
-     * @param null|string $name
-     *
-     * @return string
      */
     protected function normalizeOptionName(?string $name = null): string
     {
@@ -213,12 +188,7 @@ abstract class Manager
     /**
      * 创建连接.
      *
-     * @param string $connect
-     * @param array  $options
-     *
      * @throws \Exception
-     *
-     * @return object
      */
     protected function makeConnect(string $connect, array $options = []): object
     {
@@ -235,8 +205,6 @@ abstract class Manager
      * 分析连接参数以及其唯一值
      *
      * @param array|string $options
-     *
-     * @return array
      */
     protected function parseOptionAndUnique($options = []): array
     {
@@ -250,8 +218,6 @@ abstract class Manager
      * 分析连接参数.
      *
      * @param array|string $options
-     *
-     * @return array
      */
     protected function parseOptionParam($options = []): array
     {
@@ -271,10 +237,6 @@ abstract class Manager
 
     /**
      * 取得唯一值
-     *
-     * @param array $options
-     *
-     * @return string
      */
     protected function normalizeUnique(array $options): string
     {
@@ -283,11 +245,6 @@ abstract class Manager
 
     /**
      * 整理连接配置.
-     *
-     * @param string $connect
-     * @param array  $extendOption
-     *
-     * @return array
      */
     protected function normalizeConnectOption(string $connect, array $extendOption = []): array
     {
@@ -300,8 +257,6 @@ abstract class Manager
 
     /**
      * 读取连接全局配置.
-     *
-     * @return array
      */
     protected function getCommonOption(): array
     {
@@ -310,10 +265,6 @@ abstract class Manager
 
     /**
      * 过滤全局配置.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function filterCommonOption(array $options): array
     {
@@ -328,8 +279,6 @@ abstract class Manager
 
     /**
      * 过滤全局配置项.
-     *
-     * @return array
      */
     protected function defaultCommonOption(): array
     {
@@ -338,10 +287,6 @@ abstract class Manager
 
     /**
      * 分析连接配置.
-     *
-     * @param string $connect
-     *
-     * @return array
      */
     protected function getConnectOption(string $connect): array
     {
@@ -350,10 +295,6 @@ abstract class Manager
 
     /**
      * 清除配置 null.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function filterNullOfOption(array $options): array
     {

@@ -25,9 +25,7 @@ use Leevel\Di\Container;
 /**
  * 获取 cache 值
  *
- * @param string     $key
  * @param null|mixed $defaults
- * @param array      $option
  *
  * @return mixed
  */

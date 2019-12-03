@@ -22,10 +22,6 @@ namespace Leevel\Filesystem\Fso;
 
 /**
  * 判断是否为绝对路径.
- *
- * @param string $path
- *
- * @return bool
  */
 function is_absolute(string $path): bool
 {

@@ -27,7 +27,6 @@ use Leevel\Di\Container;
  *
  * @param array|string $key
  * @param null|mixed   $value
- * @param array        $option
  */
 function cache_set($key, $value = null, array $option = []): void
 {

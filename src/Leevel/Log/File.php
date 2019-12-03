@@ -61,8 +61,6 @@ class File extends Log implements ILog
 
     /**
      * 存储日志.
-     *
-     * @param array $data
      */
     public function store(array $data): void
     {
@@ -75,12 +73,6 @@ class File extends Log implements ILog
 
     /**
      * 格式化日志信息.
-     *
-     * @param string $level
-     * @param string $message
-     * @param array  $context
-     *
-     * @return string
      */
     public static function formatMessage(string $level, string $message, array $context = []): string
     {
@@ -93,8 +85,6 @@ class File extends Log implements ILog
 
     /**
      * 验证日志文件大小.
-     *
-     * @param string $filePath
      */
     protected function checkSize(string $filePath): void
     {
@@ -117,11 +107,7 @@ class File extends Log implements ILog
     /**
      * 格式化日志路径.
      *
-     * @param string $level
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function normalizePath(string $level): string
     {

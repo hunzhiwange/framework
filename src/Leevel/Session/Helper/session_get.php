@@ -25,7 +25,6 @@ use Leevel\Di\Container;
 /**
  * 取回 session.
  *
- * @param string     $name
  * @param null|mixed $defaults
  *
  * @return mixed

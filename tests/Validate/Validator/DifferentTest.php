@@ -45,9 +45,8 @@ class DifferentTest extends TestCase
     /**
      * @dataProvider baseUseProvider
      *
-     * @param mixed  $value
-     * @param mixed  $valueCompare
-     * @param string $param
+     * @param mixed $value
+     * @param mixed $valueCompare
      *
      * @api(
      *     title="验证通过的数据",
@@ -93,9 +92,8 @@ class DifferentTest extends TestCase
     /**
      * @dataProvider badProvider
      *
-     * @param mixed  $value
-     * @param mixed  $valueCompare
-     * @param string $param
+     * @param mixed $value
+     * @param mixed $valueCompare
      *
      * @api(
      *     title="未验证通过的数据",

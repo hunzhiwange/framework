@@ -33,22 +33,16 @@ interface ICompiler
 {
     /**
      * 获取编译器.
-     *
-     * @return array
      */
     public function getCompilers(): array;
 
     /**
      * node.tag.
-     *
-     * @return array
      */
     public function getNodeTagHelp(): array;
 
     /**
      * js.tag.
-     *
-     * @return array
      */
     public function getJsTagHelp(): array;
 }

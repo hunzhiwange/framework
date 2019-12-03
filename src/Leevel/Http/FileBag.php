@@ -48,8 +48,6 @@ class FileBag extends Bag
 
     /**
      * 构造函数.
-     *
-     * @param array $elements
      */
     public function __construct(array $elements = [])
     {
@@ -97,9 +95,6 @@ class FileBag extends Bag
      * 取回文件数组
      * 数组文件请在末尾加上反斜杆访问.
      *
-     * @param string $key
-     * @param array  $defaults
-     *
      * @return mixed
      */
     public function getArr(string $key, array $defaults = [])
@@ -140,11 +135,7 @@ class FileBag extends Bag
     /**
      * 格式化 $_FILES 数组.
      *
-     * @param array $data
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function normalizeFile(array $data): array
     {
@@ -168,11 +159,7 @@ class FileBag extends Bag
     /**
      * 格式化多维数组类文件为一维数组.
      *
-     * @param array $elements
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function normalizeArray(array $elements): array
     {
@@ -222,10 +209,6 @@ class FileBag extends Bag
 
     /**
      * 格式化 keys.
-     *
-     * @param array $data
-     *
-     * @return array
      */
     protected function normalizeKey(array $data): array
     {

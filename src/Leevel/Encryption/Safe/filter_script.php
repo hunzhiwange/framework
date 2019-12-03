@@ -24,8 +24,6 @@ namespace Leevel\Encryption\Safe;
  * 过滤 script.
  *
  * @param sting $strings
- *
- * @return string
  */
 function filter_script(string $strings): string
 {

@@ -26,13 +26,9 @@ use Leevel\Validate\IValidator;
 /**
  * 两个字段是否不同.
  *
- * @param mixed                       $value
- * @param array                       $param
- * @param \Leevel\Validate\IValidator $validator
+ * @param mixed $value
  *
  * @throws \InvalidArgumentException
- *
- * @return bool
  */
 function validate_different($value, array $param, IValidator $validator): bool
 {

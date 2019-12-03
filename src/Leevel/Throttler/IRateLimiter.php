@@ -42,15 +42,11 @@ interface IRateLimiter
 
     /**
      * 验证请求
-     *
-     * @return bool
      */
     public function attempt(): bool;
 
     /**
      * 判断资源是否被耗尽.
-     *
-     * @return bool
      */
     public function tooManyAttempt(): bool;
 
@@ -63,36 +59,26 @@ interface IRateLimiter
 
     /**
      * 下次重置时间.
-     *
-     * @return int
      */
     public function endTime(): int;
 
     /**
      * 请求返回 HEADER.
-     *
-     * @return array
      */
     public function header(): array;
 
     /**
      * 距离下一次请求等待时间.
-     *
-     * @return int
      */
     public function retryAfter(): int;
 
     /**
      * 指定时间内剩余请求次数.
-     *
-     * @return int
      */
     public function remaining(): int;
 
     /**
      * 指定时间长度.
-     *
-     * @param int $xRateLimitLimit
      *
      * @return \Leevel\Throttler\IRateLimiter
      */
@@ -101,16 +87,12 @@ interface IRateLimiter
     /**
      * 指定时间内允许的最大请求次数.
      *
-     * @param int $xRateLimitTime
-     *
      * @return \Leevel\Throttler\IRateLimiter
      */
     public function time(int $xRateLimitTime = 60): self;
 
     /**
      * 返回缓存组件.
-     *
-     * @return \Leevel\Cache\ICache
      */
     public function getCache(): ICache;
 }

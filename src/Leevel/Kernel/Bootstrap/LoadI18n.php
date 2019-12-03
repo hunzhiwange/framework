@@ -39,8 +39,6 @@ class LoadI18n
 {
     /**
      * 响应.
-     *
-     * @param \Leevel\Kernel\IApp $app
      */
     public function handle(IApp $app): void
     {
@@ -69,11 +67,7 @@ class LoadI18n
     /**
      * 获取扩展语言包.
      *
-     * @param \Leevel\Kernel\IApp $app
-     *
      * @throws \Exception
-     *
-     * @return array
      */
     public function getExtend(IApp $app): array
     {

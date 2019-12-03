@@ -33,20 +33,11 @@ interface IEncryption
 {
     /**
      * 加密.
-     *
-     * @param string $value
-     * @param int    $expiry
-     *
-     * @return string
      */
     public function encrypt(string $value, int $expiry = 0): string;
 
     /**
      * 解密.
-     *
-     * @param string $value
-     *
-     * @return string
      */
     public function decrypt(string $value): string;
 }

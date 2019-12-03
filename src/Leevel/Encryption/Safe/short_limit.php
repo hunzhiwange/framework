@@ -22,11 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * 短字符串长度验证
- *
- * @param string $strings
- * @param int    $maxLength
- *
- * @return string
  */
 function short_limit(string $strings, int $maxLength = 500): string
 {

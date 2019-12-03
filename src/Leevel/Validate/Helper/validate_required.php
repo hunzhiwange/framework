@@ -24,8 +24,6 @@ namespace Leevel\Validate\Helper;
  * 不能为空.
  *
  * @param mixed $value
- *
- * @return bool
  */
 function validate_required($value): bool
 {

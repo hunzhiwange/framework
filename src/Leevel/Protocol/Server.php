@@ -88,10 +88,6 @@ abstract class Server
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Di\IContainer $container
-     * @param \Leevel\Di\ICoroutine $coroutine
-     * @param array                 $option
      */
     public function __construct(IContainer $container, ICoroutine $coroutine, array $option = [])
     {
@@ -104,9 +100,6 @@ abstract class Server
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public function __call(string $method, array $args)
@@ -117,8 +110,7 @@ abstract class Server
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Protocol\IServer
      */
@@ -131,8 +123,6 @@ abstract class Server
 
     /**
      * 获取配置.
-     *
-     * @return array
      */
     public function getOption(): array
     {
@@ -141,8 +131,6 @@ abstract class Server
 
     /**
      * 添加自定义进程.
-     *
-     * @param string $process
      *
      * @throws \InvalidArgumentException
      */
@@ -185,8 +173,6 @@ abstract class Server
 
     /**
      * 返回服务.
-     *
-     * @return \Swoole\Server
      */
     public function getServer(): SwooleServer
     {
@@ -197,8 +183,6 @@ abstract class Server
      * 主进程的主线程.
      *
      * - 记录进程 id,脚本实现自动重启.
-     *
-     * @param \Swoole\Server $server
      *
      * @throws \InvalidArgumentException
      *
@@ -223,10 +207,6 @@ abstract class Server
      *
      * - 每次连接时(相当于每个浏览器第一次打开页面时)执行一次, reload 时连接不会断开, 也就不会再次触发该事件.
      *
-     * @param \Swoole\Server $server
-     * @param int            $fd
-     * @param int            $reactorId
-     *
      * @see https://wiki.swoole.com/wiki/page/49.html
      */
     public function onConnect(SwooleServer $server, int $fd, int $reactorId): void
@@ -243,9 +223,6 @@ abstract class Server
      *
      * - 由于服务端命令行也采用 QueryPHP,无需再次引入 QueryPHP
      * - 每个 Worker 进程启动或重启时都会执行.
-     *
-     * @param \Swoole\Server $server
-     * @param int            $workeId
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onWorkerStart.html
      */
@@ -274,8 +251,6 @@ abstract class Server
      *
      * - 服务器启动时执行一次.
      *
-     * @param \Swoole\Server $server
-     *
      * @see https://wiki.swoole.com/wiki/page/190.html
      */
     public function onManagerStart(SwooleServer $server): void
@@ -288,9 +263,6 @@ abstract class Server
 
     /**
      * worker进程终止时发生
-     *
-     * @param \Swoole\Server $server
-     * @param int            $workerId
      */
     public function onWorkerStop(SwooleServer $server, int $workerId): void
     {
@@ -304,11 +276,6 @@ abstract class Server
     /**
      * 监听数据发送事件.
      *
-     * @param \Swoole\Server $server
-     * @param int            $fd
-     * @param int            $reactorId
-     * @param string         $data
-     *
      * @see https://wiki.swoole.com/wiki/page/50.html
      */
     public function onReceive(SwooleServer $server, int $fd, int $reactorId, string $data): void
@@ -320,10 +287,6 @@ abstract class Server
     /**
      * 监听连接 Finish 事件.
      *
-     * @param \Swoole\Server $server
-     * @param int            $taskId
-     * @param string         $data
-     *
      * @see https://wiki.swoole.com/wiki/page/136.html
      */
     public function onFinish(SwooleServer $server, int $taskId, string $data): void
@@ -334,11 +297,6 @@ abstract class Server
 
     /**
      * 监听连接 task 事件.
-     *
-     * @param \Swoole\Server $server
-     * @param int            $taskId
-     * @param int            $fromId
-     * @param string         $data
      *
      * @throws \InvalidArgumentException
      *
@@ -380,8 +338,6 @@ abstract class Server
      *
      * - 服务器关闭时执行一次.
      *
-     * @param \Swoole\Server $server
-     *
      * @see https://wiki.swoole.com/wiki/page/p-event/onShutdown.html
      */
     public function onShutdown(SwooleServer $server): void
@@ -403,10 +359,6 @@ abstract class Server
 
     /**
      * 解析任务.
-     *
-     * @param string $task
-     *
-     * @return array
      */
     protected function parseTask(string $task): array
     {
@@ -503,8 +455,6 @@ abstract class Server
     /**
      * 设置 swoole 进程名称.
      *
-     * @param string $name
-     *
      * @throws \InvalidArgumentException
      *
      * @see http://php.net/manual/zh/function.cli-set-process-title.php
@@ -527,8 +477,6 @@ abstract class Server
 
     /**
      * 是否为守候进程运行.
-     *
-     * @return bool
      */
     protected function daemonize(): bool
     {
@@ -537,10 +485,6 @@ abstract class Server
 
     /**
      * 记录日志.
-     *
-     * @param string $message
-     * @param bool   $force
-     * @param string $formatTime
      */
     protected function log(string $message, bool $force = false, string $formatTime = 'H:i:s'): void
     {
@@ -553,11 +497,6 @@ abstract class Server
 
     /**
      * 消息时间.
-     *
-     * @param string $message
-     * @param string $formatTime
-     *
-     * @return string
      */
     protected function messageTime(string $message, string $formatTime = ''): string
     {

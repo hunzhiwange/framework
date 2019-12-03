@@ -73,15 +73,6 @@ class ManyMany extends Relation
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Database\Ddd\IEntity $targetEntity
-     * @param \Leevel\Database\Ddd\IEntity $sourceEntity
-     * @param \Leevel\Database\Ddd\IEntity $middleEntity
-     * @param string                       $targetKey
-     * @param string                       $sourceKey
-     * @param string                       $middleTargetKey
-     * @param string                       $middleSourceKey
-     * @param null|\Closure                $scope
      */
     public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, string $targetKey, string $sourceKey, string $middleTargetKey, string $middleSourceKey, ?Closure $scope = null)
     {
@@ -97,8 +88,6 @@ class ManyMany extends Relation
      *
      * - 获取包含软删除的数据.
      *
-     * @param bool $middleWithSoftDeleted
-     *
      * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
     public function middleWithSoftDeleted(bool $middleWithSoftDeleted = true): self
@@ -112,8 +101,6 @@ class ManyMany extends Relation
      * 中间表仅仅包含软删除数据的数据库查询集合对象.
      *
      * - 获取只包含软删除的数据.
-     *
-     * @param bool $middleOnlySoftDeleted
      *
      * @return \Leevel\Database\Ddd\Relation\ManyMany
      */
@@ -155,10 +142,6 @@ class ManyMany extends Relation
      * 匹配关联查询数据到模型实体.
      *
      * @param \Leevel\Database\Ddd\IEntity[] $entitys
-     * @param \Leevel\Collection\Collection  $result
-     * @param string                         $relation
-     *
-     * @return array
      */
     public function matchPreLoad(array $entitys, collection $result, string $relation): array
     {
@@ -228,8 +211,6 @@ class ManyMany extends Relation
 
     /**
      * 取得中间表模型实体.
-     *
-     * @return \Leevel\Database\Ddd\IEntity
      */
     public function getMiddleEntity(): IEntity
     {
@@ -238,8 +219,6 @@ class ManyMany extends Relation
 
     /**
      * 取得目标中间表关联字段.
-     *
-     * @return string
      */
     public function getMiddleTargetKey(): string
     {
@@ -248,8 +227,6 @@ class ManyMany extends Relation
 
     /**
      * 取得源中间表关联字段.
-     *
-     * @return string
      */
     public function getMiddleSourceKey(): string
     {
@@ -258,8 +235,6 @@ class ManyMany extends Relation
 
     /**
      * 查询关联数据.
-     *
-     * @param array $sourceValue
      */
     protected function selectRelationData(array $sourceValue): void
     {
@@ -288,8 +263,6 @@ class ManyMany extends Relation
 
     /**
      * 中间表软删除处理.
-     *
-     * @param array $middleCondition
      */
     protected function prepareMiddleSoftDeleted(array &$middleCondition): void
     {
@@ -313,8 +286,6 @@ class ManyMany extends Relation
 
     /**
      * 取回源模型实体对应数据.
-     *
-     * @return array
      */
     protected function getPreLoadSourceValue(array $entitys): array
     {
@@ -330,10 +301,6 @@ class ManyMany extends Relation
 
     /**
      * 模型实体映射数据.
-     *
-     * @param \Leevel\Collection\Collection $result
-     *
-     * @return array
      */
     protected function buildMap(Collection $result): array
     {

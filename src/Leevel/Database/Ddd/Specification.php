@@ -49,9 +49,6 @@ class Specification implements ISpecification
 
     /**
      * 构造函数.
-     *
-     * @param \Closure $spec
-     * @param \Closure $handle
      */
     public function __construct(Closure $spec, Closure $handle)
     {
@@ -61,9 +58,6 @@ class Specification implements ISpecification
 
     /**
      * 创建规约.
-     *
-     * @param \Closure $spec
-     * @param \Closure $handle
      *
      * @return static
      */
@@ -76,8 +70,6 @@ class Specification implements ISpecification
      * 是否满足规约.
      *
      * @param \Leevel\Database\Ddd\IEntity $entity
-     *
-     * @return bool
      */
     public function isSatisfiedBy(IEntity $entity): bool
     {

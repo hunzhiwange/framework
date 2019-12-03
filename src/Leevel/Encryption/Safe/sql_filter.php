@@ -22,10 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * sql 过滤.
- *
- * @param string $strings
- *
- * @return string
  */
 function sql_filter(string $strings): string
 {

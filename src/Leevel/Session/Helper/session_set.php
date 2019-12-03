@@ -25,8 +25,7 @@ use Leevel\Di\Container;
 /**
  * 设置 session.
  *
- * @param string $name
- * @param mixed  $value
+ * @param mixed $value
  */
 function session_set(string $name, $value): void
 {

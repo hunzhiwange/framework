@@ -54,8 +54,6 @@ class BootstrapSimple extends Bootstrap
 
     /**
      * 返回渲染 header.
-     *
-     * @return string
      */
     protected function getHeaderRender(): string
     {
@@ -64,8 +62,6 @@ class BootstrapSimple extends Bootstrap
 
     /**
      * 返回渲染 pager.ul.
-     *
-     * @return string
      */
     protected function getUlRender(): string
     {
@@ -74,8 +70,6 @@ class BootstrapSimple extends Bootstrap
 
     /**
      * 返回渲染 prev.
-     *
-     * @return string
      */
     protected function getPrevRender(): string
     {
@@ -101,8 +95,6 @@ class BootstrapSimple extends Bootstrap
 
     /**
      * 返回渲染 next.
-     *
-     * @return string
      */
     protected function getNextRender(): string
     {
@@ -128,8 +120,6 @@ class BootstrapSimple extends Bootstrap
 
     /**
      * 返回渲染 pager.endul.
-     *
-     * @return string
      */
     protected function getEndulRender(): string
     {
@@ -138,8 +128,6 @@ class BootstrapSimple extends Bootstrap
 
     /**
      * 返回渲染 footer.
-     *
-     * @return string
      */
     protected function getFooterRender(): string
     {

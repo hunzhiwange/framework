@@ -22,11 +22,6 @@ namespace Leevel\Support\Str;
 
 /**
  * 随机大写字母.
- *
- * @param int         $length
- * @param null|string $charBox
- *
- * @return string
  */
 function rand_alpha_uppercase(int $length, ?string $charBox = null): string
 {

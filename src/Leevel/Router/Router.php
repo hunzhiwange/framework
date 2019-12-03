@@ -117,8 +117,6 @@ class Router implements IRouter
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Di\IContainer $container
      */
     public function __construct(IContainer $container)
     {
@@ -127,10 +125,6 @@ class Router implements IRouter
 
     /**
      * 分发请求到路由.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IResponse
      */
     public function dispatch(IRequest $request): IResponse
     {
@@ -152,9 +146,6 @@ class Router implements IRouter
      * 设置路由请求预解析结果.
      *
      * - 可以用于高性能 Rpc 和 Websocket 预匹配数据.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param array                 $matchedData
      */
     public function setPreRequestMatched(IRequest $request, array $matchedData): void
     {
@@ -163,9 +154,6 @@ class Router implements IRouter
 
     /**
      * 穿越中间件.
-     *
-     * @param \Leevel\Http\IRequest $passed
-     * @param array                 $passedExtend
      */
     public function throughMiddleware(IRequest $passed, array $passedExtend = []): void
     {
@@ -184,8 +172,6 @@ class Router implements IRouter
 
     /**
      * 设置控制器相对目录.
-     *
-     * @param string $controllerDir
      */
     public function setControllerDir(string $controllerDir): void
     {
@@ -195,8 +181,6 @@ class Router implements IRouter
 
     /**
      * 返回控制器相对目录.
-     *
-     * @return string
      */
     public function getControllerDir(): string
     {
@@ -205,8 +189,6 @@ class Router implements IRouter
 
     /**
      * 设置路由.
-     *
-     * @param array $routers
      */
     public function setRouters(array $routers): void
     {
@@ -215,8 +197,6 @@ class Router implements IRouter
 
     /**
      * 取得当前路由.
-     *
-     * @return array
      */
     public function getRouters(): array
     {
@@ -225,8 +205,6 @@ class Router implements IRouter
 
     /**
      * 设置基础路径.
-     *
-     * @param array $basePaths
      */
     public function setBasePaths(array $basePaths): void
     {
@@ -235,8 +213,6 @@ class Router implements IRouter
 
     /**
      * 取得基础路径.
-     *
-     * @return array
      */
     public function getBasePaths(): array
     {
@@ -245,8 +221,6 @@ class Router implements IRouter
 
     /**
      * 设置分组路径.
-     *
-     * @param array $groupPaths
      */
     public function setGroupPaths(array $groupPaths): void
     {
@@ -255,8 +229,6 @@ class Router implements IRouter
 
     /**
      * 取得分组路径.
-     *
-     * @return array
      */
     public function getGroupPaths(): array
     {
@@ -265,8 +237,6 @@ class Router implements IRouter
 
     /**
      * 设置路由分组.
-     *
-     * @param array $groups
      */
     public function setGroups(array $groups): void
     {
@@ -275,8 +245,6 @@ class Router implements IRouter
 
     /**
      * 取得路由分组.
-     *
-     * @return array
      */
     public function getGroups(): array
     {
@@ -285,8 +253,6 @@ class Router implements IRouter
 
     /**
      * 设置中间件分组.
-     *
-     * @param array $middlewareGroups
      */
     public function setMiddlewareGroups(array $middlewareGroups): void
     {
@@ -295,8 +261,6 @@ class Router implements IRouter
 
     /**
      * 取得中间件分组.
-     *
-     * @return array
      */
     public function getMiddlewareGroups(): array
     {
@@ -305,8 +269,6 @@ class Router implements IRouter
 
     /**
      * 设置中间件别名.
-     *
-     * @param array $middlewareAlias
      */
     public function setMiddlewareAlias(array $middlewareAlias): void
     {
@@ -315,8 +277,6 @@ class Router implements IRouter
 
     /**
      * 取得中间件别名.
-     *
-     * @return array
      */
     public function getMiddlewareAlias(): array
     {
@@ -325,11 +285,6 @@ class Router implements IRouter
 
     /**
      * 合并中间件.
-     *
-     * @param array $middlewares
-     * @param array $newMiddlewares
-     *
-     * @return array
      */
     public function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {
@@ -349,8 +304,6 @@ class Router implements IRouter
      * 路由匹配.
      *
      * - 高效匹配，如果默认 PathInfo 路由能够匹配上则忽略 OpenApi 路由匹配.
-     *
-     * @return callable
      */
     protected function matchRouter(): callable
     {
@@ -371,8 +324,6 @@ class Router implements IRouter
     /**
      * 注解路由绑定.
      *
-     * @param array $dataPathInfo
-     *
      * @return callable|false
      */
     protected function annotationRouterBind(array $dataPathInfo)
@@ -391,8 +342,6 @@ class Router implements IRouter
 
     /**
      * 完成路由匹配数据.
-     *
-     * @param array $data
      */
     protected function resolveMatchedData(array $data): void
     {
@@ -410,11 +359,6 @@ class Router implements IRouter
 
     /**
      * 合并匹配数据.
-     *
-     * @param array $before
-     * @param array $after
-     *
-     * @return array
      */
     protected function mergeMatchedData(array $before, array $after): array
     {
@@ -434,10 +378,6 @@ class Router implements IRouter
 
     /**
      * 解析路由匹配数据.
-     *
-     * @param string $matche
-     *
-     * @return array
      */
     protected function normalizeMatchedData(string $matche): array
     {
@@ -460,10 +400,6 @@ class Router implements IRouter
 
     /**
      * 发送路由并返回响应.
-     *
-     * @param \Leevel\Http\IRequest $request
-     *
-     * @return \Leevel\Http\IResponse
      */
     protected function dispatchToRoute(IRequest $request): IResponse
     {
@@ -472,11 +408,6 @@ class Router implements IRouter
 
     /**
      * 运行路由.
-     *
-     * @param \Leevel\Http\IRequest $request
-     * @param callable              $bind
-     *
-     * @return \Leevel\Http\IResponse
      */
     protected function runRoute(IRequest $request, callable $bind): IResponse
     {
@@ -504,8 +435,6 @@ class Router implements IRouter
 
     /**
      * 生成路由节点资源.
-     *
-     * @return string
      */
     protected function makeRouterNode(): string
     {
@@ -521,8 +450,6 @@ class Router implements IRouter
 
     /**
      * 取得控制器命名空间目录.
-     *
-     * @return string
      */
     protected function parseControllerDir(): string
     {
@@ -628,8 +555,6 @@ class Router implements IRouter
     /**
      * 格式化基于 pathInfo 的默认控制器.
      *
-     * @param string $matchedBind
-     *
      * @return callable|false
      */
     protected function normalizeControllerForDefault()
@@ -668,11 +593,6 @@ class Router implements IRouter
 
     /**
      * 控制器和方法子目录支持.
-     *
-     * @param string $className
-     * @param bool   $forAction
-     *
-     * @return string
      */
     protected function normalizeForSubdir(string $className, bool $forAction = false): string
     {
@@ -693,8 +613,6 @@ class Router implements IRouter
 
     /**
      * 取回应用名.
-     *
-     * @return string
      */
     protected function matchedApp(): string
     {
@@ -722,8 +640,6 @@ class Router implements IRouter
 
     /**
      * 取回控制器名.
-     *
-     * @return string
      */
     protected function matchedController(): string
     {
@@ -732,8 +648,6 @@ class Router implements IRouter
 
     /**
      * 取回方法名.
-     *
-     * @return string
      */
     protected function matchedAction(): string
     {
@@ -742,10 +656,6 @@ class Router implements IRouter
 
     /**
      * 转换匹配资源.
-     *
-     * @param string $matched
-     *
-     * @return string
      */
     protected function convertMatched(string $matched): string
     {
@@ -773,8 +683,6 @@ class Router implements IRouter
 
     /**
      * 取回匹配参数.
-     *
-     * @return array
      */
     protected function matchedParams(): array
     {
@@ -783,8 +691,6 @@ class Router implements IRouter
 
     /**
      * 取回匹配中间件.
-     *
-     * @return array
      */
     protected function matchedMiddlewares(): array
     {
@@ -796,8 +702,6 @@ class Router implements IRouter
 
     /**
      * 取回匹配变量.
-     *
-     * @return array
      */
     protected function matchedVars(): array
     {
@@ -806,8 +710,6 @@ class Router implements IRouter
 
     /**
      * 设置 OPTIONS PathInfo.
-     *
-     * @param \Leevel\Http\IRequest $request
      */
     protected function setOptionsPathInfo(IRequest $request): void
     {
@@ -820,10 +722,6 @@ class Router implements IRouter
 
     /**
      * 查找 app.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     protected function findApp(string $path): string
     {
@@ -837,8 +735,6 @@ class Router implements IRouter
 
     /**
      * 是否为 OPTIONS 请求.
-     *
-     * @return bool
      */
     protected function isOptionsRequest(): bool
     {

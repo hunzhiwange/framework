@@ -36,27 +36,19 @@ interface IUrl
     /**
      * 生成路由地址
      *
-     * @param string           $url
-     * @param array            $params
-     * @param string           $subdomain
      * @param null|bool|string $suffix
-     *
-     * @return string
      */
     public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
 
     /**
      * 返回 HTTP 请求
-     *
-     * @return \Leevel\Http\IRequest
      */
     public function getRequest(): IRequest;
 
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Router\IUrl
      */
@@ -64,8 +56,6 @@ interface IUrl
 
     /**
      * 获取域名.
-     *
-     * @return string
      */
     public function getDomain(): string;
 }

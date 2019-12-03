@@ -171,10 +171,6 @@ abstract class Mail implements IMail
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Router\IView         $view
-     * @param null|\Leevel\Event\IDispatch $dispatch
-     * @param array                        $option
      */
     public function __construct(IView $view, ?IDispatch $dispatch = null, array $option = [])
     {
@@ -186,9 +182,6 @@ abstract class Mail implements IMail
 
     /**
      * call.
-     *
-     * @param string $method
-     * @param array  $args
      *
      * @return mixed
      * @codeCoverageIgnore
@@ -206,8 +199,7 @@ abstract class Mail implements IMail
     /**
      * 设置配置.
      *
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      *
      * @return \Leevel\Mail\IMail
      */
@@ -221,9 +213,6 @@ abstract class Mail implements IMail
     /**
      * 设置邮件发送来源.
      *
-     * @param string      $address
-     * @param null|string $name
-     *
      * @return \Leevel\Mail\IMail
      */
     public function globalFrom(string $address, ?string $name = null): IMail
@@ -236,9 +225,6 @@ abstract class Mail implements IMail
     /**
      * 设置邮件发送地址
      *
-     * @param string      $address
-     * @param null|string $name
-     *
      * @return \Leevel\Mail\IMail
      */
     public function globalTo(string $address, ?string $name = null): IMail
@@ -250,9 +236,6 @@ abstract class Mail implements IMail
 
     /**
      * 视图 html 邮件内容.
-     *
-     * @param string $file
-     * @param array  $data
      *
      * @return \Leevel\Mail\IMail
      */
@@ -269,8 +252,6 @@ abstract class Mail implements IMail
     /**
      * html 邮件内容.
      *
-     * @param string $content
-     *
      * @return \Leevel\Mail\IMail
      */
     public function html(string $content): IMail
@@ -283,8 +264,6 @@ abstract class Mail implements IMail
     /**
      * 纯文本邮件内容.
      *
-     * @param string $content
-     *
      * @return \Leevel\Mail\IMail
      */
     public function plain(string $content): IMail
@@ -296,9 +275,6 @@ abstract class Mail implements IMail
 
     /**
      * 视图纯文本邮件内容.
-     *
-     * @param string $file
-     * @param array  $data
      *
      * @return \Leevel\Mail\IMail
      */
@@ -315,8 +291,6 @@ abstract class Mail implements IMail
     /**
      * 消息回调处理.
      *
-     * @param \Closure $callbacks
-     *
      * @return \Leevel\Mail\IMail
      */
     public function message(Closure $callbacks): IMail
@@ -328,9 +302,6 @@ abstract class Mail implements IMail
 
     /**
      * 添加附件.
-     *
-     * @param string        $file
-     * @param null|\Closure $callbacks
      *
      * @return \Leevel\Mail\IMail
      */
@@ -348,10 +319,6 @@ abstract class Mail implements IMail
      * 添加内存内容附件
      * file_get_content(path).
      *
-     * @param string        $data
-     * @param string        $name
-     * @param null|\Closure $callbacks
-     *
      * @return \Leevel\Mail\IMail
      */
     public function attachData(string $data, string $name, ?Closure $callbacks = null): IMail
@@ -366,10 +333,6 @@ abstract class Mail implements IMail
 
     /**
      * 图片嵌入邮件.
-     *
-     * @param string $file
-     *
-     * @return string
      */
     public function attachView(string $file): string
     {
@@ -380,12 +343,6 @@ abstract class Mail implements IMail
 
     /**
      * 内存内容图片嵌入邮件.
-     *
-     * @param string      $data
-     * @param string      $name
-     * @param null|string $contentType
-     *
-     * @return string
      */
     public function attachDataView(string $data, string $name, ?string $contentType = null): string
     {
@@ -398,10 +355,6 @@ abstract class Mail implements IMail
 
     /**
      * 格式化中文附件名字.
-     *
-     * @param string $file
-     *
-     * @return string
      */
     public function attachChinese(string $file): string
     {
@@ -415,11 +368,6 @@ abstract class Mail implements IMail
 
     /**
      * 发送邮件.
-     *
-     * @param null|\Closure $callbacks
-     * @param bool          $htmlPriority
-     *
-     * @return int
      */
     public function flush(?Closure $callbacks = null, bool $htmlPriority = true): int
     {
@@ -444,8 +392,6 @@ abstract class Mail implements IMail
 
     /**
      * 错误消息.
-     *
-     * @return array
      */
     public function failedRecipients(): array
     {
@@ -454,15 +400,11 @@ abstract class Mail implements IMail
 
     /**
      * 创建 transport.
-     *
-     * @return object
      */
     abstract protected function makeTransport(): object;
 
     /**
      * 事件派发.
-     *
-     * @param \Swift_Message $message
      */
     protected function handleDispatch(Swift_Message $message): void
     {
@@ -473,11 +415,6 @@ abstract class Mail implements IMail
 
     /**
      * 试图渲染数据.
-     *
-     * @param string $file
-     * @param array  $data
-     *
-     * @return string
      */
     protected function getViewData(string $file, array $data): string
     {
@@ -490,8 +427,6 @@ abstract class Mail implements IMail
 
     /**
      * 解析邮件内容.
-     *
-     * @param bool $htmlPriority
      */
     protected function parseMailContent(bool $htmlPriority = true): void
     {
@@ -540,10 +475,6 @@ abstract class Mail implements IMail
 
     /**
      * 发送消息对象.
-     *
-     * @param \Swift_Message $message
-     *
-     * @return int
      */
     protected function sendMessage(Swift_Message $message): int
     {
@@ -552,8 +483,6 @@ abstract class Mail implements IMail
 
     /**
      * 创建消息对象.
-     *
-     * @return \Swift_Message
      */
     protected function makeMessage(): Swift_Message
     {
@@ -575,9 +504,6 @@ abstract class Mail implements IMail
     /**
      * 邮件消息回调处理.
      *
-     * @param \Closure       $callbacks
-     * @param \Swift_Message $message
-     *
      * @return mixed
      */
     protected function callbackMessage(Closure $callbacks, Swift_Message $message)
@@ -587,10 +513,6 @@ abstract class Mail implements IMail
 
     /**
      * 路径创建 Swift_Attachment.
-     *
-     * @param string $file
-     *
-     * @return \Swift_Attachment
      */
     protected function createPathAttachment(string $file): Swift_Attachment
     {
@@ -599,11 +521,6 @@ abstract class Mail implements IMail
 
     /**
      * 内存内容创建 Swift_Attachment.
-     *
-     * @param string $data
-     * @param string $name
-     *
-     * @return \Swift_Attachment
      */
     protected function createDataAttachment(string $data, string $name): Swift_Attachment
     {
@@ -612,9 +529,6 @@ abstract class Mail implements IMail
 
     /**
      * 邮件附件消息回调处理.
-     *
-     * @param \Swift_Attachment $attachment
-     * @param null|\Closure     $callbacks
      *
      * @return \Leevel\Mail\IMail
      */
@@ -630,8 +544,6 @@ abstract class Mail implements IMail
 
     /**
      * 生成 Swift Mailer.
-     *
-     * @return \Swift_Mailer
      */
     protected function swiftMailer(): Swift_Mailer
     {

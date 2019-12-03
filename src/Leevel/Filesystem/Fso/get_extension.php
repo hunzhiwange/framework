@@ -25,8 +25,6 @@ namespace Leevel\Filesystem\Fso;
  *
  * @param string $fileName 文件名
  * @param int    $case     格式化参数 0 默认，1 转为大小 ，转为大小
- *
- * @return string
  */
 function get_extension(string $fileName, int $case = 0): string
 {

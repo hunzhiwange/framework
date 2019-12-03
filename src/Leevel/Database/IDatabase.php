@@ -181,9 +181,7 @@ interface IDatabase
      * @param string     $sql           sql 语句
      * @param array      $bindParams    sql 参数绑定
      * @param bool|int   $master
-     * @param int        $fetchType
      * @param null|mixed $fetchArgument
-     * @param array      $ctorArgs
      *
      * @return mixed
      */
@@ -215,8 +213,6 @@ interface IDatabase
 
     /**
      * 检查是否处于事务中.
-     *
-     * @return bool
      */
     public function inTransaction(): bool;
 
@@ -232,15 +228,11 @@ interface IDatabase
 
     /**
      * 设置是否启用部分事务.
-     *
-     * @param bool $savepoints
      */
     public function setSavepoints(bool $savepoints): void;
 
     /**
      * 获取是否启用部分事务.
-     *
-     * @return bool
      */
     public function hasSavepoints(): bool;
 
@@ -248,22 +240,16 @@ interface IDatabase
      * 获取最后插入 ID 或者列.
      *
      * @param null|string $name 自增序列名
-     *
-     * @return string
      */
     public function lastInsertId(?string $name = null): string;
 
     /**
      * 获取最近一次查询的 sql 语句.
-     *
-     * @return null|string
      */
     public function getLastSql(): ?string;
 
     /**
      * 返回影响记录.
-     *
-     * @return int
      */
     public function numRows(): int;
 
@@ -289,32 +275,16 @@ interface IDatabase
 
     /**
      * sql 表达式格式化.
-     *
-     * @param string $sql
-     * @param string $tableName
-     *
-     * @return string
      */
     public function normalizeExpression(string $sql, string $tableName): string;
 
     /**
      * 表或者字段格式化（支持别名）.
-     *
-     * @param string      $name
-     * @param null|string $alias
-     * @param null|string $as
-     *
-     * @return string
      */
     public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null): string;
 
     /**
      * 字段格式化.
-     *
-     * @param string $key
-     * @param string $tableName
-     *
-     * @return string
      */
     public function normalizeColumn(string $key, string $tableName): string;
 
@@ -322,7 +292,6 @@ interface IDatabase
      * 字段值格式化.
      *
      * @param mixed $value
-     * @param bool  $quotationMark
      *
      * @return mixed
      */
@@ -330,10 +299,6 @@ interface IDatabase
 
     /**
      * 分析 sql 类型数据.
-     *
-     * @param string $sql
-     *
-     * @return string
      */
     public function normalizeSqlType(string $sql): string;
 
@@ -341,37 +306,25 @@ interface IDatabase
      * 分析绑定参数类型数据.
      *
      * @param mixed $value
-     *
-     * @return int
      */
     public function normalizeBindParamType($value): int;
 
     /**
      * dsn 解析.
-     *
-     * @param array $option
-     *
-     * @return string
      */
     public function parseDsn(array $option): string;
 
     /**
      * 取得数据库表名列表.
      *
-     * @param string   $dbName
      * @param bool|int $master
-     *
-     * @return array
      */
     public function tableNames(string $dbName, $master = false): array;
 
     /**
      * 取得数据库表字段信息.
      *
-     * @param string   $tableName
      * @param bool|int $master
-     *
-     * @return array
      */
     public function tableColumns(string $tableName, $master = false): array;
 
@@ -379,18 +332,11 @@ interface IDatabase
      * sql 字段格式化.
      *
      * @param mixed $name
-     *
-     * @return string
      */
     public function identifierColumn($name): string;
 
     /**
      * 分析 limit.
-     *
-     * @param null|int $limitCount
-     * @param null|int $limitOffset
-     *
-     * @return string
      */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string;
 }

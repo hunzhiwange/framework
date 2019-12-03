@@ -45,8 +45,6 @@ class Throttler
 
     /**
      * 构造函数.
-     *
-     * @param \Leevel\Throttler\IThrottler $throttler
      */
     public function __construct(IThrottler $throttler)
     {
@@ -55,11 +53,6 @@ class Throttler
 
     /**
      * 请求
-     *
-     * @param \Closure              $next
-     * @param \Leevel\Http\IRequest $request
-     * @param int                   $limit
-     * @param int                   $time
      */
     public function handle(Closure $next, IRequest $request, int $limit = 60, int $time = 60): void
     {

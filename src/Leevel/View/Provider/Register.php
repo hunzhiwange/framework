@@ -54,8 +54,6 @@ class Register extends Provider
 
     /**
      * 可用服务提供者.
-     *
-     * @return array
      */
     public static function providers(): array
     {
@@ -69,8 +67,6 @@ class Register extends Provider
 
     /**
      * 是否延迟载入.
-     *
-     * @return bool
      */
     public static function isDeferred(): bool
     {

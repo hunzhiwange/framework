@@ -49,45 +49,31 @@ interface IApp
 
     /**
      * 程序版本.
-     *
-     * @return string
      */
     public function version(): string;
 
     /**
      * 是否以扩展方式运行.
-     *
-     * @return bool
      */
     public function runWithExtension(): bool;
 
     /**
      * 是否为 Console.
-     *
-     * @return bool
      */
     public function console(): bool;
 
     /**
      * 设置基础路径.
-     *
-     * @param string $path
      */
     public function setPath(string $path): void;
 
     /**
      * 基础路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function path(string $path = ''): string;
 
     /**
      * 设置应用路径.
-     *
-     * @param string $path
      */
     public function setAppPath(string $path): void;
 
@@ -95,9 +81,6 @@ interface IApp
      * 应用路径.
      *
      * @param bool|string $app
-     * @param string      $path
-     *
-     * @return string
      */
     public function appPath($app = false, string $path = ''): string;
 
@@ -105,222 +88,146 @@ interface IApp
      * 取得应用主题目录.
      *
      * @param bool|string $app
-     *
-     * @return string
      */
     public function themePath($app = false): string;
 
     /**
      * 设置公共路径.
-     *
-     * @param string $path
      */
     public function setCommonPath(string $path): void;
 
     /**
      * 公共路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function commonPath(string $path = ''): string;
 
     /**
      * 设置运行时路径.
-     *
-     * @param string $path
      */
     public function setRuntimePath(string $path): void;
 
     /**
      * 运行路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function runtimePath(string $path = ''): string;
 
     /**
      * 设置存储路径.
-     *
-     * @param string $path
      */
     public function setStoragePath(string $path): void;
 
     /**
      * 附件路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function storagePath(string $path = ''): string;
 
     /**
      * 设置资源路径.
-     *
-     * @param string $path
      */
     public function setPublicPath(string $path): void;
 
     /**
      * 资源路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function publicPath(string $path = ''): string;
 
     /**
      * 设置主题路径.
-     *
-     * @param string $path
      */
     public function setThemesPath(string $path): void;
 
     /**
      * 主题路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function themesPath(string $path = ''): string;
 
     /**
      * 设置配置路径.
-     *
-     * @param string $path
      */
     public function setOptionPath(string $path): void;
 
     /**
      * 配置路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function optionPath(string $path = ''): string;
 
     /**
      * 设置语言包路径.
-     *
-     * @param string $path
      */
     public function setI18nPath(string $path): void;
 
     /**
      * 语言包路径.
-     *
-     * @param null|string $path
-     *
-     * @return string
      */
     public function i18nPath(?string $path = null): string;
 
     /**
      * 设置环境变量路径.
-     *
-     * @param string $path
      */
     public function setEnvPath(string $path): void;
 
     /**
      * 环境变量路径.
-     *
-     * @return string
      */
     public function envPath(): string;
 
     /**
      * 设置环境变量文件.
-     *
-     * @param string $file
      */
     public function setEnvFile(string $file): void;
 
     /**
      * 取得环境变量文件.
-     *
-     * @return string
      */
     public function envFile(): string;
 
     /**
      * 取得环境变量完整路径.
-     *
-     * @return string
      */
     public function fullEnvPath(): string;
 
     /**
      * 设置语言包缓存路径.
-     *
-     * @param string $i18nCachedPath
      */
     public function setI18nCachedPath(string $i18nCachedPath): void;
 
     /**
      * 返回语言包缓存路径.
-     *
-     * @param string $i18n
-     *
-     * @return string
      */
     public function i18nCachedPath(string $i18n): string;
 
     /**
      * 是否存在语言包缓存.
-     *
-     * @param string $i18n
-     *
-     * @return bool
      */
     public function isCachedI18n(string $i18n): bool;
 
     /**
      * 设置配置缓存路径.
-     *
-     * @param string $optionCachedPath
      */
     public function setOptionCachedPath(string $optionCachedPath): void;
 
     /**
      * 返回配置缓存路径.
-     *
-     * @return string
      */
     public function optionCachedPath(): string;
 
     /**
      * 是否存在配置缓存.
-     *
-     * @return bool
      */
     public function isCachedOption(): bool;
 
     /**
      * 设置路由缓存路径.
-     *
-     * @param string $routerCachedPath
      */
     public function setRouterCachedPath(string $routerCachedPath): void;
 
     /**
      * 返回路由缓存路径.
-     *
-     * @return string
      */
     public function routerCachedPath(): string;
 
     /**
      * 是否存在路由缓存.
-     *
-     * @return bool
      */
     public function isCachedRouter(): bool;
 
@@ -330,32 +237,21 @@ interface IApp
      * 一般用于获取文件 PSR4 所在的命名空间，当然如果存在命名空间。
      * 基于某个具体的类查询该类目录的真实路径。
      * 为简化开发和提升性能，必须提供具体的存在的类才能够获取目录的真实路径。
-     *
-     * @param string $specificClass
-     * @param bool   $throwException
-     *
-     * @return string
      */
     public function namespacePath(string $specificClass, bool $throwException = true): string;
 
     /**
      * 是否开启 debug.
-     *
-     * @return bool
      */
     public function debug(): bool;
 
     /**
      * 是否为开发环境.
-     *
-     * @return bool
      */
     public function development(): bool;
 
     /**
      * 运行环境.
-     *
-     * @return string
      */
     public function environment(): string;
 
@@ -371,8 +267,6 @@ interface IApp
 
     /**
      * 初始化应用.
-     *
-     * @param array $bootstraps
      */
     public function bootstrap(array $bootstraps): void;
 
@@ -383,8 +277,6 @@ interface IApp
 
     /**
      * 返回 IOC 容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public function container(): IContainer;
 }

@@ -22,11 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * 字符串长度限制.
- *
- * @param string $strings
- * @param int    $maxLength
- *
- * @return string
  */
 function length_limit(string $strings, int $maxLength): string
 {

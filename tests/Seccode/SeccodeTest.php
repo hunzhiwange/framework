@@ -172,8 +172,6 @@ class SeccodeTest extends TestCase
 
     /**
      * @dataProvider getAutoCodeData
-     *
-     * @param string $type
      */
     public function testAutoCode(string $type): void
     {

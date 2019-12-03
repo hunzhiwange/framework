@@ -69,8 +69,6 @@ class Rpc extends BaseServer
 
     /**
      * 创建 server.
-     *
-     * @return \Leevel\Protocol\IServer
      */
     protected function createServer(): IServer
     {
@@ -79,8 +77,6 @@ class Rpc extends BaseServer
 
     /**
      * 返回 Version.
-     *
-     * @return string
      */
     protected function getVersion(): string
     {

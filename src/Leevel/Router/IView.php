@@ -36,8 +36,6 @@ interface IView
     /**
      * 切换视图.
      *
-     * @param \Leevel\View\IView $view
-     *
      * @return \Leevel\Router\IView
      */
     public function switchView(IViews $view): self;
@@ -55,16 +53,12 @@ interface IView
     /**
      * 获取变量赋值.
      *
-     * @param null|string $name
-     *
      * @return mixed
      */
     public function getVar(?string $name = null);
 
     /**
      * 删除变量值.
-     *
-     * @param array $name
      *
      * @return \Leevel\Router\IView
      */
@@ -79,12 +73,6 @@ interface IView
 
     /**
      * 加载视图文件.
-     *
-     * @param string      $file
-     * @param array       $vars
-     * @param null|string $ext
-     *
-     * @return string
      */
     public function display(string $file, array $vars = [], ?string $ext = null): string;
 }

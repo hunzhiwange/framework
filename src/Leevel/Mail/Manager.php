@@ -119,8 +119,6 @@ class Manager extends Managers
 {
     /**
      * 取得配置命名空间.
-     *
-     * @return string
      */
     protected function normalizeOptionNamespace(): string
     {
@@ -129,8 +127,6 @@ class Manager extends Managers
 
     /**
      * 创建 test 连接.
-     *
-     * @param array $options
      *
      * @return \Leevel\Mail\Test
      */
@@ -146,8 +142,6 @@ class Manager extends Managers
     /**
      * 创建 smtp 连接.
      *
-     * @param array $options
-     *
      * @return \Leevel\Mail\Smtp
      * @codeCoverageIgnore
      */
@@ -162,8 +156,6 @@ class Manager extends Managers
 
     /**
      * 创建 sendmail 连接.
-     *
-     * @param array $options
      *
      * @return \Leevel\Mail\Sendmail
      * @codeCoverageIgnore

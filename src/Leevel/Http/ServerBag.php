@@ -33,8 +33,6 @@ class ServerBag extends Bag
 {
     /**
      * 取回 HTTP HEADERS.
-     *
-     * @return array
      */
     public function getHeaders(): array
     {

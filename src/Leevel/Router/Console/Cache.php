@@ -53,9 +53,6 @@ class Cache extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp           $app
-     * @param \Leevel\Router\RouterProvider $routerProvider
      */
     public function handle(IApp $app, RouterProvider $routerProvider): void
     {
@@ -68,9 +65,6 @@ class Cache extends Command
 
     /**
      * 写入缓存.
-     *
-     * @param string $cachePath
-     * @param array  $data
      */
     protected function writeCache(string $cachePath, array $data): void
     {
@@ -81,8 +75,6 @@ class Cache extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -91,8 +83,6 @@ class Cache extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

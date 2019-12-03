@@ -22,12 +22,6 @@ namespace Leevel\Encryption\Safe;
 
 /**
  * 字符串文本化.
- *
- * @param string $strings
- * @param bool   $deep
- * @param array  $black
- *
- * @return string
  */
 function text(string $strings, bool $deep = true, array $black = []): string
 {

@@ -62,8 +62,6 @@ class Page extends BasePage
 
     /**
      * 对象转数组.
-     *
-     * @return array
      */
     public function toArray(): array
     {

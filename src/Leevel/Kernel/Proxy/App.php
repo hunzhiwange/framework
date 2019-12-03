@@ -41,9 +41,6 @@ class App
     /**
      * call.
      *
-     * @param string $method
-     * @param array  $args
-     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -53,8 +50,6 @@ class App
 
     /**
      * 程序版本.
-     *
-     * @return string
      */
     public static function version(): string
     {
@@ -63,8 +58,6 @@ class App
 
     /**
      * 是否以扩展方式运行.
-     *
-     * @return bool
      */
     public static function runWithExtension(): bool
     {
@@ -73,8 +66,6 @@ class App
 
     /**
      * 是否为 Console.
-     *
-     * @return bool
      */
     public static function console(): bool
     {
@@ -83,8 +74,6 @@ class App
 
     /**
      * 设置应用路径.
-     *
-     * @param string $path
      */
     public static function setPath(string $path): void
     {
@@ -93,10 +82,6 @@ class App
 
     /**
      * 基础路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function path(string $path = ''): string
     {
@@ -105,8 +90,6 @@ class App
 
     /**
      * 设置应用路径.
-     *
-     * @param string $path
      */
     public static function setAppPath(string $path): void
     {
@@ -117,9 +100,6 @@ class App
      * 应用路径.
      *
      * @param bool|string $app
-     * @param string      $path
-     *
-     * @return string
      */
     public static function appPath($app = false, string $path = ''): string
     {
@@ -130,8 +110,6 @@ class App
      * 取得应用主题目录.
      *
      * @param bool|string $app
-     *
-     * @return string
      */
     public static function themePath($app = false): string
     {
@@ -140,8 +118,6 @@ class App
 
     /**
      * 设置公共路径.
-     *
-     * @param string $path
      */
     public static function setCommonPath(string $path): void
     {
@@ -150,10 +126,6 @@ class App
 
     /**
      * 公共路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function commonPath(string $path = ''): string
     {
@@ -162,8 +134,6 @@ class App
 
     /**
      * 设置运行时路径.
-     *
-     * @param string $path
      */
     public static function setRuntimePath(string $path): void
     {
@@ -172,10 +142,6 @@ class App
 
     /**
      * 运行路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function runtimePath(string $path = ''): string
     {
@@ -184,8 +150,6 @@ class App
 
     /**
      * 设置存储路径.
-     *
-     * @param string $path
      */
     public static function setStoragePath(string $path): void
     {
@@ -194,10 +158,6 @@ class App
 
     /**
      * 附件路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function storagePath(string $path = ''): string
     {
@@ -206,8 +166,6 @@ class App
 
     /**
      * 设置资源路径.
-     *
-     * @param string $path
      */
     public static function setPublicPath(string $path): void
     {
@@ -216,10 +174,6 @@ class App
 
     /**
      * 资源路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function publicPath(string $path = ''): string
     {
@@ -228,8 +182,6 @@ class App
 
     /**
      * 设置主题路径.
-     *
-     * @param string $path
      */
     public static function setThemesPath(string $path): void
     {
@@ -238,10 +190,6 @@ class App
 
     /**
      * 主题路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function themesPath(string $path = ''): string
     {
@@ -250,8 +198,6 @@ class App
 
     /**
      * 设置配置路径.
-     *
-     * @param string $path
      */
     public static function setOptionPath(string $path): void
     {
@@ -260,10 +206,6 @@ class App
 
     /**
      * 配置路径.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public static function optionPath(string $path = ''): string
     {
@@ -272,8 +214,6 @@ class App
 
     /**
      * 设置语言包路径.
-     *
-     * @param string $path
      */
     public static function setI18nPath(string $path): void
     {
@@ -282,10 +222,6 @@ class App
 
     /**
      * 语言包路径.
-     *
-     * @param null|string $path
-     *
-     * @return string
      */
     public static function i18nPath(?string $path = null): string
     {
@@ -294,8 +230,6 @@ class App
 
     /**
      * 设置环境变量路径.
-     *
-     * @param string $path
      */
     public static function setEnvPath(string $path): void
     {
@@ -304,8 +238,6 @@ class App
 
     /**
      * 环境变量路径.
-     *
-     * @return string
      */
     public static function envPath(): string
     {
@@ -314,8 +246,6 @@ class App
 
     /**
      * 设置环境变量文件.
-     *
-     * @param string $file
      */
     public static function setEnvFile(string $file): void
     {
@@ -324,8 +254,6 @@ class App
 
     /**
      * 取得环境变量文件.
-     *
-     * @return string
      */
     public static function envFile(): string
     {
@@ -334,8 +262,6 @@ class App
 
     /**
      * 取得环境变量完整路径.
-     *
-     * @return string
      */
     public static function fullEnvPath(): string
     {
@@ -344,8 +270,6 @@ class App
 
     /**
      * 设置语言包缓存路径.
-     *
-     * @param string $i18nCachedPath
      */
     public static function setI18nCachedPath(string $i18nCachedPath): void
     {
@@ -354,10 +278,6 @@ class App
 
     /**
      * 返回语言包缓存路径.
-     *
-     * @param string $i18n
-     *
-     * @return string
      */
     public static function i18nCachedPath(string $i18n): string
     {
@@ -366,10 +286,6 @@ class App
 
     /**
      * 是否存在语言包缓存.
-     *
-     * @param string $i18n
-     *
-     * @return bool
      */
     public static function isCachedI18n(string $i18n): bool
     {
@@ -378,8 +294,6 @@ class App
 
     /**
      * 设置配置缓存路径.
-     *
-     * @param string $optionCachedPath
      */
     public static function setOptionCachedPath(string $optionCachedPath): void
     {
@@ -388,8 +302,6 @@ class App
 
     /**
      * 返回配置缓存路径.
-     *
-     * @return string
      */
     public static function optionCachedPath(): string
     {
@@ -398,8 +310,6 @@ class App
 
     /**
      * 是否存在配置缓存.
-     *
-     * @return bool
      */
     public static function isCachedOption(): bool
     {
@@ -408,8 +318,6 @@ class App
 
     /**
      * 设置路由缓存路径.
-     *
-     * @param string $routerCachedPath
      */
     public static function setRouterCachedPath(string $routerCachedPath): void
     {
@@ -418,8 +326,6 @@ class App
 
     /**
      * 返回路由缓存路径.
-     *
-     * @return string
      */
     public static function routerCachedPath(): string
     {
@@ -428,8 +334,6 @@ class App
 
     /**
      * 是否存在路由缓存.
-     *
-     * @return bool
      */
     public static function isCachedRouter(): bool
     {
@@ -442,11 +346,6 @@ class App
      * 一般用于获取文件 PSR4 所在的命名空间，当然如果存在命名空间。
      * 基于某个具体的类查询该类目录的真实路径。
      * 为简化开发和提升性能，必须提供具体的存在的类才能够获取目录的真实路径。
-     *
-     * @param string $specificClass
-     * @param bool   $throwException
-     *
-     * @return string
      */
     public static function namespacePath(string $specificClass, bool $throwException = true): string
     {
@@ -455,8 +354,6 @@ class App
 
     /**
      * 是否开启 debug.
-     *
-     * @return bool
      */
     public static function debug(): bool
     {
@@ -465,8 +362,6 @@ class App
 
     /**
      * 是否为开发环境.
-     *
-     * @return bool
      */
     public static function development(): bool
     {
@@ -475,8 +370,6 @@ class App
 
     /**
      * 运行环境.
-     *
-     * @return string
      */
     public static function environment(): string
     {
@@ -498,8 +391,6 @@ class App
 
     /**
      * 初始化应用.
-     *
-     * @param array $bootstraps
      */
     public static function bootstrap(array $bootstraps): void
     {
@@ -516,8 +407,6 @@ class App
 
     /**
      * 返回 IOC 容器.
-     *
-     * @return \Leevel\Di\IContainer
      */
     public static function container(): IBaseContainer
     {
@@ -529,10 +418,6 @@ class App
      *
      * @param mixed      $name
      * @param null|mixed $service
-     * @param bool       $share
-     * @param bool       $coroutine
-     *
-     * @return \Leevel\Di\IContainer
      */
     public static function bind($name, $service = null, bool $share = false, bool $coroutine = false): IBaseContainer
     {
@@ -544,9 +429,6 @@ class App
      *
      * @param mixed $name
      * @param mixed $service
-     * @param bool  $coroutine
-     *
-     * @return \Leevel\Di\IContainer
      */
     public static function instance($name, $service, bool $coroutine = false): IBaseContainer
     {
@@ -558,9 +440,6 @@ class App
      *
      * @param array|scalar $name
      * @param null|mixed   $service
-     * @param bool         $coroutine
-     *
-     * @return \Leevel\Di\IContainer
      */
     public static function singleton($name, $service = null, bool $coroutine = false): IBaseContainer
     {
@@ -572,8 +451,6 @@ class App
      *
      * @param array|string      $alias
      * @param null|array|string $value
-     *
-     * @return \Leevel\Di\IContainer
      */
     public static function alias($alias, $value = null): IBaseContainer
     {
@@ -582,9 +459,6 @@ class App
 
     /**
      * 服务容器返回对象
-     *
-     * @param string $name
-     * @param array  $args
      *
      * @return mixed
      */
@@ -597,7 +471,6 @@ class App
      * 实例回调自动注入.
      *
      * @param array|callable|string $callback
-     * @param array                 $args
      *
      * @throws \InvalidArgumentException
      *
@@ -610,8 +483,6 @@ class App
 
     /**
      * 删除服务和实例.
-     *
-     * @param string $name
      */
     public static function remove(string $name): void
     {
@@ -620,10 +491,6 @@ class App
 
     /**
      * 服务或者实例是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function exists(string $name): bool
     {
@@ -640,8 +507,6 @@ class App
 
     /**
      * 执行 bootstrap.
-     *
-     * @param \Leevel\Di\Provider $provider
      */
     public static function callProviderBootstrap(Provider $provider): void
     {
@@ -650,10 +515,6 @@ class App
 
     /**
      * 创建服务提供者.
-     *
-     * @param string $provider
-     *
-     * @return \Leevel\Di\Provider
      */
     public static function makeProvider(string $provider): Provider
     {
@@ -664,8 +525,6 @@ class App
      * 注册服务提供者.
      *
      * @param \Leevel\Di\Provider|string $provider
-     *
-     * @return \Leevel\Di\Provider
      */
     public static function register($provider): Provider
     {
@@ -674,8 +533,6 @@ class App
 
     /**
      * 是否已经初始化引导.
-     *
-     * @return bool
      */
     public static function isBootstrap(): bool
     {
@@ -692,8 +549,6 @@ class App
 
     /**
      * 设置协程.
-     *
-     * @param \Leevel\Di\ICoroutine $coroutine
      */
     public static function setCoroutine(ICoroutine $coroutine): void
     {
@@ -712,10 +567,6 @@ class App
 
     /**
      * 协程服务或者实例是否存在.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public static function existsCoroutine(string $name): bool
     {
@@ -724,8 +575,6 @@ class App
 
     /**
      * 删除协程上下文服务和实例.
-     *
-     * @param null|string $name
      */
     public static function removeCoroutine(?string $name = null): void
     {
@@ -734,8 +583,6 @@ class App
 
     /**
      * 设置服务到协程上下文.
-     *
-     * @param string $service
      */
     public static function serviceCoroutine(string $service): void
     {
@@ -744,8 +591,6 @@ class App
 
     /**
      * 代理 Container 服务.
-     *
-     * @return \Leevel\Di\Container
      */
     public static function proxyContainer(): Container
     {
@@ -754,8 +599,6 @@ class App
 
     /**
      * 代理服务.
-     *
-     * @return \Leevel\Kernel\App
      */
     public static function proxy(): BaseApp
     {

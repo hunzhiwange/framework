@@ -54,11 +54,7 @@ class MiddlewareParser
      * 解析中间件
      * 最多 2 个层级支持
      *
-     * @param array $middlewares
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     public function handle(array $middlewares): array
     {
@@ -101,12 +97,7 @@ class MiddlewareParser
     /**
      * 格式化中间件.
      *
-     * @param array  $middlewares
-     * @param string $method
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
     protected function normalizeMiddleware(array $middlewares, string $method): array
     {
@@ -142,10 +133,6 @@ class MiddlewareParser
 
     /**
      * 分析中间件.
-     *
-     * @param string $middleware
-     *
-     * @return array
      */
     protected function parseMiddleware(string $middleware): array
     {
@@ -162,11 +149,6 @@ class MiddlewareParser
 
     /**
      * 中间件名字.
-     *
-     * @param string $middleware
-     * @param string $params
-     *
-     * @return string
      */
     protected function middlewareName(string $middleware, string $params): string
     {

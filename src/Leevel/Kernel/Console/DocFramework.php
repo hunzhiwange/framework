@@ -53,9 +53,6 @@ class DocFramework extends Command
 
     /**
      * 响应命令.
-     *
-     * @param \Leevel\Kernel\IApp    $app
-     * @param \Leevel\Option\IOption $option
      */
     public function handle(IApp $app, IOption $option): void
     {
@@ -75,8 +72,6 @@ class DocFramework extends Command
 
     /**
      * 取得测试用例文件或者目录相对路径.
-     *
-     * @return string
      */
     protected function path(): string
     {
@@ -85,8 +80,6 @@ class DocFramework extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -101,8 +94,6 @@ class DocFramework extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

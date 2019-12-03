@@ -59,22 +59,16 @@ abstract class Server extends Command
 
     /**
      * 创建 server.
-     *
-     * @return \Leevel\Protocol\IServer
      */
     abstract protected function createServer(): IServer;
 
     /**
      * 返回 Version.
-     *
-     * @return string
      */
     abstract protected function getVersion(): string;
 
     /**
      * 显示 Swoole 服务启动项.
-     *
-     * @param array $option
      */
     protected function start(array $option): void
     {
@@ -98,8 +92,6 @@ abstract class Server extends Command
 
     /**
      * 验证端口是否被占用.
-     *
-     * @param array $option
      */
     protected function checkPort(array $option): void
     {
@@ -120,10 +112,6 @@ abstract class Server extends Command
 
     /**
      * 获取端口占用情况.
-     *
-     * @param int $port
-     *
-     * @return array
      */
     protected function portBind(int $port): array
     {
@@ -147,8 +135,6 @@ abstract class Server extends Command
 
     /**
      * 验证服务是否被占用.
-     *
-     * @param array $option
      *
      * @throws \InvalidArgumentException
      */
@@ -176,8 +162,6 @@ abstract class Server extends Command
 
     /**
      * 返回 QueryPHP Logo.
-     *
-     * @return string
      */
     protected function getLogo(): string
     {
@@ -193,8 +177,6 @@ abstract class Server extends Command
 
     /**
      * 命令参数.
-     *
-     * @return array
      */
     protected function getArguments(): array
     {
@@ -203,8 +185,6 @@ abstract class Server extends Command
 
     /**
      * 命令配置.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {
