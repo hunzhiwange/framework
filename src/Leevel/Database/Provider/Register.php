@@ -126,7 +126,8 @@ class Register extends Provider
 
     /**
      * 注册 database.lazyload 服务.
-     * 仅仅用于占位，必要时用于唤醒数据库服务提供者.
+     *
+     * - 仅仅用于占位，必要时用于唤醒数据库服务提供者.
      */
     protected function databaseLazyload(): void
     {
@@ -152,7 +153,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 mysql.pool 服务
+     * 注册 mysql.pool 服务.
      */
     protected function mysqlPool(): void
     {

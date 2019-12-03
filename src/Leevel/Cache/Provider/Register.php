@@ -79,7 +79,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 redis 服务
+     * 注册 redis 服务.
      */
     protected function redis(): void
     {
@@ -97,7 +97,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 caches 服务
+     * 注册 caches 服务.
      */
     protected function caches(): void
     {
@@ -109,7 +109,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 cache 服务
+     * 注册 cache 服务.
      */
     protected function cache(): void
     {
@@ -121,7 +121,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 cache.load 服务
+     * 注册 cache.load 服务.
      */
     protected function cacheLoad(): void
     {
@@ -133,7 +133,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 redis.pool 服务
+     * 注册 redis.pool 服务.
      */
     protected function redisPool(): void
     {

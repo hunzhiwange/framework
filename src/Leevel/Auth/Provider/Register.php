@@ -72,7 +72,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 auths 服务
+     * 注册 auths 服务.
      */
     protected function auths(): void
     {
@@ -84,7 +84,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 auth 服务
+     * 注册 auth 服务.
      */
     protected function auth(): void
     {

@@ -73,7 +73,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 sessions 服务
+     * 注册 sessions 服务.
      */
     protected function sessions(): void
     {
@@ -85,7 +85,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 session 服务
+     * 注册 session 服务.
      */
     protected function session(): void
     {
@@ -97,7 +97,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 middleware 服务
+     * 注册 middleware 服务.
      */
     protected function middleware(): void
     {

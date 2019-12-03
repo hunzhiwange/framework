@@ -68,7 +68,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 mails 服务
+     * 注册 mails 服务.
      */
     protected function mails(): void
     {
@@ -80,7 +80,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 mail 服务
+     * 注册 mail 服务.
      */
     protected function mail(): void
     {

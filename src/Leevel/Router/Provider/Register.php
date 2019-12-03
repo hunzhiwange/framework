@@ -72,7 +72,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 router 服务
+     * 注册 router 服务.
      */
     protected function router(): void
     {
@@ -84,7 +84,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 url 服务
+     * 注册 url 服务.
      */
     protected function url(): void
     {
@@ -105,7 +105,7 @@ class Register extends Provider
     }
 
     /**
-     * 注册 redirect 服务
+     * 注册 redirect 服务.
      */
     protected function redirect(): void
     {
