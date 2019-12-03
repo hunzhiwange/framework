@@ -125,21 +125,21 @@ interface ISeccode
     public function setOption(string $name, $value): self;
 
     /**
-     * 设置验证码
+     * 设置验证码.
      *
      * @param null|mixed $code
      */
     public function display($code = null, ?string $outPath = null, bool $autoCode = true, string $autoType = self::ALPHA_UPPERCASE): void;
 
     /**
-     * 设置验证码
+     * 设置验证码.
      *
      * @return \Leevel\Seccode\ISeccode
      */
     public function code(string $code): self;
 
     /**
-     * 返回验证码
+     * 返回验证码.
      *
      * @return \Leevel\Seccode\ISeccode
      */

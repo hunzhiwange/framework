@@ -25,7 +25,7 @@ use Leevel\Filesystem\Fso\create_directory;
 use function Leevel\Filesystem\Fso\create_directory;
 
 /**
- * 验证码
+ * 验证码.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -36,7 +36,7 @@ use function Leevel\Filesystem\Fso\create_directory;
 class Seccode implements ISeccode
 {
     /**
-     * 验证码
+     * 验证码.
      *
      * @var string
      */
@@ -103,7 +103,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 设置验证码
+     * 设置验证码.
      *
      * @param null|mixed $code
      */
@@ -137,7 +137,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 设置验证码
+     * 设置验证码.
      *
      * @return \Leevel\Seccode\ISeccode
      */
@@ -149,7 +149,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回验证码
+     * 返回验证码.
      *
      * @return string
      */
@@ -574,7 +574,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 自动产生验证码
+     * 自动产生验证码.
      *
      * @throws \InvalidArgumentException
      */
