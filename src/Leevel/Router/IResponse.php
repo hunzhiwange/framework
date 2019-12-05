@@ -41,9 +41,8 @@ interface IResponse
      * 返回一个响应.
      *
      * @param mixed $content
-     * @param int   $status
      */
-    public function make($content = '', $status = 200, array $headers = []): BaseResponse;
+    public function make($content = '', int $status = 200, array $headers = []): BaseResponse;
 
     /**
      * 返回视图响应.
