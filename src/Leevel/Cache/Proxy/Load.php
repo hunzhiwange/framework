@@ -46,8 +46,9 @@ class Load
     }
 
     /**
-     * 载入缓存数据
-     * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
+     * 载入缓存数据.
+     *
+     * - 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      */
     public static function data(array $names, array $option = [], bool $force = false): array
     {
