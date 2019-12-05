@@ -72,7 +72,6 @@ class FileTest extends TestCase
     public function testBaseUse(): void
     {
         $filePath = __DIR__.'/cacheFile/hello.php';
-
         if (is_file($filePath)) {
             unlink($filePath);
         }
@@ -82,17 +81,12 @@ class FileTest extends TestCase
         ]);
 
         $file->set('hello', 'world');
-
         $this->assertTrue(is_file($filePath));
-
         $this->assertSame('world', $file->get('hello'));
 
         $file->delete('hello');
-
         $this->assertFalse(is_file($filePath));
-
         $this->assertFalse($file->get('hello'));
-
         $this->assertNull($file->close());
         $this->assertNull($file->close()); // 关闭多次不做任何事
         $this->assertNull($file->handle());
@@ -101,7 +95,6 @@ class FileTest extends TestCase
     public function testReconnect(): void
     {
         $filePath = __DIR__.'/cacheFile/hello.php';
-
         if (is_file($filePath)) {
             unlink($filePath);
         }
@@ -112,6 +105,7 @@ class FileTest extends TestCase
         $this->assertNull($file->close());
         $this->assertFalse(is_file($filePath));
         $this->assertFalse($file->get('hello'));
+
         $file->set('hello', 'world');
         $this->assertTrue(is_file($filePath));
         $this->assertSame('world', $file->get('hello'));
