@@ -103,9 +103,7 @@ class LoadTest extends TestCase
      * data(array $names, array $option = [], bool $force = false): array;
      * ```
      *
-     * ::: tip
      * 配置 `$option` 和 缓存功能中的 `set` 的用法一致。
-     * :::
      * ",
      *     note="",
      * )
@@ -134,9 +132,7 @@ class LoadTest extends TestCase
      * refresh(array $names): void;
      * ```
      *
-     * ::: tip
      * 刷新缓存块本质是删除缓存块数据，下次请求自动生成。
-     * :::
      * ",
      *     note="",
      * )
@@ -203,9 +199,7 @@ class LoadTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Cache\Pieces\Test4::class)]}
      * ```
      *
-     * ::: tip
      * 参数通过 `:` 冒号进行分割，冒号后边是自定义参数。
-     * :::
      * ",
      *     note="",
      * )
