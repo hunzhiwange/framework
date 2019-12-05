@@ -135,8 +135,8 @@ abstract class Log
     /**
      * 必须立即采取行动.
      *
-     * 比如: 整个网站宕机，数据库不可用等等.
-     * 这种错误应该通过短信通知你.
+     * - 比如: 整个网站宕机，数据库不可用等等.
+     * - 这种错误应该通过短信通知你.
      */
     public function alert(string $message, array $context = []): void
     {
@@ -146,7 +146,7 @@ abstract class Log
     /**
      * 临界条件.
      *
-     * 比如: 应用程序组件不可用，意外异常.
+     * - 比如: 应用程序组件不可用，意外异常.
      */
     public function critical(string $message, array $context = []): void
     {
@@ -155,7 +155,8 @@ abstract class Log
 
     /**
      * 运行时错误，不需要立即处理.
-     * 但是需要被记录和监控.
+     *
+     * - 但是需要被记录和监控.
      */
     public function error(string $message, array $context = []): void
     {
@@ -165,8 +166,8 @@ abstract class Log
     /**
      * 非错误的异常事件.
      *
-     * 比如: 弃用的 API 接口, API 使用不足, 不良事物.
-     * 它们不一定是错误的.
+     * - 比如: 弃用的 API 接口, API 使用不足, 不良事物.
+     * - 它们不一定是错误的.
      */
     public function warning(string $message, array $context = []): void
     {
@@ -184,7 +185,7 @@ abstract class Log
     /**
      * 想记录的日志.
      *
-     * 比如: 用户日志, SQL 日志.
+     * - 比如: 用户日志, SQL 日志.
      */
     public function info(string $message, array $context = []): void
     {
@@ -340,8 +341,9 @@ abstract class Log
     }
 
     /**
-     * 格式化级别
-     * 不支持级别归并到 DEBUG.
+     * 格式化级别.
+     *
+     * - 不支持级别归并到 DEBUG.
      */
     protected function normalizeLevel(string $level): string
     {
@@ -353,8 +355,9 @@ abstract class Log
     }
 
     /**
-     * 获取 Monolog 级别
-     * 不支持级别归并到 DEBUG.
+     * 获取 Monolog 级别.
+     *
+     * - 不支持级别归并到 DEBUG.
      */
     protected function normalizeMonologLevel(string $level): int
     {
