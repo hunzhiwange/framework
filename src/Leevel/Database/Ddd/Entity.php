@@ -731,8 +731,9 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
     }
 
     /**
-     * 获取主键
-     * 唯一标识符.
+     * 获取主键.
+     *
+     * - 唯一标识符.
      *
      * @return mixed
      */

@@ -526,8 +526,9 @@ interface IEntity
     public function newed(): bool;
 
     /**
-     * 获取主键
-     * 唯一标识符.
+     * 获取主键.
+     *
+     * - 唯一标识符.
      *
      * @return mixed
      */
