@@ -56,7 +56,7 @@ abstract class Session
     /**
      * session 名字.
      *
-     * -相当于 session_name.
+     * - 相当于 session_name.
      *
      * @var string
      */
