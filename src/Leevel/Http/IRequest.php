@@ -236,8 +236,9 @@ interface IRequest
     public function allFiles(): array;
 
     /**
-     * 获取文件
-     * 数组文件请在末尾加上反斜杆访问.
+     * 获取文件.
+     *
+     * - 数组文件请在末尾加上反斜杆访问.
      *
      * @param null|mixed $defaults
      *
@@ -246,8 +247,9 @@ interface IRequest
     public function file(?string $key = null, $defaults = null);
 
     /**
-     * 文件是否存在已上传的文件
-     * 数组文件请在末尾加上反斜杆访问.
+     * 文件是否存在已上传的文件.
+     *
+     * - 数组文件请在末尾加上反斜杆访问.
      */
     public function hasFile(string $key): bool;
 
@@ -298,7 +300,8 @@ interface IRequest
 
     /**
      * PHP 运行模式命令行, 兼容 Swoole HTTP Service.
-     * Swoole HTTP 服务器也以命令行运行.
+     *
+     * - Swoole HTTP 服务器也以命令行运行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      */
@@ -354,7 +357,7 @@ interface IRequest
     public function isRealJson(): bool;
 
     /**
-     * 是否为接受 json 请求
+     * 是否为接受 json 请求.
      */
     public function isAcceptJson(): bool;
 
@@ -364,7 +367,7 @@ interface IRequest
     public function isRealAcceptJson(): bool;
 
     /**
-     * 是否为接受任何请求
+     * 是否为接受任何请求.
      */
     public function isAcceptAny(): bool;
 
@@ -441,17 +444,17 @@ interface IRequest
     public function isMethod(string $method): bool;
 
     /**
-     * 返回当前的语言
+     * 返回当前的语言.
      */
     public function language(): ?string;
 
     /**
-     * 返回当前的语言
+     * 返回当前的语言.
      */
     public function getLanguage(): ?string;
 
     /**
-     * 设置当前的语言
+     * 设置当前的语言.
      *
      * @return \Leevel\Http\IRequest
      */
