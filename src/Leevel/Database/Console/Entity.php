@@ -84,7 +84,7 @@ class Entity extends Make
      *
      * @var \Leevel\Database\Manager
      */
-    protected $database;
+    protected Manager $database;
 
     /**
      * 响应命令.
