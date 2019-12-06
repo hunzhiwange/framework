@@ -150,8 +150,9 @@ class Pipeline implements IPipeline
     }
 
     /**
-     * 工序迭代器
-     * 添加一个空的迭代器，第一次迭代 next 自动移除.
+     * 工序迭代器.
+     *
+     * - 添加一个空的迭代器，第一次迭代 next 自动移除.
      */
     protected function stageGenerator(array $stage): Generator
     {
