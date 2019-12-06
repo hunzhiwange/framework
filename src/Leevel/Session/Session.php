@@ -46,7 +46,8 @@ abstract class Session
 
     /**
      * session ID.
-     * 相当于 session_id.
+     *
+     * - 相当于 session_id.
      *
      * @var string
      */
@@ -54,7 +55,8 @@ abstract class Session
 
     /**
      * session 名字.
-     * 相当于 session_name.
+     *
+     * -相当于 session_name.
      *
      * @var string
      */
