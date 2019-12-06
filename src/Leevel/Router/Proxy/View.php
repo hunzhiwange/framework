@@ -56,7 +56,7 @@ class View
     }
 
     /**
-     * 变量赋值
+     * 变量赋值.
      *
      * @param mixed      $name
      * @param null|mixed $value

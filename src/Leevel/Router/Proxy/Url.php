@@ -48,7 +48,7 @@ class Url
     }
 
     /**
-     * 生成路由地址
+     * 生成路由地址.
      *
      * @param null|bool|string $suffix
      */
@@ -58,7 +58,7 @@ class Url
     }
 
     /**
-     * 返回 HTTP 请求
+     * 返回 HTTP 请求.
      */
     public static function getRequest(): IRequest
     {

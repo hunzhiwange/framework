@@ -185,8 +185,9 @@ class Request
     }
 
     /**
-     * 获取文件
-     * 数组文件请在末尾加上反斜杆访问.
+     * 获取文件.
+     *
+     * - 数组文件请在末尾加上反斜杆访问.
      *
      * @param null|mixed $defaults
      *
@@ -198,8 +199,9 @@ class Request
     }
 
     /**
-     * 文件是否存在已上传的文件
-     * 数组文件请在末尾加上反斜杆访问.
+     * 文件是否存在已上传的文件.
+     *
+     * - 数组文件请在末尾加上反斜杆访问.
      */
     public static function hasFile(string $key): bool
     {
@@ -271,7 +273,8 @@ class Request
 
     /**
      * PHP 运行模式命令行, 兼容 Swoole HTTP Service.
-     * Swoole HTTP 服务器也以命令行运行.
+     *
+     * - Swoole HTTP 服务器也以命令行运行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      */
@@ -357,7 +360,7 @@ class Request
     }
 
     /**
-     * 是否为接受 json 请求
+     * 是否为接受 json 请求.
      */
     public static function isAcceptJson(): bool
     {
@@ -373,7 +376,7 @@ class Request
     }
 
     /**
-     * 是否为接受任何请求
+     * 是否为接受任何请求.
      */
     public static function isAcceptAny(): bool
     {
@@ -493,7 +496,7 @@ class Request
     }
 
     /**
-     * 返回当前的语言
+     * 返回当前的语言.
      */
     public static function language(): ?string
     {
@@ -501,7 +504,7 @@ class Request
     }
 
     /**
-     * 返回当前的语言
+     * 返回当前的语言.
      */
     public static function getLanguage(): ?string
     {
@@ -509,7 +512,7 @@ class Request
     }
 
     /**
-     * 设置当前的语言
+     * 设置当前的语言.
      */
     public static function setLanguage(string $language): IBaseRequest
     {

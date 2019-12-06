@@ -34,7 +34,7 @@ use Leevel\View\IView as IViews;
 class View implements IView
 {
     /**
-     * 视图模板
+     * 视图模板.
      *
      * @var \Leevel\View\IView
      */
@@ -63,7 +63,7 @@ class View implements IView
     }
 
     /**
-     * 变量赋值
+     * 变量赋值.
      *
      * @param mixed      $name
      * @param null|mixed $value
