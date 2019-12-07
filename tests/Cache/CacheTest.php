@@ -48,14 +48,14 @@ use Tests\TestCase;
  * ``` php
  * \Leevel\Cache\Helper::cache_get(string $key, $defaults = null, array $option = []);
  * \Leevel\Cache\Helper::cache_get(string $key, $defaults = null, array $option = []);
- * \Leevel\Cache\Helper::function cache(): \Leevel\Cache\ICache;
+ * \Leevel\Cache\Helper::function cache(): \Leevel\Cache\Manager;
  * ```
  *
- * 使用容器 cache 服务
+ * 使用容器 caches 服务
  *
  * ``` php
- * \App::make('cache')->set(string $name, $data, array $option = []): void;
- * \App::make('cache')->get(string $name, $defaults = false, array $option = []);
+ * \App::make('caches')->set(string $name, $data, array $option = []): void;
+ * \App::make('caches')->get(string $name, $defaults = false, array $option = []);
  * ```
  *
  * 依赖注入
@@ -65,7 +65,7 @@ use Tests\TestCase;
  * {
  *     private $cache;
  *
- *     public function __construct(\Leevel\Cache\ICache $cache)
+ *     public function __construct(\Leevel\Cache\Manager $cache)
  *     {
  *         $this->cache = $cache;
  *     }
