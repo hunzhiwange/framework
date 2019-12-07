@@ -46,7 +46,7 @@ class ApiResponse extends JsonResponse
     /**
      * 请求成功.
      *
-     * - 一般用于GET与POST请求: 200.
+     * - 一般用于 GET 与 POST 请求: 200.
      *
      * @param mixed $content
      *
