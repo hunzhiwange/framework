@@ -46,8 +46,8 @@ use Tests\TestCase;
  * 使用助手函数
  *
  * ``` php
- * \Leevel\Cache\Helper::cache_get(string $key, $defaults = null, array $option = []);
- * \Leevel\Cache\Helper::cache_get(string $key, $defaults = null, array $option = []);
+ * \Leevel\Cache\Helper::get(string $key, $defaults = null, array $option = []);
+ * \Leevel\Cache\Helper::get(string $key, $defaults = null, array $option = []);
  * \Leevel\Cache\Helper::function cache(): \Leevel\Cache\Manager;
  * ```
  *

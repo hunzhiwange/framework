@@ -63,8 +63,8 @@ class HelperTest extends TestCase
         });
 
         $this->assertInstanceof(Manager::class, f('Leevel\\Cache\\Helper\\cache'));
-        $this->assertNull(f('Leevel\\Cache\\Helper\\cache_set', ['foo' => 'bar']));
-        $this->assertSame('bar', f('Leevel\\Cache\\Helper\\cache_get', 'foo'));
+        $this->assertNull(f('Leevel\\Cache\\Helper\\set', ['foo' => 'bar']));
+        $this->assertSame('bar', f('Leevel\\Cache\\Helper\\get', 'foo'));
     }
 
     public function testCacheHelper(): void
@@ -82,8 +82,8 @@ class HelperTest extends TestCase
         });
 
         $this->assertInstanceof(Manager::class, Helper::cache());
-        $this->assertNull(Helper::cacheSet(['foo' => 'bar']));
-        $this->assertSame('bar', Helper::cacheGet('foo'));
+        $this->assertNull(Helper::set(['foo' => 'bar']));
+        $this->assertSame('bar', Helper::get('foo'));
     }
 
     public function testHelperNotFound(): void

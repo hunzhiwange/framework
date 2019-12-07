@@ -23,20 +23,18 @@ namespace Leevel\Cache\Helper;
 use Leevel\Di\Container;
 
 /**
- * 获取 cache 值.
+ * 设置 cache 值.
  *
- * @param null|mixed $defaults
- *
- * @return mixed
+ * @param array|string $key
+ * @param null|mixed   $value
  */
-function cache_get(string $key, $defaults = null, array $option = [])
+function set($key, $value = null, array $option = []): void
 {
     /** @var \Leevel\Cache\Manager $cache */
     $cache = Container::singletons()->make('caches');
-
-    return $cache->get($key, $defaults, $option);
+    $cache->put($key, $value, $option);
 }
 
-class cache_get
+class set
 {
 }
