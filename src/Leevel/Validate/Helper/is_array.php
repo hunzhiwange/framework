@@ -20,16 +20,18 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use function is_array as base_is_array;
+
 /**
  * 验证是否为数组.
  *
  * @param mixed $value
  */
-function arr($value): bool
+function is_array($value): bool
 {
-    return is_array($value);
+    return base_is_array($value);
 }
 
-class arr
+class is_array
 {
 }

@@ -24,7 +24,7 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * arr test.
+ * isArray test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -33,13 +33,13 @@ use Tests\TestCase;
  * @version 1.0
  *
  * @api(
- *     title="Validator.arr",
+ *     title="Validator.is_array",
  *     zh-CN:title="验证器.验证是否为数组",
- *     path="component/validate/validator/arr",
+ *     path="component/validate/validator/isarray",
  *     description="",
  * )
  */
-class ArrTest extends TestCase
+class IsArrayTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -67,7 +67,7 @@ class ArrTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'arr',
+                'name'     => 'is_array',
             ]
         );
 
@@ -110,7 +110,7 @@ class ArrTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'arr',
+                'name'     => 'is_array',
             ]
         );
 
