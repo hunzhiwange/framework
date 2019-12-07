@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate\Helper;
 
 use InvalidArgumentException;
+use function strlen as base_strlen;
 
 /**
  * 长度验证.
@@ -43,7 +44,7 @@ function strlen($value, array $param): bool
         throw new InvalidArgumentException($e);
     }
 
-    return strlen($value) === (int) $param[0];
+    return base_strlen($value) === (int) $param[0];
 }
 
 class strlen

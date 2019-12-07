@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
+use function checkdnsrr as base_checkdnsrr;
+
 /**
  * 验证是否为有效的域名.
  *
@@ -31,7 +33,7 @@ function checkdnsrr($value): bool
         return false;
     }
 
-    return checkdnsrr($value);
+    return base_checkdnsrr($value);
 }
 
 class checkdnsrr
