@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Cache\Helper;
 
-use Leevel\Cache\ICache;
+use Leevel\Cache\Manager;
 use Leevel\Di\Container;
 
 /**
- * cache 服务
+ * cache 服务.
  */
-function cache(): ICache
+function cache(): Manager
 {
     return Container::singletons()->make('caches');
 }

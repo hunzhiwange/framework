@@ -31,7 +31,7 @@ use Leevel\Di\Container;
  */
 function cache_get(string $key, $defaults = null, array $option = [])
 {
-    /** @var \Leevel\Cache\ICache $cache */
+    /** @var \Leevel\Cache\Manager $cache */
     $cache = Container::singletons()->make('caches');
 
     return $cache->get($key, $defaults, $option);

@@ -30,7 +30,7 @@ use Leevel\Di\Container;
  */
 function cache_set($key, $value = null, array $option = []): void
 {
-    /** @var \Leevel\Cache\ICache $cache */
+    /** @var \Leevel\Cache\Manager $cache */
     $cache = Container::singletons()->make('caches');
     $cache->put($key, $value, $option);
 }
