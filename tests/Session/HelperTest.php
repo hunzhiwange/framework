@@ -23,6 +23,8 @@ namespace Tests\Session;
 use Leevel\Di\Container;
 use Leevel\Session\Helper;
 use Leevel\Session\ISession;
+use Leevel\Session\Manager;
+use Tests\Session\Fixtures\Manager1;
 use Tests\TestCase;
 
 /**
@@ -48,30 +50,34 @@ class HelperTest extends TestCase
 
     public function testSession(): void
     {
-        $session = $this->createMock(ISession::class);
-        $this->assertNull($session->set('foo', 'bar'));
-        $session->method('get')->willReturn('bar');
-        $this->assertSame('bar', $session->get('foo'));
+        $connect = $this->createMock(ISession::class);
+        $this->assertNull($connect->set('foo', 'bar'));
+        $connect->method('get')->willReturn('bar');
+        $this->assertSame('bar', $connect->get('foo'));
 
         $container = $this->createContainer();
-        $container->singleton('sessions', function () use ($session) {
+        $session = new Manager1($container);
+        Manager1::setConnect($connect);
+        $container->singleton('sessions', function () use ($session): Manager {
             return $session;
         });
 
-        $this->assertInstanceof(ISession::class, f('Leevel\\Session\\Helper\\session'));
+        $this->assertInstanceof(Manager::class, f('Leevel\\Session\\Helper\\session'));
         $this->assertNull(f('Leevel\\Session\\Helper\\session_set', 'foo', 'bar'));
         $this->assertSame('bar', f('Leevel\\Session\\Helper\\session_get', 'foo'));
     }
 
     public function testFlash(): void
     {
-        $session = $this->createMock(ISession::class);
-        $this->assertNull($session->flashs(['foo' => 'bar']));
-        $session->method('getFlash')->willReturn('bar');
-        $this->assertSame('bar', $session->getFlash('foo'));
+        $connect = $this->createMock(ISession::class);
+        $this->assertNull($connect->flashs(['foo' => 'bar']));
+        $connect->method('getFlash')->willReturn('bar');
+        $this->assertSame('bar', $connect->getFlash('foo'));
 
         $container = $this->createContainer();
-        $container->singleton('sessions', function () use ($session) {
+        $session = new Manager1($container);
+        Manager1::setConnect($connect);
+        $container->singleton('sessions', function () use ($session): Manager {
             return $session;
         });
 
@@ -81,17 +87,19 @@ class HelperTest extends TestCase
 
     public function testSessionHelper(): void
     {
-        $session = $this->createMock(ISession::class);
-        $this->assertNull($session->set('foo', 'bar'));
-        $session->method('get')->willReturn('bar');
-        $this->assertSame('bar', $session->get('foo'));
+        $connect = $this->createMock(ISession::class);
+        $this->assertNull($connect->set('foo', 'bar'));
+        $connect->method('get')->willReturn('bar');
+        $this->assertSame('bar', $connect->get('foo'));
 
         $container = $this->createContainer();
-        $container->singleton('sessions', function () use ($session) {
+        $session = new Manager1($container);
+        Manager1::setConnect($connect);
+        $container->singleton('sessions', function () use ($session): Manager {
             return $session;
         });
 
-        $this->assertInstanceof(ISession::class, Helper::session());
+        $this->assertInstanceof(Manager::class, Helper::session());
         $this->assertNull(Helper::sessionSet('foo', 'bar'));
         $this->assertSame('bar', Helper::sessionGet('foo'));
     }
