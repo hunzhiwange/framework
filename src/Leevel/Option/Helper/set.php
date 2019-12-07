@@ -23,18 +23,18 @@ namespace Leevel\Option\Helper;
 use Leevel\Di\Container;
 
 /**
- * 设置 opiton 值
+ * 设置 opiton 值.
  *
  * @param mixed      $name
  * @param null|mixed $value
  */
-function option_set($name, $value = null): void
+function set($name, $value = null): void
 {
     /** @var \Leevel\Option\IOption $option */
     $option = Container::singletons()->make('option');
     $option->set($name, $value);
 }
 
-class option_set
+class set
 {
 }

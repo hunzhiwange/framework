@@ -59,8 +59,8 @@ class HelperTest extends TestCase
         });
 
         $this->assertInstanceof(IOption::class, f('Leevel\\Option\\Helper\\option'));
-        $this->assertNull(f('Leevel\\Option\\Helper\\option_set', ['foo' => 'bar']));
-        $this->assertSame('bar', f('Leevel\\Option\\Helper\\option_get', 'foo'));
+        $this->assertNull(f('Leevel\\Option\\Helper\\set', ['foo' => 'bar']));
+        $this->assertSame('bar', f('Leevel\\Option\\Helper\\get', 'foo'));
     }
 
     public function testOptionHelper(): void
@@ -76,8 +76,8 @@ class HelperTest extends TestCase
         });
 
         $this->assertInstanceof(IOption::class, Helper::option());
-        $this->assertNull(Helper::optionSet(['foo' => 'bar']));
-        $this->assertSame('bar', Helper::optionGet('foo'));
+        $this->assertNull(Helper::set(['foo' => 'bar']));
+        $this->assertSame('bar', Helper::get('foo'));
     }
 
     public function testHelperNotFound(): void

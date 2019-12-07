@@ -23,13 +23,13 @@ namespace Leevel\Option\Helper;
 use Leevel\Di\Container;
 
 /**
- * 获取 opiton 值
+ * 获取 opiton 值.
  *
  * @param null|mixed $default
  *
  * @return mixed
  */
-function option_get(string $key, $default = null)
+function get(string $key, $default = null)
 {
     /** @var \Leevel\Option\IOption $option */
     $option = Container::singletons()->make('option');
@@ -37,6 +37,6 @@ function option_get(string $key, $default = null)
     return $option->get($key, $default);
 }
 
-class option_get
+class get
 {
 }

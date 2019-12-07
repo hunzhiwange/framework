@@ -24,7 +24,7 @@ use Leevel\Di\Container;
 use Leevel\Option\IOption;
 
 /**
- * 配置服务
+ * 配置服务.
  */
 function option(): IOption
 {
