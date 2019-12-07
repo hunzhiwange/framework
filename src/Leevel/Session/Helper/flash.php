@@ -23,20 +23,19 @@ namespace Leevel\Session\Helper;
 use Leevel\Di\Container;
 
 /**
- * 取回 session.
+ * 闪存一个数据，当前请求和下一个请求可用.
  *
- * @param null|mixed $defaults
+ * @param mixed $value
  *
  * @return mixed
  */
-function session_get(string $name, $defaults = null)
+function flash(string $key, $value): void
 {
     /** @var \Leevel\Session\Manager $session */
     $session = Container::singletons()->make('sessions');
-
-    return $session->get($name, $defaults);
+    $session->flash($key, $value);
 }
 
-class session_get
+class flash
 {
 }

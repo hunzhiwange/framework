@@ -23,17 +23,20 @@ namespace Leevel\Session\Helper;
 use Leevel\Di\Container;
 
 /**
- * 设置 session.
+ * 取回 session.
  *
- * @param mixed $value
+ * @param null|mixed $defaults
+ *
+ * @return mixed
  */
-function session_set(string $name, $value): void
+function get(string $name, $defaults = null)
 {
     /** @var \Leevel\Session\Manager $session */
     $session = Container::singletons()->make('sessions');
-    $session->set($name, $value);
+
+    return $session->get($name, $defaults);
 }
 
-class session_set
+class get
 {
 }
