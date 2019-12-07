@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Leevel\Session\Helper;
 
 use Leevel\Di\Container;
-use Leevel\Session\ISession;
+use Leevel\Session\Manager;
 
 /**
- * Session 服务
+ * Session 服务.
  */
-function session(): ISession
+function session(): Manager
 {
     return Container::singletons()->make('sessions');
 }

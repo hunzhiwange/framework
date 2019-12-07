@@ -31,7 +31,7 @@ use Leevel\Di\Container;
  */
 function session_get(string $name, $defaults = null)
 {
-    /** @var \Leevel\Session\ISession $session */
+    /** @var \Leevel\Session\Manager $session */
     $session = Container::singletons()->make('sessions');
 
     return $session->get($name, $defaults);

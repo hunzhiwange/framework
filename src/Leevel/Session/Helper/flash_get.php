@@ -31,7 +31,7 @@ use Leevel\Di\Container;
  */
 function flash_get(string $key, $defaults = null)
 {
-    /** @var \Leevel\Session\ISession $session */
+    /** @var \Leevel\Session\Manager $session */
     $session = Container::singletons()->make('sessions');
 
     return $session->getFlash($key, $defaults);

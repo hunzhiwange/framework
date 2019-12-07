@@ -31,7 +31,7 @@ use Leevel\Di\Container;
  */
 function flash_set(string $key, $value): void
 {
-    /** @var \Leevel\Session\ISession $session */
+    /** @var \Leevel\Session\Manager $session */
     $session = Container::singletons()->make('sessions');
     $session->flash($key, $value);
 }

@@ -29,7 +29,7 @@ use Leevel\Di\Container;
  */
 function session_set(string $name, $value): void
 {
-    /** @var \Leevel\Session\ISession $session */
+    /** @var \Leevel\Session\Manager $session */
     $session = Container::singletons()->make('sessions');
     $session->set($name, $value);
 }
