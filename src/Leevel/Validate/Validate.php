@@ -74,7 +74,7 @@ class Validate implements IValidate
             'is_float'                                        => __('{field} 必须是浮点数'),
             'double'                                          => __('{field} 必须是双精度浮点数'),
             'boolean'                                         => __('{field} 必须是布尔值'),
-            'is_array'                                        => __('{field} 必须是数组'),
+            'arr'                                             => __('{field} 必须是数组'),
             'accepted'                                        => __('{field} 必须是 yes、on、true 或者 1'),
             'date'                                            => __('{field} 不是正确的日期格式'),
             'date_format'                                     => __('{field} 必须使用日期格式 {rule}'),
