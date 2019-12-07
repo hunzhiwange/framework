@@ -23,6 +23,8 @@ namespace Tests\Log;
 use Leevel\Di\Container;
 use Leevel\Log\Helper;
 use Leevel\Log\ILog;
+use Leevel\Log\Manager;
+use Tests\Log\Fixtures\Manager1;
 use Tests\TestCase;
 
 /**
@@ -46,32 +48,36 @@ class HelperTest extends TestCase
         Container::singletons()->clear();
     }
 
-    public function testOption(): void
+    public function testLog(): void
     {
-        $log = $this->createMock(ILog::class);
-        $this->assertNull($log->log(ILog::INFO, 'bar', []));
+        $connect = $this->createMock(ILog::class);
+        $this->assertNull($connect->log(ILog::INFO, 'bar', []));
 
         $container = $this->createContainer();
-        $container->singleton('logs', function () use ($log) {
+        $log = new Manager1($container);
+        Manager1::setConnect($connect);
+        $container->singleton('logs', function () use ($log): Manager {
             return $log;
         });
 
-        $this->assertInstanceof(ILog::class, f('Leevel\\Log\\Helper\\log'));
-        $this->assertNull(f('Leevel\\Log\\Helper\\log_record', 'bar', [], ILog::INFO));
+        $this->assertInstanceof(Manager::class, f('Leevel\\Log\\Helper\\log'));
+        $this->assertNull(f('Leevel\\Log\\Helper\\record', 'bar', [], ILog::INFO));
     }
 
-    public function testOptionHelper(): void
+    public function testLogHelper(): void
     {
-        $log = $this->createMock(ILog::class);
-        $this->assertNull($log->log(ILog::INFO, 'bar', []));
+        $connect = $this->createMock(ILog::class);
+        $this->assertNull($connect->log(ILog::INFO, 'bar', []));
 
         $container = $this->createContainer();
-        $container->singleton('logs', function () use ($log) {
+        $log = new Manager1($container);
+        Manager1::setConnect($connect);
+        $container->singleton('logs', function () use ($log): Manager {
             return $log;
         });
 
-        $this->assertInstanceof(ILog::class, Helper::log());
-        $this->assertNull(Helper::logRecord('bar', [], ILog::INFO));
+        $this->assertInstanceof(Manager::class, Helper::log());
+        $this->assertNull(Helper::record('bar', [], ILog::INFO));
     }
 
     public function testHelperNotFound(): void

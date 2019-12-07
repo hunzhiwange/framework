@@ -21,17 +21,18 @@ declare(strict_types=1);
 namespace Leevel\Log\Helper;
 
 use Leevel\Di\Container;
+use Leevel\Log\ILog;
 
 /**
  * 记录日志.
  */
-function log_record(string $message, array $context = [], string $level = ILog::INFO): void
+function record(string $message, array $context = [], string $level = ILog::INFO): void
 {
-    /** @var \Leevel\Log\ILog $log */
+    /** @var \Leevel\Log\Manager $log */
     $log = Container::singletons()->make('logs');
     $log->log($level, $message, $context);
 }
 
-class log_record
+class record
 {
 }

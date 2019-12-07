@@ -18,19 +18,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Log\Helper;
+namespace Tests\Log\Fixtures;
 
-use Leevel\Di\Container;
-use Leevel\Log\Manager;
+use Leevel\Log\ILog;
+use Leevel\Log\Manager as Managers;
 
-/**
- * 日志服务.
- */
-function log(): Manager
+class Manager1 extends Managers
 {
-    return Container::singletons()->make('logs');
-}
+    private static ILog $connect;
 
-class log
-{
+    public function connect($options = null, bool $onlyNew = false): object
+    {
+        return static::$connect;
+    }
+
+    public static function setConnect(ILog $connect): void
+    {
+        static::$connect = $connect;
+    }
 }
