@@ -20,43 +20,22 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Type;
 
-use InvalidArgumentException;
-
 /**
- * 验证参数是否为指定的类型集合.
+ * 判断字符串是否为整数.
  *
  * @param mixed $value
- * @param mixed $types
  *
- * @throws \InvalidArgumentException
+ * @since bool
  */
-function type_these($value, $types): bool
+function integer($value): bool
 {
-    if (!type($types, 'string') &&
-        !type_array($types, ['string'])) {
-        $e = 'The param must be string or an array of string elements.';
-
-        throw new InvalidArgumentException($e);
+    if (is_int($value)) {
+        return true;
     }
 
-    if (is_string($types)) {
-        $types = (array) $types;
-    }
-
-    // 类型检查
-    foreach ($types as $item) {
-        if (type($value, $item)) {
-            return true;
-        }
-    }
-
-    return false;
+    return ctype_digit((string) $value);
 }
 
-class type_these
+class integer
 {
 }
-
-// import fn.
-class_exists(type::class);
-class_exists(type_array::class);

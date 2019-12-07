@@ -21,21 +21,39 @@ declare(strict_types=1);
 namespace Leevel\Support\Type;
 
 /**
- * 判断字符串是否为整数.
+ * 验证数组中的每一项格式化是否正确.
  *
- * @param mixed $value
- *
- * @since bool
+ * @param mixed $data
  */
-function type_int($value): bool
+function arr($data, array $types): bool
 {
-    if (is_int($value)) {
-        return true;
+    // 不是数组直接返回
+    if (!is_array($data)) {
+        return false;
     }
 
-    return ctype_digit((string) $value);
+    // 判断数组内部每一个值是否为给定的类型
+    foreach ($data as $value) {
+        $ret = false;
+        foreach ($types as $item) {
+            if (type($value, $item)) {
+                $ret = true;
+
+                break;
+            }
+        }
+
+        if (!$ret) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-class type_int
+class arr
 {
 }
+
+// import fn.
+class_exists(type::class);

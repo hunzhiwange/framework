@@ -20,40 +20,42 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Type;
 
+use InvalidArgumentException;
+
 /**
- * 验证数组中的每一项格式化是否正确.
+ * 验证参数是否为指定的类型集合.
  *
- * @param mixed $data
+ * @param mixed $value
+ * @param mixed $types
+ *
+ * @throws \InvalidArgumentException
  */
-function type_array($data, array $types): bool
+function these($value, $types): bool
 {
-    // 不是数组直接返回
-    if (!is_array($data)) {
-        return false;
+    if (!type($types, 'string') && !arr($types, ['string'])) {
+        $e = 'The param must be string or an array of string elements.';
+
+        throw new InvalidArgumentException($e);
     }
 
-    // 判断数组内部每一个值是否为给定的类型
-    foreach ($data as $value) {
-        $ret = false;
-        foreach ($types as $item) {
-            if (type($value, $item)) {
-                $ret = true;
+    if (is_string($types)) {
+        $types = (array) $types;
+    }
 
-                break;
-            }
-        }
-
-        if (!$ret) {
-            return false;
+    // 类型检查
+    foreach ($types as $item) {
+        if (type($value, $item)) {
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
 
-class type_array
+class these
 {
 }
 
 // import fn.
 class_exists(type::class);
+class_exists(arr::class);

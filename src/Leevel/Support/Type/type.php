@@ -71,7 +71,7 @@ function type($value, string $type): bool
             if (!empty($tmp[1])) {
                 $tmp[1] = explode(',', $tmp[1]);
 
-                return type_array($value, $tmp[1]);
+                return arr($value, $tmp[1]);
             }
 
             return is_array($value);
@@ -96,4 +96,4 @@ class type
 }
 
 // import fn.
-class_exists(type_array::class);
+class_exists(arr::class);

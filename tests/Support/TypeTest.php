@@ -276,14 +276,14 @@ class TypeTest extends TestCase
      *     note="",
      * )
      */
-    public function testTypeNumeric(): void
+    public function testTypeNumber(): void
     {
-        $this->assertTrue(Type::typeNumeric(2.2));
-        $this->assertTrue(Type::typeNumeric(4));
-        $this->assertTrue(Type::typeNumeric('2.5'));
-        $this->assertTrue(Type::typeNumeric('2,111,500'));
-        $this->assertTrue(Type::typeNumeric('2018-06-10'));
-        $this->assertTrue(Type::typeNumeric('2,111,500-200'));
+        $this->assertTrue(Type::number(2.2));
+        $this->assertTrue(Type::number(4));
+        $this->assertTrue(Type::number('2.5'));
+        $this->assertTrue(Type::number('2,111,500'));
+        $this->assertTrue(Type::number('2018-06-10'));
+        $this->assertTrue(Type::number('2,111,500-200'));
     }
 
     /**
@@ -293,10 +293,10 @@ class TypeTest extends TestCase
      *     note="",
      * )
      */
-    public function testTypeStringInt(): void
+    public function testTypeStringInteger(): void
     {
-        $this->assertTrue(Type::typeInt(1));
-        $this->assertTrue(Type::typeInt('4'));
+        $this->assertTrue(Type::integer(1));
+        $this->assertTrue(Type::integer('4'));
     }
 
     /**
@@ -308,9 +308,9 @@ class TypeTest extends TestCase
      */
     public function testTypeThese(): void
     {
-        $this->assertTrue(Type::typeThese('foo', ['string']));
-        $this->assertTrue(Type::typeThese(1, ['string', 'int']));
-        $this->assertTrue(Type::typeThese('foo', 'string'));
+        $this->assertTrue(Type::these('foo', ['string']));
+        $this->assertTrue(Type::these(1, ['string', 'int']));
+        $this->assertTrue(Type::these('foo', 'string'));
     }
 
     public function testTypeTheseException(): void
@@ -318,7 +318,7 @@ class TypeTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The param must be string or an array of string elements.');
 
-        $this->assertTrue(Type::typeThese('foo', [[]]));
+        $this->assertTrue(Type::these('foo', [[]]));
     }
 
     /**
@@ -330,11 +330,11 @@ class TypeTest extends TestCase
      */
     public function testTypeStrictArray(): void
     {
-        $this->assertFalse(Type::typeArray('foo', ['string']));
-        $this->assertTrue(Type::typeArray(['foo'], ['string']));
-        $this->assertFalse(Type::typeArray([1, 2], ['string']));
-        $this->assertTrue(Type::typeArray(['bar', 'foo'], ['string']));
-        $this->assertTrue(Type::typeArray(['bar', 2], ['string', 'int']));
+        $this->assertFalse(Type::arr('foo', ['string']));
+        $this->assertTrue(Type::arr(['foo'], ['string']));
+        $this->assertFalse(Type::arr([1, 2], ['string']));
+        $this->assertTrue(Type::arr(['bar', 'foo'], ['string']));
+        $this->assertTrue(Type::arr(['bar', 2], ['string', 'int']));
     }
 }
 
