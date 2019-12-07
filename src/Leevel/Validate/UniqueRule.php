@@ -23,8 +23,8 @@ namespace Leevel\Validate;
 use InvalidArgumentException;
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Database\Ddd\Select;
-use function Leevel\Support\Type\type_array;
-use Leevel\Support\Type\type_array;
+use function Leevel\Support\Type\arr;
+use Leevel\Support\Type\arr;
 
 /**
  * 不能重复值验证规则.
@@ -109,7 +109,7 @@ class UniqueRule
      */
     public static function rule(string $entity, ?string $field = null, $exceptId = null, ?string $primaryKey = null, ...$additional): string
     {
-        if (!type_array($additional, ['scalar'])) {
+        if (!arr($additional, ['scalar'])) {
             $e = 'Unique additional conditions must be scalar type.';
 
             throw new InvalidArgumentException($e);
@@ -285,4 +285,4 @@ class UniqueRule
 }
 
 // import fn.
-class_exists(type_array::class);
+class_exists(arr::class);

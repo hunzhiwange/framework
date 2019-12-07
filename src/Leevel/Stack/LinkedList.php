@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Stack;
 
 use InvalidArgumentException;
-use function Leevel\Support\Type\type_these;
-use Leevel\Support\Type\type_these;
+use function Leevel\Support\Type\these;
+use Leevel\Support\Type\these;
 use SplDoublyLinkedList;
 
 /**
@@ -134,9 +134,9 @@ class LinkedList extends SplDoublyLinkedList
             return true;
         }
 
-        return type_these($value, $this->type);
+        return these($value, $this->type);
     }
 }
 
 // import fn.
-class_exists(type_these::class);
+class_exists(these::class);

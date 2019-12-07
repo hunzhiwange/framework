@@ -29,8 +29,8 @@ use IteratorAggregate;
 use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
-use function Leevel\Support\Type\type_these;
-use Leevel\Support\Type\type_these;
+use function Leevel\Support\Type\these;
+use Leevel\Support\Type\these;
 use stdClass;
 
 /**
@@ -324,7 +324,7 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
             return;
         }
 
-        if (type_these($value, $this->type)) {
+        if (these($value, $this->type)) {
             return;
         }
 
@@ -369,4 +369,4 @@ class Collection implements IArray, IJson, IteratorAggregate, ArrayAccess, Count
 }
 
 // import fn.
-class_exists(type_these::class);
+class_exists(these::class);
