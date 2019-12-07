@@ -25,11 +25,11 @@ namespace Leevel\Validate\Helper;
  *
  * @param mixed $value
  */
-function is_array($value): bool
+function arr($value): bool
 {
     return is_array($value);
 }
 
-class is_array
+class arr
 {
 }
