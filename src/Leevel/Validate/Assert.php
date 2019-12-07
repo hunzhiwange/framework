@@ -30,7 +30,7 @@ use Traversable;
 /**
  * 断言.
  *
- * 提供一套精简版本的断言方便业务中很愉快地使用。
+ * - 提供一套精简版本的断言方便业务中很愉快地使用。
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -43,7 +43,7 @@ use Traversable;
 class Assert
 {
     /**
-     * 校验值
+     * 校验值.
      *
      * @var mixed
      */
@@ -167,7 +167,7 @@ class Assert
     }
 
     /**
-     * 释放并抛出验证
+     * 释放并抛出验证.
      *
      * @throws \Leevel\Validate\AssertException
      */
@@ -187,7 +187,7 @@ class Assert
     }
 
     /**
-     * 校验断言
+     * 校验断言.
      *
      * @throws \InvalidArgumentException
      */
@@ -256,7 +256,7 @@ class Assert
     }
 
     /**
-     * 匹配多个值
+     * 匹配多个值.
      *
      * @throws \InvalidArgumentException
      *
