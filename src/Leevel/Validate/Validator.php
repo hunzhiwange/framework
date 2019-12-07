@@ -179,7 +179,7 @@ class Validator implements IValidator
             $param[] = $args;
             unset($args);
 
-            if (class_exists($fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method))) {
+            if (class_exists($fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method))) {
                 array_shift($param);
 
                 return $fn(...$param);
@@ -805,7 +805,7 @@ class Validator implements IValidator
             return;
         }
 
-        if (class_exists($fn = __NAMESPACE__.'\\Helper\\validate_'.$rule)) {
+        if (class_exists($fn = __NAMESPACE__.'\\Helper\\'.$rule)) {
             if (!$fn($fieldValue, $param, $this, $field)) {
                 $this->addFailure($field, $rule, $param);
 
