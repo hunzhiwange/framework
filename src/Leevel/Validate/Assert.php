@@ -54,7 +54,7 @@ class Assert
      *
      * @var string
      */
-    protected ?string $message;
+    protected ?string $message = null;
 
     /**
      * 是否延后提示错误.
@@ -300,7 +300,7 @@ class Assert
      */
     protected static function validateRule(string $method, array $multi): bool
     {
-        $fn = __NAMESPACE__.'\\Helper\\validate_'.un_camelize($method);
+        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
 
         foreach ($multi as $m) {
             if (!function_exists($fn)) {
