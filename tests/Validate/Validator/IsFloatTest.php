@@ -24,7 +24,7 @@ use Leevel\Validate\Validator;
 use Tests\TestCase;
 
 /**
- * array test.
+ * isFloat test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -33,13 +33,13 @@ use Tests\TestCase;
  * @version 1.0
  *
  * @api(
- *     title="Validator.array",
- *     zh-CN:title="验证器.验证是否为数组",
- *     path="component/validate/validator/array",
+ *     title="Validator.is_float",
+ *     zh-CN:title="验证器.验证是否为浮点数",
+ *     path="component/validate/validator/isfloat",
  *     description="",
  * )
  */
-class ArrayTest extends TestCase
+class IsFloatTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -52,7 +52,7 @@ class ArrayTest extends TestCase
      * 以下是通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\ArrayTest::class, 'baseUseProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\FloatTest::class, 'baseUseProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。
@@ -67,7 +67,7 @@ class ArrayTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'array',
+                'name'     => 'is_float',
             ]
         );
 
@@ -77,10 +77,11 @@ class ArrayTest extends TestCase
     public function baseUseProvider(): array
     {
         return [
-            [['this', 'is', 'an array']],
-            [['a' => 'aaa', 'b' => 1, 'c' => true]],
-            [['im', 'an', 'array']],
-            [['im' => 'not', 'going' => 'to be', 'an' => 'array']],
+            [0],
+            ['12'],
+            [' 0 '],
+            ['0.0'],
+            ['0'],
         ];
     }
 
@@ -95,7 +96,7 @@ class ArrayTest extends TestCase
      * 以下是未通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\ArrayTest::class, 'badProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\FloatTest::class, 'badProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。
@@ -110,7 +111,7 @@ class ArrayTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'array',
+                'name'     => 'is_float',
             ]
         );
 
@@ -120,14 +121,10 @@ class ArrayTest extends TestCase
     public function badProvider(): array
     {
         return [
-            ['this is a string'],
-            [0.52148389816284],
-            ['0.0'],
-            ['-0.0'],
+            ['0,0'],
+            [false],
             ['foo'],
             ['bar'],
-            ['hello'],
-            ['world'],
         ];
     }
 }

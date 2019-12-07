@@ -21,11 +21,10 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validator;
-use stdClass;
 use Tests\TestCase;
 
 /**
- * empty test.
+ * isArray test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -34,13 +33,13 @@ use Tests\TestCase;
  * @version 1.0
  *
  * @api(
- *     title="Validator.empty",
- *     zh-CN:title="验证器.值是否为空",
- *     path="component/validate/validator/empty",
+ *     title="Validator.is_array",
+ *     zh-CN:title="验证器.验证是否为数组",
+ *     path="component/validate/validator/isarray",
  *     description="",
  * )
  */
-class EmptyTest extends TestCase
+class IsArrayTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -53,7 +52,7 @@ class EmptyTest extends TestCase
      * 以下是通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EmptyTest::class, 'baseUseProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\ArrayTest::class, 'baseUseProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。
@@ -68,7 +67,7 @@ class EmptyTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'empty',
+                'name'     => 'is_array',
             ]
         );
 
@@ -77,17 +76,11 @@ class EmptyTest extends TestCase
 
     public function baseUseProvider(): array
     {
-        $val = null;
-
         return [
-            [''],
-            [0],
-            [0.0],
-            ['0'],
-            [null],
-            [false],
-            [[]],
-            [$val],
+            [['this', 'is', 'an array']],
+            [['a' => 'aaa', 'b' => 1, 'c' => true]],
+            [['im', 'an', 'array']],
+            [['im' => 'not', 'going' => 'to be', 'an' => 'array']],
         ];
     }
 
@@ -102,7 +95,7 @@ class EmptyTest extends TestCase
      * 以下是未通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EmptyTest::class, 'badProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\ArrayTest::class, 'badProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。
@@ -117,7 +110,7 @@ class EmptyTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'empty',
+                'name'     => 'is_array',
             ]
         );
 
@@ -127,19 +120,14 @@ class EmptyTest extends TestCase
     public function badProvider(): array
     {
         return [
-            [' '],
-            ['not numeric'],
-            [new stdClass()],
-            [['foo', 'bar']],
-            [[1, 2]],
             ['this is a string'],
+            [0.52148389816284],
+            ['0.0'],
+            ['-0.0'],
             ['foo'],
             ['bar'],
             ['hello'],
             ['world'],
-            [true],
-            [1],
-            [[[], []]],
         ];
     }
 }

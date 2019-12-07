@@ -25,7 +25,7 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * null test.
+ * isNull test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -34,13 +34,13 @@ use Tests\TestCase;
  * @version 1.0
  *
  * @api(
- *     title="Validator.null",
+ *     title="Validator.is_null",
  *     zh-CN:title="验证器.是否为 null",
- *     path="component/validate/validator/null",
+ *     path="component/validate/validator/isnull",
  *     description="",
  * )
  */
-class NullTest extends TestCase
+class IsNullTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -68,7 +68,7 @@ class NullTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'null',
+                'name'     => 'is_null',
             ]
         );
 
@@ -111,7 +111,7 @@ class NullTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'null',
+                'name'     => 'is_null',
             ]
         );
 
