@@ -63,8 +63,8 @@ class HelperTest extends TestCase
         });
 
         $this->assertInstanceof(Manager::class, f('Leevel\\Session\\Helper\\session'));
-        $this->assertNull(f('Leevel\\Session\\Helper\\session_set', 'foo', 'bar'));
-        $this->assertSame('bar', f('Leevel\\Session\\Helper\\session_get', 'foo'));
+        $this->assertNull(f('Leevel\\Session\\Helper\\set', 'foo', 'bar'));
+        $this->assertSame('bar', f('Leevel\\Session\\Helper\\get', 'foo'));
     }
 
     public function testFlash(): void
@@ -81,8 +81,8 @@ class HelperTest extends TestCase
             return $session;
         });
 
-        $this->assertNull(f('Leevel\\Session\\Helper\\flash_set', 'foo', 'bar'));
-        $this->assertSame('bar', f('Leevel\\Session\\Helper\\flash_get', 'foo'));
+        $this->assertNull(f('Leevel\\Session\\Helper\\flash', 'foo', 'bar'));
+        $this->assertSame('bar', f('Leevel\\Session\\Helper\\get_flash', 'foo'));
     }
 
     public function testSessionHelper(): void
@@ -100,24 +100,26 @@ class HelperTest extends TestCase
         });
 
         $this->assertInstanceof(Manager::class, Helper::session());
-        $this->assertNull(Helper::sessionSet('foo', 'bar'));
-        $this->assertSame('bar', Helper::sessionGet('foo'));
+        $this->assertNull(Helper::set('foo', 'bar'));
+        $this->assertSame('bar', Helper::get('foo'));
     }
 
     public function testFlashHelper(): void
     {
-        $session = $this->createMock(ISession::class);
-        $this->assertNull($session->flashs(['foo' => 'bar']));
-        $session->method('getFlash')->willReturn('bar');
-        $this->assertSame('bar', $session->getFlash('foo'));
+        $connect = $this->createMock(ISession::class);
+        $this->assertNull($connect->flashs(['foo' => 'bar']));
+        $connect->method('getFlash')->willReturn('bar');
+        $this->assertSame('bar', $connect->getFlash('foo'));
 
         $container = $this->createContainer();
+        $session = new Manager1($container);
+        Manager1::setConnect($connect);
         $container->singleton('sessions', function () use ($session) {
             return $session;
         });
 
-        $this->assertNull(Helper::flashSet('foo', 'bar'));
-        $this->assertSame('bar', Helper::flashGet('foo'));
+        $this->assertNull(Helper::flash('foo', 'bar'));
+        $this->assertSame('bar', Helper::getFlash('foo'));
     }
 
     public function testHelperNotFound(): void
