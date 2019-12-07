@@ -46,11 +46,11 @@ use Tests\TestCase;
  * 使用助手函数
  *
  * ``` php
- * \Leevel\Session\Helper::session_get(string $name, $defaults = null);
- * \Leevel\Session\Helper::session_set(string $name, $value): void;
+ * \Leevel\Session\Helper::get(string $name, $defaults = null);
+ * \Leevel\Session\Helper::set(string $name, $value): void;
  * \Leevel\Session\Helper::session(): \Leevel\Session\Manager;
- * \Leevel\Session\Helper::flash_get(string $key, $defaults = null);
- * \Leevel\Session\Helper::flash_set(string $key, $value): void;
+ * \Leevel\Session\Helper::getFlash(string $key, $defaults = null);
+ * \Leevel\Session\Helper::flash(string $key, $value): void;
  * ```
  *
  * 使用容器 sessions 服务
