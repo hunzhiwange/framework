@@ -32,13 +32,81 @@ use Tests\TestCase;
  * @since 2018.08.16
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="session",
+ *     path="component/session",
+ *     description="
+ * QueryPHP 提供了 Session (会话) 可以用于保存用户登录状态。
+ *
+ * 内置支持的 session 驱动类型包括 file、redis，未来可能增加其他驱动。
+ *
+ * ## 使用方式
+ *
+ * 使用助手函数
+ *
+ * ``` php
+ * \Leevel\Session\Helper::session_get(string $name, $defaults = null);
+ * \Leevel\Session\Helper::session_set(string $name, $value): void;
+ * \Leevel\Session\Helper::session(): \Leevel\Session\Manager;
+ * \Leevel\Session\Helper::flash_get(string $key, $defaults = null);
+ * \Leevel\Session\Helper::flash_set(string $key, $value): void;
+ * ```
+ *
+ * 使用容器 sessions 服务
+ *
+ * ``` php
+ * \App::make('sessions')->set(string $name, $value): void;
+ * \App::make('sessions')->get(string $name, $defaults = null);
+ * ```
+ *
+ * 依赖注入
+ *
+ * ``` php
+ * class Demo
+ * {
+ *     private $session;
+ *
+ *     public function __construct(\Leevel\Session\Manager $session)
+ *     {
+ *         $this->session = $session;
+ *     }
+ * }
+ * ```
+ *
+ * 使用静态代理
+ *
+ * ``` php
+ * \Leevel\Session\Proxy\Session::set(string $name, $value): void;
+ * \Leevel\Session\Proxy\Session::get(string $name, $value = null);
+ * ```
+ *
+ * ## session 配置
+ *
+ * 系统的 session 配置位于应用下面的 `option/session.php` 文件。
+ *
+ * 可以定义多个缓存连接，并且支持切换，每一个连接支持驱动设置。
+ *
+ * ``` php
+ * {[file_get_contents('option/session.php')]}
+ * ```
+ *
+ * session 参数根据不同的连接会有所区别，通用的 sesion 参数如下：
+ *
+ * |配置项|配置描述|
+ * |:-|:-|
+ * |id|相当于 session_id|
+ * |name|相当于 session_name|
+ * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
+ * |serialize|是否使用 serialize 编码|
+ * ",
+ * )
  */
 class SessionTest extends TestCase
 {
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache';
-
         if (is_dir($dirPath)) {
             rmdir($dirPath);
         }
