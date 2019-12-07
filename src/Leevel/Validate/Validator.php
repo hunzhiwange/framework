@@ -102,8 +102,9 @@ class Validator implements IValidator
     protected array $errorMessages = [];
 
     /**
-     * 需要跳过的验证规则
-     * 用于扩展属性支持
+     * 需要跳过的验证规则.
+     *
+     * - 用于扩展属性支持
      *
      * @var array
      */
@@ -206,7 +207,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 验证是否成功
+     * 验证是否成功.
      */
     public function success(): bool
     {
@@ -524,7 +525,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 获取字段的值
+     * 获取字段的值.
      *
      * @return mixed
      */
@@ -832,7 +833,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 是否需要终止其他验证
+     * 是否需要终止其他验证.
      */
     protected function shouldSkipOther(string $field): bool
     {
@@ -840,7 +841,7 @@ class Validator implements IValidator
     }
 
     /**
-     * 是否需要终止自己其他验证
+     * 是否需要终止自己其他验证.
      */
     protected function shouldSkipSelf(string $field): bool
     {

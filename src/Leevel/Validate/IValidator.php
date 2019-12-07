@@ -42,7 +42,7 @@ interface IValidator
     const OPTIONAL = 'optional';
 
     /**
-     * 无论是否是可选字段都验证
+     * 无论是否是可选字段都验证.
      *
      * @var string
      */
@@ -56,7 +56,7 @@ interface IValidator
     const SKIP_SELF = 'self';
 
     /**
-     * 跳过其它验证
+     * 跳过其它验证.
      *
      * @var string
      */
@@ -70,7 +70,7 @@ interface IValidator
     public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): self;
 
     /**
-     * 验证是否成功
+     * 验证是否成功.
      */
     public function success(): bool;
 
@@ -193,7 +193,7 @@ interface IValidator
     public function extend(string $rule, $extends): self;
 
     /**
-     * 设置 ioc 容器.
+     * 设置 IOC 容器.
      *
      * @return \Leevel\Validate\IValidator
      */
@@ -212,7 +212,7 @@ interface IValidator
     public function getParseRule(string $field, $rules): array;
 
     /**
-     * 获取字段的值
+     * 获取字段的值.
      *
      * @return mixed
      */
