@@ -22,7 +22,9 @@ namespace Tests\Cache;
 
 use Leevel\Cache\Helper;
 use Leevel\Cache\ICache;
+use Leevel\Cache\Manager;
 use Leevel\Di\Container;
+use Tests\Cache\Fixtures\Manager1;
 use Tests\TestCase;
 
 /**
@@ -48,34 +50,38 @@ class HelperTest extends TestCase
 
     public function testCache(): void
     {
-        $cache = $this->createMock(ICache::class);
-        $this->assertNull($cache->set('foo', 'bar'));
-        $cache->method('get')->willReturn('bar');
-        $this->assertSame('bar', $cache->get('foo'));
+        $connect = $this->createMock(ICache::class);
+        $this->assertNull($connect->set('foo', 'bar'));
+        $connect->method('get')->willReturn('bar');
+        $this->assertSame('bar', $connect->get('foo'));
 
         $container = $this->createContainer();
-        $container->singleton('caches', function () use ($cache) {
+        $cache = new Manager1($container);
+        Manager1::setConnect($connect);
+        $container->singleton('caches', function () use ($cache): Manager {
             return $cache;
         });
 
-        $this->assertInstanceof(ICache::class, f('Leevel\\Cache\\Helper\\cache'));
+        $this->assertInstanceof(Manager::class, f('Leevel\\Cache\\Helper\\cache'));
         $this->assertNull(f('Leevel\\Cache\\Helper\\cache_set', ['foo' => 'bar']));
         $this->assertSame('bar', f('Leevel\\Cache\\Helper\\cache_get', 'foo'));
     }
 
     public function testCacheHelper(): void
     {
-        $cache = $this->createMock(ICache::class);
-        $this->assertNull($cache->set('foo', 'bar'));
-        $cache->method('get')->willReturn('bar');
-        $this->assertSame('bar', $cache->get('foo'));
+        $connect = $this->createMock(ICache::class);
+        $this->assertNull($connect->set('foo', 'bar'));
+        $connect->method('get')->willReturn('bar');
+        $this->assertSame('bar', $connect->get('foo'));
 
         $container = $this->createContainer();
-        $container->singleton('caches', function () use ($cache) {
+        $cache = new Manager1($container);
+        Manager1::setConnect($connect);
+        $container->singleton('caches', function () use ($cache): Manager {
             return $cache;
         });
 
-        $this->assertInstanceof(ICache::class, Helper::cache());
+        $this->assertInstanceof(Manager::class, Helper::cache());
         $this->assertNull(Helper::cacheSet(['foo' => 'bar']));
         $this->assertSame('bar', Helper::cacheGet('foo'));
     }
