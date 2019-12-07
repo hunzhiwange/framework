@@ -23,7 +23,7 @@ namespace Leevel\Cache\Helper;
 use Leevel\Di\Container;
 
 /**
- * 获取 cache 值
+ * 获取 cache 值.
  *
  * @param null|mixed $defaults
  *

@@ -23,7 +23,7 @@ namespace Leevel\Cache\Helper;
 use Leevel\Di\Container;
 
 /**
- * 设置 cache 值
+ * 设置 cache 值.
  *
  * @param array|string $key
  * @param null|mixed   $value
