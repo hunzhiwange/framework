@@ -53,7 +53,7 @@ class IsEmptyTest extends TestCase
      * 以下是通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EmptyTest::class, 'baseUseProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\IsEmptyTest::class, 'baseUseProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。
@@ -102,7 +102,7 @@ class IsEmptyTest extends TestCase
      * 以下是未通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EmptyTest::class, 'badProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\IsEmptyTest::class, 'badProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。

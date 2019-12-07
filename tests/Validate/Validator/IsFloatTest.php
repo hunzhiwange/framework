@@ -52,7 +52,7 @@ class IsFloatTest extends TestCase
      * 以下是通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\FloatTest::class, 'baseUseProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\IsFloatTest::class, 'baseUseProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。
@@ -96,7 +96,7 @@ class IsFloatTest extends TestCase
      * 以下是未通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\FloatTest::class, 'badProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\IsFloatTest::class, 'badProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。

@@ -53,7 +53,7 @@ class IsNullTest extends TestCase
      * 以下是通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NullTest::class, 'baseUseProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\IsNullTest::class, 'baseUseProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。
@@ -96,7 +96,7 @@ class IsNullTest extends TestCase
      * 以下是未通过的校验数据示例。
      *
      * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NullTest::class, 'badProvider')]}
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\IsNullTest::class, 'badProvider')]}
      * ```
      *
      * 上面的数据是测试的数据提供者。
