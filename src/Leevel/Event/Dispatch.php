@@ -74,8 +74,6 @@ class Dispatch implements IDispatch
             $name = get_class($event);
         } else {
             $name = $event;
-
-            // This may return object or string
             $event = $this->container->make($event);
         }
 
