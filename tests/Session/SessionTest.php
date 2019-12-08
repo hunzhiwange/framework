@@ -99,6 +99,10 @@ use Tests\TestCase;
  * |name|相当于 session_name|
  * |expire|设置好缓存时间（小与等于 0 表示永不过期，单位时间为秒）|
  * |serialize|是否使用 serialize 编码|
+ *
+ * ::: warning 注意
+ * QueryPHP 并没有使用 PHP 原生 SESSION，而是模拟原生 SESSION 自己实现的一套，使用方法与原生用法几乎一致。与原生 SESSION 不一样的是，QueryPHP 会在最后通过 session 中间件统一写入。
+ * :::
  * ",
  * )
  */
@@ -112,12 +116,38 @@ class SessionTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="session 基本使用",
+     *     description="
+     * session 的使用方法和原生差不多。
+     *
+     * **设置 session**
+     *
+     * ``` php
+     * set(string $name, $value): void;
+     * ```
+     *
+     * **是否存在 session**
+     *
+     * ``` php
+     * has(string $name): bool;
+     * ```
+     *
+     * **删除 session**
+     *
+     * ``` php
+     * delete(string $name): void;
+     * ```
+     * ",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $session = $this->createFileSessionHandler();
 
         $this->assertInstanceof(ISession::class, $session);
-
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
         $this->assertSame('UID', $session->getName());
@@ -227,6 +257,13 @@ class SessionTest extends TestCase
         $session->save();
     }
 
+    /**
+     * @api(
+     *     title="put 批量插入",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPut(): void
     {
         $session = $this->createFileSessionHandler();
@@ -241,6 +278,13 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => 'world', 'foo' => 'bar'], $session->all());
     }
 
+    /**
+     * @api(
+     *     title="push 数组插入数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPush(): void
     {
         $session = $this->createFileSessionHandler();
@@ -255,6 +299,13 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => ['world', 'bar', 'bar']], $session->all());
     }
 
+    /**
+     * @api(
+     *     title="merge 合并元素",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMerge(): void
     {
         $session = $this->createFileSessionHandler();
@@ -272,6 +323,13 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => ['world', 'bar', 'bar', 'he' => 'he']], $session->all());
     }
 
+    /**
+     * @api(
+     *     title="pop 弹出元素",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPop(): void
     {
         $session = $this->createFileSessionHandler();
@@ -289,6 +347,13 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => []], $session->all());
     }
 
+    /**
+     * @api(
+     *     title="arr 数组插入键值对数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArr(): void
     {
         $session = $this->createFileSessionHandler();
@@ -303,6 +368,13 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => ['sub' => 'me', 'foo' => 'bar']], $session->all());
     }
 
+    /**
+     * @api(
+     *     title="arrDelete 数组键值删除数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testArrDelete(): void
     {
         $session = $this->createFileSessionHandler();
@@ -320,6 +392,13 @@ class SessionTest extends TestCase
         $this->assertSame(['hello' => []], $session->all());
     }
 
+    /**
+     * @api(
+     *     title="getPart 返回数组部分数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetPart(): void
     {
         $session = $this->createFileSessionHandler();
@@ -343,6 +422,13 @@ class SessionTest extends TestCase
         $this->assertNull($session->getPart('hello\\sub'));
     }
 
+    /**
+     * @api(
+     *     title="clear 清空 session",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testClear(): void
     {
         $session = $this->createFileSessionHandler();
@@ -354,6 +440,13 @@ class SessionTest extends TestCase
         $this->assertSame([], $session->all());
     }
 
+    /**
+     * @api(
+     *     title="flash 闪存一个数据，当前请求和下一个请求可用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -401,6 +494,13 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="flashs 批量闪存数据，当前请求和下一个请求可用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFlashs(): void
     {
         $session = $this->createFileSessionHandler();
@@ -427,6 +527,13 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="nowFlash 闪存一个 flash 用于当前请求使用,下一个请求将无法获取",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNowFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -450,6 +557,13 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="nowFlashs 批量闪存数据,用于当前请求使用，下一个请求将无法获取",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testNowFlashs(): void
     {
         $session = $this->createFileSessionHandler();
@@ -475,6 +589,13 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="rebuildFlash 保持所有闪存数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRebuildFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -521,6 +642,13 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="keepFlash 保持闪存数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testKeepFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -613,6 +741,13 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="getFlash 返回闪存数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -632,7 +767,14 @@ class SessionTest extends TestCase
         $this->assertNull($session->getFlash('test\\notFound'));
     }
 
-    public function testDeleteFlash(): void
+    /**
+     * @api(
+     *     title="deleteFlash 删除闪存数据",
+     *     description="",
+     *     note="",
+     * )
+     */
+    public function deleteFlash(): void
     {
         $session = $this->createFileSessionHandler();
 
@@ -724,6 +866,13 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="clearFlash 清理所有闪存数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testClearFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -821,17 +970,28 @@ class SessionTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="setPrevUrl.prevUrl 设置和返回前一个请求地址",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPrevUrl(): void
     {
         $session = $this->createFileSessionHandler();
-
         $this->assertNull($session->prevUrl());
-
         $session->setPrevUrl('foo');
-
         $this->assertSame('foo', $session->prevUrl());
     }
 
+    /**
+     * @api(
+     *     title="destroySession 终止会话",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDestroy(): void
     {
         $session = $this->createFileSessionHandler();
