@@ -133,7 +133,7 @@ interface ISession
     public function has(string $name): bool;
 
     /**
-     * 删除 session.
+     * 清空 session.
      */
     public function clear(): void;
 

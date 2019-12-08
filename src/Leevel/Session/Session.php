@@ -275,7 +275,7 @@ abstract class Session
     }
 
     /**
-     * 删除 session.
+     * 清空 session.
      */
     public function clear(): void
     {
