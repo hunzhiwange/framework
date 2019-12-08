@@ -62,7 +62,7 @@ class Response implements IResponse
     public $original;
 
     /**
-     * 状态码
+     * 状态码.
      *
      * @see http://www.iana.org/assignments/http-status-codes/
      *
@@ -148,7 +148,7 @@ class Response implements IResponse
     protected string $protocolVersion;
 
     /**
-     * 状态码
+     * 状态码.
      *
      * @var int
      */
@@ -162,7 +162,7 @@ class Response implements IResponse
     protected string $statusText;
 
     /**
-     * 字符编码
+     * 字符编码.
      *
      * @var string
      */
