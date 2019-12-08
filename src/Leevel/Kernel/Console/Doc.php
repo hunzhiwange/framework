@@ -120,8 +120,8 @@ class Doc extends Command
      */
     protected function parseFiles(): array
     {
-        $fileOrDir = dirname($this->testsDir()).'/'.$this->path();
         $result = [];
+        $fileOrDir = $this->path();
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
@@ -140,8 +140,7 @@ class Doc extends Command
      */
     protected function includeBootstrapFile(): void
     {
-        $bootstrap = $this->testsDir().'/bootstrap.php';
-        if (is_file($bootstrap)) {
+        if (is_file($bootstrap = $this->bootstrap())) {
             include $bootstrap;
         }
     }
@@ -155,11 +154,11 @@ class Doc extends Command
     }
 
     /**
-     * 取得测试用例基础目录.
+     * 取得测试用例初始化引导文件.
      */
-    protected function testsDir(): string
+    protected function bootstrap(): string
     {
-        return $this->argument('testsdir');
+        return $this->argument('bootstrap');
     }
 
     /**
@@ -198,9 +197,9 @@ class Doc extends Command
                 'This is the tests file or dir path.',
             ],
             [
-                'testsdir',
+                'bootstrap',
                 Argument::REQUIRED,
-                'This is the tests dir path.',
+                'This is the tests bootstrap file.',
             ],
             [
                 'outputdir',
