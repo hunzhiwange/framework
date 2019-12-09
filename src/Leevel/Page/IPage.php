@@ -115,7 +115,7 @@ interface IPage
     public function renderOptions(array $option): self;
 
     /**
-     * 设置 url.
+     * 设置 URL.
      *
      * @return \Leevel\Page\IPage
      */
@@ -148,14 +148,14 @@ interface IPage
     public function getRange();
 
     /**
-     * 设置 url 描点.
+     * 设置 URL 描点.
      *
      * @return \Leevel\Page\IPage
      */
     public function fragment(?string $fragment = null): self;
 
     /**
-     * 获取 url 描点.
+     * 获取 URL 描点.
      */
     public function getFragment(): ?string;
 
@@ -214,12 +214,12 @@ interface IPage
     public function getCurrentPage(): int;
 
     /**
-     * 返回分页视图开始页码
+     * 返回分页视图开始页码.
      */
     public function getPageStart(): int;
 
     /**
-     * 返回分页视图结束页码
+     * 返回分页视图结束页码.
      */
     public function getPageEnd(): int;
 

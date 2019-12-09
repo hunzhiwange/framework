@@ -52,7 +52,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     protected ?int $perPage = null;
 
     /**
-     * 当前分页页码
+     * 当前分页页码.
      *
      * @var int
      */
@@ -80,7 +80,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     protected ?int $pageEnd = null;
 
     /**
-     * 缓存 url 地址
+     * 缓存 URL 地址.
      *
      * @var string
      */
@@ -273,7 +273,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 设置 url 描点.
+     * 设置 URL 描点.
      *
      * @return \Leevel\Page\IPage
      */
@@ -283,7 +283,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 获取 url 描点.
+     * 获取 URL 描点.
      */
     public function getFragment(): ?string
     {
@@ -389,7 +389,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 返回分页视图开始页码
+     * 返回分页视图开始页码.
      */
     public function getPageStart(): int
     {
@@ -406,7 +406,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 返回分页视图结束页码
+     * 返回分页视图结束页码.
      */
     public function getPageEnd(): int
     {
@@ -613,8 +613,9 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 分析分页 url 地址.
-     * {page} 表示自定义分页变量替换.
+     * 分析分页 URL 地址.
+     *
+     * - {page} 表示自定义分页变量替换.
      */
     protected function getUrl(): string
     {
