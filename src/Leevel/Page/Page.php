@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
+use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IHtml;
@@ -103,9 +104,15 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
 
     /**
      * 构造函数.
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(int $currentPage, ?int $perPage = null, ?int $totalRecord = null, array $option = [])
     {
+        if ($currentPage < 1) {
+            throw new InvalidArgumentException('Current page must great than 0.');
+        }
+
         $this->currentPage = $currentPage;
         $this->perPage = $perPage;
         $this->totalRecord = $totalRecord;
