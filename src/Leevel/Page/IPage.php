@@ -134,14 +134,14 @@ interface IPage
     public function getRender(): ?string;
 
     /**
-     * 设置 range.
+     * 设置分页范围.
      *
      * @return \Leevel\Page\IPage
      */
     public function range(?int $range = null): self;
 
     /**
-     * 获取 range.
+     * 获取分页范围.
      *
      * @return int
      */

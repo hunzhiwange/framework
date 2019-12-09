@@ -260,7 +260,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 设置 range.
+     * 设置分页范围.
      *
      * @return \Leevel\Page\IPage
      */
@@ -270,7 +270,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 获取 range.
+     * 获取分页范围.
      */
     public function getRange(): int
     {
