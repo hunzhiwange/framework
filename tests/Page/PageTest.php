@@ -64,6 +64,13 @@ class PageTest extends TestCase
         Container::singletons()->clear();
     }
 
+    /**
+     * @api(
+     *     title="render 分页基本使用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $page = new Page(1, 10, 52);
@@ -130,6 +137,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="分页页码必须大于 0",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCurrentPageIsZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -207,6 +221,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="fragment.getFragment 分页 URL 描点",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFragment(): void
     {
         $page = new Page(1, 10, 52);
@@ -243,6 +264,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="perPage.getPerPage 每页分页数量",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPerPage(): void
     {
         $page = new Page(1, 10, 52);
@@ -281,6 +309,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="分页渲染配置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetSmallTemplate(): void
     {
         $page = new Page(1, 10, 52, [
@@ -315,6 +350,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="append.addParam.appends 追加分页条件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testAppend(): void
     {
         $page = new Page(1, 5, 3);
@@ -364,6 +406,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="renderOption 设置渲染参数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRenderOption(): void
     {
         $page = new Page(1, 5, 3);
@@ -420,6 +469,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="url 设置 URL",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testUrl(): void
     {
         $page = new Page(1, 3, 5);
@@ -436,6 +492,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="setRender 设置渲染组件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testSetRender(): void
     {
         $page = new Page(1, 3, 5);
@@ -452,6 +515,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="默认每页分页数量",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testDefaultPerPage(): void
     {
         $page = new Page(1, null, 25);
@@ -466,6 +536,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="pageName.getPageName 分页名字",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPageName(): void
     {
         $page = new Page(1, 10, 25);
@@ -540,6 +617,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="range 分页范围",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testRange(): void
     {
         $page = new Page(1, 3, 40);
@@ -576,6 +660,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="MACRO 无限数据分页",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMacro(): void
     {
         $page = new Page(1, 3, Page::MACRO);
@@ -645,6 +736,13 @@ class PageTest extends TestCase
         );
     }
 
+    /**
+     * @api(
+     *     title="bootstrap 分页尺寸设置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testPageBootstrapSize(): void
     {
         $page = new Page(1, 3, 40);
