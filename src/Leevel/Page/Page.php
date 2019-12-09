@@ -230,7 +230,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 设置 url.
+     * 设置 URL.
      *
      * @return \Leevel\Page\IPage
      */
