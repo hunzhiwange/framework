@@ -240,7 +240,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 设置 render.
+     * 设置渲染组件.
      *
      * @return \Leevel\Page\IPage
      */
@@ -250,7 +250,7 @@ class Page implements IPage, IJson, IArray, IHtml, JsonSerializable
     }
 
     /**
-     * 获取 render.
+     * 获取渲染组件.
      *
      * @return null|string
      */

@@ -122,14 +122,14 @@ interface IPage
     public function url(?string $url = null): self;
 
     /**
-     * 设置 render.
+     * 设置渲染组件.
      *
      * @return \Leevel\Page\IPage
      */
     public function setRender(?string $render = null): self;
 
     /**
-     * 获取 render.
+     * 获取渲染组件.
      */
     public function getRender(): ?string;
 
