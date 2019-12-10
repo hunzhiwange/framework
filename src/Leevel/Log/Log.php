@@ -202,8 +202,6 @@ abstract class Log
 
     /**
      * 记录特定级别的日志信息.
-     *
-     * @param mixed $level
      */
     public function log(string $level, string $message, array $context = []): void
     {
