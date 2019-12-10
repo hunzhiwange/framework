@@ -33,6 +33,94 @@ use Tests\TestCase;
  * @since 2018.08.25
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="log",
+ *     path="component/log",
+ *     description="
+ * 日志记录统一由日志组件完成，通常我们使用代理 `Leevel\Log\Proxy\Log` 类进行静态调用。
+ *
+ * 内置支持的 log 驱动类型包括 file、syslog，未来可能增加其他驱动。
+ *
+ * ::: tips
+ * 日志遵循 PSR-3 规范，用法与主流框架完全一致。
+ * :::
+ *
+ * ## 使用方式
+ *
+ * 使用助手函数
+ *
+ * ``` php
+ * \Leevel\Log\Helper::record(string $message, array $context = [], string $level = \Leevel\Log\ILog::INFO): void;
+ * \Leevel\Log\Helper::log(): \Leevel\Log\Manager;
+ * ```
+ *
+ * 使用容器 logs 服务
+ *
+ * ``` php
+ * \App::make('logs')->emergency(string $message, array $context = []): void;
+ * \App::make('logs')->alert(string $message, array $context = []): void;
+ * \App::make('logs')->critical(string $message, array $context = []): void;
+ * \App::make('logs')->error(string $message, array $context = []): void;
+ * \App::make('logs')->warning(string $message, array $context = []): void;
+ * \App::make('logs')->notice(string $message, array $context = []): void;
+ * \App::make('logs')->info(string $message, array $context = []): void;
+ * \App::make('logs')->debug(string $message, array $context = []): void;
+ * \App::make('logs')->log(string $level, string $message, array $context = []): void;
+ * ```
+ *
+ * 依赖注入
+ *
+ * ``` php
+ * class Demo
+ * {
+ *     private $log;
+ *
+ *     public function __construct(\Leevel\Log\Manager $log)
+ *     {
+ *         $this->log = $log;
+ *     }
+ * }
+ * ```
+ *
+ * 使用静态代理
+ *
+ * ``` php
+ * \Leevel\Log\Proxy\Log::emergency(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::alert(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::critical(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::error(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::warning(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::notice(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::info(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::debug(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::log(string $level, string $message, array $context = []): void;
+ * ```
+ *
+ * ## log 配置
+ *
+ * 系统的 log 配置位于应用下面的 `option/log.php` 文件。
+ *
+ * 可以定义多个日志连接，并且支持切换，每一个连接支持驱动设置。
+ *
+ * ``` php
+ * {[file_get_contents('option/log.php')]}
+ * ```
+ *
+ * log 参数根据不同的连接会有所区别，通用的 log 参数如下：
+ *
+ * |配置项|配置描述|
+ * |:-|:-|
+ * |levels|允许记录的日志级别|
+ * |channel|频道|
+ * |buffer|是否启用缓冲|
+ * |缓冲数量|日志数量达到缓冲数量会执行一次 IO 操作|
+ *
+ * ::: warning 注意
+ * QueryPHP 的日志如果启用了缓冲，会在日志数量达到缓冲数量会执行一次 IO 操作。
+ * :::
+ * ",
+ * )
  */
 class LogTest extends TestCase
 {
@@ -46,7 +134,6 @@ class LogTest extends TestCase
         $this->assertInstanceof(ILog::class, $log);
 
         $this->assertNull($log->{$level}('foo', ['hello', 'world']));
-
         $this->assertSame([$level => [[$level, 'foo', ['hello', 'world']]]], $log->all());
         $this->assertSame([[$level, 'foo', ['hello', 'world']]], $log->all($level));
 
