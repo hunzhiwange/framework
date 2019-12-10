@@ -68,8 +68,8 @@ class Log
     /**
      * 必须立即采取行动.
      *
-     * 比如: 整个网站宕机，数据库不可用等等.
-     * 这种错误应该通过短信通知你.
+     * - 比如: 整个网站宕机，数据库不可用等等.
+     * - 这种错误应该通过短信通知你.
      */
     public static function alert(string $message, array $context = []): void
     {
@@ -79,7 +79,7 @@ class Log
     /**
      * 临界条件.
      *
-     * 比如: 应用程序组件不可用，意外异常.
+     * - 比如: 应用程序组件不可用，意外异常.
      */
     public static function critical(string $message, array $context = []): void
     {
@@ -88,7 +88,8 @@ class Log
 
     /**
      * 运行时错误，不需要立即处理.
-     * 但是需要被记录和监控.
+     *
+     * - 但是需要被记录和监控.
      */
     public static function error(string $message, array $context = []): void
     {
@@ -98,8 +99,8 @@ class Log
     /**
      * 非错误的异常事件.
      *
-     * 比如: 弃用的 API 接口, API 使用不足, 不良事物.
-     * 它们不一定是错误的.
+     * - 比如: 弃用的 API 接口, API 使用不足, 不良事物.
+     * - 它们不一定是错误的.
      */
     public static function warning(string $message, array $context = []): void
     {
@@ -117,7 +118,7 @@ class Log
     /**
      * 想记录的日志.
      *
-     * 比如: 用户日志, SQL 日志.
+     * - 比如: 用户日志, SQL 日志.
      */
     public static function info(string $message, array $context = []): void
     {
