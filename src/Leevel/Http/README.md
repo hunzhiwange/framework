@@ -7,6 +7,8 @@ Http
 
 QueryPHP Http Component.
 
+QueryPHP Http component is based on [![Symfony http-foundation](https://github.com/symfony/http-foundation).
+
 ## Install
 
 - composer command
@@ -19,6 +21,7 @@ Resources
 ---------
 
   * [Documentation](https://www.queryphp.com/docs/component/http.html)
+  * [Symfony HttpFoundation Documentation](https://symfony.com/doc/current/components/http_foundation.html)
   * [Contributing](https://www.queryphp.com/docs/developer/)
   * [Report issues](https://github.com/hunzhiwange/framework/issues) and
     [send Pull Requests](https://github.com/hunzhiwange/framework/pulls)
