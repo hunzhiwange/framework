@@ -31,6 +31,35 @@ use Tests\TestCase;
  * @since 2018.07.11
  *
  * @version 1.0
+ *
+ * @api(
+ *     title="Seccode",
+ *     zh-CN:title="验证码",
+ *     zh-TW:title="驗證碼",
+ *     path="component/seccode",
+ *     zh-CN:description="
+ * QueryPHP 提供的验证组件，扩展包内定义了一些常见用法方便使用，可以满足大部分常用场景。
+ *
+ * ## 配置
+ *
+ * 验证码带有默认的配置参数，支持自定义配置。
+ *
+ * |  参数  | 默认值   | 描述  |
+ * | ------------ | ------------ | ------------ |
+ * | width |  160 | 验证码宽度  |
+ * | height  |  60 | 验证码高度  |
+ * |  adulterate | true  | 随机背景图形  |
+ * | tilt  |  true | 随机倾斜度  |
+ * | color  | true  | 随机颜色  |
+ * | size  |  true | 随机大小  |
+ * | shadow  | true  | 文字阴影  |
+ * |  font_path |   | 英文字体路径  |
+ * |  chinese_font_path |   |  中文字体路径 |
+ * |  background_path |  | 背景图路径  |
+ * | background  | true  |  启用背景图像 |
+ * ",
+ * note="你可以根据不同场景灵活运用，以满足产品需求。",
+ * )
  */
 class SeccodeTest extends TestCase
 {
@@ -58,6 +87,13 @@ class SeccodeTest extends TestCase
         }
     }
 
+    /**
+     * @api(
+     *     title="display 验证码基本使用",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testBaseUse(): void
     {
         $seccode = new Seccode([
@@ -94,6 +130,13 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
+    /**
+     * @api(
+     *     title="验证码支持中文",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testChinese(): void
     {
         $seccode = new Seccode([
@@ -172,6 +215,18 @@ class SeccodeTest extends TestCase
 
     /**
      * @dataProvider getAutoCodeData
+     *
+     * @api(
+     *     title="验证码支持随机生成",
+     *     description="
+     * **支持的类型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Seccode\SeccodeTest::class, 'getAutoCodeData')]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
     public function testAutoCode(string $type): void
     {
@@ -210,7 +265,7 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
-    public function getAutoCodeData()
+    public function getAutoCodeData(): array
     {
         return [
             [Seccode::ALPHA_NUM],
@@ -291,6 +346,13 @@ class SeccodeTest extends TestCase
         rmdir(dirname($file));
     }
 
+    /**
+     * @api(
+     *     title="验证码支持最小尺寸设置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMinWidthAndMinHeight(): void
     {
         $seccode = new Seccode([
@@ -330,6 +392,13 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
+    /**
+     * @api(
+     *     title="验证码支持最大尺寸设置",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMaxWidthAndMaxHeight(): void
     {
         $seccode = new Seccode([
@@ -369,6 +438,13 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
+    /**
+     * @api(
+     *     title="验证码默认背景图",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithBackgroundDefault(): void
     {
         $seccode = new Seccode([
@@ -405,6 +481,13 @@ class SeccodeTest extends TestCase
         unlink($file);
     }
 
+    /**
+     * @api(
+     *     title="验证码随机颜色",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testWithoutRandColor(): void
     {
         $seccode = new Seccode([
