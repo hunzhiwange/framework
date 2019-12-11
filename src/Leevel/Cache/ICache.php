@@ -32,7 +32,7 @@ namespace Leevel\Cache;
 interface ICache
 {
     /**
-     * 批量插入.
+     * 批量设置缓存.
      *
      * @param array|string $keys
      * @param null|mixed   $value
