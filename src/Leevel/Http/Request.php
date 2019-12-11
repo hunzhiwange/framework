@@ -1093,7 +1093,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 请求参数.
+     * 获取请求参数.
      */
     public function getRequestUri(): string
     {
