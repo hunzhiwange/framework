@@ -126,6 +126,40 @@ class LogTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
+     *
+     * @api(
+     *     title="log 基本使用",
+     *     description="
+     * 除了 PSR-3 支持的方法外，系统还提供了一些额外方法。
+     *
+     * **支持的日志类型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Log\LogTest::class, 'baseUseProvider')]}
+     * ```
+     *
+     * **获取日志记录数量**
+     *
+     * ``` php
+     * count(?string $level = null): int;
+     * ```
+     *
+     * **获取当前日志记录**
+     *
+     * ``` php
+     * all(?string $level = null): array;
+     * ```
+     *
+     * **清理日志记录**
+     *
+     * ``` php
+     * clear(?string $level = null): void;
+     * ```
+     *
+     * 除了这些外，还有一些辅助方法如 `isMonolog`，因为 `Monolog` 非常流行，底层进行了一些封装。
+     * ",
+     *     note="",
+     * )
      */
     public function testBaseUse(string $level): void
     {
@@ -176,6 +210,13 @@ class LogTest extends TestCase
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
+    /**
+     * @api(
+     *     title="日志支持等级过滤",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLogFilterLevel(): void
     {
         $log = $this->createFileConnect();
@@ -186,6 +227,13 @@ class LogTest extends TestCase
         $this->assertSame([ILog::INFO => [[ILog::INFO, 'foo', ['hello', 'world']]]], $log->all());
     }
 
+    /**
+     * @api(
+     *     title="日志支持默认等级 debug",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLogLevelNotFoundWithDefaultLevel(): void
     {
         $log = $this->createFileConnect();
