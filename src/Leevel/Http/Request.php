@@ -1031,7 +1031,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 分析基础 url.
+     * 获取基础 URL.
      */
     public function getBaseUrl(): string
     {

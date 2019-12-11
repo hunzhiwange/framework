@@ -538,7 +538,7 @@ interface IRequest
     public function getBasePath(): string;
 
     /**
-     * 分析基础 url.
+     * 获取基础 URL.
      */
     public function getBaseUrl(): string;
 
