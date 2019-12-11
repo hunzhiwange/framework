@@ -172,7 +172,9 @@ interface ILog
     public function clear(?string $level = null): void;
 
     /**
-     * 获取日志记录.
+     * 获取当前所有日志记录.
+     *
+     * - 每次 IO 写入后会执行一次清理
      */
     public function all(?string $level = null): array;
 
