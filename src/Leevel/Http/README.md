@@ -5,7 +5,7 @@ Http
 <a href="https://php.net"><img src="https://img.shields.io/badge/php-%3E%3D%207.4.0-8892BF.svg" alt="Minimum PHP Version"></a>
 [![QueryPHP Doc](https://img.shields.io/badge/docs-passing-green.svg?maxAge=2592000)](https://www.queryphp.com/docs/)
 
-QueryPHP Http component is based on [![Symfony http-foundation](https://github.com/symfony/http-foundation).
+QueryPHP Http Component is based on [![Symfony http-foundation](https://github.com/symfony/http-foundation).
 
 ## Install
 
