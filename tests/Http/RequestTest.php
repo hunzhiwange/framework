@@ -43,7 +43,6 @@ class RequestTest extends TestCase
     protected function setUp(): void
     {
         $dir = sys_get_temp_dir().'/form_test';
-
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
