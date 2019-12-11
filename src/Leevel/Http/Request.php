@@ -970,7 +970,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * pathInfo 兼容性分析.
+     * 获取 pathInfo.
      */
     public function getPathInfo(): string
     {

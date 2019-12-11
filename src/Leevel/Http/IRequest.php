@@ -528,7 +528,7 @@ interface IRequest
     public function setPathInfo(string $pathInfo): self;
 
     /**
-     * pathInfo 兼容性分析.
+     * 获取 pathInfo.
      */
     public function getPathInfo(): string;
 
