@@ -777,7 +777,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 验证是否为指定的方法.
+     * 是否为指定的方法.
      */
     public function isMethod(string $method): bool
     {
