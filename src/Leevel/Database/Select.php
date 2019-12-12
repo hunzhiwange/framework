@@ -300,8 +300,6 @@ class Select
     /**
      * 指定返回 SQL 不做任何操作.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return \Leevel\Database\Select
      */
     public function sql(bool $flag = true): self
@@ -386,7 +384,6 @@ class Select
      * 原生 sql 查询数据 select.
      *
      * @param null|callable|\Leevel\Database\Select|string $data
-     * @param bool                                         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -421,7 +418,6 @@ class Select
      * 插入数据 insert (支持原生 sql).
      *
      * @param array|string $data
-     * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return null|array|int
      */
@@ -438,8 +434,6 @@ class Select
 
     /**
      * 批量插入数据 insertAll.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return null|array|int
      */
@@ -458,7 +452,6 @@ class Select
      * 更新数据 update (支持原生 sql).
      *
      * @param array|string $data
-     * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -477,7 +470,6 @@ class Select
      * 更新某个字段的值
      *
      * @param mixed $value
-     * @param bool  $flag  指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -489,8 +481,6 @@ class Select
     /**
      * 字段递增.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return array|int
      */
     public function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
@@ -501,8 +491,6 @@ class Select
     /**
      * 字段减少.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return array|int
      */
     public function updateDecrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
@@ -512,8 +500,6 @@ class Select
 
     /**
      * 删除数据 delete (支持原生 sql).
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -531,8 +517,6 @@ class Select
     /**
      * 清空表重置自增 ID.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return array|int
      */
     public function truncate(bool $flag = false)
@@ -549,8 +533,6 @@ class Select
     /**
      * 返回一条记录.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return mixed
      */
     public function findOne(bool $flag = false)
@@ -565,8 +547,6 @@ class Select
     /**
      * 返回所有记录.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return mixed
      */
     public function findAll(bool $flag = false)
@@ -580,8 +560,6 @@ class Select
 
     /**
      * 返回最后几条记录.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -598,8 +576,6 @@ class Select
 
     /**
      * 返回一个字段的值
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -626,7 +602,6 @@ class Select
      * 返回一列数据.
      *
      * @param mixed $fieldValue
-     * @param bool  $flag       指示是否不做任何操作只返回 SQL
      */
     public function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {
@@ -707,8 +682,6 @@ class Select
     /**
      * 总记录数.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return array|int
      */
     public function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
@@ -724,8 +697,6 @@ class Select
     /**
      * 平均数.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return mixed
      */
     public function findAvg(string $field, string $alias = 'avg_value', bool $flag = false)
@@ -735,8 +706,6 @@ class Select
 
     /**
      * 最大值.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -748,8 +717,6 @@ class Select
     /**
      * 最小值.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return mixed
      */
     public function findMin(string $field, string $alias = 'min_value', bool $flag = false)
@@ -759,8 +726,6 @@ class Select
 
     /**
      * 合计.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -842,8 +807,6 @@ class Select
 
     /**
      * 安全格式指定返回 SQL 不做任何操作.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return \Leevel\Database\Select
      */
@@ -941,8 +904,6 @@ class Select
 
     /**
      * 获取聚合结果.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */

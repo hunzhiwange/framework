@@ -315,8 +315,6 @@ class Db
 
     /**
      * 指定返回 SQL 不做任何操作.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      */
     public static function sql(bool $flag = true): Select
     {
@@ -369,7 +367,6 @@ class Db
      * 原生 sql 查询数据 select.
      *
      * @param null|callable|\Leevel\Database\Select|string $data
-     * @param bool                                         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -382,7 +379,6 @@ class Db
      * 插入数据 insert (支持原生 sql).
      *
      * @param array|string $data
-     * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return null|array|int
      */
@@ -393,8 +389,6 @@ class Db
 
     /**
      * 批量插入数据 insertAll.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return null|array|int
      */
@@ -407,7 +401,6 @@ class Db
      * 更新数据 update (支持原生 sql).
      *
      * @param array|string $data
-     * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -420,7 +413,6 @@ class Db
      * 更新某个字段的值
      *
      * @param mixed $value
-     * @param bool  $flag  指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -432,8 +424,6 @@ class Db
     /**
      * 字段递增.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return array|int
      */
     public static function updateIncrease(string $column, int $step = 1, array $bind = [], bool $flag = false)
@@ -443,8 +433,6 @@ class Db
 
     /**
      * 字段减少.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -456,8 +444,6 @@ class Db
     /**
      * 删除数据 delete (支持原生 sql).
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return array|int
      */
     public static function delete(?string $data = null, array $bind = [], bool $flag = false)
@@ -467,8 +453,6 @@ class Db
 
     /**
      * 清空表重置自增 ID.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return array|int
      */
@@ -480,8 +464,6 @@ class Db
     /**
      * 返回一条记录.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return mixed
      */
     public static function findOne(bool $flag = false)
@@ -491,8 +473,6 @@ class Db
 
     /**
      * 返回所有记录.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -504,8 +484,6 @@ class Db
     /**
      * 返回最后几条记录.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return mixed
      */
     public static function find(?int $num = null, bool $flag = false)
@@ -515,8 +493,6 @@ class Db
 
     /**
      * 返回一个字段的值
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -529,7 +505,6 @@ class Db
      * 返回一列数据.
      *
      * @param mixed $fieldValue
-     * @param bool  $flag       指示是否不做任何操作只返回 SQL
      */
     public static function list($fieldValue, ?string $fieldKey = null, bool $flag = false): array
     {
@@ -555,8 +530,6 @@ class Db
     /**
      * 总记录数.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return array|int
      */
     public static function findCount(string $field = '*', string $alias = 'row_count', bool $flag = false)
@@ -566,8 +539,6 @@ class Db
 
     /**
      * 平均数.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -579,8 +550,6 @@ class Db
     /**
      * 最大值.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return mixed
      */
     public static function findMax(string $field, string $alias = 'max_value', bool $flag = false)
@@ -591,8 +560,6 @@ class Db
     /**
      * 最小值.
      *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
      * @return mixed
      */
     public static function findMin(string $field, string $alias = 'min_value', bool $flag = false)
@@ -602,8 +569,6 @@ class Db
 
     /**
      * 合计.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
