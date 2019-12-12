@@ -25,7 +25,7 @@ use Leevel\Protocol\Console\Base\Status as BaseStatus;
 use Leevel\Protocol\IServer;
 
 /**
- * Http 服务列表.
+ * HTTP 服务列表.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

@@ -100,7 +100,7 @@ class HttpServer extends Server implements IServer
     ];
 
     /**
-     * 处理 http 请求.
+     * 处理 HTTP 请求.
      *
      * - 浏览器连接服务器后, 页面上的每个请求均会执行一次
      * - nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求

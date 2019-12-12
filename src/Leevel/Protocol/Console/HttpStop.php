@@ -25,7 +25,7 @@ use Leevel\Protocol\Console\Base\Stop as BaseStop;
 use Leevel\Protocol\IServer;
 
 /**
- * Http 服务停止.
+ * HTTP 服务停止.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *

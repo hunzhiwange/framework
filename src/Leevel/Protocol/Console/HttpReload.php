@@ -25,7 +25,7 @@ use Leevel\Protocol\Console\Base\Reload as BaseReload;
 use Leevel\Protocol\IServer;
 
 /**
- * Http 服务重启.
+ * HTTP 服务重启.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
