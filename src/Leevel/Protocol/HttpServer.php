@@ -70,7 +70,7 @@ class HttpServer extends Server implements IServer
         'daemonize' => 0,
 
         // 开启静态路径
-        // 配合 Nginx 可以设置这里为 false,nginx 设置规则解析静态路径动态路由转发给 Swoole
+        // 配合 Nginx 可以设置这里为 false,Nginx 设置规则解析静态路径动态路由转发给 Swoole
         'enable_static_handler' => false,
 
         // 开启静态路径目录
@@ -103,8 +103,8 @@ class HttpServer extends Server implements IServer
      * 处理 HTTP 请求.
      *
      * - 浏览器连接服务器后, 页面上的每个请求均会执行一次
-     * - nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
-     * - 可以通过 nginx deny 屏蔽掉 favicon.ico 的请求，具体请 Google 或者百度.
+     * - Nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
+     * - 可以通过 Nginx deny 屏蔽掉 favicon.ico 的请求，具体请 Google 或者百度.
      */
     public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse): void
     {
