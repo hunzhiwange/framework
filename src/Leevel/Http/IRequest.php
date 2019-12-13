@@ -299,7 +299,7 @@ interface IRequest
     public function replace(array $input): void;
 
     /**
-     * PHP 运行模式命令行, 兼容 Swoole HTTP Service.
+     * 是否为 PHP 运行模式命令行, 兼容 Swoole HTTP Service.
      *
      * - Swoole HTTP 服务器也以命令行运行.
      *
