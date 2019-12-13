@@ -315,7 +315,7 @@ interface IRequest
     public function isRealCli(): bool;
 
     /**
-     * PHP 运行模式 cgi.
+     * 是否为 PHP 运行模式 cgi.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      */
