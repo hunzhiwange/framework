@@ -1138,8 +1138,9 @@ class Condition
     }
 
     /**
-     * 添加一个 HAVING 条件
-     * < 参数规范参考 where()方法 >.
+     * 添加一个 HAVING 条件.
+     *
+     * - 参数规范参考 where()方法.
      *
      * @return \Leevel\Database\Condition
      */
