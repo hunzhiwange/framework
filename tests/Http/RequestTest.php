@@ -37,6 +37,50 @@ use Tests\TestCase;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="HTTP Request",
+ *     path="component/http/request",
+ *     description="
+ * QueryPHP 基于 Symfony 请求组件二次，保留了大部分的功能，自定义一些功能。之所以会二次开发，因为早期开发 [`zephir` 版本](https://github.com/hunzhiwange/leevel/tree/master/leevel/http) 必须要这样子做。
+ *
+ * 基本使用方法可以查看 [Symfony Request](https://symfony.com/doc/current/components/http_foundation.html#request)。
+ *
+ * ## 使用方式
+ *
+ * 使用容器 request 服务
+ *
+ * ``` php
+ * \App::make('request')->get(string $key, $defaults = null);
+ * \App::make('request')->all(): array;
+ * ```
+ *
+ * 依赖注入
+ *
+ * ``` php
+ * class Demo
+ * {
+ *     private $request;
+ *
+ *     public function __construct(\Leevel\Http\IRequest $request)
+ *     {
+ *         $this->request = $request;
+ *     }
+ * }
+ * ```
+ *
+ * 使用静态代理
+ *
+ * ``` php
+ * \Leevel\Router\Proxy\Request::get(string $key, $defaults = null);
+ * \Leevel\Router\Proxy\Request::all(): array;
+ * ```
+ *
+ * ::: warning 注意
+ * 为了一致性或者更好与 Swoole 对接，请统一使用请求对象处理输入，避免直接使用 `$_GET`、`$_POST`,`$_COOKIE`,`$_FILES`,`$_SERVER` 等全局变量。
+ * :::
+ * ",
+ * )
  */
 class RequestTest extends TestCase
 {
@@ -58,7 +102,11 @@ class RequestTest extends TestCase
     }
 
     /**
-     * 测试 reset 方法.
+     * @api(
+     *     title="reset 充值请求数据",
+     *     description="",
+     *     note="",
+     * )
      */
     public function testReset(): void
     {
@@ -77,7 +125,11 @@ class RequestTest extends TestCase
     }
 
     /**
-     * 测试 language 方法.
+     * @api(
+     *     title="setLanguage.getLanguage 请求语言",
+     *     description="",
+     *     note="",
+     * )
      */
     public function testLanguage(): void
     {
@@ -88,6 +140,13 @@ class RequestTest extends TestCase
         $this->assertSame($request->getLanguage(), 'zh-cn');
     }
 
+    /**
+     * @api(
+     *     title="setLanguage.language 请求语言别名",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testLanguageAlia(): void
     {
         $request = new Request();
@@ -98,7 +157,11 @@ class RequestTest extends TestCase
     }
 
     /**
-     * 测试 getUri 方法.
+     * @api(
+     *     title="getUri 获取当前 URL 地址",
+     *     description="",
+     *     note="",
+     * )
      */
     public function testGetUri(): void
     {
@@ -205,7 +268,11 @@ class RequestTest extends TestCase
     }
 
     /**
-     * 测试 getSchemeAndHttpHost 方法.
+     * @api(
+     *     title="getSchemeAndHttpHost 取得 Scheme 和 Host",
+     *     description="",
+     *     note="",
+     * )
      */
     public function testGetSchemeAndHttpHost(): void
     {
@@ -262,6 +329,13 @@ class RequestTest extends TestCase
         $this->assertNull($request->getQueryString(), '->getQueryString() returns null for empty query string');
     }
 
+    /**
+     * @api(
+     *     title="getHost 获取 host",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetHost(): void
     {
         $request = new Request();
@@ -284,6 +358,13 @@ class RequestTest extends TestCase
         $this->assertSame('www.host.com', $request->getHost(), '->getHost() value from Host header has priority over SERVER_NAME ');
     }
 
+    /**
+     * @api(
+     *     title="getPort 服务器端口",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetPort(): void
     {
         $request = new Request([], [], [], [], [], [
@@ -294,6 +375,13 @@ class RequestTest extends TestCase
         $this->assertSame(80, $port, 'Without trusted proxies FORWARDED_PROTO and FORWARDED_PORT are ignored.');
     }
 
+    /**
+     * @api(
+     *     title="setMethod.setMethod 请求类型",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetSetMethod(): void
     {
         $request = new Request();
@@ -319,22 +407,22 @@ class RequestTest extends TestCase
         $this->assertSame('DELETE', $request->getMethod(), '->getMethod() returns the method from X-HTTP-Method-Override even though '.IRequest::VAR_METHOD.' is set if defined and POST');
     }
 
-    public function provideOverloadedMethods()
-    {
-        return [
-            ['PUT'],
-            ['DELETE'],
-            ['PATCH'],
-            ['put'],
-            ['delete'],
-            ['patch'],
-        ];
-    }
-
     /**
      * @dataProvider provideOverloadedMethods
      *
      * @param mixed $method
+     *
+     * @api(
+     *     title="createFromGlobals 全局变量创建一个 Request",
+     *     description="
+     * **支持的类型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Http\RequestTest::class, 'provideOverloadedMethods')]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
     public function testCreateFromGlobals($method): void
     {
@@ -361,18 +449,15 @@ class RequestTest extends TestCase
         unset($_SERVER['REQUEST_METHOD'], $_SERVER['CONTENT_TYPE']);
     }
 
-    public function provideOverloadedMethods2()
+    public function provideOverloadedMethods()
     {
         return [
-            ['POST'],
+            ['PUT'],
             ['DELETE'],
             ['PATCH'],
             ['put'],
             ['delete'],
             ['patch'],
-            ['post'],
-            ['get'],
-            ['options'],
         ];
     }
 
@@ -394,12 +479,34 @@ class RequestTest extends TestCase
         unset($_SERVER['REQUEST_METHOD'], $_SERVER['CONTENT_TYPE']);
     }
 
+    public function provideOverloadedMethods2()
+    {
+        return [
+            ['POST'],
+            ['DELETE'],
+            ['PATCH'],
+            ['put'],
+            ['delete'],
+            ['patch'],
+            ['post'],
+            ['get'],
+            ['options'],
+        ];
+    }
+
     public function testGetScriptName(): void
     {
         $request = new Request();
         $this->assertSame('', $request->getScriptName());
     }
 
+    /**
+     * @api(
+     *     title="getScriptName 取得脚本名字",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetScriptName2(): void
     {
         $server = [];
@@ -431,6 +538,13 @@ class RequestTest extends TestCase
         $this->assertSame('', $request->getBaseUrl());
     }
 
+    /**
+     * @api(
+     *     title="getBaseUrl 获取基础 URL",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetBaseUrl2(): void
     {
         $server = [];
@@ -461,6 +575,13 @@ class RequestTest extends TestCase
         $this->assertSame('/goods/foo/index.php/', $request->getBaseUrl());
     }
 
+    /**
+     * @api(
+     *     title="getBasePath 获取基础路径",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetBasePath(): void
     {
         $request = new Request();
@@ -541,6 +662,13 @@ class RequestTest extends TestCase
         $this->assertSame('/', $request->getPathInfo());
     }
 
+    /**
+     * @api(
+     *     title="getPathInfo 获取 pathInfo",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetPathInfo2(): void
     {
         $server = [];
@@ -593,6 +721,13 @@ class RequestTest extends TestCase
         $this->assertSame('/path/info', $request->getPathInfo());
     }
 
+    /**
+     * @api(
+     *     title="getRequestUri 获取请求参数",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetRequestUri(): void
     {
         $server = [];
@@ -626,6 +761,13 @@ class RequestTest extends TestCase
         $this->assertSame('/goods/info/index.php/foo/bar?foo=bar', $request->getRequestUri());
     }
 
+    /**
+     * @api(
+     *     title="isJson.isRealJson 是否为 json 请求行为，支持伪装",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsJson(): void
     {
         $request = new Request();
@@ -638,6 +780,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isRealJson());
     }
 
+    /**
+     * @api(
+     *     title="isAcceptAny 是否为接受任何请求",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsAcceptAny(): void
     {
         $request = new Request();
@@ -651,6 +800,13 @@ class RequestTest extends TestCase
         $this->assertTrue($request->isAcceptAny());
     }
 
+    /**
+     * @api(
+     *     title="isAcceptAny 是否为接受任何请求，支持伪装",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsAcceptJson(): void
     {
         $request = new Request();
@@ -690,6 +846,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isAcceptJson());
     }
 
+    /**
+     * @api(
+     *     title="get 获取参数",
+     *     description="获取参数支持优先权，优先权依次为 `query`、`params`、`request`。",
+     *     note="",
+     * )
+     */
     public function testGetParamPrecedence(): void
     {
         $request = new Request();
@@ -705,6 +868,13 @@ class RequestTest extends TestCase
         $this->assertNull($request->get('foo'));
     }
 
+    /**
+     * @api(
+     *     title="isXmlHttpRequest 是否为 Ajax 请求行为真实",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsXmlHttpRequest(): void
     {
         $request = new Request();
@@ -717,6 +887,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isXmlHttpRequest());
     }
 
+    /**
+     * @api(
+     *     title="isMethod 是否为指定的方法",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsMethod(): void
     {
         $request = new Request();
@@ -733,6 +910,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isMethod('post'));
     }
 
+    /**
+     * @api(
+     *     title="魔术方法 __isset 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMagicIsset(): void
     {
         $request = new Request(['foo' => 'bar']);
@@ -740,6 +924,13 @@ class RequestTest extends TestCase
         $this->assertFalse(isset($request->helloNot));
     }
 
+    /**
+     * @api(
+     *     title="魔术方法 __get 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMagicGet(): void
     {
         $request = new Request(['foo' => 'bar']);
@@ -757,6 +948,13 @@ class RequestTest extends TestCase
         $this->assertTrue(Request::coroutineContext());
     }
 
+    /**
+     * @api(
+     *     title="exists 请求是否包含非空",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testExists(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -765,6 +963,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->exists(['notFound']));
     }
 
+    /**
+     * @api(
+     *     title="has 请求是否包含非空",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHas(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world', 'e' => '']);
@@ -774,6 +979,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->has(['e']));
     }
 
+    /**
+     * @api(
+     *     title="only 取得给定的 keys 数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOnly(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -782,6 +994,13 @@ class RequestTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'not' => null], $request->only(['foo', 'not']));
     }
 
+    /**
+     * @api(
+     *     title="except 取得排除给定的 keys 数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testExcept(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -790,6 +1009,13 @@ class RequestTest extends TestCase
         $this->assertSame(['hello' => 'world'], $request->except(['foo', 'not']));
     }
 
+    /**
+     * @api(
+     *     title="input 获取输入数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testInput(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -798,18 +1024,39 @@ class RequestTest extends TestCase
         $this->assertSame('world', $request->input('hello'));
     }
 
+    /**
+     * @api(
+     *     title="input 获取所有输入数据",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testInputAll(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->input());
     }
 
+    /**
+     * @api(
+     *     title="input 获取输入数据支持默认值",
+     *     description="如果输入值为 `null`，那么将会返回默认值。",
+     *     note="",
+     * )
+     */
     public function testInputNullWithDefault(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('default', $request->input('not', 'default'));
     }
 
+    /**
+     * @api(
+     *     title="query 获取 query",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testQuery(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -818,18 +1065,39 @@ class RequestTest extends TestCase
         $this->assertSame('world', $request->query('hello'));
     }
 
+    /**
+     * @api(
+     *     title="query 获取所有 query",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testQueryAll(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query());
     }
 
+    /**
+     * @api(
+     *     title="query 获取 query 支持默认值",
+     *     description="如果 query 值为 `null`，那么将会返回默认值。",
+     *     note="",
+     * )
+     */
     public function testQueryNullWithDefault(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('default', $request->query('not', 'default'));
     }
 
+    /**
+     * @api(
+     *     title="cookie 获取 cookie",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCookie(): void
     {
         $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
@@ -838,18 +1106,39 @@ class RequestTest extends TestCase
         $this->assertSame('world', $request->cookie('hello'));
     }
 
+    /**
+     * @api(
+     *     title="cookie 获取所有 cookie",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCookieAll(): void
     {
         $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->cookie());
     }
 
+    /**
+     * @api(
+     *     title="query 获取 cookie 支持默认值",
+     *     description="如果 cookie 值为 `null`，那么将会返回默认值。",
+     *     note="",
+     * )
+     */
     public function testCookieNullWithDefault(): void
     {
         $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame('default', $request->cookie('not', 'default'));
     }
 
+    /**
+     * @api(
+     *     title="hasCookie 请求是否存在 COOKIE",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHasCookie(): void
     {
         $request = new Request([], [], [], ['foo' => 'bar', 'hello' => 'world']);
@@ -857,6 +1146,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->hasCookie('not'));
     }
 
+    /**
+     * @api(
+     *     title="file 获取文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFile(): void
     {
         $tmpFile = $this->createTempFile();
@@ -879,6 +1175,13 @@ class RequestTest extends TestCase
         $this->assertNull($request->file('not'));
     }
 
+    /**
+     * @api(
+     *     title="file 获取所有文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testFileAll(): void
     {
         $tmpFile = $this->createTempFile();
@@ -903,6 +1206,13 @@ class RequestTest extends TestCase
         $this->assertCount(1, $files);
     }
 
+    /**
+     * @api(
+     *     title="hasFile 文件是否存在已上传的文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHasFile(): void
     {
         $tmpFile = $this->createTempFile();
@@ -925,6 +1235,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->hasFile('not'));
     }
 
+    /**
+     * @api(
+     *     title="file 获取多个文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMultiFile(): void
     {
         $tmpFile = $this->createTempFile();
@@ -952,6 +1269,13 @@ class RequestTest extends TestCase
         $this->assertCount(2, $files);
     }
 
+    /**
+     * @api(
+     *     title="file 获取子文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMultiFileGetArr(): void
     {
         $tmpFile = $this->createTempFile();
@@ -981,6 +1305,13 @@ class RequestTest extends TestCase
         $this->assertCount(2, $files);
     }
 
+    /**
+     * @api(
+     *     title="header 获取响应头",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHeader(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
@@ -990,12 +1321,26 @@ class RequestTest extends TestCase
         $this->assertSame('https://www.queryphp.com', $request->header('REFERER'));
     }
 
+    /**
+     * @api(
+     *     title="header 获取所有响应头",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testHeaderAll(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertSame(['host' => '127.0.0.1', 'referer' => 'https://www.queryphp.com'], $request->header());
     }
 
+    /**
+     * @api(
+     *     title="header 获取响应头支持默认值",
+     *     description="如果 header 值为 `null`，那么将会返回默认值。",
+     *     note="",
+     * )
+     */
     public function testHeaderNullWithDefault(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
@@ -1003,6 +1348,13 @@ class RequestTest extends TestCase
         $this->assertSame('default', $request->header('notFound', 'default'));
     }
 
+    /**
+     * @api(
+     *     title="server 获取 server",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testServer(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
@@ -1010,12 +1362,26 @@ class RequestTest extends TestCase
         $this->assertSame('https://www.queryphp.com', $request->server('HTTP_REFERER'));
     }
 
+    /**
+     * @api(
+     *     title="server 获取所有 server",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testServerAll(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
         $this->assertSame(['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com'], $request->server());
     }
 
+    /**
+     * @api(
+     *     title="server 获取 server 支持默认值",
+     *     description="如果 server 值为 `null`，那么将会返回默认值。",
+     *     note="",
+     * )
+     */
     public function testServiceNullWithDefault(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_HOST' => '127.0.0.1', 'HTTP_REFERER' => 'https://www.queryphp.com']);
@@ -1023,6 +1389,13 @@ class RequestTest extends TestCase
         $this->assertSame('default', $request->server('notFound', 'default'));
     }
 
+    /**
+     * @api(
+     *     title="merge 合并输入",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testMerge(): void
     {
         $request = new Request(['foo' => 'bar']);
@@ -1031,6 +1404,13 @@ class RequestTest extends TestCase
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->input());
     }
 
+    /**
+     * @api(
+     *     title="replace 替换输入",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testReplace(): void
     {
         $request = new Request(['foo' => 'bar']);
@@ -1039,24 +1419,52 @@ class RequestTest extends TestCase
         $this->assertSame(['hello' => 'world'], $request->input());
     }
 
+    /**
+     * @api(
+     *     title="isCli 是否为 PHP 运行模式命令行, 兼容 Swoole HTTP Service",
+     *     description="Swoole HTTP 服务器也以命令行运行，也就是 Swoole 情况下会返回 false。",
+     *     note="",
+     * )
+     */
     public function testIsCli(): void
     {
         $request = new Request();
         $this->assertTrue($request->isCli());
     }
 
+    /**
+     * @api(
+     *     title="isCli 是否为 PHP 运行模式命令行，Swoole 场景测试",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsCliForSwoole(): void
     {
         $request = new Request([], [], [], [], [], ['SERVER_SOFTWARE' => 'swoole-http-server']);
         $this->assertFalse($request->isCli());
     }
 
+    /**
+     * @api(
+     *     title="isCgi 是否为 PHP 运行模式 cgi",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsCgi(): void
     {
         $request = new Request();
         $this->assertFalse($request->isCgi());
     }
 
+    /**
+     * @api(
+     *     title="isJson 是否为 json 请求行为",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsJsonForContentType(): void
     {
         $request = new Request([], [], [], [], [], ['CONTENT_TYPE' => 'application/json']);
@@ -1069,6 +1477,13 @@ class RequestTest extends TestCase
         $this->assertFalse($request->isJson());
     }
 
+    /**
+     * @api(
+     *     title="isGet 是否为 GET 请求行为",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsGet(): void
     {
         $request = new Request();
@@ -1098,6 +1513,18 @@ class RequestTest extends TestCase
      * @dataProvider provideIsMethod
      *
      * @param mixed $method
+     *
+     * @api(
+     *     title="setMethod 改变请求行为",
+     *     description="
+     * **测试类型**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Http\RequestTest::class, 'provideIsMethod')]}
+     * ```
+     * ",
+     *     note="",
+     * )
      */
     public function testIsMethodCheckWillReturnTrue(string $method): void
     {
@@ -1122,6 +1549,13 @@ class RequestTest extends TestCase
         ];
     }
 
+    /**
+     * @api(
+     *     title="getClientIp 获取 IP 地址",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetClientIp(): void
     {
         $request = new Request([], [], [], [], [], ['HTTP_CLIENT_IP' => '127.0.0.1']);
@@ -1140,12 +1574,26 @@ class RequestTest extends TestCase
         $this->assertSame('0.0.0.0', $request->getClientIp());
     }
 
+    /**
+     * @api(
+     *     title="getRealMethod 实际请求类型",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetRealMethod(): void
     {
         $request = new Request();
         $this->assertSame('GET', $request->getRealMethod());
     }
 
+    /**
+     * @api(
+     *     title="getContent 取得请求内容",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetContent(): void
     {
         $request = new Request([], [], [], [], [], [], 'helloworld');
@@ -1169,12 +1617,26 @@ class RequestTest extends TestCase
         unlink($file);
     }
 
+    /**
+     * @api(
+     *     title="getRoot 获取根 URL",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetRoot(): void
     {
         $request = new Request([], [], [], [], [], ['SERVER_NAME' => 'servername', 'SERVER_PORT' => '90']);
         $this->assertSame('http://servername:90', $request->getRoot());
     }
 
+    /**
+     * @api(
+     *     title="getEnter 获取入口文件",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testGetEnter(): void
     {
         $request = new Request();
@@ -1187,12 +1649,26 @@ class RequestTest extends TestCase
         $this->assertSame('/base/web', $request->getEnter());
     }
 
+    /**
+     * @api(
+     *     title="toArray 对象转数组",
+     *     description="Request 请求对象实现了 `\Leevel\Support\IArray` 接口。",
+     *     note="",
+     * )
+     */
     public function testToArray(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
         $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $request->toArray());
     }
 
+    /**
+     * @api(
+     *     title="数组访问 ArrayAccess.offsetExists 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOffsetExists(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -1200,6 +1676,13 @@ class RequestTest extends TestCase
         $this->assertFalse(isset($request['notfound']));
     }
 
+    /**
+     * @api(
+     *     title="数组访问 ArrayAccess.offsetGet 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOffsetGet(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -1207,6 +1690,13 @@ class RequestTest extends TestCase
         $this->assertNull($request['notfound']);
     }
 
+    /**
+     * @api(
+     *     title="数组访问 ArrayAccess.offsetSet 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOffsetSet(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -1215,6 +1705,13 @@ class RequestTest extends TestCase
         $this->assertSame('newbar', $request['foo']);
     }
 
+    /**
+     * @api(
+     *     title="数组访问 ArrayAccess.offsetUnset 支持",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testOffsetUnset(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
@@ -1223,6 +1720,13 @@ class RequestTest extends TestCase
         $this->assertNull($request['foo']);
     }
 
+    /**
+     * @api(
+     *     title="isPjax 是否为 Pjax 请求行为",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsPjax(): void
     {
         $request = new Request();
@@ -1232,6 +1736,13 @@ class RequestTest extends TestCase
         $this->assertTrue($request->isPjax());
     }
 
+    /**
+     * @api(
+     *     title="isSecure 是否启用 https",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testIsSecure(): void
     {
         $request = new Request();
