@@ -444,12 +444,12 @@ interface IRequest
     public function isMethod(string $method): bool;
 
     /**
-     * 返回当前的语言.
+     * 获取当前的语言.
      */
     public function language(): ?string;
 
     /**
-     * 返回当前的语言.
+     * 获取当前的语言.
      */
     public function getLanguage(): ?string;
 
@@ -466,12 +466,12 @@ interface IRequest
     public function getContent(): string;
 
     /**
-     * 返回 root URL.
+     * 获取根 URL.
      */
     public function getRoot(): string;
 
     /**
-     * 返回入口文件.
+     * 获取入口文件.
      */
     public function getEnter(): string;
 
@@ -501,7 +501,7 @@ interface IRequest
     public function getSchemeAndHttpHost(): string;
 
     /**
-     * 返回当前 URL 地址.
+     * 获取当前 URL 地址.
      */
     public function getUri(): string;
 
@@ -511,7 +511,7 @@ interface IRequest
     public function getPort(): int;
 
     /**
-     * 返回 scheme.
+     * 获取 scheme.
      */
     public function getScheme(): string;
 

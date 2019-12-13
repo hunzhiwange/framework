@@ -788,7 +788,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 返回当前的语言.
+     * 获取当前的语言.
      */
     public function language(): ?string
     {
@@ -796,7 +796,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 返回当前的语言.
+     * 获取当前的语言.
      */
     public function getLanguage(): ?string
     {
@@ -835,7 +835,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 返回 root URL.
+     * 获取根 URL.
      */
     public function getRoot(): string
     {
@@ -843,7 +843,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 返回入口文件.
+     * 获取入口文件.
      */
     public function getEnter(): string
     {
@@ -918,7 +918,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 返回当前 URL 地址.
+     * 获取当前 URL 地址.
      */
     public function getUri(): string
     {
@@ -943,7 +943,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 返回 scheme.
+     * 获取 scheme.
      */
     public function getScheme(): string
     {
