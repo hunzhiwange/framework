@@ -194,7 +194,7 @@ interface IRequest
     public function except(array $keys): array;
 
     /**
-     * 取回输入和文件.
+     * 获取输入和文件.
      */
     public function all(): array;
 
@@ -208,7 +208,7 @@ interface IRequest
     public function input(string $key = null, $defaults = null);
 
     /**
-     * 取回 query.
+     * 获取 query.
      *
      * @param null|array|string $defaults
      *
@@ -222,7 +222,7 @@ interface IRequest
     public function hasCookie(string $key): bool;
 
     /**
-     * 取回 cookie.
+     * 获取 cookie.
      *
      * @param null|array|string $defaults
      *
@@ -261,7 +261,7 @@ interface IRequest
     public function isValidFile($file): bool;
 
     /**
-     * 取回 header.
+     * 获取 header.
      *
      * @param null|array|string $defaults
      *
@@ -270,7 +270,7 @@ interface IRequest
     public function header(?string $key = null, $defaults = null);
 
     /**
-     * 取回 server.
+     * 获取 server.
      *
      * @param null|array|string $defaults
      *
@@ -279,7 +279,7 @@ interface IRequest
     public function server(?string $key = null, $defaults = null);
 
     /**
-     * 取回数据项.
+     * 获取数据项.
      *
      * @param string            $key
      * @param null|array|string $defaults
@@ -516,7 +516,7 @@ interface IRequest
     public function getScheme(): string;
 
     /**
-     * 取回查询参数.
+     * 获取查询参数.
      */
     public function getQueryString(): ?string;
 

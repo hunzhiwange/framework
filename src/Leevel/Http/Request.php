@@ -315,7 +315,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取回输入和文件.
+     * 获取输入和文件.
      */
     public function all(): array
     {
@@ -340,7 +340,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取回 query.
+     * 获取 query.
      *
      * @param null|array|string $defaults
      *
@@ -360,7 +360,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取回 cookie.
+     * 获取 cookie.
      *
      * @param null|array|string $defaults
      *
@@ -429,7 +429,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取回 header.
+     * 获取 header.
      *
      * @param null|array|string $defaults
      *
@@ -441,7 +441,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取回 server.
+     * 获取 server.
      *
      * @param null|array|string $defaults
      *
@@ -453,7 +453,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取回数据项.
+     * 获取数据项.
      *
      * @param string            $key
      * @param null|array|string $defaults
@@ -951,7 +951,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 取回查询参数.
+     * 获取查询参数.
      */
     public function getQueryString(): ?string
     {
