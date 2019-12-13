@@ -380,8 +380,9 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 获取文件
-     * 数组文件请在末尾加上反斜杆访问.
+     * 获取文件.
+     *
+     * - 数组文件请在末尾加上反斜杆访问.
      *
      * @param null|mixed $defaults
      *
@@ -397,8 +398,9 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 文件是否存在已上传的文件
-     * 数组文件请在末尾加上反斜杆访问.
+     * 文件是否存在已上传的文件.
+     *
+     * - 数组文件请在末尾加上反斜杆访问.
      */
     public function hasFile(string $key): bool
     {
@@ -485,7 +487,8 @@ class Request implements IRequest, IArray, ArrayAccess
 
     /**
      * PHP 运行模式命令行, 兼容 Swoole HTTP Service.
-     * Swoole HTTP 服务器也以命令行运行.
+     *
+     * - Swoole HTTP 服务器也以命令行运行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      */
@@ -793,7 +796,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 返回当前的语言
+     * 返回当前的语言.
      */
     public function getLanguage(): ?string
     {
@@ -801,7 +804,7 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 设置当前的语言
+     * 设置当前的语言.
      *
      * @return \Leevel\Http\IRequest
      */
