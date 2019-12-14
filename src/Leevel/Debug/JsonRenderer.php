@@ -22,12 +22,6 @@ namespace Leevel\Debug;
 
 /**
  * Json 渲染.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.20
- *
- * @version 1.0
  */
 class JsonRenderer
 {

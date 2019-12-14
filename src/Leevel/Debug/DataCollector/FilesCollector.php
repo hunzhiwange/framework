@@ -25,12 +25,6 @@ use DebugBar\DataCollector\Renderable;
 
 /**
  * 加载文件收集器.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.20
- *
- * @version 1.0
  */
 class FilesCollector extends DataCollector implements Renderable
 {

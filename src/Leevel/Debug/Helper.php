@@ -25,12 +25,6 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * 助手类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.21
- *
- * @version 1.0
  */
 class Helper
 {

@@ -30,12 +30,6 @@ use Throwable;
 /**
  * IDebug 接口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.05.28
- *
- * @version 1.0
- *
  * @method static \DebugBar\DebugBar addCollector(\DebugBar\DataCollector\DataCollectorInterface $collector)                                          添加数据收集器.
  * @method static bool hasCollector(string $name)                                                                                                     检查是否已添加数据收集器.
  * @method static \DebugBar\DataCollector\DataCollectorInterface getCollector(string $name)                                                           返回数据收集器.

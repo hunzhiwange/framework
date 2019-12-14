@@ -25,12 +25,6 @@ use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
 
 /**
  * Javascript 渲染.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.20
- *
- * @version 1.0
  */
 class JavascriptRenderer extends BaseJavascriptRenderer
 {

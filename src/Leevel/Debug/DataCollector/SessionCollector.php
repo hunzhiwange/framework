@@ -27,12 +27,6 @@ use Leevel\Session\ISession;
 
 /**
  * Session 收集器.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.20
- *
- * @version 1.0
  */
 class SessionCollector extends DataCollector implements DataCollectorInterface, Renderable
 {

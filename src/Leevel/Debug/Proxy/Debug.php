@@ -40,11 +40,6 @@ use Throwable;
 /**
  * 代理 debug.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.09.20
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Debug
