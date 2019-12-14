@@ -26,12 +26,6 @@ use function Leevel\Filesystem\Fso\create_file;
 
 /**
  * 文件缓存.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.02.15
- *
- * @version 1.0
  */
 class File extends Cache implements ICache
 {

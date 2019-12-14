@@ -25,11 +25,6 @@ use Leevel\Cache\Redis\RedisPool as RedisPools;
 /**
  * redis pool 缓存.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.20
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class RedisPool implements ICache

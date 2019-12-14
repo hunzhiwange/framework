@@ -21,13 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Cache;
 
 /**
- * cache 快捷载入接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.06.05
- *
- * @version 1.0
+ * Cache 快捷载入接口.
  */
 interface ILoad
 {

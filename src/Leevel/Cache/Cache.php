@@ -24,12 +24,6 @@ use Closure;
 
 /**
  * cache 抽象类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.02.15
- *
- * @version 1.0
  */
 abstract class Cache implements ICache
 {

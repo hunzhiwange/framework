@@ -26,11 +26,6 @@ use Leevel\Di\Container;
 /**
  * 代理 cache.load.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.11.20
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Load

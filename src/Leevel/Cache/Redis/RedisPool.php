@@ -27,11 +27,6 @@ use Leevel\Protocol\Pool\Pool;
 /**
  * Redis 连接池.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.07
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class RedisPool extends Pool

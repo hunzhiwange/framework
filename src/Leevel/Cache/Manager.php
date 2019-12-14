@@ -26,12 +26,6 @@ use RuntimeException;
 /**
  * 缓存入口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.02.15
- *
- * @version 1.0
- *
  * @method static void put($keys, $value = null)                           批量插入.
  * @method static remember(string $name, $data, array $option = [])        缓存存在读取否则重新设置.
  * @method static \Leevel\Cache\ICache setOption(string $name, $value)     设置配置.

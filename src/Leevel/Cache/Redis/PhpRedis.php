@@ -25,12 +25,6 @@ use RuntimeException;
 
 /**
  * php redis 扩展缓存.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.29
- *
- * @version 1.0
  */
 class PhpRedis implements IRedis
 {

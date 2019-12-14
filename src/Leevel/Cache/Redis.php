@@ -26,12 +26,6 @@ use Leevel\Protocol\Pool\IConnection;
 
 /**
  * redis 扩展缓存.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.05
- *
- * @version 1.0
  */
 class Redis extends Cache implements ICache, IConnection
 {

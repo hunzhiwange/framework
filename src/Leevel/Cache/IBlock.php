@@ -22,12 +22,6 @@ namespace Leevel\Cache;
 
 /**
  * 缓冲块接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.05.26
- *
- * @version 1.0
  */
 interface IBlock
 {

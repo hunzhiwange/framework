@@ -25,13 +25,7 @@ use Leevel\Di\IContainer;
 use ReflectionClass;
 
 /**
- * cache 快捷载入.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.11.20
- *
- * @version 1.0
+ * Cache 快捷载入.
  */
 class Load implements ILoad
 {
