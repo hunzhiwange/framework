@@ -22,12 +22,6 @@ namespace Leevel\Flow;
 
 /**
  * 流程控制复用.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.13
- *
- * @version 1.0
  */
 trait FlowControl
 {
