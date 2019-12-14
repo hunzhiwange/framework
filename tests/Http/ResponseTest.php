@@ -42,14 +42,33 @@ use Tests\TestCase;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ *
+ * @api(
+ *     title="HTTP Response",
+ *     path="component/http/response",
+ *     description="
+ * QueryPHP 响应对象基于 Symfony 二次开发，功能非常强大，做了一些精简和优化。
+ *
+ * ::: warning 注意
+ * 为了一致性或者更好与 Swoole 对接，请统一使用响应对象返回，框架会自动处理返回结果，请避免直接使用 `echo`、`die` 等中断后续处理。
+ * :::
+ * ",
+ * )
  */
 class ResponseTest extends TestCase
 {
+    /**
+     * @api(
+     *     title="create 创建一个响应对象",
+     *     description="",
+     *     note="",
+     * )
+     */
     public function testCreate(): void
     {
         $response = Response::create('foo', 301, ['Foo' => 'bar']);
-        $this->assertInstanceOf('Leevel\Http\IResponse', $response);
-        $this->assertInstanceOf('Leevel\Http\Response', $response);
+        $this->assertInstanceOf('Leevel\\Http\\IResponse', $response);
+        $this->assertInstanceOf('Leevel\\Http\\Response', $response);
         $this->assertSame(301, $response->getStatusCode());
         $this->assertSame('bar', $response->headers->get('foo'));
     }
