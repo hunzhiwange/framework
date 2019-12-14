@@ -30,12 +30,6 @@ use Leevel\Support\Str\camelize;
 
 /**
  * 生成控制器.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.03
- *
- * @version 1.0
  */
 class Controller extends Make
 {

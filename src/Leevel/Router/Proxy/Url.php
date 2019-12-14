@@ -28,11 +28,6 @@ use Leevel\Router\Url as BaseUrl;
 /**
  * 代理 url.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.02.08
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Url

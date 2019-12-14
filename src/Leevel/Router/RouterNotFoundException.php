@@ -24,12 +24,6 @@ use Leevel\Kernel\Exception\NotFoundHttpException;
 
 /**
  * 路由未找到异常.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.09.08
- *
- * @version 1.0
  */
 class RouterNotFoundException extends NotFoundHttpException
 {

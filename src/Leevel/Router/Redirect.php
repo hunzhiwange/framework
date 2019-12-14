@@ -25,12 +25,6 @@ use Leevel\Session\ISession;
 
 /**
  * Redirect.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.03.02
- *
- * @version 1.0
  */
 class Redirect
 {

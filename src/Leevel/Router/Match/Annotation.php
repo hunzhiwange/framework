@@ -25,12 +25,6 @@ use Leevel\Router\IRouter;
 
 /**
  * 注解路由匹配.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.02.15
- *
- * @version 1.0
  */
 class Annotation extends Match implements IMatch
 {

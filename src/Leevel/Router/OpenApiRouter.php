@@ -34,12 +34,6 @@ use function OpenApi\scan;
  * - 忽略已删除的路由 deprecated 和带有 leevelIgnore 的路由.
  * - 如果没有绑定路由参数 leevelBind,系统会尝试自动解析注解所在控制器方法.
  * - 只支持最新的 zircote/swagger-php 3，支持最新的 OpenApi 3.0 规范.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.04.10
- *
- * @version 1.0
  */
 class OpenApiRouter
 {

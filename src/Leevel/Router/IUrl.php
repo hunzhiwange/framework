@@ -24,12 +24,6 @@ use Leevel\Http\IRequest;
 
 /**
  * IUrl 生成.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.01.10
- *
- * @version 1.0
  */
 interface IUrl
 {

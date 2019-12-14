@@ -29,12 +29,6 @@ use Leevel\Http\ResponseHeaderBag;
 
 /**
  * 响应.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.03.03
- *
- * @version 1.0
  */
 class Response implements IResponse
 {

@@ -28,11 +28,6 @@ use Leevel\View\IView as IViews;
 /**
  * 代理 view.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class View

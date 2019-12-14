@@ -27,11 +27,6 @@ use Leevel\Http\IRequest as IBaseRequest;
 /**
  * 代理 request.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Request

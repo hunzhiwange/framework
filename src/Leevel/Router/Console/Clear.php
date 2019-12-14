@@ -25,12 +25,6 @@ use Leevel\Kernel\IApp;
 
 /**
  * 路由缓存清理.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.05.06
- *
- * @version 1.0
  */
 class Clear extends Command
 {

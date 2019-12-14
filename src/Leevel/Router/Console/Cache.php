@@ -28,12 +28,6 @@ use Leevel\Router\RouterProvider;
 
 /**
  * openapi 路由缓存.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.04.11
- *
- * @version 1.0
  */
 class Cache extends Command
 {

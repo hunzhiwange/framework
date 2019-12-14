@@ -28,12 +28,6 @@ use Leevel\Http\Response as BaseResponse;
 
 /**
  * 响应接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.03.07
- *
- * @version 1.0
  */
 interface IResponse
 {

@@ -32,11 +32,6 @@ use Leevel\Router\Response as RouterResponse;
 /**
  * 代理 response.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Response

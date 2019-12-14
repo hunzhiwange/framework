@@ -28,11 +28,6 @@ use Leevel\Router\Router as BaseRouter;
 /**
  * 代理 router.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Router

@@ -34,12 +34,6 @@ use Leevel\Router\View;
 
 /**
  * router 服务提供者.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.12
- *
- * @version 1.0
  */
 class Register extends Provider
 {

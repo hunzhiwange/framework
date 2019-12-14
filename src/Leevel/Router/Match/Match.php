@@ -25,12 +25,6 @@ use Leevel\Router\IRouter;
 
 /**
  * 路由匹配抽象类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.12.25
- *
- * @version 1.0
  */
 abstract class Match
 {

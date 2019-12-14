@@ -24,12 +24,6 @@ use Leevel\View\IView as IViews;
 
 /**
  * 视图.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2016.11.19
- *
- * @version 1.0
  */
 class View implements IView
 {
