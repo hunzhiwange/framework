@@ -29,11 +29,6 @@ use Leevel\Throttler\Throttler as BaseThrottler;
 /**
  * 代理 throttler.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Throttler

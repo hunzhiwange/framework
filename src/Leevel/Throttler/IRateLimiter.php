@@ -24,12 +24,6 @@ use Leevel\Cache\ICache;
 
 /**
  * IRateLimiter 接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.07
- *
- * @version 1.0
  */
 interface IRateLimiter
 {

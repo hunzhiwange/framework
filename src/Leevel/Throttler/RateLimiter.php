@@ -27,12 +27,6 @@ use RuntimeException;
 
 /**
  * RateLimiter 入口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.07
- *
- * @version 1.0
  */
 class RateLimiter implements IRateLimiter, IArray, Countable
 {
