@@ -25,12 +25,6 @@ use Leevel\Cache\Redis\PhpRedis;
 
 /**
  * session.redis.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.05
- *
- * @version 1.0
  */
 class Redis extends Session implements ISession
 {

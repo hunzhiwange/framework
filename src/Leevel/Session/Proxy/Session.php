@@ -26,11 +26,6 @@ use Leevel\Session\Manager;
 /**
  * 代理 session.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.06.10
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Session

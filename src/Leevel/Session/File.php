@@ -24,12 +24,6 @@ use Leevel\Cache\File as CacheFile;
 
 /**
  * session.file.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.08.16
- *
- * @version 1.0
  */
 class File extends Session implements ISession
 {

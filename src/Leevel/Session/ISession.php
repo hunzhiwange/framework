@@ -23,12 +23,6 @@ namespace Leevel\Session;
 /**
  * ISession 接口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.04.11
- *
- * @version 1.0
- *
  * @see \SessionHandlerInterface 底层接口参考
  */
 interface ISession

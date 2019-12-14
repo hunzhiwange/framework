@@ -25,12 +25,6 @@ use Leevel\Manager\Manager as Managers;
 /**
  * manager 入口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.02.15
- *
- * @version 1.0
- *
  * @method static void start(?string $sessionId = null)              启动 session.
  * @method static void save()                                        程序执行保存 session.
  * @method static array all()                                        取回所有 session 数据.
