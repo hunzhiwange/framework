@@ -23,11 +23,6 @@ namespace Leevel\Protocol\Process;
 /**
  * Swoole 自动进程抽象类.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.12.15
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 abstract class Process

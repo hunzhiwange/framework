@@ -29,11 +29,6 @@ use Swoole\Process;
 /**
  * Swoole 服务重启.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.12.27
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 abstract class Reload extends Command

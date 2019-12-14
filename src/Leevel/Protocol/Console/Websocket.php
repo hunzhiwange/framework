@@ -27,11 +27,6 @@ use Leevel\Protocol\IServer;
 /**
  * Swoole WebSocket 服务启动.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.12.21
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Websocket extends BaseServer

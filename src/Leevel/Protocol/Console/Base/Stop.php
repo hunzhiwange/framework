@@ -28,11 +28,6 @@ use Swoole\Process;
 /**
  * Swoole 服务停止.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.12.26
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 abstract class Stop extends Command

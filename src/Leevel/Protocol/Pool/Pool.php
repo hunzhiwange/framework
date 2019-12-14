@@ -30,11 +30,6 @@ use Throwable;
 /**
  * 连接池抽象层.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.05
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 abstract class Pool implements IPool

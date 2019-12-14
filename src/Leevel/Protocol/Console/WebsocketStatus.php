@@ -27,11 +27,6 @@ use Leevel\Protocol\IServer;
 /**
  * Swoole WebSocket 服务列表.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.12.26
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class WebsocketStatus extends BaseStatus

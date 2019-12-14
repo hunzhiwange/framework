@@ -26,11 +26,6 @@ use Swoole\Server as SwooleServer;
 /**
  * 任务管理.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.01
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Task implements ITask

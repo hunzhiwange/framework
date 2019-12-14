@@ -27,11 +27,6 @@ use Leevel\Protocol\IServer;
 /**
  * HTTP 服务停止.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.12.26
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class HttpStop extends BaseStop

@@ -26,11 +26,6 @@ use Swoole\Coroutine as SwooleCoroutine;
 /**
  * 协程实现.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.12.14
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Coroutine implements ICoroutine

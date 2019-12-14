@@ -29,11 +29,6 @@ use Leevel\Protocol\IServer;
 /**
  * Swoole HTTP 服务启动.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.12.21
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 abstract class Server extends Command

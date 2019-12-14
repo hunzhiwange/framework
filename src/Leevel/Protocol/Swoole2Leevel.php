@@ -29,11 +29,6 @@ use Swoole\Http\Request as SwooleHttpRequest;
  *
  * - 剥离自 \Leevel\Protocol\HttpServer
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.01
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Swoole2Leevel

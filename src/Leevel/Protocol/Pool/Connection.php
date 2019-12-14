@@ -23,11 +23,6 @@ namespace Leevel\Protocol\Pool;
 /**
  * 连接池连接驱动.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.24
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 trait Connection

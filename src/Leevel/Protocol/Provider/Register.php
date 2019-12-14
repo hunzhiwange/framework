@@ -34,11 +34,6 @@ use Leevel\Protocol\WebsocketServer;
 /**
  * Swoole 服务提供者.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.12.21
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Register extends Provider

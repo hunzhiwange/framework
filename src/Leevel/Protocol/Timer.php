@@ -27,11 +27,6 @@ use Throwable;
 /**
  * 定时器.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.07.03
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Timer implements ITimer

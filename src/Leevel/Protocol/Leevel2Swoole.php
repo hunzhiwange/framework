@@ -28,11 +28,6 @@ use Swoole\Http\Response as SwooleHttpResponse;
  *
  * - 剥离自 \Leevel\Protocol\HttpServer
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.08.02
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Leevel2Swoole

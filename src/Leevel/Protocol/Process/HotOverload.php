@@ -29,12 +29,6 @@ use Swoole\Coroutine;
 /**
  * Swoole 热重载.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.12.13
- *
- * @version 1.0
- *
  * @see https://www.swoft.org 参考 Swoft 热更新
  * @codeCoverageIgnore
  */
