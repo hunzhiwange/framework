@@ -25,24 +25,18 @@ use Leevel\Http\IRequest;
 
 /**
  * auth.token.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.07
- *
- * @version 1.0
  */
 class Token extends Auth implements IAuth
 {
     /**
-     * 验证
+     * 验证.
      *
      * @var \Leevel\Cache\ICache
      */
     protected ICache $cache;
 
     /**
-     * HTTP 请求
+     * HTTP 请求.
      *
      * @var \Leevel\Http\IRequest
      */

@@ -22,12 +22,6 @@ namespace Leevel\Auth;
 
 /**
  * auth 驱动抽象类.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.07
- *
- * @version 1.0
  */
 abstract class Auth implements IAuth
 {

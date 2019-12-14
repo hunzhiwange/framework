@@ -22,12 +22,6 @@ namespace Leevel\Auth;
 
 /**
  * Hash.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.18
- *
- * @version 1.0
  */
 class Hash implements IHash
 {

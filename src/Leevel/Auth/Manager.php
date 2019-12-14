@@ -25,12 +25,6 @@ use Leevel\Manager\Manager as Managers;
 /**
  * manager 入口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.07
- *
- * @version 1.0
- *
  * @method static bool isLogin()                              用户是否已经登录.
  * @method static array getLogin()                            获取登录信息.
  * @method static void login(array $data, int $loginTime = 0) 登录写入数据.

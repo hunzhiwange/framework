@@ -24,12 +24,6 @@ use Leevel\Session\ISession;
 
 /**
  * auth.session.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.07
- *
- * @version 1.0
  */
 class Session extends Auth implements IAuth
 {

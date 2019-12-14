@@ -22,12 +22,6 @@ namespace Leevel\Auth;
 
 /**
  * IAuth 接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.11.08
- *
- * @version 1.0
  */
 interface IAuth
 {

@@ -24,12 +24,6 @@ use RuntimeException;
 
 /**
  * 验证异常.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.09.09
- *
- * @version 1.0
  */
 class AuthException extends RuntimeException
 {

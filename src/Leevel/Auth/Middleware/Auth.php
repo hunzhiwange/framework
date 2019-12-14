@@ -27,12 +27,6 @@ use Leevel\Http\IRequest;
 
 /**
  * Auth 中间件.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.11.05
- *
- * @version 1.0
  */
 class Auth
 {
