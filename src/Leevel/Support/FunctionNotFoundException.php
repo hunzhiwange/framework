@@ -24,12 +24,6 @@ use RuntimeException;
 
 /**
  * 函数未定义.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2019.04.12
- *
- * @version 1.0
  */
 class FunctionNotFoundException extends RuntimeException
 {

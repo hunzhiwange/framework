@@ -22,12 +22,6 @@ namespace Leevel\Support;
 
 /**
  * IJson 接口.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.07.19
- *
- * @version 1.0
  */
 interface IJson
 {

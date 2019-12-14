@@ -25,12 +25,6 @@ use Leevel\Support\Str\un_camelize;
 
 /**
  * 类型判断辅助函数.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.05.05
- *
- * @version 1.0
  */
 class Type
 {
