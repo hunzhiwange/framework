@@ -25,12 +25,6 @@ use Closure;
 /**
  * IMail 接口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.26
- *
- * @version 1.0
- *
  * @see \Swift_Transport 接口参考，加入强类型
  *
  * @method static bool isStarted()                                                                    传输机制是否已经启动.

@@ -25,11 +25,6 @@ use Swift_SendmailTransport;
 /**
  * sendmail 邮件.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.28
- *
- * @version 1.0
  * @codeCoverageIgnore
  */
 class Sendmail extends Mail implements IMail

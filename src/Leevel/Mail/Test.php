@@ -24,12 +24,6 @@ use Swift_NullTransport;
 
 /**
  * test 邮件.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2018.07.28
- *
- * @version 1.0
  */
 class Test extends Mail implements IMail
 {

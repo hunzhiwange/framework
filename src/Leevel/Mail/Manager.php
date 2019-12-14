@@ -25,12 +25,6 @@ use Leevel\Manager\Manager as Managers;
 /**
  * Mail 入口.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.26
- *
- * @version 1.0
- *
  * @method static \Leevel\Mail\IMail setOption(string $name, $value)                                     设置配置.
  * @method static \Leevel\Mail\IMail globalFrom(string $address, ?string $name = null)                   设置邮件发送来源.
  * @method static \Leevel\Mail\IMail globalTo(string $address, ?string $name = null)                     设置邮件发送地址

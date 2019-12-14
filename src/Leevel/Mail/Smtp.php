@@ -24,12 +24,6 @@ use Swift_SmtpTransport;
 
 /**
  * smtp 邮件.
- *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.26
- *
- * @version 1.0
  */
 class Smtp extends Mail implements IMail
 {

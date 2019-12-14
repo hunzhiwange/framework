@@ -31,12 +31,6 @@ use Swift_Message;
 /**
  * Mail 驱动抽象类.
  *
- * @author Xiangmin Liu <635750556@qq.com>
- *
- * @since 2017.08.26
- *
- * @version 1.0
- *
  * @method static bool isStarted()                                                                    传输机制是否已经启动.
  * @method static void start()                                                                        启动传输机制.
  * @method static void stop()                                                                         停止传输机制.
